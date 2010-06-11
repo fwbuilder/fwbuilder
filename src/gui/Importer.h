@@ -52,12 +52,13 @@ class Importer;
 class UnidirectionalRuleSet {
 
 public:
-    UnidirectionalRuleSet() {}
     libfwbuilder::RuleSet* ruleset;
     std::string name;
     // interface names and directions
     std::map<std::string,std::string> intf_dir;
     libfwbuilder::PolicyRule::Action default_action;
+
+    UnidirectionalRuleSet() { default_action = libfwbuilder::PolicyRule::Deny; }
 };
 
 class ImporterException : public std::exception
@@ -137,11 +138,11 @@ protected:
 
     // checks if ruleset "rsname" exists. Returns pointer if yes,
     // otherwise returns NULL
-    UnidirectionalRuleSet* checkUnidirRuleSet(const std::string &rsname);
+    virtual UnidirectionalRuleSet* checkUnidirRuleSet(const std::string &rsname);
 
     // finds and rturns pointer to ruleset "rsname". If it does not
     // exists, it is created
-    UnidirectionalRuleSet* getUnidirRuleSet(const std::string &rsname);
+    virtual UnidirectionalRuleSet* getUnidirRuleSet(const std::string &rsname);
     
     virtual libfwbuilder::FWObject* getCustomService(const std::string &platform,
                                                      const std::string &code,

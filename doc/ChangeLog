@@ -1,7 +1,17 @@
 2010-06-11  vadim  <vadim@vk.crocodile.org>
 
-	* IPTImporter.cpp (IPTImporter::finalize): see #1513 iptables
-	importer should check default policy in standard chains.
+	* IPTImporter.cpp (IPTImporter::finalize): fixed #1513 iptables
+	importer should check default policy in standard chains. Importer
+	creates rules at the bottom of the policy rule set to reproduce
+	default policies in the built-in chains INPUT,OUTPUT,FORWARD.
+	These rules are added only when default policy in these chains is
+	set to ACCEPT because generated iptables script always sets
+	default policies to DROP.  Support for this in the mangle table is
+	limited so far, only default policies in PREROUTING, OUTPUT and
+	POSTROUTING can be implemented. Rules created for the commands
+	that set default policy in chains FORWARD and INPUT will generate
+	commands in PREROUTING chain instead. We will try to address this
+	in the future if there is sufficient demand.
 
 2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 

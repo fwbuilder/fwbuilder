@@ -72,6 +72,9 @@ IPTImporter::IPTImporter(FWObject *lib,
                          Logger *log) : Importer(lib, "iptables", input, log)
 {
     service_group_name_seed = 0;
+    current_table = "";
+    current_chain = "";
+    current_state = "";
     current_ruleset = NULL;
     current_rule = NULL;
     last_mark_rule = NULL;
@@ -881,24 +884,24 @@ void IPTImporter::pushPolicyRule()
         }
 
         //  add rule to the right ruleset
-        RuleSet *current_ruleset = NULL;
+        RuleSet *ruleset = NULL;
         std::string ruleset_name = "";
         if (isStandardChain(current_chain))
         {
-            current_ruleset = RuleSet::cast(
+            ruleset = RuleSet::cast(
                 getFirewallObject()->getFirstByType(Policy::TYPENAME));
-            assert(current_ruleset!=NULL);
-            current_ruleset->add(current_rule);
+            assert(ruleset!=NULL);
+            ruleset->add(current_rule);
         } else
         {
             UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain);
             assert(rs!=NULL);
             rs->ruleset->add(current_rule);
-            current_ruleset = rs->ruleset;
+            ruleset = rs->ruleset;
         }
 
         // renumber to clean-up rule positions
-        current_ruleset->renumberRules();
+        ruleset->renumberRules();
 
         rule->setDirection(PolicyRule::Both);
 
@@ -911,7 +914,7 @@ void IPTImporter::pushPolicyRule()
             // Branch points to a new rule set where we put a rule with
             // direction outbount on o_intf
 
-            string branch_ruleset_name = current_ruleset->getName() + "_" + o_intf;
+            string branch_ruleset_name = ruleset->getName() + "_" + o_intf;
 
             action = PolicyRule::Branch;
 
@@ -1171,38 +1174,85 @@ Firewall* IPTImporter::finalize()
         std::map<const string, UnidirectionalRuleSet*>::iterator it;
         for (it=all_rulesets.begin(); it!=all_rulesets.end(); ++it)
         {
+            // rs_index is a string composed of the table name and chain name
+            // like "filter / FORWARD" or "mangle / PREROUTING"
+            // This string is created in IPTImporter::getUnidirRuleSet()
+            string rs_index = it->first;
             UnidirectionalRuleSet* rs = it->second;
             if (Policy::isA(rs->ruleset) && rs->default_action == PolicyRule::Accept)
             {
-
                 FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
                 PolicyRule *rule = PolicyRule::cast(
                     dbroot->create(PolicyRule::TYPENAME));
 
                 // check if all child objects were populated properly
-                FWOptions  *ropt = current_rule->getOptionsObject();
-                assert(ropt!=NULL);
-                ropt->setBool("stateless",true);
+                FWOptions  *ropt = rule->getOptionsObject();
+                assert(ropt != NULL);
+                ropt->setBool("stateless", true);
 
                 rule->setAction(PolicyRule::Accept);
 
-                if (rs->name == "INPUT")
+                ostringstream str1;
+                str1 << "Default iptables policy in " << rs_index;
+
+                rule->setComment(str1.str());
+
+                if (rs->name == "FORWARD")
                 {
-                    RuleElementSrc* src = rule->getSrc();
-                    assert(src!=NULL);
-                    src->addRef(fw);
-                    rule->setDirection(PolicyRule::Inbound);
+                    rule->setDirection(PolicyRule::Both);
+
+                    if (rs_index.find("mangle") != string::npos)
+                    {
+                        QString err = QObject::tr(
+                            "Can not reproduce default action in "
+                            "table 'mangle' chain 'FORWARD'.");
+                        ropt->setStr("color", getBadRuleColor());
+                        rule->setComment(err.toUtf8().constData());
+                        *logger << err.toUtf8().constData() << "\n";
+                    }
                 }
-                if (rs->name == "OUTPUT")
+
+                if (rs->name == "INPUT")
                 {
                     RuleElementDst* dst = rule->getDst();
                     assert(dst!=NULL);
                     dst->addRef(fw);
+                    rule->setDirection(PolicyRule::Inbound);
+
+                    if (rs_index.find("mangle") != string::npos)
+                    {
+                        QString err = QObject::tr(
+                            "Can not reproduce default action in "
+                            "table 'mangle' chain 'INPUT'.");
+                        ropt->setStr("color", getBadRuleColor());
+                        rule->setComment(err.toUtf8().constData());
+                        *logger << err.toUtf8().constData() << "\n";
+                    }
+                }
+
+                if (rs->name == "OUTPUT")
+                {
+                    RuleElementSrc* src = rule->getSrc();
+                    assert(src!=NULL);
+                    src->addRef(fw);
+                    rule->setDirection(PolicyRule::Outbound);
+                }
+
+                if (rs->name == "PREROUTING")
+                {
+                    rule->setDirection(PolicyRule::Inbound);
+                }
+
+                if (rs->name == "POSTROUTING")
+                {
                     rule->setDirection(PolicyRule::Outbound);
                 }
 
                 rs->ruleset->add(rule);
 
+                *logger << "Added rule to reproduce default policy ACCEPT in "
+                        << rs_index
+                        << "\n";
             }
         }
 
@@ -1226,10 +1276,110 @@ Firewall* IPTImporter::finalize()
         return NULL;
 }
 
-void IPTImporter::newUnidirRuleSet(const std::string &ruleset_name)
+UnidirectionalRuleSet* IPTImporter::checkUnidirRuleSet(
+    const std::string &ruleset_name)
 {
-    if (!isStandardChain(ruleset_name))
-        Importer::newUnidirRuleSet(ruleset_name);
+    string all_rulesets_index = current_table + "/" + ruleset_name;
+    return all_rulesets[all_rulesets_index];
+}
+
+UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
+    const std::string &ruleset_name)
+{
+    string all_rulesets_index = current_table + "/" + ruleset_name;
+    UnidirectionalRuleSet *rs = all_rulesets[all_rulesets_index];
+    if (rs == NULL)
+    {
+        RuleSet *ruleset = NULL;
+        FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+
+        if (isStandardChain(ruleset_name))
+        {
+            if (current_table == "nat")
+                ruleset = RuleSet::cast(
+                    getFirewallObject()->getFirstByType(NAT::TYPENAME));
+            else
+            {
+                list<FWObject*> policies = getFirewallObject()->getByType(Policy::TYPENAME);
+
+                if (current_table == "mangle")
+                {
+                    for (list<FWObject*>::iterator it=policies.begin();
+                         it!=policies.end(); ++it)
+                    {
+                        RuleSet *rs = RuleSet::cast(*it);
+                        FWOptions *rulesetopt = rs->getOptionsObject();
+                        if (rulesetopt->getBool("mangle_only_rule_set"))
+                        {
+                            ruleset = rs;
+                            break;
+                        }
+                    }
+                    if (ruleset == NULL)
+                    {
+                        ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
+                        FWOptions *rulesetopt = ruleset->getOptionsObject();
+                        rulesetopt->setBool("mangle_only_rule_set", true);
+                        ruleset->setTop(true);
+
+                        ruleset->setName("Mangle");
+                        getFirewallObject()->add(ruleset);
+                    }
+                } 
+
+                if (current_table == "filter")
+                {
+                    for (list<FWObject*>::iterator it=policies.begin();
+                         it!=policies.end(); ++it)
+                    {
+                        RuleSet *rs = RuleSet::cast(*it);
+                        FWOptions *rulesetopt = rs->getOptionsObject();
+                        if (rs->getName() == "Policy" && 
+                            !rulesetopt->getBool("mangle_only_rule_set"))
+                        {
+                            ruleset = rs;
+                            break;
+                        }
+                    }
+                    if (ruleset == NULL)
+                    {
+                        ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
+                        FWOptions *rulesetopt = ruleset->getOptionsObject();
+                        rulesetopt->setBool("mangle_only_rule_set", false);
+                        ruleset->setTop(true);
+
+                        ruleset->setName("Policy");
+                        getFirewallObject()->add(ruleset);
+                    }
+                }
+            }
+
+        } else
+        {
+
+            if (current_table == "nat")
+                ruleset = RuleSet::cast(dbroot->create(NAT::TYPENAME));
+            else
+                ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
+
+            ruleset->setName(ruleset_name);
+            getFirewallObject()->add(ruleset);
+        }
+
+        rs = new UnidirectionalRuleSet();
+        rs->name = ruleset_name;
+        rs->ruleset = ruleset;
+        all_rulesets[all_rulesets_index] = rs;
+    }
+
+    return rs;
+}
+
+void IPTImporter::newUnidirRuleSet(const std::string &chain_name)
+{
+    current_ruleset = getUnidirRuleSet(chain_name);  // creates if new
+    *logger << "Ruleset: " << current_table << " / "
+            << current_ruleset->name << "\n";
 }
 
 

@@ -142,8 +142,15 @@ class IPTImporter : public Importer
     virtual void addSrv();
 
     virtual void pushRule();
-    virtual void newUnidirRuleSet(const std::string &name);
+
+    virtual UnidirectionalRuleSet* getUnidirRuleSet(
+        const std::string &rsname);
+
+    virtual UnidirectionalRuleSet* checkUnidirRuleSet(
+        const std::string &rsname);
     
+    virtual void newUnidirRuleSet(const std::string &name);
+
     // this method actually adds interfaces to the firewall object
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();

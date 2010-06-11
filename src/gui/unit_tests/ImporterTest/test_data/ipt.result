@@ -1,4 +1,11 @@
-Ruleset: user_chain
+Ruleset: filter / INPUT
+Default action: Deny
+Ruleset: filter / FORWARD
+Default action: Deny
+Ruleset: filter / OUTPUT
+Default action: Accept
+Ruleset: filter / user_chain
+Default action: Deny
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
@@ -84,6 +91,16 @@ Parser error: Original rule combines match of tcp/udp/icmp
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
 branches to implement this complex match.
+Ruleset: mangle / PREROUTING
+Default action: Accept
+Ruleset: mangle / INPUT
+Default action: Accept
+Ruleset: mangle / FORWARD
+Default action: Accept
+Ruleset: mangle / OUTPUT
+Default action: Accept
+Ruleset: mangle / POSTROUTING
+Default action: Accept
 Tag Service object: tag-16
 TCP Service object: tcp 25-25
 Tag Service object: tag-0xa
@@ -94,6 +111,12 @@ Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark'
 Tag Service object: tag-1
 Interface: eth2
 Tag Service object: tag-2
+Ruleset: nat / PREROUTING
+Default action: Accept
+Ruleset: nat / POSTROUTING
+Default action: Accept
+Ruleset: nat / OUTPUT
+Default action: Accept
 Network object: net-192.168.1.0/24
 Address object: h-222.222.222.222
 Parser error: Original rule defines outbound interface 'eth1'.
@@ -137,3 +160,11 @@ Address object: h-192.168.1.22
 Address object: h-192.168.2.10
 Address object: h-22.22.22.23
 ICMP Service object: icmp 11/0
+Added rule to reproduce default policy ACCEPT in filter/OUTPUT
+Can not reproduce default action in table 'mangle' chain 'FORWARD'.
+Added rule to reproduce default policy ACCEPT in mangle/FORWARD
+Can not reproduce default action in table 'mangle' chain 'INPUT'.
+Added rule to reproduce default policy ACCEPT in mangle/INPUT
+Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
+Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
+Added rule to reproduce default policy ACCEPT in mangle/PREROUTING
