@@ -1191,6 +1191,7 @@ Firewall* IPTImporter::finalize()
                 ropt->setBool("stateless", true);
 
                 rule->setAction(PolicyRule::Accept);
+                rule->setLogging(false);
 
                 ostringstream str1;
                 str1 << "Default iptables policy in " << rs_index;

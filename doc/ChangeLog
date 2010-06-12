@@ -1,3 +1,10 @@
+2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::finalize): fixed SF bug #3015305
+	"compile error XML validity ". The problem was introduced with a
+	change that made policy importer cabaple of reproducing default
+	policies of main chains.
+
 2010-06-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fixed SF bug #3013743 "UI build warnings"
