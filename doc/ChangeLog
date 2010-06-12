@@ -1,5 +1,9 @@
 2010-06-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* longtextdialog_q.ui, objconflictresolutiondialog_q.ui: fixed
+	SF bug #3013735 "invalid pixmap properties during make". Fixed
+	uic warnings.
+
 	* IPServiceDialogTest.cpp (IPServiceDialogTest::testIpOptions):
 	fixed SF bug #3013855 "various fixes for run_tests". Applied
 	patch suggested by Michael J. Slifcak (with changes).
