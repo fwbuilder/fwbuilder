@@ -70,6 +70,7 @@ void IPServiceDialogTest::initTestCase()
     new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
+    mw->resize(QSize(1200,600));
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     d->close();
@@ -92,15 +93,16 @@ Library* IPServiceDialogTest::findUserLibrary()
 }
 
 
-void IPServiceDialogTest::testTOS()
+void IPServiceDialogTest::testIpOptions()
 {
-    IPService *service = IPService::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), IPService::TYPENAME), IPService::TYPENAME, "testIPService-TOS"));
+    IPService *service = IPService::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(
+                findUserLibrary(), IPService::TYPENAME),
+            IPService::TYPENAME, "testIPService-1"));
     om->editObject(service);
 
     IPServiceDialog *dialog = mw->findChild<IPServiceDialog*>("w_IPServiceDialog");
-    QRadioButton *use_tos = dialog->findChild<QRadioButton*>("use_tos");
-    QRadioButton *use_dscp = dialog->findChild<QRadioButton*>("use_dscp");
-    QLineEdit *code = dialog->findChild<QLineEdit*>("code");
     QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
     QSpinBox *protocolNum = dialog->findChild<QSpinBox*>("protocolNum");
     TextEditWidget *comment = dialog->findChild<TextEditWidget*>("comment");
@@ -120,71 +122,74 @@ void IPServiceDialogTest::testTOS()
     QTest::keyClick(obj_name, Qt::Key_Enter);
     QVERIFY(service->getName() == "TestIPService");
 
-    QTest::mouseClick(use_tos, Qt::LeftButton);
+    QTest::mouseClick(comment, Qt::LeftButton);
+    QTest::keyClicks(comment, "test comment");
+    QTest::mouseClick(obj_name, Qt::LeftButton);
+    QVERIFY(service->getComment() == "test comment");
+
     QTest::keyClick(protocolNum, Qt::Key_Up);
     QTest::keyClick(protocolNum, Qt::Key_Up);
     QTest::keyClick(protocolNum, Qt::Key_Enter);
     QVERIFY(service->getProtocolNumber() == 2);
 
-    QTest::keyClicks(code, "10");
-    QTest::keyClick(code, Qt::Key_Enter);
-    QVERIFY(service->getTOSCode() == "10");
-
-    QTest::mouseClick(any_opt, Qt::LeftButton);
-    service->getBool("any_opt") == true;    
-    QTest::mouseClick(any_opt, Qt::LeftButton);
-    service->getBool("any_opt") == false;
-
+    QTest::mouseClick(lsrr, Qt::LeftButton, Qt::NoModifier, QPoint(8,8));
+    QVERIFY(service->getBool("lsrr") == true);
     QTest::mouseClick(lsrr, Qt::LeftButton);
-    service->getBool("lsrr") == true;
-    QTest::mouseClick(lsrr, Qt::LeftButton);
-    service->getBool("lsrr") == false;
+    QVERIFY(service->getBool("lsrr") == false);
 
     QTest::mouseClick(ssrr, Qt::LeftButton);
-    service->getBool("ssrr") == true;
+    QVERIFY(service->getBool("ssrr") == true);
     QTest::mouseClick(ssrr, Qt::LeftButton);
-    service->getBool("ssrr") == false;
+    QVERIFY(service->getBool("ssrr") == false);
 
     QTest::mouseClick(rr, Qt::LeftButton);
-    service->getBool("rr") == true;
+    QVERIFY(service->getBool("rr") == true);
     QTest::mouseClick(rr, Qt::LeftButton);
-    service->getBool("rr") == false;
+    QVERIFY(service->getBool("rr") == false);
 
-    QTest::mouseClick(timestamp, Qt::LeftButton);
-    service->getBool("ts") == true;
-    QTest::mouseClick(timestamp, Qt::LeftButton);
-    service->getBool("ts") == false;
+    // Have to expicitly specify position for the click; if not, mouseClick()
+    // does not change checkbox state. This could be because the text 
+    // of this checkbox widget is shorter than in the others and clicking
+    // in the center of the widget misses the text. Looks like clicking
+    // outside the text of the checkbox does not switch it.
+    QTest::mouseClick(timestamp, Qt::LeftButton, Qt::NoModifier, QPoint(8,8));
+    QVERIFY(service->getBool("ts") == true);
+    QTest::mouseClick(timestamp, Qt::LeftButton, Qt::NoModifier, QPoint(8,8));
+    QVERIFY(service->getBool("ts") == false);
 
     QTest::mouseClick(router_alert, Qt::LeftButton);
-    service->getBool("rtralt") == true;
+    QVERIFY(service->getBool("rtralt") == true);
     QTest::mouseClick(router_alert, Qt::LeftButton);
-    service->getBool("rtralt") == false;
+    QVERIFY(service->getBool("rtralt") == false);
 
     QTest::mouseClick(all_fragm, Qt::LeftButton);
-    service->getBool("fragm") == true;
+    QVERIFY(service->getBool("fragm") == true);
     QTest::mouseClick(all_fragm, Qt::LeftButton);
-    service->getBool("fragm") == false;
+    QVERIFY(service->getBool("fragm") == false);
 
     QTest::mouseClick(short_fragm, Qt::LeftButton);
-    service->getBool("short_fragm") == true;
+    QVERIFY(service->getBool("short_fragm") == true);
     QTest::mouseClick(short_fragm, Qt::LeftButton);
-    service->getBool("short_fragm") == false;
+    QVERIFY(service->getBool("short_fragm") == false);
+
+    QTest::mouseClick(any_opt, Qt::LeftButton);
+    QVERIFY(service->getBool("any_opt") == true);    
+    QTest::mouseClick(any_opt, Qt::LeftButton);
+    QVERIFY(service->getBool("any_opt") == false);
 
 }
 
-void IPServiceDialogTest::testDSCP()
-{   
-
-    IPService *service = IPService::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), IPService::TYPENAME), IPService::TYPENAME, "testIPService-DSCP"));
+void IPServiceDialogTest::testAnyOpt()
+{
+    IPService *service = IPService::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(
+                findUserLibrary(), IPService::TYPENAME),
+            IPService::TYPENAME, "testIPService-2"));
     om->editObject(service);
 
     IPServiceDialog *dialog = mw->findChild<IPServiceDialog*>("w_IPServiceDialog");
-    QRadioButton *use_tos = dialog->findChild<QRadioButton*>("use_tos");
-    QRadioButton *use_dscp = dialog->findChild<QRadioButton*>("use_dscp");
-    QLineEdit *code = dialog->findChild<QLineEdit*>("code");
-    QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
-    QSpinBox *protocolNum = dialog->findChild<QSpinBox*>("protocolNum");
-    TextEditWidget *comment = dialog->findChild<TextEditWidget*>("comment");
+
     //options:
     QCheckBox *any_opt = dialog->findChild<QCheckBox*>("any_opt");
     QCheckBox *lsrr = dialog->findChild<QCheckBox*>("lsrr");
@@ -193,61 +198,65 @@ void IPServiceDialogTest::testDSCP()
     QCheckBox *timestamp = dialog->findChild<QCheckBox*>("timestamp");
     QCheckBox *router_alert = dialog->findChild<QCheckBox*>("router_alert");
 
-    QCheckBox *all_fragm = dialog->findChild<QCheckBox*>("all_fragments");
-    QCheckBox *short_fragm = dialog->findChild<QCheckBox*>("short_fragments");
 
-    obj_name->clear();
-    QTest::keyClicks(obj_name, "TestIPService-2");
-    QTest::keyClick(obj_name, Qt::Key_Enter);
-    QVERIFY(service->getName() == "TestIPService-2");
+    QTest::mouseClick(lsrr, Qt::LeftButton);
+    QTest::mouseClick(ssrr, Qt::LeftButton);
+    QTest::mouseClick(rr, Qt::LeftButton);
+    QTest::mouseClick(timestamp, Qt::LeftButton);
+    QTest::mouseClick(router_alert, Qt::LeftButton);
 
-    QTest::mouseClick(use_dscp, Qt::LeftButton);
-    QTest::keyClick(protocolNum, Qt::Key_Up);
-    QTest::keyClick(protocolNum, Qt::Key_Up);
-    QTest::keyClick(protocolNum, Qt::Key_Enter);
-    QVERIFY(service->getProtocolNumber() == 2);
+    QTest::mouseClick(any_opt, Qt::LeftButton);
+    QVERIFY(service->getBool("any_opt") == true);    
+    QVERIFY(service->getBool("lsrr") == false);
+    QVERIFY(service->getBool("ssrr") == false);
+    QVERIFY(service->getBool("rr") == false);
+    QVERIFY(service->getBool("ts") == false);
+    QVERIFY(service->getBool("rtralt") == false);
+
+}
+
+void IPServiceDialogTest::testTOS()
+{
+    IPService *service = IPService::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(
+                findUserLibrary(), IPService::TYPENAME),
+            IPService::TYPENAME, "testIPService-3"));
+    om->editObject(service);
+
+    IPServiceDialog *dialog = mw->findChild<IPServiceDialog*>("w_IPServiceDialog");
+    QRadioButton *use_tos = dialog->findChild<QRadioButton*>("use_tos");
+    QLineEdit *code = dialog->findChild<QLineEdit*>("code");
+
+    QTest::mouseClick(use_tos, Qt::LeftButton);
+
+    QLabel *code_label = dialog->findChild<QLabel*>("code_label");
+    QVERIFY(code_label->text() == tr("TOS code (numeric):"));
 
     QTest::keyClicks(code, "10");
     QTest::keyClick(code, Qt::Key_Enter);
-    QVERIFY(service->getDSCPCode() == "10");
+    QVERIFY(service->getTOSCode() == "10");
+}
 
-    QTest::mouseClick(any_opt, Qt::LeftButton);
-    service->getBool("any_opt") == true;
-    QTest::mouseClick(any_opt, Qt::LeftButton);
-    service->getBool("any_opt") == false;
+void IPServiceDialogTest::testDSCP()
+{   
+    IPService *service = IPService::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(
+                findUserLibrary(), IPService::TYPENAME),
+            IPService::TYPENAME, "testIPService-4"));
+    om->editObject(service);
 
-    QTest::mouseClick(lsrr, Qt::LeftButton);
-    service->getBool("lsrr") == true;
-    QTest::mouseClick(lsrr, Qt::LeftButton);
-    service->getBool("lsrr") == false;
+    IPServiceDialog *dialog = mw->findChild<IPServiceDialog*>("w_IPServiceDialog");
+    QRadioButton *use_dscp = dialog->findChild<QRadioButton*>("use_dscp");
+    QLineEdit *code = dialog->findChild<QLineEdit*>("code");
 
-    QTest::mouseClick(ssrr, Qt::LeftButton);
-    service->getBool("ssrr") == true;
-    QTest::mouseClick(ssrr, Qt::LeftButton);
-    service->getBool("ssrr") == false;
+    QTest::mouseClick(use_dscp, Qt::LeftButton);
 
-    QTest::mouseClick(rr, Qt::LeftButton);
-    service->getBool("rr") == true;
-    QTest::mouseClick(rr, Qt::LeftButton);
-    service->getBool("rr") == false;
+    QLabel *code_label = dialog->findChild<QLabel*>("code_label");
+    QVERIFY(code_label->text() == tr("DSCP code or class:"));
 
-    QTest::mouseClick(timestamp, Qt::LeftButton);
-    service->getBool("ts") == true;
-    QTest::mouseClick(timestamp, Qt::LeftButton);
-    service->getBool("ts") == false;
-
-    QTest::mouseClick(router_alert, Qt::LeftButton);
-    service->getBool("rtralt") == true;
-    QTest::mouseClick(router_alert, Qt::LeftButton);
-    service->getBool("rtralt") == false;
-
-    QTest::mouseClick(all_fragm, Qt::LeftButton);
-    service->getBool("fragm") == true;
-    QTest::mouseClick(all_fragm, Qt::LeftButton);
-    service->getBool("fragm") == false;
-
-    QTest::mouseClick(short_fragm, Qt::LeftButton);
-    service->getBool("short_fragm") == true;
-    QTest::mouseClick(short_fragm, Qt::LeftButton);
-    service->getBool("short_fragm") == false;
+    QTest::keyClicks(code, "af4");
+    QTest::keyClick(code, Qt::Key_Enter);
+    QVERIFY(service->getDSCPCode() == "af4");
 }

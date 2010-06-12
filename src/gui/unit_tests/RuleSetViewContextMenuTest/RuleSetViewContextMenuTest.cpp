@@ -201,7 +201,7 @@ void RuleSetViewContextMenuTest::createGroup(QString name)
 {
     groupToCreate = name;
     // timeout should be more than clickMenuItem timeout
-    QTimer::singleShot(150, this, SLOT(actuallyCreateGroup()));
+    QTimer::singleShot(200, this, SLOT(actuallyCreateGroup()));
 }
 
 void RuleSetViewContextMenuTest::actuallyCreateGroup()
@@ -335,8 +335,8 @@ void RuleSetViewContextMenuTest::actuallyVerifyMenu()
 QPoint RuleSetViewContextMenuTest::getViewBottomPoint()
 {
     view->scrollToBottom();
-    int x = view->width()/2;
     view->viewport()->mapToParent(QPoint(view->viewport()->width()/2, view->viewport()->height()-1));
+    return QPoint(view->viewport()->width()/2, view->viewport()->height()-1);
 }
 
 

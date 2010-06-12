@@ -93,7 +93,7 @@ void AddressRangeDialogTest::checkMessageBox()
 
 void AddressRangeDialogTest::editSelectedObject()
 {
-    QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
+//NOTUSED    QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
     mw->findChild<QAction*>(QString("newObject_") + AddressRange::TYPENAME)->trigger();
     QTest::qWait(100);
     QTreeWidgetItem *item = mw->getCurrentObjectTree()->findItems("Address Range", Qt::MatchRecursive | Qt::MatchExactly, 0).first();

@@ -115,7 +115,7 @@ void IPDialogTest::testIPv4Dialog()
     QTest::qWait(100);
     om->editObject(addrobj);
     QLineEdit *name, *addr, *mask;
-    TextEditWidget *comment, *comment6;
+    TextEditWidget *comment;
     QWidget *ipv4dialog = mw->findChild<QWidget*>("w_IPv4Dialog");
     name = ipv4dialog->findChild<QLineEdit*>("obj_name");
     addr = ipv4dialog->findChild<QLineEdit*>("address");

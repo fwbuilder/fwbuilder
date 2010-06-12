@@ -175,6 +175,8 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
 void IPServiceDialog::changed()
 {
+    if (fwbdebug) qDebug() << "IPServiceDialog::changed()";
+
     setCodeLabel();
     BaseObjectDialog::changed();
 }

@@ -30,7 +30,7 @@
 int fwbdebug;
 
 
-int main(int argc, char *argv[])
+int main(int /*UNUSED argc*/, char ** /*UNUSED argv[]*/)
 {
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( FWBTreeTest::suite() );

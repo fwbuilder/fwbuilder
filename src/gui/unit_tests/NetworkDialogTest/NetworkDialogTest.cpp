@@ -58,7 +58,7 @@
 #include "NetworkDialogTest.h"
 #include "StartTipDialog.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Interface.h"""
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "FWBApplication.h"
@@ -142,7 +142,7 @@ void NetworkDialogTest::testNetwork4Dialog()
     QTest::qWait(100);
     om->editObject(obj);
     QLineEdit *name, *addr, *mask;
-    TextEditWidget *comment, *comment6;
+    TextEditWidget *comment;
     QWidget *ipv4dialog = mw->findChild<QWidget*>("w_NetworkDialog");
     name = ipv4dialog->findChild<QLineEdit*>("obj_name");
     addr = ipv4dialog->findChild<QLineEdit*>("address");

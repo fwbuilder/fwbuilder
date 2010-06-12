@@ -87,7 +87,7 @@ void newClusterDialogTest::test1()
         dialog->show();
 
     QStringList dfws = dialog->getFirewallList();
-    QVERIFY(dfws.count() == fws.size());
+    QVERIFY(dfws.count() == int(fws.size()));
     foreach( QString fwname, dfws)
         QVERIFY(fwnames.contains(fwname));
 
@@ -214,7 +214,7 @@ void newClusterDialogTest::test2()
         dialog->show();
 
     QStringList dfws = dialog->getFirewallList();
-    QVERIFY(dfws.count() == fws.size());
+    QVERIFY(dfws.count() == int(fws.size()));
     foreach( QString fwname, dfws)
         QVERIFY(fwnames.contains(fwname));
 

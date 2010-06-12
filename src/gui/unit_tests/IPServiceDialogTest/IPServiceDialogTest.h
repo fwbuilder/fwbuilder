@@ -35,8 +35,12 @@ class IPServiceDialogTest : public QObject
     Q_OBJECT
     libfwbuilder::Library* findUserLibrary();
     ObjectManipulator *om;
+
 private slots:
     void initTestCase();
+
+    void testIpOptions();
+    void testAnyOpt();
     void testTOS();
     void testDSCP();
 };

@@ -200,8 +200,8 @@ QPoint RuleSetViewTest::findRulePosition(Rule *rule)
 QPoint RuleSetViewTest::getViewBottomPoint()
 {
     view->scrollToBottom();
-    int x = view->width()/2;
     view->viewport()->mapToParent(QPoint(view->viewport()->width()/2, view->viewport()->height()-2));
+    return QPoint(view->viewport()->width()/2, view->viewport()->height()-2);
 }
 
 /*
