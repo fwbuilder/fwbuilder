@@ -12,7 +12,7 @@
   <property name="windowTitle" >
    <string>DNS Name</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
+  <layout class="QGridLayout" name="gridLayout_101" >
    <item row="0" column="0" >
     <widget class="QFrame" name="frame7" >
      <property name="frameShape" >

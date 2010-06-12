@@ -1,5 +1,7 @@
 2010-06-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* fixed SF bug #3013743 "UI build warnings"
+
 	* longtextdialog_q.ui, objconflictresolutiondialog_q.ui: fixed
 	SF bug #3013735 "invalid pixmap properties during make". Fixed
 	uic warnings.

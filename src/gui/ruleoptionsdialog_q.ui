@@ -1705,7 +1705,7 @@
           <attribute name="title">
            <string>TCP</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="gridLayout_122">
            <property name="spacing">
             <number>12</number>
            </property>

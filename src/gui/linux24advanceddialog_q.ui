@@ -754,7 +754,7 @@
       <attribute name="title">
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout_105">
        <property name="leftMargin">
         <number>12</number>
        </property>

@@ -77,7 +77,7 @@
       <attribute name="title" >
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
+      <layout class="QGridLayout" name="gridLayout_130" >
        <item row="0" column="1" >
         <spacer>
          <property name="orientation" >

@@ -78,7 +78,7 @@
        <iconset resource="MainRes.qrc" >
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
+      <layout class="QGridLayout" name="gridLayout_111" >
        <item row="0" column="0" colspan="4" >
         <widget class="QCheckBox" name="use_unicast" >
          <property name="toolTip" >

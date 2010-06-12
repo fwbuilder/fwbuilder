@@ -488,7 +488,7 @@ First, create temporary access list to permit connections from the management su
          <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QGridLayout" name="gridLayout_126">
           <item row="0" column="0">
            <widget class="QLabel" name="textLabel1_2">
             <property name="text">

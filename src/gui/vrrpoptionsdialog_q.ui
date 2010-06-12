@@ -78,7 +78,7 @@
        <iconset>
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
+      <layout class="QGridLayout" name="gridLayout_120" >
        <item row="0" column="0" colspan="3" >
         <widget class="QCheckBox" name="vrrp_over_ipsec_ah" >
          <property name="text" >

@@ -79,7 +79,7 @@
       <attribute name="title">
        <string>conntrack Parameters</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout_110">
        <item row="0" column="0" colspan="3">
         <widget class="QCheckBox" name="use_unicast">
          <property name="text">

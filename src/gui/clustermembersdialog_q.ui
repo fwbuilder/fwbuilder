@@ -187,7 +187,7 @@
          <property name="frameShadow" >
           <enum>QFrame::Plain</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout" >
+         <layout class="QGridLayout" name="gridLayout_129" >
           <item row="0" column="0" >
            <widget class="QToolButton" name="buttonAdd" >
             <property name="enabled" >

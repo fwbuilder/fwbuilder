@@ -141,7 +141,7 @@
          </property>
          <widget class="QWidget" name="page_0" />
          <widget class="QWidget" name="page_1" >
-          <layout class="QGridLayout" name="gridLayout" >
+          <layout class="QGridLayout" name="gridLayout_106" >
            <item row="0" column="0" >
             <widget class="QLabel" name="vlan_label" >
              <property name="enabled" >

@@ -109,7 +109,7 @@
      <property name="title">
       <string> Replace object </string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_119">
       <item row="0" column="0">
        <widget class="FWObjectDropArea" name="replaceDropArea" native="true">
         <property name="sizePolicy">

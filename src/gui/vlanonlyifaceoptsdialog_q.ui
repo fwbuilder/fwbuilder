@@ -85,7 +85,7 @@
        <iconset resource="MainRes.qrc" >
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
+      <layout class="QGridLayout" name="gridLayout_114" >
        <item row="0" column="0" >
         <spacer>
          <property name="orientation" >

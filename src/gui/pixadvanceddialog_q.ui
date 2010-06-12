@@ -385,7 +385,7 @@
          <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QGridLayout" name="gridLayout_124">
           <item row="0" column="0">
            <widget class="QLabel" name="textLabel1_2">
             <property name="text">

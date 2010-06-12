@@ -30,7 +30,7 @@
      <property name="title" >
       <string>Object:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" >
+     <layout class="QGridLayout" name="gridLayout_107" >
       <item row="0" column="0" >
        <widget class="FWObjectDropArea" native="1" name="dropArea" >
         <property name="sizePolicy" >

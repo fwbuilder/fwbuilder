@@ -239,7 +239,7 @@
           <property name="frameShadow" >
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QGridLayout" name="gridLayout" >
+          <layout class="QGridLayout" name="gridLayout_121" >
            <property name="topMargin" >
             <number>2</number>
            </property>

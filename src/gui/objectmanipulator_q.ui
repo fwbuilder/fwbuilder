@@ -21,7 +21,7 @@
   <property name="windowTitle" >
    <string>Tree of Objects</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
+  <layout class="QGridLayout" name="gridLayout_103" >
    <property name="verticalSpacing" >
     <number>2</number>
    </property>

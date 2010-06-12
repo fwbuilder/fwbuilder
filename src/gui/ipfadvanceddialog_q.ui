@@ -725,7 +725,7 @@ with this address:</string>
          <property name="title" >
           <string>External install script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout" >
+         <layout class="QGridLayout" name="gridLayout_127" >
           <item row="0" column="0" >
            <layout class="QHBoxLayout" name="horizontalLayout" >
             <item>
