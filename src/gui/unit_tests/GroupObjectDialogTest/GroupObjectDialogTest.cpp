@@ -160,18 +160,9 @@ template <class FWTYPE> FWTYPE* GroupObjectDialogTest::createObject(QString name
     return FWTYPE::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), FWTYPE::TYPENAME), FWTYPE::TYPENAME, name));
 }
 
-class PublicGroupDialog: public GroupObjectDialog
-{
-public:
-    void insertObject(FWObject *o)
-    {
-        GroupObjectDialog::insertObject(o);
-    }
-};
-
 bool checkObjectInsertion(GroupObjectDialog *dlg, Group *grp, FWObject *obj)
 {
-    static_cast<PublicGroupDialog*>(dlg)->insertObject(obj);
+    dlg->insertObject(obj);
     for (Group::iterator i = grp->begin(); i!= grp->end(); i++)
     {
         if (FWObjectReference::cast(*i)->getPointer() == obj)
@@ -184,7 +175,7 @@ bool checkObjectInsertion(GroupObjectDialog *dlg, Group *grp, FWObject *obj)
 
 bool checkObjectInsertion2(GroupObjectDialog *dlg, ServiceGroup *grp, FWObject *obj)
 {
-    static_cast<PublicGroupDialog*>(dlg)->insertObject(obj);
+    dlg->insertObject(obj);
     for (ServiceGroup::iterator i = grp->begin(); i!= grp->end(); i++)
     {
         if (FWServiceReference::cast(*i)->getPointer() == obj)

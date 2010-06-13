@@ -1,5 +1,11 @@
 2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* GroupObjectDialog.h (class GroupObjectDialog): fixed #1499
+	"GroupObjectDialogTest.cpp does not compile with gcc 3.4.6" and SF
+	bug 3015307.  There is no reason to make method insertObject()
+	protected which caused problems (and hacky workaround) in the unit
+	test.
+
 	* IPTImporter.cpp (IPTImporter::finalize): fixed SF bug #3015305
 	"compile error XML validity ". The problem was introduced with a
 	change that made policy importer cabaple of reproducing default

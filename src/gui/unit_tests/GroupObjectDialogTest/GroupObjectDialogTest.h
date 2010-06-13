@@ -51,7 +51,8 @@
 
 class GroupObjectDialogTest : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT;
+    
     libfwbuilder::Library* findUserLibrary();
     template <class FWTYPE> FWTYPE* createObject(QString name);
     ObjectManipulator *om;

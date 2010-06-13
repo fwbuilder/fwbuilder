@@ -65,15 +65,15 @@ class GroupObjectDialog : public BaseObjectDialog
     void setupPopupMenu(const QPoint&);
     void saveColumnWidths();
 
- protected:
-    void insertObject(libfwbuilder::FWObject *o);
-
  public:
     GroupObjectDialog(QWidget *parent);
     ~GroupObjectDialog();
 
     enum viewType { Icon, List };
 
+    // making insertObject() public so we can use it in unit tests
+    void insertObject(libfwbuilder::FWObject *o);
+    
  public slots:
     virtual void applyChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
