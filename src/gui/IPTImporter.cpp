@@ -72,6 +72,7 @@ IPTImporter::IPTImporter(FWObject *lib,
                          Logger *log) : Importer(lib, "iptables", input, log)
 {
     service_group_name_seed = 0;
+    aux_branch_number = 0;
     current_table = "";
     current_chain = "";
     current_state = "";
@@ -499,36 +500,10 @@ void IPTImporter::processModuleMatches()
             string branch_chain = str.str();
             branch_depth++;
 
-            UnidirectionalRuleSet *rs = branch_rulesets[branch_chain];
-            if (rs==NULL)
-                rs = getUnidirRuleSet(branch_chain);
-            branch_rulesets[branch_chain] = rs;
-            rs->ruleset->setName(branch_chain);
-
-            FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
-            PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
-            FWOptions  *ropt = new_rule->getOptionsObject();
-            assert(ropt!=NULL);
-            ropt->setBool("stateless", true);
-            rs->ruleset->add(new_rule);
-
-            // duplicate() ensures that new_rule has right action
-            new_rule->duplicate(rule);
-            RuleElement* re;
-            re = new_rule->getSrc();   re->reset();
-            re = new_rule->getDst();   re->reset();
-            re = new_rule->getSrv();   re->reset();
-            re = new_rule->getItf();   re->reset();
+            PolicyRule *new_rule = createBranch(rule, branch_chain,
+                                                true, true);
 
             addAllModuleMatches(new_rule);
-
-            ostringstream str1;
-            str1 << "Called from ruleset " << rule->getParent()->getName()
-                 << ", rule " << rule->getPosition();
-            new_rule->setComment(str1.str());
-
-            rule->setAction(PolicyRule::Branch);
-            rule->setBranch(rs->ruleset);
         }
     }
 }
@@ -593,6 +568,66 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
         recent_match = "";
     }
 }
+
+
+/**
+ * Special method that takes a rule and converts it into a branching
+ * rule, creates new rule set object, adds a rule to it and makes this
+ * rule a copy of the rule passed as an argument. Returns pointer to
+ * the new rule inside the branch rule set. Note that new rule inside
+ * the branch rule set is a copy of the original rule, with its action
+ * and other attributes. The original rule's action changes however
+ * and becomes "Branch".
+ */
+PolicyRule* IPTImporter::createBranch(PolicyRule *rule,
+                                      const std::string &branch_ruleset_name,
+                                      bool clear_rule_elements,
+                                      bool make_stateless)
+{
+    UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
+    if (rs==NULL)
+        rs = getUnidirRuleSet(branch_ruleset_name);
+    branch_rulesets[branch_ruleset_name] = rs;
+    rs->ruleset->setName(branch_ruleset_name);
+
+    FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+    PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
+    rs->ruleset->add(new_rule);
+
+    new_rule->duplicate(rule);
+
+    rule->setAction(PolicyRule::Branch);
+    rule->setBranch(rs->ruleset);
+
+    if (rule->getParent() != NULL)
+    {
+        ostringstream str1;
+        str1 << "Called from ruleset " << rule->getParent()->getName()
+             << ", rule " << rule->getPosition();
+        new_rule->setComment(str1.str());
+    }
+
+    if (clear_rule_elements)
+    {
+        RuleElement* re;
+        re = new_rule->getSrc();   re->reset();
+        re = new_rule->getDst();   re->reset();
+        re = new_rule->getSrv();   re->reset();
+        re = new_rule->getItf();   re->reset();
+    }
+
+    if (make_stateless)
+    {
+        FWOptions  *ropt = new_rule->getOptionsObject();
+        assert(ropt!=NULL);
+        ropt->setBool("stateless", true);
+    }
+
+    *Importer::logger << "Created branch " << branch_ruleset_name << "\n";
+
+    return new_rule;
+}
+
 
 void IPTImporter::pushRule()
 {
@@ -792,32 +827,46 @@ void IPTImporter::pushPolicyRule()
     if (current_state == "RELATED,ESTABLISHED" ||
         current_state == "ESTABLISHED,RELATED")
     {
-        if (rule->getSrc()->isAny() &&
-            rule->getDst()->isAny() &&
-            rule->getSrv()->isAny())
+        RuleElementSrv *srv = rule->getSrv();
+        std::string protocol = "";
+        FWObject *estab = NULL;
+
+        FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+        FWObject *std_obj = dbroot->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
+        estab = std_obj->findObjectByName(CustomService::TYPENAME, "ESTABLISHED");
+        if (estab == NULL)
         {
-            fwopt->setBool("accept_established", true);
-            skip_rule = true;
-            *Importer::logger
-                << "Using automatic rule controlled by option "
-                << "'Accept established,related states' to match "
-                << "states RELATED,ESTABLISHED"
-                << "\n";
+            estab = getCustomService(
+                "iptables", "-m state --state RELATED,ESTABLISHED", "");
+        }
+
+        if (!rule->getSrv()->isAny())
+        {
+            ostringstream str;
+            str << current_chain << "_established_" << aux_branch_number;
+            aux_branch_number++;
+            string branch_ruleset_name = str.str();
+
+            // two boolean args of createBranch() clear all rule elements
+            // of the rule in the branch rule set and make it stateless
+            PolicyRule *new_rule = createBranch(rule, branch_ruleset_name,
+                                                true, true);
+
+            RuleElement* re = new_rule->getSrv();
+            re->addRef(estab);
         } else
         {
-            RuleElementSrv *srv = rule->getSrv();
-            std::string protocol = "";
-            if (!rule->getSrv()->isAny())
-            {
-                Service *srv_obj = Service::cast(FWServiceReference::getObject(
-                                                     srv->front()));
-                protocol = srv_obj->getProtocolName();
-            }
-            FWObject *established = getCustomService(
-                "iptables", "-m state --state RELATED,ESTABLISHED", protocol);
             srv->clearChildren();
-            srv->addRef(established);
+            srv->addRef(estab);
         }
+
+        *Importer::logger
+            << "Rule matches states 'RELATED,ESTABLISHED'. Consider using "
+            << "automatic rule controlled by the checkbox in the firewall "
+            << "settings dialog. Automatic rule matches in all standard chains "
+            << "which may be different from the original imported configuration. "
+            << "This requires manual checking."
+            << "\n";
     }
 
     if (rule->getSrc()->isAny() &&
@@ -914,25 +963,16 @@ void IPTImporter::pushPolicyRule()
             // Branch points to a new rule set where we put a rule with
             // direction outbount on o_intf
 
-            string branch_ruleset_name = ruleset->getName() + "_" + o_intf;
-
             action = PolicyRule::Branch;
 
-            UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
-            if (rs==NULL)
-                rs = getUnidirRuleSet(branch_ruleset_name);
-            branch_rulesets[branch_ruleset_name] = rs;
-            rs->ruleset->setName(branch_ruleset_name);
+            string branch_ruleset_name = ruleset->getName() + "_" + o_intf;
 
-            FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
-            PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
-            FWOptions  *ropt = new_rule->getOptionsObject();
-            assert(ropt!=NULL);
             // note that this new rule only matches interface and
             // direction, everything else has been matched by the main
-            // rule. There is no need for the rule in the branch to be stateful.
-            ropt->setBool("stateless", true);
-            rs->ruleset->add(new_rule);
+            // rule. There is no need for the rule in the branch to be stateful
+            // (that is what the last bool argument for createBranch() is for)
+            PolicyRule *new_rule = createBranch(rule, branch_ruleset_name,
+                                                true, true);
 
             // Important: at this point we have assembled the
             // current_rule completely. This means all rule elements,
@@ -940,12 +980,8 @@ void IPTImporter::pushPolicyRule()
             // duplicating it into new_rule, we set the same action in
             // the new_rule. We will change interface, direction and
             // action in the current_rule below.
-            new_rule->duplicate(rule);
+
             RuleElement* re;
-            re = new_rule->getSrc();   re->reset();
-            re = new_rule->getDst();   re->reset();
-            re = new_rule->getSrv();   re->reset();
-            re = new_rule->getItf();   re->reset();
             
             new_rule->setDirection(PolicyRule::Outbound);
             newInterface(o_intf);
@@ -958,8 +994,6 @@ void IPTImporter::pushPolicyRule()
             intf = all_interfaces[i_intf];
             re =rule->getItf();
             re->addRef(intf);
-            rule->setAction(PolicyRule::Branch);
-            rule->setBranch(rs->ruleset);
 
             QString interfaces = QString("-i %1 -o %2").arg(i_intf.c_str()).arg(o_intf.c_str());
 

@@ -6,16 +6,22 @@ Ruleset: filter / OUTPUT
 Default action: Accept
 Ruleset: filter / user_chain
 Default action: Deny
-Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
-Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
-Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
-Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 Address object: h-21.21.21.21
 TCP Service object: tcp 22-22:
-Custom Service object: cust-0-tcp: iptables: -m state --state RELATED,ESTABLISHED
+Created branch OUTPUT_established_0
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+TCP Service object: tcp 23-23
+Created branch OUTPUT_established_1
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Interface: lo
 UDP Service object: udp 1604-1604
+Created branch Policy_eth1
 Interface: eth1
 Interface: eth0
 Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
@@ -27,7 +33,7 @@ ICMP Service object: icmp -1/-1
 Address object: h-192.168.1.1
 IP Service object: ip-47
 Network object: net-1.1.0.0/16
-Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 Network object: net-192.168.19.0/24
 TCP Service object: tcp 5432-5432
 Address object: h-192.168.16.125
@@ -73,20 +79,28 @@ TCP Service object: tcp 206-206:
 TCP Service object: tcp 2222-2222:
 ICMP Service object: icmp 3/-1
 ICMP Service object: icmp 3/6
-Custom Service object: cust-1-: iptables: -m length --length 400:65535
-Custom Service object: cust-2-: iptables: -m recent --name badguy --rcheck --seconds 60 
-Custom Service object: cust-3-: iptables: -m recent --name badguy --set 
+Custom Service object: cust-0-: iptables: -m length --length 400:65535
+Custom Service object: cust-1-: iptables: -m recent --name badguy --rcheck --seconds 60 
+Created branch user_chain_42_mod_match
+Custom Service object: cust-2-: iptables: -m recent --name badguy --set 
 TCP Service object: tcp 5190-5190
+Created branch user_chain_43_mod_match
 Tag Service object: tag-0x11
-Custom Service object: cust-4-: iptables: -m length --length 400:1500
+Created branch user_chain_44_mod_match
+Custom Service object: cust-3-: iptables: -m length --length 400:1500
+Created branch user_chain_45_mod_match
 Tag Service object: tag-0x1
 TCP Service object: tcp fsrpau/s
+Created branch user_chain_46_mod_match
 Tag Service object: tag-0x4
+Created branch user_chain_47_mod_match
 TCP Service object: tcp 53-53:
+Created branch user_chain_48_mod_match
 Parser error: Original rule combines match of tcp/udp/icmp 
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
 branches to implement this complex match.
+Created branch user_chain_49_mod_match
 Parser error: Original rule combines match of tcp/udp/icmp 
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
@@ -146,7 +160,6 @@ TCP Service object: tcp 113-113
 TCP Service object: tcp 53-53
 TCP Service object: tcp 21-21
 TCP Service object: tcp 119-119
-TCP Service object: tcp 23-23
 TCP Service object: tcp 540-540
 TCP Service object: tcp 70-70
 TCP Service object: tcp 13-13

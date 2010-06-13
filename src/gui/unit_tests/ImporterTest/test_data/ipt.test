@@ -5,21 +5,26 @@
 :OUTPUT ACCEPT [1531191:180073476]
 :user_chain - [0:0]
 
-# this should be recognized as built-in rule
+# this should produce rule in the same chain
 -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT 
 
-# and this, too
+# and these, too
 -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
+
+# this creates a branch, matching service in the main policy and
+# ESTABLISHED,RELATE states in the branch
+#
+-A OUTPUT -d 21.21.21.21 -p tcp -m tcp --sport 22 -m state --state RELATED,ESTABLISHED -j ACCEPT 
+
+# variant with a different action. New branch rule set should be created, different
+# from the one created for the rule above.
+#
+-A OUTPUT -d 21.21.21.21 -p tcp -m tcp --dport 23 -m state --state RELATED,ESTABLISHED -j DROP
 
 # this should be recognized as built-in rule
 -A FORWARD -m state --state INVALID -j drop_invalid 
-
-# this should be recognized as built-in rule
--A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
-
-# this is a hard one, we can not add this combination of states to a normal rule
-# should mark as error and add --state line to comment
--A OUTPUT -d 21.21.21.21 -p tcp -m tcp --sport 22 -m state --state RELATED,ESTABLISHED -j ACCEPT 
 
 # this should be recognized as built-in rule
 -A OUTPUT -m state --state INVALID -j drop_invalid 

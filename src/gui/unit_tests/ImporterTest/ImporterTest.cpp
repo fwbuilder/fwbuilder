@@ -28,54 +28,28 @@
 #include "../../config.h"
 #include "global.h"
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
-
 #include <fstream>
 #include <iostream>
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
 
-#include <qstring.h>
-
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <pwd.h>
-#else
-#  include <direct.h>
-#  include <stdlib.h>
-#  include <io.h>
-#endif
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
 #include <assert.h>
 
 #include "../../Importer.h"
 #include "../../IOSImporter.h"
 #include "../../IPTImporter.h"
-
 #include "../../FWBTree.h"
 
-
-#ifdef HAVE_GETOPT_H
-  #include <getopt.h>
-#else
-  #ifdef _WIN32
-    #include <getopt.h>
-  #else
-    #include <stdlib.h>
-  #endif
-#endif
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/TagService.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QStringList>
-
+#include <QString>
+#include <QRegExp>
 
 
 using namespace std;
@@ -96,10 +70,12 @@ void ImporterTest::setUp()
 {
     //init();
 
+    qDebug() << "Running ImporterTest::setUp()";
+
     string full_res_path = respath + FS_SEPARATOR + "resources.xml";
     new Resources(full_res_path);
 
-    new FWBTree();
+    FWBTree *tree = new FWBTree();
 
     /* create database */
     db = new FWObjectDatabase();
@@ -121,9 +97,8 @@ void ImporterTest::setUp()
     qDebug() << "st";
 
     db->setFileName("");
-    lib = Library::cast(db->create(Library::TYPENAME));
+    lib = Library::cast(tree->createNewLibrary(db));
     lib->setName("User");
-    db->add(lib);
 
     logger = new QueueLogger();
 }
@@ -133,9 +108,11 @@ void ImporterTest::compareResults(QueueLogger* logger,
                                   QString obtained_result_file_name)
 {
     QString result;
+    QStringList obtained_result;
+
     while (logger->ready())
         result.append(logger->getLine().c_str());
-    QStringList obtained_result = result.split("\n");
+    obtained_result = result.split("\n");
 
     QFile rw(obtained_result_file_name);
     rw.open(QFile::WriteOnly);
@@ -148,6 +125,46 @@ void ImporterTest::compareResults(QueueLogger* logger,
     QStringList expected_result = result_file.split("\n");
 
     int max_idx = max(expected_result.size(), obtained_result.size());
+    for (int i=0; i < max_idx; ++i)
+    {
+        QString err = QString("Line %1:\nExpected: '%2'\nResult: '%3'\n")
+            .arg(i).arg(expected_result[i]).arg(obtained_result[i]);
+        CPPUNIT_ASSERT_MESSAGE(err.toStdString(), obtained_result[i] == expected_result[i]);
+    }
+}
+
+void ImporterTest::compareFwbFiles(QString expected_result_file_name,
+                                   QString obtained_result_file_name)
+{
+    QString result;
+    QStringList obtained_result;
+
+    QFile rr(obtained_result_file_name);
+    rr.open(QFile::ReadOnly);
+    QString result_file = rr.readAll();
+    rr.close();
+    obtained_result = result_file.split("\n");
+   
+    QFile er(expected_result_file_name);
+    er.open(QFile::ReadOnly);
+    result_file = er.readAll();
+    er.close();
+    QStringList expected_result = result_file.split("\n");
+
+    // find all lastModified attributes and replace them with identical values
+    // because they are always going to be different
+
+    QRegExp last_mod_re("lastModified=\"\\d+\"");
+    int max_idx = max(expected_result.size(), obtained_result.size());
+    for (int i=0; i < max_idx; ++i)
+    {
+        QString os = obtained_result[i];
+        obtained_result[i] = os.replace(last_mod_re, "lastModified=\"0000000000\"");
+
+        QString es = expected_result[i];
+        expected_result[i] = es.replace(last_mod_re, "lastModified=\"0000000000\"");
+    }
+
     for (int i=0; i < max_idx; ++i)
     {
         QString err = QString("Line %1:\nExpected: '%2'\nResult: '%3'\n")
@@ -174,6 +191,13 @@ void ImporterTest::IOSImporterTest()
     //imp->run();
 
     imp->finalize();
+
+    db->setPredictableIds(db);
+
+    db->saveFile("ios_res.fwb");
+
+    compareFwbFiles("test_data/ios.fwb", "ios_res.fwb");
+
     compareResults(logger, "test_data/ios.result", "ios.output");
 }
 
@@ -195,5 +219,12 @@ void ImporterTest::IPTImporterTest()
     //imp->run();
 
     imp->finalize();
+
+    db->setPredictableIds(db);
+
+    db->saveFile("ipt_res.fwb");
+
+    compareFwbFiles("test_data/ipt.fwb", "ipt_res.fwb");
+
     compareResults(logger, "test_data/ipt.result", "ipt.output");
 }

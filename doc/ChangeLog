@@ -1,5 +1,15 @@
 2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1516
+	policy importer for iptables should not use automatic ESTABLISHED
+	rule. (See also SF bug 3012953).  Policy importer for iptables
+	always creates explicit rule to match ESTABLISHED,RELATED to make
+	sure it goes into the same chain as the original rule. Also in the
+	same fix, importer creates branch for iptables rules that match
+	both regular service and state ESTABLISHED,RELATED. The service is
+	matched in the main policy rule set, while ESTABLISHED,RELATED
+	state is matched in the branch.
+
 	* GroupObjectDialog.h (class GroupObjectDialog): fixed #1499
 	"GroupObjectDialogTest.cpp does not compile with gcc 3.4.6" and SF
 	bug 3015307.  There is no reason to make method insertObject()

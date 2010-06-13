@@ -45,7 +45,7 @@ class IPTImporter : public Importer
 {
 
     std::map<std::string, std::pair<int,int> > icmp_specs;
-
+    int aux_branch_number;
 
     libfwbuilder::FWObject* createTCPUDPService(str_tuple &src_range,
                                                 str_tuple &dst_range,
@@ -70,6 +70,10 @@ class IPTImporter : public Importer
     void addLimitMatch(libfwbuilder::PolicyRule *rule);
     void addRecentMatch(libfwbuilder::PolicyRule *rule);
 
+    libfwbuilder::PolicyRule* createBranch(
+        libfwbuilder::PolicyRule *rule, const std::string &branch_name,
+        bool clear_rule_elements, bool make_stateless);
+    
     public:
 
     int service_group_name_seed;

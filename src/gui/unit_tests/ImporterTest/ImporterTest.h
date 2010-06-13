@@ -34,6 +34,8 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <map>
+
 #include <QString>
 
 
@@ -42,11 +44,15 @@ class ImporterTest : public CppUnit::TestFixture
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
     libfwbuilder::QueueLogger *logger;
-
+    int predictable_id_tracker;
+    std::map<std::string, std::string> id_mapping;
+    
     void compareResults(libfwbuilder::QueueLogger* logger,
                         QString expected_result_file_name,
                         QString obtained_result_file_name);
-    
+    void compareFwbFiles(QString expected_result_file_name,
+                         QString obtained_result_file_name);
+
 public:
     void setUp();
     void IOSImporterTest();
