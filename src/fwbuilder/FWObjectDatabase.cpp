@@ -120,6 +120,7 @@ FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file(), obj_index()
     setRoot(this);
     index_hits = index_misses = 0;
     init_id_dict();
+    predictable_id_tracker = 0;
 
     searchId =0;
     lastModified = 0;
@@ -138,6 +139,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
     setRoot(this);
     index_hits = index_misses = 0;
     init_id_dict();
+    predictable_id_tracker = 0;
 
     data_file = d.data_file;
 
@@ -214,6 +216,72 @@ string FWObjectDatabase::getStringId(int i_id)
     id_dict_reverse[string(id_buf)] = i_id;
     return id_dict[i_id];
 }
+
+/*
+ * private method used in setPredictableIds()
+ */
+void FWObjectDatabase::change_string_id(int i_id, const string &s_id)
+{
+    id_dict[i_id] = s_id;
+    id_dict_reverse[s_id] = i_id;
+}
+
+void FWObjectDatabase::setPredictableIds(FWObject *obj)
+{
+    if (obj->getBool(".seen_this")) return;
+
+    if (!obj->isReadOnly() && !FWObjectDatabase::isA(obj) &&
+        obj->getLibrary()->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
+        obj->getLibrary()->getId() != FWObjectDatabase::DELETED_OBJECTS_ID &&
+        obj->getId() != -1)
+    {
+        ostringstream str;
+        str << "id" << predictable_id_tracker;
+        string new_id = str.str();
+        predictable_id_tracker++;
+
+        string old_id = FWObjectDatabase::getStringId(obj->getId());
+
+        FWObjectDatabase::change_string_id(obj->getId(), new_id);
+        obj->setBool(".seen_this", true);
+
+        // TODO: This should really be implemented as a virtual method
+        // so that the knowledge of the specifics of the
+        // implementation of these actions stays inside the class
+        // PolicyRule
+        if (PolicyRule::isA(obj))
+        {
+            PolicyRule *rule = PolicyRule::cast(obj);
+            switch (rule->getAction())
+            {
+            case PolicyRule::Branch:
+            {
+                RuleSet *branch_ruleset = rule->getBranch();
+                setPredictableIds(branch_ruleset);
+                rule->setBranch(branch_ruleset);
+                rule->setTagObject(NULL);
+                break;
+            }
+            case PolicyRule::Tag:
+            {
+                FWObject *tag_object = rule->getTagObject();
+                setPredictableIds(tag_object);
+                rule->setTagObject(tag_object);
+                rule->setBranch(NULL);
+                break;
+            }
+            default:
+                break;
+            }            
+        }
+    }
+
+    for (list<FWObject*>::iterator it=obj->begin(); it!=obj->end(); ++it)
+    {
+        setPredictableIds(*it);
+    }
+}
+
 
 int FWObjectDatabase::generateUniqueId()
 {

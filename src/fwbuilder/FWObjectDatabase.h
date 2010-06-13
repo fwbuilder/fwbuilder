@@ -162,6 +162,8 @@ private:
                                    std::map<int,int> &id_map,
                                    const std::string &dedup_attribute);
 
+        static void change_string_id(int i_id, const std::string &s_id);
+        
 protected:
 
         static const std::string DTD_FILE_NAME ;
@@ -172,6 +174,7 @@ protected:
         std::string data_file;
         std::map<int, FWObject*> obj_index;
         int searchId;
+        int predictable_id_tracker;
 
         void init_create_methods_table();
         void init_id_dict();
@@ -353,7 +356,13 @@ public:
         static int getIntId(const std::string &s_id);
         static std::string getStringId(int i_id);
 
-
+        /**
+         * This method replaces random string object ids with
+         * predictable ones.  Used in unit testing to create .fwb
+         * files that can be compared.
+         */
+        void setPredictableIds(FWObject *obj);
+        
         /**
          * This is the main "Create" method:
          * it creates instance of FWObject of given type

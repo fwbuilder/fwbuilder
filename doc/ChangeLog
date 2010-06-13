@@ -1,3 +1,25 @@
+2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::setPredictableIds):
+	this method is used to replace random string object ids with
+	predictable ones; useful for unit tests because it allows us
+	to create data files that can be compared. 
+	Fixes fwbuilder:ticket:1517
+
+	* FWReference.cpp (FWReference::toXML): always use int id when
+	saving to xml. This allows us to change string ids if necessary
+	using call to FWObjectDatabase::changeStringId() and it will
+	change both in id and ref attributes when objects are saved to
+	xml file. This is needed for unit tests to let tests create .fwb
+	files with predictable IDs that can be compared later.
+	See fwbuilder:ticket:1517
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::changeStringId): this
+	method changes string ID associated with given int ID. Using this
+	in unit tests to create .fwb files with predictable IDs that can
+	be compared with golden files.
+	See fwbuilder:ticket:1517
+
 2010-06-02  vadim  <vadim@vk.crocodile.org>
 
 	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):

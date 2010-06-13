@@ -87,13 +87,9 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
     if (int_ref == -1 && !str_ref.empty())
         int_ref = FWObjectDatabase::getIntId(str_ref);
 
-    if (int_ref > -1 && str_ref.empty())
-        str_ref = FWObjectDatabase::getStringId(int_ref);
+    str_ref = FWObjectDatabase::getStringId(int_ref);
 
-    //NOTUSED xmlAttrPtr pr =
-    xmlNewProp(me,
-                               TOXMLCAST("ref"),
-                               STRTOXMLCAST(str_ref));
+    xmlNewProp(me, TOXMLCAST("ref"), STRTOXMLCAST(str_ref));
     //xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
 
     return me;
