@@ -56,12 +56,14 @@ class FWBSettings : public QSettings {
     enum IconSize{ SIZE25X25, SIZE16X16};
 
  private:
+    QSettings *uuid_settings;
+
     QString getLabelColorStr(enum LabelColors c);
-    QSettings uuid_settings;
     
  public:
 
     FWBSettings();
+    ~FWBSettings();
 
     static QString getApplicationNameForSettings() { return "FirewallBuilder4.0"; }
 

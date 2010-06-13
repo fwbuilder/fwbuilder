@@ -126,10 +126,15 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
  */
 FWBSettings::FWBSettings() :
     QSettings(QSettings::UserScope,
-              "netcitadel.com", getApplicationNameForSettings()),
-    uuid_settings(QSettings::IniFormat, QSettings::UserScope,
-                  "netcitadel.com", "FirewallBuilder")
+              "netcitadel.com", getApplicationNameForSettings())
 {
+    uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+                                  "netcitadel.com", "FirewallBuilder");
+}
+
+FWBSettings::~FWBSettings()
+{
+    delete uuid_settings;
 }
 
 /**
@@ -143,7 +148,7 @@ void FWBSettings::init()
 {
     bool ok=false;
 
-    ok = uuid_settings.contains(appGUID);
+    ok = uuid_settings->contains(appGUID);
     if (!ok)
     {
         // migrate uuid from the old native format settings to uuid_settings
@@ -151,11 +156,11 @@ void FWBSettings::init()
         ok = contains(appGUID);
         if (ok)
         {
-            uuid_settings.setValue(appGUID, value(appGUID).toString());
+            uuid_settings->setValue(appGUID, value(appGUID).toString());
         } else
         {
             qsrand(time(NULL));
-            uuid_settings.setValue(appGUID, QUuid::createUuid().toString() );
+            uuid_settings->setValue(appGUID, QUuid::createUuid().toString() );
         }
     }
 
@@ -276,7 +281,7 @@ bool FWBSettings::hasKey(const QString &attribute)
 
 QString FWBSettings::getAppGUID()
 {
-    return uuid_settings.value(appGUID).toString();
+    return uuid_settings->value(appGUID).toString();
 }
 
 QString FWBSettings::getStr(const QString &attribute)

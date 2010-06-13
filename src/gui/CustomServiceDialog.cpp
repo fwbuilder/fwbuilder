@@ -88,6 +88,7 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     int cp=0;
     QString default_platform = 
         st->value(SETTINGS_PATH_PREFIX"/CustomService/Platform").toString();
+
     QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++,cp++)
@@ -106,9 +107,9 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
         if (default_platform=="") default_platform = i.key();
         if (default_platform==i.key()) m_dialog->platform->setCurrentIndex(cp);
 
-        const char *platform_cptr = i.key().toLatin1().constData();
+        string platform_code = i.key().toStdString();
 
-        allCodes[i.key()] = s->getCodeForPlatform(platform_cptr).c_str();
+        allCodes[i.key()] = QString(s->getCodeForPlatform(platform_code).c_str());
     }
 
     fillDialogInputFields();
