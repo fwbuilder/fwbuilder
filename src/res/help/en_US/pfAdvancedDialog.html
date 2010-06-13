@@ -111,7 +111,7 @@ online <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf">http://www
 <p>
   For PF 4.x this option adds "flags any" parameters to rules that
   match TCP services. PF 4.x by default behaves as if "flags S/SA"
-  parameter was added to all rules matching tcp services. Adding
+  parameter was added to all rules matching TCP services. Adding
   "flags any" makes rule match not only TCP packets with SYN flag set
   and ACK flag cleared, which is the packet that initiates the
   session, but also packets with any other combination of flags,
@@ -121,14 +121,14 @@ online <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf">http://www
 <p>
   for PF 3.x the behavior of the policy compiler is opposite: when
   this option is not set, it adds "flags S/SA" to all rules that match
-  any tcp services; if this option is set, "flags" parameter is not
+  any TCP services; if this option is set, "flags" parameter is not
   added to these rules at all, which makes them match TCP packets with
   any combination of flags.
 
 
   <h3>Modulate state for all stateful rules</h3>
 <p>
-  This adds "modulate state" parameter to rules that match any tcp
+  This adds "modulate state" parameter to rules that match any TCP
   services. Quoting man pf.conf(5), section <b>STATE MODULATION</b>:
   <blockquote>
     Much of the security derived from TCP is attributable to how well
@@ -576,7 +576,7 @@ online <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf">http://www
   here. Prolog section is added at the beginning of the script, before
   generated iptables commands. Note that generated iptables script is
   just a shell script, so commands you place in the Prolog and Epilog
-  sections should be valid bourne shell commands.
+  sections should be valid Bourne shell commands.
 
 
 
@@ -625,7 +625,7 @@ online <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf">http://www
 
   <h3>Configure interfaces of the firewall machine</h3>
 <p>
-  This option makes compiler add commands to configure ip addresses of
+  This option makes compiler add commands to configure IP addresses of
   the interfaces of the firewall according to the "Address" objects
   added to interfaces in the Firewall Builder GUI.
 

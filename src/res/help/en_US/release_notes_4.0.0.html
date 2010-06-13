@@ -108,7 +108,7 @@
 </p>
 
 <p>
-  Now you can <b>change ip addresses of interfaces of the new firewall
+  Now you can <b>change IP addresses of interfaces of the new firewall
   created from a template</b>. Templates come preconfigured with some
   IP addresses which probably do not match addresses used on your
   networks. When you create new firewall object from a template, the
@@ -296,7 +296,7 @@
   or Policy rule set. Top rule set is used to generate iptables rules
   in the built-in chains INPUT/OUTPUT/FORWARD or the rules in the main
   PF configuration file (not anchors).  If the firewall object has
-  other not-top Poluicy and NAT rule sets but no top rule set, packets
+  other not-top Policy and NAT rule sets but no top rule set, packets
   will never reach any rules.  However there are legitimate cases when
   administrator may want to use fwbuilder to only generate iptables
   commands for a custom chain or configuration for a custom PF anchor,
@@ -673,7 +673,7 @@ rule sets of this object rather than in the actual firewalls.
 
 <p>
   When an <b>interface with dynamic address</b> is used in a policy or
-  NAT rule, compiler generates shell script to read its ip addresses
+  NAT rule, compiler generates shell script to read its IP addresses
   at the time of execution, assigns them to temporary shell variables
   and uses them in rules. In previous versions (fwbuilder v2 and v3)
   only the first IPv4 address of an interface was used. V4 uses all
@@ -729,7 +729,7 @@ rule sets of this object rather than in the actual firewalls.
   loaded or there are no tables. This return code means the firewall
   is not running or not configured.  It also supports additional
   actions "interfaces" and "test_interfaces". Action "interfaces" only
-  runs commands that manage ip addresses of interfaces, as well as
+  runs commands that manage IP addresses of interfaces, as well as
   configure vlan, bridge and bonding interfaces. Action
   "test_interfaces" runs the same commands in the test mode when it
   prints commands that would be executed but does not actually execute
@@ -817,7 +817,7 @@ rule sets of this object rather than in the actual firewalls.
   /etc/init.d/fwbuilder.fw stop
 </pre>
   An option in the "Compiler" tab of the firewall object in fwbuilder
-  GUI alows you to make the firewall block all traffic when stopped
+  GUI allows you to make the firewall block all traffic when stopped
   but still permit ssh connections from preconfigured address of the
   management machine.
 </p>
@@ -839,8 +839,8 @@ rule sets of this object rather than in the actual firewalls.
 <p>
   This version of Firewall Builder introduces direct support for
   DD-WRT. There are two options: you can use nvram to install
-  generated firewall policy or you can use jffs (journaling flash file
-  system) on the device and store generated script there. Two host OS
+  generated firewall policy or you can use jffs (Journaling Flash File
+  System) on the device and store generated script there. Two host OS
   settings are provided: <strong>"DD-WRT (nvram)"</strong>
   and <strong>"DD-WRT (jffs)"</strong>.
 </p>
@@ -851,7 +851,7 @@ rule sets of this object rather than in the actual firewalls.
   In this mode generated script is somewhat shorter and does not
   support command line arguments "start", "stop", "status". The script
   does not try to load iptables modules on the firewall but configures
-  inetrface addresses, vlans, bridge ports and bonding
+  interface addresses, vlans, bridge ports and bonding
   interfaces. Built-in policy installer saves the script in nvram
   variable "fwb" and configures nvram variable "rc_firewall" to run
   this script.
@@ -927,7 +927,7 @@ rule sets of this object rather than in the actual firewalls.
   "nat-to" and "rdr-to" options in "pass" or "match" rules. Fwbuilder
   4.0 adds support for this. The list of recognized versions for PF
   has been extended with "4.7", choosing this version number makes
-  policy compiler generate nat and rdr rules using new syntax. Since
+  policy compiler generate NAT and rdr rules using new syntax. Since
   the "no" keyword has been removed as well, fwbuilder can no longer
   generate "no nat" rules for 4.7. Policy compiler recognizes this as
   a fatal error, administrator should use negation to implement
@@ -974,7 +974,7 @@ rule sets of this object rather than in the actual firewalls.
       like this: "scp file.fw router:nvram:file.fw"</li>
     <li>check that ssh and scp are enabled on the router (see commands above)</li>
     <li>check that user account has privilege 15</li>
-    <li>Use command "debug ip ssh" on the router to turn debugging
+    <li>Use command "debug IP ssh" on the router to turn debugging
       on. Diagnostic messages that it prints to the console and to log
       may help you identify the problem</li>
   </ul>
@@ -1037,7 +1037,7 @@ rule sets of this object rather than in the actual firewalls.
 
 <p>
   Added support for the <b>object-group</b> statement in generated IOS
-  configuration. This helps reduce size of the geenrated access lists
+  configuration. This helps reduce size of the generated access lists
   when the router should match long lists of IP addresses or
   ports. Both "network" and "service" object-groups are supported.
   This feature is controlled by a checkbox in the "Advanced" settings

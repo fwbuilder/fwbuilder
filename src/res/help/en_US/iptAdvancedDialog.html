@@ -224,11 +224,11 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
 <p>
   This adds a rule on top of the policy with iptables target TCPMSS
   and option --clamp-mss-to-pmtu which automatically clamps MSS value
-  to (path_MTU - 40). This iptables rule is added only if ip
-  forwarding is turned on in the host settings dialog. since ip
+  to (path_MTU - 40). This iptables rule is added only if IP
+  forwarding is turned on in the host settings dialog. since IP
   forwarding for ipv4 and ipv6 can be configured separately, rules
   with target TCPMSS for iptables and ip6tables are also added
-  separately if corresponding ip forwarding setting is
+  separately if corresponding IP forwarding setting is
   enabled. Finally, this target is only available in ip6tables
   starting with version 1.3.8 and compiler will not add it to the
   generated script if version is set to less than "1.4.x" in the
@@ -269,7 +269,7 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
   established.
 </p>
 
-<h3>Install the rule for ssh access from the manageemnt workstation
+<h3>Install the rule for ssh access from the management workstation
   when the firewall is stopped</h3>
 
 <p>
@@ -352,7 +352,7 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
   here. Prolog section is added at the beginning of the script, before
   generated iptables commands. Note that generated iptables script is
   just a shell script, so commands you place in the Prolog and Epilog
-  sections should be valid bourne shell commands.
+  sections should be valid Bourne shell commands.
 </p>
 
 <h3>Insert prolog script ... </h3>
@@ -525,7 +525,7 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
 
 <h3>Configure interfaces of the firewall machine</h3>
 <p>
-  This option makes compiler add commands to configure ip addresses of
+  This option makes compiler add commands to configure IP addresses of
   the interfaces of the firewall according to the "Address" objects
   added to interfaces in the Firewall Builder GUI.
 </p>
@@ -536,23 +536,23 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
   past it purged all addresses and then added those defined in
   fwbuilder back. Script created by fwbuilder v4.0 does not purge
   addresses, instead it manages them incrementally.  First, it obtains
-  the list of ip addresses of each interface and compares it with
+  the list of IP addresses of each interface and compares it with
   addresses defined in fwbuilder.  Then, it adds missing addresses to
   the interface and deletes addresses that are not configured in
   fwbuilder.
 </p>
 
-<h3>Clear ip addresses and bring down interfaces not configured in fwbuilder</h3>
+<h3>Clear IP addresses and bring down interfaces not configured in fwbuilder</h3>
 <p>
-  If this option is on, generated script will clear ip addresses and
+  If this option is on, generated script will clear IP addresses and
   bring down interfaces of the firewall that have not been configured
   in the fwbuilder GUI. This can be used to ensure that the
   configuration of the firewall machine is perfectly synchronized with
   objects defined in fwbuilder. This function does nothing to
   interfaces configured in fwbuilder, regardless of their type
-  ("regular", "dynamic" or "unnumbered"). Be caureful using this
+  ("regular", "dynamic" or "unnumbered"). Be careful using this
   option, especially in the early stages of building fwbuilder objects
-  for the new firewall. If you forget to add an inetrface that is
+  for the new firewall. If you forget to add an interface that is
   supposed to pass traffic to fwbuilder configuration, generated
   script will shut it down when this option is turned on. However when
   configuration has been debugged and is known to be correct, it may
@@ -563,7 +563,7 @@ online on the project web site at <a href="http://www.netfilter.org">http://www.
 <h3>Configure VLAN interfaces</h3>
 <p>
   When this option is on, generated script will use vconfig commands
-  to configure vlan inetrfaces defined in the fwbuilder GUI. The
+  to configure vlan interfaces defined in the fwbuilder GUI. The
   script tries to do this incrementally, that is, it compares
   requested set of vlans with existing vlan interfaces on the machine,
   then it creates those that are missing and deletes those that are not
