@@ -1,5 +1,8 @@
 2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* CustomService.cpp (CustomService::CustomService): fixed missing
+	class variable initialization.
+
 	* FWObjectDatabase.cpp (FWObjectDatabase::setPredictableIds):
 	this method is used to replace random string object ids with
 	predictable ones; useful for unit tests because it allows us
