@@ -503,10 +503,22 @@ void newFirewallDialog::showPage(const int page)
         for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++,n++)
         {
             FWObject *o=*m;
+
+/*
+  Ticket #1492 requested the change to only show the user templates
+  that match platform and host OS they choose on the first page of the
+  wizard.
+
+  Unfortunately this does not really work because most templates have
+  platform and host OS set to "unknown". Either we have to maintain
+  many almost identical templates to provide enough choices for all
+  possible platforms, or we should not filter by platform.
+
             string platform = readPlatform(m_dialog->platform).toAscii().constData();
             string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
             if (o->getStr("platform") != platform || o->getStr("host_OS") != host_os)
                 continue;
+*/
 
             QPixmap pm;
             if ( ! QPixmapCache::find( icn, pm) )
