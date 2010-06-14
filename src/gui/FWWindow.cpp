@@ -181,10 +181,10 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 {
     instd = new instDialog(this);
 
-    setUnifiedTitleAndToolBarOnMac(true);
 
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this));
+    this->setupGlobalToolbar();
 
     //setCentralWidget(m_space);
 
@@ -1481,6 +1481,16 @@ void FWWindow::updateGlobalToolbar()
         setCompileAndInstallActionsEnabled(fws.size() != 0);
     } else
         setCompileAndInstallActionsEnabled(false);
+}
+
+void FWWindow::setupGlobalToolbar()
+{
+    setUnifiedTitleAndToolBarOnMac(false);
+    if (st->getBool("/UI/IconWithText"))
+        m_mainWindow->toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    else
+        m_mainWindow->toolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    setUnifiedTitleAndToolBarOnMac(true);
 }
 
 

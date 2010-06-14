@@ -140,6 +140,7 @@ public:
     void updateRecentFileActions();
     void updateOpenRecentMenu(const QString &fileName);
     void updateGlobalToolbar();
+    void setupGlobalToolbar();
     
     void enableBackAction();
     
