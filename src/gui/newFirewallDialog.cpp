@@ -503,6 +503,10 @@ void newFirewallDialog::showPage(const int page)
         for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++,n++)
         {
             FWObject *o=*m;
+            string platform = readPlatform(m_dialog->platform).toAscii().constData();
+            string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
+            if (o->getStr("platform") != platform || o->getStr("host_OS") != host_os)
+                continue;
 
             QPixmap pm;
             if ( ! QPixmapCache::find( icn, pm) )
