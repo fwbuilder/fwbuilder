@@ -250,6 +250,9 @@ class FWBSettings : public QSettings {
     QByteArray getUserWorkflowFlags();
     void setUserWorkflowFlags(const QByteArray &);
     
+    bool getIconsWithText();
+    void setIconsWithText(bool f);
+    
    
 private:
     QFont getFontByType(const char*type);

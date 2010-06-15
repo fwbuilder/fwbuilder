@@ -132,7 +132,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->new_addr_tbl_run_tm->setChecked(
         ! st->getBool("Objects/AddressTable/useCompileTimeForNewObjects"));
 
-    m_dialog->toolbarIconsText->setChecked(st->getBool("/UI/IconWithText"));
+    m_dialog->toolbarIconsText->setChecked(st->getIconsWithText());
 
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
 
@@ -412,7 +412,7 @@ void PrefsDialog::accept()
     st->setBool("UI/ShowDeletedObjects", m_dialog->deletedObj->isChecked());
     st->setBool("UI/ShowObjectsAttributesInTree", m_dialog->attributesInTree->isChecked());
 
-    st->setBool("/UI/IconWithText", m_dialog->toolbarIconsText->isChecked());
+    st->setIconsWithText(m_dialog->toolbarIconsText->isChecked());
 
     ProjectPanel *pp = mw->activeProject();
     if (pp)

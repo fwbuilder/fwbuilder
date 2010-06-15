@@ -84,6 +84,7 @@ const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
 const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
 const char* showUndoPanel = SETTINGS_PATH_PREFIX "/UI/showUndoPanel";
 const char* userWorkflowFlags = SETTINGS_PATH_PREFIX "/UI/userWorkFlowFlags";
+const char* iconsWithText = SETTINGS_PATH_PREFIX "/UI/IconWithText";
 
 const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
 const char* rcsFilePreviewStyle = SETTINGS_PATH_PREFIX "/RCS/FilePreviewStyle";
@@ -115,6 +116,7 @@ const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClust
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
+
 
 
 /**
@@ -241,6 +243,9 @@ void FWBSettings::init()
     if (fwbdebug)
         qDebug() << "Default application font:"
                  << QApplication::font();
+
+    ok = contains(iconsWithText);
+    if (!ok) setIconsWithText(true);
 
     ok = contains(clipComment);
     if (!ok) setClipComment(true);
@@ -424,6 +429,9 @@ void FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}
 
 bool FWBSettings::getShowUndoPanel() {return value(showUndoPanel).toBool();}
 void FWBSettings::setShowUndoPanel(bool f) {setValue(showUndoPanel, f);}
+
+bool FWBSettings::getIconsWithText() { return value(iconsWithText).toBool(); }
+void FWBSettings::setIconsWithText(bool f) {setValue(iconsWithText, f);}
 
 QByteArray FWBSettings::getUserWorkflowFlags()
 {
