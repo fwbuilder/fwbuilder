@@ -886,6 +886,7 @@ void IPTImporter::pushPolicyRule()
             PolicyRule *new_rule = createBranch(rule, branch_ruleset_name,
                                                 true, true);
 
+            new_rule->setDirection(PolicyRule::Both);
             RuleElement* re = new_rule->getSrv();
             re->addRef(estab);
         } else
