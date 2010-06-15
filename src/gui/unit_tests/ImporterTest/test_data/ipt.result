@@ -27,6 +27,8 @@ Interface: eth0
 Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
 TCP Service object: tcp 0-8000
 UDP Service object: udp 0-8000
+Unknown parameter of target REJECT: icmp-foo-prohibited. 
+Unknown parameter of target REJECT: foo-prohib. 
 Network object: net-192.168.0.0/16
 Network object: net-128.143.0.0/16
 ICMP Service object: icmp -1/-1

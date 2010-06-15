@@ -37,9 +37,34 @@
 # both -i intf and -o intf in the same rule. Crearing a branch
 -A FORWARD -i eth0 -o eth1 -p udp --dport 1604 -j ACCEPT
 
-# testing action REJECT with option
+# testing action REJECT with option. Trying all possible options and aliases
 -A INPUT -p tcp --dport 0:8000 -j REJECT --reject-with tcp-reset
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-net-unreachable
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with net-unreach
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-host-unreachable
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with host-unreach
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-proto-unreachable
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with proto-unreach
+
 -A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-port-unreachable
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with port-unreach
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-net-prohibited
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with net-prohib
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-host-prohibited
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with host-prohib
+
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-admin-prohibited
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with admin-prohib
+
+# and lets try something we can not parse to make sure error is issued
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-foo-prohibited
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with foo-prohib
+
 
 # v2.1 does not support passing control to the same branch from
 # several rules This rule will have action 'branch' but branch name
@@ -62,7 +87,9 @@
 # target RETURN
 -A user_chain -s 1.1.0.0/16 -p ICMP -j RETURN
 
-# this should be recognized as built-in rule even though it is in user-defined chain
+# this should be reproduced using custom service object even though it
+#  is in user-defined chain
+#
 -A user_chain -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 -A user_chain -s 192.168.19.0/24  -p tcp -m tcp --dport 5432 -m state --state NEW -j ACCEPT

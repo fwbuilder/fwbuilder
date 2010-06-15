@@ -83,9 +83,7 @@ IPTImporter::IPTImporter(FWObject *lib,
     clear();
 
     icmp_specs["any"] = std::pair<int,int>(-1, -1);
-
     icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
-
     // all "unreachables"
     icmp_specs["destination-unreachable"] = std::pair<int,int>(3, -1);
     icmp_specs["network-unreachable"] = std::pair<int,int>(3, 0);
@@ -104,41 +102,46 @@ IPTImporter::IPTImporter(FWObject *lib,
     icmp_specs["communication-prohibited"] = std::pair<int,int>(3, 13);
     icmp_specs["host-precedence-violation"] = std::pair<int,int>(3, 14);
     icmp_specs["precedence-cutoff"] = std::pair<int,int>(3, 15);
-
     icmp_specs["source-quench"] = std::pair<int,int>(4, 0);
-
     icmp_specs["redirect"] = std::pair<int,int>(5, -1);
     icmp_specs["network-redirect"] = std::pair<int,int>(5, 0);
     icmp_specs["host-redirect"] = std::pair<int,int>(5, 1);
     icmp_specs["TOS-network-redirect"] = std::pair<int,int>(5, 2);
     icmp_specs["TOS-host-redirect"] = std::pair<int,int>(5, 3);
-
     icmp_specs["echo-request"] = std::pair<int,int>(8, 0);
-
     icmp_specs["router-advertisement"] = std::pair<int,int>(9, 0);
-
     icmp_specs["router-solicitation"] = std::pair<int,int>(10, 0);
-
     icmp_specs["ttl-exceeded"] = std::pair<int,int>(11, 0);
     icmp_specs["time-exceeded"] = std::pair<int,int>(11, 0);
     icmp_specs["ttl-zero-during-transit"] = std::pair<int,int>(11, 0);
     icmp_specs["ttl-zero-during-reassembly"] = std::pair<int,int>(11, 1);
-
     icmp_specs["parameter-problem"] = std::pair<int,int>(12, 0);
     icmp_specs["ip-header-bad"] = std::pair<int,int>(12, 0);
     icmp_specs["required-option-missing"] = std::pair<int,int>(12, 1);
-
     icmp_specs["timestamp-request"] = std::pair<int,int>(13, 0);
-
     icmp_specs["timestamp-reply"] = std::pair<int,int>(14, 0);
-
     icmp_specs["information-request"] = std::pair<int,int>(15, 0);
-
     icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
-
     icmp_specs["address-mask-request"] = std::pair<int,int>(17, 0);
-
     icmp_specs["address-mask-reply"] = std::pair<int,int>(18, 0);
+
+    // mapping between REJECT target argument and our internal name for it.
+    // See also comment in IPTImporter::pushPolicyRule()
+    reject_action_arg_mapping["icmp-net-unreachable"] =   "ICMP net unreachable";
+    reject_action_arg_mapping["net-unreach"] =            "ICMP net unreachable";
+    reject_action_arg_mapping["icmp-host-unreachable"] =  "ICMP host unreachable";
+    reject_action_arg_mapping["host-unreach"] =           "ICMP host unreachable";
+    reject_action_arg_mapping["icmp-proto-unreachable"] = "ICMP protocol unreachable";
+    reject_action_arg_mapping["proto-unreach"] =          "ICMP protocol unreachable";
+    reject_action_arg_mapping["icmp-port-unreachable"] =  "ICMP port unreachable";
+    reject_action_arg_mapping["port-unreach"] =           "ICMP port unreachable";
+    reject_action_arg_mapping["icmp-net-prohibited"] =    "ICMP net prohibited";
+    reject_action_arg_mapping["net-prohib"] =             "ICMP net prohibited";
+    reject_action_arg_mapping["icmp-host-prohibited"] =   "ICMP host prohibited";
+    reject_action_arg_mapping["host-prohib"] =            "ICMP host prohibited";
+    reject_action_arg_mapping["icmp-admin-prohibited"] =  "ICMP admin prohibited";
+    reject_action_arg_mapping["admin-prohib"] =           "ICMP admin prohibited";
+
 }
 
 
@@ -665,7 +668,38 @@ void IPTImporter::pushPolicyRule()
         if (action_params["reject_with"]=="tcp-reset")
             ropt->setStr("action_on_reject", "TCP RST");
         else
-            ropt->setStr("action_on_reject", action_params["reject_with"]);
+        {
+            /*
+             * for historical reasons, the argument for action Reject
+             * is stored in our XML as a human readable string such as
+             * "ICMP admin prohibited" instead of some kind of a
+             * computer readable code. Function getActionsOnReject() (see platforms.cpp)
+             * returns a list of strings where every even string is one of
+             * these codes and every odd string is translatable display name
+             * (that by currently is the same string, except it can be translated).
+             * Values in the map reject_action_arg_mapping must match internal
+             * (untranslated) codes that we get from getActionsOnReject(), keys
+             * in reject_action_arg_mapping must match iptables arguments for
+             * the target REJECT
+             */
+            string iptables_reject_arg = action_params["reject_with"];
+            string action_on_reject_code;
+            if (reject_action_arg_mapping.count(iptables_reject_arg) != 0)
+                action_on_reject_code =
+                    reject_action_arg_mapping[iptables_reject_arg];
+            else
+            {
+                action_on_reject_code = "ICMP admin prohibited";
+
+                QString err = QObject::tr(
+                    "Unknown parameter of target REJECT: %1. ").arg(iptables_reject_arg.c_str());
+                ropt->setStr("color", getBadRuleColor());
+                rule_comment += string(err.toUtf8().constData());
+                *Importer::logger << err.toUtf8().constData() << "\n";
+            }
+
+            ropt->setStr("action_on_reject", action_on_reject_code);
+        }
     }
 
     if (target=="QUEUE")    action = PolicyRule::Pipe;
@@ -1243,7 +1277,7 @@ Firewall* IPTImporter::finalize()
                             "table 'mangle' chain 'FORWARD'.");
                         ropt->setStr("color", getBadRuleColor());
                         rule->setComment(err.toUtf8().constData());
-                        *logger << err.toUtf8().constData() << "\n";
+                        *Importer::logger << err.toUtf8().constData() << "\n";
                     }
                 }
 
@@ -1261,7 +1295,7 @@ Firewall* IPTImporter::finalize()
                             "table 'mangle' chain 'INPUT'.");
                         ropt->setStr("color", getBadRuleColor());
                         rule->setComment(err.toUtf8().constData());
-                        *logger << err.toUtf8().constData() << "\n";
+                        *Importer::logger << err.toUtf8().constData() << "\n";
                     }
                 }
 
@@ -1285,9 +1319,9 @@ Firewall* IPTImporter::finalize()
 
                 rs->ruleset->add(rule);
 
-                *logger << "Added rule to reproduce default policy ACCEPT in "
-                        << rs_index
-                        << "\n";
+                *Importer::logger << "Added rule to reproduce default policy ACCEPT in "
+                                  << rs_index
+                                  << "\n";
             }
         }
 
@@ -1413,8 +1447,8 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
 void IPTImporter::newUnidirRuleSet(const std::string &chain_name)
 {
     current_ruleset = getUnidirRuleSet(chain_name);  // creates if new
-    *logger << "Ruleset: " << current_table << " / "
-            << current_ruleset->name << "\n";
+    *Importer::logger << "Ruleset: " << current_table << " / "
+                      << current_ruleset->name << "\n";
 }
 
 

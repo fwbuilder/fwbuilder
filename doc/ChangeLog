@@ -1,3 +1,10 @@
+2010-06-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed SF bug
+	3015641 "imported REJECT rule changed during compile". Importer of
+	iptables rules did not handle properly parameters of the REJECT
+	target.
+
 2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1516

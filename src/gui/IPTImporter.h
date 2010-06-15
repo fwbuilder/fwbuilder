@@ -45,6 +45,7 @@ class IPTImporter : public Importer
 {
 
     std::map<std::string, std::pair<int,int> > icmp_specs;
+    std::map<std::string, std::string> reject_action_arg_mapping;
     int aux_branch_number;
 
     libfwbuilder::FWObject* createTCPUDPService(str_tuple &src_range,
