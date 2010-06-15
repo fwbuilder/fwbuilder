@@ -1,3 +1,11 @@
+2010-06-15  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::prepareFileMenu): fixed bug 3016720
+	"import policy disabled after file close". Menu items "File/Import
+	Library" and "File/Import policy" became disabled after user
+	closed data file using "File/Close" and never became enabled
+	again.
+
 2010-06-14  Roman Bovsunivkiy <a2k0001@gmail.com>
 
 	* FWBSettings.cpp (FWBSettings::init): fixed #1504 Added (optional)

@@ -865,6 +865,7 @@ void FWWindow::prepareFileMenu()
         m_mainWindow->fileCommitAction->setEnabled(false);
         m_mainWindow->fileDiscardAction->setEnabled(false);
         m_mainWindow->filePropAction->setEnabled(false);
+        m_mainWindow->libExportAction->setEnabled(false);
         m_mainWindow->libImportAction->setEnabled(false);
         m_mainWindow->policyImportAction->setEnabled(false);
         return;
@@ -880,6 +881,8 @@ void FWWindow::prepareFileMenu()
     m_mainWindow->filePropAction->setEnabled(real_file_opened);
     m_mainWindow->filePrintAction->setEnabled(real_file_opened);
     m_mainWindow->libExportAction->setEnabled(real_file_opened);
+    m_mainWindow->libImportAction->setEnabled(true);
+    m_mainWindow->policyImportAction->setEnabled(true);
 
     m_mainWindow->addToRCSAction->setEnabled(real_file_opened && !in_rcs);
     m_mainWindow->fileCommitAction->setEnabled(real_file_opened && in_rcs && needs_saving);
