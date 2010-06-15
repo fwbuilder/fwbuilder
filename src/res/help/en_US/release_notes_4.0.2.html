@@ -1,0 +1,306 @@
+
+<h1>Firewall Builder 4.0.2 Release Notes</h1>
+
+<p>
+  This release comes with fixes several minor bugs in the GUI and
+  other components and improves policy importer for iptables.
+</p>
+
+<a name="gui"></a>
+<h2>Changes in the GUI</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Added release notes v4.0.1 and v4.0.2 to the package.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      using separate settings object and file in the .ini format to
+      store instance uuid to ensure uuid persistence on windows across
+      upgrades done with complete deinstall. Fixes #1497
+    </p>
+  </li>
+
+  <li>
+    <p>added user work flow progress flags for an attempted install and
+      first successful install. Both flags are Boolean true/false
+      indicating that the even occurred. We do not track and do not
+      report any information about the firewall, platform, rules
+      etc. These flags will be used to determine how many users
+      abandon the program before even trying to run install for real
+      because it is too complicated or the UI is not good
+      enough. Fixes #1495
+    </p>
+  </li>
+    
+
+  <li>
+    <p>added user work flow flag indicating that ssh/scp have been
+      configured in the Preferences dialog. The flag is Boolean and
+      registers only the fact that something was entered in ssh and
+      scp fields. Actual path and programs used are not registered and
+      reported. Fixes #1496
+    </p>
+  </li>
+    
+
+  <li>
+    <p>
+      fixed #1489 removed unnecessary debugging messages.
+    </p>
+  </li>
+    
+
+  <li>
+    <p>
+      fixed #1490 compile problem with Qt 4.7
+    </p>
+  </li>
+    
+
+  <li>
+    <p>
+      fixed #1501 call qsrand(seed) to seed random generator before
+      generating new UUID
+    </p>
+  </li>
+    
+
+  <li>
+    <p>
+      applied patch from slif@bellsouth.net to fix compiler
+      warnings. Patch applied partially since not all fixes were
+      appropriate. fixes #1510
+    </p>
+  </li>
+    
+
+  <li>
+    <p>
+      fixed SF bug #3013532 "file chooser dialog for import policy
+      does not show all files".
+    </p>
+  </li>
+    
+  <li>
+    <p>
+	fixed SF bug #3013855 "various fixes for run_tests". Applied
+	patch suggested by Michael J. Slifcak (with changes).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug #3013735 "invalid pixmap properties during
+      make". Fixed uic warnings.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1499 "GroupObjectDialogTest.cpp does not compile with gcc
+      3.4.6" and SF bug 3015307.  There is no reason to make method
+      insertObject() protected which caused problems (and hacky
+      workaround) in the unit test.
+    </p>
+  </li>
+
+</ul>
+
+
+<a name="importer"></a>
+<h2>Changes in the policy importer</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1511, SF bug 3012953: iptables import parse error
+      icmp_type any
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed sourceforge bug 3012953 name of UDP and TCP objects
+      created during import should follow the same pattern and not
+      include "0-0" for the source ports if they are equal to zero.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      policy importer for iptables can now parse numerical log levels.
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      bug 3012953: iptables importer sometimes does not recognize rule
+      with " ESTABLISHED,RELATED ". Parser properly processed iptables
+      rules with state "RELATED,ESTABLISHED" but not when states were
+      in the opposite order.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1513 iptables importer should check default policy in
+      standard chains. Importer creates rules at the bottom of the
+      policy rule set to reproduce default policies in the built-in
+      chains INPUT,OUTPUT,FORWARD.  These rules are added only when
+      default policy in these chains is set to ACCEPT because
+      generated iptables script always sets default policies to DROP.
+      Support for this in the mangle table is limited so far, only
+      default policies in PREROUTING, OUTPUT and POSTROUTING can be
+      implemented. Rules created for the commands that set default
+      policy in chains FORWARD and INPUT will generate commands in
+      PREROUTING chain instead. We will try to address this in the
+      future if there is sufficient demand.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1516 policy importer for iptables should not use
+      automatic ESTABLISHED rule. (See also SF bug 3012953).  Policy
+      importer for iptables always creates explicit rule to match
+      ESTABLISHED,RELATED to make sure it goes into the same chain as
+      the original rule. Also in the same fix, importer creates branch
+      for iptables rules that match both regular service and state
+      ESTABLISHED,RELATED. The service is matched in the main policy
+      rule set, while ESTABLISHED,RELATED state is matched in the
+      branch.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug 3015641 "imported REJECT rule changed during
+      compile". Importer of iptables rules did not handle properly
+      parameters of the REJECT target.
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+<a name="libfwbuilder"></a>
+<h2>Changes in libfwbuilder library</h2>
+
+<ul>
+  <li>
+    <p>
+      Added framework for creating data files with predictable and
+      repeatable object IDs and references. This is used in unit tests
+      so we can create data files that can be compared.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed missing class variable initialization in class CustomService
+    </p>
+  </li>
+
+</ul>
+
+
+
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1506 SF bug #3011516: generated iptables script tries to
+      update ip addresses of unnumbered interface.
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+</ul>
+
+
+
+<a name="pf"></a>
+<h2>Support for PF</h2>
+
+<ul>
+  <li>
+    <p>
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+
+
+<a name="ios"></a>
+<h2>Changes in support for for Cisco IOS ACL</h2>
+
+<ul>
+  <li>
+    <p>
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+</ul>
+
+
+<a name="pix"></a>
+<h2>Changes in support for for Cisco ASA (PIX)</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1491 fwb_pix crashes trying to compile simple rule. Compiler
+      should check validity of the object used as network zone of an interface.
+    </p>
+  </li>
+</ul>
+
+
+
+<a name="procurve"></a>
+<h2>Support for HP ProCurve</h2>
+
+<ul>
+  <li>
+    <p>
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+

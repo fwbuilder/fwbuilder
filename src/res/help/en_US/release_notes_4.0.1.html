@@ -1,0 +1,347 @@
+
+<h1>Firewall Builder 4.0.1 Release Notes</h1>
+
+<p>
+  This release comes with fixes several minor bugs in the GUI and
+  other components, improves policy importer for iptables and
+  introduces support for HP ProCurve ACLs.
+</p>
+
+<a name="gui"></a>
+<h2>Changes in the GUI</h2>
+
+<ul>
+
+  <li>
+    <p>fixed #1443 GUI crashes compiling file opened read-only. If a
+      file that was added to RCS was opened read-only and then any
+      firewall object in it compiled, the GUI crashed trying to update
+      "last_compiled" timestamp.</p>
+
+  </li>
+
+<li>
+    <p>fixed #1444 compile error on FreeBSD-Current
+	Compiler issues error "/usr/include/utmp.h:2:2: error: #error
+      &lt;utmp.h&gt; has been replaced by &lt;utmpx.h&gt;"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1447: context menu item "Edit" associated with rule set
+      object in the tree opens it in the rule set view and the editor
+      panel. Menu item "Open" only opens it in the rule set view. This
+      eliminates strange behavior where it would open in the rule set
+      view on first click on "Edit" and then in the editor in the
+      second click on "Edit". Double click used to work the same, the
+      first double click opened in rule set view, the second in the
+      editor. Now double click always opens in rule set view and the
+      editor which is more consistent with the behavior for other
+      object types.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1339 "Logging" icon appears looking the same as "Rule
+      options" icon on Mac
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1460 "when "show icons in rules" is turned off, there is no
+      way to tell when logging is turned on and non-default options are
+      present in a rule".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1464, SourceForge bug 3004274: "Branch rule set object
+      displays improperly".  Branch rule set attribute was not loaded
+      properly into Branch action dialog for rules of PF firewalls.
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      fixed #1462 "if you do a bulk install, and then want to do a
+      single install, bulk mode is selected"
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      fixed #1461 Need obvious button to add new rule to the empty
+      rule set. Added button with a "+" icon right above the rule set
+      view, this button adds new rule to the set.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1457 "tooltips for rule options seem to be
+      broken". Tooltip always includes the line telling of the rule is
+      "stateful" or "stateless", the function almost never returns
+      empty string now.  Added missing hashlimit parameters to the
+      rule options tooltip. Some of the more rarely used hashlimit
+      parameters are still not included in the tooltip. Improved
+      tooltip formatting using html table.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1463 Always show branch rule set name with action "Branch"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1469 some actions should always display argument, even
+      when text labels for actions and directions is off
+    </p>
+  </li>
+
+  <li>
+    <p>
+      applied patch by Vadim Jukov &lt;persgray@gmail.com&gt;,
+      maintainer of OpenBSD port. Patch fixes compile issues on
+      OpenBSD
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1468 Open new object in the editor after it has been
+      created.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1466 Implemented instrumentation that should help us
+      improve user experience. Will track few things that new users do
+      (or don't do) and report as a combination of boolean flags at
+      the end of the GUI session. Reporting things such as if user
+      ever looked at the "Getting Started" tutorial, if they created
+      their first firewall object, modified any rules, tried to
+      compile, install or import existing rule set. Information passed
+      in the report is strictly a set of boolean flags, it is not
+      identifiable and does not reveal what firewall platform they are
+      using or anything about their objects and rules. List of flags
+      is listed in the module UserWorkflow.h
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1478 always use included antlr run-time library. Because
+      of the fixes I've made in CircularQueue?.hpp in 2008 for 64 bit
+      systems, we should always link with antlr run-time that is
+      included with fwbuilder code tree rather than attempt to use the
+      one that might be installed with the OS.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1481 when user changes platform in the firewall object,
+      its version should change too.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      added mechanism for one-time announcements that can be pulled
+      from the web site when version check server says there is
+      one. Announcement is shown only once. To do this, I store time
+      stamp when it was shown in settings using hash of the
+      announcement url.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1483 If program detects change in CustomService object and
+      the change just adds code string for a platform that was not in
+      the object in the user's data file, the change is accepted
+      without showing the dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1484 "paste below" function pastes rules out of order
+    </p>
+  </li>
+    
+
+</ul>
+
+
+<a name="importer"></a>
+<h2>Changes in the policy importer</h2>
+
+<ul>
+  <li>
+    <p>
+      See #1450 and SourceForge ticket 3000809: iptables parser can
+      now import "mark" module matches with hexadecimal parameters and
+      "length" module matches. Also added check in the importer for
+      broken iptables-save files where rules for any table are not
+      terminated with "COMMIT".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1453 "iptables importer should parse multiport module
+      parameter --ports". Module multuport with parameter "--ports"
+      matches either source or destination port numbers. Importer
+      creates two tcp (or udp) service objects to implement this
+      match.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1451 "policy importer should support some popular iptables
+      modules". Added support for module "recent" and rules that match
+      standard ip/icmp/udp/tcp protocols and at the same time module
+      "mark", "length", "limit" or "recent".  Rules like these are
+      translated into a combination of a branching rule and additional
+      rule in a branch rule set that implements module match.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<a name="standard_obj"></a>
+<h2>Changes in the Standard Objects library</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1483 "missing code in the custom service object
+      ESTABLISHED for ProCurve"
+    </p>
+  </li>
+</ul>
+
+
+
+
+<a name="libfwbuilder"></a>
+<h2>Changes in libfwbuilder library</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1485 "dns name object is recognized
+      as an empty group when it appears in shared rule set"
+    </p>
+  </li>
+</ul>
+
+
+<a name="procurve"></a>
+<h2>Support for HP ProCurve</h2>
+
+<ul>
+  <li>
+    <p>
+      Added experimental support for HP ProCurve "intelligent"
+      switches (L3). Code is based on the policy compiler for Cisco
+      IOS extended access lists. Differences include ';' character for
+      comments, different naming convention for Vlan interfaces ("VLAN
+      2", with a space), requirement to unbind an ACL from interface
+      before it can be cleared, different syntax for vlan ACLs and
+      ACLs bound to switch ports.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      At the time of the release of v4.0.1, we were able to test code
+      generation for ProCurve ACL but policy installer remains
+      untested for the lack of hardware. We are going to work on the
+      installer over the next few months to make sure it works in the
+      next point version release of fwbuilder.
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+
+
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1455 Function update_addresses() (host OS linux24 and
+      derivatives) uses both ip and ifconfig. Should stick with
+      /sbin/ip so the script works on systems where ifconfig is not
+      installed.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1458 Should permit interface name "br-lan" for bridge
+      interface on Linux. Bridge interfaces on Linux can have any
+      name, including those with "-". OpenWRT creates bridge interface
+      with the name "br-lan" by default.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<a name="dd-wrt"></a>
+<h2>Changes in support for DD-WRT</h2>
+
+<ul>
+  <li>
+    <p>
+      fixes #1448 "need to commit nvram changes on DD-WRT".
+    </p>
+  </li>
+</ul>
+
+
+
+
+<a name="ios"></a>
+<h2>Changes in support for for Cisco IOS ACL</h2>
+
+<ul>
+  <li>
+    <p>
+      Compiler uses new configlet "safety_net" to add temporary ACL for
+      the "safety net" install method.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      restored function of the "comment the code" in the "Script
+      options" of the firewall settings dialog for Cisco IOS ACL and
+      ProCurve ACL. When this checkbox is off, comments are not
+      added to generated script.
+    </p>
+  </li>
+</ul>
+

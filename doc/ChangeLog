@@ -1,5 +1,8 @@
 2010-06-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* release_notes_4.0.2.html: Added release notes for v4.0.2 to
+	the package. fixes #1515
+
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed SF bug
 	3015641 "imported REJECT rule changed during compile". Importer of
 	iptables rules did not handle properly parameters of the REJECT
