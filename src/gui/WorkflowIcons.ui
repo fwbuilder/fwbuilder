@@ -22,7 +22,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>204</height>
+       <height>210</height>
       </size>
      </property>
     </spacer>
@@ -43,74 +43,80 @@
       </spacer>
      </item>
      <item>
-      <widget class="ClickableLabel" name="newFirewall">
+      <widget class="QToolButton" name="newFirewall">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="styleSheet">
+        <string notr="true">border:none</string>
+       </property>
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/Icons/firewall_64.png&quot; /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Create new firewall&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Create new firewall</string>
        </property>
-       <property name="textFormat">
-        <enum>Qt::AutoText</enum>
+       <property name="icon">
+        <iconset resource="MainRes.qrc">
+         <normaloff>:/Icons/firewall_64.png</normaloff>:/Icons/firewall_64.png</iconset>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="ClickableLabel" name="importConfig">
+      <widget class="QToolButton" name="importConfig">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="styleSheet">
+        <string notr="true">border: none</string>
+       </property>
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/Icons/Accept/icon-big&quot; /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Import existing configuration&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Import existing configuration</string>
        </property>
-       <property name="textFormat">
-        <enum>Qt::AutoText</enum>
+       <property name="icon">
+        <iconset resource="MainRes.qrc">
+         <normaloff>:/Icons/Accept/icon-big</normaloff>:/Icons/Accept/icon-big</iconset>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="ClickableLabel" name="watchTutorial">
+      <widget class="QToolButton" name="action_getting_started">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="styleSheet">
+        <string notr="true">border: none</string>
+       </property>
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/Icons/Accept/icon-big&quot; /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Watch getting started tutorial&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Watch getting started tutorial</string>
        </property>
-       <property name="textFormat">
-        <enum>Qt::AutoText</enum>
+       <property name="icon">
+        <iconset resource="MainRes.qrc">
+         <normaloff>:/Icons/Accept/icon-big</normaloff>:/Icons/Accept/icon-big</iconset>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>
@@ -137,72 +143,15 @@ p, li { white-space: pre-wrap; }
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>204</height>
+       <height>210</height>
       </size>
      </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>ClickableLabel</class>
-   <extends>QLabel</extends>
-   <header>ClickableLabel.h</header>
-  </customwidget>
- </customwidgets>
- <resources/>
- <connections>
-  <connection>
-   <sender>newFirewall</sender>
-   <signal>clicked()</signal>
-   <receiver>WorkflowIcons_q</receiver>
-   <slot>itemClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>54</x>
-     <y>171</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>89</x>
-     <y>226</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>importConfig</sender>
-   <signal>clicked()</signal>
-   <receiver>WorkflowIcons_q</receiver>
-   <slot>itemClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>133</x>
-     <y>133</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>92</x>
-     <y>148</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>watchTutorial</sender>
-   <signal>clicked()</signal>
-   <receiver>WorkflowIcons_q</receiver>
-   <slot>itemClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>282</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>221</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>itemClicked()</slot>
- </slots>
+ <resources>
+  <include location="MainRes.qrc"/>
+ </resources>
+ <connections/>
 </ui>

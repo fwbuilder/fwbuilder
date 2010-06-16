@@ -268,10 +268,9 @@
        <item row="1" column="0">
         <widget class="QStackedWidget" name="ruleSets">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
-         <widget class="QWidget" name="page"/>
-         <widget class="QWidget" name="page_2"/>
+         <widget class="WorkflowIcons" name="icons"/>
         </widget>
        </item>
       </layout>
@@ -285,6 +284,12 @@
    <class>ObjectManipulator</class>
    <extends>QWidget</extends>
    <header>ObjectManipulator.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WorkflowIcons</class>
+   <extends>QWidget</extends>
+   <header>WorkflowIcons.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
