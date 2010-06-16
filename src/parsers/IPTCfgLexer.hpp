@@ -92,6 +92,8 @@ public:
 	public: void mMATCH_RECENT_RTTL(bool _createToken);
 	public: void mMATCH_RECENT_RDEST(bool _createToken);
 	public: void mMATCH_RECENT_SET(bool _createToken);
+	public: void mMATCH_IPRANGE_SRC(bool _createToken);
+	public: void mMATCH_IPRANGE_DST(bool _createToken);
 	public: void mMATCH_COMMENT(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);
 	public: void mSET_MARK(bool _createToken);

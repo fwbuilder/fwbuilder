@@ -225,6 +225,10 @@ ipt_option :
         |
             match_length
         |
+            match_iprange_src
+        |
+            match_iprange_dst
+        |
             unknown_option
         )
     ;
@@ -297,7 +301,7 @@ unknown_parameter
 // which have some parameters that look the same as parameters for
 // other modules. See match_mark and match_recent 
 
-module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  m_length | m_comment | m_unknown_module) 
+module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  m_length | m_iprange | m_comment | m_unknown_module) 
     ;
 
 //****************************************************************
@@ -708,6 +712,37 @@ m_recent : M_RECENT
     ;
 
 //****************************************************************
+
+m_iprange : M_IPRANGE
+        {
+            *dbg << " IPRANGE";
+        }
+    ;
+
+match_iprange_src : MATCH_IPRANGE_SRC (WORD | IPV4)
+        {
+            importer->iprange_src_from = LT(0)->getText();
+            importer->using_iprange_src = true;
+        }
+        MINUS (WORD | IPV4)
+        {
+            importer->iprange_src_to = LT(0)->getText();
+        }
+    ;
+
+match_iprange_dst : MATCH_IPRANGE_DST (WORD | IPV4)
+        {
+            importer->iprange_dst_from = LT(0)->getText();
+            importer->using_iprange_dst = true;
+        }
+        MINUS (WORD | IPV4)
+        {
+            importer->iprange_dst_to = LT(0)->getText();
+        }
+    ;
+
+
+//****************************************************************
 /* Unlike with other modules, this matches both "-m recent" and 
  * module arguments
  * I am having difficulties writing grammar to catch negation
@@ -1099,6 +1134,7 @@ tokens
     M_LIMIT = "limit" ;
     M_LENGTH = "length" ;
     M_RECENT = "recent" ;
+    M_IPRANGE = "iprange" ;
 
     ICMP = "icmp";
     TCP = "tcp";
@@ -1254,6 +1290,8 @@ MATCH_RECENT_RTTL : "--rttl" ;
 MATCH_RECENT_RDEST : "--rdest" ;
 MATCH_RECENT_SET : "--set" ;
 
+MATCH_IPRANGE_SRC : "--src-range" ;
+MATCH_IPRANGE_DST : "--dst-range" ;
 
 MATCH_COMMENT : "--comment" ;
 

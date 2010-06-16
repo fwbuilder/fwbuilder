@@ -90,6 +90,8 @@ public:
 	public: void match_limit();
 	public: void match_limit_burst();
 	public: void match_length();
+	public: void match_iprange_src();
+	public: void match_iprange_dst();
 	public: void unknown_option();
 	public: void unknown_parameter();
 	public: void m_state();
@@ -99,6 +101,7 @@ public:
 	public: void m_udp();
 	public: void m_limit();
 	public: void m_length();
+	public: void m_iprange();
 	public: void m_comment();
 	public: void m_unknown_module();
 	public: void protocol_word();
@@ -134,10 +137,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 138;
+	static const int NUM_TOKENS = 141;
 #else
 	enum {
-		NUM_TOKENS = 138
+		NUM_TOKENS = 141
 	};
 #endif
 	

@@ -124,6 +124,9 @@ void ImporterTest::compareResults(QueueLogger* logger,
     QString result_file = rr.readAll();
     QStringList expected_result = result_file.split("\n");
 
+    CPPUNIT_ASSERT_MESSAGE("Sizes of the generated importer output and test files are different",
+                           expected_result.size() == obtained_result.size());
+
     int max_idx = max(expected_result.size(), obtained_result.size());
     for (int i=0; i < max_idx; ++i)
     {
@@ -153,6 +156,9 @@ void ImporterTest::compareFwbFiles(QString expected_result_file_name,
 
     // find all lastModified attributes and replace them with identical values
     // because they are always going to be different
+
+    CPPUNIT_ASSERT_MESSAGE("Sizes of the generated .fwb and test files are different",
+                           expected_result.size() == obtained_result.size());
 
     QRegExp last_mod_re("lastModified=\"\\d+\"");
     int max_idx = max(expected_result.size(), obtained_result.size());

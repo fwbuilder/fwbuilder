@@ -1,5 +1,8 @@
 2010-06-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* iptables.g (match_iprange_src): Fixed SF bug 3016779: Policy
+	importer for iptables should understand module iprange
+
 	* FWWindow.cpp (FWWindow::prepareFileMenu): fixed bug 3016720
 	"import policy disabled after file close". Menu items "File/Import
 	Library" and "File/Import policy" became disabled after user

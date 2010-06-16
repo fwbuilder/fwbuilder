@@ -61,6 +61,9 @@ class IPTImporter : public Importer
     virtual libfwbuilder::FWObject* createTCPService();
     virtual libfwbuilder::FWObject* createUDPService();
 
+    virtual libfwbuilder::FWObject* makeSrcObj();
+    virtual libfwbuilder::FWObject* makeDstObj();
+    
     std::pair<int,int> convertPortRange(str_tuple &range, const char *proto);
     int convertPort(const std::string &port_spec, const char *proto, int default_port);
 
@@ -121,6 +124,12 @@ class IPTImporter : public Importer
     std::string nat_port_range_start;
     std::string nat_port_range_end;
 
+    bool using_iprange_src;
+    std::string iprange_src_from;
+    std::string iprange_src_to;
+    bool using_iprange_dst;
+    std::string iprange_dst_from;
+    std::string iprange_dst_to;
     
     libfwbuilder::PolicyRule *last_mark_rule;
     

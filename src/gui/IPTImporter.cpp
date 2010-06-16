@@ -178,6 +178,12 @@ void IPTImporter::clear()
     nat_port_range_start = "";
     nat_port_range_end = "";
 
+    using_iprange_src = false;
+    iprange_src_from = "";
+    iprange_src_to = "";
+    using_iprange_dst = false;
+    iprange_dst_from = "";
+    iprange_dst_to = "";
 }
 
 void IPTImporter::startSrcMultiPort()
@@ -416,6 +422,24 @@ FWObject* IPTImporter::createUDPService()
     return createTCPUDPService("udp");
 }
 
+
+FWObject* IPTImporter::makeSrcObj()
+{
+    if (using_iprange_src)
+    {
+        return createAddressRange(iprange_src_from, iprange_src_to);
+    } else
+        return Importer::makeSrcObj();
+}
+
+FWObject* IPTImporter::makeDstObj()
+{
+    if (using_iprange_dst)
+    {
+        return createAddressRange(iprange_dst_from, iprange_dst_to);
+    } else
+        return Importer::makeDstObj();
+}
 
 void IPTImporter::addSrv()
 {
