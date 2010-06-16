@@ -1,5 +1,12 @@
 2010-06-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPTImporterRun.cpp (IPTImporter::run): policy importer for
+	iptables replaces --sport and --dport parameters of module
+	multiport with --source-ports and --destination-ports to remove
+	grammar ambiguity that arises from the use of the same parameters
+	--sport and --dport by different iptables modules with different
+	argument syntax.
+
 	* iptables.g (match_iprange_src): Fixed SF bug 3016779: Policy
 	importer for iptables should understand module iprange
 

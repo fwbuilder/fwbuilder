@@ -810,10 +810,17 @@ m_comment : M_COMMENT MATCH_COMMENT STRING
 //****************************************************************
 /*
  * Note that there can be just one port (i.e. no ,port[,port] part)
+ *
+ * Note also that we do little preprocessing of the iptables lines
+ * before passing them to the parser in IPTImporter::run(). Specifically,
+ * we replace --sport and --dport with --source-ports and --destination-ports
+ * for module multiport to avoid ambiguity that arises from different
+ * rules that arguments for the --sport and --dport parameters can follow
+ * depending on the module.
  */
 multiport_tcp_udp_port_spec :
         (
-            ( (MATCH_SRC_MULTIPORT | MATCH_SRC_MULTIPORT_SHORT)
+            ( MATCH_SRC_MULTIPORT
                 {
                     importer->startSrcMultiPort();
                     *dbg << " SRC MULTIPORT=";
@@ -829,7 +836,7 @@ multiport_tcp_udp_port_spec :
                 )*
             )
         |
-            ( (MATCH_DST_MULTIPORT | MATCH_DST_MULTIPORT_SHORT)
+            ( MATCH_DST_MULTIPORT
                 {
                     importer->startDstMultiPort();
                     *dbg << " DST MULTIPORT=";
@@ -1258,18 +1265,15 @@ MATCH_SRC_MULTIPORT : "--source-ports" ;
 MATCH_DST_MULTIPORT : "--destination-ports" ;
 MATCH_BOTH_MULTIPORT : "--ports" ;
 
-MATCH_SRC_MULTIPORT_SHORT : "--sports" ;
-MATCH_DST_MULTIPORT_SHORT : "--dports" ;
-
 MATCH_SRC_PORT : "--source-port" ;
 MATCH_DST_PORT : "--destination-port" ;
+
+MATCH_SRC_PORT_SHORT : "--sport" ;
+MATCH_DST_PORT_SHORT : "--dport" ;
 
 MATCH_SYN : "--syn" ;
 MATCH_TCP_FLAGS : "--tcp-flags" ;
 MATCH_TCP_OPTION : "--tcp-option" ;
-
-MATCH_SRC_PORT_SHORT : "--sport" ;
-MATCH_DST_PORT_SHORT : "--dport" ;
 
 MATCH_ICMP_TYPE : "--icmp-type" ;
 

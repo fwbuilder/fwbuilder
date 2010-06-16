@@ -28,7 +28,8 @@
 
 #include "IPTImporter.h"
 
-#include <qstring.h>
+#include <QString>
+#include <QStringList>
 
 #include <ios>
 #include <iostream>
@@ -39,6 +40,8 @@
 // parser and lexer for files produced by iptables-save
 #include "../parsers/IPTCfgLexer.hpp"
 #include "../parsers/IPTCfgParser.hpp"
+
+using namespace std;
 
 /*
  * Only this module depends on IPTCfgLexer and IPTCfgParser,
@@ -55,10 +58,53 @@ void IPTImporter::run()
 // if ANTLR runtime is not available.
 //
 
-    std::string err;
-    std::ostringstream parser_debug;
+    string err;
+    ostringstream parser_debug;
 
-    IPTCfgLexer lexer(input);
+/* Do a bit of preprocessing of the input to simplify crazy grammar. String
+ * operations are easier to do with Qt QString class.
+ *
+ * Do the following (will add more stuff here in the future):
+ *
+ *  - normalize parameters for the multiport module. Multiport accepts
+ *    parameters --source-ports and --sport and aparently in the older versions
+ *    --sports. Unfortunayely the same parameter "--sport" is used
+ *    to do port match with module tcp, udp and several others. Even though the
+ *    name of the parameter is the same, port specification can follow different
+ *    rules. For example, for multiport we can have port1[,port2], while for
+ *    modules tcp and udp it is port1[:port2]. This makes grammar difficult
+ *    to write. Need to convert parameters to the unique long form before
+ *    passing script to antlr
+ */
+    input.seekg (0, ios::end);
+    size_t input_size = input.tellg();
+    string normalized_input_buffer;
+    normalized_input_buffer.reserve(input_size);
+
+    input.seekg (0, ios::beg);
+    char buf[8192];
+    while (!input.eof())
+    {
+        input.getline(buf, sizeof(buf)-1);
+
+        QString str(buf);
+        if (str.contains("-m multiport"))
+        {
+            str.replace("--sports", "--source-ports");
+            str.replace("--sport", "--source-ports");
+            str.replace("--dports", "--destination-ports");
+            str.replace("--dport", "--destination-ports");
+        }
+
+        normalized_input_buffer.append(str.toStdString());
+        normalized_input_buffer.append("\n");
+    }
+
+    assert(normalized_input_buffer.length() > 0);
+
+    istringstream  normalized_input(normalized_input_buffer);
+
+    IPTCfgLexer lexer(normalized_input);
     IPTCfgParser parser(lexer);
     parser.importer = this;
     if (fwbdebug)   parser.dbg = &std::cerr;

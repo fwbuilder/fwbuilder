@@ -69,15 +69,13 @@ public:
 	public: void mMATCH_SRC_MULTIPORT(bool _createToken);
 	public: void mMATCH_DST_MULTIPORT(bool _createToken);
 	public: void mMATCH_BOTH_MULTIPORT(bool _createToken);
-	public: void mMATCH_SRC_MULTIPORT_SHORT(bool _createToken);
-	public: void mMATCH_DST_MULTIPORT_SHORT(bool _createToken);
 	public: void mMATCH_SRC_PORT(bool _createToken);
 	public: void mMATCH_DST_PORT(bool _createToken);
+	public: void mMATCH_SRC_PORT_SHORT(bool _createToken);
+	public: void mMATCH_DST_PORT_SHORT(bool _createToken);
 	public: void mMATCH_SYN(bool _createToken);
 	public: void mMATCH_TCP_FLAGS(bool _createToken);
 	public: void mMATCH_TCP_OPTION(bool _createToken);
-	public: void mMATCH_SRC_PORT_SHORT(bool _createToken);
-	public: void mMATCH_DST_PORT_SHORT(bool _createToken);
 	public: void mMATCH_ICMP_TYPE(bool _createToken);
 	public: void mMATCH_MARK(bool _createToken);
 	public: void mMATCH_LENGTH(bool _createToken);
