@@ -50,6 +50,7 @@
 #include "events.h"
 #include "ObjectTreeView.h"
 #include "FWObjectClipboard.h"
+#include "WorkflowIcons.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -159,6 +160,20 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
     connect(m_panel->topSplitter, SIGNAL(splitterMoved(int,int)),
             this, SLOT(splitterPositionChanged(int,int)));
+
+    WorkflowIcons *icons = new WorkflowIcons(this);
+
+    m_panel->ruleSets->setCurrentIndex(m_panel->ruleSets->addWidget(icons));
+    ObjectManipulator *om = findChild<ObjectManipulator*>();
+    QAction *newFirewall = om->findChild<QAction*>(QString("newObject_") + Firewall::TYPENAME);
+    connect(icons, SIGNAL(newFirewall()), newFirewall, SLOT(trigger()));
+
+    connect(icons, SIGNAL(watchTutorial(QString)), parent->parent()->parent(), SLOT(showTutorial(QString)));
+
+    QAction *import = parent->parent()->parent()->findChild<QAction*>("policyImportAction");
+    connect(icons, SIGNAL(importConfig()), import, SLOT(trigger()));
+
+
 }
 
 ProjectPanel::~ProjectPanel()
