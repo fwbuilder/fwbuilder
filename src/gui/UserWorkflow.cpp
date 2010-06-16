@@ -168,6 +168,6 @@ void UserWorkflow::reportDone(const QString& resp)
     disconnect(report_query, SIGNAL(done(const QString&)),
                this, SLOT(reportDone(const QString&)));
     // we ignore server response for the closing reports.
-    if (report_query != NULL) delete report_query;
+    if (report_query != NULL) report_query->deleteLater();
     report_query = NULL;
 }
