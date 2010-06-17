@@ -1,3 +1,8 @@
+2010-06-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectMatcher.cpp (ObjectMatcher::checkComplexMatchForSubnet):
+	added method to check object matching with subnets
+
 2010-06-12  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* CustomService.cpp (CustomService::CustomService): fixed missing

@@ -215,6 +215,36 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
     return false;
 }
 
+/**
+ * check if any of the addresses of obj2 belongs to the subnet of obj1
+ */
+bool ObjectMatcher::checkComplexMatchForSubnet(Address *obj1, FWObject *obj2)
+{
+    //cerr << "ObjectMatcher::checkComplexMatchForSubnet obj1=" << obj1->getName()
+    //     << "  obj2=" << obj2->getName();
+
+    const InetAddr *addr = obj1->getAddressPtr();
+    const InetAddr *netm = obj1->getNetmaskPtr();
+
+    bool res = false;
+    string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
+    list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
+    for (list<FWObject*>::iterator it = all_addresses.begin();
+         it != all_addresses.end(); ++it)
+    {
+        Address *obj2_addr = Address::cast(*it);
+        const InetAddr *rhs_addr = obj2_addr->getAddressPtr();
+        if (matchSubnetRHS(rhs_addr, addr, netm) == 0)
+        {
+            res = true;
+            break;
+        }
+    }
+
+    //cerr << " " << res << endl;
+    return res;
+}
+
 void* ObjectMatcher::dispatch(Interface* obj1, void* _obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);

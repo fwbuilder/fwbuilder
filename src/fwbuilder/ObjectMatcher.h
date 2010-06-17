@@ -51,8 +51,6 @@ private:
 
         bool checkComplexMatchForSingleAddress(const InetAddr *addr1,
                                                FWObject *obj2);
-        bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
-
         int matchRHS(const InetAddr *addr1, Address *obj2);
         int matchInetAddrRHS(const InetAddr *addr1,
                              const InetAddr *rhs_obj_addr);
@@ -78,6 +76,17 @@ public:
         void setRecognizeMulticasts(bool f) { recognize_multicasts = f; }
         void setIPV6(bool f) { ipv6 = f; }
 
+        /**
+         *  check if address obj1 matches any of the addresses of obj2. Obj1
+         * has to be a single address.
+         */
+        bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
+
+        /**
+         * check if any of the addresses of obj2 belongs to the subnet of obj1
+         */
+        bool checkComplexMatchForSubnet(Address *obj1, FWObject *obj2);
+                
         /**
          * This method returns true if one of the following conditions is met:
          *
