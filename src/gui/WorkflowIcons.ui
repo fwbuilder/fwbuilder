@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -27,8 +27,11 @@
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>20</number>
+     </property>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -44,14 +47,21 @@
      </item>
      <item>
       <widget class="QToolButton" name="newFirewall">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>120</height>
+        </size>
+       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">border:none</string>
+        <string notr="true"/>
        </property>
        <property name="text">
-        <string>Create new firewall</string>
+        <string>Create new
+firewall</string>
        </property>
        <property name="icon">
         <iconset resource="MainRes.qrc">
@@ -70,14 +80,21 @@
      </item>
      <item>
       <widget class="QToolButton" name="importConfig">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>120</height>
+        </size>
+       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: none</string>
+        <string notr="true"/>
        </property>
        <property name="text">
-        <string>Import existing configuration</string>
+        <string>Import existing
+configuration</string>
        </property>
        <property name="icon">
         <iconset resource="MainRes.qrc">
@@ -96,14 +113,21 @@
      </item>
      <item>
       <widget class="QToolButton" name="action_getting_started">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>120</height>
+        </size>
+       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: none</string>
+        <string notr="true"/>
        </property>
        <property name="text">
-        <string>Watch getting started tutorial</string>
+        <string>Watch &quot;Getting
+Started&quot; tutorial</string>
        </property>
        <property name="icon">
         <iconset resource="MainRes.qrc">
@@ -135,7 +159,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
