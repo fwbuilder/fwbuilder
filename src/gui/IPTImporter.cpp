@@ -734,7 +734,9 @@ void IPTImporter::pushPolicyRule()
     {
         action = PolicyRule::Continue;
         rule->setLogging(true);
-        ropt->setStr("log_prefix", action_params["log_prefix"]);
+        QString log_prefix = action_params["log_prefix"].c_str();
+        log_prefix.replace("\"", "");
+        ropt->setStr("log_prefix", log_prefix.toStdString());
         ropt->setStr("log_tcp_seq", action_params["log_tcp_seq"]);
         ropt->setStr("log_tcp_options", action_params["log_tcp_options"]);
         ropt->setStr("log_ip_options", action_params["log_ip_options"]);
@@ -784,7 +786,9 @@ void IPTImporter::pushPolicyRule()
         action = PolicyRule::Continue;
         rule->setLogging(true);
         fwopt->setBool("use_ULOG", true);
-        ropt->setStr("log_prefix", action_params["log_prefix"]);
+        QString log_prefix = action_params["log_prefix"].c_str();
+        log_prefix.replace("\"", "");
+        ropt->setStr("log_prefix", log_prefix.toStdString());
     }
 
     if (target=="MARK")

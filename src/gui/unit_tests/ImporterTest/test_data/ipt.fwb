@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1276659353" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1276751153" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1699,7 +1699,7 @@
             <PolicyRuleOptions>
               <Option name="log_ip_options"></Option>
               <Option name="log_level"></Option>
-              <Option name="log_prefix">"FORWARD catch-all"</Option>
+              <Option name="log_prefix">FORWARD catch-all</Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3052,7 +3052,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth XMAS scan: "</Option>
+              <Option name="log_prefix">Stealth XMAS scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3079,7 +3079,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth XMAS-PSH scan: "</Option>
+              <Option name="log_prefix">Stealth XMAS-PSH scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3106,7 +3106,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth XMAS-ALL scan: "</Option>
+              <Option name="log_prefix">Stealth XMAS-ALL scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3133,7 +3133,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth FIN scan: "</Option>
+              <Option name="log_prefix">Stealth FIN scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3160,7 +3160,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth SYN/RST scan: "</Option>
+              <Option name="log_prefix">Stealth SYN/RST scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3187,7 +3187,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth SYN/FIN scan(?): "</Option>
+              <Option name="log_prefix">Stealth SYN/FIN scan(?): </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>
@@ -3214,7 +3214,7 @@
               <Option name="limit_value">3</Option>
               <Option name="log_ip_options"></Option>
               <Option name="log_level">debug</Option>
-              <Option name="log_prefix">"Stealth Null scan: "</Option>
+              <Option name="log_prefix">Stealth Null scan: </Option>
               <Option name="log_tcp_options"></Option>
               <Option name="log_tcp_seq"></Option>
               <Option name="stateless">True</Option>

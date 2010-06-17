@@ -1,3 +1,8 @@
+2010-06-16  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed SF bug 3017084
+	"compiler adds extra quote characters to log-prefix string".
+
 2010-06-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPTImporterRun.cpp (IPTImporter::run): policy importer for
