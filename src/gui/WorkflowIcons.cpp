@@ -38,16 +38,6 @@ WorkflowIcons::WorkflowIcons(QWidget *parent) :
     ui(new Ui::WorkflowIcons_q)
 {
     ui->setupUi(this);
-
-}
-
-// Find main window object if child is in it's widget tree
-QObject *findMainWindow(QObject *child)
-{
-    if (dynamic_cast<FWWindow*>(child)!=NULL)
-        return child;
-    else
-        return findMainWindow(child->parent());
 }
 
 void WorkflowIcons::setUpSignals(QWidget *panel)
@@ -57,7 +47,7 @@ void WorkflowIcons::setUpSignals(QWidget *panel)
     connect(ui->newFirewall, SIGNAL(clicked()), newFirewall, SLOT(trigger()));
 
     // global variable mw is null when this is running
-    QObject *mainWindow = findMainWindow(panel);
+    QObject *mainWindow = dynamic_cast<ProjectPanel*>(panel)->getWindow();
     QAction *import = mainWindow->findChild<QAction*>("policyImportAction");
     connect(ui->importConfig, SIGNAL(clicked()), import, SLOT(trigger()));
 

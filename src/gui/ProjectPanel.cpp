@@ -112,6 +112,8 @@ void ProjectPanel::initMain(FWWindow *main)
 
     fd  = new findDialog(this, this);
     fd->hide();
+
+    m_panel->icons->setUpSignals(this);
 }
 
 void ProjectPanel::reset()
@@ -160,8 +162,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
     connect(m_panel->topSplitter, SIGNAL(splitterMoved(int,int)),
             this, SLOT(splitterPositionChanged(int,int)));
-
-    m_panel->icons->setUpSignals(this);
 }
 
 ProjectPanel::~ProjectPanel()
