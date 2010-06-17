@@ -180,8 +180,7 @@ HEADERS += ../../config.h \
     MDIEventFilter.h \
     UserWorkflow.h \
     FWBApplication.h \
-    WorkflowIcons.h \
-    ClickableLabel.h
+    WorkflowIcons.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -360,8 +359,7 @@ SOURCES += ProjectPanel.cpp \
     MDIEventFilter.cpp \
     UserWorkflow.cpp \
     FWBApplication.cpp \
-    WorkflowIcons.cpp \
-    ClickableLabel.cpp
+    WorkflowIcons.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
