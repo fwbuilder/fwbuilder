@@ -1,3 +1,13 @@
+2010-06-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (specialCaseWithFWInDstAndOutbound::processNext):
+	fixed #1523 "outbound ipv6 rule matching multicast ipv6 destination
+	is not generated". The rule with network object fe80::/10 in source
+	and ipv6 muticast ff00::/8 in destination did not produce correspondign
+	ip6tables command. The change affects other cases with rules using
+	broadcast or multicast objects that should be considered matching
+	the firewall object.
+
 2010-06-17  Roman Bovsunivkiy <a2k0001@gmail.com>
 
 	* RuleSetView.cpp: fixed SF bug 3016680 "Vertical scrollbar issue"

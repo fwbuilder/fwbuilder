@@ -53,6 +53,7 @@
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/XMLTools.h"
+#include "fwbuilder/ObjectMatcher.h"
 
 #include "combinedAddress.h"
 
@@ -2557,6 +2558,7 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 
 bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     Interface *itf = compiler->getFirstItf(rule);
@@ -2600,14 +2602,41 @@ bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
             return true;
         }
 
-        if (!compiler->complexMatch(src,compiler->fw) &&
-            compiler->complexMatch(dst,compiler->fw))
-        {
-            // skipping the rule
-            ;
-        } else
-            tmp_queue.push_back(rule);
+        FWOptions *ruleopt = rule->getOptionsObject();
+        bool rule_afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
 
+        bool src_matches = compiler->complexMatch(src, compiler->fw);
+        bool dst_matches = compiler->complexMatch(dst, compiler->fw);
+
+        // if "assume fw is part of any and networks" is turned off,
+        // do not consider network objects matching. Except when such
+        // network has netmask 255.255.255.255 and defines just a
+        // single address
+
+        if ((src->isAny() || Network::isA(src) || NetworkIPv6::isA(src)) &&
+            !rule_afpa && ! src->getNetmaskPtr()->isHostMask()) src_matches = false;
+
+        if ((dst->isAny() || Network::isA(dst) || NetworkIPv6::isA(dst)) &&
+            !rule_afpa && ! dst->getNetmaskPtr()->isHostMask()) dst_matches = false;
+        
+        // there is still one case that this rule processor catches
+        // and drop the rule, but I am not sure if it is right thing
+        // to do. This is when src=some address on the subnet fw
+        // intrface is on, but not the address of the firewall,
+        // dst=broadcast or multicast, "assume fw is part of any" is
+        // turned on, the firewall is not a bridge. A rule like this
+        // passes all checks above and gets dropped by this rule
+        // processor. It is hard ot say what should we really do in
+        // this case.
+        
+        if (!src_matches && dst_matches)
+        {
+            // src does not match, dst matches: skipping the rule
+            return true;
+        }
+
+
+        tmp_queue.push_back(rule);
         return true;
     }
 
@@ -4359,13 +4388,6 @@ void PolicyCompiler_ipt::compile()
     add( new splitIfSrcMatchesFw("split rule if src matches FW"));
     add( new splitIfDstMatchesFw("split rule if dst matches FW"));
 
-    /*  at this point in all rules where firewall is in either src or
-     *  dst, firewall is a single object in that rule element. Other
-     *  rule elements may contain multiple objects yet
-     */
-    add( new specialCaseWithFWInDstAndOutbound(
-       "Drop rules in FORWARD chain with non-empty interface and dir Outbound"));
-
     add( new specialCaseWithFW1(  "special case with firewall"      ) );
 
     add( new decideOnChainIfDstFW( "decide on chain if Dst has fw" ) );
@@ -4418,6 +4440,14 @@ void PolicyCompiler_ipt::compile()
 //      add( new decideOnChainForClassify("set chain if action is Classify"));
 
     add( new finalizeChain( "decide on chain"   ) );
+
+    /*****************************************************************/
+    /*  at this point in all rules where firewall is in either src or
+     *  dst, firewall is a single object in that rule element. Other
+     *  rule elements may contain multiple objects yet
+     */
+    add( new specialCaseWithFWInDstAndOutbound(
+       "Drop rules in FORWARD chain with non-empty interface and dir Outbound"));
 
     add( new decideOnTarget( "decide on target"  ) );
 
