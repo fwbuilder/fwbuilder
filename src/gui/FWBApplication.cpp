@@ -28,6 +28,7 @@
 #include "UserWorkflow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
+#include "FWWindow.h"
 
 #include <QtDebug>
 #include <QTimer>
@@ -37,6 +38,8 @@ void FWBApplication::quit()
 {
     if (fwbdebug) qDebug() << "FWBApplication::quit()";
     timeout = 0;
+
+    if (mw->isVisible()) mw->hide();
 
     if (st->getCheckUpdates())
     {
@@ -52,6 +55,7 @@ void FWBApplication::delayedQuit()
 
     if (timeout < 20 && wfl->reportInProgress())
     {
+        timeout++;
         QTimer::singleShot(100, this, SLOT(delayedQuit()));
         return;
     }
