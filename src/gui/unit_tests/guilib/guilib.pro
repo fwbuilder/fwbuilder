@@ -183,7 +183,8 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../TutorialDialog.cpp \
     ../../MDIEventFilter.cpp \
     ../../UserWorkflow.cpp \
-    ../../FWBApplication.cpp
+    ../../FWBApplication.cpp \
+    ../../WorkflowIcons.cpp
 
 HEADERS += ../../../../config.h \
     ../../../../build_num \
@@ -349,7 +350,8 @@ HEADERS += ../../../../config.h \
     ../../TutorialDialog.h \
     ../../MDIEventFilter.h \
     ../../UserWorkflow.h \
-    ../../FWBApplication.h
+    ../../FWBApplication.h \
+    ../../WorkflowIcons.h
 
 
 INCLUDEPATH += ../../.ui
