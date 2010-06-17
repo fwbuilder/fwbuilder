@@ -98,7 +98,7 @@ configuration</string>
        </property>
        <property name="icon">
         <iconset resource="MainRes.qrc">
-         <normaloff>:/Icons/Accept/icon-big</normaloff>:/Icons/Accept/icon-big</iconset>
+         <normaloff>:/Icons/Import-big</normaloff>:/Icons/Import-big</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -131,7 +131,7 @@ Started&quot; tutorial</string>
        </property>
        <property name="icon">
         <iconset resource="MainRes.qrc">
-         <normaloff>:/Icons/Accept/icon-big</normaloff>:/Icons/Accept/icon-big</iconset>
+         <normaloff>:/Icons/Tutorial</normaloff>:/Icons/Tutorial</iconset>
        </property>
        <property name="iconSize">
         <size>
