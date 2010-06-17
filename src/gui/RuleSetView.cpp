@@ -106,6 +106,9 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     initActions();
 
     popup_menu = new QMenu(this);
+
+    this->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
 RuleSetView::~RuleSetView()
