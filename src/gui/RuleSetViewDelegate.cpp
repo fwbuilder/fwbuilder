@@ -473,7 +473,6 @@ QSize RuleSetViewDelegate::calculateCellSizeForRule(const QStyleOptionViewItem &
     }
 
     result = result.expandedTo(calculated);
-
     return result;
 }
 
@@ -481,10 +480,9 @@ QSize RuleSetViewDelegate::calculateCellSizeForComment(const QModelIndex & index
 {
     QString text = index.data(Qt::DisplayRole).value<QString>();
     if (text.isNull() && text.isEmpty()) return QSize(0,0);
-
-    if (st->getClipComment()) return QSize(0,0);
-
     QSize res = getTextSize(text,0);
+    if (st->getClipComment())
+        res.setHeight(0);
     return res;
 }
 

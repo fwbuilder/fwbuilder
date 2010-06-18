@@ -109,6 +109,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
 
     this->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    this->header()->setStretchLastSection(false);
 }
 
 RuleSetView::~RuleSetView()
