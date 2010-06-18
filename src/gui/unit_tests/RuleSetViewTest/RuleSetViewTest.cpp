@@ -1,4 +1,4 @@
-/*
+    /*
 
                           Firewall Builder
 
@@ -60,6 +60,7 @@ void RuleSetViewTest::initTestCase()
     Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
     openPolicy("testFirewall");
     view = mw->findChild<RuleSetView*>("");
+    om->closeObject();
 }
 
 /*
