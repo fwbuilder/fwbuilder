@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-#include(../gui_common.inc)
 RESOURCES += ../../MainRes.qrc
 OBJECTS_DIR = ../../.obj
 MOC_DIR = ../../.moc

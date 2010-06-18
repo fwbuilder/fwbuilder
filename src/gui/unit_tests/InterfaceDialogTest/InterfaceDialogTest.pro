@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-#include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = InterfaceDialogTest
