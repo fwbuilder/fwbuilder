@@ -45,7 +45,7 @@ int main( int argc, char** argv) \
     app = new FWBApplication(argc, argv); \
     app->setOrganizationName(QLatin1String("NetCitadel")); \
     app->setApplicationName(QLatin1String("Firewall Builder")); \
-    st = new FWBSettings(); \
+    st = new FWBSettings(true); \
     st->init(); \
     init(argv); \
     wfl = new UserWorkflow(); \
