@@ -73,7 +73,7 @@ void InterfaceDialogTest::initTestCase()
     mw->startupLoad();
 //    mw->resize(1200, 600);
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    d->close();
+    if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
     firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));

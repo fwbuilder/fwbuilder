@@ -79,7 +79,7 @@ void AddressRangeDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    d->close();
+    if (d!=NULL) d->close();
     QTest::qWait(10);
 }
 

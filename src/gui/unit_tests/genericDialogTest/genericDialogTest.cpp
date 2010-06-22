@@ -87,7 +87,7 @@ void genericDialogTest::initTestCase()
     mw->startupLoad();
     mw->resize(1200, 600);
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    d->close();
+    if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 }
@@ -167,8 +167,16 @@ bool genericDialogTest::testControl(QWidget *control)
             QTest::mouseClick(box, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
         else
         { 
-            if (box->group() == NULL) return false;
-            if (box->group()->buttons().count() < 2) return false;
+            if (box->group() == NULL)
+            {
+                qDebug() << "Can not test QRadioButton" << box << "that is not in group.";
+                return false;
+            }
+            if (box->group()->buttons().count() < 2)
+            {
+                qDebug() << "Can not test QRadioButton" << box << " that is only one button in group.";
+                return false;
+            }
             // looking for first radio button in same group that is not checked and clicking it
             foreach(QAbstractButton *button, box->group()->buttons())
             {
@@ -183,7 +191,13 @@ bool genericDialogTest::testControl(QWidget *control)
     else if (dynamic_cast<QComboBox*>(control) != NULL)
     {
         QComboBox *box = dynamic_cast<QComboBox*>(control);
-        if (box->count() < 2) return false;
+        if (box->count() < 2)
+        {
+            for (int i=0; i<box->count(); i++)
+                qDebug() << box->itemText(i);
+            qDebug() << "Can not change value of QComboBox" << box << "which has less than two items.";
+            return false;
+        }
         box->setCurrentIndex((box->currentIndex() + 1) % box->count());
     }
     else return false;

@@ -44,14 +44,14 @@ class genericDialogTest : public QObject
     void activateTab(QWidget *widget);
 private slots:
     void initTestCase();
-
     void testFirewallSettingsDialog_iptables();
     void testRuleOptionsDialog();
     void testRoutingRuleOptionsDialog();
     void testNATRuleOptionsDialog();
+    void testHostOSSettingsDialog_linux24();
+
 
 public slots:
-    void testHostOSSettingsDialog_linux24();
     //void rejectDialog();
 };
 

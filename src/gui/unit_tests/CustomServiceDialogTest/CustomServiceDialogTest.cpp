@@ -76,7 +76,7 @@ void CustomServiceDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    d->close();
+    if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 }
