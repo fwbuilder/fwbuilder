@@ -126,12 +126,19 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
  * Path used for uuid_settings should not include version to ensure
  * uuid persistence across upgrades. This means do not use getApplicationNameForSettings()
  */
-FWBSettings::FWBSettings() :
+FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
               "netcitadel.com", getApplicationNameForSettings())
 {
-    uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                  "netcitadel.com", "FirewallBuilder");
+    if (testData)
+    {
+        uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+                                      "netcitadel.com", "FirewallBuilder-tests");
+        uuid_settings->setPath(QSettings::IniFormat, QSettings::UserScope, "../settings.ini");
+    }
+    else
+        uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+                                      "netcitadel.com", "FirewallBuilder");
 }
 
 FWBSettings::~FWBSettings()

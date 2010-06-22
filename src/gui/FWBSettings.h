@@ -62,7 +62,7 @@ class FWBSettings : public QSettings {
     
  public:
 
-    FWBSettings();
+    FWBSettings(bool testData = false);
     ~FWBSettings();
 
     static QString getApplicationNameForSettings() { return "FirewallBuilder4.0"; }
