@@ -184,7 +184,8 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../MDIEventFilter.cpp \
     ../../UserWorkflow.cpp \
     ../../FWBApplication.cpp \
-    ../../WorkflowIcons.cpp
+    ../../WorkflowIcons.cpp \
+    ../../FirewallCodeViewer.cpp
 
 HEADERS += ../../../../config.h \
     ../../../../build_num \
@@ -351,7 +352,8 @@ HEADERS += ../../../../config.h \
     ../../MDIEventFilter.h \
     ../../UserWorkflow.h \
     ../../FWBApplication.h \
-    ../../WorkflowIcons.h
+    ../../WorkflowIcons.h \
+    ../../FirewallCodeViewer.h
 
 
 INCLUDEPATH += ../../.ui
