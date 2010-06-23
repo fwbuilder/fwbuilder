@@ -130,6 +130,10 @@ FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
               "netcitadel.com", testData?"fwb_test_data":getApplicationNameForSettings())
 {
+    if (testData)
+    {
+        this->clear();
+    }
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                                   "netcitadel.com", "FirewallBuilder");
 }
