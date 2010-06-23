@@ -88,9 +88,7 @@ protected:
 
     void executeExternalInstallScript(const QString &script,
                                       const QString &script_args);
-    
-    virtual bool readManifest(const QString &conffie,
-                              QMap<QString, QString> *all_files);
+
 
 public:
 
@@ -115,6 +113,8 @@ public:
     virtual void activatePolicy(const QString &script, const QString &args);
 
     static QString getGeneratedFileFullPath(libfwbuilder::Firewall *fw);
+    virtual bool readManifest(const QString &conffie,
+                              QMap<QString, QString> *all_files);
 
     
 public slots:

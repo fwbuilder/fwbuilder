@@ -51,6 +51,7 @@
 #include "ObjectTreeView.h"
 #include "FWObjectClipboard.h"
 #include "WorkflowIcons.h"
+#include "FirewallCodeViewer.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -62,6 +63,7 @@
 #include <QUndoStack>
 #include <QUndoGroup>
 #include <QScrollBar>
+#include <QMessageBox>
 
 #include <iostream>
 
@@ -764,6 +766,49 @@ void ProjectPanel::installThis()
         fw.insert(f);
         mainW->install(fw);
     }
+}
+
+void ProjectPanel::inspectThis()
+{
+    if (visibleRuleSet==NULL) return;
+
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+
+    QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+    QString errorMsg = tr("Can not read generated files for the firewall object \"%1\". You need to compile it to create the files.").arg(f->getName().c_str());
+    if (!QFile::exists(mainFile))
+    {
+        QMessageBox::critical(this, tr("Error"),errorMsg);
+        return;
+    }
+    instConf cnf;
+    cnf.fwobj = f;
+    cnf.script = mainFile;
+    QMap<QString, QString> res;
+    FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+    QStringList files = res.keys();
+    bool ok = true;
+    foreach(QString file, files)
+    {
+        if (!QFile::exists(file))
+            ok = false;
+    }
+    if (!ok)
+    {
+        QMessageBox::critical(this, tr("Error"), errorMsg);
+        return;
+    }
+
+    if (files.empty()) return;
+
+    QString name;
+    mw->buildEditorTitleAndIcon(visibleRuleSet, ObjectEditor::optNone,
+                                &name, NULL, false);
+    name = "<b>" + name  + "</b>";
+    m_panel->rulesetname->setText(name );
+
+    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, name, this);
+    viewer->show();
 }
 
 void ProjectPanel::compile()

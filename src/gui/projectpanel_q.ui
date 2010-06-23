@@ -231,6 +231,32 @@
           </widget>
          </item>
          <item>
+          <widget class="QToolButton" name="inspect_this_fw">
+           <property name="toolTip">
+            <string>Inspect generated files</string>
+           </property>
+           <property name="statusTip">
+            <string>Inspect generated files</string>
+           </property>
+           <property name="whatsThis">
+            <string>Inspect generated files</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="MainRes.qrc">
+             <normaloff>:/Icons/Inspect</normaloff>:/Icons/Inspect</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -304,8 +330,8 @@
    <slot>compileThis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>344</x>
-     <y>30</y>
+     <x>276</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -320,8 +346,8 @@
    <slot>installThis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>391</x>
-     <y>30</y>
+     <x>319</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -336,7 +362,23 @@
    <slot>addRule()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>230</x>
+     <x>211</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inspect_this_fw</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectPanel_q</receiver>
+   <slot>inspectThis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
      <y>22</y>
     </hint>
     <hint type="destinationlabel">
@@ -350,5 +392,6 @@
   <slot>compileThis()</slot>
   <slot>installThis()</slot>
   <slot>addRule()</slot>
+  <slot>inspectThis()</slot>
  </slots>
 </ui>

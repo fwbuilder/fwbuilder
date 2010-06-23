@@ -180,7 +180,8 @@ HEADERS += ../../config.h \
     MDIEventFilter.h \
     UserWorkflow.h \
     FWBApplication.h \
-    WorkflowIcons.h
+    WorkflowIcons.h \
+    FirewallCodeViewer.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -359,7 +360,8 @@ SOURCES += ProjectPanel.cpp \
     MDIEventFilter.cpp \
     UserWorkflow.cpp \
     FWBApplication.cpp \
-    WorkflowIcons.cpp
+    WorkflowIcons.cpp \
+    FirewallCodeViewer.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -463,7 +465,8 @@ FORMS = FWBMainWindow_q.ui \
     InterfacesTabWidget.ui \
     ClusterInterfaceWidget.ui \
     TutorialDialog.ui \
-    WorkflowIcons.ui
+    WorkflowIcons.ui \
+    FirewallCodeViewer.ui
 
 # fwtransfer stuff.
 HEADERS += transferDialog.h
