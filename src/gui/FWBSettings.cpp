@@ -128,17 +128,10 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
  */
 FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
-              "netcitadel.com", getApplicationNameForSettings())
+              "netcitadel.com", testData?"fwb_test_data":getApplicationNameForSettings())
 {
-    if (testData)
-    {
-        uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                      "netcitadel.com", "FirewallBuilder-tests");
-        uuid_settings->setPath(QSettings::IniFormat, QSettings::UserScope, "../settings.ini");
-    }
-    else
-        uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                      "netcitadel.com", "FirewallBuilder");
+    uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+                                  "netcitadel.com", "FirewallBuilder");
 }
 
 FWBSettings::~FWBSettings()
