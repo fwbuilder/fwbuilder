@@ -93,14 +93,36 @@ string OSConfigurator_linux24::printVerifyInterfacesCommands()
     return verify_interfaces.expand().toStdString();
 }
 
+/*
+ * Generate calls to the shell function update_addresses_of_interface
+ * to add or remove ip addresses of interfaces. The following cases
+ * are supported, depending on the value of
+ * @add_virtual_addresses_for_nat and @configure_interfaces
+ *
+ * configure_interfaces == false && add_virtual_addresses_for_nat == false:  
+ *   do not generate any commands
+ *
+ * configure_interfaces == false && add_virtual_addresses_for_nat == true:  
+ *   use only  virtual_addresses_for_nat, add normal addresses of the interface
+ *   to the list of addresses we should ignore
+ * 
+ * configure_interfaces == true && add_virtual_addresses_for_nat == false:
+ *   ignore  virtual_addresses_for_nat
+ * 
+ * configure_interfaces == true && add_virtual_addresses_for_nat == true:
+ *   use  virtual_addresses_for_nat
+ * 
+ * 
+ */
 string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 {
+    FWOptions* options = fw->getOptionsObject();
+
     QStringList gencmd;
     std::auto_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
-    QStringList known_interfaces;
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator i;
     for (i=interfaces.begin(); i!=interfaces.end(); ++i )
@@ -109,13 +131,13 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
         assert(iface);
         string iface_name = iface->getName();
 
-        QStringList out;
         QStringList update_addresses;
         QStringList ignore_addresses;
 
         if (int_prop->manageIpAddresses(iface, update_addresses, ignore_addresses))
         {
-            if (virtual_addresses_for_nat.count(iface_name) > 0)
+            if (options->getBool("manage_virtual_addr") &&
+                virtual_addresses_for_nat.count(iface_name) > 0)
                 update_addresses.push_back(
                     virtual_addresses_for_nat[iface_name].c_str());
 
@@ -125,34 +147,100 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
             // removed. Say, interface was regular and had an address
             // and then user converted it to unnumbered. In this case
             // the address should be removed.
-            update_addresses.push_front(iface_name.c_str());
-            out.push_back("update_addresses_of_interface");
-            out.push_back("\"" + update_addresses.join(" ") + "\"");
-            out.push_back("\"" + ignore_addresses.join(" ") + "\"");
-            gencmd.push_back(out.join(" "));
 
-            QString iface_spec = iface_name.c_str();
-            if (iface->getOptionsObject()->getStr("type") == "8021q")
-            {
-                FWObject *parent_iface = iface->getParent();
-                iface_spec = QString("%1@%2").arg(iface_name.c_str()).arg(parent_iface->getName().c_str());
-            }
+            gencmd.push_back(
+                printUpdateAddressCommand(iface, update_addresses, ignore_addresses));
         }
 
-        known_interfaces.push_back(iface_name.c_str());
+        known_interfaces.push_back(iface_name);
     }
 
+    return gencmd.join("\n").toStdString() + "\n";
+}
+
+
+/*
+ * printVirtualAddressesForNatCommands() deals with the case when we
+ * add virtual addresses for NAT but do not configure normal addresses
+ * of interfaces
+ */
+string OSConfigurator_linux24::printVirtualAddressesForNatCommands()
+{
+    QStringList gencmd;
+    std::auto_ptr<interfaceProperties> int_prop(
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            fw->getStr("host_OS")));
+
+    list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator i;
+    for (i=interfaces.begin(); i!=interfaces.end(); ++i )
+    {
+        Interface *iface = Interface::cast(*i);
+        assert(iface);
+        string iface_name = iface->getName();
+
+        QStringList update_addresses;
+        QStringList ignore_addresses;
+
+        // Return value of InterfaceProperties::manageIpAddresses()
+        // signals if we should manage addresses of the interface at
+        // all, so it is useful even if we are not going to use the
+        // lists.
+
+        if (int_prop->manageIpAddresses(iface, update_addresses, ignore_addresses))
+        {
+            // we should not configure normal addresses of interfaces, but
+            // should configure virtual addresses for nat. This means we should
+            // add normal addresses to the ignore_addresses list.
+
+            ignore_addresses.append(update_addresses);
+            update_addresses.clear();
+
+            if (virtual_addresses_for_nat.count(iface_name) > 0)
+            {
+                update_addresses.push_back(
+                    virtual_addresses_for_nat[iface_name].c_str());
+
+                gencmd.push_back(
+                    printUpdateAddressCommand(iface, update_addresses, ignore_addresses));
+            }
+        }
+        
+        known_interfaces.push_back(iface_name);
+    }
+
+    return gencmd.join("\n").toStdString() + "\n";
+}
+
+string OSConfigurator_linux24::printCommandsToClearKnownInterfaces()
+{
     if (fw->getOptionsObject()->getBool("clear_unknown_interfaces") &&
         known_interfaces.size() > 0)
     {
         // last resort protection: if there are no interfaces with
         // addresses in fwbuilder configuration, we should not kill
         // all addresses of all interfaces on the firewall
-        known_interfaces.push_front(
-            "clear_addresses_except_known_interfaces");
-        gencmd.push_back(known_interfaces.join(" "));
+        string res = "clear_addresses_except_known_interfaces ";
+        for (list<string>::iterator it=known_interfaces.begin();
+             it!=known_interfaces.end(); ++it)
+        {
+            res += *it + " ";
+        }
+        return res;
     }
-    return gencmd.join("\n").toStdString() + "\n";
+    return "";
+}
+
+
+QString OSConfigurator_linux24::printUpdateAddressCommand(
+    Interface *intf, QStringList &update_addresses, QStringList &ignore_addresses)
+{
+    QStringList out;
+    update_addresses.push_front(intf->getName().c_str());
+    out.push_back("update_addresses_of_interface");
+    out.push_back("\"" + update_addresses.join(" ") + "\"");
+    out.push_back("\"" + ignore_addresses.join(" ") + "\"");
+    return out.join(" ");
 }
 
 string OSConfigurator_linux24::printVlanInterfaceConfigurationCommands()

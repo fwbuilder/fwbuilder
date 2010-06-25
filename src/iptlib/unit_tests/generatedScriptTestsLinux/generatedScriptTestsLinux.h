@@ -55,6 +55,8 @@ public:
     void verifyInterfacesTest();
     void configureInterfacesTest();
     void configureInterfacesClusterTest();
+    void virtualAddressesForNat1Test();
+    void virtualAddressesForNat2Test();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
     CPPUNIT_TEST(ManifestTest);
@@ -63,6 +65,8 @@ public:
     CPPUNIT_TEST(verifyInterfacesTest);
     CPPUNIT_TEST(configureInterfacesTest);
     CPPUNIT_TEST(configureInterfacesClusterTest);
+    CPPUNIT_TEST(virtualAddressesForNat1Test);
+    CPPUNIT_TEST(virtualAddressesForNat2Test);
     CPPUNIT_TEST_SUITE_END();
 
 };

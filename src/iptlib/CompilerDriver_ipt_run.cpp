@@ -514,8 +514,17 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         if ( options->getBool("configure_bridge_interfaces") ) 
             ostr << oscnf->printBridgeInterfaceConfigurationCommands();
 
-        if ( options->getBool("configure_interfaces") ) 
-            ostr << oscnf->printInterfaceConfigurationCommands();
+
+        if ( options->getBool("configure_interfaces") ||
+             options->getBool("manage_virtual_addr"))
+        {
+            if ( options->getBool("configure_interfaces"))
+                ostr << oscnf->printInterfaceConfigurationCommands();
+            else
+                ostr << oscnf->printVirtualAddressesForNatCommands();
+        }
+
+        ostr << oscnf->printCommandsToClearKnownInterfaces();
 
         ostr << oscnf->printDynamicAddressesConfigurationCommands();
 

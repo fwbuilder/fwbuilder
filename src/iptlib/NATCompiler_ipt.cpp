@@ -844,14 +844,9 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
         else
             a=compiler->getFirstODst(rule);
 
-        // TODO: should always issue the warning that adding virtual
-        // addresses for NAT is not supported with address ranges,
-        // regardless of the result of complexMatch()
-
         if ( ! a->isAny() &&
              ! compiler->complexMatch(a, compiler->fw) &&
-             ! compiler->complexMatch(a, cluster) && 
-             options->getBool("manage_virtual_addr"))
+             ! compiler->complexMatch(a, cluster))
         {
             if (AddressRange::cast(a)!=NULL)
             {

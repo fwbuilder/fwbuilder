@@ -33,6 +33,7 @@
 #include "OSData.h"
 
 class QString;
+class QStringList;
 
 namespace libfwbuilder {
     class FWObject;
@@ -54,7 +55,8 @@ namespace fwcompiler {
         std::vector<libfwbuilder::InetAddr> virtual_addresses;
         // map of virt. addresses for nat for each interface
         std::map<std::string, std::string> virtual_addresses_for_nat;
-
+        std::list<std::string> known_interfaces;
+        
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
 
@@ -68,6 +70,11 @@ namespace fwcompiler {
         virtual QString addressTableWrapper(libfwbuilder::FWObject *rule,
                                             const QString &command,
                                             bool ipv6=false);
+
+        virtual QString printUpdateAddressCommand(
+            libfwbuilder::Interface *intf,
+            QStringList &update_addresses,
+            QStringList &ignore_addresses);
 
 public:
 
@@ -100,9 +107,13 @@ public:
         virtual std::string printRunTimeWrappers(libfwbuilder::FWObject *rule,
                                                  const std::string &command,
                                                  bool ipv6=false);
-
         virtual std::string printVerifyInterfacesCommands();
+
+
+        virtual std::string printVirtualAddressesForNatCommands();
         virtual std::string printInterfaceConfigurationCommands();
+        virtual std::string printCommandsToClearKnownInterfaces();
+
         virtual std::string printVlanInterfaceConfigurationCommands();
         virtual std::string printBridgeInterfaceConfigurationCommands();
         virtual std::string printBondingInterfaceConfigurationCommands();
