@@ -52,11 +52,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="text">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="QTextBrowser" name="text"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

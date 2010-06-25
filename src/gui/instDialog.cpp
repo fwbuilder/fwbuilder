@@ -227,12 +227,12 @@ void instDialog::show(ProjectPanel *proj,
 
     if (firewalls.size()==0 && clusters.size()==0)
     {
-        setTitle( pageCount()-1, tr("There are no firewalls to process.") );
-        for (int i=0;i<pageCount()-1;i++)
+        setTitle( pageCount()-2, tr("There are no firewalls to process.") );
+        for (int i=0;i<pageCount()-2;i++)
         {
             setAppropriate(i, false);
         }
-        showPage(pageCount()-1);
+        showPage(pageCount()-2);
         return;
     }
 
@@ -268,6 +268,11 @@ void instDialog::show(ProjectPanel *proj,
 
     m_dialog->detailMCframe->show();
     this->setVisible(true);
+
+    if (firewalls.size() != 1)
+        m_dialog->inspectGeneratedFiles->hide();
+    else
+        m_dialog->inspectGeneratedFiles->show();
 
     showPage(0);
 }

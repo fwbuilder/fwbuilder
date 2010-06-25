@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>875</width>
-    <height>619</height>
+    <width>775</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -430,7 +430,14 @@
                <property name="margin">
                 <number>0</number>
                </property>
-               <item row="0" column="0">
+               <item row="1" column="0" colspan="3">
+                <widget class="QTextBrowser" name="procLogDisplay">
+                 <property name="openLinks">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
                 <spacer>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -446,17 +453,17 @@
                  </property>
                 </spacer>
                </item>
-               <item row="0" column="1">
+               <item row="2" column="2">
                 <widget class="QPushButton" name="saveMCLogButton">
                  <property name="text">
                   <string>Save log to file</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0" colspan="2">
-                <widget class="QTextBrowser" name="procLogDisplay">
-                 <property name="openLinks">
-                  <bool>false</bool>
+               <item row="2" column="1">
+                <widget class="QPushButton" name="inspectGeneratedFiles">
+                 <property name="text">
+                  <string>Inspect generated files</string>
                  </property>
                 </widget>
                </item>
@@ -739,9 +746,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>inspectGeneratedFiles</sender>
+   <signal>clicked()</signal>
+   <receiver>instDialog_q</receiver>
+   <slot>inspectFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>638</x>
+     <y>579</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>tableItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>logItemClicked(QUrl)</slot>
+  <slot>inspectFiles()</slot>
  </slots>
 </ui>

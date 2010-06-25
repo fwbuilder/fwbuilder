@@ -36,6 +36,7 @@
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
 #include "UserWorkflow.h"
+#include "FirewallCodeViewer.h"
 
 #include <qcheckbox.h>
 #include <qlineedit.h>
@@ -679,6 +680,26 @@ void instDialog::saveLog()
             f.close();
         }
     }
+}
+
+void instDialog::inspectFiles()
+{
+    Firewall *f = firewalls.front();
+
+    QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+    QStringList files;
+    instConf cnf;
+    cnf.fwobj = f;
+    cnf.script = mainFile;
+    QMap<QString, QString> res;
+    FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+    files = res.keys();
+
+    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, QString("<b>") + f->getName().c_str() + "</b>", this);
+    viewer->hideCloseButton();
+
+    m_dialog->stackedWidget->addWidget(viewer);
+    m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
 }
 
 /*
