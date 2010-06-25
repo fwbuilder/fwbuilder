@@ -1,3 +1,12 @@
+2010-06-25  Roman Bovsunivkiy <a2k0001@gmail.com>
+
+	* FirewallCodeViewer.cpp (FirewallCodeViewer::FirewallCodeViewer):
+	See #1346. Mostly completed implementation of the viewer panel
+	that can be used to inspect generated firewall configuration files
+	from within the GUI. The panel can be opened using a button in the
+	mini-toolbar above firewall rules or as a page in the compile and
+	install wizard.
+
 2010-06-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_linux24::printVirtualAddressesForNatCommands:
