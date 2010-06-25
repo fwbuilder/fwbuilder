@@ -1,3 +1,16 @@
+
+2010-06-22  Roman Bovsunivkiy <a2k0001@gmail.com>
+
+	* fixed #1526 "Make sure GUI unit tests work in the environment
+	where user turned off tip of the day dialog". Unit tests now use
+	alternative settings file with all default values and do not
+	depend on user's preferences.
+	
+2010-06-18  Roman Bovsunivkiy <a2k0001@gmail.com>
+
+	* fixed #1520 ("Comment field display clips comment text"
+	
+	
 2010-06-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (specialCaseWithFWInDstAndOutbound::processNext):
@@ -7,11 +20,25 @@
 	ip6tables command. The change affects other cases with rules using
 	broadcast or multicast objects that should be considered matching
 	the firewall object.
-
+	
+	
 2010-06-17  Roman Bovsunivkiy <a2k0001@gmail.com>
 
 	* RuleSetView.cpp: fixed SF bug 3016680 "Vertical scrollbar issue"
 	rules with a lot of objects did not scroll properly vertically.
+
+	* fixed #1493 "workflow icons in the big empty space". The GUI
+	shows big buttons in the empty space in the right hand side of the
+	main window when no firewall policy is not opened yet. These buttons
+	provide simple shortcuts to the workflow functions useful for the
+	novice users. Currently this includes "Create new firewall",
+	"Import configuration of existing firewall" and "Watch Getting
+	Started Tutorial".
+
+	* fixed #1521 "GUI crashes upon exit on CentOS 5". This fixes
+	SourceForge bug reports 3016482 "segfault with RHEL5 pre-built
+	packages on CentOS 5.5" and 3015979 "fwbuilder not exiting in
+	centos 5.5"
 
 2010-06-16  Vadim Kurland  <vadim@vk.crocodile.org>
 
