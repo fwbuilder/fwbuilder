@@ -193,7 +193,7 @@ string OSConfigurator_linux24::printVirtualAddressesForNatCommands()
             // should configure virtual addresses for nat. This means we should
             // add normal addresses to the ignore_addresses list.
 
-            ignore_addresses.append(update_addresses);
+            ignore_addresses += update_addresses;
             update_addresses.clear();
 
             if (virtual_addresses_for_nat.count(iface_name) > 0)
