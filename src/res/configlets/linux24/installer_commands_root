@@ -26,18 +26,9 @@ sh {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && shutdown -c; e
 {{if test}}
 
 ## sudo -b runs process in the background. Useful, even if this is executed as root
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-sudo -S -b /sbin/shutdown -r +{{$rbtimeout}}
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
+{{if with_rollback}} echo '{{$fwbprompt}}'; sudo -S -b /sbin/shutdown -r +{{$rbtimeout}} chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
 
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
+{{if no_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
 
 
 {{endif}}

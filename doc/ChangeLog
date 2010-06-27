@@ -1,5 +1,15 @@
 2010-06-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* installer_commands_reg_user: all instllation commands should be
+	on the single line in the configlet so they are sent to the
+	firewall as one line. When these commands were on separate lines,
+	linefeed characters between them appeared on the standard input of
+	command "sudo -S" and broke installation process. This only
+	happened in my tests when I ran GUI installer on windows and
+	looked like some sort of a race. When all commands are on the one
+	line the problem disappeared. Changed only configlets that used
+	sudo as part of installation script.
+
 	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::pixNetworkZoneChecks):
 	do not verify network zones of unprotected interfaces. Compiler
 	does not allow the same obejct to be used as network zone of two

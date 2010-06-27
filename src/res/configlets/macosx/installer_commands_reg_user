@@ -22,29 +22,19 @@
 ##  {{$fwscript}}  -- script name on the firewall
 ##  {{$rbtimeout}} -- rollback timeout
 ##
+##  Note: all commands should be on one line to avoid unnecessary linefeeds.
+##  These linefeeds are sent to the server side (to the firewall) and end up
+##  on the input of sudo and other commands. This creates difficult to catch
+##  race condition which breaks installation process.
 
 
-{{if run}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/{{$fwscript}};
-sudo -S {{$fwdir}}/{{$fwscript}} && (ps ax|awk '/shutdown/ && !/awk/ {printf "sudo -S kill %d\n",$1;}'|sh; echo 'Policy activated')
-{{endif}}
+{{if run}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && (ps ax|awk '/shutdown/ && !/awk/ {printf "sudo -S kill %d\n",$1;}'|sh; echo 'Policy activated') {{endif}}
 
 
 {{if test}}
 
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sudo -S /sbin/shutdown -r +{{$rbtimeout}};
-sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
+{{if with_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sudo -S /sbin/shutdown -r +{{$rbtimeout}}; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
+{{if no_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
 
 
 {{endif}}

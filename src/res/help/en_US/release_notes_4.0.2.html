@@ -219,6 +219,20 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      All instllation commands should be on the single line in the
+      configlet so they are sent to the firewall as one line. When
+      these commands were on separate lines, linefeed characters
+      between them appeared on the standard input of command "sudo -S"
+      and broke installation process. This only happened in my tests
+      when I ran GUI installer on Windows and looked like some sort of
+      a race. When all commands are on the one line the problem
+      disappeared. Changed only configlets that used sudo as part of
+      installation script.
+    </p>
+  </li>
+
 
 </ul>
 
