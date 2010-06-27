@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>775</width>
-    <height>615</height>
+    <width>871</width>
+    <height>622</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -260,7 +260,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QFrame" name="frame18_2">
+        <widget class="QFrame" name="firewallListFrame">
          <property name="frameShape">
           <enum>QFrame::Box</enum>
          </property>
@@ -321,7 +321,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame18">
+        <widget class="QFrame" name="logFrame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>1</horstretch>

@@ -792,6 +792,7 @@
     </property>
     <addaction name="compileAction"/>
     <addaction name="installAction"/>
+    <addaction name="inspectAction"/>
    </widget>
    <widget class="QMenu" name="fileMenu">
     <property name="title">
@@ -1374,6 +1375,15 @@
   <action name="action_getting_started">
    <property name="text">
     <string>Getting started</string>
+   </property>
+  </action>
+  <action name="inspectAction">
+   <property name="icon">
+    <iconset resource="MainRes.qrc">
+     <normaloff>:/Icons/Inspect</normaloff>:/Icons/Inspect</iconset>
+   </property>
+   <property name="text">
+    <string>Inspect</string>
    </property>
   </action>
  </widget>
@@ -2275,6 +2285,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>inspectAction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>inspect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2287,5 +2313,6 @@
   <slot>toggleViewUndo()</slot>
   <slot>showSummary()</slot>
   <slot>showTutorial()</slot>
+  <slot>inspect()</slot>
  </slots>
 </ui>

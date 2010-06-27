@@ -1544,6 +1544,7 @@ void FWWindow::setCompileAndInstallActionsEnabled(bool en)
                            << en;
     m_mainWindow->compileAction->setEnabled(en );
     m_mainWindow->installAction->setEnabled(en );
+    m_mainWindow->inspectAction->setEnabled(en );
 }
 
 void FWWindow::setEnabledAfterRF()
@@ -1551,6 +1552,7 @@ void FWWindow::setEnabledAfterRF()
     if (fwbdebug) qDebug() << "FWWindow::setEnabledAfterRF()";
     m_mainWindow->compileAction->setEnabled( true );
     m_mainWindow->installAction->setEnabled( true );
+    m_mainWindow->inspectAction->setEnabled( true );
 }
 
 void FWWindow::selectRules()
@@ -1559,6 +1561,7 @@ void FWWindow::selectRules()
 
     m_mainWindow ->compileAction->setEnabled( true );
     m_mainWindow ->installAction->setEnabled( true );
+    m_mainWindow ->inspectAction->setEnabled( true );
 
     if (activeProject()) activeProject()->selectRules();
 }
@@ -1569,6 +1572,7 @@ void FWWindow::disableActions(bool havePolicies)
 
     m_mainWindow ->compileAction->setEnabled(havePolicies);
     m_mainWindow ->installAction->setEnabled(havePolicies);
+    m_mainWindow ->inspectAction->setEnabled(havePolicies);
 }
 
 void FWWindow::compile()
@@ -1605,6 +1609,11 @@ void FWWindow::install(set<Firewall*> vf)
     {
         instd->show(this->activeProject(), true, true, vf);
     }
+}
+
+void FWWindow::inspect()
+{
+    this->activeProject()->inspectAll();
 }
 
 void FWWindow::transferfw(set<Firewall*> vf)

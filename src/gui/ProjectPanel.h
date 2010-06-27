@@ -286,6 +286,7 @@ public:
     virtual void compileThis();
     virtual void installThis();
     virtual void inspectThis();
+    virtual void inspectAll();
     virtual void addRule();
 
     void updateLastModifiedTimestampForAllFirewalls();

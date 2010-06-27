@@ -836,6 +836,70 @@ void ProjectPanel::inspectThis()
     viewer->show();
 }
 
+void ProjectPanel::inspectAll()
+{
+    QMessageBox messageBox(this);
+    messageBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+    messageBox.addButton(tr("Compile and Inspect files"), QMessageBox::AcceptRole);
+    messageBox.setIcon(QMessageBox::Critical);
+
+    ObjectManipulator *om = this->findChild<ObjectManipulator*>();
+    list<Firewall*> fws;
+    om->findAllFirewalls(fws);
+    QStringList files;
+    foreach(Firewall *fw, fws)
+    {
+        if (fw->getLastModified() > fw->getLastCompiled())
+        {
+            messageBox.setText(tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(fw->getName().c_str()));
+            messageBox.exec();
+            if (messageBox.result() == QMessageBox::Accepted)
+            {
+                this->compileThis();
+            }
+            return;
+        }
+
+        bool canShowCode = true;
+        QString mainFile = FirewallInstaller::getGeneratedFileFullPath(fw);
+        if (QFile::exists(mainFile))
+        {
+            instConf cnf;
+            cnf.fwobj = fw;
+            cnf.script = mainFile;
+            QMap<QString, QString> res;
+            FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+            QStringList current_files = res.keys();
+            foreach(QString file, current_files)
+            {
+                if (!QFile::exists(file))
+                    canShowCode = false;
+                else
+                    files.append(file);
+            }
+        }
+        else
+            canShowCode = false;
+
+        if (!canShowCode)
+        {
+            messageBox.setText(tr("Can not read generated files for the firewall object \"%1\". You need to compile it to create the files.").arg(fw->getName().c_str()));
+            messageBox.exec();
+            if (messageBox.result() == QMessageBox::Accepted)
+            {
+                this->compileThis();
+            }
+            return;
+        }
+    }
+
+    if (files.empty())
+        return;
+
+    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, tr("<b>Multiple firewalls</b>"), this);
+    viewer->show();
+}
+
 void ProjectPanel::compile()
 {
     if (mw->isEditorVisible() &&

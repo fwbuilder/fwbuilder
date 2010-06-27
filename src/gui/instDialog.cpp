@@ -38,6 +38,7 @@
 #include "FWWindow.h"
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
+#include "FirewallCodeViewer.h"
 
 #include <qcheckbox.h>
 #include <qlineedit.h>
@@ -63,6 +64,7 @@
 #include <QDateTime>
 #include <QtDebug>
 #include <QTime>
+#include <QWidget>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -269,10 +271,12 @@ void instDialog::show(ProjectPanel *proj,
     m_dialog->detailMCframe->show();
     this->setVisible(true);
 
+    /*
     if (firewalls.size() != 1)
         m_dialog->inspectGeneratedFiles->hide();
     else
         m_dialog->inspectGeneratedFiles->show();
+        */
 
     showPage(0);
 }
@@ -380,13 +384,14 @@ void instDialog::showPage(const int page)
     if (fwbdebug)
         qDebug() << QString("State %1  page_1_op %2  page %3 ---> %4")
             .arg(state).arg(page_1_op).arg(lastPage).arg(page);
-
+/*
+//I don't know why this was here, just commented it out
     if (p==2)
     {
         showPage(1);
         return;
     }
-
+*/
     switch (p)
     {
     case 0: // select firewalls for compiling and installing
@@ -401,10 +406,14 @@ void instDialog::showPage(const int page)
     {
         setBackEnabled(1, false);
         setNextEnabled(1, false);
-
+        secondPageVisited = true;
         fillCompileOpList();
-        
-        fillInstallOpList(); // fill install_fw_list 
+
+        fillInstallOpList(); // fill install_fw_list
+
+        m_dialog->stackedWidget->widget(1)->layout()->removeWidget(m_dialog->logFrame);
+        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->firewallListFrame);
+        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->logFrame);
 
         // Page 1 of the wizard does both compile and install
         // controlled by flag page_1_op
@@ -436,6 +445,7 @@ void instDialog::showPage(const int page)
             break;
         }
 
+
         case INST_DLG_INSTALL:
         {
             if (fwbdebug) qDebug("Page 1 install");
@@ -452,6 +462,56 @@ void instDialog::showPage(const int page)
         }
         }
         break;
+    }
+
+
+    case 3:
+    {
+        QStringList files;
+        foreach(Firewall *f, firewalls)
+        {
+        //Firewall *f = firewalls.front();
+
+            QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+            instConf cnf;
+            cnf.fwobj = f;
+            cnf.script = mainFile;
+            QMap<QString, QString> res;
+            FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+            files.append(res.keys());
+        }
+
+        if (m_dialog->stackedWidget->count() == 4 )
+            m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(3));
+        FirewallCodeViewer *viewer;
+        if (firewalls.size() == 1)
+            viewer = new FirewallCodeViewer(files, QString("<b>") + firewalls.front()->getName().c_str() + "</b>", this);
+        else
+            viewer = new FirewallCodeViewer(files, tr("<b>Multiple firewalls</b>"), this);
+        viewer->hideCloseButton();
+
+        viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        QWidget *container = new QWidget(this);
+        QHBoxLayout *layout = new QHBoxLayout(container);
+        layout->setContentsMargins(0,0,0,0);
+        layout->setSpacing(6);
+        QFrame *frame = new QFrame(container);
+        frame->setLayout(new QHBoxLayout());
+        frame->layout()->addWidget(viewer);
+        frame->setFrameShape(QFrame::Box);
+        frame->setFrameShadow(QFrame::Plain);
+        frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        m_dialog->firewallListFrame->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Minimum);
+        m_dialog->progress_page->layout()->removeWidget(m_dialog->firewallListFrame);
+        layout->addWidget(m_dialog->firewallListFrame);
+        layout->addWidget(frame);
+        frame->layout()->setContentsMargins(0,0,0,0);
+
+        m_dialog->stackedWidget->addWidget(container);
+
+        m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
+
+        m_dialog->backButton->setEnabled(true);
     }
 
     default: { }

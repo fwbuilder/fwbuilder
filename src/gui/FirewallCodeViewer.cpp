@@ -66,4 +66,7 @@ void FirewallCodeViewer::fileSelected(int idx)
 void FirewallCodeViewer::hideCloseButton()
 {
     ui->pushButton->hide();
+    ui->horizontalLayout->removeItem(ui->horizontalSpacer);
+    ui->horizontalLayout->removeItem(ui->horizontalSpacer_2);
+    //ui->horizontalSpacer_2->hide();
 }

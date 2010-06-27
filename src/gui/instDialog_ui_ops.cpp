@@ -403,6 +403,15 @@ void instDialog::nextClicked()
 
 void instDialog::backClicked()
 {
+    if (currentPage() == 3)
+    {
+        m_dialog->stackedWidget->widget(1)->layout()->removeWidget(m_dialog->logFrame);
+        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->firewallListFrame);
+        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->logFrame);
+        m_dialog->stackedWidget->setCurrentIndex(1);
+        m_dialog->backButton->setEnabled(false);
+        return;
+    }
     if (previousRelevant( currentPage() ) > -1)
         showPage(previousRelevant( currentPage() ));
 }
@@ -684,22 +693,7 @@ void instDialog::saveLog()
 
 void instDialog::inspectFiles()
 {
-    Firewall *f = firewalls.front();
-
-    QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
-    QStringList files;
-    instConf cnf;
-    cnf.fwobj = f;
-    cnf.script = mainFile;
-    QMap<QString, QString> res;
-    FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-    files = res.keys();
-
-    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, QString("<b>") + f->getName().c_str() + "</b>", this);
-    viewer->hideCloseButton();
-
-    m_dialog->stackedWidget->addWidget(viewer);
-    m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
+    showPage(3);
 }
 
 /*
