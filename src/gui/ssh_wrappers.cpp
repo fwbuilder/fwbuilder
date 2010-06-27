@@ -296,43 +296,27 @@ void ssh_wrapper( int argc, char *argv[] )
 
     for (i = 1 ; i<argc; i++)
     {
-        if (strncmp(argv[i], "-X", 2)==0) { ssh_wrapper=true; continue; }
-        else
-            if (strncmp(argv[i], "-Y", 2)==0) { scp_wrapper=true; continue; }
-            else
-                if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
-                else
+        if (strncmp(argv[i], "-X", 2)==0)
+        {
+            ssh_wrapper=true; continue;
+        } else
+        {
+            if (strncmp(argv[i], "-Y", 2)==0)
+            {
+                scp_wrapper=true; continue;
+            } else
+            {
+                if (strncmp(argv[i], "-d", 2)==0)
+                {
+                    fwbdebug++; continue;
+                } else
                     new_args.push_back(argv[i]);
+            }
+        }
     }
 
     if (ssh_wrapper || scp_wrapper)
     {
-
-/* need to create and initialize settings to be able to use ssh/scp
- * configuration in the wrapper
- */
-        st = new FWBSettings();
-
-/* initialize preferences */
-        st->init();
-
-        QString sshcmd;
-        if (ssh_wrapper)
-        {
-            sshcmd = st->getSSHPath();
-            if (sshcmd.isEmpty()) sshcmd = "ssh";
-        }
-
-        if (scp_wrapper)
-        {
-            sshcmd = st->getSCPPath();
-            if (sshcmd.isEmpty()) sshcmd = "scp";
-        }
-
-        // sshcmd may contain command line arguments too
-        QStringList ssh_args = sshcmd.split(" ");
-        for (i = ssh_args.size() - 1; i >= 0; --i)
-            new_args.push_front(ssh_args[i]);
 
         for (i = 0; i < new_args.size() && i < 127; ++i)
             arg[i] = strdup(new_args[i].toLatin1().constData());
