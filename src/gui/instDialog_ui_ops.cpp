@@ -397,8 +397,6 @@ void instDialog::opCancelled(Firewall *fw)
 
 void instDialog::nextClicked()
 {
-    qDebug() << "instDialog::nextClicked() currentPage()=" << currentPage();
-        
     if (currentPage() == CHOOSE_OBJECTS)
     {
         page_1_op = INST_DLG_COMPILE;

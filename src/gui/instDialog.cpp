@@ -413,9 +413,6 @@ void instDialog::showPage(const int page)
         fillCompileOpList();
         fillInstallOpList(); // fill install_fw_list
 
-        qDebug() << "compile_fw_list.size()=" << compile_fw_list.size()
-                 << "install_fw_list.size()=" << install_fw_list.size();
-
         if (compile_fw_list.size()==0 && install_fw_list.size()==0)
         {
             showPage(CHOOSE_OBJECTS);
