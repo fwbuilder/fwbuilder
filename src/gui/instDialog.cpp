@@ -485,7 +485,7 @@ void instDialog::showPage(const int page)
                 cnf.script = mainFile;
                 QMap<QString, QString> res;
                 FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-                files.append(res.keys());
+                files += res.keys();
             }
 
             // what is this?
