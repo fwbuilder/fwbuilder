@@ -256,7 +256,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
 
 
-        std::list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
         pixSecurityLevelChecks(fw, all_interfaces);
         pixNetworkZoneChecks(fw, all_interfaces);
@@ -280,9 +280,11 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             copies_of_cluster_interfaces.pop_front();
         }
 
+        all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+
         for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
         {
-            Interface *iface = dynamic_cast<Interface*>(*i);
+            Interface *iface = Interface::cast(*i);
             assert(iface);
 /*
  * missing labels on interfaces
@@ -599,6 +601,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
 
         if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
         if (iface->isDedicatedFailover()) continue;
+        if (iface->isUnprotected()) continue;
 
 
         /*
@@ -608,7 +611,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
         string netzone_id = iface->getStr("network_zone");
         if (netzone_id=="")
         {
-            QString err("Network zone definition is missing for interface %1 (%2)");
+            QString err("Network zone definition is missing for interface '%1' (%2)");
             abort(fw, NULL, NULL,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
@@ -619,7 +622,8 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
             FWObjectDatabase::getIntId(netzone_id));
         if (netzone==NULL) 
         {
-            QString err("Network zone points at nonexisting object for interface %1 (%2)");
+            QString err("Network zone points at nonexisting object for "
+                        "interface '%1' (%2)");
             abort(fw, NULL, NULL,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
@@ -660,7 +664,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
             Address *addr = Address::cast(*j);
             if (addr == NULL || addr->getAddressPtr() == NULL)
             {
-                QString err("Network zone of interface %1 uses object '%2' "
+                QString err("Network zone of interface '%1' uses object '%2' "
                             "that is not an address");
                 abort(fw, NULL, NULL,
                       err.arg(iface->getLabel().c_str())
@@ -670,7 +674,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
 
             if (addr->getAddressPtr()->isV6())
             {
-                QString err("Network zone of interface %1 uses object '%2' "
+                QString err("Network zone of interface '%1' uses object '%2' "
                             "that is IPv6 address");
                 abort(fw, NULL, NULL,
                       err.arg(iface->getLabel().c_str())
@@ -706,7 +710,8 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
             {
                 if (k->first==l->first)
                 {
-                    QString err("Object %1 is used more than once in network zone of interface %2");
+                    QString err("Object %1 is used more than once in network "
+                                "zone of interface '%2'");
                     abort(fw, NULL, NULL,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str()).toStdString());
@@ -714,7 +719,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                 } else
                 {
                     QString err("Object %1 is used in network zones of "
-                                "interfaces %2 and %3");
+                                "interfaces '%2' and '%3'");
                     abort(fw, NULL, NULL,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str())
