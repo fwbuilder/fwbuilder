@@ -289,9 +289,19 @@ void FWBSettings::init()
     ok = contains(compression);
     if (!ok) setCompression(false);
 
-#ifndef _WIN32
+#ifdef _WIN32
+    // in putty ssh keepalive is controlled by a session variable (no
+    // command line switch is provided). Windows package installer
+    // creates putty session for us.
+    if (getSSHPath().contains("plink.exe") && !getSSHPath().contains("-load"))
+        setSSHPath(getSSHPath() + " -load fwb_session_with_keepalive");
+
+    if (getSCPPath().contains("pscp.exe") && !getSCPPath().contains("-load"))
+        setSCPPath(getSCPPath() + " -load fwb_session_with_keepalive");
+
+#else
     // Using ssh keepalives. They should be configured here in the global
-    // preferences so that the user can change the values if the need to.
+    // preferences so that the user can change the values if they need to.
     if (getSSHPath().isEmpty()) setSSHPath("ssh");
     if ( ! getSSHPath().contains("ServerAliveInterval="))
         setSSHPath(getSSHPath() + " -o ServerAliveInterval=2 -o ServerAliveCountMax=15");

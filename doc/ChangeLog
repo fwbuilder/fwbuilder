@@ -38,8 +38,9 @@
 	the global preferecnes dialog, tab "Installer" to activate ssh
 	keepalive.  This way, user can change values if they need
 	to. Default values define 30 sec timeout which should be rather
-	conservative. This only works with ssh client on Unix so it is
-	not done in Windows version of the GUI.
+	conservative. On windows automatically configuring plink.exe and
+	pscp.exe to load parameters of putty session "fwb_session_with_keepalive"
+	that turns keepalives on.
 
 2010-06-25  Roman Bovsunivkiy <a2k0001@gmail.com>
 
