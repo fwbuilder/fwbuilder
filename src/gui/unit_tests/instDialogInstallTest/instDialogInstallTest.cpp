@@ -306,7 +306,7 @@ void instDialogInstallTest::testInstall2()
 
     while (!checkProgress(list))
     {
-        QVERIFY(back->isEnabled() == false);
+        QVERIFY(back->isEnabled() == true);
         QVERIFY(next->isEnabled() == false);
         QVERIFY(cancel->isEnabled() == true);
         QVERIFY2(finish->isEnabled() == false, "Button Finish is enabled during operation");
@@ -439,7 +439,7 @@ void instDialogInstallTest::testInstall3()
 
     while (!checkProgress(list))
     {
-        QVERIFY(back->isEnabled() == false);
+        QVERIFY(back->isEnabled() == true);
         QVERIFY(next->isEnabled() == false);
         QVERIFY(cancel->isEnabled() == true);
         QVERIFY2(finish->isEnabled() == false, "Button Finish is enabled during operation");
@@ -563,7 +563,7 @@ void instDialogInstallTest::executeCancelAndStopTests(const QString &button_name
 
     while (!checkProgress(list))
     {
-        QVERIFY(back->isEnabled() == false);
+        QVERIFY(back->isEnabled() == true);
         QVERIFY(next->isEnabled() == false);
         QVERIFY(cancel->isEnabled() == true);
         QVERIFY2(finish->isEnabled() == false, "Button Finish is enabled during operation");

@@ -397,23 +397,63 @@ void instDialog::opCancelled(Firewall *fw)
 
 void instDialog::nextClicked()
 {
-    if (nextRelevant( currentPage() ) > -1)
-        showPage(nextRelevant( currentPage() ));
+    qDebug() << "instDialog::nextClicked() currentPage()=" << currentPage();
+        
+    if (currentPage() == CHOOSE_OBJECTS)
+    {
+        page_1_op = INST_DLG_COMPILE;
+        showPage(COMPILE_INSTALL);
+        return;
+    }
+
+    if (currentPage() == COMPILE_INSTALL &&
+        (page_1_op == INST_DLG_COMPILE || page_1_op == INST_DLG_INSPECT))
+    {
+        // clicking "Next" on page 1 (compile/install) changes
+        // contents of the same page
+        page_1_op = INST_DLG_INSTALL;
+        showPage(COMPILE_INSTALL);
+        return;
+    }
 }
 
 void instDialog::backClicked()
 {
-    if (currentPage() == 3)
+    if (currentPage() == COMPILE_INSTALL && page_1_op == INST_DLG_COMPILE)
     {
-        m_dialog->stackedWidget->widget(1)->layout()->removeWidget(m_dialog->logFrame);
-        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->firewallListFrame);
-        m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->logFrame);
-        m_dialog->stackedWidget->setCurrentIndex(1);
-        m_dialog->backButton->setEnabled(false);
+        // clicking "Back" on page 1 in mode "compile" returns to page 0
+        page_1_op = INST_DLG_COMPILE;
+        showPage(CHOOSE_OBJECTS);
+        return;
+    } 
+
+    if (currentPage() == COMPILE_INSTALL && page_1_op == INST_DLG_INSTALL)
+    {
+        // clicking "Back" on page 1 in mode "install" changes
+        // contents of the same page.  Ideally, I would like to be
+        // able to move back from "install" mode to "compile" mode
+        // without recompiling everything. This is impossible in the
+        // current implementation because we reuse the same widgets on
+        // the page.  This will be possible when "install" becomes its
+        // own page of the wizard.
+
+        // page_1_op = INST_DLG_COMPILE;
+        // showPage(COMPILE_INSTALL);
+        return;
+    } 
+
+    if (currentPage() == COMPILE_INSTALL && page_1_op == INST_DLG_INSPECT)
+    {
+        page_1_op = INST_DLG_COMPILE;
+        showPage(COMPILE_INSTALL);
         return;
     }
-    if (previousRelevant( currentPage() ) > -1)
-        showPage(previousRelevant( currentPage() ));
+}
+
+void instDialog::inspectFiles()
+{
+    page_1_op = INST_DLG_INSPECT;
+    showPage(COMPILE_INSTALL);
 }
 
 void instDialog::prepareInstConf(Firewall *)
@@ -481,6 +521,7 @@ void instDialog::fillCompileSelectList()
     QDateTime dt;
 
     creatingTable = true;
+    m_dialog->selectTable->clear();
 
     list<Firewall*> working_list_of_firewalls = firewalls;
 
@@ -691,20 +732,15 @@ void instDialog::saveLog()
     }
 }
 
-void instDialog::inspectFiles()
-{
-    showPage(3);
-}
-
 /*
  * Adds one line of text to the log
  *
  */
 void instDialog::addToLog(const QString &buf)
 {
-    if (fwbdebug)
-        qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
-                 << "buf.size()=" << buf.size();
+//     if (fwbdebug)
+//         qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
+//                  << "buf.size()=" << buf.size();
 
     if (buf.isEmpty()) return;
 
@@ -731,9 +767,9 @@ void instDialog::addToLog(const QString &buf)
             }
         }
 
-        if (fwbdebug)
-            qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
-                     << "errors and warnings scan done";
+//         if (fwbdebug)
+//             qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
+//                      << "errors and warnings scan done";
 
         /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
          *

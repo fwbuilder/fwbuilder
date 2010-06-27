@@ -180,7 +180,7 @@ void instDialog::show(ProjectPanel *proj,
     installer = NULL;
     finished = false;
     page_1_op = INST_DLG_COMPILE;
-    state = NONE;
+    compile_complete = false;
     rejectDialogFlag = false;
 
     m_dialog->selectTable->clear();
@@ -229,12 +229,12 @@ void instDialog::show(ProjectPanel *proj,
 
     if (firewalls.size()==0 && clusters.size()==0)
     {
-        setTitle( pageCount()-2, tr("There are no firewalls to process.") );
-        for (int i=0;i<pageCount()-2;i++)
+        setTitle(0, tr("There are no firewalls to process."));
+        for (int i=0; i<pageCount(); i++)
         {
             setAppropriate(i, false);
         }
-        showPage(pageCount()-2);
+        showPage(CHOOSE_OBJECTS);
         return;
     }
 
@@ -271,14 +271,11 @@ void instDialog::show(ProjectPanel *proj,
     m_dialog->detailMCframe->show();
     this->setVisible(true);
 
-    /*
-    if (firewalls.size() != 1)
-        m_dialog->inspectGeneratedFiles->hide();
-    else
-        m_dialog->inspectGeneratedFiles->show();
-        */
+    // we just started, there is nothing to inspect in the workflow of
+    // this wizard yet. This button will be enabled when compile phase is complete
+    m_dialog->inspectGeneratedFiles->setEnabled(compile_complete);
 
-    showPage(0);
+    showPage(CHOOSE_OBJECTS);
 }
 
 instDialog::~instDialog()
@@ -314,19 +311,22 @@ void instDialog::mainLoopCompile()
         // that we "uncheck" "install" checkboxes in the first page of
         // the wizard on compile failure, so we need to rebuild install_fw_list
         // here.
-        state = COMPILE_DONE;
         fillInstallOpList();
         disableStopButton();
 
         if (compile_only)
         {
+            compile_complete = true;
             finished = true;
             setFinishEnabled(currentPage(), true);
+            m_dialog->inspectGeneratedFiles->setEnabled(compile_complete);
         } else
         {
-            page_1_op = INST_DLG_INSTALL;
-            setNextEnabled(1, true);
-            setFinishEnabled(currentPage(), false);
+            compile_complete = true;
+            showPage(COMPILE_INSTALL);
+//             setNextEnabled(currentPage(), true);
+//             setFinishEnabled(currentPage(), false);
+//             m_dialog->inspectGeneratedFiles->setEnabled(compile_complete);
         }
     }
 }
@@ -359,7 +359,6 @@ void instDialog::mainLoopInstall()
         return;
     }
 
-    state = INSTALL_DONE;
     finished = true;
     setFinishEnabled(currentPage(), true);
     disableStopButton();
@@ -377,74 +376,90 @@ void instDialog::showPage(const int page)
         m_dialog->batchInstFlagFrame->hide();
     }
 
+    m_dialog->inspectGeneratedFiles->setEnabled(
+        compile_complete && page_1_op == INST_DLG_COMPILE);
+
+    if (fwbdebug)
+        qDebug() << "instDialog::showPage  page "
+                 << lastPage << "--->" << page << "page_1_op=" << page_1_op;
+
     FakeWizard::showPage(page);
 
     int p = page;
 
-    if (fwbdebug)
-        qDebug() << QString("State %1  page_1_op %2  page %3 ---> %4")
-            .arg(state).arg(page_1_op).arg(lastPage).arg(page);
-/*
-//I don't know why this was here, just commented it out
-    if (p==2)
+    switch (page)
     {
-        showPage(1);
-        return;
-    }
-*/
-    switch (p)
+    case CHOOSE_OBJECTS: // select firewalls for compiling and installing
     {
-    case 0: // select firewalls for compiling and installing
-    {
+        // if user returned to this page from "compile" page, assume they
+        // want to recompile
+        finished = false;
+        compile_complete = false;
+        fillCompileSelectList();
+        setAppropriate(1, tableHasCheckedItems());
+        setNextEnabled(page, tableHasCheckedItems());
         m_dialog->selectTable->setFocus();
-        if (lastPage<0) fillCompileSelectList();
-        setNextEnabled(0, tableHasCheckedItems());
         break;
     }
 
-    case 1: // compile and install firewalls
+    case COMPILE_INSTALL:
     {
-        setBackEnabled(1, false);
-        setNextEnabled(1, false);
-        secondPageVisited = true;
-        fillCompileOpList();
+        // compile, install firewalls and inspect files, depending on
+        // the value of page_1_op
 
+        setNextEnabled(page, false);
+        setBackEnabled(page, false);
+
+        fillCompileOpList();
         fillInstallOpList(); // fill install_fw_list
+
+        qDebug() << "compile_fw_list.size()=" << compile_fw_list.size()
+                 << "install_fw_list.size()=" << install_fw_list.size();
+
+        if (compile_fw_list.size()==0 && install_fw_list.size()==0)
+        {
+            showPage(CHOOSE_OBJECTS);
+            return;
+        }
+
+        if (compile_fw_list.size()==0) page_1_op = INST_DLG_INSTALL;
 
         m_dialog->stackedWidget->widget(1)->layout()->removeWidget(m_dialog->logFrame);
         m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->firewallListFrame);
         m_dialog->stackedWidget->widget(1)->layout()->addWidget(m_dialog->logFrame);
 
         // Page 1 of the wizard does both compile and install
-        // controlled by flag page_1_op
+        // controlled by flag page_1_op. May be it would be less hacky if we
+        // used sepaarte page for installs, but that page would look exactly
+        // like the page for compile
         switch (page_1_op)
         {
         case INST_DLG_COMPILE:
         {
-            if (fwbdebug) qDebug("Page 1 compile");
-            if (compile_fw_list.size()==0)
+            if (fwbdebug) qDebug() << "Page 1 compile"
+                                   << "compile_complete=" << compile_complete;
+
+            // run full compile cycle only if we haven't done it before
+            // User may click Back on the "Inspect" page, this should return
+            // them to the "compile" page but not trigger full recompile.
+            // Flag compile_complete is set in instDialog::mainLoopCompile()
+            if (compile_complete)
             {
-                if (install_fw_list.size()==0)
-                {
-                    showPage(0);
-                    return;
-                }
-                page_1_op = INST_DLG_INSTALL;
-                showPage(1);
-                return;
+                setNextEnabled(page, true);
+                setBackEnabled(page, true);
+            } else
+            {
+                mw->fileSave();
+                currentFirewallsBar->reset();
+                currentFirewallsBar->setMaximum(compile_list_initial_size);
+                m_dialog->procLogDisplay->clear();
+                fillCompileUIList();
+                qApp->processEvents();
+                mainLoopCompile();
             }
-
-            mw->fileSave();
-
-            currentFirewallsBar->reset();
-            currentFirewallsBar->setMaximum(compile_list_initial_size);
-            m_dialog->procLogDisplay->clear();
-            fillCompileUIList();
-            qApp->processEvents();
-            mainLoopCompile();
+            setBackEnabled(page, true);
             break;
         }
-
 
         case INST_DLG_INSTALL:
         {
@@ -457,62 +472,70 @@ void instDialog::showPage(const int page)
                 fillInstallUIList();
                 qApp->processEvents();
                 mainLoopInstall();
-                break;
             }
+            setBackEnabled(page, false);
+            break;
         }
-        }
-        break;
-    }
 
-
-    case 3:
-    {
-        QStringList files;
-        foreach(Firewall *f, firewalls)
+        case INST_DLG_INSPECT:
         {
-        //Firewall *f = firewalls.front();
+            QStringList files;
+            foreach(Firewall *f, firewalls)
+            {
+                QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+                instConf cnf;
+                cnf.fwobj = f;
+                cnf.script = mainFile;
+                QMap<QString, QString> res;
+                FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+                files.append(res.keys());
+            }
 
-            QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
-            instConf cnf;
-            cnf.fwobj = f;
-            cnf.script = mainFile;
-            QMap<QString, QString> res;
-            FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-            files.append(res.keys());
+            // what is this?
+            if (m_dialog->stackedWidget->count() == 4 )
+                m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(3));
+
+            FirewallCodeViewer *viewer;
+            if (firewalls.size() == 1)
+                viewer = new FirewallCodeViewer(
+                    files,
+                    QString("<b>") + firewalls.front()->getName().c_str() + "</b>",
+                    this);
+            else
+                viewer = new FirewallCodeViewer(
+                    files, tr("<b>Multiple firewalls</b>"), this);
+            viewer->hideCloseButton();
+
+            viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            QWidget *container = new QWidget(this);
+            QHBoxLayout *layout = new QHBoxLayout(container);
+            layout->setContentsMargins(0,0,0,0);
+            layout->setSpacing(6);
+            QFrame *frame = new QFrame(container);
+            frame->setLayout(new QHBoxLayout());
+            frame->layout()->addWidget(viewer);
+            frame->setFrameShape(QFrame::Box);
+            frame->setFrameShadow(QFrame::Plain);
+            frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            m_dialog->firewallListFrame->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Minimum);
+            m_dialog->progress_page->layout()->removeWidget(m_dialog->firewallListFrame);
+            layout->addWidget(m_dialog->firewallListFrame);
+            layout->addWidget(frame);
+            frame->layout()->setContentsMargins(0,0,0,0);
+
+            m_dialog->stackedWidget->addWidget(container);
+
+            m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
+
+            setNextEnabled(page, true);
+            setBackEnabled(page, true);
+
+            break;
         }
+        } // end switch(page_1_op)
 
-        if (m_dialog->stackedWidget->count() == 4 )
-            m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(3));
-        FirewallCodeViewer *viewer;
-        if (firewalls.size() == 1)
-            viewer = new FirewallCodeViewer(files, QString("<b>") + firewalls.front()->getName().c_str() + "</b>", this);
-        else
-            viewer = new FirewallCodeViewer(files, tr("<b>Multiple firewalls</b>"), this);
-        viewer->hideCloseButton();
-
-        viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        QWidget *container = new QWidget(this);
-        QHBoxLayout *layout = new QHBoxLayout(container);
-        layout->setContentsMargins(0,0,0,0);
-        layout->setSpacing(6);
-        QFrame *frame = new QFrame(container);
-        frame->setLayout(new QHBoxLayout());
-        frame->layout()->addWidget(viewer);
-        frame->setFrameShape(QFrame::Box);
-        frame->setFrameShadow(QFrame::Plain);
-        frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        m_dialog->firewallListFrame->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Minimum);
-        m_dialog->progress_page->layout()->removeWidget(m_dialog->firewallListFrame);
-        layout->addWidget(m_dialog->firewallListFrame);
-        layout->addWidget(frame);
-        frame->layout()->setContentsMargins(0,0,0,0);
-
-        m_dialog->stackedWidget->addWidget(container);
-
-        m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
-
-        m_dialog->backButton->setEnabled(true);
-    }
+        break;
+    } // end case 1:
 
     default: { }
     }

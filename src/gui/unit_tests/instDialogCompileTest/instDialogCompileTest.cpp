@@ -100,7 +100,7 @@ void instDialogCompileTest::testCompile()
     while (!checkProgress(list))
     {
         // test state of the buttons
-        QVERIFY(back->isEnabled() == false);
+        QVERIFY(back->isEnabled() == true);
         QVERIFY(next->isEnabled() == false);
         QVERIFY(cancel->isEnabled() == true);
         QVERIFY(finish->isEnabled() == false);
@@ -116,7 +116,7 @@ void instDialogCompileTest::testCompile()
     }
 
     // test state of the buttons
-    QVERIFY(back->isEnabled() == false);
+    QVERIFY(back->isEnabled() == true);
     QVERIFY(next->isEnabled() == false);
     QVERIFY(cancel->isEnabled() == true);
     QVERIFY(finish->isEnabled() == true);

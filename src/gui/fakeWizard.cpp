@@ -23,7 +23,10 @@
 
 */
 
+#include "global.h"
 #include "fakeWizard.h"
+
+#include <QtDebug>
 
 FakeWizard::FakeWizard()
 {
@@ -120,30 +123,42 @@ int  FakeWizard::pageCount() const
 
 int FakeWizard::previousRelevant(const int page) const
 {
+    if (fwbdebug)
+        qDebug() << "FakeWizard::previousRelevant(" << page << ")";
+    int prev_p = -1;
     for (int i = page-1; i >= 0; i--)
         if (appropriates[i] && appropriate(i))
-            return i;
-
-    return -1;
+        {
+            prev_p = i;
+            break;
+        }
+    if (fwbdebug)
+        qDebug() << "FakeWizard::previousRelevant: previous page" << prev_p;
+    return prev_p;
 }
 
 int FakeWizard::nextRelevant(const int page) const
 {
+    if (fwbdebug)
+        qDebug() << "FakeWizard::nextRelevant(" << page << ")";
+    int next_p = -1;
     for (int i = page+1; i < m_pageCount; i++)
         if (appropriates[i] && appropriate(i))
-            return i;
-
-    return -1;
+        {
+            next_p = i;
+            break;
+        }
+    if (fwbdebug)
+        qDebug() << "FakeWizard::nextRelevant: next page" << next_p;
+    return next_p;
 }
 
 void FakeWizard::showPage(const int page)
 {
     if (page >= m_pageCount) return;
 
-    nextButton->setEnabled(nextEnabled[page] &&
-                           (nextRelevant(page) > -1) );
-    backButton->setEnabled(backEnabled[page] &&
-                           (previousRelevant(page) > -1) );
+    nextButton->setEnabled(nextEnabled[page] && (nextRelevant(page) > -1) );
+    backButton->setEnabled(backEnabled[page] && (previousRelevant(page) > -1) );
     finishButton->setEnabled(finishEnabled[page]);
 
     if (titleLabel)
