@@ -166,11 +166,24 @@ void SSHUnx::stateMachine()
             cmpPrompt(stdoutBuffer,fwb_prompt))
         {
             state = PUSHING_CONFIG;
+
             // start sending keepalive chars (just "\n", done in
             // SSHSession::heartBeat()) to keep session alive and to
             // force firewall to restore session state after policy
             // has been reloaded  and state possibly purged.
+            //
+            // Disabled for SF bug 3020381
+            // We should really use ssh kkepalives instead. See
+            // FirewallInstaller::packSSHArgs() where we add command lne
+            // options to activate ssh keepalive. This does not work
+            // on Windows with plink.exe that does not support these
+            // command line options !
+            // 
+            //
+#ifdef _WIN32
             send_keepalive = true;
+#endif
+
             if (!quiet) emit printStdout_sign( tr("Logged in") + "\n" );
             if (fwbdebug) qDebug("SSHUnx::stateMachine logged in");
             goto push_files;

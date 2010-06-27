@@ -157,6 +157,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
     }
 
     QString cmd = getActivationCmd();
+
     job_list.push_back(instJob(ACTIVATE_POLICY, cmd, ""));
     inst_dlg->addToLog(QString("Run script %1\n").arg(cmd));
     inst_dlg->addToLog(QString("\n"));

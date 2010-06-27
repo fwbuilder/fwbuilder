@@ -190,6 +190,36 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      SF bug 3020381: "Line failure should abort remote firewall
+      install". If network connection is lost during firewall policy
+      activation, policy installer should detect this, disconnect and
+      declare installation session a failure.  Prior to v4.0.2,
+      installer detected network failures during policy copy (done
+      with scp) or when it could not connect to the firewall at all,
+      but hang if connection was lost in the middle of ssh session
+      used to activate firewall policy. Now using ssh parameter
+      "ServerAliveInterval" to make it detect connection failure. This
+      does not work with plink.exe on Windows which does not support
+      these command line options. Still looking for a solution.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Automatically adding ssh parameters "-o ServerAliveInterval=2 -o
+      ServerAliveCountMax=15" and scp parameter "-o ConnectTimeout=30"
+      to the path to ssh and scp in the global preferecnes dialog, tab
+      "Installer", to activate ssh keepalive.  This way, user can
+      change values if they need to. Default values define 30 sec
+      timeout which should be rather conservative. This only works
+      with ssh client on Unix so it is not done in Windows version of
+      the GUI.
+    </p>
+  </li>
+
+
 </ul>
 
 
@@ -404,6 +434,20 @@
       should check validity of the object used as network zone of an interface.
     </p>
   </li>
+
+  <li>
+    <p>
+      do not verify network zones of unprotected interfaces. Compiler
+      does not allow the same obejct to be used as network zone of two
+      different interfaces, which caused problems when a vlan parent
+      interface has zone "Any". Vlan parent interface can not have
+      ACLs attached to it and does not need any meaningful network
+      zone, so "Any" is reasonable fill-in choice. However it
+      coinsides with network zone of the "outside" interface which
+      triggered this check.
+    </p>
+  </li>
+
 </ul>
 
 

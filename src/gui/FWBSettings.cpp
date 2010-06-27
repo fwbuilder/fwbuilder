@@ -290,8 +290,16 @@ void FWBSettings::init()
     if (!ok) setCompression(false);
 
 #ifndef _WIN32
-    if (getSSHPath().isEmpty())  setSSHPath("ssh");
-    if (getSCPPath().isEmpty())  setSCPPath("scp");
+    // Using ssh keepalives. They should be configured here in the global
+    // preferences so that the user can change the values if the need to.
+    if (getSSHPath().isEmpty()) setSSHPath("ssh");
+    if ( ! getSSHPath().contains("ServerAliveInterval="))
+        setSSHPath(getSSHPath() + " -o ServerAliveInterval=2 -o ServerAliveCountMax=15");
+
+    if (getSCPPath().isEmpty()) setSCPPath("scp");
+    if ( ! getSCPPath().contains("ConnectTimeout="))
+        setSCPPath(getSCPPath() + " -o ConnectTimeout=30");
+
 #endif
 
     // Note: hasKey calls QSettings::contains using path given as

@@ -30,6 +30,7 @@
 #ifndef _WIN32
 
 #include <QString>
+#include <QStringList>
 #include <QtDebug>
 
 #include "FWBSettings.h"
@@ -289,12 +290,11 @@ void ssh_wrapper( int argc, char *argv[] )
     bool ssh_wrapper = false;
     bool scp_wrapper = false;
     const char *arg[128];
-    int i, j;
+    int i;
 
-    i=1;
-    j=1;
+    QStringList new_args;
 
-    for ( ; i<argc; i++)
+    for (i = 1 ; i<argc; i++)
     {
         if (strncmp(argv[i], "-X", 2)==0) { ssh_wrapper=true; continue; }
         else
@@ -302,10 +302,8 @@ void ssh_wrapper( int argc, char *argv[] )
             else
                 if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
                 else
-                    arg[j] = strdup(argv[i]);
-        j++;
+                    new_args.push_back(argv[i]);
     }
-    arg[j] = NULL;
 
     if (ssh_wrapper || scp_wrapper)
     {
@@ -318,19 +316,28 @@ void ssh_wrapper( int argc, char *argv[] )
 /* initialize preferences */
         st->init();
 
+        QString sshcmd;
         if (ssh_wrapper)
         {
-            QString sshcmd = st->getSSHPath();
+            sshcmd = st->getSSHPath();
             if (sshcmd.isEmpty()) sshcmd = "ssh";
-            arg[0] = strdup( sshcmd.toLatin1().constData() );
         }
 
         if (scp_wrapper)
         {
-            QString scpcmd = st->getSCPPath();
-            if (scpcmd.isEmpty()) scpcmd = "scp";
-            arg[0] = strdup( scpcmd.toLatin1().constData() );
+            sshcmd = st->getSCPPath();
+            if (sshcmd.isEmpty()) sshcmd = "scp";
         }
+
+        // sshcmd may contain command line arguments too
+        QStringList ssh_args = sshcmd.split(" ");
+        for (i = ssh_args.size() - 1; i >= 0; --i)
+            new_args.push_front(ssh_args[i]);
+
+        for (i = 0; i < new_args.size() && i < 127; ++i)
+            arg[i] = strdup(new_args[i].toLatin1().constData());
+
+        arg[i] = NULL;
 
         if (fwbdebug)
         {

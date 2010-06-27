@@ -600,6 +600,7 @@ QString FirewallInstaller::getActivationCmd()
     // family as "linux24")
     Configlet configlet(host_os, os_family, configlet_name);
     configlet.removeComments();
+    configlet.collapseEmptyStrings(true);
     configlet.setVariable("test",  cnf->testRun);
     configlet.setVariable("run", ! cnf->testRun);
     configlet.setVariable("with_rollback",   cnf->rollback);
@@ -609,7 +610,7 @@ QString FirewallInstaller::getActivationCmd()
 
     inst_dlg->replaceMacrosInCommand(&configlet);
 
-    return configlet.expand();
+    return configlet.expand().trimmed();
 }
 
 /*
