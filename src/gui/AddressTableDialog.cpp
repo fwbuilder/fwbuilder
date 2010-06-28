@@ -157,7 +157,7 @@ void AddressTableDialog::browse()
     QString s = QFileDialog::getOpenFileName(this,
                     "Choose a file",
                     dir,
-                    "All files (*.*)");
+                    "All files (*)");
 
     if (!s.isEmpty())
     {
