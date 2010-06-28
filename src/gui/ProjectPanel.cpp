@@ -847,19 +847,40 @@ void ProjectPanel::inspectAll()
     list<Firewall*> fws;
     om->findAllFirewalls(fws);
     QStringList files;
+
+    set<Firewall*> needCompile;
+    foreach(Firewall *fw, fws)
+        if (fw->needsCompile())
+            needCompile.insert(fw);
+    if (!needCompile.empty())
+    {
+        QString text;
+        QStringList names;
+        foreach(Firewall *fw, needCompile)
+            names.append(fw->getName().c_str());
+        if (needCompile.size() > 1 && needCompile.size() < 5)
+        {
+            QString last = names.last();
+            names.pop_back();
+            QString firewalls = "\"" + names.join("\", \"") + "\" " + tr("and") + " \"" + last + "\"";
+            text = tr("Firewall objects %1 has been modified and needs to be recompiled.").arg(firewalls);
+        }
+        else if (needCompile.size() == 1)
+            text = tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(names.first());
+        else
+        {
+            text = tr("%1 firewall objects has been modified and needs to be recompiled.").arg(needCompile.size());
+        }
+        messageBox.setText(text);
+        messageBox.exec();
+        if (messageBox.result() == QMessageBox::Accepted)
+        {
+            this->compile(needCompile);
+        }
+        return;
+    }
     foreach(Firewall *fw, fws)
     {
-        if (fw->getLastModified() > fw->getLastCompiled())
-        {
-            messageBox.setText(tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(fw->getName().c_str()));
-            messageBox.exec();
-            if (messageBox.result() == QMessageBox::Accepted)
-            {
-                this->compileThis();
-            }
-            return;
-        }
-
         bool canShowCode = true;
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(fw);
         if (QFile::exists(mainFile))

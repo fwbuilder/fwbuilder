@@ -480,15 +480,23 @@ void instDialog::showPage(const int page)
             foreach(Firewall *f, firewalls)
             {
                 QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+                if (!QFile::exists(mainFile)) continue;
                 instConf cnf;
                 cnf.fwobj = f;
                 cnf.script = mainFile;
                 QMap<QString, QString> res;
                 FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-                files += res.keys();
+                foreach(QString item, res.keys())
+                    if (QFile::exists(item))
+                        files.append(item);
             }
 
-            // what is this?
+            if (files.isEmpty())
+            {
+                QMessageBox::critical(this, tr("Error"), tr("No files were generated, there is nothing to show."));
+                return;
+            }
+
             if (m_dialog->stackedWidget->count() == 4 )
                 m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(3));
 
@@ -521,7 +529,6 @@ void instDialog::showPage(const int page)
             frame->layout()->setContentsMargins(0,0,0,0);
 
             m_dialog->stackedWidget->addWidget(container);
-
             m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
 
             setNextEnabled(page, true);

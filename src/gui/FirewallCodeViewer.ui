@@ -47,7 +47,27 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="fileSelector"/>
+      <widget class="QComboBox" name="fileSelector">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -122,8 +142,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>238</x>
-     <y>406</y>
+     <x>337</x>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>447</x>
@@ -138,8 +158,8 @@ p, li { white-space: pre-wrap; }
    <slot>fileSelected(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>55</x>
-     <y>26</y>
+     <x>90</x>
+     <y>53</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
