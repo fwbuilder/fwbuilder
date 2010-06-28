@@ -319,7 +319,10 @@ void instDialog::mainLoopCompile()
             compile_complete = true;
             finished = true;
             setFinishEnabled(currentPage(), true);
-            m_dialog->inspectGeneratedFiles->setEnabled(compile_complete);
+
+            QStringList files;
+            int n = findFilesToInspect(files);
+            m_dialog->inspectGeneratedFiles->setEnabled(n != 0);
         } else
         {
             compile_complete = true;
@@ -477,21 +480,9 @@ void instDialog::showPage(const int page)
         case INST_DLG_INSPECT:
         {
             QStringList files;
-            foreach(Firewall *f, firewalls)
-            {
-                QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
-                if (!QFile::exists(mainFile)) continue;
-                instConf cnf;
-                cnf.fwobj = f;
-                cnf.script = mainFile;
-                QMap<QString, QString> res;
-                FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-                foreach(QString item, res.keys())
-                    if (QFile::exists(item))
-                        files.append(item);
-            }
+            int no_files = findFilesToInspect(files);
 
-            if (files.isEmpty())
+            if (no_files == 0)
             {
                 QMessageBox::critical(this, tr("Error"), tr("No files were generated, there is nothing to show."));
                 return;
@@ -548,6 +539,30 @@ void instDialog::showPage(const int page)
     setCurrentPage(page);
 }
 
+/**
+ * Finds files that were generated for the firewalls scheduled for
+ * compile and fills the list. Returns number of files found.
+ *
+ */
+int instDialog::findFilesToInspect(QStringList &files)
+{
+ 
+    foreach(Firewall *f, firewalls)
+    {
+        QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+        if (!QFile::exists(mainFile)) continue;
+        instConf cnf;
+        cnf.fwobj = f;
+        cnf.script = mainFile;
+        QMap<QString, QString> res;
+        FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+        foreach(QString item, res.keys())
+            if (QFile::exists(item))
+                files.append(item);
+    }
+    return files.size();
+}
+ 
 void instDialog::replaceMacrosInCommand(Configlet *conf)
 {
 /* replace macros in activation commands:

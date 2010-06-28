@@ -171,6 +171,8 @@ class instDialog : public QDialog, public FakeWizard
     void setFlags(QTreeWidgetItem* item);
 
     virtual void closeEvent(QCloseEvent *event);
+
+    int findFilesToInspect(QStringList &files);
  
  public:
    
