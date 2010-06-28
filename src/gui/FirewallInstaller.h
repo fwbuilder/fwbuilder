@@ -89,7 +89,6 @@ protected:
     void executeExternalInstallScript(const QString &script,
                                       const QString &script_args);
 
-
 public:
 
     FirewallInstaller(instDialog *_dlg, instConf *_cnf, const QString &prompt)

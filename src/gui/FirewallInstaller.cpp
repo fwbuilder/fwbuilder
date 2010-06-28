@@ -285,8 +285,12 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 {
     QString ssh = st->getSSHPath();
 
+    QStringList ssh_argv;
+    parseCommandLine(ssh, ssh_argv);
+
 #ifdef _WIN32
-    args += ssh.split(" ", QString::SkipEmptyParts);
+    //args += ssh.split(" ", QString::SkipEmptyParts);
+    args += ssh_argv;
 
 /*
  * putty ignores protocol and port specified in the session file if
@@ -310,7 +314,8 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
     args.push_back(argv0.c_str());
     args.push_back("-X");   // fwbuilder works as ssh wrapper
 
-    args += ssh.split(" ", QString::SkipEmptyParts);
+    //args += ssh.split(" ", QString::SkipEmptyParts);
+    args += ssh_argv;
 
     //if (fwbdebug)
     //    args.push_back("-d");
@@ -338,8 +343,13 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
     QString file_with_path = getFullPath(local_name);
     QString scp = st->getSCPPath();
 
+    QStringList scp_argv;
+    parseCommandLine(scp, scp_argv);
+
+
 #ifdef _WIN32
-    args += scp.split(" ", QString::SkipEmptyParts);
+    //args += scp.split(" ", QString::SkipEmptyParts);
+    args += scp_argv;
 
     if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
     {
@@ -352,7 +362,8 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
     args.push_back(argv0.c_str());
     args.push_back("-Y");   // fwbuilder works as scp wrapper
 
-    args += scp.split(" ", QString::SkipEmptyParts);
+    //args += scp.split(" ", QString::SkipEmptyParts);
+    args += scp_argv;
 
 #endif
 

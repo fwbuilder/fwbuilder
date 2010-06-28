@@ -40,6 +40,8 @@
 #include <qpixmapcache.h>
 
 #include <QList>
+#include <QStringList>
+#include <QRegExp>
 #include <QPixmap>
 #include <QApplication>
 #include <QtDebug>
@@ -504,5 +506,96 @@ void doSetObjectIcon(FWObject *obj, QPixmap *pm, int icon_size)
     }
 
     LoadPixmap(icn_alias, *pm);
+}
+
+QString _getNextToken(QStringList &args)
+{
+    QString a;
+    while (args.size() > 0)
+    {
+        a = args.front();
+        args.pop_front();
+        if (!a.isEmpty()) break;
+    }
+    return a;
+}
+
+// reassemble quoted strings from the list of tokens, possibly
+// recursively if there are quoted strings inside. The first token is
+// assumed to be " or '. Pops all processed tokens from the list but
+// leaves the rest in it.
+QString _parseTokens(QStringList &args, const QChar closing_quote='\0')
+{
+    QString a = _getNextToken(args);
+    if (args.size() == 0) return a;
+
+    if (closing_quote != '\0' && a.endsWith(closing_quote))
+        return a;
+
+    if (a.startsWith("\"") || a.startsWith("'"))
+    {
+        QStringList res;
+        QChar closing_quote = a[0];
+
+        res.append(a);
+
+        while (!a.endsWith(closing_quote) && args.size() > 0)
+        {
+            a = _parseTokens(args, closing_quote);
+            res.append(a);
+        }
+
+        return res.join(" ");
+    }
+
+    return a;
+}
+
+/**
+ * parse command line for ssh or scp given by user in the global
+ * preferences dialog. The challenge is to be able to handle situation
+ * when the program is installed in directory with a whitespace in the
+ * name, so we can't just split the string by a " ".
+ *
+ * Recognize the following constructs:
+ *
+ * /path/to/program/program -arg1 val1 -arg2 val2 -arg3 "value 3"
+ *
+ * everything before the first "-" is considered executable name
+ * (possibly with full path)
+ * 
+ * word that starts with "-" or "/" preceded by a space is an argument
+ * argument may have an optional parameter
+ * parameter may be quoted using double or single quotes
+ */
+void parseCommandLine(const QString &cmd, QStringList &argv)
+{
+    int first_arg = cmd.indexOf(QRegExp(" *-"));
+    if (first_arg == -1)
+    {
+        // no arguments
+        argv.append(cmd.trimmed());
+        return;
+    }
+    QString program = cmd.mid(0, first_arg).trimmed();
+    if (!program.isEmpty()) argv.append(program);
+
+    QStringList args = cmd.mid(first_arg).split(QRegExp("\\s+"));
+//                                                QString::SkipEmptyParts);
+    // splits like this:
+    // ["", "-arg1", "val1", "-arg2", "\"value", "2", "\""]
+
+    while (args.size() > 0)
+    {
+        QString t = _parseTokens(args);
+
+        // remove quotes from quoted strings
+        if ((t.startsWith('\"') && t.endsWith('\"')) ||
+            (t.startsWith('\'') || t.endsWith('\'')))
+        {
+            t = t.mid(1, t.length()-2);
+        }
+        argv.append(t);
+   }
 }
 

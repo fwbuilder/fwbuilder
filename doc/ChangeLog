@@ -1,3 +1,12 @@
+2010-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* utils.cpp (parseCommandLine): See #1542 since now user can enter
+	differet command line parameters together with the path to ssh and
+	scp clients in the global Preferences dialog, we need to parse
+	these properly. This is especially important if file paths or
+	arguments contain white space characters. Unit tests are in
+	src/gui/unit_tests/parseCommandLineTest
+
 2010-06-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* installer_commands_reg_user: all instllation commands should be

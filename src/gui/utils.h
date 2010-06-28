@@ -121,6 +121,9 @@ extern void LoadPixmap(const QString &path, QPixmap &where);
 extern QPixmap LoadPixmap(const QString &path);
 extern QString calculateIconName(const QString &_icn, bool negation);
 
+extern void parseCommandLine(const QString &cmd, QStringList &argv);
+
+
 /*
  * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)
  */
