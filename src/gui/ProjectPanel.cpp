@@ -858,19 +858,22 @@ void ProjectPanel::inspectAll()
         QStringList names;
         foreach(Firewall *fw, needCompile)
             names.append(fw->getName().c_str());
+
         if (needCompile.size() > 1 && needCompile.size() < 5)
         {
             QString last = names.last();
             names.pop_back();
             QString firewalls = "\"" + names.join("\", \"") + "\" " + tr("and") + " \"" + last + "\"";
-            text = tr("Firewall objects %1 has been modified and needs to be recompiled.").arg(firewalls);
+            text = tr("Firewall objects %1 have been modified and need to be recompiled.").arg(firewalls);
         }
-        else if (needCompile.size() == 1)
-            text = tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(names.first());
         else
-        {
-            text = tr("%1 firewall objects has been modified and needs to be recompiled.").arg(needCompile.size());
-        }
+            if (needCompile.size() == 1)
+                text = tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(names.first());
+            else
+            {
+                text = tr("%1 firewall objects have been modified and need to be recompiled.").arg(needCompile.size());
+            }
+
         messageBox.setText(text);
         messageBox.exec();
         if (messageBox.result() == QMessageBox::Accepted)
