@@ -352,7 +352,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     {
         QMessageBox::warning(
             this, "Firewall Builder",
-            tr("Empty addrres or netmask field"),
+            tr("Empty address or netmask field"),
             "&Continue", QString::null, QString::null, 0, 1);
         return false;
     }
