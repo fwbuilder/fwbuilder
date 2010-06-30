@@ -2385,7 +2385,10 @@ void RuleSetView::restoreCollapsedGroups()
     t.start();
     RuleSetModel* md = ((RuleSetModel*)model());
     QStringList collapsed_groups;
-    QString filename = project->getRCS()->getFileName();
+    QString filename;
+    if (project != NULL)
+        filename = project->getRCS()->getFileName();
+    else filename = "";
     if (fwbdebug)
         qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
     Firewall *f = md->getFirewall();

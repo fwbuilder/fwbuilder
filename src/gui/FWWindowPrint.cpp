@@ -49,6 +49,7 @@
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QtDebug>
+#include <QFile>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -256,9 +257,23 @@ void FWWindow::printFirewallFromFile(QString fileName,
         return;
     }
 
+    if (!QFile::exists(fileName))
+    {
+        qDebug() << "Input file does not exist";
+        return;
+    }
     FWObjectDatabase * objdb = new FWObjectDatabase();
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
-    objdb->load(fileName.toLatin1().constData(), NULL,librespath);
+    try
+    {
+        objdb->load(fileName.toLatin1().constData(), NULL,librespath);
+    }
+    catch (...)
+    {
+        qDebug() << "Could not read input file";
+        return;
+    }
+
     FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
                                             firewallName.toAscii().data());
     if (obj!=NULL)
