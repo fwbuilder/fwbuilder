@@ -358,6 +358,17 @@ void ObjectManipulator::install()
     m_project->install(fo);
 }
 
+void ObjectManipulator::inspect()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    set<Firewall*> fws;
+    filterFirewallsFromSelection(so,fws);
+
+    m_project->inspect(fws);
+}
+
 void ObjectManipulator::transferfw()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;

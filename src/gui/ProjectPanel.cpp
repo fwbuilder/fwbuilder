@@ -838,20 +838,31 @@ void ProjectPanel::inspectThis()
 
 void ProjectPanel::inspectAll()
 {
+    ObjectManipulator *om = this->findChild<ObjectManipulator*>();
+    list<Firewall*> fws;
+    om->findAllFirewalls(fws);
+    set<Firewall*> fwset;
+    foreach(Firewall *fw, fws)
+        fwset.insert(fw);
+
+    this->inspect(fwset);
+}
+
+void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
+{
+    if (fws.empty())
+        return;
+
     QMessageBox messageBox(this);
     messageBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
     messageBox.addButton(tr("Compile and Inspect files"), QMessageBox::AcceptRole);
     messageBox.setIcon(QMessageBox::Critical);
 
-    ObjectManipulator *om = this->findChild<ObjectManipulator*>();
-    list<Firewall*> fws;
-    om->findAllFirewalls(fws);
-    QStringList files;
-
     set<Firewall*> needCompile;
     foreach(Firewall *fw, fws)
         if (fw->needsCompile())
             needCompile.insert(fw);
+
     if (!needCompile.empty())
     {
         QString text;
@@ -882,6 +893,10 @@ void ProjectPanel::inspectAll()
         }
         return;
     }
+
+    QStringList files;
+
+    QSet<Firewall*> filesMissing;
     foreach(Firewall *fw, fws)
     {
         bool canShowCode = true;
@@ -897,24 +912,43 @@ void ProjectPanel::inspectAll()
             foreach(QString file, current_files)
             {
                 if (!QFile::exists(file))
-                    canShowCode = false;
+                    filesMissing.insert(fw);
                 else
                     files.append(file);
             }
         }
         else
-            canShowCode = false;
+            filesMissing.insert(fw);
+    }
 
-        if (!canShowCode)
+    if (!filesMissing.isEmpty())
+    {
+        QString text;
+        QStringList names;
+        foreach(Firewall *fw, filesMissing)
+            names.append(fw->getName().c_str());
+
+        if (filesMissing.size() > 1 && filesMissing.size() < 5)
         {
-            messageBox.setText(tr("Can not read generated files for the firewall object \"%1\". You need to compile it to create the files.").arg(fw->getName().c_str()));
-            messageBox.exec();
-            if (messageBox.result() == QMessageBox::Accepted)
-            {
-                this->compileThis();
-            }
-            return;
+            QString last = names.last();
+            names.pop_back();
+            QString firewalls = "\"" + names.join("\", \"") + "\" " + tr("and") + " \"" + last + "\"";
+            text = tr("Can not read generated files for the firewall objects %1. You need to compile them to create the files.").arg(firewalls);
         }
+        else
+            if (filesMissing.size() == 1)
+                text = tr("Can not read generated files for the firewall objects %1. You need to compile it to create the files.").arg(names.first());
+            else
+            {
+                text = tr("Can not read generated files for the %1 firewall objects. You need to compile then to create the files.").arg(filesMissing.size());
+            }
+        messageBox.setText(text);
+        messageBox.exec();
+        if (messageBox.result() == QMessageBox::Accepted)
+        {
+            this->compile(fws);
+        }
+        return;
     }
 
     if (files.empty())

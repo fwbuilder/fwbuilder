@@ -229,6 +229,7 @@ public slots:
      void dumpObj();
      void compile();
      void install();
+     void inspect();
      void transferfw();
 
      void duplicateObj(QAction*);

@@ -712,6 +712,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup_menu->addSeparator();
         popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
         popup_menu->addAction( tr("Install"), this, SLOT( install()));
+        popup_menu->addAction( tr("Inspect"), this, SLOT( inspect()));
 
         if (Firewall::cast(currentObj)!=NULL)
         {

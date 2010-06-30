@@ -277,6 +277,7 @@ public:
     virtual void compile();
     virtual void install(std::set<libfwbuilder::Firewall*> vf);
     virtual void install();
+    virtual void inspect(std::set<libfwbuilder::Firewall*> vf);
     virtual void transferfw(std::set<libfwbuilder::Firewall*> vf);
     virtual void transferfw();
 
