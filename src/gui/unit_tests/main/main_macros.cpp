@@ -30,6 +30,7 @@
 #include <QTest>
 #include "FWBApplication.h"
 #include "UserWorkflow.h"
+#include <QFile>
 
   using namespace std;
   using namespace libfwbuilder;
@@ -59,4 +60,6 @@ int main( int argc, char** argv) \
         cerr << "Can not read resource file from " << full_res_path << endl; \
     } \
     QTest::qExec(x); \
+    if (QFile::exists("test_work.fwb")) \
+	QFile::remove("test_work.fwb"); \
 }

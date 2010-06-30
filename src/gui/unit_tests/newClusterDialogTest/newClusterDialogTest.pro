@@ -38,11 +38,11 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 
 run_tests.commands = echo "Running tests..." \
-    rm *.gc??;\
+    rm -f *.gc??;\
     cp -f test_data.fwb test_data_work.fwb; \
     ./${TARGET} && \
     echo "OK" || echo "FAILED"; \
-    rm test_data_work.fwb;
+    rm -f test_data_work.fwb;
 run_tests.depends = build_tests
 build_tests.depends = all
 clean_tests.depends = all
