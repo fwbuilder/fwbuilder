@@ -41,7 +41,7 @@ public slots:
     void findNoMessageBox();
     void prepareMW();
 private slots:
-    void initTestCase();
+    void cleanupTestCase();
     void checkForUpgrade_1();
     void checkForUpgrade_2();
     void checkForUpgrade_3();

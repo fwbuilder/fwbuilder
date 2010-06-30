@@ -37,9 +37,12 @@ FWWindowTest::FWWindowTest(QWidget *parent)
 {
 }
 
-void FWWindowTest::initTestCase()
+void FWWindowTest::cleanupTestCase()
 {
-
+    qDebug() << 1;
+    if (QFile::exists("/tmp/update_4.0.0"))
+        qDebug() << 2;
+        QFile::remove("/tmp/update_4.0.0");
 }
 
 void FWWindowTest::findMessageBox()
