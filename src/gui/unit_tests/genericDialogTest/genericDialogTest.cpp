@@ -89,6 +89,7 @@ void genericDialogTest::initTestCase()
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
+    init_platforms();
     QTest::qWait(1000);
 }
 
@@ -199,6 +200,14 @@ bool genericDialogTest::testControl(QWidget *control)
             return false;
         }
         box->setCurrentIndex((box->currentIndex() + 1) % box->count());
+    }
+    else if (dynamic_cast<QTextEdit*>(control) != NULL)
+    {
+        QTextEdit *edit = dynamic_cast<QTextEdit*>(control);
+        QTest::mouseClick(edit, Qt::LeftButton, Qt::NoModifier);
+        QTest::keyClicks(edit, "Some test input for " + edit->objectName());
+        QTest::mouseClick(edit, Qt::LeftButton, Qt::NoModifier);
+        QTest::keyClick(edit, Qt::Key_Tab);
     }
     else return false;
 
