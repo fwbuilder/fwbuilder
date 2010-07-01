@@ -116,187 +116,195 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QToolButton" name="add_rule">
-           <property name="toolTip">
-            <string>Insert rule</string>
-           </property>
-           <property name="statusTip">
-            <string>Insert rule</string>
-           </property>
-           <property name="whatsThis">
-            <string>Insert rule</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="MainRes.qrc">
-             <normaloff>:/Icons/add.png</normaloff>:/Icons/add.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-           <property name="popupMode">
-            <enum>QToolButton::DelayedPopup</enum>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::NoArrow</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>10</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QToolButton" name="compile_this_fw">
-           <property name="toolTip">
-            <string>Compile this firewall</string>
-           </property>
-           <property name="statusTip">
-            <string>Compile this firewall</string>
-           </property>
-           <property name="whatsThis">
-            <string>Compile this firewall</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="MainRes.qrc">
-             <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-           <property name="popupMode">
-            <enum>QToolButton::DelayedPopup</enum>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::NoArrow</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="install_this_fw">
-           <property name="toolTip">
-            <string>Compile and install this firewall</string>
-           </property>
-           <property name="statusTip">
-            <string>Compile and install this firewall</string>
-           </property>
-           <property name="whatsThis">
-            <string>Compile and install this firewall</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="MainRes.qrc">
-             <normaloff>:/Icons/Install</normaloff>:/Icons/Install</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="inspect_this_fw">
-           <property name="toolTip">
-            <string>Inspect generated files</string>
-           </property>
-           <property name="statusTip">
-            <string>Inspect generated files</string>
-           </property>
-           <property name="whatsThis">
-            <string>Inspect generated files</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="MainRes.qrc">
-             <normaloff>:/Icons/Inspect</normaloff>:/Icons/Inspect</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="rulesetname">
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Firewall / ruleset</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="1" column="0">
         <widget class="QStackedWidget" name="ruleSets">
          <property name="currentIndex">
           <number>0</number>
          </property>
          <widget class="WorkflowIcons" name="icons"/>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QWidget" name="toolbar" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>-1</number>
+          </property>
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QToolButton" name="add_rule">
+            <property name="toolTip">
+             <string>Insert rule</string>
+            </property>
+            <property name="statusTip">
+             <string>Insert rule</string>
+            </property>
+            <property name="whatsThis">
+             <string>Insert rule</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="MainRes.qrc">
+              <normaloff>:/Icons/add.png</normaloff>:/Icons/add.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+            <property name="popupMode">
+             <enum>QToolButton::DelayedPopup</enum>
+            </property>
+            <property name="arrowType">
+             <enum>Qt::NoArrow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="compile_this_fw">
+            <property name="toolTip">
+             <string>Compile this firewall</string>
+            </property>
+            <property name="statusTip">
+             <string>Compile this firewall</string>
+            </property>
+            <property name="whatsThis">
+             <string>Compile this firewall</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="MainRes.qrc">
+              <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+            <property name="popupMode">
+             <enum>QToolButton::DelayedPopup</enum>
+            </property>
+            <property name="arrowType">
+             <enum>Qt::NoArrow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="install_this_fw">
+            <property name="toolTip">
+             <string>Compile and install this firewall</string>
+            </property>
+            <property name="statusTip">
+             <string>Compile and install this firewall</string>
+            </property>
+            <property name="whatsThis">
+             <string>Compile and install this firewall</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="MainRes.qrc">
+              <normaloff>:/Icons/Install</normaloff>:/Icons/Install</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="inspect_this_fw">
+            <property name="toolTip">
+             <string>Inspect generated files</string>
+            </property>
+            <property name="statusTip">
+             <string>Inspect generated files</string>
+            </property>
+            <property name="whatsThis">
+             <string>Inspect generated files</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="MainRes.qrc">
+              <normaloff>:/Icons/Inspect</normaloff>:/Icons/Inspect</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="rulesetname">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Firewall / ruleset</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>

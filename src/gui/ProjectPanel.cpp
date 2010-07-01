@@ -156,6 +156,8 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     m_panel->setupUi(this);
     m_panel->om->setupProject(this);
 
+    m_panel->toolbar->hide();
+
     undoStack = new QUndoStack(this);
 
     setWindowTitle(getPageTitle());
@@ -214,7 +216,7 @@ void ProjectPanel::restoreRuleSetTab()
 {
     if (fwbdebug) qDebug("ProjectPanel::()");
     m_panel->ruleSets->setCurrentIndex(ruleSetTabIndex);
-
+    m_panel->toolbar->show();
 }
 
 void ProjectPanel::loadObjects()
@@ -343,6 +345,7 @@ void ProjectPanel::reopenFirewall()
                    db()->isDirty(), ctime(&last_modified));
 
         m_panel->ruleSets->setCurrentIndex(currentPage);
+        m_panel->toolbar->show();
         rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
         rv->restoreCurrentRowColumn(memento);
 
