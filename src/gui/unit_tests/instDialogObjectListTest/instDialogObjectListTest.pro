@@ -45,7 +45,7 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 run_tests.commands = echo "Running tests..."; \
     cp -f test.fwb test_work.fwb; \ 
     ./${TARGET}; \
-    rm -r test_work.fwb
+    rm -f test_work.fwb
 run_tests.depends = build_tests
 build_tests.depends = all
 clean_tests.depends = all
