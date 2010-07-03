@@ -2355,68 +2355,84 @@ void RuleSetView::updateCurrentCell()
     updateColumnSizeForIndex(fwosm->index);
 }
 
+/*
+ * looks like this method can be called when we print from the command
+ * line. Variable project==NULL at that time.
+ */
 void RuleSetView::saveCollapsedGroups()
 {
-    QStringList collapsed_groups;
-    QString filename = project->getRCS()->getFileName();
-    RuleSetModel* md = ((RuleSetModel*)model());
-    QList<QModelIndex> groups;
-    md->getGroups(groups);
-    foreach (QModelIndex index, groups)
+    if (project)
     {
-        if (!isExpanded(index))
+        QStringList collapsed_groups;
+        QString filename = project->getRCS()->getFileName();
+        RuleSetModel* md = ((RuleSetModel*)model());
+        QList<QModelIndex> groups;
+        md->getGroups(groups);
+        foreach (QModelIndex index, groups)
         {
-            RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
-            collapsed_groups.push_back(node->name);
+            if (!isExpanded(index))
+            {
+                RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
+                collapsed_groups.push_back(node->name);
+            }
         }
+        Firewall *f = md->getFirewall();
+        if (f)
+            st->setCollapsedRuleGroups(
+                filename,
+                f->getName().c_str(),
+                md->getRuleSet()->getName().c_str(),
+                collapsed_groups);
     }
-    Firewall *f = md->getFirewall();
-    if (f)
-        st->setCollapsedRuleGroups(
-            filename,
-            f->getName().c_str(),
-            md->getRuleSet()->getName().c_str(),
-            collapsed_groups);
 }
 
+/*
+ * looks like this method can be called when we print from the command
+ * line. Variable project==NULL at that time.
+ */
 void RuleSetView::restoreCollapsedGroups()
 {
-    QTime t;
-    t.start();
-    RuleSetModel* md = ((RuleSetModel*)model());
-    QStringList collapsed_groups;
-    QString filename;
-    if (project != NULL)
+    if (project)
+    {
+        QTime t;
+        t.start();
+        RuleSetModel* md = ((RuleSetModel*)model());
+        QStringList collapsed_groups;
+        QString filename;
         filename = project->getRCS()->getFileName();
-    else filename = "";
-    if (fwbdebug)
-        qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
-    Firewall *f = md->getFirewall();
-    if (f)
-        st->getCollapsedRuleGroups(
-            filename,
-            f->getName().c_str(),
-            md->getRuleSet()->getName().c_str(),
-            collapsed_groups);
-    if (fwbdebug)
-        qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
-    QList<QModelIndex> groups;
-    md->getGroups(groups);
 
-    if (fwbdebug)
-    {
-        qDebug("restoreCollapsedGroups getGroups: %d ms", t.restart());
-        qDebug() << "Groups:" << groups.size();
+        if (fwbdebug)
+            qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
+
+        Firewall *f = md->getFirewall();
+        if (f)
+            st->getCollapsedRuleGroups(
+                filename,
+                f->getName().c_str(),
+                md->getRuleSet()->getName().c_str(),
+                collapsed_groups);
+
+        if (fwbdebug)
+            qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
+
+        QList<QModelIndex> groups;
+        md->getGroups(groups);
+
+        if (fwbdebug)
+        {
+            qDebug("restoreCollapsedGroups getGroups: %d ms", t.restart());
+            qDebug() << "Groups:" << groups.size();
+        }
+
+        foreach (QModelIndex index, groups)
+        {
+            RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
+            setExpanded(index,  !collapsed_groups.contains(node->name) );
+        }
+
+        if (fwbdebug)
+            qDebug("restoreCollapsedGroups foreach setExpanded: %d ms", t.restart());
     }
-
-    foreach (QModelIndex index, groups)
-    {
-        RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
-        setExpanded(index,  !collapsed_groups.contains(node->name) );
-    }
-
-    if (fwbdebug)
-        qDebug("restoreCollapsedGroups foreach setExpanded: %d ms", t.restart());
 }
 
 int RuleSetView::rowHeight(const QModelIndex& index) const

@@ -1,3 +1,9 @@
+2010-07-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::restoreCollapsedGroups): fixed
+	SourceForge bug 3020761 "printing from command line causes
+	Segmentation fault". Fixes #1533
+
 2010-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* utils.cpp (parseCommandLine): See #1542 since now user can enter
