@@ -611,7 +611,6 @@ void instDialog::fillCompileSelectList()
         m_dialog->selectTable->resizeColumnToContents(i);
 
     setNextEnabled(0, tableHasCheckedItems());
-
     //m_dialog->selectTable->resizeRowsToContents();
 }
 

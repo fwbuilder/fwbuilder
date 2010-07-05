@@ -624,6 +624,15 @@ void instDialog::testRunRequested()
 {
 }
 
+struct CaseInsensitiveComparison :
+    public std::binary_function<libfwbuilder::FWObject*, libfwbuilder::FWObject*, bool>
+{
+    bool operator()(libfwbuilder::FWObject *a,libfwbuilder::FWObject *b)
+    {
+        return QString(a->getName().c_str()).toLower() < QString(b->getName().c_str()).toLower();
+    }
+};
+
 void instDialog::findFirewalls()
 {
     firewalls.clear();
@@ -635,8 +644,8 @@ void instDialog::findFirewalls()
         project->m_panel->om->findAllClusters(clusters);
     }
 
-    firewalls.sort(FWObjectNameCmpPredicate());
-    clusters.sort(FWObjectNameCmpPredicate());
+    firewalls.sort(CaseInsensitiveComparison());
+    clusters.sort(CaseInsensitiveComparison());
 
     m_dialog->saveMCLogButton->setEnabled(true);
 }
