@@ -774,69 +774,21 @@ void ProjectPanel::installThis()
 void ProjectPanel::inspectThis()
 {
     if (visibleRuleSet==NULL) return;
-
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-
-    QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
-    bool canShowCode = true;
-    QStringList files;
-    QString errorMsg;
-    if (f->getLastModified() > f->getLastCompiled())
+    set<Firewall*> fwlist;
+    if (Cluster::isA(f))
     {
-        canShowCode = false;
-        errorMsg = tr("Firewall object \"%1\" has been modified and needs to be recompiled.").arg(f->getName().c_str());
+        std::list<Firewall*> cfws;
+        Cluster::cast(f)->getMembersList(cfws);
+        foreach(Firewall *fw, cfws)
+            fwlist.insert(fw);
     }
     else
     {
-        errorMsg = tr("Can not read generated files for the firewall object \"%1\". You need to compile it to create the files.").arg(f->getName().c_str());
-        if (QFile::exists(mainFile))
-        {
-            instConf cnf;
-            cnf.fwobj = f;
-            cnf.script = mainFile;
-            QMap<QString, QString> res;
-            FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
-            files = res.keys();
-            foreach(QString file, files)
-            {
-                if (!QFile::exists(file))
-                    canShowCode = false;
-            }
-        }
-        else
-        {
-            canShowCode = false;
-        }
-    }
-    if (!canShowCode)
-    {
-        QMessageBox messageBox(this);
-        messageBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
-        messageBox.addButton(tr("Compile and Inspect files"), QMessageBox::AcceptRole);
-        messageBox.setText(errorMsg);
-        messageBox.setIcon(QMessageBox::Critical);
-        messageBox.exec();
-        if (messageBox.result() == QMessageBox::Accepted)
-        {
-            this->compileThis();
-        }
-        return;
+        fwlist.insert(f);
     }
 
-    if (files.empty())
-    {
-        return; // I have no idea when it can happen
-    }
-
-    QString name;
-    mw->buildEditorTitleAndIcon(visibleRuleSet, ObjectEditor::optNone,
-                                &name, NULL, false);
-    QStringList nameparts = name.split(" / ");
-    nameparts.removeLast();
-    name = "<b>" + nameparts.join(" / ") + "</b>";
-
-    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, name, this);
-    viewer->show();
+    this->inspect(fwlist);
 }
 
 void ProjectPanel::inspectAll()
@@ -846,7 +798,19 @@ void ProjectPanel::inspectAll()
     om->findAllFirewalls(fws);
     set<Firewall*> fwset;
     foreach(Firewall *fw, fws)
-        fwset.insert(fw);
+    {
+        if (Cluster::isA(fw))
+        {
+            std::list<Firewall*> cfws;
+            Cluster::cast(fw)->getMembersList(cfws);
+            foreach(Firewall *f, cfws)
+                fwset.insert(f);
+        }
+        else
+        {
+            fwset.insert(fw);
+        }
+    }
 
     this->inspect(fwset);
 }

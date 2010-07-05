@@ -546,8 +546,19 @@ void instDialog::showPage(const int page)
  */
 int instDialog::findFilesToInspect(QStringList &files)
 {
- 
+
+    QList<Firewall*> fwlist;
     foreach(Firewall *f, firewalls)
+        fwlist.append(f);
+    foreach(Cluster *c, clusters)
+    {
+        std::list<Firewall*> cfws;
+        c->getMembersList(cfws);
+        foreach(Firewall *f, cfws)
+            fwlist.append(f);
+    }
+
+    foreach(Firewall *f, fwlist)
     {
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
         if (!QFile::exists(mainFile)) continue;

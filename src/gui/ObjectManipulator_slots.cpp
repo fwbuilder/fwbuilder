@@ -365,8 +365,21 @@ void ObjectManipulator::inspect()
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     set<Firewall*> fws;
     filterFirewallsFromSelection(so,fws);
+    set<Firewall*> fwset;
+    foreach(Firewall *fw, fws)
+    if (Cluster::isA(fw))
+    {
+        std::list<Firewall*> cfws;
+        Cluster::cast(fw)->getMembersList(cfws);
+        foreach(Firewall *f, cfws)
+            fwset.insert(f);
+    }
+    else
+    {
+        fwset.insert(fw);
+    }
 
-    m_project->inspect(fws);
+    m_project->inspect(fwset);
 }
 
 void ObjectManipulator::transferfw()
