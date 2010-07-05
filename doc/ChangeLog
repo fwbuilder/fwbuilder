@@ -66,7 +66,7 @@
 	pscp.exe to load parameters of putty session "fwb_session_with_keepalive"
 	that turns keepalives on.
 
-2010-06-25  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-06-25  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* FirewallCodeViewer.cpp (FirewallCodeViewer::FirewallCodeViewer):
 	See #1346. Mostly completed implementation of the viewer panel
@@ -86,14 +86,14 @@
 	NAT" is turned on regardless of the setting of the option
 	"configure interfaces".
 
-2010-06-22  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-06-22  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* fixed #1526 "Make sure GUI unit tests work in the environment
 	where user turned off tip of the day dialog". Unit tests now use
 	alternative settings file with all default values and do not
 	depend on user's preferences.
 	
-2010-06-18  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-06-18  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* fixed #1520 ("Comment field display clips comment text"
 	
@@ -109,7 +109,7 @@
 	the firewall object.
 	
 	
-2010-06-17  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-06-17  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* RuleSetView.cpp: fixed SF bug 3016680 "Vertical scrollbar issue"
 	rules with a lot of objects did not scroll properly vertically.
@@ -150,7 +150,7 @@
 	closed data file using "File/Close" and never became enabled
 	again.
 
-2010-06-14  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-06-14  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* FWBSettings.cpp (FWBSettings::init): fixed #1504 Added (optional)
 	text to the toolbar buttons. Text is turned on by default but
@@ -879,7 +879,7 @@
 	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): fixed #1351
 	"synproxy rule option is broken"
 
-2010-03-24  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-03-24  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* unit tests for IPv4Dialog, IPv6dialog, NetworkDialog, NetworkIPv6dialog
 	fixed #1329, #1327
@@ -972,7 +972,7 @@
 	* fixes #1326 MDI subwindow title is left "Untitled" when GUI
 	starts with a file on the command line
 
-2010-03-13  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-03-13  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* Object tree panel should have title when detached. Fixes #1317
 
@@ -1011,7 +1011,7 @@
 	RuleSetView.cpp
 	RuleSetView.h
 
-2010-03-07  Roman Bovsunivkiy <a2k0001@gmail.com>
+2010-03-07  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* ticket #1307 "cluster names in cyrillic appear garbled in
 	instDialog list"
@@ -1157,7 +1157,7 @@
 	* ../src/res/configlets/bsd/update_vlans: fixes #1275 "script
 	always deletes, then adds vlans back on OpenBSD"
 
-2010-02-25  Roman Bovsunivkiy     a2k0001@gmail.com
+2010-02-25  Roman Bovsunivskiy     a2k0001@gmail.com
 
 	* TutorialDialog.cpp (TutorialDialog::TutorialDialog): in-program
 	tutorial "Getting Started". Activated using menu Help/Tutorial.
