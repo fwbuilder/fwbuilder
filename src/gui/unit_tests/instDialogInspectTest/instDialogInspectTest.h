@@ -48,7 +48,8 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void testInspect();
+    void testInspect_cluster();
+    void testInspect_firewall();
 public slots:
     void closeInstallOptions();
 };

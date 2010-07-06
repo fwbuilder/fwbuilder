@@ -83,7 +83,7 @@ void instDialogInspectTest::closeInstallOptions()
     dialogClosed = true;
 }
 
-void instDialogInspectTest::testInspect()
+void instDialogInspectTest::testInspect_firewall()
 {
     mw->findChild<QAction*>("installAction")->trigger();
     instDialog *dlg = mw->findChild<instDialog*>();
@@ -119,7 +119,7 @@ void instDialogInspectTest::testInspect()
 
     QVERIFY(stack->currentIndex() == 1);
     QTest::mouseClick(inspect, Qt::LeftButton);
-    QVERIFY(stack->currentIndex() == 2);
+    QVERIFY(stack->currentIndex() == 3);
     QVERIFY(back->isEnabled());
     QVERIFY(next->isEnabled());
 
@@ -135,3 +135,51 @@ void instDialogInspectTest::testInspect()
 
     QTest::mouseClick(cancel, Qt::LeftButton);
 }
+
+void instDialogInspectTest::testInspect_cluster()
+{
+    mw->findChild<QAction*>("installAction")->trigger();
+    instDialog *dlg = mw->findChild<instDialog*>();
+
+    QTest::mouseClick(dlg->findChild<QPushButton*>("pushButton17"), Qt::LeftButton);
+
+    QPushButton *back = dlg->findChild<QPushButton*>("backButton");
+    QPushButton *next = dlg->findChild<QPushButton*>("nextButton");
+    QPushButton *cancel = dlg->findChild<QPushButton*>("cancelButton");
+
+    QPushButton *inspect = dlg->findChild<QPushButton*>("inspectGeneratedFiles");
+
+    QTreeWidget *selectTable = dlg->findChild<QTreeWidget*>("selectTable");
+    QTreeWidgetItem *cluster1item = selectTable->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first();
+    cluster1item->setCheckState(1, Qt::Checked);
+
+    QTest::mouseClick(next, Qt::LeftButton);
+
+    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
+    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
+
+    while (!checkProgress(list))
+    {
+        QVERIFY(!inspect->isEnabled());
+        QTest::qWait(50);
+    }
+    QTest::qWait(50);
+    QVERIFY(inspect->isEnabled());
+
+    QString oldtext = processLogDisplay->toPlainText();
+    QStackedWidget *stack = dlg->findChild<QStackedWidget*>();
+
+    QVERIFY(stack->currentIndex() == 1);
+    QTest::mouseClick(inspect, Qt::LeftButton);
+    QVERIFY(stack->currentIndex() == 2);
+    QVERIFY(back->isEnabled());
+    QVERIFY(next->isEnabled());
+
+    QTest::mouseClick(back, Qt::LeftButton);
+    QVERIFY(stack->currentIndex() == 1);
+    QVERIFY(oldtext == processLogDisplay->toPlainText());
+
+    QTest::mouseClick(cancel, Qt::LeftButton);
+}
+
+
