@@ -163,7 +163,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="1" column="0">
-             <widget class="QFrame" name="frame14">
+             <widget class="QFrame" name="selectAllNoneFrame">
               <property name="frameShape">
                <enum>QFrame::Box</enum>
               </property>
@@ -193,14 +193,14 @@
                <item row="0" column="0">
                 <widget class="QPushButton" name="pushButton16">
                  <property name="text">
-                  <string>All</string>
+                  <string>Select all</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
                 <widget class="QPushButton" name="pushButton17">
                  <property name="text">
-                  <string>None</string>
+                  <string>Select none</string>
                  </property>
                 </widget>
                </item>

@@ -5,6 +5,10 @@
 	* FirewallCodeViewer.cpp (FirewallCodeViewer::fileSelected): now 
 	when viewing again file that was viewed before scroll position is
 	same as user left it.
+	* instDialog_q.ui: renames "All" button to "Select all" and "None"
+	to "Select none"
+	* instDialog.cpp (instDialog::show): hide "Select all" and "Select none"
+	buttons when there is only one firewall in list
 
 2010-07-05  Roman Bovsunivskiy <a2k0001@gmail.com>
 	
