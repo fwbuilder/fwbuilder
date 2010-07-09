@@ -849,6 +849,12 @@ void newFirewallDialog::finishClicked()
         qDebug() << "newFirewallDialog::finishClicked()"
                  << "p=" << p;
 
+    if ((!this->m_dialog->useTemplate->isChecked()) && p == 2)
+    {
+        if ( !this->m_dialog->interfaceEditor1->isValid() )
+            return;
+    }
+
     if ( p == 5 )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;

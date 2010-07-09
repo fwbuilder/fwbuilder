@@ -1,3 +1,8 @@
+2010-07-09  Roman Bovsunivskiy <a2k0001@gmail.com>
+	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): fixed
+	crash when clicking finish after getting error about wrong IP
+	address or netmask
+
 2010-07-05  Roman Bovsunivskiy <a2k0001@gmail.com>
 	
 	* instDialog.cpp (instDialog::findFirewalls): sorting of filewall
