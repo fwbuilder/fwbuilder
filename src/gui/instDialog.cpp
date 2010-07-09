@@ -179,7 +179,7 @@ void instDialog::show(ProjectPanel *proj,
     lastPage = -1;
     installer = NULL;
     finished = false;
-    page_1_op = INST_DLG_COMPILE;
+    page_1_op = install?INST_DLG_INSTALL:INST_DLG_COMPILE;
     compile_complete = false;
     rejectDialogFlag = false;
 
@@ -525,7 +525,7 @@ void instDialog::showPage(const int page)
             m_dialog->stackedWidget->addWidget(container);
             m_dialog->stackedWidget->setCurrentIndex(m_dialog->stackedWidget->count()-1);
 
-            setNextEnabled(page, true);
+            setNextEnabled(page, !compile_only);
             setBackEnabled(page, true);
 
             break;

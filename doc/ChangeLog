@@ -9,6 +9,8 @@
 	to "Select none"
 	* instDialog.cpp (instDialog::show): hide "Select all" and "Select none"
 	buttons when there is only one firewall in list
+	* instDialog.cpp (instDialog::showPage): next button on inspect page
+	is now not enabled if dialog called for compile only
 
 2010-07-05  Roman Bovsunivskiy <a2k0001@gmail.com>
 	
