@@ -26,6 +26,8 @@
 #include "FirewallCodeViewer.h"
 #include "ui_FirewallCodeViewer.h"
 #include <QFile>
+#include <QDebug>
+#include <QTextBrowser>
 
 FirewallCodeViewer::FirewallCodeViewer(QStringList files, QString name, QWidget *parent) :
     QDialog(parent),
@@ -58,9 +60,20 @@ void FirewallCodeViewer::changeEvent(QEvent *e)
 
 void FirewallCodeViewer::fileSelected(int idx)
 {
-    QFile f(this->files.at(idx));
-    f.open(QFile::ReadOnly);
-    ui->text->setPlainText(f.readAll());
+    if (pages.contains(idx))
+    {
+        ui->pages->setCurrentIndex(pages[idx]);
+    }
+    else
+    {
+        QFile f(this->files.at(idx));
+        f.open(QFile::ReadOnly);
+        QTextBrowser *browser = new QTextBrowser(ui->pages);
+        browser->setPlainText(f.readAll());
+        ui->pages->addWidget(browser);
+        pages.insert(idx, ui->pages->indexOf(browser));
+        ui->pages->setCurrentWidget(browser);
+    }
 }
 
 void FirewallCodeViewer::hideCloseButton()

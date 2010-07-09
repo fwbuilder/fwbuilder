@@ -27,6 +27,7 @@
 #define FIREWALLCODEVIEWER_H
 
 #include <QDialog>
+#include <QMap>
 
 namespace Ui {
     class FirewallCodeViewer_q;
@@ -35,6 +36,7 @@ namespace Ui {
 class FirewallCodeViewer : public QDialog {
     Q_OBJECT
     QStringList files;
+    QMap<int, int> pages;
 public:
     FirewallCodeViewer(QStringList files, QString path, QWidget *parent = 0);
     ~FirewallCodeViewer();

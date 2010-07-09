@@ -2,6 +2,9 @@
 	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): fixed
 	crash when clicking finish after getting error about wrong IP
 	address or netmask
+	* FirewallCodeViewer.cpp (FirewallCodeViewer::fileSelected): now 
+	when viewing again file that was viewed before scroll position is
+	same as user left it.
 
 2010-07-05  Roman Bovsunivskiy <a2k0001@gmail.com>
 	
