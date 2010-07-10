@@ -221,18 +221,16 @@ Firewall* Importer::getFirewallObject()
     fw = Firewall::cast(nobj);
 
     fw->setStr("platform", platform);
+    Resources::setDefaultTargetOptions(platform , fw);
 
-    std::map<std::string,std::string> platforms = Resources::getPlatforms();
-    std::map<std::string,std::string>::iterator i;
-    for (i=platforms.begin(); i!=platforms.end(); i++)
-        Resources::setDefaultTargetOptions( i->first , fw );
+//     std::map<std::string,std::string> platforms = Resources::getPlatforms();
+//     std::map<std::string,std::string>::iterator i;
+//     for (i=platforms.begin(); i!=platforms.end(); i++)
+//         Resources::setDefaultTargetOptions( i->first , fw );
 
-    std::map<std::string,std::string> OSs = Resources::getOS();
-    for (i=OSs.begin(); i!=OSs.end(); i++)
-        Resources::setDefaultTargetOptions( i->first  , fw );
-
-    //o->setStr("platform", readPlatform(platform).latin1() );
-    //o->setStr("host_OS",  readHostOS(hostOS).latin1() );
+//     std::map<std::string,std::string> OSs = Resources::getOS();
+//     for (i=OSs.begin(); i!=OSs.end(); i++)
+//         Resources::setDefaultTargetOptions( i->first  , fw );
 
     return fw;
 }

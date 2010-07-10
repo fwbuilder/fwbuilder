@@ -1,3 +1,11 @@
+2010-07-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Importer.cpp (Importer::getFirewallObject): fixed bug #3027272:
+	"default values taken from unexpected sources". When new firewall
+	object was created using "Import Policy" function, parts of its
+	configuration were taken from default settings of an unexpected
+	host OS.
+
 2010-07-09  Roman Bovsunivskiy <a2k0001@gmail.com>
 	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): fixed
 	crash when clicking finish after getting error about wrong IP

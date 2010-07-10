@@ -388,15 +388,15 @@ Firewall* IOSImporter::finalize()
     // UnidirectionalRuleSet into one RuleSet object. Attach this
     // object to the firewall.
 
-    if (fwbdebug) qDebug("IPTImporter::finalize()");
+    if (fwbdebug) qDebug("IOSImporter::finalize()");
 
     if (haveFirewallObject())
     {
-        FWObject *fw = getFirewallObject();
+        Firewall *fw = Firewall::cast(getFirewallObject());
         fw->setStr("host_OS", "ios");
+        Resources::setDefaultTargetOptions("ios" , fw);
 
-        FWObject *policy =
-            getFirewallObject()->getFirstByType(Policy::TYPENAME);
+        FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );
 
         if (all_rulesets.size()!=0)

@@ -1258,10 +1258,12 @@ Firewall* IPTImporter::finalize()
 
     if (haveFirewallObject())
     {
-        FWObject *fw = getFirewallObject();
-        fw->setStr("host_OS", "linux24");
+        Firewall *fw = Firewall::cast(getFirewallObject());
 
-        FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
+        fw->setStr("host_OS", "linux24");
+        Resources::setDefaultTargetOptions("linux24" , fw);
+
+        FWOptions  *fwopt = fw->getOptionsObject();
         assert(fwopt!=NULL);
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
