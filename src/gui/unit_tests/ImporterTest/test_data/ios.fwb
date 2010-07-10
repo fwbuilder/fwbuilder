@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1276399137" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1278791988" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -827,64 +827,9 @@
           <IPv4 id="id265" name="&quot;c3620&quot;:Ethernet1/2:ip" comment="" ro="False" address="10.10.20.20" netmask="255.255.255.0"/>
         </Interface>
         <FirewallOptions>
-          <Option name="accept_established">true</Option>
-          <Option name="accept_new_tcp_with_no_syn">true</Option>
-          <Option name="activationCmd">/etc/rc.d/rc.firewall restart</Option>
-          <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser">root</Option>
-          <Option name="check_shading">true</Option>
-          <Option name="configure_interfaces">False</Option>
-          <Option name="eliminate_duplicates">true</Option>
-          <Option name="firewall_dir">/tmp</Option>
-          <Option name="firewall_is_part_of_any_and_networks">true</Option>
-          <Option name="flush_and_set_default_policy">True</Option>
-          <Option name="freebsd_ip_forward">1</Option>
-          <Option name="in_out_code">true</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
           <Option name="iosacl_include_comments">true</Option>
-          <Option name="limit_value">0</Option>
-          <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_ipv6_forward"></Option>
-          <Option name="load_modules">False</Option>
-          <Option name="local_nat">false</Option>
-          <Option name="log_level">info</Option>
-          <Option name="log_prefix">RULE=%N ACTION=%A </Option>
-          <Option name="loopback_interface">lo</Option>
-          <Option name="macosx_ip_forward">1</Option>
-          <Option name="manage_virtual_addr">False</Option>
-          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
-          <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file">fwbuilder.fw</Option>
-          <Option name="pass_all_out">false</Option>
-          <Option name="pf_limit_frags">5000</Option>
-          <Option name="pf_limit_states">10000</Option>
-          <Option name="pf_scrub_maxmss">1460</Option>
-          <Option name="pf_timeout_frag">30</Option>
-          <Option name="pf_timeout_interval">10</Option>
-          <Option name="pix_add_clear_statements">true</Option>
-          <Option name="pix_assume_fw_part_of_any">true</Option>
-          <Option name="pix_default_logint">300</Option>
-          <Option name="pix_emblem_log_format">false</Option>
-          <Option name="pix_emulate_out_acl">true</Option>
-          <Option name="pix_floodguard">true</Option>
-          <Option name="pix_include_comments">true</Option>
-          <Option name="pix_route_dnat_supported">true</Option>
-          <Option name="pix_rule_syslog_settings">false</Option>
-          <Option name="pix_security_fragguard_supported">true</Option>
-          <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_use_acl_remarks">true</Option>
-          <Option name="procurve_acl_add_clear_statements">true</Option>
-          <Option name="procurve_acl_assume_fw_part_of_any">true</Option>
-          <Option name="procurve_acl_include_comments">true</Option>
-          <Option name="prompt1">$ </Option>
-          <Option name="prompt2"> # </Option>
-          <Option name="secuwall_add_files">False</Option>
-          <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
-          <Option name="secuwall_dns_reso1">files</Option>
-          <Option name="solaris_ip_forward">1</Option>
-          <Option name="ulog_nlgroup">1</Option>
-          <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
