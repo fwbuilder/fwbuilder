@@ -246,8 +246,10 @@ void instDialog::show(ProjectPanel *proj,
     if (clusters.size() >= 1)  // even one cluster enables batch install btn
         m_dialog->batchInstall->setEnabled(true);
 
-    if (firewalls.size() + clusters.size() == 1)
+    if (firewalls.size() == 1 && clusters.size() == 0)
         m_dialog->selectAllNoneFrame->hide();
+    else
+        m_dialog->selectAllNoneFrame->show();
 
     m_dialog->batchInstall->setChecked(false);
 
