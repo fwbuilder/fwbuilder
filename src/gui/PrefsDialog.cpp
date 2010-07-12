@@ -145,6 +145,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->sshPath->setText( st->getSSHPath() );
     m_dialog->scpPath->setText( st->getSCPPath() );
+    m_dialog->sshTimeout->setValue( st->getSSHTimeout() );
+
     m_dialog->rememberSshPass->setChecked( st->getBool("Environment/RememberSshPassEnabled") );
 
     m_dialog->showTips->setChecked( st->getBool("UI/NoStartTip") );
@@ -485,6 +487,8 @@ void PrefsDialog::accept()
 
     st->setSSHPath( m_dialog->sshPath->text() );
     st->setSCPPath( m_dialog->scpPath->text() );
+    st->setSSHTimeout(m_dialog->sshTimeout->value());
+
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
     
     wfl->registerFlag(UserWorkflow::SSH_CONFIGURED, 

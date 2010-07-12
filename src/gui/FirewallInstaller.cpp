@@ -289,7 +289,6 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
     parseCommandLine(ssh, ssh_argv);
 
 #ifdef _WIN32
-    //args += ssh.split(" ", QString::SkipEmptyParts);
     args += ssh_argv;
 
 /*
@@ -303,6 +302,8 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
  */
     if (!cnf->user.isEmpty() && ssh.toLower().indexOf("plink.exe")!=-1)
     {
+        args.push_back("-load");
+        args.push_back("fwb_session_with_keepalive");
         args.push_back("-ssh");
         args.push_back("-pw");
         args.push_back(cnf->pwd);
@@ -312,13 +313,14 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 #else
 
     args.push_back(argv0.c_str());
+
     args.push_back("-X");   // fwbuilder works as ssh wrapper
 
-    //args += ssh.split(" ", QString::SkipEmptyParts);
     args += ssh_argv;
 
-    //if (fwbdebug)
-    //    args.push_back("-d");
+    args.push_back("-o");
+    args.push_back(QString("ServerAliveInterval=%1").arg(st->getSSHTimeout()));
+
     args.push_back("-t");
     args.push_back("-t");
 
@@ -348,11 +350,12 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
 
 #ifdef _WIN32
-    //args += scp.split(" ", QString::SkipEmptyParts);
     args += scp_argv;
 
     if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
     {
+        args.push_back("-load");
+        args.push_back("fwb_session_with_keepalive");
 //        args.push_back("-ssh");
         args.push_back("-pw");
         args.push_back(cnf->pwd);
@@ -362,8 +365,12 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
     args.push_back(argv0.c_str());
     args.push_back("-Y");   // fwbuilder works as scp wrapper
 
-    //args += scp.split(" ", QString::SkipEmptyParts);
     args += scp_argv;
+
+    args.push_back("-o");
+    // "3" here is the default value of ServerAliveCountMax parameter
+    // This way, overall timeout will be the same for ssh and scp
+    args.push_back(QString("ConnectTimeout=%1").arg(st->getSSHTimeout() * 3));
 
 #endif
 

@@ -57,7 +57,8 @@ class FWBSettings : public QSettings {
 
  private:
     QSettings *uuid_settings;
-
+    QSettings *ssh_timeout_setings_object;
+    
     QString getLabelColorStr(enum LabelColors c);
     
  public:
@@ -160,6 +161,10 @@ class FWBSettings : public QSettings {
 
     QString getSCPPath();
     void    setSCPPath(const QString &path);
+
+    bool    haveSSHTimeout();
+    int     getSSHTimeout();
+    void    setSSHTimeout(int value_sec);
 
     void    getPrinterOptions(QPrinter *printer,int &pageWidth,int &pageHeight);
     void    setPrinterOptions(QPrinter *printer,int pageWidth,int pageHeight);

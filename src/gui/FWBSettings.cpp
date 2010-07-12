@@ -94,8 +94,6 @@ const char* dontSaveStdLib = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
 const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
 
-const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
-const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
 const char* showIconsInRules = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
 const char* showDirectionText = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
 const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
@@ -117,6 +115,15 @@ const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 
+const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
+const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
+
+#ifdef _WIN32
+const char* SSHTimeout = "Sessions/fwb_session_with_keepalive/PingIntervalSecs";
+#else
+const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
+#endif
+
 
 
 /**
@@ -128,7 +135,8 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
  */
 FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
-              "netcitadel.com", testData?"fwb_test_data":getApplicationNameForSettings())
+              "netcitadel.com",
+              testData?"fwb_test_data":getApplicationNameForSettings())
 {
     if (testData)
     {
@@ -136,11 +144,20 @@ FWBSettings::FWBSettings(bool testData) :
     }
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                                   "netcitadel.com", "FirewallBuilder");
+#ifdef _WIN32
+    ssh_timeout_setings_object = new QSettings(QSettings::UserScope,
+                                                 "SimonTatham", "PuTTY");
+#else
+    ssh_timeout_setings_object = this;
+#endif
 }
 
 FWBSettings::~FWBSettings()
 {
     delete uuid_settings;
+#ifdef _WIN32
+    delete fwbuilder_putty_session;
+#endif
 }
 
 /**
@@ -289,28 +306,13 @@ void FWBSettings::init()
     ok = contains(compression);
     if (!ok) setCompression(false);
 
-#ifdef _WIN32
-    // in putty ssh keepalive is controlled by a session variable (no
-    // command line switch is provided). Windows package installer
-    // creates putty session for us.
-    if (getSSHPath().contains("plink.exe") && !getSSHPath().contains("-load"))
-        setSSHPath(getSSHPath() + " -load fwb_session_with_keepalive");
-
-    if (getSCPPath().contains("pscp.exe") && !getSCPPath().contains("-load"))
-        setSCPPath(getSCPPath() + " -load fwb_session_with_keepalive");
-
-#else
-    // Using ssh keepalives. They should be configured here in the global
-    // preferences so that the user can change the values if they need to.
+#ifndef _WIN32
     if (getSSHPath().isEmpty()) setSSHPath("ssh");
-    if ( ! getSSHPath().contains("ServerAliveInterval="))
-        setSSHPath(getSSHPath() + " -o ServerAliveInterval=2 -o ServerAliveCountMax=15");
-
     if (getSCPPath().isEmpty()) setSCPPath("scp");
-    if ( ! getSCPPath().contains("ConnectTimeout="))
-        setSCPPath(getSCPPath() + " -o ConnectTimeout=30");
-
 #endif
+    // default timeout is 30 sec (default value of ServerAliveCountMax is 3)
+    // do this for both Linux and windows !
+    if (!haveSSHTimeout()) setSSHTimeout(10);
 
     // Note: hasKey calls QSettings::contains using path given as
     // argument, prepended with SETTINGS_PATH_PREFIX
@@ -695,6 +697,31 @@ void FWBSettings::setSCPPath(const QString &path)
 {
     setValue(SCPPath,path);
 }
+
+// Putty uses different parameter name for the server alive interval
+// and keeps it as part of the session, stored in registry. Using
+// separate QSettings object on windows that controls putty session
+// "fwb_session_with_keepalive". On all other platforms
+// ssh_timeout_setings_object == this
+
+bool FWBSettings::haveSSHTimeout()
+{
+    return ssh_timeout_setings_object->contains(SSHTimeout);
+}
+
+int FWBSettings::getSSHTimeout()
+{
+    return ssh_timeout_setings_object->value(SSHTimeout).toInt();
+}
+
+void FWBSettings::setSSHTimeout(int value_sec)
+{
+    ssh_timeout_setings_object->setValue(SSHTimeout, value_sec);
+}
+
+
+
+
 
 void FWBSettings::getPrinterOptions(QPrinter *printer,
                                     int &pageWidth,

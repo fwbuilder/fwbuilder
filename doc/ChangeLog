@@ -1,3 +1,22 @@
+2010-07-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FirewallInstaller.cpp (FirewallInstaller::packSSHArgs): fixed
+	bug 3027284: "redux settings for scp/ssh to respond to line
+	failure". The solution for bug 3020381 used to force ssh and scp
+	commands to use the parameters ServerAliveInterval and
+	ConnectTimeout to activate and configure ssh keepalive protocol.
+	These command line parameters were enforced and added to the input
+	fields where user enters the path to ssh and scp utilities on the
+	machine where fwbuilder GUI is running. This was confusing and
+	poor GUI design as the program was changing fields that were
+	supposed to be user-editable. This fix adds an input field for the
+	timeout value in seconds to the "Installer" tab of the global
+	preferences dialog. The program does not change strings entered by
+	the user for ssh and scp path anymore. The same timeout value is
+	used to set up ServerAliveInterval parameter for ssh,
+	ConnectTimeout parameter for scp and registry entries required by
+	plink and pscp on Windows.
+
 2010-07-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Importer.cpp (Importer::getFirewallObject): fixed bug #3027272:
@@ -7,16 +26,21 @@
 	host OS.
 
 2010-07-09  Roman Bovsunivskiy <a2k0001@gmail.com>
+
 	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): fixed
 	crash when clicking finish after getting error about wrong IP
 	address or netmask
+
 	* FirewallCodeViewer.cpp (FirewallCodeViewer::fileSelected): now 
 	when viewing again file that was viewed before scroll position is
 	same as user left it.
+
 	* instDialog_q.ui: renames "All" button to "Select all" and "None"
 	to "Select none"
+
 	* instDialog.cpp (instDialog::show): hide "Select all" and "Select none"
 	buttons when there is only one firewall in list
+
 	* instDialog.cpp (instDialog::showPage): next button on inspect page
 	is now not enabled if dialog called for compile only
 

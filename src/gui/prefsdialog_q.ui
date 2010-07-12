@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>699</width>
-    <height>674</height>
+    <width>793</width>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -476,10 +476,10 @@
        <string>Data File</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
        <item row="0" column="0">
@@ -568,55 +568,7 @@
        <string>Installer</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_15">
-       <item row="4" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="1">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="10" column="1">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>505</width>
-           <height>61</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0" colspan="2">
+       <item row="0" column="0" colspan="3">
         <widget class="QLabel" name="textLabel1_5_2">
          <property name="text">
           <string>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</string>
@@ -629,23 +581,34 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="browseForSSH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Browse...</string>
-         </property>
-        </widget>
+       <item row="1" column="0" colspan="3">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLineEdit" name="sshPath">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="browseForSSH">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Browse...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLineEdit" name="sshPath"/>
-       </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0" colspan="3">
         <widget class="QLabel" name="textLabel1_5_3">
          <property name="text">
           <string>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</string>
@@ -658,57 +621,71 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="QPushButton" name="browseForSCP">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Browse...</string>
-         </property>
-        </widget>
+       <item row="3" column="0" colspan="3">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLineEdit" name="scpPath">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="browseForSCP">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Browse...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLineEdit" name="scpPath"/>
-       </item>
-       <item row="7" column="0" colspan="3">
-        <widget class="QLabel" name="label_8">
+       <item row="4" column="0" colspan="3">
+        <widget class="QLabel" name="label_14">
          <property name="text">
-          <string>Built-in policy installer can remember passwords for the duration of the session. Passwords are never stored permanently, they are only kept in memory. In order to use this feature, you also need to configure user name used to authenticate to the firewall in the &quot;advanced&quot; settings dialog of the firewall object. </string>
+          <string>Value for the ServerAliveInterval ssh configuration parameter. This parameter sets timeout interval in seconds after which if no data has been received from the server, ssh client will send a message through the encrypted channel to request a response from the server. This helps detect disconnects between fwbuilder policy installer and the firewall. If set to 0, these messages will not be sent to the server and loss of connectivity with the firewall will lead to hanging of the installer session. Scp uses different parameter for this, ConnectTimeout. Fwbuilder automatically calculates the value for this parameter using the same timeout value. Note that this only works with ssh protocol v2.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="0" colspan="3">
-        <widget class="QLabel" name="label_12">
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Warning: using this feature creates certain risk if working Firewall Builder GUI is left unattended on the unlocked workstation. Someone may walk up to the machine and make changes to the firewall using cached password of the administrator who used the same GUI session before. Always lock the screen or exit Firewall Builder GUI when leaving computer.</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
+       <item row="5" column="0">
+        <widget class="QSpinBox" name="sshTimeout">
+         <property name="maximum">
+          <number>999999</number>
          </property>
         </widget>
        </item>
-       <item row="9" column="0" colspan="3">
-        <widget class="QCheckBox" name="rememberSshPass">
-         <property name="toolTip">
-          <string>Enable password caching for the duration of the session (passwords
-are never stored permanently)</string>
-         </property>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_15">
          <property name="text">
-          <string>Enable password caching</string>
+          <string>sec</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
+       <item row="5" column="2">
+        <spacer name="horizontalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>528</width>
+           <height>23</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0" colspan="3">
         <widget class="QFrame" name="plink_hint">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -760,8 +737,8 @@ are never stored permanently)</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="acceptRichText">
              <bool>true</bool>
@@ -774,6 +751,72 @@ p, li { white-space: pre-wrap; }
          </layout>
         </widget>
        </item>
+       <item row="7" column="0" colspan="3">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="0" colspan="3">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Built-in policy installer can remember passwords for the duration of the session. Passwords are never stored permanently, they are only kept in memory. In order to use this feature, you also need to configure user name used to authenticate to the firewall in the &quot;advanced&quot; settings dialog of the firewall object. </string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="3">
+        <widget class="QLabel" name="label_12">
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Warning: using this feature creates certain risk if working Firewall Builder GUI is left unattended on the unlocked workstation. Someone may walk up to the machine and make changes to the firewall using cached password of the administrator who used the same GUI session before. Always lock the screen or exit Firewall Builder GUI when leaving computer.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0" colspan="3">
+        <widget class="QCheckBox" name="rememberSshPass">
+         <property name="toolTip">
+          <string>Enable password caching for the duration of the session (passwords
+are never stored permanently)</string>
+         </property>
+         <property name="text">
+          <string>Enable password caching</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0" colspan="3">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>505</width>
+           <height>61</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabLabels">
@@ -781,10 +824,10 @@ p, li { white-space: pre-wrap; }
        <string>Labels</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
        <item row="0" column="0" colspan="3">
@@ -1342,6 +1385,7 @@ p, li { white-space: pre-wrap; }
  </tabstops>
  <resources>
   <include location="MainRes.qrc"/>
+  <include location="../../../../../../../.designer/backup/MainRes.qrc"/>
  </resources>
  <connections>
   <connection>

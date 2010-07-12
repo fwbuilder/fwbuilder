@@ -191,31 +191,22 @@
 
   <li>
     <p>
-      SF bug 3020381: "Line failure should abort remote firewall
-      install". If network connection is lost during firewall policy
-      activation, policy installer should detect this, disconnect and
-      declare installation session a failure.  Prior to v4.0.2,
-      installer detected network failures during policy copy (done
-      with scp) or when it could not connect to the firewall at all,
-      but hang if connection was lost in the middle of ssh session
-      used to activate firewall policy. Now using ssh parameter
-      "ServerAliveInterval" to make it detect connection failure. This
-      does not work with plink.exe on Windows which does not support
-      these command line options. Still looking for a solution.
-    </p>
-  </li>
-
-  <li>
-    <p>
-      Automatically adding ssh parameters "-o ServerAliveInterval=2 -o
-      ServerAliveCountMax=15" and scp parameter "-o ConnectTimeout=30"
-      to the path to ssh and scp in the global preferecnes dialog, tab
-      "Installer", to activate ssh keepalive.  This way, user can
-      change values if they need to. Default values define 30 sec
-      timeout which should be rather conservative. On windows
-      automatically configuring plink.exe and pscp.exe to load
-      parameters of putty session "fwb_session_with_keepalive" that
-      turns keepalives on.
+      SF bugs 3020381 and 3027284: "Line failure should abort remote
+      firewall install". If network connection is lost during firewall
+      policy activation, policy installer should detect this,
+      disconnect and declare installation session a failure.  Prior to
+      v4.0.2, installer detected network failures during policy copy
+      (done with scp) or when it could not connect to the firewall at
+      all, but hang if connection was lost in the middle of ssh
+      session used to activate firewall policy. Now using ssh
+      parameter "ServerAliveInterval" to make it detect connection
+      failure.  Added an input field that defines inactivity timeout
+      value in seconds to the "Installer" tab of the global
+      preferences dialog. The same timeout value is used to set up
+      ServerAliveInterval parameter for ssh, ConnectTimeout parameter
+      for scp and registry entries required by plink and pscp on
+      Windows using putty session "fwb_session_with_keepalive".
+      Default value defines 30 sec timeout.
     </p>
   </li>
 
