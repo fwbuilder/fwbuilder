@@ -590,8 +590,8 @@ void instDialog::fillCompileSelectList()
                     {
                         warn2 <<
                             QString(tr("Firewall '%1' is member of cluster '%2'")
-                                    .arg(fw->getName().c_str())
-                                    .arg(cluster->getPath().c_str()));
+                                    .arg(QString::fromUtf8(fw->getName().c_str()))
+                                    .arg(QString::fromUtf8(cluster->getPath().c_str())));
                     }
                 }
             }
