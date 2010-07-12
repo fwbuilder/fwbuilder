@@ -2,6 +2,9 @@
 	* instDialog_ui_opts.cpp (intDialog::fillCompileSelectList): fixed
 	wrong display of non-ascii symbols in cluster member compilation
 	warning.
+	* newFirewallDialog.cpp (newFirewallDialog::showPage): firewall names
+	are now resolved to IP address. Added new input element for firewall
+	IP address to use for SNMP interface discovery.
 
 2010-07-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
