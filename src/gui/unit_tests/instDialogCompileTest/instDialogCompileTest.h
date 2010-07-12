@@ -44,7 +44,13 @@ class instDialogCompileTest : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void testSelectButtonsVisibility();
     void testCompile();
+
+public slots:
+    void closeContextMenu();
+    void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item,
+                         ObjectTreeView *tree, const QString &actionText);
 };
 
 #endif // INSTDIALOGTEST_H

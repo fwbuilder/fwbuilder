@@ -46,6 +46,7 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include "FWObjectClipboard.h"
+#include "FWBApplication.h"
 
 using namespace std;
 using namespace QTest;
@@ -70,6 +71,135 @@ bool checkProgress(QTreeWidget *list)
     return true;
 }
 
+QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
+{
+    for (int h=10; h<tree->height(); h+=1)
+    {
+        for (int w=75; w<tree->width(); w+=1)
+        {
+            if(tree->itemAt(w,h) == item)
+                return QPoint(w, h);
+        }
+    }
+    return QPoint(-1,-1);
+}
+
+void instDialogCompileTest::closeContextMenu()
+{
+    QMenu *menu;
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            menu = dynamic_cast<QMenu*>(w);
+            break;
+        }
+    }
+    menu->hide();
+}
+
+/*
+ * This function finds and activates an item with given name in the
+ * context menu. If item is absent in the menu or is disabled, it
+ * fails the test.
+ */
+void instDialogCompileTest::openContextMenu(ObjectManipulator *om,
+                                               ObjectTreeViewItem *item, ObjectTreeView *tree,
+                                               const QString &actionText)
+{
+    QTimer::singleShot(100, this, SLOT(closeContextMenu()));
+    om->contextMenuRequested(findItemPos(item, tree));
+    bool found_menu_item = false;
+    QMenu *menu = NULL;
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            menu = dynamic_cast<QMenu*>(w);
+            break;
+        }
+    }
+    QVERIFY(menu != NULL);
+    foreach (QObject *act, menu->children())
+    {
+        QAction *action = dynamic_cast<QAction*>(act);
+        if (action == NULL) continue;
+        if (action->text() == actionText)
+        {
+            QVERIFY(action->isEnabled() == true);
+            action->activate(QAction::Trigger);
+            found_menu_item = true;
+            break;
+        }
+    }
+    QVERIFY2(found_menu_item == true,
+             QString("Item %1 not found in the context menu").arg(actionText).toAscii().constData());
+}
+
+
+void instDialogCompileTest::testSelectButtonsVisibility()
+{
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    tree->expandAll();
+    ObjectTreeViewItem *test1 =
+        dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *test2 =
+        dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *cluster1 =
+        dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+
+    // case when compiling only one firewall: buttons should not be visible
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    openContextMenu(om, test1, tree, "Compile");
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    QPushButton *selectAll = dlg->findChild<QPushButton*>("pushButton16");
+    QPushButton *selectNone = dlg->findChild<QPushButton*>("pushButton17");
+    QVERIFY(!selectAll->isVisible());
+    QVERIFY(!selectNone->isVisible());
+    dlg->reject();
+
+    // case when compiling more than one firewall: button should be visible
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
+    tree->selectionModel()->select(
+            tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+    openContextMenu(om, test1, tree, "Compile");
+    QVERIFY(selectAll->isVisible());
+    QVERIFY(selectNone->isVisible());
+    dlg->reject();
+
+    // case when compiling cluster: buttons should be visible
+    tree->scrollToItem(cluster1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(cluster1);
+    openContextMenu(om, cluster1, tree, "Compile");
+    QVERIFY(selectAll->isVisible());
+    QVERIFY(selectNone->isVisible());
+    dlg->reject();
+
+    // case when compiling one firewall and one cluster: buttons should be visible
+    tree->scrollToItem(cluster1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(cluster1);
+    tree->selectionModel()->select(
+            tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+    openContextMenu(om, cluster1, tree, "Compile");
+    QVERIFY(selectAll->isVisible());
+    QVERIFY(selectNone->isVisible());
+    dlg->reject();
+}
+
 void instDialogCompileTest::testCompile()
 {
     if (QFileInfo("test1.fw").exists())
@@ -82,11 +212,9 @@ void instDialogCompileTest::testCompile()
         QVERIFY(QFile("test4.fw").remove());
 
     mw->findChild<QAction*>("compileAction")->trigger();
-    QTest::qWait(500);
 
     instDialog *dlg = mw->findChild<instDialog*>();
     dlg->findChild<QPushButton*>("pushButton16")->click();
-    QTest::qWait(500);
     dlg->findChild<QPushButton*>("nextButton")->click();
 
     QTreeWidget *list = dlg->findChild<QTreeWidget*>("fwWorkList");
@@ -131,6 +259,5 @@ void instDialogCompileTest::testCompile()
     QFile::remove("test2.fw");
     QFile::remove("test3.fw");
     QFile::remove("test4.fw");
-    QTest::qWait(1000);
 }
 
