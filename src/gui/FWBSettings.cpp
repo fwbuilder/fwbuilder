@@ -156,7 +156,7 @@ FWBSettings::~FWBSettings()
 {
     delete uuid_settings;
 #ifdef _WIN32
-    delete fwbuilder_putty_session;
+    delete ssh_timeout_setings_object;
 #endif
 }
 
