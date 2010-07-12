@@ -220,11 +220,11 @@ void newFirewallDialog::changed()
         f = false;
         m_dialog->use_snmp->setEnabled( f );
 #endif
-
+        m_dialog->snmpIP->setEnabled( f );
         m_dialog->snmp_community->setEnabled( f );
         m_dialog->snmpQuery->setEnabled( f );
         m_dialog->snmpProgress->setEnabled( f );
-        if (f) m_dialog->snmp_community->setFocus();
+        if ( f ) m_dialog->snmp_community->setFocus();
 
         f = m_dialog->use_manual->isChecked() || snmpPollCompleted;
         setNextEnabled( 1, f );
@@ -299,22 +299,30 @@ void newFirewallDialog::getInterfacesViaSNMP()
     getInterfacesBusy = true;
 
     InetAddr addr;
-    QString name=m_dialog->obj_name->text().toLatin1().constData();
     try
     {
-        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-        QString a = getAddrByName(name, AF_INET);
-        QApplication::restoreOverrideCursor();
-        addr = InetAddr(a.toAscii().constData());
-    } catch (FWException &ex)
+        addr = InetAddr(m_dialog->snmpIP->text().toStdString());
+    }
+    catch (FWException &ex)
     {
-        QMessageBox::warning(
-            this,"Firewall Builder",
-            tr("Address of %1 could not be obtained via DNS")
-            .arg(m_dialog->obj_name->text()),
-            "&Continue", QString::null, QString::null, 0, 1 );
-        getInterfacesBusy = false;
-        return ;
+        try
+        {
+            QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+            QString a = getAddrByName(m_dialog->snmpIP->text(), AF_INET);
+            QApplication::restoreOverrideCursor();
+            addr = InetAddr(a.toAscii().constData());
+            getInterfacesBusy = false;
+        }
+        catch (FWException &ex)
+        {
+            QMessageBox::warning(
+                this,"Firewall Builder",
+                tr("Address of %1 could not be obtained via DNS")
+                .arg(m_dialog->snmpIP->text()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+            getInterfacesBusy = false;
+            return ;
+        }
     }
 
     logger=NULL;
@@ -418,6 +426,29 @@ void newFirewallDialog::showPage(const int page)
     case 1:
     {
         changed();  // to properly enable/disable widgets
+
+        getInterfacesBusy = true;
+
+        InetAddr addr;
+        QString name=m_dialog->obj_name->text().toLatin1().constData();
+        try
+        {
+            QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+            QString a = getAddrByName(name, AF_INET);
+            m_dialog->snmpIP->setText(a);
+            QApplication::restoreOverrideCursor();
+            getInterfacesBusy = false;
+        } catch (FWException &ex)
+        {
+            QMessageBox::warning(
+                this,"Firewall Builder",
+                tr("Address of %1 could not be obtained via DNS")
+                .arg(m_dialog->obj_name->text()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+            getInterfacesBusy = false;
+            break ;
+        }
+
         break;
     }
 
