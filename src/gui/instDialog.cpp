@@ -179,7 +179,7 @@ void instDialog::show(ProjectPanel *proj,
     lastPage = -1;
     installer = NULL;
     finished = false;
-    page_1_op = install?INST_DLG_INSTALL:INST_DLG_COMPILE;
+    page_1_op = INST_DLG_COMPILE;
     compile_complete = false;
     rejectDialogFlag = false;
 
