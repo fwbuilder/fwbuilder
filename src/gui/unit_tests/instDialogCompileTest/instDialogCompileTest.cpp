@@ -159,10 +159,8 @@ void instDialogCompileTest::testSelectButtonsVisibility()
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
             dlg = dynamic_cast<instDialog*>(w);
-    QPushButton *selectAll = dlg->findChild<QPushButton*>("pushButton16");
-    QPushButton *selectNone = dlg->findChild<QPushButton*>("pushButton17");
-    QVERIFY(!selectAll->isVisible());
-    QVERIFY(!selectNone->isVisible());
+    QFrame *selectFrame = dlg->findChild<QFrame*>("selectAllNoneFrame");
+    QVERIFY(selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling more than one firewall: button should be visible
@@ -173,8 +171,7 @@ void instDialogCompileTest::testSelectButtonsVisibility()
     tree->selectionModel()->select(
             tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
     openContextMenu(om, test1, tree, "Compile");
-    QVERIFY(selectAll->isVisible());
-    QVERIFY(selectNone->isVisible());
+    QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling cluster: buttons should be visible
@@ -183,8 +180,7 @@ void instDialogCompileTest::testSelectButtonsVisibility()
         tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     tree->setCurrentItem(cluster1);
     openContextMenu(om, cluster1, tree, "Compile");
-    QVERIFY(selectAll->isVisible());
-    QVERIFY(selectNone->isVisible());
+    QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling one firewall and one cluster: buttons should be visible
@@ -195,8 +191,7 @@ void instDialogCompileTest::testSelectButtonsVisibility()
     tree->selectionModel()->select(
             tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
     openContextMenu(om, cluster1, tree, "Compile");
-    QVERIFY(selectAll->isVisible());
-    QVERIFY(selectNone->isVisible());
+    QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 }
 
