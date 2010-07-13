@@ -132,6 +132,7 @@ class instDialog : public QDialog, public FakeWizard
     bool finished;
     bool onlySelected;
     bool secondPageVisited;
+    bool canceledAll;
 
     QTextCharFormat normal_format;
     QTextCharFormat error_format;

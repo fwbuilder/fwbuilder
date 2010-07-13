@@ -1,3 +1,9 @@
+2010-07-13  Roman Bovsunivskiy <a2k0001@gmail.com>
+	* instdialogoptions_q.ui: Added "Cancell All" button to stop all
+	firewalls installations, renamed OK button to "Install"
+	* instDialog_ui_opts.cpp (instDialog::getInstOptions): added support
+	for "Cancel All" dialog result code.
+
 2010-07-12  Roman Bovsunivskiy <a2k0001@gmail.com> 
 	* instDialog_ui_opts.cpp (intDialog::fillCompileSelectList): fixed
 	wrong display of non-ascii symbols in cluster member compilation

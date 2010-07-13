@@ -230,3 +230,8 @@ QString instOptionsDialog::getUName() { return m_dialog->uname->text(); }
 QString instOptionsDialog::getPWD()   { return m_dialog->pwd->text();   }
 QString instOptionsDialog::getEPWD()  { return m_dialog->epwd->text();  }
 
+
+void instOptionsDialog::cancelAll()
+{
+    this->done(-1);
+}

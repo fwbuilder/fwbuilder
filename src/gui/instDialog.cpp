@@ -175,6 +175,7 @@ void instDialog::show(ProjectPanel *proj,
                       bool onlySelected,
                       std::set<Firewall*> fws)
 {
+    canceledAll = false;
     if (isVisible()) return;
     lastPage = -1;
     installer = NULL;
@@ -349,7 +350,7 @@ void instDialog::mainLoopInstall()
 
     enableStopButton();
 
-    if (install_fw_list.size())
+    if (install_fw_list.size() && !canceledAll)
     {
         Firewall *fw = install_fw_list.front();
 
@@ -365,6 +366,14 @@ void instDialog::mainLoopInstall()
         install_fw_list.pop_front();
         runInstaller(fw);
         return;
+    }
+    if (canceledAll)
+    {
+        foreach(Firewall *fw, install_fw_list)
+        {
+            this->opCancelled(fw);
+        }
+        install_fw_list.clear();
     }
 
     finished = true;

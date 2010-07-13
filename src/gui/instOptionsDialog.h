@@ -51,6 +51,8 @@ class instOptionsDialog : public QDialog
     
     Ui::instOptionsDialog_q *m_dialog;
 
+public slots:
+    void cancelAll();
    
 };
 
