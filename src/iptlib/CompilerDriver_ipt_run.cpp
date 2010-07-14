@@ -664,9 +664,9 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
         QFileInfo fw_file_info(fw_file_name);
         script_buffer = "";
-        script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
+        script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
         string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-        if (!remote_name.empty()) script << " " << remote_name;
+        if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
         script << "\n";
 
         /* Add additional files to manifest if specified.  Currently there
@@ -683,7 +683,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             {
                 string name = c_iter->first;
                 string dest = c_iter->second;
-                script << MANIFEST_MARKER << name;
+                script << MANIFEST_MARKER << this->escapeFileName(name.c_str());
                 if (!dest.empty()) script << " " << dest;
                 script << "\n";
             }

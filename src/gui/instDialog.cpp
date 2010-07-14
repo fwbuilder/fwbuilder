@@ -503,8 +503,8 @@ void instDialog::showPage(const int page)
                 return;
             }
 
-            if (m_dialog->stackedWidget->count() == 4 )
-                m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(3));
+            if (m_dialog->stackedWidget->count() == 3 )
+                m_dialog->stackedWidget->removeWidget(m_dialog->stackedWidget->widget(2));
 
             FirewallCodeViewer *viewer;
             if (firewalls.size() == 1)
@@ -519,6 +519,7 @@ void instDialog::showPage(const int page)
 
             viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
             QWidget *container = new QWidget(this);
+            container->setObjectName("codeViewer");
             QHBoxLayout *layout = new QHBoxLayout(container);
             layout->setContentsMargins(0,0,0,0);
             layout->setSpacing(6);

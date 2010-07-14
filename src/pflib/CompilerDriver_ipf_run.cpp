@@ -121,22 +121,22 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
+    script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
+    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
     script << endl;
 
     if (have_filter) 
     {
-        script << MANIFEST_MARKER << "  " << QFileInfo(ipf_file_name).fileName();
-        if (remote_ipf_name != ipf_file_name) script << " " << remote_ipf_name;
+        script << MANIFEST_MARKER << "  " << this->escapeFileName(QFileInfo(ipf_file_name).fileName());
+        if (remote_ipf_name != ipf_file_name) script << " " << this->escapeFileName(remote_ipf_name);
         script << endl;
     }
 
     if (have_nat) 
     {
-        script << MANIFEST_MARKER << "  " << QFileInfo(nat_file_name).fileName();
-        if (remote_nat_name != nat_file_name) script << " " << remote_nat_name;
+        script << MANIFEST_MARKER << "  " << this->escapeFileName(QFileInfo(nat_file_name).fileName());
+        if (remote_nat_name != nat_file_name) script << " " << this->escapeFileName(remote_nat_name);
         script << endl;
     }
 

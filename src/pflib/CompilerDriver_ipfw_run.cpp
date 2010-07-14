@@ -79,9 +79,9 @@ QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    script << MANIFEST_MARKER << "* " << QFileInfo(fw_file_name).fileName();
+    script << MANIFEST_MARKER << "* " << this->escapeFileName(QFileInfo(fw_file_name).fileName());
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
+    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
     script << "\n";
     script << "#" << endl;
     script << "#" << endl;

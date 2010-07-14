@@ -222,6 +222,8 @@ public:
          */
         QString formSingleRuleCompileOutput(const QString &generated_code);
         
+        static QString escapeFileName(QString fileName);
+        static QString unescapeFileName(QString fileName);
     };
 
 };

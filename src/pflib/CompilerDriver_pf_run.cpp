@@ -140,9 +140,9 @@ QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
+    script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
+    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
     script << "\n";
 
     for (map<string,string>::iterator i=conf_files.begin();
@@ -151,9 +151,9 @@ QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
         string ruleset_name = i->first;
         QString file_name = QFileInfo(i->second.c_str()).fileName();
         QString remote_file_name = remote_conf_files[ruleset_name].c_str();
-        script << MANIFEST_MARKER << "  " << file_name;
+        script << MANIFEST_MARKER << "  " << this->escapeFileName(file_name);
         if (!remote_file_name.isEmpty() && remote_file_name != file_name)
-            script << " " << remote_file_name;
+            script << " " << this->escapeFileName(remote_file_name);
         script << "\n";
     }
     return script_buffer;

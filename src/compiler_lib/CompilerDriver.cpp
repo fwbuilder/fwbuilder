@@ -1117,3 +1117,15 @@ QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_cod
     return res;
 }
 
+QString CompilerDriver::escapeFileName(QString fileName)
+{
+    // This is very simple space escaping! We should rewrite it later.
+    return fileName.replace(' ', "\\ ");
+}
+
+QString CompilerDriver::unescapeFileName(QString fileName)
+{
+    // This is very simple space unescaping! We should rewrite it later.
+    return fileName.replace("\\ ", " ");
+}
+

@@ -82,7 +82,7 @@ QString CompilerDriver_iosacl::assembleManifest(Cluster *cluster, Firewall* fw, 
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
     QString ofname = determineOutputFileName(cluster, fw, cluster_member, ".fw");
-    script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
+    script << "!" << MANIFEST_MARKER << "* " << this->escapeFileName(ofname) << endl;
     return script_buffer;
 }
 

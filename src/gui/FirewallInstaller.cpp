@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
+#include "compiler_lib/CompilerDriver.h"
 #include "FirewallInstaller.h"
 #include "instDialog.h"
 #include "FWBSettings.h"
@@ -79,18 +80,30 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
         qDebug("Manifest line: '%s'", line.toAscii().constData());
 
     int n = QString(MANIFEST_MARKER).length();
-    QStringList parts = line.mid(n).split(" ", QString::SkipEmptyParts);
-    if (parts.size() == 0) return false;
-    if (parts[0] == "*") { *main_script = true; parts.pop_front(); }
-    if (parts.size() == 0) return false;
-    *local_file_name = parts[0];
-    if (parts.size() == 1)
+    QString workline = line.split(MANIFEST_MARKER)[1];
+    if (workline.startsWith("*"))
     {
-        *remote_file_name = "";
-    } else
-    {
-        *remote_file_name = parts[1];
+        *main_script = true;
+        workline = workline.remove(0, 1).trimmed();
     }
+    QString local, remote;
+    int i = 0;
+    for(i=0; i<workline.size(); i++)
+    {
+        if (workline.at(i) == ' ' && workline.at(i-1) != '\\')
+            break;
+        else
+            local.append(workline.at(i));
+    }
+    for(; i<workline.size(); i++)
+    {
+        if (workline.at(i) == ' ' && workline.at(i-1) != '\\')
+            break;
+        else
+            remote.append(workline.at(i));
+    }
+    *local_file_name = fwcompiler::CompilerDriver::unescapeFileName(local);
+    *remote_file_name = fwcompiler::CompilerDriver::unescapeFileName(remote);
 
     if (fwbdebug)
         qDebug("local_name: '%s'  remote_name: '%s'  main_script: %d",
@@ -164,6 +177,7 @@ not root.
 
 */
 
+#include "CompilerDriver.h"
 
 bool FirewallInstaller::readManifest(const QString &script, 
                                      QMap<QString, QString> *all_files)
