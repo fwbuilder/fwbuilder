@@ -393,8 +393,9 @@ void instDialog::showPage(const int page)
         m_dialog->batchInstFlagFrame->hide();
     }
 
+    QStringList tmp;
     m_dialog->inspectGeneratedFiles->setEnabled(
-        compile_complete && page_1_op == INST_DLG_COMPILE);
+        compile_complete && page_1_op == INST_DLG_COMPILE && findFilesToInspect(tmp));
 
     if (fwbdebug)
         qDebug() << "instDialog::showPage  page "
