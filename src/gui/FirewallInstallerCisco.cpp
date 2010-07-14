@@ -219,7 +219,8 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     pre_config.setVariable("save_standby", cnf->saveStandby);
     pre_config.setVariable("version_lt_124", version_lt_124);
     pre_config.setVariable("version_ge_124", version_ge_124);
-    inst_dlg->replaceMacrosInCommand(&pre_config);
+
+    replaceMacrosInCommand(&pre_config);
 
     Configlet post_config(host_os, os_family, "installer_commands_post_config");
     post_config.removeComments();
@@ -230,7 +231,8 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     post_config.setVariable("save_standby", cnf->saveStandby);
     post_config.setVariable("version_lt_124", version_lt_124);
     post_config.setVariable("version_ge_124", version_ge_124);
-    inst_dlg->replaceMacrosInCommand(&post_config);
+
+    replaceMacrosInCommand(&post_config);
 
     ssh_object->loadPreConfigCommands(
         pre_config.expand().split("\n", QString::SkipEmptyParts) );
@@ -240,7 +242,9 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     Configlet activation(host_os, os_family, "installer_commands_reg_user");
     activation.removeComments();
-    inst_dlg->replaceMacrosInCommand(&activation);
+
+    replaceMacrosInCommand(&activation);
+
     activation.setVariable("using_scp",       cnf->useSCPForCisco);
     activation.setVariable("not_using_scp", ! cnf->useSCPForCisco);
 

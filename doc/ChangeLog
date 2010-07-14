@@ -1,5 +1,11 @@
 2010-07-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): 
+	fixed #1571 "Installer does not work if firewall object name
+	contains spaces". Installer should use escaping to make sure
+	file name with a space is correctly interpreted by the script
+	it runs on the firewall.
+
 	* DiscoveryDruid.cpp (DiscoveryDruid::loadDataFromImporter):
 	fixed #1544 "fwbuilder crashes during import of file with rtf
 	formatting data". The fix should prevent crashes in other cases

@@ -590,52 +590,6 @@ int instDialog::findFilesToInspect(QStringList &files)
     return files.size();
 }
  
-void instDialog::replaceMacrosInCommand(Configlet *conf)
-{
-/* replace macros in activation commands:
- *
- * {{$fwbpromp}}   -- "magic" prompt that installer uses to detect when it is logged in
- * {{$fwdir}}      -- directory on the firewall
- * {{$fwscript}}   -- script name on the firewall
- * {{$rbtimeout}}  -- rollbak timeout
- */
-
-/*
- * TODO: it does not make sense to split remote_script and then
- * reassemble it again from the file name and cnf.fwdir. We should set
- * variable $remote_script and use it in the configlets instead, but
- * keep $fwbscript and $fwdir for backwards compatibility
- */
-
-/*
- * remote_script is a full path, which in case of Cisco can be
- * something like "flash:file.fw". This means we have a problem with
- * QFileInfo that interprets it as path:filename on Window or just
- * file name with no directory path on Unix. As the result, fwbscript
- * becomes just "file.fw" on Windows and stays "flash:file.fw" on
- * Unix.
- */
-
-    QString fwbscript = QFileInfo(cnf.remote_script).fileName();
-    if (fwbscript.indexOf(":")!=-1) fwbscript = fwbscript.section(':', 1, 1);
-
-    if (fwbdebug)
-    {
-        qDebug() << "Macro substitutions:";
-        qDebug() << "  $fwdir=" << cnf.fwdir;
-        qDebug() << "  cnf.script=" << cnf.script;
-        qDebug() << "  cnf.remote_script=" << cnf.remote_script;
-        qDebug() << "  $fwscript=" << fwbscript;
-    }
-
-    conf->setVariable("fwbprompt", fwb_prompt);
-    conf->setVariable("fwdir", cnf.fwdir);
-    conf->setVariable("fwscript", fwbscript);
-
-    conf->setVariable("rbtimeout", cnf.rollbackTime);
-    conf->setVariable("rbtimeout_sec", cnf.rollbackTime * 60);
-}
-
 void instDialog::testRunRequested()
 {
 }

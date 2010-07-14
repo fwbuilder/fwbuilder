@@ -1117,15 +1117,30 @@ QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_cod
     return res;
 }
 
+/*
+ * Replace ' ' with '\ ' in the string. 
+ *
+ * DO NOT CHANGE WITHOUT EXTENSIVE TESTING OF THE POLICY INSTALLER !
+ *
+ * This is used in different places to deal with generated files with
+ * spaces in the name. This can happen if firewall object name has
+ * spaces. This method of escaping the space is used when we generate
+ * manifest line in the .fw file to find other generated files. The
+ * same method is also used to generate command line arguments for scp
+ * where spaces cause all sorts of problems, for example scp can't
+ * find the file to copy or issues "ambiguous target" error when
+ * remote file name has a space. Finally, the same method is used to
+ * escape space in the file name before using it for the configlet
+ * variable because this name is used in the shell script that we run
+ * on the firewall.
+ */
 QString CompilerDriver::escapeFileName(QString fileName)
 {
-    // This is very simple space escaping! We should rewrite it later.
     return fileName.replace(' ', "\\ ");
 }
 
 QString CompilerDriver::unescapeFileName(QString fileName)
 {
-    // This is very simple space unescaping! We should rewrite it later.
     return fileName.replace("\\ ", " ");
 }
 

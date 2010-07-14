@@ -32,6 +32,7 @@
 
 #include "instConf.h"
 #include "instDialog.h"
+#include "Configlet.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -102,6 +103,7 @@ public:
     void packSSHArgs(QStringList &args);
     void packSCPArgs(const QString &local_name, const QString &remote_name, QStringList &args);
     QString getActivationCmd();
+    void replaceMacrosInCommand(Configlet *configlet);
     virtual QString getDestinationDir(const QString &dir);
 
     void terminate();

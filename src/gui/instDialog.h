@@ -37,7 +37,6 @@
 #include "instOptionsDialog.h"
 #include "FirewallInstaller.h"
 #include "ProjectPanel.h"
-#include "Configlet.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -193,7 +192,6 @@ class instDialog : public QDialog, public FakeWizard
 
     QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
     bool tableHasCheckedItems();
-    void replaceMacrosInCommand(Configlet *configlet);
     QString getActivationCmd();
     
     void enableStopButton();
