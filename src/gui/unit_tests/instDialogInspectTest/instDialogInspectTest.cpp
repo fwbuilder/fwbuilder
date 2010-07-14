@@ -82,12 +82,13 @@ void instDialogInspectTest::cleanupTestCase()
 void instDialogInspectTest::closeInstallOptions()
 {
     QVERIFY(dynamic_cast<instOptionsDialog*>(app->activeModalWidget()) != NULL);
-    app->activeModalWidget()->close();
+    dynamic_cast<instOptionsDialog*>(app->activeModalWidget())->cancelAll();
     dialogClosed = true;
 }
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
+    tree->scrollToItem(item);
     for (int h=10; h<tree->height(); h+=1)
     {
         for (int w=75; w<tree->width(); w+=1)
@@ -151,9 +152,9 @@ void instDialogInspectTest::openContextMenu(ObjectManipulator *om,
              QString("Item %1 not found in the context menu").arg(actionText).toAscii().constData());
 }
 
-void instDialogInspectTest::testInspect_firewall()
+void instDialogInspectTest::testInspect(QString firewall)
 {
-    ObjectTreeViewItem *treeitem = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive).first());
+    ObjectTreeViewItem *treeitem = dynamic_cast<ObjectTreeViewItem*>(tree->findItems(firewall, Qt::MatchExactly | Qt::MatchRecursive).first());
     this->openContextMenu(om, treeitem, tree, "Install");
 
     instDialog *dlg = mw->findChild<instDialog*>();
@@ -176,57 +177,7 @@ void instDialogInspectTest::testInspect_firewall()
         QTest::qWait(50);
     }
     QTest::qWait(50);
-    QVERIFY(inspect->isEnabled());
-
-    QString oldtext = processLogDisplay->toPlainText();
-    QStackedWidget *stack = dlg->findChild<QStackedWidget*>();
-
-    QVERIFY(stack->currentIndex() == 1);
-    QTest::mouseClick(inspect, Qt::LeftButton);
-    QVERIFY(stack->currentIndex() == 3);
-    QVERIFY(back->isEnabled());
-    QVERIFY(next->isEnabled());
-
-    QTest::mouseClick(back, Qt::LeftButton);
-    QVERIFY(stack->currentIndex() == 1);
-    QVERIFY(oldtext == processLogDisplay->toPlainText());
-
-    QTest::mouseClick(inspect, Qt::LeftButton);
-    QTimer::singleShot(100, this, SLOT(closeInstallOptions()));
-    QTest::mouseClick(next, Qt::LeftButton);
-    QVERIFY(dialogClosed);
-    QVERIFY(stack->currentIndex() == 1);
-
-    dlg->reject();
-    QTest::qWait(500);
-}
-
-void instDialogInspectTest::testInspect_cluster()
-{
-    ObjectTreeViewItem *treeitem = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive).first());
-    this->openContextMenu(om, treeitem, tree, "Install");
-
-    instDialog *dlg = mw->findChild<instDialog*>();
-
-    QTest::mouseClick(dlg->findChild<QPushButton*>("pushButton16"), Qt::LeftButton);
-
-    QPushButton *back = dlg->findChild<QPushButton*>("backButton");
-    QPushButton *next = dlg->findChild<QPushButton*>("nextButton");
-
-    QPushButton *inspect = dlg->findChild<QPushButton*>("inspectGeneratedFiles");
-
-    QTest::mouseClick(next, Qt::LeftButton);
-
-    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
-    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
-
-    while (!checkProgress(list))
-    {
-        QVERIFY(!inspect->isEnabled());
-        QTest::qWait(50);
-    }
-    QTest::qWait(50);
-    QVERIFY(inspect->isEnabled());
+    Q_ASSERT(inspect->isEnabled());
 
     QString oldtext = processLogDisplay->toPlainText();
     QStackedWidget *stack = dlg->findChild<QStackedWidget*>();
@@ -241,50 +192,6 @@ void instDialogInspectTest::testInspect_cluster()
     QVERIFY(stack->currentIndex() == 1);
     QVERIFY(oldtext == processLogDisplay->toPlainText());
 
-    dlg->reject();
-    QTest::qWait(500);
-}
-
-void instDialogInspectTest::testInspect_space()
-{
-    ObjectTreeViewItem *treeitem = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("firewall name", Qt::MatchExactly | Qt::MatchRecursive).first());
-    this->openContextMenu(om, treeitem, tree, "Install");
-
-    instDialog *dlg = mw->findChild<instDialog*>();
-
-    QTest::mouseClick(dlg->findChild<QPushButton*>("pushButton16"), Qt::LeftButton);
-
-    QPushButton *back = dlg->findChild<QPushButton*>("backButton");
-    QPushButton *next = dlg->findChild<QPushButton*>("nextButton");
-
-    QPushButton *inspect = dlg->findChild<QPushButton*>("inspectGeneratedFiles");
-
-    QTest::mouseClick(next, Qt::LeftButton);
-
-    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
-    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
-
-    while (!checkProgress(list))
-    {
-        QVERIFY(!inspect->isEnabled());
-        QTest::qWait(50);
-    }
-    QTest::qWait(50);
-    QVERIFY(inspect->isEnabled());
-
-    QString oldtext = processLogDisplay->toPlainText();
-    QStackedWidget *stack = dlg->findChild<QStackedWidget*>();
-
-    QVERIFY(stack->currentIndex() == 1);
-    QTest::mouseClick(inspect, Qt::LeftButton);
-    QVERIFY(stack->currentIndex() == 3);
-    QVERIFY(back->isEnabled());
-    QVERIFY(next->isEnabled());
-
-    QTest::mouseClick(back, Qt::LeftButton);
-    QVERIFY(stack->currentIndex() == 1);
-    QVERIFY(oldtext == processLogDisplay->toPlainText());
-
     QTest::mouseClick(inspect, Qt::LeftButton);
     QTimer::singleShot(100, this, SLOT(closeInstallOptions()));
     QTest::mouseClick(next, Qt::LeftButton);
@@ -292,4 +199,26 @@ void instDialogInspectTest::testInspect_space()
     QVERIFY(stack->currentIndex() == 1);
 
     dlg->reject();
+    QTest::qWait(500);
+}
+
+void instDialogInspectTest::testInspect_firewall()
+{
+    testInspect("test1");
+}
+
+void instDialogInspectTest::testInspect_cluster()
+{
+    testInspect("cluster1");
+}
+
+void instDialogInspectTest::testInspect_space()
+{
+    testInspect("firewall name");
+}
+
+void instDialogInspectTest::testInspect_ascii()
+{
+
+    testInspect("firewall !@#$%^&()-+{},;");
 }

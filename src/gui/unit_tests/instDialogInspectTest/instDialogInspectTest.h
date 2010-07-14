@@ -54,11 +54,13 @@ private slots:
     void testInspect_cluster();
     void testInspect_firewall();
     void testInspect_space();
+    void testInspect_ascii();
 public slots:
     void closeInstallOptions();
     void closeContextMenu();
     void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item,
                          ObjectTreeView *tree, const QString &actionText);
+    void testInspect(QString fwname);
 };
 
 #endif // INSTDIALOGTEST_H
