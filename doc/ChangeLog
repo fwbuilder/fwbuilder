@@ -1,3 +1,10 @@
+2010-07-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::loadDataFromImporter):
+	fixed #1544 "fwbuilder crashes during import of file with rtf
+	formatting data". The fix should prevent crashes in other cases
+	when import was unsuccessful.
+
 2010-07-13  Roman Bovsunivskiy <a2k0001@gmail.com>
 	* instdialogoptions_q.ui: Added "Cancell All" button to stop all
 	firewalls installations, renamed OK button to "Install"

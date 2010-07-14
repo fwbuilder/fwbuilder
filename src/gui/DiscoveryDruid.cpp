@@ -1315,24 +1315,28 @@ void DiscoveryDruid::loadDataFromImporter()
     if (imp!=NULL)
     {
         Firewall *fw = imp->finalize();
-        ProjectPanel *pp = mw->activeProject();
-        QString filename = pp->getFileName();
-        //pp->m_panel->om->reload();
-        //pp->m_panel->om->autoRenameChildren(fw, "");
+        if (fw) // fw can be NULL if import was uncussessful
+        {
 
-        QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
-        if (mw->isEditorVisible())
+            ProjectPanel *pp = mw->activeProject();
+            QString filename = pp->getFileName();
+            //pp->m_panel->om->reload();
+            //pp->m_panel->om->autoRenameChildren(fw, "");
+
+            QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+            if (mw->isEditorVisible())
+                QCoreApplication::postEvent(
+                    mw, new openObjectInEditorEvent(filename, fw->getId()));
             QCoreApplication::postEvent(
-                mw, new openObjectInEditorEvent(filename, fw->getId()));
-        QCoreApplication::postEvent(
-            mw, new showObjectInTreeEvent(filename, fw->getId()));
+                mw, new showObjectInTreeEvent(filename, fw->getId()));
 
-        // Open first created Policy ruleset object
-        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
-        if (first_policy)
-            QCoreApplication::postEvent(
-                mw, new openRulesetEvent(filename, first_policy->getId()));
+            // Open first created Policy ruleset object
+            FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
+            if (first_policy)
+                QCoreApplication::postEvent(
+                    mw, new openRulesetEvent(filename, first_policy->getId()));
 
+        }
     }
 }
 
