@@ -47,6 +47,7 @@ class instDialogInspectTest : public QObject
     bool dialogClosed;
     ObjectManipulator *om;
     ObjectTreeView *tree;
+    QStringList filesToCleanup;
 private slots:
     void initTestCase();
     void cleanupTestCase();

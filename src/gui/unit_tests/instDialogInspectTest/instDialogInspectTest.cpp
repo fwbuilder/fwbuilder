@@ -69,14 +69,9 @@ void instDialogInspectTest::initTestCase()
 
 void instDialogInspectTest::cleanupTestCase()
 {
-    if (QFileInfo("test1.fw").exists())
-        QVERIFY(QFile::remove("test1.fw"));
-    if (QFileInfo("test2.fw").exists())
-        QVERIFY(QFile::remove("test2.fw"));
-    if (QFileInfo("test3.fw").exists())
-        QVERIFY(QFile::remove("test3.fw"));
-    if (QFileInfo("test4.fw").exists())
-        QVERIFY(QFile::remove("test4.fw"));
+    foreach(QString filename, filesToCleanup)
+        if (QFileInfo(filename).exists())
+           QVERIFY(QFile::remove(filename));
 }
 
 void instDialogInspectTest::closeInstallOptions()
@@ -154,6 +149,7 @@ void instDialogInspectTest::openContextMenu(ObjectManipulator *om,
 
 void instDialogInspectTest::testInspect(QString firewall)
 {
+    filesToCleanup.append(firewall+".fw");
     ObjectTreeViewItem *treeitem = dynamic_cast<ObjectTreeViewItem*>(tree->findItems(firewall, Qt::MatchExactly | Qt::MatchRecursive).first());
     this->openContextMenu(om, treeitem, tree, "Install");
 
