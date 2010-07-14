@@ -30,6 +30,7 @@
 
 #include "FWBTree.h"
 #include "FWWindow.h"
+#include "ObjectManipulator.h"
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "events.h"
@@ -44,14 +45,20 @@ class instDialogInspectTest : public QObject
 {
     Q_OBJECT;
     bool dialogClosed;
+    ObjectManipulator *om;
+    ObjectTreeView *tree;
 private slots:
     void initTestCase();
     void cleanupTestCase();
 
     void testInspect_cluster();
     void testInspect_firewall();
+    void testInspect_space();
 public slots:
     void closeInstallOptions();
+    void closeContextMenu();
+    void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item,
+                         ObjectTreeView *tree, const QString &actionText);
 };
 
 #endif // INSTDIALOGTEST_H
