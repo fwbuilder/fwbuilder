@@ -55,6 +55,7 @@ private slots:
     void testInspect_firewall();
     void testInspect_space();
     void testInspect_ascii();
+    void testInspect_russian();
 public slots:
     void closeInstallOptions();
     void closeContextMenu();

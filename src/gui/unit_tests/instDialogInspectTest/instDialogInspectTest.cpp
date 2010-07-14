@@ -222,3 +222,9 @@ void instDialogInspectTest::testInspect_ascii()
 
     testInspect("firewall !@#$%^&()-+{},;");
 }
+
+void instDialogInspectTest::testInspect_russian()
+{
+
+    testInspect("русский фаерволл");
+}
