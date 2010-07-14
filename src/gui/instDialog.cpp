@@ -364,7 +364,7 @@ void instDialog::mainLoopInstall()
         }
 
         install_fw_list.pop_front();
-        runInstaller(fw);
+        runInstaller(fw, install_fw_list.size()>0);
         return;
     }
     if (canceledAll)

@@ -52,12 +52,14 @@
 using namespace std;
 using namespace libfwbuilder;
 
-instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
+instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cancelAllVisible) :
     QDialog(parent)
 {
     m_dialog = new Ui::instOptionsDialog_q;
     m_dialog->setupUi(this);
     cnf = _cnf;
+
+    this->m_dialog->cancelAllButton->setVisible(cancelAllVisible);
 
     int fw_id = -1;
     if (cnf->fwobj)

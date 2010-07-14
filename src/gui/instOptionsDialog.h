@@ -40,7 +40,7 @@ class instOptionsDialog : public QDialog
     instConf *cnf;
 
  public:
-    instOptionsDialog(QWidget *parent, instConf *_cnf);
+    instOptionsDialog(QWidget *parent, instConf *_cnf, bool cancelAllVisible = true);
     ~instOptionsDialog();
 
     void savePassword();

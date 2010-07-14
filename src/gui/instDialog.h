@@ -189,7 +189,7 @@ class instDialog : public QDialog, public FakeWizard
     
     void displayCommand(const QStringList &args);
     bool runCompiler(libfwbuilder::Firewall *fw);
-    bool runInstaller(libfwbuilder::Firewall *fw);
+    bool runInstaller(libfwbuilder::Firewall *fw, bool cancelAllVisible = true);
 
     QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
     bool tableHasCheckedItems();
@@ -210,7 +210,7 @@ protected:
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
 
-    bool getInstOptions(libfwbuilder::Firewall *fw);
+    bool getInstOptions(libfwbuilder::Firewall *fw, bool cancelAllVisible = true);
     bool getBatchInstOptions(libfwbuilder::Firewall *first_fw);
     
     void prepareInstConf(libfwbuilder::Firewall *fw);

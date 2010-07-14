@@ -1045,7 +1045,7 @@ bool instDialog::tableHasCheckedItems()
 /*
  * getInstOptions() fills attributes of the cnf object
  */
-bool instDialog::getInstOptions(Firewall *fw)
+bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
 {
     cnf.fwobj = fw;
 
@@ -1061,7 +1061,7 @@ bool instDialog::getInstOptions(Firewall *fw)
     {
         // In non-batch mode installer options from the dialog
         // overwrite options set in the fw object itself.
-        instOptionsDialog *inst_opt_dlg = new instOptionsDialog(this, &cnf);
+        instOptionsDialog *inst_opt_dlg = new instOptionsDialog(this, &cnf, cancelAllVisible);
         int resultCode = inst_opt_dlg->exec();
         // 0 - rejected
         // 1 - accepted
