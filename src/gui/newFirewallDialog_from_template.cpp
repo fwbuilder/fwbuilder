@@ -25,6 +25,7 @@
 
 #include "../../config.h"
 #include "global.h"
+#include "events.h"
 #include "platforms.h"
 
 #include "newFirewallDialog.h"
@@ -33,6 +34,7 @@
 #include "FWBTree.h"
 #include "InterfaceEditorWidget.h"
 #include "InterfacesTabWidget.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -311,6 +313,8 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
                                                     InetAddrMask old_net,
                                                     InetAddrMask new_net)
 {
+    QString filename = mw->activeProject()->getFileName();
+
     // Find all matching Network and NetworkIPv6
     // objects used in the rules
     FindNetwork pred(old_net);
@@ -330,6 +334,11 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
         new_net_obj->setName(new_net_name.toStdString());
         new_net_obj->setAddress(*(new_net.getAddressPtr()));
         new_net_obj->setNetmask(*(new_net.getNetmaskPtr()));
+
+        QCoreApplication::postEvent(
+            mw, new insertObjectInTreeEvent(filename,
+                                            parent->getId(),
+                                            new_net_obj->getId()));
 
         for (list<FWObject*>::iterator it=res.begin();
              it!=res.end(); ++it)

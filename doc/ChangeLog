@@ -1,3 +1,9 @@
+2010-07-15  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* newFirewallDialog_from_template.cpp (newFirewallDialog::replaceReferencesToNetworks):
+	fixed #1582 'tree is not refreshed after address substitutions in
+	"new firewall" wizard'
+
 2010-07-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): 
