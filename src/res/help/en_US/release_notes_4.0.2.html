@@ -232,6 +232,82 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixed source forge bug #3028740 "inspect/install does not like
+      spaces in Firewall object name". compiling firewall objects with
+      name that contains white space produces files with spaces in the
+      name which confused "inspect generated files" function and
+      built-in policy installer. Names with spaces are now supported.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      sorting of filewall and cluster items in compile/install dialog
+	is now case insensitive.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      hiding "Select all" and "Select none" buttons in the first page
+      of the compile/install wizard when there is only one firewall in
+      list.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      renamed buttons  "All"  to "Select all" and "None" to "Select none"
+      in the first page of the compile/install wizard.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SourceForge bug #3027272: "default values taken from
+      unexpected sources". When new firewall object was created using
+      "Import Policy" function, parts of its configuration were taken
+      from default settings of an unexpected host OS.
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      fixed wrong display of non-ascii symbols in cluster member
+      compilation warning.
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      firewall names are now resolved to IP address in the SNMP
+      discovery. Added new input element for firewall IP address to
+      use for SNMP interface discovery when firewall object name does
+      not match DNS record..
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added "Cancell All" button to the installer options dialog to
+      stop all firewalls installations and renamed OK button to
+      "Install". The new "Cancel All" button lets user interrupt
+      installation process when they are in the middle of pushing
+      configuration to many firewalls.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1582 'tree is not refreshed after address substitutions
+      in "new firewall" wizard'
+    </p>
+  </li>
+
 </ul>
 
 
@@ -330,6 +406,14 @@
     <p>
       fixed SF bug 3017084 "compiler adds extra quote characters to
       log-prefix string".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1544 "fwbuilder crashes during import of file with rtf
+      formatting data". The fix should prevent crashes in other cases
+      when import was unsuccessful.
     </p>
   </li>
 
