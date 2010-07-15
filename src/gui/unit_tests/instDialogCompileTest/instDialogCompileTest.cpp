@@ -73,15 +73,8 @@ bool checkProgress(QTreeWidget *list)
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
-    for (int h=10; h<tree->height(); h+=1)
-    {
-        for (int w=75; w<tree->width(); w+=1)
-        {
-            if(tree->itemAt(w,h) == item)
-                return QPoint(w, h);
-        }
-    }
-    return QPoint(-1,-1);
+     QRect rect = tree->visualItemRect(item);
+     return QPoint(rect.x() + 1, rect.y() + 1);
 }
 
 void instDialogCompileTest::closeContextMenu()
@@ -104,11 +97,13 @@ void instDialogCompileTest::closeContextMenu()
  * fails the test.
  */
 void instDialogCompileTest::openContextMenu(ObjectManipulator *om,
-                                               ObjectTreeViewItem *item, ObjectTreeView *tree,
-                                               const QString &actionText)
+                                            ObjectTreeViewItem *item,
+                                            ObjectTreeView *tree,
+                                            const QString &actionText)
 {
     QTimer::singleShot(100, this, SLOT(closeContextMenu()));
     om->contextMenuRequested(findItemPos(item, tree));
+
     bool found_menu_item = false;
     QMenu *menu = NULL;
     foreach(QWidget *w, QApplication::allWidgets())
@@ -139,8 +134,11 @@ void instDialogCompileTest::openContextMenu(ObjectManipulator *om,
 
 void instDialogCompileTest::testSelectButtonsVisibility()
 {
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectTreeView *tree = om->getCurrentObjectTree();
+
     tree->expandAll();
+
     ObjectTreeViewItem *test1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     ObjectTreeViewItem *test2 =
@@ -148,49 +146,76 @@ void instDialogCompileTest::testSelectButtonsVisibility()
     ObjectTreeViewItem *cluster1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
 
+
     // case when compiling only one firewall: buttons should not be visible
+    tree->clearSelection();
+
     tree->scrollToItem(test1);
-    tree->selectionModel()->select(
-        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    test1->setSelected(true);
     tree->setCurrentItem(test1);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+
+    //QTest::qWait(2000);
+
     openContextMenu(om, test1, tree, "Compile");
+
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
             dlg = dynamic_cast<instDialog*>(w);
     QFrame *selectFrame = dlg->findChild<QFrame*>("selectAllNoneFrame");
+
+    QTest::qWait(1000);
     QVERIFY(selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling more than one firewall: button should be visible
+
+    tree->clearSelection();
+
     tree->scrollToItem(test1);
-    tree->selectionModel()->select(
-        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    test1->setSelected(true);
     tree->setCurrentItem(test1);
-    tree->selectionModel()->select(
-            tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+    test2->setSelected(true);
+
     openContextMenu(om, test1, tree, "Compile");
+
+    //QTest::qWait(2000);
+
+
+    QTest::qWait(1000);
     QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling cluster: buttons should be visible
+
+    tree->clearSelection();
+
     tree->scrollToItem(cluster1);
-    tree->selectionModel()->select(
-        tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    cluster1->setSelected(true);
     tree->setCurrentItem(cluster1);
+
     openContextMenu(om, cluster1, tree, "Compile");
+
+    QTest::qWait(1000);
     QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 
     // case when compiling one firewall and one cluster: buttons should be visible
+
+    tree->clearSelection();
+
     tree->scrollToItem(cluster1);
-    tree->selectionModel()->select(
-        tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    cluster1->setSelected(true);
     tree->setCurrentItem(cluster1);
-    tree->selectionModel()->select(
-            tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+    test2->setSelected(true);
+
     openContextMenu(om, cluster1, tree, "Compile");
+
+    QTest::qWait(1000);
     QVERIFY(!selectFrame->isHidden());
     dlg->reject();
 }
