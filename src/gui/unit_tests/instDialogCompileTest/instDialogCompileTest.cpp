@@ -230,6 +230,8 @@ void instDialogCompileTest::testCompile()
         QVERIFY(QFile("test3.fw").remove());
     if (QFileInfo("test4.fw").exists())
         QVERIFY(QFile("test4.fw").remove());
+    if (QFileInfo("pf firewall.fw").exists())
+        QVERIFY(QFile("pf firewall.fw").remove());
 
     mw->findChild<QAction*>("compileAction")->trigger();
 
@@ -275,9 +277,14 @@ void instDialogCompileTest::testCompile()
     QVERIFY(QFileInfo("test2.fw").exists() && QFileInfo("test2.fw").size());
     QVERIFY(QFileInfo("test3.fw").exists() && QFileInfo("test3.fw").size());
     QVERIFY(QFileInfo("test4.fw").exists() && QFileInfo("test4.fw").size());
+    QVERIFY(QFileInfo("pf firewall.fw").exists() &&
+            QFileInfo("pf firewall.conf").exists() &&
+            QFileInfo("pf firewall.fw").size());
     QFile::remove("test1.fw");
     QFile::remove("test2.fw");
     QFile::remove("test3.fw");
     QFile::remove("test4.fw");
+    QFile::remove("pf firewall.fw");
+    QFile::remove("pf firewall.conf");
 }
 
