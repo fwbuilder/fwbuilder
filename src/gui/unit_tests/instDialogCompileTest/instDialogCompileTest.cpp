@@ -232,6 +232,8 @@ void instDialogCompileTest::testCompile()
         QVERIFY(QFile("test4.fw").remove());
     if (QFileInfo("pf firewall.fw").exists())
         QVERIFY(QFile("pf firewall.fw").remove());
+    if (QFileInfo("ipfilter firewall.fw").exists())
+        QVERIFY(QFile("ipfilter firewall.fw").remove());
 
     mw->findChild<QAction*>("compileAction")->trigger();
 
@@ -279,12 +281,22 @@ void instDialogCompileTest::testCompile()
     QVERIFY(QFileInfo("test4.fw").exists() && QFileInfo("test4.fw").size());
     QVERIFY(QFileInfo("pf firewall.fw").exists() &&
             QFileInfo("pf firewall.conf").exists() &&
-            QFileInfo("pf firewall.fw").size());
+            QFileInfo("pf firewall.fw").size() &&
+            QFileInfo("pf firewall.conf").size());
+    QVERIFY(QFileInfo("ipfilter firewall.fw").exists() &&
+            QFileInfo("ipfilter firewall-ipf.conf").exists() &&
+            QFileInfo("ipfilter firewall-nat.conf").exists() &&
+            QFileInfo("ipfilter firewall.fw").size() &&
+            QFileInfo("ipfilter firewall-ipf.conf").size() &&
+            QFileInfo("ipfilter firewall-nat.conf").size());
     QFile::remove("test1.fw");
     QFile::remove("test2.fw");
     QFile::remove("test3.fw");
     QFile::remove("test4.fw");
     QFile::remove("pf firewall.fw");
     QFile::remove("pf firewall.conf");
+    QFile::remove("ipfilter firewall.fw");
+    QFile::remove("ipfilter firewall-ipf.conf");
+    QFile::remove("ipfilter firewall-nat.conf");
 }
 
