@@ -72,12 +72,12 @@ reset_all() {
 # See how we were called.
 # For backwards compatibility missing argument is equivalent to 'start'
 
-test -z "$1" && {
-    $0 start
-    exit $?
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
 }
 
-case "$1" in
+case "$cmd" in
     start)
         log "Activating firewall script generated {{$timestamp}} by {{$user}}"
         check_tools
