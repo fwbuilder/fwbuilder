@@ -1068,8 +1068,11 @@ void ProjectPanel::registerObjectToUpdateInTree(FWObject *o, bool update_subtree
                  << "o=" << o->getName().c_str()
                  << "update_subtree=" << update_subtree
                  << "updateObjectsInTreePool.size()=" << updateObjectsInTreePool.size();
-    updateObjectsInTreePool[o->getId()] = update_subtree;
-    QTimer::singleShot(0, this, SLOT(updateObjectInTree()));
+    if (updateObjectsInTreePool.find(o->getId()) == updateObjectsInTreePool.end())
+    {
+        updateObjectsInTreePool[o->getId()] = update_subtree;
+        QTimer::singleShot(0, this, SLOT(updateObjectInTree()));
+    }
 }
 
 void ProjectPanel::updateObjectInTree()
@@ -1090,8 +1093,15 @@ void ProjectPanel::updateObjectInTree()
 
 void ProjectPanel::registerModifiedObject(FWObject *o)
 {
-    lastModifiedTimestampChangePool.insert(o->getId());
-    QTimer::singleShot(0, this, SLOT(updateLastModifiedTimestampForAllFirewalls()));
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::registerModifiedObject "
+                 << "lastModifiedTimestampChangePool.size()=" << lastModifiedTimestampChangePool.size()
+                 << "o=" << o->getName().c_str();
+    if (lastModifiedTimestampChangePool.find(o->getId()) == lastModifiedTimestampChangePool.end())
+    {
+        lastModifiedTimestampChangePool.insert(o->getId());
+        QTimer::singleShot(0, this, SLOT(updateLastModifiedTimestampForAllFirewalls()));
+    }
 }
 
 void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()

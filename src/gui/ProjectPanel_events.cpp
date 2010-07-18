@@ -129,7 +129,7 @@ bool ProjectPanel::event(QEvent *event)
                 {
                     f->updateLastModifiedTimestamp();
                     QCoreApplication::postEvent(
-                        this, new updateObjectInTreeEvent(data_file,
+                        mw, new updateObjectInTreeEvent(data_file,
                                                           f->getId()));
                 }
                 registerModifiedObject(obj);
@@ -175,7 +175,7 @@ bool ProjectPanel::event(QEvent *event)
                 }
 
                 QCoreApplication::postEvent(
-                    this, new updateObjectInTreeEvent(data_file, obj_id));
+                    mw, new updateObjectInTreeEvent(data_file, obj_id));
 
                 // QCoreApplication::postEvent(
                 //     this, new reloadRulesetEvent(data_file));
@@ -203,7 +203,7 @@ bool ProjectPanel::event(QEvent *event)
                 {
                     Firewall::cast(obj)->updateLastCompiledTimestamp();
                     QCoreApplication::postEvent(
-                        this, new updateObjectInTreeEvent(data_file, obj_id));
+                        mw, new updateObjectInTreeEvent(data_file, obj_id));
                     ev->accept();
                     return true;
                 }
@@ -214,7 +214,7 @@ bool ProjectPanel::event(QEvent *event)
                 {
                     Firewall::cast(obj)->updateLastInstalledTimestamp();
                     QCoreApplication::postEvent(
-                        this, new updateObjectInTreeEvent(data_file, obj_id));
+                        mw, new updateObjectInTreeEvent(data_file, obj_id));
                     ev->accept();
                     return true;
                 }
