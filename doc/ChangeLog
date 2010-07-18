@@ -1,3 +1,9 @@
+2010-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid): fixed #1597
+	import method "import configuration of a firewall" is disabled on
+	the first page of the discovery druid
+
 2010-07-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* newFirewallDialog_from_template.cpp (newFirewallDialog::replaceReferencesToNetworks):

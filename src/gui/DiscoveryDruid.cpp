@@ -163,8 +163,6 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     m_dialog->dm_usesnmp->setEnabled(false);
 #endif
 
-    m_dialog->dm_import_config->setEnabled(false);
-
     restore();
 
     importPlatformChanged(m_dialog->import_platform->currentIndex());
