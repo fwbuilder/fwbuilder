@@ -1,3 +1,9 @@
+2010-07-19  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* objects_init.xml.in: fixed bug #3031721 "Qt has caught an
+	exception thrown from an event handler." The "Standard" objects
+	library was made read-write in one of the earlier builds
+
 2010-07-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid): fixed #1597
