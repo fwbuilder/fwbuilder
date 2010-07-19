@@ -354,17 +354,20 @@ void newHostDialog::showPage(const int page)
     {
     case SNMP_PAGE:
         changed();  // to properly enable/disable widgets
+        m_dialog->nextButton->setDefault(true);
         break;
 
     case MANUAL_PAGE:
     {
         setNextEnabled( MANUAL_PAGE, false );
         setFinishEnabled( MANUAL_PAGE, true );
+        m_dialog->finishButton->setDefault(true);
         break;
     }
 
     case TEMPLATES_PAGE:
     {
+        m_dialog->finishButton->setDefault(true);
         setFinishEnabled( TEMPLATES_PAGE, true );
 /* load templates if not loaded */
 

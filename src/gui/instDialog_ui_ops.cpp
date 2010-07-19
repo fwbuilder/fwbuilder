@@ -1103,6 +1103,7 @@ bool instDialog::getBatchInstOptions(Firewall *first_fw)
     {
         stopProcessFlag = true;
         this->m_dialog->finishButton->setEnabled(true);
+        this->m_dialog->finishButton->setDefault(true);
         foreach(Firewall *fw, this->install_fw_list)
             this->opCancelled(fw);
         return false;

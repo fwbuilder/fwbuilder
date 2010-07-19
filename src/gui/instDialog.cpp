@@ -325,6 +325,7 @@ void instDialog::mainLoopCompile()
             compile_complete = true;
             finished = true;
             setFinishEnabled(currentPage(), true);
+            this->m_dialog->finishButton->setDefault(true);
 
             QStringList files;
             int n = findFilesToInspect(files);
@@ -378,6 +379,7 @@ void instDialog::mainLoopInstall()
 
     finished = true;
     setFinishEnabled(currentPage(), true);
+    this->m_dialog->finishButton->setDefault(true);
     disableStopButton();
 }
 
@@ -417,6 +419,7 @@ void instDialog::showPage(const int page)
         setAppropriate(1, tableHasCheckedItems());
         setNextEnabled(page, tableHasCheckedItems());
         m_dialog->selectTable->setFocus();
+        m_dialog->nextButton->setDefault(true);
         break;
     }
 
@@ -462,6 +465,7 @@ void instDialog::showPage(const int page)
             {
                 setNextEnabled(page, true);
                 setBackEnabled(page, true);
+                m_dialog->nextButton->setDefault(true);
             } else
             {
                 mw->fileSave();
@@ -540,6 +544,10 @@ void instDialog::showPage(const int page)
 
             setNextEnabled(page, !compile_only);
             setBackEnabled(page, true);
+            if (compile_only)
+                m_dialog->finishButton->setDefault(true);
+            else
+                m_dialog->nextButton->setDefault(true);
 
             break;
         }

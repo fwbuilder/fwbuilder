@@ -581,12 +581,21 @@
         <property name="text">
          <string>&lt; &amp;Back</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="nextButton">
         <property name="text">
          <string>&amp;Next &gt;</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -598,6 +607,9 @@
         <property name="text">
          <string>&amp;Finish</string>
         </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
         <property name="flat">
          <bool>false</bool>
         </property>
@@ -607,6 +619,9 @@
        <widget class="QPushButton" name="cancelButton">
         <property name="text">
          <string>&amp;Cancel</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

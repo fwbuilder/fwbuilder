@@ -81,6 +81,9 @@
         <property name="text">
          <string>&lt; &amp;Back</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -110,6 +113,9 @@
        <widget class="QPushButton" name="cancelButton">
         <property name="text">
          <string>&amp;Cancel</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
