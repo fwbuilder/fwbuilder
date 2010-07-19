@@ -170,8 +170,11 @@ p, li { white-space: pre-wrap; }
        <property name="text">
         <string>Next Tip</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
        <property name="default">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="flat">
         <bool>false</bool>
@@ -185,6 +188,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="autoDefault">
         <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
