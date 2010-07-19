@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>577</width>
-    <height>774</height>
+    <width>581</width>
+    <height>592</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -51,7 +51,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page1">
       <layout class="QGridLayout" name="gridLayout">
@@ -202,7 +202,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>210</height>
+           <height>1</height>
           </size>
          </property>
         </spacer>
