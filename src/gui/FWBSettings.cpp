@@ -37,6 +37,7 @@
 #include <qapplication.h>
 
 #include <QDir>
+#include <QMainWindow>
 #include <QDesktopWidget>
 #include <QUuid>
 #include <QRegExp>
@@ -570,6 +571,12 @@ void FWBSettings::restoreGeometry(QWidget *w)
 // get geometry of the screen that contains mw
     QRect sg = d->screenGeometry(mw);
 
+    if (width > sg.width() || height > sg.height())
+    {
+        w->showMaximized();
+        return;
+    }
+
     if (x+width > sg.width())   x=sg.width()-width;
     if (y+height > sg.height()) y=sg.height()-height;
     if (x<0)                    x=(sg.width()-width)/2;
@@ -599,6 +606,12 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
     QDesktopWidget *d = QApplication::desktop();
 // get geometry of the screen that contains mw
     QRect sg = d->screenGeometry(mw);
+
+    if (width > sg.width() || height > sg.height())
+    {
+        w->showMaximized();
+        return;
+    }
 
     if (x+width > sg.width())   x=sg.width()-width;
     if (y+height > sg.height()) y=sg.height()-height;
