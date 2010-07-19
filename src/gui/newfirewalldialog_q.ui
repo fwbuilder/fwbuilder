@@ -51,7 +51,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page1">
       <layout class="QGridLayout" name="gridLayout">
@@ -387,19 +387,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label658">
-         <property name="text">
-          <string>Click 'Next' when done.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="InterfacesTabWidget" name="interfaceEditor1">
          <property name="currentIndex">
           <number>0</number>
@@ -428,7 +415,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QFrame" name="frame160">
          <property name="frameShape">
           <enum>QFrame::Box</enum>
@@ -495,19 +482,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label668">
-         <property name="text">
-          <string>Click 'Finish' when done.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
         </widget>
        </item>
        <item row="0" column="0">

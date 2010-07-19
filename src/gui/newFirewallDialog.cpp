@@ -157,6 +157,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     this->m_dialog->interfaceEditor1->closeTab();
     this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
 
+    this->resize(this->width(), this->minimumHeight());
     if (this->height() > app->desktop()->height()*0.9)
         this->resize(this->width(), app->desktop()->height()*0.9);
 
