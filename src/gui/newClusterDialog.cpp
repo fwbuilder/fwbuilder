@@ -135,6 +135,7 @@ void newClusterDialog::showPage(const int page, bool blank)
 
         setNextEnabled(FIREWALLS_PAGE, !this->m_dialog->obj_name->text().isEmpty());
         setFinishEnabled(FIREWALLS_PAGE, false);
+        m_dialog->nextButton->setDefault(true);
         break;
     }
     case INTERFACES_PAGE:
@@ -150,6 +151,7 @@ void newClusterDialog::showPage(const int page, bool blank)
         }
         setNextEnabled(INTERFACES_PAGE, true);
         setFinishEnabled(INTERFACES_PAGE, false);
+        m_dialog->nextButton->setDefault(true);
         break;
     }
     case INTERFACEEDITOR_PAGE:
@@ -186,6 +188,7 @@ void newClusterDialog::showPage(const int page, bool blank)
         }
         setNextEnabled(INTERFACEEDITOR_PAGE, true);
         setFinishEnabled(INTERFACEEDITOR_PAGE, false);
+        m_dialog->nextButton->setDefault(true);
         break;
     }
     case POLICY_PAGE:
@@ -211,6 +214,7 @@ void newClusterDialog::showPage(const int page, bool blank)
         }
         setNextEnabled(POLICY_PAGE, true);
         setFinishEnabled(POLICY_PAGE, false);
+        m_dialog->nextButton->setDefault(true);
         break;
     }
     case SUMMARY_PAGE:
@@ -289,6 +293,7 @@ void newClusterDialog::showPage(const int page, bool blank)
 
         setNextEnabled(SUMMARY_PAGE, false);
         setFinishEnabled(SUMMARY_PAGE, true);
+        m_dialog->finishButton->setDefault(true);
         break;
     }
     }

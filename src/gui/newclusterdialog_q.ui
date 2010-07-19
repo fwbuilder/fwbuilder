@@ -88,6 +88,9 @@
         <property name="text">
          <string>&amp;Next &gt;</string>
         </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
         <property name="flat">
          <bool>false</bool>
         </property>
