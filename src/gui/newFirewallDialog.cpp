@@ -426,6 +426,7 @@ void newFirewallDialog::showPage(const int page)
             delete tmpldb;
             tmpldb = NULL;
         }
+        m_dialog->nextButton->setDefault(true);
         break;
 
     case 1:
@@ -453,7 +454,7 @@ void newFirewallDialog::showPage(const int page)
             getInterfacesBusy = false;
             break ;
         }
-
+        m_dialog->nextButton->setDefault(true);
         break;
     }
 
@@ -478,6 +479,7 @@ void newFirewallDialog::showPage(const int page)
  */
             setNextEnabled( 2, false );
             setFinishEnabled( 2, true );
+            m_dialog->finishButton->setDefault(true);
         }
         break;
     }
@@ -495,6 +497,7 @@ void newFirewallDialog::showPage(const int page)
 
         setNextEnabled( 3, false );
         setFinishEnabled( 3, true );
+        m_dialog->finishButton->setDefault(true);
         break;
     }
 
@@ -572,6 +575,8 @@ void newFirewallDialog::showPage(const int page)
         }
         m_dialog->templateList->setFocus();
         m_dialog->templateList->setCurrentItem(0);
+        m_dialog->finishButton->setDefault(false);
+        m_dialog->nextButton->setDefault(true);
         break;
     }
 
@@ -598,6 +603,7 @@ void newFirewallDialog::showPage(const int page)
         sort(interfaces.begin(), interfaces.end(), interfaceCompare);
         foreach(Interface* intr, interfaces)
             m_dialog->interfaceEditor2->addInterface(intr);
+        m_dialog->finishButton->setDefault(true);
     }
     }
 }
