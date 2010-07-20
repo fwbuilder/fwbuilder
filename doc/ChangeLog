@@ -1,5 +1,13 @@
 2010-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* routing_functions: added a copy of the routing_functions
+	configlet to the dd-wrt-nvram and dd-wrt-jjfs because newest
+	versions of DD-WRT lack mktemp. The original routing_functions
+	configlet does not use mktemp either, but Gentoo (and possibly
+	other distros) ship patched version that needs mktemp which breaks
+	fwbuilder generated script on these versions of DD-WRT. Hopefully
+	they won't patch the copy of routing_functions configlet.
+
 	* StartTipDialog.cpp (StartTipDialog::StartTipDialog): fixed #1603
 	"Welcome dialog should show full version of the program".
 
