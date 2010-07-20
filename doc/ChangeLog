@@ -1,3 +1,11 @@
+2010-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* set version to 4.1.0 and version of the data file format to
+	"17". Data files need to be upgraded. Upgrade script changes the
+	version and makes sure Standard objects library is read-only. Some
+	users may have this library configured read-write in their data
+	files because of a bug in the early versions of fwbuilder 4.
+
 2010-07-19 Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* DiscoveryDruid_q.ui, newclusterdialog_q.ui, newfirewalldialog_q.ui:
