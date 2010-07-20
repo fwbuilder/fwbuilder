@@ -156,9 +156,10 @@ class ConfigImport : public WorkerThread
     std::string *buffer;
     Importer    *imp;
     std::string  platform;
+    std::string  fwname;
         
 public:
-    ConfigImport(std::string *buffer, const std::string &platform);
+    ConfigImport(std::string *buffer, const std::string &platform, const std::string &fwname);
     virtual ~ConfigImport();
 
     virtual void run();
@@ -301,6 +302,8 @@ public slots:
     virtual void backClicked();
     virtual void cancelClicked();
     virtual void finishClicked();
+
+    virtual void objNameChanged(QString name);
  signals:
     
     

@@ -138,8 +138,10 @@ void Importer::SaveTmpPortToDst()
 Importer::Importer(FWObject *_lib,
                    const std::string &_platform,
                    std::istringstream &_input,
-                   Logger *log) : input(_input)
+                   Logger *log,
+                   std::string &fwname) : input(_input)
 {
+    this->fwname = fwname;
     library = _lib;
     fw = NULL;
     error_counter = 0;
@@ -216,7 +218,7 @@ Firewall* Importer::getFirewallObject()
 {
     if (fw!=NULL) return fw;
 
-    FWObject *nobj = createObject(Firewall::TYPENAME, "New Firewall");
+    FWObject *nobj = createObject(Firewall::TYPENAME, fwname);
 
     fw = Firewall::cast(nobj);
 

@@ -64,7 +64,8 @@ class IOSImporter : public Importer
 
     IOSImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
-                libfwbuilder::Logger *log);
+                libfwbuilder::Logger *log,
+                std::string &fwname);
     ~IOSImporter();
 
     virtual void run();

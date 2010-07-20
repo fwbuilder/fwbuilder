@@ -81,6 +81,7 @@ class Importer {
     // create unnecessary object
 
     libfwbuilder::Firewall *fw;
+    std::string fwname;
    
 protected:
 
@@ -251,7 +252,8 @@ public:
     Importer(libfwbuilder::FWObject *lib,
              const std::string      &platform,
              std::istringstream     &input,
-             libfwbuilder::Logger   *log);
+             libfwbuilder::Logger   *log,
+             std::string &fwname);
     virtual ~Importer();
 
     virtual void run();

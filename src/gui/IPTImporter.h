@@ -135,7 +135,8 @@ class IPTImporter : public Importer
     
     IPTImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
-                libfwbuilder::Logger *log);
+                libfwbuilder::Logger *log,
+                std::string &fwname);
     ~IPTImporter();
 
     virtual void run();
