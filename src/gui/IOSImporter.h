@@ -65,7 +65,7 @@ class IOSImporter : public Importer
     IOSImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
                 libfwbuilder::Logger *log,
-                std::string &fwname);
+                std::string fwname = "New Firewall");
     ~IOSImporter();
 
     virtual void run();

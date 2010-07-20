@@ -69,7 +69,7 @@ using namespace libfwbuilder;
 
 IPTImporter::IPTImporter(FWObject *lib,
                          std::istringstream &input,
-                         Logger *log, std::string &fwname) : Importer(lib, "iptables", input, log, fwname)
+                         Logger *log, std::string fwname) : Importer(lib, "iptables", input, log, fwname)
 {
     service_group_name_seed = 0;
     aux_branch_number = 0;

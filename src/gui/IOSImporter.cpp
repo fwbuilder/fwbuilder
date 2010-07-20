@@ -54,7 +54,7 @@ using namespace libfwbuilder;
 IOSImporter::IOSImporter(FWObject *lib,
                          std::istringstream &input,
                          Logger *log,
-                         std::string &fwname) : Importer(lib, "iosacl", input, log, fwname)
+                         std::string fwname) : Importer(lib, "iosacl", input, log, fwname)
 {
     ios_icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
     ios_icmp_specs["unreachable"] = std::pair<int,int>(3, -1); // all "unreachables"
