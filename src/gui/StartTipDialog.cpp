@@ -56,6 +56,11 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
     m_dialog = new Ui::StartTipDialog_q;
     m_dialog->setupUi(this);
 
+    QString pgm = m_dialog->program_name_and_version->text();
+
+    m_dialog->program_name_and_version->setText(pgm.arg(VERSION));
+
+
     QString locale = QLocale::system().name(); //"en_US";
     QStringList paths;
     paths.append(QString(respath.c_str()) + "/help/" + locale);

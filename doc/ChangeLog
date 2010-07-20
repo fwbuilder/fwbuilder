@@ -1,5 +1,8 @@
 2010-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* StartTipDialog.cpp (StartTipDialog::StartTipDialog): fixed #1603
+	"Welcome dialog should show full version of the program".
+
 	* set version to 4.1.0 and version of the data file format to
 	"17". Data files need to be upgraded. Upgrade script changes the
 	version and makes sure Standard objects library is read-only. Some
