@@ -885,6 +885,10 @@ void newFirewallDialog::cancelClicked()
 
 void newFirewallDialog::finishClicked()
 {
+    // getting focus to close table cell editor
+    // see #1594
+    m_dialog->finishButton->setFocus(Qt::OtherFocusReason);
+
     int p = currentPage();
 
     if (fwbdebug)
