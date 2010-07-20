@@ -160,6 +160,7 @@ void InterfaceEditorWidget::deleteAddress()
     types.remove(idx);
     rows.remove(idx);
     fwaddrs.remove(idx);
+    this->addressChanged(-1, -1);
 }
 
 InterfaceEditorWidget::~InterfaceEditorWidget()
@@ -417,6 +418,12 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 
 void InterfaceEditorWidget::addressChanged(int row, int col)
 {
+    qDebug() << m_ui->addresses->rowCount();
+    if (m_ui->addresses->rowCount() >= 1)
+        m_ui->addAddress->setText(tr("Add another address"));
+    else
+        m_ui->addAddress->setText(tr("Add address"));
+
     if ( row < 0 || col < 0 || rows.isEmpty() || row > m_ui->addresses->rowCount() || col > 1 ) return;
 
     if (!rows.keys().contains(row)) return;
