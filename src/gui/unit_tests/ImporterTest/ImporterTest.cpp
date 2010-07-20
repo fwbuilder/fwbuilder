@@ -191,7 +191,7 @@ void ImporterTest::IOSImporterTest()
 
     std::istringstream instream(buffer);
 
-    Importer* imp = new IOSImporter(lib, instream, logger);
+    Importer* imp = new IOSImporter(lib, instream, logger, "test_fw");
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     //imp->run();
@@ -219,7 +219,7 @@ void ImporterTest::IPTImporterTest()
 
     std::istringstream instream(buffer);
 
-    Importer* imp = new IPTImporter(lib, instream, logger);
+    Importer* imp = new IPTImporter(lib, instream, logger, "test_fw");
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     //imp->run();

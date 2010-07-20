@@ -136,7 +136,7 @@ class IPTImporter : public Importer
     IPTImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
                 libfwbuilder::Logger *log,
-                std::string fwname = "New Firewall");
+                const std::string &fwname);
     ~IPTImporter();
 
     virtual void run();

@@ -1,8 +1,11 @@
 2010-07-19 Roman Bovsunivskiy <a2k0001@gmail.com>
+
 	* DiscoveryDruid_q.ui, newclusterdialog_q.ui, newfirewalldialog_q.ui:
 	  Set up default buttons in dialogs
+
 	* DiscoveryDruid_q.ui, DiscoveryDruid.cpp, Importer.cpp: Added firewall
 	name input field.
+
 	* InterfaceEditorWidget.cpp: Button "Add address" now changes text
 	to "Add anoter address" when there is at least one address in current 
 	interface.

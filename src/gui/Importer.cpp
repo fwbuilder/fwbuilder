@@ -139,7 +139,7 @@ Importer::Importer(FWObject *_lib,
                    const std::string &_platform,
                    std::istringstream &_input,
                    Logger *log,
-                   std::string fwname) : input(_input)
+                   const std::string &fwname) : input(_input)
 {
     this->fwname = fwname;
     library = _lib;

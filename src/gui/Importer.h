@@ -253,7 +253,7 @@ public:
              const std::string      &platform,
              std::istringstream     &input,
              libfwbuilder::Logger   *log,
-             std::string fwname = "New Firewall");
+             const std::string &fwname);
     virtual ~Importer();
 
     virtual void run();
