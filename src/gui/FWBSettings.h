@@ -34,7 +34,7 @@
 
 #include <set>
 
-#define SETTINGS_PATH_PREFIX  "/4.0"
+#define SETTINGS_PATH_PREFIX  "/4.1"
 
 #include <fwbuilder/FWObject.h>
 
