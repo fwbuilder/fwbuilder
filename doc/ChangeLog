@@ -1,3 +1,11 @@
+2010-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (loadFile): fixed #1612 "File/Open should create
+	new project panel". If user has some unsaved changes in the
+	default project panel (the one with no associated file) and then
+	uses File/Open menu to open another data file, the file should
+	open in a new project panel.
+
 2010-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::showEvent): default main window geometry

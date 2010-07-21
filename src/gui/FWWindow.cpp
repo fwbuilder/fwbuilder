@@ -683,9 +683,13 @@ bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
     // if the only project panel window that we have shows
     // default object tree (i.e. its filename is empty), then load file
     // into. Otherwise create new project window.
-    if (activeProject() && activeProject()->getFileName().isEmpty())
+    //
+    // However if the only project panel has default tree with unsaved
+    // changes then we open new project window.
+
+    proj = activeProject();
+    if (proj && proj->getFileName().isEmpty() && !proj->db()->isDirty())
     {
-        proj = activeProject();
         if (!proj->loadFile(file_name, load_rcs_head)) return false;
     } else
     {
