@@ -776,7 +776,7 @@ void FWWindow::importPolicy()
 
 void FWWindow::showEvent(QShowEvent *ev)
 {
-    st->restoreGeometry(this, QRect(100,100,750,600) );
+    st->restoreGeometry(this, QRect(100,100,1000,600) );
     QMainWindow::showEvent(ev);
 }
 

@@ -1,5 +1,9 @@
 2010-07-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::showEvent): default main window geometry
+	should be 1000x600, wider than it used to be before. This is to
+	make object dialogs fit in the main window without squishing.
+
 	* routing_functions: added a copy of the routing_functions
 	configlet to the dd-wrt-nvram and dd-wrt-jjfs because newest
 	versions of DD-WRT lack mktemp. The original routing_functions
@@ -16,6 +20,10 @@
 	version and makes sure Standard objects library is read-only. Some
 	users may have this library configured read-write in their data
 	files because of a bug in the early versions of fwbuilder 4.
+
+	* We have decided to release this version as 4.1.0 rather than
+	4.0.2.  "4.0.2" will remain our internal testing version
+	designation.
 
 2010-07-19 Roman Bovsunivskiy <a2k0001@gmail.com>
 

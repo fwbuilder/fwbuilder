@@ -1,5 +1,5 @@
 
-<h1>Firewall Builder 4.0.2 Release Notes</h1>
+<h1>Firewall Builder 4.1.0 Release Notes</h1>
 
 <p>
   This release focuses on the improvements for the GUI usability and
@@ -27,12 +27,6 @@
       fixed #1504 Added (optional) text to the toolbar buttons. Text
       is turned on by default but can be turned off in the global
       Preferences dialog.
-    </p>
-  </li>
-
-  <li>
-    <p>
-      Added release notes v4.0.1 and v4.0.2 to the package.
     </p>
   </li>
 
@@ -195,10 +189,10 @@
       firewall install". If network connection is lost during firewall
       policy activation, policy installer should detect this,
       disconnect and declare installation session a failure.  Prior to
-      v4.0.2, installer detected network failures during policy copy
-      (done with scp) or when it could not connect to the firewall at
-      all, but hang if connection was lost in the middle of ssh
-      session used to activate firewall policy. Now using ssh
+      this version, installer detected network failures during policy
+      copy (done with scp) or when it could not connect to the
+      firewall at all, but hang if connection was lost in the middle
+      of ssh session used to activate firewall policy. Now using ssh
       parameter "ServerAliveInterval" to make it detect connection
       failure.  Added an input field that defines inactivity timeout
       value in seconds to the "Installer" tab of the global
