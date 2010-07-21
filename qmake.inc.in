@@ -55,9 +55,6 @@ unix {
         res_desktop.path = @DATADIR@/applications/
         res_configlets.path = $$res.path/configlets
 
-        INSTALLS += res 
-        INSTALLS += res_os
-        INSTALLS += res_platform
         # INSTALLS += icns
         LIBS += $$LIBS_FWBUILDER @LIBS@
 
