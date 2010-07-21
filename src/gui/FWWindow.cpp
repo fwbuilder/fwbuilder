@@ -558,10 +558,13 @@ void FWWindow::debug()
 
 void FWWindow::fileNew()
 {
-    // if the only project panel window that we have shows
-    // default object tree (i.e. its filename is empty), then load file
-    // into. Otherwise create new project window.
-    if (activeProject() && activeProject()->getFileName().isEmpty())
+    // if the only project panel window that we have shows default
+    // object tree (i.e. its filename is empty) and has no unsaved
+    // changes, then load file into. Otherwise create new project
+    // window.
+
+    ProjectPanel *proj = activeProject();
+    if (proj && proj->getFileName().isEmpty() && !proj->db()->isDirty())
     {
         activeProject()->fileNew();
     } else
