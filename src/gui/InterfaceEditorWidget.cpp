@@ -418,7 +418,6 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 
 void InterfaceEditorWidget::addressChanged(int row, int col)
 {
-    qDebug() << m_ui->addresses->rowCount();
     if (m_ui->addresses->rowCount() >= 1)
         m_ui->addAddress->setText(tr("Add another address"));
     else
