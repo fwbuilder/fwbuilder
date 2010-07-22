@@ -206,6 +206,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>name</tabstop>
+  <tabstop>label</tabstop>
+  <tabstop>type</tabstop>
+  <tabstop>mac</tabstop>
+  <tabstop>comment</tabstop>
+  <tabstop>protocol</tabstop>
+  <tabstop>addresses</tabstop>
+  <tabstop>addAddress</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
