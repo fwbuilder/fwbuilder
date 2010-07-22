@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>819</width>
-    <height>641</height>
+    <width>858</width>
+    <height>618</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,6 +29,62 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QPushButton" name="buttonHelp">
+       <property name="text">
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>351</width>
+         <height>27</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
@@ -44,120 +100,127 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_7">
-       <item row="0" column="0">
-        <widget class="QLabel" name="compilerLabel">
-         <property name="text">
-          <string>Compiler:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_7"/>
        </item>
-       <item row="0" column="1" colspan="2">
-        <widget class="QLineEdit" name="compiler">
-         <property name="minimumSize">
-          <size>
-           <width>300</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_9" columnstretch="5,5,5">
+         <item row="1" column="0">
+          <widget class="QLabel" name="compilerLabel">
+           <property name="text">
+            <string>Compiler:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="compiler">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="compilerArgsLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Compiler command line options:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="compilerArgs">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="textLabel1_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Output file name:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="outputFileName">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>241</width>
-           <height>22</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLabel" name="compilerArgsLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Command line options for the compiler:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLineEdit" name="compilerArgs">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="textLabel1_5">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Output file name:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="2">
-        <widget class="QLineEdit" name="outputFileName">
-         <property name="minimumSize">
-          <size>
-           <width>300</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="3">
+       <item>
         <widget class="QLabel" name="label_7">
          <property name="text">
           <string>If output file name is left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</string>
@@ -167,33 +230,50 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Script name on the firewall:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_8" columnstretch="5,5,5">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Script name on the firewall:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="fileNameOnFw">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
-       <item row="4" column="1" colspan="2">
-        <widget class="QLineEdit" name="fileNameOnFw">
-         <property name="minimumSize">
-          <size>
-           <width>300</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" colspan="3">
+       <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
@@ -203,7 +283,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="4">
+       <item>
         <widget class="Line" name="line4_2">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -216,7 +296,7 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0" colspan="4">
+       <item>
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
           <widget class="QCheckBox" name="assumeFwIsPartOfAny">
@@ -267,19 +347,6 @@
            </property>
            <property name="text">
             <string>Ignore empty groups in rules</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="acceptESTBeforeFirst">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
            </property>
           </widget>
          </item>
@@ -401,9 +468,22 @@ packets to IPv6 policies</string>
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="acceptESTBeforeFirst">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
-       <item row="8" column="0" colspan="4">
+       <item>
         <widget class="Line" name="line4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -416,7 +496,7 @@ packets to IPv6 policies</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="0" colspan="4">
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QCheckBox" name="mgmt_ssh">
@@ -456,14 +536,14 @@ packets to IPv6 policies</string>
          </item>
         </layout>
        </item>
-       <item row="10" column="0" colspan="4">
+       <item>
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
           <string>Install the rule for ssh access from the management workstation when the firewall is stopped</string>
          </property>
         </widget>
        </item>
-       <item row="11" column="2" colspan="2">
+       <item>
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -787,10 +867,10 @@ packets to IPv6 policies</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
+       <property name="verticalSpacing">
         <number>6</number>
        </property>
-       <property name="verticalSpacing">
+       <property name="margin">
         <number>6</number>
        </property>
        <item row="1" column="0">
@@ -921,11 +1001,11 @@ packets to IPv6 policies</string>
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>20</number>
-       </property>
        <property name="verticalSpacing">
         <number>6</number>
+       </property>
+       <property name="margin">
+        <number>20</number>
        </property>
        <item row="0" column="0" rowspan="5">
         <widget class="QGroupBox" name="buttonGroup1">
@@ -968,9 +1048,6 @@ packets to IPv6 policies</string>
              <layout class="QGridLayout">
               <property name="margin">
                <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>6</number>
               </property>
               <item row="0" column="0" colspan="2">
                <widget class="QCheckBox" name="logTCPseq">
@@ -1019,9 +1096,6 @@ packets to IPv6 policies</string>
              <layout class="QGridLayout">
               <property name="margin">
                <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>6</number>
               </property>
               <item row="0" column="1">
                <widget class="QSpinBox" name="cprange">
@@ -1511,70 +1585,10 @@ packets to IPv6 policies</string>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
-     <item>
-      <widget class="QPushButton" name="buttonHelp">
-       <property name="text">
-        <string>Help</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>351</width>
-         <height>27</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk">
-       <property name="text">
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut">
-        <string/>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel">
-       <property name="text">
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut">
-        <string/>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>compiler</tabstop>
-  <tabstop>compilerArgs</tabstop>
-  <tabstop>outputFileName</tabstop>
-  <tabstop>fileNameOnFw</tabstop>
   <tabstop>assumeFwIsPartOfAny</tabstop>
   <tabstop>acceptSessions</tabstop>
   <tabstop>acceptESTBeforeFirst</tabstop>
