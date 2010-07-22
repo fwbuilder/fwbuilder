@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>962</width>
-    <height>564</height>
+    <width>819</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -45,7 +45,7 @@
        <string>Compiler</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
-       <item row="0" column="0" colspan="2">
+       <item row="0" column="0">
         <widget class="QLabel" name="compilerLabel">
          <property name="text">
           <string>Compiler:</string>
@@ -58,7 +58,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2" colspan="2">
+       <item row="0" column="1" colspan="2">
         <widget class="QLineEdit" name="compiler">
          <property name="minimumSize">
           <size>
@@ -74,7 +74,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
+       <item row="0" column="3">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -106,11 +106,11 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2">
+       <item row="1" column="2">
         <widget class="QLineEdit" name="compilerArgs">
          <property name="minimumSize">
           <size>
-           <width>300</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -122,7 +122,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0">
         <widget class="QLabel" name="textLabel1_5">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -141,7 +141,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2">
+       <item row="2" column="1" colspan="2">
         <widget class="QLineEdit" name="outputFileName">
          <property name="minimumSize">
           <size>
@@ -157,7 +157,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="2" colspan="3">
+       <item row="3" column="1" colspan="3">
         <widget class="QLabel" name="label_7">
          <property name="text">
           <string>If output file name is left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</string>
@@ -167,7 +167,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="4" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Script name on the firewall:</string>
@@ -177,7 +177,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="2" colspan="2">
+       <item row="4" column="1" colspan="2">
         <widget class="QLineEdit" name="fileNameOnFw">
          <property name="minimumSize">
           <size>
@@ -193,7 +193,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="2" colspan="3">
+       <item row="5" column="1" colspan="3">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
@@ -203,7 +203,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="5">
+       <item row="6" column="0" colspan="4">
         <widget class="Line" name="line4_2">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -216,23 +216,7 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>10</width>
-           <height>150</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="7" column="1" colspan="4">
+       <item row="7" column="0" colspan="4">
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
           <widget class="QCheckBox" name="assumeFwIsPartOfAny">
@@ -419,7 +403,7 @@ packets to IPv6 policies</string>
          </item>
         </layout>
        </item>
-       <item row="8" column="0" colspan="5">
+       <item row="8" column="0" colspan="4">
         <widget class="Line" name="line4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -432,37 +416,54 @@ packets to IPv6 policies</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2">
-        <widget class="QCheckBox" name="mgmt_ssh">
-         <property name="text">
-          <string>Always permit ssh access from the management workstation with this address:</string>
-         </property>
-        </widget>
+       <item row="9" column="0" colspan="4">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QCheckBox" name="mgmt_ssh">
+           <property name="text">
+            <string>Always permit ssh access from the management workstation with this address:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="mgmt_addr">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>32767</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
-       <item row="9" column="3" colspan="2">
-        <widget class="QLineEdit" name="mgmt_addr">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1" colspan="4">
+       <item row="10" column="0" colspan="4">
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
           <string>Install the rule for ssh access from the management workstation when the firewall is stopped</string>
          </property>
         </widget>
        </item>
-       <item row="11" column="4">
+       <item row="11" column="2" colspan="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
