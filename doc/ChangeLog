@@ -1,5 +1,9 @@
 2010-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* InterfaceEditorWidget.ui: set minimum height for the name, label
+	and few other input fields because they came out squished on Mac.
+	Fixes #1613.
+
 	* FWWindow.cpp (fileNew): fixed #1611 "File/New should create new
 	project panel". Like #1612, open new data file in a new project
 	panel if current project panel has no data file associated with it
