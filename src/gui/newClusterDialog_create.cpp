@@ -25,13 +25,15 @@
 
 #include "../../config.h"
 #include "global.h"
-
+#include "events.h"
 #include "FWWindow.h"
 #include "newClusterDialog.h"
 #include "InterfacesTabWidget.h"
 #include "platforms.h"
 #include "FWBTree.h"
 #include "FWCmdAddObject.h"
+#include "RuleSetModel.h"
+#include "RuleSetView.h"
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/FailoverClusterGroup.h"
@@ -208,7 +210,35 @@ void newClusterDialog::createNewCluster()
 
     if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 4";
 
-    if (source == NULL) return;
+    ProjectPanel *pp = mw->activeProject();
+    QString filename = pp->getFileName();
+
+
+    if (source == NULL)
+    {
+        FWObject *first_policy = ncl->getFirstByType(Policy::TYPENAME);
+        QCoreApplication::postEvent(
+            mw, new openRulesetEvent(filename, first_policy->getId()));
+        return;
+    }
+
+    // See #1622 If rule set view shows rules of the firewall
+    // <source>, need to close it because we are about to delete that
+    // rule set object
+
+    RuleSet* current_ruleset = NULL;
+    RuleSetView* rsv = pp->getCurrentRuleSetView();
+    RuleSetModel* md = NULL;
+    if (rsv)
+    {
+        md = (RuleSetModel*)rsv->model();
+        current_ruleset = md->getRuleSet();
+    }
+
+    if (current_ruleset && current_ruleset->isChildOf(source))
+    {
+        pp->closeRuleSet(current_ruleset);
+    }
 
     FWObject *fwgroup =
         FWBTree().getStandardSlotForObject(parent->getLibrary(), Firewall::TYPENAME);
@@ -244,6 +274,10 @@ void newClusterDialog::createNewCluster()
         deleteRuleSets(NAT::TYPENAME, fw);
         deleteRuleSets(Routing::TYPENAME, fw);
     }
+
+    FWObject *first_policy = ncl->getFirstByType(Policy::TYPENAME);
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(filename, first_policy->getId()));
 }
 
 void newClusterDialog::deleteRuleSets(const string &type, Firewall *fw)

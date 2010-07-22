@@ -1,3 +1,10 @@
+2010-07-22  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* newClusterDialog_create.cpp (newClusterDialog::createNewCluster):
+	fixed #1622 "Crash when configuring cluster". The GUI used to crash
+	if user created a cluster copying rules of one of the cluster members
+	while that rule set was opened in the rule set view.
+
 2010-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* iptadvanceddialog_q.ui: rearranged elements in the tab
