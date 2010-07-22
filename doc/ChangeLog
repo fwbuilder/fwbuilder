@@ -1,5 +1,9 @@
 2010-07-21  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* iptadvanceddialog_q.ui: rearranged elements in the tab
+	"Compiler" of the dialog to make it shorter and wider. Still
+	needs some work to make it render better.
+
 	* InterfaceEditorWidget.ui: set minimum height for the name, label
 	and few other input fields because they came out squished on Mac.
 	Fixes #1613.

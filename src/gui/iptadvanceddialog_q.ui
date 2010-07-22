@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>672</width>
-    <height>812</height>
+    <width>962</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,14 +38,14 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab0">
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0" colspan="3">
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="compilerLabel">
          <property name="text">
           <string>Compiler:</string>
@@ -58,8 +58,14 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3" colspan="2">
+       <item row="0" column="2" colspan="2">
         <widget class="QLineEdit" name="compiler">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>32767</width>
@@ -68,7 +74,20 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3">
+       <item row="0" column="4">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>241</width>
+           <height>22</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="compilerArgsLabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -87,8 +106,14 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="3" colspan="2">
+       <item row="1" column="2" colspan="2">
         <widget class="QLineEdit" name="compilerArgs">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>32767</width>
@@ -97,7 +122,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="5">
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="textLabel1_5">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -106,18 +131,24 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Output file name. If left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</string>
+          <string>Output file name:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignVCenter</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="3" colspan="2">
+       <item row="2" column="2" colspan="2">
         <widget class="QLineEdit" name="outputFileName">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>32767</width>
@@ -126,17 +157,17 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="5">
-        <widget class="QLabel" name="label_4">
+       <item row="3" column="2" colspan="3">
+        <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
+          <string>If output file name is left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
+       <item row="4" column="0" colspan="2">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Script name on the firewall:</string>
@@ -146,13 +177,29 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="3" colspan="2">
+       <item row="4" column="2" colspan="2">
         <widget class="QLineEdit" name="fileNameOnFw">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
           </size>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="3">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -169,229 +216,210 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0" rowspan="2">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="8" column="1" colspan="2">
-        <widget class="QCheckBox" name="assumeFwIsPartOfAny">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Assume firewall is part of 'any'</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0" rowspan="6">
+       <item row="7" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
+          <enum>QSizePolicy::Fixed</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>30</width>
+           <width>10</width>
            <height>150</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="9" column="1" colspan="4">
-        <widget class="QCheckBox" name="acceptSessions">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Accept TCP sessions opened prior to firewall restart</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1" colspan="4">
-        <widget class="QCheckBox" name="acceptESTBeforeFirst">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1" colspan="2">
-        <widget class="QCheckBox" name="dropInvalid">
-         <property name="text">
-          <string>Drop packets that are associated with
+       <item row="7" column="1" colspan="4">
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="assumeFwIsPartOfAny">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Assume firewall is part of 'any'</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="shadowing">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Detect shadowing in policy rules</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="acceptSessions">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Accept TCP sessions opened prior to firewall restart</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="emptyGroups">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Ignore empty groups in rules</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="acceptESTBeforeFirst">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="localNAT">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Enable support for NAT of locally originated connections</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="dropInvalid">
+             <property name="text">
+              <string>Drop packets that are associated with
 no known connection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="3">
-        <widget class="QCheckBox" name="logInvalid">
-         <property name="text">
-          <string>and log them</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="4">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>80</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="12" column="1" colspan="4">
-        <widget class="QCheckBox" name="bridge">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Bridging firewall</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1" colspan="4">
-        <widget class="QCheckBox" name="shadowing">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Detect shadowing in policy rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1" colspan="4">
-        <widget class="QCheckBox" name="emptyGroups">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Ignore empty groups in rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="15" column="1" colspan="4">
-        <widget class="QCheckBox" name="localNAT">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Enable support for NAT of locally originated connections</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="1" colspan="4">
-        <widget class="QCheckBox" name="clampMSStoMTU">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>This adds a rule on top of the policy with iptables target TCPMSS
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="logInvalid">
+             <property name="text">
+              <string>and log them</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="clampMSStoMTU">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>This adds a rule on top of the policy with iptables target TCPMSS
 and option --clamp-mss-to-pmtu. Generation of this command is
 version-dependent and also depends on the setting of ip or ipv6 forwarding
 in host settings dialog.
 </string>
-         </property>
-         <property name="text">
-          <string>Clamp MSS to MTU</string>
-         </property>
-        </widget>
-       </item>
-       <item row="17" column="1" colspan="4">
-        <widget class="QCheckBox" name="makeTagClassifyTerminating">
-         <property name="text">
-          <string>Make Tag and Classify actions terminating</string>
-         </property>
-        </widget>
-       </item>
-       <item row="18" column="1" colspan="4">
-        <widget class="QCheckBox" name="ipv6NeighborDiscovery">
-         <property name="toolTip">
-          <string>Compiler will automatically generate rules to permit ICMP6 packets used in IPv6
+           </property>
+           <property name="text">
+            <string>Clamp MSS to MTU</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="bridge">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Bridging firewall</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="makeTagClassifyTerminating">
+           <property name="text">
+            <string>Make Tag and Classify actions terminating</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="textLabel9">
+             <property name="text">
+              <string>Default action on 'Reject':</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="actionOnReject"/>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>72</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="1">
+          <widget class="QCheckBox" name="ipv6NeighborDiscovery">
+           <property name="toolTip">
+            <string>Compiler will automatically generate rules to permit ICMP6 packets used in IPv6
 Neighbor Discovery after the rules that accept ESTABLISHED,RELATE and before 
 the rule that drops packets in state INVALID.</string>
-         </property>
-         <property name="text">
-          <string>Add rules to accept IPv6 Neighbor Discovery packets to IPv6 policies</string>
-         </property>
-        </widget>
+           </property>
+           <property name="text">
+            <string>Add rules to accept IPv6 Neighbor Discovery
+packets to IPv6 policies</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="19" column="1">
-        <widget class="QLabel" name="textLabel9">
-         <property name="text">
-          <string>Default action on 'Reject':</string>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="19" column="2" colspan="2">
-        <widget class="QComboBox" name="actionOnReject"/>
-       </item>
-       <item row="19" column="4">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>72</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="20" column="0" colspan="5">
+       <item row="8" column="0" colspan="5">
         <widget class="Line" name="line4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -404,30 +432,14 @@ the rule that drops packets in state INVALID.</string>
          </property>
         </widget>
        </item>
-       <item row="21" column="0" rowspan="2">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>30</width>
-           <height>50</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="21" column="1" colspan="4">
+       <item row="9" column="1" colspan="2">
         <widget class="QCheckBox" name="mgmt_ssh">
          <property name="text">
           <string>Always permit ssh access from the management workstation with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="22" column="1" colspan="4">
+       <item row="9" column="3" colspan="2">
         <widget class="QLineEdit" name="mgmt_addr">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -443,15 +455,14 @@ the rule that drops packets in state INVALID.</string>
          </property>
         </widget>
        </item>
-       <item row="23" column="1" colspan="4">
+       <item row="10" column="1" colspan="4">
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
-          <string>Install the rule for ssh access from the management workstation when the firewall 
-is stopped</string>
+          <string>Install the rule for ssh access from the management workstation when the firewall is stopped</string>
          </property>
         </widget>
        </item>
-       <item row="24" column="1">
+       <item row="11" column="4">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -475,7 +486,7 @@ is stopped</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <property name="verticalSpacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox2">
@@ -484,7 +495,7 @@ is stopped</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <property name="verticalSpacing">
-           <number>-1</number>
+           <number>6</number>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label556">
@@ -779,7 +790,7 @@ is stopped</string>
         <number>6</number>
        </property>
        <property name="verticalSpacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <item row="1" column="0">
         <widget class="QGroupBox" name="frame147">
@@ -913,7 +924,7 @@ is stopped</string>
         <number>20</number>
        </property>
        <property name="verticalSpacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <item row="0" column="0" rowspan="5">
         <widget class="QGroupBox" name="buttonGroup1">
@@ -958,7 +969,7 @@ is stopped</string>
                <number>0</number>
               </property>
               <property name="spacing">
-               <number>-1</number>
+               <number>6</number>
               </property>
               <item row="0" column="0" colspan="2">
                <widget class="QCheckBox" name="logTCPseq">
@@ -1009,7 +1020,7 @@ is stopped</string>
                <number>0</number>
               </property>
               <property name="spacing">
-               <number>-1</number>
+               <number>6</number>
               </property>
               <item row="0" column="1">
                <widget class="QSpinBox" name="cprange">
@@ -1446,7 +1457,7 @@ is stopped</string>
       </attribute>
       <layout class="QGridLayout">
        <property name="verticalSpacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <item row="1" column="0">
         <widget class="QLabel" name="label">
@@ -1569,13 +1580,13 @@ is stopped</string>
   <tabstop>dropInvalid</tabstop>
   <tabstop>logInvalid</tabstop>
   <tabstop>bridge</tabstop>
+  <tabstop>actionOnReject</tabstop>
   <tabstop>shadowing</tabstop>
   <tabstop>emptyGroups</tabstop>
   <tabstop>localNAT</tabstop>
   <tabstop>clampMSStoMTU</tabstop>
   <tabstop>makeTagClassifyTerminating</tabstop>
   <tabstop>ipv6NeighborDiscovery</tabstop>
-  <tabstop>actionOnReject</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
   <tabstop>add_mgmt_ssh_rule_when_stoped</tabstop>
@@ -1630,8 +1641,8 @@ is stopped</string>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>757</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1646,8 +1657,8 @@ is stopped</string>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>843</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1662,8 +1673,8 @@ is stopped</string>
    <slot>switchLOG_ULOG()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>45</x>
+     <y>66</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1678,8 +1689,8 @@ is stopped</string>
    <slot>editProlog()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>822</x>
+     <y>329</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1694,8 +1705,8 @@ is stopped</string>
    <slot>editEpilog()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>822</x>
+     <y>633</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1710,8 +1721,8 @@ is stopped</string>
    <slot>help()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>30</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
