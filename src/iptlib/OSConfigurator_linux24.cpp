@@ -76,6 +76,11 @@ OSConfigurator_linux24::OSConfigurator_linux24(FWObjectDatabase *_db,
     OSConfigurator(_db, fw, ipv6_policy) , os_data(fw->getStr("host_OS"))
 {
     command_wrappers = new Configlet(fw, "linux24", "run_time_wrappers");
+
+    FWOptions* fwopt = fw->getOptionsObject();
+    string version = fw->getStr("version");
+    can_use_module_set = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
+                          fwopt->getBool("use_m_set"));
 }
 
 OSConfigurator_linux24::~OSConfigurator_linux24()
@@ -468,7 +473,12 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
  */
 
     bool wildcard_interface = false;
-    QString combined_command = addressTableWrapper(rule, command.c_str(), ipv6);
+    QString combined_command;
+
+    if (can_use_module_set)
+        combined_command = command.c_str();
+    else
+        combined_command = addressTableWrapper(rule, command.c_str(), ipv6);
 
     command_wrappers->clear();
     command_wrappers->removeComments();

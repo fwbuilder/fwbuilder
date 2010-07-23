@@ -302,6 +302,40 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      Most dialogs were adjusted to make sure they fit on the screen 1024x768
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1612 "File/Open should create
+      new project panel". If user has some unsaved changes in the
+      default project panel (the one with no associated file) and then
+      uses File/Open menu to open another data file, the file should
+      open in a new project panel.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1611 "File/New should create new project panel". Like
+      #1612, open new data file in a new project panel if current
+      project panel has no data file associated with it but has
+      unsaved changes.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1622 "Crash when configuring cluster". The GUI used to
+      crash if user created a cluster copying rules of one of the
+      cluster members while that rule set was opened in the rule set
+      view.
+    </p>
+  </li>
+
 </ul>
 
 
@@ -470,6 +504,20 @@
       behavior is to generate these commands when option "Add virtual
       addresses for NAT" is turned on regardless of the setting of the
       option "configure interfaces".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added support for iptables module "set" used to generate
+      iptables command for rules with run-time AddressTable
+      objects. This module is only available in iptables 1.4.1.1 and
+      later, however some embedded platforms do not have it even
+      though they ship later versions of iptables (e.g. OpenWRT).  Use
+      of this module is controlled by a checkbox in the iptables
+      "advanced" settings dialog which is off by default. This
+      checkbox becomes disabled when iptables version is set to <
+      1.4.1.1.
     </p>
   </li>
 

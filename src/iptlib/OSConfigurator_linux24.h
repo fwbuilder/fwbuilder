@@ -48,7 +48,8 @@ namespace fwcompiler {
 
         OSData os_data;
         Configlet *command_wrappers;
-
+        bool can_use_module_set;
+        
         std::map<std::string,std::string> address_table_objects;
 
         // this vector is used to avoid duplication of virtual addresses for nat

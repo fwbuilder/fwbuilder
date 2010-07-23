@@ -66,6 +66,8 @@ protected:
         bool                           have_dynamic_interfaces;
         bool                           have_connmark;
         bool                           have_connmark_in_output;
+        bool                           can_use_module_set;
+        bool                           actually_used_module_set;
         std::string                    my_table;
 
         std::map<std::string, int>     tmp_chain_no;

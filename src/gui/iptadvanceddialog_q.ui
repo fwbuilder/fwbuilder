@@ -100,11 +100,11 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_10">
+       <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_7"/>
        </item>
-       <item>
+       <item row="1" column="0" colspan="2">
         <layout class="QGridLayout" name="gridLayout_9" columnstretch="5,5,5">
          <item row="1" column="0">
           <widget class="QLabel" name="compilerLabel">
@@ -220,7 +220,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="label_7">
          <property name="text">
           <string>If output file name is left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</string>
@@ -230,7 +230,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="3" column="0" colspan="2">
         <layout class="QGridLayout" name="gridLayout_8" columnstretch="5,5,5">
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
@@ -273,7 +273,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="4" column="0" colspan="2">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
@@ -283,7 +283,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="5" column="0" colspan="2">
         <widget class="Line" name="line4_2">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -296,7 +296,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="6" column="0" colspan="2">
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
           <widget class="QCheckBox" name="assumeFwIsPartOfAny">
@@ -347,6 +347,19 @@
            </property>
            <property name="text">
             <string>Ignore empty groups in rules</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="acceptESTBeforeFirst">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
            </property>
           </widget>
          </item>
@@ -468,22 +481,16 @@ packets to IPv6 policies</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="acceptESTBeforeFirst">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="useModuleSet">
            <property name="text">
-            <string>Accept ESTABLISHED and RELATED packets before the first rule</string>
+            <string>Use module &quot;set&quot; for run-time Address Table objects (module is only available in iptables v 1.4.1.1 and later)</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item>
+       <item row="7" column="0" colspan="2">
         <widget class="Line" name="line4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -496,7 +503,7 @@ packets to IPv6 policies</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="8" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QCheckBox" name="mgmt_ssh">
@@ -536,14 +543,14 @@ packets to IPv6 policies</string>
          </item>
         </layout>
        </item>
-       <item>
+       <item row="9" column="0" colspan="2">
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
           <string>Install the rule for ssh access from the management workstation when the firewall is stopped</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="10" column="1">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -867,10 +874,10 @@ packets to IPv6 policies</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="verticalSpacing">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="margin">
+       <property name="verticalSpacing">
         <number>6</number>
        </property>
        <item row="1" column="0">
@@ -1001,11 +1008,11 @@ packets to IPv6 policies</string>
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="verticalSpacing">
-        <number>6</number>
-       </property>
        <property name="margin">
         <number>20</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
        </property>
        <item row="0" column="0" rowspan="5">
         <widget class="QGroupBox" name="buttonGroup1">

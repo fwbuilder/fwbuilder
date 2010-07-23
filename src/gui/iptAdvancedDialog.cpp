@@ -81,13 +81,6 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
         qDebug("%s",Resources::getTargetOptionStr(
                    obj->getStr("host_OS"),"user_can_change_install_dir").c_str());
 
-    if (!Resources::getTargetOptionBool(
-            obj->getStr("host_OS"), "user_can_change_install_dir"))
-    {
-        m_dialog->ipt_fw_dir->setEnabled(false);
-        //fwoptions->setStr("firewall_dir", "");
-    }
-
     //QString s = fwoptions->getStr("ipv4_6_order")
     data.registerOption(m_dialog->ipv4before, fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first");
 
@@ -144,6 +137,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->actionOnReject->addItems(getScreenNames(slm));
     data.registerOption(m_dialog-> actionOnReject,
                          fwoptions,"action_on_reject", slm);
+
+    data.registerOption(m_dialog->useModuleSet, fwoptions, "use_m_set");
 
     data.registerOption(m_dialog->mgmt_ssh, fwoptions, "mgmt_ssh");
     data.registerOption(m_dialog->mgmt_addr, fwoptions, "mgmt_addr");
@@ -209,6 +204,19 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.loadAll();
     switchLOG_ULOG();
+
+    if (!Resources::getTargetOptionBool(
+            obj->getStr("host_OS"), "user_can_change_install_dir"))
+    {
+        m_dialog->ipt_fw_dir->setEnabled(false);
+        //fwoptions->setStr("firewall_dir", "");
+    }
+
+    string version = obj->getStr("version");
+    bool can_use_module_set = (XMLTools::version_compare(version, "1.4.1.1") >= 0);
+    if (!can_use_module_set)
+        m_dialog->useModuleSet->setChecked(false);
+    m_dialog->useModuleSet->setEnabled(can_use_module_set);
 
     m_dialog->tabWidget->setCurrentIndex(0);
 }

@@ -96,13 +96,13 @@ string PolicyCompiler_ipt::PrintRule::_printSingleOptionWithNegation(
     ostringstream ostr;
     if (XMLTools::version_compare(version, "1.4.3")>=0)
     {
-        ostr  << _printSingleObjectNegation(rel);
+        ostr << _printSingleObjectNegation(rel);
         ostr << option << " ";
         ostr << arg << " ";
     } else
     {
         ostr << option << " ";
-        ostr  << _printSingleObjectNegation(rel);
+        ostr << _printSingleObjectNegation(rel);
         ostr << arg << " ";
     }
     return ostr.str();
@@ -1109,6 +1109,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
 
 string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *o)
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string res;
     if (AddressRange::cast(o)!=NULL)
     {
@@ -1126,11 +1127,23 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *
 
         return res;
     }
+
+    MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
+    if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
+        ipt_comp->can_use_module_set)
+    {
+        string set_match = "--set " + o->getName() + " src";
+        ostringstream ostr;
+        ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
+        return ostr.str();
+    }
+
     return _printSingleOptionWithNegation(" -s", rel, _printAddr(o));
 }
 
 string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel, Address  *o)
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string res;
     if (AddressRange::cast(o)!=NULL)
     {
@@ -1147,6 +1160,17 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel, Address  *
 
         return res;
     }
+
+    MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
+    if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
+        ipt_comp->can_use_module_set)
+    {
+        string set_match = "--set " + o->getName() + " dst";
+        ostringstream ostr;
+        ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
+        return ostr.str();
+    }
+
     return _printSingleOptionWithNegation(" -d", rel, _printAddr(o));
 }
 

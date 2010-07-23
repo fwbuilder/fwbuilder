@@ -515,6 +515,11 @@ int PolicyCompiler_ipt::prolog()
         n++;
     }
 
+    string version = fw->getStr("version");
+    can_use_module_set = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
+                          fwopt->getBool("use_m_set"));
+    actually_used_module_set = false;
+
     return n;
 }
 
@@ -1006,12 +1011,23 @@ bool PolicyCompiler_ipt::singleItfNegation::processNext()
 
 bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     RuleElementSrc *srcrel = rule->getSrc();
 
 /*   ! A  B  C  ACTION  */
     if (srcrel->getNeg() && srcrel->size()==1)
     {
+        // We call singleSrcNegation before we replace AddressTable
+        // objects with MultiAddressRunTime objects
+        FWObject *o = FWReference::getObject(srcrel->front());
+        if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
+            ipt_comp->can_use_module_set)
+        {
+            srcrel->setNeg(false);
+            srcrel->setBool("single_object_negation", true);
+        }
+
         Address *src = compiler->getFirstSrc(rule);  
         // note: src can be NULL if object in this rule element is a group
         // or MultiAddress
@@ -1029,12 +1045,23 @@ bool PolicyCompiler_ipt::singleSrcNegation::processNext()
 
 bool PolicyCompiler_ipt::singleDstNegation::processNext()
 {
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     RuleElementDst *dstrel = rule->getDst();
 
 /*   A  ! B  C  ACTION  */
     if (dstrel->getNeg() && dstrel->size()==1)
     {
+        // We call singleSrcNegation before we replace AddressTable
+        // objects with MultiAddressRunTime objects
+        FWObject *o = FWReference::getObject(dstrel->front());
+        if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
+            ipt_comp->can_use_module_set)
+        {
+            dstrel->setNeg(false);
+            dstrel->setBool("single_object_negation", true);
+        }
+
         Address *dst = compiler->getFirstDst(rule);  
         if (dst!=NULL && dst->countInetAddresses(true)==1 &&
             !compiler->complexMatch(dst, compiler->fw)) 
@@ -2558,7 +2585,6 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 
 bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
 {
-    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     Interface *itf = compiler->getFirstItf(rule);
@@ -2922,7 +2948,6 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
          * with an interface which is a bridge port.
          */
 
-        RuleElementItf *itfre = rule->getItf();
         Interface *rule_iface = compiler->getFirstItf(rule);
         if (rule_iface == NULL || rule_iface->isBridgePort())
         {
@@ -3022,7 +3047,6 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
          * with an interface which is a bridge port.
          */
 
-        RuleElementItf *itfre = rule->getItf();
         Interface *rule_iface = compiler->getFirstItf(rule);
         if (rule_iface == NULL || rule_iface->isBridgePort())
         {
@@ -3981,7 +4005,6 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
 
     return true;
 }
-
 
 /*
  * iptables does not have target that would do nothing and would not

@@ -93,7 +93,11 @@ int PolicyCompiler_pf::prolog()
     return  PolicyCompiler::prolog();
 }
 
-
+/*
+ * this is very much like
+ * Compiler::swapMultiAddressObjectsInRE::processNext() except it also
+ * registers the table using registerTable()
+ */
 bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
 {
     PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);

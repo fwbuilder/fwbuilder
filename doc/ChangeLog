@@ -1,5 +1,14 @@
 2010-07-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp: added support for iptables module
+	"set" used to generate iptables command for rules with run-time
+	AddressTable objects. This module is only available in iptables
+	1.4.1.1 and later, however some embedded platforms do not have it
+	even though they ship later versions of	iptables (e.g. OpenWRT).
+	Use of this module is controlled by a checkbox in the iptables 
+	"advanced" settings dialog which is off by default. This checkbox
+	becomes disabled when iptables version is set to < 1.4.1.1.
+
 	* newClusterDialog_create.cpp (newClusterDialog::createNewCluster):
 	fixed #1622 "Crash when configuring cluster". The GUI used to crash
 	if user created a cluster copying rules of one of the cluster members
