@@ -42,6 +42,7 @@ OSData::OSData(const std::string &ho)
     attribute_names[VCONFIG] = "path_vconfig";
     attribute_names[BRCTL] = "path_brctl";
     attribute_names[IFENSLAVE] = "path_ifenslave";
+    attribute_names[IPSET] = "path_ipset";
     attribute_names[LOGGER] = "path_logger";
 
     variable_names[LSMOD] = "LSMOD";
@@ -55,6 +56,7 @@ OSData::OSData(const std::string &ho)
     variable_names[VCONFIG] = "VCONFIG";
     variable_names[BRCTL] = "BRCTL";
     variable_names[IFENSLAVE] = "IFENSLAVE";
+    variable_names[IPSET] = "IPSET";
     variable_names[LOGGER] = "LOGGER";
 
     all_tools.push_back(LSMOD);
@@ -68,6 +70,7 @@ OSData::OSData(const std::string &ho)
     all_tools.push_back(VCONFIG);
     all_tools.push_back(BRCTL);
     all_tools.push_back(IFENSLAVE);
+    all_tools.push_back(IPSET);
     all_tools.push_back(LOGGER);
 }
 

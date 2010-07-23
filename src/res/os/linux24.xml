@@ -136,6 +136,7 @@
           <path_vconfig>/sbin/vconfig</path_vconfig>
           <path_brctl>/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
         </RedHat>
         <Mandrake>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -151,6 +152,7 @@
           <path_vconfig>/sbin/vconfig</path_vconfig>
           <path_brctl>/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
         </Mandrake>
         <SuSE>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -166,6 +168,7 @@
           <path_vconfig>/sbin/vconfig</path_vconfig>
           <path_brctl>/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
         </SuSE>
         <Debian>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -181,6 +184,7 @@
           <path_vconfig>/sbin/vconfig</path_vconfig>
           <path_brctl>/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
         </Debian>
         <Unknown>
           <path_lsmod>lsmod</path_lsmod>
@@ -196,6 +200,7 @@
           <path_vconfig>vconfig</path_vconfig>
           <path_brctl>brctl</path_brctl>
           <path_ifenslave>ifenslave</path_ifenslave>
+          <path_ipset>ipset</path_ipset>
         </Unknown>
       </tools>
     </Target>

@@ -75,6 +75,7 @@
           <path_vconfig>vconfig</path_vconfig>
           <path_brctl>brctl</path_brctl>
           <path_ifenslave>ifenslave</path_ifenslave>
+          <path_ipset>ipset</path_ipset>
         </Unknown>
       </tools>
     </Target>

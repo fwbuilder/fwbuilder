@@ -78,6 +78,7 @@
           <path_vconfig>/sbin/vconfig</path_vconfig>
           <path_brctl>/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
         </ipcop>
       </tools>
     </Target>

@@ -54,6 +54,7 @@ class OSData {
                    VCONFIG,
                    BRCTL,
                    IFENSLAVE,
+                   IPSET,
                    LOGGER } tools;
 
     std::string getVariableName(tools t) { return variable_names[t]; }

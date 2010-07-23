@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
-    <height>590</height>
+    <width>493</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab0">
       <attribute name="title">
@@ -757,16 +757,7 @@
       <attribute name="title">
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_105">
-       <property name="leftMargin">
-        <number>12</number>
-       </property>
-       <property name="rightMargin">
-        <number>12</number>
-       </property>
-       <property name="bottomMargin">
-        <number>12</number>
-       </property>
+      <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
         <spacer>
          <property name="orientation">
@@ -783,7 +774,7 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="3">
+       <item row="1" column="0" colspan="4">
         <widget class="QLabel" name="label456">
          <property name="text">
           <string>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</string>
@@ -810,7 +801,14 @@
         </widget>
        </item>
        <item row="2" column="1" colspan="2">
-        <widget class="QLineEdit" name="linux24_path_iptables"/>
+        <widget class="QLineEdit" name="linux24_path_iptables">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label">
@@ -860,7 +858,7 @@
        <item row="6" column="0">
         <widget class="QLabel" name="label455_3">
          <property name="text">
-          <string>vconfig</string>
+          <string>vconfig:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -876,7 +874,7 @@
        <item row="7" column="0">
         <widget class="QLabel" name="label455_4">
          <property name="text">
-          <string>brctl</string>
+          <string>brctl:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -892,7 +890,7 @@
        <item row="8" column="0">
         <widget class="QLabel" name="label455">
          <property name="text">
-          <string>ifenslave</string>
+          <string>ifenslave:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -924,7 +922,7 @@
        <item row="10" column="0">
         <widget class="QLabel" name="label459">
          <property name="text">
-          <string>lsmod</string>
+          <string>lsmod:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -938,6 +936,19 @@
         <widget class="QLineEdit" name="linux24_path_lsmod"/>
        </item>
        <item row="11" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>ipset:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_ipset"/>
+       </item>
+       <item row="12" column="0">
         <widget class="QLabel" name="label453_2">
          <property name="text">
           <string>iptables-restore:</string>
@@ -950,10 +961,10 @@
          </property>
         </widget>
        </item>
-       <item row="11" column="1" colspan="2">
+       <item row="12" column="1" colspan="2">
         <widget class="QLineEdit" name="linux24_path_iptables_restore"/>
        </item>
-       <item row="12" column="0">
+       <item row="13" column="0">
         <widget class="QLabel" name="label_2">
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -963,26 +974,10 @@
          </property>
         </widget>
        </item>
-       <item row="12" column="1" colspan="2">
+       <item row="13" column="1" colspan="2">
         <widget class="QLineEdit" name="linux24_path_ip6tables_restore"/>
        </item>
-       <item row="13" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>150</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="13" column="2">
+       <item row="14" column="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>

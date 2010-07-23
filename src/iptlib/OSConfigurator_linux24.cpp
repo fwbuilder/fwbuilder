@@ -328,6 +328,8 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
                               options->getBool("configure_bonding_interfaces"));
     }
 
+    configlet.setVariable("need_ipset", can_use_module_set);
+
     configlet.setVariable("need_iptables_restore",
                           options->getBool("use_iptables_restore"));
 

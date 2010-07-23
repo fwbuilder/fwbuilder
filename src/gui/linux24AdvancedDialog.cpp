@@ -168,6 +168,9 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_modprobe,
                          fwopt,
                          "linux24_path_modprobe");
+    data.registerOption( m_dialog->linux24_path_ipset,
+                         fwopt,
+                         "linux24_path_ipset");
     data.registerOption( m_dialog->linux24_path_iptables_restore,
                          fwopt,
                          "linux24_path_iptables_restore");

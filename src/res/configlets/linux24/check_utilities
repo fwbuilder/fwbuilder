@@ -30,5 +30,6 @@ check_tools() {
 {{if need_vconfig}}  find_program $VCONFIG {{endif}}
 {{if need_brctl}}  find_program $BRCTL {{endif}}
 {{if need_ifenslave}}  find_program $IFENSLAVE {{endif}}
+{{if need_ipset}}  find_program $IPSET {{endif}}
 }
 

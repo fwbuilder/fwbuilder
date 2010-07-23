@@ -1,3 +1,13 @@
+2010-07-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* check_utilities: fixed #1625, #see 137: added ipset to the list
+	of command line utilities generated iptables script can
+	use. Script will check if the utility is present on the firewall
+	if user requested use of iptables module "set" for run-time
+	Address Table objects. Also added an input field for ipset in the
+	advanced settings host OS dialog for Linux to let the user specify
+	path to ipset if it is not standard.
+
 2010-07-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp: added support for iptables module
