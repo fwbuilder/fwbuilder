@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>743</width>
-    <height>717</height>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -237,7 +237,7 @@ interfaces.
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
           <property name="verticalSpacing">
-           <number>20</number>
+           <number>5</number>
           </property>
           <item row="0" column="0">
            <widget class="QRadioButton" name="procurve_acl_acl_basic">
@@ -739,22 +739,6 @@ First, create temporary access list to permit connections from the management su
           </item>
          </layout>
         </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
