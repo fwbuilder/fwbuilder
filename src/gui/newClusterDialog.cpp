@@ -301,6 +301,7 @@ void newClusterDialog::showPage(const int page, bool blank)
 
 void newClusterDialog::finishClicked()
 {
+    m_dialog->nextButton->setFocus(Qt::OtherFocusReason);
     createNewCluster();
 
     if (unloadTemplatesLib)
@@ -320,6 +321,7 @@ void newClusterDialog::cancelClicked()
 
 void newClusterDialog::nextClicked()
 {
+    m_dialog->nextButton->setFocus(Qt::OtherFocusReason);
     if (currentPage() == FIREWALLS_PAGE)
     {
         if (!this->m_dialog->firewallSelector->isValid()) return;
