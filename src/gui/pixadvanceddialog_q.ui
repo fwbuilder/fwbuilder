@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>716</height>
+    <width>829</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -150,109 +150,6 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QGroupBox" name="frame114">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Policy Compiler Options</string>
-         </property>
-         <layout class="QGridLayout">
-          <property name="verticalSpacing">
-           <number>12</number>
-          </property>
-          <property name="margin">
-           <number>12</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="pix_assume_fw_part_of_any">
-            <property name="toolTip">
-             <string>Generate rules assuming the firewall is part of &quot;Any&quot;. This makes a difference in rules that use services 'ssh' and 'telnet' since PIX uses special commands to control ssh and telnet access to the firewall machine</string>
-            </property>
-            <property name="text">
-             <string>Assume firewall is part of 'any'</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="pix_replace_natted_objects">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>PIX inspects packets with ACLs before it does NAT, while many other firewalls do NAT first and then apply ACLs. Policy compiler can emulate the latter behaviour if this options is turned on.</string>
-            </property>
-            <property name="text">
-             <string>Replace NAT'ted objects with their translations in policy rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="pix_emulate_out_acl">
-            <property name="toolTip">
-             <string>Normally PIX does not support outbound ACL, however policy compiler can emulate them if this option is turned on</string>
-            </property>
-            <property name="text">
-             <string>Emulate outbound ACLs</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="pix_generate_out_acl">
-            <property name="toolTip">
-             <string>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</string>
-            </property>
-            <property name="text">
-             <string>Generate outbound ACLs</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QCheckBox" name="pix_ignore_empty_groups">
-            <property name="toolTip">
-             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-            </property>
-            <property name="text">
-             <string>Ignore empty groups in rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="pix_optimize_default_nat">
-            <property name="toolTip">
-             <string>In nat rules where network zone object is used in OSrc, ODst and OSrv are 'any' and TSrc defines a global pool for the translation, replace object in OSrc with 'any' to produce PIX command &quot;nat (interface) N 0.0.0.0 0.0.0.0&quot;</string>
-            </property>
-            <property name="text">
-             <string>Optimize 'default nat' rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="pix_check_shadowing">
-            <property name="toolTip">
-             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-            </property>
-            <property name="text">
-             <string>Detect rule shadowing in the policy</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="4" column="0" colspan="2">
         <widget class="QGroupBox" name="frame153">
          <property name="sizePolicy">
@@ -281,13 +178,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="pix_check_overlapping_global_pools">
-            <property name="text">
-             <string>Check for overlapping global pools</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="pix_check_overlapping_statics">
             <property name="text">
@@ -295,7 +185,14 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="pix_check_overlapping_global_pools">
+            <property name="text">
+             <string>Check for overlapping global pools</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
            <widget class="QCheckBox" name="pix_check_overlapping_global_statics">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -372,6 +269,109 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QGroupBox" name="frame114">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Policy Compiler Options</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <property name="margin">
+           <number>12</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pix_assume_fw_part_of_any">
+            <property name="toolTip">
+             <string>Generate rules assuming the firewall is part of &quot;Any&quot;. This makes a difference in rules that use services 'ssh' and 'telnet' since PIX uses special commands to control ssh and telnet access to the firewall machine</string>
+            </property>
+            <property name="text">
+             <string>Assume firewall is part of 'any'</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pix_emulate_out_acl">
+            <property name="toolTip">
+             <string>Normally PIX does not support outbound ACL, however policy compiler can emulate them if this option is turned on</string>
+            </property>
+            <property name="text">
+             <string>Emulate outbound ACLs</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="pix_optimize_default_nat">
+            <property name="toolTip">
+             <string>In nat rules where network zone object is used in OSrc, ODst and OSrv are 'any' and TSrc defines a global pool for the translation, replace object in OSrc with 'any' to produce PIX command &quot;nat (interface) N 0.0.0.0 0.0.0.0&quot;</string>
+            </property>
+            <property name="text">
+             <string>Optimize 'default nat' rules</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="pix_check_shadowing">
+            <property name="toolTip">
+             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+            </property>
+            <property name="text">
+             <string>Detect rule shadowing in the policy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="pix_replace_natted_objects">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>PIX inspects packets with ACLs before it does NAT, while many other firewalls do NAT first and then apply ACLs. Policy compiler can emulate the latter behaviour if this options is turned on.</string>
+            </property>
+            <property name="text">
+             <string>Replace NAT'ted objects with their translations in policy rules</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="pix_generate_out_acl">
+            <property name="toolTip">
+             <string>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</string>
+            </property>
+            <property name="text">
+             <string>Generate outbound ACLs</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="pix_ignore_empty_groups">
+            <property name="toolTip">
+             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+            </property>
+            <property name="text">
+             <string>Ignore empty groups in rules</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -500,8 +500,8 @@
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0" colspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
            <widget class="QLabel" name="label">
             <property name="text">
              <string>Instead of running generated configuration on the firewall line by line, installer can use scp to copy the file and then &quot;copy file running-config&quot; command to activate it. Ssh v2 and scp servers should be configured on the firewall for this to work.  This method works for PIX v7 or later and is much faster than running configuration line by line.</string>
@@ -511,14 +511,14 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="2">
+          <item>
            <widget class="QCheckBox" name="use_scp">
             <property name="text">
              <string>Copy generated configuration file to the firewall using scp</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
+          <item>
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>File system on the firewall where configuration file should be saved if it is copied with scp. Examples: &quot;flash:&quot;, &quot;disk0:&quot;. Should end with a colon &quot;:&quot;. If this input field is left blank, installer uses &quot;flash:&quot;:</string>
@@ -528,21 +528,25 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLineEdit" name="filesystem"/>
-          </item>
-          <item row="3" column="1">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>398</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLineEdit" name="filesystem"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -555,6 +559,12 @@
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="textLabel5_2">
               <property name="sizePolicy">
@@ -564,7 +574,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Policy install script :</string>
+               <string>Policy install script (built-in installer will be used if blank):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -594,6 +604,12 @@
           </item>
           <item row="2" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="textLabel6_2">
               <property name="sizePolicy">
@@ -631,31 +647,8 @@
             </item>
            </layout>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Built-in installer will be used if policy install script field is blank.</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -828,8 +821,20 @@
           <enum>QFrame::Sunken</enum>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
-           <number>11</number>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>4</number>
           </property>
           <item row="1" column="0">
            <widget class="QLabel" name="label461">
@@ -3879,41 +3884,6 @@
             </item>
            </layout>
           </item>
-          <item row="2" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QRadioButton" name="pix_acl_substitution">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="textLabel4">
-              <property name="text">
-               <string>&quot;Safety net&quot; method:
-
-First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignVCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-              <property name="buddy">
-               <cstring>pix_acl_substitution</cstring>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
           <item row="3" column="0">
            <widget class="QFrame" name="frame5">
             <property name="frameShape">
@@ -3996,10 +3966,65 @@ First, create temporary access list to permit connections from the management su
             </layout>
            </widget>
           </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QRadioButton" name="pix_acl_substitution">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="textLabel4">
+              <property name="text">
+               <string>&quot;Safety net&quot; method:
+
+First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignVCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+              <property name="buddy">
+               <cstring>pix_acl_substitution</cstring>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </widget>
        </item>
        <item row="1" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>137</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Script (additional)</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string/>
@@ -4025,7 +4050,7 @@ First, create temporary access list to permit connections from the management su
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item>
         <widget class="QGroupBox" name="frame170">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -4036,7 +4061,7 @@ First, create temporary access list to permit connections from the management su
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout">
+         <layout class="QGridLayout" name="_3">
           <property name="margin">
            <number>12</number>
           </property>
@@ -4060,7 +4085,7 @@ First, create temporary access list to permit connections from the management su
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="0" column="1">
            <widget class="QCheckBox" name="pix_regroup_commands">
             <property name="toolTip">
              <string>Group PIX commands in the script so that similar commands appear next to each other, just like PIX does it when you use 'show config'</string>
@@ -4070,7 +4095,7 @@ First, create temporary access list to permit connections from the management su
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="1" column="1">
            <widget class="QCheckBox" name="pix_use_manual_commit">
             <property name="text">
              <string>Use manual ACL commit on FWSM</string>
@@ -4080,15 +4105,15 @@ First, create temporary access list to permit connections from the management su
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
-        <spacer name="verticalSpacer">
+       <item>
+        <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>137</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
@@ -4423,16 +4448,11 @@ the packet should go to, and which is the next hop
   <tabstop>tabWidget</tabstop>
   <tabstop>outputFileName</tabstop>
   <tabstop>pix_assume_fw_part_of_any</tabstop>
-  <tabstop>pix_replace_natted_objects</tabstop>
   <tabstop>pix_emulate_out_acl</tabstop>
-  <tabstop>pix_generate_out_acl</tabstop>
   <tabstop>pix_optimize_default_nat</tabstop>
-  <tabstop>pix_ignore_empty_groups</tabstop>
   <tabstop>pix_check_shadowing</tabstop>
   <tabstop>pix_check_duplicate_nat</tabstop>
-  <tabstop>pix_check_overlapping_global_pools</tabstop>
   <tabstop>pix_check_overlapping_statics</tabstop>
-  <tabstop>pix_check_overlapping_global_statics</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
   <tabstop>user</tabstop>
@@ -4440,8 +4460,6 @@ the packet should go to, and which is the next hop
   <tabstop>sshArgs</tabstop>
   <tabstop>scpArgs</tabstop>
   <tabstop>use_scp</tabstop>
-  <tabstop>filesystem</tabstop>
-  <tabstop>installScript</tabstop>
   <tabstop>installScriptArgs</tabstop>
   <tabstop>pix_prolog_script</tabstop>
   <tabstop>edit_prolog_button</tabstop>
@@ -4549,11 +4567,6 @@ the packet should go to, and which is the next hop
   <tabstop>pix_acl_no_clear</tabstop>
   <tabstop>pix_acl_substitution</tabstop>
   <tabstop>pix_acl_temp_addr</tabstop>
-  <tabstop>short_script</tabstop>
-  <tabstop>pix_include_comments</tabstop>
-  <tabstop>pix_use_acl_remarks</tabstop>
-  <tabstop>pix_regroup_commands</tabstop>
-  <tabstop>pix_use_manual_commit</tabstop>
   <tabstop>resetinbound</tabstop>
   <tabstop>resetoutside</tabstop>
   <tabstop>connection_timewait</tabstop>
