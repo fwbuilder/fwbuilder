@@ -61,7 +61,6 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::linux24AdvancedDialog_q;
     m_dialog->setupUi(this);
-    setWindowModality(Qt::WindowModal);
     obj=o;
 
     string host_os = obj->getStr("host_OS");

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>pixAdvancedDialog_q</class>
  <widget class="QDialog" name="pixAdvancedDialog_q">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="enabled">
    <bool>true</bool>
   </property>

@@ -38,7 +38,6 @@ secuwallIfaceOptsDialog::secuwallIfaceOptsDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::secuwallIfaceOptsDialog_q;
     m_dialog->setupUi(this);
-    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();

@@ -60,7 +60,6 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::ipcoposAdvancedDialog_q;
     m_dialog->setupUi(this);
-    setWindowModality(Qt::WindowModal);
     obj=o;
 
     string host_os = obj->getStr("host_OS");

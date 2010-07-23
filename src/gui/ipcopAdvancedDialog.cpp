@@ -60,7 +60,6 @@ ipcopAdvancedDialog::ipcopAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::ipcopAdvancedDialog_q;
     m_dialog->setupUi(this);
-    setWindowModality(Qt::WindowModal);
 
     obj=o;
     QStringList slm;

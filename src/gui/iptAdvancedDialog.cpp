@@ -61,7 +61,6 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::iptAdvancedDialog_q;
     m_dialog->setupUi(this);
-    setWindowModality(Qt::WindowModal);
 
     obj=o;
     QStringList slm;

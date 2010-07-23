@@ -2,11 +2,14 @@
 <ui version="4.0">
  <class>pfAdvancedDialog_q</class>
  <widget class="QDialog" name="pfAdvancedDialog_q">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>697</width>
+    <width>700</width>
     <height>550</height>
    </rect>
   </property>
@@ -91,7 +94,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">

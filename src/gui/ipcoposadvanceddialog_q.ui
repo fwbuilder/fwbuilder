@@ -1,7 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ipcoposAdvancedDialog_q</class>
- <widget class="QDialog" name="ipcoposAdvancedDialog_q" >
-  <property name="geometry" >
+ <widget class="QDialog" name="ipcoposAdvancedDialog_q">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,32 +13,32 @@
     <height>625</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>IPCOP: advanced settings</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="tabShape" >
+  <layout class="QGridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
-     <property name="currentIndex" >
+     <property name="currentIndex">
       <number>2</number>
      </property>
-     <widget class="QWidget" name="tab0" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab0">
+      <attribute name="title">
        <string>Options</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="2" >
+      <layout class="QGridLayout">
+       <item row="0" column="0" colspan="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -42,47 +46,47 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="2" >
-        <widget class="QLabel" name="label368" >
-         <property name="text" >
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="label368">
+         <property name="text">
           <string>IPv4 Packet forwarding</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="2" >
-        <widget class="QComboBox" name="linux24_ip_forward" >
+       <item row="1" column="2">
+        <widget class="QComboBox" name="linux24_ip_forward">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item rowspan="7" row="1" column="3" >
+       <item row="1" column="3" rowspan="7">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>150</height>
@@ -90,271 +94,271 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" colspan="2" >
-        <widget class="QLabel" name="label368_2" >
-         <property name="text" >
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="label368_2">
+         <property name="text">
           <string>IPv6 Packet forwarding</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" >
-        <widget class="QComboBox" name="linux24_ipv6_forward" >
+       <item row="2" column="2">
+        <widget class="QComboBox" name="linux24_ipv6_forward">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2" >
-        <widget class="QLabel" name="label369" >
-         <property name="text" >
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="label369">
+         <property name="text">
           <string>Kernel anti-spoofing protection</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="2" >
-        <widget class="QComboBox" name="linux24_rp_filter" >
+       <item row="3" column="2">
+        <widget class="QComboBox" name="linux24_rp_filter">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2" >
-        <widget class="QLabel" name="label370" >
-         <property name="text" >
+       <item row="4" column="0" colspan="2">
+        <widget class="QLabel" name="label370">
+         <property name="text">
           <string>Ignore broadcast pings</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_echo_ignore_broadcasts" >
+       <item row="4" column="2">
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_broadcasts">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2" >
-        <widget class="QLabel" name="label386" >
-         <property name="text" >
+       <item row="5" column="0" colspan="2">
+        <widget class="QLabel" name="label386">
+         <property name="text">
           <string>Ignore all pings</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="5" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_echo_ignore_all" >
+       <item row="5" column="2">
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_all">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2" >
-        <widget class="QLabel" name="label371" >
-         <property name="text" >
+       <item row="6" column="0" colspan="2">
+        <widget class="QLabel" name="label371">
+         <property name="text">
           <string>Accept source route</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="2" >
-        <widget class="QComboBox" name="linux24_accept_source_route" >
+       <item row="6" column="2">
+        <widget class="QComboBox" name="linux24_accept_source_route">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2" >
-        <widget class="QLabel" name="label373" >
-         <property name="text" >
+       <item row="7" column="0" colspan="2">
+        <widget class="QLabel" name="label373">
+         <property name="text">
           <string>Accept ICMP redirects</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="7" column="2" >
-        <widget class="QComboBox" name="linux24_accept_redirects" >
+       <item row="7" column="2">
+        <widget class="QComboBox" name="linux24_accept_redirects">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="8" column="0" colspan="2" >
-        <widget class="QLabel" name="label374" >
-         <property name="text" >
+       <item row="8" column="0" colspan="2">
+        <widget class="QLabel" name="label374">
+         <property name="text">
           <string>Ignore bogus ICMP errors</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="2" >
-        <widget class="QComboBox" name="linux24_icmp_ignore_bogus_error_responses" >
+       <item row="8" column="2">
+        <widget class="QComboBox" name="linux24_icmp_ignore_bogus_error_responses">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="9" column="0" colspan="2" >
-        <widget class="QLabel" name="label375" >
-         <property name="text" >
+       <item row="9" column="0" colspan="2">
+        <widget class="QLabel" name="label375">
+         <property name="text">
           <string>Allow dynamic addresses</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="9" column="2" >
-        <widget class="QComboBox" name="linux24_ip_dynaddr" >
+       <item row="9" column="2">
+        <widget class="QComboBox" name="linux24_ip_dynaddr">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="10" column="0" >
+       <item row="10" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>141</width>
            <height>21</height>
@@ -362,50 +366,50 @@
          </property>
         </spacer>
        </item>
-       <item row="10" column="1" >
-        <widget class="QLabel" name="label380" >
-         <property name="text" >
+       <item row="10" column="1">
+        <widget class="QLabel" name="label380">
+         <property name="text">
           <string>Log martians</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="10" column="2" >
-        <widget class="QComboBox" name="linux24_log_martians" >
-         <property name="whatsThis" >
-          <string comment="whats this comment" >whats this text</string>
+       <item row="10" column="2">
+        <widget class="QComboBox" name="linux24_log_martians">
+         <property name="whatsThis">
+          <string comment="whats this comment">whats this text</string>
          </property>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="11" column="2" >
+       <item row="11" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>93</width>
            <height>21</height>
@@ -415,36 +419,36 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab1" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab1">
+      <attribute name="title">
        <string>TCP</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <item row="1" column="0" colspan="4" >
-        <widget class="QLabel" name="network_tab_txt2" >
-         <property name="text" >
+       <item row="1" column="0" colspan="4">
+        <widget class="QLabel" name="network_tab_txt2">
+         <property name="text">
           <string>These parameters make sense for connections to or from the firewall host</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" >
+       <item row="0" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -452,15 +456,15 @@
          </property>
         </spacer>
        </item>
-       <item row="10" column="2" >
+       <item row="10" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>30</height>
@@ -468,15 +472,15 @@
          </property>
         </spacer>
        </item>
-       <item rowspan="3" row="2" column="3" >
+       <item row="2" column="3" rowspan="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>100</width>
            <height>50</height>
@@ -484,15 +488,15 @@
          </property>
         </spacer>
        </item>
-       <item row="10" column="0" >
+       <item row="10" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>150</width>
            <height>20</height>
@@ -500,266 +504,266 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="1" colspan="2" >
-        <widget class="QSpinBox" name="linux24_tcp_fin_timeout" >
-         <property name="minimum" >
+       <item row="2" column="1" colspan="2">
+        <widget class="QSpinBox" name="linux24_tcp_fin_timeout">
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>1000</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>30</number>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2" >
-        <widget class="QSpinBox" name="linux24_tcp_keepalive_interval" >
-         <property name="minimum" >
+       <item row="3" column="1" colspan="2">
+        <widget class="QSpinBox" name="linux24_tcp_keepalive_interval">
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>10000</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>1800</number>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_window_scaling" >
+       <item row="4" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_window_scaling">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_sack" >
+       <item row="5" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_sack">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_fack" >
+       <item row="6" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_fack">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_ecn" >
+       <item row="7" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_ecn">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="8" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_syncookies" >
+       <item row="8" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_syncookies">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2" >
-        <widget class="QComboBox" name="linux24_tcp_timestamps" >
+       <item row="9" column="1" colspan="2">
+        <widget class="QComboBox" name="linux24_tcp_timestamps">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="5" column="0" >
-        <widget class="QLabel" name="label379" >
-         <property name="text" >
+       <item row="5" column="0">
+        <widget class="QLabel" name="label379">
+         <property name="text">
           <string>TCP sack</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label378" >
-         <property name="text" >
+       <item row="4" column="0">
+        <widget class="QLabel" name="label378">
+         <property name="text">
           <string>TCP window scaling</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="7" column="0" >
-        <widget class="QLabel" name="label383" >
-         <property name="text" >
+       <item row="7" column="0">
+        <widget class="QLabel" name="label383">
+         <property name="text">
           <string>TCP ECN</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="0" >
-        <widget class="QLabel" name="label372" >
-         <property name="text" >
+       <item row="8" column="0">
+        <widget class="QLabel" name="label372">
+         <property name="text">
           <string>TCP SYN cookies</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label377" >
-         <property name="text" >
+       <item row="3" column="0">
+        <widget class="QLabel" name="label377">
+         <property name="text">
           <string>TCP keepalive time (sec)</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="0" >
-        <widget class="QLabel" name="label384" >
-         <property name="text" >
+       <item row="6" column="0">
+        <widget class="QLabel" name="label384">
+         <property name="text">
           <string>TCP fack</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="9" column="0" >
-        <widget class="QLabel" name="label385" >
-         <property name="text" >
+       <item row="9" column="0">
+        <widget class="QLabel" name="label385">
+         <property name="text">
           <string>TCP timestamps</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label376" >
-         <property name="text" >
+       <item row="2" column="0">
+        <widget class="QLabel" name="label376">
+         <property name="text">
           <string>TCP FIN timeout (sec)</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab2" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab2">
+      <attribute name="title">
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_123" >
-       <item row="0" column="1" >
+      <layout class="QGridLayout" name="gridLayout_123">
+       <item row="0" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -767,198 +771,198 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QLabel" name="label456" >
-         <property name="text" >
+       <item row="1" column="0" colspan="3">
+        <widget class="QLabel" name="label456">
+         <property name="text">
           <string>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label453" >
-         <property name="text" >
+       <item row="2" column="0">
+        <widget class="QLabel" name="label453">
+         <property name="text">
           <string>iptables:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_iptables" />
+       <item row="2" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_iptables"/>
        </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="layoutDirection" >
+       <item row="3" column="0">
+        <widget class="QLabel" name="label">
+         <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>:ip6tables</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_ip6tables" />
+       <item row="3" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_ip6tables"/>
        </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label454" >
-         <property name="text" >
+       <item row="4" column="0">
+        <widget class="QLabel" name="label454">
+         <property name="text">
           <string>ip:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_ip" />
+       <item row="4" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_ip"/>
        </item>
-       <item row="5" column="0" >
-        <widget class="QLabel" name="label455_3" >
-         <property name="text" >
+       <item row="5" column="0">
+        <widget class="QLabel" name="label455_3">
+         <property name="text">
           <string>vconfig</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_vconfig" />
+       <item row="5" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_vconfig"/>
        </item>
-       <item row="6" column="0" >
-        <widget class="QLabel" name="label455_4" >
-         <property name="text" >
+       <item row="6" column="0">
+        <widget class="QLabel" name="label455_4">
+         <property name="text">
           <string>brctl</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_brctl" />
+       <item row="6" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_brctl"/>
        </item>
-       <item row="7" column="0" >
-        <widget class="QLabel" name="label455_2" >
-         <property name="text" >
+       <item row="7" column="0">
+        <widget class="QLabel" name="label455_2">
+         <property name="text">
           <string>ifenslave</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_ifenslave" />
+       <item row="7" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_ifenslave"/>
        </item>
-       <item row="8" column="0" >
-        <widget class="QLabel" name="label455" >
-         <property name="text" >
+       <item row="8" column="0">
+        <widget class="QLabel" name="label455">
+         <property name="text">
           <string>logger:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_logger" />
+       <item row="8" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_logger"/>
        </item>
-       <item row="9" column="0" >
-        <widget class="QLabel" name="label458" >
-         <property name="text" >
+       <item row="9" column="0">
+        <widget class="QLabel" name="label458">
+         <property name="text">
           <string>modprobe:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_modprobe" />
+       <item row="9" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_modprobe"/>
        </item>
-       <item row="10" column="0" >
-        <widget class="QLabel" name="label459" >
-         <property name="text" >
+       <item row="10" column="0">
+        <widget class="QLabel" name="label459">
+         <property name="text">
           <string>lsmod</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="10" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_lsmod" />
+       <item row="10" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_lsmod"/>
        </item>
-       <item row="11" column="0" >
-        <widget class="QLabel" name="label453_2" >
-         <property name="text" >
+       <item row="11" column="0">
+        <widget class="QLabel" name="label453_2">
+         <property name="text">
           <string>iptables-restore:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="11" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_iptables_restore" />
+       <item row="11" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_iptables_restore"/>
        </item>
-       <item row="12" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="layoutDirection" >
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>:ip6tables-restore</string>
          </property>
         </widget>
        </item>
-       <item row="12" column="1" colspan="2" >
-        <widget class="QLineEdit" name="linux24_path_ip6tables_restore" />
+       <item row="12" column="1" colspan="2">
+        <widget class="QLineEdit" name="linux24_path_ip6tables_restore"/>
        </item>
-       <item row="13" column="2" >
+       <item row="13" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>60</height>
@@ -970,24 +974,24 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QPushButton" name="buttonHelp" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonHelp">
+       <property name="text">
         <string>Help</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType" >
+       <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>151</width>
          <height>27</height>
@@ -996,30 +1000,30 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
         <string>&amp;OK</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
-       <property name="default" >
+       <property name="default">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
         <string>&amp;Cancel</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
       </widget>
@@ -1028,7 +1032,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>linux24_ip_forward</tabstop>
   <tabstop>linux24_ipv6_forward</tabstop>
@@ -1072,11 +1076,11 @@
    <receiver>ipcoposAdvancedDialog_q</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>395</x>
      <y>447</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>223</x>
      <y>239</y>
     </hint>
@@ -1088,11 +1092,11 @@
    <receiver>ipcoposAdvancedDialog_q</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>314</x>
      <y>447</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>223</x>
      <y>239</y>
     </hint>
@@ -1104,11 +1108,11 @@
    <receiver>ipcoposAdvancedDialog_q</receiver>
    <slot>help()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>47</x>
      <y>447</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>223</x>
      <y>239</y>
     </hint>
