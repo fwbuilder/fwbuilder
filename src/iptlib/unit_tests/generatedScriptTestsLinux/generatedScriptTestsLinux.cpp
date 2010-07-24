@@ -367,7 +367,26 @@ void GeneratedScriptTest::virtualAddressesForNat2Test()
     delete objdb;
 }
 
-void GeneratedScriptTest::runTimeAddressTablesWithIpSetTest()
+/*
+ * negative test first. test6 does not use ipset module and the configlet should
+ * only insert blank function check_run_time_address_table_files()
+ */
+void GeneratedScriptTest::runTimeAddressTablesWithIpSet1Test()
+{
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "test6", "test6.fw");
+
+    QString res = Configlet::findConfigletInFile("run_time_address_tables", "test6.fw");
+    CPPUNIT_ASSERT(!res.isEmpty());
+    int n1 = res.indexOf("load_run_time_address_table_files() {");
+    CPPUNIT_ASSERT(n1 == -1);
+    n1 = res.indexOf("check_run_time_address_table_files() {");
+    CPPUNIT_ASSERT(n1 != -1);
+
+    delete objdb;
+}
+
+void GeneratedScriptTest::runTimeAddressTablesWithIpSet2Test()
 {
     QStringList sample_1;
 
