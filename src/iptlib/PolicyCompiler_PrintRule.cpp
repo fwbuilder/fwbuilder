@@ -1133,14 +1133,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *
     if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
         ipt_comp->using_ipset)
     {
-        ipt_comp->actually_used_module_set = true;
-        string set_name =
-            dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
-        ipt_comp->ipset_tables[set_name] = atrt->getSourceName();
-        string set_match = "--set " + set_name + " src";
-        ostringstream ostr;
-        ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
-        return ostr.str();
+        return _printIpSetMatch(o, rel);
     }
 
     return _printSingleOptionWithNegation(" -s", rel, _printAddr(o));
@@ -1170,17 +1163,24 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel, Address  *
     if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
         ipt_comp->using_ipset)
     {
-        ipt_comp->actually_used_module_set = true;
-        string set_name =
-            dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
-        ipt_comp->ipset_tables[set_name] = atrt->getSourceName();
-        string set_match = "--set " + set_name + " dst";
-        ostringstream ostr;
-        ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
-        return ostr.str();
+        return _printIpSetMatch(o, rel);
     }
 
     return _printSingleOptionWithNegation(" -d", rel, _printAddr(o));
+}
+
+string PolicyCompiler_ipt::PrintRule::_printIpSetMatch(Address *o, RuleElement *rel)
+{
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    string set_name =
+        dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
+    string suffix = "dst";
+    if (RuleElementSrc::isA(rel)) suffix = "src";
+    if (RuleElementDst::isA(rel)) suffix = "dst";
+    string set_match = "--set " + set_name + " " + suffix;
+    ostringstream ostr;
+    ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
+    return ostr.str();
 }
 
 string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)

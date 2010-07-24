@@ -53353,8 +53353,71 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id56583X26628" host_OS="linux24" inactive="False" lastCompiled="1279850008" lastInstalled="0" lastModified="1279855256" platform="iptables" version="1.4.1.1" name="firewall41-1" comment="testing run time address table objects with module set" ro="False">
+      <Firewall id="id56583X26628" host_OS="linux24" inactive="False" lastCompiled="1279850008" lastInstalled="0" lastModified="1279949656" platform="iptables" version="1.4.1.1" name="firewall41-1" comment="testing run time address table objects with module set" ro="False">
         <NAT id="id56688X26628" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id985478X9995" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id56591X26628"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id2287813X9995" disabled="False" group="" position="1" action="Translate" comment="">
+            <OSrc neg="True">
+              <ObjectRef ref="id44F7056328576"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id56591X26628"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id985500X9995" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id56601X26628" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -53705,8 +53768,71 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4374266X29460" host_OS="openwrt" inactive="False" lastCompiled="1279850008" lastInstalled="0" lastModified="1279855986" platform="iptables" version="1.4.3" name="firewall41-2" comment="testing run time address table objects with module set&#10;use module set is turned off&#10;" ro="False">
+      <Firewall id="id4374266X29460" host_OS="openwrt" inactive="False" lastCompiled="1279850008" lastInstalled="0" lastModified="1279949642" platform="iptables" version="1.4.3" name="firewall41-2" comment="testing run time address table objects with module set&#10;use module set is turned off&#10;" ro="False">
         <NAT id="id4374396X29460" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id1543124X9995" disabled="False" group="" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id56591X26628"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id2101361X9995" disabled="False" group="" position="1" action="Translate" comment="">
+            <OSrc neg="True">
+              <ObjectRef ref="id44F7056328576"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id56591X26628"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id1543070X9995" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id4374284X29460" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">

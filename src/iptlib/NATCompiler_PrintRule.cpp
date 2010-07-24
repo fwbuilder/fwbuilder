@@ -501,6 +501,20 @@ string NATCompiler_ipt::PrintRule::_printDstService(RuleElementOSrv  *rel)
     return ostr.str();
 }
 
+string NATCompiler_ipt::PrintRule::_printIpSetMatch(Address  *o, RuleElement *rel)
+{
+    NATCompiler_ipt *ipt_comp=dynamic_cast<NATCompiler_ipt*>(compiler);
+    string set_name =
+        dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
+    string suffix = "dst";
+    if (RuleElementOSrc::isA(rel)) suffix = "src";
+    if (RuleElementODst::isA(rel)) suffix = "dst";
+    string set_match = "--set " + set_name + " " + suffix;
+    ostringstream ostr;
+    ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
+    return ostr.str();
+}
+
 // Note print_mask is true by default, print_range is false by default.
 string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
                                               bool ,
@@ -659,9 +673,17 @@ bool NATCompiler_ipt::PrintRule::processNext()
         const InetAddr *osrc_addr = osrc->getAddressPtr();
         if (osrc_addr==NULL || !osrc_addr->isAny())
         {
-            string osrc_out = _printAddr(osrc);
-            if (!osrc_out.empty())
-                cmdout << _printSingleOptionWithNegation(" -s", osrcrel, osrc_out);
+            MultiAddressRunTime *atrt = MultiAddressRunTime::cast(osrc);
+            if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
+                ipt_comp->using_ipset)
+            {
+                cmdout << _printIpSetMatch(osrc, osrcrel);
+            } else
+            {
+                string osrc_out = _printAddr(osrc);
+                if (!osrc_out.empty())
+                    cmdout << _printSingleOptionWithNegation(" -s", osrcrel, osrc_out);
+            }
         }
 
 //	cmdout << " -s ";
@@ -676,7 +698,13 @@ bool NATCompiler_ipt::PrintRule::processNext()
 
     if (!odst->isAny())
     {
-        cmdout << _printSingleOptionWithNegation(" -d", odstrel, _printAddr(odst));
+        MultiAddressRunTime *atrt = MultiAddressRunTime::cast(odst);
+        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
+            ipt_comp->using_ipset)
+        {
+            cmdout << _printIpSetMatch(odst, odstrel);
+        } else
+            cmdout << _printSingleOptionWithNegation(" -d", odstrel, _printAddr(odst));
     }
 
     cmdout << " ";

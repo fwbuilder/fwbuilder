@@ -214,6 +214,10 @@ int NATCompiler_ipt::prolog()
 	}
     }
 
+    string version = fw->getStr("version");
+    using_ipset = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
+                          fwopt->getBool("use_m_set"));
+
     return n;
 }
 

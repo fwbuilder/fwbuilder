@@ -1005,6 +1005,8 @@ public:
             virtual std::string _printDstAddr(libfwbuilder::RuleElement *rel,
                                               libfwbuilder::Address *o);
             virtual std::string _printAddr(libfwbuilder::Address *o);
+            virtual std::string _printIpSetMatch(
+                libfwbuilder::Address *o, libfwbuilder::RuleElement *rel);
             virtual std::string _printSingleObjectNegation(
                 libfwbuilder::RuleElement *rel);
             virtual std::string _printChain(libfwbuilder::PolicyRule *r);

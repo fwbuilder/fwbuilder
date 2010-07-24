@@ -60,7 +60,8 @@ namespace fwcompiler {
         class PrintRule;
 
         NATCompiler_ipt::PrintRule *printRule;
-        bool   have_dynamic_interfaces;
+        bool have_dynamic_interfaces;
+        bool using_ipset;
         std::map<std::string, int> chain_usage_counter;
 
         // use minus_n_commands map to track creation of chains.
@@ -535,6 +536,8 @@ namespace fwcompiler {
             virtual std::string _printAddr(libfwbuilder::Address  *o,
                                            bool print_mask=true,
                                            bool print_range=false);
+            virtual std::string _printIpSetMatch(
+                libfwbuilder::Address *o, libfwbuilder::RuleElement *rel);
             virtual std::string _printChainDirectionAndInterface(libfwbuilder::NATRule *r);
             virtual std::string _printSingleObjectNegation(libfwbuilder::RuleElement *rel);
 
