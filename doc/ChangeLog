@@ -9,7 +9,7 @@
 	any changes to iptables policy. If files are not available, the
 	script aborts and leaves iptables in the original state.  This
 	fixes #1628 "generated script checks presence of the address table
-	files after it sets default iptables policy to DROP"
+	files after it sets default iptables policy to DROP". fixes #1628
 
 	* run_time_address_tables: new configlet that adds shell code to
 	check if all run time address table data files are present on the
