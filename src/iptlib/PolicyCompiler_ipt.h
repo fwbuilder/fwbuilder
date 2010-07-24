@@ -72,6 +72,7 @@ protected:
 
         std::map<std::string, int>     tmp_chain_no;
         std::map<std::string, int>     chain_usage_counter;
+        std::map<std::string, std::string> ipset_tables;
 
         typedef std::list<std::string> chain_list;
         std::map<std::string, chain_list*> chains;
@@ -974,6 +975,8 @@ public:
 
             void initializeMinusNTracker();
 
+            std::string normalizeSetName(const std::string &txt);
+            
             /*
              * Prints single --option with argument and negation "!"
              * taking into account the change that happened in iptables 1.4.3.1

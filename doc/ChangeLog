@@ -1,5 +1,12 @@
 2010-07-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::normalizeSetName):
+	fixed #1626 "convert space and other special characters found in
+	the run time address table object into underscores". The name of
+	the run-time Address Table object is used for the name of the
+	ipset module set. Making sure the name is sanitized of the
+	chanracters considered "special" by shell before it is used.
+
 	* check_utilities: fixed #1625, #see 137: added ipset to the list
 	of command line utilities generated iptables script can
 	use. Script will check if the utility is present on the firewall
