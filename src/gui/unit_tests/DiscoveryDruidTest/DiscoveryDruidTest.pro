@@ -18,7 +18,6 @@ HEADERS += DiscoveryDruidTest.h
 RESOURCES += ../../MainRes.qrc
 CONFIG -= release
 CONFIG += debug
-RESOURCES += ../../MainRes.qrc
 LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 OBJECTS_DIR = ../../.obj
@@ -45,7 +44,6 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 
 run_tests.commands = echo "Running tests..."; \
-    cp -f test.fwb test_work.fwb; \ 
     ./${TARGET}; \
     rm -f test_work.fwb
 run_tests.depends = build_tests

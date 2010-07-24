@@ -26,8 +26,12 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
 #include "ImporterTest.h"
+#include "fwbuilder/Resources.h"
+
+#include <QApplication>
 #include <QString>
 #include <string>
+
 #include "../../../common/init.cpp"
 
 //std::string respath;
@@ -35,9 +39,12 @@ int fwbdebug = 0;
 //QString user_name;
 std::string platform;
 
-int main( int, char** argv)
+int main(int argc, char** argv)
 {
+    QApplication app(argc, argv, false);
+
     init(argv);
+    Resources res(respath + FS_SEPARATOR + "resources.xml");
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),

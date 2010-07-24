@@ -72,9 +72,6 @@ void ImporterTest::setUp()
 
     qDebug() << "Running ImporterTest::setUp()";
 
-    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
-    new Resources(full_res_path);
-
     FWBTree *tree = new FWBTree();
 
     /* create database */
