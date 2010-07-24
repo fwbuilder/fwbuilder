@@ -516,7 +516,7 @@ int PolicyCompiler_ipt::prolog()
     }
 
     string version = fw->getStr("version");
-    can_use_module_set = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
+    using_ipset = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
                           fwopt->getBool("use_m_set"));
     actually_used_module_set = false;
 
@@ -1022,7 +1022,7 @@ bool PolicyCompiler_ipt::singleSrcNegation::processNext()
         // objects with MultiAddressRunTime objects
         FWObject *o = FWReference::getObject(srcrel->front());
         if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
-            ipt_comp->can_use_module_set)
+            ipt_comp->using_ipset)
         {
             srcrel->setNeg(false);
             srcrel->setBool("single_object_negation", true);
@@ -1056,7 +1056,7 @@ bool PolicyCompiler_ipt::singleDstNegation::processNext()
         // objects with MultiAddressRunTime objects
         FWObject *o = FWReference::getObject(dstrel->front());
         if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
-            ipt_comp->can_use_module_set)
+            ipt_comp->using_ipset)
         {
             dstrel->setNeg(false);
             dstrel->setBool("single_object_negation", true);

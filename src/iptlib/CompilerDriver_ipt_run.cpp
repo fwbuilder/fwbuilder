@@ -427,7 +427,6 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
  * These store generated configuration internally, extract it later using
  * OSConfiguration::getGeneratedFiles();
  */
-        oscnf->printChecksForRunTimeMultiAddress();
         oscnf->processFirewallOptions();
 
 /*
@@ -488,11 +487,14 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                                     oscnf->printPathForAllTools(os_variant).c_str());
         script_skeleton.setVariable("shell_functions",
                                     oscnf->printShellFunctions(have_ipv6).c_str());
+        script_skeleton.setVariable("run_time_address_tables",
+                                    oscnf->printRunTimeAddressTablesCode().c_str());
+        script_skeleton.setVariable("using_ipset", oscnf->usingIpSetModule());
+
         if (supports_prolog_epilog)
         {
             //script_skeleton.setVariable("prolog_epilog",
             //                         oscnf->printPrologEpilogFunctions().c_str());
-
             script_skeleton.setVariable(
                 "prolog_script", 
                 fw->getOptionsObject()->getStr("prolog_script").c_str());

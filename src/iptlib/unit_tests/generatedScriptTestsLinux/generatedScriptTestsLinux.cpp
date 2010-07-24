@@ -367,3 +367,56 @@ void GeneratedScriptTest::virtualAddressesForNat2Test()
     delete objdb;
 }
 
+void GeneratedScriptTest::runTimeAddressTablesWithIpSetTest()
+{
+    QStringList sample_1;
+
+    sample_1 << "reload_ipset \"bad_guys\" \"/etc/fw/bad_guys.dat\"";
+    sample_1 << "reload_ipset \"bad_guys_2\" \"/etc/fw/bad_guys.dat\"";
+
+    QStringList sample_2;
+
+    sample_2 << "check_file \"bad_guys\" \"/etc/fw/bad_guys.dat\"";
+    sample_2 << "check_file \"bad_guys_2\" \"/etc/fw/bad_guys.dat\"";
+
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "test7", "test7.fw");
+
+    QString res = Configlet::findConfigletInFile("run_time_address_tables", "test7.fw");
+    int n1 = res.indexOf("load_run_time_address_table_files() {");
+    CPPUNIT_ASSERT_MESSAGE("Shell function load_run_time_address_table_files is missing", n1 != -1);
+    int n2 = res.indexOf("}", n1);
+    QString conf = res.mid(n1, n2-n1);
+
+    QStringList cmd_list;
+    foreach(QString line, conf.split("\n"))
+    {
+        if (line.indexOf("reload_ipset ")!=-1)
+        {
+            cmd_list.push_back(line.trimmed());
+        }
+    }
+
+    cmd_list.sort();
+    CPPUNIT_ASSERT(sample_1 == cmd_list);
+
+    n1 = res.indexOf("check_run_time_address_table_files() {");
+    CPPUNIT_ASSERT_MESSAGE("Shell function check_run_time_address_table_files is missing", n1 != -1);
+    n2 = res.indexOf("}", n1);
+    conf = res.mid(n1, n2-n1);
+
+    cmd_list.clear();
+    foreach(QString line, conf.split("\n"))
+    {
+        if (line.indexOf("check_file ")!=-1)
+        {
+            cmd_list.push_back(line.trimmed());
+        }
+    }
+
+    cmd_list.sort();
+    CPPUNIT_ASSERT(sample_2 == cmd_list);
+
+    delete objdb;
+}
+

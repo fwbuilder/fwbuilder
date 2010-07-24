@@ -66,7 +66,7 @@ protected:
         bool                           have_dynamic_interfaces;
         bool                           have_connmark;
         bool                           have_connmark_in_output;
-        bool                           can_use_module_set;
+        bool                           using_ipset;
         bool                           actually_used_module_set;
         std::string                    my_table;
 
@@ -975,8 +975,6 @@ public:
 
             void initializeMinusNTracker();
 
-            std::string normalizeSetName(const std::string &txt);
-            
             /*
              * Prints single --option with argument and negation "!"
              * taking into account the change that happened in iptables 1.4.3.1

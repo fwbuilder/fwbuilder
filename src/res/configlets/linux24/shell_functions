@@ -5,13 +5,6 @@ log() {
     test -x "$LOGGER" && $LOGGER -p info "$1"
 }
 
-check_file() {
-    test -r "$2" || {
-        echo "Can not find file $2 referenced by AddressTable object $1"
-        exit 1
-    }
-}
-
 getInterfaceVarName() {
     echo $1 | sed 's/\./_/'
 }

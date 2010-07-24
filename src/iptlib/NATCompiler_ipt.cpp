@@ -824,7 +824,6 @@ bool NATCompiler_ipt::fillTranslatedSrv::processNext()
 
 bool NATCompiler_ipt::addVirtualAddress::processNext()
 {
-    FWOptions* options=compiler->fw->getOptionsObject();
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);

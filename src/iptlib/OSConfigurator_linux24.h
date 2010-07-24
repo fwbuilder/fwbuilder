@@ -31,7 +31,7 @@
 #include "fwcompiler/OSConfigurator.h"
 
 #include "OSData.h"
-
+ 
 class QString;
 class QStringList;
 
@@ -48,7 +48,7 @@ namespace fwcompiler {
 
         OSData os_data;
         Configlet *command_wrappers;
-        bool can_use_module_set;
+        bool using_ipset;
         
         std::map<std::string,std::string> address_table_objects;
 
@@ -57,7 +57,7 @@ namespace fwcompiler {
         // map of virt. addresses for nat for each interface
         std::map<std::string, std::string> virtual_addresses_for_nat;
         std::list<std::string> known_interfaces;
-        
+
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
 
@@ -88,6 +88,7 @@ public:
         virtual int  prolog();
         virtual void epilog();
 
+        bool usingIpSetModule() { return using_ipset; }
         /*
          * Try to find conflicts in subinterface types and unsupported
          * interface configurations.
@@ -101,7 +102,6 @@ public:
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw);
 
         virtual void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
-        virtual void printChecksForRunTimeMultiAddress();
         virtual std::string printShellFunctions(bool have_ipv6);
         virtual std::string printPathForAllTools(const std::string &os);
         virtual std::string printIPForwardingCommands();
@@ -120,7 +120,12 @@ public:
         virtual std::string printBondingInterfaceConfigurationCommands();
         virtual std::string printDynamicAddressesConfigurationCommands();
 
+        virtual std::string printRunTimeAddressTablesCode();
+
         virtual std::map<std::string, std::string> getGeneratedFiles() const;
+
+        std::string normalizeSetName(const std::string &txt);
+
     };
 };
 

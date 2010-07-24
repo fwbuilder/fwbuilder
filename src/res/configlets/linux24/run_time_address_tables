@@ -1,0 +1,89 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux24/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+
+## this function checks if ipset actually can work on the system note
+## that we check if it is present separately in check_utilities
+## configlet By this time, it is assumed the utility is installed and
+## is available, but we still need to check if it works properly
+## because it also depends on the kernel module.
+##
+## ipset -V  checks the version of ipset utility and kernel module and
+## is a good way to check if the utility can communicate with the module.
+## Unfortunately "ipset -V" returns 0 return code even in the case of
+## an error. Will use "ipset --list" which fails when it can't talk to
+## the module and then use ipset -V to get diagnostics.
+
+{{if using_ipset}}
+
+check_module_ipset() {
+    $IPSET --list > /dev/null 2>&1 || {
+        echo "Detected an error with ipset utility :"
+        $IPSET -V
+        exit 1
+    }
+}
+
+## reloads ipset from the data file. The file must have one address
+## per line.  The difficulty with ipset is that no set type accepts a
+## mix of individual ip addresses and CIDR blocks. Set type iphash
+## takes only ip addresses and type nethash takes only CIDR blocks
+## with netmask between 1 and 31 bits (no 32 bits). Will check if data
+## file contains only addresses or subnets and decide on the type.
+## This means the data file can not contain a mix of addresses and
+## subnets.
+##
+reload_ipset() {
+    set_name=$1
+    data_file=$2
+
+    test -z "$set_name" -o -z "$data_file" && {
+        echo "Usage: reload_ipset set_name file_name"
+        exit 1
+    }
+
+    set_type="iphash"
+    grep -q "/" $data_file && set_type="nethash"
+
+    $IPSET -N tmp_fwb_set $set_type
+    grep -Ev '^#|^;|^\s*$' $data_file | while read L ; do
+        set $L; $IPSET -A tmp_fwb_set $1
+    done
+    $IPSET -W $set_name tmp_fwb_set
+    $IPSET -X tmp_fwb_set
+}
+
+load_run_time_address_table_files() {
+    :
+    {{$load_files_commands}}
+}
+
+{{endif}}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by AddressTable object $1"
+        exit 1
+    }
+}
+
+## function to check if the data file is available. This is done
+## regardless of whether we use module ipset or not.
+## Since macro language does not support loops at this time, whole
+## code for the body of this function is generated in 
+## OSConfigurator_linux24::printRunTimeAddressTablesCode()
+check_run_time_address_table_files() {
+    :
+    {{$check_files_commands}}
+}
+

@@ -79,7 +79,7 @@ OSConfigurator_linux24::OSConfigurator_linux24(FWObjectDatabase *_db,
 
     FWOptions* fwopt = fw->getOptionsObject();
     string version = fw->getStr("version");
-    can_use_module_set = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
+    using_ipset = (XMLTools::version_compare(version, "1.4.1.1") >= 0 &&
                           fwopt->getBool("use_m_set"));
 }
 
@@ -270,22 +270,17 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
     }
 }
 
-void OSConfigurator_linux24::registerMultiAddressObject(MultiAddressRunTime *at)
+string OSConfigurator_linux24::normalizeSetName(const string &txt)
 {
-    address_table_objects[at->getName()] = at->getSourceName();
+    QString table_name = txt.c_str();
+    table_name.replace(QRegExp("[ +*!#|]"), "_");
+    return table_name.toStdString();
 }
 
-void OSConfigurator_linux24::printChecksForRunTimeMultiAddress()
+void OSConfigurator_linux24::registerMultiAddressObject(MultiAddressRunTime *at)
 {
-    output << "# Using " << address_table_objects.size() << " address table files" << endl;
-
-    map<string,string>::iterator i;
-    for (i=address_table_objects.begin(); i!=address_table_objects.end(); ++i)
-    {
-        string at_name = i->first;
-        string at_file = i->second;
-        output << "check_file \"" + at_name + "\" \"" + at_file + "\"" << endl;
-    }
+    // std::map<std::string,std::string>
+    address_table_objects[normalizeSetName(at->getName())] = at->getSourceName();
 }
 
 int  OSConfigurator_linux24::prolog()
@@ -328,7 +323,7 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
                               options->getBool("configure_bonding_interfaces"));
     }
 
-    configlet.setVariable("need_ipset", can_use_module_set);
+    configlet.setVariable("need_ipset", using_ipset);
 
     configlet.setVariable("need_iptables_restore",
                           options->getBool("use_iptables_restore"));
@@ -367,6 +362,28 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
     }
 
     return output.join("\n").toStdString();
+}
+
+string OSConfigurator_linux24::printRunTimeAddressTablesCode()
+{
+    Configlet conf(fw, "linux24", "run_time_address_tables");
+    conf.setVariable("using_ipset", using_ipset);
+
+    ostringstream check_ostr;
+    ostringstream load_ostr;
+    map<string,string>::iterator i;
+    for (i=address_table_objects.begin(); i!=address_table_objects.end(); ++i)
+    {
+        string at_name = i->first;
+        string at_file = i->second;
+        check_ostr << "check_file \"" + at_name + "\" \"" + at_file + "\"" << endl;
+        load_ostr << "reload_ipset \"" + at_name + "\" \"" + at_file + "\"" << endl;
+    }
+
+    conf.setVariable("check_files_commands", check_ostr.str().c_str());
+    conf.setVariable("load_files_commands", load_ostr.str().c_str());
+
+    return conf.expand().toStdString();
 }
 
 string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData::tools tool_name)
@@ -477,7 +494,7 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     bool wildcard_interface = false;
     QString combined_command;
 
-    if (can_use_module_set)
+    if (using_ipset)
         combined_command = command.c_str();
     else
         combined_command = addressTableWrapper(rule, command.c_str(), ipv6);

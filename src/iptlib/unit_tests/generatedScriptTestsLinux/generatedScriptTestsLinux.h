@@ -57,6 +57,7 @@ public:
     void configureInterfacesClusterTest();
     void virtualAddressesForNat1Test();
     void virtualAddressesForNat2Test();
+    void runTimeAddressTablesWithIpSetTest();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
     CPPUNIT_TEST(ManifestTest);
@@ -67,6 +68,7 @@ public:
     CPPUNIT_TEST(configureInterfacesClusterTest);
     CPPUNIT_TEST(virtualAddressesForNat1Test);
     CPPUNIT_TEST(virtualAddressesForNat2Test);
+    CPPUNIT_TEST(runTimeAddressTablesWithIpSetTest);
     CPPUNIT_TEST_SUITE_END();
 
 };

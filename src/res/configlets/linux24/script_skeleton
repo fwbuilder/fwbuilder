@@ -21,6 +21,8 @@ FWBDEBUG=""
 
 {{$shell_functions}}
 
+{{$run_time_address_tables}}
+
 load_modules() {
     :
     {{$load_modules}}
@@ -81,6 +83,11 @@ case "$cmd" in
     start)
         log "Activating firewall script generated {{$timestamp}} by {{$user}}"
         check_tools
+        check_run_time_address_table_files
+        {{if using_ipset}}
+        check_module_ipset
+        load_run_time_address_table_files
+        {{endif}}
         {{if prolog_top}} prolog_commands {{endif}}
         load_modules {{$load_modules_with_nat}}
         configure_interfaces
@@ -121,8 +128,15 @@ case "$cmd" in
         RETVAL=$?
         ;;
 
+## Usage:  script.fw reload_ipset <set_name> <file_name>
+    reload_ipset)
+{{if using_ipset}}
+        reload_ipset $2 $3
+{{endif}}
+        ;;
+
     *)
-        echo "Usage $0 {start|stop|status|reload|interfaces|test_interfaces}"
+        echo "Usage $0 {start|stop|status|reload|interfaces|test_interfaces|reload_ipset}"
         ;;
 
 esac

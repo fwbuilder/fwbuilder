@@ -1108,13 +1108,6 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
     return ostr.str();
 }
 
-string PolicyCompiler_ipt::PrintRule::normalizeSetName(const string &txt)
-{
-    QString table_name = txt.c_str();
-    table_name.replace(QRegExp("[ +*!#|]"), "_");
-    return table_name.toStdString();
-}
-
 string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *o)
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -1138,10 +1131,11 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
-        ipt_comp->can_use_module_set)
+        ipt_comp->using_ipset)
     {
         ipt_comp->actually_used_module_set = true;
-        string set_name = normalizeSetName(o->getName());
+        string set_name =
+            dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
         ipt_comp->ipset_tables[set_name] = atrt->getSourceName();
         string set_match = "--set " + set_name + " src";
         ostringstream ostr;
@@ -1174,10 +1168,11 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel, Address  *
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME &&
-        ipt_comp->can_use_module_set)
+        ipt_comp->using_ipset)
     {
         ipt_comp->actually_used_module_set = true;
-        string set_name = normalizeSetName(o->getName());
+        string set_name =
+            dynamic_cast<OSConfigurator_linux24*>(ipt_comp->osconfigurator)->normalizeSetName(o->getName());
         ipt_comp->ipset_tables[set_name] = atrt->getSourceName();
         string set_match = "--set " + set_name + " dst";
         ostringstream ostr;

@@ -1,5 +1,23 @@
 2010-07-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* script_skeleton: added command line argument "reload_ipset"
+	that calls function reload_ipset and takes two additional
+	arguments: set name and file name.
+	
+	* script_skeleton (cmd): calling functions to check if data files
+	used by run time address table objects are available before making
+	any changes to iptables policy. If files are not available, the
+	script aborts and leaves iptables in the original state.  This
+	fixes #1628 "generated script checks presence of the address table
+	files after it sets default iptables policy to DROP"
+
+	* run_time_address_tables: new configlet that adds shell code to
+	check if all run time address table data files are present on the
+	firewall machine and that ipset utility works and can communicate
+	the the kernel driver. This configlet also defines a function to
+	reload one ipset with given name and data file name and function
+	to reload all ipsets used in the generated script. Fixes #1625, #1627
+
 	* PolicyCompiler_PrintRule.cpp (PrintRule::normalizeSetName):
 	fixed #1626 "convert space and other special characters found in
 	the run time address table object into underscores". The name of
