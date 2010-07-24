@@ -21,6 +21,8 @@ FWBDEBUG=""
 
 {{$shell_functions}}
 
+{{$run_time_address_tables}}
+
 load_modules() {
     :
     echo "Modules are loaded only at startup!"
@@ -89,6 +91,11 @@ case "$cmd" in
         log "Activating firewall script generated {{$timestamp}} by {{$user}}"
         log "Database was {{$database}}"
         check_tools
+        check_run_time_address_table_files
+        {{if using_ipset}}
+        check_module_ipset
+        load_run_time_address_table_files
+        {{endif}}
         {{if prolog_top}} prolog_commands {{endif}}
         load_modules {{$load_modules_with_nat}}
         configure_interfaces

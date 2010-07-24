@@ -23,6 +23,8 @@
 
 {{$shell_functions}}
 
+{{$run_time_address_tables}}
+
 verify_interfaces() {
     :
     {{$verify_interfaces}}
@@ -55,6 +57,11 @@ reset_all() {
 case "$1" in
     start)
         check_tools
+        check_run_time_address_table_files
+        {{if using_ipset}}
+        check_module_ipset
+        load_run_time_address_table_files
+        {{endif}}
         verify_interfaces
         prolog_commands
         script_body
