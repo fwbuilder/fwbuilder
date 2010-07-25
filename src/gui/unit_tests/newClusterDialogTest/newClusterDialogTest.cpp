@@ -33,6 +33,7 @@
 #include "fwbuilder/Policy.h"
 #include "ObjectTreeView.h"
 #include "ProjectPanel.h"
+#include "StartTipDialog.h"
 
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
@@ -66,6 +67,19 @@ public:
     }
 
 };
+
+void newClusterDialogTest::initTestCase()
+{
+    new FWObjectClipboard();
+    mw = new FWWindow();
+    mw->show();
+    mw->startupLoad();
+
+    QTest::qWait(5000);
+
+    StartTipDialog *d = mw->findChild<StartTipDialog*>();
+    if (d!=NULL) d->close();
+}
 
 void newClusterDialogTest::test1()
 {
@@ -185,9 +199,6 @@ void newClusterDialogTest::test1()
 
 void newClusterDialogTest::test2()
 {
-
-    mw = new FWWindow();
-
     mw->loadFile("test_data_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();
@@ -327,8 +338,6 @@ void newClusterDialogTest::openContextMenu(ObjectManipulator *om, ObjectTreeView
 
 void newClusterDialogTest::test3()
 {
-    new FWObjectClipboard();
-
     mw->loadFile("test_data_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();

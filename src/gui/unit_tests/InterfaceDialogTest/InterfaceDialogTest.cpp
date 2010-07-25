@@ -119,17 +119,6 @@ void InterfaceDialogTest::testDialog()
     QRadioButton *dynamic = dialog->findChild<QRadioButton*>("dynamic");
     QRadioButton *unnumbered = dialog->findChild<QRadioButton*>("unnumbered");
 
-
-    QCheckBox *any_opt = dialog->findChild<QCheckBox*>("any_opt");
-    QCheckBox *lsrr = dialog->findChild<QCheckBox*>("lsrr");
-    QCheckBox *ssrr = dialog->findChild<QCheckBox*>("ssrr");
-    QCheckBox *rr = dialog->findChild<QCheckBox*>("rr");
-    QCheckBox *timestamp = dialog->findChild<QCheckBox*>("timestamp");
-    QCheckBox *router_alert = dialog->findChild<QCheckBox*>("router_alert");
-
-    QCheckBox *all_fragm = dialog->findChild<QCheckBox*>("all_fragments");
-    QCheckBox *short_fragm = dialog->findChild<QCheckBox*>("short_fragments");
-
     // setting object name
     obj_name->clear();
     QTest::keyClicks(obj_name, "TestInterfaceName");

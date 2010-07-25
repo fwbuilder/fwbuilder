@@ -53,11 +53,11 @@ void RuleSetViewTest::initTestCase()
     mw->show();
     mw->resize(QSize(800,600));
     mw->startupLoad();
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d) if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
+    Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
     openPolicy("testFirewall");
     view = mw->findChild<RuleSetView*>("");
     om->closeObject();

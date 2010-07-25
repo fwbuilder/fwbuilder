@@ -81,7 +81,7 @@ void instDialogClusterTest::initTestCase()
     wfl = new UserWorkflow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
 }
 
 void instDialogClusterTest::openPolicy(QString fwname)

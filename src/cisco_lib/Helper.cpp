@@ -252,7 +252,6 @@ list<int> Helper::getAllInterfaceIDs()
 
 list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 {
-    Firewall *fw = compiler->fw;
     list<int> intf_id_list;
     if (re->isAny())
     {

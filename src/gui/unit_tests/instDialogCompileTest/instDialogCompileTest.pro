@@ -17,7 +17,6 @@ HEADERS += instDialogCompileTest.h
 RESOURCES += ../../MainRes.qrc
 CONFIG -= release
 CONFIG += debug
-RESOURCES += ../../MainRes.qrc
 LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 OBJECTS_DIR = ../../.obj

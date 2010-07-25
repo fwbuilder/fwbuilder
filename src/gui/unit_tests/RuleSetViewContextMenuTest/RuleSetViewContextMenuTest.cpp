@@ -60,7 +60,7 @@ void RuleSetViewContextMenuTest::initTestCase()
     else
         mw->resize(1024, 768);
     mw->startupLoad();
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());

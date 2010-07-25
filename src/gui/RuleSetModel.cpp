@@ -611,7 +611,7 @@ void RuleSetModel::insertRule(Rule *rule) {
 }
 
 
-void RuleSetModel::restoreRule(Rule* rule)
+void RuleSetModel::restoreRule(Rule *)
 {
 
 }
@@ -1185,7 +1185,6 @@ RuleSetModelIterator RuleSetModel::end()
     RuleSetModelIterator it;
     if (root->children.isEmpty()) return it;
     it.model = this;
-    RuleNode *node = root->children.last();
     it.row = root->children.size();
 
     return it;

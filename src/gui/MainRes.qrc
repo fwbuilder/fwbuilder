@@ -47,7 +47,6 @@
     <file alias="Icons/Compile" >Icons/compile_25.png</file>
     <file alias="Icons/Continue/icon" >Icons/continue_25.png</file>
     <file alias="Icons/Continue/icon-big" >Icons/continue_64.png</file>
-    <file alias="Icons/Continue/icon-big" >Icons/continue_64.png</file>
     <file alias="Icons/Continue/icon-tree" >Icons/continue_16.png</file>
     <file alias="Icons/Custom/icon" >Icons/custom_25.png</file>
     <file alias="Icons/Custom/icon-big" >Icons/custom_64.png</file>
@@ -191,7 +190,6 @@
     <file alias="Icons/Route/icon-tree" >Icons/route_16.png</file>
     <file alias="Icons/Routing/icon" >Icons/routing_25.png</file>
     <file alias="Icons/Routing/icon-big" >Icons/routing_64.png</file>
-    <file alias="Icons/Routing/icon-tree" >Icons/route_16.png</file>
     <file alias="Icons/Routing/icon-tree" >Icons/routing_16.png</file>
     <file alias="Icons/ServiceGroup/icon" >Icons/service-group_25.png</file>
     <file alias="Icons/ServiceGroup/icon-big" >Icons/service-group_64.png</file>

@@ -60,7 +60,7 @@ void instDialogInspectTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
     dialogClosed = false;
     om = mw->findChild<ObjectManipulator*>("om");
     tree = mw->activeProject()->getCurrentObjectTree();

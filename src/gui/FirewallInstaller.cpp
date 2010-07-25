@@ -79,7 +79,6 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
     if (fwbdebug)
         qDebug("Manifest line: '%s'", line.toAscii().constData());
 
-    int n = QString(MANIFEST_MARKER).length();
     QString workline = line.split(MANIFEST_MARKER)[1].trimmed();
     if (workline.startsWith("*"))
     {

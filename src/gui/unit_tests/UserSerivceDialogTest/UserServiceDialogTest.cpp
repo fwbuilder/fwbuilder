@@ -73,10 +73,14 @@ void UserServiceDialogTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->startupLoad();
+    mw->resize(1200, 600);
+
+    QTest::qWait(2000);
+
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    QTest::qWait(1000);
+
 }
 
 Library* UserServiceDialogTest::findUserLibrary()
@@ -96,30 +100,51 @@ Library* UserServiceDialogTest::findUserLibrary()
 
 void UserServiceDialogTest::testDialog()
 {
-    UserService *service = UserService::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), UserService::TYPENAME), UserService::TYPENAME, "testUserService"));
-    om->editObject(service);
+    UserService *service = UserService::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(findUserLibrary(),
+                                               UserService::TYPENAME),
+            UserService::TYPENAME, "testUserService"));
+
+    QTest::qWait(1000);
+    //om->editObject(service);
 
     UserDialog *dialog = mw->findChild<UserDialog*>("w_UserDialog");
+    QVERIFY(dialog != NULL);
+
     QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
     QLineEdit *userid = dialog->findChild<QLineEdit*>("userid");
     TextEditWidget *comment = dialog->findChild<TextEditWidget*>("comment");
 
     obj_name->clear();
-    QTest::keyClicks(obj_name, "TestTagService");
+    QTest::keyClicks(obj_name, "TestUserService");
     QTest::keyClick(obj_name, Qt::Key_Enter);
-    QVERIFY(service->getName() == "TestTagService");
+    QTest::qWait(100);
+    QVERIFY(service->getName() == "TestUserService");
 
     userid->clear();
     QTest::keyClicks(userid, "username");
     QTest::keyClick(userid, Qt::Key_Enter);
+    QTest::qWait(100);
     QVERIFY(service->getUserId() == "username");
 
+    // need to click inside the comment input field to make sure it
+    // has focus. Looks like keyClicks() works even when widget has no
+    // focus, so clicking outside of it does not trigger "edit
+    // finished" signal. also looks like waiting a little after
+    // clicking inside the text editor widget makes test more stable.
     comment->clear();
-    QTest::mouseClick(comment, Qt::LeftButton);
-    QTest::keyClicks(comment, "Test comment");
-    QTest::mouseClick(comment, Qt::LeftButton);
-    QTest::keyClick(comment, Qt::Key_Tab);
+    QTest::mouseClick(comment, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
     QTest::qWait(100);
-    QVERIFY (service->getComment() == "Test comment");
+    QTest::keyClicks(comment, "Test comment");
+    QTest::mouseClick(obj_name, Qt::LeftButton);
+    QTest::qWait(100);
 
+    qDebug() << "Dialog comment text=" << comment->toPlainText();
+    qDebug() << "Object comment=" << QString(service->getComment().c_str());
+
+    QVERIFY(service->getComment() == "Test comment");
 }
+ 
+ 
+ 

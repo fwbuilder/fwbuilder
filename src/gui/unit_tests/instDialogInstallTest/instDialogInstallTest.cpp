@@ -131,7 +131,7 @@ void instDialogInstallTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
     ssh_auth_sock = getenv("SSH_AUTH_SOCK");
 }
 
@@ -224,7 +224,7 @@ void instDialogInstallTest::removeFiles()
 }
 
 
-void instDialogInstallTest::verifyInstallSuccess(const QString &test_name)
+void instDialogInstallTest::verifyInstallSuccess(const QString &)
 {
     instDialog *dlg = mw->findChild<instDialog*>();
     QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");

@@ -866,7 +866,6 @@ void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
     QSet<Firewall*> filesMissing;
     foreach(Firewall *fw, fws)
     {
-        bool canShowCode = true;
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(fw);
         if (QFile::exists(mainFile))
         {

@@ -405,8 +405,6 @@ void instDialog::showPage(const int page)
 
     FakeWizard::showPage(page);
 
-    int p = page;
-
     switch (page)
     {
     case CHOOSE_OBJECTS: // select firewalls for compiling and installing

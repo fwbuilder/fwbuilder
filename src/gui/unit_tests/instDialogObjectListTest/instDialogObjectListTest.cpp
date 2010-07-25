@@ -108,7 +108,7 @@ void instDialogObjectListTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    FWObjectClipboard *clip = new FWObjectClipboard();
+    new FWObjectClipboard();
 }
 
 void instDialogObjectListTest::openPolicy(QString fwname)

@@ -691,7 +691,9 @@ bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
     // changes then we open new project window.
 
     proj = activeProject();
-    if (proj && proj->getFileName().isEmpty() && !proj->db()->isDirty())
+
+    if (proj && proj->getFileName().isEmpty() &&
+        (proj->db() == NULL || !proj->db()->isDirty()))
     {
         if (!proj->loadFile(file_name, load_rcs_head)) return false;
     } else

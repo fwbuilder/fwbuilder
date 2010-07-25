@@ -43,6 +43,7 @@ private slots:
     void test2();
     void test3();
 public slots:
+    void initTestCase();
     void closeContextMenu();
     void test3_part2();
 };

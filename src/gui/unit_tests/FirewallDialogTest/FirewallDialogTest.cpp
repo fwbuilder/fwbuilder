@@ -73,11 +73,12 @@ void FirewallDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     mw->resize(1200, 600);
+
+    QTest::qWait(2000);
+
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
-    QTest::qWait(1000);    
 }
 
 Library* FirewallDialogTest::findUserLibrary()
@@ -104,6 +105,14 @@ void FirewallDialogTest::rejectDialog()
 
 void FirewallDialogTest::testDialog()
 {
+    firewall = Firewall::cast(
+        om->createObject(
+            FWBTree().getStandardSlotForObject(findUserLibrary(),
+                                               Firewall::TYPENAME),
+            Firewall::TYPENAME, "TestFirewall"));
+
+    QTest::qWait(1000);
+
     FirewallDialog *dialog = mw->findChild<FirewallDialog*>("w_FirewallDialog");
     QVERIFY(dialog != NULL);
 
@@ -126,15 +135,17 @@ void FirewallDialogTest::testDialog()
     QTest::keyClicks(obj_name, "TestFirewallName");
     QTimer::singleShot(10, this, SLOT(rejectDialog()));
     QTest::keyClick(obj_name, Qt::Key_Enter);
-    QTest::qWait(100);
     QVERIFY(firewall->getName() == "TestFirewallName");
 
     // setting comment
     comment->clear();
     QTest::mouseClick(comment, Qt::LeftButton);
     QTest::keyClicks(comment, "Test comment");
-    QTest::mouseClick(comment, Qt::LeftButton);
-    QTest::keyClick(comment, Qt::Key_Tab);
+    QTest::mouseClick(obj_name, Qt::LeftButton);
+    //QTest::mouseClick(comment, Qt::LeftButton);
+    //QTest::keyClick(comment, Qt::Key_Tab);
+    qDebug() << "Dialog comment text=" << comment->toPlainText();
+    qDebug() << "Object comment=" << QString(firewall->getComment().c_str());
     QVERIFY (firewall->getComment() == "Test comment");
 
     // switching inactive

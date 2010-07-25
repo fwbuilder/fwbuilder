@@ -536,7 +536,7 @@ void instDialog::fillCompileSelectList()
         for (list<Firewall*>::iterator member=members.begin();
              member!=members.end(); ++member)
         {
-            QTreeWidgetItem *itm = createTreeItem(cluster_item, *member);
+            createTreeItem(cluster_item, *member);
             working_list_of_firewalls.remove(*member);
         }
         cluster_item->setExpanded(true);
@@ -1342,7 +1342,7 @@ void instDialog::logItemClicked(QUrl data)
     emit activateRule(project, parts[0], parts[1], parts[2].toInt());
 }
 
-void instDialog::closeEvent(QCloseEvent *event)
+void instDialog::closeEvent(QCloseEvent *)
 {
     if (fwbdebug) qDebug() << "instDialog::closeEvent";
     if (proc.state() == QProcess::Running)

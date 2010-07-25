@@ -94,6 +94,5 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib \
     ../../../cisco_lib/libfwbcisco.a \
     ../../../compiler_lib/libcompilerdriver.a
 
-RESOURCES += ../../MainRes.qrc
 OBJECTS_DIR = ../../.obj
 MOC_DIR = ../../.moc

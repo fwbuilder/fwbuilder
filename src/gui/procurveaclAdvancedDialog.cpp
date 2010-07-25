@@ -79,8 +79,8 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
 
     obj=o;
 
-    Firewall  *fw=Firewall::cast(obj);
-    FWOptions *fwopt=fw->getOptionsObject();
+    FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
+    assert(fwoptions!=NULL);
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // should be 'procurve_acl'
@@ -174,9 +174,6 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
     syslogFacilities.push_back("LOCAL7");
     syslogFacilityMapping.push_back("LOCAL7");
     syslogFacilityMapping.push_back("23");
-
-    FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
 
     bool f1=fwoptions->getBool("procurve_acl_acl_basic");
     bool f2=fwoptions->getBool("procurve_acl_acl_no_clear");
