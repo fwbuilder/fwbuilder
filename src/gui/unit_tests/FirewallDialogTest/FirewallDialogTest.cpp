@@ -139,6 +139,7 @@ void FirewallDialogTest::testDialog()
 
     // setting comment
     comment->clear();
+    QTest::qWait(2000);
     QTest::mouseClick(comment, Qt::LeftButton);
     QTest::keyClicks(comment, "Test comment");
     QTest::mouseClick(obj_name, Qt::LeftButton);
