@@ -138,7 +138,6 @@ void genericDialogTest::activateTab(QWidget *widget)
 
 bool genericDialogTest::testControl(QWidget *control)
 {
-    QString className = control->metaObject()->className();
     if (dynamic_cast<QSpinBox*>(control) != NULL)
     {
         QSpinBox *box = dynamic_cast<QSpinBox*>(control);
@@ -167,24 +166,38 @@ bool genericDialogTest::testControl(QWidget *control)
         if (!box->isChecked())
             QTest::mouseClick(box, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
         else
-        { 
+        {
+            QList<QAbstractButton*> buttons;
             if (box->group() == NULL)
             {
-                qDebug() << "Can not test QRadioButton" << box << "that is not in group.";
-                return false;
+                foreach(QRadioButton *button, box->parent()->findChildren<QRadioButton*>())
+                {
+                    if (button->group() == NULL)
+                        buttons.append(button);
+                }
+
+                if (buttons.isEmpty())
+                {
+                    qDebug() << "Can not test QRadioButton" << box << "that is not in group and has no buttons nearby.";
+                   return false;
+                }
             }
-            if (box->group()->buttons().count() < 2)
+            else
+            {
+                buttons = box->group()->buttons();
+            }
+            if (buttons.count() < 2)
             {
                 qDebug() << "Can not test QRadioButton" << box << " that is only one button in group.";
                 return false;
             }
             // looking for first radio button in same group that is not checked and clicking it
-            foreach(QAbstractButton *button, box->group()->buttons())
+            foreach(QAbstractButton *button, buttons)
             {
                 if (button->isChecked() == false && button != box)
                 {
                     QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
-                    break;
+                    return true;
                 }
             }
         }
