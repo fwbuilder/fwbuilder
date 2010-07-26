@@ -27,6 +27,8 @@
 #define FIREWALLCODEVIEWER_H
 
 #include <QDialog>
+#include <QFrame>
+#include <QKeyEvent>
 #include <QMap>
 
 namespace Ui {
@@ -49,6 +51,13 @@ private:
 public slots:
     void fileSelected(int);
     void hideCloseButton();
+    void keyPressEvent(QKeyEvent *event)
+    {
+        if (dynamic_cast<QFrame*>(this->parent()) == NULL)
+            return QDialog::keyPressEvent(event);
+        event->setAccepted(false);
+    }
+
 };
 
 #endif // FIREWALLCODEVIEWER_H
