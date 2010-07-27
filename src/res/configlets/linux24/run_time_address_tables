@@ -38,10 +38,8 @@ check_module_ipset() {
 ## per line.  The difficulty with ipset is that no set type accepts a
 ## mix of individual ip addresses and CIDR blocks. Set type iphash
 ## takes only ip addresses and type nethash takes only CIDR blocks
-## with netmask between 1 and 31 bits (no 32 bits). Will check if data
-## file contains only addresses or subnets and decide on the type.
-## This means the data file can not contain a mix of addresses and
-## subnets.
+## with netmask between 1 and 31 bits (no 32 bits). Using a setlist
+## set with two sub-sets, one for addresses and another for subnets.
 ##
 reload_ipset() {
     set_name=$1
