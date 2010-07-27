@@ -52,15 +52,42 @@ reload_ipset() {
         exit 1
     }
 
-    set_type="iphash"
-    grep -q "/" $data_file && set_type="nethash"
+    $IPSET -X tmp_fwb_set:ip -q
+    $IPSET -X tmp_fwb_set:net -q
 
-    $IPSET -N tmp_fwb_set $set_type
+    $IPSET -N tmp_fwb_set:ip  iphash
+    $IPSET -N tmp_fwb_set:net nethash
+
     grep -Ev '^#|^;|^\s*$' $data_file | while read L ; do
-        set $L; $IPSET -A tmp_fwb_set $1
+        set $L
+        addr=$1
+        echo $addr | grep -q "/" && {
+            $IPSET -A tmp_fwb_set:net $1
+        } || {
+            $IPSET -A tmp_fwb_set:ip $1
+        }
     done
-    $IPSET -W $set_name tmp_fwb_set
-    $IPSET -X tmp_fwb_set
+
+    $IPSET --list ${set_name}:ip >/dev/null || $IPSET -N ${set_name}:ip iphash
+    $IPSET --list ${set_name}:net >/dev/null || $IPSET -N ${set_name}:net nethash
+
+    $IPSET -W ${set_name}:ip tmp_fwb_set:ip
+    $IPSET -W ${set_name}:net tmp_fwb_set:net
+
+    $IPSET --list ${set_name} >/dev/null || {
+        $IPSET -N ${set_name} setlist
+    }
+
+    $IPSET --list ${set_name} | grep -q ${set_name}:ip || {
+        $IPSET -A ${set_name} ${set_name}:ip
+    }
+
+    $IPSET --list ${set_name} | grep -q ${set_name}:net || {
+        $IPSET -A ${set_name} ${set_name}:net
+    }
+
+    $IPSET -X tmp_fwb_set:ip
+    $IPSET -X tmp_fwb_set:net
 }
 
 load_run_time_address_table_files() {

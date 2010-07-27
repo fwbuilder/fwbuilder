@@ -1,3 +1,17 @@
+2010-07-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/run_time_address_tables: implemented support
+	for mixed address lists for run-time address table objects using
+	ipset module. Normally, one ipset set can either contain
+	individual ip addresses or subnets. We create a "setlist" type set
+	that includes two sub-sets, one for ip addresses and the other for
+	subnets. Function reload_ipset in the configlet
+	run_time_address_tables takes care of managing these three sets
+	automatically. Address list file has the same format as for all
+	other supported types of Address Table object: one address per
+	line, subnets are defined using '/bitlength' or '/netmask' syntax,
+	comments start with '#' or ';' character.
+
 2010-07-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* code cleanup. Removed bunch of warnings and cleaned up some test
