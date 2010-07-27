@@ -37,6 +37,7 @@
 #include "PrintingController.h"
 #include "ProjectPanel.h"
 
+#include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
 
@@ -240,6 +241,17 @@ void FWWindow::tableResolutionSettingChanged(int )
     }
 }
 
+class UpgradePredicate: public XMLTools::UpgradePredicate
+{
+    public:
+    virtual bool operator()(const string&) const
+    {
+        cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << endl;
+        return false;
+    }
+};
+
+
 void FWWindow::printFirewallFromFile(QString fileName,
                                      QString firewallName,
                                      QString outputFileName)
@@ -263,10 +275,11 @@ void FWWindow::printFirewallFromFile(QString fileName,
         return;
     }
     FWObjectDatabase * objdb = new FWObjectDatabase();
+    UpgradePredicate up;
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     try
     {
-        objdb->load(fileName.toLatin1().constData(), NULL,librespath);
+        objdb->load(fileName.toLatin1().constData(), &up, librespath);
     }
     catch (...)
     {
