@@ -2283,21 +2283,20 @@ bool NATCompiler_ipt::AssignInterface::processNext()
              * Include interfaces that have no addresses in the list
              * for backwards compatibility.
              */
-            FWObjectTypedChildIterator ipv4_addresses = iface->findByType(IPv4::TYPENAME);
-            FWObjectTypedChildIterator ipv6_addresses = iface->findByType(IPv6::TYPENAME);
+            FWObjectTypedChildIterator ipv4_addresses =
+                iface->findByType(IPv4::TYPENAME);
+            FWObjectTypedChildIterator ipv6_addresses =
+                iface->findByType(IPv6::TYPENAME);
 
             if ((ipt_comp->ipv6 && ipv6_addresses != ipv6_addresses.end()) ||
                 (!ipt_comp->ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
-                ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end())
+                (ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end()))
             {
                 /* 
                  * if interface name ends with '*', this is wildcard
                  * interface. Just replace '*' with '+'. If interace
                  * name does not end with '*', replace numeric
-                 * interface index with '+'. Either way, cptr points
-                 * at the first caracter after the 'family' name of
-                 * the interface (is there a better term?) which will
-                 * be either a digit or '*'.
+                 * interface index with '+'. 
                  */
 
                 QString iname = QString(iface->getName().c_str());
