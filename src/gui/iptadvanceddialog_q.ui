@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
-    <height>618</height>
+    <width>842</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -546,7 +546,7 @@ packets to IPv6 policies</string>
        <item row="9" column="0" colspan="2">
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
-          <string>Install the rule for ssh access from the management workstation when the firewall is stopped</string>
+          <string>Install the rule for ssh access from the management workstation when the firewall script is run with the &quot;block&quot; command</string>
          </property>
         </widget>
        </item>

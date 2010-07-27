@@ -67,6 +67,8 @@ reset_all() {
     {{$reset_all}}
 }
 
+{{$block_action}}
+
 {{$stop_action}}
 
 {{$status_action}}
@@ -108,6 +110,11 @@ case "$cmd" in
 
     status)
         status_action
+        RETVAL=$?
+        ;;
+
+    block)
+        block_action
         RETVAL=$?
         ;;
 

@@ -31652,7 +31652,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1272404003" lastInstalled="0" lastModified="1260831598" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1280268015" lastInstalled="0" lastModified="1280267960" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -32364,6 +32364,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">True</Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
@@ -32371,6 +32372,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
           <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_bonding_interfaces">False</Option>
@@ -32431,8 +32433,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">1.1.1.2</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="no_ipv6_default_policy">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="output_file"></Option>
@@ -32467,6 +32469,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">True</Option>
           <Option name="use_iptables_restore">False</Option>
+          <Option name="use_m_set">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
@@ -40747,7 +40750,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1272404068" lastInstalled="0" lastModified="1247356189" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1280268021" lastInstalled="0" lastModified="1280267975" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id56353X87590" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -41474,12 +41477,15 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">True</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
           <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_bonding_interfaces">False</Option>
@@ -41541,8 +41547,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">1.1.1.2</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="no_ipv6_default_policy">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="output_file"></Option>
@@ -41577,11 +41583,12 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">True</Option>
           <Option name="use_iptables_restore">False</Option>
+          <Option name="use_m_set">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id39576X8300" host_OS="linux24" inactive="False" lastCompiled="1272404133" lastInstalled="0" lastModified="1247356177" platform="iptables" version="" name="firewall-ipv6-3" comment="Simple policy that makes sense in ipv4 but translates into a few wide-matching rules in ipv6. Policy is configured as dual address family" ro="False">
+      <Firewall id="id39576X8300" host_OS="linux24" inactive="False" lastCompiled="1280268026" lastInstalled="0" lastModified="1247356177" platform="iptables" version="" name="firewall-ipv6-3" comment="Simple policy that makes sense in ipv4 but translates into a few wide-matching rules in ipv6. Policy is configured as dual address family" ro="False">
         <NAT id="id39944X8300" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <NATRule id="id39859X15057" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">

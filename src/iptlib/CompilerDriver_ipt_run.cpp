@@ -635,21 +635,33 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
         script_buffer = "";
 
-        Configlet stop_action(fw, "linux24", "stop_action");
-        stop_action.collapseEmptyStrings(true);
+        Configlet block_action(fw, "linux24", "block_action");
+        block_action.collapseEmptyStrings(true);
 
+        // the name of the option is historical (including the typo)
         if (fw->getOptionsObject()->getBool("add_mgmt_ssh_rule_when_stoped"))
         {
-            std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
-                fw, false, NULL,  NULL);
+            std::auto_ptr<PolicyCompiler_ipt> policy_compiler =
+                createPolicyCompiler(fw, false, NULL,  NULL);
             PolicyCompiler_ipt::PrintRule* print_rule =
                 policy_compiler->createPrintRuleProcessor();
             print_rule->setContext(policy_compiler.get());
-            print_rule->_printBackupSSHAccessRules(&stop_action);
+            print_rule->_printBackupSSHAccessRules(&block_action);
         } else
-            stop_action.setVariable("mgmt_access", 0);
+        {
+            block_action.setVariable("mgmt_access", 0);
+        }
+
+        script_skeleton.setVariable("block_action", block_action.expand());
+
+
+        Configlet stop_action(fw, "linux24", "stop_action");
+        stop_action.collapseEmptyStrings(true);
+        stop_action.setVariable("ipv6", have_ipv6);
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
+
+
 
         Configlet status_action(fw, "linux24", "status_action");
         status_action.collapseEmptyStrings(true);
