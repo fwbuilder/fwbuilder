@@ -209,7 +209,7 @@ public:
     void editDelete();
     void editPaste();
     
-    bool saveIfModified();
+    bool saveIfModified(bool include_discard_button=true);
 
     // semi-intelligent way to guess most appropriate
     // destination directory for various file save or file open

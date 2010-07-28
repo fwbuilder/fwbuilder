@@ -745,14 +745,17 @@ void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
-
-    set<Firewall*> fw;
-    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-    if (f)
+    if (saveIfModified(false)) // disable "Discard" button
     {
-        fw.insert(f);
-        mainW->compile(fw);
+        wfl->registerFlag(UserWorkflow::COMPILE, true);
+
+        set<Firewall*> fw;
+        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+        if (f)
+        {
+            fw.insert(f);
+            mainW->compile(fw);
+        }
     }
 }
 
@@ -760,35 +763,42 @@ void ProjectPanel::installThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
-
-    set<Firewall*> fw;
-    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-    if (f)
+    if (saveIfModified(false)) // disable "Discard" button
     {
-        fw.insert(f);
-        mainW->install(fw);
+        wfl->registerFlag(UserWorkflow::INSTALL, true);
+
+        set<Firewall*> fw;
+        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+        if (f)
+        {
+            fw.insert(f);
+            mainW->install(fw);
+        }
     }
 }
 
 void ProjectPanel::inspectThis()
 {
     if (visibleRuleSet==NULL) return;
-    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-    set<Firewall*> fwlist;
-    if (Cluster::isA(f))
-    {
-        std::list<Firewall*> cfws;
-        Cluster::cast(f)->getMembersList(cfws);
-        foreach(Firewall *fw, cfws)
-            fwlist.insert(fw);
-    }
-    else
-    {
-        fwlist.insert(f);
-    }
 
-    this->inspect(fwlist);
+    if (saveIfModified(false)) // disable "Discard" button
+    {
+        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+        set<Firewall*> fwlist;
+        if (Cluster::isA(f))
+        {
+            std::list<Firewall*> cfws;
+            Cluster::cast(f)->getMembersList(cfws);
+            foreach(Firewall *fw, cfws)
+                fwlist.insert(fw);
+        }
+        else
+        {
+            fwlist.insert(f);
+        }
+
+        this->inspect(fwlist);
+    }
 }
 
 void ProjectPanel::inspectAll()

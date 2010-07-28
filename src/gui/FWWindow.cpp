@@ -1586,7 +1586,7 @@ void FWWindow::disableActions(bool havePolicies)
 
 void FWWindow::compile()
 {
-    if (activeProject())
+    if (activeProject() && activeProject()->saveIfModified(false))
     {
         std::set<Firewall*> emp;
         instd->show(this->activeProject(), false, false, emp);
@@ -1595,7 +1595,7 @@ void FWWindow::compile()
 
 void FWWindow::install()
 {
-    if (activeProject())
+    if (activeProject() && activeProject()->saveIfModified(false))
     {
         std::set<Firewall*> emp;
         instd->show(this->activeProject(), true, false, emp);
@@ -1606,7 +1606,7 @@ void FWWindow::compile(set<Firewall*> vf)
 {
     if (fwbdebug)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
-    if (activeProject())
+    if (activeProject() && activeProject()->saveIfModified(false))
     {
         instd->show(this->activeProject(), false, true, vf);
     }
@@ -1614,7 +1614,7 @@ void FWWindow::compile(set<Firewall*> vf)
 
 void FWWindow::install(set<Firewall*> vf)
 {
-    if (activeProject())
+    if (activeProject() && activeProject()->saveIfModified(false))
     {
         instd->show(this->activeProject(), true, true, vf);
     }
@@ -1622,7 +1622,10 @@ void FWWindow::install(set<Firewall*> vf)
 
 void FWWindow::inspect()
 {
-    this->activeProject()->inspectAll();
+    if (activeProject() && activeProject()->saveIfModified(false))
+    {
+        this->activeProject()->inspectAll();
+    }
 }
 
 void FWWindow::transferfw(set<Firewall*> vf)

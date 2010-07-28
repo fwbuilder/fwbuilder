@@ -81,7 +81,7 @@ using namespace Ui;
 using namespace libfwbuilder;
 using namespace std;
 
-bool ProjectPanel::saveIfModified()
+bool ProjectPanel::saveIfModified(bool include_discard_button)
 {
     if (fwbdebug) qDebug() << "ProjectPanel::saveIfModified()";
 
@@ -92,21 +92,40 @@ bool ProjectPanel::saveIfModified()
         message += "Do you want to save ";
         message += rcs->getFileName();
         message += " changes now ?"; 
-        switch (QMessageBox::information(this, "Firewall Builder",
-            message,
-            tr("&Save"), tr("&Discard"), tr("&Cancel"),
-            0,       // Enter = button 0
-            2 ) ) {   // Escape == button 2
 
-        case 0:
-            save();
-            break;
-        case 1:  // discard
-            db()->setDirty(false);
-            break;
-        case 2:  // cancel
-            return(false);
+        if (include_discard_button)
+        {
+            switch (QMessageBox::information(this, "Firewall Builder",
+                                             message,
+                                             tr("&Save"), tr("&Discard"), tr("&Cancel"),
+                                             0,      // Enter = button 0
+                                             2 ) )   // Escape == button 2
+            {
+            case 0:
+                save();
+                break;
+            case 1:  // discard
+                db()->setDirty(false);
+                break;
+            case 2:  // cancel
+                return false;
+            }
+        } else
+        {
+            switch (QMessageBox::information(this, "Firewall Builder",
+                                             message,
+                                             tr("&Save"),tr("&Cancel"),
+                                             0,      // Enter = button 0
+                                             1 ) )   // Escape == button 1
+            {
+            case 0:
+                save();
+                break;
+            case 1:  // cancel
+                return false;
+            }
         }
+
     }
     return true;
 }

@@ -1,5 +1,11 @@
 2010-07-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::compile): fixed SF bug 3035426 "canceled
+	save writes .fwb ". The program created file with name ".fwb" if
+	user started with an empty project paje, created some objects, then
+	hit "Compile" but then clicked "Cancel" when offered a chance to
+	save objects into a new data file.
+
 	* CompilerDriver.cpp (CompilerDriver::_findImportedRuleSetsRecursively):
 	fixed #1631 "Process branch rule sets recursively". Policy
 	compilers used to look only one level deep while processing
