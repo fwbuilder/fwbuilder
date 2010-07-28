@@ -98,6 +98,7 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     have_filter = false;
     have_nat = false;
     start_current_dir = QDir::current();
+    looped_branching_marker = 0;
 }
 
 CompilerDriver::~CompilerDriver()
@@ -633,38 +634,64 @@ QString CompilerDriver::determineOutputFileName(Cluster *cluster,
 void CompilerDriver::findImportedRuleSets(Firewall *fw,
                                           list<FWObject*> &all_policies)
 {
-    bool cluster_member = fw->getOptionsObject()->getBool("cluster_member");
-    int cluster_id = fw->getInt("parent_cluster_id");
+    looped_branching_marker++;
 
     list<FWObject*> imported_policies;
     for (list<FWObject*>::iterator i=all_policies.begin();
          i!=all_policies.end(); ++i)
     {
-        for (list<FWObject*>::iterator r=(*i)->begin(); r!=(*i)->end(); ++r)
-        {
-            Rule *rule = Rule::cast(*r);
-            if (rule == NULL) continue; // skip RuleSetOptions object
-            RuleSet *ruleset = rule->getBranch();
-
-            if (ruleset!=NULL)
-            {
-                if (ruleset->isChildOf(fw)) continue;
-
-                // Additional check: the rule set may be child of a
-                // cluster this firewall is member of. If it is, it
-                // has been taken care of in CompilerDriver::mergeRuleSets()
-                FWObject *ruleset_parent = ruleset->getParent();
-                if (cluster_member && Cluster::isA(ruleset_parent) &&
-                    ruleset_parent->getId() == cluster_id) continue;
-
-                ruleset->setTop(false);
-                imported_policies.push_back(ruleset);
-            }
-        }
+        RuleSet *ruleset = RuleSet::cast(*i);
+        if (ruleset == NULL) continue; // should not happen
+        _findImportedRuleSetsRecursively(fw, ruleset, imported_policies);
     }
     if (imported_policies.size() > 0)
         all_policies.insert(all_policies.end(),
                             imported_policies.begin(), imported_policies.end());
+}
+
+void CompilerDriver::_findImportedRuleSetsRecursively(Firewall *fw,
+                                                      RuleSet *ruleset,
+                                                      list<FWObject*> &imported_policies)
+{
+    bool cluster_member = fw->getOptionsObject()->getBool("cluster_member");
+    int cluster_id = fw->getInt("parent_cluster_id");
+
+    ruleset->setInt(".looped_branching_marker", looped_branching_marker);
+
+    for (list<FWObject*>::iterator r=ruleset->begin(); r!=ruleset->end(); ++r)
+    {
+        Rule *rule = Rule::cast(*r);
+        if (rule == NULL) continue; // skip RuleSetOptions object
+        RuleSet *branch_ruleset = rule->getBranch();
+
+        if (branch_ruleset!=NULL)
+        {
+            if (branch_ruleset->getInt(".looped_branching_marker"))
+            {
+                QString err("Rule set %1 of firewall %2 has branching rule that loops back to it");
+                warning(ruleset->getParent(), ruleset, rule,
+                        err.arg(ruleset->getName().c_str())
+                        .arg(fw->getName().c_str()).toStdString());
+            }
+
+            if (branch_ruleset->isChildOf(fw)) continue;
+            list<FWObject*>::iterator it = std::find(imported_policies.begin(),
+                                                     imported_policies.end(),
+                                                     branch_ruleset);
+            if (it != imported_policies.end()) continue;
+
+            // Additional check: the rule set may be child of a
+            // cluster this firewall is member of. If it is, it
+            // has been taken care of in CompilerDriver::mergeRuleSets()
+            FWObject *ruleset_parent = branch_ruleset->getParent();
+            if (cluster_member && Cluster::isA(ruleset_parent) &&
+                ruleset_parent->getId() == cluster_id) continue;
+
+            branch_ruleset->setTop(false);
+            imported_policies.push_back(branch_ruleset);
+            _findImportedRuleSetsRecursively(fw, branch_ruleset, imported_policies);
+        }
+    }
 }
 
 QString CompilerDriver::run(const std::string&, const std::string&, const std::string&)

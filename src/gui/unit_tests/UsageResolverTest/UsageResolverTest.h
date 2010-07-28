@@ -47,6 +47,7 @@ public:
     libfwbuilder::Library *lib;
     libfwbuilder::IPv4 *addr1;
     libfwbuilder::IPv4 *addr2;
+    libfwbuilder::IPv4 *addr3;
     libfwbuilder::PolicyRule *r1, *r2, *r3, *r4;
 
     void setUp();

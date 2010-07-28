@@ -176,7 +176,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     if (project_panel==NULL) return;
 
     map<int, set<FWObject*> > reference_holders;
-    UsageResolver::findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
+    UsageResolver().findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
 
     map<int, set<FWObject*> >::iterator it;
     for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)

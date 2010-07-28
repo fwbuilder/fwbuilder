@@ -344,6 +344,17 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixed #1632 "dependencies created by branching rule sets should
+      be processed recursively". In the case of multi-level branches
+      the GUI should trace all references to find all firewalls
+      affected by a change of an object used in the rule. This fixes
+      SourceForge bug 3033462 "nested shared branch rules between
+      servers not working".
+    </p>
+  </li>
+
 </ul>
 
 
@@ -477,6 +488,25 @@
     </p>
   </li>
 
+</ul>
+
+
+
+<a name="compiler_lib"></a>
+<h2>Changes common for all policy compilers</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1631 "Process branch rule sets recursively". Policy
+      compilers used to look only one level deep while processing
+      branching rules.  They should allow for arbitrary nesting and
+      correctly avoid infinite loops if user creates looped
+      branches. Compiler issues a warning when it detects looped
+      bracnhing.  This fixes SF bug 3033462 "nested shared branch
+      rules between servers not working".
+    </p>
+  </li>
 </ul>
 
 

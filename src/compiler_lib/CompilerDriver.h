@@ -69,6 +69,7 @@ protected:
         int fwbdebug;
         std::string filename;
         std::string wdir;
+        int looped_branching_marker;
         QDir start_current_dir;
         QString fwobjectname;
         QString current_firewall_name;
@@ -134,6 +135,10 @@ protected:
                                               Configlet *top_comment,
                                               const QString &comment_char);
 
+        void _findImportedRuleSetsRecursively(libfwbuilder::Firewall *fw,
+                                              libfwbuilder::RuleSet *ruleset,
+                                              std::list<libfwbuilder::FWObject*> &all_policies);
+        
 public:
 
         CompilerDriver(libfwbuilder::FWObjectDatabase *db);

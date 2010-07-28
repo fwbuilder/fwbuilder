@@ -1,3 +1,20 @@
+2010-07-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* CompilerDriver.cpp (CompilerDriver::_findImportedRuleSetsRecursively):
+	fixed #1631 "Process branch rule sets recursively". Policy
+	compilers used to look only one level deep while processing
+	branching rules.  They should allow for arbitrary nesting and
+	correctly avoid infinite loops if user creates looped branches.
+	Compiler issues a warning when it detects looped bracnhing.
+	This fixes SF bug 3033462 "nested shared branch rules between
+	servers not working".
+
+	* UsageResolver.cpp (UsageResolver::findWhereUsedRecursively):
+	fixed #1632 "dependencies created by branching rule sets should be
+	processed recursively". In the case of multi-level branches
+	the GUI should trace all references to find all firewalls affected
+	by a change of an object used in the rule.
+	
 2010-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* configlets/linux24/block_action: fixed #1640 "default policy

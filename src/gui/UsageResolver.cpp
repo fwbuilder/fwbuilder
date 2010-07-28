@@ -41,11 +41,15 @@
 using namespace std;
 using namespace libfwbuilder;
 
-/*
+int UsageResolver::search_id_seed = 0;
+
+
 UsageResolver::UsageResolver()
 {
+    search_id = search_id_seed;
+    search_id_seed++;
 }
-*/
+
 
 /*
  * per bug #2412334, FWObjectDatabase::findWhereObjectIsUsed finds
@@ -64,21 +68,37 @@ void UsageResolver::findWhereUsedRecursively(
                  << obj->getName().c_str()
                  << "(" << obj->getTypeName().c_str() << ")";
 
-    set<FWObject*> resset_tmp;
+    set<FWObject*> new_obj_set;
+    set<FWObject*> resset_tmp_2;
 
 /*
  * findWhereObjectIsUsed() finds references to object 'obj' in a subtree
- *  rooted at object 'top'.
+ * rooted at object 'top'.
  */
-    db->findWhereObjectIsUsed(obj, top, resset_tmp);
+    db->findWhereObjectIsUsed(obj, top, resset_tmp_2);
+
+/*
+ * skip objects that are already in resset because they were found on previous
+ * passes (recursive calls)
+ */
     set<FWObject *>::iterator i = resset.begin();
     for ( ; i!=resset.end(); ++i)
-        if (resset_tmp.count(*i)) resset_tmp.erase(*i);
+        if (resset_tmp_2.count(*i)) resset_tmp_2.erase(*i);
+/*
+ * skip objects we have already seen to break recursive loops in rule branches
+ */
+    for (i=resset_tmp_2.begin(); i!=resset_tmp_2.end(); ++i)
+    {
+        if ((*i)->getInt(".usage_resolver_seach_id") != search_id)
+        {
+            new_obj_set.insert(*i);
+            (*i)->setInt(".usage_resolver_seach_id", search_id);
+        }
+    }
 
-    resset.insert(resset_tmp.begin(), resset_tmp.end());
+    resset.insert(new_obj_set.begin(), new_obj_set.end());
 
-    i = resset_tmp.begin();
-    for ( ; i!=resset_tmp.end(); ++i)
+    for (i = new_obj_set.begin(); i!=new_obj_set.end(); ++i)
     {
         FWObject *parent_obj = *i;
         FWReference  *ref = FWReference::cast(parent_obj);
@@ -96,15 +116,14 @@ void UsageResolver::findWhereUsedRecursively(
                      << "parent_obj=" << parent_obj->getName().c_str()
                      << "(" << parent_obj->getTypeName().c_str() << ")";
 
-        // add new results to a separate set to avoid modifying the resset_tmp
+        // add new results to a separate set to avoid modifying the new_obj_set
         // in the middle of iteration
         if (Group::cast(parent_obj) && !RuleElement::cast(parent_obj))
             findWhereUsedRecursively(parent_obj, top, resset, db);
     }
 }
 
-list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
-                                                      FWObjectDatabase *db)
+list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatabase *db)
 {
     if (fwbdebug)
         qDebug("UsageResolver::findFirewallsForObject");
@@ -123,8 +142,18 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
     //FindWhereUsedWidget::humanizeSearchResults(resset);
 
     if (fwbdebug)
+    {
         qDebug() << "UsageResolver::findFirewallsForObject"
                  << "resset.size()=" << resset.size();
+        set<FWObject *>::iterator i = resset.begin();
+        for ( ;i!=resset.end(); ++i)
+        {
+            FWObject *obj = *i;
+            qDebug() << "UsageResolver::findFirewallsForObject"
+                     << obj->getName().c_str()
+                     << "(" << obj->getTypeName().c_str() << ")";
+        }
+    }
 
     set<FWObject *>::iterator i = resset.begin();
     for ( ;i!=resset.end(); ++i)
@@ -136,11 +165,16 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
 
         FWReference  *ref = FWReference::cast(*i);
         if (ref && RuleElement::cast(ref->getParent()) != NULL)
+        {
             obj = ref->getParent();
-        else
-            continue;
+        }
+        
+//         else
+//             continue;
 
-        Rule *r = Rule::cast(obj->getParent());
+        Rule *r = Rule::cast(obj);
+        if (r == NULL) r = Rule::cast(obj->getParent());
+
         if (r && !r->isDisabled())
         {
             f = r;
@@ -149,12 +183,29 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
             {
                 fws.push_back(Firewall::cast(f));
             }
+
+            // check if some rule somewhere may use ruleset r belongs to as a branch
+            FWObject *ruleset = r->getParent();
+            list<Firewall*> other_fws =
+                UsageResolver::findFirewallsForObject(ruleset, db);
+            for (list<Firewall*>::iterator fit = other_fws.begin(); fit != other_fws.end(); ++fit)
+            {
+                if (std::find(fws.begin(), fws.end(), *fit) == fws.end())
+                    fws.push_back(*fit);
+            }
         }
     }
 
     if (fwbdebug)
-        qDebug() << QString("Program spent %1 ms searching for firewalls.")
-            .arg(tt.elapsed());
+    {
+        qDebug() << QString("Program spent %1 ms searching for firewalls.") .arg(tt.elapsed());
+        qDebug() << "UsageResolver::findFirewallsForObject returns";
+        for (list<Firewall*>::iterator i = fws.begin(); i!=fws.end(); ++i)
+        {
+            qDebug() << "    " << (*i)->getName().c_str();
+        }
+
+    }
 
     return fws;
 }

@@ -91,7 +91,7 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
     loadIcon(pm0, obj);
 
     map<int, set<FWObject*> > reference_holders;
-    UsageResolver::findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
+    UsageResolver().findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
 
     set<FWObject*> simplified_holders;
     map<int, set<FWObject*> >::iterator it;

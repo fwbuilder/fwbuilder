@@ -38,16 +38,21 @@
 
 class UsageResolver
 {
+    int search_id;
+
+    static int search_id_seed;
+
 public:
-    //UsageResolver();
-    static void findWhereUsedRecursively(
+    UsageResolver();
+    
+    void findWhereUsedRecursively(
         libfwbuilder::FWObject *, libfwbuilder::FWObject *,
         std::set<libfwbuilder::FWObject*> &, libfwbuilder::FWObjectDatabase*);
 
-    static std::list<libfwbuilder::Firewall*> findFirewallsForObject(
+    std::list<libfwbuilder::Firewall*> findFirewallsForObject(
         libfwbuilder::FWObject*, libfwbuilder::FWObjectDatabase*);
 
-    static void findAllReferenceHolders(
+    void findAllReferenceHolders(
         libfwbuilder::FWObject *obj, libfwbuilder::FWObject *root,
         std::map<int, std::set<libfwbuilder::FWObject*> > &res);
 
@@ -60,7 +65,7 @@ public:
      * parent objects. These can be either groups that hold
      * references, or rules, which are two levels up.
      */
-    static void humanizeSearchResults(std::set<libfwbuilder::FWObject *>&);
+    void humanizeSearchResults(std::set<libfwbuilder::FWObject *>&);
 };
 
 #endif // USAGERESOLVER_H

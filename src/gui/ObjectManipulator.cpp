@@ -1531,16 +1531,15 @@ void ObjectManipulator::setAttributesColumnEnabled(bool)
     }
 }
 
-void ObjectManipulator::findWhereUsedRecursively(libfwbuilder::FWObject *obj,
-                              libfwbuilder::FWObject *top,
-                              std::set<libfwbuilder::FWObject*> &resset)
+void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
+                                                 FWObject *top,
+                                                 set<FWObject*> &resset)
 {
-    UsageResolver::findWhereUsedRecursively(obj, top, resset, this->m_project->db());
+    UsageResolver().findWhereUsedRecursively(obj, top, resset, this->m_project->db());
 }
 
-std::list<libfwbuilder::Firewall*> ObjectManipulator::findFirewallsForObject(
-    libfwbuilder::FWObject *o)
+list<Firewall*> ObjectManipulator::findFirewallsForObject(FWObject *o)
 {
-    return UsageResolver::findFirewallsForObject(o, this->m_project->db());
+    return UsageResolver().findFirewallsForObject(o, this->m_project->db());
 }
 
