@@ -21,8 +21,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>0</height>
+    <width>1000</width>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -47,6 +47,12 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>950</width>
+        <height>300</height>
+       </size>
       </property>
       <property name="maximumSize">
        <size>
@@ -656,11 +662,11 @@
               </widget>
               <widget class="QWidget" name="page_35">
                <layout class="QGridLayout" name="gridLayout_40">
-                <property name="margin">
-                 <number>0</number>
-                </property>
                 <property name="horizontalSpacing">
                  <number>6</number>
+                </property>
+                <property name="margin">
+                 <number>0</number>
                 </property>
                 <item row="0" column="0">
                  <widget class="MetricEditorPanel" name="w_MetricEditorPanel" native="true"/>
@@ -736,7 +742,7 @@
      <x>0</x>
      <y>0</y>
      <width>1144</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
