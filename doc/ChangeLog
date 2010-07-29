@@ -1,5 +1,11 @@
 2010-07-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (checkActionInMangleTable::processNext):
+	fixed SF bug 3034628 "iptables does not allow target REJECT in
+	mangle table". Iptables does not support target REJECT in mangle
+	table. Added check to the policy compiler to make it detect this
+	situation and issue an error.
+
 	* FWWindow.cpp (FWWindow::compile): fixed SF bug 3035426 "canceled
 	save writes .fwb ". The program created file with name ".fwb" if
 	user started with an empty project paje, created some objects, then

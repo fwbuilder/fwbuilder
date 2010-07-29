@@ -163,6 +163,12 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(dropMangleTableRules);
 
         /**
+         * this processor checks actions in mangle table. For example,
+         * REJECT is not allowed.
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(checkActionInMangleTable);
+
+        /**
          * adds few predefined (or "builtin") rules on top of the policy
          */
         class addPredefinedRules : public PolicyRuleProcessor

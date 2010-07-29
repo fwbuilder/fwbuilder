@@ -1916,8 +1916,8 @@ bool NATCompiler_ipt::splitNONATRule::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    if ( rule->getStr("ipt_chain").empty() && rule->getRuleType()==NATRule::NONAT) {
-
+    if ( rule->getStr("ipt_chain").empty() && rule->getRuleType()==NATRule::NONAT)
+    {
         Address *osrc=compiler->getFirstOSrc(rule);
         bool osrcfw= compiler->complexMatch(osrc,compiler->fw);
 /*

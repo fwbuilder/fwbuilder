@@ -797,6 +797,25 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
     return true;
 }
 
+/*
+ *  Only call this rule processor if compiling for the mangle table
+ */
+bool PolicyCompiler_ipt::checkActionInMangleTable::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    if (rule->getAction() == PolicyRule::Reject)
+    {
+	compiler->abort(
+            rule, 
+            "Action Reject is not allowed in mangle table");
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
 
 bool PolicyCompiler_ipt::Logging1::processNext()
 {
@@ -4383,6 +4402,10 @@ void PolicyCompiler_ipt::compile()
              " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
     add( new splitIfSrcAny("split rule if src is any") );
+
+    if (my_table == "mangle")
+        add( new checkActionInMangleTable("check allowed actions in mangle table"));
+
     add( new setChainForMangle("set chain for other rules in mangle"));
     add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
     add( new splitIfDstAny("split rule if dst is any") );

@@ -617,6 +617,15 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixed SF bug 3034628 "iptables does not allow target REJECT in
+      mangle table". Iptables does not support target REJECT in mangle
+      table. Added check to the policy compiler to make it detect this
+      situation and issue an error.
+    </p>
+  </li>
+
 </ul>
 
 
