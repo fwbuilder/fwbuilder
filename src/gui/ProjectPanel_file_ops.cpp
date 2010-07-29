@@ -165,10 +165,10 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     {
         QStringList fileNames = fd.selectedFiles();
         fn = fileNames.front();
+        QFileInfo finfo(fn);
+        if (finfo.suffix().isEmpty()) fn += ".fwb";
     }
 
-    QFileInfo finfo(fn);
-    if (finfo.suffix().isEmpty()) fn += ".fwb";
     return fn;
 }
 

@@ -745,17 +745,18 @@ void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    if (saveIfModified(false)) // disable "Discard" button
-    {
-        wfl->registerFlag(UserWorkflow::COMPILE, true);
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
 
-        set<Firewall*> fw;
-        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-        if (f)
-        {
-            fw.insert(f);
-            mainW->compile(fw);
-        }
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
+
+    set<Firewall*> fw;
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+    if (f)
+    {
+        fw.insert(f);
+        mainW->compile(fw);
     }
 }
 
@@ -763,17 +764,18 @@ void ProjectPanel::installThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    if (saveIfModified(false)) // disable "Discard" button
-    {
-        wfl->registerFlag(UserWorkflow::INSTALL, true);
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
 
-        set<Firewall*> fw;
-        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-        if (f)
-        {
-            fw.insert(f);
-            mainW->install(fw);
-        }
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
+
+    set<Firewall*> fw;
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+    if (f)
+    {
+        fw.insert(f);
+        mainW->install(fw);
     }
 }
 
@@ -781,24 +783,25 @@ void ProjectPanel::inspectThis()
 {
     if (visibleRuleSet==NULL) return;
 
-    if (saveIfModified(false)) // disable "Discard" button
-    {
-        Firewall *f = Firewall::cast(visibleRuleSet->getParent());
-        set<Firewall*> fwlist;
-        if (Cluster::isA(f))
-        {
-            std::list<Firewall*> cfws;
-            Cluster::cast(f)->getMembersList(cfws);
-            foreach(Firewall *fw, cfws)
-                fwlist.insert(fw);
-        }
-        else
-        {
-            fwlist.insert(f);
-        }
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
 
-        this->inspect(fwlist);
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+    set<Firewall*> fwlist;
+    if (Cluster::isA(f))
+    {
+        std::list<Firewall*> cfws;
+        Cluster::cast(f)->getMembersList(cfws);
+        foreach(Firewall *fw, cfws)
+            fwlist.insert(fw);
     }
+    else
+    {
+        fwlist.insert(f);
+    }
+
+    this->inspect(fwlist);
 }
 
 void ProjectPanel::inspectAll()
@@ -824,6 +827,57 @@ void ProjectPanel::inspectAll()
 
     this->inspect(fwset);
 }
+
+void ProjectPanel::compile()
+{
+    if (mw->isEditorVisible() &&
+        !mw->requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
+        return;
+
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
+
+    //fileSave();
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
+    mainW->compile();
+}
+
+void ProjectPanel::compile(set<Firewall*> vf)
+{
+    if (mw->isEditorVisible() &&
+        !mw->requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
+        return;
+
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
+
+    //fileSave();
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
+    mainW->compile(vf);
+}
+
+void ProjectPanel::install(set<Firewall*> vf)
+{
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
+
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
+    mainW->install(vf);
+}
+
+void ProjectPanel::install()
+{
+    save();
+    // see comment in FWWindow::compile()
+    if (db()->isDirty()) return;
+
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
+    mainW->install();
+}
+
 
 void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
 {
@@ -932,40 +986,6 @@ void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
 
     FirewallCodeViewer *viewer = new FirewallCodeViewer(files, tr("<b>Multiple firewalls</b>"), this);
     viewer->show();
-}
-
-void ProjectPanel::compile()
-{
-    if (mw->isEditorVisible() &&
-        !mw->requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
-        return;
-
-    fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
-    mainW->compile();
-}
-
-void ProjectPanel::compile(set<Firewall*> vf)
-{
-    if (mw->isEditorVisible() &&
-        !mw->requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
-        return;
-
-    fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
-    mainW->compile(vf);
-}
-
-void ProjectPanel::install(set<Firewall*> vf)
-{
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
-    mainW->install(vf);
-}
-
-void ProjectPanel::install()
-{
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
-    mainW->install();
 }
 
 void ProjectPanel::transferfw(set<Firewall*> vf)

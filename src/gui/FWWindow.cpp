@@ -1586,8 +1586,17 @@ void FWWindow::disableActions(bool havePolicies)
 
 void FWWindow::compile()
 {
-    if (activeProject() && activeProject()->saveIfModified(false))
+    if (activeProject())
     {
+        activeProject()->save();
+        // if there is no file name associated with the project yet,
+        // user is offered a chance to choose the file. If they hit
+        // Cancel in the dialog where they choose the file name,
+        // operation should be cancelled. We do not get direct
+        // information whether they hit Cancel so the only way to
+        // check is to verify that the file has been saved at this
+        // point.
+        if (activeProject()->db()->isDirty()) return;
         std::set<Firewall*> emp;
         instd->show(this->activeProject(), false, false, emp);
     }
@@ -1595,8 +1604,11 @@ void FWWindow::compile()
 
 void FWWindow::install()
 {
-    if (activeProject() && activeProject()->saveIfModified(false))
+    if (activeProject())
     {
+        activeProject()->save();
+        // see comment in FWWindow::compile()
+        if (activeProject()->db()->isDirty()) return;
         std::set<Firewall*> emp;
         instd->show(this->activeProject(), true, false, emp);
     }
@@ -1606,24 +1618,33 @@ void FWWindow::compile(set<Firewall*> vf)
 {
     if (fwbdebug)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
-    if (activeProject() && activeProject()->saveIfModified(false))
+    if (activeProject())
     {
+        activeProject()->save();
+        // see comment in FWWindow::compile()
+        if (activeProject()->db()->isDirty()) return;
         instd->show(this->activeProject(), false, true, vf);
     }
 }
 
 void FWWindow::install(set<Firewall*> vf)
 {
-    if (activeProject() && activeProject()->saveIfModified(false))
+    if (activeProject())
     {
+        activeProject()->save();
+        // see comment in FWWindow::compile()
+        if (activeProject()->db()->isDirty()) return;
         instd->show(this->activeProject(), true, true, vf);
     }
 }
 
 void FWWindow::inspect()
 {
-    if (activeProject() && activeProject()->saveIfModified(false))
+    if (activeProject())
     {
+        activeProject()->save();
+        // see comment in FWWindow::compile()
+        if (activeProject()->db()->isDirty()) return;
         this->activeProject()->inspectAll();
     }
 }
