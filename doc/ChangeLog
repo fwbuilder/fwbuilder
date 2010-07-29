@@ -1,5 +1,10 @@
 2010-07-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* instDialog_installer.cpp (instDialog::installerSuccess):
+	fixed #1639 "Add success message to the bottom of the process log
+	for the installer". Added a message to the installer log to
+	display installation status.
+
 	* stop_action: "stop" action should reset ipv4 iptables
 	configuration only if firewall object configuration defines any
 	ipv4 rules. This is how generated script works for ipv6; behavior

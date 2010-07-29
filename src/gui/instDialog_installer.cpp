@@ -138,6 +138,8 @@ bool instDialog::runInstaller(Firewall *fw, bool cancelAllVisible)
         opListMapping[fw->getId()]->setText(1, tr("Failure"));
         setFailureState(opListMapping[fw->getId()]);
 
+        addToLog("Firewall policy installation failed\n");
+
         QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
     }
     return true;
@@ -199,6 +201,9 @@ void instDialog::installerSuccess()
                                                   cnf.fwobj->getId()));
 
     currentProgressBar->setValue(currentProgressBar->maximum());
+
+    addToLog("Firewall policy successfully installed\n");
+
     QTimer::singleShot( 1000, this, SLOT(mainLoopInstall()));
 }
 
@@ -206,7 +211,10 @@ void instDialog::installerError()
 {
     opError(cnf.fwobj);
     currentProgressBar->setValue(currentProgressBar->maximum());
-    QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
     opListMapping[cnf.fwobj->getId()]->setText(1, tr("Failure"));
+
+    addToLog("Firewall policy installation failed\n");
+
+    QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
 }
 
