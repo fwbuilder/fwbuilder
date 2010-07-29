@@ -51759,7 +51759,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id654160X7324" host_OS="linux24" inactive="False" lastCompiled="1272404272" lastInstalled="0" lastModified="1276815782" platform="iptables" version="1.4.0" name="firewall-ipv6-8" comment="matching multicast with different directions" ro="False">
+      <Firewall id="id654160X7324" host_OS="linux24" inactive="False" lastCompiled="1280426747" lastInstalled="0" lastModified="1276815782" platform="iptables" version="1.4.0" name="firewall-ipv6-8" comment="matching multicast with different directions" ro="False">
         <NAT id="id654194X7324" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

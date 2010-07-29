@@ -19,11 +19,13 @@
 stop_action() {
     reset_all
 
+{{if have_ipv4}}
     $IPTABLES -P OUTPUT  ACCEPT
     $IPTABLES -P INPUT   ACCEPT
     $IPTABLES -P FORWARD ACCEPT
+{{endif}}
 
-{{if ipv6}}
+{{if have_ipv6}}
     $IP6TABLES -P OUTPUT  ACCEPT
     $IP6TABLES -P INPUT   ACCEPT
     $IP6TABLES -P FORWARD ACCEPT

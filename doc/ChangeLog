@@ -1,3 +1,14 @@
+2010-07-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* stop_action: "stop" action should reset ipv4 iptables
+	configuration only if firewall object configuration defines any
+	ipv4 rules. This is how generated script works for ipv6; behavior
+	for ipv4 and ipv6 should be similar. Fixes SF bug #3036541 "IPV6
+	only firewall resets ipv4 stack"
+
+	* script_skeleton (cmd): added action "block" to the "usage" string
+	of the generated iptables script
+
 2010-07-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (checkActionInMangleTable::processNext):

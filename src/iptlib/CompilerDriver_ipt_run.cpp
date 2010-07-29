@@ -201,6 +201,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
         int routing_rules_count = 0;
+        bool have_ipv4 = false;
         bool have_ipv6 = false;
 
         // track chains in each table separately. Can we have the same
@@ -365,6 +366,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                     generated_script += "\n\n";
                 } else
                 {
+                    have_ipv4 = true;
                     generated_script += "\n\n";
                     generated_script += "# ================ IPv4\n";
                     generated_script += "\n\n";
@@ -629,7 +631,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                                     ! fw->getOptionsObject()->getBool("use_iptables_restore"));
 
         script_buffer = "";
-        script << "  reset_iptables_v4" << endl;
+        if (have_ipv4) script << "  reset_iptables_v4" << endl;
         if (have_ipv6) script << "  reset_iptables_v6" << endl;
         script_skeleton.setVariable("reset_all", script_buffer);
 
@@ -657,7 +659,8 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
         Configlet stop_action(fw, "linux24", "stop_action");
         stop_action.collapseEmptyStrings(true);
-        stop_action.setVariable("ipv6", have_ipv6);
+        stop_action.setVariable("have_ipv4", have_ipv4);
+        stop_action.setVariable("have_ipv6", have_ipv6);
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
 

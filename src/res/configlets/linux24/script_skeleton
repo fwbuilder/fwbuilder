@@ -143,7 +143,7 @@ case "$cmd" in
         ;;
 
     *)
-        echo "Usage $0 {start|stop|status|reload|interfaces|test_interfaces|reload_ipset}"
+        echo "Usage $0 {start|stop|status|block|reload|interfaces|test_interfaces|reload_ipset}"
         ;;
 
 esac
