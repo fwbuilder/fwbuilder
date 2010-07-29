@@ -37,12 +37,17 @@ FWWindowTest::FWWindowTest(QWidget *parent)
 {
 }
 
+void FWWindowTest::initTestCase()
+{
+    st->setCheckUpdates(true);
+    st->setBool("UI/NoStartTip", true);
+}
+
 void FWWindowTest::cleanupTestCase()
 {
-    qDebug() << 1;
     if (QFile::exists("/tmp/update_4.0.0"))
-        qDebug() << 2;
-        QFile::remove("/tmp/update_4.0.0");
+        qDebug() << "file /tmp/update_4.0.0 exists";
+    QFile::remove("/tmp/update_4.0.0");
 }
 
 void FWWindowTest::findMessageBox()

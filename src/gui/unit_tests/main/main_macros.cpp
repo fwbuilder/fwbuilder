@@ -48,6 +48,8 @@ int main( int argc, char** argv) \
     app->setApplicationName(QLatin1String("Firewall Builder")); \
     st = new FWBSettings(true); \
     st->init(); \
+    st->setCheckUpdates(false); \
+    st->setBool("UI/NoStartTip", true);  \
     init(argv); \
     wfl = new UserWorkflow(); \
     string full_res_path = respath + FS_SEPARATOR + "resources.xml"; \
