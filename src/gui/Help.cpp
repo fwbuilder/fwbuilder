@@ -77,10 +77,10 @@ Help::~Help()
     delete m_dialog;
 }
 
-Help* Help::getHelpWindow(QWidget*)
+Help* Help::getHelpWindow(QWidget* w)
 {
     if (help_window == NULL)
-        help_window = new Help(NULL, "Firewall Builder");
+        help_window = new Help(w, "Firewall Builder");
 
     //if (parent != mw) help_window->setParent(parent, help_window->flags);
     return help_window;
