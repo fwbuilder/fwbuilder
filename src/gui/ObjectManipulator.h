@@ -124,6 +124,10 @@ class ObjectManipulator : public QWidget
 
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
 
+    bool isObjectAllowed(const QString &type_name);
+    bool isObjectAllowed(libfwbuilder::FWObject *target,
+                         libfwbuilder::FWObject *obj);
+    
     /* find the name of the interface that was created last */
     QString findNewestInterfaceName(libfwbuilder::FWObject *parent);
 

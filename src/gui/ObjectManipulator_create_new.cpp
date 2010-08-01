@@ -173,6 +173,8 @@ void ObjectManipulator::createNewObject()
                  << "add_to_group_id:" << add_to_group_id;
     FWObject *new_obj = NULL;
 
+    if (!isObjectAllowed(type_name)) return;
+
     QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
     // FWCmdMacro should be used for commands grouping
     FWCmdMacro* macro = 0;
@@ -777,6 +779,5 @@ FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
     }
     return NULL;
 }
-
 
 

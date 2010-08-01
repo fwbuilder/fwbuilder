@@ -230,6 +230,7 @@ SOURCES += ProjectPanel.cpp \
     ObjectManipulator_tree_ops.cpp \
     ObjectManipulator_create_new.cpp \
     ObjectManipulator_slots.cpp \
+    ObjectManipulator_new_object_checks.cpp \
     ObjectEditor.cpp \
     FWObjectDrag.cpp \
     ObjectTreeView.cpp \

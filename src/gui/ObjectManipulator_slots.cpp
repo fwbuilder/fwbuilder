@@ -236,7 +236,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
         FWObject *cl = idxToLibs[libid];
         nobj = duplicateObject(cl, obj);
     }
-    editObject(nobj);
+    if (nobj) editObject(nobj);
     ot->freezeSelection(false);
 }
 

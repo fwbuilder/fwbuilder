@@ -213,6 +213,7 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
 FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
+
     openLib(targetLib);
     FWObject *new_parent = FWBTree().getStandardSlotForObject(
         targetLib, obj->getTypeName().c_str());
@@ -221,6 +222,9 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
         makeNameUnique(new_parent,
                        QString::fromUtf8(obj->getName().c_str()),
                        obj->getTypeName().c_str());
+
+    if (!isObjectAllowed(new_parent, obj)) return NULL;
+
     return createObject(obj->getTypeName().c_str(), newName, obj);
 }
 
@@ -288,6 +292,8 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
 
     FWObject *ta = prepareForInsertion(target, obj);
     if (ta == NULL) return NULL;
+
+    if (!isObjectAllowed(ta, obj)) return NULL;
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::actuallyPasteTo"
