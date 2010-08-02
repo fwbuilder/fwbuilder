@@ -74,6 +74,7 @@ void startTipDialogTest::testDialogAppear()
     oldtext = textview->toPlainText();
     QTest::mouseClick(nextTip, Qt::LeftButton);
     QVERIFY(oldtext != textview->toPlainText());
+    dialog->reject();
     mw->hide();
     mw->deleteLater();
 }
