@@ -59,7 +59,7 @@ filePropDialog::~filePropDialog()
 }
 
 filePropDialog::filePropDialog(QWidget *parent, RCS *rcs) :
-    QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowSystemMenuHint)
+    QDialog(parent)
 {
     m_dialog = new Ui::filePropDialog_q;
     m_dialog->setupUi(this);
