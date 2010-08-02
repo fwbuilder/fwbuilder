@@ -78,6 +78,8 @@ void RuleSetDialog::getHelpName(QString *str)
 void RuleSetDialog::loadFWObject(FWObject *o)
 {
     obj = o;
+    this->setEnabled(!o->isReadOnly());
+
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
     assert(s!=NULL);
 
@@ -85,6 +87,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+
     // ipv4_6_rule_set QComboBox:
     // 0 - ipv4
     // 1 - ipv6
