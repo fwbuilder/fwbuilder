@@ -34,7 +34,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-
+#ifndef ELC
 bool ObjectManipulator::isObjectAllowed(const QString&)
 {
     return true;
@@ -46,3 +46,4 @@ bool ObjectManipulator::isObjectAllowed(FWObject*, FWObject*)
     return true;
 }
 
+#endif

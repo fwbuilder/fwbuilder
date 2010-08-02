@@ -154,7 +154,7 @@ int main( int argc, char *argv[] )
         filename = strdup( argv[optind++] );
 
     //QApplication::setDesktopSettingsAware(desktopaware);
-
+ 
     Q_INIT_RESOURCE(MainRes);
 
     app = new FWBApplication( argc, argv );
