@@ -36,7 +36,6 @@ class startTipDialogTest : public QObject
 public:
     startTipDialogTest(QWidget *parent = 0);
 private slots:
-    void iniTestCase();
     void testDialogAppear();
     void testDialogNotAppear();
     void cleanupTestCase();

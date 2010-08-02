@@ -41,9 +41,6 @@ startTipDialogTest::startTipDialogTest(QWidget *parent)
     : QObject(parent)
 {
 }
-void startTipDialogTest::iniTestCase()
-{
-}
 
 void startTipDialogTest::testDialogAppear()
 {
@@ -56,11 +53,23 @@ void startTipDialogTest::testDialogAppear()
     StartTipDialog *dialog = NULL;
     for(int i=0; i<10; i++)
     {
-        dialog = dynamic_cast<StartTipDialog*>(app->activeWindow());
-        if (dialog == NULL)
-            QTest::qWait(1000);
-        else
-            break;
+        qDebug() << "app->topLevelWidgets():";
+        foreach (QWidget *widget, QApplication::topLevelWidgets())
+        {
+            if (dynamic_cast<StartTipDialog*>(widget) != NULL)
+            {
+                qDebug() << widget << "isHidden()=" << widget->isHidden();
+                if (widget->objectName() == "StartTipDialog_q")
+                    dialog = dynamic_cast<StartTipDialog*>(widget);
+            }
+        }
+        // qDebug() << "app->activeWindow()=" << app->activeWindow();
+        // dialog = dynamic_cast<StartTipDialog*>(app->activeWindow());
+
+        qDebug() << "--";
+
+        if (dialog == NULL) QTest::qWait(1000);
+        else break;
     }
     Q_ASSERT(dialog != NULL);
 
