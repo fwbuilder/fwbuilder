@@ -33,6 +33,7 @@
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/Address.h>
 #include <fwbuilder/Firewall.h>
+#include <fwbuilder/FWException.h>
 
 namespace fwcompiler {
 
@@ -57,7 +58,7 @@ namespace fwcompiler {
          * that object 'obj' belongs to.  Returns interface ID
          */
         int findInterfaceByNetzone(const libfwbuilder::InetAddr *a)
-            throw(std::string);
+            throw(libfwbuilder::FWException);
         int findInterfaceByNetzone(libfwbuilder::Address *obj);
         std::list<int> findInterfaceByNetzoneOrAll(
             libfwbuilder::RuleElement *re);

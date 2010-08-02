@@ -39,6 +39,9 @@
 #include <limits.h>
 #include <iostream>
 
+#include <QObject>
+#include <QString>
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -130,7 +133,7 @@ int  Helper::findInterfaceByNetzone(Address *obj)
     return findInterfaceByNetzone(obj->getAddressPtr());
 }
 
-int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
+int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
 {
 #if DEBUG_NETZONE_OPS
     cerr << "Helper::findInterfaceByNetzone "
@@ -229,9 +232,11 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
     if (res_id == -1) res_id = findInterfaceByAddress( addr );
 
     if (res_id == -1)
-        throw(string("Can not find interface with network zone that includes "
-                     "address ") + string((addr)?addr->toString():"NULL"));
-
+    {
+        QString err = QObject::tr("Can not find interface with network zone "
+                                  "that includes address '%1'");
+        throw(FWException(err.arg((addr)?addr->toString().c_str():"NULL").toStdString()));
+    }
     return res_id;
 }
 

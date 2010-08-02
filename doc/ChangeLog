@@ -1,3 +1,8 @@
+2010-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Helper.cpp (findInterfaceByNetzone): fixed #1653 "Crash when
+	compiling a rule for Cisco PIX with incorrect network zone".
+
 2010-07-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog_installer.cpp (instDialog::installerSuccess):
@@ -42,7 +47,7 @@
 	processed recursively". In the case of multi-level branches
 	the GUI should trace all references to find all firewalls affected
 	by a change of an object used in the rule.
-	
+
 2010-07-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* configlets/linux24/block_action: fixed #1640 "default policy
