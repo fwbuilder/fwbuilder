@@ -40,7 +40,7 @@ using namespace std;
 Help* Help::help_window = NULL;
 
 Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
-    QMainWindow(parent)
+    QDialog(parent)
 {
     load_links_in_browser = _load_links_in_browser;
     m_dialog = new Ui::HelpView_q;
@@ -52,9 +52,6 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     http_getter = new HttpGet();
     connect(http_getter, SIGNAL(done(const QString&)),
             this, SLOT(downloadComplete(const QString&)));
-
-    m_dialog->menubar->hide();
-    m_dialog->statusbar->hide();
 
     QString locale = QLocale::system().name(); //"en_US";
 
@@ -159,17 +156,17 @@ QString Help::findHelpFile(const QString &file_base_name)
 void Help::closeEvent(QCloseEvent *event)
 {
     window_geometry = QWidget::saveGeometry();
-    QMainWindow::closeEvent(event);
+    QDialog::closeEvent(event);
 }
 
 void Help::hideEvent(QHideEvent *event)
 {
     restoreGeometry(window_geometry);
-    QMainWindow::hideEvent(event);
+    QDialog::hideEvent(event);
 }
 
 void Help::showEvent(QShowEvent *event)
 {
     restoreGeometry(window_geometry);
-    QMainWindow::showEvent(event);
+    QDialog::showEvent(event);
 }

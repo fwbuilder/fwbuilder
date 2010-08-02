@@ -32,13 +32,13 @@
 
 #include "HttpGet.h"
 
-#include <QMainWindow>
+#include <QDialog>
 #include <QStringList>
 #include <QUrl>
 #include <QByteArray>
 
 
-class Help : public QMainWindow
+class Help : public QDialog
 {
     Q_OBJECT;
 
