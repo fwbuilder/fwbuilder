@@ -1,5 +1,15 @@
 2010-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24.cpp (printRunTimeAddressTablesCode):
+	fixed #1654 "Support for run-time Address Tables with empty file
+	in iptables". This is an implementation of the same feature we
+	already have for PF. If the file name in the configuration of the
+	run-time Address Table object is blank, policy compiler generates
+	firewall configuration that uses ipset with the name the same as
+	the name of the object but does not generate code to load
+	addresses from a file into it. All control of the ipset is left
+	for the user.
+
 	* Helper.cpp (findInterfaceByNetzone): fixed #1653 "Crash when
 	compiling a rule for Cisco PIX with incorrect network zone".
 

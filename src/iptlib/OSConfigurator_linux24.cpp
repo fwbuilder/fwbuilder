@@ -376,8 +376,17 @@ string OSConfigurator_linux24::printRunTimeAddressTablesCode()
     {
         string at_name = i->first;
         string at_file = i->second;
-        check_ostr << "check_file \"" + at_name + "\" \"" + at_file + "\"" << endl;
-        load_ostr << "reload_ipset \"" + at_name + "\" \"" + at_file + "\"" << endl;
+        // If the file name is empty, this run-time table is
+        // completely controlled by the user outside fwbuilder so we
+        // do not need to add commands to check if the file exits and
+        // load it
+        if (!at_file.empty())
+        {
+            check_ostr << "check_file \"" + at_name +
+                "\" \"" + at_file + "\"" << endl;
+            load_ostr << "reload_ipset \"" + at_name +
+                "\" \"" + at_file + "\"" << endl;
+        }
     }
 
     conf.setVariable("check_files_commands", check_ostr.str().c_str());
