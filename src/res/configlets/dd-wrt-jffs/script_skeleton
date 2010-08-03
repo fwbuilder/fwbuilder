@@ -135,15 +135,30 @@ case "$cmd" in
         RETVAL=$?
         ;;
 
-## Usage:  script.fw reload_ipset <set_name> <file_name>
-    reload_ipset)
 {{if using_ipset}}
-        reload_ipset $2 $3
-{{endif}}
+## Usage:  script.fw reload_address_table <address_table_name> <file_name>
+    reload_address_table)
+        reload_address_table $2 $3
         ;;
 
+## Usage:  script.fw add_to_address_table <address_table_name> <file_name> <address>
+    add_to_address_table)
+        add_to_address_table $2 $3 $4
+        ;;
+
+## Usage:  script.fw remove_from_address_table <address_table_name> <file_name> <address>
+    remove_from_address_table)
+        remove_from_address_table $2 $3 $4
+        ;;
+
+## Usage:  script.fw test_address_table <address_table_name> <address>
+    test_address_table)
+        test_address_table $2 $3
+        ;;
+{{endif}}
+
     *)
-        echo "Usage $0 {start|stop|status|block|reload|interfaces|test_interfaces|reload_ipset}"
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces{{if using_ipset}}|reload_address_table|add_to_address_table|remove_from_address_table|test_address_table{{endif}}]"
         ;;
 
 esac

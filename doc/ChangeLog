@@ -1,5 +1,12 @@
 2010-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* configlets/linux24/run_time_address_tables: fixed #1652 "support
+	for adding single address to address table in the generated
+	script". Generated iptables script now provides functions
+	"add_to_address_table", "remove_from_address_table" and
+	"test_address_table" that let administrator add or remove single
+	ip address to a given address_table.
+
 	* OSConfigurator_linux24.cpp (printRunTimeAddressTablesCode):
 	fixed #1654 "Support for run-time Address Tables with empty file
 	in iptables". This is an implementation of the same feature we
@@ -83,7 +90,7 @@
 	ipset module. Normally, one ipset set can either contain
 	individual ip addresses or subnets. We create a "setlist" type set
 	that includes two sub-sets, one for ip addresses and the other for
-	subnets. Function reload_ipset in the configlet
+	subnets. Function reload_address_table in the configlet
 	run_time_address_tables takes care of managing these three sets
 	automatically. Address list file has the same format as for all
 	other supported types of Address Table object: one address per
@@ -107,8 +114,8 @@
 	support method of loading addresses from the file at run time
 	based on script variables and a "while" loop.
 
-	* script_skeleton: added command line argument "reload_ipset"
-	that calls function reload_ipset and takes two additional
+	* script_skeleton: added command line argument "reload_address_table"
+	that calls function reload_address_table and takes two additional
 	arguments: set name and file name.
 
 	* script_skeleton (cmd): calling functions to check if data files

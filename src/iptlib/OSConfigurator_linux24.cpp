@@ -384,7 +384,7 @@ string OSConfigurator_linux24::printRunTimeAddressTablesCode()
         {
             check_ostr << "check_file \"" + at_name +
                 "\" \"" + at_file + "\"" << endl;
-            load_ostr << "reload_ipset \"" + at_name +
+            load_ostr << "reload_address_table \"" + at_name +
                 "\" \"" + at_file + "\"" << endl;
         }
     }
