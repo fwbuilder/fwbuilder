@@ -1,25 +1,52 @@
 
-<h1>Firewall Builder 4.1.0 Release Notes</h1>
+<h1>Firewall Builder 4.1.0 Beta Release Notes</h1>
 
 <p>
-  This release focuses on the improvements for the GUI usability and
-  policy importer for iptables. The GUI offers several buttons that
-  serve as shortcuts to the most popular operations new user needs to
-  use to get started working with fwbuilder. A new function and
-  toolbar button allows the user to inspect generated firewall
-  configuration files from within the GUI. Most dialogs were
-  redesigned to fit on screen 1024x768. 
+    This is the first official Beta release for V4.1.  It has been
+    tested and we believe it to be stable, but you should test 
+    it prior to using it in production.  If you find a bug please 
+    open a ticket in our SourceForge project:
+</p>
+<p>
+    <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets for V4</a>
+</p>
+
+   <h2>What's new in V4.1?</h2>
+
+<p>
+    There are several new features in this version including:
+    <ul>
+        <li>Support for Address Table objects that use the iptables ipset module</li>
+        <li>New toolbar shortcut to view complete generated firewall configuration files in the GUI</li>
+        <li>Shortcut buttons in the main window to help new users get started more easily</li>
+        <li>Updated many dialog window sizes to work better for users with smaller displays (1024x768)</li>
+        <li>Added a new mode for stopping the firewall script called 'block'</li>
+    </ul>
 </p>
 
 <p>
-  This release also comes with support for iptables module ipset that
-  provides efficient way to build iptables rules that match large sets
-  of ip addresses and update these addresses without reloading iptables
-  rules.
+    In addition to providing new functionality one of the goals of this
+    release is to make Firewall Builder easier for new users to learn.
+    There are new buttons in the main window that are shortcuts to common
+    functions that new users need to get started like adding a new firewall
+    and importing policies from existing devices.  
+</p>
+
+<p>
+    The iptables ipset module support provides an efficient way to build 
+    iptables rules that match large sets of ip addresses and update these
+    addresses without reloading iptables rules.  Please not this function
+    requires that your firewall has the ipset module loaded. You can find 
+    more information about how to setup and use Firewall Builder to manage 
+    iptables IP sets in the Users Guide section for Address Table objects.
+</p>
+
+<p>
+<a href="http://www.fwbuilder.org/4.0/docs/users_guide/address-table-object.html">UsersGuide: Address Table Objects</a>
 </p>
 
 <a name="gui"></a>
-<h2>Changes in the GUI</h2>
+<h2>GUI Updates</h2>
 
 <ul>
 
@@ -51,7 +78,6 @@
       fixed #1489 removed unnecessary debugging messages.
     </p>
   </li>
-    
 
   <li>
     <p>
@@ -635,33 +661,17 @@
 
 <ul>
   <li>
-    <p>
+    <p>No changes for PF.
     </p>
   </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
 </ul>
-
-
-
-
-
 
 <a name="ios"></a>
 <h2>Changes in support for for Cisco IOS ACL</h2>
 
 <ul>
   <li>
-    <p>
-    </p>
-  </li>
-
-  <li>
-    <p>
+    <p>No changes for Cisco IOS ACL.
     </p>
   </li>
 </ul>
@@ -700,15 +710,9 @@
 
 <ul>
   <li>
-    <p>
+    <p>No changes for HP ProCurve.
     </p>
   </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
 </ul>
 
 
