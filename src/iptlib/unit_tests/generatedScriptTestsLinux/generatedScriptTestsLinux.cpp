@@ -390,8 +390,8 @@ void GeneratedScriptTest::runTimeAddressTablesWithIpSet2Test()
 {
     QStringList sample_1;
 
-    sample_1 << "reload_ipset \"bad_guys\" \"/etc/fw/bad_guys.dat\"";
-    sample_1 << "reload_ipset \"bad_guys_2\" \"/etc/fw/bad_guys.dat\"";
+    sample_1 << "reload_address_table \"bad_guys\" \"/etc/fw/bad_guys.dat\"";
+    sample_1 << "reload_address_table \"bad_guys_2\" \"/etc/fw/bad_guys.dat\"";
 
     QStringList sample_2;
 
@@ -410,7 +410,7 @@ void GeneratedScriptTest::runTimeAddressTablesWithIpSet2Test()
     QStringList cmd_list;
     foreach(QString line, conf.split("\n"))
     {
-        if (line.indexOf("reload_ipset ")!=-1)
+        if (line.indexOf("reload_address_table ")!=-1)
         {
             cmd_list.push_back(line.trimmed());
         }
