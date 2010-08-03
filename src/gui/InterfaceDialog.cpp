@@ -295,7 +295,13 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
             QStringList netzoneObjectNames;
 
-            int n=0;
+            int n = 0;
+
+            netzoneObjectIDs[0] = n;
+            netzoneObjectNos[n] = 0;
+            netzoneObjectNames.push_back(" None ");
+
+            ++n;
 
             netzoneObjectIDs[FWObjectDatabase::ANY_ADDRESS_ID] = n;
             netzoneObjectNos[n] = FWObjectDatabase::ANY_ADDRESS_ID;
@@ -357,7 +363,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
             m_dialog->netzone->addItems( netzoneObjectNames );
 
             int id = FWObjectDatabase::getIntId(obj->getStr("network_zone"));
-            if (id==-1) id = FWObjectDatabase::ANY_ADDRESS_ID;  // any network
+            if (id==-1) id = 0;
             m_dialog->netzone->setCurrentIndex( netzoneObjectIDs[id] );
         }
         else

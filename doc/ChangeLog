@@ -1,5 +1,9 @@
 2010-08-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* InterfaceDialog.cpp (loadFWObject): fixed #1657 "When no network
+	zone is defined on the interface, the Interface object editor says
+	it is "Any" which is a lie"
+
 	* configlets/linux24/run_time_address_tables: fixed #1652 "support
 	for adding single address to address table in the generated
 	script". Generated iptables script now provides functions
