@@ -52,6 +52,8 @@ void WorkflowIcons::setUpSignals(QWidget *panel)
     connect(ui->importConfig, SIGNAL(clicked()), import, SLOT(trigger()));
 
     connect(ui->action_getting_started, SIGNAL(clicked()), mainWindow, SLOT(showTutorial()));
+
+    connect(om, SIGNAL(libraryAccessChanged(bool)), this, SLOT(libraryAccessChanged(bool)));
 }
 
 WorkflowIcons::~WorkflowIcons()
@@ -69,4 +71,11 @@ void WorkflowIcons::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+
+void WorkflowIcons::libraryAccessChanged(bool writable)
+{
+    ui->newFirewall->setEnabled(writable);
+    ui->importConfig->setEnabled(writable);
 }

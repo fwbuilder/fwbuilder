@@ -1,3 +1,4 @@
+
 /*
 
                           Firewall Builder
@@ -44,6 +45,9 @@ protected:
 
 private:
     Ui::WorkflowIcons_q *ui;
+
+public slots:
+    void libraryAccessChanged(bool writable);
 };
 
 #endif // WORKFLOWICONS_H

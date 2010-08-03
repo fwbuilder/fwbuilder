@@ -1305,7 +1305,7 @@ void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly();
-
+    emit libraryAccessChanged(!f);
     m_objectManipulator->newButton->setEnabled( !f );
     QAction *noa = (QAction*)(mw->findChild<QAction*>("newObjectAction"));
     noa->setEnabled( !f );

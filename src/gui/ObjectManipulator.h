@@ -409,7 +409,8 @@ public:
                                    const char* type_name,
                                    const QString &text=QString(),
                                    int add_to_group_id=-1);
-                                  
+ signals:
+     void libraryAccessChanged(bool writable);
 };
 
 #endif
