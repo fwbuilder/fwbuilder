@@ -58,7 +58,6 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     showPage(currentPage);
 
     wfl->registerTutorialViewing(tutorial);
-    this->setWindowFlags(this->windowFlags() | Qt::WindowMinimizeButtonHint);
 }
 
 void TutorialDialog::resizeEvent(QResizeEvent *)

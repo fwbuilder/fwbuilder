@@ -29,7 +29,6 @@
 
 #include "Help.h"
 #include "FWWindow.h"
-#include "TutorialDialog.h"
 
 #include <QFile>
 #include <QLocale>
@@ -67,7 +66,7 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     resize(600, 700);
     //raise();
 
-    flags = windowFlags() | Qt::WindowStaysOnTopHint | Qt::WindowMinMaxButtonsHint;//| Qt::Dialog;
+    flags = windowFlags() | Qt::Dialog;
 };
 
 Help::~Help()
@@ -77,23 +76,10 @@ Help::~Help()
 
 Help* Help::getHelpWindow(QWidget* w)
 {
-    TutorialDialog *tutorial = mw->findChild<TutorialDialog*>();
     if (help_window == NULL)
-    {
         help_window = new Help(w, "Firewall Builder");
-        help_window->setWindowFlags(help_window->windowFlags() | Qt::WindowMinimizeButtonHint);
-    }
 
     //if (parent != mw) help_window->setParent(parent, help_window->flags);
-    if (tutorial)
-    {
-        help_window->resize(tutorial->size());
-        help_window->move(tutorial->pos());
-        tutorial->reject();
-    }
-    help_window->raise();
-    help_window->showNormal();
-    help_window->activateWindow();
     return help_window;
 }
 

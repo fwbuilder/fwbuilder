@@ -1402,26 +1402,13 @@ void FWWindow::showTutorial(QString tutorial)
     if (fwbdebug)
         qDebug() << "FWWindow::showTutorial:" << tutorial;
 
-    Help *help = Help::getHelpWindow(this);
-    if (help->isVisible())
-    {
-        help->raise();
-        help->showNormal();
-        help->activateWindow();
-
-    }
     TutorialDialog *dialog;
     if (tutorial.isEmpty())
         dialog= new TutorialDialog(
             sender()->objectName().remove(0,7).toLower(), this);
     else
         dialog = new TutorialDialog(tutorial, this);
-    dialog->move(help->pos());
-    dialog->resize(help->size());
     dialog->show();
-    help->hide();
-    help->reject();
-    dialog->activateWindow();
 }
 
 void FWWindow::showReleaseNotes()
