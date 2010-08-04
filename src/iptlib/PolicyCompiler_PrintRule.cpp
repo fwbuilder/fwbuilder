@@ -873,14 +873,34 @@ string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv, PolicyRule *rule)
         if (!ipt_comp->ipv6)
         {
             str << " -m ipv4options ";
-            if  (srv->getBool("any_opt")) str << " --any-opt";
-            else
+
+            if (version.empty() || XMLTools::version_compare(version, "1.4.3")<0)
             {
-                if  (srv->getBool("lsrr")) str << " --lsrr";
-                if  (srv->getBool("ssrr")) str << " --ssrr";
-                if  (srv->getBool("rr")) str << " --rr";
-                if  (srv->getBool("ts")) str << " --ts";
-                if  (srv->getBool("rtralt")) str << " --ra";
+                // "old" ipv4options module
+                if  (srv->getBool("any_opt")) str << " --any-opt";
+                else
+                {
+                    if  (srv->getBool("lsrr")) str << " --lsrr";
+                    if  (srv->getBool("ssrr")) str << " --ssrr";
+                    if  (srv->getBool("rr")) str << " --rr";
+                    if  (srv->getBool("ts")) str << " --ts";
+                    if  (srv->getBool("rtralt")) str << " --ra";
+                }
+            } else
+            {
+                // "new" ipv4options module
+                if  (srv->getBool("any_opt")) str << " --any";
+                else
+                {
+                    QStringList options;
+                    if  (srv->getBool("lsrr")) options << "lsrr";
+                    if  (srv->getBool("ssrr")) options << "ssrr";
+                    if  (srv->getBool("rr")) options << "record-route";
+                    if  (srv->getBool("ts")) options << "timestamp";
+                    if  (srv->getBool("rtralt")) options << "router-alert";
+                    if (options.size() > 0)
+                        str << " --flags " << options.join(",").toStdString();
+                }
             }
         } else
         {
