@@ -1136,10 +1136,10 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     FWObject *o = obj;
     //if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
-    if (history.empty() || otvi!=history.top().item() )
+    if (history.empty() || otvi!=history.back().item() )
     {
         mw->enableBackAction();
-        history.push( HistoryItem(otvi, o->getId()) );
+        history.push_back( HistoryItem(otvi, o->getId()) );
     }
 
     //currentObj = obj;

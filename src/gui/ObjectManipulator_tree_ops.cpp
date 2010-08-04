@@ -244,6 +244,8 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 
 void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
 {
+    removeObjectFromHistory(obj);
+
 //    QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(getCurrentLib()) ];
     int current_lib_idx = m_objectManipulator->libs->currentIndex();
     QTreeWidget *objTreeView = idxToTrees[current_lib_idx];
@@ -257,6 +259,46 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
         itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
         delete itm;
     }
+}
+
+bool FindHistoryItemByObjectId::operator()(const HistoryItem &itm)
+{
+    return (itm.id() == id);
+}
+
+void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
+{
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::removeObjectFromHistory"
+                 << "obj:" << obj->getName().c_str()
+                 << "id=" << obj->getId()
+                 << "history.size()=" << history.size();
+
+    history.remove_if(FindHistoryItemByObjectId(obj->getId()));
+
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::removeObjectFromHistory"
+                 << "history.size()=" << history.size();
+
+    if (history.empty()) mw->enableBackAction();
+
+#if 0
+    int obj_id = obj->getId();
+    list<HistoryItem> tmp_list;
+    while (!history.empty())
+    {
+        HistoryItem itm = history.top();
+        history.pop();
+        if (obj_id == itm.id()) continue;
+        tmp_list.push_back(itm);
+    }
+
+    while (!tmp_list.empty())
+    {
+        history.push(tmp_list.back());
+        tmp_list.pop_back();
+    }
+#endif
 }
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
@@ -322,7 +364,7 @@ void ObjectManipulator::clearObjects()
 {
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects %p start",this);
 
-    while (history.size()!=0) history.pop();
+    while (history.size()!=0) history.pop_back();
 
     int N = m_objectManipulator->libs->count();
 

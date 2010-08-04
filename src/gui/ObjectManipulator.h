@@ -45,7 +45,6 @@
 
 #include "UsageResolver.h"
 
-#include <stack>
 #include <set>
 
 class ObjectTreeView;
@@ -73,7 +72,14 @@ class HistoryItem {
     HistoryItem(ObjectTreeViewItem *oi, int id) { itm=oi; objId=id; }
     ~HistoryItem();
     ObjectTreeViewItem* item() { return itm;   }
-    int  id()   { return objId; }
+    int id() const { return objId; }
+};
+
+class FindHistoryItemByObjectId {
+    int id;
+public:
+    FindHistoryItemByObjectId(int i) { id = i; }
+    bool operator()(const HistoryItem &itm);
 };
 
 class ObjectManipulator : public QWidget
@@ -84,7 +90,7 @@ class ObjectManipulator : public QWidget
     std::vector<QTreeWidget*> idxToTrees;
     int previous_lib_index;
     QSet<int> ids ;
-    std::stack<HistoryItem> history;
+    std::list<HistoryItem> history;
     int cacheHits;
 
     //libfwbuilder::FWObject *currentObj;
@@ -299,6 +305,8 @@ public:
      void openObjectInTree(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
+     void removeObjectFromHistory(libfwbuilder::FWObject *obj);
+     
      libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
                                              libfwbuilder::FWObject *obj);
 

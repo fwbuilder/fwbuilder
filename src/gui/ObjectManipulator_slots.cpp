@@ -415,13 +415,20 @@ void ObjectManipulator::back()
 {
     if (!history.empty())
     {
-        history.pop();
+        history.pop_back();
 
-/* skip objects that have been deleted */
+/* skip objects that have been deleted.
+ *
+ * But see removeObjectFromHistory() which is now called by
+ * removeObjectFromTreeView() it may not be necessary to do this
+ * additional check here, especially since according to #1661 it
+ * probably does not work anyway.
+ *
+ */
         while ( ! history.empty())
         {
-            if (m_project->db()->findInIndex( history.top().id() )!=NULL) break;
-            history.pop();
+            if (m_project->db()->findInIndex( history.back().id() )!=NULL) break;
+            history.pop_back();
         }
 
         if (history.empty())
@@ -430,11 +437,11 @@ void ObjectManipulator::back()
             return;
         }
 
-        openObjectInTree( history.top().item(), false );
+        openObjectInTree( history.back().item(), false );
 
         if (mw->isEditorVisible())
         {
-            ObjectTreeViewItem *otvi=history.top().item();
+            ObjectTreeViewItem *otvi=history.back().item();
             switchObjectInEditor(otvi->getFWObject());
         }
     }
