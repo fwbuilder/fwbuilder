@@ -181,3 +181,8 @@ void Help::showEvent(QShowEvent *event)
     restoreGeometry(window_geometry);
     QDialog::showEvent(event);
 }
+
+void Help::show()
+{
+    Help::showNormal();
+}

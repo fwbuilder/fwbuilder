@@ -72,6 +72,7 @@ public:
 
 public slots:
     void downloadComplete(const QString&);
+    void show();
 
 };
 
