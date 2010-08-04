@@ -66,7 +66,7 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     resize(600, 700);
     //raise();
 
-    flags = windowFlags() | Qt::Dialog;
+    flags = windowFlags()| Qt::WindowMinimizeButtonHint;
 };
 
 Help::~Help()
@@ -77,7 +77,11 @@ Help::~Help()
 Help* Help::getHelpWindow(QWidget* w)
 {
     if (help_window == NULL)
+    {
         help_window = new Help(w, "Firewall Builder");
+        help_window->setWindowFlags(Qt::Dialog | Qt::WindowMinimizeButtonHint | Qt::WindowStaysOnTopHint | Qt::WindowCloseButtonHint);
+//        help_window->setWindowFlags(help_window->windowFlags() |  Qt::WindowMinimizeButtonHint);
+    }
 
     //if (parent != mw) help_window->setParent(parent, help_window->flags);
     return help_window;

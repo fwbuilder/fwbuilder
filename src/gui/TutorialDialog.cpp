@@ -38,6 +38,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     ui(new Ui::TutorialDialog_q)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog | Qt::WindowMinimizeButtonHint | Qt::WindowStaysOnTopHint | Qt::WindowCloseButtonHint);
     ui->contents->setOpenExternalLinks(true);
     this->tutorial = tutorial;
     doc = new QTextDocument(this);
@@ -53,7 +54,6 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     }
     ui->contents->setDocument(doc);
     currentPage = 0;
-    this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowModality(Qt::ApplicationModal);
     showPage(currentPage);
 
