@@ -83,8 +83,9 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     QString      s;
     QStringList  logLevels;
     QStringList  logLevelMapping;
-    logLevelMapping.push_back("");
-    logLevelMapping.push_back("");
+
+    // logLevelMapping.push_back("");
+    // logLevelMapping.push_back("");
 
 /* filling pop-down menu and pushing the same strings to the mapping
  * list at the same time so we could use translation
