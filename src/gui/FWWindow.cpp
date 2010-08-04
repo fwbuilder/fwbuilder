@@ -778,6 +778,9 @@ void FWWindow::importPolicy()
 {
     if (activeProject())
     {
+        if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
+            return;
+
         DiscoveryDruid druid(this, true);
         druid.exec();
     }
