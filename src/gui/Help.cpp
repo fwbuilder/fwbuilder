@@ -81,12 +81,14 @@ Help* Help::getHelpWindow(QWidget* w)
         help_window = new Help(w, "Firewall Builder");
         help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
     }
-
+/*
     else
     {
+        help_window->showMinimized();
+        help_window->hide();
         help_window->showNormal();
         help_window->raise();
-    }
+    }*/
 
     //if (parent != mw) help_window->setParent(parent, help_window->flags);
     return help_window;
