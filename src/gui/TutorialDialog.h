@@ -29,7 +29,6 @@
 #include <QDialog>
 #include <QTextDocument>
 
-
 namespace Ui {
     class TutorialDialog_q;
 }
@@ -38,6 +37,7 @@ class TutorialDialog : public QDialog {
     Q_OBJECT;
 public:
     TutorialDialog(QString tutorial, QWidget *parent = 0);
+
     ~TutorialDialog();
     QString tutorial;
     QString css_stylesheet;
@@ -48,7 +48,8 @@ public:
     QString getResetForPage(int page);
 
     void runScenario(QString scenario);
-    void resizeEvent(QResizeEvent *);
+
+    static void showTutorial(QString tutorial);
 
 protected:
     void changeEvent(QEvent *e);
@@ -56,6 +57,8 @@ protected:
 private:
     Ui::TutorialDialog_q *ui;
     int currentPage;
+    void initializeTutorial(QString tutorial);
+    static TutorialDialog *dialog;
 
 public slots:
     void previous();

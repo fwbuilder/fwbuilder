@@ -39,8 +39,8 @@ using namespace std;
 
 Help* Help::help_window = NULL;
 
-Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
-    QDialog(parent)
+Help::Help(QWidget *, const QString &title, bool _load_links_in_browser) :
+    QDialog(NULL)
 {
     load_links_in_browser = _load_links_in_browser;
     m_dialog = new Ui::HelpView_q;
@@ -79,8 +79,13 @@ Help* Help::getHelpWindow(QWidget* w)
     if (help_window == NULL)
     {
         help_window = new Help(w, "Firewall Builder");
-        help_window->setWindowFlags(Qt::Dialog | Qt::WindowMinimizeButtonHint | Qt::WindowStaysOnTopHint | Qt::WindowCloseButtonHint);
-//        help_window->setWindowFlags(help_window->windowFlags() |  Qt::WindowMinimizeButtonHint);
+        help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
+    }
+
+    else
+    {
+        help_window->showNormal();
+        help_window->raise();
     }
 
     //if (parent != mw) help_window->setParent(parent, help_window->flags);

@@ -31,15 +31,38 @@
 
 #include <QDebug>
 #include <QFile>
+#include "FWBApplication.h"
 
+TutorialDialog * TutorialDialog::dialog = NULL;
 
 TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
-    QDialog(parent),
+    QDialog(NULL),
     ui(new Ui::TutorialDialog_q)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::Dialog | Qt::WindowMinimizeButtonHint | Qt::WindowStaysOnTopHint | Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
     ui->contents->setOpenExternalLinks(true);
+
+    dialog = this;
+    this->initializeTutorial(tutorial);
+}
+
+void TutorialDialog::showTutorial(QString tutorial)
+{
+    if (dialog != NULL)
+    {
+        dialog->initializeTutorial(tutorial);
+        dialog->showNormal();
+        dialog->raise();
+    }
+    else
+    {
+        (new TutorialDialog(tutorial))->show();
+    }
+}
+
+void TutorialDialog::initializeTutorial(QString tutorial)
+{
     this->tutorial = tutorial;
     doc = new QTextDocument(this);
 
@@ -54,15 +77,9 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     }
     ui->contents->setDocument(doc);
     currentPage = 0;
-    //this->setWindowModality(Qt::ApplicationModal);
     showPage(currentPage);
 
     wfl->registerTutorialViewing(tutorial);
-}
-
-void TutorialDialog::resizeEvent(QResizeEvent *)
-{
-//    ui->contents->setMaximumWidth(ui->scrollArea->viewport()->width());
 }
 
 TutorialDialog::~TutorialDialog()

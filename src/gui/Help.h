@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -31,12 +31,15 @@
 #include "ui_helpview_q.h"
 
 #include "HttpGet.h"
+#include "global.h"
 
 #include <QDialog>
 #include <QStringList>
 #include <QUrl>
 #include <QByteArray>
-
+#include <QWidget>
+#include <FWWindow.h>
+#include <QDebug>
 
 class Help : public QDialog
 {
@@ -48,10 +51,10 @@ class Help : public QDialog
     bool load_links_in_browser;
     HttpGet *http_getter;
     bool delayed_open;
-    
+
 public:
     Ui::HelpView_q *m_dialog;
-    
+
     Help(QWidget *parent, const QString &title, bool load_links_in_browser=true);
     virtual ~Help();
 
@@ -59,7 +62,7 @@ public:
     QString findHelpFile(const QString &file_base_name);
 
     void setName(const QString &name);
-    
+
     virtual void closeEvent(QCloseEvent *event);
     virtual void hideEvent(QHideEvent *event);
     virtual void showEvent(QShowEvent *event);
@@ -72,4 +75,4 @@ public slots:
 
 };
 
-#endif 
+#endif

@@ -1402,13 +1402,10 @@ void FWWindow::showTutorial(QString tutorial)
     if (fwbdebug)
         qDebug() << "FWWindow::showTutorial:" << tutorial;
 
-    TutorialDialog *dialog;
     if (tutorial.isEmpty())
-        dialog= new TutorialDialog(
-            sender()->objectName().remove(0,7).toLower(), this);
+        TutorialDialog::showTutorial(sender()->objectName().remove(0,7).toLower());
     else
-        dialog = new TutorialDialog(tutorial, this);
-    dialog->show();
+        TutorialDialog::showTutorial(tutorial);
 }
 
 void FWWindow::showReleaseNotes()
