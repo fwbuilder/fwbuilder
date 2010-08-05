@@ -518,13 +518,29 @@ void GroupObjectDialog::validate(bool *res)
 
 void GroupObjectDialog::applyChanges()
 {
-    if (fwbdebug) qDebug("GroupObjectDialog::applyChanges");
+    if (fwbdebug)
+        qDebug() << "GroupObjectDialog::applyChanges"
+                 << "checkpoint 1"
+                 << "root->isDirty()=" << obj->getRoot()->isDirty();
 
     std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();
-    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    string newname = string(m_dialog->obj_name->text().toUtf8().constData());
+    if (oldname != newname)
+    {
+        if (fwbdebug)
+            qDebug() << "oldname=" << oldname.c_str()
+                     << "newname=" << newname.c_str();
+        new_state->setName(newname);
+    }
+
+    if (fwbdebug)
+        qDebug() << "GroupObjectDialog::applyChanges"
+                 << "checkpoint 2"
+                 << "root->isDirty()=" << obj->getRoot()->isDirty();
+
     new_state->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 

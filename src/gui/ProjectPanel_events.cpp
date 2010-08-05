@@ -75,6 +75,13 @@ bool ProjectPanel::event(QEvent *event)
                      << "object:"
                      << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "");
 
+        if (event_code == UPDATE_GUI_STATE_EVENT && mdiWindow != NULL)
+        {
+            m_panel->om->updateCreateObjectMenu(getCurrentLib());
+            ev->accept();
+            return true;
+        }
+
         if ((rcs && rcs->getFileName() == data_file) ||
             (!rcs && data_file.isEmpty()))
         {
@@ -115,10 +122,6 @@ bool ProjectPanel::event(QEvent *event)
                 // This event does not trigger any updates in the UI,
                 // this purely data structure update event. 
 
-                mw->prepareFileMenu();
-                mw->prepareEditMenu();
-                mw->updateGlobalToolbar();
-
                 FWObject *p = obj;
                 while (p && Firewall::cast(p)==NULL) p = p->getParent();
                 Firewall *f = Firewall::cast(p);
@@ -129,10 +132,12 @@ bool ProjectPanel::event(QEvent *event)
                 {
                     f->updateLastModifiedTimestamp();
                     QCoreApplication::postEvent(
-                        mw, new updateObjectInTreeEvent(data_file,
-                                                          f->getId()));
+                        mw, new updateObjectInTreeEvent(data_file, f->getId()));
                 }
                 registerModifiedObject(obj);
+
+                QCoreApplication::postEvent(mw, new updateGUIStateEvent());
+
                 ev->accept();
                 return true;
             }
@@ -405,6 +410,7 @@ bool ProjectPanel::event(QEvent *event)
                 }
                 ev->accept();
                 return true;
+
             }
         }
         return false;

@@ -827,14 +827,25 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 {
     if (fwbdebug) qDebug("ObjectManipulator::getMenuState");
 
+    inDeletedObjects = false;
+
+    if (m_project->db() == NULL)
+    {
+        dupMenuItem = false;
+        moveMenuItem = false;
+        copyMenuItem = false;
+        pasteMenuItem = false;
+        delMenuItem = false;
+        newMenuItem = false;
+        return;
+    }
+
     dupMenuItem = true;
     moveMenuItem = true;
     copyMenuItem = true;
     pasteMenuItem = true;
     delMenuItem = true;
     newMenuItem = true;
-
-    inDeletedObjects = false;
 
     FWObject *del_obj_library =
         m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
@@ -1000,6 +1011,11 @@ FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj
 
     FWObject *ta = target;
     if (IPv4::isA(ta) || IPv6::isA(ta)) ta = ta->getParent();
+
+    if (Library::isA(target))
+        ta = FWBTree().getStandardSlotForObject(target,
+                                                 obj->getTypeName().c_str());
+
     QString err;
     if (! FWBTree().validateForInsertion(ta, obj, err))
     {
@@ -1275,6 +1291,8 @@ void ObjectManipulator::changeFirstNotSystemLib()
 
 void ObjectManipulator::libChanged(int ln)
 {
+    if (fwbdebug) qDebug() << "ObjectManipulator::libChanged ln=" << ln;
+
     previous_lib_index = ln;
 
     QTreeWidget *lv = idxToTrees[ln];
@@ -1289,29 +1307,33 @@ void ObjectManipulator::libChanged(int ln)
         else
             assert(FALSE);
     }
-    //currentObj = otvi->getFWObject();
+
     showObjectInTree( otvi );
 
-// Experiment: switching libraries does not open new lib in the editor
+// switching libraries does not open new lib in the editor
 //    if (mw->isEditorVisible()) mw->openEditor(getSelectedObject());
 
-    updateCreateObjectMenu( idxToLibs[ln] );
+    //updateCreateObjectMenu( idxToLibs[ln] );
+
+    QCoreApplication::postEvent(mw, new updateGUIStateEvent());
+
     return;
 }
 
 void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 {
-    bool f =
+    bool f = lib == NULL ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly();
-    emit libraryAccessChanged(!f);
-    m_objectManipulator->newButton->setEnabled( !f );
+    bool new_object_op_possible = !f;
+    emit libraryAccessChanged(new_object_op_possible);
+    m_objectManipulator->newButton->setEnabled(new_object_op_possible);
     QAction *noa = (QAction*)(mw->findChild<QAction*>("newObjectAction"));
-    noa->setEnabled( !f );
+    noa->setEnabled(new_object_op_possible);
 }
 
-FWObject*  ObjectManipulator::getCurrentLib()
+FWObject* ObjectManipulator::getCurrentLib()
 {
     int idx = m_objectManipulator->libs->currentIndex();
     if (idx == -1 ) return NULL;

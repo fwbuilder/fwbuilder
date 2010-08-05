@@ -65,7 +65,8 @@ enum EVENT_CODES {
     CLOSE_OBJECT_EVENT ,
     OBJECT_NAME_CHANGED_EVENT,
     OPEN_LIBRARY_FOR_OBJECT_EVENT,
-    UPDATE_SUBWINDOW_TITLES_EVENT
+    UPDATE_SUBWINDOW_TITLES_EVENT,
+    UPDATE_GUI_STATE_EVENT
 };
 
 
@@ -355,6 +356,19 @@ public:
     fwbUpdateEvent("", -1,
                    QEvent::Type(QEvent::User + UPDATE_SUBWINDOW_TITLES_EVENT),
                    "updateSubWindowTitlesEvent")
+    {}
+};
+
+/*
+ * This event is processed by FWWindow class and updates all menus and
+ * toolbar buttins
+ */
+class updateGUIStateEvent : public fwbUpdateEvent {
+public:
+    updateGUIStateEvent() :
+    fwbUpdateEvent("", -1,
+                   QEvent::Type(QEvent::User + UPDATE_GUI_STATE_EVENT),
+                   "updateGUIStateEvent")
     {}
 };
 

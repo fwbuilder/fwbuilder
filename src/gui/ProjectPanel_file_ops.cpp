@@ -1436,7 +1436,9 @@ void ProjectPanel::save()
                     db()->setDirty(false);
                     // and reset actions, including Save() which should now
                     // be inactive
-                    mw->prepareFileMenu();
+                    QCoreApplication::postEvent(mw, new updateGUIStateEvent());
+
+                    //mw->prepareFileMenu();
                 } else
                 {
                     QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));

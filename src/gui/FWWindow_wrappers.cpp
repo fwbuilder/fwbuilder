@@ -95,7 +95,9 @@ void FWWindow::fileSave()
     if (activeProject())
     {
         activeProject()->fileSave();
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+
+        //prepareFileMenu();
     }
 }
 
@@ -104,7 +106,9 @@ void FWWindow::fileSaveAs()
     if (activeProject())
     {
         activeProject()->fileSaveAs();
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+
+        //prepareFileMenu();
     }
 }
 
@@ -115,7 +119,9 @@ void FWWindow::fileCommit()
         activeProject()->fileCommit();
         // reset actions, including Save() which should now
         // be inactive
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+
+        //prepareFileMenu();
     }
 }
 
@@ -128,9 +134,11 @@ void FWWindow::fileDiscard()
     if (activeProject())
     {
         activeProject()->fileDiscard();
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+
+        //prepareFileMenu();
         //prepareRulesMenu();
-        updateGlobalToolbar();
+        //updateGlobalToolbar();
     }
 }
 
@@ -139,7 +147,9 @@ void FWWindow::fileAddToRCS()
     if (activeProject())
     {
         activeProject()->fileAddToRCS();
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+    
+        //prepareFileMenu();
     }
 }
 
@@ -168,9 +178,11 @@ void FWWindow::fileImport()
     if (activeProject())
     {
         activeProject()->fileImport();
-        prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateGUIStateEvent());
+
+        //prepareFileMenu();
         //prepareRulesMenu();
-        updateGlobalToolbar();
+        //updateGlobalToolbar();
     }
 }
 

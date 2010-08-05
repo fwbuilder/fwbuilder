@@ -1,3 +1,11 @@
+2010-08-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_events.cpp (event): fixed #1660 "Crash when
+	cut-and-pasting firewall between libraries". GUI crashed if user
+	performed the following sequence: cut an object, switch to a
+	different object library, try to paste using keyboard shortcut
+	Ctrl-V while library object was selected in the tree.
+
 2010-08-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::finalize): fixed #1664 "Policy

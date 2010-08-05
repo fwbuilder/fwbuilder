@@ -484,7 +484,8 @@ void FWBTree::getStandardSlotForObject(const QString &objType,
  * this method finds standard system folder for an object of a given
  * type in a given library. This method implemented our standard tree
  * structure (the one that is created in the method createNewLibrary)
- */FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
+ */
+FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
 {
     QString path = systemGroupPaths[objType];
 

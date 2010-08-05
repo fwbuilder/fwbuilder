@@ -126,7 +126,6 @@ class ObjectManipulator : public QWidget
 
     int  getIdxForLib(libfwbuilder::FWObject*);
     void removeLib(int idx);
-    void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
 
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
 
@@ -325,8 +324,10 @@ public:
 
      void autoRenameChildren(libfwbuilder::FWObject *obj,
                              const QString &oldName);
-    void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
+     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
 
+     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
+     
      ObjectTreeView* getCurrentObjectTree();
      libfwbuilder::FWObject* getSelectedObject();
 
