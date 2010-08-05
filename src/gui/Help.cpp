@@ -84,13 +84,7 @@ Help* Help::getHelpWindow(QWidget* w)
         help_window->setWindowFlags(help_window->windowFlags() | Qt::WindowCloseButtonHint);
 #endif
     }
-    else
-    {
-        help_window->showNormal();
-        help_window->raise();
-    }
 
-    //if (parent != mw) help_window->setParent(parent, help_window->flags);
     return help_window;
 }
 
