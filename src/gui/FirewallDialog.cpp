@@ -89,62 +89,68 @@ void FirewallDialog::getHelpName(QString *str)
 
 void FirewallDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
-    Firewall *s = dynamic_cast<Firewall*>(obj);
-    assert(s!=NULL);
+    try
+    {
+        obj = o;
+        Firewall *s = dynamic_cast<Firewall*>(obj);
+        assert(s!=NULL);
 
-    init = true;
+        init = true;
 
-    QString platform = obj->getStr("platform").c_str();
+        QString platform = obj->getStr("platform").c_str();
 /* fill in platform */
-    setPlatform(m_dialog->platform, platform);
+        setPlatform(m_dialog->platform, platform);
 
-    fillVersion();
+        fillVersion();
 
 /* fill in host OS  */
-    setHostOS(m_dialog->hostOS, platform, obj->getStr("host_OS").c_str());
+        setHostOS(m_dialog->hostOS, platform, obj->getStr("host_OS").c_str());
 
 /* ---------------- */
-    updateTimeStamps();
+        updateTimeStamps();
 
-    Management *mgmt=s->getManagementObject();
-    assert(mgmt!=NULL);
+        Management *mgmt=s->getManagementObject();
+        assert(mgmt!=NULL);
 
 //    FWOptions  *opt =s->getOptionsObject();
 
-    m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
+        m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
 
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
-    m_dialog->inactive->setChecked(s->getInactive());
+        m_dialog->inactive->setChecked(s->getInactive());
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->obj_name);
+        m_dialog->obj_name->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->obj_name);
 
-    m_dialog->platform->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->platform);
+        m_dialog->platform->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->platform);
 
-    m_dialog->version->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->version);
+        m_dialog->version->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->version);
 
-    m_dialog->hostOS->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->hostOS);
+        m_dialog->hostOS->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->hostOS);
 
-    m_dialog->fwAdvanced->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->fwAdvanced);
+        m_dialog->fwAdvanced->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->fwAdvanced);
 
-    m_dialog->osAdvanced->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->osAdvanced);
+        m_dialog->osAdvanced->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->osAdvanced);
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
+        m_dialog->comment->setReadOnly(o->isReadOnly());
+        setDisabledPalette(m_dialog->comment);
 
 //    snmpCommunity->setEnabled(!o->isReadOnly());
 //    setDisabledPalette(snmpCommunity);
 
-    m_dialog->inactive->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->inactive);
+        m_dialog->inactive->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->inactive);
 
+    } catch (FWException &ex)
+    {
+        qDebug() << "Caught FWException:" << ex.toString().c_str();
+    }
 
     init=false;
 }
@@ -185,7 +191,7 @@ void FirewallDialog::fillVersion()
         m_dialog->version->addItem( i1->second );
         if ( v == i1->first ) { found_version = true; m_dialog->version->setCurrentIndex( cp ); }
     }
-    if (!found_version)
+    if (!found_version && !obj->isReadOnly())
     {
         // version configured in the object does not match any valid
         // version for this platform.

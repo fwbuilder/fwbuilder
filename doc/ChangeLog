@@ -1,5 +1,9 @@
 2010-08-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPTImporter.cpp (IPTImporter::finalize): fixed #1664 "Policy
+	import creates firewall object w/o version". This also fixes
+	crash reported in SF bug #3036934
+
 	* pixAdvancedDialog.cpp (pixAdvancedDialog::displayCommands):
 	fixed SF bug #3038945 "ASA inspect configurations not saved".
 	Under some circumstances the GUI did not save changes made in the
