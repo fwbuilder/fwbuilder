@@ -72,10 +72,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 {
     m_dialog = new Ui::pixAdvancedDialog_q;
     m_dialog->setupUi(static_cast<QDialog*>(this));
-    obj=o;
-
-    //Firewall  *fw=Firewall::cast(obj);
-    //FWOptions *fwopt=fw->getOptionsObject();
+    obj = o;
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
@@ -724,15 +721,12 @@ void pixAdvancedDialog::loadFixups()
     }
 }
 
-void pixAdvancedDialog::saveFixups()
+void pixAdvancedDialog::saveFixups(FWOptions *options)
 {
-    FWOptions *options=(Firewall::cast(obj))->getOptionsObject();
-    assert(options!=NULL);
-
     for (list<fixupControl>::iterator fi=allFixups.begin(); fi!=allFixups.end(); fi++)
     {
-        string name=fi->fwoption.toLatin1().constData();
-        int sw=translateFixupSwitchFromWidgetToOption(
+        string name = fi->fwoption.toLatin1().constData();
+        int sw = translateFixupSwitchFromWidgetToOption(
             fi->switch_widget->currentIndex());
 
         int    p1  =(fi->arg1)?fi->arg1->value():0;
@@ -746,6 +740,11 @@ void pixAdvancedDialog::saveFixups()
         str << sw << " " << p1 << " " << p2 << " " << on << " " << int(ov);
 
         options->setStr( fi->fwoption.toLatin1().constData(), str.str() );
+
+        if (fwbdebug)
+            qDebug() << "pixAdvancedDialog::saveFixups()"
+                     << name.c_str()
+                     << str.str().c_str();
     }
 }
 
@@ -757,13 +756,29 @@ void pixAdvancedDialog::displayCommands()
  * need to copy information from widgets that control fixups into
  * firewall object's options, so that when we dump the database into
  * memory buffer, we get updated info
+ *
+ * This creates a problem however: since we save changes into the
+ * actual object here, the undo/redo commands don't work later on in
+ * accept() because we do not detect any changes and undo command is
+ * not placed on undo stack. Need to save FWOptions object, save fixup
+ * parameters into it, generate commands and then restore FWOptions
+ * object back
  */
-    saveFixups();
+    FWOptions *options = (Firewall::cast(obj))->getOptionsObject();
+    assert(options!=NULL);
+
+    FWOptions *backup_options = new FWOptions();
+    backup_options->duplicate(options, false);
+
+    saveFixups(options);
 
     CompilerDriver_pix driver(obj->getRoot());
     driver.setTargetId(FWObjectDatabase::getStringId(obj->getId()));
     string inspectors = driver.protocolInspectorCommands();
     m_dialog->pix_generated_fixup->setText(inspectors.c_str());
+
+    options->duplicate(backup_options, false);
+    delete backup_options;
 }
 
 void pixAdvancedDialog::updateFixupCommandsDisplay()
@@ -794,11 +809,7 @@ void pixAdvancedDialog::accept()
 
     data.saveAll(fwoptions);
 
-    saveFixups();
-
-//    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
-//    pis->setCommand( installScript->text() );
-//    pis->setArguments( installScriptArgs->text() );
+    saveFixups(fwoptions);
 
     // find first interface marked as "management"
     const InetAddr *mgmt_addr = Firewall::cast(new_state)->getManagementAddress();

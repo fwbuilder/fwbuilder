@@ -1,5 +1,11 @@
 2010-08-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* pixAdvancedDialog.cpp (pixAdvancedDialog::displayCommands):
+	fixed SF bug #3038945 "ASA inspect configurations not saved".
+	Under some circumstances the GUI did not save changes made in the
+	"Inspectors" tab of the PIX advanced settings dialog into the
+	object.
+
 	* ObjectManipulator_tree_ops.cpp (ObjectManipulator::removeObjectFromHistory):
 	fixed #1661 "Crash after deleting firewall" a sequence where user deleted
 	an object and then hit "Back" button caused crash.

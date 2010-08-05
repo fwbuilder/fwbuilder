@@ -40,6 +40,7 @@ class QCheckBox;
 
 namespace libfwbuilder {
     class FWObject;
+    class FWOptions;
 };
 
 struct fixupControl {
@@ -74,15 +75,15 @@ class pixAdvancedDialog : public QDialog
     bool                             syslogDeviceIdSupported;
     
     Ui::pixAdvancedDialog_q         *m_dialog;
-    
+
  public:
-    pixAdvancedDialog(QWidget *parent,libfwbuilder::FWObject *o);
+    pixAdvancedDialog(QWidget *parent, libfwbuilder::FWObject *o);
     ~pixAdvancedDialog();
 
     void setDefaultTimeoutValue(const QString &option);
     void updateFixupCommandsDisplay();
     void loadFixups();
-    void saveFixups();
+    void saveFixups(libfwbuilder::FWOptions *options);
     
     int translateFixupSwitchFromOptionToWidget(int o);
     int translateFixupSwitchFromWidgetToOption(int o);
