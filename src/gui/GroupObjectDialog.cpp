@@ -48,6 +48,11 @@
 #include "fwbuilder/FWObjectReference.h"
 #include "fwbuilder/FWServiceReference.h"
 #include "fwbuilder/FWIntervalReference.h"
+#include "fwbuilder/Service.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 
 #include <memory>
 
@@ -77,6 +82,89 @@
 using namespace std;
 using namespace libfwbuilder;
 
+
+bool compare_addrs(const InetAddr *one, const InetAddr *two)
+{
+    if (one->isV4() + two->isV4() == 1)
+        return one->isV4();
+
+    QString oneip;
+    QString twoip;
+    QList<int> onenumbers;
+    QList<int> twonumbers;
+
+    if (one->isV4())
+    {
+        oneip = one->toString().c_str();
+        foreach (QString part, oneip.split("."))
+            onenumbers.append(part.toInt());
+        twoip = two->toString().c_str();
+        foreach (QString part, twoip.split("."))
+            twonumbers.append(part.toInt());
+    }
+    else
+    {
+        bool ok;
+        oneip = one->toString().c_str();
+        foreach (QString part, oneip.split(":"))
+            onenumbers.append(part.toInt(&ok, 16));
+        twoip = two->toString().c_str();
+        foreach (QString part, twoip.split(":"))
+            twonumbers.append(part.toInt(&ok, 16));
+    }
+    for (int i=0; i < onenumbers.count(); i++)
+    {
+        if (onenumbers.at(i) != twonumbers.at(i))
+            return onenumbers.at(i) < twonumbers.at(i);
+    }
+    return false;
+}
+
+class GroupObjectWidgetItem: public QTreeWidgetItem
+{
+    FWObjectDatabase * db;
+public:
+    GroupObjectWidgetItem(QTreeWidget *parent, FWObjectDatabase *db): QTreeWidgetItem(parent)
+    {
+        this->db = db;
+    }
+
+    bool operator<( const QTreeWidgetItem & other ) const
+    {
+        int col = this->treeWidget()->sortColumn();
+        if ( col != 1)
+            return this->text(col) < other.text(col);
+
+        FWObject *otherobj = db->findInIndex(other.data(0, Qt::UserRole).toInt());
+        FWObject *thisobj = db->findInIndex(this->data(0, Qt::UserRole).toInt());
+        if (otherobj->getTypeName() != thisobj->getTypeName())
+            return thisobj->getTypeName() < otherobj->getTypeName();
+
+        if (IPv4::isA(thisobj) || IPv6::isA(thisobj))
+        {
+            return compare_addrs(Address::cast(thisobj)->getAddressPtr(), Address::cast(otherobj)->getAddressPtr());
+        }
+
+        if (Service::isA(thisobj))
+        {
+            return Service::cast(thisobj)->getProtocolNumber() < Service::cast(otherobj)->getProtocolNumber();
+        }
+
+        if(AddressRange::isA(thisobj))
+        {
+            return compare_addrs(&AddressRange::cast(thisobj)->getRangeStart(),
+                                 &AddressRange::cast(otherobj)->getRangeStart());
+        }
+
+        if (Host::isA(thisobj))
+        {
+            return compare_addrs(Host::cast(thisobj)->getAddressPtr(),
+                                 Host::cast(otherobj)->getAddressPtr());
+        }
+
+        return this->text(col) < other.text(col);
+    }
+};
 
 enum GroupObjectDialog::viewType GroupObjectDialog::vt = GroupObjectDialog::Icon;
 
@@ -311,7 +399,7 @@ void GroupObjectDialog::addIcon(FWObject *o, bool ref)
     list_item->setData(Qt::UserRole, QVariant(o->getId()));
     iconView->addItem(list_item);
 
-    QTreeWidgetItem *tree_item = new QTreeWidgetItem(listView);
+    GroupObjectWidgetItem *tree_item = new GroupObjectWidgetItem(listView, m_project->db());
     tree_item->setText(0, obj_name);
     tree_item->setText(1, FWObjectPropertiesFactory::getObjectProperties(o) );
     tree_item->setIcon(0, QIcon(pm) );
