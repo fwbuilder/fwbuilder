@@ -32,13 +32,13 @@
 
 #include "HttpGet.h"
 #include "global.h"
+#include "FWWindow.h"
 
 #include <QDialog>
 #include <QStringList>
 #include <QUrl>
 #include <QByteArray>
 #include <QWidget>
-#include <FWWindow.h>
 #include <QDebug>
 
 class Help : public QDialog
