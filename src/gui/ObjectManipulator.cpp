@@ -864,6 +864,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
         copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);
         pasteMenuItem = pasteMenuItem &&
             FWBTree().getPasteMenuState(object_path) &&
+            FWObjectClipboard::obj_clipboard &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
         delMenuItem = delMenuItem && getDeleteMenuState(obj);
         delMenuItem = delMenuItem && current_library != NULL &&
