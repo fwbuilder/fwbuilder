@@ -47,7 +47,8 @@ using namespace std;
  ********************************************************/
 
 FWCmdChange::FWCmdChange(ProjectPanel *project,
-                         FWObject *obj, QString text, bool _rename_children, QUndoCommand* macro):
+                         FWObject *obj, QString text, bool _rename_children,
+                         QUndoCommand* macro):
     FWCmdBasic(project, macro)
 {
     setObject(obj);
@@ -66,8 +67,14 @@ FWCmdChange::FWCmdChange(ProjectPanel *project,
         this->newState = db->create(obj->getTypeName());
     }
 
+    bool was_clean = (db->isDirty() == false);
+    // Note: if obj is a group that holds references to other objects,
+    // duplicateForUndo() increments reference counters in those objects
+    // and subsequently raises "dirty" flag in the database.
     this->oldState->duplicateForUndo(obj);
     this->newState->duplicateForUndo(obj);
+
+    if (was_clean) db->setDirty(false);
 
     if (text.isEmpty())
     {
