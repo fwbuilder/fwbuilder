@@ -46,7 +46,7 @@ using namespace std;
 class newClusterDialog_ext: public newClusterDialog
 {
 public:
-    newClusterDialog_ext(libfwbuilder::FWObject* obj): newClusterDialog(obj)
+    newClusterDialog_ext(QWidget *parent, libfwbuilder::FWObject* obj): newClusterDialog(parent, obj)
     {
 
     }
@@ -87,7 +87,7 @@ void newClusterDialogTest::test1()
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
     db->load("test_data_work.fwb", &p, librespath);
-    newClusterDialog_ext *dialog = new newClusterDialog_ext(db);
+    newClusterDialog_ext *dialog = new newClusterDialog_ext(NULL, db);
     vector<FWObject*> fws;
     QStringList fwnames;
     foreach(FWObject *obj, db->getByTypeDeep(Firewall::TYPENAME))
@@ -211,7 +211,7 @@ void newClusterDialogTest::test2()
     }
     QVERIFY(lib != NULL);
 
-    newClusterDialog_ext *dialog = new newClusterDialog_ext(FWBTree().getStandardSlotForObject(lib, Cluster::TYPENAME));
+    newClusterDialog_ext *dialog = new newClusterDialog_ext(NULL, FWBTree().getStandardSlotForObject(lib, Cluster::TYPENAME));
     vector<FWObject*> fws;
     QStringList fwnames;
     foreach(FWObject *obj, db->getByTypeDeep(Firewall::TYPENAME))
