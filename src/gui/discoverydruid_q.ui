@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>DiscoveryDruid_q</class>
  <widget class="QDialog" name="DiscoveryDruid_q">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

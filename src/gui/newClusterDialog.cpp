@@ -54,8 +54,8 @@ using namespace libfwbuilder;
 using namespace std;
 
 
-newClusterDialog::newClusterDialog(FWObject *_p)
-    : QDialog(), ncl(NULL), fwlist(NULL), tmpldb(NULL)
+newClusterDialog::newClusterDialog(QWidget *parentw, FWObject *_p)
+    : QDialog(parentw), ncl(NULL), fwlist(NULL), tmpldb(NULL)
 {
     parent = _p;
     db = parent->getRoot();

@@ -3,7 +3,7 @@
  <class>iosAdvancedDialog_q</class>
  <widget class="QDialog" name="iosAdvancedDialog_q">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="enabled">
    <bool>true</bool>

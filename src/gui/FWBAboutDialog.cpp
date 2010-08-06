@@ -31,7 +31,7 @@
 
 #include "../../VERSION.h"
 
-FWBAboutDialog::FWBAboutDialog() 
+FWBAboutDialog::FWBAboutDialog(QWidget *parent): QDialog(parent)
 {
     m_aboutDialog = new Ui::AboutDialog_q;
     m_aboutDialog->setupUi(this);

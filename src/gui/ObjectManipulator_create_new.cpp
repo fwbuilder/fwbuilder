@@ -462,8 +462,10 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
 
-    newFirewallDialog *nfd = new newFirewallDialog(parent);
+    newFirewallDialog *nfd = new newFirewallDialog(this, parent);
     if (mw->isEditorVisible()) mw->hideEditor();
+    nfd->setWindowModality(Qt::WindowModal);
+    nfd->setWindowFlags(Qt::Window);
     nfd->exec();
     FWObject *nfw = nfd->getNewFirewall();
     delete nfd;
@@ -488,7 +490,7 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
 
-    newClusterDialog *ncd = new newClusterDialog(parent);
+    newClusterDialog *ncd = new newClusterDialog(this, parent);
     if (mw->isEditorVisible())  mw->hideEditor();
     if (fromSelected)
     {
@@ -625,7 +627,7 @@ FWObject* ObjectManipulator::newHost(QUndoCommand* macro)
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Host::TYPENAME);
     assert(parent);
-    newHostDialog *nhd = new newHostDialog(parent);
+    newHostDialog *nhd = new newHostDialog(this, parent);
     if (mw->isEditorVisible()) mw->hideEditor();
     nhd->exec();
     FWObject *o = nhd->getNewHost();

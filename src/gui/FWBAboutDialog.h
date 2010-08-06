@@ -42,7 +42,7 @@ class FWBAboutDialog: public QDialog {
 
 public:
     
-    FWBAboutDialog();
+    FWBAboutDialog(QWidget *parent);
     ~FWBAboutDialog();
 };
 

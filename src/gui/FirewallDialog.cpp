@@ -395,6 +395,8 @@ void FirewallDialog::openFWDialog()
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
+        d->setWindowModality(Qt::WindowModal);
+//        d->open();
         d->exec();
         delete d;
     }

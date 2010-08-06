@@ -97,7 +97,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
                                    libfwbuilder::FWObject *new_obj);
 
 public:
-    newFirewallDialog(libfwbuilder::FWObject *parent);
+    newFirewallDialog(QWidget *parentw, libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();
 
     libfwbuilder::Firewall* getNewFirewall() { return nfw; };

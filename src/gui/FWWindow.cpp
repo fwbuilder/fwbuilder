@@ -548,7 +548,7 @@ void FWWindow::startupLoad()
 
 void FWWindow::helpAbout()
 {
-    FWBAboutDialog ad;
+    FWBAboutDialog ad(this);
     ad.exec();
 }
 

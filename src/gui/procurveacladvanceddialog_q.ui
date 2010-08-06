@@ -3,7 +3,7 @@
  <class>procurveaclAdvancedDialog_q</class>
  <widget class="QDialog" name="procurveaclAdvancedDialog_q">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="enabled">
    <bool>true</bool>

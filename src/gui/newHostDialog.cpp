@@ -74,7 +74,7 @@ using namespace std;
 #define MANUAL_PAGE      2
 #define TEMPLATES_PAGE   3
 
-newHostDialog::newHostDialog(FWObject *_p) : QDialog()
+newHostDialog::newHostDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
 {
     parent = _p;
     db = parent->getRoot();

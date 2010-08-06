@@ -57,7 +57,7 @@ class newClusterDialog : public QDialog, public FakeWizard
     void createNewCluster();
 
 public:
-    newClusterDialog(libfwbuilder::FWObject *parent);
+    newClusterDialog(QWidget *parentw, libfwbuilder::FWObject *parent);
     virtual ~newClusterDialog();
 
     libfwbuilder::Cluster* getNewCluster() { return ncl; };

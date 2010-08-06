@@ -3,7 +3,7 @@
  <class>linksysAdvancedDialog_q</class>
  <widget class="QDialog" name="linksysAdvancedDialog_q">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>

@@ -3,7 +3,7 @@
  <class>ipcoposAdvancedDialog_q</class>
  <widget class="QDialog" name="ipcoposAdvancedDialog_q">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>

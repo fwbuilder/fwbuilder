@@ -77,7 +77,7 @@ using namespace std;
 
 
 
-newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
+newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
 {
     parent = _p;
     db = parent->getRoot();

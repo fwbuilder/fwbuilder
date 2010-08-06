@@ -71,7 +71,7 @@ class newHostDialog : public QDialog, public FakeWizard
     bool validateAddressAndMask(const QString &addr, const QString &netm);
 
  public:
-    newHostDialog(libfwbuilder::FWObject *parent);
+    newHostDialog(QWidget *parentw, libfwbuilder::FWObject *parent);
     virtual ~newHostDialog();
 
     libfwbuilder::Host* getNewHost() { return nhst; };
