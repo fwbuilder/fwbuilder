@@ -859,6 +859,12 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     {
         FWObject *obj= *i;
 
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::getMenuState"
+                     << "obj=" << obj
+                     << "root=" << obj->getRoot()
+                     << "current_library root=" << current_library->getRoot();
+
         QString object_path = obj->getPath(true).c_str();
 
         copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);

@@ -388,6 +388,7 @@ void ObjectManipulator::clearObjects()
     idxToLibs.clear();
     idxToTrees.clear();
     m_objectManipulator->libs->clear();
+    current_tree_view = NULL;
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
 }
