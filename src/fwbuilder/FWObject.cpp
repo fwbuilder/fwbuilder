@@ -503,8 +503,11 @@ const string &FWObject::getName() const
 
 void FWObject::setName(const string &n)   
 {
-    name = n;
-    setDirty(true);
+    if (name != n)
+    {
+        name = n;
+        setDirty(true);
+    }
 }
 
 const string& FWObject::getLibraryName() const
@@ -548,8 +551,11 @@ const string& FWObject::getComment() const
 
 void FWObject::setComment(const string &c)
 {
-    comment = c;
-    setDirty(true);
+    if (comment != c)
+    {
+        comment = c;
+        setDirty(true);
+    }
 }
 
 int FWObject::getId() const
@@ -562,9 +568,12 @@ int FWObject::getId() const
  */
 void FWObject::setId(int c)
 {
-    id = c;
-    setDirty(true);
-    if (dbroot!=NULL) dbroot->addToIndex(this);
+    if (id != c)
+    {
+        id = c;
+        setDirty(true);
+        if (dbroot!=NULL) dbroot->addToIndex(this);
+    }
 }
 
 bool FWObject::exists(const string &name) const 
@@ -595,8 +604,15 @@ void FWObject::remStr(const string &name)
 void FWObject::setStr(const string &name, const string &val)
 {
     if (name[0]!='.') checkReadOnly();
-    data[name] = val;
-    if (name[0]!='.') setDirty(true);
+    string old_val = data[name];
+    if (old_val != val)
+    {
+        data[name] = val;
+        // attribute with name that starts with "." is considered "hidden"
+        // or "internal". Such attribute is not saved to the data file and
+        // should not trigger "dirty" flag.
+        if (name[0]!='.') setDirty(true);
+    }
 }
 
 int FWObject::getInt(const string &name) const
@@ -617,10 +633,6 @@ void FWObject::setInt(const string &name, int val)
     ostringstream str;
     str << val;
     setStr(name, str.str());
-    // attribute with name that starts with "." is considered "hidden"
-    // or "internal". Such attribute is not saved to the data file and
-    // should not trigger "dirty" flag.
-    if (name[0]!='.') setDirty(true);
 }
 
 bool FWObject::getBool(const string &name) const
@@ -639,7 +651,7 @@ bool FWObject::getBool(const string &name) const
 void FWObject::setBool(const string &name, bool val)
 {
     setStr(name, (val)?"True":"False");
-    if (name[0]!='.') setDirty(true);
+    //if (name[0]!='.') setDirty(true);
 }
 
 void FWObject::setBool(const string &name, const string &val)
