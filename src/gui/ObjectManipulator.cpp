@@ -852,6 +852,8 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
     FWObject *current_library = getCurrentLib();
 
+    if (getCurrentObjectTree()==NULL) return;
+
     vector<FWObject*> so = getCurrentObjectTree()->getSelectedObjects();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
