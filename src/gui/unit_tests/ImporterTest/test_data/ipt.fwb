@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1279644762" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1281062181" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -590,7 +590,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="id150" name="Firewalls" comment="" ro="False">
-      <Firewall id="id151" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" name="test_fw" comment="" ro="False">
+      <Firewall id="id151" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="test_fw" comment="" ro="False">
         <NAT id="id1611" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id1613" disabled="False" position="0" action="Translate" comment="Original rule defines outbound interface 'eth1'.&#10; Replace address in TSrc with matching interface of the firewall.">
             <OSrc neg="False">
@@ -3687,6 +3687,11 @@
         <Interface id="id1885" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="eth1" comment="" ro="False"/>
         <Interface id="id1886" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="eth0" comment="" ro="False"/>
         <Interface id="id1949" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="eth2" comment="" ro="False"/>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
         <FirewallOptions>
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>

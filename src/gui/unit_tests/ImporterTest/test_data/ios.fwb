@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1279597915" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1281062181" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -482,7 +482,7 @@
       <ServiceGroup id="id54" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id55" name="Firewalls" comment="" ro="False">
-      <Firewall id="id56" host_OS="ios" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iosacl" name="&quot;c3620&quot;" comment="" ro="False">
+      <Firewall id="id56" host_OS="ios" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iosacl" version="" name="&quot;c3620&quot;" comment="" ro="False">
         <NAT id="id252" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -826,6 +826,11 @@
         <Interface id="id264" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/2" comment="" ro="False">
           <IPv4 id="id265" name="&quot;c3620&quot;:Ethernet1/2:ip" comment="" ro="False" address="10.10.20.20" netmask="255.255.255.0"/>
         </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
         <FirewallOptions>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
