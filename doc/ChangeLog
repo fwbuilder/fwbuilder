@@ -1,5 +1,10 @@
 2010-08-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator_ops.cpp (ObjectManipulator::actuallyDeleteObject):
+	fixed #1674 "Crash while using Undo Stack". Operation "Cut" should be
+	represented by an undo macro object and should appear as one operation
+	on the undo stack.
+
 	* ObjectManipulator.cpp (ObjectManipulator::getMenuState): fixed #1676
 	"Crash when deleting an interface that has multiple IP addresses
 	and not all addresses are selected for deletion"

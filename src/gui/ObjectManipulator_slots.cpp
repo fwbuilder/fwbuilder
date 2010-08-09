@@ -244,7 +244,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
  * Note: this slot gets controlwhen user presses "Delete" key in
  * addition to menu items activation
  */
-void ObjectManipulator::delObj(QUndoCommand* /* UNUSED macro */)
+void ObjectManipulator::delObj(QUndoCommand* macro)
 {
     if (fwbdebug)
         qDebug("ObjectManipulator::delObj selected %d objects ",
@@ -313,7 +313,7 @@ void ObjectManipulator::delObj(QUndoCommand* /* UNUSED macro */)
                 if (mw->isEditorVisible() && mw->getOpenedEditor()==obj)
                     mw->hideEditor();
 
-                deleteObject(obj);
+                deleteObject(obj, macro);
             }
         }
     }

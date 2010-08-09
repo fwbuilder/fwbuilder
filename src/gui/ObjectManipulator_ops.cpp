@@ -554,7 +554,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 
         if (is_library) parent = m_project->db()->getFirstByType(Library::TYPENAME);
 
-        actuallyDeleteObject(obj);
+        actuallyDeleteObject(obj, macro);
         
         if (ruleset_visible) m_project->closeRuleSetPanel();
     }
