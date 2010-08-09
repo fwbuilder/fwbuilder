@@ -45,6 +45,7 @@
 #include <fwbuilder/TagService.h>
 #include <fwbuilder/UserService.h>
 #include <fwbuilder/FWServiceReference.h>
+#include <fwbuilder/RuleSet.h>
 
 #include <iostream>
 
@@ -66,7 +67,8 @@ bool  ServiceGroup::validateChild(FWObject *o)
             Address::cast(o)==NULL &&
             ObjectGroup::cast(o)==NULL &&
             Interval::cast(o)==NULL &&
-            FWObjectReference::cast(o)==NULL);
+            FWObjectReference::cast(o)==NULL &&
+            RuleSet::cast(o)==NULL);
 }
 
 FWReference* ServiceGroup::createRef()

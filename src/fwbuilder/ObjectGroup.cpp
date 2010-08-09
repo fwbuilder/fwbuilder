@@ -45,6 +45,7 @@
 #include <fwbuilder/AddressTable.h>
 #include <fwbuilder/AddressRange.h>
 #include <fwbuilder/FWObjectReference.h>
+#include <fwbuilder/RuleSet.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -65,7 +66,8 @@ bool ObjectGroup::validateChild(FWObject *o)
             Service::cast(o)==NULL &&
             ServiceGroup::cast(o)==NULL &&
             Interval::cast(o)==NULL &&
-            FWServiceReference::cast(o)==NULL);
+            FWServiceReference::cast(o)==NULL &&
+            RuleSet::cast(o)==NULL);
 }
 
 xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent) throw(FWException)
