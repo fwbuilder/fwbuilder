@@ -2319,8 +2319,8 @@ Please enter the domain name below:</string>
    <slot>browseForImport()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>498</x>
-     <y>160</y>
+     <x>572</x>
+     <y>147</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -2335,8 +2335,8 @@ Please enter the domain name below:</string>
    <slot>importPlatformChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>130</x>
-     <y>193</y>
+     <x>244</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -2703,8 +2703,8 @@ Please enter the domain name below:</string>
    <slot>checkSNMPCommunity()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>242</x>
-     <y>127</y>
+     <x>111</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -2805,6 +2805,22 @@ Please enter the domain name below:</string>
     <hint type="destinationlabel">
      <x>582</x>
      <y>211</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>import_filename</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>DiscoveryDruid_q</receiver>
+   <slot>objNameChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>237</y>
     </hint>
    </hints>
   </connection>

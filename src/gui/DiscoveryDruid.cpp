@@ -2640,8 +2640,9 @@ void ConfigImport::run()
     done();
 }
 
-void DiscoveryDruid::objNameChanged(QString name)
+void DiscoveryDruid::objNameChanged(QString)
 {
-    m_dialog->nextButton->setEnabled(!name.isEmpty());
+    m_dialog->nextButton->setEnabled(!(m_dialog->obj_name->text().isEmpty()
+                                       || m_dialog->import_filename->text().isEmpty()));
     m_dialog->nextButton->setDefault(true);
 }
