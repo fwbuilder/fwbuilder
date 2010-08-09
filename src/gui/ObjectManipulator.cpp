@@ -854,6 +854,11 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
     if (getCurrentObjectTree()==NULL) return;
 
+    // delete, cut and copy menu items will be enabled only if all
+    // selected objects have the same parent (so user can not select
+    // an interface and one but not all of its addresses for deletion,
+    // see #1676)
+    FWObject *parent = NULL;
     vector<FWObject*> so = getCurrentObjectTree()->getSelectedObjects();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
@@ -866,6 +871,16 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                      << "current_library root=" << current_library->getRoot();
 
         QString object_path = obj->getPath(true).c_str();
+
+        if (parent == NULL) parent = obj->getParent();
+        else
+        {
+            if (parent != obj->getParent())
+            {
+                delMenuItem = false;
+                copyMenuItem = false;
+            }
+        }
 
         copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);
         pasteMenuItem = pasteMenuItem &&
