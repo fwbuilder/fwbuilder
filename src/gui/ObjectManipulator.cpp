@@ -1346,10 +1346,12 @@ void ObjectManipulator::libChanged(int ln)
 
 void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 {
-    bool f = lib == NULL ||
+    bool f = (
+        lib == NULL ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
-        lib->isReadOnly();
+        lib->isReadOnly()
+    );
     bool new_object_op_possible = !f;
     emit libraryAccessChanged(new_object_op_possible);
     m_objectManipulator->newButton->setEnabled(new_object_op_possible);
