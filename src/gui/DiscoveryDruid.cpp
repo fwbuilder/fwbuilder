@@ -425,7 +425,7 @@ void DiscoveryDruid::changedSelected( const int &page )
 
     case 2: // import config
     {
-        m_dialog->import_filename->setFocus();
+        m_dialog->obj_name->setFocus();
         setBackEnabled(page,true);
         setFinishEnabled(page,false);
         break;
