@@ -35,7 +35,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="aboutdialog_q.ui" line="596"/>
-        <source>Copyright 2002-2009  NetCitadel, LLC</source>
+        <source>Copyright 2002-2010  NetCitadel, LLC</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

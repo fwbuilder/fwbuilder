@@ -3625,8 +3625,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="aboutdialog_q.ui" line="596"/>
-        <source>Copyright 2002-2009  NetCitadel, LLC</source>
-        <translation>Copyright 2002-2009 (C) NetCitadel, LLC</translation>
+        <source>Copyright 2002-2010  NetCitadel, LLC</source>
+        <translation>Copyright 2002-2010 (C) NetCitadel, LLC</translation>
     </message>
 </context>
 <context>
