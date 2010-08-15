@@ -1,3 +1,11 @@
+2010-08-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* set version to 4.1.1
+
+2010-08-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v4.1.0 released
+
 2010-08-09  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectGroup.cpp (validateChild): fixed fwbuilder:ticket:1679
