@@ -82,6 +82,14 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
 
+    // As of 4.1.0 we do not support scp install method for Procurve
+    // I could not figure out how to copy configuration to the switch
+    // even when "ip ssh filetransfer" command has been executed and scp
+    // seems to work - I ran into problems with file permissions that
+    // I could not resolve. This will remain a low priority TODO item.
+    // See also commented out code in FirewallInstallerProcurve.cpp
+    m_dialog->SCPgroupBox->setEnabled(false);
+
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // should be 'procurve_acl'
 

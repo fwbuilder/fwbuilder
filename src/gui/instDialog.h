@@ -225,6 +225,7 @@ protected:
     void findFirewalls();
 
     bool isCiscoFamily();
+    bool isProcurve();
 
     void interpretLogLine(const QString &buf);
     

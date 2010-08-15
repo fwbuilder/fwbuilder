@@ -32,6 +32,7 @@ HEADERS += ../../config.h \
     SSHCisco.h \
     SSHPIX.h \
     SSHIOS.h \
+    SSHProcurve.h \
     debugDialog.h \
     findDialog.h \
     longTextDialog.h \
@@ -126,6 +127,7 @@ HEADERS += ../../config.h \
     instDialog.h \
     FirewallInstaller.h \
     FirewallInstallerCisco.h \
+    FirewallInstallerProcurve.h \
     FirewallInstallerUnx.h \
     newFirewallDialog.h \
     newClusterDialog.h \
@@ -207,6 +209,7 @@ SOURCES += ProjectPanel.cpp \
     SSHCisco.cpp \
     SSHPIX.cpp \
     SSHIOS.cpp \
+    SSHProcurve.cpp \
     debugDialog.cpp \
     findDialog.cpp \
     longTextDialog.cpp \
@@ -304,6 +307,7 @@ SOURCES += ProjectPanel.cpp \
     instDialog_installer.cpp \
     FirewallInstaller.cpp \
     FirewallInstallerCisco.cpp \
+    FirewallInstallerProcurve.cpp \
     FirewallInstallerUnx.cpp \
     newFirewallDialog.cpp \
     newFirewallDialog_from_template.cpp \

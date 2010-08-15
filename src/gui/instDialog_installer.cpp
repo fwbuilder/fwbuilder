@@ -31,6 +31,7 @@
 #include "instDialog.h"
 #include "FirewallInstallerCisco.h"
 #include "FirewallInstallerUnx.h"
+#include "FirewallInstallerProcurve.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "instOptionsDialog.h"
@@ -117,7 +118,12 @@ bool instDialog::runInstaller(Firewall *fw, bool cancelAllVisible)
         if (isCiscoFamily())
             installer = new FirewallInstallerCisco(this, &cnf, fwb_prompt);
         else
-            installer = new FirewallInstallerUnx(this, &cnf, fwb_prompt);
+        {
+            if (isProcurve())
+                installer = new FirewallInstallerProcurve(this, &cnf, fwb_prompt);
+            else
+                installer = new FirewallInstallerUnx(this, &cnf, fwb_prompt);
+        }
 
         if (!installer->packInstallJobsList(fw))
         {

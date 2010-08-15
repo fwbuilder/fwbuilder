@@ -24,13 +24,13 @@
 */
 
 
-#ifndef __FIREWALLINSTALLERCISCO_H_
-#define __FIREWALLINSTALLERCISCO_H_
+#ifndef __FIREWALLINSTALLERPROCURVE_H_
+#define __FIREWALLINSTALLERPROCURVE_H_
 
 
 #include "../../config.h"
 
-#include "FirewallInstaller.h"
+#include "FirewallInstallerCisco.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -43,20 +43,13 @@ namespace libfwbuilder
     class Firewall;
 }
 
-class FirewallInstallerCisco : public FirewallInstaller
+class FirewallInstallerProcurve : public FirewallInstallerCisco
 {
     Q_OBJECT;
 
-protected:
-    QStringList config_lines;
-
-    virtual QString getDestinationDir(const QString &dir);
-    
-    virtual bool readManifest(const QString &conffie,
-                              QMap<QString, QString> *all_files);
 public:
 
-    FirewallInstallerCisco(instDialog *_dlg, instConf *_cnf, const QString &_p);
+    FirewallInstallerProcurve(instDialog *_dlg, instConf *_cnf, const QString &_p);
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
     virtual void activatePolicy(const QString &script, const QString &args);

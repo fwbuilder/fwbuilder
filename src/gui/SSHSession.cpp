@@ -101,7 +101,7 @@ SSHSession::SSHSession(QWidget *_par,
     incremental=false;
     dry_run=false;
     testRun=false;
-    stripComments=false;
+    stripComments = false;
     wdir="";
     script="";
     backupFile="";
@@ -245,6 +245,13 @@ void SSHSession::setOptions(instConf *cnf)
     setSaveDiff(cnf->save_diff);
     setDiffPgm(cnf->diff_pgm);
     setDiffFile(cnf->diff_file);
+
+    // do not send comments to cisco and procurve devices
+    // We used to provide an option for this on instOptions dialog but
+    // it has been disabled. Possibly we'll re-enable it in the future, but
+    // it seems wasteful to send comments to devices. Besides, Procurve
+    // does not like it anyway.
+    stripComments = true;
 }
 
 void SSHSession::terminate()
@@ -507,8 +514,8 @@ void SSHSession::stopHeartBeat()
 
 void SSHSession::heartBeat()
 {
-    if (fwbdebug)
-        qDebug() << "SSHSession::heartBeat begin" << QTime::currentTime().toString();
+//     if (fwbdebug)
+//         qDebug() << "SSHSession::heartBeat begin" << QTime::currentTime().toString();
     if (send_keepalive) proc->write("\n");
     readFromStderr();
     readFromStdout();
@@ -517,8 +524,8 @@ void SSHSession::heartBeat()
         allDataSent();
         endOfCopy = false;
     }
-    if (fwbdebug)
-        qDebug() << "SSHSession::heartBeat end  " << QTime::currentTime().toString();
+//     if (fwbdebug)
+//         qDebug() << "SSHSession::heartBeat end  " << QTime::currentTime().toString();
 }
 
 void SSHSession::readFromStdout()
@@ -530,15 +537,31 @@ void SSHSession::readFromStdout()
 
     if (proc)
     {
+        
         QByteArray ba = proc->readAllStandardOutput();
         int  basize  = ba.size();
         if (basize==0) return;
 
         QString buf(ba);
 
+        /* regex to match minimal set of ANSI terminal codes used by HP Procurve
+         * and Linux if shell prompt is configured to show colors.
+         *
+         * Matches ESC [ n ; m H (move cursor to position), ESC ? 25 l and ESC ? 25 h
+         * (hide and show cursor) and a few others
+         */
+        QRegExp suppress_ansi_codes(
+            "\x1B\\[((\\d*A)|(\\d*B)|(\\d*C)|(\\d*D)|(\\d*G)|(\\?\\d+l)|(\\d*J)|(2K)|(\\d*;\\d*[fHmr])|(\\?25h)|(\\?25l))");
+        QRegExp cursor_next_line("\x1B\\d*E");
+
+        while (buf.indexOf(suppress_ansi_codes) != -1)
+            buf.replace(suppress_ansi_codes, "");
+
+        buf.replace(cursor_next_line, "\n");
+
         stdoutBuffer.append(buf);
 
-        if (fwbdebug) qDebug() << buf;
+        if (fwbdebug) qDebug() << buf.toAscii().constData() << "\n";
 
         bool endsWithLF = buf.endsWith("\n");
         QString lastLine = "";
@@ -631,14 +654,8 @@ void SSHSession::sessionComplete(bool err)
     if (fwbdebug) qDebug("SSHSession::sessionComplete  done");
 }
 
-void SSHSession::finished(int retcode)
+void SSHSession::cleanUp()
 {
-    if (fwbdebug) qDebug("SSHSession::processExited");
-    if (fwbdebug) qDebug("SSHSession::processExited   proc=%p retcode=%d",
-                         proc, retcode);
-
-    // background process has exited now, we do not need proc object anymore
-
     disconnect(proc, SIGNAL(readyReadStandardOutput()),
                this, SLOT(readFromStdout() ) );
     disconnect(proc, SIGNAL(readyReadStandardError()),
@@ -648,16 +665,23 @@ void SSHSession::finished(int retcode)
 
     delete proc;
     proc = NULL;
+}
 
-    QString exitStatus = (retcode)?QObject::tr("ERROR"):QObject::tr("OK");
+void SSHSession::finished(int retcode)
+{
+    if (fwbdebug) qDebug("SSHSession::processExited   proc=%p retcode=%d",
+                         proc, retcode);
+    // background process has exited now, we do not need proc object anymore
+    cleanUp();
 
-    emit printStdout_sign(tr("SSH session terminated, exit status: %1").arg(
-                              retcode) + "\n");
+    //QString exitStatus = (retcode)?QObject::tr("ERROR"):QObject::tr("OK");
+
+    emit printStdout_sign(tr("SSH session terminated, exit status: %1")
+                          .arg(retcode) + "\n");
+
     sessionComplete( retcode!=0 );
 
     if (fwbdebug) qDebug("SSHSession::processExited done");
-//    if (retcode) error=true;
-//    emit sessionFinished_sign();
 }
 
 bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)

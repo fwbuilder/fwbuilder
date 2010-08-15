@@ -13,10 +13,10 @@
 ##
 
 terminal width 256
-terminal length 0
+no page
 
 {{if schedule_rollback}}
-reload in {{$rbtimeout}}
+reload after {{$rbtimeout}}
 {{endif}}
 
 

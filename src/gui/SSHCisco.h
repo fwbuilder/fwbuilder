@@ -59,6 +59,8 @@ protected:
     QStringList pre_config_commands;
     QStringList post_config_commands;
     QStringList activation_commands;
+
+    char comment_symbol;
     
 public:
     

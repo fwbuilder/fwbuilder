@@ -28,10 +28,12 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
-#include "FirewallInstallerCisco.h"
+#include "FirewallInstallerProcurve.h"
 #include "instDialog.h"
 #include "SSHPIX.h"
 #include "SSHIOS.h"
+#include "SSHProcurve.h"
+
 #include "Configlet.h"
 
 #include "fwbuilder/Resources.h"
@@ -52,22 +54,16 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-FirewallInstallerCisco::FirewallInstallerCisco(instDialog *_dlg,
-                                               instConf *_cnf, const QString &_p):
-    FirewallInstaller(_dlg, _cnf, _p)
+FirewallInstallerProcurve::FirewallInstallerProcurve(instDialog *_dlg,
+                                                     instConf *_cnf, const QString &_p):
+    FirewallInstallerCisco(_dlg, _cnf, _p)
 {
-    // string platform = cnf->fwobj->getStr("platform");
-    // if (cnf->fwdir.isEmpty())
-    // {
-    //     if (platform=="iosacl") cnf->fwdir = "nvram:";
-    //     else cnf->fwdir = "flash:";
-    // }
 }
 
-bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
+bool FirewallInstallerProcurve::packInstallJobsList(Firewall*)
 {
     if (fwbdebug)
-        qDebug("FirewallInstallerCisco::packInstallJobList  script=%s",
+        qDebug("FirewallInstallerProcurve::packInstallJobList  script=%s",
                cnf->script.toAscii().constData());
     job_list.clear();
 
@@ -87,23 +83,6 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
     // Load configuration file early so we can abort installation if
     // it is not accessible
 
-    // Note about option "install only acl, icmp, telnet, ssh, nat,
-    // global and static" for PIX. This option used to read generated
-    // config but cuts off everything before the magic comment line
-    // "!################". This way, it only read object-group,
-    // access-list, access-group, nat, static and global commands. It
-    // skipped all interface configurations, timeouts and inspector
-    // commands. It is difficult to implement now that we (can) use
-    // scp to copy configuration to the firewall. We would have to
-    // create temporary file with modified configuration in order to
-    // do this.  To avoid hassles with temporary files, we move the
-    // same function to the compiler. The checkbox moves to the
-    // "script" tab of the pix advanced settings dialog and when it is on,
-    // compiler generates the script with only acl, icmp, telnet, ssh
-    // nat,static and global commands
-    //
-    // This mode of installation is not supported on IOS at all.
-    
     QString ff;
     QFileInfo script_info(cnf->script);
     if (script_info.isAbsolute()) ff = cnf->script;
@@ -129,7 +108,7 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
         return false;
     }
 
-    string platform = cnf->fwobj->getStr("platform");
+#ifdef SCP_SUPPORT_FOR_PROCURVE
 
     if (cnf->useSCPForRouter)
     {
@@ -154,35 +133,28 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
         job_list.push_back(instJob(ACTIVATE_POLICY, cnf->script, ""));
     }
 
+#endif
+
+    job_list.push_back(instJob(ACTIVATE_POLICY, cnf->script, ""));
+
     return true;
 }
 
-void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
+void FirewallInstallerProcurve::activatePolicy(const QString&, const QString&)
 {
     QStringList args;
 
     packSSHArgs(args);
     if (cnf->verbose) inst_dlg->displayCommand(args);
 
-    SSHCisco *ssh_object = NULL;
-    if (cnf->fwobj->getStr("platform")=="pix" ||
-        cnf->fwobj->getStr("platform")=="fwsm")
-    {
-        ssh_object = new SSHPIX(inst_dlg,
-                                cnf->fwobj->getName().c_str(),
-                                args,
-                                cnf->pwd,
-                                cnf->epwd,
-                                list<string>());
-    } else   // ios
-    {
-        ssh_object = new SSHIOS(inst_dlg,
-                                cnf->fwobj->getName().c_str(),
-                                args,
-                                cnf->pwd,
-                                cnf->epwd,
-                                list<string>());
-    }
+    SSHProcurve *ssh_object = NULL;
+    ssh_object = new SSHProcurve(inst_dlg,
+                                 cnf->fwobj->getName().c_str(),
+                                 args,
+                                 cnf->pwd,
+                                 cnf->epwd,
+                                 list<string>());
+
     /*
      * TODO:
      * the structure of scriptlets (command templates) for PIX and
@@ -196,8 +168,6 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     QStringList post_config_commands;
 
     string version = cnf->fwobj->getStr("version");
-    bool version_lt_124 = XMLTools::version_compare(version, "12.4") < 0;
-    bool version_ge_124 = XMLTools::version_compare(version, "12.4") >= 0;
 
     string host_os = cnf->fwobj->getStr("host_OS");
     string os_family = Resources::os_res[host_os]->
@@ -217,8 +187,6 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     pre_config.setVariable("schedule_rollback", cnf->rollback);
     pre_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
     pre_config.setVariable("save_standby", cnf->saveStandby);
-    pre_config.setVariable("version_lt_124", version_lt_124);
-    pre_config.setVariable("version_ge_124", version_ge_124);
 
     replaceMacrosInCommand(&pre_config);
 
@@ -229,8 +197,6 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     post_config.setVariable("schedule_rollback", cnf->rollback);
     post_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
     post_config.setVariable("save_standby", cnf->saveStandby);
-    post_config.setVariable("version_lt_124", version_lt_124);
-    post_config.setVariable("version_ge_124", version_ge_124);
 
     replaceMacrosInCommand(&post_config);
 
@@ -245,8 +211,8 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     replaceMacrosInCommand(&activation);
 
-    activation.setVariable("using_scp",       cnf->useSCPForRouter);
-    activation.setVariable("not_using_scp", ! cnf->useSCPForRouter);
+    activation.setVariable("using_scp",     false);
+    activation.setVariable("not_using_scp", true);
 
     if ( ! cnf->useSCPForRouter)
     {
@@ -261,32 +227,4 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     return;
 }
-
-bool FirewallInstallerCisco::readManifest(const QString &script, 
-                                          QMap<QString, QString> *all_files)
-{
-    if (fwbdebug)
-        qDebug("FirewallInstaller::readManifest");
-    QString dest_dir = getDestinationDir(cnf->fwdir);
-    // path returned by getDestinationDir always ends with separator
-    // in case of IOS, it is ":"
-    QFileInfo file_base(script);
-    QString remote_file = dest_dir + file_base.fileName();
-    QString local_name = script;
-    cnf->remote_script = remote_file;
-    (*all_files)[local_name] = remote_file;
-    return true;
-}
-
-QString FirewallInstallerCisco::getDestinationDir(const QString &fwdir)
-{
-    if (fwbdebug)
-        qDebug() << "FirewallInstallerCisco::getDestinationDir:  "
-                 << "fwdir=" << fwdir;
-
-    QString dir = fwdir;
-    if (!dir.endsWith(":")) return dir + ":";
-    return dir;
-}
-
 

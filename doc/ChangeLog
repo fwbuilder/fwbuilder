@@ -1,3 +1,17 @@
+2010-08-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FirewallInstallerProcurve.cpp (FirewallInstallerProcurve::packInstallJobsList): 
+	Policy installer for HP Procurve. Currently only works in line-by-line
+	mode (no support for scp). Tested with Procurve firmware K14.31 on
+	ProCurve J9470A Switch 3500-24. Caveat: manager access should not be
+	configured with user name (that is, no "password manager user-name foo")
+
+	* set version to 4.1.1
+	
+2010-08-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v4.1.0 released
+
 2010-08-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator_ops.cpp (ObjectManipulator::actuallyDeleteObject):

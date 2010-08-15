@@ -160,8 +160,9 @@ class SSHSession : public QObject {
 
 protected:
 
-    void sendCommand(const QString &cmd);
-
+    virtual void sendCommand(const QString &cmd);
+    void cleanUp();
+    
 public:
     
     SSHSession(QWidget *parent,
@@ -204,13 +205,13 @@ public:
     QString findKeyFingerprint(QString &buffer);
 
 public slots:
-     void readFromStdout();
-     void readFromStderr();
-     void finished( int code );
-     void readyToSend();
-     void sendLine();
-     void allDataSent();
-     void heartBeat();
+    virtual void readFromStdout();
+    virtual void readFromStderr();
+    virtual void finished( int code );
+    void readyToSend();
+    void sendLine();
+    void allDataSent();
+    void heartBeat();
      
  signals:
 

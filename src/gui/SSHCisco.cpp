@@ -88,6 +88,8 @@ SSHCisco::SSHCisco(QWidget *_par,
     errorsEnabledState.push_back("An object-group with the same id but different type");
 
     local_event_loop = new QEventLoop();
+    
+    comment_symbol = '!';
 }
 
 void SSHCisco::loadPreConfigCommands(const QStringList &cl)
@@ -140,9 +142,18 @@ bool SSHCisco::checkForErrors()
 
     switch (state)
     {
-    case LOGGEDIN:  errptr= &errorsLoggedin;     break;
-    case ENABLE:    errptr= &errorsEnabledState; break;
-    default:        errptr= &errorsInit;         break;
+    case LOGGEDIN:
+    case WAITING_FOR_ENABLE:
+        errptr = &errorsLoggedin;
+        break;
+
+    case ENABLE:
+        errptr = &errorsEnabledState;
+        break;
+
+    default:
+        errptr = &errorsInit;
+        break;
     }
 
     for (QStringList::const_iterator i=errptr->begin();
@@ -185,6 +196,7 @@ void SSHCisco::stateMachine()
             proc->write( (pwd + "\n").toAscii() );
             break;
         }
+
 /* we may get to LOGGEDIN state directly from NONE, for example when
  * password is supplied on command line to plink.exe
  */
@@ -395,25 +407,27 @@ void SSHCisco::stateMachine()
                 do {
                     s = activation_commands.front();
                     activation_commands.pop_front();
-                } while (stripComments && s[0]=='!');
 
-                emit updateProgressBar_sign(activation_commands.size(),false);
+                    emit updateProgressBar_sign(activation_commands.size(),false);
 
-                s.replace('\"','\'');
+                    s.replace('\"','\'');
 
-                if (!verbose)
-                {
-                    QString rl="";
-                    if (s.indexOf("! Rule ")!=-1)  rl=s.mid(7);
-                    if ( !rl.isEmpty())
+                    if (!quiet)
                     {
-                        emit printStdout_sign( tr("Rule %1").arg(rl) + "\n" );
+                        QString rl="";
+                        if (s.indexOf(QString("%1 Rule ").arg(comment_symbol)) != -1)
+                            rl = s.mid(7);
+
+                        if ( !rl.isEmpty())
+                        {
+                            emit printStdout_sign( tr("Rule %1").arg(rl) + "\n" );
+                        }
                     }
-                }
+
+                } while (stripComments && s[0] == comment_symbol);
 
                 sendCommand(s);
 
-                break;
             } else
             {
                 /* activation_commands.size()==0 */
@@ -442,7 +456,7 @@ void SSHCisco::stateMachine()
             }
 
             stdoutBuffer="";
-            state=EXIT;
+            state = EXIT;
             proc->write( "exit\n");
         }
         break;

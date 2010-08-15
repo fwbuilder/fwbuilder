@@ -658,10 +658,13 @@ bool instDialog::checkSSHPathConfiguration(Firewall *fw)
 bool instDialog::isCiscoFamily()
 {
     string platform = cnf.fwobj->getStr("platform");
-    return (platform=="pix" ||
-            platform=="fwsm" ||
-            platform=="iosacl" ||
-            platform=="procurve_acl");
+    return (platform=="pix" || platform=="fwsm" || platform=="iosacl");
+}
+
+bool instDialog::isProcurve()
+{
+    string platform = cnf.fwobj->getStr("platform");
+    return (platform=="procurve_acl");
 }
 
 /*

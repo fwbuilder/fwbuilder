@@ -13,7 +13,7 @@
 
 
 {{if cancel_rollback}}
-reload cancel
+no reload
 {{endif}}
 
 {{if run}}

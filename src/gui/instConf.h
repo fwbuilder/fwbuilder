@@ -53,7 +53,7 @@ class instConf {
     bool      cancelRollbackIfSuccess;
     bool      saveStandby;
     bool      batchInstall;
-    bool      useSCPForCisco;
+    bool      useSCPForRouter; // use scp for cisco ios, pix and hp procurve
 
     QString   pgm;
     QString   wdir;

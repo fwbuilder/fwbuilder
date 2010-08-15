@@ -735,10 +735,6 @@ void instDialog::saveLog()
  */
 void instDialog::addToLog(const QString &buf)
 {
-//     if (fwbdebug)
-//         qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
-//                  << "buf.size()=" << buf.size();
-
     if (buf.isEmpty()) return;
 
     foreach(QString line, buf.trimmed().split("\n"))
@@ -763,10 +759,6 @@ void instDialog::addToLog(const QString &buf)
                 break;
             }
         }
-
-//         if (fwbdebug)
-//             qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
-//                      << "errors and warnings scan done";
 
         /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
          *
@@ -1196,7 +1188,7 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 #endif
         cnf.sshArgs = fwopt->getStr("sshArgs").c_str();
         cnf.scpArgs = fwopt->getStr("scpArgs").c_str();
-        cnf.useSCPForCisco = fwopt->getBool("use_scp");
+        cnf.useSCPForRouter = fwopt->getBool("use_scp");
 
         cnf.activationCmd = fwopt->getStr("activationCmd").c_str();
 

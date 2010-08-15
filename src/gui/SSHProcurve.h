@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2008 NetCitadel, LLC
+                 Copyright (C) 2003 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -24,44 +24,37 @@
 */
 
 
-#ifndef __FIREWALLINSTALLERCISCO_H_
-#define __FIREWALLINSTALLERCISCO_H_
-
+#ifndef  __SSHPROCURVE_H_
+#define  __SSHPROCURVE_H_
 
 #include "../../config.h"
+#include "global.h"
 
-#include "FirewallInstaller.h"
+#include "SSHCisco.h"
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qprocess.h>
-#include <qobject.h>
-#include <QStringList>
+#include <QString>
 
-namespace libfwbuilder
-{
-    class Firewall;
-}
+class SSHProcurve : public SSHCisco {
 
-class FirewallInstallerCisco : public FirewallInstaller
-{
     Q_OBJECT;
 
-protected:
-    QStringList config_lines;
+    QString hp_greeting_prompt;
 
-    virtual QString getDestinationDir(const QString &dir);
-    
-    virtual bool readManifest(const QString &conffie,
-                              QMap<QString, QString> *all_files);
 public:
+    
+    SSHProcurve(QWidget *parent,
+           const QString &host,
+           const QStringList &args,
+           const QString &pwd,
+           const QString &epwd,
+           const std::list<std::string> &in);
+    virtual ~SSHProcurve();
 
-    FirewallInstallerCisco(instDialog *_dlg, instConf *_cnf, const QString &_p);
+    virtual void stateMachine();
 
-    virtual bool packInstallJobsList(libfwbuilder::Firewall*);
-    virtual void activatePolicy(const QString &script, const QString &args);
+public slots:
+    virtual void finished( int code );
     
 };
-
 
 #endif

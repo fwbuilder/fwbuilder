@@ -131,9 +131,12 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
         QString platform = cnf->fwobj->getStr("platform").c_str();
         string version = cnf->fwobj->getStr("version");
 
-        if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
+        if (platform=="pix" || platform=="fwsm" ||
+            platform=="iosacl" ||
+            platform=="procurve_acl" )
         {
             m_dialog->copyFWB->hide();
+
             if (platform == "iosacl")
             {
                 if (XMLTools::version_compare(version, "12.4") >= 0)
@@ -148,7 +151,9 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
                         "Cancel reboot if policy activation was successfull");
                 }
             }
-            if (platform=="iosacl") m_dialog->PIXgroupBox->hide();
+
+            m_dialog->PIXgroupBox->hide();
+
         } else
         {
             m_dialog->rollback->setText("Schedule reboot in ");
