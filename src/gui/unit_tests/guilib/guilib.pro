@@ -30,6 +30,7 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../SSHUnx.cpp \
     ../../SSHCisco.cpp \
     ../../SSHPIX.cpp \
+    ../../SSHProcurve.cpp \
     ../../SSHIOS.cpp \
     ../../debugDialog.cpp \
     ../../findDialog.cpp \
@@ -129,6 +130,7 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../instDialog_installer.cpp \
     ../../FirewallInstaller.cpp \
     ../../FirewallInstallerCisco.cpp \
+    ../../FirewallInstallerProcurve.cpp \
     ../../FirewallInstallerUnx.cpp \
     ../../newFirewallDialog.cpp \
     ../../newFirewallDialog_from_template.cpp \
@@ -204,6 +206,7 @@ HEADERS += ../../../../config.h \
     ../../SSHUnx.h \
     ../../SSHCisco.h \
     ../../SSHPIX.h \
+    ../../SSHProcurve.h \
     ../../SSHIOS.h \
     ../../debugDialog.h \
     ../../findDialog.h \
@@ -300,6 +303,7 @@ HEADERS += ../../../../config.h \
     ../../instDialog.h \
     ../../FirewallInstaller.h \
     ../../FirewallInstallerCisco.h \
+    ../../FirewallInstallerProcurve.h \
     ../../FirewallInstallerUnx.h \
     ../../newFirewallDialog.h \
     ../../newClusterDialog.h \
