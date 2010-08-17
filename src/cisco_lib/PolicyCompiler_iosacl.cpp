@@ -88,6 +88,8 @@ int PolicyCompiler_iosacl::prolog()
     object_groups = new Group();
     dbcopy->add( object_groups );
 
+    setAllNetworkZonesToAny();
+
     return PolicyCompiler::prolog();
 }
 

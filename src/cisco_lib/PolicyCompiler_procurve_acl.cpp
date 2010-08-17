@@ -73,7 +73,19 @@ int PolicyCompiler_procurve_acl::prolog()
         fw->getOptionsObject()->getBool("procurve_acl_use_acl_remarks"));
 
 
+    setAllNetworkZonesToAny();
+
     return PolicyCompiler::prolog();
+}
+
+ciscoACL* PolicyCompiler_procurve_acl::createACLObject(const string &acl_name,
+                                                       Interface *intf,
+                                                       const string &dir,
+                                                       bool using_named_acl)
+{
+    ciscoACL *acl = new ciscoACL(acl_name, intf, dir, using_named_acl);
+    acl->setQuoteRemarks(true);
+    return acl;
 }
 
 

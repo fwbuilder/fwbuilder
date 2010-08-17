@@ -80,6 +80,37 @@ string PolicyCompiler_cisco::createRuleLabel(const string &txt,
     return str.str();
 }
 
+void PolicyCompiler_cisco::setAllNetworkZonesToAny()
+{
+    /* see #1690. After recent changes (aug 2010) in how we deal with
+     * network zones, we do not assume that interfaces have network
+     * zone "any" if they don't have network zone configured at all.
+     * To work around this, will set network zone to "any" on all
+     * interfaces. Note that this needs to be done only for IOS ACL and
+     * Procurve ACL but not PIX where network zone must be configured
+     * by the user.
+     */
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+    {
+	Interface *iface = Interface::cast(*i);
+        int netzone_id =
+            FWObjectDatabase::getIntId(iface->getStr("network_zone"));
+        if (netzone_id == -1)
+            iface->setStr("network_zone",
+                          FWObjectDatabase::getStringId(FWObjectDatabase::ANY_ADDRESS_ID));
+    }
+
+}
+
+ciscoACL* PolicyCompiler_cisco::createACLObject(const string &acl_name,
+                                                Interface *intf,
+                                                const string &dir,
+                                                bool using_named_acl)
+{
+    ciscoACL *acl = new ciscoACL(acl_name, intf, dir, using_named_acl);
+    return acl;
+}
 
 string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 {

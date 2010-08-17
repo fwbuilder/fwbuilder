@@ -41,9 +41,11 @@ class ciscoACL {
     std::string              _last_rule_label;
     int                      nlines;
     std::list<std::string>   acl;
-
+    bool                     quote_remarks;
+    
     std::string printLine(const std::string &s);
-
+    std::string quoteLine(const std::string &s);
+    
  public:
     ciscoACL() {
         _ip_acl = false;
@@ -53,6 +55,7 @@ class ciscoACL {
         _dir = "in";
         nlines = 0;
         _last_rule_label = "";
+        quote_remarks = false;
     }
 
     ciscoACL(const std::string &n,
@@ -67,6 +70,7 @@ class ciscoACL {
         _dir = d;
         nlines = 0;
         _last_rule_label = "";
+        quote_remarks = false;
     }
 
     std::string addLine(const std::string &s);
@@ -88,7 +92,8 @@ class ciscoACL {
     
     void setDirection(const std::string &d) { _dir=d; }
     std::string direction() { return _dir; }
-    
+
+    void setQuoteRemarks(bool f) { quote_remarks = f; }
     
     std::string print();
     std::string printLastLine();

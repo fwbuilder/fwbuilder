@@ -49,6 +49,10 @@ namespace fwcompiler {
 	virtual std::string myPlatformName();
         virtual void _printClearCommands();
         virtual std::string printAccessGroupCmd(ciscoACL *acl, bool neg=false);
+        virtual ciscoACL* createACLObject(const std::string &n,
+                                          libfwbuilder::Interface *intf,
+                                          const std::string &d="in",
+                                          bool _ip_list=false);
         
 	public:
 

@@ -241,7 +241,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
 bool PolicyCompiler_cisco::pickACL::processNext()
 {
-    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(
+    PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(
         compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     
@@ -318,7 +318,7 @@ bool PolicyCompiler_cisco::pickACL::processNext()
 
     rule->setStr("acl",acl_name);
 
-    ciscoACL *acl = new ciscoACL(acl_name, rule_iface, dir, using_named_acl);
+    ciscoACL *acl = cisco_comp->createACLObject(acl_name, rule_iface, dir, using_named_acl);
     cisco_comp->acls[acl_name] = acl;
 
     acl->setWorkName(acl_name);

@@ -1,3 +1,15 @@
+2010-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_cisco.cpp (PolicyCompiler_cisco::setAllNetworkZonesToAny): 
+	fixed #1690 "IOS ACL and Procurve ACL compilers fail because
+	interfaces are not assumed to have network zone "any" anymore".
+	Compilers for Cisco IOS ACL and Procurve ACL always assumed all
+	interfaces have network zone "any". Recent changes made in 4.1.0
+	changed that and compilers stopped working for some rule configurations.
+
+	* (PolicyCompiler_cisco::createACLObject): fixed #1688 "Procurve
+	ACL remarks should be in quotes if they include space"
+
 2010-08-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FirewallInstallerProcurve.cpp (FirewallInstallerProcurve::packInstallJobsList): 

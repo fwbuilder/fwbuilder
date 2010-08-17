@@ -69,6 +69,22 @@ protected:
          */
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
+
+        virtual ciscoACL* createACLObject(const std::string &n,
+                                          libfwbuilder::Interface *intf,
+                                          const std::string &d="in",
+                                          bool _ip_list=false);
+
+        /* see #1690. After recent changes (aug 2010) in how we deal with
+         * network zones, we do not assume that interfaces have network
+         * zone "any" if they don't have network zone configured at all.
+         * To work around this, will set network zone to "any" on all
+         * interfaces. Note that this needs to be done only for IOS ACL and
+         * Procurve ACL but not PIX where network zone must be configured
+         * by the user.
+         */
+        virtual void setAllNetworkZonesToAny();
+       
 	/**
 	 * drops dynamic interface from the rule in the following
 	 * cases because its address is unknown and we can not build
