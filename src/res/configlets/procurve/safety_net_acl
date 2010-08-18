@@ -16,13 +16,13 @@
 
 {{if ipv4}}
 {{if management_interface_is_vlan}}
-no {{$management_interface}} ip access-group tmp_acl in
+no vlan {{$management_interface_vlan_id}} ip access-group tmp_acl in
 no ip access-list extended tmp_acl
 ip access-list extended tmp_acl
   permit ip {{$management_addr}} {{$management_netm}} any 
   deny ip any any 
 exit
-{{$management_interface}} ip access-group tmp_acl in
+vlan {{$management_interface_vlan_id}} ip access-group tmp_acl in
 {{endif}}
 
 {{if management_interface_is_not_vlan}}

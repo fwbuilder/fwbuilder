@@ -1,5 +1,9 @@
 2010-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* safety_net_acl: fixed #1687 "temporary access list commands
+	syntax is incorrect". Temporary ACL generated for the Procurve
+	platform was incorrect.
+
 	* PolicyCompiler_cisco.cpp (PolicyCompiler_cisco::setAllNetworkZonesToAny): 
 	fixed #1690 "IOS ACL and Procurve ACL compilers fail because
 	interfaces are not assumed to have network zone "any" anymore".
