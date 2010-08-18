@@ -281,7 +281,7 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
         {
             int intf_id = findInterfaceByNetzone(a);
             intf_id_list.push_back(intf_id);
-        } catch(string err)
+        } catch(FWException &ex)
         {
             // could not find interface with netzone to match address 'a'
             // will assign rule to all interfaces. Act as if all interfaces
@@ -294,7 +294,7 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
                     compiler->fw->getStr("platform"), "network_zones");
 
             if (supports_network_zones)
-                compiler->warning(err);
+                compiler->warning(ex.toString());
 
             FWObjectTypedChildIterator i = compiler->fw->findByType(
                 Interface::TYPENAME);

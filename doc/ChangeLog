@@ -1,3 +1,10 @@
+2010-08-18  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Helper.cpp (list): fixed #1691 , this is a better fix for the
+	problem reported in the earlier bug (see #1690).
+	Function Helper::findInterfaceByNetzone() throws FWException, this
+	changed in v4.1.0 with a fix for #1653.
+
 2010-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* procurveInterfaces.cpp (procurveInterfaces::parseVlan): fixed #1683

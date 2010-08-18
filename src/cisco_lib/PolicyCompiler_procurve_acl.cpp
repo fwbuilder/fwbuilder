@@ -73,7 +73,7 @@ int PolicyCompiler_procurve_acl::prolog()
         fw->getOptionsObject()->getBool("procurve_acl_use_acl_remarks"));
 
 
-    setAllNetworkZonesToAny();
+    setAllNetworkZonesToNone();
 
     return PolicyCompiler::prolog();
 }

@@ -103,6 +103,17 @@ void PolicyCompiler_cisco::setAllNetworkZonesToAny()
 
 }
 
+void PolicyCompiler_cisco::setAllNetworkZonesToNone()
+{
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+    {
+	Interface *iface = Interface::cast(*i);
+        if (iface->getStr("network_zone") != "")
+            iface->setStr("network_zone", "");
+    }
+}
+
 ciscoACL* PolicyCompiler_cisco::createACLObject(const string &acl_name,
                                                 Interface *intf,
                                                 const string &dir,

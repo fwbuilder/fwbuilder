@@ -84,6 +84,16 @@ protected:
          * by the user.
          */
         virtual void setAllNetworkZonesToAny();
+
+        /*
+         * complementary operation: sets all interface's network zones
+         * to blank to make sure compiler operates with predictable
+         * configuration. This can be important if user switches from
+         * platform that requires network zones (PIX) to the one that
+         * does not support them, but compiler code uses the same
+         * classes.
+         */
+        virtual void setAllNetworkZonesToNone();
        
 	/**
 	 * drops dynamic interface from the rule in the following
