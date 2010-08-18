@@ -58,7 +58,15 @@ bool procurveInterfaces::basicValidateInterfaceName(Interface*,
 bool procurveInterfaces::parseVlan(
     const QString &name, QString *base_name, int *vlan_id)
 {
-    QRegExp vlan_name_pattern("(vlan|Vlan|VLAN) (\\d{1,})");
+    if (name == "DEFAULT_VLAN")
+    {
+        if (base_name!=NULL) *base_name = "vlan";
+        if (vlan_id!=NULL) *vlan_id = 1;
+        return true;
+    }
+
+    // Procurve SNMP reports vlan interface names without space
+    QRegExp vlan_name_pattern("(vlan|Vlan|VLAN) *(\\d{1,})");
     if (vlan_name_pattern.indexIn(name) != -1)
     {
         if (base_name!=NULL) *base_name = vlan_name_pattern.cap(1);

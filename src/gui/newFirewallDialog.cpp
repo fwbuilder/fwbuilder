@@ -39,6 +39,9 @@
 #include "FWBApplication.h"
 #include "QDesktopWidget"
 
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
@@ -982,6 +985,19 @@ void newFirewallDialog::finishClicked()
             if (fwbdebug)
                 qDebug("Adding interface %s: security_level=%d",
                        oi->getName().c_str(), sl);
+
+            std::auto_ptr<interfaceProperties> int_prop(
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(nfw));
+            if (int_prop->looksLikeVlanInterface(name))
+            {
+                QString base_name;
+                int vlan_id;
+                int_prop->parseVlan(name, &base_name, &vlan_id);
+
+                oi->getOptionsObject()->setStr("type", "8021q");
+                oi->getOptionsObject()->setInt("vlan_id", vlan_id);
+            }
+
 
             if (iface.type == 0)
             {

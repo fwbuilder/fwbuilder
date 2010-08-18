@@ -2090,12 +2090,12 @@ FWObject* DiscoveryDruid::addInterface(FWObject *parent, InterfaceData *in,
             return NULL;
     }
 
+    QString obj_name = in->name.c_str();
     Interface *itf = NULL;
     itf = Interface::cast(
         mw->createObject(parent,
-                         QString(Interface::TYPENAME),
-                         QString(in->name.c_str())));
-
+                         QString(Interface::TYPENAME), obj_name));
+    
     QString iname = om->getStandardName(itf, physAddress::TYPENAME, "mac");
     iname = om->makeNameUnique(itf, iname, physAddress::TYPENAME);
 
@@ -2107,11 +2107,28 @@ FWObject* DiscoveryDruid::addInterface(FWObject *parent, InterfaceData *in,
     itf->setLabel(in->label);
     itf->setSecurityLevel(in->securityLevel);
 
+    if (fwbdebug)
+        qDebug() << "Interface=" << obj_name
+                 << "type=" << in->interface_type.c_str();
+
     if (!in->interface_type.empty())
     {
         itf->getOptionsObject()->setStr("type", in->interface_type);
         if (in->interface_type == "8021q")
             itf->getOptionsObject()->setInt("vlan_id", in->vlan_id);
+    } else
+    {
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent));
+        if (int_prop->looksLikeVlanInterface(obj_name))
+        {
+            QString base_name;
+            int vlan_id;
+            int_prop->parseVlan(obj_name, &base_name, &vlan_id);
+
+            itf->getOptionsObject()->setStr("type", "8021q");
+            itf->getOptionsObject()->setInt("vlan_id", vlan_id);
+        }
     }
 
     if (in->addr_mask.size()==0 ||

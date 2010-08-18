@@ -1,5 +1,14 @@
 2010-08-17  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* procurveInterfaces.cpp (procurveInterfaces::parseVlan): fixed #1683
+	class procurveInterfaces interprets interface "DEFAULT_VLAN" as
+	vlan interface with vlan id 1.
+
+	* newFirewallDialog.cpp (newFirewallDialog::finishClicked):
+	fixed #1683 When user creates new firewall using snmp scan,
+	fwbuilder will now guess and assign the type to interfaces that
+	look like vlans for the given platform and host OS.
+
 	* safety_net_acl: fixed #1687 "temporary access list commands
 	syntax is incorrect". Temporary ACL generated for the Procurve
 	platform was incorrect.

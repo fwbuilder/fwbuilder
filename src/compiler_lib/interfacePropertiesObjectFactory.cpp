@@ -27,6 +27,7 @@
 #include "interfaceProperties.h"
 #include "linux24Interfaces.h"
 #include "iosInterfaces.h"
+#include "procurveInterfaces.h"
 #include "bsdInterfaces.h"
 #include "pixInterfaces.h"
 #include "procurveInterfaces.h"
