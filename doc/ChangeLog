@@ -8,6 +8,12 @@
 	will use PREROUTING and POSTROUTING in single compile mode but issue
 	a warning.
 
+	* NATCompiler_ipt.cpp (VerifyRules2::processNext): fixed #1685
+	"iptables redirecting NAT rules in the OUTPUT chain". NAT rules
+	should be allowed to translate from CustomService to TCP or UDP
+	service, provided CustomService object is configured with matching
+	protocol. See also change in libfwbuilder NATCompiler::classifyNATRule::processNext.
+
 	* NATCompiler_ipt.cpp (localNATRule::processNext): see #1685
 	"iptables redirecting NAT rules in the OUTPUT chain". This fix
 	makes it possible to create iptables NAT rule with target REDIRECT

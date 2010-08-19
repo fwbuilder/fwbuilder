@@ -669,7 +669,7 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
             return true;
         }
 
-        if (!tsrv->isAny() && s1->getProtocolNumber()!=s2->getProtocolNumber())
+        if (!tsrv->isAny() && s1->getProtocolName()!=s2->getProtocolName())
         {
             compiler->abort(
                 rule, 
