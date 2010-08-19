@@ -38,6 +38,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/TCPUDPService.h"
+#include "fwbuilder/CustomService.h"
 
 #include <iostream>
 #include <iomanip>
@@ -248,15 +249,20 @@ bool NATCompiler::classifyNATRule::processNext()
 
     if (!osrv->isAny() && !tsrv->isAny() && !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
     {
+        bool translation_ok = true;
         if (osrv->getTypeName() != tsrv->getTypeName())
-            compiler->abort(
-                                rule,
-                                "NAT rule can not change service types: " +
-                                osrv->getTypeName() + " to " +
-                                tsrv->getTypeName());
+        {
+            translation_ok = false;
+            // see #1685. Custom service needs special treatment
+            if (CustomService::isA(osrv) &&
+                (Service::cast(osrv)->getProtocolName() == Service::cast(tsrv)->getProtocolName()))
+                translation_ok = true;
+        }
 
-//      rule->setRuleType(NATRule::DNAT);
-//	return true;
+        if (!translation_ok)
+            compiler->abort(rule,
+                            "NAT rule can not change service types: " +
+                            osrv->getTypeName() + " to " + tsrv->getTypeName());
     }
 
 
