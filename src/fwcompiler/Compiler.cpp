@@ -520,7 +520,7 @@ void Compiler::_expand_addr(Rule *rule, FWObject *s,
  * regular address obejcts. Drop objects that do not match current
  * address family.
  */
-void Compiler::_expandAddressRanges(Rule*, FWObject *re)
+void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
 {
     list<FWObject*> cl;
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
@@ -541,6 +541,13 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *re)
                 InetAddr a2 = aro->getRangeEnd();
                 vector<InetAddrMask> vn = 
                     libfwbuilder::convertAddressRange(a1,a2);
+
+                if (vn.size() == 0)
+                {
+                    abort(rule,
+                        "Address Range object '" + aro->getName() +
+                        "' can not be converted to set of addresses");
+                }
 
                 for (vector<InetAddrMask>::iterator i=vn.begin();
                      i!=vn.end(); i++)

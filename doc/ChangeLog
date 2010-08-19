@@ -1,5 +1,11 @@
 2010-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Compiler.cpp (Compiler::_expandAddressRanges): fixed
+	fwbuilder:ticket:1696 "Compiler ignores, but provides no warning,
+	about rules with invalid address range being
+	skipped". AddressRange object in the ticket had start address
+	greater than the end address.
+
 	* NATCompiler.cpp (classifyNATRule::processNext):
 	fixed fwbuilder:ticket:1685 "iptables redirecting NAT
 	rules in the OUTPUT chain". NAT rules should be allowed to
