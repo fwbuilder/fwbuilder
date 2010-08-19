@@ -1,5 +1,13 @@
 2010-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_ipt.cpp (splitNATBranchRule::processNext): fixed #1686
+	"can not generate basic NAT branching rule". NAT branching rules
+	were not generated in single rule compile mode because compiler
+	needs information about targets used in the branch rule set rules
+	to decide which chain the branching rule should be placed in. Now it
+	will use PREROUTING and POSTROUTING in single compile mode but issue
+	a warning.
+
 	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixed #1693
 	SF bug 3048516 "NAT rule with 'Use SNAT instead MASQ' doesn't
 	work".  NAT rule using combination of the option "Use SNAT instead

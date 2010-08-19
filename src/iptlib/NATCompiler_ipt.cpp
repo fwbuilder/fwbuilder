@@ -2006,29 +2006,31 @@ bool NATCompiler_ipt::splitNATBranchRule::processNext()
                         }
 
                     }
+                    return true;
                 }
-            } else
-            {
-                compiler->warning(rule,
-                                  "NAT branching rule does not have information"
-                                  " about targets used in the branch ruleset"
-                                  " to choose proper chain in the nat table."
-                                  " Will split the rule and place it in both"
-                                  " PREROUTNING and POSTROUTING");
-                NATRule *r = compiler->dbcopy->createNATRule();
-                compiler->temp_ruleset->add(r);
-                r->duplicate(rule);
-                r->setStr("ipt_chain", "POSTROUTING");
-                r->setStr("ipt_target", branch_name);
-                tmp_queue.push_back(r);
-
-                r = compiler->dbcopy->createNATRule();
-                compiler->temp_ruleset->add(r);
-                r->duplicate(rule);
-                r->setStr("ipt_chain", "PREROUTING");
-                r->setStr("ipt_target", branch_name);
-                tmp_queue.push_back(r);
             }
+
+            compiler->warning(rule,
+                              "NAT branching rule does not have information"
+                              " about targets used in the branch ruleset"
+                              " to choose proper chain in the nat table."
+                              " Will split the rule and place it in both"
+                              " PREROUTNING and POSTROUTING");
+            NATRule *r = compiler->dbcopy->createNATRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setStr("ipt_chain", "POSTROUTING");
+            r->setStr("ipt_target", branch_name);
+            tmp_queue.push_back(r);
+
+            r = compiler->dbcopy->createNATRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setStr("ipt_chain", "PREROUTING");
+            r->setStr("ipt_target", branch_name);
+            tmp_queue.push_back(r);
+
+            return true;
         }
         else 
         {

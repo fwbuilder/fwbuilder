@@ -47715,7 +47715,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id48783X29790" host_OS="linux24" inactive="False" lastCompiled="1272404572" lastInstalled="0" lastModified="1256066997" platform="iptables" version="" name="firewall80" comment="Branch rules in NAT" ro="False">
+      <Firewall id="id48783X29790" host_OS="linux24" inactive="False" lastCompiled="1272404572" lastInstalled="0" lastModified="1282238317" platform="iptables" version="" name="firewall80" comment="Branch rules in NAT" ro="False">
         <NAT id="id48857X29790" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id138652X29790" disabled="False" group="" position="0" action="NATBranch" comment="Branch rule with actual translation. Translation is ignored and warning should be issued">
             <OSrc neg="False">
@@ -47770,6 +47770,94 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </ODst>
             <OSrv neg="False">
               <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id71294X29790</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id57866X1812" disabled="False" group="" position="2" action="NATBranch" comment="for #1686&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="id48792X29790"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id71294X29790</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id916423X1812" disabled="False" group="" position="3" action="NATBranch" comment="for #1686&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="id48783X29790"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
             </OSrv>
             <TSrc neg="False">
               <ObjectRef ref="sysid0"/>
@@ -47879,20 +47967,34 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -47918,9 +48020,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="linux24_tcp_timestamps"></Option>
           <Option name="linux24_tcp_window_scaling"></Option>
           <Option name="load_modules">False</Option>
-          <Option name="local_nat">False</Option>
+          <Option name="local_nat">True</Option>
           <Option name="log_all">False</Option>
           <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
@@ -47929,19 +48032,29 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
           <Option name="use_ip_tool">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_m_set">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
