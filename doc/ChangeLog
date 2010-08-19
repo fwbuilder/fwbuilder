@@ -8,6 +8,12 @@
 	will use PREROUTING and POSTROUTING in single compile mode but issue
 	a warning.
 
+	* NATCompiler_ipt.cpp (localNATRule::processNext): see #1685
+	"iptables redirecting NAT rules in the OUTPUT chain". This fix
+	makes it possible to create iptables NAT rule with target REDIRECT
+	in the OUTPUT chain. The rule should have firewall object in OSrc
+	and TDst rule elements.
+
 	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixed #1693
 	SF bug 3048516 "NAT rule with 'Use SNAT instead MASQ' doesn't
 	work".  NAT rule using combination of the option "Use SNAT instead

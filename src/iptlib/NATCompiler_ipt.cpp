@@ -2064,7 +2064,7 @@ bool NATCompiler_ipt::localNATRule::processNext()
     {
     case NATRule::DNAT:
     case NATRule::DNetnat:
-
+    case NATRule::Redirect:
 /* it should not be necessary to do anything if rule type is NONAT
  * since splitNONATRule takes care of NONAT rules
  *

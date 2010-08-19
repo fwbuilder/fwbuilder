@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1280885247" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1282242248" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -4640,6 +4640,7 @@
         <TCPService id="id46355X95438" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="False" name="New TCP Service 1" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1" dst_range_end="1"/>
         <TCPService id="id69385X25753" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ports 3050-3051" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="3050" dst_range_end="3051"/>
         <TCPService id="id69386X25753" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="port 700" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="700" dst_range_end="700"/>
+        <TCPService id="id1195021X6573" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp-9040" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="9040" dst_range_end="9040"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
         <UDPService id="id3ED59BF0" name="udp-src-6767" comment="" ro="False" src_range_start="6767" src_range_end="6767" dst_range_start="0" dst_range_end="0"/>
@@ -8138,7 +8139,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1273779773" lastInstalled="1142003872" lastModified="1264552639" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1273779773" lastInstalled="1142003872" lastModified="1282242276" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -9232,6 +9233,27 @@
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="id69386X25753"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id1194991X6573" disabled="False" group="" position="49" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3AFB66C6"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id1195021X6573"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3AFB66C6"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id1195021X6573"/>
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
