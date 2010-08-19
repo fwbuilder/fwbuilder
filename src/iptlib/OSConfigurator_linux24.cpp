@@ -515,7 +515,7 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
     command_wrappers->setVariable("address_table", false);
 
-    QRegExp intf_re("\\$i_(\\S+)");
+    QRegExp intf_re("\\$i_([^ :]+)");
 
     QStringList iface_names;
     QStringList iface_vars;

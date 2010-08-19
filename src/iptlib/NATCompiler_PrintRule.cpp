@@ -60,6 +60,7 @@
 
 #include <assert.h>
 
+#include <QString>
 #include <QStringList>
 
 using namespace libfwbuilder;
@@ -724,9 +725,21 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    cmdout << "--to-source ";
             // if TSrc is "any" and this is SNAT rule, then this rule only
             // translates source port. Skip address part.
-            if (!tsrc->isAny()) cmdout << _printAddr(tsrc, false, true);
+            // Note for #1693: _printAddr() returns string that ends with a space,
+            // but there should be no space if the address is followed by port
+            // spec.
+            QString addr_part;
+            if (!tsrc->isAny())
+            {
+                addr_part = _printAddr(tsrc, false, true).c_str();
+            }
 	    string ports = _printSNATPorts(tsrv);
-	    if (!ports.empty()) cmdout << ":" << ports;
+	    if (!ports.empty())
+            {
+                cmdout << addr_part.trimmed().toStdString()
+                       << ":" << ports;
+            } else
+                cmdout << addr_part.toStdString();
 
             if (ropt->getBool("ipt_nat_random")) cmdout << " --random";
             if (XMLTools::version_compare(version, "1.4.3")>=0)

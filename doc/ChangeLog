@@ -1,3 +1,11 @@
+2010-08-19  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixed #1693
+	SF bug 3048516 "NAT rule with 'Use SNAT instead MASQ' doesn't
+	work".  NAT rule using combination of the option "Use SNAT instead
+	of MASQ", dynamic address of an interface and source port
+	translation produced iptables command with incorrect syntax.
+
 2010-08-18  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Helper.cpp (list): fixed #1691 , this is a better fix for the
