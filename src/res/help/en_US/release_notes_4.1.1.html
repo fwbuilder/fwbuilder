@@ -11,13 +11,20 @@
 
 
 <p>
-  Hewlett Packard donated ProCurve 3500 switches to the project, this
-  allowed us to debug and improve built-in policy installer for this
-  platform. v4.1.1 is the first release that comes with complete
-  support for ProCurve switches. This release also includes the fix
-  for the critical bug in policy compiler for Cisco IOS ACL that caused
-  it to fail with error message "Can not find interface with network
-  zone that includes address A.B.C.D".
+  This release includes fixes for a number of minor bugs as well being
+  the first release to officially support HP ProCurve ACL
+  configuration.  Thanks to a generous donation of several switches
+  from Hewlett Packard we were able to test and finalize the ProCurve
+  support.  This release also fixes a critical bug in V4.1 related to
+  Cisco IOS ACL configurations.  Some configurations would cause
+  Firewall Builder to incorrectly generate and error with the message
+  "Can not find interface with network zone that includes address
+  A.B.C.D.".
+</p>
+
+<p>
+  v4.1.1 has been tested, and we believe it to be ready for production
+  use, but if you do find a bug or issue please let us know.
 </p>
 
 <a name="gui"></a>
