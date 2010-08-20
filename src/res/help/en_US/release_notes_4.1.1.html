@@ -1,0 +1,185 @@
+
+<h1>Firewall Builder 4.1.1 Release Notes</h1>
+
+<p>
+</p>
+<p>
+    <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets for V4</a>
+</p>
+
+<h2>What's new in V4.1.1 ?</h2>
+
+
+<p>
+  Hewlett Packard donated ProCurve 3500 switches to the project, this
+  allowed us to debug and improve built-in policy installer for this
+  platform. v4.1.1 is the first release that comes with complete
+  support for ProCurve switches. This release also includes the fix
+  for the critical bug in policy compiler for Cisco IOS ACL that caused
+  it to fail with error message "Can not find interface with network
+  zone that includes address A.B.C.D".
+</p>
+
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Built-in policy installer now works with HP Procurve
+      switches. Currently installer can only execute generated
+      configurarion lines one-by-one on the switch; installation
+      method using scp that is available for Cisco routers is not
+      supported yet. This has been tested with Procurve firmware
+      K14.31 on ProCurve J9470A Switch 3500-24. Caveat: manager access
+      should not be configured with user name (that is, no "password
+      manager user-name foo")
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1683 When user creates new firewall using snmp scan,
+      fwbuilder will now guess and assign the type to interfaces that
+      look like vlans for the given platform and host OS.
+      
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1683
+      class procurveInterfaces interprets interface "DEFAULT_VLAN" as
+      vlan interface with vlan id 1.      
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1693 SF bug 3048516 "NAT rule with 'Use SNAT instead
+      MASQ' doesn't work".  NAT rule using combination of the option
+      "Use SNAT instead of MASQ", dynamic address of an interface and
+      source port translation produced iptables command with incorrect
+      syntax.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1685 "iptables redirecting NAT rules in the OUTPUT
+      chain". This fix makes it possible to create iptables NAT rule
+      with target REDIRECT in the OUTPUT chain. The rule should have
+      firewall object in OSrc and TDst rule elements.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1685 "iptables redirecting NAT rules in the OUTPUT
+      chain". NAT rules should be allowed to translate from
+      CustomService to TCP or UDP service, provided CustomService
+      object is configured with matching protocol. 
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1686 "can not generate basic NAT branching rule". NAT
+      branching rules were not generated in single rule compile mode
+      because compiler needs information about targets used in the
+      branch rule set rules to decide which chain the branching rule
+      should be placed in. Now it will use PREROUTING and POSTROUTING
+      in single compile mode but issue a warning.
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<a name="pf"></a>
+<h2>Support for PF</h2>
+
+<ul>
+  <li>
+    <p>No changes support for PF in this release
+    </p>
+  </li>
+</ul>
+
+<a name="ios"></a>
+<h2>Changes in support for for Cisco IOS ACL</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1690 "IOS ACL and Procurve ACL compilers fail because
+      interfaces are not assumed to have network zone any anymore".
+      Compilers for Cisco IOS ACL and Procurve ACL always assumed all
+      interfaces have network zone "any". Recent changes made in 4.1.0
+      changed that and compilers stopped working for some rule
+      configurations. This bug caused compiler to fail with error
+      message "Can not find interface with network zone that includes
+      address A.B.C.D"
+    </p>
+  </li>
+</ul>
+
+
+<a name="pix"></a>
+<h2>Changes in support for for Cisco ASA (PIX)</h2>
+
+<ul>
+  <li>
+    <p>No changes in support for PIX in this release
+    </p>
+  </li>
+
+</ul>
+
+
+
+<a name="procurve"></a>
+<h2>Support for HP ProCurve</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1688 "Procurve ACL remarks should be in quotes if they
+	include space"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1687 "temporary access list commands syntax is
+      incorrect". Temporary ACL generated for the Procurve platform
+      was incorrect.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Built-in installer has been tested and now works with
+      ProCurve switches.
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+
+
