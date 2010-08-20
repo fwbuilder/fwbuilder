@@ -185,8 +185,9 @@ void SSHProcurve::finished(int retcode)
     emit printStdout_sign(tr("SSH session terminated, exit status: %1").
                           arg(retcode) + "\n");
 
-    // ignoring return code, this is different from SSHSession
-    sessionComplete(false);
+    // Consider return code 0 and 255 a success, this is different from SSHSession
+    // 
+    sessionComplete(retcode!=0 && retcode!=255);
 
     if (fwbdebug) qDebug("SSHProcurve::processExited done");
 }
