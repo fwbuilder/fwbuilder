@@ -8,7 +8,7 @@
 
 #line 10 "IPTCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgLexer.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "iptables.g" -> "IPTCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>
@@ -93,6 +93,7 @@ public:
 	public: void mMATCH_IPRANGE_SRC(bool _createToken);
 	public: void mMATCH_IPRANGE_DST(bool _createToken);
 	public: void mMATCH_COMMENT(bool _createToken);
+	public: void mMATCH_PKT_TYPE(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);
 	public: void mSET_MARK(bool _createToken);
 	public: void mSAVE_MARK(bool _createToken);

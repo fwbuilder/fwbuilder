@@ -8,7 +8,7 @@
 
 #line 10 "IPTCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "iptables.g" -> "IPTCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "IPTCfgParserTokenTypes.hpp"
@@ -103,6 +103,7 @@ public:
 	public: void m_length();
 	public: void m_iprange();
 	public: void m_comment();
+	public: void m_pkttype();
 	public: void m_unknown_module();
 	public: void protocol_word();
 	public: void target_options();
@@ -137,10 +138,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 139;
+	static const int NUM_TOKENS = 141;
 #else
 	enum {
-		NUM_TOKENS = 139
+		NUM_TOKENS = 141
 	};
 #endif
 	

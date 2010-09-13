@@ -202,6 +202,8 @@
 -A user_chain -p tcp -m length --length 0:128 -m mark --mark 0x4 -m tcp --sport 53 -j ACCEPT
 -A user_chain -p tcp -m length --length 0:128 -m mark ! --mark 0x4 -m tcp --sport 53 -j ACCEPT
 
+# bug 1703, SF bug 3065435 
+-A user_chain -m pkttype --pkt-type broadcast -j DROP
 
 -A user_chain -j DROP
 

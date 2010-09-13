@@ -301,7 +301,7 @@ unknown_parameter
 // which have some parameters that look the same as parameters for
 // other modules. See match_mark and match_recent 
 
-module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  m_length | m_iprange | m_comment | m_unknown_module) 
+module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  m_length | m_iprange | m_comment | m_pkttype | m_unknown_module) 
     ;
 
 //****************************************************************
@@ -619,7 +619,6 @@ fragm    : OPT_FRAGM
     ;
 
 //****************************************************************
-
 m_unknown_module : WORD
         {
             *dbg << " UNKNOWN MODULE=" << LT(0)->getText();
@@ -805,6 +804,16 @@ m_comment : M_COMMENT MATCH_COMMENT STRING
             *dbg << " COMMENT=" << LT(0)->getText();
         }
 
+    ;
+
+//****************************************************************
+
+m_pkttype: M_PKTTYPE MATCH_PKT_TYPE WORD
+        {
+            *dbg << " MODULE 'pkttype' is not supported";
+            importer->markCurrentRuleBad(
+                std::string("Rule uses module pkttype that is not supported "));
+        }
     ;
 
 //****************************************************************
@@ -1142,6 +1151,7 @@ tokens
     M_LENGTH = "length" ;
     M_RECENT = "recent" ;
     M_IPRANGE = "iprange" ;
+    M_PKTTYPE = "pkttype" ;
 
     ICMP = "icmp";
     TCP = "tcp";
@@ -1256,6 +1266,7 @@ UNSUPPORTED_OPTION:;
 
 // "--rsource" also confuses lexer which expects "--reject"
 RSOURCE : "--rsource" { $setType(UNSUPPORTED_OPTION); };
+
 // ------------------------------------------------------------------------
 
 ADD_RULE : "-A" ;
@@ -1298,6 +1309,8 @@ MATCH_IPRANGE_SRC : "--src-range" ;
 MATCH_IPRANGE_DST : "--dst-range" ;
 
 MATCH_COMMENT : "--comment" ;
+
+MATCH_PKT_TYPE : "--pkt-type" ;
 
 // ----------------------------------------------------------------
 //  target options

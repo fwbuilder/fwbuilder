@@ -111,6 +111,7 @@ Parser error: Original rule combines match of tcp/udp/icmp
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
 branches to implement this complex match.
+Parser error: Rule uses module pkttype that is not supported
 Ruleset: mangle / PREROUTING
 Default action: Accept
 Ruleset: mangle / INPUT
