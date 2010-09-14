@@ -1,5 +1,8 @@
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_PrintRule.cpp (processNext): fixed SF bug 3057503
+	"DNAT rule with dynamic IP has a white space, causing error".
+
 	* PolicyCompiler_PrintRule.cpp (_printIpSetMatch): fixed #1705
 	"iptables (v>=1.4.4) "--set option deprecated ..."  (SF bug 3059893)
 	Option "--set" has been deprecated and renamed "--match-set" in

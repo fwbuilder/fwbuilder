@@ -758,9 +758,19 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    cmdout << "--to-destination ";
             // if TDst is "any" and this is DNAT rule, then this rule only
             // translates source port. Skip address part.
-            if (!tdst->isAny()) cmdout << _printAddr(tdst, false, true);
+            QString addr_part;
+            if (!tdst->isAny())
+                addr_part = _printAddr(tdst, false, true).c_str();
+
 	    string ports = _printDNATPorts(tsrv);
-	    if (!ports.empty()) cmdout << ":" << ports;
+	    if (!ports.empty())
+            {
+                cmdout << addr_part.trimmed().toStdString()
+                       << ":" << ports;
+            } else
+            {
+                cmdout << addr_part.toStdString();
+            }
 
             if (ropt->getBool("ipt_nat_random")) cmdout << " --random";
             if (XMLTools::version_compare(version, "1.4.3")>=0)

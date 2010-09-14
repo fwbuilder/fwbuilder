@@ -14177,7 +14177,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3D94D4F8" host_OS="linux24" inactive="False" lastCompiled="1272404308" lastInstalled="1142003872" lastModified="1282234973" platform="iptables" version="" name="firewall11" comment="testing rules with broadcasts and multicasts and action-on-reject 'TCP reset'. &#10;&#10;This is BRIDGING FIREWALL &#10;Firewall is part of any is OFF&#10;&#10;Interfaces eth0 and eth1 are parts of the bridge; Interface eth2 is external interface (doing NAT and routing on this interface) Interface eth3 is connected to protected network and is used to manage firewall. This is rather realistic configuration for the bridging firewall " ro="False">
+      <Firewall id="id3D94D4F8" host_OS="linux24" inactive="False" lastCompiled="1272404308" lastInstalled="1142003872" lastModified="1284500299" platform="iptables" version="" name="firewall11" comment="testing rules with broadcasts and multicasts and action-on-reject 'TCP reset'. &#10;&#10;This is BRIDGING FIREWALL &#10;Firewall is part of any is OFF&#10;&#10;Interfaces eth0 and eth1 are parts of the bridge; Interface eth2 is external interface (doing NAT and routing on this interface) Interface eth3 is connected to protected network and is used to manage firewall. This is rather realistic configuration for the bridging firewall " ro="False">
         <NAT id="id3D94D4F9" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3E854D22" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -14245,6 +14245,27 @@
               <Option name="ipt_nat_random">False</Option>
               <Option name="ipt_use_snat_instead_of_masq">True</Option>
             </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id58296X15267" disabled="False" group="" position="3" action="Translate" comment="see SF bug 3057503&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3E21FC66"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
