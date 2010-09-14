@@ -1,5 +1,10 @@
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* CompilerDriver_ipt_policy.cpp (processPolicyRuleSet): fixed
+	#1707 "call function "prolog_commands" from the main iptables
+	script part instead of function "script_body" when prolog should
+	be executed after iptables reset"
+
 	* configlets/linux24/script_skeleton (cmd): fixed SF bug 3060325
 	"Address table object and prolog script conflict". Generated
 	script should run prolog before checking and loading run-time

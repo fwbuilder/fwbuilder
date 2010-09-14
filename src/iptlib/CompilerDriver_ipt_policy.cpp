@@ -219,12 +219,17 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (flush_and_set_default_policy)
             tmp << policy_compiler->flushAndSetDefaultPolicy();
 
+        /*
+         * commented out for #1707
+         *
+
         if (!prolog_done && prolog_place == "after_flush" &&
             !fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
             tmp << "prolog_commands" << endl;
             prolog_done = true;
         }
+        */
 
         tmp << policy_compiler->printAutomaticRules();
 
