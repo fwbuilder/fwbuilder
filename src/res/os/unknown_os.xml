@@ -39,6 +39,7 @@
 
       <tools>
         <Unknown>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
           <path_lsmod>/sbin/lsmod</path_lsmod>
           <path_modprobe>/sbin/modprobe</path_modprobe>
           <path_iptables>/sbin/iptables</path_iptables>

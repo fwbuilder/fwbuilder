@@ -40,6 +40,7 @@
       </subinterfaces>
 
       <tools>
+        <path_ifconfig>/sbin/ifconfig</path_ifconfig>
         <path_ipfw>/sbin/ipfw</path_ipfw>
         <path_sysctl>/usr/sbin/sysctl</path_sysctl>
         <path_logger>/usr/bin/logger</path_logger>

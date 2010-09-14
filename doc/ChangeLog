@@ -1,3 +1,9 @@
+2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pf.cpp (printPathForAllTools): fixed SF bug
+	3061034 "ifconfig definition missing". Script generated for the
+	ipfw firewall on Mac OS X missed definition of variable IFCONFIG.
+
 2010-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (addPktTypeMatch), iptables.g: fixed #1703

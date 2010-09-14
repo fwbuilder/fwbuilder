@@ -33,15 +33,16 @@ OSData::OSData() {}
 
 string  OSData::getPathForTool(const string &os,tools t)
 {
-    string r="/FWBuilderResources/Target/tools/";
+    string r = "/FWBuilderResources/Target/tools/";
     switch (t)
     {
-    case SYSCTL: r+="path_sysctl"; break;
-    case PFCTL:  r+="path_pfctl";  break;
-    case IPFW:   r+="path_ipfw";   break;
-    case IPF:    r+="path_ipf";    break;
-    case IPNAT:  r+="path_ipnat";  break;
-    case LOGGER: r+="path_logger"; break;
+    case IFCONFIG: r += "path_ifconfig"; break;
+    case SYSCTL:   r += "path_sysctl";   break;
+    case PFCTL:    r += "path_pfctl";    break;
+    case IPFW:     r += "path_ipfw";     break;
+    case IPF:      r += "path_ipf";      break;
+    case IPNAT:    r += "path_ipnat";    break;
+    case LOGGER:   r += "path_logger";   break;
     }
     return Resources::os_res[os]->getResourceStr(r);
 }

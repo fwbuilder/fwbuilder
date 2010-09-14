@@ -73,6 +73,7 @@
       </subinterfaces>
 
       <tools>
+        <path_ifconfig>/sbin/ifconfig</path_ifconfig>
         <path_ipfw>/sbin/ipfw</path_ipfw>
         <path_ipf>/sbin/ipf</path_ipf>
         <path_ipnat>/sbin/ipnat</path_ipnat>

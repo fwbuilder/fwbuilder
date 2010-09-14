@@ -72,6 +72,7 @@
       </subinterfaces>
 
       <tools>
+        <path_ifconfig>/sbin/ifconfig</path_ifconfig>
         <path_pfctl>/sbin/pfctl</path_pfctl>
         <path_sysctl>/sbin/sysctl</path_sysctl>
         <path_logger>/usr/bin/logger</path_logger>

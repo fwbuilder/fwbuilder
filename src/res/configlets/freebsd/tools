@@ -13,6 +13,7 @@
 ##
 ## Set path to all utilities that we need
 
+IFCONFIG="{{$path_ifconfig}}"
 PFCTL="{{$path_pfctl}}"
 IPFW="{{$path_ipfw}}"
 IPF="{{$path_ipf}}"

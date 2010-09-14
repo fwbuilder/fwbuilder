@@ -38,7 +38,7 @@ class OSData {
 
     OSData();
     
-    typedef enum { SYSCTL, PFCTL, IPFW, IPF, IPNAT, LOGGER } tools;
+    typedef enum { IFCONFIG, SYSCTL, PFCTL, IPFW, IPF, IPNAT, LOGGER } tools;
 
     std::string  getPathForTool(const std::string &os,tools t);
 };

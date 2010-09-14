@@ -378,6 +378,7 @@ QString CompilerDriver_pf::printPathForAllTools(Firewall* fw, const string &os)
     Configlet tools = Configlet(fw, "bsd", "tools");
     tools.removeComments();
 
+    setToolPathVar(fw, os, "path_ifconfig", OSData::IFCONFIG, &tools);
     setToolPathVar(fw, os, "path_ipf", OSData::IPF, &tools);
     setToolPathVar(fw, os, "path_ipnat", OSData::IPNAT, &tools);
     setToolPathVar(fw, os, "path_ipfw", OSData::IPFW, &tools);

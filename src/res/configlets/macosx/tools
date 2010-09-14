@@ -13,6 +13,7 @@
 ##
 ## Set path to all utilities that we need
 
+IFCONFIG="{{$path_ifconfig}}"
 IPFW="{{$path_ipfw}}"
 SYSCTL="{{$path_sysctl}}"
 LOGGER="{{$path_logger}}"
