@@ -1,5 +1,10 @@
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (_printIpSetMatch): fixed #1705
+	"iptables (v>=1.4.4) "--set option deprecated ..."  (SF bug 3059893)
+	Option "--set" has been deprecated and renamed "--match-set" in
+	iptales 1.4.4
+
 	* CompilerDriver_pf.cpp (printPathForAllTools): fixed SF bug
 	3061034 "ifconfig definition missing". Script generated for the
 	ipfw firewall on Mac OS X missed definition of variable IFCONFIG.

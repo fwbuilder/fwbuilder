@@ -405,7 +405,8 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
         res.push_back(QStringPair("1.3.0", QObject::tr("1.3.x")));
         res.push_back(QStringPair("1.4.0", QObject::tr("1.4.0 or later")));
         res.push_back(QStringPair("1.4.1.1", QObject::tr("1.4.1.1 or later")));
-        res.push_back(QStringPair("1.4.3", QObject::tr("1.4.3 or later")));
+        res.push_back(QStringPair("1.4.3", QObject::tr("1.4.3")));
+        res.push_back(QStringPair("1.4.4", QObject::tr("1.4.4 or later")));
     } else
     {
         // we list supported versions for the following platforms in
