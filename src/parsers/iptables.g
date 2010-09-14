@@ -791,6 +791,18 @@ length_spec :
 
 //****************************************************************
 
+m_pkttype: M_PKTTYPE MATCH_PKT_TYPE pkt_type_spec
+    ;
+
+pkt_type_spec : (WORD_BROADCAST | WORD_MULTICAST | WORD_UNICAST)
+        {
+            importer->pkt_type_spec = LT(0)->getText();
+            *dbg << " PKT_TYPE " << importer->pkt_type_spec;
+        }
+    ;
+
+//****************************************************************
+
 m_mport : M_MPORT
         {
             *dbg << " MULTIPORT";
@@ -804,16 +816,6 @@ m_comment : M_COMMENT MATCH_COMMENT STRING
             *dbg << " COMMENT=" << LT(0)->getText();
         }
 
-    ;
-
-//****************************************************************
-
-m_pkttype: M_PKTTYPE MATCH_PKT_TYPE WORD
-        {
-            *dbg << " MODULE 'pkttype' is not supported";
-            importer->markCurrentRuleBad(
-                std::string("Rule uses module pkttype that is not supported "));
-        }
     ;
 
 //****************************************************************
@@ -1165,6 +1167,10 @@ tokens
     PSH = "PSH";
     ALL = "ALL";
     NONE = "NONE";
+
+    WORD_BROADCAST = "broadcast" ;
+    WORD_MULTICAST = "multicast" ;
+    WORD_UNICAST = "unicast" ;
 
 }
 

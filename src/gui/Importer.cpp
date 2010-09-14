@@ -549,11 +549,12 @@ FWObject* Importer::getCustomService(const std::string &platform,
     }
 
     std::ostringstream nstr, cstr, sstr;
-    nstr << "cust-" << custom_service_codes[platform + code] << "-" << protocol;
+    nstr << "cust-" << custom_service_codes[platform + code];
+    if (!protocol.empty()) nstr << "-" << protocol;
     sstr << "cust-" << custom_service_codes[platform + code] << "-" << protocol;
     cstr << "Imported from " << getFirewallObject()->getName() << "\n"
-         << "code: " << code << "\n"
-         << "protocol: " << protocol;
+         << "code: " << code;
+    if (!protocol.empty()) cstr << "\n" << "protocol: " << protocol;
 
     if (all_objects.count(sstr.str())!=0) return all_objects[sstr.str()];
 

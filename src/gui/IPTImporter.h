@@ -73,6 +73,7 @@ class IPTImporter : public Importer
     void addLengthMatch(libfwbuilder::PolicyRule *rule);
     void addLimitMatch(libfwbuilder::PolicyRule *rule);
     void addRecentMatch(libfwbuilder::PolicyRule *rule);
+    void addPktTypeMatch(libfwbuilder::PolicyRule *rule);
 
     libfwbuilder::PolicyRule* createBranch(
         libfwbuilder::PolicyRule *rule, const std::string &branch_name,
@@ -117,6 +118,7 @@ class IPTImporter : public Importer
     std::string limit_burst;
     std::string length_spec;
     std::string recent_match;
+    std::string pkt_type_spec;
     
     std::string nat_addr1;
     std::string nat_addr2;

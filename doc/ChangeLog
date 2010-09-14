@@ -1,12 +1,11 @@
 2010-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* iptables.g (m_pkttype): fixed #1703 "importing iptables line
-	with module pkttype causes parser error". We do not have any
-	object with the behavior closely resembling that of iptables
-	module "pkttype" so rules using this module are marked to let
-	administrator know that they have not been imported properly.
-	Parser should not abort import process when it encounters this
-	module though. SF bug 3065435
+	* IPTImporter.cpp (addPktTypeMatch), iptables.g: fixed #1703
+	"importing iptables line with module pkttype causes parser
+	error". We do not have any object with the behavior closely
+	resembling that of iptables module "pkttype" so the importer
+	creates CustomService object with the code taken from the original
+	iptables rule. SF bug 3065435
 
 	* VERSION (FWB_MICRO_VERSION): started 4.1.2
 

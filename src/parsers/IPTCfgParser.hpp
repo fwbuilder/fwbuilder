@@ -119,6 +119,7 @@ public:
 	public: void recent_args_no_param();
 	public: void recent_args_param();
 	public: void length_spec();
+	public: void pkt_type_spec();
 	public: void port_def_no_range();
 	public: void port_def_with_range();
 	public: void port_def_with_incomplete_range();
@@ -138,10 +139,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 141;
+	static const int NUM_TOKENS = 144;
 #else
 	enum {
-		NUM_TOKENS = 141
+		NUM_TOKENS = 144
 	};
 #endif
 	

@@ -172,6 +172,7 @@ void IPTImporter::clear()
     limit_suffix = "";
     limit_burst = "";
     length_spec = "";
+    pkt_type_spec = "";
     if (!action_params.empty()) action_params.clear();
     nat_addr1 = "";
     nat_addr2 = "";
@@ -504,6 +505,7 @@ void IPTImporter::processModuleMatches()
     module_match_options.push_back(match_mark);
     module_match_options.push_back(length_spec);
     module_match_options.push_back(recent_match);
+    module_match_options.push_back(pkt_type_spec);
 
     int branch_depth = 0;
     for(list<string>::iterator it=module_match_options.begin();
@@ -542,6 +544,7 @@ void IPTImporter::addAllModuleMatches(PolicyRule *rule)
     addMarkMatch(rule);
     addLengthMatch(rule);
     addRecentMatch(rule);
+    addPktTypeMatch(rule);
 }
 
 void IPTImporter::addMarkMatch(PolicyRule *rule)
@@ -566,6 +569,19 @@ void IPTImporter::addLengthMatch(PolicyRule *rule)
         srv->addRef(getCustomService(
                         "iptables", "-m length --length " + length_spec, ""));
         length_spec = "";
+    }
+}
+
+void IPTImporter::addPktTypeMatch(PolicyRule *rule)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
+    if (rule->getSrv()->isAny() && !pkt_type_spec.empty())
+    {
+        // create custom service with module "pkttype"
+        srv->addRef(getCustomService(
+                        "iptables", "-m pkttype --pkt-type " + pkt_type_spec, ""));
+        pkt_type_spec = "";
     }
 }
 
