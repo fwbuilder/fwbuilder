@@ -1,5 +1,10 @@
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* configlets/linux24/script_skeleton (cmd): fixed SF bug 3060325
+	"Address table object and prolog script conflict". Generated
+	script should run prolog before checking and loading run-time
+	address tables.
+
 	* NATCompiler_PrintRule.cpp (processNext): fixed SF bug 3057503
 	"DNAT rule with dynamic IP has a white space, causing error".
 
