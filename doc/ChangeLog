@@ -1,5 +1,9 @@
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (getGeneratedFileFullPath): fixed SF bug
+	3049665 "Firewall Settings -> Output file name misses .fw
+	extension"
+
 	* CompilerDriver_ipt_policy.cpp (processPolicyRuleSet): fixed
 	#1707 "call function "prolog_commands" from the main iptables
 	script part instead of function "script_body" when prolog should

@@ -755,8 +755,11 @@ QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)
     QString generated_file;
     QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
     if (!ofname.isEmpty())
-        generated_file = ofname;
-    else
+    {
+        QFileInfo fi(ofname);
+        if (fi.suffix() != ".fw") generated_file = ofname + ".fw";
+        else generated_file = ofname;
+    } else
         generated_file = QString::fromUtf8(fw->getName().c_str()) + ".fw";
 
     QFileInfo gen_file_info(generated_file);
