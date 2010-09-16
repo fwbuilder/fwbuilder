@@ -1,3 +1,19 @@
+2010-09-16  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* generatedScriptTestsIpfilter.cpp (GeneratedScriptTest::runCompiler):
+	unit tests to test manifest and activation commands in the generated
+	.fw script for ipfilter. Refs #1702
+
+	* FirewallInstaller.cpp (FirewallInstaller::getGeneratedFileFullPath): 
+	fixed how we append suffix ".fw" to the name of generated script
+	when it is preconfigured in the firewall settings dialog and already
+	includes ".fw" suffix (it was added twice).
+
+	* CompilerDriver_ipf_run.cpp (CompilerDriver_ipf::run): fixed #1702
+	"Wrong path in the activation script for ipfilter". Activation command
+	embedded in the generated .fw script used local path to the generated
+	.conf file on the machine where fwbuilder compiler was running.
+
 2010-09-14  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FirewallInstaller.cpp (getGeneratedFileFullPath): fixed SF bug

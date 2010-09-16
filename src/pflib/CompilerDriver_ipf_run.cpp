@@ -71,7 +71,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
-
+#include <QtDebug>
 
 
 using namespace std;
@@ -104,6 +104,9 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
 QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     FWOptions* options = fw->getOptionsObject();
+
+    //qDebug() << "CompilerDriver_ipf::assembleManifest fw_file_name=" << fw_file_name;
+
     QFileInfo fw_file_info(fw_file_name);
     QString ipf_file_name = fw_file_info.completeBaseName() + "-ipf.conf";
     QString nat_file_name = fw_file_info.completeBaseName() + "-nat.conf";
@@ -200,10 +203,14 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         }
 
         QString remote_ipf_name = options->getStr("ipf_conf_file_name_on_firewall").c_str();
-        if (remote_ipf_name.isEmpty()) remote_ipf_name = ipf_file_name;
+        if (remote_ipf_name.isEmpty())
+            remote_ipf_name = QFileInfo(ipf_file_name).fileName();
+        remote_ipf_name = this->escapeFileName(remote_ipf_name);
 
         QString remote_nat_name = options->getStr("nat_conf_file_name_on_firewall").c_str();
-        if (remote_nat_name.isEmpty()) remote_nat_name = nat_file_name;
+        if (remote_nat_name.isEmpty())
+            remote_nat_name = QFileInfo(nat_file_name).fileName();
+        remote_nat_name = this->escapeFileName(remote_nat_name);
 
         string s;
 
