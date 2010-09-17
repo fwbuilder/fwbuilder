@@ -1,5 +1,12 @@
 2010-09-16  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* SSHSession.cpp: Refs #1699 installation session status was reset
+	from "failure" to "success" in a configuration where fwbuilder gui
+	was running on Windows and talked to Cisco router using pscp.exe
+	and plink.exe and ssh session failed because of authentication
+	failure. This happened because plink.exe terminated with return
+	status "success" even in case of authentication failure.
+
 	* generatedScriptTestsIpfilter.cpp (GeneratedScriptTest::runCompiler):
 	unit tests to test manifest and activation commands in the generated
 	.fw script for ipfilter. Refs #1702

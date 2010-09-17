@@ -85,6 +85,7 @@ SSHSession::SSHSession(QWidget *_par,
     error = false;
     endOfCopy = false;
     send_keepalive = false;
+    session_completed = false;
 
     proc = NULL;
     retcode = 0;
@@ -641,17 +642,42 @@ void SSHSession::readFromStderr()
     }
 }
 
+/*
+ * See #1699:
+ *
+ * on windows, when ssh session fails because of an authentication
+ * failure or other error, we get two calls to this function: first
+ * with parameter err=true when an error line has been detected
+ * somewhere in the state machine by function checkForErrors() and
+ * then one more time when ssh client process terminates and
+ * SSHSession::finished() calls sessionComplete(). On Windows using
+ * plink and pscp while talking to Cisco ssh client terminates with
+ * return code 0 even when authentication fails. The first call to
+ * sessionComplete() sets session status to "Failure", but since
+ * return code from ssh client was 0, the second call to this function
+ * resets status to "Success". Using flag session_completed to avoid
+ * this reset and use the status set by the first call.
+ *
+ */
 void SSHSession::sessionComplete(bool err)
 {
     if (fwbdebug) qDebug("SSHSession::sessionComplete  err=%d", err);
     heartBeatTimer->disconnect(SIGNAL(timeout()));
 
-    error = err;
-    if (error)
-        emit sessionFatalError_sign();
-    else
-        emit sessionFinished_sign();
+    if (session_completed)
+    {
+        if (fwbdebug) qDebug("SSHSession::sessionComplete  session is already completed");
+    } else
+    {
+        error = err;
+        if (error)
+            emit sessionFatalError_sign();
+        else
+            emit sessionFinished_sign();
+    }
     if (fwbdebug) qDebug("SSHSession::sessionComplete  done");
+
+    session_completed = true;
 }
 
 void SSHSession::cleanUp()

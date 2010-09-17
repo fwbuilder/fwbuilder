@@ -159,13 +159,14 @@ bool SSHCisco::checkForErrors()
     for (QStringList::const_iterator i=errptr->begin();
          i!=errptr->end(); ++i)
     {
-        if ( stdoutBuffer.lastIndexOf(*i,-1)!=-1 )
+        QString line = *i;
+        if ( stdoutBuffer.lastIndexOf(line, -1)!=-1 )
         {
             if (fwbdebug)
-                qDebug() << "Got known error message: " << stdoutBuffer;
+                qDebug() << "Got known error message: " << line;
 
             emit printStdout_sign( tr("\n*** Fatal error :") );
-            emit printStdout_sign( stdoutBuffer+"\n" );
+            emit printStdout_sign( line + "\n" );
             stdoutBuffer="";
 //            terminate();
             sessionComplete(true);   // finish with error status
