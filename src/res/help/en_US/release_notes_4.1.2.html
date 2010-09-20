@@ -26,16 +26,37 @@
 
   <li>
     <p>
+      fixed #1703 "importing iptables line with module pkttype causes
+      parser error". We do not have any object with the behavior
+      closely resembling that of iptables module "pkttype" so the
+      importer creates CustomService object with the code taken from
+      the original iptables rule. SF bug 3065435
     </p>
   </li>
 
   <li>
     <p>
+      fixed SF bug 3049665 "Firewall Settings -&gt; Output file name
+      misses .fw extension"
     </p>
   </li>
 
   <li>
     <p>
+      fixed how we append suffix ".fw" to the name of generated script
+      when it is preconfigured in the firewall settings dialog and
+      already includes ".fw" suffix (it was added twice).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Fixed #1699 installation session status was reset from "failure"
+      to "success" in a configuration where fwbuilder gui was running
+      on Windows and talked to Cisco router using pscp.exe and
+      plink.exe and ssh session failed because of authentication
+      failure. This happened because plink.exe terminated with return
+      status "success" even in case of authentication failure.
     </p>
   </li>
 
@@ -50,16 +71,48 @@
 <ul>
   <li>
     <p>
+      fixed SF bug #3071667 "Compilation segfault with DNS address in
+      NAT rule". Added rule processors to replace Run-time DNSName and
+      Address Table objects in TSrc and TDst.
     </p>
   </li>
 
   <li>
     <p>
+      fixed #1705 "iptables (v &gt= 1.4.4) "--set option deprecated ..."
+      (SF bug 3059893) Option "--set" has been deprecated and renamed
+      "--match-set" in iptales 1.4.4
     </p>
   </li>
 
   <li>
     <p>
+      fixed SF bug 3057503 "DNAT rule with dynamic IP has a white
+      space, causing error".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug 3060325 "Address table object and prolog script
+      conflict". Generated script should run prolog before checking
+      and loading run-time address tables.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1707 "call function "prolog_commands" from the main
+      iptables script part instead of function "script_body" when
+      prolog should be executed after iptables reset"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug #3071667 "Compilation segfault with DNS address in
+      NAT rule". Added rule processors to replace Run-time DNSName and
+      Address Table objects in TSrc and TDst.
     </p>
   </li>
 
@@ -77,10 +130,31 @@
 
 <ul>
   <li>
-    <p>No changes in support for PF in this release
+    <p>
+      fixed SF bug 3061034 "ifconfig definition missing". Script
+      generated for the ipfw firewall on Mac OS X missed definition of
+      variable IFCONFIG.
     </p>
   </li>
 </ul>
+
+
+
+<a name="ipf"></a>
+<h2>Support for ipfilter</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1702 "Wrong path in the activation script for
+      ipfilter". Activation command embedded in the generated .fw
+      script used local path to the generated .conf file on the
+      machine where fwbuilder compiler was running.
+   </p>
+  </li>
+</ul>
+
+
 
 <a name="ios"></a>
 <h2>Changes in support for for Cisco IOS ACL</h2>
@@ -93,6 +167,8 @@
 </ul>
 
 
+
+
 <a name="pix"></a>
 <h2>Changes in support for for Cisco ASA (PIX)</h2>
 
@@ -103,6 +179,7 @@
   </li>
 
 </ul>
+
 
 
 

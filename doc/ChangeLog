@@ -1,3 +1,10 @@
+2010-09-20  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (compile): fixed SF bug #3071667
+	"Compilation segfault with DNS address in NAT rule". Added rule
+	processors to replace Run-time DNSName and Address Table objects
+	in TSrc and TDst.
+
 2010-09-16  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* SSHSession.cpp: Refs #1699 installation session status was reset

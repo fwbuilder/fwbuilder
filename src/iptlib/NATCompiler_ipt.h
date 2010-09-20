@@ -467,16 +467,33 @@ namespace fwcompiler {
         {
             public:
             processMultiAddressObjectsInOSrc(const std::string &n) :
-                processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementOSrc::TYPENAME) {}
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementOSrc::TYPENAME) {}
         };
 
         class processMultiAddressObjectsInODst : public processMultiAddressObjectsInRE
         {
             public:
             processMultiAddressObjectsInODst(const std::string &n) :
-                processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementODst::TYPENAME) {}
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementODst::TYPENAME) {}
         };
 
+        class processMultiAddressObjectsInTSrc : public processMultiAddressObjectsInRE
+        {
+            public:
+            processMultiAddressObjectsInTSrc(const std::string &n) :
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementTSrc::TYPENAME) {}
+        };
+
+        class processMultiAddressObjectsInTDst : public processMultiAddressObjectsInRE
+        {
+            public:
+            processMultiAddressObjectsInTDst(const std::string &n) :
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementTDst::TYPENAME) {}
+        };
 
 	/**
 	 * count how many times each user-defined chain we've created is

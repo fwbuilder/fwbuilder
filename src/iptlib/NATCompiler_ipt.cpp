@@ -2488,7 +2488,8 @@ bool NATCompiler_ipt::processMultiAddressObjectsInRE::processNext()
     if (re->size()==1) 
     {
         FWObject *o = re->front();
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
         if (atrt!=NULL)
         {
@@ -2619,11 +2620,19 @@ void NATCompiler_ipt::compile()
                  " swap MultiAddress -> MultiAddressRunTime in OSrc") );
         add( new swapMultiAddressObjectsInODst(
                  " swap MultiAddress -> MultiAddressRunTime in ODst") );
+        add( new swapMultiAddressObjectsInTSrc(
+                 " swap MultiAddress -> MultiAddressRunTime in TSrc") );
+        add( new swapMultiAddressObjectsInTDst(
+                 " swap MultiAddress -> MultiAddressRunTime in TDst") );
 
         add( new processMultiAddressObjectsInOSrc(
                  "process MultiAddress objects in OSrc") );
         add( new processMultiAddressObjectsInODst(
                  "process MultiAddress objects in ODst") );
+        add( new processMultiAddressObjectsInTSrc(
+                 "process MultiAddress objects in TSrc") );
+        add( new processMultiAddressObjectsInTDst(
+                 "process MultiAddress objects in TDst") );
 
         add( new doOSrvNegation( "process negation in OSrv" ));
 
