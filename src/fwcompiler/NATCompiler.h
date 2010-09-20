@@ -428,23 +428,40 @@ namespace fwcompiler {
         };
 
         /**
-         * rule processors that replace MultiAddress objects with MultiAddressRunTime
-         * equivalents
+         * rule processors that replace MultiAddress objects with
+         * MultiAddressRunTime equivalents
          */
         class swapMultiAddressObjectsInOSrc : public Compiler::swapMultiAddressObjectsInRE
         {
             public:
             swapMultiAddressObjectsInOSrc(const std::string &n) :
-                swapMultiAddressObjectsInRE(n,libfwbuilder::RuleElementOSrc::TYPENAME) {}
+            swapMultiAddressObjectsInRE(
+                n, libfwbuilder::RuleElementOSrc::TYPENAME) {}
         };
 
         class swapMultiAddressObjectsInODst : public Compiler::swapMultiAddressObjectsInRE
         {
             public:
             swapMultiAddressObjectsInODst(const std::string &n) :
-                swapMultiAddressObjectsInRE(n,libfwbuilder::RuleElementODst::TYPENAME) {}
+            swapMultiAddressObjectsInRE(
+                n, libfwbuilder::RuleElementODst::TYPENAME) {}
         };
 
+        class swapMultiAddressObjectsInTSrc : public Compiler::swapMultiAddressObjectsInRE
+        {
+            public:
+            swapMultiAddressObjectsInTSrc(const std::string &n) :
+            swapMultiAddressObjectsInRE(
+                n, libfwbuilder::RuleElementTSrc::TYPENAME) {}
+        };
+
+        class swapMultiAddressObjectsInTDst : public Compiler::swapMultiAddressObjectsInRE
+        {
+            public:
+            swapMultiAddressObjectsInTDst(const std::string &n) :
+            swapMultiAddressObjectsInRE(
+                n, libfwbuilder::RuleElementTDst::TYPENAME) {}
+        };
 
     };
 

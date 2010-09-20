@@ -1,3 +1,10 @@
+2010-09-20  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler.h (fwcompiler): fixed SF bug #3071667
+	"Compilation segfault with DNS address in NAT rule". Added
+	rule processors to replace Run-time DNSName and Address Table
+	objects in TSrc and TDst.
+
 2010-09-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* VERSION (LIBFWBUILDER_MICRO_VERSION): started 4.1.2
