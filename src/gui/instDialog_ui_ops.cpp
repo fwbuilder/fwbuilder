@@ -1167,24 +1167,31 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
  * sessions. Plink.exe accepts session name in place of the host name
  * on the command line, but pscp.exe does not. We ask user to enter
  * session name in the "alternative name or address to use to
- * communicate with the firewall" and then try to use it in place of
- * the host name. This breaks pscp.exe session which interprets it as
- * a host name and fails with an error ""ssh_init: Host does not
- * exist".
+ * communicate with the firewall" input field in the "Installer" tab
+ * of the firewall settings dialog and then use it in place of the
+ * host name in the command line for pscp.exe and plink.exe. This
+ * works with plink.exe but breaks pscp.exe which interprets it as a
+ * host name and fails with an error ""ssh_init: Host does not exist".
  *
  * Will try to determine if what user entered in the "alternative host
- * or address field" is a session name and use different command line.
+ * or address field" is a session name and use different command line
+ * for pscp.exe
+ *
+ *
+ * HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\<session_name>
  */
 
-// HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\<session_name>
-// HKEY_CURRENT_USER\Software\netcitadel.com\FirewallBuilder4.1\4.1\SSH
-
-        QSettings putty_reg(QSettings::UserScope, "SimonTatham", "PuTTY/Sessions");
+        QSettings putty_reg(QSettings::UserScope, "SimonTatham", "PuTTY\\Sessions");
         QStringList sessions = putty_reg.childGroups();
 
-        foreach(QString key, sessions)
+        if (fwbdebug)
         {
-            qDebug() << "putty session " << key;
+            qDebug() << putty_reg.fileName();
+            qDebug() << "found " << sessions.size() << " putty sessions";
+            foreach(QString key, sessions)
+            {
+                qDebug() << "putty session " << key;
+            }
         }
 
         if (sessions.contains(aaddr))

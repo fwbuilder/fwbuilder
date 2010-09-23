@@ -1,3 +1,19 @@
+2010-09-22  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::readInstallerOptionsFromFirewallObject): 
+	fixed #1724 . There was a problem with pscp.exe and putty
+	sessions. Plink.exe accepts session name in place of the host name
+	on the command line, but pscp.exe does not. We ask user to enter
+	session name in the "alternative name or address to use to
+	communicate with the firewall" input field in the "Installer" tab
+	of the firewall settings dialog and then use it in place of the
+	host name in the command line for pscp.exe and plink.exe. This
+	works with plink.exe but breaks pscp.exe which interprets it as a
+	host name and fails with an error ""ssh_init: Host does not
+	exist". The fix checks if what user entered in the "alternative
+	host or address field" is a session name and uses different
+	command line with pscp.exe
+
 2010-09-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (compile): fixed SF bug #3071667
