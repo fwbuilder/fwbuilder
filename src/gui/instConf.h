@@ -63,6 +63,7 @@ class instConf {
     QString   pwd;
     QString   epwd;
     QString   maddr;
+    QString   putty_session;
     QString   sshArgs;
     QString   scpArgs;
     QString   fwdir;

@@ -1144,19 +1144,58 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         string host_OS = cnf.fwobj->getStr("host_OS");
 
         cnf.user = fwopt->getStr("admUser").c_str();
+
+        QString standard_management_addr;
+        // Note that Host::getManagementAddress() scans interfaces and
+        // finds one marked as "management" and takes its address.
+        // It does not use Management child object.
+        const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
+        if (mgmt_addr)
+            standard_management_addr = mgmt_addr->toString().c_str();
+        else
+            standard_management_addr = "";
+
         QString aaddr = fwopt->getStr("altAddress").c_str();
         if (!aaddr.isEmpty()) cnf.maddr = aaddr;
-        else
+        else cnf.maddr = standard_management_addr;
+
+
+#ifdef _WIN32
+
+/*
+ * See #1724. There is a problem with pscp.exe and putty
+ * sessions. Plink.exe accepts session name in place of the host name
+ * on the command line, but pscp.exe does not. We ask user to enter
+ * session name in the "alternative name or address to use to
+ * communicate with the firewall" and then try to use it in place of
+ * the host name. This breaks pscp.exe session which interprets it as
+ * a host name and fails with an error ""ssh_init: Host does not
+ * exist".
+ *
+ * Will try to determine if what user entered in the "alternative host
+ * or address field" is a session name and use different command line.
+ */
+
+// HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\<session_name>
+// HKEY_CURRENT_USER\Software\netcitadel.com\FirewallBuilder4.1\4.1\SSH
+
+        QSettings putty_reg(QSettings::UserScope, "SimonTatham", "PuTTY/Sessions");
+        QStringList sessions = putty_reg.childGroups();
+
+        foreach(QString key, sessions)
         {
-            // Note that Host::getManagementAddress() scans interfaces and
-            // finds one marked as "management" and takes its address.
-            // It does not use Management child object.
-            const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
-            if (mgmt_addr)
-                cnf.maddr = mgmt_addr->toString().c_str();
-            else
-                cnf.maddr = "";
+            qDebug() << "putty session " << key;
         }
+
+        if (sessions.contains(aaddr))
+        {
+            cnf.maddr = standard_management_addr;
+            cnf.putty_session = aaddr;
+        }
+
+#endif
+
+
         /*
          * if user requested test run, store firewall script in a temp
          * file.  Always store it in a temp file on linksys

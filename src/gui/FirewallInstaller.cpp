@@ -53,6 +53,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QtDebug>
+#include <QSettings>
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2) and getdomainname
@@ -369,12 +370,20 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
     {
         args.push_back("-load");
         args.push_back("fwb_session_with_keepalive");
+
+        if (!cnf->putty_session.isEmpty())
+        {
+            args.push_back("-load");
+            args.push_back(cnf->putty_session);
+        }
+
 //        args.push_back("-ssh");
         args.push_back("-pw");
         args.push_back(cnf->pwd);
     }
 
 #else
+
     args.push_back(argv0.c_str());
     args.push_back("-Y");   // fwbuilder works as scp wrapper
 
