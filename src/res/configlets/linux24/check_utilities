@@ -10,6 +10,22 @@
 ## Configlets support simple macro language with these constructs:
 ## {{$var}} is variable expansion
 ## {{if var}} is conditional operator.
+##
+## Known variables:
+##
+## need_iptables_restore
+## need_ip6tables_restore
+## need_modprobe     : set to true if "load modules" option is on, or
+##                     script needs to manage vlan or bonding interfaces.
+##                     See configlets for vlan and bonding interfaces to find
+##                     how modprobe is used to load corresponding modules
+## need_vconfig      : set to true if script manages vlans
+## need_brctl        : set to true if script manages bridge ports
+## need_ifenslave    : set to true if script manages bonding interfaces
+## need_ipset        : set to true if ipset is used for run-time address tables
+## load_modules      : set to true if "load modules" option is on
+##
+## These variables are set in OSConfigurator_linux24::printShellFunctions()
 
 find_program() {
   PGM=$1
@@ -25,7 +41,7 @@ check_tools() {
   find_program $IPTABLES 
 {{if need_iptables_restore}}  find_program $IPTABLES_RESTORE{{endif}}
 {{if need_ip6tables_restore}}  find_program $IP6TABLES_RESTORE{{endif}}
-  find_program $MODPROBE 
+{{if need_modprobe}} find_program $MODPROBE {{endif}}
   find_program $IP 
 {{if need_vconfig}}  find_program $VCONFIG {{endif}}
 {{if need_brctl}}  find_program $BRCTL {{endif}}

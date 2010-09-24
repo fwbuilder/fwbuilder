@@ -1,3 +1,10 @@
+2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/check_utilities: fixed #1714 "make checking
+	for MODPROBE conditional". There is no need to check if modprobe
+	utility exists on the firewall machine if it is not used by the
+	script.
+
 2010-09-22  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog_ui_ops.cpp (instDialog::readInstallerOptionsFromFirewallObject): 

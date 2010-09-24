@@ -311,6 +311,15 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
     configlet.removeComments();
     configlet.collapseEmptyStrings(true);
 
+    configlet.setVariable("load_modules", options->getBool("load_modules"));
+
+    if (options->getBool("load_modules") ||
+        options->getBool("configure_vlan_interfaces") ||
+        options->getBool("configure_bonding_interfaces"))
+    {
+        configlet.setVariable("need_modprobe", true);
+    }
+
     if (options->getBool("verify_interfaces") || 
         options->getBool("manage_virtual_addr") ||
         options->getBool("configure_interfaces") )
