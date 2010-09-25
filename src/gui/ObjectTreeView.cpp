@@ -605,20 +605,14 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
 }
 
 /*
- * normally QAbstractItemView::edit starts in-place editing. WE use
- * double click to open object in a separate editor panel, but use
- * this virtual method to tell unerlying class that editing has
- * started, which prevents it from expanding/collapsing tree branch.
+ * normally QAbstractItemView::edit starts in-place editing. We use
+ * double click to open object in a separate editor panel 
  */
 bool ObjectTreeView::edit(const QModelIndex &index,
                           EditTrigger trigger, QEvent *event)
 {
     if (fwbdebug) qDebug("ObjectTreeView::edit");
-    if (trigger==QAbstractItemView::DoubleClicked)
-    {
-        editCurrentObject();
-        return true;
-    }
+    if (trigger==QAbstractItemView::DoubleClicked) editCurrentObject();
     return QTreeWidget::edit(index, trigger, event);
 }
 

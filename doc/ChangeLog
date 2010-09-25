@@ -1,5 +1,14 @@
 2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (editSelectedObject): fixed #1729 "double
+	clicking a folder in the tree should expand it rather than open it
+	in the editor".
+
+	* ObjectTreeView.cpp (edit): fixed #1732 "Double clicking on
+	object with child objects should auto expand them".  Double
+	clicking on objects and folders in the tree expands and collapses
+	them, as well as opens object in the editor.
+
 	* ObjectManipulator.cpp (expandObjectInTree): fixed #1715
 	"automatically expand new firewall and new host objects in the
 	tree once they are created"

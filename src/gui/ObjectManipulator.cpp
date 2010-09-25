@@ -1063,6 +1063,9 @@ void ObjectManipulator::editSelectedObject()
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
 
+    // do not edit system folders (#1729)
+    if (FWBTree().isSystem(obj)) return;
+
     if (RuleSet::cast(obj)!=NULL)
     {
         // Open rule set object in the editor if it is already opened
