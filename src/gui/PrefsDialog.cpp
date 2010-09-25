@@ -115,7 +115,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->wDir->setText( st->getWDir() );
 
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
-    m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
+//    m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
 
     m_dialog->deletedObj->setChecked( st->getBool("UI/ShowDeletedObjects") );
     m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
@@ -409,7 +409,8 @@ void PrefsDialog::accept()
     st->setWDir( wd );
 
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
-    st->setTooltipDelay( m_dialog->tooltipDelay->value() );
+//  st->setTooltipDelay( m_dialog->tooltipDelay->value() );
+//  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
     st->setBool("UI/ShowDeletedObjects", m_dialog->deletedObj->isChecked());
     st->setBool("UI/ShowObjectsAttributesInTree", m_dialog->attributesInTree->isChecked());
@@ -433,7 +434,6 @@ void PrefsDialog::accept()
     st->setBool("Objects/AddressTable/useCompileTimeForNewObjects",
                 m_dialog->new_addr_tbl_compile_tm->isChecked());
 
-//  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
     st->setRCSLogState( m_dialog->emptyRCSLog->isChecked() );
 
