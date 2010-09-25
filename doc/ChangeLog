@@ -1,5 +1,7 @@
 2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWBSettings.cpp (init): fixed #1738 "Enable tooltips by default"
+
 	* ObjectManipulator.cpp (editSelectedObject): fixed #1729 "double
 	clicking a folder in the tree should expand it rather than open it
 	in the editor".

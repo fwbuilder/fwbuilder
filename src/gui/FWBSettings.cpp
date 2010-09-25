@@ -253,6 +253,9 @@ void FWBSettings::init()
         }
     }
 
+    ok = contains(objTooltips);
+    if (!ok) setObjTooltips(true);
+
     QString c;
     if (getLabelColor(RED   ).isEmpty())
     { setLabelColor(RED   ,"#C86E6E"); setLabelText(RED,"Red"); }
