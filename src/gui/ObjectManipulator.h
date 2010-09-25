@@ -301,6 +301,8 @@ public:
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
      void removeObjectFromHistory(libfwbuilder::FWObject *obj);
+
+     void expandObjectInTree(libfwbuilder::FWObject *obj);
      
      libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
                                              libfwbuilder::FWObject *obj);

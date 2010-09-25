@@ -393,6 +393,11 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case EXPAND_OBJECT_IN_TREE:
+                m_panel->om->expandObjectInTree(obj);
+                ev->accept();
+                return true;
+
             case OPEN_LIBRARY_FOR_OBJECT_EVENT:
                 m_panel->om->openLibForObject(obj);
                 ev->accept();

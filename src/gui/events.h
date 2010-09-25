@@ -66,7 +66,8 @@ enum EVENT_CODES {
     OBJECT_NAME_CHANGED_EVENT,
     OPEN_LIBRARY_FOR_OBJECT_EVENT,
     UPDATE_SUBWINDOW_TITLES_EVENT,
-    UPDATE_GUI_STATE_EVENT
+    UPDATE_GUI_STATE_EVENT,
+    EXPAND_OBJECT_IN_TREE
 };
 
 
@@ -373,6 +374,14 @@ public:
 };
 
 
-
+class expandObjectInTreeEvent : public fwbUpdateEvent {
+public:
+    int parent_id;
+    expandObjectInTreeEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + EXPAND_OBJECT_IN_TREE),
+                   "expandObjectInTreeEvent")
+    {}
+};
 
 #endif

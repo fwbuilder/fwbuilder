@@ -50,7 +50,7 @@ class ProjectPanel;
 
 class ObjectTreeView : public QTreeWidget {
 
-     Q_OBJECT
+    Q_OBJECT;
 
     QTreeWidgetItem *item_before_drag_started;
     QTreeWidgetItem *lastSelected;

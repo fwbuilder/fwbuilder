@@ -1194,7 +1194,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 void ObjectManipulator::openObjectInTree(ObjectTreeViewItem *otvi,
                                    bool register_in_history)
 {
-    openObjectInTree(otvi->getFWObject(),register_in_history);
+    openObjectInTree(otvi->getFWObject(), register_in_history);
 }
 
 /*
@@ -1203,8 +1203,8 @@ void ObjectManipulator::openObjectInTree(ObjectTreeViewItem *otvi,
  */
 void ObjectManipulator::openObjectInTree(QTreeWidgetItem *item)
 {
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(item);
-    openObjectInTree(otvi,true);
+    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(item);
+    openObjectInTree(otvi, true);
 }
 
 void ObjectManipulator::openObjectInTree(FWObject *obj)
@@ -1279,6 +1279,22 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
     otvi->getTree()->setCurrentItem( otvi );
     otvi->setSelected( true );
     otvi->getTree()->setFocus(Qt::OtherFocusReason);
+}
+
+void ObjectManipulator::expandObjectInTree(FWObject *obj)
+{
+    FWObject *o = obj;
+    if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+
+    QTreeWidgetItem *it = allItems[o];
+    if (it==NULL) return;
+    it->setExpanded(true);
+
+    for (list<FWObject*>::iterator i=o->begin();  i!=o->end(); ++i)
+    {
+        FWObject *o1 = *i;
+        if (o1 && o1->size() > 0) expandObjectInTree(o1);
+    }
 }
 
 void ObjectManipulator::libChangedById(int id)

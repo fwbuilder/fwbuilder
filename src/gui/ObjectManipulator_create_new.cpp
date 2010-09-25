@@ -245,6 +245,11 @@ void ObjectManipulator::createNewObject()
                     m_project->getFileName(), new_obj->getId()));
         }
     }
+
+    QCoreApplication::postEvent(
+        m_project, new expandObjectInTreeEvent(
+            m_project->getFileName(), new_obj->getId()));
+
     m_project->undoStack->push(macro);
 }
 

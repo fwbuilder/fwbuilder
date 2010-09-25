@@ -1,5 +1,9 @@
 2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (expandObjectInTree): fixed #1715
+	"automatically expand new firewall and new host objects in the
+	tree once they are created"
+
 	* configlets/linux24/check_utilities: fixed #1714 "make checking
 	for MODPROBE conditional". There is no need to check if modprobe
 	utility exists on the firewall machine if it is not used by the
