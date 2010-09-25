@@ -1,5 +1,10 @@
 2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (itemDoubleClicked): refs #1731 Change
+	double-clicking on "Any" object behavior. Double click on "any" in
+	a rule does not try to open object "any" in the tree and editor
+	panel.
+
 	* FWObjectPropertiesFactory.cpp (getObjectPropertiesDetailed):
 	refs #1731 Change double-clicking on "Any" object
 	behavior. Tooltip shown for the object "any" in rules says
