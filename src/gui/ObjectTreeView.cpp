@@ -175,6 +175,11 @@ bool ObjectTreeView::event( QEvent *event )
 
             if (obj==NULL) return false;
 
+            if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
+                obj->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
+                obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+                return false;
+
             cr = visualItemRect(itm);
 
             QRect global = QRect(

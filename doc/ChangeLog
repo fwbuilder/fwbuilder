@@ -1,5 +1,11 @@
 2010-09-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (getObjectPropertiesDetailed):
+	refs #1731 Change double-clicking on "Any" object
+	behavior. Tooltip shown for the object "any" in rules says
+	"to modify the rule drag and drop an object from the tree here"
+	instead of atributes of the object "any".
+
 	* FWBSettings.cpp (init): fixed #1738 "Enable tooltips by default"
 
 	* ObjectManipulator.cpp (editSelectedObject): fixed #1729 "double

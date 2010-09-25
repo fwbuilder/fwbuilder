@@ -499,6 +499,13 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
     QString path = obj->getPath().c_str();
     path = path.section('/',2,-1);
 
+    if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
+        obj->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
+        obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+    {
+        return "to modify this field drag and \ndrop an object from the tree here";
+    } 
+
     if (showPath)
     {
         str += QObject::tr("<b>Library:</b> ");
@@ -510,6 +517,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += QString(FWObjectDatabase::getStringId(obj->getId()).c_str()) + "<br>\n";
         }
     }
+
 
     str += QObject::tr("<b>Object Type:</b> ");
     string d = Resources::global_res->getObjResourceStr(obj,"description");
