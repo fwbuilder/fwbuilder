@@ -1,5 +1,11 @@
 2010-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWCmdMoveObject.cpp (FWCmdMoveObject::notify): fixed #1740
+	"Deleted library remains in the drop-down list". If option "Show
+	deleted objects" was turned off in the Preferences dialog and user
+	deleted a library, it remained in the drop-down list of libraries
+	and its object tree was still displayed in the object tree panel.
+	
 	* listOfLibrariesModel.cpp (ListOfLibrariesModel::addStaticItems):
 	fixed #1728 "Update Library drop down menu". Library drop down
 	list shows an item "Object libraries:" at the top that can not be

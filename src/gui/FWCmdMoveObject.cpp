@@ -165,19 +165,32 @@ void FWCmdMoveObject::notify()
     {
         if (Library::isA(obj))
         {
-//             // See #1740
-//             // looks like the object that moved into Deleted Objects is
-//             // another library. Show Deleted Objects library if it is enabled.
-//             // 
-//             if (fwbdebug)
-//                 qDebug() << "Moved library to Deleted objects"
-//                          << "old_parent=" << old_parent;
-
-//             if (st->getBool("UI/ShowDeletedObjects"))
-                new_obj = current_parent;
-//             else
-//                 new_obj = old_parent;  // this does not work!
-        }else
+            // See #1740
+            // looks like the object that moved into Deleted Objects is
+            // another library. Show Deleted Objects library if it is enabled.
+            // 
+            if (fwbdebug)
+                qDebug() << "Moved library to Deleted objects"
+                         << "old_parent=" << old_parent;
+            
+            if (st->getBool("UI/ShowDeletedObjects"))
+                new_obj = current_parent; // should be "deleted objects" lib
+            else
+            {
+//                new_obj = old_parent;  // this does not work!
+                new_obj = project->m_panel->om->getNextUserLib(obj);
+                if (new_obj == NULL)
+                {
+                    // no user libraries left, show "Standard"
+                    new_obj = old_parent->getRoot()->findInIndex(
+                        FWObjectDatabase::getIntId("syslib000"));
+                }
+                if (new_obj == NULL)
+                    new_obj = old_parent->getRoot()->front();
+                if (fwbdebug) qDebug() << "FWCmdMoveObject::notify() new_obj="
+                                       << new_obj;
+            }
+        } else
             new_obj = old_parent;
     } else
     {

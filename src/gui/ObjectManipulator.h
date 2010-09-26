@@ -268,7 +268,8 @@ public:
      void setupProject(ProjectPanel *project);
 
      void libChangedById(int id);
-     void changeFirstNotSystemLib();
+
+     libfwbuilder::FWObject* getNextUserLib(libfwbuilder::FWObject *after_this=NULL);
 
      std::vector<QTreeWidget*> getTreeWidgets();
 

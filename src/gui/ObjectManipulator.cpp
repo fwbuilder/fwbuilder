@@ -1320,24 +1320,26 @@ void ObjectManipulator::libChangedById(int obj_id)
     }
 }
 
-void ObjectManipulator::changeFirstNotSystemLib()
+FWObject* ObjectManipulator::getNextUserLib(FWObject *after_this)
 {
     QString sid2 = "syslib000";
     QString sid3 = "syslib001";
+
+    FWObject *lib = NULL;
+    if (after_this != NULL) lib = after_this->getLibrary();
 
     for (int i=0; i<libs_model->rowCount(); ++i)
     {
         QModelIndex idx = libs_model->index(i, 0);
         FWObject *l = libs_model->getLibrary(idx);
         if (l == NULL) continue;
+        if (l == lib) continue;
         QString sid1 = FWObjectDatabase::getStringId(l->getId()).c_str();
-        if ( sid1 != sid2 && sid1!=sid3)
-        {
-            libChanged(i);
-            m_objectManipulator->libs->setCurrentIndex(i);
-            return;
-        }
+        if ( sid1 == sid2 || sid1 == sid3) continue;
+
+        return l;
     }
+    return NULL;
 }
 
 void ObjectManipulator::libChanged(int list_row)
