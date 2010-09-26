@@ -53,6 +53,7 @@ class QComboBox;
 class QPixmap;
 class QUndoCommand;
 
+class ListOfLibrariesModel;
 class ProjectPanel;
 
 
@@ -82,12 +83,15 @@ public:
     bool operator()(const HistoryItem &itm);
 };
 
+
 class ObjectManipulator : public QWidget
 {
     Q_OBJECT;
 
-    std::vector<libfwbuilder::FWObject*> idxToLibs;
-    std::vector<QTreeWidget*> idxToTrees;
+    ListOfLibrariesModel *libs_model;
+//    std::vector<libfwbuilder::FWObject*> idxToLibs;
+//    std::vector<QTreeWidget*> idxToTrees;
+
     int previous_lib_index;
     QSet<int> ids ;
     std::list<HistoryItem> history;
@@ -124,7 +128,6 @@ class ObjectManipulator : public QWidget
 
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm);
 
-    int  getIdxForLib(libfwbuilder::FWObject*);
     void removeLib(int idx);
 
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
@@ -257,6 +260,8 @@ public slots:
 
 public:
 
+     Ui::ObjectManipulator_q *m_objectManipulator;
+     
      ObjectManipulator(QWidget *parent);
      ~ObjectManipulator();
 
@@ -264,8 +269,9 @@ public:
 
      void libChangedById(int id);
      void changeFirstNotSystemLib();
-     std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
-     Ui::ObjectManipulator_q *m_objectManipulator;
+
+     std::vector<QTreeWidget*> getTreeWidgets();
+
      void filterFirewallsFromSelection(
          std::vector<libfwbuilder::FWObject*> &so,
          std::set<libfwbuilder::Firewall*> &fo);

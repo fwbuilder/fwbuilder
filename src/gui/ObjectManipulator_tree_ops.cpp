@@ -31,6 +31,7 @@
 #include "utils_no_qt.h"
 #include "platforms.h"
 
+#include "listOfLibrariesModel.h"
 #include "ObjectManipulator.h"
 #include "ObjectEditor.h"
 #include "ObjectTreeViewItem.h"
@@ -141,7 +142,6 @@ using namespace libfwbuilder;
 #define OBJTREEVIEW_WIDGET_NAME  "ObjTreeView"
 
 
-
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
@@ -246,11 +246,11 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
 {
     removeObjectFromHistory(obj);
 
-//    QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(getCurrentLib()) ];
     int current_lib_idx = m_objectManipulator->libs->currentIndex();
-    QTreeWidget *objTreeView = idxToTrees[current_lib_idx];
+
+    ObjectTreeView *objTreeView = libs_model->getTreeWidget(current_lib_idx);
     assert(objTreeView);
-    dynamic_cast<ObjectTreeView*>(objTreeView)->clearLastSelected();
+    objTreeView->clearLastSelected();
 
     ObjectTreeViewItem *itm = allItems[obj];
     allItems[obj] = NULL;
@@ -258,6 +258,11 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
     {
         itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
         delete itm;
+    }
+
+    if (Library::isA(obj))
+    {
+        removeLib(obj);
     }
 }
 
@@ -281,33 +286,16 @@ void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
                  << "history.size()=" << history.size();
 
     if (history.empty()) mw->enableBackAction();
-
-#if 0
-    int obj_id = obj->getId();
-    list<HistoryItem> tmp_list;
-    while (!history.empty())
-    {
-        HistoryItem itm = history.top();
-        history.pop();
-        if (obj_id == itm.id()) continue;
-        tmp_list.push_back(itm);
-    }
-
-    while (!tmp_list.empty())
-    {
-        history.push(tmp_list.back());
-        tmp_list.pop_back();
-    }
-#endif
 }
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
     QString clr = lib->getStr("color").c_str();
-    int index = getIdxForLib(lib);
-    if (index >= 0)
+    QModelIndex index = libs_model->getIdxForLib(lib);
+    if (index.isValid())
     {
-        QTreeWidget *objTreeView = idxToTrees[index];
+        QTreeWidget *objTreeView = libs_model->getTreeWidget(index);
+
         if (clr=="" || clr=="#000000" || clr=="black") clr="#FFFFFF";
         QPalette palette = objTreeView->palette();
         palette.setColor(QPalette::Active, QPalette::Base, QColor( clr ));
@@ -318,11 +306,14 @@ void ObjectManipulator::updateLibColor(FWObject *lib)
 
 void ObjectManipulator::updateLibName(FWObject *lib)
 {
-    int index = getIdxForLib(lib);
-    if (index >= 0)
+    QModelIndex index = libs_model->getIdxForLib(lib);
+    if (index.isValid())
     {
         QString newlibname = QString::fromUtf8(lib->getName().c_str());
-        m_objectManipulator->libs->setItemText(index, newlibname);
+        libs_model->setName(index, newlibname);
+        libs_model->sort(0, Qt::AscendingOrder);
+        QModelIndex lib_idx = libs_model->getIdxForLib(lib);
+        m_objectManipulator->libs->setCurrentIndex(lib_idx.row());
     }
 }
 
@@ -366,28 +357,23 @@ void ObjectManipulator::clearObjects()
 
     while (history.size()!=0) history.pop_back();
 
-    int N = m_objectManipulator->libs->count();
-
-    if (fwbdebug)
-    {
-        qDebug("ObjectManipulator::clearObjects %d libs, "
-               "idxToLibs size: %d, idxToTrees size: %d", N,
-               int(idxToLibs.size()),
-               int(idxToTrees.size()));
-    }
+    int N = libs_model->rowCount();
 
     for (int i=N-1; i>=0; i--)
     {
-        QTreeWidget *otv = idxToTrees[i];
-        assert(otv!=NULL);
-        m_objectManipulator->widgetStack->removeWidget( otv );
+
+        QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
+        if (objTreeView == NULL) continue;
+        m_objectManipulator->widgetStack->removeWidget(objTreeView);
        // delete otv;
 
         removeLib(i);
     }
-    idxToLibs.clear();
-    idxToTrees.clear();
-    m_objectManipulator->libs->clear();
+
+    libs_model->removeRows(0, libs_model->rowCount());
+
+    libs_model->addStaticItems();
+    
     current_tree_view = NULL;
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
@@ -448,29 +434,30 @@ void ObjectManipulator::loadObjects()
 
 void ObjectManipulator::addLib(FWObject *lib)
 {
-    if (fwbdebug) qDebug("Object Manipulator::addLib lib: %s",
-                         lib->getName().c_str());
+    if (fwbdebug) qDebug() << "Object Manipulator::addLib lib: " << lib->getName().c_str();
 
     ObjectTreeView *objTreeView = new ObjectTreeView(
         m_project, m_objectManipulator->widgetStack, OBJTREEVIEW_WIDGET_NAME );
 
     QString newlibname = QString::fromUtf8(lib->getName().c_str());
-    int N = m_objectManipulator->libs->count();
-    int idx = 0;
-    vector<FWObject*>::iterator  i1=idxToLibs.begin();
-    vector<QTreeWidget*>::iterator i2=idxToTrees.begin();
-    for ( ; idx<N; ++idx,++i1,++i2)
-        if ( m_objectManipulator->libs->itemText(idx) > newlibname ) break;
+
+    int idx = libs_model->rowCount();
+    if (fwbdebug) qDebug() << "Adding at idx=" << idx;
 
     QPixmap pm;
     doSetObjectIcon(lib, &pm, 0);
 
-    m_objectManipulator->libs->insertItem( idx, pm, newlibname);
+    libs_model->insertRows(idx, 1);
+    QModelIndex model_idx = libs_model->index(idx, 0);
+    libs_model->setData(model_idx, newlibname, lib, objTreeView);
+    libs_model->sort(0, Qt::AscendingOrder);
 
-    m_objectManipulator->libs->setCurrentIndex(idx);
+    // after sorting the row of the new library may be different from where we added it
+    QModelIndex lib_idx = libs_model->getIdxForLib(lib);
+    m_objectManipulator->libs->setCurrentIndex(lib_idx.row());
 
-    idxToLibs.insert(i1, lib);
-    idxToTrees.insert(i2, objTreeView);
+
+
 
     QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHorizontalStretch(0);
@@ -542,25 +529,20 @@ void ObjectManipulator::addLib(FWObject *lib)
 
 void ObjectManipulator::removeLib(FWObject* lib)
 {
-    removeLib( getIdxForLib(lib) );
+    if (fwbdebug) qDebug() << "ObjectManipulator::removeLib lib=" << lib;
+
+    QModelIndex idx = libs_model->getIdxForLib(lib);
+    if (idx.isValid())
+        removeLib( idx.row() );
+
 }
 
-void ObjectManipulator::removeLib(int id)
+void ObjectManipulator::removeLib(int row)
 {
-    int N = m_objectManipulator->libs->count();
-    int idx = 0;
-    vector<FWObject*>::iterator  i1 = idxToLibs.begin();
-    vector<QTreeWidget*>::iterator i2 = idxToTrees.begin();
-    for ( ; idx<N; ++idx,++i1,++i2)
-    {
-        if ( idx==id )
-        {
-            m_objectManipulator->libs->removeItem( idx );
-            idxToLibs.erase(i1);
-            idxToTrees.erase(i2);
-            break;
-        }
-    }
+    if (fwbdebug) qDebug() << "ObjectManipulator::removeLib row=" << row;
+    libs_model->removeRows(row, 1);
+    m_objectManipulator->libs->setCurrentIndex(libs_model->rowCount() - 1);
+    //libs_model->reset();
 }
 
 void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm)

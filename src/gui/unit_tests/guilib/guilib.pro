@@ -34,6 +34,7 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../SSHIOS.cpp \
     ../../debugDialog.cpp \
     ../../findDialog.cpp \
+	../../listOfLibrariesModel.cpp \
     ../../longTextDialog.cpp \
     ../../newGroupDialog.cpp \
     ../../filePropDialog.cpp \
@@ -210,6 +211,7 @@ HEADERS += ../../../../config.h \
     ../../SSHIOS.h \
     ../../debugDialog.h \
     ../../findDialog.h \
+	../../listOfLibrariesModel.h \
     ../../longTextDialog.h \
     ../../newGroupDialog.h \
     ../../filePropDialog.h \

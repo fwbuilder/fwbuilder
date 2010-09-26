@@ -1,4 +1,14 @@
-2010-09-25  Vadim Kurland  <vadim@vk.crocodile.org>
+2010-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* listOfLibrariesModel.cpp (ListOfLibrariesModel::addStaticItems):
+	fixed #1728 "Update Library drop down menu". Library drop down
+	list shows an item "Object libraries:" at the top that can not be
+	selected and that always stays on top as libraries are added,
+	removed and renamed. The list always stays sorted in ascending
+	order. Library names are indented by 2 spaces to make them
+	visually distinguishable from the prompt item at the
+	top. Implementation uses class ListOfLibrariesModel that inherits
+	QStringListModel.
 
 	* PrefsDialog.cpp (PrefsDialog::PrefsDialog): fixed #1739 "remove
 	"tooltip delay" input form preferences dialog". Qt4 does not allow

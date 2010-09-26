@@ -30,6 +30,7 @@
 #include "platforms.h"
 #include "events.h"
 
+#include "listOfLibrariesModel.h"
 #include "ObjectManipulator.h"
 #include "ObjectEditor.h"
 #include "ObjectTreeViewItem.h"
@@ -81,7 +82,7 @@ void ObjectManipulator::moveObj(QAction* action)
     ot->freezeSelection(true);
     FWObject *obj;
 
-    FWObject *targetLib   = idxToLibs[libid];
+    FWObject *targetLib = libs_model->getLibrary(libid);
 
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
@@ -233,7 +234,9 @@ void ObjectManipulator::duplicateObj(QAction *action)
     {
         obj= *i;
         if ( FWBTree().isSystem(obj) || Interface::isA(obj) ) continue;
-        FWObject *cl = idxToLibs[libid];
+
+        FWObject *cl = libs_model->getLibrary(libid);
+
         nobj = duplicateObject(cl, obj);
     }
     if (nobj) editObject(nobj);

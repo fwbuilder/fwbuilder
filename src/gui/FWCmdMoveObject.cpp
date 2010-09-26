@@ -28,6 +28,7 @@
 #include "FWCmdChange.h"
 #include "FWCmdMoveObject.h"
 #include "FWWindow.h"
+#include "FWBSettings.h"
 #include "events.h"
 
 #include "fwbuilder/Firewall.h"
@@ -164,9 +165,18 @@ void FWCmdMoveObject::notify()
     {
         if (Library::isA(obj))
         {
-            // looks like the object that moved into Deleted Objects is
-            // another library. Show Deleted Objects library.
-            new_obj = current_parent;
+//             // See #1740
+//             // looks like the object that moved into Deleted Objects is
+//             // another library. Show Deleted Objects library if it is enabled.
+//             // 
+//             if (fwbdebug)
+//                 qDebug() << "Moved library to Deleted objects"
+//                          << "old_parent=" << old_parent;
+
+//             if (st->getBool("UI/ShowDeletedObjects"))
+                new_obj = current_parent;
+//             else
+//                 new_obj = old_parent;  // this does not work!
         }else
             new_obj = old_parent;
     } else

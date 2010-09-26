@@ -31,7 +31,7 @@
 #include "platforms.h"
 #include "events.h"
 
-
+#include "listOfLibrariesModel.h"
 #include "ProjectPanel.h"
 #include "ObjectManipulator.h"
 #include "ObjectEditor.h"
@@ -99,11 +99,14 @@ using namespace std;
 using namespace libfwbuilder;
 
 
+
+
 HistoryItem::~HistoryItem() {}
 
 ObjectManipulator::~ObjectManipulator()
 {
     delete m_objectManipulator;
+    delete libs_model;
 }
 
 ObjectManipulator::ObjectManipulator(QWidget *parent):
@@ -112,6 +115,9 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     m_objectManipulator = new Ui::ObjectManipulator_q;
     m_objectManipulator->setupUi(this);
     setObjectName(tr("Object Manipulator"));
+
+    libs_model = new ListOfLibrariesModel();
+    m_objectManipulator->libs->setModel(libs_model);
 
     m_project = NULL;
 
@@ -131,6 +137,18 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
 void ObjectManipulator::setupProject(ProjectPanel *project)
 {
     m_project = project;
+}
+
+vector<QTreeWidget*> ObjectManipulator::getTreeWidgets()
+{
+    vector<QTreeWidget*> res;
+    for (int i=0; i<libs_model->rowCount(); ++i)
+    {
+        QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
+        if (objTreeView == NULL) continue;
+        res.push_back(objTreeView);
+    }
+    return res;
 }
 
 /*
@@ -162,28 +180,28 @@ void ObjectManipulator::showDeletedObjects(bool f)
             m_project->db()->add(dobj);
         }
 
-        int idx = getIdxForLib(dobj);
+        QModelIndex idx = libs_model->getIdxForLib(dobj);
 
         if (fwbdebug)
-            qDebug("ObjectManipulator::showDeletedObjects idx=%d", idx);
+            qDebug("ObjectManipulator::showDeletedObjects idx.row()=%d", idx.row());
 
         if (f)
         {
-            if (idx>=0) return;
+            if (idx.isValid()) return;
             addLib( dobj );
             openLib( dobj );
         } else
         {
-            if (idx<0) return;
+            if (!idx.isValid()) return;
 
-            QTreeWidget *otv = idxToTrees[idx];
+            QTreeWidget *otv = libs_model->getTreeWidget(idx);
 
             if (fwbdebug)
                 qDebug("ObjectManipulator::showDeletedObjects otv=%p", otv);
 
             assert(otv!=NULL);
             m_objectManipulator->widgetStack->removeWidget( otv );
-            removeLib(idx);
+            removeLib(idx.row());
         }
     }
     catch(FWException &ex)
@@ -192,25 +210,6 @@ void ObjectManipulator::showDeletedObjects(bool f)
  * objects" library yet
  */
     }
-}
-
-int ObjectManipulator::getIdxForLib(FWObject* lib)
-{
-    if (fwbdebug)
-        qDebug() << "ObjectManipulator::getIdxForLib"
-                 << "lib=" << lib->getName().c_str();
-
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
-    {
-        if ( idxToLibs[i]->getId() == lib->getId() )
-        {
-            if (fwbdebug) qDebug() << "Index=" << i;
-            return i;
-        }
-    }
-    if (fwbdebug) qDebug() << "Library not found";
-
-    return -1;
 }
 
 QString ObjectManipulator::getStandardName(FWObject *parent,
@@ -409,24 +408,25 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         FWObject *cl = getCurrentLib();
         vector<FWObject*>::iterator i;
 
-        for (i=idxToLibs.begin(); i!=idxToLibs.end(); ++i,++libid)
+        int N = libs_model->rowCount();
+        for (int i=0 ; i<N; ++i)
         {
-            FWObject *lib   = *i;
-
+            QModelIndex idx = libs_model->index(i, 0);
+            FWObject *lib = libs_model->getLibrary(idx);
+            if (lib == NULL) continue;
             if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
                  lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
                  lib->isReadOnly())
                 continue;
+            if (lib == cl) continue; // skip current library
 
             dupID = duptargets->addAction(
                 tr("place in library %1").arg(
                     QString::fromUtf8(lib->getName().c_str())));
             dupID->setData(libid);
 
-            /* can't move to the same library or if selected object is
-             * a library
-             */
-            if (!libSelected && lib!=cl)
+            // can't move to the same library
+            if (!libSelected)
             {
                 moveTargetsCounter++;
                 QAction* mact = movetargets->addAction(
@@ -436,7 +436,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             }
         }
     }
-
+    
     popup_menu->addSeparator();
 
     QAction *copyID = popup_menu->addAction(tr("Copy"), this, SLOT(copyObj()));
@@ -451,7 +451,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     popup_menu->addSeparator();
 
     QList<QAction*> AddObjectActions;
-
+    
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
 
@@ -686,7 +686,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
         popup_menu->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
     }
-
+    
     popup_menu->addSeparator();
     popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) )
             ->setDisabled(getCurrentObjectTree()->getNumSelected()==1);
@@ -850,7 +850,11 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     FWObject *del_obj_library =
         m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
 
+    if (fwbdebug) qDebug() << "ObjectManipulator::getMenuState del_obj_library=" << del_obj_library;
+
     FWObject *current_library = getCurrentLib();
+
+    if (fwbdebug) qDebug() << "ObjectManipulator::getMenuState current_library=" << current_library;
 
     if (getCurrentObjectTree()==NULL) return;
 
@@ -1255,10 +1259,10 @@ void ObjectManipulator::openLibForObject(FWObject *obj)
     // library, getIdxForLib() is not going to find it.
     if (FWObjectDatabase::isA(obj->getParent()))
         m_objectManipulator->libs->setCurrentIndex(
-            getIdxForLib(obj->getLibrary()));
+            libs_model->getIdxForLib(obj->getLibrary()).row());
     else
         m_objectManipulator->libs->setCurrentIndex(
-            getIdxForLib(obj->getParent()->getLibrary()));
+            libs_model->getIdxForLib(obj->getParent()->getLibrary()).row());
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
@@ -1300,11 +1304,14 @@ void ObjectManipulator::expandObjectInTree(FWObject *obj)
     }
 }
 
-void ObjectManipulator::libChangedById(int id)
+void ObjectManipulator::libChangedById(int obj_id)
 {
-    for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        if (idxToLibs[i]->getId()==id)
+        QModelIndex idx = libs_model->index(i, 0);
+        FWObject *l = libs_model->getLibrary(idx);
+        if (l == NULL) continue;
+        if (l->getId() == obj_id)
         {
             libChanged(i);
             m_objectManipulator->libs->setCurrentIndex(i);
@@ -1317,49 +1324,61 @@ void ObjectManipulator::changeFirstNotSystemLib()
 {
     QString sid2 = "syslib000";
     QString sid3 = "syslib001";
-    for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
+
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        QString sid1 = FWObjectDatabase::getStringId(idxToLibs[i]->getId()).c_str();
-        if ( sid1 != sid2)
+        QModelIndex idx = libs_model->index(i, 0);
+        FWObject *l = libs_model->getLibrary(idx);
+        if (l == NULL) continue;
+        QString sid1 = FWObjectDatabase::getStringId(l->getId()).c_str();
+        if ( sid1 != sid2 && sid1!=sid3)
         {
-            if (sid1!=sid3)
-            {
-                libChanged(i);
-                m_objectManipulator->libs->setCurrentIndex(i);
-                return;
-            }
+            libChanged(i);
+            m_objectManipulator->libs->setCurrentIndex(i);
+            return;
         }
     }
 }
 
-void ObjectManipulator::libChanged(int ln)
+void ObjectManipulator::libChanged(int list_row)
 {
-    if (fwbdebug) qDebug() << "ObjectManipulator::libChanged ln=" << ln;
+    if (fwbdebug) qDebug() << "ObjectManipulator::libChanged list_row=" << list_row;
 
-    previous_lib_index = ln;
+    previous_lib_index = list_row;
 
-    QTreeWidget *lv = idxToTrees[ln];
-    assert(lv!=NULL);
+    QTreeWidget *objTreeView = libs_model->getTreeWidget(list_row);
+    if (objTreeView == NULL)
+    {
+        if (fwbdebug)
+        {
+            qDebug() << "There is no object tree widget associated with this row";
+            qDebug() << "Scanning all rows:";
 
-    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(lv->currentItem());
+            for (int i=0; i<libs_model->rowCount(); ++i)
+            {
+                qDebug() << "Row" << i;
+
+                QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
+                FWObject *lib = libs_model->getLibrary(i);
+
+                qDebug() << "lib=" << lib << "objTreeView=" << objTreeView;
+            }
+        }
+        return;
+    }
+
+    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(objTreeView->currentItem());
     if (otvi == NULL)
     {
-        if (lv->invisibleRootItem()->childCount() > 0)
+        if (objTreeView->invisibleRootItem()->childCount() > 0)
             otvi = dynamic_cast<ObjectTreeViewItem*>(
-                lv->invisibleRootItem()->child(0));
+                objTreeView->invisibleRootItem()->child(0));
         else
             assert(FALSE);
     }
 
     showObjectInTree( otvi );
-
-// switching libraries does not open new lib in the editor
-//    if (mw->isEditorVisible()) mw->openEditor(getSelectedObject());
-
-    //updateCreateObjectMenu( idxToLibs[ln] );
-
     QCoreApplication::postEvent(mw, new updateGUIStateEvent());
-
     return;
 }
 
@@ -1382,7 +1401,9 @@ FWObject* ObjectManipulator::getCurrentLib()
 {
     int idx = m_objectManipulator->libs->currentIndex();
     if (idx == -1 ) return NULL;
-    FWObject *lib = idxToLibs[idx];
+
+    FWObject *lib = libs_model->getLibrary(idx);
+
     if (fwbdebug)
     {
         qDebug("ObjectManipulator::getCurrentLib(): idx=%d  lib=%p", idx, lib);
@@ -1393,7 +1414,9 @@ FWObject* ObjectManipulator::getCurrentLib()
 
 ObjectTreeView* ObjectManipulator::getCurrentObjectTree()
 {
-    return current_tree_view;
+    return libs_model->getTreeWidget(m_objectManipulator->libs->currentIndex());
+
+//    return current_tree_view;
 }
 
 void ObjectManipulator::openLib(FWObject *obj)
@@ -1417,7 +1440,8 @@ void ObjectManipulator::select()
 
     if (currentObj==NULL) return;
 
-    m_objectManipulator->libs->setCurrentIndex(getIdxForLib(currentObj->getLibrary()));
+    m_objectManipulator->libs->setCurrentIndex(
+        libs_model->getIdxForLib(currentObj->getLibrary()).row());
 
     // TODO: I forget why do we need flag "active", check this.
     ObjectTreeViewItem *otvi = allItems[currentObj];
@@ -1434,9 +1458,13 @@ void ObjectManipulator::unselect()
     FWObject *currentObj = getSelectedObject();
     if (currentObj==NULL) return;
 
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
-        idxToTrees[i]->clearSelection();
+    for (int i=0; i<libs_model->rowCount(); ++i)
+    {
+        QTreeWidget *otv = libs_model->getTreeWidget(i);
+        if (otv == NULL) continue;
 
+        otv->clearSelection();
+    }
     active=false;
 }
 
@@ -1504,12 +1532,6 @@ FWObject* ObjectManipulator::getSelectedObject()
         return otvi->getFWObject();
     }
     return NULL;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    if (so.size() > 0) return so.front();
-    return NULL;
-
-//    return currentObj;
 }
 
 void ObjectManipulator::reopenCurrentItemParent()
@@ -1525,11 +1547,12 @@ void ObjectManipulator::reopenCurrentItemParent()
 
 void ObjectManipulator::loadSectionSizes()
 {
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        ObjectTreeView *objTreeView =
-            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
-        FWObject *lib = idxToLibs[i];
+        QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
+        FWObject *lib = libs_model->getLibrary(i);
+        if (lib == NULL || objTreeView == NULL) continue;
+
         objTreeView->header()->resizeSection(
             0,
             st->getTreeSectionSize(
@@ -1543,11 +1566,12 @@ void ObjectManipulator::loadSectionSizes()
 
 void ObjectManipulator::saveSectionSizes()
 {
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        ObjectTreeView *objTreeView =
-            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
-        FWObject *lib = idxToLibs[i];
+        QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
+        FWObject *lib = libs_model->getLibrary(i);
+        if (lib == NULL || objTreeView == NULL) continue;
+
         st->setTreeSectionSize(
             m_project->getFileName(), lib->getName().c_str(), 0,
             objTreeView->header()->sectionSize(0));
@@ -1559,11 +1583,16 @@ void ObjectManipulator::saveSectionSizes()
 
 void ObjectManipulator::loadExpandedTreeItems()
 {
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    if (fwbdebug) qDebug() << "ObjectManipulator::loadExpandedTreeItems()";
+
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        ObjectTreeView *objTreeView =
-            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
-        FWObject *lib = idxToLibs[i];
+        if (fwbdebug) qDebug() << "i=" << i;
+
+        ObjectTreeView *objTreeView = libs_model->getTreeWidget(i);
+        FWObject *lib = libs_model->getLibrary(i);
+        if (lib == NULL || objTreeView == NULL) continue;
+
         set<int> expanded_objects;
         st->getExpandedObjectIds(m_project->getFileName(),
                                  lib->getName().c_str(),
@@ -1577,11 +1606,12 @@ void ObjectManipulator::loadExpandedTreeItems()
 
 void ObjectManipulator::saveExpandedTreeItems()
 {
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        ObjectTreeView *objTreeView =
-            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
-        FWObject *lib = idxToLibs[i];
+        ObjectTreeView *objTreeView = libs_model->getTreeWidget(i);
+        FWObject *lib = libs_model->getLibrary(i);
+        if (lib == NULL || objTreeView == NULL) continue;
+
         st->setExpandedObjectIds(m_project->getFileName(),
                                  lib->getName().c_str(),
                                  objTreeView->getListOfExpandedObjectIds());
@@ -1590,10 +1620,10 @@ void ObjectManipulator::saveExpandedTreeItems()
 
 void ObjectManipulator::setAttributesColumnEnabled(bool)
 {
-    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    for (int i=0; i<libs_model->rowCount(); ++i)
     {
-        ObjectTreeView *objTreeView =
-            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        ObjectTreeView *objTreeView = libs_model->getTreeWidget(i);
+        if (objTreeView == NULL) continue;
         objTreeView->showOrHideAttributesColumn();
     }
 }

@@ -30,6 +30,7 @@
 #include "platforms.h"
 #include "events.h"
 
+#include "listOfLibrariesModel.h"
 #include "ObjectManipulator.h"
 #include "ObjectTreeView.h"
 #include "newFirewallDialog.h"
@@ -285,7 +286,9 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
             break;
         }
 
-        lib= idxToLibs[i];
+//        lib = idxToLibs[i];
+
+        lib = libs_model->getLibrary(i);
 
         if (fwbdebug)
         {
@@ -344,7 +347,10 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
             lib=getCurrentLib();
             break;
         }
-        lib= idxToLibs[i];
+//        lib = idxToLibs[i];
+
+        lib = libs_model->getLibrary(i);
+
         i++;
     }
 

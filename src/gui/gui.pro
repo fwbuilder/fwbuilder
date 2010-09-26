@@ -35,6 +35,7 @@ HEADERS += ../../config.h \
     SSHProcurve.h \
     debugDialog.h \
     findDialog.h \
+	listOfLibrariesModel.h \
     longTextDialog.h \
     newGroupDialog.h \
     filePropDialog.h \
@@ -212,6 +213,7 @@ SOURCES += ProjectPanel.cpp \
     SSHProcurve.cpp \
     debugDialog.cpp \
     findDialog.cpp \
+	listOfLibrariesModel.cpp \
     longTextDialog.cpp \
     newGroupDialog.cpp \
     filePropDialog.cpp \
