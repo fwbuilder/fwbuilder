@@ -229,6 +229,9 @@ void FWBSettings::init()
     ok = contains(startupActionSetpath);
     if (!ok) setStartupAction(2);
 
+    ok = getShowDirectionText();
+    if (!ok) setShowDirectionText(true);
+
 #ifdef _WIN32
     QString wd = getWDir().replace('/','\\');
 #else

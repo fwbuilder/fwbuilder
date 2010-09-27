@@ -1,5 +1,15 @@
 2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (showToolTip): fixed #1744 "Add tooltip to the
+	rule number". The column in the RuleSetView? where rule number is
+	shown now has a tooltip to remind the user that they can click
+	right mouse button to the the context menu and use keyboard
+	shortcut "x" to compile the rule
+
+	* FWBSettings.cpp (init): fixed #1743 "change default for the
+	option 'Show text descriptions for direction and action'". The
+	option should be on by default.
+
 	* RuleSetView.cpp (showToolTip): fixed #1730 "Add background help
 	text and images to empty policy window". Showing tooltip in the
 	empty space in the rule set view, this tooltip provides hints on

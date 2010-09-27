@@ -2489,42 +2489,52 @@ Policy, NAT and routing rules are shown here.\
 </html>";
 
         QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this);
-
-        // QToolTip::hideText();
         return true;
     }
 
     RuleSetModel* md = ((RuleSetModel*)model());
     RuleNode *node = md->nodeFromIndex(index);
+    int column = index.column();
 
     if (node->type == RuleNode::Rule)
     {
         QVariant v = index.data(Qt::DisplayRole);
         ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
 
-        switch (colDesc.type)
+        if (column == 0)
         {
+            // rule number column
+            toolTip = "<html>\
+<b>To open menu of operations</b> such as 'add rule', 'remove rule' etc, click right mouse button<br>\
+<b>To compile the rule</b> and see generated firewall configuration, first select it by clicking inside of it and then hit 'X' on keyboard\
+</html>";
+            QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this);
+            return true;
+        } else
+        {
+            switch (colDesc.type)
+            {
             case ColDesc::Comment:
                 if (!st->getClipComment()) return false;
                 toolTip = v.value<QString>();
                 break;
 
             case ColDesc::Options:
+            {
+                Rule* rule = node->rule;
+                if (PolicyRule::cast(rule)!=NULL )
                 {
-                    Rule* rule = node->rule;
-                    if (PolicyRule::cast(rule)!=NULL )
-                    {
-                        if (!isDefaultPolicyRuleOptions(rule->getOptionsObject())) {
-                            toolTip = FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
-                        }
-                    }
-                    if (NATRule::cast(rule)!=NULL )
-                    {
-                        if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
-                            toolTip = FWObjectPropertiesFactory::getNATRuleOptions(rule);
+                    if (!isDefaultPolicyRuleOptions(rule->getOptionsObject())) {
+                        toolTip = FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
                     }
                 }
-                break;
+                if (NATRule::cast(rule)!=NULL )
+                {
+                    if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
+                        toolTip = FWObjectPropertiesFactory::getNATRuleOptions(rule);
+                }
+            }
+            break;
 
             case ColDesc::Direction:
                 toolTip = v.value<QString>();
@@ -2538,6 +2548,7 @@ Policy, NAT and routing rules are shown here.\
                 FWObject *object = getObject(pos, index);
                 if (object == 0) return true;
                 toolTip = FWObjectPropertiesFactory::getObjectPropertiesDetailed(object, true, true);
+            }
         }
     }
     else
