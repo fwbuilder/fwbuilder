@@ -2472,18 +2472,30 @@ bool RuleSetView::showToolTip(QEvent *event)
     QHelpEvent *he = (QHelpEvent*) event;
 
     QPoint pos = viewport()->mapFromGlobal(he->globalPos());
+    QString toolTip="";
 
     QModelIndex index = indexAt(pos);
     if (!index.isValid())
     {
-        QToolTip::hideText();
-        return false;
+        toolTip = "<html>\
+Policy, NAT and routing rules are shown here.\
+<ul>\
+<li><b>Rules use objects</b>, if you want to use an object like IP address in a rule,\
+ you need to first create it in the object tree</li>\
+<li><b>Drag and drop</b> objects from the tree to the desired field (source, destination, etc.) in the rule.</li>\
+<li><b>To add a rule</b>, click the '+' button at the top of the window</li>\
+<li><b>To open menu of operations</b> such as 'add rule', 'remove rule' etc, click right mouse button</li>\
+</ul>\
+</html>";
+
+        QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this);
+
+        // QToolTip::hideText();
+        return true;
     }
 
     RuleSetModel* md = ((RuleSetModel*)model());
     RuleNode *node = md->nodeFromIndex(index);
-
-    QString toolTip="";
 
     if (node->type == RuleNode::Rule)
     {
@@ -2539,13 +2551,15 @@ bool RuleSetView::showToolTip(QEvent *event)
         return true;
     }
 
-    QRect   cr = visualRect(index);
+    if (fwbdebug)
+        qDebug() << "Toolip: " << toolTip;
 
-    cr = QRect(
-            cr.left() - horizontalOffset() - 2,
-            cr.top() - verticalOffset() - 2,
-            cr.width() + 4,
-            cr.height() + 4);
+    QRect cr = visualRect(index);
+
+    cr = QRect(cr.left() - horizontalOffset() - 2,
+               cr.top() - verticalOffset() - 2,
+               cr.width() + 4,
+               cr.height() + 4);
 
     QRect global = QRect(
         viewport()->mapToGlobal(cr.topLeft()),

@@ -1,3 +1,10 @@
+2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (showToolTip): fixed #1730 "Add background help
+	text and images to empty policy window". Showing tooltip in the
+	empty space in the rule set view, this tooltip provides hints on
+	how to edit rules which should be useful for the beginners.
+
 2010-09-26  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
@@ -8,7 +15,7 @@
 	deleted objects" was turned off in the Preferences dialog and user
 	deleted a library, it remained in the drop-down list of libraries
 	and its object tree was still displayed in the object tree panel.
-	
+
 	* listOfLibrariesModel.cpp (ListOfLibrariesModel::addStaticItems):
 	fixed #1728 "Update Library drop down menu". Library drop down
 	list shows an item "Object libraries:" at the top that can not be
