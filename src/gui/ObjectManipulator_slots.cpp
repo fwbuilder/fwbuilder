@@ -46,6 +46,7 @@
 #include "FWWindow.h"
 #include "ProjectPanel.h"
 #include "ConfirmDeleteObjectDialog.h"
+#include "FWCmdMoveObject.h"
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/FWObject.h"
@@ -68,6 +69,30 @@ using namespace std;
 using namespace libfwbuilder;
 
 
+void ObjectManipulator::undeleteLibrary()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+
+    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
+    if (obj==NULL) return;
+
+    // check that obj is in Deleted objects library. We do not show menu item
+    // "Undelete" if it isnt, but will double check anyway
+    if (Library::isA(obj) &&
+        obj->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
+    {
+        map<int, set<FWObject*> > reference_holders;
+        FWCmdMoveObject *cmd = new FWCmdMoveObject(
+            m_project,
+            obj->getParent(),
+            obj->getRoot(),
+            obj,
+            reference_holders,
+            QString("Undelete library object"),
+            0);
+        m_project->undoStack->push(cmd);
+    }
+}
 
 /* 
  * moveObj is a slot called from the context menu

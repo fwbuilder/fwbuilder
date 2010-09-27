@@ -149,11 +149,27 @@ void FWCmdMoveObject::notify()
     // QCoreApplication::postEvent(
     //     mw, new reloadObjectTreeImmediatelyEvent(filename));
 
-    QCoreApplication::postEvent(
-        mw, new removeObjectFromTreeEvent(filename, obj->getId()));
-    QCoreApplication::postEvent(
-        mw, new insertObjectInTreeEvent(filename, current_parent->getId(),
-                                        obj->getId()));
+    if (Library::isA(obj) && FWObjectDatabase::isA(obj->getParent()))
+    {
+        // library was undeleted abd moved from Deleted obj library to root
+
+        QCoreApplication::postEvent(
+            mw, new removeObjectFromTreeEvent(filename, obj->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new addTreePageEvent(filename, obj->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new updateObjectAndSubtreeImmediatelyEvent(filename, obj->getId()));
+
+    } else
+    {
+        QCoreApplication::postEvent(
+            mw, new removeObjectFromTreeEvent(filename, obj->getId()));
+        QCoreApplication::postEvent(
+            mw, new insertObjectInTreeEvent(filename, current_parent->getId(),
+                                            obj->getId()));
+    }
 
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(filename, old_parent->getId()));

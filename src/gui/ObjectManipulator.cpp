@@ -437,6 +437,13 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         }
     }
     
+    if (Library::isA(currentObj) &&
+        currentObj->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
+    {
+        popup_menu->addAction( tr("Undelete"), this, SLOT(undeleteLibrary()));
+    }
+
+
     popup_menu->addSeparator();
 
     QAction *copyID = popup_menu->addAction(tr("Copy"), this, SLOT(copyObj()));

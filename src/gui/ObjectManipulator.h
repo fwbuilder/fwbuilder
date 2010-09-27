@@ -243,6 +243,8 @@ public slots:
      void duplicateObj(QAction*);
      void moveObj(QAction*);
 
+     void undeleteLibrary();
+     
      void groupObjects();
 
      void openObjectInTree(QTreeWidgetItem *otvi);
