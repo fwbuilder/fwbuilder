@@ -1017,15 +1017,17 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
 
             if (!ropt->getStr("log_level").empty())
             {
-                options << qMakePair(QObject::tr("Log Level:"),
-                                     QString(getScreenName(ropt->getStr("log_level").c_str(),
-                                                           getLogLevels(platform.c_str()))));
+                options << qMakePair(
+                    QObject::tr("Log Level:"),
+                    QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                          getLogLevels(platform.c_str()))));
             }
 
             if (ropt->getInt("ulog_nlgroup")>1)
             {
-                options << qMakePair(QObject::tr("Netlink group:"),
-                                     QString(ropt->getStr("ulog_nlgroup").c_str()));
+                options << qMakePair(
+                    QObject::tr("Netlink group:"),
+                    QString(ropt->getStr("ulog_nlgroup").c_str()));
             }
             
             if (ropt->getInt("limit_value")>0)
@@ -1068,14 +1070,16 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                                          getLimitSuffixes(platform.c_str()));
                 }
 
-                options << qMakePair(QString("hashlimit name:"),
-                                     QString(ropt->getStr("hashlimit_name").c_str()));
+                options << qMakePair(
+                    QString("hashlimit name:"),
+                    QString(ropt->getStr("hashlimit_name").c_str()));
                 options << qMakePair(QString("hashlimit value:"), arg);
 
                 if (ropt->getInt("hashlimit_burst")>0)
                 {
-                    options << qMakePair(QString("haslimit burst:"),
-                                         QString(ropt->getStr("hashlimit_burst").c_str()));
+                    options << qMakePair(
+                        QString("haslimit burst:"),
+                        QString(ropt->getStr("hashlimit_burst").c_str()));
                 }
             }
             
@@ -1089,26 +1093,31 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
         {
             if (!ropt->getStr("ipf_log_facility").empty())
             {
-                options << qMakePair(QObject::tr("Log facility:"),
-                                     QString(getScreenName(ropt->getStr("ipf_log_facility").c_str(),
-                                                           getLogFacilities(platform.c_str()))));
+                options << qMakePair(
+                    QObject::tr("Log facility:"),
+                    QString(getScreenName(ropt->getStr("ipf_log_facility").c_str(),
+                                          getLogFacilities(platform.c_str()))));
             }
             
             if (!ropt->getStr("log_level").empty())
             {
-                options << qMakePair(QObject::tr("Log level:"),
-                                     QString(getScreenName(ropt->getStr("log_level").c_str(),
-                                                           getLogLevels(platform.c_str()))));
+                options << qMakePair(
+                    QObject::tr("Log level:"),
+                    QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                          getLogLevels(platform.c_str()))));
             }
             
             if (ropt->getBool("ipf_return_icmp_as_dest"))
             {
-                options << qMakePair(QObject::tr("Send 'unreachable'"), QString(""));
+                options << qMakePair(
+                    QObject::tr("Send 'unreachable'"), QString(""));
             }
 
             if (ropt->getBool("ipf_keep_frags"))
             {
-                options << qMakePair(QObject::tr("Keep information on fragmented packets"), QString(""));
+                options << qMakePair(
+                    QObject::tr("Keep information on fragmented packets"),
+                    QString(""));
             }
             
         }else if (platform=="pf")
@@ -1122,13 +1131,15 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
             
             if (ropt->getInt("pf_rule_max_state")>0)
             {
-                options << qMakePair(QObject::tr("Max state:"),
-                                     QString(ropt->getStr("pf_rule_max_state").c_str()));
+                options << qMakePair(
+                    QObject::tr("Max state:"),
+                    QString(ropt->getStr("pf_rule_max_state").c_str()));
             }
             
             if (ropt->getBool("pf_keep_state"))
             {
-                options << qMakePair(QObject::tr("Force 'keep-state'"), QString(""));
+                options << qMakePair(
+                    QObject::tr("Force 'keep-state'"), QString(""));
             }
             if (ropt->getBool("pf_no_sync"))
             {
@@ -1145,13 +1156,16 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
             
             if (ropt->getBool("pf_source_tracking"))
             {
-                options << qMakePair(QObject::tr("Source tracking"), QString(""));
+                options << qMakePair(
+                    QObject::tr("Source tracking"), QString(""));
                 
-                options << qMakePair(QObject::tr("Max src nodes:"),
-                                     QString(ropt->getStr("pf_max_src_nodes").c_str()));
+                options << qMakePair(
+                    QObject::tr("Max src nodes:"),
+                    QString(ropt->getStr("pf_max_src_nodes").c_str()));
                 
-                options << qMakePair(QObject::tr("Max src states:"),
-                                     QString(ropt->getStr("pf_max_src_states").c_str()));
+                options << qMakePair(
+                    QObject::tr("Max src states:"),
+                    QString(ropt->getStr("pf_max_src_states").c_str()));
             }
 
             if (ropt->getBool("pf_synproxy"))
@@ -1171,7 +1185,8 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
         {
             if (ropt->getBool("iosacl_add_mirror_rule"))
             {
-                options << qMakePair(QObject::tr("Add mirrored rule"), QString(""));
+                options << qMakePair(
+                    QObject::tr("Add mirrored rule"), QString(""));
             }
             
         }else if (platform=="pix" || platform=="fwsm")
@@ -1186,25 +1201,33 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 
                 if (!ropt->getStr("log_level").empty())
                 {
-                    options << qMakePair(QObject::tr("Log level:"),
-                                         QString(getScreenName(ropt->getStr("log_level").c_str(),
-                                                               getLogLevels(platform.c_str()))));
+                    options << qMakePair(
+                        QObject::tr("Log level:"),
+                        QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                              getLogLevels(platform.c_str()))));
                 }
                 if (ropt->getInt("log_interval")>0)
                 {
-                    options << qMakePair(QObject::tr("Log interval:"),
-                                         QString(ropt->getStr("log_interval").c_str()));
+                    options << qMakePair(
+                        QObject::tr("Log interval:"),
+                        QString(ropt->getStr("log_interval").c_str()));
                 }
                 
                 if (ropt->getBool("disable_logging_for_this_rule"))
                 {
-                    options << qMakePair(QObject::tr("Disable logging for this rule"), QString(""));
+                    options << qMakePair(
+                        QObject::tr("Disable logging for this rule"), QString(""));
                 }
                 
             } 
         }
-        
     }
+
+    PolicyRule *prule = PolicyRule::cast(rule);
+    if (prule)
+        options << qMakePair(
+            QObject::tr("Logging: "),
+            (prule->getLogging()) ? QObject::tr("on") : QObject::tr("off"));
 
     QStringList res;
     res << "<table>";

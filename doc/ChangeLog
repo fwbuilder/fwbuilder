@@ -1,5 +1,10 @@
 2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (showToolTip): Added text to the tooltips shown
+	for the "Direction" and "Action" rule elements to remind user that
+	to change these rule parameters they need to click right mouse
+	button to open list of possible settings
+
 	* RuleSetView.cpp (showToolTip): fixed #1744 "Add tooltip to the
 	rule number". The column in the RuleSetView? where rule number is
 	shown now has a tooltip to remind the user that they can click

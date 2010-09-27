@@ -2524,24 +2524,27 @@ Policy, NAT and routing rules are shown here.\
                 Rule* rule = node->rule;
                 if (PolicyRule::cast(rule)!=NULL )
                 {
-                    if (!isDefaultPolicyRuleOptions(rule->getOptionsObject())) {
-                        toolTip = FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
-                    }
+//                    if (!isDefaultPolicyRuleOptions(rule->getOptionsObject()))
+                        toolTip =
+                            FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
                 }
                 if (NATRule::cast(rule)!=NULL )
                 {
-                    if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
-                        toolTip = FWObjectPropertiesFactory::getNATRuleOptions(rule);
+//                    if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
+                        toolTip =
+                            FWObjectPropertiesFactory::getNATRuleOptions(rule);
                 }
             }
             break;
 
             case ColDesc::Direction:
-                toolTip = v.value<QString>();
+                toolTip = "<b>Direction:</b> " + v.value<QString>() +
+                    "<br><b>To change the direction</b>, click right mouse button to open the list of possible settings";
                 break;
 
             case ColDesc::Action:
-                toolTip = v.value<ActionDesc>().tooltip;
+                toolTip = v.value<ActionDesc>().tooltip +
+                    "<b>To change the action</b>, click right mouse button to open the list of possible settings";
                 break;
 
             default:
