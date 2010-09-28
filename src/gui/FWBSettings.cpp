@@ -185,6 +185,7 @@ void FWBSettings::init()
         {
             qsrand(time(NULL));
             uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
+            first_run = true;
         }
     }
 

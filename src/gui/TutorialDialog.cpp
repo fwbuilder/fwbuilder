@@ -128,8 +128,16 @@ void TutorialDialog::showPage(int page)
     src.open(QFile::ReadOnly);
     QString text = src.readAll();
     doc->setHtml(text);
-    bool nextPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page+1) + ".html");
-    bool prevPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page-1) + ".html");
+
+    ui->contents->scrollToAnchor("top");
+
+    bool nextPageExists = 
+        QFile::exists(QString(":/Tutorial/") + this->tutorial +
+                      "/html/page" + QString::number(page+1) + ".html");
+    bool prevPageExists =
+        QFile::exists(QString(":/Tutorial/") + this->tutorial +
+                      "/html/page" + QString::number(page-1) + ".html");
+
     ui->next->setEnabled(nextPageExists);
     ui->prev->setEnabled(prevPageExists);
 }

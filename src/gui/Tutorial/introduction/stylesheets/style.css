@@ -1,0 +1,22 @@
+
+p {
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    font-size: medium;
+}
+
+.header td {
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    color: #DDDDDD;
+}
+
+.header th {
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    color: black;
+}
+
+.tip {
+    margin-left: 20px;
+}
+
+img { margin-top: 10px; }
+

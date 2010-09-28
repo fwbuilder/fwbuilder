@@ -1,5 +1,11 @@
 2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* src/gui/Tutorial/introduction/html/page0.html: refs #1737 Added
+	"Quick Start Guide" tutorial that demonstrates basic features and
+	key concepts of Firewall Builder. The tutorial is accessible
+	via Help / Tutorials menu and is shown to the first-time user
+	on the GUI startup instead of the "tip of the day" dialog.
+
 	* FWObjectPropertiesFactory.cpp (getObjectPropertiesDetailed):
 	system folders in the tree now have tooltips that explain what
 	kind of objects belong there.

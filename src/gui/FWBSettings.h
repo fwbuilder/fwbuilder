@@ -58,8 +58,10 @@ class FWBSettings : public QSettings {
  private:
     QSettings *uuid_settings;
     QSettings *ssh_timeout_setings_object;
+    bool first_run;
     
     QString getLabelColorStr(enum LabelColors c);
+
     
  public:
 
@@ -71,6 +73,8 @@ class FWBSettings : public QSettings {
     void init();
     void save();
 
+    bool isFirstRun() { return first_run; }
+    
     QString getWDir();
     void    setWDir( const QString &wd );
 

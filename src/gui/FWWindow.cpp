@@ -513,7 +513,8 @@ void FWWindow::startupLoad()
 
         if (!current_version_http_getter->get(QUrl(url)) && fwbdebug)
         {
-            qDebug() << "HttpGet error: " << current_version_http_getter->getLastError();
+            qDebug() << "HttpGet error: "
+                     << current_version_http_getter->getLastError();
             qDebug() << "Url: " << url;
         }
     }
@@ -533,10 +534,16 @@ void FWWindow::startupLoad()
 
     QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
 
-    if (! st->getBool("UI/NoStartTip"))
+    if (st->isFirstRun())
     {
-        StartTipDialog *stdlg = new StartTipDialog(this);
-        stdlg->run();
+        showTutorial("introduction");
+    } else
+    {
+        if (!st->getBool("UI/NoStartTip"))
+        {
+            StartTipDialog *stdlg = new StartTipDialog(this);
+            stdlg->run();
+        }
     }
 
     QCoreApplication::postEvent(mw, new updateGUIStateEvent());
@@ -1417,7 +1424,7 @@ void FWWindow::showSummary()
  * name of subdirectory under src/gui/Tutorial. Names of tutorials
  * (and directories under src/gui/Tutorial) are always all lower-case.
  */
-void FWWindow::showTutorial(QString tutorial)
+void FWWindow::showTutorial(const QString &tutorial)
 {
     if (fwbdebug)
         qDebug() << "FWWindow::showTutorial:" << tutorial;

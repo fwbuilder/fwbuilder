@@ -784,6 +784,7 @@
       <string>Tutorial</string>
      </property>
      <addaction name="action_getting_started"/>
+     <addaction name="action_introduction"/>
     </widget>
     <addaction name="helpAboutAction"/>
     <addaction name="summary_action"/>
@@ -1390,6 +1391,11 @@
    </property>
    <property name="text">
     <string>Inspect</string>
+   </property>
+  </action>
+  <action name="action_introduction">
+   <property name="text">
+    <string>Introduction</string>
    </property>
   </action>
  </widget>
@@ -2296,6 +2302,22 @@
    <signal>triggered()</signal>
    <receiver>FWBMainWindow_q</receiver>
    <slot>inspect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_introduction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>showTutorial()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
