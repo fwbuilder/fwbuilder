@@ -4,8 +4,8 @@
     <file>Tutorial/introduction/html/page1.html</file>
     <file>Tutorial/introduction/html/page2.html</file>
     <file>Tutorial/introduction/html/page0.html</file>
-    <file>Tutorial/introduction/images/fwbuilder_intro_screenshot_actions_v1_25dpi.png</file>
-    <file>Tutorial/introduction/images/fwbuilder_intro_screenshot_layout_v1_25dpi.png</file>
+    <file>Tutorial/introduction/images/fwbuilder_gui_actions.png</file>
+    <file>Tutorial/introduction/images/fwbuilder_gui_layout.png</file>
     <file alias="Icons/Import-big">Icons/import_64_1.png</file>
     <file alias="Icons/Inspect">Icons/inspect.png</file>
     <file alias="Icons/Tutorial">Icons/tutorial_64.png</file>

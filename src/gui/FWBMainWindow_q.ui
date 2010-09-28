@@ -783,8 +783,8 @@
      <property name="title">
       <string>Tutorial</string>
      </property>
-     <addaction name="action_getting_started"/>
      <addaction name="action_introduction"/>
+     <addaction name="action_getting_started"/>
     </widget>
     <addaction name="helpAboutAction"/>
     <addaction name="summary_action"/>
