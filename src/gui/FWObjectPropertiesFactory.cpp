@@ -38,6 +38,7 @@
 #include "FWObjectPropertiesFactory.h"
 #include "platforms.h"
 #include "DialogFactory.h"
+#include "FWBTree.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
@@ -518,6 +519,90 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         }
     }
 
+    if (FWBTree().isSystem(obj))
+    {
+        QString object_path = obj->getPath(true).c_str();
+
+        if (object_path == "Objects")
+            return QObject::tr("This system folder holds objects that represent <b>IPv4</b> and <b>IPv6</b> addresses and networks");
+
+        if (object_path == "Objects/Addresses")
+            return QObject::tr("This system folder holds objects that represent <b>IPv4</b> and <b>IPv6</b> addresses");
+
+        if (object_path == "Objects/DNS Names")
+            return QObject::tr("This system folder holds objects that represent <b>DNS A</b> records");
+
+        if (object_path == "Objects/Address Tables")
+            return QObject::tr("This system folder holds objects that read <b>IP addresses</b> from external files");
+
+        if (object_path == "Objects/Address Ranges")
+            return QObject::tr("This system folder holds objects that represent <b>IPv4</b> and <b>IPv6</b> address ranges");
+
+        if (object_path == "Objects/Groups")
+            return QObject::tr("This system folder holds objects that represent groups of <b>IPv4</b> and <b>IPv6</b> addresses, networks and other groups");
+
+        if (object_path == "Objects/Hosts")
+            return QObject::tr("This system folder holds objects that represent <b>hosts</b> or <b>servers</b> that have one or more interfaces");
+
+        if (object_path == "Objects/Networks")
+            return QObject::tr("This system folder holds objects that represent <b>IPv4</b> and <b>IPv6</b> networks");
+
+        if (object_path == "Services")
+            return QObject::tr("This system folder holds objects that represent <b>IP, ICMP, TCP and UDP</b> services");
+
+        if (object_path == "Services/Groups")
+            return QObject::tr("This system folder holds objects that represent groups of <b>IP, ICMP, TCP and UDP</b> services");
+
+        if (object_path == "Services/Custom")
+            return QObject::tr("This system folder holds objects that represent <b>custom (user-defined)</b> services");
+
+        if (object_path == "Services/IP")
+            return QObject::tr("This system folder holds objects that represent <b>IP</b> services");
+
+        if (object_path == "Services/ICMP")
+            return QObject::tr("This system folder holds objects that represent <b>ICMP</b> and <b>ICMPv6</b> services");
+        
+        if (object_path == "Services/TCP")
+            return QObject::tr("This system folder holds objects that represent <b>TCP</b> services");
+
+        if (object_path == "Services/UDP")
+            return QObject::tr("This system folder holds objects that represent <b>UDP</b> services");
+
+        if (object_path == "Services/Users")
+            return QObject::tr("This system folder holds objects that represent <b>user names</b>");
+
+        if (object_path == "Services/TagServices")
+            return QObject::tr("This system folder holds objects that represent <b>tags</b>");
+
+        if (object_path == "Firewalls")
+            return QObject::tr("This system folder holds objects that represent <b>firewalls</b>");
+
+        if (object_path ==  "Clusters")
+            return QObject::tr("This system folder holds objects that represent firewall <b>clusters</b>");
+
+        if (object_path ==  "Time")
+            return QObject::tr("This system folder holds objects that represent <b>time intervals</b>");
+
+    }
+
+
+    if (Library::isA(obj))
+    {
+        switch (obj->getId())
+        {
+        case FWObjectDatabase::STANDARD_LIB_ID:
+            return QObject::tr("<html>A library of predefined read-only address and service objects that come with the program</html>");
+            ;
+
+        case FWObjectDatabase::DELETED_OBJECTS_ID:
+            return QObject::tr("<html>This library holds objects that have been deleted. You can undelete them by clicking right mouse button and using menu item 'Move to ...' to move them back to another library</html>");
+            ;
+
+        default:
+            return QObject::tr("<html>A library of user-defined objects; this is where you create your objects</html>");
+        }
+
+    }
 
     str += QObject::tr("<b>Object Type:</b> ");
     string d = Resources::global_res->getObjResourceStr(obj,"description");

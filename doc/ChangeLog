@@ -1,5 +1,9 @@
 2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (getObjectPropertiesDetailed):
+	system folders in the tree now have tooltips that explain what
+	kind of objects belong there.
+
 	* RuleSetView.cpp (showToolTip): Added text to the tooltips shown
 	for the "Direction" and "Action" rule elements to remind user that
 	to change these rule parameters they need to click right mouse

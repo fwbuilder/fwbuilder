@@ -673,4 +673,3 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     return "";
 }
 
-
