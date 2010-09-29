@@ -170,7 +170,7 @@ FWBSettings::~FWBSettings()
  *  On Windows default working dir is set to
  *             "Documents and settings/USERNAME/Firewalls"
  */
-void FWBSettings::init()
+void FWBSettings::init(bool force_first_time_run)
 {
     bool ok=false;
 
@@ -192,9 +192,13 @@ void FWBSettings::init()
             qsrand(time(NULL));
             uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
             first_run = true;
-            suppressReminderAboutStandardLib(false);
         }
     }
+
+    if (force_first_time_run) first_run = true;
+
+    if (first_run)
+        suppressReminderAboutStandardLib(false);
 
     /*
      * I am seeing two particular uuids a lot in the logs, both coming

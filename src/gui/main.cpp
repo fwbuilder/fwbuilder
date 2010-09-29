@@ -112,6 +112,8 @@ int main( int argc, char *argv[] )
     fwbdebug = 0;
     safemode = false;
 
+    bool force_first_time_run_flag = false;
+
     ssh_wrapper(argc, argv);
 
     // can not use "-p" for command line printing because
@@ -119,7 +121,7 @@ int main( int argc, char *argv[] )
     // started via Finder.
 
     int c;
-    while ((c = getopt (argc , argv , "hvf:o:P:dxgr")) != EOF )
+    while ((c = getopt (argc , argv , "1hvf:o:P:dxgr")) != EOF )
 	switch (c) {
 	case 'h':
 	    usage();
@@ -148,6 +150,11 @@ int main( int argc, char *argv[] )
         case 'P':
             cli_print = true ;
             cli_print_fwname = optarg;
+            break;
+
+        case '1':
+            force_first_time_run_flag = true;
+            break;
 	}
 
     if ( (argc-1)==optind)
@@ -170,7 +177,7 @@ int main( int argc, char *argv[] )
 
     if (fwbdebug) qDebug("Reading settings ...");
     st = new FWBSettings();
-    st->init();
+    st->init(force_first_time_run_flag);
     if (fwbdebug) qDebug("done");
 
     wfl = new UserWorkflow();

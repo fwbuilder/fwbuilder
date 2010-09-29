@@ -70,7 +70,7 @@ class FWBSettings : public QSettings {
 
     static QString getApplicationNameForSettings() { return "FirewallBuilder4.1"; }
 
-    void init();
+    void init(bool force_first_time_run=false);
     void save();
 
     bool isFirstRun() { return first_run; }
