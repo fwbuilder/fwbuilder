@@ -1,3 +1,11 @@
+2010-09-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator_create_new.cpp (reminderAboutStandardLib):
+	refs #1748 "Add dialog about Standard Library when user creates
+	first Service object". First time users will see an informational
+	dialog reminding them about the Standard objects library when
+	they create their first service object.
+
 2010-09-27  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* src/gui/Tutorial/introduction/html/page0.html: refs #1737 Added

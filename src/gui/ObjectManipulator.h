@@ -430,7 +430,8 @@ public:
      bool isObjectAllowed(libfwbuilder::FWObject *target,
                           libfwbuilder::FWObject *obj);
     
-
+     void reminderAboutStandardLib();
+     
 signals:
      void libraryAccessChanged(bool writable);
 };

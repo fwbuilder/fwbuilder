@@ -175,6 +175,9 @@ class FWBSettings : public QSettings {
 
     QString getAppGUID();
 
+    bool isReminderAboutStandardLibSuppressed();
+    void suppressReminderAboutStandardLib(bool f);
+    
     enum IconSize getIconsInRulesSize();
     void setIconsInRulesSize(enum IconSize size);
 

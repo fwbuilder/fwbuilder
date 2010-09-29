@@ -110,6 +110,8 @@ const char* updateAvailableWarningLastTime = SETTINGS_PATH_PREFIX "/UI/updateAva
 const char* announcementLastTime = SETTINGS_PATH_PREFIX "/UI/announcementLastTime/%1";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
+const char* reminderAboutStandardLibSuppressed = SETTINGS_PATH_PREFIX "/UI/reminderAboutStandardLibSuppressed";
+
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
 const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
@@ -172,6 +174,10 @@ void FWBSettings::init()
 {
     bool ok=false;
 
+    ok = contains(reminderAboutStandardLibSuppressed);
+    if (!ok)
+        suppressReminderAboutStandardLib(true);
+
     ok = uuid_settings->contains(appGUID);
     if (!ok)
     {
@@ -186,6 +192,7 @@ void FWBSettings::init()
             qsrand(time(NULL));
             uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
             first_run = true;
+            suppressReminderAboutStandardLib(false);
         }
     }
 
@@ -334,6 +341,16 @@ void FWBSettings::init()
 
     if (!hasKey("Objects/AddressTable/useCompileTimeForNewObjects"))
         setBool("Objects/AddressTable/useCompileTimeForNewObjects", true);
+}
+
+bool FWBSettings::isReminderAboutStandardLibSuppressed()
+{
+    return value(reminderAboutStandardLibSuppressed).toBool();
+}
+
+void FWBSettings::suppressReminderAboutStandardLib(bool f)
+{
+    setValue(reminderAboutStandardLibSuppressed, f);
 }
 
 bool FWBSettings::hasKey(const QString &attribute)

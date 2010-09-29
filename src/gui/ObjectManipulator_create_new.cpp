@@ -399,6 +399,12 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     if (!macro)
         m_project->undoStack->push(cmd);
     m_project->db()->setDirty(true);
+
+    if (objType == IPService::TYPENAME ||
+        objType == ICMPService::TYPENAME ||
+        objType == UDPService::TYPENAME ||
+        objType == TCPService::TYPENAME) reminderAboutStandardLib();
+
     return nobj;
 }
 
@@ -791,6 +797,21 @@ FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
         }
     }
     return NULL;
+}
+
+void ObjectManipulator::reminderAboutStandardLib()
+{
+    if (st->isReminderAboutStandardLibSuppressed()) return;
+
+    st->suppressReminderAboutStandardLib(true);
+    QMessageBox::information(
+        this,"Firewall Builder",
+        QObject::tr(
+            "Did you know that Firewall Builder comes with a library "
+            "of standard address and service objects that includes over "
+            "a hunderd of often used protocols and services? You can "
+            "find them in the object library \"Standard\"."
+        ));
 }
 
 
