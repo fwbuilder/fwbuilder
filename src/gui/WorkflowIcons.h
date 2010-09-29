@@ -48,6 +48,7 @@ private:
 
 public slots:
     void libraryAccessChanged(bool writable);
+    void openTutorial();
 };
 
 #endif // WORKFLOWICONS_H

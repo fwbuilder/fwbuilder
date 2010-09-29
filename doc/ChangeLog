@@ -1,5 +1,10 @@
 2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* WorkflowIcons.cpp (WorkflowIcons::openTutorial): fixed #1733
+	"Add button for video tutorial link". Shortcut button "Watch
+	Getting Started Tutorial" opens page with video tutorials in
+	the standard browser.
+
 	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::isValid):
 	fixed #1746 "Force user to change interface name in New Firewall
 	wizard". When user creates interfaces for the new firewall or host

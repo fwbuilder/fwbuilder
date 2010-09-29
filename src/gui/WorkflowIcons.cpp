@@ -23,15 +23,21 @@
 
 */
 
-#include "WorkflowIcons.h"
+#include "global.h"
+
 #include "ClickableLabel.h"
-#include "ui_WorkflowIcons.h"
-#include "ProjectPanel.h"
 #include "FWWindow.h"
 #include "ObjectManipulator.h"
+#include "ProjectPanel.h"
+#include "WorkflowIcons.h"
+#include "ui_WorkflowIcons.h"
+
 #include <fwbuilder/Firewall.h>
-#include "global.h"
+
 #include <QDebug>
+#include <QDesktopServices>
+#include <QUrl>
+
 
 WorkflowIcons::WorkflowIcons(QWidget *parent) :
     QWidget(parent),
@@ -50,10 +56,10 @@ void WorkflowIcons::setUpSignals(QWidget *panel)
     QObject *mainWindow = dynamic_cast<ProjectPanel*>(panel)->getWindow();
     QAction *import = mainWindow->findChild<QAction*>("policyImportAction");
     connect(ui->importConfig, SIGNAL(clicked()), import, SLOT(trigger()));
-
-    connect(ui->action_getting_started, SIGNAL(clicked()), mainWindow, SLOT(showTutorial()));
-
     connect(om, SIGNAL(libraryAccessChanged(bool)), this, SLOT(libraryAccessChanged(bool)));
+
+    connect(ui->action_getting_started, SIGNAL(clicked()),
+            this, SLOT(openTutorial()));
 }
 
 WorkflowIcons::~WorkflowIcons()
@@ -73,9 +79,18 @@ void WorkflowIcons::changeEvent(QEvent *e)
     }
 }
 
-
 void WorkflowIcons::libraryAccessChanged(bool writable)
 {
     ui->newFirewall->setEnabled(writable);
     ui->importConfig->setEnabled(writable);
+}
+
+void WorkflowIcons::openTutorial()
+{
+    // if we want to show tutorial included with the package:
+    //    mw->showTutorial("getting_started");
+
+    // if we want to open the page with video tutorials in the standard browser
+    QDesktopServices::openUrl(QUrl("http://www.fwbuilder.org/4.0/videos.html",
+                                   QUrl::StrictMode));
 }
