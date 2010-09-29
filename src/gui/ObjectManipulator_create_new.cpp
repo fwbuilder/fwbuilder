@@ -811,6 +811,7 @@ void ObjectManipulator::reminderAboutStandardLib()
             "of standard address and service objects that includes over "
             "a hunderd of often used protocols and services? You can "
             "find them in the object library \"Standard\"."
+            "<img src=\":/Images/library_switch_screenshot.png\">"
         ));
 }
 

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>Images/library_switch_screenshot.png</file>
     <file>Tutorial/introduction/html/page3.html</file>
     <file>Tutorial/introduction/html/page1.html</file>
     <file>Tutorial/introduction/html/page2.html</file>
