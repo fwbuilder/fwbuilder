@@ -128,7 +128,7 @@
         <widget class="QWidget" name="toolbar" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
-           <number>-1</number>
+           <number>6</number>
           </property>
           <property name="margin">
            <number>0</number>
@@ -292,8 +292,9 @@
             <property name="font">
              <font>
               <pointsize>14</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
+              <weight>50</weight>
+              <bold>false</bold>
+              <kerning>false</kerning>
              </font>
             </property>
             <property name="text">

@@ -1,3 +1,9 @@
+2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.cpp (ProjectPanel::updateFirewallName): fixed #1745
+	"Remove path data from text above rules window that shows firewall
+	name".
+
 2010-09-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator_create_new.cpp (reminderAboutStandardLib):
