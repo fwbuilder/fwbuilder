@@ -1,5 +1,13 @@
 2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::InterfaceEditorWidget):
+	added "placeholder" text to the interface name and label input
+	fields. This text is displayed in greyed-out small font inside
+	the imput field but is cleared as soon as user starts their input.
+	The text gives user a prompt as of what is expected in each input
+	field. The "placeholder" text support is available only in Qt 4.7
+	and later so the code is conditional on the version of Qt.
+
 	* WorkflowIcons.cpp (WorkflowIcons::openTutorial): fixed #1733
 	"Add button for video tutorial link". Shortcut button "Watch
 	Getting Started Tutorial" opens page with video tutorials in

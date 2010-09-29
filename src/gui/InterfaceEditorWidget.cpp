@@ -45,7 +45,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
-#if (QT_VERSION > 0x040700)
+#if (QT_VERSION >= 0x040700)
     this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
     this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
 #endif
