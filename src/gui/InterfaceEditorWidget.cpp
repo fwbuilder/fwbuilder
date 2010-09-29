@@ -89,6 +89,12 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->interfacep = NULL;
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
+
+#if (QT_VERSION >= 0x040700)
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+#endif
+
     this->m_ui->comment->setText(data.comment);
 
     QString host_os = data.os;
@@ -113,7 +119,14 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
 {
     this->m_ui->name->setText(data->name.c_str());
     this->m_ui->label->setText(data->label.c_str());
+
+#if (QT_VERSION >= 0x040700)
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+#endif
+
     this->m_ui->mac->setText(data->mac_addr.c_str());
+
     this->m_ui->comment->clear();
     if ( data->isDyn )
         this->m_ui->type->setCurrentIndex(1);
@@ -144,6 +157,12 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     setClusterMode(false);
     this->m_ui->name->setText(""); // blank interface name
     this->m_ui->label->clear();
+
+#if (QT_VERSION >= 0x040700)
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+#endif
+
     this->m_ui->comment->clear();
     addNewAddress();
 }
