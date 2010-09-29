@@ -46,7 +46,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
     this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
 #endif
 
@@ -91,7 +91,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->m_ui->label->setText(data.label);
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
     this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
 #endif
 
@@ -121,7 +121,7 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     this->m_ui->label->setText(data->label.c_str());
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
     this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
 #endif
 
@@ -159,7 +159,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->m_ui->label->clear();
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
     this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
 #endif
 
