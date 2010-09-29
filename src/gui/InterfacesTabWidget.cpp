@@ -120,7 +120,7 @@ void InterfacesTabWidget::addNewInterface()
     }
     InterfaceEditorWidget *w = new InterfaceEditorWidget(this);
     w->setClusterMode(clusterMode);
-    addTab(w, tr("New interface"));
+    addTab(w, ""); // deliberately create new interface with blank name
     setCurrentIndex(count() - 1);
 }
 

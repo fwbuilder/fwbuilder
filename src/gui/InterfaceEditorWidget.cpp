@@ -28,6 +28,7 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
+#include <QLineEdit>
 #include <QDebug>
 
 using namespace libfwbuilder;
@@ -43,6 +44,12 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     setClusterMode(false);
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
+
+#if (QT_VERSION > 0x040700)
+    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\" etc"));
+    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+#endif
+
     if (iface->getPhysicalAddress() != NULL)
        m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
     this->m_ui->comment->setPlainText(iface->getComment().c_str());
@@ -135,7 +142,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->interfacep = NULL;
     m_ui->setupUi(this);
     setClusterMode(false);
-    this->m_ui->name->setText(tr("New interface"));
+    this->m_ui->name->setText(""); // blank interface name
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
     addNewAddress();
@@ -329,6 +336,19 @@ bool InterfaceEditorWidget::isValid()
     }
 
 #endif
+
+    if (this->m_ui->name->text().isEmpty())
+    {
+        QMessageBox::warning(
+            this, "Firewall Builder",
+            tr("<html>Interface name can not be blank."
+               "<br/> "
+               "<br/>"
+               "Interface name must match the name of the physical interface, "
+               "such as 'eth0', 'fxp0', 'ethernet0' etc</html>"),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {

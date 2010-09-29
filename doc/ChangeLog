@@ -1,5 +1,16 @@
 2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::isValid):
+	fixed #1746 "Force user to change interface name in New Firewall
+	wizard". When user creates interfaces for the new firewall or host
+	using manual method and clicks on the "+" button to add a tab for
+	the new interface in the wizard page, the interface tab is created
+	with blank name. Wizard later checks the name when user clicks
+	Finish to create new firewall or host object and does not let them
+	do this while interface name is still blank. Error dialog reminds
+	that the name of the interface must match the name of the
+	interface on the machine.
+
 	* ProjectPanel.cpp (ProjectPanel::updateFirewallName): fixed #1745
 	"Remove path data from text above rules window that shows firewall
 	name".
