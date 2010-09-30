@@ -46,8 +46,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
-    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
+    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
 #endif
 
     if (iface->getPhysicalAddress() != NULL)
@@ -91,8 +91,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->m_ui->label->setText(data.label);
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
-    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
+    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
 #endif
 
     this->m_ui->comment->setText(data.comment);
@@ -121,8 +121,8 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     this->m_ui->label->setText(data->label.c_str());
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
-    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
+    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
 #endif
 
     this->m_ui->mac->setText(data->mac_addr.c_str());
@@ -159,8 +159,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->m_ui->label->clear();
 
 #if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("\"eth0\", \"en0\", \"FastEthernet0/0\" etc"));
-    this->m_ui->label->setPlaceholderText(tr("\"outside\", \"inside\" etc"));
+    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
+    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
 #endif
 
     this->m_ui->comment->clear();
@@ -364,7 +364,7 @@ bool InterfaceEditorWidget::isValid()
                "<br/> "
                "<br/>"
                "Interface name must match the name of the physical interface, "
-               "such as 'eth0', 'fxp0', 'ethernet0' etc</html>"),
+               "such as 'eth0', 'fxp0', 'ethernet0', etc</html>"),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
