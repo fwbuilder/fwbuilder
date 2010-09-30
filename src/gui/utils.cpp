@@ -225,6 +225,23 @@ bool isTreeReadWrite(QWidget *parent, FWObject *obj)
  */
 bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
 {
+    if (newname.isEmpty())
+    {
+        // show warning dialog only if app has focus
+        if (QApplication::focusWidget() != NULL)
+        {
+            parent->blockSignals(true);
+            
+            QMessageBox::warning(
+                parent, "Firewall Builder",
+                QObject::tr("Object name should not be blank"),
+                QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                
+            parent->blockSignals(false);
+        }
+        return false;
+    }
+
     FWObject *p = obj->getParent();
     for (FWObject::iterator i=p->begin(); i!=p->end(); ++i)
     {

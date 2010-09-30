@@ -1,3 +1,9 @@
+2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* utils.cpp (validateName): fixed #1751 "Don't allow interface
+	names to be blank". The GUI should not allow the name of any
+	object to be blank.
+
 2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ProjectPanel.cpp (ProjectPanel::inspect): fixed #1718 "Inspect
