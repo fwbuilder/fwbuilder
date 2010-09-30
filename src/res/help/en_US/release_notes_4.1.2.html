@@ -60,6 +60,210 @@
     </p>
   </li>
 
+
+  <li>
+    <p>
+      	fixed #1724 . There was a problem with pscp.exe and putty
+	sessions. Plink.exe accepts session name in place of the host name
+	on the command line, but pscp.exe does not. We ask user to enter
+	session name in the "alternative name or address to use to
+	communicate with the firewall" input field in the "Installer" tab
+	of the firewall settings dialog and then use it in place of the
+	host name in the command line for pscp.exe and plink.exe. This
+	works with plink.exe but breaks pscp.exe which interprets it as a
+	host name and fails with an error 'ssh_init: Host does not
+	exist'. The fix checks if what user entered in the "alternative
+	host or address field" is a session name and uses different
+	command line with pscp.exe
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1715 "automatically expand new firewall and new host
+      objects in the tree once they are created"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1732 "Double clicking on object with child objects should
+      auto expand them".  Double clicking on objects and folders in
+      the tree expands and collapses them, as well as opens object in
+      the editor.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1729 "double clicking a folder in the tree should expand
+      it rather than open it in the editor".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1738 "Enable tooltips by default"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1731 Change double-clicking on "Any" object
+      behavior. Tooltip shown for the object "any" in rules says "to
+      modify the rule drag and drop an object from the tree here"
+      instead of atributes of the object "any". Double click on "any"
+      in a rule does not try to open object "any" in the tree and
+      editor panel.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1739 "remove 'tooltip delay' input form preferences
+      dialog". Qt4 does not allow for changing tooltip delay.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1728 "Update Library drop down menu". Library drop down
+      list shows an item "Object libraries:" at the top that can not
+      be selected and that always stays on top as libraries are added,
+      removed and renamed. The list always stays sorted in ascending
+      order. Library names are indented by 2 spaces to make them
+      visually distinguishable from the prompt item at the
+      top. Implementation uses class ListOfLibrariesModel that
+      inherits QStringListModel.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1740 "Deleted library remains in the drop-down list". If
+      option "Show deleted objects" was turned off in the Preferences
+      dialog and user deleted a library, it remained in the drop-down
+      list of libraries and its object tree was still displayed in the
+      object tree panel.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1741 "there is no way to undelete a library object".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1730 "Add background help text and images to empty policy
+      window". Showing tooltip in the empty space in the rule set
+      view, this tooltip provides hints on how to edit rules which
+      should be useful for the beginners.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1743 "change default for the option 'Show text
+      descriptions for direction and action'". The option should be on
+      by default.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1744 "Add tooltip to the rule number". The column in the
+      RuleSetView? where rule number is shown now has a tooltip to
+      remind the user that they can click right mouse button to the
+      the context menu and use keyboard shortcut "x" to compile the
+      rule
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added text to the tooltips shown for the "Direction" and
+      "Action" rule elements to remind user that to change these rule
+      parameters they need to click right mouse button to open list of
+      possible settings
+    </p>
+  </li>
+
+  <li>
+    <p>
+      system folders in the tree now have tooltips that explain what
+      kind of objects belong there.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1737 Added "Quick Start Guide" tutorial that demonstrates
+      basic features and key concepts of Firewall Builder. The
+      tutorial is accessible via Help / Tutorials menu and is shown to
+      the first-time user on the GUI startup instead of the "tip of
+      the day" dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1748 "Add dialog about Standard Library when user creates
+      first Service object". First time users will see an
+      informational dialog reminding them about the Standard objects
+      library when they create their first service object.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1745 "Remove path data from text above rules window that
+      shows firewall name".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1746 "Force user to change interface name in New Firewall
+      wizard". When user creates interfaces for the new firewall or
+      host using manual method and clicks on the "+" button to add a
+      tab for the new interface in the wizard page, the interface tab
+      is created with blank name. Wizard later checks the name when
+      user clicks Finish to create new firewall or host object and
+      does not let them do this while interface name is still
+      blank. Error dialog reminds that the name of the interface must
+      match the name of the interface on the machine.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1733 "Add button for video tutorial link". Shortcut
+      button "Watch Getting Started Tutorial" opens page with video
+      tutorials in the standard browser.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      added "placeholder" text to the interface name and label input
+      fields. This text is displayed in greyed-out small font inside
+      the imput field but is cleared as soon as user starts their
+      input.  The text gives user a prompt as of what is expected in
+      each input field. The "placeholder" text support is available
+      only in Qt 4.7 and later so the code is conditional on the
+      version of Qt.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1718 "Inspect generated files" dialog says "Multiple
+      firewalls" even when there is only one
+    </p>
+  </li>
+
 </ul>
 
 
@@ -79,9 +283,9 @@
 
   <li>
     <p>
-      fixed #1705 "iptables (v &gt= 1.4.4) "--set option deprecated ..."
-      (SF bug 3059893) Option "--set" has been deprecated and renamed
-      "--match-set" in iptales 1.4.4
+      fixed #1705 "iptables (v &gt= 1.4.4) --set option deprecated ..."
+      (SF bug 3059893) Option '--set' has been deprecated and renamed
+      '--match-set' in iptales 1.4.4
     </p>
   </li>
 
@@ -118,6 +322,9 @@
 
   <li>
     <p>
+      fixed #1714 "make checking for MODPROBE conditional". There is
+      no need to check if modprobe utility exists on the firewall
+      machine if it is not used by the script.
     </p>
   </li>
 
