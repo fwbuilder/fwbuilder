@@ -882,7 +882,7 @@ void ProjectPanel::install()
 }
 
 
-void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
+void ProjectPanel::inspect(set<Firewall *> fws)
 {
     if (fws.empty())
         return;
@@ -931,8 +931,10 @@ void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
     QStringList files;
 
     QSet<Firewall*> filesMissing;
+    Firewall *first_fw = NULL;
     foreach(Firewall *fw, fws)
     {
+        if (first_fw == NULL) first_fw = fw;
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(fw);
         if (QFile::exists(mainFile))
         {
@@ -987,7 +989,12 @@ void ProjectPanel::inspect(std::set<libfwbuilder::Firewall *> fws)
     if (files.empty())
         return;
 
-    FirewallCodeViewer *viewer = new FirewallCodeViewer(files, tr("<b>Multiple firewalls</b>"), this);
+    QString viewer_title;
+    if (fws.size() > 1) viewer_title = tr("<b>Multiple firewalls</b>");
+    else viewer_title = QString("<b>%1</b>").arg(first_fw->getName().c_str());
+
+    FirewallCodeViewer *viewer =
+        new FirewallCodeViewer(files, viewer_title, this);
     viewer->show();
 }
 

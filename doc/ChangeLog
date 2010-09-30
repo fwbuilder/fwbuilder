@@ -1,5 +1,9 @@
 2010-09-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ProjectPanel.cpp (ProjectPanel::inspect): fixed #1718 "Inspect
+	generated files" dialog says "Multiple firewalls" even when there
+	is only one
+
 	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::InterfaceEditorWidget):
 	added "placeholder" text to the interface name and label input
 	fields. This text is displayed in greyed-out small font inside
