@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>Tutorial/introduction/html/page4.html</file>
+    <file>Tutorial/introduction/images/Quick_Start_Splash_Screen.png</file>
     <file>Images/library_switch_screenshot.png</file>
     <file>Tutorial/introduction/html/page3.html</file>
     <file>Tutorial/introduction/html/page1.html</file>
