@@ -134,7 +134,7 @@
        <item row="4" column="0" colspan="2">
         <widget class="QCheckBox" name="useTemplate">
          <property name="text">
-          <string>Use preconfigured template firewall objects</string>
+          <string>Use preconfigured firewall  templates</string>
          </property>
         </widget>
        </item>
