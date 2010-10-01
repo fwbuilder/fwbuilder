@@ -47,7 +47,7 @@ class QDragEnterEvent;
 
 class FWObjectDropArea : public QWidget//Ui::FWObjectDropArea_q
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 private:
     libfwbuilder::FWObject *object;
@@ -68,7 +68,7 @@ public:
     void setObject(libfwbuilder::FWObject * o){ object = o ;};
     void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
     bool isEmpty() {return object==NULL;};
-    void setHelperText (QString text){helperText=text;}
+    void setHelperText(const QString &text) { helperText=text; }
     virtual void mouseDoubleClickEvent ( QMouseEvent * event );
     public slots:
     void insertObject(libfwbuilder::FWObject *o);

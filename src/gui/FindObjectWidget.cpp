@@ -86,6 +86,11 @@ FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
     replaceDisable();
     m_widget->srScope->setCurrentIndex(
         st->getInt(SETTINGS_PATH_PREFIX"/Search/Scope"));
+
+    m_widget->findDropArea->setHelperText(
+        tr("Drop object you want to find here"));
+    m_widget->replaceDropArea->setHelperText(
+        tr("Drop object for replacement here"));
 }
 
 void FindObjectWidget::findObject(FWObject *o)
