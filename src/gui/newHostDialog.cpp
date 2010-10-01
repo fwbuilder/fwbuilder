@@ -574,6 +574,9 @@ void newHostDialog::finishClicked()
         nhst = Host::cast(no);
     } else
     {
+        if ( !this->m_dialog->interfaceEditor->isValid() )
+            return;
+
         FWObject *o;
         o = db->create(Host::TYPENAME);
         o->setName(m_dialog->obj_name->text().toUtf8().constData());
@@ -587,7 +590,8 @@ void newHostDialog::finishClicked()
 
 /* create interfaces */
 
-        foreach(EditedInterfaceData iface, this->m_dialog->interfaceEditor->getNewData())
+        foreach(EditedInterfaceData iface,
+                this->m_dialog->interfaceEditor->getNewData())
         {
             QString name     =  iface.name;
             QString label    =  iface.label;

@@ -1,5 +1,8 @@
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* newHostDialog.cpp (finishClicked): fixed #1761 "blank interface
+	name is possible in new host wizard"
+
 	* FWObjectPropertiesFactory.cpp (getInterfaceNameExamplesForHostOS):
 	fixed #1753 "Set interface name hint based on firewall platform
 	and host OS". The placeholder text in the interface name and label
