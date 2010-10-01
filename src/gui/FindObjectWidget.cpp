@@ -118,18 +118,23 @@ void FindObjectWidget::disableAll()
 
 void FindObjectWidget::objectInserted()
 {
-    FWObject *o=m_widget->findDropArea->getObject();
-    if (o==NULL) return;
-    disableAll();
+    FWObject *o = m_widget->findDropArea->getObject();
+    if (o == NULL) return;
 
-    QString n=QString::fromUtf8(o->getName().c_str());
+//    disableAll();  // see #1757
+
+    QString n = QString::fromUtf8(o->getName().c_str());
+
+    m_widget->findAttr->blockSignals(true);
 
     if (m_widget->findAttr->count()>=MAX_SEARCH_ITEMS_COUNT)
         m_widget->findAttr->removeItem(MAX_SEARCH_ITEMS_COUNT-1);
 
-    m_widget->findAttr->lineEdit()->setText (n);
+    m_widget->findAttr->lineEdit()->setText(n);
 
-     reset();
+    m_widget->findAttr->blockSignals(false);
+
+    reset();
 }
 
 void FindObjectWidget::reset()
@@ -139,11 +144,16 @@ void FindObjectWidget::reset()
     found_objects.clear();
 }
 
-
+/**
+ * This slot is called when @attribute or @findAttr fields change
+ * (that is, whenever user changes attribute they want to match or type
+ * in the input field to change the value)
+ */
 void FindObjectWidget::findAttrChanged(const QString &ns)
 {
     if (ns!=lastAttrSearch)  reset();
-    lastAttrSearch=ns;
+    lastAttrSearch = ns;
+    m_widget->findDropArea->deleteObject(); //  for #1757
 }
 
 void FindObjectWidget::find()

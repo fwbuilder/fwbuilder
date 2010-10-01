@@ -1,5 +1,9 @@
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (objectInserted): fixed #1757 Allow
+	searching by attributes even after an object is dropped into the
+	drop area in search panel.
+
 	* newFirewallDialog.cpp (browseTemplate): fixed #1759 "Use default
 	template library" button seems to do nothing. This button should
 	only be enabled if user switched to their own library of template
