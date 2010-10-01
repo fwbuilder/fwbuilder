@@ -265,7 +265,10 @@ class FWBSettings : public QSettings {
     bool getIconsWithText();
     void setIconsWithText(bool f);
     
-   
+    int getABTestingGroup();
+    void setABTestingGroup(int n);
+
+        
 private:
     QFont getFontByType(const char*type);
 };

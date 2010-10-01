@@ -73,7 +73,8 @@ class UserWorkflow : public QObject {
 
 public:
 
-    enum workflowFlags {
+    enum workflowFlags
+    {
          UPDATE_CHECKS_DISABLED,
          GETTING_STARTED_TUTOTIAL,
          NEW_FW_WITH_TEMPLATE,
@@ -87,6 +88,7 @@ public:
          TIP_OF_THE_DAY_DISABLED,
          USING_HTTP_PROXY,
          SSH_CONFIGURED,
+         INTRO_TUTOTIAL,
     };
 
 private:

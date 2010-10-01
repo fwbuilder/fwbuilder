@@ -1,3 +1,8 @@
+2010-10-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWBSettings.cpp (getABTestingGroup): fixed #1763 Implemented
+	basic facility for A/B testing within the GUI
+
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FindObjectWidget.cpp (keyPressEvent): fixed #1755 "hitting enter

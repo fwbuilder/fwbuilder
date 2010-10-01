@@ -536,6 +536,15 @@ void FWWindow::startupLoad()
 
     if (st->isFirstRun())
     {
+        /*
+         * TODO: instead of showing "quick start guide" (or
+         * "introduction") in the tutorial window, show just the
+         * invitation in a dialog and put the rest of the guide on the
+         * web site. Use st->getABTestingGroup() to choose url for the
+         * guide. Call  wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
+         * when user clicks on the button to view intro tutorial.
+         *
+         */
         showTutorial("introduction");
     } else
     {

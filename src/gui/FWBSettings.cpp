@@ -43,6 +43,7 @@
 #include <QRegExp>
 #include <QtDebug>
 #include <QCryptographicHash>
+#include <QTime>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -115,6 +116,7 @@ const char* reminderAboutStandardLibSuppressed = SETTINGS_PATH_PREFIX "/UI/remin
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
 const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
+const char* abTestingGroup = SETTINGS_PATH_PREFIX "/abTestingGroup";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 
@@ -199,6 +201,13 @@ void FWBSettings::init(bool force_first_time_run)
 
     if (first_run)
         suppressReminderAboutStandardLib(false);
+
+    ok = contains(abTestingGroup);
+    if (!ok)
+    {
+        // a/b group codes are "1" and "2"
+        setABTestingGroup(QTime::currentTime().second() % 2 + 1);
+    }
 
     /*
      * I am seeing two particular uuids a lot in the logs, both coming
@@ -1121,6 +1130,16 @@ void FWBSettings::setTargetStatus(const QString &platform, const QString &status
 {
     QString var_path = targetStatus + platform;
     setValue(var_path, status);
+}
+
+int FWBSettings::getABTestingGroup()
+{
+    return value(abTestingGroup).toInt();
+}
+
+void FWBSettings::setABTestingGroup(int n)
+{
+    setValue(abTestingGroup, n);
 }
 
 

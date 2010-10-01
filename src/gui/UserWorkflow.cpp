@@ -92,6 +92,7 @@ QString UserWorkflow::flagsToQueryString(int session_duration)
     // query string of flags has the format uc=0&gs=1&ft=0 ...
     // each flag is a two-characters variable with a value of 0 or 1
     QStringList fl;
+    fl << QString("ab=%1").arg(st->getABTestingGroup());
     fl << QString("co=%1").arg(flags.value(COMPILE));
     fl << QString("fn=%1").arg(flags.value(NEW_FW_NO_TEMPLATE));
     fl << QString("ft=%1").arg(flags.value(NEW_FW_WITH_TEMPLATE));
@@ -100,6 +101,7 @@ QString UserWorkflow::flagsToQueryString(int session_duration)
     fl << QString("in=%1").arg(flags.value(INSTALL));
     fl << QString("ir=%1").arg(flags.value(INSTALL_RAN));
     fl << QString("is=%1").arg(flags.value(INSTALL_SUCCESS));
+    fl << QString("it=%1").arg(flags.value(INTRO_TUTOTIAL));
     fl << QString("pr=%1").arg(flags.value(USING_HTTP_PROXY));
     fl << QString("rm=%1").arg(flags.value(RULE_MOD));
     fl << QString("sc=%1").arg(flags.value(SSH_CONFIGURED));
