@@ -465,20 +465,17 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, Interface::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add Interface"), this,
-            //                                           SLOT( newInterface() ) ));
-
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, Interface::TYPENAME));
         }
+
         if ((Firewall::isA(currentObj) || Cluster::isA(currentObj)) &&
              ! currentObj->isReadOnly())
         {
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, Policy::TYPENAME));
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, NAT::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add Policy Rule Set"), this,
-            //                                           SLOT( newPolicyRuleSet() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add NAT Rule Set"), this,
-            //                                           SLOT( newNATRuleSet() ) ));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, Policy::TYPENAME));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, NAT::TYPENAME));
         }
 
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
@@ -513,16 +510,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                     //     tr("Add Interface"), this, SLOT( newInterface() ) );
             }
 
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, IPv6::TYPENAME));
-            AddObjectActions.append(addNewObjectMenuItem(popup_menu, physAddress::TYPENAME));
-
-            // AddObjectActions.append(popup_menu->addAction( tr("Add IP Address"), this,
-            //                                           SLOT( newInterfaceAddress() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add IPv6 Address"), this,
-            //                                           SLOT( newInterfaceAddressIPv6() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add MAC Address"), this,
-            //                                           SLOT( newPhysicalAddress() ) ));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, IPv6::TYPENAME));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, physAddress::TYPENAME));
 
 
             // Check if we should add menu item that creates failover
@@ -538,37 +531,32 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 //     tr("Add Failover Group"), this,
                 //     SLOT( newFailoverClusterGroup() ) );
                 failover_menu_id->setEnabled(
-                    currentObj->getFirstByType(FailoverClusterGroup::TYPENAME) == NULL);
+                    currentObj->getFirstByType(
+                        FailoverClusterGroup::TYPENAME) == NULL);
             }
         }
 
         if (Cluster::isA(currentObj) && ! currentObj->isReadOnly())
         {
             AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Interface::TYPENAME, "Add cluster interface"));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add Cluster interface"), this,
-            //                                           SLOT( newClusterIface() ) ));
+                addNewObjectMenuItem(
+                    popup_menu, Interface::TYPENAME, "Add cluster interface"));
 
             // allow multiple state syncing groups per cluster
             // Rationale: these groups may represent different state syncing
             // protocols that can synchronize different things.
             AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, StateSyncClusterGroup::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("Add State Synchronization Group"), this,
-            //                                           SLOT( newStateSyncClusterGroup() ) ));
+                addNewObjectMenuItem(
+                    popup_menu, StateSyncClusterGroup::TYPENAME));
         }
 
         if (currentObj->getPath(true)=="Firewalls")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Firewall::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Firewall"), this,
-            //                                           SLOT( newFirewall() ) ));
 
         if (currentObj->getPath(true)=="Clusters")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Cluster::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Cluster"), this,
-            //                                           SLOT( newCluster() ) ));
 
         if (currentObj->getPath(true)=="Objects/Addresses")
         {
@@ -576,39 +564,27 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, IPv6::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Address"), this,
-            //                                           SLOT( newAddress() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Address IPv6"), this,
-            //                                           SLOT( newAddressIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, DNSName::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New DNS Name"), this,
-            //                                           SLOT( newDNSName() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Tables")
         {
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, AddressTable::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Address Table"), this,
-            //                                           SLOT( newAddressTable() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Ranges")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Address Range"), this,
-            //                                           SLOT( newAddressRange() ) ));
 
         if (currentObj->getPath(true)=="Objects/Hosts")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Host::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Host"), this,
-            //                                           SLOT( newHost() ) ));
 
         if (currentObj->getPath(true)=="Objects/Networks")
         {
@@ -616,29 +592,19 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 addNewObjectMenuItem(popup_menu, Network::TYPENAME));
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, NetworkIPv6::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Network"), this,
-            //                                           SLOT( newNetwork() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Network IPv6"), this,
-            //                                           SLOT( newNetworkIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Groups")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ObjectGroup::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Group"), this,
-            //                                           SLOT( newObjectGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Custom")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, CustomService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Custom Service"),this,
-            //                                           SLOT( newCustom() ) ));
 
         if (currentObj->getPath(true)=="Services/IP")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, IPService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New IP Service"), this,
-            //                                           SLOT( newIP() ) ));
 
         if (currentObj->getPath(true)=="Services/ICMP")
         {
@@ -646,52 +612,43 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 addNewObjectMenuItem(popup_menu, ICMPService::TYPENAME));
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ICMP6Service::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New ICMP Service"), this,
-            //                                           SLOT( newICMP() ) ));
-            // AddObjectActions.append(popup_menu->addAction( tr("New ICMP6 Service"), this,
-            //                                           SLOT( newICMP6() ) ));
         }
 
         if (currentObj->getPath(true)=="Services/TCP")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, TCPService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New TCP Service"), this,
-            //                                           SLOT( newTCP() ) ));
 
         if (currentObj->getPath(true)=="Services/UDP")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, UDPService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New UDP Service"), this,
-            //                                           SLOT( newUDP() ) ));
 
         if (currentObj->getPath(true)=="Services/TagServices")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, TagService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New TagService"), this,
-            //                                           SLOT( newTagService() ) ));
 
         if (currentObj->getPath(true)=="Services/Groups")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ServiceGroup::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Group"), this,
-            //                                           SLOT( newServiceGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Users")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, UserService::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction(tr("New User Service"), this,
-            //                                          SLOT(newUserService() )));
 
         if (currentObj->getPath(true)=="Time")
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Interval::TYPENAME));
-            // AddObjectActions.append(popup_menu->addAction( tr("New Time Interval"), this,
-            //                                           SLOT( newInterval() ) ));
 
         popup_menu->addSeparator();
-        popup_menu->addAction( tr("Find"), this, SLOT( findObject()));
 
-        popup_menu->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
+        QAction *findID =
+            popup_menu->addAction( tr("Find"), this, SLOT( findObject()));
+
+        QAction *whereUsedID =
+            popup_menu->addAction( tr("Where used"),
+                                   this, SLOT( findWhereUsedSlot()));
+
+        findID->setEnabled( !FWBTree().isStandardFolder(currentObj));
+        whereUsedID->setEnabled( !FWBTree().isStandardFolder(currentObj));
     }
     
     popup_menu->addSeparator();
@@ -732,7 +689,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             }
         }
 
-        if (ObjectGroup::cast(currentObj)!=NULL && currentObj->getName()=="Firewalls")
+        if (ObjectGroup::cast(currentObj)!=NULL &&
+            currentObj->getName()=="Firewalls")
         {
             // Config transfer is currently only supported for Secuwall.
             // Check if we have any
@@ -751,8 +709,6 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             if (have_transfer_support)
                 popup_menu->addAction( tr("Transfer"), this, SLOT(transferfw()));
         }
-//        popup_menu->addSeparator();
-//        popup_menu->addAction( tr("Simulate install"), this, SLOT( simulateInstall()));
     }
 
     popup_menu->addSeparator();
