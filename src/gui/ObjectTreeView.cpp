@@ -640,6 +640,8 @@ void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
     {
         if (ev->key()==Qt::Key_Enter || ev->key()==Qt::Key_Return)
         {
+            if (fwbdebug)
+                qDebug() << "ObjectTreeView::keyPressEvent Qt::Key_Enter";
             editCurrentObject();
             ev->accept();
             return;

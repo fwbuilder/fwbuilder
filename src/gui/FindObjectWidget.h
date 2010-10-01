@@ -61,6 +61,8 @@ private:
     bool matchAttr(libfwbuilder::FWObject* obj);
     bool validateReplaceObject();
     bool inSelectedFirewall( libfwbuilder::RuleElement* r);
+
+    virtual void keyPressEvent( QKeyEvent* ev );
     
  public:
     Ui::findObjectWidget_q *m_widget;

@@ -94,6 +94,18 @@ FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
         tr("Drop object for replacement here"));
 }
 
+void FindObjectWidget::keyPressEvent( QKeyEvent* ev )
+{
+    if (ev->key()==Qt::Key_Enter || ev->key()==Qt::Key_Return)
+    {
+        if (fwbdebug)
+            qDebug() << "FindObjectWidget::keyPressEvent Qt::Key_Enter";
+        ev->accept();
+        find();
+        return;
+    }
+}
+
 void FindObjectWidget::findObject(FWObject *o)
 {
     if (fwbdebug) qDebug("FindObjectWidget::findObject");

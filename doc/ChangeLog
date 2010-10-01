@@ -1,5 +1,9 @@
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (keyPressEvent): fixed #1755 "hitting enter
+	after editing search attribute in the Find panel should trigger
+	search"
+
 	* FindObjectWidget.cpp (matchAttr): fixed #1760 'Search by
 	attribute "name" should search by name or label'.
 
