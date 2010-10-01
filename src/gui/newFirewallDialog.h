@@ -115,7 +115,7 @@ public slots:
     virtual void monitor();
     virtual void templateSelected(QListWidgetItem *itm);
     void browseTemplate();
-    void useStandartTemplate();
+    void useStandardTemplate();
     void showHideTemplatePanel();
 
 protected slots:

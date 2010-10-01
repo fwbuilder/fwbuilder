@@ -116,12 +116,18 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(p
     getInterfacesBusy = false;
 
     timer = new QTimer(this);
-    connect( timer, SIGNAL(timeout()), this, SLOT(monitor()) );
-    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),this,SLOT(browseTemplate()));
-    connect( m_dialog->templateUseStandart, SIGNAL(pressed()),this,SLOT(useStandartTemplate()));
-    connect( m_dialog->useTemplate, SIGNAL(released()),this,SLOT(showHideTemplatePanel()));
+    connect( timer, SIGNAL(timeout()), this, SLOT(monitor()));
+    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),
+             this, SLOT(browseTemplate()));
+    connect( m_dialog->templateUseStandard, SIGNAL(pressed()),
+             this, SLOT(useStandardTemplate()));
+    connect( m_dialog->useTemplate, SIGNAL(released()),
+             this, SLOT(showHideTemplatePanel()));
+
     m_dialog->templaterFilePath->setText(tempfname.c_str());
     m_dialog->templaterFrame->setVisible(false);
+
+    m_dialog->templateUseStandard->setEnabled(false);
 
     /* fill in platform. Since iptables is the most popular, start with
      * it.
@@ -170,19 +176,25 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(p
 
 void newFirewallDialog::browseTemplate()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("FWBuilder template files"), "", tr("FWBuilder template files (*.xml *.fwb *.fwl)"));
-    if (fileName=="")
-        return ;
-    QDir dir (fileName);
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("FWBuilder template files"), "",
+        tr("FWBuilder template files (*.xml *.fwb *.fwl)"));
+
+    if (fileName=="") return ;
+
+//    QDir dir (fileName);
 //    if (dir.exists ())
 //    {
-        m_dialog->templaterFilePath->setText(fileName);
+    m_dialog->templaterFilePath->setText(fileName);
 //    }
+
+    m_dialog->templateUseStandard->setEnabled(fileName != tempfname.c_str());
 }
 
-void newFirewallDialog::useStandartTemplate()
+void newFirewallDialog::useStandardTemplate()
 {
     m_dialog->templaterFilePath->setText(tempfname.c_str());
+    m_dialog->templateUseStandard->setEnabled(false);
 }
 
 void newFirewallDialog::showHideTemplatePanel()
@@ -522,14 +534,16 @@ void newFirewallDialog::showPage(const int page)
             tmpldb->setReadOnly( false );
             try
             {
-                tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
-                              &upgrade_predicate, librespath);
+                tmpldb->load(
+                    m_dialog->templaterFilePath->text().toAscii().data(),
+                    &upgrade_predicate, librespath);
             }
             catch (FWException &ex)
             {
                 QMessageBox::critical(
                     this,"Firewall Builder",
-                    tr("Error loading template library:\n%1").arg(ex.toString().c_str()),
+                    tr("Error loading template library:\n%1")
+                    .arg(ex.toString().c_str()),
                     tr("&Continue"), QString::null,QString::null,
                     0, 1 );
             }
@@ -537,7 +551,8 @@ void newFirewallDialog::showPage(const int page)
 
         list<FWObject*> fl;
 
-        FWObjectTypedChildIterator libiter = tmpldb->findByType(Library::TYPENAME);
+        FWObjectTypedChildIterator libiter =
+            tmpldb->findByType(Library::TYPENAME);
         for ( ; libiter!=libiter.end(); ++libiter)
             findFirewalls(*libiter, fl, false);
 
