@@ -51,6 +51,7 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/MultiAddress.h"
+#include "fwbuilder/Interface.h"
 
 #include <QLineEdit>
 #include <QStackedWidget>
@@ -192,13 +193,21 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
     int  attrN = m_widget->attribute->currentIndex();
 
     switch (attrN) {
-    case 0:   // Name
+    case 0:   // Name or label
     {
-        QString name=QString::fromUtf8( obj->getName().c_str() );
+        QString name = QString::fromUtf8( obj->getName().c_str() );
+        QString label;
+        if (Interface::isA(obj))
+            label = QString::fromUtf8( Interface::cast(obj)->getLabel().c_str() );
 
-        if (m_widget->useRegexp->isChecked()) res= ( name.indexOf( QRegExp(s) )!=-1 );
-        else                        res= ( name == s );
-
+        if (m_widget->useRegexp->isChecked())
+        {
+            res = (name.indexOf( QRegExp(s) )!=-1 ||
+                   (!label.isEmpty() && label.indexOf( QRegExp(s) )!=-1));
+        } else
+        {
+            res = (name == s || (!label.isEmpty() && label == s));
+        }
         //res= ( name == s );
         break;
 

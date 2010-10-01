@@ -1,5 +1,8 @@
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (matchAttr): fixed #1760 'Search by
+	attribute "name" should search by name or label'.
+
 	* FindObjectWidget.cpp (objectInserted): fixed #1757 Allow
 	searching by attributes even after an object is dropped into the
 	drop area in search panel.
