@@ -58,6 +58,7 @@ class FWObjectPropertiesFactory {
 
     static QString stripHTML(const QString &str);
 
+    static QString getInterfaceNameExamplesForHostOS(const QString &host_os);
 };
 
 #endif

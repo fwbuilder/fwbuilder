@@ -25,6 +25,8 @@
 
 #include "InterfaceEditorWidget.h"
 #include "ui_InterfaceEditorWidget.h"
+#include "FWObjectPropertiesFactory.h"
+
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
@@ -44,11 +46,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     setClusterMode(false);
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
-
-#if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
-    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
-#endif
 
     if (iface->getPhysicalAddress() != NULL)
        m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
@@ -82,7 +79,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {
-    os = data.os;
     clusterMode = true;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
@@ -90,16 +86,12 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
 
-#if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
-    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
-#endif
-
     this->m_ui->comment->setText(data.comment);
 
-    QString host_os = data.os;
+    setHostOS(data.os);
+
     list<QStringPair> types;
-    getFailoverTypesForOS(host_os, types);
+    getFailoverTypesForOS(os, types);
     QStringList typenames;
     QString lastProtocol = st->getNewClusterFailoverProtocol();
     int toSelect = 0;
@@ -119,11 +111,6 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
 {
     this->m_ui->name->setText(data->name.c_str());
     this->m_ui->label->setText(data->label.c_str());
-
-#if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
-    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
-#endif
 
     this->m_ui->mac->setText(data->mac_addr.c_str());
 
@@ -157,11 +144,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     setClusterMode(false);
     this->m_ui->name->setText(""); // blank interface name
     this->m_ui->label->clear();
-
-#if (QT_VERSION >= 0x040700)
-    this->m_ui->name->setPlaceholderText(tr("eth0, en0, FastEthernet0/0, etc"));
-    this->m_ui->label->setPlaceholderText(tr("outside, inside, etc"));
-#endif
 
     this->m_ui->comment->clear();
     addNewAddress();
@@ -511,4 +493,20 @@ void InterfaceEditorWidget::setExplanation(const QString& text)
 void InterfaceEditorWidget::setProtocolIndex(int idx)
 {
     this->m_ui->protocol->setCurrentIndex(idx);
+}
+
+void InterfaceEditorWidget::setHostOS(const QString &s)
+{
+    os = s;
+
+    QString name_prompt =
+        FWObjectPropertiesFactory::getInterfaceNameExamplesForHostOS(os);
+
+    if (fwbdebug)
+        qDebug() << "Interface name prompt:" << name_prompt;
+
+#if (QT_VERSION >= 0x040700)
+    this->m_ui->name->setPlaceholderText(name_prompt);
+    this->m_ui->label->setPlaceholderText("outside, inside, etc");
+#endif
 }

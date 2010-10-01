@@ -70,10 +70,12 @@ QMap<Interface*, EditedInterfaceData> InterfacesTabWidget::getData()
     QMap<Interface*, EditedInterfaceData> res;
     for ( int i = 0; i < this->count(); i++ )
     {
-        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if (w == NULL || w->getInterface() == NULL)
             continue;
-        InterfaceEditorWidget *intEditor = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget *intEditor = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if (intEditor != NULL)
             res[intEditor->getInterface()] = intEditor->getInterfaceData();
     }
@@ -85,7 +87,8 @@ QList<EditedInterfaceData> InterfacesTabWidget::getNewData()
     QList<EditedInterfaceData> res;
     for ( int i = 0; i < this->count(); i++ )
     {
-        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if ( w != NULL && w->getInterface() == NULL)
             res.append(w->getInterfaceData());
     }
@@ -120,6 +123,7 @@ void InterfacesTabWidget::addNewInterface()
     }
     InterfaceEditorWidget *w = new InterfaceEditorWidget(this);
     w->setClusterMode(clusterMode);
+    w->setHostOS(host_OS);
     addTab(w, ""); // deliberately create new interface with blank name
     setCurrentIndex(count() - 1);
 }
@@ -163,7 +167,8 @@ bool InterfacesTabWidget::isValid()
 {
     for (int i = 0; i< this->count(); i++)
     {
-        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if (w == NULL) continue;
         if (!w->isValid())
             return false;
@@ -201,7 +206,8 @@ void InterfacesTabWidget::setClusterMode(bool st)
     clusterMode = st;
     for ( int i = 0; i < this->count() ; i++ )
     {
-        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if (w!=NULL) w->setClusterMode(st);
     }
 }
@@ -218,7 +224,19 @@ void InterfacesTabWidget::setExplanation(const QString& text)
     explanation = text;
     for( int i = 0; i < this->count(); i++ )
     {
-        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
         if (w!=NULL) w->setExplanation(text);
+    }
+}
+
+void InterfacesTabWidget::setHostOS(const QString &s)
+{
+    host_OS = s;
+    for ( int i = 0; i < this->count(); i++ )
+    {
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
+            this->widget(i));
+        if (w != NULL) w->setHostOS(host_OS);
     }
 }

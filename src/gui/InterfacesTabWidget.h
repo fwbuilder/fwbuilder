@@ -59,7 +59,8 @@ struct EditedInterfaceData
 };
 
 class InterfacesTabWidget : public QTabWidget {
-    Q_OBJECT
+    Q_OBJECT;
+
 public:
     InterfacesTabWidget(QWidget *parent = 0);
     ~InterfacesTabWidget();
@@ -69,7 +70,8 @@ public:
     bool isValid();
     void setCornerWidgetsVisible(bool);
     void setClusterMode(bool);
-
+    void setHostOS(const QString &s);
+    
 protected:
     void changeEvent(QEvent *e);
 
@@ -84,7 +86,8 @@ private:
     bool clusterMode;
     QString explanation;
     bool noTabs;
-
+    QString host_OS;
+    
 public slots:
     void addInterface(libfwbuilder::Interface*);
     void clear();
@@ -95,7 +98,7 @@ public slots:
     void addClusterInterface(ClusterInterfaceData);
     void setExplanation(const QString&);
     virtual void addTab(QWidget*, const QString&);
-
+    
 };
 
 #endif // INTERFACESTABWIDGET_H

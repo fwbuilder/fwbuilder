@@ -63,7 +63,8 @@ struct AddressInfo
 };
 
 class InterfaceEditorWidget : public QWidget {
-    Q_OBJECT
+    Q_OBJECT;
+
 public:
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *iface);
@@ -77,6 +78,7 @@ public:
     void updateColumnsSizes();
     void setClusterMode(bool);
     void setProtocolIndex(int);
+    void setHostOS(const QString &s);
 
 private:
     QTabWidget *tabw;

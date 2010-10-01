@@ -251,9 +251,10 @@
       fields. This text is displayed in greyed-out small font inside
       the imput field but is cleared as soon as user starts their
       input.  The text gives user a prompt as of what is expected in
-      each input field. The "placeholder" text support is available
-      only in Qt 4.7 and later so the code is conditional on the
-      version of Qt.
+      each input field and actual list of example interface names
+      depends on the host OS chosen in the first page of the
+      wizard.. The "placeholder" text support is available only in Qt
+      4.7 and later so the code is conditional on the version of Qt.
     </p>
   </li>
 
@@ -264,6 +265,12 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixed #1751 "Don't allow interface names to be blank". The GUI
+      should not allow the name of any object to be blank.
+    </p>
+  </li>
 </ul>
 
 

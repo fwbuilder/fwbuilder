@@ -1,5 +1,11 @@
 2010-09-30  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (getInterfaceNameExamplesForHostOS):
+	fixed #1753 "Set interface name hint based on firewall platform
+	and host OS". The placeholder text in the interface name and label
+	input fields in the new firewall wizard will depend on the host OS
+	chosen in the first page of the wizard.
+
 	* utils.cpp (validateName): fixed #1751 "Don't allow interface
 	names to be blank". The GUI should not allow the name of any
 	object to be blank.

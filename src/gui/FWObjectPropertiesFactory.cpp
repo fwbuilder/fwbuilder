@@ -1368,3 +1368,28 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
     return res;
 }
 
+QString FWObjectPropertiesFactory::getInterfaceNameExamplesForHostOS(const QString &host_os)
+{
+    Resources *os_resources = Resources::os_res[host_os.toStdString()];
+    if (os_resources == NULL) return "";
+    string os_family = os_resources-> getResourceStr("/FWBuilderResources/Target/family");
+
+    if (os_family == "linux24" ||
+        os_family == "ipcop"   ||
+        os_family == "openwrt" ||
+        os_family == "dd-wrt-nvram" ||
+        os_family == "dd-wrt-jffs" ||
+        os_family == "sveasoft") return "eth0, eth0.100, vlan100, br0, etc";
+    
+    if (os_family == "openbsd" ||
+        os_family == "freebsd" ||
+        os_family == "macosx") return "en0, fxp0, vlan100, etc";
+    
+    if (os_family == "ios" ||
+        os_family == "pix_os") return "FastEthernet0/0, etc";
+    
+    if (os_family == "procurve") return "vlan 10, a1, b1, etc";
+
+    return "";
+}
+
