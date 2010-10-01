@@ -807,14 +807,16 @@ void ObjectManipulator::reminderAboutStandardLib()
     QMessageBox::information(
         this,"Firewall Builder",
         QObject::tr(
-            "<img src=\":/Images/library_switch_screenshot.png\"/>"
-            " <br/>"
-            "<hr/>"
-            " <br/>"
+            "<html>"
             "Did you know that Firewall Builder comes with over a hunderd "
             "standard address and service objects that represent "
             "often used protocols and services? You can "
             "find them in the object library \"Standard\"."
+            " <br/>"
+            "<hr/>"
+            " <br/>"
+            "<img src=\":/Images/library_switch_screenshot.png\"/>"
+            "</html>"
         ));
 }
 
