@@ -418,7 +418,6 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                  lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
                  lib->isReadOnly())
                 continue;
-            if (lib == cl) continue; // skip current library
 
             dupID = duptargets->addAction(
                 tr("place in library %1").arg(
@@ -426,6 +425,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             dupID->setData(libid);
 
             // can't move to the same library
+            if (lib == cl) continue; // skip current library
+
             if (!libSelected)
             {
                 moveTargetsCounter++;
