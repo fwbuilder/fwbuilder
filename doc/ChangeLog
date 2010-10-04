@@ -1,5 +1,11 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget): fixed #1772
+	improved design of the widget used to edit ip addresses and other
+	attributes of an interface in the new firewall, new host and new
+	cluster wizards. Removed "MAC Address" imput field and rearranged
+	other input fields according to the result of usability tests.
+
 	* SSHCisco.cpp (SSHCisco): fixed #1784 added Cisco ASA (PIX) error
 	message "cannot add route entry" to the list of errors that
 	built-in installer recognizes and marks install process as

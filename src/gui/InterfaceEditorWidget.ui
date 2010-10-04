@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>479</width>
-    <height>391</height>
+    <width>434</width>
+    <height>359</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,156 +15,134 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="name">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Label:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="label">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="typeLabel">
-       <property name="text">
-        <string>Type:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="type">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <item>
-        <property name="text">
-         <string>Static IP address</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dynamic IP address</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Unnumbered interface</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="macLabel">
-       <property name="text">
-        <string>MAC address:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QLineEdit" name="mac">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Comment:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1" colspan="3">
-      <widget class="QTextEdit" name="comment">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>70</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="protocolLabel">
-       <property name="text">
-        <string>Protocol:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="protocol">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="explanation">
+    <widget class="QLabel" name="label_1">
      <property name="text">
-      <string/>
+      <string>Name:</string>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="name">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Label:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="typeLabel">
+     <property name="text">
+      <string>Type:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="type">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Static IP address</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dynamic IP address</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Unnumbered interface</string>
+      </property>
+     </item>
+    </widget>
+   </item>
    <item row="2" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Minimum</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>48</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="addAddress">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Add address</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>228</width>
+         <height>23</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0" colspan="4">
     <widget class="QTableWidget" name="addresses">
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>50</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>50</number>
+     </attribute>
      <column>
       <property name="text">
        <string>Address</string>
@@ -187,18 +165,92 @@
      </column>
     </widget>
    </item>
-   <item row="3" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="addAddress">
+   <item row="4" column="0" colspan="4">
+    <widget class="QLabel" name="explanation">
+     <property name="text">
+      <string>explanation text</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="4">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="protocolLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Failover protocol:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="protocol">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>298</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Add address</string>
+        <string>Comment:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QTextEdit" name="comment">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>70</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -210,11 +262,9 @@
   <tabstop>name</tabstop>
   <tabstop>label</tabstop>
   <tabstop>type</tabstop>
-  <tabstop>mac</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>protocol</tabstop>
   <tabstop>addresses</tabstop>
-  <tabstop>addAddress</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -36,6 +36,22 @@
 using namespace libfwbuilder;
 using namespace std;
 
+
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
+    QWidget(parent),
+    m_ui(new Ui::InterfaceEditorWidget)
+{
+    tabw = dynamic_cast<QTabWidget*>(parent);
+    this->interfacep = NULL;
+    m_ui->setupUi(this);
+    setClusterMode(false);
+    this->m_ui->name->setText(""); // blank interface name
+    this->m_ui->label->clear();
+
+    this->m_ui->comment->clear();
+//    addNewAddress();
+}
+
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) :
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
@@ -47,8 +63,9 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
-    if (iface->getPhysicalAddress() != NULL)
-       m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
+//    if (iface->getPhysicalAddress() != NULL)
+//       m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
+
     this->m_ui->comment->setPlainText(iface->getComment().c_str());
 
     if ( this->interfacep->isDyn() ) this->m_ui->type->setCurrentIndex(1);
@@ -75,7 +92,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
 }
 
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceData data) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent,
+                                             ClusterInterfaceData data) :
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {
@@ -112,7 +130,7 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     this->m_ui->name->setText(data->name.c_str());
     this->m_ui->label->setText(data->label.c_str());
 
-    this->m_ui->mac->setText(data->mac_addr.c_str());
+//    this->m_ui->mac->setText(data->mac_addr.c_str());
 
     this->m_ui->comment->clear();
 
@@ -133,21 +151,6 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
                           !addr->getAddressPtr()->isV6());
         }
     }
-}
-
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
-    QWidget(parent),
-    m_ui(new Ui::InterfaceEditorWidget)
-{
-    tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interfacep = NULL;
-    m_ui->setupUi(this);
-    setClusterMode(false);
-    this->m_ui->name->setText(""); // blank interface name
-    this->m_ui->label->clear();
-
-    this->m_ui->comment->clear();
-    addNewAddress();
 }
 
 void InterfaceEditorWidget::deleteAddress()
@@ -247,7 +250,8 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
     res.type = this->m_ui->type->currentIndex();
     res.protocol = this->m_ui->protocol->currentText();
 
-    res.mac = this->m_ui->mac->text();
+//    res.mac = this->m_ui->mac->text();
+
     bool noAddrs = false;
     // if (clusterMode)
     //     noAddrs = Resources::os_res[os.toStdString()]->getResourceBool(
@@ -441,12 +445,13 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 
 void InterfaceEditorWidget::addressChanged(int row, int col)
 {
-    if (m_ui->addresses->rowCount() >= 1)
-        m_ui->addAddress->setText(tr("Add another address"));
-    else
+    // if (m_ui->addresses->rowCount() >= 1)
+    //     m_ui->addAddress->setText(tr("Add another address"));
+    // else
         m_ui->addAddress->setText(tr("Add address"));
 
-    if ( row < 0 || col < 0 || rows.isEmpty() || row > m_ui->addresses->rowCount() || col > 1 ) return;
+    if ( row < 0 || col < 0 ||
+         rows.isEmpty() || row > m_ui->addresses->rowCount() || col > 1 ) return;
 
     if (!rows.keys().contains(row)) return;
     QString address = this->rows[row].first->text();
@@ -464,8 +469,8 @@ void InterfaceEditorWidget::setClusterMode(bool st)
     this->m_ui->name->setEnabled(!st);
     this->m_ui->protocol->setVisible(st);
     this->m_ui->protocolLabel->setVisible(st);
-    this->m_ui->mac->setVisible(!st);
-    this->m_ui->macLabel->setVisible(!st);
+//    this->m_ui->mac->setVisible(!st);
+//    this->m_ui->macLabel->setVisible(!st);
     this->m_ui->type->setVisible(!st);
     this->m_ui->typeLabel->setVisible(!st);
 }
@@ -509,6 +514,9 @@ void InterfaceEditorWidget::setHostOS(const QString &s)
 
 #if (QT_VERSION >= 0x040700)
     this->m_ui->name->setPlaceholderText(name_prompt);
-    this->m_ui->label->setPlaceholderText("outside, inside, etc");
+    this->m_ui->label->setPlaceholderText("outside, inside, etc (optional)");
 #endif
+
+    this->m_ui->name->setToolTip(name_prompt);
+    this->m_ui->label->setToolTip("outside, inside, etc (optional)");
 }
