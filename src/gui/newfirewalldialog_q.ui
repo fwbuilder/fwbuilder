@@ -57,7 +57,7 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="page1">
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
         <widget class="QLabel" name="label631">
          <property name="text">
@@ -131,31 +131,31 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="4" column="0">
         <widget class="QCheckBox" name="useTemplate">
          <property name="text">
-          <string>Use preconfigured firewall  templates</string>
+          <string>Use preconfigured firewall templates</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0" colspan="2">
-        <widget class="QFrame" name="templaterFrame">
+        <widget class="QFrame" name="templateFrame">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QGridLayout">
+         <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="templateFilePathLabel">
             <property name="text">
-             <string>Template file:</string>
+             <string>Using template library file:</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="templaterFilePath">
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="templateFilePath">
             <property name="minimumSize">
              <size>
               <width>400</width>
@@ -164,40 +164,41 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="templaterBrowseButton">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="templateUseStandard">
-            <property name="text">
-             <string>Use standard template library</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>100</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="templateUseCustom">
+              <property name="text">
+               <string>Select custom template library file</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="templateUseStandard">
+              <property name="text">
+               <string> Use standard template library </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>81</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="6" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

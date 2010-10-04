@@ -117,17 +117,15 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(p
 
     timer = new QTimer(this);
     connect( timer, SIGNAL(timeout()), this, SLOT(monitor()));
-    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),
+    connect( m_dialog->templateUseCustom, SIGNAL(pressed()),
              this, SLOT(browseTemplate()));
     connect( m_dialog->templateUseStandard, SIGNAL(pressed()),
              this, SLOT(useStandardTemplate()));
     connect( m_dialog->useTemplate, SIGNAL(released()),
-             this, SLOT(showHideTemplatePanel()));
+             this, SLOT(updateTemplatePanel()));
 
-    m_dialog->templaterFilePath->setText(tempfname.c_str());
-    m_dialog->templaterFrame->setVisible(false);
-
-    m_dialog->templateUseStandard->setEnabled(false);
+    m_dialog->templateFilePath->setText(tempfname.c_str());
+    updateTemplatePanel();
 
     /* fill in platform. Since iptables is the most popular, start with
      * it.
@@ -185,27 +183,33 @@ void newFirewallDialog::browseTemplate()
 //    QDir dir (fileName);
 //    if (dir.exists ())
 //    {
-    m_dialog->templaterFilePath->setText(fileName);
+    m_dialog->templateFilePath->setText(fileName);
 //    }
-
-    m_dialog->templateUseStandard->setEnabled(fileName != tempfname.c_str());
+    updateTemplatePanel();
 }
 
 void newFirewallDialog::useStandardTemplate()
 {
-    m_dialog->templaterFilePath->setText(tempfname.c_str());
-    m_dialog->templateUseStandard->setEnabled(false);
+    m_dialog->templateFilePath->setText(tempfname.c_str());
+    updateTemplatePanel();
 }
 
-void newFirewallDialog::showHideTemplatePanel()
+void newFirewallDialog::updateTemplatePanel()
 {
     if (m_dialog->useTemplate->checkState()==Qt::Checked)
     {
-            m_dialog->templaterFrame->setVisible(true);
+        QString fileName = m_dialog->templateFilePath->text();
+        bool using_std = fileName == tempfname.c_str();
+
+        m_dialog->templateFrame->setVisible(true);
+        m_dialog->templateFilePathLabel->setVisible(!using_std);
+        m_dialog->templateFilePath->setVisible(!using_std);
+        m_dialog->templateUseCustom->setVisible(using_std);
+        m_dialog->templateUseStandard->setVisible(!using_std);
     }
     else
     {
-            m_dialog->templaterFrame->setVisible(false);
+        m_dialog->templateFrame->setVisible(false);
     }
 }
 
@@ -535,7 +539,7 @@ void newFirewallDialog::showPage(const int page)
             try
             {
                 tmpldb->load(
-                    m_dialog->templaterFilePath->text().toAscii().data(),
+                    m_dialog->templateFilePath->text().toAscii().data(),
                     &upgrade_predicate, librespath);
             }
             catch (FWException &ex)

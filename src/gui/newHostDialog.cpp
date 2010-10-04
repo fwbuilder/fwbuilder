@@ -98,11 +98,14 @@ newHostDialog::newHostDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
 
     timer = new QTimer(this);
     connect( timer, SIGNAL(timeout()), this, SLOT(monitor()) );
-    connect( m_dialog->templaterBrowseButton, SIGNAL(pressed()),this,SLOT(browseTemplate()));
-    connect( m_dialog->templateUseStandart, SIGNAL(pressed()),this,SLOT(useStandartTemplate()));
-    connect( m_dialog->useTemplate, SIGNAL(released()),this,SLOT(showHideTemplatePanel()));
-    m_dialog->templaterFilePath->setText(tempfname.c_str());
-    m_dialog->templaterFrame->setVisible(false);
+    connect( m_dialog->templateUseCustom, SIGNAL(pressed()),
+             this,SLOT(browseTemplate()));
+    connect( m_dialog->templateUseStandard, SIGNAL(pressed()),
+             this,SLOT(useStandardTemplate()));
+    connect( m_dialog->useTemplate, SIGNAL(released()),
+             this,SLOT(updateTemplatePanel()));
+    m_dialog->templateFilePath->setText(tempfname.c_str());
+    updateTemplatePanel();
 
     setNextEnabled( OBJECT_NAME_PAGE, false );
 
@@ -121,24 +124,33 @@ void newHostDialog::browseTemplate()
     QDir dir (fileName);
 //    if (dir.exists ())
 //    {
-        m_dialog->templaterFilePath->setText(fileName);
+        m_dialog->templateFilePath->setText(fileName);
 //    }
+    updateTemplatePanel();
 }
 
-void newHostDialog::useStandartTemplate()
+void newHostDialog::useStandardTemplate()
 {
-    m_dialog->templaterFilePath->setText(tempfname.c_str());
+    m_dialog->templateFilePath->setText(tempfname.c_str());
+    updateTemplatePanel();
 }
 
-void newHostDialog::showHideTemplatePanel()
+void newHostDialog::updateTemplatePanel()
 {
     if (m_dialog->useTemplate->checkState()==Qt::Checked)
     {
-            m_dialog->templaterFrame->setVisible(true);
+        QString fileName = m_dialog->templateFilePath->text();
+        bool using_std = fileName == tempfname.c_str();
+
+        m_dialog->templateFrame->setVisible(true);
+        m_dialog->templateFilePathLabel->setVisible(!using_std);
+        m_dialog->templateFilePath->setVisible(!using_std);
+        m_dialog->templateUseCustom->setVisible(using_std);
+        m_dialog->templateUseStandard->setVisible(!using_std);
     }
     else
     {
-            m_dialog->templaterFrame->setVisible(false);
+        m_dialog->templateFrame->setVisible(false);
     }
 }
 
@@ -378,7 +390,7 @@ void newHostDialog::showPage(const int page)
 
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
-            tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
+            tmpldb->load( m_dialog->templateFilePath->text().toAscii().data(),
                           &upgrade_predicate, librespath);
         }
         list<FWObject*> fl;
