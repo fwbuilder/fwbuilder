@@ -403,15 +403,13 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             (getCurrentObjectTree()->getNumSelected()==1 &&
              Library::isA(getCurrentObjectTree()->getSelectedObjects().front()));
 
-        int libid = 0;
-
         FWObject *cl = getCurrentLib();
         vector<FWObject*>::iterator i;
 
         int N = libs_model->rowCount();
-        for (int i=0 ; i<N; ++i)
+        for (int row=0 ; row<N; ++row)
         {
-            QModelIndex idx = libs_model->index(i, 0);
+            QModelIndex idx = libs_model->index(row, 0);
             FWObject *lib = libs_model->getLibrary(idx);
             if (lib == NULL) continue;
             if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
@@ -422,7 +420,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             dupID = duptargets->addAction(
                 tr("place in library %1").arg(
                     QString::fromUtf8(lib->getName().c_str())));
-            dupID->setData(libid);
+            dupID->setData(row);
 
             // can't move to the same library
             if (lib == cl) continue; // skip current library
@@ -433,7 +431,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 QAction* mact = movetargets->addAction(
                     tr("to library %1").arg(
                         QString::fromUtf8(lib->getName().c_str())));
-                mact->setData(libid);
+                mact->setData(row);
             }
         }
     }
