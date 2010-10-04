@@ -119,6 +119,7 @@
 #  undef index
 #endif
 
+#include <QDesktopServices>
 #include <QCloseEvent>
 #include <QDateTime>
 #include <QDockWidget>
@@ -534,32 +535,80 @@ void FWWindow::startupLoad()
 
     QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
 
-    if (st->isFirstRun())
-    {
-        /*
-         * TODO: instead of showing "quick start guide" (or
-         * "introduction") in the tutorial window, show just the
-         * invitation in a dialog and put the rest of the guide on the
-         * web site. Use st->getABTestingGroup() to choose url for the
-         * guide. Call  wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
-         * when user clicks on the button to view intro tutorial.
-         *
-         */
-        showTutorial("introduction");
-    } else
-    {
-        if (!st->getBool("UI/NoStartTip"))
-        {
-            StartTipDialog *stdlg = new StartTipDialog(this);
-            stdlg->run();
-        }
-    }
+    showIntroDialog();
 
     QCoreApplication::postEvent(mw, new updateGUIStateEvent());
+}
 
-    //prepareFileMenu();
-    //updateGlobalToolbar();
-    //prepareRulesMenu();
+void FWWindow::showIntroDialog()
+{
+    if (!st->getBool("UI/NoIntro"))
+    {
+        // Show dialog inviting user to look at the "Quick start"
+        // guide on the web site.
+        QMessageBox msg_box;
+        msg_box.setText("<html>"
+                        "<table border='0'>"
+                        "<tr>"
+                        "<td>"
+                        "<img src=':/Images/fwbuilder3-128x128.png'>"
+                        "</td>"
+                        "<td align='center'>"
+                        "<h1>Welcome to Firewall Builder v4</h1>"
+                        "<h3>Quick Start Guide</h3>"
+                        "</td>"
+                        "</tr>"
+                        "</table>"
+                        "<p>"
+                        "This short guide provides basic information "
+                        "new users need to save time when first learning "
+                        "to use Firewall Builder."
+                        "</p>"
+                        "<p>"
+                        "In this guide you will learn:"
+                        "</p>"
+                        "<p>"
+                        "<ul>"
+                        "<li>Layout of the application windows</li>"
+                        "<li>Location of frequently used command buttons</li>"
+                        "<li>How toc reate and edit objects</li>"
+                        "<li>Where to find predefined system objects</li>"
+                        "</ul>"
+                        "</p>"
+                        "</html>"
+        );
+
+        msg_box.setInformativeText(tr("The guide will open in the web browser"));
+        QCheckBox cb(tr("Do not show this again"), &msg_box);
+        msg_box.addButton(&cb, QMessageBox::ResetRole);  // is this role right ?
+        QPushButton *watch_button = 
+            msg_box.addButton(tr("Watch the guide"), QMessageBox::AcceptRole);
+        QPushButton *close_button = msg_box.addButton(QMessageBox::Close);
+
+        msg_box.setDefaultButton(watch_button);
+        msg_box.exec();
+
+        if (msg_box.clickedButton() == &cb)
+        {
+            st->setBool("UI/NoIntro", true);
+        }
+
+        if (msg_box.clickedButton() == watch_button)
+        {
+            wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
+            QDesktopServices::openUrl(
+                QUrl("http://www.fwbuilder.org/4.0/quick_start_guide.html",
+                     QUrl::StrictMode));
+        }
+
+        return;
+    }
+
+    if (!st->getBool("UI/NoStartTip"))
+    {
+        StartTipDialog *stdlg = new StartTipDialog(this);
+        stdlg->run();
+    }
 }
 
 void FWWindow::helpAbout()

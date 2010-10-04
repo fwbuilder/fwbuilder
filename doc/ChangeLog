@@ -1,3 +1,10 @@
+2010-10-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::showIntroDialog): fixed #1765, #1779
+	Move quick start guide to the web site. The "Quick Start Guide" is
+	now part of the web site and the GUI only shows a
+	dialog-invitation to watch it.
+
 2010-10-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWBSettings.cpp (getABTestingGroup): fixed #1763 Implemented

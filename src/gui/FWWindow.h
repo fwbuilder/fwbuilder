@@ -367,6 +367,7 @@ public slots:
                                  QString *title_txt,
                                  QPixmap *pm,
                                  bool include_file_name);
+    void showIntroDialog();
     
  protected:
 
