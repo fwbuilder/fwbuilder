@@ -157,7 +157,6 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(p
     m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     m_dialog->obj_name->setFocus();
 
-
     currentTemplate = NULL;
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
@@ -225,6 +224,10 @@ newFirewallDialog::~newFirewallDialog()
 void newFirewallDialog::changed()
 {
     int p = currentPage();
+
+    if (fwbdebug)
+        qDebug() << "newFirewallDialog::changed page=" << p;
+
     if (p==0)
     {
         setNextEnabled(p,
@@ -233,9 +236,9 @@ void newFirewallDialog::changed()
         );
         setHostOS(m_dialog->hostOS, readPlatform(m_dialog->platform), "");
         QString host_os = readHostOS(m_dialog->hostOS);
-        this->m_dialog->interfaceEditor1->setHostOS(host_os);
-        this->m_dialog->interfaceEditor2->setHostOS(host_os);
-        m_dialog->obj_name->setFocus();
+        m_dialog->interfaceEditor1->setHostOS(host_os);
+        m_dialog->interfaceEditor2->setHostOS(host_os);
+        m_dialog->obj_name->setFocus(Qt::OtherFocusReason);
     }
 
     if (p==1)
@@ -436,7 +439,7 @@ void newFirewallDialog::showPage(const int page)
     int p = page;
 
     if (fwbdebug)
-        qDebug("newFirewallDialog::showPage  page=%d", page);
+        qDebug() << "newFirewallDialog::showPage  page=" << page;
 
 // p is a page number _after_ it changed
     switch (p)
@@ -451,6 +454,7 @@ void newFirewallDialog::showPage(const int page)
             tmpldb = NULL;
         }
         m_dialog->nextButton->setDefault(true);
+        m_dialog->obj_name->setFocus();
         break;
 
     case 1:

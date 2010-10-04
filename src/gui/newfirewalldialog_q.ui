@@ -118,7 +118,7 @@
          <string>&amp;Finish</string>
         </property>
         <property name="default">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="flat">
          <bool>false</bool>
