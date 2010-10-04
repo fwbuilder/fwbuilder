@@ -50,6 +50,7 @@ int main( int argc, char** argv) \
     st->init(); \
     st->setCheckUpdates(false); \
     st->setBool("UI/NoStartTip", true);  \
+    st->setBool("UI/NoIntro", true);  \
     init(argv); \
     wfl = new UserWorkflow(); \
     string full_res_path = respath + FS_SEPARATOR + "resources.xml"; \
