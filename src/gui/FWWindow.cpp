@@ -554,7 +554,7 @@ void FWWindow::showIntroDialog()
                         "<img src=':/Images/fwbuilder3-128x128.png'>"
                         "</td>"
                         "<td align='center'>"
-                        "<h1>Welcome to Firewall Builder v4</h1>"
+                        "<h1>Welcome to Firewall Builder</h1>"
                         "<h3>Quick Start Guide</h3>"
                         "</td>"
                         "</tr>"
