@@ -85,7 +85,9 @@ SSHCisco::SSHCisco(QWidget *_par,
     errorsEnabledState.push_back("Invalid");
     errorsEnabledState.push_back("invalid");
     errorsEnabledState.push_back("cannot find");
-    errorsEnabledState.push_back("An object-group with the same id but different type");
+    errorsEnabledState.push_back(
+        "An object-group with the same id but different type");
+    errorsEnabledState.push_back("cannot add route entry");
 
     local_event_loop = new QEventLoop();
     

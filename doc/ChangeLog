@@ -1,5 +1,10 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* SSHCisco.cpp (SSHCisco): fixed #1784 added Cisco ASA (PIX) error
+	message "cannot add route entry" to the list of errors that
+	built-in installer recognizes and marks install process as
+	"Failure".
+
 	* newFirewallDialog.cpp (showPage): fixed #1767 improved UI in the
 	new firewall and new host dialogs where user chooses file for the
 	custom template library or uses standard template library.
