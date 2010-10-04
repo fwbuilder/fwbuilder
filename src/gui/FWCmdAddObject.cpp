@@ -180,7 +180,8 @@ void FWCmdAddObject::redo()
             mw, new insertObjectInTreeEvent(filename, grp->getId(), member->getId()));
 
         QCoreApplication::postEvent(
-            mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
+            mw, new updateObjectAndSubtreeImmediatelyEvent(
+                filename, grp->getId()));
     }
 
     // when user clicks in the undo stack window, the program executes
@@ -203,8 +204,10 @@ void FWCmdAddObject::redo()
     // changes when editor opens
 
     //if (mw->isEditorVisible())
-    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
-    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, member->getId()));
+    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
+                                    filename, member->getId()));
+    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
+                                    filename, member->getId()));
 }
 
 void FWCmdAddObject::notify()

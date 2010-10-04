@@ -1,5 +1,8 @@
 2010-10-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator_create_new.cpp (ObjectManipulator::createNewObject):
+	fixed #1776 once new firewall is created, automatically open its Policy
+
 	* FWWindow.cpp (FWWindow::showIntroDialog): fixed #1765, #1779
 	Move quick start guide to the web site. The "Quick Start Guide" is
 	now part of the web site and the GUI only shows a

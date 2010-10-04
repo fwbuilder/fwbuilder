@@ -251,6 +251,15 @@ void ObjectManipulator::createNewObject()
         m_project, new expandObjectInTreeEvent(
             m_project->getFileName(), new_obj->getId()));
 
+    if (Firewall::cast(new_obj)!=NULL)  // Cluster too
+    {
+        FWObject *ruleset = new_obj->getFirstByType(Policy::TYPENAME);
+        if (ruleset)
+            QCoreApplication::postEvent(
+                m_project, new openRulesetEvent(
+                    m_project->getFileName(), ruleset->getId()));
+    }
+
     m_project->undoStack->push(macro);
 }
 
