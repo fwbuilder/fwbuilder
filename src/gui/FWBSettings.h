@@ -268,7 +268,11 @@ class FWBSettings : public QSettings {
     int getABTestingGroup();
     void setABTestingGroup(int n);
 
-        
+    int getStartsCounter();
+
+    bool isIntroDialogEnabled();
+    void setIntroDialogEnabled(bool f);
+    
 private:
     QFont getFontByType(const char*type);
 };

@@ -542,7 +542,7 @@ void FWWindow::startupLoad()
 
 void FWWindow::showIntroDialog()
 {
-    if (!st->getBool("UI/NoIntro"))
+    if (st->isIntroDialogEnabled())
     {
         // Show dialog inviting user to look at the "Quick start"
         // guide on the web site.
@@ -571,7 +571,7 @@ void FWWindow::showIntroDialog()
                         "<ul>"
                         "<li>Layout of the application windows</li>"
                         "<li>Location of frequently used command buttons</li>"
-                        "<li>How toc reate and edit objects</li>"
+                        "<li>How to create and edit objects</li>"
                         "<li>Where to find predefined system objects</li>"
                         "</ul>"
                         "</p>"
@@ -590,15 +590,15 @@ void FWWindow::showIntroDialog()
 
         if (msg_box.clickedButton() == &cb)
         {
-            st->setBool("UI/NoIntro", true);
+            st->setIntroDialogEnabled(false);
         }
 
         if (msg_box.clickedButton() == watch_button)
         {
             wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
-            QDesktopServices::openUrl(
-                QUrl("http://www.fwbuilder.org/4.0/quick_start_guide.html",
-                     QUrl::StrictMode));
+            int ab_group = st->getABTestingGroup();
+            QString url("http://www.fwbuilder.org/4.0/quick_start_guide_%1.html");
+            QDesktopServices::openUrl(QUrl(url.arg(ab_group), QUrl::StrictMode));
         }
 
         return;

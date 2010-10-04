@@ -71,7 +71,8 @@ const char* compression = SETTINGS_PATH_PREFIX "/DataFile/compression";
 const char* wdirSetpath = SETTINGS_PATH_PREFIX "/Environment/WDir";
 const char* ofdirSetpath = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
 const char* sfdirSetpath = SETTINGS_PATH_PREFIX "/Environment/SaveFileDir";
-const char* startupActionSetpath = SETTINGS_PATH_PREFIX "/Environment/StartupAction";
+const char* startupActionSetpath =
+    SETTINGS_PATH_PREFIX "/Environment/StartupAction";
 const char* labelColorPath = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
 const char* labelTextPath = SETTINGS_PATH_PREFIX "/ColorLabels/text_";
 const char* lastEditedSetpath = SETTINGS_PATH_PREFIX "/Environment/LastEdited";
@@ -87,39 +88,40 @@ const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
 const char* showUndoPanel = SETTINGS_PATH_PREFIX "/UI/showUndoPanel";
 const char* userWorkflowFlags = SETTINGS_PATH_PREFIX "/UI/userWorkFlowFlags";
 const char* iconsWithText = SETTINGS_PATH_PREFIX "/UI/IconWithText";
-
 const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
 const char* rcsFilePreviewStyle = SETTINGS_PATH_PREFIX "/RCS/FilePreviewStyle";
-const char* rcsFilePreviewSortColumn = SETTINGS_PATH_PREFIX "/RCS/FilePreviewSortColumn";
-
+const char* rcsFilePreviewSortColumn =
+    SETTINGS_PATH_PREFIX "/RCS/FilePreviewSortColumn";
 const char* dontSaveStdLib = SETTINGS_PATH_PREFIX "/DataFormat/dontSaveStdLib";
 const char* WindowGeometrySetpath= SETTINGS_PATH_PREFIX "/Layout/";
 const char* screenPositionSetpath= SETTINGS_PATH_PREFIX "/ScreenPos/";
-
 const char* showIconsInRules = SETTINGS_PATH_PREFIX "/UI/Icons/ShowIconsInRules";
-const char* showDirectionText = SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
+const char* showDirectionText =
+    SETTINGS_PATH_PREFIX "/UI/Icons/ShowDirectionTextInRules";
 const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize";
 const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
-const char* compilerOutputFont = SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
-
+const char* compilerOutputFont = 
+    SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
-
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
-const char* updateAvailableWarningLastTime = SETTINGS_PATH_PREFIX "/UI/updateAvailableWarningLastTime";
-const char* announcementLastTime = SETTINGS_PATH_PREFIX "/UI/announcementLastTime/%1";
+const char* updateAvailableWarningLastTime =
+    SETTINGS_PATH_PREFIX "/UI/updateAvailableWarningLastTime";
+const char* announcementLastTime =
+    SETTINGS_PATH_PREFIX "/UI/announcementLastTime/%1";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
-
-const char* reminderAboutStandardLibSuppressed = SETTINGS_PATH_PREFIX "/UI/reminderAboutStandardLibSuppressed";
-
-const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
-const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
+const char* reminderAboutStandardLibSuppressed =
+    SETTINGS_PATH_PREFIX "/UI/reminderAboutStandardLibSuppressed";
+const char* introDialogEnabled = SETTINGS_PATH_PREFIX "/UI/introDialogEnabled";
+const char* newFirewallPlatform =
+    SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
+const char* newClusterFailoverProtocol =
+    SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 const char* abTestingGroup = SETTINGS_PATH_PREFIX "/abTestingGroup";
-
+const char* startsCounter = SETTINGS_PATH_PREFIX "/startsCounter";
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
-
 const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
 const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
 
@@ -128,7 +130,6 @@ const char* SSHTimeout = "Sessions/fwb_session_with_keepalive/PingIntervalSecs";
 #else
 const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 #endif
-
 
 
 /**
@@ -208,6 +209,22 @@ void FWBSettings::init(bool force_first_time_run)
         // a/b group codes are "1" and "2"
         setABTestingGroup(QTime::currentTime().second() % 2 + 1);
     }
+
+    ok = contains(introDialogEnabled);
+    if (!ok)
+    {
+        setIntroDialogEnabled(true);
+    }
+
+    ok = contains(startsCounter);
+    if (!ok)
+    {
+        setValue(startsCounter, 0);
+    }
+
+    setValue(startsCounter, getStartsCounter() + 1);
+    // disable invitation to watch quick start guide after 5 starts
+    if (getStartsCounter() > 5) setIntroDialogEnabled(false);
 
     /*
      * I am seeing two particular uuids a lot in the logs, both coming
@@ -1142,5 +1159,18 @@ void FWBSettings::setABTestingGroup(int n)
     setValue(abTestingGroup, n);
 }
 
+int FWBSettings::getStartsCounter()
+{
+    return value(startsCounter).toInt();
+}
 
+bool FWBSettings::isIntroDialogEnabled()
+{
+    return value(introDialogEnabled).toBool();
+}
+
+void FWBSettings::setIntroDialogEnabled(bool f)
+{
+    setValue(introDialogEnabled, f);
+}
 
