@@ -50,10 +50,10 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     if (iface->getPhysicalAddress() != NULL)
        m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
     this->m_ui->comment->setPlainText(iface->getComment().c_str());
-    if ( this->interfacep->isDyn() )
-        this->m_ui->type->setCurrentIndex(1);
-    if ( this->interfacep->isUnnumbered() )
-        this->m_ui->type->setCurrentIndex(2);
+
+    if ( this->interfacep->isDyn() ) this->m_ui->type->setCurrentIndex(1);
+    if ( this->interfacep->isUnnumbered() ) this->m_ui->type->setCurrentIndex(2);
+
     FWObjectTypedChildIterator adriter = iface->findByType(IPv4::TYPENAME);
     for ( ; adriter != adriter.end(); ++adriter )
     {
@@ -115,14 +115,15 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     this->m_ui->mac->setText(data->mac_addr.c_str());
 
     this->m_ui->comment->clear();
-    if ( data->isDyn )
-        this->m_ui->type->setCurrentIndex(1);
-    else if ( data->isUnnumbered )
-        this->m_ui->type->setCurrentIndex(2);
+
+    if ( data->isDyn ) this->m_ui->type->setCurrentIndex(1);
     else
-        this->m_ui->type->setCurrentIndex(0);
+        if ( data->isUnnumbered ) this->m_ui->type->setCurrentIndex(2);
+        else this->m_ui->type->setCurrentIndex(0);
+
     foreach(QPushButton *btn, this->buttons.keys())
         btn->click();
+
     if ( !data->isDyn && !data->isUnnumbered )
     {
         foreach( InetAddrMask* addr, data->addr_mask )
@@ -216,7 +217,8 @@ int InterfaceEditorWidget::addNewAddress(QString address, QString netmask, bool 
 void InterfaceEditorWidget::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
         m_ui->retranslateUi(this);
         break;

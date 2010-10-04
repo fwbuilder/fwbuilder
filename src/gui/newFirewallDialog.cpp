@@ -235,6 +235,7 @@ void newFirewallDialog::changed()
         QString host_os = readHostOS(m_dialog->hostOS);
         this->m_dialog->interfaceEditor1->setHostOS(host_os);
         this->m_dialog->interfaceEditor2->setHostOS(host_os);
+        m_dialog->obj_name->setFocus();
     }
 
     if (p==1)

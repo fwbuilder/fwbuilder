@@ -67,12 +67,12 @@
        </property>
        <item>
         <property name="text">
-         <string>Regular interface</string>
+         <string>Static IP address</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Dynamic address</string>
+         <string>Dynamic IP address</string>
         </property>
        </item>
        <item>
