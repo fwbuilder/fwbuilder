@@ -106,6 +106,7 @@ public:
     
     void showPage(const int page); //it was "selected(QString)"
     bool validateAddressAndMask(const QString &addr,const QString &netm);
+    void getIPAddressOfFirewallByName();
     
 public slots:
     virtual void upInterface();

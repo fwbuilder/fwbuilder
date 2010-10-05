@@ -1,5 +1,12 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* newFirewallDialog.cpp (changed): fixed #1770 Eliminated pause
+	that happened when user switched from page 0 to page 1 of the new
+	firewall wizard. Pause was caused by the DNS queries the program
+	ran trying to determine ip address of the firewall using the name
+	provided on the first page of the wizard. Now DNS query is
+	launched only if user wants to create interfaces uses snmp scan.
+
 	* InterfaceEditorWidget.cpp (InterfaceEditorWidget): fixed #1772
 	improved design of the widget used to edit ip addresses and other
 	attributes of an interface in the new firewall, new host and new

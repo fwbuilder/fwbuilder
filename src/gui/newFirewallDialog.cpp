@@ -80,7 +80,8 @@ using namespace std;
 
 
 
-newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
+newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
+    QDialog(parentw)
 {
     parent = _p;
     db = parent->getRoot();
@@ -226,7 +227,9 @@ void newFirewallDialog::changed()
     int p = currentPage();
 
     if (fwbdebug)
-        qDebug() << "newFirewallDialog::changed page=" << p;
+        qDebug() << "newFirewallDialog::changed() page=" << p
+                 << "use_manual=" << m_dialog->use_manual->isChecked()
+                 << "use_snmp=" << m_dialog->use_snmp->isChecked();
 
     if (p==0)
     {
@@ -238,32 +241,63 @@ void newFirewallDialog::changed()
         QString host_os = readHostOS(m_dialog->hostOS);
         m_dialog->interfaceEditor1->setHostOS(host_os);
         m_dialog->interfaceEditor2->setHostOS(host_os);
-        m_dialog->obj_name->setFocus(Qt::OtherFocusReason);
     }
 
     if (p==1)
     {
 
-        bool f;
+        bool use_snmp = false;
 
 #ifdef HAVE_LIBSNMP
-        f = m_dialog->use_snmp->isChecked();
+        use_snmp = m_dialog->use_snmp->isChecked();
 #else
-        f = false;
-        m_dialog->use_snmp->setEnabled( f );
+        use_snmp = false;
+        m_dialog->use_snmp->setEnabled( use_snmp );
 #endif
-        m_dialog->snmpIP->setEnabled( f );
-        m_dialog->snmp_community->setEnabled( f );
-        m_dialog->snmpQuery->setEnabled( f );
-        m_dialog->snmpProgress->setEnabled( f );
-        if ( f ) m_dialog->snmp_community->setFocus();
+        m_dialog->snmpIP->setEnabled( use_snmp );
+        m_dialog->snmp_community->setEnabled( use_snmp );
+        m_dialog->snmpQuery->setEnabled( use_snmp );
+        m_dialog->snmpProgress->setEnabled( use_snmp );
+        if ( use_snmp ) m_dialog->snmp_community->setFocus();
 
-        f = m_dialog->use_manual->isChecked() || snmpPollCompleted;
-        setNextEnabled( 1, f );
+        if (use_snmp)
+        {
+            getIPAddressOfFirewallByName();
+        }
+
+        use_snmp = m_dialog->use_manual->isChecked() || snmpPollCompleted;
+        setNextEnabled( 1, use_snmp );
     }
+    if (fwbdebug)
+        qDebug() << "newFirewallDialog::changed() done";
 }
 
-void  newFirewallDialog::monitor()
+void newFirewallDialog::getIPAddressOfFirewallByName()
+{
+    getInterfacesBusy = true;
+
+    m_dialog->snmpIP->setText("");
+
+    QString name = m_dialog->obj_name->text().toLatin1().constData();
+    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+    QString addr = getAddrByName(name, AF_INET);
+    QApplication::restoreOverrideCursor();
+
+    if (!addr.isEmpty())
+        m_dialog->snmpIP->setText(addr);
+    else
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Address of %1 could not be obtained via DNS")
+            .arg(m_dialog->obj_name->text()),
+            "&Continue", QString::null, QString::null, 0, 1 );
+    }
+
+    getInterfacesBusy = false;
+}
+
+void newFirewallDialog::monitor()
 {
     if (logger==NULL || q==NULL) return;
 
@@ -381,7 +415,8 @@ void newFirewallDialog::getInterfacesViaSNMP()
 #endif
 }
 
-bool interfaceCompare(libfwbuilder::Interface *first, libfwbuilder::Interface *second)
+bool interfaceCompare(libfwbuilder::Interface *first,
+                      libfwbuilder::Interface *second)
 {
     return first->getName() < second->getName();
 }
@@ -459,29 +494,9 @@ void newFirewallDialog::showPage(const int page)
 
     case 1:
     {
+// page 1 is where we choose to configure interfaces manually or via snmp
+        m_dialog->snmpIP->setText("");
         changed();  // to properly enable/disable widgets
-
-        getInterfacesBusy = true;
-
-        InetAddr addr;
-        QString name = m_dialog->obj_name->text().toLatin1().constData();
-        try
-        {
-            QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-            QString a = getAddrByName(name, AF_INET);
-            m_dialog->snmpIP->setText(a);
-            QApplication::restoreOverrideCursor();
-            getInterfacesBusy = false;
-        } catch (FWException &ex)
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("Address of %1 could not be obtained via DNS")
-                .arg(m_dialog->obj_name->text()),
-                "&Continue", QString::null, QString::null, 0, 1 );
-            getInterfacesBusy = false;
-            break ;
-        }
         m_dialog->nextButton->setDefault(true);
         break;
     }
