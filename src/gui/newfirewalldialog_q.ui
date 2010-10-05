@@ -147,7 +147,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page1">
       <layout class="QGridLayout" name="gridLayout_4">
@@ -232,22 +232,47 @@
         </widget>
        </item>
        <item row="5" column="0" colspan="2">
-        <widget class="QFrame" name="templateFrame">
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
+        <widget class="QGroupBox" name="templateGroupBox">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="templateLibExplanation">
+            <property name="text">
+             <string>Firewall Builder comes with a library of standard template firewall objects, however you can compose your own library of templates and use it to create new firewall.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="useStandard">
+            <property name="text">
+             <string>Use standard template objects</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="useCustom">
+            <property name="text">
+             <string>Use custom template objects</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="selectCustomTemplateLib">
+            <property name="text">
+             <string>Select custom template library file</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
            <widget class="QLabel" name="templateFilePathLabel">
             <property name="text">
              <string>Using template library file:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="4" column="0" colspan="2">
            <widget class="QLineEdit" name="templateFilePath">
             <property name="minimumSize">
              <size>
@@ -256,37 +281,6 @@
              </size>
             </property>
            </widget>
-          </item>
-          <item row="2" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QPushButton" name="templateUseCustom">
-              <property name="text">
-               <string>Select custom template library file</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="templateUseStandard">
-              <property name="text">
-               <string> Use standard template library </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>81</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>

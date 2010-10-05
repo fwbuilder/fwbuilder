@@ -1,5 +1,13 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWBSettings.cpp (setCustomTemplatesEnabled): fixed #1791 "Add
+	preference flag to enable / disable the Custom templates button on
+	the New Firewall Wizard". Use of the custom template library
+	to create new firewall object is now optional, controlled by
+	a checkbox in the "Object" tab of the gobal preferenes dialog.
+	New users will have this option turned off by default, however
+	existing users will see it enabled for backwards compatibility.
+
 	* FindObjectWidget.cpp (showObject): fixed #1790 "When an object
 	is found using Find and the object is in the object tree, the
 	keyboard focus shifts to the Object Panel". The "find" pabel now

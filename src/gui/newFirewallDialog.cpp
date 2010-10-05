@@ -118,13 +118,14 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
 
     timer = new QTimer(this);
     connect( timer, SIGNAL(timeout()), this, SLOT(monitor()));
-    connect( m_dialog->templateUseCustom, SIGNAL(pressed()),
+    connect( m_dialog->selectCustomTemplateLib, SIGNAL(pressed()),
              this, SLOT(browseTemplate()));
-    connect( m_dialog->templateUseStandard, SIGNAL(pressed()),
-             this, SLOT(useStandardTemplate()));
+    connect( m_dialog->useStandard, SIGNAL(toggled(bool)),
+             this, SLOT(updateTemplatePanel()));
     connect( m_dialog->useTemplate, SIGNAL(released()),
              this, SLOT(updateTemplatePanel()));
 
+    m_dialog->useStandard->setChecked(true);
     m_dialog->templateFilePath->setText(tempfname.c_str());
     updateTemplatePanel();
 
@@ -196,20 +197,28 @@ void newFirewallDialog::useStandardTemplate()
 
 void newFirewallDialog::updateTemplatePanel()
 {
-    if (m_dialog->useTemplate->checkState()==Qt::Checked)
+    if (st->customTemplatesEnabled() &&
+        m_dialog->useTemplate->checkState()==Qt::Checked)
     {
         QString fileName = m_dialog->templateFilePath->text();
-        bool using_std = fileName == tempfname.c_str();
+        bool using_std = m_dialog->useStandard->isChecked();
 
-        m_dialog->templateFrame->setVisible(true);
-        m_dialog->templateFilePathLabel->setVisible(!using_std);
-        m_dialog->templateFilePath->setVisible(!using_std);
-        m_dialog->templateUseCustom->setVisible(using_std);
-        m_dialog->templateUseStandard->setVisible(!using_std);
+        m_dialog->templateGroupBox->setVisible(true);
+        m_dialog->templateFilePathLabel->setVisible(true);
+        m_dialog->templateFilePath->setVisible(true);
+        m_dialog->templateLibExplanation->setVisible(true);
+
+        m_dialog->templateFilePath->setEnabled(!using_std);
+        m_dialog->selectCustomTemplateLib->setEnabled(!using_std);
+
+        if (using_std)
+        {
+            m_dialog->templateFilePath->setText(tempfname.c_str());
+        }
     }
     else
     {
-        m_dialog->templateFrame->setVisible(false);
+        m_dialog->templateGroupBox->setVisible(false);
     }
 }
 

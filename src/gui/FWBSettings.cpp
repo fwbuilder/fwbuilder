@@ -83,6 +83,8 @@ const char* infoStyleSetpath = SETTINGS_PATH_PREFIX "/UI/InfoWindowStyle";
 const char* infoWindowHSetpath = SETTINGS_PATH_PREFIX "/UI/InfoWindowHeight";
 const char* groupModeSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewMode";
 const char* groupColsSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewColumns";
+const char* customTemplatesEn =
+    SETTINGS_PATH_PREFIX "/UI/customTemplatesEnabled";
 const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
 const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
 const char* showUndoPanel = SETTINGS_PATH_PREFIX "/UI/showUndoPanel";
@@ -201,7 +203,16 @@ void FWBSettings::init(bool force_first_time_run)
     if (force_first_time_run) first_run = true;
 
     if (first_run)
+    {
         suppressReminderAboutStandardLib(false);
+    } else
+    {
+        // enable custom templates for existing users for backwards
+        // compatibility. New users will have this disabled for simplicity.
+        ok = contains(customTemplatesEn);
+        if (!ok)
+            setCustomTemplatesEnabled(true);
+    }
 
     ok = contains(abTestingGroup);
     if (!ok)
@@ -1174,3 +1185,12 @@ void FWBSettings::setIntroDialogEnabled(bool f)
     setValue(introDialogEnabled, f);
 }
 
+bool FWBSettings::customTemplatesEnabled()
+{
+    return value(customTemplatesEn).toBool();
+}
+
+void FWBSettings::setCustomTemplatesEnabled(bool f)
+{
+    setValue(customTemplatesEn, f);
+}

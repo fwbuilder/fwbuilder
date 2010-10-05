@@ -188,41 +188,34 @@
        <string>Objects</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <property name="verticalSpacing">
-        <number>20</number>
-       </property>
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QCheckBox" name="objTooltips">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Enable object tooltips in the tree and rule sets</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="spacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>244</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <widget class="QCheckBox" name="objTooltips">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Enable object tooltips in the tree and rule sets</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <spacer name="spacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>429</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="1" column="0">
         <widget class="QCheckBox" name="deletedObj">
@@ -238,7 +231,19 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0" colspan="2">
+        <widget class="QCheckBox" name="enableCustomTemplates">
+         <property name="toolTip">
+          <string>The program comes with a library of template objects that can
+be used to create new firewalls, however you can create your
+own library of templates and use it in addition to the one we provide</string>
+         </property>
+         <property name="text">
+          <string>Enable use of custom firewall template libraries</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
         <spacer name="verticalSpacer_5">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -261,7 +266,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="6" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
           <number>0</number>
@@ -423,7 +428,7 @@
          </widget>
         </widget>
        </item>
-       <item row="7" column="0">
+       <item row="7" column="0" colspan="2">
         <spacer name="verticalSpacer_7">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

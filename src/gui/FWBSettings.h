@@ -272,6 +272,9 @@ class FWBSettings : public QSettings {
 
     bool isIntroDialogEnabled();
     void setIntroDialogEnabled(bool f);
+
+    bool customTemplatesEnabled();
+    void setCustomTemplatesEnabled(bool f);
     
 private:
     QFont getFontByType(const char*type);

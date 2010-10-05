@@ -117,6 +117,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
 //    m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
 
+    m_dialog->enableCustomTemplates->setChecked( st->customTemplatesEnabled() );
+
     m_dialog->deletedObj->setChecked( st->getBool("UI/ShowDeletedObjects") );
     m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
 
@@ -409,6 +411,9 @@ void PrefsDialog::accept()
     st->setWDir( wd );
 
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
+
+    st->setCustomTemplatesEnabled(m_dialog->enableCustomTemplates->isChecked());
+
 //  st->setTooltipDelay( m_dialog->tooltipDelay->value() );
 //  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
