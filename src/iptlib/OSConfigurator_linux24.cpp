@@ -532,13 +532,19 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     while ((pos = intf_re.indexIn(combined_command, pos + 1)) > -1)
     {
         QString name = intf_re.cap(1);
+        int match_len = intf_re.matchedLength();
         iface_names.push_back(name);
         iface_vars.push_back("$i_" + name);
         if (name.contains("*")) 
         {
             wildcard_interface = true;
-            QString intf_family = name.section('*', 0);
+            QString intf_family = name.section('*', 0, 0);
             command_wrappers->setVariable("interface_family_name", intf_family);
+
+            // replace $i_ppp* with $addr. This must match shell code
+            // in the configlet run_time_wrappers
+            combined_command.replace(pos, match_len, "$addr");
+
             break;
         }
     }
@@ -547,7 +553,8 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
     if (!no_wrapper)
     {
-        QStringList command_lines = QString(combined_command).split("\n", QString::SkipEmptyParts);
+        QStringList command_lines = 
+            QString(combined_command).split("\n", QString::SkipEmptyParts);
         if (command_lines.size() > 1)
         {
             command_lines.push_front("{");
@@ -567,14 +574,15 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     {
         QString intf_name = iface_names[idx];
         //if (ipv6) intf_name += "_v6";
-        command_wrappers->setVariable(QString("intf_%1_var_name").arg(idx+1), intf_name);
+        command_wrappers->setVariable(QString("intf_%1_var_name").arg(idx+1),
+                                      intf_name);
     }
 
     command_wrappers->setVariable("command", combined_command);
 
     return command_wrappers->expand().toStdString() + "\n";
 
-#if 0
+#if V30_IMPLEMENTATION
     string command_line = command;
     ostringstream  ext_command_line;
 

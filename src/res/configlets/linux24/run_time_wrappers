@@ -26,13 +26,14 @@ done
 ## Current implementation supports only one wildcard interface per rule.
 ## This can be something like "ppp*"
 ##
-{{if whildcard_interface}}
+{{if wildcard_interface}}
 getinterfaces {{$interface_family_name}} | while read I; do
     ivar=$(getInterfaceVarName $I)
     getaddr{{if ipv6}}6{{endif}} $I $ivar
     cmd="$"$ivar
     eval "addr=$cmd"
-    test -n "$addr" && {{$command}} 
+    test -n "$addr" && {{$command}}
+done
 {{endif}}
 
 ## If the rule uses address of dynamic interface, there can be either

@@ -1,5 +1,10 @@
 2010-10-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24.cpp (printRunTimeWrappers): fixed SF bug
+	3077132 "no PREROUTING rule with *-Interface". Rules matching
+	addresses of a wildcard interface (e.g. "ppp*") were not properly
+	generated.
+
 	* RuleSetView.cpp (updateSelectionSensitiveActions): fixed SF bug
 	3039681 "context-menu items inconsistent for Single/Multiple
 	rules". When several rules are selected in rule set, some context
