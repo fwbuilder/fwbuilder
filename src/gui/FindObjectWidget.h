@@ -91,6 +91,7 @@ public slots:
     void init();
     void firewallOpened(libfwbuilder::Firewall *f);
     void scopeChanged();
+    void objectDeleted();
 
  signals:
     void close();

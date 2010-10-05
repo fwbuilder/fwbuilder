@@ -92,6 +92,9 @@ FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
         tr("Drop object you want to find here"));
     m_widget->replaceDropArea->setHelperText(
         tr("Drop object for replacement here"));
+
+    connect(m_widget->findDropArea, SIGNAL(objectDeleted()),
+            this, SLOT(objectDeleted()));
 }
 
 void FindObjectWidget::keyPressEvent( QKeyEvent* ev )
@@ -111,9 +114,7 @@ void FindObjectWidget::findObject(FWObject *o)
     if (fwbdebug) qDebug("FindObjectWidget::findObject");
     show();
     m_widget->findDropArea->insertObject(o);
-
 }
-
 
 void FindObjectWidget::enableAll()
 {
@@ -158,6 +159,17 @@ void FindObjectWidget::reset()
 }
 
 /**
+ * This slot is called when user deletes an object from the "find"
+ * drop area. See #1785
+ */
+void FindObjectWidget::objectDeleted()
+{
+    m_widget->findAttr->blockSignals(true);
+    m_widget->findAttr->lineEdit()->setText("");
+    m_widget->findAttr->blockSignals(false);
+}
+
+/**
  * This slot is called when @attribute or @findAttr fields change
  * (that is, whenever user changes attribute they want to match or type
  * in the input field to change the value)
@@ -166,7 +178,9 @@ void FindObjectWidget::findAttrChanged(const QString &ns)
 {
     if (ns!=lastAttrSearch)  reset();
     lastAttrSearch = ns;
+    m_widget->findDropArea->blockSignals(true);
     m_widget->findDropArea->deleteObject(); //  for #1757
+    m_widget->findDropArea->blockSignals(false);
 }
 
 void FindObjectWidget::find()

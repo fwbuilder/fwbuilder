@@ -1,5 +1,9 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (objectDeleted): fixed #1785 "Deleting
+	graphic icon of object from Find tab should also remove the text
+	name or label"
+
 	* newFirewallDialog.cpp (changed): fixed #1770 Eliminated pause
 	that happened when user switched from page 0 to page 1 of the new
 	firewall wizard. Pause was caused by the DNS queries the program
