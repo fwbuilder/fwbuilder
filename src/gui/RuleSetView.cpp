@@ -177,32 +177,39 @@ void RuleSetView::configureGroups()
 void RuleSetView::initActions()
 {
     // Compile rule
-    compileRuleAction = createAction(tr("Compile rule"), SLOT(compileCurrentRule()), QKeySequence(Qt::Key_X));
+    compileRuleAction = createAction(tr("Compile Rule"), SLOT(compileCurrentRule()),
+                                     QKeySequence(Qt::Key_X));
     addAction(compileRuleAction );
     compileRuleAction->setVisible(true);
     compileRuleAction->setEnabled(true);
 
     // Move rule up
-    moveRuleUpAction = createAction(tr("Move Rule up"), SLOT( moveRuleUp()), QKeySequence(Qt::CTRL + Qt::Key_PageUp));
+    moveRuleUpAction = createAction(tr("Move Rule Up"), SLOT( moveRuleUp()),
+                                    QKeySequence(Qt::CTRL + Qt::Key_PageUp));
     addAction(moveRuleUpAction );
 
     // Move rule down
-    moveRuleDownAction = createAction(tr("Move Rule down"), SLOT( moveRuleDown()), QKeySequence(Qt::CTRL + Qt::Key_PageDown));
+    moveRuleDownAction = createAction(tr("Move Rule Down"), SLOT( moveRuleDown()),
+                                      QKeySequence(Qt::CTRL + Qt::Key_PageDown));
     addAction(moveRuleDownAction );
 
     // Remove rules from group
-    removeFromGroupAction = createAction(tr("Remove from the group"), SLOT( removeFromGroup()));
+    removeFromGroupAction = createAction(tr("Remove From the Group"),
+                                         SLOT( removeFromGroup()));
 
     // New group
-    newGroupAction = createAction(tr("New group"), SLOT( newGroup()));
+    newGroupAction = createAction(tr("New Group"), SLOT( newGroup()));
 
     // Insert Rule
-    insertRuleAction = createAction( tr("Insert Rule"), SLOT( insertRule() ) );
+    insertRuleAction = createAction( tr("Insert New Rule"), SLOT( insertRule() ) );
 
-    addRuleAfterCurrentAction = createAction(tr("Add Rule Below"), SLOT( addRuleAfterCurrent() ));
+    addRuleAfterCurrentAction = createAction(tr("Add New Rule Below"),
+                                             SLOT( addRuleAfterCurrent() ));
 
-    addToGroupAboveAction = createAction("addToGroupAboveAction", SLOT( addToGroupAbove() ));
-    addToGroupBelowAction = createAction("addToGroupBelowAction", SLOT( addToGroupBelow() ));
+    addToGroupAboveAction = createAction("addToGroupAboveAction",
+                                         SLOT( addToGroupAbove() ));
+    addToGroupBelowAction = createAction("addToGroupBelowAction",
+                                         SLOT( addToGroupBelow() ));
 
     // Remove rule
     removeRuleAction = createAction(tr("Remove Rule"), SLOT( removeRule()));
@@ -210,8 +217,10 @@ void RuleSetView::initActions()
     // Clipboard operations
     copyRuleAction = createAction(tr("Copy Rule"), SLOT( copyRule() ));
     cutRuleAction = createAction(tr("Cut Rule"), SLOT( cutRule() ));
-    pasteRuleAboveAction = createAction(tr("Paste Rule Above"), SLOT( pasteRuleAbove() ));
-    pasteRuleBelowAction = createAction(tr("Paste Rule Below"), SLOT( pasteRuleBelow() ));
+    pasteRuleAboveAction = createAction(tr("Paste Rule Above"),
+                                        SLOT( pasteRuleAbove() ));
+    pasteRuleBelowAction = createAction(tr("Paste Rule Below"),
+                                        SLOT( pasteRuleBelow() ));
 
     //Disable or Enable rules
     disableRuleAction = createAction(tr("Enable Rule"), SLOT( disableRule() ));
@@ -221,42 +230,49 @@ void RuleSetView::initActions()
 
     QPixmap pcolor(16,16);
 
-    setColorEmptyAction = createAction(tr("No color"), SLOT( setColorEmpty() ));
+    setColorEmptyAction = createAction(tr("No Color"), SLOT( setColorEmpty() ));
     pcolor.fill(QColor(255,255,255));
     setColorEmptyAction->setIcon(QIcon(pcolor));
     setColorEmptyAction->setVisible(true);
 
-    setColorRedAction = createAction(st->getLabelText(FWBSettings::RED), SLOT( setColorRed() ));
+    setColorRedAction = createAction(st->getLabelText(FWBSettings::RED),
+                                     SLOT( setColorRed() ));
     pcolor.fill(st->getLabelColor(FWBSettings::RED));
     setColorRedAction->setIcon(QIcon(pcolor));
     setColorRedAction->setVisible(true);
 
-    setColorBlueAction = createAction(st->getLabelText(FWBSettings::BLUE), SLOT( setColorBlue() ));
+    setColorBlueAction = createAction(st->getLabelText(FWBSettings::BLUE),
+                                      SLOT( setColorBlue() ));
     pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
     setColorBlueAction->setIcon(QIcon(pcolor));
     setColorBlueAction->setVisible(true);
 
-    setColorOrangeAction = createAction(st->getLabelText(FWBSettings::ORANGE), SLOT( setColorOrange() ));
+    setColorOrangeAction = createAction(st->getLabelText(FWBSettings::ORANGE),
+                                        SLOT( setColorOrange() ));
     pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
     setColorOrangeAction->setIcon(QIcon(pcolor));
     setColorOrangeAction->setVisible(true);
 
-    setColorPurpleAction = createAction(st->getLabelText(FWBSettings::PURPLE), SLOT( setColorPurple() ));
+    setColorPurpleAction = createAction(st->getLabelText(FWBSettings::PURPLE),
+                                        SLOT( setColorPurple() ));
     pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
     setColorPurpleAction->setIcon(QIcon(pcolor));
     setColorPurpleAction->setVisible(true);
 
-    setColorGrayAction = createAction(st->getLabelText(FWBSettings::GRAY), SLOT( setColorGray() ));
+    setColorGrayAction = createAction(st->getLabelText(FWBSettings::GRAY),
+                                      SLOT( setColorGray() ));
     pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
     setColorGrayAction->setIcon(QIcon(pcolor));
     setColorGrayAction->setVisible(true);
 
-    setColorYellowAction = createAction(st->getLabelText(FWBSettings::YELLOW), SLOT( setColorYellow() ));
+    setColorYellowAction = createAction(st->getLabelText(FWBSettings::YELLOW),
+                                        SLOT( setColorYellow() ));
     pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
     setColorYellowAction->setIcon(QIcon(pcolor));
     setColorYellowAction->setVisible(true);
 
-    setColorGreenAction = createAction(st->getLabelText(FWBSettings::GREEN), SLOT( setColorGreen() ));
+    setColorGreenAction = createAction(st->getLabelText(FWBSettings::GREEN),
+                                       SLOT( setColorGreen() ));
     pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
     setColorGreenAction->setIcon(QIcon(pcolor));
     setColorGreenAction->setVisible(true);
@@ -264,7 +280,8 @@ void RuleSetView::initActions()
 }
 
 
-QAction* RuleSetView::createAction(QString label, const char* member, const QKeySequence &shortcut)
+QAction* RuleSetView::createAction(QString label, const char* member,
+                                   const QKeySequence &shortcut)
 {
     QAction* action = new QAction(label, this);
     action->setShortcut(shortcut);
@@ -743,7 +760,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
 void RuleSetView::addGenericMenuItemsToContextMenu(QMenu *menu) const
 {
     if (((RuleSetModel*)model())->isEmpty())
-        menu->addAction(tr("Insert Rule"), this, SLOT( insertRule() ));
+        menu->addAction(tr("Insert new rule"), this, SLOT( insertRule() ));
     else
     {
         menu->addAction(tr("Add new rule on top"), this,
@@ -811,6 +828,7 @@ void RuleSetView::addRowMenuItemsToMenu(QMenu *menu) const
 
     menu->addAction(enableRuleAction);
     menu->addAction(disableRuleAction);
+
 }
 
 void RuleSetView::itemDoubleClicked(const QModelIndex& index)
@@ -2621,7 +2639,8 @@ void RuleSetView::setModel(QAbstractItemModel *model)
 
     QTreeView::setModel(model);
 
-    connect (selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    connect (selectionModel(),
+             SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
              this, SLOT(updateSelectionSensitiveActions()));
 }
 
@@ -2933,27 +2952,31 @@ void RuleSetView::updateSelectionSensitiveActions()
         setActionState(disableRuleAction, enabled > 0);
         setActionState(enableRuleAction, disabled > 0);
 
-        enableRuleAction->setText((disabled==1)?tr("Enable Rule"):tr("Enable Rules"));
-        disableRuleAction->setText((enabled==1)?tr("Disable Rule"):tr("Disable Rules"));
+        enableRuleAction->setText(
+            (disabled==1)?tr("Enable Rule"):tr("Enable Rules"));
+        disableRuleAction->setText(
+            (enabled==1)?tr("Disable Rule"):tr("Disable Rules"));
 
         if (selectionSize > 1)
         {
-            moveRuleUpAction->setText(tr("Move Rules up"));
-            moveRuleDownAction->setText(tr("Move Rules down"));
+            copyRuleAction->setText(tr("Copy Rules"));
+            cutRuleAction->setText(tr("Cut Rules"));
+            moveRuleUpAction->setText(tr("Move Rules Up"));
+            moveRuleDownAction->setText(tr("Move Rules Down"));
             removeRuleAction->setText(tr("Remove Rules"));
 
         } else
         {
-            moveRuleUpAction->setText(tr("Move Rule up"));
-            moveRuleDownAction->setText(tr("Move Rule down"));
+            copyRuleAction->setText(tr("Copy Rule"));
+            cutRuleAction->setText(tr("Cut Rule"));
+            moveRuleUpAction->setText(tr("Move Rule Up"));
+            moveRuleDownAction->setText(tr("Move Rule Down"));
             removeRuleAction->setText(tr("Remove Rule"));
         }
 
-
-
         if (topLevelOnly)
         {
-            QString addToGroupLabel = tr("Add to the group ");
+            QString addToGroupLabel = tr("Add To the Group ");
             QString nn;
 
             nn = md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();

@@ -1,5 +1,10 @@
 2010-10-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (updateSelectionSensitiveActions): fixed SF bug
+	3039681 "context-menu items inconsistent for Single/Multiple
+	rules". When several rules are selected in rule set, some context
+	menu itmes should turn to plural.
+
 	* FWWindow.cpp (prepareRulesMenu): fixed #1778 "main menu Rules
 	should have the same items that context RuleSetView menu when no
 	rules are selected"

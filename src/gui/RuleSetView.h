@@ -123,7 +123,7 @@ public:
     void addRowMenuItemsToMenu(QMenu *menu) const;
     void addGenericMenuItemsToContextMenu(QMenu *menu) const;
 
-    int selectedRulesCount() { return getSelectedRows().size(); }
+    int selectedRulesCount() const  { return getSelectedRows().size(); }
     
 public slots:
 
