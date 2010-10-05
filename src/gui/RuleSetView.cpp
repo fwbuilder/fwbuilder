@@ -746,8 +746,10 @@ void RuleSetView::addGenericMenuItemsToContextMenu(QMenu *menu) const
         menu->addAction(tr("Insert Rule"), this, SLOT( insertRule() ));
     else
     {
-        menu->addAction(tr("Add new rule on top"), this, SLOT( insertNewRuleOnTop()));
-        menu->addAction(tr("Add new rule at the bottom"), this, SLOT( insertNewRuleAtBottom()));
+        menu->addAction(tr("Add new rule on top"), this,
+                        SLOT( insertNewRuleOnTop()));
+        menu->addAction(tr("Add new rule at the bottom"), this,
+                        SLOT( insertNewRuleAtBottom()));
     }
     menu->addSeparator();
     menu->addAction(tr("Paste Rule"), this, SLOT( pasteRuleBelow()));
@@ -772,11 +774,11 @@ void RuleSetView::addChangeColorSubmenu(QMenu *menu) const
     subcolor->addAction(setColorBlueAction);
     subcolor->addAction(setColorPurpleAction);
     subcolor->addAction(setColorGrayAction);
-
 }
 
 void RuleSetView::addRowMenuItemsToMenu(QMenu *menu) const
 {
+    if (fwbdebug) qDebug() << "RuleSetView::addRowMenuItemsToMenu menu=" << menu;
 
     menu->addAction(removeFromGroupAction);
     menu->addAction(newGroupAction);
@@ -809,7 +811,6 @@ void RuleSetView::addRowMenuItemsToMenu(QMenu *menu) const
 
     menu->addAction(enableRuleAction);
     menu->addAction(disableRuleAction);
-
 }
 
 void RuleSetView::itemDoubleClicked(const QModelIndex& index)

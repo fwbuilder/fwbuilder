@@ -1,3 +1,9 @@
+2010-10-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (prepareRulesMenu): fixed #1778 "main menu Rules
+	should have the same items that context RuleSetView menu when no
+	rules are selected"
+
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (showObjectInTree): fixed #1777 "scroll

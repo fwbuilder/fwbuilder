@@ -1594,6 +1594,8 @@ void FWWindow::setupGlobalToolbar()
  */
 void FWWindow::prepareRulesMenu()
 {
+    if (fwbdebug) qDebug() << "FWWindow::prepareRulesMenu()";
+
     cleanRulesMenu();
 
     ProjectPanel* pp = activeProject();
@@ -1601,9 +1603,14 @@ void FWWindow::prepareRulesMenu()
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
 
+        if (fwbdebug) qDebug() << "FWWindow::prepareRulesMenu() rsv=" << rsv;
+
         if(rsv)
         {
-            rsv->addRowMenuItemsToMenu(m_mainWindow->RulesMenu);
+            if (rsv->selectedRulesCount() == 0)
+                rsv->addGenericMenuItemsToContextMenu(m_mainWindow->RulesMenu);
+            else
+                rsv->addRowMenuItemsToMenu(m_mainWindow->RulesMenu);
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);
@@ -1614,8 +1621,10 @@ void FWWindow::prepareRulesMenu()
     }
 }
 
-void FWWindow::cleanRulesMenu ()
+void FWWindow::cleanRulesMenu()
 {
+    if (fwbdebug) qDebug() << "FWWindow::cleanRulesMenu()";
+
     m_mainWindow->RulesMenu->actions().clear();
     m_mainWindow->RulesMenu->clear();
 }

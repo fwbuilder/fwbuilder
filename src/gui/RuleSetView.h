@@ -121,7 +121,10 @@ public:
     void addToGroup(bool isAbove);
 
     void addRowMenuItemsToMenu(QMenu *menu) const;
+    void addGenericMenuItemsToContextMenu(QMenu *menu) const;
 
+    int selectedRulesCount() { return getSelectedRows().size(); }
+    
 public slots:
 
     void showContextMenu(const QPoint&);
@@ -200,7 +203,8 @@ public slots:
     void compileCurrentRule();
     void updateSelectionSensitiveActions();
 
-    void setSelectedRows(const QModelIndex firstIndex, const QModelIndex lastIndex);
+    void setSelectedRows(const QModelIndex firstIndex,
+                         const QModelIndex lastIndex);
 
 protected:
 
@@ -220,15 +224,18 @@ protected:
     virtual void keyPressEvent( QKeyEvent* ev );
 
     bool validateForInsertion(QModelIndex index, libfwbuilder::FWObject *obj);
-    void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* makro = 0);
-    bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* makro = 0);
+    void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj,
+                      QString text, QUndoCommand* makro = 0);
+    bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj,
+                      QString text, QUndoCommand* makro = 0);
 
     bool validateForInsertion(libfwbuilder::RuleElement *re,
                               libfwbuilder::FWObject *obj, bool quiet=false);
     bool validateForInsertionToInterfaceRE(libfwbuilder::RuleElementItf *re,
                                            libfwbuilder::FWObject *obj);
 
-    QAction* createAction(QString label, const char* member, const QKeySequence &shortcut = 0);
+    QAction* createAction(QString label, const char* member,
+                          const QKeySequence &shortcut = 0);
 
 
 private:
@@ -272,7 +279,6 @@ private:
     void selectObject(libfwbuilder::FWObject *object, const QModelIndex &index);
     ProjectPanel* project;
 
-    void addGenericMenuItemsToContextMenu(QMenu *menu) const;
     void addGroupMenuItemsToContextMenu(QMenu *menu) const;
 
     void addChangeColorSubmenu(QMenu *menu) const;
