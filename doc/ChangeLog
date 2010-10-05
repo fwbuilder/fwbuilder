@@ -1,5 +1,12 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (showObject): fixed #1790 "When an object
+	is found using Find and the object is in the object tree, the
+	keyboard focus shifts to the Object Panel". The "find" pabel now
+	retains keyboard focus after it shows found object in the tree,
+	this allows the user to just hit Enter on the keyboard to find
+	the next object.
+
 	* FindObjectWidget.cpp (objectDeleted): fixed #1785 "Deleting
 	graphic icon of object from Find tab should also remove the text
 	name or label"

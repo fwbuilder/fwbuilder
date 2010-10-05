@@ -616,23 +616,28 @@ void FindObjectWidget::replaceDisable()
     m_widget->replaceButton->setEnabled   (false);
     m_widget->repNextButton->setEnabled   (false);
     m_widget->replaceAllButton->setEnabled(false);
-
 }
 
+/**
+ * Show object that we have found in the tree or in rules but retain focus
+ * so that user can find next one by just hitting Return on the keyboard.
+ */
 void FindObjectWidget::showObject(FWObject* o)
 {
     if (fwbdebug)
         qDebug("FindObjectWidget::showObject  o: %s parent: %s",
                o->getName().c_str(), o->getParent()->getName().c_str());
 
+    QWidget *focus_holder = focusWidget();
+
     FWReference* ref = FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
-
         // found object in rules
-        QCoreApplication::postEvent(
+        QCoreApplication::sendEvent(
             project_panel, new showObjectInRulesetEvent(
                 project_panel->getFileName(), ref->getId()));
+        focus_holder->setFocus();
         return;
     }
 
@@ -640,16 +645,16 @@ void FindObjectWidget::showObject(FWObject* o)
         Group::cast(o->getParent())!=NULL &&
         !FWBTree().isStandardFolder(o->getParent()))
     {
-        QCoreApplication::postEvent(
+        QCoreApplication::sendEvent(
             mw, new showObjectInTreeEvent(project_panel->getFileName(),
                                           o->getParent()->getId()));
+        focus_holder->setFocus();
         return;
     }
 
-    QCoreApplication::postEvent(
+    QCoreApplication::sendEvent(
         mw, new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
-
-    //project_panel->select();  // selects an item in the tree and assigns kbd focus to it
+    focus_holder->setFocus();
 }
 
 void FindObjectWidget::init()
