@@ -1,5 +1,11 @@
 2010-10-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (showObjectInTree): fixed #1777 "scroll
+	new fw object to the top of the tree view panel once its created"
+	This has side effect in that some other operations that open an
+	object in the tree will also sc roll the tree to position this
+	object at the top.
+
 	* FWBSettings.cpp (setCustomTemplatesEnabled): fixed #1791 "Add
 	preference flag to enable / disable the Custom templates button on
 	the New Firewall Wizard". Use of the custom template library
