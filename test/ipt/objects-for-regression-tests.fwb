@@ -17371,7 +17371,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EFBC648" host_OS="linux24" inactive="False" lastCompiled="1272404356" lastInstalled="1142003872" lastModified="1264552656" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id3EFBC648" host_OS="linux24" inactive="False" lastCompiled="1272404356" lastInstalled="1142003872" lastModified="1286307234" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
         <NAT id="id3EFBC649" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3EFBC64A" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -17521,6 +17521,28 @@
             </TSrc>
             <TDst neg="False">
               <ObjectRef ref="id3D151943"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id647653X13110" disabled="False" group="" position="7" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3EFBC702"/>
+              <ObjectRef ref="id3EFBC6F1"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -34454,7 +34476,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id30191X26784" host_OS="linux24" inactive="False" lastCompiled="1272404359" lastInstalled="1142003872" lastModified="1264474374" platform="iptables" version="" name="firewall20-ipv6" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it (interface used to be static and had an address, then got converted to dynamic but address object is still there). Compiler should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id30191X26784" host_OS="linux24" inactive="False" lastCompiled="1272404359" lastInstalled="1142003872" lastModified="1286307167" platform="iptables" version="" name="firewall20-ipv6" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it (interface used to be static and had an address, then got converted to dynamic but address object is still there). Compiler should ignore this address object and issue a warning.&#10;" ro="False">
         <NAT id="id30432X26784" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
           <NATRule id="id30433X26784" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -34534,6 +34556,28 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </TSrc>
             <TDst neg="False">
               <ObjectRef ref="id3D151943"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id76714X13110" disabled="False" group="" position="4" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id30490X26784"/>
+              <ObjectRef ref="id30496X26784"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
