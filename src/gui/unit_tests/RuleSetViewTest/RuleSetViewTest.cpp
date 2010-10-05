@@ -241,13 +241,13 @@ void RuleSetViewTest::test_add_remove()
     QVERIFY(view->model()->rowCount(QModelIndex()) == 0);
 
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rule1 = ((RuleSetModel*)view->model())->findRuleForPosition(0);
 
     // Adding rule at the bottom
-    clickMenuItem("Add new rule at the bottom");
+    clickMenuItem("Add New Rule at the Bottom");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 2);
     Rule *rule2 = getRuleForPosition(1);
@@ -255,7 +255,7 @@ void RuleSetViewTest::test_add_remove()
     QVERIFY(getRuleForPosition(0) == rule1);
 
     // Adding rule on top
-    clickMenuItem("Add new rule on top");
+    clickMenuItem("Add New Rule on Top");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 3);
     Rule *rule3 = getRuleForPosition(0);
@@ -265,7 +265,7 @@ void RuleSetViewTest::test_add_remove()
 
     // Remove last rule
     view->selectRE(rule1, 0);
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(findRulePosition(rule1));
     QVERIFY(view->model()->rowCount(QModelIndex()) == 4);
     QVERIFY(getRuleForPosition(0) == rule3);
@@ -304,7 +304,7 @@ void RuleSetViewTest::test_add_remove()
 void RuleSetViewTest::test_group()
 {
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rule1 = ((RuleSetModel*)view->model())->findRuleForPosition(0);
@@ -313,7 +313,7 @@ void RuleSetViewTest::test_group()
     Rule *rules[7];
     for (int i=0; i<7;i++)
     {
-        clickMenuItem("Add new rule at the bottom");
+        clickMenuItem("Add New Rule at the Bottom");
         showContextMenu(getViewBottomPoint());
         QVERIFY(view->model()->rowCount(QModelIndex()) == i+2);
         rules[i] = getRuleForPosition(i+1);
@@ -322,7 +322,7 @@ void RuleSetViewTest::test_group()
     // Create new group
     view->selectRE(rules[2], 0);
     createGroup("Test Group Name");
-    clickMenuItem("New group");
+    clickMenuItem("New Group");
     showContextMenu(findRulePosition(rules[2]));
 
     QList<QModelIndex> groups;
@@ -332,12 +332,12 @@ void RuleSetViewTest::test_group()
 
     // Add two more rules to the group
     view->selectRE(rules[3], 0);
-    clickMenuItem("Add to the group Test Group Name");
+    clickMenuItem("Add To the Group Test Group Name");
     showContextMenu(findRulePosition(rules[3]));
 
     view->clearSelection();
     view->selectRE(rules[1], 0);
-    clickMenuItem("Add to the group Test Group Name");
+    clickMenuItem("Add To the Group Test Group Name");
     showContextMenu(findRulePosition(rules[1]));
 
     QList<QModelIndex> groups2;
@@ -353,7 +353,7 @@ void RuleSetViewTest::test_group()
 
     // Creating new rule in group using "Add Rule Below"
     view->selectRE(rules[2], 0);
-    clickMenuItem("Add Rule Below");
+    clickMenuItem("Add New Rule Below");
     showContextMenu(findRulePosition(rules[2]));
     Rule *newrule1 = ((RuleSetModel*)view->model())->findRuleForPosition(4);
     for (int i=0; i<5; i++)
@@ -363,7 +363,7 @@ void RuleSetViewTest::test_group()
 
     // Creating new rule in group using "Insert Rule"
     view->selectRE(rules[2], 0);
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(findRulePosition(rules[2]));
     Rule *newrule2 = ((RuleSetModel*)view->model())->findRuleForPosition(3);
     for (int i=0; i<5; i++)
@@ -378,7 +378,7 @@ void RuleSetViewTest::test_group()
                                    QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     view->selectionModel()->select(((RuleSetModel*)view->model())->indexForPosition(rules[5]->getPosition()),
                                    QItemSelectionModel::Select);
-    clickMenuItem("Add to the group Test Group Name");
+    clickMenuItem("Add To the Group Test Group Name");
     showContextMenu(findRulePosition(rules[4]));
     QList<QModelIndex> groups3;
     ((RuleSetModel*)view->model())->getGroups(groups3);
@@ -390,14 +390,14 @@ void RuleSetViewTest::test_group()
     // Remoe first rule from group
     QVERIFY(view->model()->rowCount(groups3.first()) == 7);
     view->selectRE(rules[1], 0);
-    clickMenuItem("Remove from the group");
+    clickMenuItem("Remove From the Group");
     showContextMenu(findRulePosition(rules[1]));
     QVERIFY(rules[1]->getRuleGroupName() == "");
     QVERIFY(view->model()->rowCount(groups3.first()) == 6);
 
     // Remoe last rule from group
     view->selectRE(rules[5], 0);
-    clickMenuItem("Remove from the group");
+    clickMenuItem("Remove From the Group");
     showContextMenu(findRulePosition(rules[5]));
     QVERIFY(rules[5]->getRuleGroupName() == "");
     QVERIFY(view->model()->rowCount(groups3.first()) == 5);
@@ -433,7 +433,7 @@ void RuleSetViewTest::test_group()
 void RuleSetViewTest::test_move()
 {
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rules[4];
@@ -442,7 +442,7 @@ void RuleSetViewTest::test_move()
     // Adding three new rules at the bottom
     for (int i=1; i<4;i++)
     {
-        clickMenuItem("Add new rule at the bottom");
+        clickMenuItem("Add New Rule at the Bottom");
         showContextMenu(getViewBottomPoint());
         QVERIFY(view->model()->rowCount(QModelIndex()) == i+1);
         rules[i] = getRuleForPosition(i);
@@ -454,28 +454,28 @@ void RuleSetViewTest::test_move()
 
     // Moving second rule up
     view->selectRE(rules[1], 0);
-    clickMenuItem("Move Rule up");
+    clickMenuItem("Move Rule Up");
     showContextMenu(findRulePosition(rules[1]));
     QVERIFY(rules[1]->getPosition() == 0);
     QVERIFY(rules[0]->getPosition() == 1);
 
     // Moving first rule down
     view->selectRE(rules[1], 0);
-    clickMenuItem("Move Rule down");
+    clickMenuItem("Move Rule Down");
     showContextMenu(findRulePosition(rules[1]));
     QVERIFY(rules[1]->getPosition() == 1);
     QVERIFY(rules[0]->getPosition() == 0);
 
     // Moving first rule up (rule order should not change)
     view->selectRE(rules[0], 0);
-    clickMenuItem("Move Rule up");
+    clickMenuItem("Move Rule Up");
     showContextMenu(findRulePosition(rules[0]));
     for (int i=0; i<4; i++)
         QVERIFY(rules[i]->getPosition() == i);
 
     // Moving last rule down (rule order should not change)
     view->selectRE(rules[3], 0);
-    clickMenuItem("Move Rule down");
+    clickMenuItem("Move Rule Down");
     showContextMenu(findRulePosition(rules[3]));
     for (int i=0; i<4; i++)
         QVERIFY(rules[i]->getPosition() == i);
@@ -484,7 +484,7 @@ void RuleSetViewTest::test_move()
     view->selectRE(rules[1], 0);
     view->selectionModel()->select(((RuleSetModel*)view->model())->indexForPosition(2),
                                    QItemSelectionModel::Select);
-    clickMenuItem("Move Rules up");
+    clickMenuItem("Move Rules Up");
     showContextMenu(findRulePosition(rules[1]));
     QVERIFY(rules[1]->getPosition() == 0);
     QVERIFY(rules[2]->getPosition() == 1);
@@ -495,7 +495,7 @@ void RuleSetViewTest::test_move()
     view->selectRE(rules[2], 0);
     view->selectionModel()->select(((RuleSetModel*)view->model())->indexForPosition(2),
                                    QItemSelectionModel::Select);
-    clickMenuItem("Move Rules down");
+    clickMenuItem("Move Rules Down");
     showContextMenu(findRulePosition(rules[2]));
     QVERIFY(rules[1]->getPosition() == 0);
     QVERIFY(rules[3]->getPosition() == 1);
@@ -506,7 +506,7 @@ void RuleSetViewTest::test_move()
     Rule *newrules[6] = { rules[1], rules[3], rules[2], rules[0], NULL, NULL };
     for (int i=4; i<6;i++)
     {
-        clickMenuItem("Add new rule at the bottom");
+        clickMenuItem("Add New Rule at the Bottom");
         showContextMenu(getViewBottomPoint());
         QVERIFY(view->model()->rowCount(QModelIndex()) == i+1);
         newrules[i] = getRuleForPosition(i);
@@ -518,7 +518,7 @@ void RuleSetViewTest::test_move()
         view->selectionModel()->select(((RuleSetModel*)view->model())->indexForPosition(i),
                                        QItemSelectionModel::Select);
     createGroup("Test Group Name");
-    clickMenuItem("New group");
+    clickMenuItem("New Group");
     showContextMenu(findRulePosition(newrules[1]));
     for (int i=1; i<5; i++)
         QVERIFY(newrules[i]->getRuleGroupName() == "Test Group Name");
@@ -528,14 +528,14 @@ void RuleSetViewTest::test_move()
 
     // Moving second rule of group up
     view->selectRE(newrules[2], 0);
-    clickMenuItem("Move Rule up");
+    clickMenuItem("Move Rule Up");
     showContextMenu(findRulePosition(newrules[2]));
     QVERIFY(newrules[2]->getPosition() == 1);
     QVERIFY(newrules[1]->getPosition() == 2);
 
     // Moving first rule of group up. It should leave the group.
     view->selectRE(newrules[2], 0);
-    clickMenuItem("Move Rule up");
+    clickMenuItem("Move Rule Up");
     showContextMenu(findRulePosition(newrules[2]));
     QVERIFY(newrules[2]->getPosition() == 1);
     QVERIFY(newrules[0]->getPosition() == 0);
@@ -544,7 +544,7 @@ void RuleSetViewTest::test_move()
 
     // Moving first rule above group down. It should be added to group.
     view->selectRE(newrules[2], 0);
-    clickMenuItem("Move Rule down");
+    clickMenuItem("Move Rule Down");
     showContextMenu(findRulePosition(newrules[2]));
     QVERIFY(newrules[2]->getPosition() == 1);
     QVERIFY(newrules[0]->getPosition() == 0);
@@ -553,7 +553,7 @@ void RuleSetViewTest::test_move()
 
     // Moving last rule of group down. It should leave the group.
     view->selectRE(newrules[4], 0);
-    clickMenuItem("Move Rule down");
+    clickMenuItem("Move Rule Down");
     showContextMenu(findRulePosition(newrules[4]));
     QVERIFY(newrules[4]->getPosition() == 4);
     QVERIFY(newrules[5]->getPosition() == 5);
@@ -562,7 +562,7 @@ void RuleSetViewTest::test_move()
 
     // Moving first rule below group up. It should be added to group.
     view->selectRE(newrules[4], 0);
-    clickMenuItem("Move Rule up");
+    clickMenuItem("Move Rule Up");
     showContextMenu(findRulePosition(newrules[4]));
     QVERIFY(newrules[4]->getPosition() == 4);
     QVERIFY(newrules[5]->getPosition() == 5);
@@ -582,7 +582,7 @@ void RuleSetViewTest::test_move()
 void RuleSetViewTest::test_copy_paste()
 {
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rules[4];
@@ -591,7 +591,7 @@ void RuleSetViewTest::test_copy_paste()
     // Adding three new rules at the bottom
     for (int i=1; i<4;i++)
     {
-        clickMenuItem("Add new rule at the bottom");
+        clickMenuItem("Add New Rule at the Bottom");
         showContextMenu(getViewBottomPoint());
         QVERIFY(view->model()->rowCount(QModelIndex()) == i+1);
         rules[i] = getRuleForPosition(i);
@@ -626,7 +626,7 @@ void RuleSetViewTest::test_copy_paste()
     view->selectRE(getRuleForPosition(1), 0);
     view->selectionModel()->select(((RuleSetModel*)view->model())->indexForPosition(2),
                                    QItemSelectionModel::Select);
-    clickMenuItem("Copy Rule");
+    clickMenuItem("Copy Rules");
     showContextMenu(findRulePosition(getRuleForPosition(1)));
     QVERIFY(view->model()->rowCount() == 5);
 

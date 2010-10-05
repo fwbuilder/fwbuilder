@@ -234,15 +234,20 @@ void RuleSetViewContextMenuTest::verifyMenu(int column)
     names.clear();
     if (column == 0)
     {
-        names << "New group" << "Change color" << "Insert Rule" << "Add Rule Below"
-                << "Remove Rule" << "Move Rule up" << "Move Rule down" << "Copy Rule"
-                << "Cut Rule" << "Paste Rule Above" << "Paste Rule Below" << "Disable Rule"
-                << "Compile rule";
+        names << "New Group" << "Change color" << "Insert New Rule"
+              << "Add New Rule Below"
+              << "Remove Rule" << "Move Rule Up" << "Move Rule Down"
+              << "Copy Rule"
+              << "Cut Rule"
+              << "Paste Rule Above" << "Paste Rule Below"
+              << "Disable Rule"
+              << "Compile rule";
     }
     if (column > 0 && column < 5 || column == 7)
     {
-        names << "Edit" << "Copy" << "Cut" << "Paste" << "Delete"<< "Where used"
-                << "Reveal in tree" << "Negate" << "Compile rule";
+        names << "Edit" << "Copy" << "Cut" << "Paste"
+              << "Delete"<< "Where used"
+              << "Reveal in tree" << "Negate" << "Compile rule";
     }
     if (column == 5)
     {
@@ -283,7 +288,7 @@ void RuleSetViewContextMenuTest::verifyMenu(int column)
         names << "Edit" << "Compile Rule";
     }
     QStringList groupCommon;
-    groupCommon << "Change color" << "Insert Rule" << "Add Rule Below"
+    groupCommon << "Change color" << "Insert New Rule" << "Add New Rule Below"
             << "Remove Rule" << "Move Rule up" << "Move Rule down" << "Copy Rule"
             << "Cut Rule" << "Paste Rule Above" << "Paste Rule Below" << "Disable Rule"
             << "Compile rule";
@@ -344,7 +349,7 @@ void RuleSetViewContextMenuTest::test_menus()
 {
     failed = false;
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rule = ((RuleSetModel*)view->model())->findRuleForPosition(0);
@@ -370,12 +375,12 @@ void RuleSetViewContextMenuTest::test_group_menus()
 
     // Adding five new rules
     Rule *rules[5];
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     rules[0] = getRuleForPosition(0);
     for (int i=0; i<4; i++)
     {
-        clickMenuItem("Add new rule at the bottom");
+        clickMenuItem("Add New Rule at the Bottom");
         showContextMenu(getViewBottomPoint());
         rules[i+1] = getRuleForPosition(i+1);
     }
@@ -383,14 +388,14 @@ void RuleSetViewContextMenuTest::test_group_menus()
     // Create new group
     view->selectRE(rules[2], 0);
     createGroup("Test Group Name");
-    clickMenuItem("New group");
+    clickMenuItem("New Group");
     showContextMenu(findRulePosition(rules[3]));
     // Add two rules to group
     view->selectRE(rules[1], 0);
-    clickMenuItem("Add to the group Test Group Name");
+    clickMenuItem("Add To the Group Test Group Name");
     showContextMenu(findRulePosition(rules[1]));
     view->selectRE(rules[3], 0);
-    clickMenuItem("Add to the group Test Group Name");
+    clickMenuItem("Add To the Group Test Group Name");
     showContextMenu(findRulePosition(rules[3]));
 
     view->expandAll();
@@ -422,7 +427,7 @@ void RuleSetViewContextMenuTest::test_group_menus()
     // remove created rules
     for (int i=1; i<4; i++)
     {
-        clickMenuItem("Remove from the group");
+        clickMenuItem("Remove From the Group");
         view->selectRE(rules[i],0);
         showContextMenu(findCell(rules[i],0))
     }
@@ -438,7 +443,7 @@ void RuleSetViewContextMenuTest::test_platforms()
 {
     failed = false;
     // Adding one new rule
-    clickMenuItem("Insert Rule");
+    clickMenuItem("Insert New Rule");
     showContextMenu(getViewBottomPoint());
     QVERIFY(view->model()->rowCount(QModelIndex()) == 1);
     Rule *rule = ((RuleSetModel*)view->model())->findRuleForPosition(0);

@@ -760,12 +760,12 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
 void RuleSetView::addGenericMenuItemsToContextMenu(QMenu *menu) const
 {
     if (((RuleSetModel*)model())->isEmpty())
-        menu->addAction(tr("Insert new rule"), this, SLOT( insertRule() ));
+        menu->addAction(tr("Insert New Rule"), this, SLOT( insertRule() ));
     else
     {
-        menu->addAction(tr("Add new rule on top"), this,
+        menu->addAction(tr("Add New Rule on Top"), this,
                         SLOT( insertNewRuleOnTop()));
-        menu->addAction(tr("Add new rule at the bottom"), this,
+        menu->addAction(tr("Add New Rule at the Bottom"), this,
                         SLOT( insertNewRuleAtBottom()));
     }
     menu->addSeparator();
