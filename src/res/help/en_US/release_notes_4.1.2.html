@@ -512,7 +512,11 @@
 
 <ul>
   <li>
-    <p>No changes in support for PIX in this release
+    <p>
+      fixed #1783 "PIX routing entries require interface, but PIX
+      config will compile without interface in Routing rule". Policy
+      compiler for PIX now checks that both "interface" and "gateway"
+      rule elements are not empty.
     </p>
   </li>
 

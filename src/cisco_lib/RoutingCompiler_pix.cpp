@@ -61,6 +61,24 @@ void RoutingCompiler_pix::epilog()
 {
 }
 
+bool RoutingCompiler_pix::emptyRDstOrRItf::processNext()
+{
+    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    tmp_queue.push_back(rule);
+    
+    RuleElementRGtw *gtwrel = rule->getRGtw();
+    RuleElementRItf *itfrel = rule->getRItf();
+
+    if (itfrel->isAny() || gtwrel->isAny())
+    {
+        string msg;
+        msg = "Interface and gateway rule elements can not be empty in the PIX routing rule";
+        compiler->abort(rule, msg.c_str());
+    }
+
+    return true;
+}
+
 /**
  *-----------------------------------------------------------------------
  */
@@ -81,7 +99,7 @@ void RoutingCompiler_pix::compile()
 
         add(new recursiveGroupsInRDst("Check for recursive Groups in RDst"));
         add(new emptyGroupsInRDst("Check for empty Groups in RDst"));
-        add(new emptyRDstAndRItf("Check if RDst and RItf are both empty"));
+        add(new emptyRDstOrRItf("Check if RDst or RItf is empty"));
         add(new singleAdressInRGtw(
                 "Check if RGtw object has exactly one IP adress"));
         add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));

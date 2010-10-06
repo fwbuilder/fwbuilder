@@ -1,3 +1,11 @@
+2010-10-06  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* RoutingCompiler_pix.cpp (emptyRDstOrRItf::processNext): fixed
+	#1783 "PIX routing entries require interface, but PIX config will
+	compile without interface in Routing rule". Policy compiler for PIX
+	now checks that both "interface" and "gateway" rule elements are
+	not empty.
+
 2010-10-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_linux24.cpp (printRunTimeWrappers): fixed SF bug

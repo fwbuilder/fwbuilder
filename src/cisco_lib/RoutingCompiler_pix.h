@@ -56,6 +56,12 @@ namespace fwcompiler {
                             fwcompiler::OSConfigurator *_oscnf) :
         RoutingCompiler_cisco(_db, fw, ipv6_policy, _oscnf) {};
 
+        /**
+         * checks if the gateway or Interface rule element is empty
+         * (both are mandatory on PIX)
+         */
+        DECLARE_ROUTING_RULE_PROCESSOR(emptyRDstOrRItf);
+        
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();
