@@ -164,7 +164,7 @@
 #include <qtimer.h>
 #include <qtoolbutton.h>
 
-
+ 
 extern bool regCheck();
 
 using namespace libfwbuilder;
@@ -550,17 +550,8 @@ void FWWindow::showIntroDialog()
         // guide on the web site.
         QMessageBox msg_box;
         msg_box.setText("<html>"
-                        "<table border='0'>"
-                        "<tr>"
-                        "<td>"
-                        "<img src=':/Images/fwbuilder3-128x128.png'>"
-                        "</td>"
-                        "<td align='center'>"
                         "<h1>Welcome to Firewall Builder</h1>"
                         "<h3>Quick Start Guide</h3>"
-                        "</td>"
-                        "</tr>"
-                        "</table>"
                         "<p>"
                         "There is a short online guide that provides basic information "
                         "to help new users save time when first learning "
@@ -580,6 +571,20 @@ void FWWindow::showIntroDialog()
                         "</html>"
         );
 
+
+        QPixmap pm;
+        pm.load(":/Images/fwbuilder3-128x128.png");
+
+        msg_box.setWindowModality(Qt::ApplicationModal);
+        msg_box.setWindowFlags(
+            Qt::Window |
+            Qt::WindowTitleHint |
+            Qt::CustomizeWindowHint |
+            Qt::WindowCloseButtonHint |
+            Qt::WindowSystemMenuHint);
+
+        msg_box.setWindowTitle(tr("Welcome to Firewall Builder"));
+        msg_box.setIconPixmap(pm);
         msg_box.setInformativeText(tr("The guide will open in the web browser"));
         QCheckBox cb(tr("Do not show this again"), &msg_box);
         msg_box.addButton(&cb, QMessageBox::ResetRole);  // is this role right ?

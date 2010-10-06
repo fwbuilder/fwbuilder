@@ -221,7 +221,7 @@ int main( int argc, char *argv[] )
                                         print_output_file_name);
         return 0;
     }
-
+    
 
     if (fwbdebug) qDebug("creating widgets ...");
 
