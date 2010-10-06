@@ -165,7 +165,7 @@
 #include <qtoolbutton.h>
 
 
-extern void regCheck();
+extern bool regCheck();
 
 using namespace libfwbuilder;
 using namespace std;
