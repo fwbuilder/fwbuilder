@@ -140,12 +140,9 @@
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>50</number>
      </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>50</number>
-     </attribute>
      <column>
       <property name="text">
-       <string>Address</string>
+       <string>IP Address</string>
       </property>
      </column>
      <column>
