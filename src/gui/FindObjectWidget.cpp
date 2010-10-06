@@ -91,7 +91,7 @@ FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
     m_widget->findDropArea->setHelperText(
         tr("Drop object you want to find here"));
     m_widget->replaceDropArea->setHelperText(
-        tr("Drop object for replacement here"));
+        tr("Drop object to replace with here"));
 
     connect(m_widget->findDropArea, SIGNAL(objectDeleted()),
             this, SLOT(objectDeleted()));
