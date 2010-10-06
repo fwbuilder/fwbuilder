@@ -165,6 +165,8 @@
 #include <qtoolbutton.h>
 
 
+extern void regCheck();
+
 using namespace libfwbuilder;
 using namespace std;
 using namespace Ui;
@@ -583,7 +585,7 @@ void FWWindow::showIntroDialog()
         msg_box.addButton(&cb, QMessageBox::ResetRole);  // is this role right ?
         QPushButton *watch_button = 
             msg_box.addButton(tr("Watch the guide"), QMessageBox::AcceptRole);
-        QPushButton *close_button = msg_box.addButton(QMessageBox::Close);
+        msg_box.addButton(QMessageBox::Close);
 
         msg_box.setDefaultButton(watch_button);
         msg_box.exec();
@@ -603,6 +605,10 @@ void FWWindow::showIntroDialog()
 
         return;
     }
+
+#ifdef ELC
+    if (regCheck()) return;
+#endif
 
     if (!st->getBool("UI/NoStartTip"))
     {
