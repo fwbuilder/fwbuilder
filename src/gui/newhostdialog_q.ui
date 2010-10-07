@@ -67,7 +67,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page0">
       <layout class="QGridLayout" name="gridLayout_4">
@@ -415,7 +415,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Check option 'dynamic address' for the interface that gets its IP address dynamically via DHCP or PPP protocol.</string>
+          <string>Check option 'Dynamic IP Address' for the interface that gets its IP address dynamically via DHCP or PPP protocol.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
