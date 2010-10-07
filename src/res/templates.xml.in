@@ -101,29 +101,19 @@
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
-        <CustomServiceCommand platform="pf"></CustomServiceCommand>
-        <CustomServiceCommand platform="pix"></CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
-        <CustomServiceCommand platform="pf"></CustomServiceCommand>
-        <CustomServiceCommand platform="pix"></CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -3677,7 +3667,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id6268X9236" host_OS="pix_os" inactive="False" lastCompiled="1286477204" lastInstalled="0" lastModified="1286477329" platform="pix" version="6.3" name="pix-50x" comment="ethernet0 faces outside and has a dynamic address; ethernet1 faces inside.  Internal network is configured with address 192.168.1.0/255.255.255.0. Network zone of the inside interface is set to&#10;the all RFC1918 address ranges.&#10;&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH." ro="False">
+      <Firewall id="id6268X9236" host_OS="pix_os" inactive="False" lastCompiled="1286477204" lastInstalled="0" lastModified="1286480334" platform="pix" version="6.3" name="pix-50x" comment="ethernet0 faces outside and has a dynamic address; ethernet1 faces inside.  Internal network is configured with address 192.168.1.0/255.255.255.0. Network zone of the inside interface is set to&#10;the all RFC1918 address ranges.&#10;&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH." ro="False">
         <NAT id="id6518X9236" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id6520X9236" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3956,12 +3946,12 @@
         <FirewallOptions>
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
-          <Option name="admUser"></Option>
+          <Option name="admUser">pix</Option>
           <Option name="altAddress"></Option>
           <Option name="check_shading">True</Option>
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
-          <Option name="conn_hh">0</Option>
+          <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
@@ -3976,11 +3966,11 @@
           <Option name="ftp_fixup">2 21 0 strict 0</Option>
           <Option name="h323_h225_fixup">2 1720 1720 nil 0</Option>
           <Option name="h323_hh">0</Option>
-          <Option name="h323_mm">0</Option>
+          <Option name="h323_mm">5</Option>
           <Option name="h323_ras_fixup">2 1718 1719 nil 0</Option>
           <Option name="h323_ss">0</Option>
           <Option name="half-closed_hh">0</Option>
-          <Option name="half-closed_mm">0</Option>
+          <Option name="half-closed_mm">10</Option>
           <Option name="half-closed_ss">0</Option>
           <Option name="http_fixup">2 80 80 nil 0</Option>
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
@@ -4006,9 +3996,9 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
-          <Option name="pix_acl_basic">False</Option>
+          <Option name="pix_acl_basic">True</Option>
           <Option name="pix_acl_no_clear">False</Option>
-          <Option name="pix_acl_substitution">True</Option>
+          <Option name="pix_acl_substitution">False</Option>
           <Option name="pix_acl_temp_addr">192.168.1.0/24</Option>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">True</Option>
@@ -4074,7 +4064,7 @@
           <Option name="pix_use_manual_commit">False</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="rpc_hh">0</Option>
-          <Option name="rpc_mm">0</Option>
+          <Option name="rpc_mm">10</Option>
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
@@ -4083,9 +4073,9 @@
           <Option name="sip_fixup">2 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
-          <Option name="sip_media_mm">0</Option>
+          <Option name="sip_media_mm">2</Option>
           <Option name="sip_media_ss">0</Option>
-          <Option name="sip_mm">0</Option>
+          <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
@@ -4094,18 +4084,18 @@
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="sshArgs"></Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
-          <Option name="uauth_abs">False</Option>
-          <Option name="uauth_hh">0</Option>
+          <Option name="uauth_abs">True</Option>
+          <Option name="uauth_hh">2</Option>
           <Option name="uauth_inact">False</Option>
           <Option name="uauth_mm">0</Option>
           <Option name="uauth_ss">0</Option>
           <Option name="udp_hh">0</Option>
-          <Option name="udp_mm">0</Option>
+          <Option name="udp_mm">2</Option>
           <Option name="udp_ss">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
-          <Option name="xlate_hh">0</Option>
+          <Option name="xlate_hh">3</Option>
           <Option name="xlate_mm">0</Option>
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
