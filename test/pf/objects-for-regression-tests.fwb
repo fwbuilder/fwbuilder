@@ -101,29 +101,19 @@
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
-        <CustomServiceCommand platform="pf"></CustomServiceCommand>
-        <CustomServiceCommand platform="pix"></CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
-        <CustomServiceCommand platform="pf"></CustomServiceCommand>
-        <CustomServiceCommand platform="pix"></CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -18913,7 +18903,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id21423X46405" host_OS="openbsd" lastCompiled="1266117733" lastInstalled="0" lastModified="1266117729" platform="pf" name="openbsd-test-1" comment="" ro="False">
+      <Firewall id="id21423X46405" host_OS="openbsd" inactive="False" lastCompiled="1286413974" lastInstalled="0" lastModified="1286413946" platform="pf" version="" name="firewall91" comment="" ro="False">
         <NAT id="id21427X46405" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -18944,21 +18934,21 @@
           <RuleSetOptions/>
         </Routing>
         <Interface id="id21431X46405" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="pcn0" comment="" ro="False">
-          <IPv4 id="id21432X46405" name="openbsd-test-1:pcn0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
+          <IPv4 id="id21432X46405" name="firewall91:pcn0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id21433X46405" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
-          <IPv4 id="id21434X46405" name="openbsd-test-1:em0:ip" comment="" ro="False" address="10.1.1.50" netmask="255.255.255.0"/>
+          <IPv4 id="id21434X46405" name="firewall91:em0:ip" comment="" ro="False" address="10.1.1.50" netmask="255.255.255.0"/>
           <InterfaceOptions/>
           <Interface id="id30689X46405" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
-            <IPv4 id="id39977X46405" name="openbsd-test-1:em0:vlan101:ip" comment="" ro="False" address="10.100.101.1" netmask="255.255.255.0"/>
+            <IPv4 id="id39977X46405" name="firewall91:em0:vlan101:ip" comment="" ro="False" address="10.100.101.1" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">101</Option>
             </InterfaceOptions>
           </Interface>
           <Interface id="id30707X46405" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan103" comment="" ro="False">
-            <IPv4 id="id39990X46405" name="openbsd-test-1:em0:vlan103:ip-1" comment="" ro="False" address="10.100.103.1" netmask="255.255.255.0"/>
+            <IPv4 id="id39990X46405" name="firewall91:em0:vlan103:ip" comment="" ro="False" address="10.100.103.1" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">103</Option>
@@ -18978,7 +18968,7 @@
           <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="conf_file_name_on_firewall">/etc/fw/pf.conf</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_pfsync_interfaces">False</Option>
@@ -19028,6 +19018,7 @@
           <Option name="pf_scrub_no_df">False</Option>
           <Option name="pf_scrub_random_id">False</Option>
           <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_reassemble_tcp">False</Option>
           <Option name="pf_scrub_use_maxmss">False</Option>
           <Option name="pf_scrub_use_minttl">False</Option>
           <Option name="pf_set_adaptive">False</Option>
@@ -19060,7 +19051,7 @@
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="script_name_on_firewall">/etc/fw/pf.fw</Option>
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
@@ -19368,7 +19359,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id22021X58767" host_OS="openbsd" inactive="False" lastCompiled="1271995576" lastInstalled="1271995582" lastModified="1271995560" platform="pf" version="4.7" name="openbsd47" comment="syntax of the nat and rdr rules has changed in 4.7&#10;" ro="False">
+      <Firewall id="id22021X58767" host_OS="openbsd" inactive="False" lastCompiled="1286413975" lastInstalled="1271995582" lastModified="1286413961" platform="pf" version="4.7" name="firewall92" comment="syntax of the nat and rdr rules has changed in 4.7&#10;" ro="False">
         <NAT id="id22025X58767" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id70699X58767" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -19585,11 +19576,11 @@
           <RuleSetOptions/>
         </Routing>
         <Interface id="id22029X58767" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
-          <IPv4 id="id22030X58767" name="openbsd47:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
+          <IPv4 id="id22030X58767" name="firewall92:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id22031X58767" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em1" comment="" ro="False">
-          <IPv4 id="id22032X58767" name="openbsd47:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
+          <IPv4 id="id22032X58767" name="firewall92:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
@@ -19603,9 +19594,9 @@
           <Option name="admUser">root</Option>
           <Option name="altAddress"></Option>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="conf_file_name_on_firewall">/etc/fw/path with space/pf.conf</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_pfsync_interfaces">False</Option>
@@ -19688,7 +19679,7 @@
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="script_name_on_firewall">/etc/fw/pf.fw</Option>
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>

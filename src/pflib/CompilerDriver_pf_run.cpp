@@ -111,26 +111,29 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     string pfctl_dbg = (debug)?"-v ":"";
 
     QStringList activation_commands;
-    string remote_file = remote_conf_files["__main__"];
-    if (remote_file.empty()) remote_file = conf_files["__main__"];
+    QString remote_file = remote_conf_files["__main__"].c_str();
+    if (remote_file.isEmpty()) remote_file = conf_files["__main__"].c_str();
     if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+    remote_file = this->escapeFileName(remote_file);
 
     activation_commands.push_back(
         composeActivationCommand(
-            fw, pfctl_dbg, "", fw->getStr("version"), remote_file));
+            fw, pfctl_dbg, "", fw->getStr("version"), remote_file.toStdString()));
 
     for (map<string,string>::iterator i=conf_files.begin();
          i!=conf_files.end(); ++i)
     {
-        string remote_file = remote_conf_files[i->first];
-        if (remote_file.empty()) remote_file = i->second;
+        QString remote_file = remote_conf_files[i->first].c_str();
+        if (remote_file.isEmpty()) remote_file = i->second.c_str();
         if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+        remote_file = this->escapeFileName(remote_file);
 
         if (i->first != "__main__")
             activation_commands.push_back(
                 composeActivationCommand(
-                    fw, pfctl_dbg, i->first, fw->getStr("version"), remote_file));
+                    fw, pfctl_dbg, i->first, fw->getStr("version"), remote_file.toStdString()));
     }
+
     return activation_commands.join("\n");
 }
 
