@@ -25,7 +25,7 @@
 
 #include "../../config.h"
 
-#include "generatedScriptTestsIpfilter.h"
+#include "generatedScriptTestsPF.h"
 
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
