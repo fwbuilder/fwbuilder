@@ -23,6 +23,7 @@ copy /noconfirm {{$fwdir}}{{$fwscript}} running-config
 
 {{if not_using_scp}}
 config term
+terminal width 256
 {{$fwbuilder_generated_configuration_lines}}
 exit
 {{endif}}

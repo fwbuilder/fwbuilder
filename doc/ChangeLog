@@ -1,5 +1,9 @@
 2010-10-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* configlets/pix_os/installer_commands_reg_user: using command
+	"terminal width 256" to turn off ANSI commands in the PIX command
+	echo.
+
 	* FindObjectWidget.cpp (showObject): rolled back change done in
 	r3320 (refs #1790) "When an object is found using Find and the
 	object is in the object tree, the keyboard focus shifts to the
