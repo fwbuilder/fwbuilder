@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
 <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1270752748" id="root">
-  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
@@ -101,17 +101,29 @@
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -3663,6 +3675,439 @@
           <Option name="use_ULOG">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id6268X9236" host_OS="pix_os" inactive="False" lastCompiled="1286477204" lastInstalled="0" lastModified="1286477329" platform="pix" version="6.3" name="pix-50x" comment="ethernet0 faces outside and has a dynamic address; ethernet1 faces inside.  Internal network is configured with address 192.168.1.0/255.255.255.0. Network zone of the inside interface is set to&#10;the all RFC1918 address ranges.&#10;&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH." ro="False">
+        <NAT id="id6518X9236" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id6520X9236" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id6276X9236"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id6286X9236" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id6288X9236" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+            <Src neg="False">
+              <ObjectRef ref="id6268X9236"/>
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id6276X9236"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6317X9236" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;This rule is not necessary&#10;because we use option in &#10;the firewall settings dialog to add&#10;equivalent rule automatically">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6268X9236"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id6345X9236" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id6268X9236"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-Useful_ICMP"/>
+              <ServiceRef ref="icmp-Time_exceeded"/>
+              <ServiceRef ref="icmp-ping_reply"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6375X9236" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6268X9236"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="sg-Useful_ICMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6404X9236" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="outside interface gets&#10;its address via DHCP">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6276X9236"/>
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sg-DHCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6433X9236" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6268X9236"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6461X9236" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id6489X9236" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id6554X9236" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id6276X9236" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id6278X9236" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DC75CE8" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id6279X9236" name="pix-50x:ethernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="conn_hh">0</Option>
+          <Option name="conn_mm">0</Option>
+          <Option name="conn_ss">0</Option>
+          <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
+          <Option name="dns_fixup">2 65535 0 nil 0</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="espike_fixup">2 0 0 nil 0</Option>
+          <Option name="filesystem"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ftp_fixup">2 21 0 strict 0</Option>
+          <Option name="h323_h225_fixup">2 1720 1720 nil 0</Option>
+          <Option name="h323_hh">0</Option>
+          <Option name="h323_mm">0</Option>
+          <Option name="h323_ras_fixup">2 1718 1719 nil 0</Option>
+          <Option name="h323_ss">0</Option>
+          <Option name="half-closed_hh">0</Option>
+          <Option name="half-closed_mm">0</Option>
+          <Option name="half-closed_ss">0</Option>
+          <Option name="http_fixup">2 80 80 nil 0</Option>
+          <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ils_fixup">2 389 389 nil 0</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
+          <Option name="mgmt_addr">192.168.1.0/24</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_acl_basic">False</Option>
+          <Option name="pix_acl_no_clear">False</Option>
+          <Option name="pix_acl_substitution">True</Option>
+          <Option name="pix_acl_temp_addr">192.168.1.0/24</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">True</Option>
+          <Option name="pix_check_duplicate_nat">False</Option>
+          <Option name="pix_check_overlapping_global_pools">False</Option>
+          <Option name="pix_check_overlapping_global_statics">False</Option>
+          <Option name="pix_check_overlapping_statics">False</Option>
+          <Option name="pix_connection_timewait">False</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_disable_snmp_agent">False</Option>
+          <Option name="pix_emb_limit">0</Option>
+          <Option name="pix_emblem_log_format">False</Option>
+          <Option name="pix_emulate_out_acl">True</Option>
+          <Option name="pix_enable_snmp_traps">False</Option>
+          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_floodguard">True</Option>
+          <Option name="pix_fragguard">False</Option>
+          <Option name="pix_generate_out_acl">False</Option>
+          <Option name="pix_include_comments">True</Option>
+          <Option name="pix_ip_address">True</Option>
+          <Option name="pix_logging_buffered">False</Option>
+          <Option name="pix_logging_buffered_level">0</Option>
+          <Option name="pix_logging_console">False</Option>
+          <Option name="pix_logging_console_level">0</Option>
+          <Option name="pix_logging_timestamp">False</Option>
+          <Option name="pix_logging_trap_level">0</Option>
+          <Option name="pix_max_conns">0</Option>
+          <Option name="pix_nodnsalias_inbound">False</Option>
+          <Option name="pix_nodnsalias_outbound">False</Option>
+          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1_pref">False</Option>
+          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2_pref">False</Option>
+          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3_pref">False</Option>
+          <Option name="pix_optimize_default_nat">False</Option>
+          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_regroup_commands">False</Option>
+          <Option name="pix_replace_natted_objects">False</Option>
+          <Option name="pix_resetinbound">False</Option>
+          <Option name="pix_resetoutside">False</Option>
+          <Option name="pix_route_dnat">False</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_set_communities_from_object_data">False</Option>
+          <Option name="pix_set_host_name">True</Option>
+          <Option name="pix_snmp_poll_traps_1"></Option>
+          <Option name="pix_snmp_poll_traps_2"></Option>
+          <Option name="pix_snmp_server1"></Option>
+          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_ssh_timeout">0</Option>
+          <Option name="pix_syslog_device_id_opt"></Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_syslog_device_id_val"></Option>
+          <Option name="pix_syslog_facility"></Option>
+          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_queue_size">0</Option>
+          <Option name="pix_tcpmss">False</Option>
+          <Option name="pix_tcpmss_value">0</Option>
+          <Option name="pix_telnet_timeout">0</Option>
+          <Option name="pix_use_acl_remarks">True</Option>
+          <Option name="pix_use_manual_commit">False</Option>
+          <Option name="pptp_fixup">2 1723 0 nil 0</Option>
+          <Option name="rpc_hh">0</Option>
+          <Option name="rpc_mm">0</Option>
+          <Option name="rpc_ss">0</Option>
+          <Option name="rsh_fixup">2 514 0 nil 0</Option>
+          <Option name="rtsp_fixup">2 554 0 nil 0</Option>
+          <Option name="scpArgs"></Option>
+          <Option name="short_script">False</Option>
+          <Option name="sip_fixup">2 5060 5060 nil 0</Option>
+          <Option name="sip_hh">0</Option>
+          <Option name="sip_media_hh">0</Option>
+          <Option name="sip_media_mm">0</Option>
+          <Option name="sip_media_ss">0</Option>
+          <Option name="sip_mm">0</Option>
+          <Option name="sip_ss">0</Option>
+          <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
+          <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
+          <Option name="smtp_fixup">2 25 25 nil 0</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="tftp_fixup">2 69 0 nil 0</Option>
+          <Option name="uauth_abs">False</Option>
+          <Option name="uauth_hh">0</Option>
+          <Option name="uauth_inact">False</Option>
+          <Option name="uauth_mm">0</Option>
+          <Option name="uauth_ss">0</Option>
+          <Option name="udp_hh">0</Option>
+          <Option name="udp_mm">0</Option>
+          <Option name="udp_ss">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="use_scp">False</Option>
+          <Option name="verify_interfaces">true</Option>
+          <Option name="xlate_hh">0</Option>
+          <Option name="xlate_mm">0</Option>
+          <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
