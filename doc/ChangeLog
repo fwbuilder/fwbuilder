@@ -1,5 +1,14 @@
 2010-10-06  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::showIntroDialog): fixed compile problem
+	with old Qt (v < 4.5.0).
+
+	* FWWindow.cpp (FWWindow::showIntroDialog): See #1765, #1779 Will
+	show a dialog inviting the user to watch Quick Start Guide on the
+	web site when they run the GUI for the first few times. The dialog
+	is shown instead of the Time of the day dialog. Switching to the
+	tip of the day after 5 starts.
+	
 	* RoutingCompiler_pix.cpp (emptyRDstOrRItf::processNext): fixed
 	#1783 "PIX routing entries require interface, but PIX config will
 	compile without interface in Routing rule". Policy compiler for PIX
