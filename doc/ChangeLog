@@ -1,5 +1,11 @@
 2010-10-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FindObjectWidget.cpp (showObject): rolled back change done in
+	r3320 (refs #1790) "When an object is found using Find and the
+	object is in the object tree, the keyboard focus shifts to the
+	Object Panel". That change broke highlighting of the found object
+	in rules.
+
 	* refs #336 "Need template for PIX firewall"; added template for
 	PIX 50X (501 and 506)
 

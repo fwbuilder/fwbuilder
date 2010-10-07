@@ -628,8 +628,6 @@ void FindObjectWidget::showObject(FWObject* o)
         qDebug("FindObjectWidget::showObject  o: %s parent: %s",
                o->getName().c_str(), o->getParent()->getName().c_str());
 
-    QWidget *focus_holder = focusWidget();
-
     FWReference* ref = FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
@@ -637,7 +635,6 @@ void FindObjectWidget::showObject(FWObject* o)
         QCoreApplication::sendEvent(
             project_panel, new showObjectInRulesetEvent(
                 project_panel->getFileName(), ref->getId()));
-        focus_holder->setFocus();
         return;
     }
 
@@ -648,13 +645,11 @@ void FindObjectWidget::showObject(FWObject* o)
         QCoreApplication::sendEvent(
             mw, new showObjectInTreeEvent(project_panel->getFileName(),
                                           o->getParent()->getId()));
-        focus_holder->setFocus();
         return;
     }
 
     QCoreApplication::sendEvent(
         mw, new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
-    focus_holder->setFocus();
 }
 
 void FindObjectWidget::init()
