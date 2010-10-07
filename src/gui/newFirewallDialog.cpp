@@ -165,6 +165,22 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     this->m_dialog->interfaceEditor1->closeTab();
     this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
 
+    this->m_dialog->interfaceEditor1->setExplanation(
+        tr("Interfaces with the type set to 'Dynamic IP address' get "
+           "IP address by means of DHCP or PPP protocol and do not "
+           "require an address here. Interfaces with the type set to "
+           "'Static IP address' have statically configured IP address "
+           "which should be entered on this page. Interface can have "
+           "several IPv4 and IPv6 addresses.")
+    );
+
+    this->m_dialog->interfaceEditor2->setExplanation(
+        tr("Here you can change IP address of the template interface "
+           "to match addresses used on your network. "
+           "Interface can have several IPv4 and "
+           "IPv6 addresses.")
+    );
+
     this->resize(this->width(), this->minimumHeight());
     int maxheight = (int)(app->desktop()->height()*0.9);
     if (this->height() > maxheight)
@@ -517,15 +533,6 @@ void newFirewallDialog::showPage(const int page)
                 "security_levels") )
         {
 
-            this->m_dialog->interfaceEditor1->setExplanation(
-                tr("Dynamic interface gets its IP address by means "
-                   "of DHCP or PPP protocol and does not require an "
-                   "address here. Regular interface has statically "
-                   "configured IP address which should be entered on "
-                   "this page. Interface can have several IPv4 and "
-                   "IPv6 addresses.")
-            );
-
 /* if chosen fw platform does not support security levels,
  * this is the last page
  */
@@ -640,14 +647,14 @@ void newFirewallDialog::showPage(const int page)
         // Edit interfaces of the template object
         createFirewallFromTemplate();
         setFinishEnabled( 5, true );
-
+/*
         this->m_dialog->interfaceEditor2->setExplanation(
             tr("Here you can change IP address of the template interface "
                "to match addresses used on your network. "
                "Interface can have several IPv4 and "
                "IPv6 addresses.")
         );
-
+*/
         this->m_dialog->interfaceEditor2->clear();
         this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
