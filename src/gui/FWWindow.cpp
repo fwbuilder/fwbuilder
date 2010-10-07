@@ -576,12 +576,21 @@ void FWWindow::showIntroDialog()
         pm.load(":/Images/fwbuilder3-128x128.png");
 
         msg_box.setWindowModality(Qt::ApplicationModal);
+
+#if QT_VERSION >= 0x040500
         msg_box.setWindowFlags(
             Qt::Window |
             Qt::WindowTitleHint |
             Qt::CustomizeWindowHint |
             Qt::WindowCloseButtonHint |
             Qt::WindowSystemMenuHint);
+#else
+        msg_box.setWindowFlags(
+            Qt::Window |
+            Qt::WindowTitleHint |
+            Qt::CustomizeWindowHint |
+            Qt::WindowSystemMenuHint);
+#endif
 
         msg_box.setWindowTitle(tr("Welcome to Firewall Builder"));
         msg_box.setIconPixmap(pm);
