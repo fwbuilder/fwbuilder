@@ -1208,6 +1208,26 @@ bool FWWindow::event(QEvent *event)
     {
         fwbUpdateEvent *ev = dynamic_cast<fwbUpdateEvent*>(event);
         int obj_id = ev->getObjectId();
+
+        /*
+         * TODO:
+         *
+         * db() returns pointer to the FWObjectDatabase object that
+         * belongs to the current active project panel. If the event
+         * was sent for an object that does not belong to the active
+         * panel, the object @obj won't be found in this
+         * database. Event has project file name as another parameter,
+         * need to use that to localte right project panel instead of
+         * just calling activeProject().
+         *
+         * This happens when two data files are open and object tree
+         * panels are detached. User can try to open an object from
+         * file A by double clicking in the tree, while active panel
+         * shows file B. See ticket #1804 "With 2 files open and
+         * object trees undocked you cannot open objects from both
+         * object trees"
+         */
+
         FWObject *obj = db()->findInIndex(obj_id);
         ProjectPanel *pp = activeProject();
 
