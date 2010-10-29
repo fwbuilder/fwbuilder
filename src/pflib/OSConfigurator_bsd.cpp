@@ -212,11 +212,18 @@ string OSConfigurator_bsd::printFunctions()
     return ostr.str();
 }
 
-
+/*
+ * We need to sort interfaces by name but make sure carp interfaces
+ * are always last. See #1807
+ */
 bool compare_names(FWObject *a, FWObject *b)
 {
-    if (a->getName() < b->getName()) return true;
-    return false;
+    QString a_name = QString(a->getName().c_str());
+    QString b_name = QString(b->getName().c_str());
+    if (a_name.startsWith("carp") && b_name.startsWith("carp")) return a_name < b_name;
+    if (a_name.startsWith("carp")) return false;
+    if (b_name.startsWith("carp")) return true;
+    return a_name < b_name;
 }
 
 string OSConfigurator_bsd::configureInterfaces()

@@ -1,5 +1,10 @@
 2010-10-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_bsd.cpp (compare_names): fixed #1807 "wrong order
+	of address assignment in the generated OpenBSD/PF/CARP cluster
+	configuration". Need to assign ip addresses to regular interfaces
+	before trying to assign them to carp interfaces.
+
 	* configlets/linux24/load_modules: fixed #1820 "skip module
 	"nf_conntrack_ipv6" if generated script has no ipv6 rules"
 	Shell function load_modules should not try to load module
