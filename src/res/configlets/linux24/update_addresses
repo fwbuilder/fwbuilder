@@ -50,13 +50,20 @@ missing_address() {
 
     test "$cmd" = "add" && {
       echo "# Adding ip address: $interface $addr"
+## Use "broadcast +" syntax to make ip assign broadcast automatically,
+## but only for ipv4 addresses
+      echo $addr | grep -q ':' && {
+          $FWBDEBUG $IP addr $cmd $addr dev $interface
+      } || {
+          $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+      }
     }
 
     test "$cmd" = "del" && {
       echo "# Removing ip address: $interface $addr"
+      $FWBDEBUG $IP addr $cmd $addr dev $interface
     }
 
-    $FWBDEBUG $IP addr $cmd $addr dev $interface
     $FWBDEBUG $IP link set $interface up
 }
 
