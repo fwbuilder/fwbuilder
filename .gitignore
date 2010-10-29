@@ -9,6 +9,8 @@
 *.m4
 *.fw
 *.fw.orig
+*.conf
+*.conf.orig
 Makefile
 install*
 qmake.inc
