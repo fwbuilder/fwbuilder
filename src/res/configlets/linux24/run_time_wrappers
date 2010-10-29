@@ -30,9 +30,12 @@ done
 getinterfaces {{$interface_family_name}} | while read I; do
     ivar=$(getInterfaceVarName $I)
     getaddr{{if ipv6}}6{{endif}} $I $ivar
-    cmd="$"$ivar
-    eval "addr=$cmd"
-    test -n "$addr" && {{$command}}
+    ## cmd="$"$ivar
+    ## eval "addr=$cmd"
+    for addr in ${ivar}_list
+    do
+        test -n "$addr" && {{$command}}
+    done
 done
 {{endif}}
 
