@@ -1,0 +1,17 @@
+*.so*
+*.log
+*.status
+*.guess
+*.sub
+*.cache
+*.m4
+Makefile
+install*
+qmake.inc
+ltmain.sh
+configure
+.obj
+libfwbuilder-config-4
+libfwbuilder-config.h
+.configure_marker
+.build_marker
