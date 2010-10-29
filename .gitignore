@@ -11,6 +11,7 @@
 *.fw.orig
 *.conf
 *.conf.orig
+test/ipt/secuwall-1
 Makefile
 install*
 qmake.inc
