@@ -81,14 +81,14 @@
 
 {{if add_rules_for_ipv6_neighbor_discovery}}
 # rules to permit IPv6 Neighbor discovery
-{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -j ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -j ACCEPT {{$end_rule}}
-{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -j ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -j ACCEPT {{$end_rule}}
-{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -j ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -j ACCEPT {{$end_rule}}
-{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -j ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
 {{endif}}
 
 {{if drop_invalid}}
