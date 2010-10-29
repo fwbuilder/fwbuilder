@@ -7,6 +7,8 @@
 *.sub
 *.cache
 *.m4
+*.fw
+*.fw.orig
 Makefile
 install*
 qmake.inc
