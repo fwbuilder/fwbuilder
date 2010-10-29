@@ -99,7 +99,7 @@ case "$cmd" in
         load_run_time_address_table_files
         {{endif}}
         {{if prolog_top}} prolog_commands {{endif}}
-        load_modules {{$load_modules_with_nat}}
+        load_modules "{{$load_modules_with_nat}} {{$load_modules_with_ipv6}}"
         configure_interfaces
         verify_interfaces
         {{if prolog_after_interfaces}} prolog_commands {{endif}}

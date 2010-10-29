@@ -18,16 +18,22 @@
 ## function in the script_skeleton configlet as well, but I keep it
 ## separate to make script_skeleton small and clean.
 ##
-## Function load_modules is called with one parameter. If this
-## parameter is non-empty string, the function should also load
-## modules for nat.
+## Function load_modules is called with one parameter. This parameter
+## is a space-separated list of options. Options (words) "nat" and
+## "ipv6" are recognized. PArameter can be "", "nat", "ipv6",
+## "nat ipv6" If word "nat" is included, the function should also load
+## modules for nat. If word "ipv6" is included, it should also load
+## module nf_conntrack_ipv6
 
 {{if load_modules}}
-    HAVE_NAT=$1
+    OPTS=$1
     MODULES_DIR="{{$modules_dir}}"
-    MODULES=`find $MODULES_DIR -name '*conntrack*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`
-    test -n "$HAVE_NAT" && {
-        MODULES="$MODULES `find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`"
+    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
+    echo $OPTS | grep -q nat && {
+        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    echo $OPTS | grep -q ipv6 && {
+        MODULES="$MODULES nf_conntrack_ipv6"
     }
     for module in $MODULES; do 
         if $LSMOD | grep ${module} >/dev/null; then continue; fi

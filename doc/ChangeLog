@@ -1,3 +1,12 @@
+2010-10-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/load_modules: fixed #1820 "skip module
+	"nf_conntrack_ipv6" if generated script has no ipv6 rules"
+	Shell function load_modules should not try to load module
+	nf_conntrack_ipv6 if generated script does not load any ipv6
+	rules. Loading this module fails if ipv6 has been disabled in
+	the kernel.
+
 2010-10-29  Vadim Kurland  <vadim@netcitadel.com>
 
 	* run_time_wrappers: fix for the SF bug #3095615 "reopen no

@@ -588,7 +588,8 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
         script_skeleton.setVariable("load_modules",
                                     oscnf->generateCodeForProtocolHandlers().c_str());
-        script_skeleton.setVariable("load_modules_with_nat", (have_nat)?"\"nat\"":"");
+        script_skeleton.setVariable("load_modules_with_nat", (have_nat)?"nat":"");
+        script_skeleton.setVariable("load_modules_with_ipv6", (have_ipv6)?"ipv6":"");
 
         script_skeleton.setVariable("ip_forward_commands",
                                     oscnf->printIPForwardingCommands().c_str());
