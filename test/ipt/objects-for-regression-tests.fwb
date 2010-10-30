@@ -143,6 +143,12 @@
           <ServiceRef ref="icmp-ping_reply"/>
           <ServiceRef ref="icmp-Unreachables"/>
         </ServiceGroup>
+        <ServiceGroup id="id1569X4889" name="Ipv6 unreachable messages" comment="" ro="False">
+          <ServiceRef ref="idE0D27650"/>
+          <ServiceRef ref="idCFE27650"/>
+          <ServiceRef ref="idE0B27650"/>
+          <ServiceRef ref="id1519Z388"/>
+        </ServiceGroup>
         <ServiceGroup id="id3B4FEDD9" name="kerberos" comment="" ro="False">
           <ServiceRef ref="id3B4FEDA5"/>
           <ServiceRef ref="id3B4FEDA9"/>
@@ -205,6 +211,7 @@
         <ICMP6Service id="ipv6-icmp-neighbrsol" code="0" type="135" name="ipv6 neighbrsol" comment="IPv6 neighbor solicitation" ro="False"/>
         <ICMP6Service id="ipv6-icmp-neighbradv" code="0" type="136" name="ipv6 neighbradv" comment="IPv6 neighbor advertisement" ro="False"/>
         <ICMP6Service id="ipv6-icmp-redir" code="0" type="137" name="ipv6 redir" comment="IPv6 redirect: shorter route exists" ro="False"/>
+        <ICMP6Service id="id1519Z388" code="-1" type="4" name="ipv6 parameter problem" comment="IPv6 Parameter Problem: RFC4443" ro="False"/>
         <ICMP6Service id="idCFE27650" code="0" type="3" name="ipv6 time exceeded" comment="Time exceeded in transit" ro="False"/>
         <ICMP6Service id="idCFF27650" code="1" type="3" name="ipv6 time exceeded in reassembly" comment="Time exceeded in reassembly" ro="False"/>
         <ICMP6Service id="idE0B27650" code="-1" type="2" name="ipv6 packet too big" comment="" ro="False"/>
@@ -31859,7 +31866,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1280268015" lastInstalled="0" lastModified="1280267960" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1280268015" lastInstalled="0" lastModified="1288399354" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -32003,6 +32010,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -32023,6 +32031,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -32043,10 +32052,190 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43597X31704" disabled="False" log="False" position="9" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id2237207X9812" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4833F62B6131"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="idCFE27660"/>
+              <ServiceRef ref="id3B4FED9F"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C08B5A</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id2782843X9812" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4833F62B6131"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="idCFE27660"/>
+              <ServiceRef ref="id3E7E3E9A"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C08B5A</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1419191X9812" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4833F62B6131"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="idCFE27660"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1419145X9812" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4833F62B6131"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="idCFE27660"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1419099X9812" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="idCFE27660"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43597X31704" disabled="False" log="False" position="14" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id4833F6316131"/>
             </Src>
@@ -32066,7 +32255,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43963X63240" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="ipv4 address range for bug 2820152">
+          <PolicyRule id="id43963X63240" disabled="False" group="" log="True" position="15" action="Deny" direction="Both" comment="ipv4 address range for bug 2820152">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -32086,7 +32275,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43989X63637" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="ipv4 address range for bug 2820152&#10;">
+          <PolicyRule id="id43989X63637" disabled="False" group="" log="True" position="16" action="Deny" direction="Both" comment="ipv4 address range for bug 2820152&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

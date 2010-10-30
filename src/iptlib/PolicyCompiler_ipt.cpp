@@ -3672,6 +3672,34 @@ bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
     return true;
 }
 
+/**
+ * objects in Srv must be of the same type by the time when we call
+ * this rule processor
+ */
+bool PolicyCompiler_ipt::checkForStatefulICMP6Rules::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    FWOptions *ruleopt = rule->getOptionsObject();
+
+    RuleElementSrv *srv = rule->getSrv();
+    if (!srv->isAny())
+    {
+        Service *s = Service::cast(FWReference::getObject(srv->front()));
+        assert(s);
+        if (ICMP6Service::isA(s) && ! ruleopt->getBool("stateless"))
+        {
+            compiler->warning(
+                rule,
+                "Making rule stateless because it matches ICMPv6");
+            ruleopt->setBool("stateless",true);
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 /*
  * I am adding subrule suffix here, which I then use to generate
  * unique new chain name for this rule. The idea is to generate
@@ -4535,6 +4563,7 @@ void PolicyCompiler_ipt::compile()
     add( new separatePortRanges("separate port ranges"));
     add( new separateUserServices("separate user services"));
     add( new separateSrcPort("split on TCP and UDP with source ports"));
+    add( new checkForStatefulICMP6Rules("Make sure rules that match icmpv6 are stateless"));
 
 //        add( new optimize1(        "optimization 1, pass 1"              ) );
 //        add( new optimize1(        "optimization 1, pass 2"              ) );

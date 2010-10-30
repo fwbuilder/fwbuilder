@@ -750,6 +750,19 @@ protected:
         friend class PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset;
 
 	/**
+	 * Rules that match icmpv6 should not be stateful. See SF bug 3094273
+         * Will reset "stateful" flag and issue warning.
+         * Call this processor after groups have been expanded in Srv
+	 */
+        class checkForStatefulICMP6Rules :public PolicyRuleProcessor
+        {
+            public:
+            checkForStatefulICMP6Rules(const std::string &name) : PolicyRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+        friend class PolicyCompiler_ipt::checkForStatefulICMP6Rules;
+
+	/**
 	 * This processor separates TCP/UDP services with port ranges
 	 * (they can not be used with multiport). It also separates
 	 * rules using "Any UDP" and "Any TCP" objects (they have

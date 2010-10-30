@@ -1,5 +1,15 @@
 2010-10-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (checkForStatefulICMP6Rules::processNext):
+	fixed SF bug 3094273 "no state needed for ipv6-icmp in
+	ip6tables". Rules that match ICMPv6 objects should be
+	stateless. Compiler will check for this and reset "stateful" flag
+	of a rule and issue warning if the rule was built stateful in the
+	GUI. This could be version-dependent, we may need to revisit this
+	in the future when netfilter fixes the underlying issue. Some
+	resources: https://bugzilla.redhat.com/show_bug.cgi?id=243739
+	https://bugs.launchpad.net/ubuntu/+source/iptables/+bug/479105
+
 	* src/res/objects_init.xml.in: added ICMPv6 object "parameter
 	problem" (type 4, any code) per SF feature request 3094743.  Also
 	added service group object "ipv6 unreachable messages" that
