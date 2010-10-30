@@ -1,5 +1,12 @@
 2010-10-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* src/res/objects_init.xml.in: added ICMPv6 object "parameter
+	problem" (type 4, any code) per SF feature request 3094743.  Also
+	added service group object "ipv6 unreachable messages" that
+	includes ICMPv6 messages "destination unreachable", "packet too
+	big", "parameter problem" and "time exceeded" per SF feature
+	request 3094758
+
 	* configlets/linux24/automatic_rules: implemented SF feature
 	request 3094738 "Set the HL to 255 for IPv6 Neighbor
 	Discovery". Neighbor discovery packets must have hop limit of 255
