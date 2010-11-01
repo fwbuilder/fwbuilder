@@ -453,17 +453,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                     (policy_script + nat_script + routing_script).c_str()));
         }
 
-        QFileInfo finfo(ofname);
-        if (finfo.isRelative())
-        {
-            // if ofname is relative, it is relative to the
-            // directory the program started in, which can be
-            // different from wdir and different from the current dir
-            // at this point because we do chdir to the directory
-            // defined by the -d command line option
-            QFileInfo new_finfo(start_current_dir, ofname);
-            ofname = new_finfo.absoluteFilePath();
-        }
+        ofname = getAbsOutputFileName(ofname);
 
         info("Output file name: " + ofname.toStdString());
         QFile fw_file(ofname);

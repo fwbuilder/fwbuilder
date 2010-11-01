@@ -547,17 +547,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
             if (ruleset_name.find("/*")!=string::npos) continue;
 
-            QFileInfo finfo(file_name);
-            if (finfo.isRelative())
-            {
-                // if file_name is relative, it is relative to the
-                // directory the program started in, which can be
-                // different from wdir and different from the current dir
-                // at this point because we do chdir to the directory
-                // defined by the -d command line option
-                QFileInfo new_finfo(start_current_dir, file_name);
-                file_name = new_finfo.absoluteFilePath();
-            }
+            file_name = getAbsOutputFileName(file_name);
 
             info("Output file name: " + file_name.toStdString());
             QFile pf_file(file_name);
@@ -599,17 +589,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         table_factories.clear();
         generated_scripts.clear();
 
-        QFileInfo finfo(fw_file_name);
-        if (finfo.isRelative())
-        {
-            // if fw_file_name is relative, it is relative to the
-            // directory the program started in, which can be
-            // different from wdir and different from the current dir
-            // at this point because we do chdir to the directory
-            // defined by the -d command line option
-            QFileInfo new_finfo(start_current_dir, fw_file_name);
-            fw_file_name = new_finfo.absoluteFilePath();
-        }
+        fw_file_name = getAbsOutputFileName(fw_file_name);
 
         info("Output file name: " + fw_file_name.toStdString());
         QFile fw_file(fw_file_name);

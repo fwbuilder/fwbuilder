@@ -326,17 +326,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
         if (have_filter) 
         {
-            QFileInfo finfo(ipf_file_name);
-            if (finfo.isRelative())
-            {
-                // if ipf_file_name is relative, it is relative to the
-                // directory the program started in, which can be
-                // different from wdir and different from the current dir
-                // at this point because we do chdir to the directory
-                // defined by the -d command line option
-                QFileInfo new_finfo(start_current_dir, ipf_file_name);
-                ipf_file_name = new_finfo.absoluteFilePath();
-            }
+            ipf_file_name = getAbsOutputFileName(ipf_file_name);
 
             info("Output file name: " + ipf_file_name.toStdString());
             QFile ipf_file(ipf_file_name);
@@ -374,17 +364,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
         if (have_nat) 
         {
-            QFileInfo finfo(nat_file_name);
-            if (finfo.isRelative())
-            {
-                // if nat_file_name is relative, it is relative to the
-                // directory the program started in, which can be
-                // different from wdir and different from the current dir
-                // at this point because we do chdir to the directory
-                // defined by the -d command line option
-                QFileInfo new_finfo(start_current_dir, nat_file_name);
-                nat_file_name = new_finfo.absoluteFilePath();
-            }
+            nat_file_name = getAbsOutputFileName(nat_file_name);
 
             info("Output file name: " + nat_file_name.toStdString());
             QFile nat_file(nat_file_name);
@@ -425,17 +405,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
 
-        QFileInfo fw_finfo(fw_file_name);
-        if (fw_finfo.isRelative())
-        {
-            // if fw_file_name is relative, it is relative to the
-            // directory the program started in, which can be
-            // different from wdir and different from the current dir
-            // at this point because we do chdir to the directory
-            // defined by the -d command line option
-            QFileInfo new_finfo(start_current_dir, fw_file_name);
-            fw_file_name = new_finfo.absoluteFilePath();
-        }
+        fw_file_name = getAbsOutputFileName(fw_file_name);
 
         info("Output file name: " + fw_file_name.toStdString());
         QFile fw_file(fw_file_name);

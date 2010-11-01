@@ -146,6 +146,7 @@ bool CompilerDriver::configure(const QStringList &args)
         }
         if (arg == "-d")
         {
+            // TODO: deal with UTF-8 in directory name
             idx++;
             wdir = string(args.at(idx).toLatin1().constData());
             continue;
@@ -250,6 +251,27 @@ void CompilerDriver::chDir()
 	cerr << "Can't change to: " << wdir << endl;
 	exit(1);
     }
+}
+
+QString CompilerDriver::getAbsOutputFileName(const QString &output_file_name)
+{
+    QFileInfo finfo(output_file_name);
+    if (finfo.isRelative())
+    {
+        // if fw_file_name is relative, it is relative to the
+        // directory the program started in, or if wdir was defined
+        // via "-d" command line switch, then it is relative to that.
+        if (wdir.empty())
+        {
+            QFileInfo new_finfo(start_current_dir, output_file_name);
+            return new_finfo.absoluteFilePath();
+        } else
+        {
+            QFileInfo new_finfo(QDir(wdir.c_str()), output_file_name);
+            return new_finfo.absoluteFilePath();
+        }
+    }
+    return output_file_name;
 }
 
 void CompilerDriver::commonChecks(Firewall *fw)

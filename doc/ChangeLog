@@ -1,3 +1,11 @@
+2010-11-01  Vadim Kurland  <vadim@netcitadel.com>
+
+	* CompilerDriver.cpp (CompilerDriver::getAbsOutputFileName): fixed
+	SF bug 3090249 "fwb_ipt ignores -d option ". Documented behavior
+	is for the compiler to create files in the directory specified by
+	the argument of the "-d" command line flag. If flag "-d" is not
+	provided, files should be created in the current directory.
+
 2010-10-29  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (checkForStatefulICMP6Rules::processNext):

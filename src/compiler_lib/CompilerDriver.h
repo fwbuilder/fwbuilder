@@ -138,6 +138,9 @@ protected:
                                               libfwbuilder::RuleSet *ruleset,
                                               std::map<libfwbuilder::FWObject*, int> &branch_rulesets);
         
+
+        QString getAbsOutputFileName(const QString &output_file_name);
+        
 public:
 
         CompilerDriver(libfwbuilder::FWObjectDatabase *db);

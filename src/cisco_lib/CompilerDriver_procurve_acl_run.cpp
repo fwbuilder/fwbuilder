@@ -310,17 +310,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         QString script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
-        QFileInfo finfo(ofname);
-        if (finfo.isRelative())
-        {
-            // if fw_file_name is relative, it is relative to the
-            // directory the program started in, which can be
-            // different from wdir and different from the current dir
-            // at this point because we do chdir to the directory
-            // defined by the -d command line option
-            QFileInfo new_finfo(start_current_dir, ofname);
-            ofname = new_finfo.absoluteFilePath();
-        }
+        ofname = getAbsOutputFileName(ofname);
 
         info("Output file name: " + ofname.toStdString());
         QFile fw_file(ofname);
