@@ -12,7 +12,7 @@ SOURCES += main_ImporterTest.cpp \
         ImporterTest.cpp
 
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 TARGET = ImporterTest
 CONFIG -= release
 CONFIG += debug

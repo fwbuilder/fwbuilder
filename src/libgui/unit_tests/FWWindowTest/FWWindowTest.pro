@@ -11,7 +11,7 @@ SOURCES += main_FWWindowTest.cpp \
     FWWindowTest.cpp
 
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 CONFIG -= release
 CONFIG += debug
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS

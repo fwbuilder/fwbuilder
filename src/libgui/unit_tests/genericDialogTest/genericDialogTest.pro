@@ -13,7 +13,7 @@ HEADERS += genericDialogTest.h
 CONFIG -= release
 CONFIG += debug
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui
@@ -45,7 +45,7 @@ QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS -L../guilib -lguilib
+LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS -L../.. -lguilib
 DEFINES += $$ANTLR_DEFINES
 
 LIBS += $$LIBS_FWCOMPILER

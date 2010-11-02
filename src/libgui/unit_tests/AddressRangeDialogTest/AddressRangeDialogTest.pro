@@ -14,7 +14,7 @@ SOURCES += AddressRangeDialogTest.cpp \
 
 
 HEADERS += AddressRangeDialogTest.h
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 
 CONFIG -= release
 CONFIG += debug

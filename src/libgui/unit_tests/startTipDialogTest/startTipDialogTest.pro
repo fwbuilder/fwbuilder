@@ -11,7 +11,7 @@ SOURCES += main_startTipDialogTest.cpp \
     startTipDialogTest.cpp
 
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 CONFIG -= release
 CONFIG += debug
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS

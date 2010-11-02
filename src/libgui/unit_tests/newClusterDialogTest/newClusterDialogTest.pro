@@ -14,7 +14,7 @@ CONFIG -= release
 CONFIG += debug
 QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui

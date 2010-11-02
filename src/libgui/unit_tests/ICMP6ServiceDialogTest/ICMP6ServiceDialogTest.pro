@@ -13,7 +13,7 @@ HEADERS += ICMP6ServiceDialogTest.h
 CONFIG -= release
 CONFIG += debug
 RESOURCES += ../../MainRes.qrc
-LIBS += ../guilib/libguilib.a
+LIBS += ../../libgui.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui
