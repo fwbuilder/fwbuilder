@@ -35,10 +35,11 @@
 #include "fwbuilder/IPService.h"
 
 #include <QApplication>
-#include <QStringList>
+#include <QDir>
+#include <QFile>
 #include <QFileInfo>
+#include <QStringList>
 #include <QtDebug>
-
 
 using namespace std;
 using namespace libfwbuilder;
@@ -73,13 +74,19 @@ void GeneratedScriptTest::tearDown()
 
 void GeneratedScriptTest::loadDataFile(const string &file_name)
 {
-    /* load the data file */
-    UpgradePredicate upgrade_predicate; 
+    try
+    {
+        /* load the data file */
+        UpgradePredicate upgrade_predicate; 
 
-    objdb->setReadOnly( false );
-    objdb->load(file_name, &upgrade_predicate, librespath);
-    objdb->setFileName(file_name);
-    objdb->reIndex();
+        objdb->setReadOnly( false );
+        objdb->load(file_name, &upgrade_predicate, librespath);
+        objdb->setFileName(file_name);
+        objdb->reIndex();
+    } catch (FWException &ex)
+    {
+        qDebug() << ex.toString().c_str();
+    }
 }
 
 void GeneratedScriptTest::runCompiler(const std::string &test_file,
@@ -439,3 +446,144 @@ void GeneratedScriptTest::runTimeAddressTablesWithIpSet2Test()
     delete objdb;
 }
 
+// compiler should place generated script in the directory specified
+// with -d option
+void GeneratedScriptTest::minusDTest()
+{
+    QDir current = QDir::current();
+
+    QFile f("/tmp/test1.fw");
+    f.remove();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QStringList args;
+    args << "-d" <<  "/tmp" << "test1";
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file /tmp/test1.fw
+    QFileInfo fi("/tmp/test1.fw");
+    CPPUNIT_ASSERT_MESSAGE("Generated file /tmp/test1.fw not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile("top_comment", "/tmp/test1.fw");
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+
+    QDir::setCurrent(current.path());
+}
+
+// if -o option is given, it defines the path and name for the
+// generated script
+void GeneratedScriptTest::minusOTest1()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    qDebug() << "Data load starts";
+
+    loadDataFile("test1.fwb");
+
+    qDebug() << "Data loaded";
+
+    QString full_output_file_name = QString("%1/test1.fw").arg(current.path());
+
+    QStringList args;
+    args << "-o" <<  full_output_file_name << "test1";
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+}
+
+// same as the previous but different output file name
+void GeneratedScriptTest::minusOTest2()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QString full_output_file_name = QString("%1/foo1.fw").arg(current.path());
+
+    QStringList args;
+    args << "-o" <<  full_output_file_name << "test1";
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * foo1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") == -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+}
+
+// if both -d and -o are present, -o takes precedence
+void GeneratedScriptTest::minusDminusOTest()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QString full_output_file_name = QString("%1/test1.fw").arg(current.path());
+
+    QStringList args;
+    args << "-d" <<  "/tmp" << "-o" << full_output_file_name << "test1";
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+
+    QDir::setCurrent(current.path());
+}

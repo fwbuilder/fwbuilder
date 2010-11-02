@@ -59,6 +59,10 @@ public:
     void virtualAddressesForNat2Test();
     void runTimeAddressTablesWithIpSet1Test();
     void runTimeAddressTablesWithIpSet2Test();
+    void minusDTest();
+    void minusOTest1();
+    void minusOTest2();
+    void minusDminusOTest();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
     CPPUNIT_TEST(ManifestTest);
@@ -71,6 +75,10 @@ public:
     CPPUNIT_TEST(virtualAddressesForNat2Test);
     CPPUNIT_TEST(runTimeAddressTablesWithIpSet1Test);
     CPPUNIT_TEST(runTimeAddressTablesWithIpSet2Test);
+    CPPUNIT_TEST(minusDTest);
+    CPPUNIT_TEST(minusOTest1);
+    CPPUNIT_TEST(minusOTest2);
+    CPPUNIT_TEST(minusDminusOTest);
     CPPUNIT_TEST_SUITE_END();
 
 };

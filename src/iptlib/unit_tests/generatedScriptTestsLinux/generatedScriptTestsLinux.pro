@@ -47,6 +47,7 @@ win32:PRE_TARGETDEPS  = ../../../common/release/common.lib \
 			../../../compiler_lib/libcompilerdriver.a
 
 run_tests.commands = echo "Running tests..." && \
+    rm -f *.fw && \
     ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
 
