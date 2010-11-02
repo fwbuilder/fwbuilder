@@ -21,7 +21,7 @@
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../gui/IOSImporter.h"
+#include "../libgui/IOSImporter.h"
 
 #line 27 "IOSCfgLexer.cpp"
 #line 1 "iosacl.g"

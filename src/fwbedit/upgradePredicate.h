@@ -24,6 +24,7 @@
 */
 
 #include "fwbuilder/XMLTools.h"
+#include <iostream>
 
 class UpgradePredicate: public libfwbuilder::XMLTools::UpgradePredicate
 {
