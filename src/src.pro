@@ -19,6 +19,7 @@ SUBDIRS  =  res \
 			iptlib \
 			pflib \
 			cisco_lib \
+			libgui \
 			gui \
 			ipt \
 			pf \
