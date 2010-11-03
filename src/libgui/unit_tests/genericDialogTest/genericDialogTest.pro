@@ -45,7 +45,7 @@ QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS -L../.. -lguilib
+LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS
 DEFINES += $$ANTLR_DEFINES
 
 LIBS += $$LIBS_FWCOMPILER
