@@ -378,7 +378,8 @@ void ProjectPanel::updateFirewallName()
 //    name = "<b>" + name  + "</b>";
     FWObject *fw = visibleRuleSet->getParent();
     name = QString("Currently editing: <b>%1 / %2</b>")
-        .arg(fw->getName().c_str()).arg(visibleRuleSet->getName().c_str());
+           .arg(QString::fromUtf8(fw->getName().c_str()))
+           .arg(QString::fromUtf8(visibleRuleSet->getName().c_str()));
     m_panel->rulesetname->setText(name );
 }
 
