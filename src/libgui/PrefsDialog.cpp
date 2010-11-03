@@ -115,6 +115,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->wDir->setText( st->getWDir() );
 
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
+    m_dialog->advTooltipMode->setChecked(st->getBool("UI/AdvancedTooltips"));
+    m_dialog->advTooltipMode->setEnabled(st->getObjTooltips());
 //    m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
 
     m_dialog->enableCustomTemplates->setChecked( st->customTemplatesEnabled() );
@@ -411,6 +413,7 @@ void PrefsDialog::accept()
     st->setWDir( wd );
 
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
+    st->setBool("UI/AdvancedTooltips", m_dialog->advTooltipMode->isChecked());
 
     st->setCustomTemplatesEnabled(m_dialog->enableCustomTemplates->isChecked());
 
@@ -603,4 +606,9 @@ void PrefsDialog::checkForUpgrade(const QString& server_response)
     }
 }
 
-
+void PrefsDialog::objTooltipsEnabled(bool enabled)
+{
+    if (!enabled && m_dialog->advTooltipMode->isChecked())
+        m_dialog->advTooltipMode->setChecked(false);
+    m_dialog->advTooltipMode->setEnabled(enabled);
+}

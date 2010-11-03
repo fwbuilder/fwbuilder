@@ -87,6 +87,7 @@ public slots:
     virtual void changeCompilerOutputFont();
     virtual void checkSwUpdates();
     virtual void checkForUpgrade(const QString&);
+    virtual void objTooltipsEnabled(bool);
 };
 
 #endif // __PREFSDIALOG_H

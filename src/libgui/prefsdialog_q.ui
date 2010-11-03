@@ -217,21 +217,21 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QCheckBox" name="deletedObj">
          <property name="text">
           <string>Show deleted objects</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QCheckBox" name="attributesInTree">
          <property name="text">
           <string>Show object attributes in the tree</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <widget class="QCheckBox" name="enableCustomTemplates">
          <property name="toolTip">
           <string>The program comes with a library of template objects that can
@@ -243,7 +243,7 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <spacer name="verticalSpacer_5">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -256,7 +256,7 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </spacer>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="label_9">
          <property name="text">
           <string>Properties of specific object types:</string>
@@ -266,7 +266,7 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="7" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
           <number>0</number>
@@ -428,7 +428,7 @@ own library of templates and use it in addition to the one we provide</string>
          </widget>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2">
+       <item row="8" column="0" colspan="2">
         <spacer name="verticalSpacer_7">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -441,6 +441,13 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </spacer>
        </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="advTooltipMode">
+         <property name="text">
+          <string>Advanced User Mode, only show minimal tooltips</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabData">
@@ -448,10 +455,10 @@ own library of templates and use it in addition to the one we provide</string>
        <string>Data File</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
        <item row="0" column="0">
@@ -709,8 +716,8 @@ own library of templates and use it in addition to the one we provide</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="acceptRichText">
              <bool>true</bool>
@@ -796,10 +803,10 @@ are never stored permanently)</string>
        <string>Labels</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
        <item row="0" column="0" colspan="3">
@@ -1357,7 +1364,6 @@ are never stored permanently)</string>
  </tabstops>
  <resources>
   <include location="MainRes.qrc"/>
-  <include location="../../../../../../../.designer/backup/MainRes.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -1367,8 +1373,8 @@ are never stored permanently)</string>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>558</x>
-     <y>457</y>
+     <x>697</x>
+     <y>566</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1383,8 +1389,8 @@ are never stored permanently)</string>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>457</y>
+     <x>780</x>
+     <y>566</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1399,8 +1405,8 @@ are never stored permanently)</string>
    <slot>findWDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
-     <y>52</y>
+     <x>757</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1415,8 +1421,8 @@ are never stored permanently)</string>
    <slot>findSSH()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>568</x>
-     <y>51</y>
+     <x>757</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1431,8 +1437,8 @@ are never stored permanently)</string>
    <slot>changeRedColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>72</y>
+     <x>353</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1447,8 +1453,8 @@ are never stored permanently)</string>
    <slot>changeOrangeColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>118</y>
+     <x>353</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1463,8 +1469,8 @@ are never stored permanently)</string>
    <slot>changeYellowColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>164</y>
+     <x>353</x>
+     <y>202</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1479,8 +1485,8 @@ are never stored permanently)</string>
    <slot>changeGreenColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>210</y>
+     <x>353</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1495,8 +1501,8 @@ are never stored permanently)</string>
    <slot>changeBlueColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>256</y>
+     <x>353</x>
+     <y>286</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1511,8 +1517,8 @@ are never stored permanently)</string>
    <slot>changePurpleColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>302</y>
+     <x>353</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1527,8 +1533,8 @@ are never stored permanently)</string>
    <slot>changeGrayColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>348</y>
+     <x>353</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1543,8 +1549,8 @@ are never stored permanently)</string>
    <slot>changeShowIcons()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>28</x>
-     <y>152</y>
+     <x>43</x>
+     <y>181</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1559,8 +1565,8 @@ are never stored permanently)</string>
    <slot>changeIconSize16()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>155</x>
-     <y>243</y>
+     <x>243</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1575,8 +1581,8 @@ are never stored permanently)</string>
    <slot>changeIconSize25()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>155</x>
-     <y>280</y>
+     <x>243</x>
+     <y>360</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1591,8 +1597,8 @@ are never stored permanently)</string>
    <slot>findSCP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>590</x>
-     <y>138</y>
+     <x>757</x>
+     <y>182</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1607,8 +1613,8 @@ are never stored permanently)</string>
    <slot>checkSwUpdates()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>420</x>
-     <y>120</y>
+     <x>375</x>
+     <y>195</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1639,8 +1645,8 @@ are never stored permanently)</string>
    <slot>changeTreeFont()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>137</x>
-     <y>99</y>
+     <x>152</x>
+     <y>125</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1655,12 +1661,28 @@ are never stored permanently)</string>
    <slot>changeCompilerOutputFont()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>137</x>
-     <y>138</y>
+     <x>152</x>
+     <y>169</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
      <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>objTooltips</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>objTooltipsEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -1672,5 +1694,6 @@ are never stored permanently)</string>
   <slot>changeRulesFont()</slot>
   <slot>changeTreeFont()</slot>
   <slot>changeCompilerOutputFont()</slot>
+  <slot>objTooltipsEnabled(bool)</slot>
  </slots>
 </ui>

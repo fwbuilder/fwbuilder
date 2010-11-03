@@ -56,6 +56,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Cluster.h"
+#include "fwbuilder/Network.h"
 
 #include <memory>
 
@@ -2496,6 +2497,8 @@ bool RuleSetView::showToolTip(QEvent *event)
     QModelIndex index = indexAt(pos);
     if (!index.isValid())
     {
+        if (st->getBool("UI/AdvancedTooltips"))
+            return false;
         toolTip = "<html>\
 Policy, NAT and routing rules are shown here.\
 <ul>\
@@ -2557,11 +2560,15 @@ Policy, NAT and routing rules are shown here.\
             break;
 
             case ColDesc::Direction:
+                if (st->getBool("UI/AdvancedTooltips"))
+                    return false;
                 toolTip = "<b>Direction:</b> " + v.value<QString>() +
                     "<br><b>To change the direction</b>, click right mouse button to open the list of possible settings";
                 break;
 
             case ColDesc::Action:
+                if (st->getBool("UI/AdvancedTooltips"))
+                    return false;
                 toolTip = v.value<ActionDesc>().tooltip +
                     "<b>To change the action</b>, click right mouse button to open the list of possible settings";
                 break;
@@ -2570,6 +2577,13 @@ Policy, NAT and routing rules are shown here.\
                 FWObject *object = getObject(pos, index);
                 if (object == 0) return true;
                 toolTip = FWObjectPropertiesFactory::getObjectPropertiesDetailed(object, true, true);
+                if (st->getBool("UI/AdvancedTooltips"))
+                {
+                    if (object->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
+                        object->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
+                        object->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+                        return false;
+                }
             }
         }
     }
