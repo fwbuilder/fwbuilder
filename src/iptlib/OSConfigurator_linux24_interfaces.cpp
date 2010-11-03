@@ -81,7 +81,10 @@ string OSConfigurator_linux24::printVerifyInterfacesCommands()
     for (i=interfaces.begin(); i!=interfaces.end(); ++i )
     {
         QString iface_name = (*i)->getName().c_str();
-        if (interfaces_to_check.indexOf(iface_name) == -1)
+/* if interface name ends with '*', this is a wildcard interface. Do
+ * not check if it exists.
+ */
+        if (!iface_name.contains("*") && interfaces_to_check.indexOf(iface_name) == -1)
         {
             interfaces_to_check.push_back((*i)->getName().c_str());
         }
