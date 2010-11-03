@@ -157,7 +157,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     m_dialog->iface_unnum->setToolTip(wordWrap(tr("Check option 'Unnumbered interface' for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.") ,80 ));
 */
     m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
-    m_dialog->obj_name->setFocus();
+    QTimer::singleShot(0, m_dialog->obj_name, SLOT(setFocus()));
 
     currentTemplate = NULL;
     this->m_dialog->interfaceEditor1->clear();
