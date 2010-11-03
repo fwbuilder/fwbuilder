@@ -11,7 +11,7 @@ SOURCES += main.cpp
 
 win32:LIBS += ../libgui/libgui.lib
 !win32:LIBS += ../libgui/libgui.a
-INCLUDEPATH += ../libgui
+INCLUDEPATH += ../libgui ../libgui/.ui
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
 LIBS += $$FWBPARSER_LIB \
