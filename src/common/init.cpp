@@ -1,7 +1,6 @@
 
 
 #include "../../config.h"
-#include "../../build_num"
 
 #include <string>
 #include <assert.h>
