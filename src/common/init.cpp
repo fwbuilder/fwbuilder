@@ -25,7 +25,11 @@ std::string sysfname;
 std::string tempfname;
 std::string argv0;
 std::string ee;
-QString build_num = QString("").setNum(BUILD_NUM);
+
+#define Str(x) #x
+#define Xstr(x) Str(x)
+
+QString build_num = Xstr(BUILD_NUM);
 QString user_name;
 
 

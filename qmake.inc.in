@@ -89,7 +89,7 @@ exists(build_num) {
 if (isEmpty(BUILD_NUM)) {
 	GIT_BRANCH=$$system(git branch | grep '\\*' | cut -c3-)
 	GIT_COMMIT=$$system(git show --abbrev-commit -1 --pretty=oneline --shortstat | head -1 | cut -c1-7)
-	BUILD_NUM="$$GIT_BRANCH:$$GIT_COMMIT"
+	BUILD_NUM="\"$$GIT_BRANCH:$$GIT_COMMIT\""
 }
 
 DEFINES += BUILD_NUM=$$BUILD_NUM
