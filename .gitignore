@@ -13,6 +13,10 @@ core
 *.conf
 *.conf.orig
 *.app
+*.icns
+*.ico
+*.plist
+*.rc
 test/ipt/secuwall-1
 Makefile
 install*
