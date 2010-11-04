@@ -25,9 +25,8 @@
 
 #include "parseCommandLineTest.h"
 
-#include "../../../../config.h"
-//#include "../../global.h"
-#include "../../utils.h"
+#include "config.h"
+#include "utils.h"
 
 #include <qapplication.h>
 #include <qfile.h>

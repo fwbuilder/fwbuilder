@@ -10,7 +10,7 @@ run_tests.commands = echo "Running tests..."; \
                ./unit_tests.sh make run_tests
 
 clean_tests.commands = echo "Cleaning tests..."; \
-                 ./unit_tests.sh make clean_tests
+                 ./unit_tests.sh make clean
 
 build_tests.depends = libgui
 run_tests.depends = libgui

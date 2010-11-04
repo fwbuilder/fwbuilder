@@ -25,7 +25,7 @@
 
 #include "ImporterTest.h"
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 
 #include <fstream>
@@ -36,10 +36,10 @@
 
 #include <assert.h>
 
-#include "../../Importer.h"
-#include "../../IOSImporter.h"
-#include "../../IPTImporter.h"
-#include "../../FWBTree.h"
+#include "Importer.h"
+#include "IOSImporter.h"
+#include "IPTImporter.h"
+#include "FWBTree.h"
 
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"

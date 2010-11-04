@@ -12,7 +12,8 @@ CONFIG -= release
 CONFIG += debug
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
-INCLUDEPATH += ../.ui
+INCLUDEPATH += ../../libgui
+INCLUDEPATH += ../../libgui/.ui
 INCLUDEPATH += ../../compiler_lib
 INCLUDEPATH += ../../iptlib
 INCLUDEPATH += ../../.. \
