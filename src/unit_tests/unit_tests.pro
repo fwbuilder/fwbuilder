@@ -1,7 +1,7 @@
 DOLLAR = $
 
-libgui.target = ../libgui.a
-libgui.commands = cd .. && qmake -spec $$QMAKESPEC && make && cd -
+libgui.target = ../libgui/libgui.a
+libgui.commands = cd ../libgui && qmake -spec $$QMAKESPEC && make && cd -
 
 build_tests.commands = echo "Building tests..."; \
                ./unit_tests.sh make build_tests

@@ -23,9 +23,9 @@
 
 */
 
-#include "../../config.h"
+#include "config.h"
 
-#include "../../common/init.cpp"
+#include "common/init.cpp"
 #include "interfacePropertiesTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>
