@@ -35,7 +35,7 @@ run_tests.commands = echo "Running tests..."; \
     ./${TARGET}
 run_tests.depends = build_tests
 build_tests.depends = all
-clean_tests.depends = all
+clean_tests.depends = clean 
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
