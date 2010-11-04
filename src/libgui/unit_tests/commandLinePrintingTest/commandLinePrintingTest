@@ -51,7 +51,7 @@ pass "initTestCase"
 
 # -------- actual testing goes here --------
 
-run_command "runPrinting" "../../fwbuilder -f test.fwb -P test"
+run_command "runPrinting" "../../../gui/fwbuilder -f test.fwb -P test"
 run_command "fileExists" "ls print.pdf"
 
 # --------- end of actual testing ---------

@@ -46,6 +46,7 @@ int main( int argc, char** argv) \
     app = new FWBApplication(argc, argv); \
     app->setOrganizationName(QLatin1String("NetCitadel")); \
     app->setApplicationName(QLatin1String("Firewall Builder")); \
+    Q_INIT_RESOURCE(MainRes); \
     st = new FWBSettings(true); \
     st->init(); \
     st->setCheckUpdates(false); \
