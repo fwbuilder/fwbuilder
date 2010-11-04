@@ -12,6 +12,7 @@ core
 *.fw.orig
 *.conf
 *.conf.orig
+*.app
 test/ipt/secuwall-1
 Makefile
 install*
