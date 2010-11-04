@@ -51,6 +51,7 @@ int main( int argc, char** argv) \
     st->setCheckUpdates(false); \
     st->setBool("UI/NoStartTip", true);  \
     st->setIntroDialogEnabled(false); \
+    st->suppressReminderAboutStandardLib(true); \
     init(argv); \
     wfl = new UserWorkflow(); \
     string full_res_path = respath + FS_SEPARATOR + "resources.xml"; \
