@@ -13,5 +13,6 @@ configure
 .obj
 libfwbuilder-config-4
 libfwbuilder-config.h
+src/fwbuilder/unit_tests/*/*Test
 .configure_marker
 .build_marker
