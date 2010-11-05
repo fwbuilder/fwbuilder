@@ -26,7 +26,6 @@ INSTALLS -= target
 # control whether we build debug or release in ../../qmake.inc
 # CONFIG += precompile_header
 HEADERS += ../../config.h \
-    ../../build_num \
     events.h \
     FWWindow.h \
     ProjectPanel.h \
