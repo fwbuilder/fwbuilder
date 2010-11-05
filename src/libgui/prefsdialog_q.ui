@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>579</height>
+    <width>731</width>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -315,6 +315,26 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </widget>
        </item>
+       <item row="8" column="0" colspan="2">
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>618</width>
+           <height>46</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="advTooltipMode">
+         <property name="text">
+          <string>Advanced User Mode, only show minimal tooltips</string>
+         </property>
+        </widget>
+       </item>
        <item row="7" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
@@ -479,15 +499,43 @@ own library of templates and use it in addition to the one we provide</string>
           <attribute name="title">
            <string>Policy Rules</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
+          <layout class="QGridLayout" name="gridLayout_16">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="minimumSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="MainRes.qrc">:/Icons/Policy/icon-big</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
             <widget class="QCheckBox" name="rulesLoggingOn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Create new policy rules with logging turned on by default</string>
              </property>
             </widget>
            </item>
-           <item>
+           <item row="2" column="1">
             <spacer name="verticalSpacer_10">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -495,33 +543,13 @@ own library of templates and use it in addition to the one we provide</string>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>166</height>
+               <height>116</height>
               </size>
              </property>
             </spacer>
            </item>
           </layout>
          </widget>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
-        <spacer name="verticalSpacer_7">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>618</width>
-           <height>46</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="advTooltipMode">
-         <property name="text">
-          <string>Advanced User Mode, only show minimal tooltips</string>
-         </property>
         </widget>
        </item>
       </layout>
