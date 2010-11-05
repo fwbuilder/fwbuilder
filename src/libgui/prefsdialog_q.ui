@@ -477,7 +477,7 @@ own library of templates and use it in addition to the one we provide</string>
          </widget>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string>Page</string>
+           <string>Policy Rules</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
