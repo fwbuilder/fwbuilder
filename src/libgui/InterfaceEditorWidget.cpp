@@ -31,6 +31,7 @@
 #include "fwbuilder/IPv6.h"
 
 #include <QLineEdit>
+#include <QTimer>
 #include <QDebug>
 
 using namespace libfwbuilder;
@@ -346,14 +347,12 @@ bool InterfaceEditorWidget::isValid()
 
     if (this->m_ui->name->text().isEmpty())
     {
-        QMessageBox::warning(
-            this, "Firewall Builder",
-            tr("<html>Interface name can not be blank."
-               "<br/> "
-               "<br/>"
-               "Interface name must match the name of the physical interface, "
-               "such as 'eth0', 'fxp0', 'ethernet0', etc</html>"),
-            "&Continue", QString::null, QString::null, 0, 1 );
+        setError("Firewall Builder",
+                 tr("<html>Interface name can not be blank."
+                 "<br/> "
+                 "<br/>"
+                 "Interface name must match the name of the physical interface, "
+                 "such as 'eth0', 'fxp0', 'ethernet0', etc</html>"));
         return false;
     }
 
@@ -366,7 +365,9 @@ bool InterfaceEditorWidget::isValid()
                  address, netmask,
                  this->m_ui->type->currentIndex() == 0,
                  types[i]->currentIndex() == 1) )
+        {
             return false;
+        }
     }
     return true;
 }
@@ -378,10 +379,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
 {
     if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
-        QMessageBox::warning(
-            this, "Firewall Builder",
-            tr("Empty address or netmask field"),
-            "&Continue", QString::null, QString::null, 0, 1);
+        setError("Firewall Builder", tr("Empty address or netmask field"));
         return false;
     }
 
@@ -392,10 +390,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     }
     catch (FWException &ex)
     {
-        QMessageBox::warning(
-            this, "Firewall Builder",
-            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+        setError("Firewall Builder",
+                 tr("Invalid address '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     try
@@ -406,10 +402,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         {
             if (ilen < 0 || (!ipv6 && (ilen > 32)) || (ilen>64) )
             {
-                QMessageBox::warning(
-                    this,"Firewall Builder",
-                    tr("Invalid netmask '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                setError("Firewall Builder",
+                         tr("Invalid netmask '%1/%2'").arg(addr).arg(netm));
                 return false;
             }
         }
@@ -422,10 +416,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     }
     catch (FWException &ex)
     {
-        QMessageBox::warning(
-            this, "Firewall Builder",
-            tr("Invalid netmask '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+        setError("Firewall Builder",
+                 tr("Invalid netmask '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     return true;
@@ -519,4 +511,17 @@ void InterfaceEditorWidget::setHostOS(const QString &s)
 
     this->m_ui->name->setToolTip(name_prompt);
     this->m_ui->label->setToolTip("outside, inside, etc (optional)");
+}
+
+void InterfaceEditorWidget::setError(const QString &title,
+                                     const QString &text)
+{
+    errorTitle = title;
+    errorText = text;
+}
+
+void InterfaceEditorWidget::showError()
+{
+    QMessageBox::warning(this, errorTitle, errorText, "&Continue",
+                         QString::null, QString::null, 0, 1);
 }

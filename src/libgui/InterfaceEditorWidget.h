@@ -91,7 +91,8 @@ private:
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
     bool clusterMode;
-    QString os;
+    QString os, errorTitle, errorText;
+    void setError(const QString &title, const QString &text);
 
 
 public slots:
@@ -103,6 +104,7 @@ public slots:
     void addressChanged(int, int);
     void protocolChanged(QString);
     void setExplanation(const QString&);
+    void showError();
 
 protected:
     void changeEvent(QEvent *e);
