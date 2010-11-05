@@ -10,7 +10,7 @@ exists(qmake.inc):include( qmake.inc)
 SOURCES += main.cpp
 
 # libgui goes first
-win32:LIBS += ../libgui/release/libgui.lib
+win32:LIBS += ../libgui/release/gui.lib
 !win32:LIBS += ../libgui/libgui.a
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
