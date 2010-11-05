@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -447,6 +447,33 @@ own library of templates and use it in addition to the one we provide</string>
           <string>Advanced User Mode, only show minimal tooltips</string>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabPolicyRules">
+      <attribute name="title">
+       <string>Policy Rules</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QCheckBox" name="rulesLoggingOn">
+         <property name="text">
+          <string>Create new policy rules with logging turned on by default</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>426</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
