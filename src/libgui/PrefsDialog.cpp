@@ -155,6 +155,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->showTips->setChecked( st->getBool("UI/NoStartTip") );
 
+    m_dialog->rulesLoggingOn->setChecked( st->getBool("Objects/PolicyRule/defaultLoggingState") );
+
 // set label icons colors and text strings using user's settings
 
     QString t;
@@ -442,6 +444,8 @@ void PrefsDialog::accept()
     st->setBool("Objects/AddressTable/useCompileTimeForNewObjects",
                 m_dialog->new_addr_tbl_compile_tm->isChecked());
 
+    st->setBool("Objects/PolicyRule/defaultLoggingState",
+                m_dialog->rulesLoggingOn->isChecked());
 
     st->setRCSLogState( m_dialog->emptyRCSLog->isChecked() );
 

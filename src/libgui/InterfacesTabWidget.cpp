@@ -171,7 +171,11 @@ bool InterfacesTabWidget::isValid()
             this->widget(i));
         if (w == NULL) continue;
         if (!w->isValid())
+        {
+            this->setCurrentWidget(w);
+            w->showError();
             return false;
+        }
     }
     return true;
 }

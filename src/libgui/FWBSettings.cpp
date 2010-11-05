@@ -382,6 +382,9 @@ void FWBSettings::init(bool force_first_time_run)
 
     if (!hasKey("Objects/AddressTable/useCompileTimeForNewObjects"))
         setBool("Objects/AddressTable/useCompileTimeForNewObjects", true);
+
+    if (!hasKey("Objects/PolicyRule/defaultLoggingState"))
+        setBool("Objects/PolicyRule/defaultLoggingState", true);
 }
 
 bool FWBSettings::isReminderAboutStandardLibSuppressed()

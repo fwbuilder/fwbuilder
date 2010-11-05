@@ -48,6 +48,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Interface.h"
 
+#include "FWBSettings.h"
 #include "RuleSetModel.h"
 #include "FWObjectPropertiesFactory.h"
 
@@ -1438,7 +1439,8 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
     PolicyRule *newrule_as_policy_rule = PolicyRule::cast(new_rule);
     if (newrule_as_policy_rule)
     {
-        newrule_as_policy_rule->setLogging(supports_logging);
+        newrule_as_policy_rule->setLogging(supports_logging &&
+                     st->getBool("Objects/PolicyRule/defaultLoggingState"));
         newrule_as_policy_rule->setAction(PolicyRule::Deny);
         newrule_as_policy_rule->setDirection(PolicyRule::Both);
         FWOptions *ruleopt = newrule_as_policy_rule->getOptionsObject();
