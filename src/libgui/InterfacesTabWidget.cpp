@@ -214,6 +214,8 @@ void InterfacesTabWidget::setClusterMode(bool st)
             this->widget(i));
         if (w!=NULL) w->setClusterMode(st);
     }
+    newInterface.setVisible(!st);
+    delInterface.setVisible(!st);
 }
 
 void InterfacesTabWidget::addClusterInterface(ClusterInterfaceData data)

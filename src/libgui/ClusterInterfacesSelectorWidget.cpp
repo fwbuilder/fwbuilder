@@ -39,10 +39,10 @@ ClusterInterfacesSelectorWidget::ClusterInterfacesSelectorWidget(QWidget *parent
     delInterface.setIcon(QIcon(":/Icons/del.png"));
     newInterface.setToolTip(tr("Add new interface"));
     delInterface.setToolTip(tr("Delete current interface"));
-    this->setCornerWidget(&delInterface, Qt::TopRightCorner);
+/*    this->setCornerWidget(&delInterface, Qt::TopRightCorner);
     this->setCornerWidget(&newInterface, Qt::TopLeftCorner);
     this->cornerWidget(Qt::TopRightCorner)->show();
-    this->cornerWidget(Qt::TopLeftCorner)->show();
+    this->cornerWidget(Qt::TopLeftCorner)->show();*/
     noTabs = false;
 }
 
