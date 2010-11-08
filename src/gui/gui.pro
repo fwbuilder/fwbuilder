@@ -9,16 +9,12 @@ exists(qmake.inc):include( qmake.inc)
 
 SOURCES += main.cpp
 
-win32:LIBS += ../libgui/libgui.lib
+# libgui goes first
+win32:LIBS += ../libgui/release/gui.lib
 !win32:LIBS += ../libgui/libgui.a
 
-INCLUDEPATH += ../libgui
-win32:INCLUDEPATH += ../libgui/ui
-!win32:INCLUDEPATH += ../libgui/.ui
-
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-LIBS += $$FWBPARSER_LIB \
-    $$ANTLR_LIBS
+LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
 DEFINES += $$ANTLR_DEFINES
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
@@ -31,38 +27,53 @@ contains( HAVE_QTDBUS, 1 ):unix {
 }
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
-INCLUDEPATH += ../common \
+INCLUDEPATH +=  \
+	../common \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
-    ../compiler_lib/
-DEPENDPATH = ../common \
+    ../compiler_lib/ \
+	../libgui
+
+win32:INCLUDEPATH += ../libgui/ui
+!win32:INCLUDEPATH += ../libgui/.ui
+
+DEPENDPATH =  \
+	../common \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib
-win32:LIBS += ../common/release/common.lib \
+
+win32:LIBS += \
+	../common/release/common.lib \
     ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib
-!win32:LIBS += ../common/libcommon.a \
+
+!win32:LIBS +=  \
+	../common/libcommon.a \
     ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
-win32:PRE_TARGETDEPS = ../common/release/common.lib \
+
+win32:PRE_TARGETDEPS = \
+	../common/release/common.lib \
     ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib \
     $$FWBPARSER_LIB
-!win32:PRE_TARGETDEPS = ../common/libcommon.a \
+!win32:PRE_TARGETDEPS = \
+	 ../common/libcommon.a \
     ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a \
     $$FWBPARSER_LIB
+
 macx:LIBS += -framework \
     Carbon
 LIBS += $$LIBS_FWCOMPILER
