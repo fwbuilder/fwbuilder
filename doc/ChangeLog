@@ -8,6 +8,32 @@
 	both plink.exe and pscp.exe. This only affects users who run
 	fwbuilder GUI on Windows
 
+2010-11-05  Roman Bovsunivskiy <a2k0001@gmail.com>
+
+	* see #1809 "Add Firewall Setting in Logging settings for default
+	log setting on new rules". Added a tab "Policy Rule" to the
+	"Objects" page of the global preferences dialog; checkbox in this
+	tab allows the user to choose whether new policy rules should be
+	created with logging turned on or off.
+	
+2010-11-04  Roman Bovsunivskiy <a2k0001@gmail.com>
+
+	* see #1826 "Please place all unit tests in one directory". All GUI
+	and other unit tests moved to the directory src/unit_tests
+
+2010-11-03  Roman Bovsunivskiy <a2k0001@gmail.com>
+
+	* code refactoring: see #1822 "refactor all GUI classes into
+	libgui library and link executable with it"
+
+	* see #1787 "new fw name input field should have focus when new
+	firewall wizard opens"
+
+	* see #1823 "Add Preference option for Advanced / Power users".
+	Added checkbox to the Preferences dialog, this checkbox turns off
+	some tooltips that can be annoying for users who are sufficiently
+	familiar with the GUI
+	
 2010-11-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_linux24_interfaces.cpp (printVerifyInterfacesCommands):
