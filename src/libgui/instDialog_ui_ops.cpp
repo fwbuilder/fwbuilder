@@ -489,6 +489,8 @@ void instDialog::summary()
                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())));
     str.append(QObject::tr("* Installer uses user name : %1").arg(cnf.user));
     str.append(QObject::tr("* Management address : %1").arg(cnf.maddr));
+    if (!cnf.putty_session.isEmpty())
+        str.append(QObject::tr("* Using putty session : %1").arg(cnf.putty_session));
     str.append(QObject::tr("* Platform : %1")
               .arg(cnf.fwobj->getStr("platform").c_str()));
     str.append(QObject::tr("* Host OS : %1")

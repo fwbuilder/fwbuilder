@@ -41,3 +41,8 @@ fwb_procurve_acl
 transfer_secuwall
 .configure_marker
 .build_marker
+src/unit_tests/*/*Test
+src/unit_tests/*/*Tests
+src/unit_tests/*/*.output
+src/unit_tests/ImporterTest/ios_res.fwb
+src/unit_tests/ImporterTest/ipt_res.fwb

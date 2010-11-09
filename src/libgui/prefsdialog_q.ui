@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>579</height>
+    <width>731</width>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,10 +20,59 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -266,6 +315,26 @@ own library of templates and use it in addition to the one we provide</string>
          </property>
         </widget>
        </item>
+       <item row="8" column="0" colspan="2">
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>618</width>
+           <height>46</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="advTooltipMode">
+         <property name="text">
+          <string>Advanced User Mode, only show minimal tooltips</string>
+         </property>
+        </widget>
+       </item>
        <item row="7" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
@@ -426,54 +495,62 @@ own library of templates and use it in addition to the one we provide</string>
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Policy Rules</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_16">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="minimumSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="MainRes.qrc">:/Icons/Policy/icon-big</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="rulesLoggingOn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Create new policy rules with logging turned on by default</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>116</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
-        <spacer name="verticalSpacer_7">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>618</width>
-           <height>46</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="advTooltipMode">
-         <property name="text">
-          <string>Advanced User Mode, only show minimal tooltips</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabPolicyRules">
-      <attribute name="title">
-       <string>Policy Rules</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QCheckBox" name="rulesLoggingOn">
-         <property name="text">
-          <string>Create new policy rules with logging turned on by default</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_8">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>426</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -1314,55 +1391,6 @@ are never stored permanently)</string>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk">
-       <property name="text">
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut">
-        <string/>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel">
-       <property name="text">
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut">
-        <string/>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -1426,182 +1454,6 @@ are never stored permanently)</string>
    </hints>
   </connection>
   <connection>
-   <sender>browseWDir</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>findWDir()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>757</x>
-     <y>82</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>browseForSSH</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>findSSH()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>757</x>
-     <y>114</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>redBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeRedColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>orangeBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeOrangeColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>yellowBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeYellowColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>202</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>greenBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeGreenColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>244</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>blueBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeBlueColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>286</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>purpleBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changePurpleColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>328</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>grayBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeGrayColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>353</x>
-     <y>370</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chShowIcons</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeShowIcons()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>43</x>
-     <y>181</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rb16</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeIconSize16()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>243</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>rb25</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
@@ -1650,6 +1502,70 @@ are never stored permanently)</string>
    </hints>
   </connection>
   <connection>
+   <sender>btTreeFont</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeTreeFont()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orangeBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeOrangeColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blueBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeBlueColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb16</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeIconSize16()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>btRulesFont</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
@@ -1666,18 +1582,18 @@ are never stored permanently)</string>
    </hints>
   </connection>
   <connection>
-   <sender>btTreeFont</sender>
-   <signal>clicked()</signal>
+   <sender>objTooltips</sender>
+   <signal>toggled(bool)</signal>
    <receiver>prefsDialog_q</receiver>
-   <slot>changeTreeFont()</slot>
+   <slot>objTooltipsEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>152</x>
-     <y>125</y>
+     <x>65</x>
+     <y>53</y>
     </hint>
     <hint type="destinationlabel">
-     <x>334</x>
-     <y>210</y>
+     <x>3</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -1698,18 +1614,130 @@ are never stored permanently)</string>
    </hints>
   </connection>
   <connection>
-   <sender>objTooltips</sender>
-   <signal>toggled(bool)</signal>
+   <sender>browseWDir</sender>
+   <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
-   <slot>objTooltipsEnabled(bool)</slot>
+   <slot>findWDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>65</x>
-     <y>53</y>
+     <x>757</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel">
-     <x>3</x>
-     <y>71</y>
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>redBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeRedColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yellowBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeYellowColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>browseForSSH</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>findSSH()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>757</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>greenBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeGreenColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>purpleBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changePurpleColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chShowIcons</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeShowIcons()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>43</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>grayBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeGrayColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>370</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>

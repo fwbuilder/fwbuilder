@@ -362,47 +362,6 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
     QStringList scp_argv;
     parseCommandLine(scp, scp_argv);
 
-
-#ifdef _WIN32
-    args += scp_argv;
-
-    if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
-    {
-        args.push_back("-load");
-        args.push_back("fwb_session_with_keepalive");
-
-        if (!cnf->putty_session.isEmpty())
-        {
-            args.push_back("-load");
-            args.push_back(cnf->putty_session);
-        }
-
-//        args.push_back("-ssh");
-        args.push_back("-pw");
-        args.push_back(cnf->pwd);
-    }
-
-#else
-
-    args.push_back(argv0.c_str());
-    args.push_back("-Y");   // fwbuilder works as scp wrapper
-
-    args += scp_argv;
-
-    args.push_back("-o");
-    // "3" here is the default value of ServerAliveCountMax parameter
-    // This way, overall timeout will be the same for ssh and scp
-    args.push_back(QString("ConnectTimeout=%1").arg(st->getSSHTimeout() * 3));
-
-#endif
-
-    if (!cnf->scpArgs.isEmpty())
-        args += cnf->scpArgs.split(" ", QString::SkipEmptyParts);
-
-    args.push_back("-q");
-
-    args.push_back(file_with_path);
-
     QString mgmt_addr = cnf->maddr;
 
     // bug #2618686 "built-in installer can not handle ipv6 management
@@ -432,17 +391,72 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
         ;
     }
 
+
+#ifdef _WIN32
+    args += scp_argv;
+
+    if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
+    {
+        args.push_back("-load");
+        args.push_back("fwb_session_with_keepalive");
+
+/*
+ * See #1832
+ * looks like I was mistaken and pscp.exe actually supports putty session
+ * name in place of the host name. We do not need to load session name
+ * using -load
+
+        if (!cnf->putty_session.isEmpty())
+        {
+            args.push_back("-load");
+            args.push_back(cnf->putty_session);
+        }
+*/
+
+//        args.push_back("-ssh");
+        args.push_back("-pw");
+        args.push_back(cnf->pwd);
+    }
+
+#else
+
+    args.push_back(argv0.c_str());
+    args.push_back("-Y");   // fwbuilder works as scp wrapper
+
+    args += scp_argv;
+
+    args.push_back("-o");
+    // "3" here is the default value of ServerAliveCountMax parameter
+    // This way, overall timeout will be the same for ssh and scp
+    args.push_back(QString("ConnectTimeout=%1").arg(st->getSSHTimeout() * 3));
+
+#endif
+
+    if (!cnf->scpArgs.isEmpty())
+        args += cnf->scpArgs.split(" ", QString::SkipEmptyParts);
+
+    args.push_back("-q");
+
+    args.push_back(file_with_path);
+
     // bug #2618772: "test install" option does not work.  To fix, I
     // put macro for the temp directory in in res/os/host_os.xml XML
     // elements root/test/copy reg_user/test/copy. That macro
     // is read and processed by getDestinationDir()
 
-    if (!cnf->user.isEmpty())
-        args.push_back(cnf->user + "@" + mgmt_addr + ":" +
+    if (!cnf->putty_session.isEmpty())
+    {
+        args.push_back(cnf->putty_session + ":" +
                        fwcompiler::CompilerDriver::escapeFileName(remote_name));
-    else
-        args.push_back(mgmt_addr + ":" +
-                       fwcompiler::CompilerDriver::escapeFileName(remote_name));
+    } else
+    {
+        if (!cnf->user.isEmpty())
+            args.push_back(cnf->user + "@" + mgmt_addr + ":" +
+                           fwcompiler::CompilerDriver::escapeFileName(remote_name));
+        else
+            args.push_back(mgmt_addr + ":" +
+                           fwcompiler::CompilerDriver::escapeFileName(remote_name));
+    }
 }
 
 /*

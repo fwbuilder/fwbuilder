@@ -1,3 +1,13 @@
+2010-11-08  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): See
+	#1832, SF bug 3097419 "installer uses bare IP address instead of
+	putty session name". It appears pscp.exe on Windows can use putty
+	session name in place of the host name. This change restores old
+	behavior where session name was used like that but does it for
+	both plink.exe and pscp.exe. This only affects users who run
+	fwbuilder GUI on Windows
+
 2010-11-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_linux24_interfaces.cpp (printVerifyInterfacesCommands):
