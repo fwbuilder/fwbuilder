@@ -587,7 +587,7 @@ string PolicyCompiler_pf::PrintRule::_printPort(int rs,int re,bool neg)
 /*
  * we made sure that all services in rel  represent the same protocol. 
  */
-void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElementSrv  *rel)
+void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElement  *rel)
 {
 /* I do not want to use rel->getFirst because it traverses the tree to
  * find the object. I'd rather use a cached copy in the compiler
@@ -641,7 +641,7 @@ string PolicyCompiler_pf::PrintRule::_printSrcService(Service *srv, bool neg)
     return str.str();
 }
 
-void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
+void PolicyCompiler_pf::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -840,7 +840,7 @@ void PolicyCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool negflag)
     compiler->output << "} ";
 }
 
-void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElementSrc  *rel)
+void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);
@@ -879,7 +879,7 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElementSrc  *rel)
 
 }
 
-void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElementDst  *rel)
+void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);

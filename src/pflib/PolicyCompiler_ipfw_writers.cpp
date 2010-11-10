@@ -331,6 +331,17 @@ void PolicyCompiler_ipfw::PrintRule::_printDirection(libfwbuilder::PolicyRule *r
     }
 }
 
+void PolicyCompiler_ipfw::PrintRule::_printOppositeDirection(PolicyRule *r)
+{
+    switch (r->getDirection())
+    {
+    case PolicyRule::Outbound: compiler->output << "in  "; break;
+    case PolicyRule::Inbound:  compiler->output << "out "; break;
+    case PolicyRule::Both:     compiler->output << "    "; break;
+    default: break;
+    }
+}
+
 void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
 {
     Interface *intf = compiler->getFirstItf(r);
@@ -362,7 +373,7 @@ void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
     // }
 }
 
-void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElementSrv  *rel)
+void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElement  *rel)
 {
 /* I do not want to use rel->getFirst because it traverses the tree to
  * find the object. I'd rather use a cached copy in the compiler
@@ -408,7 +419,7 @@ string PolicyCompiler_ipfw::PrintRule::_printSrcService(Service *srv,bool neg)
     return res;
 }
 
-void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
+void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -542,28 +553,42 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
 
     if (rule->getBool("needs_established"))
     {
-// ipfw_num is assigned with a step of 10, so it is safe to substract 1 here
+        /*
+         * This flag means we need to automatically generate mirrored rule with
+         * parameter "established"
+         *
+         * ipfw_num is assigned with a step of 10, so it is safe to substract 1 
+         */
+
         compiler->output <<  quote << "$IPFW" << quote
                          << " add " << rule->getInt("ipfw_num")-1 << " set 1 ";
 
         _printAction(rule);
 
-        if (rule->getLogging())       compiler->output << " log ";
+        if (rule->getLogging()) compiler->output << " log ";
 
         _printProtocol(srv);
 
         compiler->output << " from ";
-        _printSrcAddr(srcrel);
-        _printSrcService(srvrel);
+        _printSrcAddr(dstrel);
+        _printSrcService(dstrel);
 
         compiler->output << " to ";
-        _printDstAddr(dstrel);
-        _printDstService(srvrel);
+        _printDstAddr(srcrel);
+        _printDstService(dstrel);
 
-        _printDirection(rule);
+        _printOppositeDirection(rule);
         _printInterface(rule);
 
-	compiler->output << "established ";
+        if ( ! ruleopt->getBool("stateless"))
+        {  
+            TCPService *tcpsrv = TCPService::cast(srv);
+            if ( tcpsrv!=NULL &&
+                 !tcpsrv->inspectFlags() &&
+                 !tcpsrv->getEstablished()  ) compiler->output << "established ";
+
+            compiler->output << "keep-state ";
+        }
 
         compiler->output << endl;
     }

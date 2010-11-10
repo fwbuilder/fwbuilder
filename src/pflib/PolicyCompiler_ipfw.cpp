@@ -709,3 +709,4 @@ string PolicyCompiler_ipfw::debugPrintRule(Rule *r)
 void PolicyCompiler_ipfw::epilog()
 {
 }
+
