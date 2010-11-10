@@ -1,3 +1,11 @@
+2010-11-09  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): see #1832
+	pscp.exe supports putty session in place of the target name but
+	not if argument "-load session_name" is also present. Plink.exe
+	does the same. We can not use fwb_session_with_keepalive if user
+	wants to use putty session.
+
 2010-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): See
