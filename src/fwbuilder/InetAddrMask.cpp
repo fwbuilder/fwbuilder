@@ -336,25 +336,46 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
 
     vector<InetAddrMask>  res;
 
-    InetAddr rs,re;
+    if (e2 < s1) return res;
+    if (e1 < s2) return res;
 
-    if (e2<s1) return res;
-    if (s2<s1 && e2>s1 && e2<e1) { rs=s1; re=e2; }
-    if (s2>s1 && e2<e1)          { rs=s2; re=e2; }
-    if (s2>s1 && s2<e1 && e2>e1) { rs=s2; re=e1; }
-    if (s2>e1) return res;
-    if (s2<s1 && e2>e1)          { rs=s1; re=e1; }
-    if (s1==s2 && e1==e2)        { rs=s1; re=e1; }
+    if (s1 == s2 && e1 == e2)
+    {
+        res.push_back(InetAddrMask(s1, e1));
+        return res;
+    }
+
+    if (e2 == s1)
+    {
+        res.push_back(InetAddrMask(s1, InetAddr::getAllOnes()));
+        return res;
+    }
+
+    if (e1 == s2)
+    {
+        res.push_back(InetAddrMask(s2, InetAddr::getAllOnes()));
+        return res;
+    }
+
+    InetAddr rs, re;
+
+    if (s1 == s2) { rs = s1; }
+    if (s1 < s2)  { rs = s2; }
+    if (s2 < s1)  { rs = s1; }
+
+    if (e1 == e2) { re = e1; }
+    if (e1 < e2)  { re = e1; }
+    if (e2 < e1)  { re = e2; }
 
 /* rb and re represent resulting address range boundaries */
 
-    libfwbuilder::_convert_range_to_networks(rs,re,res);
+    libfwbuilder::_convert_range_to_networks(rs, re, res);
 
     return res;
 }
 
 vector<InetAddrMask> libfwbuilder::substract(const InetAddrMask &n1,
-                                          const InetAddrMask &n2)
+                                             const InetAddrMask &n2)
 {
     const InetAddr n1s = *(n1.getAddressPtr());
     const InetAddr n2s = *(n2.getAddressPtr());
