@@ -218,7 +218,9 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
     if (end < start) return false;
     if (start == end)
     {
-	res.push_back(InetAddrMask(start, InetAddr(InetAddr::getAllOnes())));
+	res.push_back(InetAddrMask(
+                          start,
+                          InetAddr(InetAddr::getAllOnes(start.addressFamily()))));
 	return false;
     }
 
@@ -232,8 +234,12 @@ bool libfwbuilder::_convert_range_to_networks(const InetAddr &start,
 
     if (size==2)
     {
-	res.push_back(InetAddrMask(start, InetAddr(InetAddr::getAllOnes())));
-	res.push_back(InetAddrMask(end, InetAddr(InetAddr::getAllOnes())));
+	res.push_back(InetAddrMask(
+                          start,
+                          InetAddr(InetAddr::getAllOnes(start.addressFamily()))));
+	res.push_back(InetAddrMask(
+                          end,
+                          InetAddr(InetAddr::getAllOnes(end.addressFamily()))));
 	return false;
     }
 
@@ -313,8 +319,8 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
     const InetAddr& s1 = *(n1.getAddressPtr());
     const InetAddr& s2 = *(n2.getAddressPtr());
 
-    const InetAddr&   m1 = *(n1.getNetmaskPtr());
-    const InetAddr&   m2 = *(n2.getNetmaskPtr());
+    const InetAddr& m1 = *(n1.getNetmaskPtr());
+    const InetAddr& m2 = *(n2.getNetmaskPtr());
 
     InetAddr e1 = s1 | (~m1);
     InetAddr e2 = s2 | (~m2);
@@ -327,12 +333,11 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
  * 255.255.255.255). Check for this condition and replace e1 or e2
  * accordingly if needed.
  *
- * TODO: comparison with InetAddr() looks ugly. May be need to
- * overload operator==(int) so we could compare with '0'
- *
  */
-    if (s1==InetAddr() && m1==InetAddr()) e1=InetAddr(InetAddr::getAllOnes());
-    if (s2==InetAddr() && m2==InetAddr()) e2=InetAddr(InetAddr::getAllOnes());
+    if (s1.isAny() && m1.isAny())
+        e1 = InetAddr(InetAddr::getAllOnes(s1.addressFamily()));
+    if (s2.isAny() && m2.isAny())
+        e2 = InetAddr(InetAddr::getAllOnes(s2.addressFamily()));
 
     vector<InetAddrMask>  res;
 
@@ -347,13 +352,13 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
 
     if (e2 == s1)
     {
-        res.push_back(InetAddrMask(s1, InetAddr::getAllOnes()));
+        res.push_back(InetAddrMask(s1, InetAddr::getAllOnes(s1.addressFamily())));
         return res;
     }
 
     if (e1 == s2)
     {
-        res.push_back(InetAddrMask(s2, InetAddr::getAllOnes()));
+        res.push_back(InetAddrMask(s2, InetAddr::getAllOnes(s2.addressFamily())));
         return res;
     }
 
