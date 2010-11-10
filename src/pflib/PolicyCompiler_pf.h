@@ -57,7 +57,7 @@ namespace fwcompiler {
 	 * this unconditional blocking rule in the end. See also comment
 	 * in the code regarding "pass_all_out" option
 	 */
-	void addDefaultPolicyRule();
+        void addDefaultPolicyRule();
         void insertCarpRule();
         void insertPfsyncRule();
         
@@ -427,8 +427,8 @@ namespace fwcompiler {
             bool                             init;
             std::string                      current_rule_label;
 
-            virtual void _printSrcService(libfwbuilder::RuleElementSrv  *o);
-            virtual void _printDstService(libfwbuilder::RuleElementSrv  *o);
+            virtual void _printSrcService(libfwbuilder::RuleElement  *o);
+            virtual void _printDstService(libfwbuilder::RuleElement  *o);
             virtual void _printProtocol(libfwbuilder::Service *srv);
 
             virtual std::string _printPort(int rs,int re,bool neg=false);
@@ -437,8 +437,8 @@ namespace fwcompiler {
             virtual std::string _printTCPFlags(libfwbuilder::TCPService *srv);
 
             virtual void _printAddrList(libfwbuilder::FWObject  *o,bool negflag);
-            virtual void _printSrcAddr(libfwbuilder::RuleElementSrc  *o);
-            virtual void _printDstAddr(libfwbuilder::RuleElementDst  *o);
+            virtual void _printSrcAddr(libfwbuilder::RuleElement  *o);
+            virtual void _printDstAddr(libfwbuilder::RuleElement  *o);
             virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
 
             virtual void _printNegation(libfwbuilder::RuleElement  *o);

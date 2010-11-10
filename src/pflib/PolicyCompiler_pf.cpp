@@ -457,32 +457,32 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
 //        mgmt_workstation->setAddress(getCachedFwOpt()->getStr("mgmt_addr"));
             dbcopy->add(mgmt_workstation,false);
 
-
-            r= dbcopy->createPolicyRule();
+            r = dbcopy->createPolicyRule();
             temp_ruleset->add(r);
             r->setAction(PolicyRule::Accept);
             r->setLogging(false);
             r->setDirection(PolicyRule::Inbound);
-            r->setPosition(9999);
+            r->setPosition(9998);
             r->setComment("   backup ssh access rule ");
             r->setHidden(true);
             r->setFallback(false);
             r->setLabel("backup ssh access rule");
             r->setBool("needs_established",true);  // supported in ipfw
 
-            RuleElement *src=r->getSrc();
+            RuleElement *src = r->getSrc();
             assert(src!=NULL);
             src->addRef(mgmt_workstation);
 
-            RuleElement *dst=r->getDst();
+            RuleElement *dst = r->getDst();
             assert(dst!=NULL);
             dst->addRef(fw);
 
-            RuleElement *srv=r->getSrv();
+            RuleElement *srv = r->getSrv();
             assert(srv!=NULL);
             srv->addRef(ssh);
 
             combined_ruleset->push_front(r);
+
         }
 
         insertCarpRule();

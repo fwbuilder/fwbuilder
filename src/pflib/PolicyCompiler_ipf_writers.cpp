@@ -114,7 +114,7 @@ string PolicyCompiler_ipf::PrintRule::_printPort(int rs,int re,bool neg)
     return str.str();
 }
 
-void PolicyCompiler_ipf::PrintRule::_printDstService(RuleElementSrv  *rel)
+void PolicyCompiler_ipf::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();

@@ -222,9 +222,10 @@ namespace fwcompiler {
             virtual void _printAction(libfwbuilder::PolicyRule *r);
             virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
             virtual void _printDirection(libfwbuilder::PolicyRule *r);
+            virtual void _printOppositeDirection(libfwbuilder::PolicyRule *r);
             virtual void _printInterface(libfwbuilder::PolicyRule *r);
-            virtual void _printSrcService(libfwbuilder::RuleElementSrv  *o);
-            virtual void _printDstService(libfwbuilder::RuleElementSrv  *o);
+            virtual void _printSrcService(libfwbuilder::RuleElement  *o);
+            virtual void _printDstService(libfwbuilder::RuleElement  *o);
             virtual std::string _printSrcService(libfwbuilder::Service *srv,
                                                  bool neg=false);
             virtual std::string _printDstService(libfwbuilder::Service *srv,

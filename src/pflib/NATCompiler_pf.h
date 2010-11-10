@@ -338,7 +338,6 @@ namespace fwcompiler {
         friend class NATCompiler_pf::PrintTables;
 
 
-
 	/**
 	 *  prints single policy rule, assuming all groups have been
 	 *  expanded, so source, destination and service hold exactly
@@ -354,8 +353,8 @@ namespace fwcompiler {
                                   libfwbuilder::NATRule *rule);
                 
     protected:
-            bool                             init;
-            std::string                      current_rule_label;
+            bool init;
+            std::string current_rule_label;
 
             virtual void _printProtocol(libfwbuilder::Service *srv);
             virtual void _printPort(libfwbuilder::Service *srv, bool lhs);
@@ -374,9 +373,7 @@ namespace fwcompiler {
         };
 
 
-
 	virtual std::string myPlatformName();
-
 
         std::list<redirectRuleInfo> redirect_rules;
 

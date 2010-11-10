@@ -92,7 +92,12 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
     m_dialog->backupConfigFile->setText( cnf->backup_file );
     m_dialog->saveDiff->setChecked( cnf->save_diff );
     m_dialog->saveStandby->setChecked( cnf->saveStandby );
-    m_dialog->altAddress->setText( cnf->maddr );
+
+    if (!cnf->putty_session.isEmpty())
+        m_dialog->altAddress->setText( cnf->putty_session );
+    else
+        m_dialog->altAddress->setText( cnf->maddr );
+
     m_dialog->quiet->setChecked( cnf->quiet );
     m_dialog->verbose->setChecked( cnf->verbose );
     m_dialog->stripComments->setChecked( cnf->stripComments );

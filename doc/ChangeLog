@@ -1,3 +1,25 @@
+2010-11-10  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipfw_writers.cpp (processNext): fixed #1836
+	"installer hangs and fails after activation of ipfw policy".  As
+	soon as .fw script swapped ipfw sets usig command "ipfw sawp" and
+	deleted temporary set 1, ssh session would hang and eventually
+	break. We optionally add ipfw rules to permit ssh session used to
+	manage the firewall, as well as a rule to permit reply packets but
+	the latter rule was not built correctly. It should match source
+	and destination reversed, as well as match keyword "established"
+	and recreate state with "keep-state". This rule automatically
+	recreates state for the established ssh session over which
+	firewall policy is being managed. Also added a comment to the
+	firewall settings dialog for ipfw to remind the user that address
+	or subnet they use with this automatic rule should be as narrow as
+	possible.
+
+	* instOptionsDialog.cpp (instOptionsDialog): see #1832 if user
+	wants to use putty session, show session name instead of the ip
+	address in the "Address that will be used to communicate with the
+	firewall" input field in the installer options dialog.
+
 2010-11-09  Vadim Kurland  <vadim@netcitadel.com>
 
 	* Helper.cpp (Helper::findInterfaceByAddress): see #1834 Fixed
@@ -33,7 +55,7 @@
 	"Objects" page of the global preferences dialog; checkbox in this
 	tab allows the user to choose whether new policy rules should be
 	created with logging turned on or off.
-	
+
 2010-11-04  Roman Bovsunivskiy <a2k0001@gmail.com>
 
 	* see #1826 "Please place all unit tests in one directory". All GUI
