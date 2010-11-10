@@ -305,23 +305,32 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 #ifdef _WIN32
     args += ssh_argv;
 
-/*
- * putty ignores protocol and port specified in the session file if
- * command line option -ssh is given.
- *
- * On the other hand,the sign of session usage is an empty user name,
- * so we can check for that. If user name is empty, then putty will
- * use current Windows account name to log in to the firewall and this
- * is unlikely to work anyway. This seems to be a decent workaround.
- */
-    if (!cnf->user.isEmpty() && ssh.toLower().indexOf("plink.exe")!=-1)
+    /*
+     * putty ignores protocol and port specified in the session file if
+     * command line option -ssh is given.
+     *
+     * On the other hand,the sign of session usage is an empty user name,
+     * so we can check for that. If user name is empty, then putty will
+     * use current Windows account name to log in to the firewall and this
+     * is unlikely to work anyway. This seems to be a decent workaround.
+     */
+    if (ssh.contains("plink.exe", Qt::CaseInsensitive))
     {
-        args.push_back("-load");
-        args.push_back("fwb_session_with_keepalive");
         args.push_back("-ssh");
-        args.push_back("-pw");
-        args.push_back(cnf->pwd);
         args.push_back("-t");
+
+        if (cnf->putty_session.isEmpty())
+        {
+            args.push_back("-load");
+            args.push_back("fwb_session_with_keepalive");
+        }
+
+
+        if (!cnf->pwd.isEmpty())
+        {
+            args.push_back("-pw");
+            args.push_back(cnf->pwd);
+        }
     }
 
 #else
@@ -342,14 +351,22 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 
     if (!cnf->sshArgs.isEmpty())
         args += cnf->sshArgs.split(" ", QString::SkipEmptyParts);
+
     if (cnf->verbose) args.push_back("-v");
+
     if (!cnf->user.isEmpty())
     {
         args.push_back("-l");
         args.push_back(cnf->user);
-        args.push_back(cnf->maddr);
+    }
+
+    if (!cnf->putty_session.isEmpty())
+    {
+        args.push_back(cnf->putty_session);
     } else
+    {
         args.push_back(cnf->maddr);
+    }
 }
 
 void FirewallInstaller::packSCPArgs(const QString &local_name,
@@ -364,14 +381,15 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
     QString mgmt_addr = cnf->maddr;
 
-    // bug #2618686 "built-in installer can not handle ipv6 management
-    // address". If cnf->maddr is ipv6 address, it needs to be placed in
-    // [ ] for scp (otherwise scp interprets ':' as a separator between
-    // host name and port number).
-    // Note that this is only necessary for scp; ssh takes ipv6 addresses
-    // without [ ] just fine.
+    /*
+     * bug #2618686 "built-in installer can not handle ipv6 management
+     * address". If cnf->maddr is ipv6 address, it needs to be placed in
+     * [ ] for scp (otherwise scp interprets ':' as a separator between
+     * host name and port number).
+     * Note that this is only necessary for scp; ssh takes ipv6 addresses
+     * without [ ] just fine.
+     */
 
-    // try ipv6
     try
     {
         InetAddr addr(AF_INET6, cnf->maddr.toAscii().constData());
@@ -379,12 +397,15 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
             qDebug("SCP will talk to the firewall using address %s ( %s )",
                    cnf->maddr.toAscii().constData(),
                    addr.toString().c_str());
-        // It looks like if cnf->maddr is a host name, then InetAddr
-        // does not fail but just creates address '::'.
-        // InetAddr throws exception if it is given ipv4 address.
-        // Only add [ ] if this is legitimate ipv6 address (not '::')
+        /*
+         * It looks like if cnf->maddr is a host name, then InetAddr
+         * does not fail but just creates address '::'.
+         * InetAddr throws exception if it is given ipv4 address.
+         * Only add [ ] if this is legitimate ipv6 address (not '::')
+         */
         if (!addr.isAny())
             mgmt_addr = '[' + cnf->maddr + ']';
+
     } catch(FWException &ex)
     {
         // Assume cnf->maddr is ipv4 or host name
@@ -394,28 +415,26 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
 #ifdef _WIN32
     args += scp_argv;
-
-    if (!cnf->user.isEmpty() && scp.toLower().indexOf("pscp.exe")!=-1)
+ 
+    /*
+     * See #1832. plink.exe and pscp.exe do not try to interpret target
+     * host name as session name if they see "-load session_name" on the
+     * command line. This means if user wants to use session, we can not
+     * load session fwb_session_with_keepalive.
+     */
+    if (scp.contains("pscp.exe", Qt::CaseInsensitive))
     {
-        args.push_back("-load");
-        args.push_back("fwb_session_with_keepalive");
-
-/*
- * See #1832
- * looks like I was mistaken and pscp.exe actually supports putty session
- * name in place of the host name. We do not need to load session name
- * using -load
-
-        if (!cnf->putty_session.isEmpty())
+        if (cnf->putty_session.isEmpty())
         {
             args.push_back("-load");
-            args.push_back(cnf->putty_session);
+            args.push_back("fwb_session_with_keepalive");
         }
-*/
 
-//        args.push_back("-ssh");
-        args.push_back("-pw");
-        args.push_back(cnf->pwd);
+        if (!cnf->pwd.isEmpty())
+        {
+            args.push_back("-pw");
+            args.push_back(cnf->pwd);
+        }
     }
 
 #else
@@ -439,11 +458,32 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
     args.push_back(file_with_path);
 
-    // bug #2618772: "test install" option does not work.  To fix, I
-    // put macro for the temp directory in in res/os/host_os.xml XML
-    // elements root/test/copy reg_user/test/copy. That macro
-    // is read and processed by getDestinationDir()
+    /*
+     * bug #2618772: "test install" option does not work.  To fix, I
+     * put macro for the temp directory in in res/os/host_os.xml XML
+     * elements root/test/copy reg_user/test/copy. That macro
+     * is read and processed by getDestinationDir()
+     *
+     * Also note that pscp.exe supports "-l user" command line arg,
+     * but unix scp does not. Both support user@target format though
+     * and it works with sessions for pscp.exe
+     */
 
+    QString user_spec;
+    if (!cnf->user.isEmpty()) user_spec = cnf->user + "@";
+
+    QString target;
+
+    if (!cnf->putty_session.isEmpty())
+        target = QString("%1%2:%3").arg(user_spec)
+            .arg(cnf->putty_session).arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
+    else
+        target = QString("%1%2:%3").arg(user_spec)
+            .arg(mgmt_addr).arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
+
+    args.push_back(target);
+
+/*
     if (!cnf->putty_session.isEmpty())
     {
         args.push_back(cnf->putty_session + ":" +
@@ -457,6 +497,7 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
             args.push_back(mgmt_addr + ":" +
                            fwcompiler::CompilerDriver::escapeFileName(remote_name));
     }
+*/
 }
 
 /*
