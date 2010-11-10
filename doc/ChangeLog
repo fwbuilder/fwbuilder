@@ -1,5 +1,15 @@
 2010-11-09  Vadim Kurland  <vadim@netcitadel.com>
 
+	* Helper.cpp (Helper::findInterfaceByAddress): see #1834 Fixed
+	matching algorithm that determins which interface a rule should be
+	associated with for Cisco IOS ACLs. Previously compiler did not
+	compare subnets properly and because of that it interpreted some
+	configurations incorrectly. For example in the case with a network
+	object 10.0.0.0/8 in "source" and an interface with address
+	10.0.0.1/24 (network should not be considered matching) compiler
+	considered this interface matching and assigned the rule to the
+	interface only with direction "inbound".
+
 	* FirewallInstaller.cpp (FirewallInstaller::packSCPArgs): see #1832
 	pscp.exe supports putty session in place of the target name but
 	not if argument "-load session_name" is also present. Plink.exe
