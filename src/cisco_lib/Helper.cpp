@@ -34,6 +34,9 @@
 #include <fwbuilder/Rule.h>
 #include "fwbuilder/Resources.h"
 #include <fwbuilder/IPv6.h>
+#include <fwbuilder/NetworkIPv6.h>
+#include <fwbuilder/Network.h>
+#include <fwbuilder/InetAddrMask.h>
 
 #include <assert.h>
 #include <limits.h>
@@ -47,7 +50,7 @@ using namespace fwcompiler;
 using namespace std;
 
 
-// #define DEBUG_NETZONE_OPS 1
+//#define DEBUG_NETZONE_OPS 1
 
 static unsigned long calculateDimension(FWObject* obj)
 {
@@ -93,7 +96,7 @@ void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
 
 int  Helper::findInterfaceByAddress(Address *obj)
 {
-    return findInterfaceByAddress( obj->getAddressPtr() );
+    return findInterfaceByAddress(obj->getAddressPtr(), obj->getNetmaskPtr());
 }
 
 /*
@@ -106,7 +109,8 @@ int  Helper::findInterfaceByAddress(Address *obj)
  * interfaces instead.
  */
 
-int  Helper::findInterfaceByAddress(const InetAddr *addr)
+int  Helper::findInterfaceByAddress(const InetAddr *addr,
+                                    const InetAddr *nm)
 {
     if (addr==NULL) return -1;
 
@@ -122,7 +126,41 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr)
         for (; j!=j.end(); ++j)
         {
             const Address *i_addr = Address::constcast(*j);
-            if ( i_addr->belongs(*addr) ) return iface->getId();
+            if (nm != NULL)
+            {
+                InetAddrMask interface_subnet(*(i_addr->getAddressPtr()),
+                                              *(i_addr->getNetmaskPtr()));
+                InetAddrMask other_subnet(*addr, *nm);
+                vector<InetAddrMask> ovr =
+                    libfwbuilder::getOverlap(interface_subnet, other_subnet);
+#if DEBUG_NETZONE_OPS
+                cerr << "Helper::findInterfaceByAddress";
+                cerr << " addr=" << other_subnet.toString();
+                cerr << " intf=" << iface->getName()
+                     << "  " << interface_subnet.toString();
+                cerr << endl;
+                cerr << " overlap:";
+                cerr << " ovr.size()=" << ovr.size();
+                if (ovr.size() > 0)
+                    cerr << " ovr.front()=" << ovr.front().toString();
+                cerr << endl;
+#endif
+                if (ovr.size()==0) continue;
+
+                // if interface_subnet is equal or wider than other_subnet,
+                // getOverlap() returns subnet object equal to other_subnet
+                // If other_subnet is wider, returned object is equal
+                // to interface_subnet. If they intersect but one does not fit
+                // completely in the other, returned object is not equal
+                // to either.
+                if (ovr.front() == other_subnet)
+                {
+                    return iface->getId();
+                }
+            } else
+            {
+                if ( i_addr->belongs(*addr) ) return iface->getId();
+            }
         }
     }
     return -1;
@@ -130,15 +168,24 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr)
 
 int  Helper::findInterfaceByNetzone(Address *obj)
 {
-    return findInterfaceByNetzone(obj->getAddressPtr());
+    return findInterfaceByNetzone(obj->getAddressPtr(), obj->getNetmaskPtr());
 }
 
-int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
+/**
+ * finds interface of the firewall associated with the netzone
+ * that object 'obj' belongs to.  Returns interface ID
+ *
+ */
+int  Helper::findInterfaceByNetzone(
+    const InetAddr *addr, const libfwbuilder::InetAddr *nm) throw(FWException)
 {
 #if DEBUG_NETZONE_OPS
-    cerr << "Helper::findInterfaceByNetzone "
-         << " matching to " << addr;
+    cerr << "Helper::findInterfaceByNetzone";
+    cerr << " matching to";
+    cerr << " addr=" << addr;
     if (addr) cerr << " " << addr->toString();
+    cerr << " nm=" << nm;
+    if (nm) cerr << " " << nm->toString();
     cerr << endl;
 #endif
 
@@ -162,7 +209,8 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
             expand_group_recursive(netzone, nz);
 
 #if DEBUG_NETZONE_OPS
-            cerr << "netzone_id=" << netzone_id
+            cerr << "Helper::findInterfaceByNetzone";
+            cerr << "  netzone_id=" << netzone_id
                  << "  " << iface->getStr("network_zone")
                  << "  " << netzone->getName()
                  << endl;
@@ -173,6 +221,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
                 if (Address::cast(*j) == NULL) continue;
 
 #if DEBUG_NETZONE_OPS
+                cerr << "Helper::findInterfaceByNetzone";
                 cerr << "    " << (*j)->getName()
                      << "  " << Address::cast(*j)->getAddressPtr()->toString()
                      << endl;
@@ -186,13 +235,51 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
                         return iface->getId(); // id of the interface
                 } else
                 {
-                    if (Address::cast(*j)->belongs(*addr))
+                    const InetAddr *nz_addr = Address::cast(*j)->getAddressPtr();
+                    const InetAddr *nz_netm = Address::cast(*j)->getNetmaskPtr();
+                    if (nm != NULL && nz_netm != NULL)
                     {
-                        zones[iface->getId()] = *j;
+                        InetAddrMask nz_subnet(*nz_addr, *nz_netm);
+                        InetAddrMask other_subnet(*addr, *nm);
+                        vector<InetAddrMask> ovr =
+                            libfwbuilder::getOverlap(nz_subnet,
+                                                     other_subnet);
+#if DEBUG_NETZONE_OPS
+                        cerr << "Helper::findInterfaceByNetzone";
+                        cerr << " addr=" << other_subnet.toString();
+                        cerr << " nz=" << nz_subnet.toString();
+                        cerr << " overlap:";
+                        cerr << " ovr.size()=" << ovr.size();
+                        if (ovr.size() > 0)
+                            cerr << " ovr.front()=" << ovr.front().toString();
+                        cerr << endl;
+#endif
+                        if (ovr.size()==0) continue;
+                        // if nz_subnet is equal or wider than other_subnet,
+                        // getOverlap() returns subnet object equal to other_subnet
+                        // If other_subnet is wider, returned object is equal
+                        // to nz_subnet. If they intersect but one does not fit
+                        // completely in the other, returned object is not equal
+                        // to either.
+                        if (ovr.front() == other_subnet)
+                        {
+                            zones[iface->getId()] = *j;
+#if DEBUG_NETZONE_OPS
+                            cerr << "Helper::findInterfaceByNetzone";
+                            cerr << "    match" << endl;
+#endif
+                        }
+                    } else
+                    {
+                        if (Address::cast(*j)->belongs(*addr))
+                        {
+                            zones[iface->getId()] = *j;
 
 #if DEBUG_NETZONE_OPS
-                        cerr << "    match" << endl;
+                            cerr << "Helper::findInterfaceByNetzone";
+                            cerr << "    match" << endl;
 #endif
+                        }
                     }
                 }
             }
@@ -212,6 +299,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
         unsigned long dim = calculateDimension(netzone);
 
 #if DEBUG_NETZONE_OPS
+        cerr << "Helper::findInterfaceByNetzone";
         cerr << "    netzone=" << netzone->getName()
              << "  dim=" << dim
              << "  res_dim=" << res_dim
@@ -225,18 +313,33 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(FWException)
         }
     }
 
+#if DEBUG_NETZONE_OPS
+    cerr << "Helper::findInterfaceByNetzone";
+    cerr << " Result after scanning network zones: " << res_id << endl;
+#endif
+
 /*
  * Subnets defined by addresses of interfaces are automatically part
  * of the corresponding network zones
  */
-    if (res_id == -1) res_id = findInterfaceByAddress( addr );
+    if (res_id == -1)
+        res_id = findInterfaceByAddress(addr, nm);
 
     if (res_id == -1)
     {
         QString err = QObject::tr("Can not find interface with network zone "
-                                  "that includes address '%1'");
-        throw(FWException(err.arg((addr)?addr->toString().c_str():"NULL").toStdString()));
+                                  "that includes address '%1%2'");
+        throw(FWException(err
+                          .arg((addr)?addr->toString().c_str():"NULL")
+                          .arg((nm)?QString("/%1").arg(nm->toString().c_str()):"")
+                          .toStdString()));
     }
+
+#if DEBUG_NETZONE_OPS
+    cerr << "Helper::findInterfaceByNetzone";
+    cerr << " returning " << res_id << endl;
+#endif
+
     return res_id;
 }
 
