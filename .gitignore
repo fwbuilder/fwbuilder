@@ -46,3 +46,6 @@ src/unit_tests/*/*Tests
 src/unit_tests/*/*.output
 src/unit_tests/ImporterTest/ios_res.fwb
 src/unit_tests/ImporterTest/ipt_res.fwb
+src/unit_tests/generatedScriptTests*/generatedScriptTests*
+src/unit_tests/generatedScriptTestsSecuwall/ref.*
+
