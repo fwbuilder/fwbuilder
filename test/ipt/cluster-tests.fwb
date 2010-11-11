@@ -105,6 +105,7 @@
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
@@ -112,6 +113,7 @@
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -140,6 +142,12 @@
           <ServiceRef ref="icmp-Time_exceeded_in_transit"/>
           <ServiceRef ref="icmp-ping_reply"/>
           <ServiceRef ref="icmp-Unreachables"/>
+        </ServiceGroup>
+        <ServiceGroup id="id1569X4889" name="Ipv6 unreachable messages" comment="" ro="False">
+          <ServiceRef ref="idE0D27650"/>
+          <ServiceRef ref="idCFE27650"/>
+          <ServiceRef ref="idE0B27650"/>
+          <ServiceRef ref="id1519Z388"/>
         </ServiceGroup>
         <ServiceGroup id="id3B4FEDD9" name="kerberos" comment="" ro="False">
           <ServiceRef ref="id3B4FEDA5"/>
@@ -203,6 +211,7 @@
         <ICMP6Service id="ipv6-icmp-neighbrsol" code="0" type="135" name="ipv6 neighbrsol" comment="IPv6 neighbor solicitation" ro="False"/>
         <ICMP6Service id="ipv6-icmp-neighbradv" code="0" type="136" name="ipv6 neighbradv" comment="IPv6 neighbor advertisement" ro="False"/>
         <ICMP6Service id="ipv6-icmp-redir" code="0" type="137" name="ipv6 redir" comment="IPv6 redirect: shorter route exists" ro="False"/>
+        <ICMP6Service id="id1519Z388" code="-1" type="4" name="ipv6 parameter problem" comment="IPv6 Parameter Problem: RFC4443" ro="False"/>
         <ICMP6Service id="idCFE27650" code="0" type="3" name="ipv6 time exceeded" comment="Time exceeded in transit" ro="False"/>
         <ICMP6Service id="idCFF27650" code="1" type="3" name="ipv6 time exceeded in reassembly" comment="Time exceeded in reassembly" ro="False"/>
         <ICMP6Service id="idE0B27650" code="-1" type="2" name="ipv6 packet too big" comment="" ro="False"/>
@@ -1279,7 +1288,7 @@
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="secuwall" inactive="True" lastCompiled="1248670597" lastInstalled="0" lastModified="1269891680" platform="iptables" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="secuwall" inactive="True" lastCompiled="1248670597" lastInstalled="0" lastModified="1289439976" platform="iptables" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1299,6 +1308,27 @@
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id8387X11449" disabled="False" group="" position="1" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id2366X75741"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
             </TSrv>
             <NATRuleOptions/>
           </NATRule>

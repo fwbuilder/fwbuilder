@@ -1,5 +1,11 @@
 2010-11-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_ipt.cpp (processNext): fixed SF bug 3103582 "Cant
+	create redirect rule in cluster firewall object".  Iptables nat
+	rule with target REDIRECT could not be built in a cluster
+	configuration. It should be possible to do this by putting cluster
+	object in Translated Destination.
+
 	* OSConfigurator_linux24_interfaces.cpp (printDynamicAddressesConfigurationCommands):
 	fixed #1838 "function configure_interfaces() does not manage ip
 	addresses of vlan interfaces". This function used to take into
