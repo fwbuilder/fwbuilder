@@ -1,5 +1,11 @@
 2010-11-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (getGeneratedFileFullPath): fixed #1837
+	"generated script gets .fw suffix even when user set output file
+	name". Suffix .fw should not be appended to the name entered by
+	the user in the "output file name" input field in the firewall
+	settings dialog.
+
 	* PolicyCompiler_ipfw_writers.cpp (processNext): fixed #1836
 	"installer hangs and fails after activation of ipfw policy".  As
 	soon as .fw script swapped ipfw sets usig command "ipfw sawp" and
