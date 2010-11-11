@@ -736,12 +736,26 @@ bool NATCompiler_ipt::portTranslationRules::processNext()
 
 bool NATCompiler_ipt::specialCaseWithRedirect::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==NULL) return false;
 
-    Address  *tdst=compiler->getFirstTDst(rule);
+    Address *tdst = compiler->getFirstTDst(rule);
 
-/* we consider rule redirect only if TDst is a firewall object */
-    if (rule->getRuleType() == NATRule::DNAT && tdst->getId()==compiler->fw->getId()) 
+/* we consider rule redirect only if TDst is a firewall object
+ *
+ */
+    int fw_id = compiler->fw->getId();
+    int cluster_id = -1;
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    Cluster *cluster = NULL;
+    if (cluster_member)
+    {
+        cluster = Cluster::cast(
+            compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+        cluster_id = cluster->getId();
+    }
+
+    if (rule->getRuleType() == NATRule::DNAT && 
+        (tdst->getId() == fw_id || tdst->getId() == cluster_id))
         rule->setRuleType(NATRule::Redirect);
 
     tmp_queue.push_back(rule);
