@@ -1,3 +1,9 @@
+2010-11-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* src/gui/gui.pro (LIBS): fixed #1840: fixed build on Mandriva
+	2010, all static libraries should go first on the linker command
+	line.
+
 2010-11-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (processNext): fixed SF bug 3103582 "Cant
