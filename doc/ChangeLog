@@ -1,5 +1,12 @@
 2010-11-10  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24_interfaces.cpp (printDynamicAddressesConfigurationCommands):
+	fixed #1838 "function configure_interfaces() does not manage ip
+	addresses of vlan interfaces". This function used to take into
+	account only interfaces that were direct children objects of the
+	firewall. Since vlan interfaces are children of the corresponding
+	physical interface, they were not included.
+
 	* FirewallInstaller.cpp (getGeneratedFileFullPath): fixed #1837
 	"generated script gets .fw suffix even when user set output file
 	name". Suffix .fw should not be appended to the name entered by

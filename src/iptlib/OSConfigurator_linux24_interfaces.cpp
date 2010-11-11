@@ -489,10 +489,11 @@ string OSConfigurator_linux24::printDynamicAddressesConfigurationCommands()
 /*
  * get addresses of dynamic interfaces
  */
-    FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j ) 
+    list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator j;
+    for (j=interfaces.begin(); j!=interfaces.end(); ++j )
     {
-        Interface *iface=Interface::cast(*j);
+        Interface *iface = Interface::cast(*j);
         
         if ( iface->isDyn() )
         {
