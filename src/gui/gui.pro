@@ -43,7 +43,8 @@ DEPENDPATH =  \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
-    ../compiler_lib
+    ../compiler_lib \
+	../libgui
 
 win32:LIBS += \
 	../common/release/common.lib \
@@ -60,6 +61,7 @@ win32:LIBS += \
     ../compiler_lib/libcompilerdriver.a
 
 win32:PRE_TARGETDEPS = \
+	../libgui/release/gui.lib \
 	../common/release/common.lib \
     ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
@@ -67,7 +69,8 @@ win32:PRE_TARGETDEPS = \
     ../compiler_lib/release/compilerdriver.lib \
     $$FWBPARSER_LIB
 !win32:PRE_TARGETDEPS = \
-	 ../common/libcommon.a \
+    ../libgui/libgui.a \
+    ../common/libcommon.a \
     ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \

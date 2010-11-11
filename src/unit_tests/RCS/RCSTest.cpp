@@ -27,7 +27,7 @@
 
 #include "../../../../config.h"
 //#include "../../global.h"
-#include "../../RCS.h"
+#include "../../libgui/RCS.h"
 
 #include <qapplication.h>
 #include <qfile.h>
