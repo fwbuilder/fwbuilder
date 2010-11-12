@@ -298,8 +298,23 @@ void newClusterDialog::copyRuleSets(const string &type, Firewall *source,
     for (; it != it.end(); ++it)
     {
         FWObject *new_ruleset = ncl->addCopyOf(*it);
+        id_mapping[(*it)->getId()] = new_ruleset->getId();
         db->fixReferences(new_ruleset, id_mapping);
     }
+
+    /*
+     * since the order in which we copy rule sets is undefined and
+     * because they may have references to each other via branching
+     * rules, we need to fix references in them after we create all of
+     * them. This fixes SF bug #3106168 "Branch destinations lost when adding to cluster"
+     */
+
+    it = ncl->findByType(type);
+    for (; it != it.end(); ++it)
+    {
+        db->fixReferences(*it, id_mapping);
+    }
+
 }
 
 

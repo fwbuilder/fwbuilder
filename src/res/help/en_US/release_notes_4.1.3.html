@@ -52,7 +52,6 @@
     </p>
   </li>
 
-
   <li>
     <p>
       see #1809 "Add Firewall Setting in Logging settings for default
@@ -85,6 +84,11 @@
 
   <li>
     <p>
+      Fixed SF bug #3106168 "Branch destinations lost when adding to
+      cluster".  Since the order in which I copy rule sets is
+      undefined and because they may have references to each other via
+      branching rules, I need to fix references after I create all
+      of them.
     </p>
   </li>
 
