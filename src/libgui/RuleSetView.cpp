@@ -2369,7 +2369,11 @@ void RuleSetView::saveCurrentRowColumn(SelectionMemento &memento)
         if (node && node->rule)
         {
             memento.column = index.column();
-            memento.rule_id = node->rule->getId();
+            FWObject *rule = node->rule;
+            if (rule)
+                memento.rule_id = node->rule->getId();
+            else
+                memento.rule_id = -1;
             return;
         }
     }
