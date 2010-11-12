@@ -1,5 +1,11 @@
 2010-11-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* configlets/linux24/load_modules: fixed #1844 "generated script
+	fails if module nf_conntrack_ipv6 does not exist". Generated
+	script tries to load module nf_conntrack_ipv6 if user defined
+	any ipv6 rules, however the script should not fail if the module
+	is not installed.
+
 	* src/gui/gui.pro (LIBS): fixed #1840: fixed build on Mandriva
 	2010, all static libraries should go first on the linker command
 	line.

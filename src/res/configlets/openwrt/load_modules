@@ -12,7 +12,7 @@
         MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
     }
     echo $OPTS | grep -q ipv6 && {
-        MODULES="$MODULES nf_conntrack_ipv6"
+        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
     }
     for module in $MODULES; do 
         if $LSMOD | grep ${module} >/dev/null; then continue; fi
