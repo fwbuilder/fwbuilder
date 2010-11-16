@@ -34,7 +34,7 @@
 #include <limits>
 #include <limits.h>
 
-#include <stdio.h>
+// #include <stdio.h>
 
 // convinience macro
 #define U128_C(s) uint128(#s)
@@ -521,18 +521,18 @@ template<>
 struct numeric_limits<uint128>
 {
     static const bool is_specialized = true;
-    static uint128 min() throw()
-    {
-        return 0;
-    }
-
-    static uint128 max() throw()
-    {
-        return uint128(
-                   std::numeric_limits<uint64_t>::max(),
-                   std::numeric_limits<uint64_t>::max()
-               );
-    }
+//    static uint128 min() throw()
+//    {
+//        return 0;
+//    }
+//
+//    static uint128 max() throw()
+//    {
+//        return uint128(
+//                   std::numeric_limits<uint64_t>::max(),
+//                   std::numeric_limits<uint64_t>::max()
+//               );
+//    }
 
     static const bool is_signed = false;
     static const bool is_integer = true;

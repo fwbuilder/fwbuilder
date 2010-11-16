@@ -168,16 +168,16 @@ uint128 InetAddr::to_uint128() const
 {
     assert(isV6());
     uint128 res;
-    uint128 x = ntohl(((uint32_t *) (&ipv6))[0]);
+    uint128 x = uint64_t(ntohl(((uint32_t *) (&ipv6))[0]));
     x <<= 96;
     res |= x;
-    x = ntohl(((uint32_t *) (&ipv6))[1]);
+    x = uint64_t(ntohl(((uint32_t *) (&ipv6))[1]));
     x <<= 64;
     res |= x;
-    x = ntohl(((uint32_t *) (&ipv6))[2]);
+    x = uint64_t(ntohl(((uint32_t *) (&ipv6))[2]));
     x <<= 32;
     res |= x;
-    x = ntohl(((uint32_t *) (&ipv6))[3]);
+    x = uint64_t(ntohl(((uint32_t *) (&ipv6))[3]));
     res |= x;
     return res;
 }
