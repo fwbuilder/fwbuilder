@@ -1,3 +1,15 @@
+2010-11-15  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* InetAddr.cpp (InetAddr::opGT): (change in libfwbuilder) added
+	module uint128 (128-bt arithmetics by Evan Teran). Implemented
+	basic operations with ipv6 addresses using this module. See #1834.
+	Now all policy compilers can correctly compare ipv6 addresses used
+	in rules with ipv6 addresses of interfaces. This helps perform
+	various optimizations and fixes issues with the algorithm used to
+	pick the right interface for the Cisco IOS ACL compiled from a
+	policy rule with an empty "interface" rule element and direction
+	"both".
+
 2010-11-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* newClusterDialog_create.cpp (copyRuleSets): Fixed SF bug
