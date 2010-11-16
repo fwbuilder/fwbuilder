@@ -25,10 +25,68 @@
 
 #include "Inet6AddrMaskTest.h"
 #include <fwbuilder/Inet6AddrMask.h>
+#include <fwbuilder/uint128.h>
 
 using namespace libfwbuilder;
 using namespace std;
 
+void Inet6AddrMaskTest::testUInt128ToInetAddr6()
+{
+    InetAddr x1(AF_INET6, "::1");
+    uint128 x = x1.to_uint128();
+    InetAddr x2(AF_INET6, 0);
+    x2.init_from_uint128(x);
+    CPPUNIT_ASSERT(x2.toString() == "::1");
+
+    InetAddr x3(AF_INET6, "::8000");
+    x = x3.to_uint128();
+    InetAddr x4(AF_INET6, 0);
+    x4.init_from_uint128(x);
+    CPPUNIT_ASSERT(x4.toString() == "::8000");
+
+    InetAddr x5(AF_INET6, "::ff00");
+    x = x5.to_uint128();
+    InetAddr x6(AF_INET6, 0);
+    x6.init_from_uint128(x);
+    CPPUNIT_ASSERT(x6.toString() == "::ff00");
+
+    InetAddr x90(AF_INET6, "fe80::20c:29ff:fed2:cca1");
+    x = x90.to_uint128();
+    InetAddr x91(AF_INET6, 0);
+    x91.init_from_uint128(x);
+    CPPUNIT_ASSERT(x91.toString() == "fe80::20c:29ff:fed2:cca1");
+}
+
+void Inet6AddrMaskTest::testInetAddr6ToUInt128()
+{
+    InetAddr x1(AF_INET6, 0);
+    uint128 x = x1.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "0");
+
+    InetAddr x2(AF_INET6, 1);
+    x = x2.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "800000000000000000000000");
+
+    InetAddr x3(AF_INET6, 8);
+    x = x3.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "FF0000000000000000000000");
+
+    InetAddr x4(AF_INET6, 16);
+    x = x4.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "FFFF00000000000000000000");
+
+    InetAddr x5(AF_INET6, 64);
+    x = x5.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "FFFFFFFFFFFFFFFF00000000");
+
+    InetAddr x6(AF_INET6, 128);
+    x = x6.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+
+    InetAddr x7(AF_INET6, "fe80::20c:29ff:fed2:cca1");
+    x = x7.to_uint128();
+    CPPUNIT_ASSERT(x.to_string() == "FE8000000000000020C29FFFED2CCA1");
+}
 
 void Inet6AddrMaskTest::testIntToInetAddr6()
 {
@@ -107,12 +165,29 @@ void Inet6AddrMaskTest::testInet6AddressOps()
     InetAddr z4 = z3 - 1;
     CPPUNIT_ASSERT_MESSAGE(z4.toString(), z4.toString() == "fe80::21d:9ff:fe8b:8e94");
 
+
+    InetAddr z5 = x7 + 65536;
+    CPPUNIT_ASSERT_MESSAGE(z5.toString(), z5.toString() == "fe80::21d:9ff:fe8c:8e94");
+
+    InetAddr z6 = z5 - 65536;
+    CPPUNIT_ASSERT_MESSAGE(z6.toString(), z6.toString() == "fe80::21d:9ff:fe8b:8e94");
+
+    InetAddr z7 = x7 + 2147483647;  // 2^31-1
+    CPPUNIT_ASSERT_MESSAGE(z7.toString(), z7.toString() == "fe80::21d:a00:7e8b:8e93");
+
+    InetAddr z8 = z7 - 2147483647;
+    CPPUNIT_ASSERT_MESSAGE(z8.toString(), z8.toString() == "fe80::21d:9ff:fe8b:8e94");
+
     InetAddr x8(AF_INET6, "fe80::21d:9ff:fe8b:1111");
     CPPUNIT_ASSERT(x7 > x8);
     CPPUNIT_ASSERT(x8 < x7);
 
     InetAddr x9(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
     CPPUNIT_ASSERT(x7 == x9);
+
+    InetAddr x10(AF_INET6, "fe80::21d:a00:7e8b:8e93");
+    CPPUNIT_ASSERT(x10 > x9);
+    CPPUNIT_ASSERT(x9 < x10);
 
 }
 

@@ -36,11 +36,15 @@ public:
     void testStringToInetAddr6();
     void testStringToInetAddrMask();
     void testInet6AddressOps();
+    void testUInt128ToInetAddr6();
+    void testInetAddr6ToUInt128();
 
     CPPUNIT_TEST_SUITE(Inet6AddrMaskTest);
 
     CPPUNIT_TEST(testStringToInetAddrExceptions);
     CPPUNIT_TEST(testIntToInetAddr6);
+    CPPUNIT_TEST(testUInt128ToInetAddr6);
+    CPPUNIT_TEST(testInetAddr6ToUInt128);
     CPPUNIT_TEST(testStringToInetAddr6);
     CPPUNIT_TEST(testStringToInetAddrMask);
     CPPUNIT_TEST(testInet6AddressOps);

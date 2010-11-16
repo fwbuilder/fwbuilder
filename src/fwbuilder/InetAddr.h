@@ -46,6 +46,7 @@ typedef unsigned int uint32_t;
 
 #endif
 
+#include <fwbuilder/uint128.h>
 #include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/FWException.h>
 
@@ -109,6 +110,9 @@ class InetAddr
         return sizeof(ipv6) * 8;
     }
 
+    void init_from_uint128(uint128 int128a);
+    uint128 to_uint128() const;
+    
     InetAddr(const char *data) throw(FWException);
     InetAddr(int af, const char *data) throw(FWException);
     InetAddr(const struct in_addr*) throw(FWException);

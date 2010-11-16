@@ -74,10 +74,11 @@ SOURCES  = 	InetAddr.cpp \
 			ObjectMatcher.cpp \
 			ObjectMirror.cpp \
 			inet_net_ntop.c \
-			inet_net_pton.c
-
+			inet_net_pton.c \
+			uint128.cpp
 
 HEADERS  = 	inet_net.h \
+			uint128.h \
 			InetAddr.h \
 			InetAddrMask.h \
 			Inet6AddrMask.h \

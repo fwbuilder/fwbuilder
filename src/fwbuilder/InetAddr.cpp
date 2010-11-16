@@ -58,6 +58,16 @@ extern "C" {
 #  include <winsock2.h>
 #endif
 
+#ifdef __linux__
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
+# define A6PREF __in6_u
+#else
+# define A6PREF __u6_addr
+#endif
+
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -145,6 +155,32 @@ void InetAddr::init_from_int(unsigned int len)
    }
 }
 
+// uint128 is always in the host order
+void InetAddr::init_from_uint128(uint128 la)
+{
+    ((uint32_t *) (&ipv6))[0] = htonl((la >> 96).to_integer() & 0xffffffff);
+    ((uint32_t *) (&ipv6))[1] = htonl((la >> 64).to_integer() & 0xffffffff);
+    ((uint32_t *) (&ipv6))[2] = htonl((la >> 32).to_integer() & 0xffffffff);
+    ((uint32_t *) (&ipv6))[3] = htonl( la.to_integer() & 0xffffffff);
+}
+   
+uint128 InetAddr::to_uint128() const
+{
+    assert(isV6());
+    uint128 res;
+    uint128 x = ntohl(((uint32_t *) (&ipv6))[0]);
+    x <<= 96;
+    res |= x;
+    x = ntohl(((uint32_t *) (&ipv6))[1]);
+    x <<= 64;
+    res |= x;
+    x = ntohl(((uint32_t *) (&ipv6))[2]);
+    x <<= 32;
+    res |= x;
+    x = ntohl(((uint32_t *) (&ipv6))[3]);
+    res |= x;
+    return res;
+}
 
 InetAddr::InetAddr(const InetAddr &o)
 {
@@ -352,11 +388,17 @@ InetAddr InetAddr::opPlus(int increment) const
         return InetAddr(&res);
     } else
     {
-        struct in6_addr res;
-        InetAddr::_copy_in6_addr(&res, &(ipv6) );
-        ((uint32_t*)(&res))[3] =
-            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) + increment);
-        return InetAddr(&res);
+        uint128 x = to_uint128();
+        x += increment;
+        InetAddr res(AF_INET6, 0);
+        res.init_from_uint128(x);
+        return res;
+
+//         struct in6_addr res;
+//         InetAddr::_copy_in6_addr(&res, &(ipv6) );
+//         ((uint32_t*)(&res))[3] =
+//             htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) + increment);
+//         return InetAddr(&res);
     }
 }
 
@@ -369,11 +411,17 @@ InetAddr InetAddr::opMinus(int decrement) const
         return InetAddr(&res);
     } else
     {
-        struct in6_addr res;
-        InetAddr::_copy_in6_addr(&res, &(ipv6) );
-        ((uint32_t*)(&res))[3] =
-            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) - decrement);
-        return InetAddr(&res);
+        uint128 x = to_uint128();
+        x -= decrement;
+        InetAddr res(AF_INET6, 0);
+        res.init_from_uint128(x);
+        return res;
+
+//         struct in6_addr res;
+//         InetAddr::_copy_in6_addr(&res, &(ipv6) );
+//         ((uint32_t*)(&res))[3] =
+//             htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) - decrement);
+//         return InetAddr(&res);
     }
 }
 
@@ -385,8 +433,12 @@ bool InetAddr::opLT(const InetAddr &other) const
         return (ntohl( ipv4.s_addr ) < ntohl( other.ipv4.s_addr ));
     } else
     {
-        return (ntohl(((uint32_t*)(&(ipv6)))[3]) <
-                ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+        uint128 a = to_uint128();
+        uint128 b = other.to_uint128();
+        return a < b;
+
+//         return (ntohl(((uint32_t*)(&(ipv6)))[3]) <
+//                 ntohl(((uint32_t*)(&(other.ipv6)))[3]));
     }
 }
 
@@ -398,8 +450,12 @@ bool InetAddr::opGT(const InetAddr &other) const
         return (ntohl( ipv4.s_addr ) > ntohl( other.ipv4.s_addr ));
     } else
     {
-        return (ntohl(((uint32_t*)(&(ipv6)))[3]) >
-                ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+        uint128 a = to_uint128();
+        uint128 b = other.to_uint128();
+        return a > b;
+
+//         return (ntohl(((uint32_t*)(&(ipv6)))[3]) >
+//                 ntohl(((uint32_t*)(&(other.ipv6)))[3]));
     }
 }
 
