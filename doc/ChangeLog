@@ -1,3 +1,9 @@
+2010-11-15  Vadim Kurland  <vadim@netcitadel.com>
+
+	* InetAddr.cpp (InetAddr::opGT): added module uint128 (128-bt
+	arithmetics by Evan Teran). Implemented basic operations
+	with ipv6 addresses using this module. See #1834
+
 2010-09-20  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler.h (fwcompiler): fixed SF bug #3071667
