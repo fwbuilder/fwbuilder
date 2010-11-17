@@ -222,15 +222,25 @@ class InetAddr
      * This method is limited, it only calculates distance that fit in 32 bit
      * number
      */
-    inline int distance(const InetAddr &a2) const
+    inline unsigned int distance(const InetAddr &a2) const
     {
         if (address_family==AF_INET)
             return ntohl(a2.ipv4.s_addr) - ntohl(ipv4.s_addr) + 1;
         else
         {
-            uint32_t *d1 = (uint32_t *)(&ipv6);
-            uint32_t *d2 = (uint32_t *)(&(a2.ipv6));
-            return *d2 - *d1 + 1;
+            uint128 d1 = to_uint128();
+            uint128 d2 = a2.to_uint128();
+            uint128 res;
+            if (d1 < d2)
+            {
+                res = d2;
+                res -= d1;
+            } else
+            {
+                res = d1;
+                res -= d2;
+            }
+            return res.to_integer()  + 1;
         }
     }
 

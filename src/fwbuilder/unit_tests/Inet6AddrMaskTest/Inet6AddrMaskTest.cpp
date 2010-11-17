@@ -182,13 +182,15 @@ void Inet6AddrMaskTest::testInet6AddressOps()
     CPPUNIT_ASSERT(x7 > x8);
     CPPUNIT_ASSERT(x8 < x7);
 
+    unsigned int dist = x8.distance(x7);
+    CPPUNIT_ASSERT(dist == 32132);
+
     InetAddr x9(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
     CPPUNIT_ASSERT(x7 == x9);
 
     InetAddr x10(AF_INET6, "fe80::21d:a00:7e8b:8e93");
     CPPUNIT_ASSERT(x10 > x9);
     CPPUNIT_ASSERT(x9 < x10);
-
 }
 
 void Inet6AddrMaskTest::testStringToInetAddrMask()

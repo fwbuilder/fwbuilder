@@ -346,7 +346,8 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
 
     if (s1 == s2 && e1 == e2)
     {
-        libfwbuilder::_convert_range_to_networks(s1, e1, res);
+        // libfwbuilder::_convert_range_to_networks(s1, e1, res);
+        res.push_back(n1);
         return res;
     }
 
