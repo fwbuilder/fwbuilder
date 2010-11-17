@@ -50,7 +50,7 @@ using namespace fwcompiler;
 using namespace std;
 
 
-//#define DEBUG_NETZONE_OPS 1
+// #define DEBUG_NETZONE_OPS 1
 
 static unsigned long calculateDimension(FWObject* obj)
 {
@@ -114,31 +114,61 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr,
 {
     if (addr==NULL) return -1;
 
-    Firewall *fw=compiler->fw;
-    list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
+#if DEBUG_NETZONE_OPS
+    cerr << "Helper::findInterfaceByAddress";
+    cerr << " addr=" << addr->toString();
+    cerr << " nm=" << nm->toString();
+    cerr << endl;
+#endif
+
+    Firewall *fw = compiler->fw;
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
-	Interface *iface=Interface::cast(*i);
+	Interface *iface = Interface::cast(*i);
         if (iface->isDedicatedFailover()) continue;
         if (iface->isUnprotected()) continue;
+
+#if DEBUG_NETZONE_OPS
+        cerr << "Helper::findInterfaceByAddress";
+        cerr << " intf=" << iface->getName();
+        cerr << endl;
+#endif
+
         FWObjectTypedChildIterator j =
             iface->findByType((addr->isV4())?IPv4::TYPENAME:IPv6::TYPENAME);
         for (; j!=j.end(); ++j)
         {
             const Address *i_addr = Address::constcast(*j);
+
+#if DEBUG_NETZONE_OPS
+            cerr << "Helper::findInterfaceByAddress";
+            cerr << " i_addr=" << i_addr->getName();
+            cerr << endl;
+            cerr << "    " << i_addr->getAddressPtr()->toString();
+            cerr << "    " << i_addr->getNetmaskPtr()->toString();
+            cerr << endl;
+#endif
+
             if (nm != NULL)
             {
                 InetAddrMask interface_subnet(*(i_addr->getAddressPtr()),
                                               *(i_addr->getNetmaskPtr()));
                 InetAddrMask other_subnet(*addr, *nm);
-                vector<InetAddrMask> ovr =
-                    libfwbuilder::getOverlap(interface_subnet, other_subnet);
+
 #if DEBUG_NETZONE_OPS
                 cerr << "Helper::findInterfaceByAddress";
                 cerr << " addr=" << other_subnet.toString();
                 cerr << " intf=" << iface->getName()
                      << "  " << interface_subnet.toString();
                 cerr << endl;
+#endif
+
+                vector<InetAddrMask> ovr =
+                    libfwbuilder::getOverlap(interface_subnet, other_subnet);
+
+#if DEBUG_NETZONE_OPS
+                cerr << "Helper::findInterfaceByAddress";
                 cerr << " overlap:";
                 cerr << " ovr.size()=" << ovr.size();
                 if (ovr.size() > 0)
