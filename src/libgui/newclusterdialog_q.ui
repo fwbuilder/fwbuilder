@@ -226,7 +226,7 @@
        <item>
         <widget class="QLabel" name="label_10">
          <property name="text">
-          <string>Choose which member's policy and NAT rules should be used to create policy and nat rules of the cluster. First, each member firewall object will be copied with the name &quot;&lt;firewall&gt;-bak&quot; (where &lt;firewall&gt; is the name of the member) for backup, then rules from the chosen member will be copied to the new cluster and finally all policy and NAT rules will be deleted in both members. Backup firewall objects ensure that you do not lose your configuration and can always revert back if necessary. You can delete backup objects or move them to a separate library for archival later.</string>
+          <string>Choose which member's Policy and NAT rules should be used to create Policy and NAT rules of the cluster. First, each member firewall object will be copied with the name &quot;&lt;firewall&gt;-bak&quot; (where &lt;firewall&gt; is the name of the member) for backup, then rules from the chosen member will be copied to the new cluster and finally all Policy and NAT rules will be deleted in both members. Backup firewall objects ensure that you do not lose your configuration and can always revert back if necessary. You can delete backup objects or move them to a separate library for archival later.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
