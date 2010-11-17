@@ -1,3 +1,17 @@
+2010-11-16  Vadim Kurland  <vadim@netcitadel.com>
+
+	* check_utilities: fixed #1851 "no need to check for modprobe when
+	host OS is "dd-wrt" and possibly other embedded Linux
+	systems". Generated script does not use modprobe utility when host
+	OS is set to "DD-WRT" or "OpenWRT" and should not try to find this
+	utility on the system. This is also related to the SourceForge bug
+	3032293
+
+2010-11-16  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* newclusterdialog_q.ui: fixed #1848 Text formatting clean up -
+	New cluster wizard dialog
+
 2010-11-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* InetAddr.cpp (InetAddr::opGT): (change in libfwbuilder) added
