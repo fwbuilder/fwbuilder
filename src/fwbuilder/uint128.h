@@ -34,7 +34,7 @@
 #include <limits>
 #include <limits.h>
 
-// #include <stdio.h>
+#include <stdio.h>
 
 // convinience macro
 #define U128_C(s) uint128(#s)
