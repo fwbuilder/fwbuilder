@@ -104,6 +104,9 @@ void interfacePropertiesTest::validateInterfaceNameCommon()
                        iface, "foo 0", err) == false);
 
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo-1", err) == false);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "foo 12345", err) == false);
 
     iface->getOptionsObject()->setStr("type", "bridge");
@@ -148,6 +151,13 @@ void interfacePropertiesTest::validateInterfaceNameLinux()
 
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "bar0", err) == true);
+    
+    // we do not have special type for p2p interfaces yet
+    // Linux permits "-" in interface names (see #1856)
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "ppp-dsl", err) == true);
+
+    iface->getOptionsObject()->setStr("type", "8021q");
 
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "vlan100", err) == true);
@@ -172,10 +182,11 @@ void interfacePropertiesTest::validateInterfaceNameLinux()
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "Br0", err) == true);
 
-    // Linux permits "-" in bridge interface names
+    // Linux permits "-" in interface names (see #1856)
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "br-lan", err) == true);
 
+    // spaces are not permitted
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "br 200", err) == false);
 

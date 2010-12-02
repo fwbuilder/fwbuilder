@@ -92,33 +92,8 @@
     </p>
   </li>
 
-  <li>
-    <p>
-    </p>
-  </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
-
 </ul>
+
 
 
 <a name="libfwbuilder"></a>
@@ -140,6 +115,7 @@
 </ul>
 
 
+
 <a name="std_lib"></a>
 <h2>Changes and improvements in the library of standard objects</h2>
 
@@ -154,6 +130,7 @@
     </p>
   </li>
 </ul>
+
 
 
 <a name="iptables"></a>
@@ -247,6 +224,10 @@
 
   <li>
     <p>
+      fixed #1856 "Pemit '-' in Linux interface names". OpenWRT uses
+      name "ppp-dsl" for PPPoE interfaces. In addition to that, Linux
+      bridge interfaces may have names with a "-" such as
+      "br-lan". We will now permit a "-" in Linux interface names.
     </p>
   </li>
 

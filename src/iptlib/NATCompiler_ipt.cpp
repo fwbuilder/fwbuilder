@@ -112,12 +112,23 @@ const std::list<std::string>& NATCompiler_ipt::getStandardChains()
 
 string NATCompiler_ipt::myPlatformName() { return "iptables"; }
 
+/*
+ * this function generates acceptable shell variable name from
+ * interface name. Note that
+ * OSConfigurator_linux24::getInterfaceVarName() and
+ * PolicyCompiler_ipt::getInterfaceVarName() do the same thing and
+ * these functions should be identical.
+ *
+ *  TODO: really need to have one function for this instead of three in
+ * three different classes.
+ */
 string NATCompiler_ipt::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname=iface->getName();
     string::size_type p1;
     while ( (p1=iname.find("."))!=string::npos) iname=iname.replace(p1,1,"_");
+    while ( (p1=iname.find("-"))!=string::npos) iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
     if (v6) ostr << "_v6";
     return ostr.str();
