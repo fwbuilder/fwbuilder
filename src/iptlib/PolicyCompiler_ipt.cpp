@@ -189,12 +189,22 @@ bool PolicyCompiler_ipt::isChainDescendantOfInput(const string &chain_name)
     return false;
 }
 
+/*
+ * this function generates acceptable shell variable name from
+ * interface name. Note that OSConfigurator_linux24::getInterfaceVarName()
+ * does the same and these two functions should be identical.
+ *
+ *  TODO: really need to have one function for this instead of two in
+ * two different classes.
+ */
 string PolicyCompiler_ipt::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname = iface->getName();
     string::size_type p1;
     while ( (p1=iname.find("."))!=string::npos)
+        iname=iname.replace(p1,1,"_");
+    while ( (p1=iname.find("-"))!=string::npos)
         iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
     if (v6) ostr << "_v6";

@@ -1497,42 +1497,6 @@ void FWWindow::help()
     h->show();
 }
 
-void FWWindow::showSummary()
-{
-    Help *h = Help::getHelpWindow(this);
-    h->setName("Welcome to Firewall Builder");
-    if (h->findHelpFile("summary.html").isEmpty())
-    {
-        // the file does not exist
-        h->hide();
-    } else
-    {
-        h->setSource(QUrl("file:summary.html"));
-        h->raise();
-        h->show();
-    }
-}
-
-/**
- * Tutorials are activated by actions attached to menu items under
- * main menu Help.  Each action must have a name that consits of word
- * "action" and the name of the tutorial, spearated by an
- * underscore. For example: "action_getting_started". The name of the
- * corresponding tutorial is "getting_started", which should match the
- * name of subdirectory under src/gui/Tutorial. Names of tutorials
- * (and directories under src/gui/Tutorial) are always all lower-case.
- */
-void FWWindow::showTutorial(const QString &tutorial)
-{
-    if (fwbdebug)
-        qDebug() << "FWWindow::showTutorial:" << tutorial;
-
-    if (tutorial.isEmpty())
-        TutorialDialog::showTutorial(sender()->objectName().remove(0,7).toLower());
-    else
-        TutorialDialog::showTutorial(tutorial);
-}
-
 void FWWindow::showReleaseNotes()
 {
     QString file_name = QString("release_notes_%1.html").arg(VERSION);

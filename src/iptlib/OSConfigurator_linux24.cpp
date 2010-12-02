@@ -88,12 +88,23 @@ OSConfigurator_linux24::~OSConfigurator_linux24()
     delete command_wrappers;
 }
 
+/*
+ * this function generates acceptable shell variable name from
+ * interface name. Note that PolicyCompiler_ipt::getInterfaceVarName()
+ * and NATCompiler_ipt::getInterfaceVarName do the same thing and
+ * these functions should be identical.
+ *
+ * TODO: really need to have one function for this instead of three in
+ * three different classes.
+ */
 string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface, bool v6)
 {
     ostringstream  ostr;
     string iname=iface->getName();
     string::size_type p1;
     while ( (p1=iname.find("."))!=string::npos)
+        iname=iname.replace(p1,1,"_");
+    while ( (p1=iname.find("-"))!=string::npos)
         iname=iname.replace(p1,1,"_");
     ostr << "i_" << iname;
     if (v6) ostr << "_v6";
@@ -581,98 +592,6 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     command_wrappers->setVariable("command", combined_command);
 
     return command_wrappers->expand().toStdString() + "\n";
-
-#if V30_IMPLEMENTATION
-    string command_line = command;
-    ostringstream  ext_command_line;
-
-    int nlines = 0;
-    string::size_type p1 = 0;
-    string::size_type p2, p3;
-
-    p1=command_line.find("$at_");
-    if ( p1!=string::npos )
-    {
-        p2=command_line.find(" ",p1);
-        string at_var= command_line.substr(p1+1,p2-p1-1);  // skip '$'
-        string atfile = rule->getStr("address_table_file");
-        ext_command_line << "grep -Ev '^#|^;|^\\s*$' " << atfile << " | ";
-        ext_command_line << "while read L ; do" << endl;
-        ext_command_line << "  set $L; " << at_var << "=$1; ";
-        ext_command_line << command_line;
-        ext_command_line << "done" << endl;
-
-        command_line = ext_command_line.str();
-    }
-
-    p1 = 0;
-    while (1)
-    {
-        p1=command_line.find_first_of("\n\r",p1);
-        if (p1==string::npos) break;
-        nlines++;
-        p1=command_line.find_first_not_of("\n\r",p1);
-        if (p1==string::npos) break;
-    }
-
-    string getaddr_function_name = "getaddr";
-    if (ipv6) getaddr_function_name = "getaddr6";
-
-    ostringstream  res;
-    bool wildcard_interfaces = false;
-    p1=0;
-    while ((p1=command_line.find("$i_", p1))!=string::npos)
-    {
-        string  iface_name;
-        string  iface_var;
-
-        p2=command_line.find(" ",p1);
-        p3=command_line.find("_",p1) +1;
-        iface_name=command_line.substr(p3,p2-p3);
-        iface_var= command_line.substr(p1,p2-p1);
-
-/* if interface name ends with '*', this is a wildcard interface. */
-        string::size_type p4;
-        if ((p4=iface_name.find("*"))!=string::npos)
-        {
-            wildcard_interfaces = true;
-            string cmdline=command_line;
-            string iface_family_name=iface_name.substr(0,p4);
-            res << "getinterfaces " << iface_family_name << " | while read I; do" << endl;
-            res << "  ivar=`getInterfaceVarName $I`" << endl;
-            res << "  " << getaddr_function_name << " $I $ivar" << endl;
-            res << "  cmd=\"$\"$ivar"   << endl;
-            res << "  eval \"addr=$cmd\""          << endl;
-            cmdline.replace(p1,p2-p1,"$addr");
-            res << "  test -n \"$addr\" && ";
-            if (nlines>1) res << "{" << endl;
-            res << cmdline;
-            if (nlines>1) res << "}" << endl;
-            res << "done" << endl;
-        } else
-        {
-            // bug #1851166: there could be two dynamic interfaces in
-            // the same rule. Just print "test" command here and continue
-            // in the "while" loop. We'll print actual commands when the loop
-            // ends.
-            res << "test -n \"" << iface_var << "\" && ";
-        }
-        p1++;  // p1 points at the previous "$i_" fragment
-    }
-
-
-    // for wildcard interfaces we only support one such interface
-    // per rule and we have already printed the actual command above.
-    if (!wildcard_interfaces)
-    {
-        if (nlines>1) res << "{" << endl;
-        res << command_line;
-        if (nlines>1) res << "}" << endl;
-    }
-
-    return res.str();
-#endif
-
 }
 
 string OSConfigurator_linux24::printIPForwardingCommands()

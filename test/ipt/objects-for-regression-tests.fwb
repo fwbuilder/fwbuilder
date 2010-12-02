@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1282244747" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1291313384" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -3522,6 +3522,7 @@
     <Policy id="id54807X99373" name="mangle_ruleset" comment="Pure mangle rule set. Checking that there will be only one COMMIT" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
       <RuleSetOptions/>
     </Policy>
+    <IPv4 id="id58766X17179" name="firewall93:eth0:ip-1" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -55578,6 +55579,137 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="use_m_set">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id58536X16164" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1291313406" platform="iptables" version="" name="firewall93" comment="testing shell code generated for dynamic interface with &quot;-&quot; in the name" ro="False">
+        <NAT id="id58540X16164" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id58538X16164" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id58669X16164" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id58536X16164"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id58546X16164"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id58554X16164" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id58536X16164"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id58547X16164"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Policy id="id58636X17179" name="Policy_v6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="False">
+          <PolicyRule id="id58697X17179" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id58536X16164"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id58547X16164"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id58743X17179" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id58536X16164"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id58546X16164"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions>
+            <Option name="mangle_only_rule_set">False</Option>
+          </RuleSetOptions>
+        </Policy>
+        <Routing id="id58542X16164" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id58544X16164" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id58545X16164" name="firewall93:eth0:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <IPv6 id="id58771X17179" name="firewall93:eth0:ipv6" comment="" ro="False" address="fe80::20c:29ff:fe28:c078" netmask="64"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id58546X16164" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id58547X16164" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="ppp-dsl" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
