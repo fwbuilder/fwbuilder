@@ -1,3 +1,18 @@
+2010-12-02  Vadim Kurland  <vadim@netcitadel.com>
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::getInterfaceVarName):
+	fixed #1856 "Pemit '-' in Linux interface names". OpenWRT uses
+	name "ppp-dsl" for PPPoE interfaces. In addition to that, Linux
+	bridge interfaces may have names with a "-" such as
+	"br-lan". We will now permit a "-" in Linux interface names.
+
+	* FWWIndow.cpp: Fixes #1858 'Remove "Summary of features" page
+	from the package' and #1857 'Remove "Getting Started" guide from
+	the package'. We have dediced to keep documentation and other
+	content like this on the web site. Button "Watch Getting Started
+	Tutorial" in the Tip of the Day dialog opens tutorial hosted on
+	the web site in a web browser.
+
 2010-11-16  Vadim Kurland  <vadim@netcitadel.com>
 
 	* check_utilities: fixed #1851 "no need to check for modprobe when
