@@ -786,7 +786,6 @@
      <addaction name="action_getting_started"/>
     </widget>
     <addaction name="helpAboutAction"/>
-    <addaction name="summary_action"/>
     <addaction name="helpAction"/>
     <addaction name="release_Notes_Action"/>
     <addaction name="debugAction"/>
@@ -1371,11 +1370,6 @@
    </property>
    <property name="text">
     <string>Undo Stack</string>
-   </property>
-  </action>
-  <action name="summary_action">
-   <property name="text">
-    <string>Summary of features</string>
    </property>
   </action>
   <action name="action_getting_started">
@@ -2255,22 +2249,6 @@
     </hint>
     <hint type="destinationlabel">
      <x>554</x>
-     <y>422</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>summary_action</sender>
-   <signal>triggered()</signal>
-   <receiver>FWBMainWindow_q</receiver>
-   <slot>showSummary()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
      <y>422</y>
     </hint>
    </hints>

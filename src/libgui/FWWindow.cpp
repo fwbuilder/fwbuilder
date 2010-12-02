@@ -1497,22 +1497,6 @@ void FWWindow::help()
     h->show();
 }
 
-void FWWindow::showSummary()
-{
-    Help *h = Help::getHelpWindow(this);
-    h->setName("Welcome to Firewall Builder");
-    if (h->findHelpFile("summary.html").isEmpty())
-    {
-        // the file does not exist
-        h->hide();
-    } else
-    {
-        h->setSource(QUrl("file:summary.html"));
-        h->raise();
-        h->show();
-    }
-}
-
 /**
  * Tutorials are activated by actions attached to menu items under
  * main menu Help.  Each action must have a name that consits of word

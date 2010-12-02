@@ -230,8 +230,3 @@ void StartTipDialog::showGettingStartedTutorial()
 {
     dynamic_cast<FWWindow*>(parent())->showTutorial("getting_started");
 }
-
-void StartTipDialog::showSummary()
-{
-    dynamic_cast<FWWindow*>(parent())->showSummary();
-}

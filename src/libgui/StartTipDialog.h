@@ -67,7 +67,6 @@ public slots:
     void nextTip();
     void prevTip();
     void showGettingStartedTutorial();
-    void showSummary();
 
     virtual void close();
 };
