@@ -779,17 +779,10 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <widget class="QMenu" name="menuTutorial">
-     <property name="title">
-      <string>Tutorial</string>
-     </property>
-     <addaction name="action_getting_started"/>
-    </widget>
     <addaction name="helpAboutAction"/>
     <addaction name="helpAction"/>
     <addaction name="release_Notes_Action"/>
     <addaction name="debugAction"/>
-    <addaction name="menuTutorial"/>
    </widget>
    <widget class="QMenu" name="RulesMenu">
     <property name="title">
@@ -1370,11 +1363,6 @@
    </property>
    <property name="text">
     <string>Undo Stack</string>
-   </property>
-  </action>
-  <action name="action_getting_started">
-   <property name="text">
-    <string>Getting started</string>
    </property>
   </action>
   <action name="inspectAction">
@@ -2249,22 +2237,6 @@
     </hint>
     <hint type="destinationlabel">
      <x>554</x>
-     <y>422</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>action_getting_started</sender>
-   <signal>triggered()</signal>
-   <receiver>FWBMainWindow_q</receiver>
-   <slot>showTutorial()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
      <y>422</y>
     </hint>
    </hints>
