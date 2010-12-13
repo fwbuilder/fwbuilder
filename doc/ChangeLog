@@ -1,3 +1,7 @@
+2010-12-12  Vadim Kurland  <vadim@netcitadel.com>
+
+	* VERSION (LIBFWBUILDER_MICRO_VERSION): started 4.1.4
+	
 2010-11-15  Vadim Kurland  <vadim@netcitadel.com>
 
 	* InetAddr.cpp (InetAddr::opGT): added module uint128 (128-bt
