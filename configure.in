@@ -9,6 +9,9 @@ PACKAGE=fwbuilder
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [package])
 AC_SUBST(PACKAGE)
 
+LT_INIT
+AC_CONFIG_MACRO_DIR([m4])
+
 dnl
 dnl all version numbers are defined in the file VERSION
 dnl
