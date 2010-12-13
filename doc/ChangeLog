@@ -1,3 +1,7 @@
+2010-12-12  Vadim Kurland  <vadim@netcitadel.com>
+
+	* VERSION (FWB_MICRO_VERSION): started 4.1.4
+
 2010-12-05  Mike Horn <mike@netcitadel.com>
 
 	* minor updates to main help dialog text to fix broken/outdated
