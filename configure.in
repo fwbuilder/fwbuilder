@@ -8,6 +8,9 @@ AC_CONFIG_HEADER(src/fwbuilder/libfwbuilder-config.h)
 
 AC_PROG_INSTALL
 
+LT_INIT
+AC_CONFIG_MACRO_DIR([m4])
+
 dnl
 dnl all version numbers are defined in the file VERSION
 dnl
