@@ -451,10 +451,13 @@ void ActionsDialog::fillInterfaces(QComboBox* cb)
     cb->clear();
     cb->addItem("");
 
-    FWObjectTypedChildIterator j=firewall->findByType(Interface::TYPENAME);
-    for (; j!=j.end(); ++j )
+    list<FWObject*> interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=interfaces.begin(); i!=interfaces.end(); ++i)
     {
-        cb->addItem(QString::fromUtf8((*j)->getName().c_str()) );
+        Interface *iface = Interface::cast(*i);
+        assert(iface);
+
+        cb->addItem(iface->getName().c_str());
     }
 
 }
