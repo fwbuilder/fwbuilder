@@ -1,3 +1,9 @@
+2010-12-16  Vadim Kurland  <vadim@netcitadel.com>
+
+	* ActionsDialog.cpp (fillInterfaces): fixed #1872: "vlan interface
+	does not appear in the list of interfaces for route-to action for
+	PF".
+
 2010-12-12  Vadim Kurland  <vadim@netcitadel.com>
 
 	* VERSION (FWB_MICRO_VERSION): started 4.1.4
