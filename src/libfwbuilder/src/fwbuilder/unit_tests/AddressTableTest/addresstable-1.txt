@@ -1,0 +1,26 @@
+#  This is a comment
+;; comment too
+# Test of Address Table
+#
+# 1.2.3.4   this address should be ignored because it is in the comment
+
+216.193.197.238 www.rebol.com
+
+www.microsoft.com:
+    207.46.20.60/24
+    207.46.198.3
+    207.46.198.60
+    207.46.199.30
+    207.46.225.60/30
+    207.46.19.60
+
+OKC Network:
+  192.168.105.57 OKC_B0
+  192.168.105.69 OKC_DEVP2
+  192.168.105.68 OKC_SQL
+
+RK Network:
+  192.168.100.0/24
+
+TT Lan:
+  192.168.11.0/24

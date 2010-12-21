@@ -1,0 +1,52 @@
+#-*- mode: makefile; tab-width: 4; -*-
+#
+######### libfwbuilder/qmake.inc.in
+#
+QTDIR = $$(QTDIR)
+TEMPLATE = lib
+SO_VERSION = @LIBFWBUILDER_SOLIB_VERSION@
+DEFINES += $$(DEFINES)
+INCLUDEPATH += .. ../.. $$(INCLUDEPATH)
+LANGUAGE = C++
+
+HAVE_CPPUNIT = @HAVE_CPPUNIT@
+CPPUNIT_CFLAGS = @CPPUNIT_CFLAGS@
+CPPUNIT_LIBS = @CPPUNIT_LIBS@
+
+unix {
+    prefix = @prefix@
+
+    QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
+
+    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
+    LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
+        @LIB_RESOLV@ @LIBS@
+
+    !macx {
+         UI_DIR = .ui
+         MOC_DIR = .moc
+         OBJECTS_DIR = .obj
+
+         exec_prefix = @EXEC_PREFIX@
+         DESTDIR =
+
+         target.path = @LIBDIR@
+         dtd.path = @TEMPLATE_DIR@/
+         migration.path = @TEMPLATE_DIR@/migration
+         doc.path = @DOCDIR@
+
+         CONFIG += warn_on debug
+         QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
+         QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
+         QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
+         QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
+    }
+}
+
+exists(qmake2.inc) {
+  include( qmake2.inc)
+}
+
+CONFIG -= qt
+
+INSTALLS += target

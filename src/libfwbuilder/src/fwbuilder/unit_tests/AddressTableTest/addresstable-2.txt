@@ -1,0 +1,8 @@
+#  This is a comment
+;; comment too
+# Test of Address Table
+#
+# This file is different from addresstable-1.txt , it has invalid ip address
+
+300.300.300.300
+

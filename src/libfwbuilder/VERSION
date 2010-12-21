@@ -1,0 +1,42 @@
+#-*- mode: shell-script; tab-width: 4; -*-
+# $Id: VERSION 1046 2007-10-21 20:27:01Z vk $
+
+LIBFWBUILDER_MAJOR_VERSION=4
+LIBFWBUILDER_MINOR_VERSION=1
+LIBFWBUILDER_MICRO_VERSION=4
+
+LIBFWBUILDER_VERSION=${LIBFWBUILDER_MAJOR_VERSION}.${LIBFWBUILDER_MINOR_VERSION}.${LIBFWBUILDER_MICRO_VERSION}
+#LIBFWBUILDER_LIB_VER=${LIBFWBUILDER_MAJOR_VERSION}.${LIBFWBUILDER_MINOR_VERSION}
+
+# VERSION must be a string rather than $var because of the build scripts
+VERSION="4.1.4"
+
+# 
+#  Library versioning: 
+#
+# +1 : ? : +1  == new interface that does not break old one
+# +1 : ? : 0   == new interface that breaks old one
+#  ? : ? : 0   == no new interfaces, but breaks apps
+#  ? :+1 : ?   == just some internal changes, nothing breaks but might work 
+#                 better
+# CURRENT : REVISION : AGE
+#
+#  for more details see libtool manual, chapter "Libtool's versioning system"
+
+LIBFWBUILDER_CURRENT=9
+LIBFWBUILDER_REVISION=1
+LIBFWBUILDER_AGE=0
+
+LIBFWBUILDER_SO_VERSION=${LIBFWBUILDER_CURRENT}:${LIBFWBUILDER_REVISION}:${LIBFWBUILDER_AGE}
+LIBFWBUILDER_SOLIB_VERSION=${LIBFWBUILDER_CURRENT}.${LIBFWBUILDER_REVISION}.${LIBFWBUILDER_AGE}
+LIBFWBUILDER_SOLIB_SYMLINK1_VERSION=${LIBFWBUILDER_CURRENT}.${LIBFWBUILDER_REVISION}
+LIBFWBUILDER_SOLIB_SYMLINK2_VERSION=${LIBFWBUILDER_CURRENT}
+
+
+# Data format version
+FWBUILDER_XML_VERSION=17
+
+# RELEASE="1"
+RELEASE="b@BUILD_NUM@"
+
+LIBMAJOR=${LIBFWBUILDER_CURRENT}
