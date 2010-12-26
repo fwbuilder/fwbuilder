@@ -433,7 +433,7 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 
     xmlNewProp(parent, 
                TOXMLCAST("version") , 
-               TOXMLCAST(LIBFWBUILDER_FORMAT_VERSION));
+               TOXMLCAST(FWBUILDER_XML_VERSION));
 
     if (lastModified!=0)
     {
@@ -448,8 +448,8 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 
     //NOTUSED xmlAttrPtr pr =
     xmlNewProp(parent,
-			       TOXMLCAST("id") , 
-			       STRTOXMLCAST(id_dict[rootid]));
+               TOXMLCAST("id") , 
+               STRTOXMLCAST(id_dict[rootid]));
 
     //xmlAddID(NULL, parent->doc, STRTOXMLCAST(id_dict[rootid]), pr);
 

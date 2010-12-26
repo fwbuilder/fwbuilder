@@ -1,10 +1,9 @@
 
-#include "libfwbuilder-version.h"
-
 #ifdef _WIN32
 #  pragma warning(disable:4786)
 #endif
 
+#undef FWBUILDER_XML_VERSION
 
 /* 
  * Template files directory dir

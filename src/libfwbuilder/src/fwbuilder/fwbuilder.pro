@@ -5,7 +5,6 @@ include(../../qmake.inc)
 TEMPLATE = lib
 CONFIG += staticlib
 
-VERSION = $$SO_VERSION
 #
 SOURCES  = 	InetAddr.cpp \
 			InetAddrMask.cpp \

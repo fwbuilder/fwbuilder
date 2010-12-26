@@ -89,7 +89,7 @@ class XMLTools
                               const std::string &dtd_file,
                               const UpgradePredicate *upgrade,
                               const std::string &template_dir,
-                              const std::string &current_version = std::string(LIBFWBUILDER_FORMAT_VERSION)
+                              const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
     ) throw(FWException);
 
     static void setDTD(xmlDocPtr doc, 
@@ -192,7 +192,7 @@ class XMLTools
                              const std::string &file_name, 
                              const std::string &type_name,
                              const std::string &template_dir,
-                             const std::string &current_version = std::string(LIBFWBUILDER_FORMAT_VERSION)
+                             const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
     ) throw(FWException);
 
     /**

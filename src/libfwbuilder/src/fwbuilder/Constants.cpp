@@ -24,8 +24,9 @@
 
 */
 
-#include <fwbuilder/Constants.h>
-#include <fwbuilder/libfwbuilder-config.h>
+#include "../../config.h"
+#include "fwbuilder/Constants.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -37,12 +38,12 @@ const string Constants::getLibraryDescription()
 
 const string Constants::getLibraryVersion() 
 { 
-    return string(LIBFWBUILDER_VERSION); 
+    return string(VERSION); 
 }
 
 const string Constants::getDataFormatVersion()
 {
-    return string(LIBFWBUILDER_FORMAT_VERSION); 
+    return string(FWBUILDER_XML_VERSION); 
 }
 
 const string Constants::getTemplateDirectory() 
