@@ -16,11 +16,16 @@ core
 *.icns
 *.ico
 *.plist
+!src/gui/FwbuilderInfo.plist
 *.rc
+*.dylib
+*.spec
+*.control
+*.nsi
+build_num
 test/ipt/secuwall-1
 Makefile
 install*
-qmake.inc
 ltmain.sh
 configure
 config.h
@@ -42,6 +47,7 @@ fwb_procurve_acl
 transfer_secuwall
 .configure_marker
 .build_marker
+qmake.inc
 src/unit_tests/*/*Test
 src/unit_tests/*/*Tests
 src/unit_tests/*/*.output
