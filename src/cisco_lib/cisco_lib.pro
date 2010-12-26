@@ -66,9 +66,6 @@ macx:LIBS  += $$LIBS_FWCOMPILER
 
 INCLUDEPATH += ../compiler_lib ../libfwbuilder/src
 
-# win32:LIBS  += ../compiler_lib/release/compilerdriver.lib
-# !win32:LIBS += ../compiler_lib/libcompilerdriver.a
-
 win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib
 !win32:PRE_TARGETDEPS = ../compiler_lib/libcompilerdriver.a
 

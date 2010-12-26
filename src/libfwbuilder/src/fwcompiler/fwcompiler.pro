@@ -5,7 +5,6 @@ include(../../qmake.inc)
 TEMPLATE = lib
 CONFIG += staticlib
 
-VERSION = $$SO_VERSION
 #
 SOURCES  = 	BaseCompiler.cpp \
 			Compiler.cpp \
@@ -26,10 +25,6 @@ HEADERS  = 	BaseCompiler.h \
 			PolicyCompiler.h \
 			RuleProcessor.h \
 			RoutingCompiler.h
-
-unix {
-        LIBS += -L../fwbuilder -lfwbuilder
-}
 
 TARGET = fwcompiler
 # target.path = "$$prefix/lib"

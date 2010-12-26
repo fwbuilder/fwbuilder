@@ -157,12 +157,12 @@ dnl Check for GNU make
 dnl 
 AC_MSG_CHECKING(whether make is GNU Make)
 if ${MAKE-make} -q --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
-      AC_MSG_RESULT(yes)
+  AC_MSG_RESULT(yes)
 else
-      AC_MSG_RESULT(no)
-      if test "$host_vendor" = "sun" ; then
-              AC_MSG_ERROR("SUN make does not work for building Firewall Builder. Please install GNU make")
-      fi
+  AC_MSG_RESULT(no)
+  if test "$host_vendor" = "sun" ; then
+    AC_MSG_ERROR("SUN make does not work for building Firewall Builder. Please install GNU make")
+  fi
 fi
 
 dnl some platform-dependent flags
@@ -173,18 +173,6 @@ GUILINKFLAGS=
 case "$build_os" in
   *solaris*)
     GUILINKFLAGS="-export-dynamic"
-    ;;
-  *darwin*)
-    if test -d /sw/include; then
-      CXXFLAGS="-I/sw/include"
-      CPPFLAGS="-I/sw/include"
-      CFLAGS="-I/sw/include"
-      LDFLAGS="-flat_namespace"
-    fi
-    LIBS="$LIBS -L/sw/lib"
-    AC_CHECK_LIB(poll, poll, [LIBS="$LIBS -lpoll"],[
-        AC_MSG_ERROR([Could not link with libpoll: library is not installed on this system]) 
-    ])
     ;;
  esac
 AC_SUBST(GUILINKFLAGS)
