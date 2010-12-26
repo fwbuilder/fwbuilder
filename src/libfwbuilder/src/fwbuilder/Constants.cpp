@@ -47,5 +47,5 @@ const string Constants::getDataFormatVersion()
 
 const string Constants::getTemplateDirectory() 
 { 
-    return string(LIBFWBUILDER_TEMPLATE_DIR); 
+    return string(RES_DIR); 
 }

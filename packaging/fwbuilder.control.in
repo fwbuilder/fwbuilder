@@ -1,0 +1,9 @@
+Package: fwbuilder
+Conflicts: fwbuilder (<=4.1.1-1), fwbuilder-common, fwbuilder-bsd, fwbuilder-linux, fwbuilder-doc
+Replaces: fwbuilder (<=4.1.1-1), fwbuilder-common, fwbuilder-bsd, fwbuilder-linux, fwbuilder-doc
+Priority: extra
+Section: checkinstall
+Maintainer: vadim@fwbuilder.org
+Version: @VERSION@-@RELEASE_NUM@
+Depends: libfwbuilder, libqt4-gui (>= 4.3.0), libxml2, libxslt1.1, libsnmp | libsnmp15
+Description: Firewall Builder GUI and policy compilers

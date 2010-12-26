@@ -10,7 +10,7 @@
  * Template files directory dir
  * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
  */
-#undef LIBFWBUILDER_TEMPLATE_DIR
+#undef RES_DIR
 
 #undef HAVE_LIBSNMP
 #undef UCD_SNMP

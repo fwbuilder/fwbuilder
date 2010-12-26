@@ -2,6 +2,9 @@
 #
 include(../../qmake.inc)
 #
+TEMPLATE = lib
+CONFIG += staticlib
+
 VERSION = $$SO_VERSION
 #
 SOURCES  = 	BaseCompiler.cpp \
@@ -24,14 +27,17 @@ HEADERS  = 	BaseCompiler.h \
 			RuleProcessor.h \
 			RoutingCompiler.h
 
-headers.files = $$HEADERS
-headers.path  = "$$prefix/include/fwb-4/fwcompiler"
-
 unix {
         LIBS += -L../fwbuilder -lfwbuilder
 }
 
-TARGET    = fwcompiler
+TARGET = fwcompiler
 # target.path = "$$prefix/lib"
 
-INSTALLS += headers
+# no need to install headers in fortress
+#headers.files = $$HEADERS
+#headers.path  = "$$prefix/include/fwb-4/fwcompiler"
+#INSTALLS += headers
+
+# and no need to install .a library
+INSTALLS -= target

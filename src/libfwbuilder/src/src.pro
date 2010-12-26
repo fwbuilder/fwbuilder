@@ -5,6 +5,6 @@ TEMPLATE = subdirs
 
 CONFIG  += ordered
 TARGET   = src
-SUBDIRS  = confscript fwbuilder fwcompiler
+SUBDIRS  = fwbuilder fwcompiler
 
 

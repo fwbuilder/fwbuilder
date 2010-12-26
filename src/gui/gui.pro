@@ -11,8 +11,17 @@ SOURCES += main.cpp
 
 # Arrange static libraries before dynamic ones in the linker command
 # line.  libgui goes first
-win32:STATIC_LIBS += ../libgui/release/gui.lib
-!win32:STATIC_LIBS += ../libgui/libgui.a
+win32 {
+    FWBPARSER_LIB = ../parsers/release/fwbparser.lib
+    FWTRANSFER_LIB = ../fwtransfer/release/fwtransfer.lib
+    STATIC_LIBS += ../libgui/release/gui.lib
+}
+
+!win32 {
+    FWBPARSER_LIB = ../parsers/libfwbparser.a
+    FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
+    STATIC_LIBS += ../libgui/libgui.a
+}
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
 STATIC_LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
@@ -34,7 +43,8 @@ INCLUDEPATH +=  \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib/ \
-	../libgui
+	../libgui \
+	../libfwbuilder/src
 
 win32:INCLUDEPATH += ../libgui/ui
 !win32:INCLUDEPATH += ../libgui/.ui
@@ -45,21 +55,27 @@ DEPENDPATH =  \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib \
-	../libgui
+	../libgui \
+	../libfwbuilder/src/fwbuilder \
+	../libfwbuilder/src/fwcompiler
 
 win32:STATIC_LIBS += \
 	../common/release/common.lib \
     ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
-    ../compiler_lib/release/compilerdriver.lib
+    ../compiler_lib/release/compilerdriver.lib \
+	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
+	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
 
 !win32:STATIC_LIBS +=  \
 	../common/libcommon.a \
     ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
-    ../compiler_lib/libcompilerdriver.a
+    ../compiler_lib/libcompilerdriver.a \
+	../libfwbuilder/src/fwcompiler/libfwcompiler.a \
+	../libfwbuilder/src/fwbuilder/libfwbuilder.a \
 
 win32:PRE_TARGETDEPS = \
 	../libgui/release/gui.lib \
@@ -68,7 +84,10 @@ win32:PRE_TARGETDEPS = \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib \
+	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
+	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
     $$FWBPARSER_LIB
+
 !win32:PRE_TARGETDEPS = \
     ../libgui/libgui.a \
     ../common/libcommon.a \
@@ -76,6 +95,8 @@ win32:PRE_TARGETDEPS = \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a \
+    ../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+    ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     $$FWBPARSER_LIB
 
 macx:STATIC_LIBS += -framework \

@@ -20,7 +20,8 @@ HEADERS	 = ../../config.h    \
 
 CONFIG += staticlib
 
-INCLUDEPATH += $$ANTLR_INCLUDEPATH
+INCLUDEPATH += $$ANTLR_INCLUDEPATH ../libfwbuilder/src/
+
 LIBS += $$ANTLR_LIBS
 DEFINES += $$ANTLR_DEFINES
 

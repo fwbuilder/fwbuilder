@@ -9,7 +9,8 @@ CONFIG  += ordered
 
 TARGET   = src
 
-SUBDIRS  =  res \
+SUBDIRS  =  libfwbuilder \
+			res \
 			parsers \
 			antlr \
 			common \

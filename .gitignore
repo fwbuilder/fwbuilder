@@ -24,6 +24,7 @@ qmake.inc
 ltmain.sh
 configure
 config.h
+libtool
 .obj
 .moc
 .ui

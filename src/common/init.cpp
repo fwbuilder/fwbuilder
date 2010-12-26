@@ -59,7 +59,7 @@ void init(char * const*)
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
     if (respath=="") respath = RES_DIR;
-    librespath = LIBFWBUILDER_TEMPLATE_DIR;
+    librespath = RES_DIR;
 
     libfwbuilder::init();
 

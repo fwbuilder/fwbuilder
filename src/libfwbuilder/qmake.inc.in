@@ -19,8 +19,7 @@ unix {
     QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
 
     INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
-    LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
-        @LIB_RESOLV@ @LIBS@
+    LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ @LIB_RESOLV@ @LIBS@
 
     !macx {
          UI_DIR = .ui
@@ -31,8 +30,8 @@ unix {
          DESTDIR =
 
          target.path = @LIBDIR@
-         dtd.path = @TEMPLATE_DIR@/
-         migration.path = @TEMPLATE_DIR@/migration
+         dtd.path = @RES_DIR@/
+         migration.path = @RES_DIR@/migration
          doc.path = @DOCDIR@
 
          CONFIG += warn_on debug

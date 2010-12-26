@@ -2,6 +2,9 @@
 #
 include(../../qmake.inc)
 #
+TEMPLATE = lib
+CONFIG += staticlib
+
 VERSION = $$SO_VERSION
 #
 SOURCES  = 	InetAddr.cpp \
@@ -151,10 +154,12 @@ HEADERS  = 	inet_net.h \
 			ObjectMirror.h \
 			XMLTools.h
 
-headers.files = $$HEADERS
-headers.path  = "$$prefix/include/fwb-4/fwbuilder"
-
 TARGET    = fwbuilder
-# target.path = "$$prefix/lib"
 
-INSTALLS += headers
+# no need to install headers 
+#headers.files = $$HEADERS
+#headers.path  = "$$prefix/include/fwb-4/fwbuilder"
+#INSTALLS += headers
+
+# and no need to install .a library
+INSTALLS -= target

@@ -1,12 +1,9 @@
 # -*- mode: makefile; tab-width: 4; -*-
-# $Id$
-#TEMPLATE = lib
-#CONFIG += staticlib
-#LANGUAGE = C++
+
 QT += network
-#TARGET = libgui
-#INSTALLS -= target
+
 include(../../qmake.inc)
+
 exists(qmake.inc):include( qmake.inc)
 
 TEMPLATE = lib
@@ -495,11 +492,16 @@ INCLUDEPATH += ../common \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
-    ../compiler_lib/
+    ../compiler_lib/ \
+	../libfwbuilder/src
+
 DEPENDPATH = ../common \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
-    ../compiler_lib
+    ../compiler_lib \
+	../libfwbuilder/src/fwbuilder \
+	../libfwbuilder/src/fwcompiler
+
 RESOURCES += MainRes.qrc
 

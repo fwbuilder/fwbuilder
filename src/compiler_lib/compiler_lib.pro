@@ -30,7 +30,7 @@ HEADERS	 = ../../config.h \
 			pixInterfaces.h \
 			interfacePropertiesObjectFactory.h
 
-!macx:LIBS  += $$LIBS_FWCOMPILER
+INCLUDEPATH += ../libfwbuilder/src
 
 CONFIG += staticlib
 

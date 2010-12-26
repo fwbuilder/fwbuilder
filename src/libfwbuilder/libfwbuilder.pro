@@ -3,7 +3,7 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = etc doc migration src
+SUBDIRS = etc migration src
 
 DOLLAR = $
 

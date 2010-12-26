@@ -12,6 +12,8 @@ SOURCES = init.cpp
 
 HEADERS = ../../config.h commoninit.h
 
+INCLUDEPATH += ../libfwbuilder/src
+
 CONFIG += staticlib
 
 TARGET = common

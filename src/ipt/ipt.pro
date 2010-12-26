@@ -12,16 +12,33 @@ HEADERS	 = ../../config.h
 
 win32: CONFIG += console
 
-INCLUDEPATH += ../common ../iptlib ../compiler_lib/
+INCLUDEPATH += ../common ../iptlib ../compiler_lib/ ../libfwbuilder/src
+
 DEPENDPATH   = ../common ../iptlib ../compiler_lib
 
-win32:LIBS  += ../common/release/common.lib ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib 
-!win32:LIBS += ../common/libcommon.a ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
+win32:LIBS  += ../common/release/common.lib \
+      ../iptlib/release/iptlib.lib \
+      ../compiler_lib/release/compilerdriver.lib  \
+      ../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
+      ../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
 
-win32:PRE_TARGETDEPS  = ../common/release/common.lib ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib
-!win32:PRE_TARGETDEPS = ../common/libcommon.a ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
+!win32:LIBS += ../common/libcommon.a \
+      ../iptlib/libiptlib.a \
+      ../compiler_lib/libcompilerdriver.a \
+      ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
+      ../libfwbuilder/src/fwbuilder/libfwbuilder.a
 
-LIBS += $$LIBS_FWCOMPILER
+win32:PRE_TARGETDEPS  = ../common/release/common.lib \
+      ../iptlib/release/iptlib.lib \
+      ../compiler_lib/release/compilerdriver.lib \
+      ../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
+      ../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
+
+!win32:PRE_TARGETDEPS = ../common/libcommon.a \
+      ../iptlib/libiptlib.a \
+      ../compiler_lib/libcompilerdriver.a \
+      ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
+      ../libfwbuilder/src/fwbuilder/libfwbuilder.a
 
 TARGET = fwb_ipt
 

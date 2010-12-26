@@ -13,6 +13,28 @@ RELEASE="b@BUILD_NUM@"
 
 BETA="no"
 
-REQUIRED_LIBFWBUILDER_VERSION="4.1.4"
+# 
+#  Library versioning: 
+#
+# +1 : ? : +1  == new interface that does not break old one
+# +1 : ? : 0   == new interface that breaks old one
+#  ? : ? : 0   == no new interfaces, but breaks apps
+#  ? :+1 : ?   == just some internal changes, nothing breaks but might work 
+#                 better
+# CURRENT : REVISION : AGE
+#
+#  for more details see libtool manual, chapter "Libtool's versioning system"
+
+LIBFWBUILDER_CURRENT=9
+LIBFWBUILDER_REVISION=1
+LIBFWBUILDER_AGE=0
+
+LIBFWBUILDER_SO_VERSION=${LIBFWBUILDER_CURRENT}:${LIBFWBUILDER_REVISION}:${LIBFWBUILDER_AGE}
+LIBFWBUILDER_SOLIB_VERSION=${LIBFWBUILDER_CURRENT}.${LIBFWBUILDER_REVISION}.${LIBFWBUILDER_AGE}
+LIBFWBUILDER_SOLIB_SYMLINK1_VERSION=${LIBFWBUILDER_CURRENT}.${LIBFWBUILDER_REVISION}
+LIBFWBUILDER_SOLIB_SYMLINK2_VERSION=${LIBFWBUILDER_CURRENT}
+
+# Data format version
+FWBUILDER_XML_VERSION=17
 
 

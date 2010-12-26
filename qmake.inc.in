@@ -4,7 +4,6 @@
 #
 QTDIR = $$(QTDIR)
 TEMPLATE = app
-SO_VERSION = @LIBFWBUILDER_SOLIB_VERSION@
 DEFINES += $$(DEFINES)
 LANGUAGE = C++
 UI_DIR = ui
@@ -21,29 +20,31 @@ unix {
 
     ANTLR_INCLUDEPATH =  @ANTLR_INCLUDEPATH@
     ANTLR_LIBS =  @ANTLR_LIBS@
-    FWBPARSER_LIB = ../parsers/libfwbparser.a
-    FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
 
     QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
 
-    !macx {
+    INCLUDEPATH += .. ../..
+    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
+    LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ @LIB_RESOLV@ @LIBS@
 
-        UI_DIR = .ui
-        MOC_DIR = .moc
-        OBJECTS_DIR = .obj
+    UI_DIR = .ui
+    MOC_DIR = .moc
+    OBJECTS_DIR = .obj
+
+    QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
+    QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
+    QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter
+    QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter
+
+    !macx {
 
         exec_prefix = @EXEC_PREFIX@
         DESTDIR =
         ICONSDIR = @ICONSDIR@
 
-        INCLUDEPATH += .. ../.. $$(INCLUDEPATH) @LIBFWBUILDER_INCLUDEPATH@
-
-        LIBS_FWCOMPILER = @LIBFWBUILDER_LIBS_FWCOMPILER@
-        LIBS_FWBUILDER = @LIBFWBUILDER_LIBS_FWBUILDER@
-
         target.path = $$PREFIX/bin
-        dtd.path = @TEMPLATE_DIR@/
-        migration.path = @TEMPLATE_DIR@/migration
+        dtd.path = @RES_DIR@/
+        migration.path = @RES_DIR@/migration
         doc.path = @DOCDIR@
         datadir.path   = @DATADIR@
 
@@ -56,17 +57,11 @@ unix {
         res_configlets.path = $$res.path/configlets
 
         # INSTALLS += icns
-        LIBS += $$LIBS_FWBUILDER @LIBS@
+        LIBS += @LIBS@
 
         PKGLOCALEDIR = $$res.path/locale
 
-        LIBS += $$LIBS_FWBUILDER @LIBS@
-
         CONFIG += warn_on debug
-        QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
-        QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
-        QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter
-        QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter
 
     }
 }
@@ -82,16 +77,5 @@ DEFINES += FWB_SIG=$$FWB_SIG
 exists(qmake2.inc) {
   include(qmake2.inc)
 }
-
-exists(build_num) {
-	include(build_num)
-}
-if (isEmpty(BUILD_NUM)) {
-	GIT_BRANCH=$$system(git branch | grep '\\*' | cut -c3-)
-	GIT_COMMIT=$$system(git show --abbrev-commit -1 --pretty=oneline --shortstat | head -1 | cut -c1-7)
-	BUILD_NUM="\"$$GIT_BRANCH:$$GIT_COMMIT\""
-}
-
-DEFINES += BUILD_NUM=$$BUILD_NUM
 
 INSTALLS += target

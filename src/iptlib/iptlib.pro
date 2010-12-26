@@ -44,16 +44,17 @@ HEADERS	 = ../../config.h \
 
 CONFIG += staticlib
 
-INCLUDEPATH += ../compiler_lib/
+INCLUDEPATH += ../compiler_lib/ ../libfwbuilder/src
+
 DEPENDPATH   = ../compiler_lib
 
-win32:LIBS  += ../compiler_lib/release/compilerdriver.lib
-!win32:LIBS += ../compiler_lib/libcompilerdriver.a
+win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib \
+	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
+	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib
 
-win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib
-!win32:PRE_TARGETDEPS = ../compiler_lib/libcompilerdriver.a
-
-LIBS += $$LIBS_FWCOMPILER
+!win32:PRE_TARGETDEPS = ../compiler_lib/libcompilerdriver.a \
+	../libfwbuilder/src/fwcompiler/libfwcompiler.a \
+	../libfwbuilder/src/fwbuilder/libfwbuilder.a
 
 TARGET = iptlib
 

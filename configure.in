@@ -4,6 +4,7 @@ AC_INIT
 AC_CONFIG_SRCDIR([src/gui/main.cpp])
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADER(src/libfwbuilder/src/fwbuilder/libfwbuilder-config.h)
 
 PACKAGE=fwbuilder
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [package])
@@ -17,19 +18,49 @@ dnl all version numbers are defined in the file VERSION
 dnl
 . ./VERSION
 
-BUILD_NUM=`cat build_num | cut -d' ' -f3`
+# RELEASE number (== build number) is taken from the file build_num if
+# it exists If the file is not there, we construct it from git branch
+# and commit
+test -f build_num && {
+    . build_num
+} || {
+    BUILD_NUM="999999"
+}
+RELEASE_NUM=$BUILD_NUM
+
+AC_DEFINE_UNQUOTED(BUILD_NUM, "$BUILD_NUM")
+AC_SUBST(BUILD_NUM)
+AC_SUBST(RELEASE_NUM)
 
 AC_SUBST(FWB_MAJOR_VERSION)
 AC_SUBST(FWB_MINOR_VERSION)
 AC_SUBST(FWB_MICRO_VERSION)
 AC_SUBST(FWB_VERSION)
 
+# libfwbuilder versions
+AC_SUBST(LIBMAJOR)
+AC_SUBST(LIBFWBUILDER_SO_VERSION)
+AC_SUBST(LIBFWBUILDER_SOLIB_VERSION)
+AC_SUBST(LIBFWBUILDER_VERSION)
+#AC_SUBST(LIBFWBUILDER_LIB_VER)
+AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK1_VERSION)
+AC_SUBST(LIBFWBUILDER_SOLIB_SYMLINK2_VERSION)
+AC_SUBST(FWBUILDER_XML_VERSION)
+
 SHORTVERSION=${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}${FWB_MICRO_VERSION}
 AC_SUBST(SHORTVERSION)
+
+LIBFWBUILDER_FORMAT_VERSION="${LIBFWBUILDER_VERSION}"
+AC_DEFINE_UNQUOTED(LIBFWBUILDER_FORMAT_VERSION, "${LIBFWBUILDER_FORMAT_VERSION}")
 
 echo "Creating VERSION.h file..."
 
 echo "#define VERSION      \"$VERSION\""      > VERSION.h
+
+echo "Creating libfwbuilder-version.h file..."
+
+echo "#define LIBFWBUILDER_VERSION  \"$LIBFWBUILDER_VERSION\"" > src/libfwbuilder/src/fwbuilder/libfwbuilder-version.h
+echo "#define LIBFWBUILDER_FORMAT_VERSION  \"$FWBUILDER_XML_VERSION\"" >> src/libfwbuilder/src/fwbuilder/libfwbuilder-version.h
 
 dnl try to find QT
 dnl
@@ -75,6 +106,12 @@ AC_ARG_WITH(docdir,      [  --with-docdir=DIR       Specify directory path for f
                           documentation files  ])
 AC_ARG_WITH(datadir,     [  --with-datadir=DIR      Specify directory path for fwbuilder 
                           data files  ])
+
+AC_C_BIGENDIAN(AC_DEFINE(WORDS_BIGENDIAN),
+               AC_DEFINE(WORDS_LITTLEENDIAN),
+               AC_MSG_ERROR(Failed to determine endianness!!))
+
+LIBFWBUILDER_LIBDIR='-L${libdir}'
 
 
 
@@ -184,6 +221,9 @@ dnl AC_PROG_RANLIB
 
 AC_CHECK_HEADERS([getopt.h])
 AC_CHECK_HEADERS([signal.h])
+AC_CHECK_HEADERS([endian.h])
+
+AC_CHECK_FUNCS(strtok_r)
 
 AC_CHECK_FUNCS(stat _stat signal)
 
@@ -203,43 +243,6 @@ AC_DEFINE_UNQUOTED(RLOG_FILE_NAME,     ["$RLOG_FILE_NAME"], [rlog_file_name])
 AC_DEFINE_UNQUOTED(CI_FILE_NAME,       ["$CI_FILE_NAME"], [ci_file_name])
 AC_DEFINE_UNQUOTED(CO_FILE_NAME,       ["$CO_FILE_NAME"], [co_file_name])
 
-
-AC_PATH_PROG(LIBFWBUILDER_CONFIG, libfwbuilder-config-${FWB_MAJOR_VERSION},  ,[$EXTENDED_PATH])
-
-if test x$LIBFWBUILDER_CONFIG = x ; then
-   AC_MSG_ERROR([*** libfwbuilder not installed, or libfwbuilder-config-${FWB_MAJOR_VERSION} is not in path])
-else
-  LIBFWBUILDER_CFLAGS_FWBUILDER="`$LIBFWBUILDER_CONFIG --cflags fwbuilder`"
-  LIBFWBUILDER_CFLAGS_FWCOMPILER="`$LIBFWBUILDER_CONFIG --cflags fwcompiler`"
-  LIBFWBUILDER_CFLAGS_FWBD="`$LIBFWBUILDER_CONFIG --cflags fwbd`"
-  LIBFWBUILDER_INCLUDEPATH="`$LIBFWBUILDER_CONFIG --includepath`"
-  LIBFWBUILDER_LIBPATH="`$LIBFWBUILDER_CONFIG --libpath`"
-  LIBFWBUILDER_LIBS_FWBUILDER="`$LIBFWBUILDER_CONFIG --libs fwbuilder`"
-  LIBFWBUILDER_LIBS_FWCOMPILER="`$LIBFWBUILDER_CONFIG --libs fwcompiler`"
-  LIBFWBUILDER_LIBS_FWBD="`$LIBFWBUILDER_CONFIG --libs fwbd`"
-  LIBFWBUILDER_STATICLIBS="`$LIBFWBUILDER_CONFIG --staticlibs`"
-  LIBFWBUILDER_VERSION="`$LIBFWBUILDER_CONFIG --version`"
-  FWBUILDER_XML_VERSION="`$LIBFWBUILDER_CONFIG --xml_version`"
-
-  AC_MSG_CHECKING(libfwbuilder version)
-  if test x${LIBFWBUILDER_VERSION} != x${REQUIRED_LIBFWBUILDER_VERSION} ; then
-    AC_MSG_ERROR([*** Need libfwbuilder version $REQUIRED_LIBFWBUILDER_VERSION, found $LIBFWBUILDER_VERSION ])
-  fi
-  AC_MSG_RESULT($LIBFWBUILDER_VERSION)
-
-  AC_SUBST(LIBFWBUILDER_CFLAGS_FWBUILDER)
-  AC_SUBST(LIBFWBUILDER_CFLAGS_FWCOMPILER)
-  AC_SUBST(LIBFWBUILDER_LIBS_FWBUILDER) 
-  AC_SUBST(LIBFWBUILDER_LIBS_FWCOMPILER) 
-  AC_SUBST(LIBFWBUILDER_LIBPATH) 
-  AC_SUBST(LIBFWBUILDER_INCLUDEPATH)
-  AC_SUBST(LIBFWBUILDER_STATICLIBS) 
-  AC_SUBST(LIBFWBUILDER_VERSION)
-  AC_SUBST(FWBUILDER_XML_VERSION)
-
-fi
-
-AC_DEFINE_UNQUOTED(LIBFWBUILDER_VERSION, "$LIBFWBUILDER_VERSION", [libfwbuilder_version])
 
 AC_SUBST(LIBS) 
 
@@ -264,6 +267,221 @@ ANTLR_INCLUDEPATH="`pwd`/src/"
 ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
 AC_SUBST(ANTLR_LIBS)
 AC_SUBST(ANTLR_INCLUDEPATH)
+
+dnl check for pthreads
+dnl
+dnl Somehow, standard macro tries -lpthreads, while pthread library really
+dnl is "libpthread" on Linux. Thus only test using -pthread suceeds, but
+dnl PTHREAD_LIBS macro ends up empty.
+
+ACX_PTHREAD([
+   test -z "$PTHREAD_LIBS" && test "$PTHREAD_CFLAGS" = "-pthread" && PTHREAD_LIBS="-pthread"
+
+   echo "Found pthread library:"
+   echo "PTHREAD_CFLAGS="$PTHREAD_CFLAGS
+   echo "PTHREAD_LIBS="$PTHREAD_LIBS
+
+] , [
+   AC_MSG_ERROR([POSIX threads library not present or not configured])
+])
+
+dnl check for XML library
+
+AC_PATH_PROG(XML2_CONFIG, xml2-config,  ,[$EXTENDED_PATH])
+
+if test x$XML2_CONFIG = x ; then
+   AC_MSG_ERROR([libxml2 not present or not configured])
+else
+  XML_CFLAGS="`$XML2_CONFIG --cflags`"
+  XML_LIBS="`$XML2_CONFIG --libs`"
+fi
+XML_CFLAGS=`echo $XML_CFLAGS | sed 's/-I\/usr\/include //'`
+AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_LIBS) 
+
+SAVE_LIBS=${LIBS}
+LIBS="$XML_LIBS $LIBS"
+AC_CHECK_FUNCS(xmlSaveFormatFileEnc)
+LIBS=${SAVE_LIBS}
+
+dnl check for XSLT library
+
+AC_PATH_PROG(XSLT_CONFIG, xslt-config,  ,[$EXTENDED_PATH])
+
+if test x$XSLT_CONFIG = x ; then
+   AC_MSG_ERROR([libxslt not present or not configured])
+else
+  XSLT_CFLAGS="`$XSLT_CONFIG --cflags`"
+  XSLT_LIBS="`$XSLT_CONFIG --libs`"
+fi
+XSLT_CFLAGS=`echo $XSLT_CFLAGS | sed 's/-I\/usr\/include //'`
+
+dnl
+dnl purely aestetical: xslt-config often reports the same flags as 
+dnl xml2-config
+dnl
+ac_xslt_var=""
+for w in ${XSLT_CFLAGS}; do
+  case " ${XML_CFLAGS} " in
+    *\ $w\ *) ;;
+    *) ac_xslt_var="$ac_xslt_var $w" ;;
+  esac
+done
+XSLT_CFLAGS=$ac_xslt_var
+
+ac_xslt_var=""
+for w in ${XSLT_LIBS}; do
+  case " ${XML_LIBS} " in
+    *\ $w\ *) ;;
+    *) ac_xslt_var="$ac_xslt_var $w" ;;
+  esac
+done
+XSLT_LIBS=$ac_xslt_var
+
+AC_SUBST(XSLT_CFLAGS)
+AC_SUBST(XSLT_LIBS) 
+ 
+dnl libXslt header libxslt/xsltconfig.h only present in newew version of libxslt
+dnl for instance it is not part of 1.0.1 but present in 1.0.7.
+AC_CHECK_HEADERS(libxslt/xsltconfig.h)
+
+dnl Check for bind specific headers and libraries
+dnl if they are present, use them, rather than ones
+dnl coming with libc.
+
+AC_CHECK_HEADER(bind/resolv.h, [
+  CPPFLAGS="$CPPFLAGS -I/usr/include/bind"
+  HAVE_RESOLV_H=yes
+] , [ AC_CHECK_HEADER(/usr/local/bind/include/resolv.h, [
+    CPPFLAGS="$CPPFLAGS -I/usr/local/bind/include/"
+    HAVE_RESOLV_H=yes
+  ], [ 
+    AC_CHECK_HEADERS([resolv.h], [ HAVE_RESOLV_H=yes ], [], [
+#include <sys/types.h>
+#include <netinet/in.h> 
+    ] )
+  ] )
+], [
+#include <netinet/in.h>
+] )
+
+LIB_RESOLV=""
+HAVE_RES_NQUERY=""
+AC_SUBST(LIB_RESOLV) 
+
+
+dnl
+dnl prepare equivalents of *_CFLAGS variables for qmake
+dnl qmake requires these to be without "-I"
+dnl
+XML_CFLAGS_Q=`echo ${XML_CFLAGS} | sed 's/-I//g'`
+XSLT_CFLAGS_Q=`echo ${XSLT_CFLAGS} | sed 's/-I//g'`
+PTHREAD_CFLAGS_Q=`echo ${PTHREAD_CFLAGS} | sed 's/-I//g'`
+LIBS_Q=`echo ${LIBS} | sed 's/-I//g'`
+
+AC_SUBST(XML_CFLAGS_Q)
+AC_SUBST(XSLT_CFLAGS_Q)
+AC_SUBST(PTHREAD_CFLAGS_Q)
+AC_SUBST(LIBS_Q)
+
+
+
+dnl
+dnl  We also support "--with-ucdsnmp=no" and "--without-ucdsnmp"
+dnl  By default we assume user wants snmp support, provided script
+dnl  can find the library
+dnl
+dnl  Just in case we support both --with-ucdsnmp and --with-ucd-snmp
+dnl                                    --vk
+dnl
+
+check_for_ucdsnmp=yes
+if test x$with_ucdsnmp = xno ; then
+  check_for_ucdsnmp=no
+fi
+
+if test x$with_ucd_snmp = xno ; then
+  check_for_ucdsnmp=no
+fi
+
+if test $check_for_ucdsnmp = yes ; then
+
+dnl
+dnl net-snmp library includes script net-snmp-config which I use to determine cflags
+dnl and libs. Unfortunately even if this script is there and is used  flags, 
+dnl the program may still not link with the library. Currently having this problem on 
+dnl FreeBSD 4.7 - after upgrade of openssl, code using net-snmp stopped linking. That 
+dnl is why I still try to do linking test even if script is present.
+dnl
+dnl Testing for presence of includes and doing linking test assures that -devel 
+dnl package is indeed installed (primitive test program could link with libsnmp.so 
+dnl even if -devel package is not installed and headers are not there).
+dnl
+  AC_PATH_PROG(NET_SNMP_CONFIG, net-snmp-config,  ,[$EXTENDED_PATH])
+  if test x$NET_SNMP_CONFIG != x ; then
+    ac_LIBSNMP_LIBS="`$NET_SNMP_CONFIG --libs`"
+    ac_LIBSNMP_CFLAGS="`$NET_SNMP_CONFIG --cflags`"
+    AC_CHECK_LIB(netsnmp, init_snmp,
+    [
+      HAVE_LIBSNMP="1"
+      AC_DEFINE(HAVE_LIBSNMP)
+      NET_SNMP="1"
+      AC_DEFINE(NET_SNMP)
+      LIBSNMP_LIBS=$ac_LIBSNMP_LIBS
+      LIBSNMP_CFLAGS=$ac_LIBSNMP_CFLAGS
+      AC_CHECK_LIB(netsnmp, snprint_objid, [
+        AC_DEFINE(HAVE_SNPRINT_OBJID)
+      ], ,$ac_LIBSNMP_LIBS)
+    ], ,$ac_LIBSNMP_LIBS)
+  else
+    AC_CHECK_HEADERS([ucd-snmp/asn1.h], [
+      AC_CHECK_HEADER(ucd-snmp/snmp.h, [
+        AC_CHECK_LIBSNMP( snmp )
+        if test "Z$HAVE_LIBSNMP" != "Z"; then
+          UCD_SNMP="1"
+          AC_DEFINE(UCD_SNMP)
+          save_LIBS=$LIBS
+          LIBS="$LIBSNMP_LIBS $LIBS"
+          AC_CHECK_LIB(snmp, snprint_objid, [
+            AC_DEFINE(HAVE_SNPRINT_OBJID)
+          ])
+          LIBS=$save_LIBS
+        fi
+      ], ,[
+#include <sys/types.h>
+#include <ucd-snmp/asn1.h>
+      ])
+    ])
+  fi
+
+  LIBS="${LIBSNMP_LIBS} ${LIBS}"
+
+fi
+AC_SUBST(LIBSNMP_LIBS) 
+
+AC_CHECK_LIB(c, inet_net_ntop, [
+  AC_DEFINE_UNQUOTED(HAVE_INET_NET_NTOP, 1, [inet_net_ntop])
+  ],[
+    AC_CHECK_LIB(bind, inet_net_ntop, [
+      AC_DEFINE_UNQUOTED(HAVE_INET_NET_NTOP, 1, [inet_net_ntop])
+      LIBS="-lbind $LIBS"
+      ])
+],[])
+
+
+AC_CHECK_LIB(z, gzopen, [ LIBS="-lz ${LIBS}"], [
+   AC_MSG_ERROR([libz library not found])
+])
+
+dnl
+dnl   Determine init dir and add definition to config.h
+dnl
+
+PREFIX=$ac_default_prefix
+
+if test "x$prefix" != "xNONE"; then
+  PREFIX=$prefix
+fi
 
 # TODO: Probably need to repackage this as Autoconf macro.
 #
@@ -415,6 +633,18 @@ fi
 AC_DEFINE_UNQUOTED(RES_DIR, "$RES_DIR", [res_dir])
 AC_SUBST(RES_DIR)
 
+dnl   prefix has bogus value while building RPM. Since program
+dnl   should incrorporate full path to the templates directory into
+dnl   the code via config.h file, we need to keep track of
+dnl   this directory twice: TEMPLATE_DIR is what goes to config.h, while
+dnl   "install" Makefile targets will use $(prefix) to build install
+dnl   path
+
+TEMPLATE_DIR=$RES_DIR
+AC_DEFINE_UNQUOTED(LIBFWBUILDER_TEMPLATE_DIR, "${TEMPLATE_DIR}")
+AC_SUBST(TEMPLATE_DIR)
+
+
 AC_SUBST(OS)
 AC_DEFINE_UNQUOTED(OS, "${OS}", [os])
 test -n "$OS_CYGWIN" && AC_DEFINE_UNQUOTED(OS_CYGWIN, "${OS_CYGWIN}", [cygwin])
@@ -474,11 +704,14 @@ else
   fi
 fi
 
-AC_CONFIG_FILES([ qmake.inc ])
-
-AC_CONFIG_FILES([ src/res/objects_init.xml ])
-AC_CONFIG_FILES([ src/res/templates.xml ])
-
+AC_CONFIG_FILES([ qmake.inc
+                  src/res/objects_init.xml
+                  src/res/templates.xml
+                  src/libfwbuilder/qmake.inc
+                  src/libfwbuilder/etc/fwbuilder.dtd
+                  packaging/fwbuilder.control
+                  packaging/fwbuilder.spec
+                  packaging/fwbuilder-static-qt.spec])
 
 
 AC_OUTPUT
