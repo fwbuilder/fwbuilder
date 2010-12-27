@@ -26,7 +26,8 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
 #include "FWObjectTest.h"
-#include "FWObjectDatabase.h"
+#include "fwbuilder/FWObjectDatabase.h"
+
 #include <string>
 
 using namespace libfwbuilder;

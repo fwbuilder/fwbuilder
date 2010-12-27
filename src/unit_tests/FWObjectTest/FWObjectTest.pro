@@ -1,4 +1,4 @@
-include(../../../../qmake.inc)
+include(../../../qmake.inc)
 
 QT -= core gui
 
@@ -11,8 +11,8 @@ LIBS += $$CPPUNIT_LIBS
 
 SOURCES += main.cpp FWObjectTest.cpp
 HEADERS += FWObjectTest.h
-INCLUDEPATH += ../../..
-LIBS += -L../.. -lfwbuilder -lcppunit
+INCLUDEPATH += ../../libfwbuilder/src
+LIBS += ../../libfwbuilder/src/fwbuilder/libfwbuilder.a
 run_tests.commands = echo "Running tests..." && ./${TARGET}
 run_tests.depends = all
 clean_tests.depends = clean

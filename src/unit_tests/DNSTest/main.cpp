@@ -26,8 +26,9 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
 #include "DNSTest.h"
+#include "fwbuilder/FWObjectDatabase.h"
+
 #include <string>
-#include "FWObjectDatabase.h"
 
 int fwbdebug = 0;
 std::string platform;

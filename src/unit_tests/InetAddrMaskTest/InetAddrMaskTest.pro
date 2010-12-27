@@ -1,20 +1,18 @@
-include(../../../../qmake.inc)
+include(../../../qmake.inc)
 
-QT -= core \
-    gui
-
-QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
-LIBS += $$CPPUNIT_LIBS
+QT -= core gui
 
 TARGET = InetAddrMaskTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
-    InetAddrMaskTest.cpp
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
+LIBS += $$CPPUNIT_LIBS
+
+SOURCES += main.cpp InetAddrMaskTest.cpp
 HEADERS += InetAddrMaskTest.h
-INCLUDEPATH += ../../..
-LIBS += -L ../.. -lfwbuilder
+INCLUDEPATH += ../../libfwbuilder/src
+LIBS += ../../libfwbuilder/src/fwbuilder/libfwbuilder.a
 run_tests.commands = echo "Running tests..." && ./${TARGET}
 run_tests.depends = all
 clean_tests.depends = clean

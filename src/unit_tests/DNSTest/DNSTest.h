@@ -29,8 +29,10 @@
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "FWObjectDatabase.h"
-#include "FWObject.h"
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObject.h"
+
 
 class DNSTest : public CppUnit::TestCase
 {

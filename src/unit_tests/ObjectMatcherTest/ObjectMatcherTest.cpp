@@ -63,7 +63,7 @@ void ObjectMatcherTest::matchTest()
     FWObjectDatabase *db = new FWObjectDatabase();
 
     XMLTools::UpgradePredicate up;
-    db->load(string("test_data.fwb"), &up, string(LIBFWBUILDER_TEMPLATE_DIR));
+    db->load(string("test_data.fwb"), &up, string(RES_DIR));
 
     ObjectMatcher om;
     om.setRecognizeBroadcasts(true);

@@ -38,7 +38,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Firewall.h"
-#include "Group.h"
+#include "fwbuilder/Group.h"
 
 using namespace libfwbuilder;
 using namespace std;
