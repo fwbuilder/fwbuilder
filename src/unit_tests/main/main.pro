@@ -15,6 +15,8 @@ INCLUDEPATH += ../..
 INCLUDEPATH += ../../libfwbuilder/src
 INCLUDEPATH += ../../libgui
 INCLUDEPATH += ../../libgui/.ui
+INCLUDEPATH += ../../compiler_lib
+INCLUDEPATH += ../../common
 
 QT += testlib network gui
 
