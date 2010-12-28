@@ -1,6 +1,6 @@
 # -*- mode: makefile; tab-width: 4; -*-
 
-include(../../qmake.inc)
+include(../../../qmake.inc)
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
