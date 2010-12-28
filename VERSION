@@ -13,22 +13,6 @@ RELEASE="b@BUILD_NUM@"
 
 BETA="no"
 
-# 
-#  Library versioning: 
-#
-# +1 : ? : +1  == new interface that does not break old one
-# +1 : ? : 0   == new interface that breaks old one
-#  ? : ? : 0   == no new interfaces, but breaks apps
-#  ? :+1 : ?   == just some internal changes, nothing breaks but might work 
-#                 better
-# CURRENT : REVISION : AGE
-#
-#  for more details see libtool manual, chapter "Libtool's versioning system"
-
-LIBFWBUILDER_CURRENT=9
-LIBFWBUILDER_REVISION=1
-LIBFWBUILDER_AGE=0
-
 # Data format version
 FWBUILDER_XML_VERSION=17
 
