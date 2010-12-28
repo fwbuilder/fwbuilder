@@ -27,7 +27,6 @@
 #define OBJECTMANIPULATORTEST_H
 
 #include <QObject>
-#include "../main/main_macros.cpp"
 
 
 class AddressRangeDialogTest : public QObject

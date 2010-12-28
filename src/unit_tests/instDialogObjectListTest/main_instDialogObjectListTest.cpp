@@ -24,7 +24,44 @@
 */
 
 #include "instDialogObjectListTest.h"
-#include "../main/main_macros.cpp"
 
 
-RUN_TEST(new instDialogObjectListTest());
+#include <QTest>
+#include <QFile>
+
+#include "FWWindow.h"
+#include "FWBSettings.h"
+#include "FWBApplication.h"
+#include "UserWorkflow.h"
+
+
+using namespace std;
+using namespace libfwbuilder;
+
+int fwbdebug = 0;
+FWWindow *mw = NULL; 
+FWBSettings *st = NULL; 
+FWBApplication *app = NULL; 
+UserWorkflow *wfl; 
+int sig = FWB_SIG; 
+
+
+extern void build_app(int argc, char** argv,
+                      FWBApplication** app,
+                      FWBSettings** st,
+                      UserWorkflow** wfl);
+
+int main(int argc, char** argv)
+{ 
+    app = new FWBApplication(argc, argv); 
+    app->setOrganizationName(QLatin1String("NetCitadel")); 
+    app->setApplicationName(QLatin1String("Firewall Builder")); 
+
+    build_app(argc, argv, &app, &st, &wfl);
+
+
+    QTest::qExec(new instDialogObjectListTest()); 
+
+    if (QFile::exists("test_work.fwb")) 
+        QFile::remove("test_work.fwb"); 
+}

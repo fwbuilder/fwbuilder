@@ -55,7 +55,9 @@ DEPENDPATH = ../../common \
     ../../libfwbuilder/src/fwbuilder \
     ../../libfwbuilder/src/fwcompiler
 
-STATIC_LIBS += ../../libgui/libgui.a \
+STATIC_LIBS += \
+    ../main/libtest_main.a \
+    ../../libgui/libgui.a \
     ../../common/libcommon.a \
     ../../iptlib/libiptlib.a \
     ../../pflib/libfwbpf.a \
@@ -69,6 +71,7 @@ STATIC_LIBS += ../../libgui/libgui.a \
     $$CPPUNIT_LIBS
 
 PRE_TARGETDEPS += ../../common/libcommon.a \
+    ../main/libtest_main.a \
     ../../iptlib/libiptlib.a \
     ../../pflib/libfwbpf.a \
     ../../cisco_lib/libfwbcisco.a \
