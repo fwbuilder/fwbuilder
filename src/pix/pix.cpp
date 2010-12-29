@@ -84,7 +84,7 @@ void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for Cisco PIX firewall (with support for FWSM)" << endl;
     cout << "Copyright 2002-2009 NetCitadel, LLC" << endl;
-    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
+    cout << "Version " << VERSION << endl;
     cout << "Usage: " << name << " [-tvV] [-f filename.xml] [-d destdir] [-o output.fw] firewall_object_name" << endl;
 }
 

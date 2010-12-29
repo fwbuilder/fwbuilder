@@ -87,7 +87,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for ipfw" << endl;
-    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
+    cout << "Version " << VERSION << endl;
     cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
 }
 

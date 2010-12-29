@@ -1,15 +1,24 @@
 #-*- mode: shell-script; tab-width: 4; -*-
 
 FWB_MAJOR_VERSION=4
-FWB_MINOR_VERSION=1
-FWB_MICRO_VERSION=4
+FWB_MINOR_VERSION=2
+FWB_MICRO_VERSION=0
+
+# build number is like "nano" version number. Complete version is 
+# composed like this:
+#  $FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION.$BUILD_NUM
+#
+# I am incrementing build number during development cycle
+#
+BUILD_NUM="3425"
 
 # VERSION must be a string rather than $var because of the build scripts
-VERSION="4.1.4"
-SHORTVERSION="414"
+# VERSION="4.2.0"
+# SHORTVERSION="420"
 
-# RELEASE="1"
-RELEASE="b@BUILD_NUM@"
+VERSION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION.$BUILD_NUM"
+SHORTVERSION="${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}${FWB_MICRO_VERSION}"
+
 
 BETA="no"
 

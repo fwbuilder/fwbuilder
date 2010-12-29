@@ -92,15 +92,9 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
         .arg(QLocale::system().name()) );
     m_dialog->debugText->append( "\n" );
     m_dialog->debugText->append( QString("Versions:") );
-    m_dialog->debugText->append( QString("  Firewall Builder %1")
-        .arg(VERSION) );
-    m_dialog->debugText->append( QString("  Build %2").arg(build_num));
-    m_dialog->debugText->append( QString("  Using libfwbuilder %1")
-        .arg( libfwbuilder::Constants::getLibraryVersion().c_str() ) );
-
+    m_dialog->debugText->append( QString("  Firewall Builder %1").arg(VERSION));
     m_dialog->debugText->append( QString("  Data format version %1")
         .arg(libfwbuilder::Constants::getDataFormatVersion().c_str() ) );
-
 
     m_dialog->debugText->append( QString("  Built with QT %1").arg(QT_VERSION_STR));
     m_dialog->debugText->append( QString("  Using QT %1").arg( qVersion() ) );

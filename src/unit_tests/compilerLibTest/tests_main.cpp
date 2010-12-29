@@ -32,7 +32,6 @@
 #include <cppunit/CompilerOutputter.h>
 #include <string>
 
-//int build_num = 0;
 //std::string respath;
 //QString user_name;
 

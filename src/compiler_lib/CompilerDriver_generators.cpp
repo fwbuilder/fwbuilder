@@ -47,7 +47,6 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-extern QString build_num;
 extern QString user_name;
 
 
@@ -106,7 +105,6 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
     script_skeleton->setVariable("firewall_dir", firewall_dir.c_str());
 
     top_comment->setVariable("version", VERSION);
-    top_comment->setVariable("build", build_num);
  
     top_comment->setVariable("timestamp", timestr);
     top_comment->setVariable("tz", tzname[stm->tm_isdst]);

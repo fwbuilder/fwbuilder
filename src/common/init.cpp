@@ -26,12 +26,7 @@ std::string tempfname;
 std::string argv0;
 std::string ee;
 
-#define Str(x) #x
-#define Xstr(x) Str(x)
-
-QString build_num = Xstr(BUILD_NUM);
 QString user_name;
-
 
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)

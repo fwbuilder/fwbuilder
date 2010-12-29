@@ -80,7 +80,6 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-extern QString build_num;
 extern QString user_name;
 
 /*
@@ -674,7 +673,6 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         Configlet top_comment(fw, "linux24", "top_comment");
 
         top_comment.setVariable("version", VERSION);
-        top_comment.setVariable("build", build_num);
         top_comment.setVariable("timestamp", timestr);
         top_comment.setVariable("tz", tzname[stm->tm_isdst]);
         top_comment.setVariable("user", user_name);

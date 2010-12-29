@@ -78,8 +78,6 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-extern QString build_num;
-
 
 QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
                                                      bool filter,

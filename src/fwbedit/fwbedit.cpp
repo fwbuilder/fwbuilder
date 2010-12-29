@@ -122,7 +122,7 @@ void usage()
 {
     cout << "Firewall Builder:  general purpose object tree editing tool"
          << endl;
-    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
+    cout << "Version " << VERSION << endl;
     cout << endl;
     cout << "Usage: fwbedit command [options]" << endl;
     cout << endl;

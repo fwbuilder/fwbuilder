@@ -18,14 +18,6 @@ dnl all version numbers are defined in the file VERSION
 dnl
 . ./VERSION
 
-# RELEASE number (== build number) is taken from the file build_num if
-# it exists If the file is not there, we construct it from git branch
-# and commit
-test -f build_num && {
-    . build_num
-} || {
-    BUILD_NUM="999999"
-}
 RELEASE_NUM=$BUILD_NUM
 
 AC_DEFINE_UNQUOTED(BUILD_NUM, "$BUILD_NUM")

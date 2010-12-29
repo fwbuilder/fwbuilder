@@ -1,3 +1,21 @@
+2010-12-29  vadim  <vadim@netcitadel.com>
+
+	* VERSION (VERSION): started 4.2.0
+
+	This version is the first one to merge libfwbuilder and fwbuilder
+	packages. Libfwbuilder is now in the src/libfwbuilder subtree inside
+	fwbuilder code tree.
+
+	RPM .spec files and DEB .control files are now located in the packaging
+	directory inside fwbuilder code tree.
+
+	Changes in the versioning format: I am going to use build number
+	as a "nano" version number, composing complete version as
+	"4.2.0.3425". The "-N" suffix in rpm and deb package names will
+	be used for package release number and most of the time will be
+	"-1". This suffix should reflect minor differences in the package
+	that do not affect code at all.
+
 2010-12-16  Vadim Kurland  <vadim@netcitadel.com>
 
 	* ActionsDialog.cpp (fillInterfaces): fixed #1872: "vlan interface

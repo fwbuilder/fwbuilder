@@ -37,10 +37,8 @@ FWBAboutDialog::FWBAboutDialog(QWidget *parent): QDialog(parent)
     m_aboutDialog->setupUi(this);
     m_aboutDialog->titleLbl->setText(
         QString("Firewall Builder v%1").arg(VERSION) );
-    m_aboutDialog->revLbl->setText(tr("Build: %1").arg(build_num));
-    m_aboutDialog->apiLbl->setText(
-        tr("Using Firewall Builder API %1").arg(
-            libfwbuilder::Constants::getLibraryVersion().c_str() ) );
+    m_aboutDialog->revLbl->setText("");
+    m_aboutDialog->apiLbl->setText("");
 
     ABOUT_DLG_BLANKS;
 

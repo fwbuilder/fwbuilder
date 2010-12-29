@@ -3,8 +3,8 @@
 
 
 %define name    fwbuilder
-%define version 4.1.4
-%define release 999999
+%define version 4.2.0.3425
+%define release 1
 
 %if "%_vendor" == "MandrakeSoft"
 %define guigroup  System/Configuration/Networking
@@ -27,11 +27,9 @@ Packager:       Vadim Kurland <vadim@fwbuilder.org>
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-root
 
-Requires:      libfwbuilder = @REQUIRED_LIBFWBUILDER_VERSION@
-BuildRequires: libfwbuilder-devel = @REQUIRED_LIBFWBUILDER_VERSION@
 BuildRequires: libxml2-devel, libxslt-devel, openssl-devel
 
-Obsoletes:     fwbuilder-ipt, fwbuilder-pf, fwbuilder-ipf, fwbuilder-ipfw, fwbuilder-pix, fwbuilder-iosacl, fwbuilder-cisco
+Obsoletes:     fwbuilder-ipt, fwbuilder-pf, fwbuilder-ipf, fwbuilder-ipfw, fwbuilder-pix, fwbuilder-iosacl, fwbuilder-cisco, libfwbuilder, libfwbuilder-devel
 
 Docdir:         /usr/share/doc
 

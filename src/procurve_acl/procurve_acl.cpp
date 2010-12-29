@@ -82,7 +82,7 @@ void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for HP ProCurve ACL" << endl;
     cout << "Copyright 2010 NetCitadel, LLC" << endl;
-    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
+    cout << "Version " << VERSION << endl;
     cout << "Usage: " << name << " [-tvV] [-f filename.xml] [-d destdir] [-o output.fw] firewall_object_name" << endl;
 }
 
