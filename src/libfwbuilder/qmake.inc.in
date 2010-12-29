@@ -13,6 +13,12 @@ CPPUNIT_CFLAGS = @CPPUNIT_CFLAGS@
 CPPUNIT_LIBS = @CPPUNIT_LIBS@
 
 unix {
+    CONFIG += warn_on debug
+
+    UI_DIR = .ui
+    MOC_DIR = .moc
+    OBJECTS_DIR = .obj
+
     prefix = @prefix@
 
     QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
@@ -20,11 +26,12 @@ unix {
     INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
     LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ @LIB_RESOLV@ @LIBS@
 
-    !macx {
-         UI_DIR = .ui
-         MOC_DIR = .moc
-         OBJECTS_DIR = .obj
+    QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
+    QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
+    QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
+    QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
 
+    !macx {
          exec_prefix = @EXEC_PREFIX@
          DESTDIR =
 
@@ -33,11 +40,6 @@ unix {
          migration.path = @RES_DIR@/migration
          doc.path = @DOCDIR@
 
-         CONFIG += warn_on debug
-         QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
-         QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
-         QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
-         QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
     }
 }
 
