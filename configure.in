@@ -37,7 +37,10 @@ AC_DEFINE_UNQUOTED(FWBUILDER_XML_VERSION, "$FWBUILDER_XML_VERSION")
 
 echo "Creating VERSION.h file..."
 
-echo "#define VERSION      \"$VERSION\""      > VERSION.h
+cat <<EOF > VERSION.h
+#define VERSION      "$VERSION"
+#define GENERATION   "$GENERATION"
+EOF
 
 dnl try to find QT
 dnl

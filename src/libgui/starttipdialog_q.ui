@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
+    <width>529</width>
     <height>403</height>
    </rect>
   </property>
@@ -29,8 +29,8 @@
    </item>
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLabel" name="program_name_and_version">
+     <item row="0" column="0" colspan="3">
+      <widget class="QLabel" name="program_name">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -63,9 +63,12 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="start_tutorial">
+      <widget class="QLabel" name="program_version">
        <property name="text">
-        <string>Watch Getting Started Tutorial</string>
+        <string>Version</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -94,6 +97,13 @@ p, li { white-space: pre-wrap; }
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="start_tutorial">
+       <property name="text">
+        <string>Watch Getting Started Tutorial</string>
+       </property>
+      </widget>
      </item>
      <item row="2" column="2">
       <spacer name="horizontalSpacer_3">
