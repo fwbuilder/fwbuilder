@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#  Firewall Builder  fwb_pf v4.2.0.3425
 #
-#  Generated Mon Jan  3 12:59:40 2011 PST by vadim
+#  Generated Mon Jan  3 13:20:31 2011 PST by vadim
 #
 # files: * firewall40.fw
 # files:   firewall40.conf
@@ -160,7 +160,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Mon Jan  3 12:59:40 2011 by vadim"
+log "Activating firewall script generated Mon Jan  3 13:20:31 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

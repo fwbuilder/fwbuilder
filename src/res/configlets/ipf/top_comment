@@ -2,7 +2,7 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v{{$version}}-{{$build}}
+#  Firewall Builder  fwb_ipf v{{$version}}
 #
 #  Generated {{$timestamp}} {{$tz}} by {{$user}}
 #
