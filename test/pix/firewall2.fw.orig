@@ -1,0 +1,239 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:09 2011 PST by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall2.fw
+!
+! lots of different combinations of objects in the NAT rules
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 inside security100
+
+nameif eth1 outside security0
+
+nameif eth2 dmz security50
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+clear snmp-server
+no snmp-server enable traps
+
+clear ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+floodguard disable
+
+
+!################
+clear access-list
+clear object-group
+clear icmp
+clear telnet
+
+object-group service inside.id3D6EF08C.srv.tcp.0 tcp
+ port-object eq 80
+ port-object eq 119
+ exit
+
+
+object-group network inside.id3D8FCCDE.src.net.0
+ network-object  host 192.168.1.10 
+ network-object  host 192.168.1.20 
+ exit
+
+! 
+! Rule  0 (eth1)
+! Anti-spoofing rule
+access-list outside_acl_in deny   ip host 192.168.1.1 any 
+access-list outside_acl_in deny   ip host 22.22.22.22 any 
+access-list outside_acl_in deny   ip host 192.168.2.1 any 
+access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  1 (eth1)
+! Anti-spoofing rule
+access-list inside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  2 (global)
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
+access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
+access-list outside_acl_in permit tcp any host 22.22.22.22 eq 119 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
+access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
+! 
+! Rule  3 (global)
+access-list inside_acl_in permit ip object-group inside.id3D8FCCDE.src.net.0 host 200.200.200.200 
+! 
+! Rule  4 (global)
+access-list outside_acl_in permit ip host 200.200.200.200 object-group inside.id3D8FCCDE.src.net.0 
+! 
+! Rule  6 (global)
+access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear static
+clear global
+clear nat
+! 
+! Rule  0 (NAT)
+
+access-list nat0.inside permit ip 192.168.1.0 255.255.255.0 192.168.2.0 255.255.255.0
+nat (inside) 0 access-list nat0.inside
+! 
+! Rule  1 (NAT)
+static (inside,dmz) 192.168.1.0 192.168.1.0 netmask 255.255.255.0
+! 
+! Rule  2 (NAT)
+global (outside) 1 interface
+access-list id3AFB66C8.0 permit ip 192.168.1.0 255.255.255.0  any 
+global (dmz) 1 interface
+! 
+! 
+! Rule  3 (NAT)
+access-list id3AFB66C8.0 permit ip host 192.168.1.10   any 
+! 
+access-list id3AFB66C8.0 permit ip host 192.168.1.20   any 
+! 
+! 
+! Rule  4 (NAT)
+access-list id3AFB66C8.0 permit ip host 192.168.1.11   any 
+! 
+access-list id3AFB66C8.0 permit ip 192.168.1.12 255.255.255.252  any 
+! 
+! 
+! Rule  5 (NAT)
+access-list id3D1C2292.0 permit ip 192.168.2.0 255.255.255.0  any 
+nat (dmz) 1 access-list id3D1C2292.0 0 0
+! 
+! Rule  6 (NAT)
+! 
+! 
+! Rule  7 (NAT)
+global (outside) 1 interface
+! 
+! 
+! Rule  8 (NAT)
+! 
+! 
+! Rule  9 (NAT)
+! 
+! 
+! 
+! Rule  10 (NAT)
+global (outside) 1 22.22.22.0 netmask 255.255.255.0
+! 
+! 
+! Rule  11 (NAT)
+global (outside) 1 22.22.22.21-22.22.22.25 netmask 255.255.255.0
+! 
+! 
+! 
+! Rule  12 (NAT)
+global (dmz) 1 interface
+access-list id3D1C1104.0 permit ip host 192.168.1.10   192.168.2.0 255.255.255.0 
+! 
+! Rule  13 (NAT)
+access-list id3D1C1D30.0 permit ip 192.168.1.0 255.255.255.0  192.168.2.0 255.255.255.0 
+nat (inside) 1 access-list id3D1C1D30.0 0 0
+! 
+! Rule  14 (NAT)
+! 
+! 
+! Rule  16 (NAT)
+access-list id3D1BFFA4.0 permit ip host 192.168.1.10   any 
+static (inside,outside) interface  access-list id3D1BFFA4.0 0 0
+! 
+! Rule  17 (NAT)
+access-list id3D1C0835.0 permit tcp host 192.168.1.10  eq 6667 any 
+static (inside,outside) tcp interface 6667  access-list id3D1C0835.0 0 0
+! 
+! Rule  18 (NAT)
+access-list id16986X27842.0 permit tcp host 192.168.1.1  eq 6667 any 
+static (inside,outside) tcp interface 6667  access-list id16986X27842.0 0 0
+! 
+! Rule  19 (NAT)
+access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80 any 
+! 
+! Rule  20 (NAT)
+access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80 any 
+static (inside,outside) tcp interface 80  access-list id414351C7.0 0 0
+! 
+! Rule  21 (NAT)
+access-list id3AFB69BD.0 permit ip host 192.168.1.10   any 
+static (inside,outside) interface  access-list id3AFB69BD.0 0 0
+! 
+! Rule  22 (NAT)
+access-list id3D1BFFCE.0 permit ip 192.168.1.0 255.255.255.0  any 
+static (inside,outside) 22.22.22.0  access-list id3D1BFFCE.0 0 0
+! 
+! Rule  24 (NAT)
+access-list id3D1BFFF6.0 permit ip host 192.168.1.10   192.168.2.0 255.255.255.0 
+static (inside,dmz) interface  access-list id3D1BFFF6.0 0 0
+! 
+! Rule  25 (NAT)
+access-list id3BEEF6D2.0 permit tcp host 192.168.1.10  eq 119 any 
+static (inside,outside) tcp interface 119  access-list id3BEEF6D2.0 0 0
+! 
+! Rule  27 (NAT)
+access-list id3B7313C4.0 permit tcp host 192.168.1.10  eq 3128 any 
+static (inside,outside) tcp interface 80  access-list id3B7313C4.0 0 0
+! 
+! Rule  28 (NAT)
+access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
+! 
+! Rule  29 (NAT)
+access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
+static (inside,outside) tcp interface 80  access-list id47B6CF3421818.0 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

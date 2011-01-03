@@ -1,0 +1,221 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:12 2011 PST by vadim
+!
+! Compiled for iosacl 12.4
+!
+!# files: * testios20.fw
+!
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+hostname testios20
+
+
+
+! ================ IPv4
+
+
+no ip access-list extended e0_in
+no ip access-list extended e0_out
+no ip access-list extended e1_in
+no ip access-list extended e1_out
+
+
+ip access-list extended e0_in
+! 
+! Rule  0 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  2 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  3 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  5 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (global)
+  permit ip  any  any  tos 16
+! 
+! Rule  7 (global)
+  permit ip  any  any  dscp 16
+! 
+! Rule  8 (global)
+  permit ip  any  any  dscp af11
+! 
+! Rule  9 (global)
+  permit ip  any  any  dscp 16
+  permit ip  any  any  dscp af11
+! 
+! Rule  10 (ethernet0)
+  permit ip  any  any  option lsr
+  permit ip  any  any  option record-route
+  permit ip  any  any  option ssr
+  permit ip  any  any  
+! 
+! Rule  11 (ethernet0)
+  permit ip  any  any  option any-options 
+! 
+! Rule  12 (ethernet0)
+  permit tcp  any  any  match-all -urg +ack -psh -rst -syn -fin 
+! 
+! Rule  13 (ethernet0)
+  permit tcp  any  any  match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  any  any  match-all -urg -ack -psh -rst +syn -fin 
+! 
+! Rule  14 (ethernet0)
+  permit tcp  any  any  match-all -urg +ack -psh -rst +syn -fin 
+! 
+! Rule  15 (global)
+  permit ip  any  any  
+! 
+! Rule  16 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e0_out
+! 
+! Rule  2 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (global)
+  permit ip  any  any  tos 16
+! 
+! Rule  7 (global)
+  permit ip  any  any  dscp 16
+! 
+! Rule  8 (global)
+  permit ip  any  any  dscp af11
+! 
+! Rule  9 (global)
+  permit ip  any  any  dscp 16
+  permit ip  any  any  dscp af11
+! 
+! Rule  15 (global)
+  permit ip  any  any  
+! 
+! Rule  16 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e1_in
+! 
+! Rule  0 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  1 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  3 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  4 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (global)
+  permit ip  any  any  tos 16
+! 
+! Rule  7 (global)
+  permit ip  any  any  dscp 16
+! 
+! Rule  8 (global)
+  permit ip  any  any  dscp af11
+! 
+! Rule  9 (global)
+  permit ip  any  any  dscp 16
+  permit ip  any  any  dscp af11
+! 
+! Rule  15 (global)
+  permit ip  any  any  
+! 
+! Rule  16 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e1_out
+! 
+! Rule  0 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  1 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (global)
+  permit ip  any  any  tos 16
+! 
+! Rule  7 (global)
+  permit ip  any  any  dscp 16
+! 
+! Rule  8 (global)
+  permit ip  any  any  dscp af11
+! 
+! Rule  9 (global)
+  permit ip  any  any  dscp 16
+  permit ip  any  any  dscp af11
+! 
+! Rule  15 (global)
+  permit ip  any  any  
+! 
+! Rule  16 (global)
+  deny   ip  any  any  log 
+exit
+
+
+interface ethernet0
+  ip access-group e0_in in
+exit
+interface ethernet0
+  ip access-group e0_out out
+exit
+interface ethernet1
+  ip access-group e1_in in
+exit
+interface ethernet1
+  ip access-group e1_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

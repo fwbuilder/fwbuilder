@@ -1,0 +1,161 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:05 2011 PST by vadim
+#
+# files: * firewall2.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+# this object has several interfaces and shows different rules for NAT. Also testing policy rule options
+
+# firewall2:Policy:12: warning: Changing rule direction due to self reference
+
+
+
+cd /etc || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:05 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (eth1)
+"$IPFW" add 10 set 1 permit tcp  from any  to any established  in  recv eth1 keep-state  || exit 1
+# 
+# Rule  1 (eth1)
+"$IPFW" add 20 set 1 permit tcp  from any  to any  established in  recv eth1  || exit 1
+# 
+# Rule  2 (eth1)
+"$IPFW" add 30 set 1 permit tcp  from any 80 to any  established in  recv eth1  || exit 1
+# 
+# Rule  3 (eth1)
+# Anti-spoofing rule
+"$IPFW" add 40 set 1 drop    log all  from me  to any  in  recv eth1  || exit 1
+"$IPFW" add 50 set 1 drop    log all  from 192.168.1.0/24  to any  in  recv eth1  || exit 1
+# 
+# Rule  4 (eth1)
+# Anti-spoofing rule
+"$IPFW" add 60 set 1 skipto 90 all  from me  to any  out xmit eth1  || exit 1
+"$IPFW" add 70 set 1 skipto 90 all  from 192.168.1.0/24  to any  out xmit eth1  || exit 1
+"$IPFW" add 80 set 1 drop    log all  from any  to any  out xmit eth1  || exit 1
+# 
+# Rule  5 (global)
+# block fragments
+"$IPFW" add 90 set 1 drop    log all  from any  to any   frag      || exit 1
+# 
+# Rule  6 (global)
+# sends TCP RST and makes custom record in the log
+"$IPFW" add 100 set 1 reset   log tcp  from any  to any 113      || exit 1
+# 
+# Rule  7 (global)
+# sends TCP RST and makes custom record in the log
+"$IPFW" add 110 set 1 unreach net  log udp  from any  to any 161      || exit 1
+# 
+# Rule  8 (global)
+"$IPFW" add 120 set 1 permit all  from 192.168.1.10  to 200.200.200.200      keep-state  || exit 1
+"$IPFW" add 130 set 1 permit all  from 192.168.1.20  to 200.200.200.200      keep-state  || exit 1
+# 
+# Rule  9 (global)
+"$IPFW" add 140 set 1 permit all  from 200.200.200.200  to 192.168.1.10      keep-state  || exit 1
+"$IPFW" add 150 set 1 permit all  from 200.200.200.200  to 192.168.1.20      keep-state  || exit 1
+# 
+# Rule  10 (global)
+# 'masquerading' rule
+"$IPFW" add 160 set 1 permit all  from 192.168.1.0/24  to any      keep-state  || exit 1
+# 
+# Rule  11 (global)
+# host-fw2 has the same address as 
+#         one of the firewall's interfaces
+"$IPFW" add 170 set 1 permit  log tcp  from any  to 22.22.22.22 21     setup keep-state  || exit 1
+# 
+# Rule  12 (global)
+# firewall2:Policy:12: warning: Changing rule direction due to self reference
+"$IPFW" add 180 set 1 permit  log tcp  from any  to me 21 in  setup keep-state  || exit 1
+# 
+# Rule  13 (global)
+# 'catch all' rule
+"$IPFW" add 190 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 200 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

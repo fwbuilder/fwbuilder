@@ -1,0 +1,14 @@
+
+# Tables: (1)
+table <rule3_branch:tbl.r1.d> { 192.168.1.11 , 192.168.1.12 } 
+
+# 
+# Rule  rule3_branch 0 (global)
+pass in   quick inet  from any  to 192.168.1.10 keep state 
+# 
+# Rule  rule3_branch 1 (global)
+pass  quick inet  from any  to ! <rule3_branch:tbl.r1.d> keep state 
+# 
+# Rule  rule3_branch 2 (global)
+block  log  quick inet  from any  to any 
+

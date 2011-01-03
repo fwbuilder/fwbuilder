@@ -1,0 +1,198 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:04 2011 PST by vadim
+#
+# files: * firewall.fw ipfw.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+# this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule
+
+# firewall:Policy:3: warning: Changing rule direction due to self reference
+# firewall:Policy:9: warning: Changing rule direction due to self reference
+# firewall:Policy:20: warning: Changing rule direction due to self reference
+# firewall:Policy:6: warning: ipfw can not match "any IP option" 
+# firewall:Policy:8: warning: ipfw can not match "any IP option"
+
+set -x
+
+cd /etc/fw || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/usr/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:04 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+"$IPFW" add 9 set 1 permit tcp  from me  to 192.168.1.100  out established keep-state 
+"$IPFW" add 10 set 1 permit tcp  from 192.168.1.100  to me 22 in  setup keep-state  || exit 1
+# 
+# Rule  0 (eth1)
+"$IPFW" add 20 set 1 drop    log all  from any  to me   frag in  recv eth1  || exit 1
+# 
+# Rule  1 (eth1)
+# Automatically generated rule blocking short fragments
+"$IPFW" add 30 set 1 drop    log all  from any  to any   frag in  recv eth1  || exit 1
+# 
+# Rule  2 (eth1)
+# Automatically generated anti-spoofing rule
+"$IPFW" add 40 set 1 drop    log all  from me  to any  in  recv eth1  || exit 1
+"$IPFW" add 50 set 1 drop    log all  from 192.168.1.0/24  to any  in  recv eth1  || exit 1
+# 
+# Rule  3 (eth0)
+# комментарий по-русски
+# firewall:Policy:3: warning: Changing rule direction due to self reference
+"$IPFW" add 60 set 1 permit udp  from 192.168.1.0/24  to me 53 in  recv eth0 keep-state  || exit 1
+# 
+# Rule  4 (eth0)
+"$IPFW" add 70 set 1 drop    log udp  from any  to 192.168.1.255 53 in  recv eth0  || exit 1
+# 
+# Rule  5 (global)
+"$IPFW" add 80 set 1 drop    log tcp  from any  to any  tcpflags !fin,syn,!rst,!psh,!ack,!urg      || exit 1
+"$IPFW" add 90 set 1 drop    log tcp  from any  to any  tcpflags fin,syn,rst,!psh,ack,!urg      || exit 1
+# 
+# Rule  6 (global)
+"$IPFW" add 100 set 1 unreach port  log all  from any  to any       || exit 1
+# 
+# Rule  7 (global)
+"$IPFW" add 110 set 1 unreach port  log all  from any  to any   ipoptions rr      || exit 1
+# 
+# Rule  8 (global)
+"$IPFW" add 120 set 1 unreach port  log all  from any  to any   ipoptions rr      || exit 1
+"$IPFW" add 130 set 1 unreach port  log all  from any  to any   ipoptions lsrr,ssrr      || exit 1
+"$IPFW" add 140 set 1 unreach port  log all  from any  to any   ipoptions ts      || exit 1
+"$IPFW" add 150 set 1 unreach port  log all  from any  to any       || exit 1
+"$IPFW" add 160 set 1 unreach port  log all  from any  to any       || exit 1
+# 
+# Rule  9 (global)
+# firewall:Policy:9: warning: Changing rule direction due to self reference
+"$IPFW" add 170 set 1 unreach port 50  from any  to me  in   || exit 1
+# 
+# Rule  12 (global)
+"$IPFW" add 180 set 1 permit tcp  from 211.11.11.11  to 192.168.1.10 53     setup keep-state  || exit 1
+"$IPFW" add 190 set 1 permit tcp  from 211.22.22.22  to 192.168.1.10 53     setup keep-state  || exit 1
+# 
+# Rule  13 (global)
+"$IPFW" add 200 set 1 permit tcp  from any  to 192.168.1.10 10000-11000,6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443,143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513,514,4321,465,1080,111,7100     setup keep-state  || exit 1
+# 
+# Rule  14 (global)
+"$IPFW" add 210 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+# 
+# Rule  15 (global)
+"$IPFW" add 220 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 230 set 1 permit tcp  from any  to 192.168.1.12/30 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+# 
+# Rule  16 (global)
+"$IPFW" add 240 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 250 set 1 permit tcp  from any  to 192.168.1.12 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 260 set 1 permit tcp  from any  to 192.168.1.13 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 270 set 1 permit tcp  from any  to 192.168.1.14 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 280 set 1 permit tcp  from any  to 192.168.1.15 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+# 
+# Rule  17 (global)
+"$IPFW" add 290 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 11,11,0,3     keep-state  || exit 1
+"$IPFW" add 300 set 1 permit tcp  from any  to 192.168.1.0/24 3128     setup keep-state  || exit 1
+# 
+# Rule  18 (global)
+"$IPFW" add 310 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 11,11,0,3     keep-state  || exit 1
+"$IPFW" add 320 set 1 permit tcp  from any 20 to 192.168.1.0/24 1024-65535     setup keep-state  || exit 1
+"$IPFW" add 330 set 1 permit tcp  from any  to 192.168.1.0/24 10000-11000     setup keep-state  || exit 1
+"$IPFW" add 340 set 1 permit tcp  from any  to 192.168.1.0/24 6000-6063,3128,6667,113,53,21,80,119,25,22,23,540,70,13,2105,443,143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513,514,4321,465,1080,111,7100     setup keep-state  || exit 1
+# 
+# Rule  19 (global)
+"$IPFW" add 350 set 1 permit  log all  from me  to me      keep-state  || exit 1
+# 
+# Rule  20 (global)
+# Automatically generated 'masquerading' rule
+# firewall:Policy:20: warning: Changing rule direction due to self reference
+"$IPFW" add 360 set 1 permit all  from me  to any  out keep-state  || exit 1
+"$IPFW" add 370 set 1 permit all  from 192.168.1.0/24  to any      keep-state  || exit 1
+# 
+# Rule  21 (global)
+# Automatically generated 'catch all' rule
+"$IPFW" add 380 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 390 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

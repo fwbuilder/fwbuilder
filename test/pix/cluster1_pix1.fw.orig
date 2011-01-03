@@ -1,0 +1,258 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:21 2011 PST by vadim
+!
+! Compiled for pix 7.0
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: yes
+! Assume firewall is part of any: yes
+!
+!# files: * cluster1_pix1.fw
+!
+!
+
+! pix1::: warning: Interface Ethernet0 has vlan subinterfaces, it can not be used for ACL. Marking this interface "unprotected" to exclude it.
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+hostname pix1
+
+interface Ethernet1
+  nameif inside
+  ip address 10.3.14.206 255.255.255.0  standby 10.3.14.207 
+  security-level 100
+exit
+
+interface Ethernet0
+  no nameif
+  no ip address
+  no security-level
+exit
+
+interface Ethernet2
+  description LAN/STATE Failover Interface
+  no nameif
+exit
+
+interface Ethernet0.101
+  vlan 101
+  nameif outside
+  ip address 192.0.2.253 255.255.255.0  standby 192.0.2.254 
+  security-level 0
+exit
+
+interface Ethernet0.102
+  vlan 102
+  nameif dmz20
+  ip address 10.0.0.253 255.255.255.0  standby 10.0.0.254 
+  security-level 20
+exit
+
+
+failover lan unit primary
+failover lan interface failover Ethernet2 
+failover lan enable
+failover key super_secret
+failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
+failover link failover Ethernet2
+failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
+failover
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+!################
+clear config access-list
+clear config object-group
+clear config icmp
+clear config telnet
+
+object-group network outside.id2913X78273.src.net.0
+ network-object  host 10.3.14.206 
+ network-object  host 10.3.14.207 
+ exit
+
+
+object-group network outside.id2913X78273.src.net.1
+ network-object  host 172.17.1.253 
+ network-object  host 172.17.1.254 
+ network-object  host 192.0.2.253 
+ network-object  host 192.0.2.254 
+ exit
+
+
+object-group network outside.id2913X78273.src.net.2
+ network-object  host 10.0.0.253 
+ network-object  host 10.0.0.254 
+ exit
+
+
+object-group network inside.id55439X897.src.net.0
+ network-object  host 172.17.1.253 
+ network-object  host 192.0.2.253 
+ exit
+
+! 
+! Rule  0 (Ethernet0.101)
+! anti spoofing rule
+access-list outside_in deny   ip object-group outside.id2913X78273.src.net.0 any log 2 interval 300 
+access-list outside_in deny   ip object-group outside.id2913X78273.src.net.1 any log 2 interval 300 
+access-list outside_in deny   ip object-group outside.id2913X78273.src.net.2 any log 2 interval 300 
+access-list outside_in deny   ip 10.3.14.0 255.255.255.0 any log 2 interval 300 
+! 
+! Rule  1 (global)
+! SSH Access to firewall is permitted
+! only from internal network
+ssh    10.3.14.0 255.255.255.0 inside
+! 
+! Rule  2 (global)
+ssh    10.3.14.0 255.255.255.0 inside
+! 
+! Rule  3 (global)
+! Firewall uses one of the machines
+! on internal network for DNS
+access-list inside_out permit udp host 10.3.14.206 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+access-list inside_out permit udp object-group inside.id55439X897.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+access-list inside_out permit udp host 10.0.0.253 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+! 
+! Rule  4 (global)
+! Firewall uses one of the machines
+! on internal network for DNS
+access-list inside_out permit udp object-group outside.id2913X78273.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+access-list inside_out permit udp object-group outside.id2913X78273.src.net.1 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+access-list inside_out permit udp object-group outside.id2913X78273.src.net.2 10.3.14.0 255.255.255.0 eq 53 log 2 interval 300 
+! 
+! Rule  5 (Ethernet0.101,Ethernet0.102)
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+! 
+! Rule  6 (cl1 itf)
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+! 
+! Rule  7 (Ethernet0.101,Ethernet0.102)
+access-list outside_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list outside_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+! 
+! Rule  8 (cl1 itf)
+access-list outside_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list outside_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+! 
+! Rule  9 (global)
+! All other attempts to connect to
+! the firewall are denied and logged
+access-list inside_in deny   ip any object-group outside.id2913X78273.src.net.0 log 2 interval 300 
+access-list inside_in deny   ip any object-group outside.id2913X78273.src.net.1 log 2 interval 300 
+access-list inside_in deny   ip any object-group outside.id2913X78273.src.net.2 log 2 interval 300 
+! 
+! Rule  10 (global)
+access-list inside_in permit ip 10.3.14.0 255.255.255.0 any 
+access-list inside_out permit ip 10.3.14.0 255.255.255.0 any 
+! 
+! Rule  11 (global)
+access-list inside_in deny   ip any any log 2 interval 300 
+access-list inside_out deny   ip any any log 2 interval 300 
+
+
+access-group dmz20_in in interface dmz20
+access-group dmz20_out out interface dmz20
+access-group inside_in in interface inside
+access-group inside_out out interface inside
+access-group outside_in in interface outside
+access-group outside_out out interface outside
+
+clear xlate
+clear config static
+clear config global
+clear config nat
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id4606X78273.0 permit ip 10.3.14.0 255.255.255.0  any 
+nat (inside) 1 access-list id4606X78273.0 tcp 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

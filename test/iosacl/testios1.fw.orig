@@ -1,0 +1,344 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:11 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * testios1.fw
+!
+
+
+
+!
+! Prolog script:
+!
+! This is prolog
+!
+! End of prolog script:
+!
+
+hostname testios1
+
+! temporary access list for "safety net install"
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip 10.10.10.1 0.0.0.0 any 
+  deny ip any any 
+exit
+interface ethernet0
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended e0_in
+no ip access-list extended e0_out
+no ip access-list extended e1_in
+no ip access-list extended e1_out
+
+
+ip access-list extended e0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  host 1.1.1.100 host 1.1.1.1 eq 22 
+  permit tcp  host 1.1.1.100 host 3.3.3.3 eq 22 
+  permit tcp  host 1.1.1.100 host 10.10.10.1 eq 22 
+! 
+! Rule  0 (ethernet0)
+! anti-spoofing
+  deny   ip  10.10.10.0 0.0.0.255 any  log 
+  deny   ip  10.10.11.0 0.0.0.255 any  log 
+  deny   ip  10.10.12.0 0.0.0.255 any  log 
+! 
+! Rule  1 (global)
+! комментарий по-русски
+  deny   ip  any  any  log fragments 
+! 
+! Rule  2 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  3 (ethernet0,ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  4 (testios1 itf)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  7 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  9 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  10 (global)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+! 
+! Rule  12 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+! 
+! Rule  13 (global)
+! interface ethernet1 has address on network 10.10.10.0/24,
+! therefore net-10.10.10 is behind the router and we do
+! not need to put rules 12-18 in outbound acl of eth0
+  permit 47  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit 50  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit 51  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+! 
+! Rule  14 (global)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 3 
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 11 
+! 
+! Rule  15 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 79 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 21 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+! 
+! Rule  16 (global)
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 4000 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 500 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 53 
+! 
+! Rule  17 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 established 
+! 
+! Rule  18 (global)
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+! 
+! Rule  19 (global)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 179 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 79 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 123 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 26000 
+! 
+! Rule  20 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp af11 
+! 
+! Rule  21 (global)
+  permit 50  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp af12 
+! 
+! Rule  22 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 1.1.1.1 eq 22 host 1.1.1.100 
+  permit tcp  host 3.3.3.3 eq 22 host 1.1.1.100 
+  permit tcp  host 10.10.10.1 eq 22 host 1.1.1.100 
+! 
+! Rule  1 (global)
+! комментарий по-русски
+  deny   ip  any  any  log fragments 
+! 
+! Rule  2 (global)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  3 (ethernet0,ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  4 (testios1 itf)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  6 (ethernet0)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  10 (global)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+! 
+! Rule  12 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+! 
+! Rule  13 (global)
+! interface ethernet1 has address on network 10.10.10.0/24,
+! therefore net-10.10.10 is behind the router and we do
+! not need to put rules 12-18 in outbound acl of eth0
+  permit 47  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit 50  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit 51  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+! 
+! Rule  14 (global)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 3 
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 11 
+! 
+! Rule  15 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 79 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 21 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+! 
+! Rule  16 (global)
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 4000 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 500 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 53 
+! 
+! Rule  17 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 established 
+! 
+! Rule  18 (global)
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+! 
+! Rule  19 (global)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 179 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 79 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 123 
+  permit udp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 26000 
+! 
+! Rule  20 (global)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp af11 
+! 
+! Rule  21 (global)
+  permit 50  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp af12 
+! 
+! Rule  22 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e1_in
+! 
+! Rule  3 (ethernet0,ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  4 (testios1 itf)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  5 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  8 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  11 (ethernet1)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+exit
+
+ip access-list extended e1_out
+! 
+! Rule  3 (ethernet0,ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  4 (testios1 itf)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  5 (ethernet1)
+  permit ip  any  10.10.10.0 0.0.0.255 
+  permit ip  any  10.10.11.0 0.0.0.255 
+  permit ip  any  10.10.12.0 0.0.0.255 
+! 
+! Rule  11 (ethernet1)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.12.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.23.0 0.0.0.255 10.10.12.0 0.0.0.255 
+exit
+
+
+interface ethernet0
+  ip access-group e0_in in
+exit
+interface ethernet0
+  ip access-group e0_out out
+exit
+interface ethernet1
+  ip access-group e1_in in
+exit
+interface ethernet1
+  ip access-group e1_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+! This is epilog for testing
+! End of epilog script:
+!

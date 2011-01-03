@@ -1,0 +1,346 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:14 2011 PST by vadim
+!
+! Compiled for iosacl 12.4
+!
+!# files: * testios5.fw
+!
+! mirrored rules, not using object-groups
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+hostname testios5
+
+! temporary access list for "safety net install"
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip 10.10.10.0 0.0.0.255 any 
+  deny ip any any 
+exit
+interface ethernet1
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended e0_in
+no ip access-list extended e0_out
+no ip access-list extended e1_in
+no ip access-list extended e1_out
+
+
+ip access-list extended e0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  10.10.10.0 0.0.0.255 host 1.1.1.1 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 host 10.10.10.1 eq 22 
+! 
+! Rule  0 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+! 
+! Rule  1 (ethernet0)
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 
+! 
+! Rule  2 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 
+! 
+! Rule  3 (ethernet0)
+  deny   ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  deny   ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  deny   ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  deny   ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+! 
+! Rule  4 (ethernet0)
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+! 
+! Rule  5 (ethernet0)
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+! 
+! Rule  6 (ethernet0)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+! 
+! Rule  7 (ethernet0)
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+! 
+! Rule  8 (ethernet0)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+! 
+! Rule  9 (ethernet0)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+! 
+! Rule  10 (ethernet0)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+! 
+! Rule  11 (ethernet0)
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+! 
+! Rule  12 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 option any-options 
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp 16
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 option any-options 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 dscp 16
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 option any-options 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 dscp 16
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 option any-options 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 dscp 16
+! 
+! Rule  13 (ethernet0)
+  permit icmp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 0 
+  permit icmp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 0 
+  permit tcp  22.22.21.0 0.0.0.255 eq 179 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 79 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 179 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 79 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 179 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 79 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 179 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 79 10.10.11.0 0.0.0.255 established 
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.21.0 0.0.0.255 eq 26000 10.10.10.0 0.0.0.255 
+  permit udp  22.22.21.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+  permit udp  22.22.21.0 0.0.0.255 eq 26000 10.10.11.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.10.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 26000 10.10.10.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 123 10.10.11.0 0.0.0.255 
+  permit udp  22.22.22.0 0.0.0.255 eq 26000 10.10.11.0 0.0.0.255 
+exit
+
+ip access-list extended e0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 1.1.1.1 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  host 10.10.10.1 eq 22 10.10.10.0 0.0.0.255 
+! 
+! Rule  0 (ethernet0)
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 
+! 
+! Rule  1 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+! 
+! Rule  2 (ethernet0)
+  permit ip  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 
+  permit ip  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 
+! 
+! Rule  3 (ethernet0)
+  deny   ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  deny   ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 
+  deny   ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 
+  deny   ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 
+! 
+! Rule  4 (ethernet0)
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+! 
+! Rule  5 (ethernet0)
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.21.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.10.0 0.0.0.255 established 
+  permit tcp  22.22.22.0 0.0.0.255 eq 80 10.10.11.0 0.0.0.255 established 
+! 
+! Rule  6 (ethernet0)
+  permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+! 
+! Rule  7 (ethernet0)
+  permit udp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+! 
+! Rule  8 (ethernet0)
+  permit icmp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 8 
+  permit icmp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 8 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 8 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 8 
+! 
+! Rule  9 (ethernet0)
+  permit icmp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 8 
+  permit icmp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 8 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 8 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 8 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 80 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 80 
+  permit udp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+! 
+! Rule  10 (ethernet0)
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
+  permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+! 
+! Rule  11 (ethernet0)
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 established 
+! 
+! Rule  12 (ethernet0)
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 option any-options 
+  permit ip  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 dscp 16
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 option any-options 
+  permit ip  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 dscp 16
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 option any-options 
+  permit ip  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 dscp 16
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 option any-options 
+  permit ip  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 dscp 16
+! 
+! Rule  13 (ethernet0)
+  permit icmp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 0 
+  permit icmp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 0 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 0 
+  permit icmp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 0 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 179 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 79 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 179 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 79 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 179 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 79 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 179 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 79 
+  permit udp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 26000 
+  permit udp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+  permit udp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 26000 
+  permit udp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 eq 26000 
+  permit udp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 123 
+  permit udp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 eq 26000 
+exit
+
+ip access-list extended e1_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  10.10.10.0 0.0.0.255 host 1.1.1.1 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 host 10.10.10.1 eq 22 
+exit
+
+ip access-list extended e1_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 1.1.1.1 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  host 10.10.10.1 eq 22 10.10.10.0 0.0.0.255 
+exit
+
+
+interface ethernet0
+  ip access-group e0_in in
+exit
+interface ethernet0
+  ip access-group e0_out out
+exit
+interface ethernet1
+  ip access-group e1_in in
+exit
+interface ethernet1
+  ip access-group e1_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

@@ -1,0 +1,1480 @@
+#!/bin/sh 
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipt v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:54:00 2011 PST by vadim
+#
+# files: * firewall2-1.fw
+#
+# Compiled for iptables lt_1.2.6
+#
+# copy of firewall2 but old iptables version
+
+# firewall2-1:NAT:20: warning: Adding of virtual address for address range is not implemented (object ext_range)
+
+# firewall2-1:Policy:0: error: Rule '0 (eth1)' shadows rule '3 (eth1,eth3)'  below it
+# firewall2-1:Policy:0: error: Rule '0 (eth1)' shadows rule '3 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
+# firewall2-1:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
+# firewall2-1:Policy:10: error: Rule '10 (global)' shadows rule '11 (global)'  below it
+# firewall2-1:Policy:10: error: Rule '10 (global)' shadows rule '12 (global)'  below it
+# firewall2-1:Policy:10: error: Rule '10 (global)' shadows rule '13 (global)'  below it
+# firewall2-1:Policy:10: error: Rule '10 (global)' shadows rule '14 (global)'  below it
+# firewall2-1:Policy:10: error: Rule '10 (global)' shadows rule '20 (global)'  below it
+# firewall2-1:Policy:25: error: Rule '25 (global)' shadows rule '26 (global)'  below it
+# firewall2-1:Policy:: warning: Log prefix has been truncated to 29 characters
+# firewall2-1:Policy:: warning: Log prefix has been truncated to 29 characters
+# firewall2-1:Policy:: warning: Log prefix has been truncated to 29 characters
+# firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+# firewall2-1:Policy:: warning: Log prefix has been truncated to 29 characters
+# firewall2-1:Policy:: warning: Log prefix has been truncated to 29 characters
+
+
+FWBDEBUG=""
+
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:${PATH}"
+export PATH
+
+
+
+LSMOD="/sbin/lsmod"
+MODPROBE="/sbin/modprobe"
+IPTABLES="/sbin/iptables"
+IP6TABLES="/sbin/ip6tables"
+IPTABLES_RESTORE="/sbin/iptables-restore"
+IP6TABLES_RESTORE="/sbin/ip6tables-restore"
+IP="/sbin/ip"
+IFCONFIG="/sbin/ifconfig"
+VCONFIG="/sbin/vconfig"
+BRCTL="/sbin/brctl"
+IFENSLAVE="/sbin/ifenslave"
+IPSET="/usr/sbin/ipset"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+getaddr_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+getaddr() {
+    getaddr_internal $1 $2 "-4"
+}
+
+getaddr6() {
+    getaddr_internal $1 $2 "-6"
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+find_program() {
+  PGM=$1
+  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+    echo "$PGM not found"
+    exit 1
+  }
+}
+check_tools() {
+  find_program $IPTABLES 
+  find_program $IP 
+}
+reset_iptables_v4() {
+  $IPTABLES -P OUTPUT  DROP
+  $IPTABLES -P INPUT   DROP
+  $IPTABLES -P FORWARD DROP
+
+cat /proc/net/ip_tables_names | while read table; do
+  $IPTABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IPTABLES -t $table -F $chain
+      fi
+  done
+  $IPTABLES -t $table -X
+done
+}
+
+reset_iptables_v6() {
+  $IP6TABLES -P OUTPUT  DROP
+  $IP6TABLES -P INPUT   DROP
+  $IP6TABLES -P FORWARD DROP
+
+cat /proc/net/ip6_tables_names | while read table; do
+  $IP6TABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IP6TABLES -t $table -F $chain
+      fi
+  done
+  $IP6TABLES -t $table -X
+done
+}
+
+
+P2P_INTERFACE_WARNING=""
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+
+
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      echo $addr | grep -q ':' && {
+          $FWBDEBUG $IP addr $cmd $addr dev $interface
+      } || {
+          $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+      }
+    }
+
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      $FWBDEBUG $IP addr $cmd $addr dev $interface
+    }
+
+    $FWBDEBUG $IP link set $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+    $IP addr ls dev $interface | \
+      awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' | \
+        while read addr; do
+          echo "${addr}@$interface"
+	done | sort
+}
+
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IP link show dev $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+clear_addresses_except_known_interfaces() {
+    $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/state/ && !($2 in ignored_dict)) {print $2;}' | \
+         while read intf; do
+            echo "# Removing addresses not configured in fwbuilder from interface $intf"
+            $FWBDEBUG $IP addr flush dev $intf scope global
+            $FWBDEBUG $IP link set $intf down
+         done
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+check_run_time_address_table_files() {
+    :
+    
+}
+
+load_modules() {
+    :
+    
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    # Configure interfaces
+    update_addresses_of_interface "eth0 192.168.1.1/24 192.168.1.10/24 192.168.1.50/24" ""
+    update_addresses_of_interface "eth1 22.22.22.22/24 22.22.22.23/24 22.22.22.24/24 22.22.22.25/24 22.22.22.0/32 22.22.22.1/32 22.22.22.2/32 22.22.22.3/32 22.22.22.4/32 22.22.22.5/32 22.22.22.6/32 22.22.22.7/32 22.22.22.8/32 22.22.22.9/32 22.22.22.10/32 22.22.22.11/32 22.22.22.12/32 22.22.22.13/32 22.22.22.14/32 22.22.22.15/32 22.22.22.16/32 22.22.22.17/32 22.22.22.18/32 22.22.22.19/32 22.22.22.20/32 22.22.22.21/32 22.22.22.22/32 22.22.22.23/32 22.22.22.24/32 22.22.22.25/32 22.22.22.26/32 22.22.22.27/32 22.22.22.28/32 22.22.22.29/32 22.22.22.30/32 22.22.22.31/32 22.22.22.32/32 22.22.22.33/32 22.22.22.34/32 22.22.22.35/32 22.22.22.36/32 22.22.22.37/32 22.22.22.38/32 22.22.22.39/32 22.22.22.40/32 22.22.22.41/32 22.22.22.42/32 22.22.22.43/32 22.22.22.44/32 22.22.22.45/32 22.22.22.46/32 22.22.22.47/32 22.22.22.48/32 22.22.22.49/32 22.22.22.50/32 22.22.22.51/32 22.22.22.52/32 22.22.22.53/32 22.22.22.54/32 22.22.22.55/32 22.22.22.56/32 22.22.22.57/32 22.22.22.58/32 22.22.22.59/32 22.22.22.60/32 22.22.22.61/32 22.22.22.62/32 22.22.22.63/32 22.22.22.64/32 22.22.22.65/32 22.22.22.66/32 22.22.22.67/32 22.22.22.68/32 22.22.22.69/32 22.22.22.70/32 22.22.22.71/32 22.22.22.72/32 22.22.22.73/32 22.22.22.74/32 22.22.22.75/32 22.22.22.76/32 22.22.22.77/32 22.22.22.78/32 22.22.22.79/32 22.22.22.80/32 22.22.22.81/32 22.22.22.82/32 22.22.22.83/32 22.22.22.84/32 22.22.22.85/32 22.22.22.86/32 22.22.22.87/32 22.22.22.88/32 22.22.22.89/32 22.22.22.90/32 22.22.22.91/32 22.22.22.92/32 22.22.22.93/32 22.22.22.94/32 22.22.22.95/32 22.22.22.96/32 22.22.22.97/32 22.22.22.98/32 22.22.22.99/32 22.22.22.100/32 22.22.22.101/32 22.22.22.102/32 22.22.22.103/32 22.22.22.104/32 22.22.22.105/32 22.22.22.106/32 22.22.22.107/32 22.22.22.108/32 22.22.22.109/32 22.22.22.110/32 22.22.22.111/32 22.22.22.112/32 22.22.22.113/32 22.22.22.114/32 22.22.22.115/32 22.22.22.116/32 22.22.22.117/32 22.22.22.118/32 22.22.22.119/32 22.22.22.120/32 22.22.22.121/32 22.22.22.122/32 22.22.22.123/32 22.22.22.124/32 22.22.22.125/32 22.22.22.126/32 22.22.22.127/32 22.22.22.128/32 22.22.22.129/32 22.22.22.130/32 22.22.22.131/32 22.22.22.132/32 22.22.22.133/32 22.22.22.134/32 22.22.22.135/32 22.22.22.136/32 22.22.22.137/32 22.22.22.138/32 22.22.22.139/32 22.22.22.140/32 22.22.22.141/32 22.22.22.142/32 22.22.22.143/32 22.22.22.144/32 22.22.22.145/32 22.22.22.146/32 22.22.22.147/32 22.22.22.148/32 22.22.22.149/32 22.22.22.150/32 22.22.22.151/32 22.22.22.152/32 22.22.22.153/32 22.22.22.154/32 22.22.22.155/32 22.22.22.156/32 22.22.22.157/32 22.22.22.158/32 22.22.22.159/32 22.22.22.160/32 22.22.22.161/32 22.22.22.162/32 22.22.22.163/32 22.22.22.164/32 22.22.22.165/32 22.22.22.166/32 22.22.22.167/32 22.22.22.168/32 22.22.22.169/32 22.22.22.170/32 22.22.22.171/32 22.22.22.172/32 22.22.22.173/32 22.22.22.174/32 22.22.22.175/32 22.22.22.176/32 22.22.22.177/32 22.22.22.178/32 22.22.22.179/32 22.22.22.180/32 22.22.22.181/32 22.22.22.182/32 22.22.22.183/32 22.22.22.184/32 22.22.22.185/32 22.22.22.186/32 22.22.22.187/32 22.22.22.188/32 22.22.22.189/32 22.22.22.190/32 22.22.22.191/32 22.22.22.192/32 22.22.22.193/32 22.22.22.194/32 22.22.22.195/32 22.22.22.196/32 22.22.22.197/32 22.22.22.198/32 22.22.22.199/32 22.22.22.200/32 22.22.22.201/32 22.22.22.202/32 22.22.22.203/32 22.22.22.204/32 22.22.22.205/32 22.22.22.206/32 22.22.22.207/32 22.22.22.208/32 22.22.22.209/32 22.22.22.210/32 22.22.22.211/32 22.22.22.212/32 22.22.22.213/32 22.22.22.214/32 22.22.22.215/32 22.22.22.216/32 22.22.22.217/32 22.22.22.218/32 22.22.22.219/32 22.22.22.220/32 22.22.22.221/32 22.22.22.222/32 22.22.22.223/32 22.22.22.224/32 22.22.22.225/32 22.22.22.226/32 22.22.22.227/32 22.22.22.228/32 22.22.22.229/32 22.22.22.230/32 22.22.22.231/32 22.22.22.232/32 22.22.22.233/32 22.22.22.234/32 22.22.22.235/32 22.22.22.236/32 22.22.22.237/32 22.22.22.238/32 22.22.22.239/32 22.22.22.240/32 22.22.22.241/32 22.22.22.242/32 22.22.22.243/32 22.22.22.244/32 22.22.22.245/32 22.22.22.246/32 22.22.22.247/32 22.22.22.248/32 22.22.22.249/32 22.22.22.250/32 22.22.22.251/32 22.22.22.252/32 22.22.22.253/32 22.22.22.254/32" ""
+    update_addresses_of_interface "eth3 22.22.23.23/24 22.22.25.50/24 22.22.23.24/24" ""
+    update_addresses_of_interface "eth2 192.168.2.1/24 192.168.2.40/24" ""
+    update_addresses_of_interface "lo 127.0.0.1/8" ""
+}
+
+script_body() {
+    echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter 
+     echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route 
+     echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects 
+     echo 1 > /proc/sys/net/ipv4/conf/all/log_martians 
+     echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all 
+     echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses 
+     echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout 
+     echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_intvl 
+
+
+    # ================ IPv4
+
+
+    # ================ Table 'filter', automatic rules
+    $IPTABLES -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+    # accept established sessions
+    $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    # drop TCP sessions opened prior firewall restart
+    $IPTABLES -A INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    # drop packets that do not match any valid state and log them
+    $IPTABLES -N drop_invalid
+    $IPTABLES -A OUTPUT   -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A INPUT    -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A FORWARD  -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A drop_invalid -j ULOG --ulog-nlgroup 1  --ulog-qthreshold 1 --ulog-prefix "INVALID state -- DENY "
+    $IPTABLES -A drop_invalid -j DROP
+
+
+    # ================ Table 'nat',  rule set NAT
+    # 
+    # Rule 0 (NAT)
+    # 
+    echo "Rule 0 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 192.168.2.40
+    # 
+    # Rule 1 (NAT)
+    # 
+    echo "Rule 1 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 192.168.2.40
+    # 
+    # Rule 2 (NAT)
+    # 
+    echo "Rule 2 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/0  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 11/1  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 0/0  -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p icmp -m icmp  -s 192.168.1.0/24   --icmp-type 3 -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p 50  -s 192.168.1.0/24   -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p 50  -s 192.168.1.0/24   -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p 50  -s 192.168.1.0/24   -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p 50  -s 192.168.1.0/24   -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p 50  -s 192.168.1.0/24   -j SNAT --to-source 192.168.2.40
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p 88  -s 192.168.1.0/24   -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p 88  -s 192.168.1.0/24   -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3 -p 88  -s 192.168.1.0/24   -j SNAT --to-source 22.22.25.50
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p 88  -s 192.168.1.0/24   -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2 -p 88  -s 192.168.1.0/24   -j SNAT --to-source 192.168.2.40
+    # 
+    # Rule 3 (NAT)
+    # 
+    echo "Rule 3 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.25.50
+    # 
+    # Rule 4 (NAT)
+    # 
+    echo "Rule 4 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.25.50
+    # 
+    # Rule 5 (NAT)
+    # 
+    echo "Rule 5 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 22.22.25.50
+    # 
+    # Rule 6 (NAT)
+    # 
+    echo "Rule 6 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10  -j SNAT --to-source 22.22.22.23
+    # 
+    # Rule 7 (NAT)
+    # 
+    echo "Rule 7 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10  -j SNAT --to-source 22.22.22.23
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10  -j SNAT --to-source 22.22.22.24
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10  -j SNAT --to-source 22.22.22.25
+    # 
+    # Rule 8 (NAT)
+    # 
+    echo "Rule 8 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -d 192.168.1.10  -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 9 (NAT)
+    # 
+    echo "Rule 9 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid31547X1798.0
+    $IPTABLES -t nat -A POSTROUTING   -d 192.168.2.10  -j Cid31547X1798.0
+    $IPTABLES -t nat -A POSTROUTING   -d 192.168.2.11  -j Cid31547X1798.0
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 22.22.22.22  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 22.22.23.23  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 22.22.25.50  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 192.168.1.1  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 192.168.2.1  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.0   -s 192.168.2.40  -j ACCEPT
+    $IPTABLES -t nat -A OUTPUT   -d 192.168.2.10  -j ACCEPT
+    $IPTABLES -t nat -A OUTPUT   -d 192.168.2.11  -j ACCEPT
+    $IPTABLES -t nat -N Cid31547X1798.1
+    $IPTABLES -t nat -A POSTROUTING   -d 192.168.2.10  -j Cid31547X1798.1
+    $IPTABLES -t nat -A POSTROUTING   -d 192.168.2.11  -j Cid31547X1798.1
+    $IPTABLES -t nat -A Cid31547X1798.1   -s 192.168.1.10  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.1   -s 192.168.1.20  -j ACCEPT
+    $IPTABLES -t nat -N Cid31547X1798.2
+    $IPTABLES -t nat -A PREROUTING   -d 192.168.2.10  -j Cid31547X1798.2
+    $IPTABLES -t nat -A PREROUTING   -d 192.168.2.11  -j Cid31547X1798.2
+    $IPTABLES -t nat -A Cid31547X1798.2   -s 192.168.1.10  -j ACCEPT
+    $IPTABLES -t nat -A Cid31547X1798.2   -s 192.168.1.20  -j ACCEPT
+    # 
+    # Rule 10 (NAT)
+    # 
+    echo "Rule 10 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid31565X1798.0
+    $IPTABLES -t nat -A POSTROUTING   -s 192.168.1.10  -j Cid31565X1798.0
+    $IPTABLES -t nat -A POSTROUTING   -s 192.168.1.20  -j Cid31565X1798.0
+    $IPTABLES -t nat -A PREROUTING   -s 192.168.1.10  -j Cid31565X1798.0
+    $IPTABLES -t nat -A PREROUTING   -s 192.168.1.20  -j Cid31565X1798.0
+    $IPTABLES -t nat -A Cid31565X1798.0   -d 192.168.2.10  -j RETURN
+    $IPTABLES -t nat -A Cid31565X1798.0   -d 192.168.2.11  -j RETURN
+    $IPTABLES -t nat -A Cid31565X1798.0   -j ACCEPT
+    # 
+    # Rule 11 (NAT)
+    # 
+    echo "Rule 11 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 0/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 3 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p 50   -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p 88   -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 0/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 3 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p 50   -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p 88   -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 12 (NAT)
+    # 
+    echo "Rule 12 (NAT)"
+    # 
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 11/1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 0/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p icmp -m icmp   -d 22.22.22.23  --icmp-type 3 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 13 (NAT)
+    # 
+    echo "Rule 13 (NAT)"
+    # 
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport  -s 22.22.23.23   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport  -s 22.22.25.50   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 14 (NAT)
+    # 
+    echo "Rule 14 (NAT)"
+    # 
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport  -s 200.200.200.200   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 16 (NAT)
+    # 
+    echo "Rule 16 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 22.22.22.24  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 22.22.22.25  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.23  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.24  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp -m multiport   -d 22.22.22.25  --destination-port 80,119 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 17 (NAT)
+    # 
+    echo "Rule 17 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 119 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 119 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 18 (NAT)
+    # 
+    echo "Rule 18 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.20  -j SNAT --to-source 22.22.23.24
+    # 
+    # Rule 19 (NAT)
+    # 
+    echo "Rule 19 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING   -d 22.22.23.24  -j DNAT --to-destination 192.168.1.20
+    $IPTABLES -t nat -A OUTPUT   -d 22.22.23.24  -j DNAT --to-destination 192.168.1.20
+    # 
+    # Rule 20 (NAT)
+    # 
+    echo "Rule 20 (NAT)"
+    # 
+    # firewall2-1:NAT:20: warning: Adding of virtual address for address range is not implemented (object ext_range)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.100-22.22.22.110
+    # 
+    # Rule 21 (NAT)
+    # 
+    echo "Rule 21 (NAT)"
+    # 
+    # NETMAP 
+    $IPTABLES -t nat -A POSTROUTING   -s 192.168.1.0/24  -j NETMAP --to 22.22.22.0/24
+    # 
+    # Rule 22 (NAT)
+    # 
+    echo "Rule 22 (NAT)"
+    # 
+    # NETMAP
+    $IPTABLES -t nat -A PREROUTING   -d 22.22.22.0/24  -j NETMAP --to 192.168.1.0/24
+    # 
+    # Rule 23 (NAT)
+    # 
+    echo "Rule 23 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.23.23  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.25.50  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.1  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.40  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.23.23  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.25.50  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 192.168.1.1  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 192.168.2.1  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 192.168.2.40  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10:10000-11000
+    # 
+    # Rule 24 (NAT)
+    # 
+    echo "Rule 24 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.23.23  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.25.50  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.23.23  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.25.50  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.10  --dport 80 -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 25 (NAT)
+    # 
+    echo "Rule 25 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.23  --dport 80 -j DNAT --to-destination 192.168.1.10:25
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.23  --dport 80 -j DNAT --to-destination 192.168.1.10:25
+    # 
+    # Rule 26 (NAT)
+    # 
+    echo "Rule 26 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.23.23  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.25.50  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.1  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.40  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 443 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.23.23  --dport 443 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.25.50  --dport 443 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 443 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.1  --dport 443 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.40  --dport 443 -j REDIRECT --to-ports 3128
+    # 
+    # Rule 27 (NAT)
+    # 
+    echo "Rule 27 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 8080 -j DNAT --to-destination 192.168.1.10-192.168.1.100
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 8080 -j DNAT --to-destination 192.168.1.10-192.168.1.100
+    # 
+    # Rule 28 (NAT)
+    # 
+    echo "Rule 28 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 8080 -j DNAT --to-destination 192.168.1.11-192.168.1.15
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 8080 -j DNAT --to-destination 192.168.1.11-192.168.1.15
+    # 
+    # Rule 29 (NAT)
+    # 
+    echo "Rule 29 (NAT)"
+    # 
+    # transparent proxy rule
+    $IPTABLES -t nat -A PREROUTING   -s 192.168.1.0/24  -d ! 22.22.22.23  -j DNAT --to-destination 192.168.2.10
+    # 
+    # Rule 31 (NAT)
+    # 
+    echo "Rule 31 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j DNAT --to-destination :8080
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 80 -j DNAT --to-destination :8080
+    # 
+    # Rule 32 (NAT)
+    # 
+    echo "Rule 32 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.10  --dport 80 -j DNAT --to-destination 192.168.1.10:8080
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 192.168.1.10  --dport 80 -j DNAT --to-destination 192.168.1.10:8080
+    # 
+    # Rule 33 (NAT)
+    # 
+    echo "Rule 33 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j SNAT --to-source 22.22.22.22
+    # 
+    # Rule 34 (NAT)
+    # 
+    echo "Rule 34 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s ! 192.168.1.10   --dport 80 -j DNAT --to-destination 192.168.1.10:3128
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.10:3128
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s ! 192.168.1.10   --dport 80 -j DNAT --to-destination 192.168.1.10:3128
+    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s ! 192.168.1.10   -d 192.168.1.10  --dport 3128 -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 35 (NAT)
+    # 
+    echo "Rule 35 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid31935X1798.0
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d ! 192.168.1.50  --dport 80 -j Cid31935X1798.0
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d ! 192.168.1.50  --dport 80 -j Cid31935X1798.0
+    $IPTABLES -t nat -A Cid31935X1798.0   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid31935X1798.0   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid31935X1798.0  -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.50:3128
+    # 
+    # Rule 36 (NAT)
+    # 
+    echo "Rule 36 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid31949X1798.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -j Cid31949X1798.1
+    $IPTABLES -t nat -A Cid31949X1798.1   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid31949X1798.1   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -N Cid31949X1798.0
+    $IPTABLES -t nat -A Cid31949X1798.1   -j Cid31949X1798.0
+    $IPTABLES -t nat -A Cid31949X1798.0  -p tcp -m tcp   --dport 80 -j RETURN
+    $IPTABLES -t nat -A Cid31949X1798.0   -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 37 (NAT)
+    # 
+    echo "Rule 37 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j DNAT --to-destination 192.168.1.10:3128
+    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.10  --dport 3128 -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 38 (NAT)
+    # 
+    echo "Rule 38 (NAT)"
+    # 
+    # this is the "exception" rule
+    # used in support req. originally
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.20   --dport 80 -j SNAT --to-source 22.22.22.22
+    # 
+    # Rule 39 (NAT)
+    # 
+    echo "Rule 39 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j DNAT --to-destination 192.168.1.1:3128
+    # 
+    # Rule 40 (NAT)
+    # 
+    echo "Rule 40 (NAT)"
+    # 
+    # "exception" rule in the pair
+    # from a support req.
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.20   --dport 80 -j SNAT --to-source 22.22.22.22
+    # 
+    # Rule 41 (NAT)
+    # 
+    echo "Rule 41 (NAT)"
+    # 
+    # testing transparent proxy
+    # roules for a support req.
+    $IPTABLES -t nat -N Cid32019X1798.0
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j Cid32019X1798.0
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 80 -j Cid32019X1798.0
+    $IPTABLES -t nat -A Cid32019X1798.0   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid32019X1798.0   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid32019X1798.0  -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.1:3128
+    # 
+    # Rule 42 (NAT)
+    # 
+    echo "Rule 42 (NAT)"
+    # 
+    # testing transparent proxy
+    # roules for a support req.
+    $IPTABLES -t nat -N Cid32033X1798.0
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j Cid32033X1798.0
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 80 -j Cid32033X1798.0
+    $IPTABLES -t nat -A Cid32033X1798.0   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid32033X1798.0   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid32033X1798.0  -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.1:3128
+    # 
+    # Rule 43 (NAT)
+    # 
+    echo "Rule 43 (NAT)"
+    # 
+    # testing transparent proxy
+    # roules for a support req.
+    $IPTABLES -t nat -N Cid32047X1798.0
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j Cid32047X1798.0
+    $IPTABLES -t nat -A Cid32047X1798.0   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid32047X1798.0   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid32047X1798.0  -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
+    # 
+    # Rule 44 (NAT)
+    # 
+    echo "Rule 44 (NAT)"
+    # 
+    # "exception" rule in the pair
+    # from a support req.
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.20   --dport 80 -j SNAT --to-source 22.22.22.22
+    # 
+    # Rule 45 (NAT)
+    # 
+    echo "Rule 45 (NAT)"
+    # 
+    # testing transparent proxy
+    # roules for a support req.
+    $IPTABLES -t nat -N Cid32075X1798.0
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j Cid32075X1798.0
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 80 -j Cid32075X1798.0
+    $IPTABLES -t nat -A Cid32075X1798.0   -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid32075X1798.0   -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid32075X1798.0  -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.50:3128
+
+
+
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (eth1)
+    # 
+    echo "Rule 0 (eth1)"
+    # 
+    # Anti-spoofing rule
+    $IPTABLES -N In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 22.22.22.22   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 22.22.23.23   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 22.22.25.50   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.40   -j In_RULE_0
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 22.22.22.22   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 22.22.23.23   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 22.22.25.50   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.40   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A In_RULE_0  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "Iface: global RULE 0 -- DENY " --ulog-qthreshold 1
+    $IPTABLES -A In_RULE_0  -j DROP
+    # 
+    # Rule 1 (eth1)
+    # 
+    echo "Rule 1 (eth1)"
+    # 
+    # Anti-spoofing rule
+    $IPTABLES -N Cid31178X1798.0
+    $IPTABLES -A OUTPUT  -o eth1   -j Cid31178X1798.0
+    $IPTABLES -A Cid31178X1798.0  -s 22.22.22.22   -j RETURN
+    $IPTABLES -A Cid31178X1798.0  -s 22.22.23.23   -j RETURN
+    $IPTABLES -A Cid31178X1798.0  -s 22.22.25.50   -j RETURN
+    $IPTABLES -A Cid31178X1798.0  -s 192.168.1.1   -j RETURN
+    $IPTABLES -A Cid31178X1798.0  -s 192.168.2.1   -j RETURN
+    $IPTABLES -A Cid31178X1798.0  -s 192.168.2.40   -j RETURN
+    $IPTABLES -N Out_RULE_1_3
+    $IPTABLES -A Cid31178X1798.0  -j Out_RULE_1_3
+    $IPTABLES -A Out_RULE_1_3  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "Iface: global RULE 1 -- DENY " --ulog-qthreshold 1
+    $IPTABLES -A Out_RULE_1_3  -j DROP
+    $IPTABLES -N Cid31178X1798.1
+    $IPTABLES -A FORWARD  -o eth1   -j Cid31178X1798.1
+    $IPTABLES -A Cid31178X1798.1  -s 192.168.1.0/24   -j RETURN
+    $IPTABLES -A Cid31178X1798.1  -j Out_RULE_1_3
+    # 
+    # Rule 2 (fw2i1,3)
+    # 
+    echo "Rule 2 (fw2i1,3)"
+    # 
+    # testing group in "interface"
+    # this rule should be identical to rule 3
+    $IPTABLES -N In_RULE_2
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_2
+    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_2
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_2
+    $IPTABLES -A FORWARD  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_2
+    $IPTABLES -A In_RULE_2  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 2 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A In_RULE_2  -j DROP
+    # 
+    # Rule 3 (eth1,eth3)
+    # 
+    echo "Rule 3 (eth1,eth3)"
+    # 
+    $IPTABLES -N In_RULE_3
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_3
+    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_3
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_3
+    $IPTABLES -A FORWARD  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --destination-port 68,67  -j In_RULE_3
+    $IPTABLES -A In_RULE_3  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 3 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A In_RULE_3  -j DROP
+    # 
+    # Rule 4 (eth1,eth3)
+    # 
+    echo "Rule 4 (eth1,eth3)"
+    # 
+    # testing choice of chains in case when several
+    # interfaces are used and rule matches 'any' or
+    # broadcast 
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 5 (eth1,eth3)
+    # 
+    echo "Rule 5 (eth1,eth3)"
+    # 
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 6 (eth1,eth3)
+    # 
+    echo "Rule 6 (eth1,eth3)"
+    # 
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --destination-port 68,67  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 7 (global)
+    # 
+    echo "Rule 7 (global)"
+    # 
+    $IPTABLES -N Cid31255X1798.0
+    $IPTABLES -A OUTPUT  -j Cid31255X1798.0
+    $IPTABLES -A INPUT  -j Cid31255X1798.0
+    $IPTABLES -A FORWARD  -j Cid31255X1798.0
+    $IPTABLES -A Cid31255X1798.0 -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RETURN
+    $IPTABLES -N RULE_7_3
+    $IPTABLES -A Cid31255X1798.0  -j RULE_7_3
+    $IPTABLES -A RULE_7_3  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 7 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_7_3  -j DROP
+    # 
+    # Rule 8 (global)
+    # 
+    echo "Rule 8 (global)"
+    # 
+    # block fragments
+    $IPTABLES -N RULE_8
+    $IPTABLES -A OUTPUT -p all  -f   -j RULE_8
+    $IPTABLES -A INPUT -p all  -f   -j RULE_8
+    $IPTABLES -A FORWARD -p all  -f   -j RULE_8
+    $IPTABLES -A RULE_8  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 8 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_8  -j DROP
+    # 
+    # Rule 9 (global)
+    # 
+    echo "Rule 9 (global)"
+    # 
+    # sends TCP RST and makes custom record
+    # in the log
+    $IPTABLES -N RULE_9
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 113  -j RULE_9
+    $IPTABLES -A INPUT -p tcp -m tcp  --dport 113  -j RULE_9
+    $IPTABLES -A FORWARD -p tcp -m tcp  --dport 113  -j RULE_9
+    $IPTABLES -A RULE_9  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "IDENT" --ulog-qthreshold 1
+    $IPTABLES -A RULE_9 -p tcp -m tcp  -j REJECT  --reject-with tcp-reset
+    # 
+    # Rule 10 (global)
+    # 
+    echo "Rule 10 (global)"
+    # 
+    # firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+    $IPTABLES -N RULE_10
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -j RULE_10
+    # firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -j RULE_10
+    # firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -j RULE_10
+    # firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+    $IPTABLES -A RULE_10  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 10 - REJECT **" --ulog-qthreshold 1
+    # firewall2-1:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+    $IPTABLES -A RULE_10  -j REJECT  --reject-with icmp-net-unreachable
+    # 
+    # Rule 11 (global)
+    # 
+    echo "Rule 11 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid112778X70161.0
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid112778X70161.0
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.0  -d 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid112778X70161.1
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid112778X70161.1
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.1  -d 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid112778X70161.2
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid112778X70161.2
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid112778X70161.2  -d 192.168.1.100   -j ACCEPT
+    # 
+    # Rule 12 (global)
+    # 
+    echo "Rule 12 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid94383X70161.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94383X70161.0
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.0  -s 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid94383X70161.1
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94383X70161.1
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.1  -s 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid94383X70161.2
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94383X70161.2
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid94383X70161.2  -s 192.168.1.100   -j ACCEPT
+    # 
+    # Rule 13 (global)
+    # 
+    echo "Rule 13 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid131133X70161.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid131133X70161.0
+    $IPTABLES -N Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.10/31   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.12/30   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.16/28   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.32/27   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.64/27   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.96/30   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.0  -s 222.222.222.100   -j Cid131133X70161.1
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.1  -d 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid131133X70161.2
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid131133X70161.2
+    $IPTABLES -N Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.10/31   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.12/30   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.16/28   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.32/27   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.64/27   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.96/30   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.2  -s 222.222.222.100   -j Cid131133X70161.3
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.10/31   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.12/30   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid131133X70161.3  -d 192.168.1.100   -j ACCEPT
+    # 
+    # Rule 14 (global)
+    # 
+    echo "Rule 14 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid131116X70161.0
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid131116X70161.0
+    $IPTABLES -N Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.10/31   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.12/30   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.16/28   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.32/27   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.64/27   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.96/30   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.0  -s 192.168.1.100   -j Cid131116X70161.1
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.10/31   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.12/30   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.16/28   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.32/27   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.64/27   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.96/30   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.1  -d 222.222.222.100   -j ACCEPT
+    $IPTABLES -N Cid131116X70161.2
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid131116X70161.2
+    $IPTABLES -N Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.10/31   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.12/30   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.16/28   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.32/27   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.64/27   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.96/30   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.2  -s 192.168.1.100   -j Cid131116X70161.3
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.10/31   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.12/30   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.16/28   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.32/27   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.64/27   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.96/30   -j ACCEPT
+    $IPTABLES -A Cid131116X70161.3  -d 222.222.222.100   -j ACCEPT
+    # 
+    # Rule 15 (global)
+    # 
+    echo "Rule 15 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid94366X70161.0
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94366X70161.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94366X70161.0
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94366X70161.0
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.10/31   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.12/30   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.16/28   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.32/27   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.64/27   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.96/30   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -d 192.168.1.100   -j RETURN
+    $IPTABLES -A Cid94366X70161.0  -j ACCEPT
+    # 
+    # Rule 16 (global)
+    # 
+    echo "Rule 16 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid94349X70161.0
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94349X70161.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94349X70161.0
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94349X70161.0
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.10/31   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.12/30   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.16/28   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.32/27   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.64/27   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.96/30   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -s 192.168.1.100   -j RETURN
+    $IPTABLES -A Cid94349X70161.0  -j ACCEPT
+    # 
+    # Rule 17 (global)
+    # 
+    echo "Rule 17 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid94331X70161.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94331X70161.0
+    $IPTABLES -A Cid94331X70161.0  -d 192.168.1.0   -j RETURN
+    $IPTABLES -A Cid94331X70161.0  -j ACCEPT
+    $IPTABLES -N Cid94331X70161.1
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94331X70161.1
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94331X70161.1
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.10/31   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.12/30   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.16/28   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.32/27   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.64/27   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.96/30   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -d 192.168.1.100   -j RETURN
+    $IPTABLES -A Cid94331X70161.1  -j ACCEPT
+    # 
+    # Rule 18 (global)
+    # 
+    echo "Rule 18 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -N Cid94313X70161.0
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94313X70161.0
+    $IPTABLES -A Cid94313X70161.0  -s 192.168.1.0   -j RETURN
+    $IPTABLES -A Cid94313X70161.0  -j ACCEPT
+    $IPTABLES -N Cid94313X70161.1
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94313X70161.1
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid94313X70161.1
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.10/31   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.12/30   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.16/28   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.32/27   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.64/27   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.96/30   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -s 192.168.1.100   -j RETURN
+    $IPTABLES -A Cid94313X70161.1  -j ACCEPT
+    # 
+    # Rule 19 (global)
+    # 
+    echo "Rule 19 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    # also test for bug #2526173
+    $IPTABLES -N RULE_19
+    $IPTABLES -A INPUT  -s 0.0.0.0   -j RULE_19
+    $IPTABLES -A FORWARD  -s 0.0.0.0   -j RULE_19
+    $IPTABLES -A RULE_19  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 19 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_19  -j DROP
+    # 
+    # Rule 20 (global)
+    # 
+    echo "Rule 20 (global)"
+    # 
+    # using module iprange if
+    # iptables version is >= 1.2.11
+    $IPTABLES -A INPUT -p udp -m udp  -s 192.168.1.1   --dport 161  -m state --state NEW  -j ACCEPT
+    $IPTABLES -N Cid80837X35957.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid80837X35957.0
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.2/31   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.4/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.8/29   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.0  -s 192.168.1.100   -j ACCEPT
+    $IPTABLES -A OUTPUT -p udp -m udp  -s 192.168.1.1   --dport 161  -m state --state NEW  -j ACCEPT
+    $IPTABLES -N Cid80837X35957.1
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid80837X35957.1
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.2/31   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.4/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.8/29   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.1  -s 192.168.1.100   -j ACCEPT
+    $IPTABLES -N Cid80837X35957.2
+    $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -m state --state NEW  -j Cid80837X35957.2
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.2/31   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.4/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.8/29   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.16/28   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.32/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.64/27   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.96/30   -j ACCEPT
+    $IPTABLES -A Cid80837X35957.2  -s 192.168.1.100   -j ACCEPT
+    # 
+    # Rule 21 (global)
+    # 
+    echo "Rule 21 (global)"
+    # 
+    $IPTABLES -N Cid31303X1798.0
+    $IPTABLES -A INPUT -p icmp  -s 192.168.2.0/24   -m state --state NEW  -j Cid31303X1798.0
+    $IPTABLES -N RULE_21
+    $IPTABLES -A Cid31303X1798.0  -d 192.168.2.1   -j RULE_21
+    $IPTABLES -A Cid31303X1798.0  -d 192.168.2.40   -j RULE_21
+    $IPTABLES -A RULE_21  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 21 - ACCEPT **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_21  -j ACCEPT
+    # 
+    # Rule 22 (global)
+    # 
+    echo "Rule 22 (global)"
+    # 
+    $IPTABLES -N Cid31315X1798.0
+    $IPTABLES -A FORWARD  -d 211.11.11.11   -m state --state NEW  -j Cid31315X1798.0
+    $IPTABLES -A Cid31315X1798.0  -s 192.168.1.10   -j ACCEPT
+    $IPTABLES -A Cid31315X1798.0  -s 192.168.1.20   -j ACCEPT
+    # 
+    # Rule 23 (global)
+    # 
+    echo "Rule 23 (global)"
+    # 
+    $IPTABLES -N Cid31328X1798.0
+    $IPTABLES -A FORWARD  -s 211.11.11.11   -m state --state NEW  -j Cid31328X1798.0
+    $IPTABLES -A Cid31328X1798.0  -d 192.168.1.10   -j ACCEPT
+    $IPTABLES -A Cid31328X1798.0  -d 192.168.1.20   -j ACCEPT
+    # 
+    # Rule 24 (global)
+    # 
+    echo "Rule 24 (global)"
+    # 
+    $IPTABLES -N Cid31341X1798.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -j Cid31341X1798.0
+    $IPTABLES -A INPUT -p tcp -m tcp  -j Cid31341X1798.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -j Cid31341X1798.0
+    $IPTABLES -A Cid31341X1798.0  -s 192.168.1.0/24   -j RETURN
+    $IPTABLES -A Cid31341X1798.0  -s 192.168.2.0/24   -j RETURN
+    $IPTABLES -A Cid31341X1798.0 -p tcp -m tcp  -j REJECT  --reject-with tcp-reset
+    $IPTABLES -N Cid31341X1798.1
+    $IPTABLES -A OUTPUT  -j Cid31341X1798.1
+    $IPTABLES -A INPUT  -j Cid31341X1798.1
+    $IPTABLES -A FORWARD  -j Cid31341X1798.1
+    $IPTABLES -A Cid31341X1798.1  -s 192.168.1.0/24   -j RETURN
+    $IPTABLES -A Cid31341X1798.1  -s 192.168.2.0/24   -j RETURN
+    $IPTABLES -A Cid31341X1798.1  -j REJECT  --reject-with icmp-net-unreachable
+    # 
+    # Rule 25 (global)
+    # 
+    echo "Rule 25 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 26 (global)
+    # 
+    echo "Rule 26 (global)"
+    # 
+    $IPTABLES -N RULE_26
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -j RULE_26
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -j RULE_26
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -j RULE_26
+    $IPTABLES -A RULE_26  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 26 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_26  -j DROP
+    # 
+    # Rule 27 (global)
+    # 
+    echo "Rule 27 (global)"
+    # 
+    # host-fw2 has the same address as 
+    #         one of the firewall's interfaces
+    $IPTABLES -N RULE_27
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -d 22.22.22.22   --dport 21  -m state --state NEW  -m limit --limit 5/minute --limit-burst 10 -j RULE_27
+    $IPTABLES -A INPUT -p tcp -m tcp  -d 22.22.22.22   --dport 21  -m state --state NEW  -m limit --limit 5/minute --limit-burst 10 -j RULE_27
+    $IPTABLES -A RULE_27  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 27 - ACCEPT **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_27  -j ACCEPT
+    # 
+    # Rule 28 (global)
+    # 
+    echo "Rule 28 (global)"
+    # 
+    $IPTABLES -N Cid31391X1798.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 21  -m state --state NEW  -j Cid31391X1798.0
+    $IPTABLES -N RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 22.22.22.22   -j RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 22.22.23.23   -j RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 22.22.25.50   -j RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 192.168.1.1   -j RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 192.168.2.1   -j RULE_28
+    $IPTABLES -A Cid31391X1798.0  -d 192.168.2.40   -j RULE_28
+    $IPTABLES -N Cid31391X1798.1
+    $IPTABLES -A INPUT -p tcp -m tcp  --dport 21  -m state --state NEW  -j Cid31391X1798.1
+    $IPTABLES -A Cid31391X1798.1  -d 22.22.22.22   -j RULE_28
+    $IPTABLES -A Cid31391X1798.1  -d 22.22.23.23   -j RULE_28
+    $IPTABLES -A Cid31391X1798.1  -d 22.22.25.50   -j RULE_28
+    $IPTABLES -A Cid31391X1798.1  -d 192.168.1.1   -j RULE_28
+    $IPTABLES -A Cid31391X1798.1  -d 192.168.2.1   -j RULE_28
+    $IPTABLES -A Cid31391X1798.1  -d 192.168.2.40   -j RULE_28
+    $IPTABLES -A RULE_28  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 28 - ACCEPT **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_28  -j ACCEPT
+    # 
+    # Rule 29 (global)
+    # 
+    echo "Rule 29 (global)"
+    # 
+    # 'catch all' rule
+    $IPTABLES -N RULE_29
+    $IPTABLES -A OUTPUT  -j RULE_29
+    $IPTABLES -A INPUT  -j RULE_29
+    $IPTABLES -A FORWARD  -j RULE_29
+    $IPTABLES -A RULE_29  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 29 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_29  -j DROP
+}
+
+ip_forward() {
+    :
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+}
+
+reset_all() {
+    :
+    reset_iptables_v4
+}
+
+block_action() {
+    reset_all
+}
+
+stop_action() {
+    reset_all
+    $IPTABLES -P OUTPUT  ACCEPT
+    $IPTABLES -P INPUT   ACCEPT
+    $IPTABLES -P FORWARD ACCEPT
+}
+
+check_iptables() {
+    IP_TABLES="$1"
+    [ ! -e $IP_TABLES ] && return 151
+    NF_TABLES=$(cat $IP_TABLES 2>/dev/null)
+    [ -z "$NF_TABLES" ] && return 152
+    return 0
+}
+status_action() {
+    check_iptables "/proc/net/ip_tables_names"
+    ret_ipv4=$?
+    check_iptables "/proc/net/ip6_tables_names"
+    ret_ipv6=$?
+    [ $ret_ipv4 -eq 0 -o $ret_ipv6 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 -o $ret_ipv6 -eq 151 ] && {
+        echo "iptables modules are not loaded"
+    }
+    [ $ret_ipv4 -eq 152 -o $ret_ipv6 -eq 152 ] && {
+        echo "Firewall is not configured"
+    }
+    exit 3
+}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
+}
+
+case "$cmd" in
+    start)
+        log "Activating firewall script generated Mon Jan  3 12:54:00 2011 by vadim"
+        check_tools
+        
+        check_run_time_address_table_files
+        
+        load_modules "nat "
+        configure_interfaces
+        verify_interfaces
+        
+         reset_all 
+         prolog_commands 
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
+        ;;
+
+    stop)
+        stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
+        ;;
+
+    block)
+        block_action
+        RETVAL=$?
+        ;;
+
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+
+
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
+        ;;
+
+esac
+
+exit $RETVAL

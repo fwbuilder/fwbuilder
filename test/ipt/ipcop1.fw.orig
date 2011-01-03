@@ -1,0 +1,233 @@
+#!/bin/sh 
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipt v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:58:00 2011 PST by vadim
+#
+# files: * ipcop1.fw
+#
+# Compiled for iptables (any version)
+#
+# Endian firewall appliance, 2 interfaces:
+# br0 is GREEN
+# eth1 is RED
+# Do not forget to change IP addresses to 
+# match your firewall.
+
+
+
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:${PATH}"
+export PATH
+
+
+
+LSMOD="/sbin/lsmod"
+MODPROBE="/sbin/modprobe"
+IPTABLES="/sbin/iptables"
+IP6TABLES="/sbin/ip6tables"
+IPTABLES_RESTORE="/sbin/iptables-restore"
+IP6TABLES_RESTORE="/sbin/ip6tables-restore"
+IP="/sbin/ip"
+IFCONFIG="/sbin/ifconfig"
+VCONFIG="/sbin/vconfig"
+BRCTL="/sbin/brctl"
+IFENSLAVE="/sbin/ifenslave"
+IPSET="/usr/sbin/ipset"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by AddressTable object $1"
+        exit 1
+    }
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+find_program() {
+  PGM=$1
+  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+    echo "$PGM not found"
+    exit 1
+  }
+}
+check_tools() {
+  find_program $IPTABLES 
+ find_program $MODPROBE 
+  find_program $IP 
+}
+reset_iptables_v4() {
+  $IPTABLES -P OUTPUT  DROP
+  $IPTABLES -P INPUT   DROP
+  $IPTABLES -P FORWARD DROP
+
+cat /proc/net/ip_tables_names | while read table; do
+  $IPTABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IPTABLES -t $table -F $chain
+      fi
+  done
+  $IPTABLES -t $table -X
+done
+}
+
+reset_iptables_v6() {
+  $IP6TABLES -P OUTPUT  DROP
+  $IP6TABLES -P INPUT   DROP
+  $IP6TABLES -P FORWARD DROP
+
+cat /proc/net/ip6_tables_names | while read table; do
+  $IP6TABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IP6TABLES -t $table -F $chain
+      fi
+  done
+  $IP6TABLES -t $table -X
+done
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+check_run_time_address_table_files() {
+    :
+    check_file "atbl.1" "addr-table-1.tbl"
+}
+
+verify_interfaces() {
+    :
+    echo "Verifying interfaces: et0 eth1"
+    for i in et0 eth1 ; do
+        $IP link show "$i" > /dev/null 2>&1 || {
+            log "Interface $i does not exist"
+            exit 1
+        }
+    done
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+script_body() {
+    # ================ IPv4
+
+
+
+
+
+
+
+
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (global)
+    # 
+    echo "Rule 0 (global)"
+    # 
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -d 10.3.14.40   --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p tcp -m tcp  -d 10.3.14.40   --dport 80  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 1 (global)
+    # 
+    echo "Rule 1 (global)"
+    # 
+    $IPTABLES -N RULE_1
+    $IPTABLES -A INPUT  -s 192.168.1.1   -j RULE_1
+    $IPTABLES -A INPUT  -s 192.168.1.2   -j RULE_1
+    $IPTABLES -A INPUT  -s 192.168.1.3/30   -j RULE_1
+    $IPTABLES -A INPUT  -s 192.168.1.200   -j RULE_1
+    $IPTABLES -A INPUT  -s 192.168.1.201   -j RULE_1
+    $IPTABLES -A INPUT  -s 192.168.2.128/25   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.1.1   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.1.2   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.1.3/30   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.1.200   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.1.201   -j RULE_1
+    $IPTABLES -A FORWARD  -s 192.168.2.128/25   -j RULE_1
+    $IPTABLES -A RULE_1  -j LOG  --log-level info --log-prefix "RULE 1 -- DENY "
+    $IPTABLES -A RULE_1  -j DROP
+    # 
+    # Rule 2 (global)
+    # 
+    echo "Rule 2 (global)"
+    # 
+    $IPTABLES -N RULE_2
+    grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
+      set $L; at_atbl_1=$1; $IPTABLES -A INPUT  -s $at_atbl_1   -j RULE_2 
+    done
+    grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
+      set $L; at_atbl_1=$1; $IPTABLES -A FORWARD  -s $at_atbl_1   -j RULE_2 
+    done
+    $IPTABLES -A RULE_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
+    $IPTABLES -A RULE_2  -j DROP
+}
+
+reset_all() {
+    :
+    reset_iptables_v4
+}
+
+case "$1" in
+    start)
+        check_tools
+        check_run_time_address_table_files
+        
+        verify_interfaces
+        prolog_commands
+        script_body
+        epilog_commands
+        ;;
+
+    stop)
+    # on IPCOP "/etc/rc.firewall stop" purges all tables and chains
+    # and then calls this script with command "stop", but there is
+    # nothing left for us to do here.
+        ;;
+    
+    reload)
+        $0 stop
+        $0 start
+        ;;
+
+    *)
+        echo "Usage $0 {start|stop|reload}"
+        ;;
+    
+esac

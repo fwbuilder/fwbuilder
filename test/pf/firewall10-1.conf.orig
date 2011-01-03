@@ -1,0 +1,33 @@
+
+
+#
+# Scrub rules
+#
+scrub in all fragment reassemble
+
+# 
+# Rule  1 (NAT)
+nat on eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+pass in   quick inet proto tcp  from 192.168.1.100  to 192.168.1.1 port 22 flags S/SA keep state 
+# 
+# Rule  0 (eth0)
+pass in   quick on eth0 inet proto tcp  from 192.168.1.0/24  to any port { 22, 80 } flags S/SA keep state 
+# 
+# Rule  1 (lo0)
+pass  quick on lo0 inet  from any  to any 
+# 
+# Rule  2 (enc0)
+# via ipsec
+pass  quick on enc0 inet proto tcp  from 33.33.33.0/24  to 192.168.1.0/24 port 80 flags S/SA keep state 
+# 
+# Rule  3 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

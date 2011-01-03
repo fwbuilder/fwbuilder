@@ -1,0 +1,14 @@
+
+
+
+# 
+# Rule  0 (eth0)
+block in   log  quick on eth0 inet  from any  to 192.168.1.255 
+# 
+# Rule  1 (global)
+pass  quick inet proto udp  from any  to 192.168.1.255 port 68 keep state 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

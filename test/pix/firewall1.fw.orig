@@ -1,0 +1,157 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:05 2011 PST by vadim
+!
+! Compiled for pix 6.1
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * firewall1.fw
+!
+! this object is used to test all kinds of negation in policy rules
+
+! firewall1::: error: Dynamic interface eth1 should not have an IP address object attached to it. This IP address object will be ignored.
+
+! C firewall1:Policy:9: error: Dynamic interface can be used in the policy rule only in v6.3 or later.
+! C firewall1:Policy:9: error: Dynamic interface can be used in the policy rule only in v6.3 or later.
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 inside security100
+
+nameif eth1 outside security0
+
+nameif eth2 dmz security50
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+no snmp-server
+
+
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+no sysopt route dnat
+floodguard disable
+
+
+!################
+
+object-group icmp-type outside.id3D50B022.srv.icmp.0
+ icmp-object 8
+ icmp-object 11
+ exit
+
+! 
+! Rule  2 (eth1)
+! Anti-spoofing rule
+access-list outside_acl_in deny   ip host 192.168.1.1 any 
+access-list outside_acl_in deny   ip host 192.168.2.1 any 
+access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  3 (eth0)
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  4 (eth1)
+icmp permit any 8 outside
+icmp permit any 11 outside
+access-list outside_acl_in permit icmp any interface outside object-group outside.id3D50B022.srv.icmp.0 
+! 
+! Rule  5 (eth1)
+access-list outside_acl_in permit icmp any any object-group outside.id3D50B022.srv.icmp.0 
+! 
+! Rule  6 (eth1,eth2)
+access-list outside_acl_in permit icmp any interface outside object-group outside.id3D50B022.srv.icmp.0 
+icmp permit any 8 dmz
+icmp permit any 11 dmz
+access-list dmz_acl_in permit icmp any host 192.168.2.1 object-group outside.id3D50B022.srv.icmp.0 
+! 
+! Rule  9 (global)
+telnet 0.0.0.0 0.0.0.0 inside
+telnet 0.0.0.0 0.0.0.0 dmz
+ssh    0.0.0.0 0.0.0.0 inside
+ssh    0.0.0.0 0.0.0.0 dmz
+! 
+! Rule  11 (global)
+! hostF has the same IP address as firewal.
+icmp permit any 8  inside
+access-list inside_acl_in permit icmp any host 192.168.1.1 8 
+! 
+! Rule  19 (global)
+! 'masquerading' rule
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  20 (global)
+! 'catch all' rule
+access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+! 
+! Rule  0 (NAT)
+
+access-list nat0.inside permit ip 192.168.1.0 255.255.255.0 192.168.2.0 255.255.255.0
+nat (inside) 0 access-list nat0.inside
+! 
+! Rule  1 (NAT)
+global (outside) 1 interface
+nat (inside) 1 192.168.1.10 255.255.255.255 0 0
+! 
+! Rule  4 (NAT)
+global (outside) 2 interface
+nat (inside) 2 192.168.1.0 255.255.255.0 0 0
+global (dmz) 2 interface
+! 
+nat (dmz) 2 192.168.2.0 255.255.255.0 0 0
+! 
+! 
+! Rule  5 (NAT)
+! 
+! 
+! 
+!
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

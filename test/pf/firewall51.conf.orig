@@ -1,0 +1,23 @@
+
+
+
+# 
+# Rule  0 (global)
+anchor "mail_server_inbound" inet  from any  to 192.168.1.10 
+# 
+# Rule  1 (global)
+anchor "mail_server_outbound" inet  from 192.168.1.10  to any 
+# 
+# Rule  2 (global)
+anchor "web_server_inbound" inet  from any  to 192.168.1.20 
+# 
+# Rule  3 (global)
+anchor "web_server_outbound" inet  from 192.168.1.20  to any 
+# 
+# Rule  4 (global)
+anchor "rule2_branch" inet  from 192.168.1.0/24  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

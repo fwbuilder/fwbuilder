@@ -1,0 +1,39 @@
+# 
+# Rule  0 (NAT)
+map le1 from 192.168.1.0/24 to any -> 22.22.22.22/32   portmap tcp/udp auto 
+map le1 from 192.168.1.0/24 to any -> 22.22.22.22/32  
+map le0 from 192.168.1.0/24 to any -> 192.168.1.1/32   portmap tcp/udp auto 
+map le0 from 192.168.1.0/24 to any -> 192.168.1.1/32  
+# 
+# Rule  1 (NAT)
+map le1 from 192.168.1.0/24 to any -> 22.22.22.22/32   portmap tcp/udp auto 
+map le1 from 192.168.1.0/24 to any -> 22.22.22.22/32  
+# 
+# Rule  2 (NAT)
+map le0 from 192.168.1.0/24 to any -> 0/0 
+# 
+# Rule  3 (NAT)
+rdr  from any to 22.22.22.22/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+# 
+# Rule  4 (NAT)
+rdr  from any to 22.22.22.22/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+# 
+# Rule  5 (NAT)
+rdr  from any to 22.22.22.22/32 port = 22 -> 192.168.1.1 port 22 tcp 
+rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.1 port 22 tcp 
+# 
+# Rule  6 (NAT)
+rdr  from any to 22.22.22.22/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+# 
+# Rule  7 (NAT)
+rdr le1 from any to 22.22.22.22/32 port = 22 -> 192.168.1.100 port 22 tcp 
+# 
+# Rule  8 (NAT)
+rdr le1 from any to 22.22.22.22/32 port = 22 -> 192.168.1.1 port 22 tcp 
+# 
+# Rule  9 (NAT)
+rdr le0 from any to any port = 22 -> 192.168.1.100 port 22 tcp 
+rdr le1 from any to any port = 22 -> 192.168.1.100 port 22 tcp 

@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:40 2011 PST by vadim
+#
+# files: * firewall4.fw pf.fw
+# files:   firewall4.conf /etc/fw/pf.conf
+#
+# Compiled for pf 
+#
+# this object is used to test a configuration where firewall has dynamic address
+
+# firewall4::: error: Dynamic interface eth1 should not have an IP address object attached to it. This IP address object will be ignored.
+# firewall4:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+# firewall4:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+
+
+# firewall4:Policy:6: warning: Changing rule direction due to self reference
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:40 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    /etc/fw/pf.conf || exit 1
+
+
+
+epilog_commands

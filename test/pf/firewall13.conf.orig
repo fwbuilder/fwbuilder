@@ -1,0 +1,33 @@
+
+
+
+# NAT compiler errors and warnings:
+# firewall13:NAT:0: warning: Empty group or address table object 'egroup'
+# firewall13:NAT:0: warning: After removal of all empty groups and address table objects rule element OSrc becomes 'any' in the rule 0 (NAT)
+# Dropping rule 0 (NAT) because option 'Ignore rules with empty groups' is in effect
+# firewall13:NAT:1: warning: Empty group or address table object 'egroup'
+# firewall13:NAT:2: warning: Empty group or address table object 'sgroup'
+# firewall13:NAT:2: warning: After removal of all empty groups and address table objects rule element OSrv becomes 'any' in the rule 2 (NAT)
+# Dropping rule 2 (NAT) because option 'Ignore rules with empty groups' is in effect
+# 
+# Rule  1 (NAT)
+# firewall13:NAT:1: warning: Empty group or address table object 'egroup'
+rdr proto tcp from 200.200.200.200 to 22.22.22.23 port 6667 -> 192.168.1.10 port 6667 
+
+# Policy compiler errors and warnings:
+# firewall13:Policy:0: warning: Empty group or address table object 'egroup2'
+# firewall13:Policy:1: warning: Empty group or address table object 'sgroup'
+# firewall13:Policy:1: warning: After removal of all empty groups and address table objects rule element Srv becomes 'any' in the rule 1 (global)
+# Dropping rule 1 (global) because option 'Ignore rules with empty groups' is in effect
+# 
+# Rule  0 (global)
+# firewall13:Policy:0: warning: Empty group or address table object 'egroup2'
+pass  quick inet  from 200.200.200.200  to 192.168.1.10 keep state 
+# 
+# Rule  2 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

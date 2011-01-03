@@ -1,0 +1,55 @@
+
+set optimization conservative
+
+#
+# Scrub rules
+#
+scrub in all no-df 
+scrub out all random-id
+
+
+#
+# Prolog script
+#
+# prolog
+# prolog commands go after scrub commands
+
+#
+# End of prolog script
+#
+
+# Tables: (1)
+table <tbl.r0.d> { 22.22.22.21 , 22.22.22.22 , 192.168.1.1 } 
+
+# 
+# Rule  0 (NAT)
+nat on le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.21 
+# 
+# Rule  1 (NAT)
+nat on le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 22.22.22.21 , 22.22.22.22 } bitmask 
+# 
+# Rule  2 (NAT)
+nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/28 source-hash 
+# 
+# Rule  3 (NAT)
+nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 22.22.22.1 , 22.22.22.2/31 , 22.22.22.4 , 22.22.22.5 } round-robin static-port 
+# 
+# Rule  4 (NAT)
+rdr proto {tcp udp icmp} from any to 22.22.22.21 -> { 192.168.1.10 , 192.168.1.20 } round-robin 
+
+# Policy compiler errors and warnings:
+# firewall3:Policy:0: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (global)
+# All other attempts to connect to
+# the firewall are denied and logged
+# firewall3:Policy:0: warning: Changing rule direction due to self reference
+block in   log  quick inet  from any  to <tbl.r0.d>  label "RULE 0 -- DROP "  
+# 
+# Rule  1 (global)
+pass  quick inet  from 192.168.1.0/24  to any keep state ( max 1000 ) label "RULE 1 -- ACCEPT "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any  label "RULE 10000 -- DROP "  
+

@@ -1,0 +1,24 @@
+
+
+
+# 
+# Rule  1 (NAT)
+nat on eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+
+# 
+# Rule  0 (eth0)
+block in   log  quick on eth0 inet  from any  to 192.168.1.255 
+# 
+# Rule  1 (lo)
+pass  quick on lo inet  from any  to any keep state 
+# 
+# Rule  3 (global)
+pass  quick inet proto udp  from any  to 192.168.1.255 port 68 keep state 
+# 
+# Rule  4 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

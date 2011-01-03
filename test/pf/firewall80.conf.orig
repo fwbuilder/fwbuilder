@@ -1,0 +1,27 @@
+
+
+
+# 
+# Rule  0 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 
+# 
+# Rule  1 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 flags S/SA keep state 
+# 
+# Rule  2 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 flags S/SA keep state 
+# 
+# Rule  3 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 flags S/SA keep state ( max-src-nodes 10 )
+# 
+# Rule  4 (global)
+# synproxy
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 flags S/SA synproxy state 
+# 
+# Rule  5 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

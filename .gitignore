@@ -9,9 +9,7 @@ core
 *.cache
 *.m4
 *.fw
-*.fw.orig
 *.conf
-*.conf.orig
 *.app
 *.icns
 *.ico

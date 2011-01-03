@@ -1,0 +1,615 @@
+#!/bin/sh 
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipt v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:56:17 2011 PST by vadim
+#
+# files: * firewall72-1.3.x.fw
+#
+# Compiled for iptables 1.3.0
+#
+# this firewall is used to test a rule in the global policy of object "firewall"
+
+# firewall72-1.3.x:Policy:10: error: Rule '10 (eth1)' shadows rule '13 (eth1)'  below it
+# firewall72-1.3.x:Policy:10: error: Rule '10 (eth1)' shadows rule '14 (eth1)'  below it
+# firewall72-1.3.x:Policy:15: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
+# firewall72-1.3.x::: warning: Can not add virtual address for object address
+# firewall72-1.3.x::: warning: Can not add virtual address for object address
+
+
+FWBDEBUG=""
+
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:${PATH}"
+export PATH
+
+
+
+LSMOD="/sbin/lsmod"
+MODPROBE="/sbin/modprobe"
+IPTABLES="/sbin/iptables"
+IP6TABLES="/sbin/ip6tables"
+IPTABLES_RESTORE="/sbin/iptables-restore"
+IP6TABLES_RESTORE="/sbin/ip6tables-restore"
+IP="/sbin/ip"
+IFCONFIG="/sbin/ifconfig"
+VCONFIG="/sbin/vconfig"
+BRCTL="/sbin/brctl"
+IFENSLAVE="/sbin/ifenslave"
+IPSET="/usr/sbin/ipset"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+getaddr_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+getaddr() {
+    getaddr_internal $1 $2 "-4"
+}
+
+getaddr6() {
+    getaddr_internal $1 $2 "-6"
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+find_program() {
+  PGM=$1
+  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+    echo "$PGM not found"
+    exit 1
+  }
+}
+check_tools() {
+  find_program $IPTABLES 
+ find_program $MODPROBE 
+  find_program $IP 
+}
+reset_iptables_v4() {
+  $IPTABLES -P OUTPUT  DROP
+  $IPTABLES -P INPUT   DROP
+  $IPTABLES -P FORWARD DROP
+
+cat /proc/net/ip_tables_names | while read table; do
+  $IPTABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IPTABLES -t $table -F $chain
+      fi
+  done
+  $IPTABLES -t $table -X
+done
+}
+
+reset_iptables_v6() {
+  $IP6TABLES -P OUTPUT  DROP
+  $IP6TABLES -P INPUT   DROP
+  $IP6TABLES -P FORWARD DROP
+
+cat /proc/net/ip6_tables_names | while read table; do
+  $IP6TABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IP6TABLES -t $table -F $chain
+      fi
+  done
+  $IP6TABLES -t $table -X
+done
+}
+
+
+P2P_INTERFACE_WARNING=""
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+
+
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      echo $addr | grep -q ':' && {
+          $FWBDEBUG $IP addr $cmd $addr dev $interface
+      } || {
+          $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+      }
+    }
+
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      $FWBDEBUG $IP addr $cmd $addr dev $interface
+    }
+
+    $FWBDEBUG $IP link set $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+    $IP addr ls dev $interface | \
+      awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' | \
+        while read addr; do
+          echo "${addr}@$interface"
+	done | sort
+}
+
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IP link show dev $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+clear_addresses_except_known_interfaces() {
+    $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/state/ && !($2 in ignored_dict)) {print $2;}' | \
+         while read intf; do
+            echo "# Removing addresses not configured in fwbuilder from interface $intf"
+            $FWBDEBUG $IP addr flush dev $intf scope global
+            $FWBDEBUG $IP link set $intf down
+         done
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+check_run_time_address_table_files() {
+    :
+    
+}
+
+load_modules() {
+    :
+    OPTS=$1
+    MODULES_DIR="/lib/modules/`uname -r`/kernel/net/"
+    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
+    echo $OPTS | grep -q nat && {
+        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    echo $OPTS | grep -q ipv6 && {
+        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    for module in $MODULES; do 
+        if $LSMOD | grep ${module} >/dev/null; then continue; fi
+        $MODPROBE ${module} ||  exit 1 
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    # Configure interfaces
+    update_addresses_of_interface "eth0 33.33.33.33/24" ""
+    update_addresses_of_interface "eth1 172.16.1.1/24" ""
+    update_addresses_of_interface "lo 127.0.0.1/8" ""
+}
+
+script_body() {
+    echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout 
+     echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_intvl 
+
+
+    # ================ IPv4
+
+
+    # ================ Table 'filter', automatic rules
+    # accept established sessions
+    $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+    # ================ Table 'nat',  rule set NAT
+    # 
+    # Rule 0 (NAT)
+    # 
+    echo "Rule 0 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s ! 192.168.1.0/24  -d 200.200.200.200  -j SNAT --to-source 22.22.22.23
+    # 
+    # Rule 1 (NAT)
+    # 
+    echo "Rule 1 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp  -s ! 192.168.1.0/24   -d 200.200.200.200  --dport 80 -j SNAT --to-source 22.22.22.23
+    # 
+    # Rule 2 (NAT)
+    # 
+    echo "Rule 2 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -d ! 192.168.2.0/24  -j SNAT --to-source 33.33.33.33
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -d ! 192.168.2.0/24  -j SNAT --to-source 172.16.1.1
+    # 
+    # Rule 3 (NAT)
+    # 
+    echo "Rule 3 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s 192.168.1.0/24   -d ! 192.168.2.0/24  --dport 80 -j SNAT --to-source 33.33.33.33
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.0/24   -d ! 192.168.2.0/24  --dport 80 -j SNAT --to-source 172.16.1.1
+    # 
+    # Rule 4 (NAT)
+    # 
+    echo "Rule 4 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid212911X8629.0
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j Cid212911X8629.0
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j Cid212911X8629.0
+    $IPTABLES -t nat -A Cid212911X8629.0   -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid212911X8629.0   -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid212911X8629.0   -j SNAT --to-source 172.16.1.1
+    # 
+    # Rule 5 (NAT)
+    # 
+    echo "Rule 5 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   -d ! 192.168.1.1  --dport 80 -j REDIRECT --to-ports 3128
+
+
+
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (lo)
+    # 
+    echo "Rule 0 (lo)"
+    # 
+    $IPTABLES -A INPUT  -i ! lo   -s 127.0.0.1   -j DROP
+    $IPTABLES -A FORWARD  -i ! lo   -s 127.0.0.1   -j DROP
+    $IPTABLES -A OUTPUT  -o ! lo   -s 127.0.0.1   -j DROP
+    # 
+    # Rule 1 (eth1)
+    # 
+    echo "Rule 1 (eth1)"
+    # 
+    $IPTABLES -N Cid107355X8629.0
+    $IPTABLES -A OUTPUT  -o eth1   -s ! 192.168.1.0/24   -j Cid107355X8629.0
+    $IPTABLES -A Cid107355X8629.0  -d 33.33.33.33   -j DROP
+    $IPTABLES -A Cid107355X8629.0  -d 172.16.1.1   -j DROP
+    $IPTABLES -N Cid107355X8629.1
+    $IPTABLES -A FORWARD  -o eth1   -s ! 192.168.1.0/24   -j Cid107355X8629.1
+    $IPTABLES -A Cid107355X8629.1  -d 33.33.33.33   -j DROP
+    $IPTABLES -A Cid107355X8629.1  -d 172.16.1.1   -j DROP
+    # 
+    # Rule 2 (eth1)
+    # 
+    echo "Rule 2 (eth1)"
+    # 
+    $IPTABLES -N Cid107338X8629.0
+    $IPTABLES -A INPUT  -i eth1   -d ! 192.168.1.0/24   -j Cid107338X8629.0
+    $IPTABLES -A Cid107338X8629.0  -s 33.33.33.33   -j DROP
+    $IPTABLES -A Cid107338X8629.0  -s 172.16.1.1   -j DROP
+    $IPTABLES -N Cid107338X8629.1
+    $IPTABLES -A FORWARD  -i eth1   -d ! 192.168.1.0/24   -j Cid107338X8629.1
+    $IPTABLES -A Cid107338X8629.1  -s 33.33.33.33   -j DROP
+    $IPTABLES -A Cid107338X8629.1  -s 172.16.1.1   -j DROP
+    # 
+    # Rule 3 (global)
+    # 
+    echo "Rule 3 (global)"
+    # 
+    $IPTABLES -N Cid107321X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107321X8629.0
+    $IPTABLES -A Cid107321X8629.0  -i +  -p tcp -m tcp  --dport 80  -j RETURN
+    $IPTABLES -A Cid107321X8629.0  -i +   -j DROP
+    # 
+    # Rule 4 (global)
+    # 
+    echo "Rule 4 (global)"
+    # 
+    $IPTABLES -N Cid107304X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107304X8629.0
+    $IPTABLES -A Cid107304X8629.0  -i +  -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RETURN
+    $IPTABLES -A Cid107304X8629.0  -i +   -j DROP
+    # 
+    # Rule 5 (global)
+    # 
+    echo "Rule 5 (global)"
+    # 
+    $IPTABLES -N Cid107287X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107287X8629.0
+    $IPTABLES -A Cid107287X8629.0  -i +  -p icmp  -m icmp  --icmp-type 3/1   -j RETURN
+    $IPTABLES -A Cid107287X8629.0  -i +   -j DROP
+    # 
+    # Rule 6 (global)
+    # 
+    echo "Rule 6 (global)"
+    # 
+    $IPTABLES -N Cid107270X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107270X8629.0
+    $IPTABLES -A Cid107270X8629.0  -i +  -p icmp  -m icmp  --icmp-type 3/1   -j RETURN
+    $IPTABLES -A Cid107270X8629.0  -i +   -j DROP
+    # 
+    # Rule 7 (global)
+    # 
+    echo "Rule 7 (global)"
+    # 
+    $IPTABLES -N Cid107253X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107253X8629.0
+    $IPTABLES -A Cid107253X8629.0  -i +  -p 47  -j RETURN
+    $IPTABLES -A Cid107253X8629.0  -i +   -j DROP
+    # 
+    # Rule 8 (global)
+    # 
+    echo "Rule 8 (global)"
+    # 
+    $IPTABLES -N Cid107236X8629.0
+    $IPTABLES -A INPUT  -d 172.16.1.1   -j Cid107236X8629.0
+    $IPTABLES -A Cid107236X8629.0  -i +  -p tcp -m tcp   --tcp-flags ALL NONE  -j RETURN
+    $IPTABLES -A Cid107236X8629.0  -i +   -j DROP
+    # 
+    # Rule 9 (global)
+    # 
+    echo "Rule 9 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -d 172.16.1.1  -m mark ! --mark 16  -j DROP
+    $IPTABLES -A INPUT  -d 172.16.1.1  -m mark ! --mark 16  -j DROP
+    # 
+    # Rule 10 (eth1)
+    # 
+    echo "Rule 10 (eth1)"
+    # 
+    # Should use ! -i eth1 eventually
+    $IPTABLES -A FORWARD  -i ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    # 
+    # Rule 11 (eth1)
+    # 
+    echo "Rule 11 (eth1)"
+    # 
+    # Should use ! -i eth1 eventually
+    $IPTABLES -N Cid107185X8629.0
+    $IPTABLES -A FORWARD  -i ! eth1   -d 192.168.1.0/24   -j Cid107185X8629.0
+    $IPTABLES -A Cid107185X8629.0 -p tcp -m tcp   --tcp-flags ALL NONE  -j RETURN
+    $IPTABLES -A Cid107185X8629.0  -j DROP
+    # 
+    # Rule 12 (eth1)
+    # 
+    echo "Rule 12 (eth1)"
+    # 
+    # Should use ! -i eth1 eventually
+    $IPTABLES -A OUTPUT  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    $IPTABLES -A FORWARD  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    # 
+    # Rule 13 (eth1)
+    # 
+    echo "Rule 13 (eth1)"
+    # 
+    # Should use ! -i eth1 eventually
+    $IPTABLES -A FORWARD  -i ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    $IPTABLES -A OUTPUT  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    $IPTABLES -A FORWARD  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    # 
+    # Rule 14 (eth1)
+    # 
+    echo "Rule 14 (eth1)"
+    # 
+    # Should use ! -i eth1 eventually
+    $IPTABLES -A FORWARD  -i ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    $IPTABLES -A OUTPUT  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    $IPTABLES -A FORWARD  -o ! eth1  -p tcp -m tcp  -d 192.168.1.0/24    --tcp-flags ALL NONE  -j DROP
+    # 
+    # Rule 15 (global)
+    # 
+    echo "Rule 15 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -d 172.16.1.1  -m owner ! --uid-owner 500  -j DROP
+}
+
+ip_forward() {
+    :
+    
+}
+
+reset_all() {
+    :
+    reset_iptables_v4
+}
+
+block_action() {
+    reset_all
+}
+
+stop_action() {
+    reset_all
+    $IPTABLES -P OUTPUT  ACCEPT
+    $IPTABLES -P INPUT   ACCEPT
+    $IPTABLES -P FORWARD ACCEPT
+}
+
+check_iptables() {
+    IP_TABLES="$1"
+    [ ! -e $IP_TABLES ] && return 151
+    NF_TABLES=$(cat $IP_TABLES 2>/dev/null)
+    [ -z "$NF_TABLES" ] && return 152
+    return 0
+}
+status_action() {
+    check_iptables "/proc/net/ip_tables_names"
+    ret_ipv4=$?
+    check_iptables "/proc/net/ip6_tables_names"
+    ret_ipv6=$?
+    [ $ret_ipv4 -eq 0 -o $ret_ipv6 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 -o $ret_ipv6 -eq 151 ] && {
+        echo "iptables modules are not loaded"
+    }
+    [ $ret_ipv4 -eq 152 -o $ret_ipv6 -eq 152 ] && {
+        echo "Firewall is not configured"
+    }
+    exit 3
+}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
+}
+
+case "$cmd" in
+    start)
+        log "Activating firewall script generated Mon Jan  3 12:56:17 2011 by vadim"
+        check_tools
+         prolog_commands 
+        check_run_time_address_table_files
+        
+        load_modules "nat "
+        configure_interfaces
+        verify_interfaces
+        
+         reset_all 
+        
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
+        ;;
+
+    stop)
+        stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
+        ;;
+
+    block)
+        block_action
+        RETVAL=$?
+        ;;
+
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+
+
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
+        ;;
+
+esac
+
+exit $RETVAL

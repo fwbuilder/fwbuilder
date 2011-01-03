@@ -1,0 +1,61 @@
+
+
+
+
+# Tables: (2)
+table <tbl.r3> { ppp0 , 33.33.33.33 , 33.33.33.34 , 192.168.1.1 } 
+table <tbl.r4.d> { 33.33.33.33 , 33.33.33.34 } 
+
+# 
+# Rule  0 (NAT)
+nat on eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 33.33.33.33 , 33.33.33.34 } 
+nat on eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+nat on ppp0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (ppp0) 
+# 
+# Rule  1 (NAT)
+nat on eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 33.33.33.33 , 33.33.33.34 } 
+# 
+# Rule  2 (NAT)
+nat on eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 33.33.33.33 
+# 
+# Rule  3 (NAT)
+rdr proto tcp from any to <tbl.r3> port 22 -> 192.168.1.100 port 22 
+# 
+# Rule  4 (NAT)
+rdr on eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22 
+# 
+# Rule  5 (NAT)
+rdr on eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22 
+# 
+# Rule  6 (NAT)
+rdr on eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22 
+# 
+# Rule  7 (NAT)
+rdr on eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22 
+# 
+# Rule  8 (NAT)
+rdr proto tcp from 192.168.1.0/24 to any port 80 -> 33.33.33.34 port 80 
+
+# 
+# Rule  0 (global)
+pass inet  from any  to any 
+# 
+# Rule  1 (global)
+pass  log inet  from any  to any 
+# 
+# Rule  2 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.33 port 22 flags S/SA keep state 
+# 
+# Rule  3 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 flags S/SA keep state 
+# 
+# Rule  4 (global)
+pass  quick inet proto tcp  from any  to <tbl.r4.d> port 22 flags S/SA keep state 
+# 
+# Rule  5 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

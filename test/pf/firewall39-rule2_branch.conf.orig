@@ -1,0 +1,14 @@
+
+# Tables: (1)
+table <rule2_branch:tbl.r0.d> { 192.168.1.1 , 192.168.2.1 } 
+
+# Policy compiler errors and warnings:
+# firewall39:rule2_branch:0: warning: Changing rule direction due to self reference
+# 
+# Rule  rule2_branch 0 (global)
+# firewall39:rule2_branch:0: warning: Changing rule direction due to self reference
+pass in   quick inet  from any  to <rule2_branch:tbl.r0.d> keep state 
+# 
+# Rule  rule2_branch 1 (global)
+block  log  quick inet  from any  to any 
+

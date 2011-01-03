@@ -1,0 +1,134 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:07 2011 PST by vadim
+#
+# files: * mac.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+
+# mac:Policy:1: warning: Changing rule direction due to self reference
+# mac:Policy:3: warning: Changing rule direction due to self reference
+# mac:Policy:4: warning: Changing rule direction due to self reference
+
+set -x
+
+cd /etc || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+IPFW="/sbin/ipfw"
+SYSCTL="/usr/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    $SYSCTL -w net.inet.ip.forwarding=1
+    $SYSCTL -w net.inet.ip.sourceroute=0
+    $SYSCTL -w net.inet.ip.redirect=0
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:07 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (lo0)
+"$IPFW" add 10 set 1 permit all  from any  to any      via  lo0 keep-state  || exit 1
+# 
+# Rule  1 (global)
+# mac:Policy:1: warning: Changing rule direction due to self reference
+"$IPFW" add 20 set 1 permit tcp  from any  to me established  in  keep-state  || exit 1
+# 
+# Rule  2 (global)
+"$IPFW" add 30 set 1 drop    log all  from any  to any   frag      || exit 1
+"$IPFW" add 40 set 1 drop    log tcp  from any  to any  tcpflags fin,syn,!rst,psh,ack,urg      || exit 1
+# 
+# Rule  3 (global)
+# mac:Policy:3: warning: Changing rule direction due to self reference
+"$IPFW" add 50 set 1 permit icmp  from any  to me icmptypes 11,11,0,3 in  keep-state  || exit 1
+# mac:Policy:3: warning: Changing rule direction due to self reference
+"$IPFW" add 60 set 1 permit tcp  from any  to me 22,25 in  setup keep-state  || exit 1
+# mac:Policy:3: warning: Changing rule direction due to self reference
+"$IPFW" add 70 set 1 permit udp  from any  to me  in  keep-state  || exit 1
+# 
+# Rule  4 (global)
+# mac:Policy:4: warning: Changing rule direction due to self reference
+"$IPFW" add 80 set 1 permit icmp  from me  to any icmptypes 11,11,0,3 out keep-state  || exit 1
+# mac:Policy:4: warning: Changing rule direction due to self reference
+"$IPFW" add 90 set 1 permit tcp  from me  to any  out setup keep-state  || exit 1
+# mac:Policy:4: warning: Changing rule direction due to self reference
+"$IPFW" add 100 set 1 permit udp  from me  to any 53,68,67 out keep-state  || exit 1
+# 
+# Rule  5 (global)
+"$IPFW" add 110 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 120 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

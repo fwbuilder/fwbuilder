@@ -1,0 +1,261 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:05 2011 PST by vadim
+#
+# files: * firewall33.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+# testing DNSName object
+
+# firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+# firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
+
+
+cd /etc/fw || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+    if echo "$addr" | grep -q ':'
+    then
+        inet="inet6"
+        addr=$(echo "$addr" | sed 's!/! prefixlen !')
+    else
+        inet="inet"
+        addr=$(echo "$addr" | sed 's!/! netmask !')
+    fi
+
+    parameter=""
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      parameter="alias"
+    }
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      parameter="delete"
+    }
+
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+
+    scope_regex="1"
+    if test -n "$scope"; then scope_regex=" \$0 !~ \"$scope\" "; fi
+
+    $IFCONFIG $interface | sed "s/%$interface//" | \
+      awk -v IGNORED="$ignore_list" \
+        "BEGIN {  
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $scope_regex && !(\$2 in ignored_dict)) {printf \"%s/%s\n\",\$2,\$4;}" | \
+        while read addr; do
+          echo "${addr}@$interface"
+        done | sort
+   
+}
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IFCONFIG $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface '' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scopeid .*' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    update_addresses_of_interface "eth1 192.168.1.100/0xffffff00" ""
+    update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:05 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (global)
+"$IPFW" add 10 set 1 permit all  from 157.166.224.25  to any      keep-state  || exit 1
+"$IPFW" add 20 set 1 permit all  from 157.166.224.26  to any      keep-state  || exit 1
+"$IPFW" add 30 set 1 permit all  from 157.166.226.25  to any      keep-state  || exit 1
+"$IPFW" add 40 set 1 permit all  from 157.166.226.26  to any      keep-state  || exit 1
+"$IPFW" add 50 set 1 permit all  from 157.166.255.18  to any      keep-state  || exit 1
+"$IPFW" add 60 set 1 permit all  from 157.166.255.19  to any      keep-state  || exit 1
+# 
+# Rule  1 (global)
+"$IPFW" add 70 set 1 permit all  from www.cnn.com  to any      keep-state  || exit 1
+# 
+# Rule  2 (global)
+# firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+"$IPFW" add 80 set 1 permit all  from 192.0.2.1  to any      keep-state  || exit 1
+# 
+# Rule  3 (global)
+"$IPFW" add 90 set 1 permit all  from buildmaster  to any      keep-state  || exit 1
+# 
+# Rule  4 (global)
+"$IPFW" add 100 set 1 skipto 170 all  from any  to 157.166.224.25       || exit 1
+"$IPFW" add 110 set 1 skipto 170 all  from any  to 157.166.224.26       || exit 1
+"$IPFW" add 120 set 1 skipto 170 all  from any  to 157.166.226.25       || exit 1
+"$IPFW" add 130 set 1 skipto 170 all  from any  to 157.166.226.26       || exit 1
+"$IPFW" add 140 set 1 skipto 170 all  from any  to 157.166.255.18       || exit 1
+"$IPFW" add 150 set 1 skipto 170 all  from any  to 157.166.255.19       || exit 1
+"$IPFW" add 160 set 1 drop   all  from any  to any       || exit 1
+# 
+# Rule  5 (global)
+"$IPFW" add 170 set 1 skipto 190 all  from any  to www.cnn.com       || exit 1
+"$IPFW" add 180 set 1 drop   all  from any  to any       || exit 1
+# 
+# Rule  6 (global)
+# firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+"$IPFW" add 190 set 1 skipto 210 all  from any  to 192.0.2.1       || exit 1
+"$IPFW" add 200 set 1 permit all  from any  to any      keep-state  || exit 1
+# 
+# Rule  7 (global)
+"$IPFW" add 210 set 1 skipto 230 all  from any  to buildmaster       || exit 1
+"$IPFW" add 220 set 1 permit all  from any  to any      keep-state  || exit 1
+# 
+# Rule  8 (global)
+"$IPFW" add 230 set 1 skipto 340 all  from any  to 74.125.19.99       || exit 1
+"$IPFW" add 240 set 1 skipto 340 all  from any  to 74.125.19.103       || exit 1
+"$IPFW" add 250 set 1 skipto 340 all  from any  to 74.125.19.104       || exit 1
+"$IPFW" add 260 set 1 skipto 340 all  from any  to 74.125.19.147       || exit 1
+"$IPFW" add 270 set 1 skipto 340 all  from any  to 157.166.224.25       || exit 1
+"$IPFW" add 280 set 1 skipto 340 all  from any  to 157.166.224.26       || exit 1
+"$IPFW" add 290 set 1 skipto 340 all  from any  to 157.166.226.25       || exit 1
+"$IPFW" add 300 set 1 skipto 340 all  from any  to 157.166.226.26       || exit 1
+"$IPFW" add 310 set 1 skipto 340 all  from any  to 157.166.255.18       || exit 1
+"$IPFW" add 320 set 1 skipto 340 all  from any  to 157.166.255.19       || exit 1
+"$IPFW" add 330 set 1 permit all  from any  to any      keep-state  || exit 1
+# 
+# Rule  9 (global)
+"$IPFW" add 340 set 1 skipto 370 all  from any  to www.google.com       || exit 1
+"$IPFW" add 350 set 1 skipto 370 all  from any  to www.cnn.com       || exit 1
+"$IPFW" add 360 set 1 permit all  from any  to any      keep-state  || exit 1
+# 
+# Rule  10 (global)
+"$IPFW" add 370 set 1 skipto 450 all  from any  to www.google.com       || exit 1
+"$IPFW" add 380 set 1 skipto 450 all  from any  to 157.166.224.25       || exit 1
+"$IPFW" add 390 set 1 skipto 450 all  from any  to 157.166.224.26       || exit 1
+"$IPFW" add 400 set 1 skipto 450 all  from any  to 157.166.226.25       || exit 1
+"$IPFW" add 410 set 1 skipto 450 all  from any  to 157.166.226.26       || exit 1
+"$IPFW" add 420 set 1 skipto 450 all  from any  to 157.166.255.18       || exit 1
+"$IPFW" add 430 set 1 skipto 450 all  from any  to 157.166.255.19       || exit 1
+"$IPFW" add 440 set 1 permit all  from any  to any      keep-state  || exit 1
+# 
+# Rule  11 (global)
+"$IPFW" add 450 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 460 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

@@ -1,0 +1,170 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:11 2011 PST by vadim
+!
+! Compiled for pix 6.2
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall3.fw
+!
+! testing icmp and ssh/telnet commands
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 inside security100
+
+nameif eth1 outside security0
+
+nameif eth2 dmz security50
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout rpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout uauth 2:0:0 absolute
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+clear snmp-server
+no snmp-server enable traps
+
+clear ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+no sysopt route dnat
+floodguard disable
+
+
+!################
+clear access-list
+clear object-group
+clear icmp
+clear telnet
+! 
+! Rule  0 (eth0)
+ssh    0.0.0.0 0.0.0.0 inside
+access-list inside_acl_in permit tcp any any eq 22 
+! 
+! Rule  1 (eth0)
+ssh    0.0.0.0 0.0.0.0 inside
+! 
+! Rule  2 (eth0)
+icmp permit any 3  inside
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 
+access-list inside_acl_in permit icmp any any 3 
+! 
+! Rule  3 (eth0)
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 
+! 
+! Rule  4 (eth1)
+ssh    0.0.0.0 0.0.0.0 outside
+access-list outside_acl_in permit tcp any any eq 22 
+! 
+! Rule  5 (eth1)
+ssh    0.0.0.0 0.0.0.0 outside
+! 
+! Rule  6 (eth1)
+icmp permit any 3  outside
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+access-list outside_acl_in permit icmp any any 3 
+! 
+! Rule  7 (eth1)
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+! 
+! Rule  8 (global)
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+icmp permit any 3  dmz
+access-list dmz_acl_in permit icmp any host 192.168.2.1 3 
+access-list inside_acl_in permit icmp any any 3 
+access-list outside_acl_in permit icmp any any 3 
+access-list dmz_acl_in permit icmp any any 3 
+! 
+! Rule  9 (global)
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+access-list dmz_acl_in permit icmp any host 192.168.2.1 3 
+! 
+! Rule  10 (global)
+ssh    0.0.0.0 0.0.0.0 inside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz
+access-list inside_acl_in permit tcp any any eq 22 
+access-list outside_acl_in permit tcp any any eq 22 
+access-list dmz_acl_in permit tcp any any eq 22 
+! 
+! Rule  11 (global)
+ssh    0.0.0.0 0.0.0.0 inside
+ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz
+! 
+! Rule  12 (global)
+telnet 0.0.0.0 0.0.0.0 inside
+telnet 0.0.0.0 0.0.0.0 outside
+telnet 0.0.0.0 0.0.0.0 dmz
+access-list inside_acl_in permit tcp any any eq 23 
+access-list outside_acl_in permit tcp any any eq 23 
+access-list dmz_acl_in permit tcp any any eq 23 
+! 
+! Rule  13 (global)
+telnet 0.0.0.0 0.0.0.0 inside
+telnet 0.0.0.0 0.0.0.0 outside
+telnet 0.0.0.0 0.0.0.0 dmz
+! 
+! Rule  14 (global)
+access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

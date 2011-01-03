@@ -1,0 +1,393 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:10 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * ccie4u-r1.fw
+!
+! CCIE4U router R1
+! 2600
+
+! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 3 (global)'  below it
+! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 4 (global)'  below it
+! ccie4u-r1:r1-ipv6:3: error: Rule 'r1-ipv6 3 (global)' shadows rule 'r1-ipv6 4 (global)'  below it
+! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 5 (global)'  below it
+! ccie4u-r1:r1-ipv6:3: error: Rule 'r1-ipv6 3 (global)' shadows rule 'r1-ipv6 5 (global)'  below it
+! ccie4u-r1:r1-ipv6:2: error: Rule 'r1-ipv6 2 (global)' shadows rule 'r1-ipv6 5 (global)'  below it
+! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 6 (global)'  below it
+! ccie4u-r1:r1-ipv6:2: error: Rule 'r1-ipv6 2 (global)' shadows rule 'r1-ipv6 6 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 10 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 10 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 11 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 11 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 11 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 11 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 12 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 12 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:3: error: Rule 'r1-ipv6 3 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+! temporary access list for "safety net install"
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip 10.1.1.0 0.0.0.0 any 
+  deny ip any any 
+exit
+interface FastEthernet0/0
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended r1-ipv4_fe0_0_in
+no ip access-list extended r1-ipv4_fe0_0_out
+no ip access-list extended r1-ipv4_fe0_1_in
+no ip access-list extended r1-ipv4_fe0_1_out
+
+
+ip access-list extended r1-ipv4_fe0_0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  host 10.1.1.100 host 10.1.1.1 eq 22 
+  permit tcp  host 10.1.1.100 host 10.1.2.1 eq 22 
+! 
+! Rule  r1-ipv4 1 (global)
+  permit icmp  any  host 61.150.47.112 8 
+  permit icmp  any  host 192.168.1.0 8 
+  permit 50  any  host 61.150.47.112 dscp af12 
+  permit 50  any  host 192.168.1.0 dscp af12 
+! 
+! Rule  r1-ipv4 2 (global)
+  permit icmp  host 61.150.47.112 any  8 
+  permit icmp  host 192.168.1.0 any  8 
+exit
+
+ip access-list extended r1-ipv4_fe0_0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 10.1.1.1 eq 22 host 10.1.1.100 
+  permit tcp  host 10.1.2.1 eq 22 host 10.1.1.100 
+! 
+! Rule  r1-ipv4 1 (global)
+  permit icmp  any  host 61.150.47.112 8 
+  permit icmp  any  host 192.168.1.0 8 
+  permit 50  any  host 61.150.47.112 dscp af12 
+  permit 50  any  host 192.168.1.0 dscp af12 
+! 
+! Rule  r1-ipv4 2 (global)
+  permit icmp  host 61.150.47.112 any  8 
+  permit icmp  host 192.168.1.0 any  8 
+exit
+
+ip access-list extended r1-ipv4_fe0_1_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  host 10.1.1.100 host 10.1.1.1 eq 22 
+  permit tcp  host 10.1.1.100 host 10.1.2.1 eq 22 
+! 
+! Rule  r1-ipv4 1 (global)
+  permit icmp  any  host 61.150.47.112 8 
+  permit icmp  any  host 192.168.1.0 8 
+  permit 50  any  host 61.150.47.112 dscp af12 
+  permit 50  any  host 192.168.1.0 dscp af12 
+! 
+! Rule  r1-ipv4 2 (global)
+  permit icmp  host 61.150.47.112 any  8 
+  permit icmp  host 192.168.1.0 any  8 
+exit
+
+ip access-list extended r1-ipv4_fe0_1_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 10.1.1.1 eq 22 host 10.1.1.100 
+  permit tcp  host 10.1.2.1 eq 22 host 10.1.1.100 
+! 
+! Rule  r1-ipv4 1 (global)
+  permit icmp  any  host 61.150.47.112 8 
+  permit icmp  any  host 192.168.1.0 8 
+  permit 50  any  host 61.150.47.112 dscp af12 
+  permit 50  any  host 192.168.1.0 dscp af12 
+! 
+! Rule  r1-ipv4 2 (global)
+  permit icmp  host 61.150.47.112 any  8 
+  permit icmp  host 192.168.1.0 any  8 
+exit
+
+
+
+
+
+! ================ IPv6
+
+
+no ipv6 access-list ipv6_fe0_0_in
+no ipv6 access-list ipv6_fe0_0_out
+no ipv6 access-list ipv6_fe0_1_in
+no ipv6 access-list ipv6_fe0_1_out
+
+
+ipv6 access-list ipv6_fe0_0_in
+! 
+! Rule  r1-ipv6 0 (global)
+  permit tcp  fe80::/64 any  eq 22 
+! 
+! Rule  r1-ipv6 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+! 
+! Rule  r1-ipv6 2 (global)
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 3 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 4 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 5 (global)
+  permit tcp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 6 (global)
+  permit tcp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 7 (global)
+  permit ipv6  any  host fe80::21d:9ff:fe8b:8e94 log 
+! 
+! Rule  r1-ipv6 8 (global)
+  permit ipv6  fe80::/64 any  log 
+! 
+! Rule  r1-ipv6 9 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  3ffe:1200:2000::/36 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 10 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 11 (global)
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+! 
+! Rule  r1-ipv6 12 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+! 
+! Rule  r1-ipv6 13 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 
+  permit udp  host 2001:5c0:0:2::24 any  eq 161 
+  permit udp  host 3ffe:1200:2001:1:8000::1 any  eq 161 
+  permit icmp  host 2001:5c0:0:2::24 any  128 
+  permit icmp  host 3ffe:1200:2001:1:8000::1 any  128 
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+exit
+
+ipv6 access-list ipv6_fe0_0_out
+! 
+! Rule  r1-ipv6 0 (global)
+  permit tcp  fe80::/64 any  eq 22 
+! 
+! Rule  r1-ipv6 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+! 
+! Rule  r1-ipv6 3 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 4 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 8 (global)
+  permit ipv6  fe80::/64 any  log 
+! 
+! Rule  r1-ipv6 9 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  3ffe:1200:2000::/36 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 10 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 11 (global)
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+! 
+! Rule  r1-ipv6 12 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+! 
+! Rule  r1-ipv6 13 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 
+  permit udp  host 2001:5c0:0:2::24 any  eq 161 
+  permit udp  host 3ffe:1200:2001:1:8000::1 any  eq 161 
+  permit icmp  host 2001:5c0:0:2::24 any  128 
+  permit icmp  host 3ffe:1200:2001:1:8000::1 any  128 
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+exit
+
+ipv6 access-list ipv6_fe0_1_in
+! 
+! Rule  r1-ipv6 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+! 
+! Rule  r1-ipv6 2 (global)
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 3 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 4 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 5 (global)
+  permit tcp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 6 (global)
+  permit tcp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
+! 
+! Rule  r1-ipv6 7 (global)
+  permit ipv6  any  host fe80::21d:9ff:fe8b:8e94 log 
+! 
+! Rule  r1-ipv6 9 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  3ffe:1200:2000::/36 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 10 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 11 (global)
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+! 
+! Rule  r1-ipv6 12 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+! 
+! Rule  r1-ipv6 13 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 
+  permit udp  host 2001:5c0:0:2::24 any  eq 161 
+  permit udp  host 3ffe:1200:2001:1:8000::1 any  eq 161 
+  permit icmp  host 2001:5c0:0:2::24 any  128 
+  permit icmp  host 3ffe:1200:2001:1:8000::1 any  128 
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+exit
+
+ipv6 access-list ipv6_fe0_1_out
+! 
+! Rule  r1-ipv6 0 (global)
+  permit tcp  fe80::/64 any  eq 22 
+! 
+! Rule  r1-ipv6 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+! 
+! Rule  r1-ipv6 3 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 4 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+! 
+! Rule  r1-ipv6 8 (global)
+  permit ipv6  fe80::/64 any  log 
+! 
+! Rule  r1-ipv6 9 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  3ffe:1200:2000::/36 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 10 (global)
+  permit ipv6  host 2001:5c0:0:2::24 any  log 
+  permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
+! 
+! Rule  r1-ipv6 11 (global)
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+! 
+! Rule  r1-ipv6 12 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+! 
+! Rule  r1-ipv6 13 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 
+  permit udp  host 2001:5c0:0:2::24 any  eq 161 
+  permit udp  host 3ffe:1200:2001:1:8000::1 any  eq 161 
+  permit icmp  host 2001:5c0:0:2::24 any  128 
+  permit icmp  host 3ffe:1200:2001:1:8000::1 any  128 
+  permit tcp  host 2001:5c0:0:2::24 any  established 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  established 
+exit
+
+
+interface FastEthernet0/0
+  ipv6 traffic-filter ipv6_fe0_0_in in
+exit
+interface FastEthernet0/0
+  ipv6 traffic-filter ipv6_fe0_0_out out
+exit
+interface FastEthernet0/1
+  ipv6 traffic-filter ipv6_fe0_1_in in
+exit
+interface FastEthernet0/1
+  ipv6 traffic-filter ipv6_fe0_1_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

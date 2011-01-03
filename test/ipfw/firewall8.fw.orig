@@ -1,0 +1,120 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:06 2011 PST by vadim
+#
+# files: * firewall8.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+
+# firewall8:Policy:0: warning: Changing rule direction due to self reference
+
+
+
+cd /etc || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    $SYSCTL -w net.inet.ip.forwarding=1
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:06 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (global)
+# firewall8:Policy:0: warning: Changing rule direction due to self reference
+"$IPFW" add 10 set 1 permit tcp  from any  to me 22 in  setup keep-state  || exit 1
+# 
+# Rule  1 (global)
+"$IPFW" add 20 set 1 permit tcp  from any  to 33.33.33.33 22     setup keep-state  || exit 1
+"$IPFW" add 30 set 1 permit tcp  from any  to 33.33.33.34 22     setup keep-state  || exit 1
+# 
+# Rule  2 (global)
+"$IPFW" add 40 set 1 permit tcp  from any  to 33.33.33.33 22     setup keep-state  || exit 1
+# 
+# Rule  3 (global)
+"$IPFW" add 50 set 1 permit tcp  from any  to 33.33.33.34 22     setup keep-state  || exit 1
+# 
+# Rule  4 (global)
+"$IPFW" add 60 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 70 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

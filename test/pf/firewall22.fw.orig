@@ -1,0 +1,100 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:35 2011 PST by vadim
+#
+# files: * firewall22.fw
+# files:   firewall22-NAT_1.conf
+# files:   firewall22.conf
+#
+# Compiled for pf 4.3
+#
+# branching in NAT rules
+# PF v4.3 and later
+
+# firewall22:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+
+# firewall22:NAT:2: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/usr/local/bin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:35 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/firewall22.conf || exit 1
+$PFCTL  -a NAT_1 \
+     -f \
+    ${FWDIR}/firewall22-NAT_1.conf || exit 1
+
+
+
+
+
+epilog_commands

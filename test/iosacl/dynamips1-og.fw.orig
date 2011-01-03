@@ -1,0 +1,194 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:10 2011 PST by vadim
+!
+! Compiled for iosacl 12.4
+!
+!# files: * dynamips1-og.fw
+!
+! IOS 12.4 with object-groups
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+
+! ================ IPv4
+
+
+no ip access-list extended fe0_0_in
+no ip access-list extended fe0_0_out
+
+no object-group network id29216X37699.src.net.0
+no object-group service id29216X37699.srv.udp.0
+no object-group network id18740X37673.dst.net.0
+no object-group network id18964X37673.src.net.0
+
+
+object-group network id29216X37699.src.net.0
+  host 61.150.47.112
+  host 192.168.1.0
+exit
+
+
+object-group service id29216X37699.srv.udp.0
+  udp eq 161
+  udp range 1024 65535
+exit
+
+
+object-group network id18740X37673.dst.net.0
+  10.3.14.0 /24
+  host 192.0.2.1
+  host 192.0.2.2
+  host 192.0.2.3
+exit
+
+
+object-group network id18964X37673.src.net.0
+  host 192.0.2.1
+  host 192.0.2.2
+  host 192.0.2.3
+exit
+
+ip access-list extended fe0_0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  10.3.14.0 0.0.0.255 host 10.3.14.114 eq 22 
+! 
+! Rule  1 (FastEthernet0/0)
+! object-groups can not be used for ipv6
+  permit icmp  object-group id29216X37699.src.net.0 host 10.3.14.114 8 
+  permit object-group id29216X37699.srv.udp.0 object-group id29216X37699.src.net.0 host 10.3.14.114 
+! 
+! Rule  2 (FastEthernet0/0)
+  permit icmp  any  object-group id18740X37673.dst.net.0 8 
+  permit object-group id29216X37699.srv.udp.0 any  object-group id18740X37673.dst.net.0 
+! 
+! Rule  3 (FastEthernet0/0)
+  permit icmp  any  object-group id18740X37673.dst.net.0 8 log 
+  permit udp  any  object-group id18740X37673.dst.net.0 eq 161 log 
+! 
+! Rule  4 (FastEthernet0/0)
+  permit icmp  any  host 10.3.14.40 8 log 
+  permit object-group id29216X37699.srv.udp.0 any  host 10.3.14.40 log 
+! 
+! Rule  5 (FastEthernet0/0)
+  permit icmp  any  10.3.14.0 0.0.0.255 8 log 
+  permit object-group id29216X37699.srv.udp.0 any  10.3.14.0 0.0.0.255 log 
+! 
+! Rule  6 (global)
+  permit icmp  object-group id18740X37673.dst.net.0 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 object-group id18740X37673.dst.net.0 any  log 
+! 
+! Rule  7 (global)
+  permit icmp  object-group id18740X37673.dst.net.0 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 object-group id18740X37673.dst.net.0 any  log 
+! 
+! Rule  8 (global)
+  permit icmp  host 10.3.14.40 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 host 10.3.14.40 any  log 
+! 
+! Rule  9 (FastEthernet0/0)
+  permit udp  object-group id18964X37673.src.net.0 any  eq 161 
+! 
+! Rule  10 (FastEthernet0/0)
+  permit object-group id29216X37699.srv.udp.0 object-group id18964X37673.src.net.0 any  
+! 
+! Rule  11 (global)
+  deny   ip  10.3.14.0 0.0.0.255 any  log 
+! 
+! Rule  12 (global)
+  permit ip  any  host 10.3.14.114 
+exit
+
+ip access-list extended fe0_0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 10.3.14.114 eq 22 10.3.14.0 0.0.0.255 
+! 
+! Rule  0 (FastEthernet0/0)
+  permit ip  host 10.3.14.114 any  
+! 
+! Rule  6 (global)
+  permit icmp  object-group id18740X37673.dst.net.0 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 object-group id18740X37673.dst.net.0 any  log 
+! 
+! Rule  7 (global)
+  permit icmp  object-group id18740X37673.dst.net.0 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 object-group id18740X37673.dst.net.0 any  log 
+! 
+! Rule  8 (global)
+  permit icmp  host 10.3.14.40 any  8 log 
+  permit object-group id29216X37699.srv.udp.0 host 10.3.14.40 any  log 
+! 
+! Rule  11 (global)
+  deny   ip  10.3.14.0 0.0.0.255 any  log 
+exit
+
+
+interface FastEthernet0/0
+  ip access-group fe0_0_in in
+exit
+interface FastEthernet0/0
+  ip access-group fe0_0_out out
+exit
+
+
+
+! ================ IPv6
+
+
+no ipv6 access-list ipv6_fe0_0_in
+no ipv6 access-list ipv6_fe0_0_out
+
+
+ipv6 access-list ipv6_fe0_0_in
+! 
+! Rule  1 (FastEthernet0/0)
+! object-groups can not be used for ipv6
+  permit udp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 161 
+  permit udp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 gt 1024 
+  permit udp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 161 
+  permit udp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 gt 1024 
+! 
+! Rule  12 (global)
+  permit ipv6  any  host fe80::21d:9ff:fe8b:8e94 
+exit
+
+ipv6 access-list ipv6_fe0_0_out
+! 
+! Rule  0 (FastEthernet0/0)
+  permit ipv6  host fe80::21d:9ff:fe8b:8e94 any  
+exit
+
+
+interface FastEthernet0/0
+  ipv6 traffic-filter ipv6_fe0_0_in in
+exit
+interface FastEthernet0/0
+  ipv6 traffic-filter ipv6_fe0_0_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

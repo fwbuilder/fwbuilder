@@ -1,0 +1,139 @@
+
+set limit { frags 4000, states 10000, src-nodes 1000, tables 1000, table-entries 1000000 }
+set timeout interval 15
+set timeout frag 40
+set timeout tcp.first 120
+set timeout tcp.opening 120
+set timeout tcp.established 86400
+set timeout tcp.closing 60
+set timeout tcp.finwait 60
+set timeout tcp.closed 30
+set timeout udp.first 10
+set timeout udp.single 10
+set timeout udp.multiple 10
+set timeout icmp.first 10
+set timeout icmp.error 10
+set timeout other.first 10
+set timeout other.single 10
+set timeout other.multiple 10
+set timeout adaptive.start 6000
+set timeout adaptive.end 12000
+
+#
+# Scrub rules
+#
+scrub in all fragment reassemble
+
+
+# Tables: (3)
+table <tbl.r12.d> { 192.168.1.11 , 192.168.1.12/30 } 
+table <tbl.r2> { 192.168.1.1 , 222.222.222.222 } 
+table <tbl.r9.s> { 211.11.11.11 , 211.22.22.22 } 
+
+# 
+# Rule  0 (NAT)
+nat on eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.222 
+nat on eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+# 
+# Rule  2 (NAT)
+rdr proto tcp from any to <tbl.r2> port 25 -> 192.168.1.10 port 25 
+# 
+# Rule  3 (NAT)
+rdr proto tcp from any to any port 80 -> 127.0.0.1 port 3128 
+
+# Policy compiler errors and warnings:
+# firewall:Policy:18: error: Rule '18 (global)' shadows rule '21 (global)'  below it
+# firewall:Policy:20: error: Rule '20 (global)' shadows rule '22 (global)'  below it
+# firewall:Policy:20: error: Rule '20 (global)' shadows rule '23 (global)'  below it
+# firewall:Policy:3: warning: Changing rule direction due to self reference
+# firewall:Policy:18: warning: Changing rule direction due to self reference
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+pass in   quick inet proto tcp  from 192.168.1.100  to <tbl.r2> port 22 flags S/SA modulate state  label "RULE 9998 - ACCEPT"  
+# 
+# Rule  0 (eth1)
+block in   log  quick on eth1 inet  from any  to <tbl.r2>  fragment  label "RULE 0 - DROP"  
+# 
+# Rule  1 (eth1)
+# Automatically generated rule blocking short fragments
+block in   log  quick on eth1 inet  from any  to any  fragment  label "RULE 1 - DROP"  
+# 
+# Rule  2 (eth1)
+# Automatically generated anti-spoofing rule
+block in   log  quick on eth1 inet  from <tbl.r2>  to any  label "RULE 2 - DROP"  
+block in   log  quick on eth1 inet  from 192.168.1.0/24  to any  label "RULE 2 - DROP"  
+# 
+# Rule  3 (eth0)
+# комментарий по-русски, Проверяем конвертацию в Utf-8
+# firewall:Policy:3: warning: Changing rule direction due to self reference
+pass in   quick on eth0 inet proto udp  from 192.168.1.0/24  to <tbl.r2> port 53 keep state  label "RULE 3 - ACCEPT"  
+# 
+# Rule  4 (eth0)
+# code should go into INPUT chain with 
+# address in destination for comparison
+block in   log  quick on eth0 inet proto udp  from any  to 192.168.1.255 port 53  label "RULE 4 - DROP"  
+# 
+# Rule  5 (global)
+block  log  quick inet proto tcp  from any  to any flags S/UAPRSF  label "** RULE 5"  
+block  log  quick inet proto tcp  from any  to any flags ARSF/UAPRSF  label "** RULE 5"  
+# 
+# Rule  6 (global)
+block  log  quick inet  from any  to any  label "RULE 6 - DROP"  
+# 
+# Rule  9 (global)
+# this rule is limited to 4 simultaneous
+# connections by rule options
+pass  quick inet proto tcp  from <tbl.r9.s>  to 192.168.1.10 port 53 flags S/SA modulate state ( max 4 ) label "RULE 9 - ACCEPT"  
+# 
+# Rule  10 (global)
+pass  quick inet proto tcp  from 33.33.33.0/24 port 20  to 192.168.1.10 port >= 1024 flags S/SA modulate state  label "RULE 10 - ACCEPT"  
+pass  quick inet proto tcp  from 33.33.33.0/24  to 192.168.1.10 port { 113, 80, 25, 22, 540, 443, 143 } flags S/SA modulate state  label "RULE 10 - ACCEPT"  
+# 
+# Rule  11 (global)
+pass  quick inet proto tcp  from any  to 192.168.1.10 port { 9999 >< 11001, 6667, 3128, 113, 53, 21, 80, 119, 25, 22, 23, 540, 70, 13, 2105, 443, 143, 993, 6667, 543, 544, 389, 98, 3306, 2049, 110, 5432, 515, 26000, 512, 513, 514, 4321, 465, 1080, 111, 7100 } flags S/SA modulate state ( max-src-nodes 10, max-src-states 10, max-src-conn-rate 3/15 ) label "RULE 11 - ACCEPT"  
+# 
+# Rule  12 (global)
+pass  quick inet proto tcp  from any  to <tbl.r12.d> port { 113, 80, 25, 22, 540, 443, 143, 3128 } flags S/SA modulate state ( max 10, max-src-nodes 75, max-src-states 2 ) label "RULE 12 - ACCEPT"  
+# 
+# Rule  14 (global)
+pass  quick inet proto icmp  from any  to 192.168.1.0/24 icmp-type { 11 code 0 , 11 code 1 , 0 code 0 , 3  } keep state  label "RULE 14 - ACCEPT"  
+pass  quick inet proto tcp  from any  to 192.168.1.0/24 port 3128 flags S/SA modulate state  label "RULE 14 - ACCEPT"  
+# 
+# Rule  16 (global)
+pass  quick inet  from any  to 192.168.1.10 keep state  label "RULE 16 - ACCEPT"  
+# 
+# Rule  18 (global)
+# Automatically generated 'masquerading' rule
+# firewall:Policy:18: warning: Changing rule direction due to self reference
+pass out  quick inet  from <tbl.r2>  to any keep state  label "RULE 18 - ACCEPT"  
+pass  quick inet  from 192.168.1.0/24  to any keep state  label "RULE 18 - ACCEPT"  
+# 
+# Rule  19 (global)
+# test for bug 1111267: "CustomService should specify protocol and parameters for it"
+# Should generate "proto { tcp udp icmp gre}"
+pass  quick inet proto {tcp udp icmp gre}  from any  to any    keep state  label "RULE 19 - ACCEPT"  
+# 
+# Rule  20 (global)
+# bug #2791950  "no way to generate "pass out" rule with no interface"
+# Interface field should be "any", direction "outbound"
+pass out  quick inet  from any  to any keep state  label "RULE 20 - ACCEPT"  
+# 
+# Rule  21 (global)
+# bug #2791950  "no way to generate "pass out" rule with no interface"
+# 
+pass out  quick inet  from 192.168.1.0/24  to any keep state  label "RULE 21 - ACCEPT"  
+# 
+# Rule  22 (global)
+# bug #2791950  "no way to generate "pass out" rule with no interface"
+# 
+pass out  quick inet  from any  to 192.168.1.0/24 keep state  label "RULE 22 - ACCEPT"  
+# 
+# Rule  23 (global)
+# Automatically generated 'catch all' rule
+block  log  quick inet  from any  to any  label "RULE 23 - DROP"  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  log  quick inet  from any  to any  label "RULE 10000 - DROP"  
+

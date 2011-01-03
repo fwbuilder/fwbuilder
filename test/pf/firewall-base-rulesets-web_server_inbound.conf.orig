@@ -1,0 +1,7 @@
+# 
+# Rule  web_server_inbound 0 (global)
+pass in   quick inet proto tcp  from any  to any port 80 keep state  label "RULE 0 -- ACCEPT "  
+# 
+# Rule  web_server_inbound 1 (global)
+pass in   quick inet proto icmp  from any  to any icmp-type { 3 , 8 code 0  } keep state  label "RULE 1 -- ACCEPT "  
+

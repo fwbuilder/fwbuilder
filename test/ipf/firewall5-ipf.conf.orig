@@ -1,0 +1,27 @@
+# Policy compiler errors and warnings:
+# firewall5:Policy:0: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (global)
+# firewall5:Policy:0: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 33.33.33.33 port = 22 flags S keep state 
+# firewall5:Policy:0: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 33.33.33.34 port = 22 flags S keep state 
+# firewall5:Policy:0: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 192.168.1.1 port = 22 flags S keep state 
+# 
+# Rule  1 (global)
+pass  in  quick proto tcp  from any  to (ppp0) port = 22 flags S keep state 
+pass  out quick proto tcp  from any  to (ppp0) port = 22 flags S keep state 
+# 
+# Rule  2 (global)
+pass  out quick proto tcp  from any  to 33.33.33.33 port = 22 flags S keep state 
+pass  out quick proto tcp  from any  to 33.33.33.34 port = 22 flags S keep state 
+# 
+# Rule  5 (global)
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

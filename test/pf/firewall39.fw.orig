@@ -1,0 +1,103 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:39 2011 PST by vadim
+#
+# files: * firewall39.fw pf.fw
+# files:   firewall39.conf pf.conf
+# files:   firewall39-rule2_branch.conf pf-rule2_branch.conf
+# files:   firewall39-rule3_branch.conf pf-rule3_branch.conf
+# files:   firewall39-rule5_branch.conf pf-rule5_branch.conf
+#
+# Compiled for pf 
+#
+# testing branching rules
+
+# firewall39:rule2_branch:0: warning: Changing rule direction due to self reference
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:39 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/pf.conf || exit 1
+$PFCTL  -a rule2_branch \
+     -f \
+    ${FWDIR}/pf-rule2_branch.conf || exit 1
+$PFCTL  -a rule3_branch \
+     -f \
+    ${FWDIR}/pf-rule3_branch.conf || exit 1
+$PFCTL  -a rule5_branch \
+     -f \
+    ${FWDIR}/pf-rule5_branch.conf || exit 1
+
+
+
+epilog_commands

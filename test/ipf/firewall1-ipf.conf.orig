@@ -1,0 +1,211 @@
+# Policy compiler errors and warnings:
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+# firewall1:Policy:12: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (eth0)
+skip 11 in  on eth0 proto icmp  from 22.22.22.22  to 22.22.22.22 
+skip 10 in  on eth0 proto icmp  from 22.22.22.22  to 192.168.1.1 
+skip 9 in  on eth0 proto icmp  from 192.168.1.1  to 22.22.22.22 
+skip 8 in  on eth0 proto icmp  from 192.168.1.1  to 192.168.1.1 
+skip 7 in  on eth0 proto 50  from 22.22.22.22  to 22.22.22.22 
+skip 6 in  on eth0 proto 50  from 22.22.22.22  to 192.168.1.1 
+skip 5 in  on eth0 proto 50  from 192.168.1.1  to 22.22.22.22 
+skip 4 in  on eth0 proto 50  from 192.168.1.1  to 192.168.1.1 
+skip 11 out on eth0 proto icmp  from 22.22.22.22  to 22.22.22.22 
+skip 10 out on eth0 proto icmp  from 22.22.22.22  to 192.168.1.1 
+skip 9 out on eth0 proto icmp  from 192.168.1.1  to 22.22.22.22 
+skip 8 out on eth0 proto icmp  from 192.168.1.1  to 192.168.1.1 
+skip 7 out on eth0 proto 50  from 22.22.22.22  to 22.22.22.22 
+skip 6 out on eth0 proto 50  from 22.22.22.22  to 192.168.1.1 
+skip 5 out on eth0 proto 50  from 192.168.1.1  to 22.22.22.22 
+skip 4 out on eth0 proto 50  from 192.168.1.1  to 192.168.1.1 
+block in   log  quick on eth0 proto icmp  from 22.22.22.22  to any 
+block in   log  quick on eth0 proto icmp  from 192.168.1.1  to any 
+block in   log  quick on eth0 proto 50  from 22.22.22.22  to any 
+block in   log  quick on eth0 proto 50  from 192.168.1.1  to any 
+block out  log  quick on eth0 proto icmp  from 22.22.22.22  to any 
+block out  log  quick on eth0 proto icmp  from 192.168.1.1  to any 
+block out  log  quick on eth0 proto 50  from 22.22.22.22  to any 
+block out  log  quick on eth0 proto 50  from 192.168.1.1  to any 
+# 
+# Rule  1 (eth0)
+skip 11 in  on eth0 proto icmp  from 192.168.1.10  to 192.168.1.10 
+skip 10 in  on eth0 proto icmp  from 192.168.1.10  to 192.168.1.20 
+skip 9 in  on eth0 proto icmp  from 192.168.1.20  to 192.168.1.10 
+skip 8 in  on eth0 proto icmp  from 192.168.1.20  to 192.168.1.20 
+skip 7 in  on eth0 proto 50  from 192.168.1.10  to 192.168.1.10 
+skip 6 in  on eth0 proto 50  from 192.168.1.10  to 192.168.1.20 
+skip 5 in  on eth0 proto 50  from 192.168.1.20  to 192.168.1.10 
+skip 4 in  on eth0 proto 50  from 192.168.1.20  to 192.168.1.20 
+skip 11 out on eth0 proto icmp  from 192.168.1.10  to 192.168.1.10 
+skip 10 out on eth0 proto icmp  from 192.168.1.10  to 192.168.1.20 
+skip 9 out on eth0 proto icmp  from 192.168.1.20  to 192.168.1.10 
+skip 8 out on eth0 proto icmp  from 192.168.1.20  to 192.168.1.20 
+skip 7 out on eth0 proto 50  from 192.168.1.10  to 192.168.1.10 
+skip 6 out on eth0 proto 50  from 192.168.1.10  to 192.168.1.20 
+skip 5 out on eth0 proto 50  from 192.168.1.20  to 192.168.1.10 
+skip 4 out on eth0 proto 50  from 192.168.1.20  to 192.168.1.20 
+block in  quick on eth0 proto icmp  from 192.168.1.10  to any 
+block in  quick on eth0 proto icmp  from 192.168.1.20  to any 
+block in  quick on eth0 proto 50  from 192.168.1.10  to any 
+block in  quick on eth0 proto 50  from 192.168.1.20  to any 
+block out quick on eth0 proto icmp  from 192.168.1.10  to any 
+block out quick on eth0 proto icmp  from 192.168.1.20  to any 
+block out quick on eth0 proto 50  from 192.168.1.10  to any 
+block out quick on eth0 proto 50  from 192.168.1.20  to any 
+# 
+# Rule  2 (eth1)
+# Anti-spoofing rule
+block in   log  quick on eth1  from 22.22.22.22  to any 
+block in   log  quick on eth1  from 22.22.23.23  to any 
+block in   log  quick on eth1  from 192.168.1.1  to any 
+block in   log  quick on eth1  from 192.168.2.1  to any 
+block in   log  quick on eth1  from 192.168.1.0/24  to any 
+# 
+# Rule  3 (eth1)
+# Anti-spoofing rule
+skip 1 out on eth1  from 192.168.1.0/24  to any 
+block out  log  quick on eth1  from any  to any 
+# 
+# Rule  4 (lo)
+pass  in  quick on lo proto icmp  from any  to any keep state 
+pass  in  quick on lo proto tcp  from any  to any keep state 
+pass  in  quick on lo proto udp  from any  to any keep state 
+pass  in  quick on lo  from any  to any 
+pass  out quick on lo proto icmp  from any  to any keep state 
+pass  out quick on lo proto tcp  from any  to any keep state 
+pass  out quick on lo proto udp  from any  to any keep state 
+pass  out quick on lo  from any  to any 
+# 
+# Rule  5 (global)
+block in   log  quick proto tcp  from any  to any flags S/UAPRSF 
+block out  log  quick proto tcp  from any  to any flags S/UAPRSF 
+# 
+# Rule  7 (global)
+# hostF has the same IP address as firewal.
+pass  in   log  quick proto icmp  from any  to 192.168.1.1 icmp-type 8 code 0  keep state 
+pass  out  log  quick proto icmp  from any  to 192.168.1.1 icmp-type 8 code 0  keep state 
+# 
+# Rule  8 (global)
+# testing negation in the policy rule
+skip 2 in  proto icmp  from 192.168.1.10  to any icmp-type 3  
+skip 1 in  proto icmp  from 192.168.1.20  to any icmp-type 3  
+skip 2 out proto icmp  from 192.168.1.10  to any icmp-type 3  
+skip 1 out proto icmp  from 192.168.1.20  to any icmp-type 3  
+block in   log  quick proto icmp  from any  to any icmp-type 3  
+block out  log  quick proto icmp  from any  to any icmp-type 3  
+# 
+# Rule  9 (global)
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 11 in  proto icmp  from 192.168.1.10  to 22.22.22.22 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 10 in  proto icmp  from 192.168.1.10  to 22.22.23.23 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 9 in  proto icmp  from 192.168.1.10  to 192.168.1.1 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 8 in  proto icmp  from 192.168.1.10  to 192.168.2.1 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 7 in  proto icmp  from 192.168.1.20  to 22.22.22.22 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 6 in  proto icmp  from 192.168.1.20  to 22.22.23.23 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 5 in  proto icmp  from 192.168.1.20  to 192.168.1.1 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+skip 4 in  proto icmp  from 192.168.1.20  to 192.168.2.1 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+block in   log  quick proto icmp  from any  to 22.22.22.22 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+block in   log  quick proto icmp  from any  to 22.22.23.23 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+block in   log  quick proto icmp  from any  to 192.168.1.1 icmp-type 3  
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+block in   log  quick proto icmp  from any  to 192.168.2.1 icmp-type 3  
+# 
+# Rule  10 (global)
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+skip 5 out  from 22.22.22.22  to 192.168.1.0/24 
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+skip 4 out  from 22.22.23.23  to 192.168.1.0/24 
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+skip 3 out  from 192.168.1.1  to 192.168.1.0/24 
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+skip 2 out  from 192.168.2.1  to 192.168.1.0/24 
+skip 1 in   from 192.168.2.0/24  to 192.168.1.0/24 
+skip 1 out  from 192.168.2.0/24  to 192.168.1.0/24 
+block in   log  quick  from any  to 192.168.1.0/24 
+block out  log  quick  from any  to 192.168.1.0/24 
+# 
+# Rule  11 (global)
+skip 5 in   from 192.168.1.0/24  to 192.168.1.10 
+skip 4 in   from 192.168.1.0/24  to 192.168.1.20 
+skip 3 in   from 192.168.2.0/24  to 192.168.1.10 
+skip 2 in   from 192.168.2.0/24  to 192.168.1.20 
+skip 5 out  from 192.168.1.0/24  to 192.168.1.10 
+skip 4 out  from 192.168.1.0/24  to 192.168.1.20 
+skip 3 out  from 192.168.2.0/24  to 192.168.1.10 
+skip 2 out  from 192.168.2.0/24  to 192.168.1.20 
+block in   log  quick  from 192.168.1.0/24  to any 
+block in   log  quick  from 192.168.2.0/24  to any 
+block out  log  quick  from 192.168.1.0/24  to any 
+block out  log  quick  from 192.168.2.0/24  to any 
+# 
+# Rule  12 (global)
+# firewall1:Policy:12: warning: Changing rule direction due to self reference
+skip 4 in   from any  to 22.22.22.22 
+# firewall1:Policy:12: warning: Changing rule direction due to self reference
+skip 3 in   from any  to 22.22.23.23 
+# firewall1:Policy:12: warning: Changing rule direction due to self reference
+skip 2 in   from any  to 192.168.1.1 
+# firewall1:Policy:12: warning: Changing rule direction due to self reference
+skip 1 in   from any  to 192.168.2.1 
+block in  quick  from any  to any 
+block out quick  from any  to any 
+# 
+# Rule  15 (global)
+skip 11 in  proto icmp  from 22.22.22.22  to 22.22.22.22 
+skip 10 in  proto icmp  from 22.22.22.22  to 192.168.1.1 
+skip 9 in  proto icmp  from 192.168.1.1  to 22.22.22.22 
+skip 8 in  proto icmp  from 192.168.1.1  to 192.168.1.1 
+skip 7 in  proto 50  from 22.22.22.22  to 22.22.22.22 
+skip 6 in  proto 50  from 22.22.22.22  to 192.168.1.1 
+skip 5 in  proto 50  from 192.168.1.1  to 22.22.22.22 
+skip 4 in  proto 50  from 192.168.1.1  to 192.168.1.1 
+skip 11 out proto icmp  from 22.22.22.22  to 22.22.22.22 
+skip 10 out proto icmp  from 22.22.22.22  to 192.168.1.1 
+skip 9 out proto icmp  from 192.168.1.1  to 22.22.22.22 
+skip 8 out proto icmp  from 192.168.1.1  to 192.168.1.1 
+skip 7 out proto 50  from 22.22.22.22  to 22.22.22.22 
+skip 6 out proto 50  from 22.22.22.22  to 192.168.1.1 
+skip 5 out proto 50  from 192.168.1.1  to 22.22.22.22 
+skip 4 out proto 50  from 192.168.1.1  to 192.168.1.1 
+block in   log  quick proto icmp  from 22.22.22.22  to any 
+block in   log  quick proto icmp  from 192.168.1.1  to any 
+block in   log  quick proto 50  from 22.22.22.22  to any 
+block in   log  quick proto 50  from 192.168.1.1  to any 
+block out  log  quick proto icmp  from 22.22.22.22  to any 
+block out  log  quick proto icmp  from 192.168.1.1  to any 
+block out  log  quick proto 50  from 22.22.22.22  to any 
+block out  log  quick proto 50  from 192.168.1.1  to any 
+# 
+# Rule  16 (global)
+# 'masquerading' rule
+pass  in  quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  in  quick proto tcp  from 192.168.1.0/24  to any keep state 
+pass  in  quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  in  quick  from 192.168.1.0/24  to any 
+pass  out quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  out quick proto tcp  from 192.168.1.0/24  to any keep state 
+pass  out quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  out quick  from 192.168.1.0/24  to any 
+# 
+# Rule  17 (global)
+# 'catch all' rule
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

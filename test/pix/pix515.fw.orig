@@ -1,0 +1,170 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:19 2011 PST by vadim
+!
+! Compiled for pix 7.0
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * pix515.fw
+!
+! Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.
+! This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.
+! Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall.
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+interface ethernet0
+  nameif outside
+  security-level 0
+exit
+
+interface ethernet1
+  nameif inside
+  security-level 100
+exit
+
+
+logging buffered 6
+no logging console
+logging timestamp
+logging on
+logging device-id hostname
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+!################
+
+clear config access-list tmp_acl
+access-list tmp_acl permit ip 10.3.14.42 255.255.255.255 any 
+access-list tmp_acl deny ip any any 
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
+
+clear config access-list inside_acl_in
+clear config access-list outside_acl_in
+clear config object-group
+
+clear config icmp
+clear config telnet
+! 
+! Rule  -1 backup ssh access rule (automatic)
+ssh    10.3.14.42 255.255.255.255 inside
+! 
+! Rule  0 (global)
+ssh    10.3.14.0 255.255.255.0 inside
+access-list inside_acl_in  remark 0 (global)
+access-list inside_acl_in permit tcp 10.3.14.0 255.255.255.0 host 10.3.14.206 eq 53 
+access-list inside_acl_in permit udp 10.3.14.0 255.255.255.0 host 10.3.14.206 eq 53 
+! 
+! Rule  1 (global)
+access-list outside_acl_in  remark 1 (global)
+access-list outside_acl_in permit tcp any host 192.168.1.1 eq 2525 
+access-list outside_acl_in permit tcp any host 10.3.14.50 eq 25 
+access-list inside_acl_in  remark 1 (global)
+access-list inside_acl_in permit tcp any host 10.3.14.50 eq 25 
+! 
+! Rule  3 (global)
+access-list outside_acl_in  remark 3 (global)
+access-list outside_acl_in permit ip host 192.168.1.1 any 
+access-list inside_acl_in  remark 3 (global)
+access-list inside_acl_in permit ip host 10.3.14.206 any 
+! 
+! Rule  4 (global)
+access-list inside_acl_in  remark 4 (global)
+access-list inside_acl_in permit ip 10.3.14.0 255.255.255.0 any 
+! 
+! Rule  5 (global)
+access-list outside_acl_in  remark 5 (global)
+access-list outside_acl_in deny   ip any any 
+access-list inside_acl_in  remark 5 (global)
+access-list inside_acl_in deny   ip any any 
+
+
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear config static
+clear config global
+clear config nat
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+clear config access-list id47B7A71421818.0
+access-list id47B7A71421818.0 permit ip 10.3.14.0 255.255.255.0  any 
+nat (inside) 1 access-list id47B7A71421818.0 tcp 0 0
+! 
+! Rule  1 (NAT)
+clear config access-list id47B7C22E21818.0
+access-list id47B7C22E21818.0 permit tcp host 10.3.14.50  eq 25 any 
+static (inside,outside) tcp interface 2525  access-list id47B7C22E21818.0 tcp 0 0
+
+! 
+! Rule 0 (main)
+! 
+! "Routing rule 0 (main)"
+! 
+! The default metric on PIX is 1, so the GUI default value of 0 becomes 1 in
+! the compiled rules.
+! 
+route inside 192.168.10.0 255.255.255.0 10.3.14.254 1
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

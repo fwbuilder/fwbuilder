@@ -1,0 +1,215 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:22 2011 PST by vadim
+!
+! Compiled for pix 7.0
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: yes
+! Assume firewall is part of any: yes
+!
+!# files: * cluster1-1_pix2.fw
+!
+!
+
+! pix2::: warning: Interface Ethernet0 has vlan subinterfaces, it can not be used for ACL. Marking this interface "unprotected" to exclude it.
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+hostname pix2
+
+interface Ethernet1
+  nameif inside
+  ip address 10.3.14.207 255.255.255.0  standby 10.3.14.206 
+  security-level 100
+exit
+
+interface Ethernet0
+  no nameif
+  no ip address
+  no security-level
+exit
+
+interface Ethernet2
+  description LAN/STATE Failover Interface
+  no nameif
+exit
+
+interface Ethernet0.101
+  vlan 101
+  nameif outside
+  ip address 192.0.2.254 255.255.255.0  standby 192.0.2.253 
+  security-level 0
+exit
+
+interface Ethernet0.102
+  vlan 102
+  nameif dmz20
+  ip address 10.0.0.254 255.255.255.0  standby 10.0.0.253 
+  security-level 20
+exit
+
+
+failover lan unit secondary
+failover lan interface failover Ethernet2 
+failover lan enable
+failover key super_secret
+failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
+failover link failover Ethernet2
+failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
+failover
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+!################
+clear config access-list
+clear config object-group
+clear config icmp
+clear config telnet
+
+object-group network outside.id56590X61097.src.net.3
+ network-object  host 10.3.14.206 
+ network-object  host 10.3.14.207 
+ exit
+
+
+object-group network outside.id56590X61097.src.net.4
+ network-object  host 172.17.1.253 
+ network-object  host 172.17.1.254 
+ network-object  host 192.0.2.253 
+ network-object  host 192.0.2.254 
+ exit
+
+
+object-group network outside.id56590X61097.src.net.5
+ network-object  host 10.0.0.253 
+ network-object  host 10.0.0.254 
+ exit
+
+
+object-group network inside.id56627X61097.src.net.1
+ network-object  host 172.17.1.253 
+ network-object  host 192.0.2.253 
+ exit
+
+! 
+! Rule  0 (Ethernet0.101)
+! anti spoofing rule
+access-list outside_in deny   ip object-group outside.id56590X61097.src.net.3 any log 3 interval 300 
+access-list outside_in deny   ip object-group outside.id56590X61097.src.net.4 any log 3 interval 300 
+access-list outside_in deny   ip object-group outside.id56590X61097.src.net.5 any log 3 interval 300 
+access-list outside_in deny   ip 10.3.14.0 255.255.255.0 any log 3 interval 300 
+! 
+! Rule  1 (global)
+! SSH Access to firewall is permitted
+! only from internal network
+ssh    10.3.14.0 255.255.255.0 inside
+! 
+! Rule  2 (global)
+ssh    10.3.14.0 255.255.255.0 inside
+! 
+! Rule  3 (global)
+! Firewall uses one of the machines
+! on internal network for DNS
+access-list inside_out permit udp host 10.3.14.206 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+access-list inside_out permit udp object-group inside.id56627X61097.src.net.1 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+access-list inside_out permit udp host 10.0.0.253 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+! 
+! Rule  4 (global)
+! Firewall uses one of the machines
+! on internal network for DNS
+access-list inside_out permit udp object-group outside.id56590X61097.src.net.3 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+access-list inside_out permit udp object-group outside.id56590X61097.src.net.4 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+access-list inside_out permit udp object-group outside.id56590X61097.src.net.5 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300 
+! 
+! Rule  5 (global)
+! All other attempts to connect to
+! the firewall are denied and logged
+access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.3 log 3 interval 300 
+access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.4 log 3 interval 300 
+access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.5 log 3 interval 300 
+! 
+! Rule  6 (global)
+access-list inside_in permit ip 10.3.14.0 255.255.255.0 any 
+access-list inside_out permit ip 10.3.14.0 255.255.255.0 any 
+! 
+! Rule  7 (global)
+access-list inside_in deny   ip any any log 3 interval 300 
+access-list inside_out deny   ip any any log 3 interval 300 
+
+
+access-group inside_in in interface inside
+access-group inside_out out interface inside
+access-group outside_in in interface outside
+
+clear xlate
+clear config static
+clear config global
+clear config nat
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id56689X61097.0 permit ip 10.3.14.0 255.255.255.0  any 
+nat (inside) 1 access-list id56689X61097.0 tcp 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

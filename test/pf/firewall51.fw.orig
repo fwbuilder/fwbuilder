@@ -1,0 +1,110 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:44 2011 PST by vadim
+#
+# files: * firewall51.fw
+# files:   firewall51.conf
+# files:   firewall51-mail_server_inbound.conf
+# files:   firewall51-mail_server_outbound.conf
+# files:   firewall51-rule2_branch.conf
+# files:   firewall51-web_server_inbound.conf
+# files:   firewall51-web_server_outbound.conf
+#
+# Compiled for pf 
+#
+# testing branching rules that point
+# at rule sets defined in object
+# firewall-base-rulesets
+
+
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:44 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/firewall51.conf || exit 1
+$PFCTL  -a mail_server_inbound \
+     -f \
+    ${FWDIR}/firewall51-mail_server_inbound.conf || exit 1
+$PFCTL  -a mail_server_outbound \
+     -f \
+    ${FWDIR}/firewall51-mail_server_outbound.conf || exit 1
+$PFCTL  -a rule2_branch \
+     -f \
+    ${FWDIR}/firewall51-rule2_branch.conf || exit 1
+$PFCTL  -a web_server_inbound \
+     -f \
+    ${FWDIR}/firewall51-web_server_inbound.conf || exit 1
+$PFCTL  -a web_server_outbound \
+     -f \
+    ${FWDIR}/firewall51-web_server_outbound.conf || exit 1
+
+
+
+epilog_commands

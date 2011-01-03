@@ -1,0 +1,20 @@
+
+
+
+# 
+# Rule  -3 pfsync (automatic)
+pass  quick on en0 inet proto pfsync  from any  to any  label "RULE -3 -- ACCEPT "  
+# 
+# Rule  -2 CARP (automatic)
+pass  quick on en1 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "  
+# 
+# Rule  -1 CARP (automatic)
+pass  quick on en0 inet proto carp  from any  to any  label "RULE -1 -- ACCEPT "  
+# 
+# Rule  0 (global)
+block  log  quick inet  from any  to any no state  label "RULE 0 -- DROP "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE 10000 -- DROP "  
+

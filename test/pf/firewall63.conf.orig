@@ -1,0 +1,21 @@
+
+
+
+# 
+# Rule  0 (global)
+block  log  quick inet  from any  to any  tos 0x20 
+# 
+# Rule  1 (global)
+block  log  quick inet  from any  to any  tos 0x10 
+# 
+# Rule  2 (global)
+block  log  quick inet  from any  to any  tos 0x10 
+block  log  quick inet  from any  to any  tos 0x20 
+# 
+# Rule  4 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

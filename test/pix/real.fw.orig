@@ -1,0 +1,144 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:20 2011 PST by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * real.fw
+!
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+hostname real
+
+nameif ethernet0 outside security0
+ip address outside dhcp setroute retry 10 
+
+nameif ethernet1 inside security100
+ip address inside 10.3.14.204 255.255.255.0 
+
+
+
+logging host inside 10.3.14.10 format emblem 
+logging queue 1000
+logging facility 16
+logging trap 0
+no logging buffered
+no logging console
+no logging timestamp
+logging on
+logging device-id string real_firewall
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout rpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 absolute
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+clear snmp-server
+snmp-server community public
+snmp-server enable traps
+snmp-server host inside 10.3.14.40 poll  
+
+clear ntp
+ntp server 10.3.14.30 source inside  
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+floodguard disable
+
+
+fixup protocol dns maximum-length 65535
+fixup protocol ftp 21
+fixup protocol http 80
+fixup protocol icmp error
+
+
+!################
+clear access-list
+clear object-group
+clear icmp
+clear telnet
+! 
+! Rule  0 (global)
+access-list inside_acl_in  remark 0 (global)
+access-list inside_acl_in permit ip 10.3.14.0 255.255.255.0 any 
+! 
+! Rule  1 (global)
+ssh    10.3.14.0 255.255.255.0 inside
+! 
+! Rule  2 (global)
+icmp permit any 0  outside
+access-list outside_acl_in  remark 2 (global)
+access-list outside_acl_in permit icmp any interface outside 0 
+icmp permit any 0  inside
+access-list inside_acl_in  remark 2 (global)
+access-list inside_acl_in permit icmp any host 10.3.14.204 0 
+! 
+! Rule  3 (global)
+access-list outside_acl_in  remark 3 (global)
+access-list outside_acl_in permit tcp any host 10.3.14.30 eq 80 
+access-list inside_acl_in  remark 3 (global)
+access-list inside_acl_in permit tcp any host 10.3.14.30 eq 80 
+! 
+! Rule  4 (global)
+access-list outside_acl_in  remark 4 (global)
+access-list outside_acl_in deny   ip any any log 5 interval 120 
+access-list inside_acl_in  remark 4 (global)
+access-list inside_acl_in deny   ip any any log 5 interval 120 
+
+
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear static
+clear global
+clear nat
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id3D385E43.0 permit ip 10.3.14.0 255.255.255.0  any 
+nat (inside) 1 access-list id3D385E43.0 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

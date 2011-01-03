@@ -1,0 +1,18 @@
+# 
+# Rule  0 (eth0)
+block in   log  quick on eth0  from any  to 192.168.1.255 
+# 
+# Rule  1 (eth1)
+block in   log  quick on eth1  from any  to 22.22.22.22 
+block in   log  quick on eth1  from any  to 22.22.23.23 
+block in   log  quick on eth1  from any  to 192.168.1.1 
+block in   log  quick on eth1  from any  to 192.168.2.1 
+# 
+# Rule  2 (global)
+pass  in  quick proto udp  from any  to 192.168.1.255 port = 68 keep state 
+pass  out quick proto udp  from any  to 192.168.1.255 port = 68 keep state 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

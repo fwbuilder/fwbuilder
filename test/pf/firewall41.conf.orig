@@ -1,0 +1,36 @@
+
+
+
+
+# Tables: (4)
+table <block these> persist file "block-hosts.tbl"
+table <spammers> persist
+table <tbl.r0.s> { 1.1.1.1 , 2.2.2.2 } 
+table <tbl.r1.d> { 192.168.1.1 , 192.168.1.2 , 192.168.1.3/30 , 192.168.1.200 , 192.168.1.201 , 192.168.2.128/25 } 
+
+# Policy compiler errors and warnings:
+# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+# 
+# Rule  0 (global)
+pass out  log  quick inet  from <tbl.r0.s>  to www.heise.de keep state  label "RULE 0 -- ACCEPT "  
+# 
+# Rule  1 (global)
+pass out  log  quick inet  from <tbl.r0.s>  to <tbl.r1.d> keep state  label "RULE 1 -- ACCEPT "  
+# 
+# Rule  2 (global)
+pass out  log  quick inet  from <tbl.r0.s>  to <block these> keep state  label "RULE 2 -- ACCEPT "  
+pass out  log  quick inet  from <tbl.r0.s>  to <spammers> keep state  label "RULE 2 -- ACCEPT "  
+# 
+# Rule  3 (global)
+# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+pass out  log  quick inet  from <tbl.r0.s>  to 192.0.2.0/24 keep state  label "RULE 3 -- ACCEPT "  
+# 
+# Rule  4 (global)
+pass out  log  quick inet  from <tbl.r0.s>  to 1.1.1.1 keep state  label "RULE 4 -- ACCEPT "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any  label "RULE 10000 -- DROP "  
+

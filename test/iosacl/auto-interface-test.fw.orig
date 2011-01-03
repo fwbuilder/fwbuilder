@@ -1,0 +1,253 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:09 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * auto-interface-test.fw
+!
+! An example of Cisco router
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+! temporary access list for "safety net install"
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip 192.168.1.1 0.0.0.0 any 
+  deny ip any any 
+exit
+interface FastEthernet0/0
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended e1_0_in
+no ip access-list extended e1_0_out
+no ip access-list extended e1_1_in
+no ip access-list extended e1_1_out
+no ip access-list extended fe0_0_in
+no ip access-list extended fe0_0_out
+
+
+ip access-list extended e1_0_in
+! 
+! Rule  0 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  1 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+ip access-list extended e1_0_out
+! 
+! Rule  0 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  2 (global)
+  permit ip  10.1.2.0 0.0.0.255 any  
+! 
+! Rule  3 (global)
+  permit ip  10.1.3.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+ip access-list extended e1_1_in
+! 
+! Rule  1 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  2 (global)
+  permit ip  10.1.2.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+ip access-list extended e1_1_out
+! 
+! Rule  0 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  2 (global)
+  permit ip  10.1.2.0 0.0.0.255 any  
+! 
+! Rule  3 (global)
+  permit ip  10.1.3.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+ip access-list extended fe0_0_in
+! 
+! Rule  1 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  3 (global)
+  permit ip  10.1.3.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+ip access-list extended fe0_0_out
+! 
+! Rule  0 (global)
+  permit ip  10.1.1.0 0.0.0.255 any  
+! 
+! Rule  2 (global)
+  permit ip  10.1.2.0 0.0.0.255 any  
+! 
+! Rule  3 (global)
+  permit ip  10.1.3.0 0.0.0.255 any  
+! 
+! Rule  4 (global)
+  permit ip  10.1.0.0 0.0.255.255 any  
+exit
+
+
+interface Ethernet1/0
+  ip access-group e1_0_in in
+exit
+interface Ethernet1/0
+  ip access-group e1_0_out out
+exit
+interface Ethernet1/1
+  ip access-group e1_1_in in
+exit
+interface Ethernet1/1
+  ip access-group e1_1_out out
+exit
+interface FastEthernet0/0
+  ip access-group fe0_0_in in
+exit
+interface FastEthernet0/0
+  ip access-group fe0_0_out out
+exit
+
+
+
+! ================ IPv6
+
+
+no ipv6 access-list ipv6_Policy_v6_e1_0_in
+no ipv6 access-list ipv6_Policy_v6_e1_0_out
+no ipv6 access-list ipv6_Policy_v6_e1_1_in
+no ipv6 access-list ipv6_Policy_v6_e1_1_out
+no ipv6 access-list ipv6_Policy_v6_fe0_0_in
+no ipv6 access-list ipv6_Policy_v6_fe0_0_out
+
+
+ipv6 access-list ipv6_Policy_v6_e1_0_in
+! 
+! Rule  Policy_v6 0 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 1 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+ipv6 access-list ipv6_Policy_v6_e1_0_out
+! 
+! Rule  Policy_v6 0 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 2 (global)
+  permit ipv6  2001:1234:2::/64 any  
+! 
+! Rule  Policy_v6 3 (global)
+  permit ipv6  2001:1234:3::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+ipv6 access-list ipv6_Policy_v6_e1_1_in
+! 
+! Rule  Policy_v6 1 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 2 (global)
+  permit ipv6  2001:1234:2::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+ipv6 access-list ipv6_Policy_v6_e1_1_out
+! 
+! Rule  Policy_v6 0 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 2 (global)
+  permit ipv6  2001:1234:2::/64 any  
+! 
+! Rule  Policy_v6 3 (global)
+  permit ipv6  2001:1234:3::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+ipv6 access-list ipv6_Policy_v6_fe0_0_in
+! 
+! Rule  Policy_v6 1 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 3 (global)
+  permit ipv6  2001:1234:3::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+ipv6 access-list ipv6_Policy_v6_fe0_0_out
+! 
+! Rule  Policy_v6 0 (global)
+  permit ipv6  2001:1234:1::/64 any  
+! 
+! Rule  Policy_v6 2 (global)
+  permit ipv6  2001:1234:2::/64 any  
+! 
+! Rule  Policy_v6 3 (global)
+  permit ipv6  2001:1234:3::/64 any  
+! 
+! Rule  Policy_v6 4 (global)
+  permit ipv6  2001:1234::/48 any  
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

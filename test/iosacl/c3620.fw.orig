@@ -1,0 +1,278 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:09 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * c3620.fw
+!
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+no service timestamp log datetime localtime
+logging buffered 6
+logging console 6
+
+
+
+! ================ IPv4
+
+
+no ip access-list extended e1_0_in
+no ip access-list extended e1_0_out
+no ip access-list extended e1_1_in
+no ip access-list extended e1_1_out
+no ip access-list extended fe0_0_in
+no ip access-list extended fe0_0_out
+
+
+ip access-list extended e1_0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+   remark -1 backup ssh access rule (automatic)
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
+  permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
+! 
+! Rule  1 (Ethernet1/0)
+   remark 1 (Ethernet1/0)
+  permit tcp  any  any  eq 80 
+! 
+! Rule  2 (Ethernet1/0)
+   remark 2 (Ethernet1/0)
+  permit tcp  any  any  eq 443 
+! 
+! Rule  5 (Ethernet1/0)
+   remark 5 (Ethernet1/0)
+  permit ip  any  10.3.14.0 0.0.0.255 
+! 
+! Rule  7 (global)
+   remark 7 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  8 (global)
+   remark 8 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 eq 22 
+  permit udp  any  10.3.14.0 0.0.0.255 eq 53 
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  9 (global)
+   remark 9 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  10 (global)
+   remark 10 (global)
+  permit tcp  any  eq 80 10.3.14.0 0.0.0.255 established 
+exit
+
+ip access-list extended e1_0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+   remark -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
+  permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
+! 
+! Rule  1 (Ethernet1/0)
+   remark 1 (Ethernet1/0)
+  permit tcp  any  any  eq 80 
+! 
+! Rule  2 (Ethernet1/0)
+   remark 2 (Ethernet1/0)
+  permit tcp  any  any  eq 443 
+! 
+! Rule  4 (Ethernet1/0)
+   remark 4 (Ethernet1/0)
+  permit ip  10.3.14.0 0.0.0.255 any  
+exit
+
+ip access-list extended e1_1_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+   remark -1 backup ssh access rule (automatic)
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
+  permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
+! 
+! Rule  0 (Ethernet1/1)
+! interface eth 1/1 has only
+! inbound access list
+   remark 0 (Ethernet1/1)
+   remark interface eth 1/1 has only
+   remark inbound access list
+  permit tcp  any  any  eq 80 
+! 
+! Rule  7 (global)
+   remark 7 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  8 (global)
+   remark 8 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 eq 22 
+  permit udp  any  10.3.14.0 0.0.0.255 eq 53 
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  9 (global)
+   remark 9 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  10 (global)
+   remark 10 (global)
+  permit tcp  any  eq 80 10.3.14.0 0.0.0.255 established 
+exit
+
+ip access-list extended e1_1_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+   remark -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
+  permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
+exit
+
+ip access-list extended fe0_0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+   remark -1 backup ssh access rule (automatic)
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
+  permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
+  permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
+! 
+! Rule  3 (FastEthernet0/0)
+   remark 3 (FastEthernet0/0)
+  permit ip  10.3.14.0 0.0.0.255 any  
+! 
+! Rule  7 (global)
+   remark 7 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  8 (global)
+   remark 8 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 eq 22 
+  permit udp  any  10.3.14.0 0.0.0.255 eq 53 
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  9 (global)
+   remark 9 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  10 (global)
+   remark 10 (global)
+  permit tcp  any  eq 80 10.3.14.0 0.0.0.255 established 
+exit
+
+ip access-list extended fe0_0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+   remark -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
+  permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
+  permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
+! 
+! Rule  6 (FastEthernet0/0)
+   remark 6 (FastEthernet0/0)
+  permit ip  any  10.3.14.0 0.0.0.255 
+! 
+! Rule  7 (global)
+   remark 7 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  8 (global)
+   remark 8 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 eq 22 
+  permit udp  any  10.3.14.0 0.0.0.255 eq 53 
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  9 (global)
+   remark 9 (global)
+  permit tcp  any  10.3.14.0 0.0.0.255 established 
+! 
+! Rule  10 (global)
+   remark 10 (global)
+  permit tcp  any  eq 80 10.3.14.0 0.0.0.255 established 
+exit
+
+
+interface Ethernet1/0
+  ip access-group e1_0_in in
+exit
+interface Ethernet1/0
+  ip access-group e1_0_out out
+exit
+interface Ethernet1/1
+  ip access-group e1_1_in in
+exit
+interface Ethernet1/1
+  ip access-group e1_1_out out
+exit
+interface FastEthernet0/0
+  ip access-group fe0_0_in in
+exit
+interface FastEthernet0/0
+  ip access-group fe0_0_out out
+exit
+
+
+
+! 
+! Rule 0 (main)
+! 
+! "Routing rule 0 (main)"
+! 
+! 
+! 
+ip route 10.10.10.0 255.255.255.0 10.3.14.254 1
+! 
+! Rule 1 (main)
+! 
+! "Routing rule 1 (main)"
+! 
+! 
+! 
+ip route 10.10.11.0 255.255.255.0 FastEthernet0/0 1
+! 
+! Rule 2 (main)
+! 
+! "Routing rule 2 (main)"
+! 
+! 
+! 
+ip route 10.10.12.0 255.255.255.0 FastEthernet0/0 1
+! 
+! Rule 3 (main)
+! 
+! "Routing rule 3 (main)"
+! 
+! 
+! 
+ip route 0.0.0.0 0.0.0.0  Ethernet1/0 1
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

@@ -1,0 +1,120 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:15 2011 PST by vadim
+!
+! Compiled for pix 6.2
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall6.fw
+!
+! testing rule with firewall in dst and negation
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 inside security100
+
+nameif eth1 outside security0
+
+nameif eth2 dmz security50
+
+
+
+logging host outside 10.3.14.30
+logging queue 512
+logging facility 20
+logging trap 4
+logging buffered 5
+logging console 0
+logging timestamp
+logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout rpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout uauth 2:0:0 absolute
+
+
+clear ssh
+aaa authentication ssh console LOCAL
+
+clear snmp-server
+no snmp-server enable traps
+
+clear ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+no sysopt route dnat
+floodguard disable
+
+
+!################
+clear access-list
+clear object-group
+clear icmp
+clear telnet
+! 
+! Rule  0 (eth1)
+access-list outside_acl_in deny   ip any host 22.22.22.22 
+! 
+! Rule  1 (global)
+access-list inside_acl_in deny   ip any host 192.168.1.1 
+access-list outside_acl_in deny   ip any host 22.22.22.22 
+access-list dmz_acl_in deny   ip any host 192.168.2.1 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear static
+clear global
+clear nat
+! 
+! Rule  0 (NAT)
+static (inside,dmz) 192.168.10.0 192.168.10.0 netmask 255.255.255.0
+static (inside,dmz) 192.168.20.0 192.168.20.0 netmask 255.255.255.0
+! 
+! Rule  1 (NAT)
+static (inside,outside) 192.168.1.1 192.168.1.1 netmask 255.255.255.255
+! 
+! Rule  2 (NAT)
+global (outside) 1 interface
+nat (inside) 1 192.168.1.10 255.255.255.255 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

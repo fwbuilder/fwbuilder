@@ -1,0 +1,7 @@
+# 
+# Rule  mail_server_inbound 0 (global)
+pass in   quick inet proto tcp  from any  to any port 25 keep state  label "RULE 0 -- ACCEPT "  
+# 
+# Rule  mail_server_inbound 1 (global)
+pass in   quick inet proto icmp  from any  to any icmp-type { 3 , 8 code 0  } keep state  label "RULE 1 -- ACCEPT "  
+

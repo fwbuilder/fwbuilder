@@ -1,0 +1,20 @@
+
+set optimization normal
+
+
+# 
+# Rule  0 (global)
+block  log  quick inet  from any  to any  fragment 
+block  log  quick inet proto 50  from any  to any 
+# 
+# Rule  1 (global)
+block  log  quick inet  from any  to any  fragment 
+block  log  quick inet proto tcp  from any  to any flags ARSF/UAPRSF 
+# 
+# Rule  2 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

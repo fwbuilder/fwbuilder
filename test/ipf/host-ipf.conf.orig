@@ -1,0 +1,110 @@
+# Policy compiler errors and warnings:
+# host:Policy:4: warning: Changing rule direction due to self reference
+# host:Policy:5: warning: Changing rule direction due to self reference
+# host:Policy:6: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (eth0)
+pass  in   log  quick on eth0 proto icmp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on eth0 proto tcp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on eth0 proto udp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on eth0  from 22.22.22.22  to 22.22.22.22 
+pass  out  log  quick on eth0 proto icmp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on eth0 proto tcp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on eth0 proto udp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on eth0  from 22.22.22.22  to 22.22.22.22 
+# 
+# Rule  1 (lo)
+# allow everything on loopback
+pass  in  quick on lo proto icmp  from any  to 22.22.22.22 keep state 
+pass  in  quick on lo proto icmp  from any  to 127.0.0.1 keep state 
+pass  in  quick on lo proto tcp  from any  to 22.22.22.22 keep state 
+pass  in  quick on lo proto tcp  from any  to 127.0.0.1 keep state 
+pass  in  quick on lo proto udp  from any  to 22.22.22.22 keep state 
+pass  in  quick on lo proto udp  from any  to 127.0.0.1 keep state 
+pass  in  quick on lo  from any  to 22.22.22.22 
+pass  in  quick on lo  from any  to 127.0.0.1 
+# 
+# Rule  2 (lo)
+# allow everything on loopback
+pass  out quick on lo proto icmp  from 22.22.22.22  to any keep state 
+pass  out quick on lo proto icmp  from 127.0.0.1  to any keep state 
+pass  out quick on lo proto tcp  from 22.22.22.22  to any keep state 
+pass  out quick on lo proto tcp  from 127.0.0.1  to any keep state 
+pass  out quick on lo proto udp  from 22.22.22.22  to any keep state 
+pass  out quick on lo proto udp  from 127.0.0.1  to any keep state 
+pass  out quick on lo  from 22.22.22.22  to any 
+pass  out quick on lo  from 127.0.0.1  to any 
+# 
+# Rule  3 (lo)
+pass  in   log  quick on lo proto icmp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto icmp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  in   log  quick on lo proto icmp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto icmp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  in   log  quick on lo proto tcp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto tcp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  in   log  quick on lo proto tcp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto tcp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  in   log  quick on lo proto udp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto udp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  in   log  quick on lo proto udp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  in   log  quick on lo proto udp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  in   log  quick on lo  from 22.22.22.22  to 22.22.22.22 
+pass  in   log  quick on lo  from 22.22.22.22  to 127.0.0.1 
+pass  in   log  quick on lo  from 127.0.0.1  to 22.22.22.22 
+pass  in   log  quick on lo  from 127.0.0.1  to 127.0.0.1 
+pass  out  log  quick on lo proto icmp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto icmp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  out  log  quick on lo proto icmp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto icmp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  out  log  quick on lo proto tcp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto tcp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  out  log  quick on lo proto tcp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto tcp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  out  log  quick on lo proto udp  from 22.22.22.22  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto udp  from 22.22.22.22  to 127.0.0.1 keep state 
+pass  out  log  quick on lo proto udp  from 127.0.0.1  to 22.22.22.22 keep state 
+pass  out  log  quick on lo proto udp  from 127.0.0.1  to 127.0.0.1 keep state 
+pass  out  log  quick on lo  from 22.22.22.22  to 22.22.22.22 
+pass  out  log  quick on lo  from 22.22.22.22  to 127.0.0.1 
+pass  out  log  quick on lo  from 127.0.0.1  to 22.22.22.22 
+pass  out  log  quick on lo  from 127.0.0.1  to 127.0.0.1 
+# 
+# Rule  4 (global)
+# block fragments
+# host:Policy:4: warning: Changing rule direction due to self reference
+block in   log  quick  from any  to 22.22.22.22  with short
+# 
+# Rule  5 (global)
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto icmp  from any  to 22.22.22.22 icmp-type 3  keep state 
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 25 keep state 
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 80 keep state 
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 keep state 
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 21 keep state 
+# host:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 23 keep state 
+# 
+# Rule  6 (global)
+# allow all outgoing connections
+# host:Policy:6: warning: Changing rule direction due to self reference
+pass  out quick proto icmp  from 22.22.22.22  to any keep state 
+# host:Policy:6: warning: Changing rule direction due to self reference
+pass  out quick proto tcp  from 22.22.22.22  to any keep state 
+# host:Policy:6: warning: Changing rule direction due to self reference
+pass  out quick proto udp  from 22.22.22.22  to any keep state 
+# host:Policy:6: warning: Changing rule direction due to self reference
+pass  out quick  from 22.22.22.22  to any 
+# 
+# Rule  7 (global)
+# 'catch all' rule
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

@@ -1,0 +1,63 @@
+
+
+
+
+# Tables: (1)
+table <tbl.r0.s> { 172.20.0.1 , 172.20.0.2 , 172.24.0.1 , 172.24.0.2 , 192.168.1.1 , 192.168.1.2 } 
+
+# 
+# Rule  -4 CARP (automatic)
+pass  quick on vlan100 inet proto carp  from any  to any  label "RULE -4 -- ACCEPT "  
+# 
+# Rule  -3 CARP (automatic)
+pass  quick on lo inet proto carp  from any  to any  label "RULE -3 -- ACCEPT "  
+# 
+# Rule  -2 CARP (automatic)
+pass  quick on en1 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "  
+# 
+# Rule  -1 CARP (automatic)
+pass  quick on en0 inet proto carp  from any  to any  label "RULE -1 -- ACCEPT "  
+# 
+# Rule  0 (carp0)
+block in   log  quick on en0 inet  from <tbl.r0.s>  to any no state  label "RULE 0 -- DROP "  
+# 
+# Rule  1 (carp0)
+pass  quick on en0 inet  from any  to any  label "RULE 1 -- ACCEPT "  
+# 
+# Rule  2 (carp0,carp1)
+pass  quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.s> port 22  label "RULE 2 -- ACCEPT "  
+# 
+# Rule  3 (cl3 itf)
+pass  quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.s> port 22  label "RULE 3 -- ACCEPT "  
+# 
+# Rule  4 (carp0)
+pass  quick on { en1 en2 vlan100 } inet  from any  to any  label "RULE 4 -- ACCEPT "  
+# 
+# Rule  5 (carp0,carp1)
+pass  quick on { en2 vlan100 } inet  from any  to any  label "RULE 5 -- ACCEPT "  
+# 
+# Rule  6 (carp0,carp1,carp2)
+pass  quick on en2 inet  from any  to any  label "RULE 6 -- ACCEPT "  
+# 
+# Rule  7 (carp0)
+pass in   quick on { en1 en2 vlan100 } inet  from any  to any  label "RULE 7 -- ACCEPT "  
+# 
+# Rule  8 (carp0,carp1)
+pass in   quick on { en2 vlan100 } inet  from any  to any  label "RULE 8 -- ACCEPT "  
+# 
+# Rule  9 (carp0)
+pass out  quick on { en1 en2 vlan100 } inet  from any  to any  label "RULE 9 -- ACCEPT "  
+# 
+# Rule  10 (carp0,carp1)
+pass out  quick on { en2 vlan100 } inet  from any  to any  label "RULE 10 -- ACCEPT "  
+# 
+# Rule  11 (carp0)
+pass  quick on { en1 en2 vlan100 } inet  from any  to <tbl.r0.s>  label "RULE 11 -- ACCEPT "  
+# 
+# Rule  12 (carp0,carp1)
+pass  quick on { en2 vlan100 } inet  from any  to <tbl.r0.s>  label "RULE 12 -- ACCEPT "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE 10000 -- DROP "  
+

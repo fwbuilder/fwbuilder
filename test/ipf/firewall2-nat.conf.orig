@@ -1,0 +1,464 @@
+# NAT compiler errors and warnings:
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+# 
+# Rule  0 (NAT)
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32  
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32  
+map eth0 from 192.168.1.0/24 to any -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to any -> 192.168.1.1/32  
+map eth2 from 192.168.1.0/24 to any -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to any -> 192.168.2.1/32  
+# 
+# Rule  1 (NAT)
+map eth0 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth1 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth3 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth2 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth0 from 192.168.1.20/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.20/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.20/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.20/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.20/32 to any -> 22.22.22.23/32  
+map eth1 from 192.168.1.20/32 to any -> 22.22.22.23/32  
+map eth3 from 192.168.1.20/32 to any -> 22.22.22.23/32  
+map eth2 from 192.168.1.20/32 to any -> 22.22.22.23/32  
+# 
+# Rule  2 (NAT)
+map eth1 from 192.168.1.0/24 to any port = 22 -> 22.22.22.22/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to any port = 22 -> 22.22.23.23/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to any port = 22 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to any port = 22 -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32  proxy port 21 ftp/tcp 
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32  proxy port 21 ftp/tcp 
+map eth0 from 192.168.1.0/24 to any -> 192.168.1.1/32  proxy port 21 ftp/tcp 
+map eth2 from 192.168.1.0/24 to any -> 192.168.2.1/32  proxy port 21 ftp/tcp 
+# 
+# Rule  3 (NAT)
+map eth1 from 192.168.1.0/24 to any port = 22 -> 22.22.22.22/32   portmap tcp/udp auto 
+# 
+# Rule  4 (NAT)
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32  proxy port 500 ipsec/udp 
+# 
+# Rule  5 (NAT)
+map eth0 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32  
+map eth1 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32  
+map eth3 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32  
+map eth2 from 192.168.1.0/24 to 192.168.1.10/32 -> 192.168.1.1/32  
+map eth0 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32  
+map eth1 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32  
+map eth3 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32  
+map eth2 from 192.168.1.0/24 to 192.168.1.20/32 -> 192.168.1.1/32  
+# 
+# Rule  7 (NAT)
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.10 port 80 tcp 
+rdr eth1 from any to 22.22.22.23/32 port = 119 -> 192.168.1.10 port 119 tcp 
+# 
+# Rule  8 (NAT)
+# load balancing rule
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.10,192.168.1.20 port 80 tcp  round-robin 
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.100 port 80 tcp  round-robin 
+# 
+# Rule  9 (NAT)
+# load balancing rule
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.10,192.168.1.20 port 80 tcp  round-robin 
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.100 port 80 tcp  round-robin 
+# 
+# Rule  10 (NAT)
+map eth0 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32  
+map eth1 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32  
+map eth3 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32  
+map eth2 from 192.168.1.0/24 to 192.168.2.10/32 -> 192.168.2.1/32  
+# 
+# Rule  11 (NAT)
+rdr eth1 from any to 22.22.22.24/32 port = 80 -> 192.168.2.10 port 80 tcp 
+# 
+# Rule  12 (NAT)
+rdr eth1 from any to 22.22.22.22/32 port = 119 -> 192.168.1.10 port 119 tcp 
+# 
+# Rule  13 (NAT)
+map eth0 from 192.168.1.20/32 to any -> 22.22.23.24/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.20/32 to any -> 22.22.23.24/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.20/32 to any -> 22.22.23.24/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.20/32 to any -> 22.22.23.24/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.20/32 to any -> 22.22.23.24/32  
+map eth1 from 192.168.1.20/32 to any -> 22.22.23.24/32  
+map eth3 from 192.168.1.20/32 to any -> 22.22.23.24/32  
+map eth2 from 192.168.1.20/32 to any -> 22.22.23.24/32  
+# 
+# Rule  15 (NAT)
+# NETMAP 
+map eth0 from 192.168.1.0/24 to any -> 22.22.22.0/24   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.0/24   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to any -> 22.22.22.0/24   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to any -> 22.22.22.0/24   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to any -> 22.22.22.0/24  
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.0/24  
+map eth3 from 192.168.1.0/24 to any -> 22.22.22.0/24  
+map eth2 from 192.168.1.0/24 to any -> 22.22.22.0/24  
+# 
+# Rule  17 (NAT)
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10000 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10000 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10000 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10000 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10001 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10001 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10001 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10001 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10002 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10002 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10002 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10002 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10003 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10003 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10003 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10003 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10004 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10004 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10004 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10004 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10005 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10005 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10005 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10005 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10006 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10006 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10006 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10006 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10007 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10007 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10007 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10007 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10008 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10008 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10008 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10008 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10009 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10009 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10009 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10009 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10010 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10010 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10010 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10010 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10011 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10011 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10011 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10011 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10012 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10012 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10012 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10012 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10013 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10013 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10013 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10013 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10014 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10014 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10014 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10014 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10015 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10015 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10015 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10015 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10016 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10016 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10016 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10016 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10017 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10017 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10017 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10017 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10018 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10018 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10018 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10018 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10019 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10019 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10019 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10019 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10020 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10020 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10020 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10020 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10021 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10021 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10021 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10021 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10022 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10022 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10022 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10022 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10023 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10023 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10023 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10023 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10024 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10024 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10024 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10024 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10025 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10025 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10025 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10025 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10026 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10026 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10026 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10026 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10027 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10027 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10027 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10027 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10028 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10028 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10028 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10028 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10029 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10029 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10029 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10029 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10030 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10030 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10030 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10030 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10031 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10031 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10031 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10031 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10032 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10032 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10032 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10032 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10033 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10033 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10033 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10033 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10034 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10034 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10034 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10034 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10035 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10035 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10035 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10035 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10036 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10036 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10036 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10036 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10037 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10037 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10037 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10037 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10038 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10038 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10038 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10038 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10039 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10039 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10039 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10039 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.22.22/32 port = 10040 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 22.22.23.23/32 port = 10040 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.1.1/32 port = 10040 -> 192.168.1.10 port 10000 tcp 
+# firewall2:NAT:17: warning: Expanding port range test-TCP creates 41 rules
+rdr  from any to 192.168.2.1/32 port = 10040 -> 192.168.1.10 port 10000 tcp 
+# 
+# Rule  18 (NAT)
+rdr eth1 from any to 22.22.22.23/32 port = 80 -> 192.168.1.10 port 25 tcp 
+# 
+# Rule  19 (NAT)
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 -> 0/0 proxy port 21 ftp/tcp 
+# 
+# Rule  20 (NAT)
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 -> 0/0 proxy port 21 ftp/tcp 
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 -> 0/0 proxy port 1720 h323/tcp 
+# 
+# Rule  21 (NAT)
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 port = 80 -> 0/0 
+# 
+# Rule  22 (NAT)
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 -> 0/0 
+# 
+# Rule  23 (NAT)
+map eth2 from 192.168.1.0/24 to 192.168.2.0/24 -> 0/0 

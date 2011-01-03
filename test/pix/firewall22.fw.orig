@@ -1,0 +1,258 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:11 2011 PST by vadim
+!
+! Compiled for pix 7.0
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: yes
+! Assume firewall is part of any: no
+!
+!# files: * firewall22.fw
+!
+! testing outbound ACLs
+! v7.0, outbound ACLs are supported
+! option 'generate outbound acls' is ON
+
+
+
+!
+! Prolog script:
+!
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+!
+! End of prolog script:
+!
+
+
+
+
+interface eth0
+  nameif outside
+  security-level 0
+exit
+
+interface eth1
+  nameif dmz
+  security-level 50
+exit
+
+interface eth2
+  nameif inside
+  security-level 100
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout sunrpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:2:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute
+
+telnet timeout 5
+
+clear config ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+no snmp-server enable traps
+
+
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+    inspect ftp
+
+service-policy global_policy global
+
+
+!################
+! 
+! Rule  0 (global)
+access-list outside_in permit ip any host 192.168.1.10 
+access-list dmz_in permit ip any host 192.168.1.10 
+access-list inside_in permit ip any host 192.168.1.10 
+access-list inside_out permit ip any host 192.168.1.10 
+! 
+! Rule  1 (global)
+access-list outside_in permit ip any host 192.168.1.10 
+access-list dmz_in permit ip any host 192.168.1.10 
+access-list inside_in permit ip any host 192.168.1.10 
+! 
+! Rule  2 (global)
+access-list outside_out permit ip any host 192.168.1.10 
+access-list dmz_out permit ip any host 192.168.1.10 
+access-list inside_out permit ip any host 192.168.1.10 
+! 
+! Rule  3 (global)
+access-list inside_in permit ip 192.168.1.0 255.255.255.0 any 
+access-list outside_out permit ip 192.168.1.0 255.255.255.0 any 
+access-list dmz_out permit ip 192.168.1.0 255.255.255.0 any 
+access-list inside_out permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  4 (global)
+access-list outside_in permit ip 192.168.1.0 255.255.255.0 any 
+access-list dmz_in permit ip 192.168.1.0 255.255.255.0 any 
+access-list inside_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  5 (global)
+access-list outside_out permit ip 192.168.1.0 255.255.255.0 any 
+access-list dmz_out permit ip 192.168.1.0 255.255.255.0 any 
+access-list inside_out permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  6 (global)
+access-list dmz_in permit ip 192.168.2.0 255.255.255.0 any 
+access-list outside_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list dmz_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list inside_out permit ip 192.168.2.0 255.255.255.0 any 
+! 
+! Rule  7 (global)
+access-list outside_in permit ip 192.168.2.0 255.255.255.0 any 
+access-list dmz_in permit ip 192.168.2.0 255.255.255.0 any 
+access-list inside_in permit ip 192.168.2.0 255.255.255.0 any 
+! 
+! Rule  8 (global)
+access-list outside_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list dmz_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list inside_out permit ip 192.168.2.0 255.255.255.0 any 
+! 
+! Rule  9 (global)
+access-list dmz_in permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+access-list inside_out permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+! 
+! Rule  10 (global)
+access-list outside_in permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+access-list dmz_in permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+access-list inside_in permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+! 
+! Rule  11 (global)
+access-list outside_out permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+access-list dmz_out permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+access-list inside_out permit ip 192.168.2.0 255.255.255.0 host 192.168.1.10 
+! 
+! Rule  12 (eth1)
+! dmz -> intnet
+access-list dmz_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list dmz_out permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  13 (eth1)
+! dmz -> intnet
+access-list dmz_in permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  14 (eth1)
+! dmz -> intnet
+access-list dmz_out permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  15 (eth2)
+! dmz -> intnet
+access-list inside_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list inside_out permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  16 (eth2)
+! dmz -> intnet
+access-list inside_in permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  17 (eth2)
+! dmz -> intnet
+access-list inside_out permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  18 (eth1,eth2)
+! dmz -> intnet
+access-list dmz_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list dmz_out permit ip host 192.168.2.23 host 192.168.1.10 
+access-list inside_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list inside_out permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  19 (eth0,eth1)
+access-list outside_in deny   ip host 10.5.70.20 any log 0 interval 300 
+access-list outside_in deny   ip host 192.168.2.20 any log 0 interval 300 
+access-list outside_in deny   ip host 192.168.1.20 any log 0 interval 300 
+access-list outside_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
+access-list dmz_in deny   ip host 10.5.70.20 any log 0 interval 300 
+access-list dmz_in deny   ip host 192.168.2.20 any log 0 interval 300 
+access-list dmz_in deny   ip host 192.168.1.20 any log 0 interval 300 
+access-list dmz_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
+! 
+! Rule  20 (eth0,eth1)
+access-list outside_out permit ip host 10.5.70.20 any 
+access-list outside_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list outside_out permit ip 192.168.1.0 255.255.255.0 any 
+access-list dmz_out permit ip host 192.168.2.20 any 
+access-list dmz_out permit ip 192.168.2.0 255.255.255.0 any 
+access-list dmz_out permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  21 (global)
+access-list outside_in deny   ip any any 
+access-list dmz_in deny   ip any any 
+access-list inside_in deny   ip any any 
+access-list outside_out deny   ip any any 
+access-list dmz_out deny   ip any any 
+access-list inside_out deny   ip any any 
+
+
+access-group dmz_in in interface dmz
+access-group dmz_out out interface dmz
+access-group inside_in in interface inside
+access-group inside_out out interface inside
+access-group outside_in in interface outside
+access-group outside_out out interface outside
+
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id4529E45516799.0 permit ip 192.168.1.0 255.255.255.0  any 
+nat (inside) 1 access-list id4529E45516799.0 tcp 0 0
+! 
+! Rule  1 (NAT)
+access-list id4529E46316799.0 permit ip 192.168.2.0 255.255.255.0  any 
+nat (dmz) 1 access-list id4529E46316799.0 tcp 0 0
+! 
+! Rule  2 (NAT)
+access-list id4529E47116799.0 permit ip host 192.168.2.100   any 
+static (dmz,outside) interface  access-list id4529E47116799.0 tcp 0 0
+! 
+! Rule  3 (NAT)
+global (inside) 3 interface
+access-list id4529E47F16799.0 permit ip 192.168.2.0 255.255.255.0  192.168.1.0 255.255.255.0 
+nat (dmz) 3 access-list id4529E47F16799.0 outside
+! 
+! Rule  4 (NAT)
+global (dmz) 4 interface
+access-list id4529E48D16799.0 permit ip 192.168.1.0 255.255.255.0  192.168.2.0 255.255.255.0 
+nat (inside) 4 access-list id4529E48D16799.0 tcp 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

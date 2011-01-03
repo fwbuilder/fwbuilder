@@ -1,0 +1,76 @@
+
+set limit { frags 5000, states 10000 }
+set optimization aggressive
+set timeout tcp.first 5
+set timeout tcp.opening 5
+set timeout tcp.established 10
+
+
+#
+# Prolog script
+#
+# prolog
+# prolog commands go after set commands
+
+#
+# End of prolog script
+#
+#
+# Scrub rules
+#
+scrub in all fragment reassemble no-df 
+scrub out all random-id min-ttl  32 max-mss  1460
+
+
+# Tables: (1)
+table <tbl.r9998.d> { 22.22.22.22 , 192.168.1.1 , 192.168.2.1 } 
+
+# NAT compiler errors and warnings:
+# firewall2-1:NAT:0: error: There should be no more than one object in original destination
+# firewall2-1:NAT:1: error: Negation in original service is not supported.
+# firewall2-1:NAT:2: error: Can not translate 'any' into a specific service.
+# firewall2-1:NAT:3: error: Can not use negation in translated source.
+# firewall2-1:NAT:4: error: Can not use negation in translated destination.
+# firewall2-1:NAT:5: error: Can not use negation in translated service.
+# firewall2-1:NAT:6: error: Translated service should be 'Original' or should contain single object.
+# firewall2-1:NAT:7: error: Translated service should be 'Original' or should contain single object.
+# firewall2-1:NAT:9: error: Can not use unnumbered interface in Translated Source of a Source translation rule.
+# firewall2-1:NAT:12: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:13: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:15: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:16: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+# firewall2-1:NAT:16: error: Action 'Branch' needs NAT rule set to point to
+# firewall2-1:NAT:17: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+# 
+# Rule  8 (NAT)
+no nat proto tcp from 192.168.1.0/24 to any 
+no rdr proto tcp from 192.168.1.0/24 to any 
+# 
+# Rule  10 (NAT)
+no nat proto tcp from any to 22.22.22.22 
+no rdr proto tcp from any to 22.22.22.22 
+# 
+# Rule  11 (NAT)
+rdr proto tcp from any to 22.22.22.22 port 1080 -> { 192.168.1.10 , 192.168.1.20 } port 1080 
+# 
+# Rule  14 (NAT)
+nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/28 
+# 
+# Rule  17 (NAT)
+# firewall2-1:NAT:17: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+nat-anchor "NAT" proto tcp from 192.168.1.0/24 to any port 1080 
+rdr-anchor "NAT" proto tcp from 192.168.1.0/24 to any port 1080 
+
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+pass in   quick inet proto tcp  from 192.168.1.100  to <tbl.r9998.d> port 22 keep state  label "RULE 9998 - ACCEPT **"  
+# 
+# Rule  0 (global)
+# 'catch all' rule
+block  log  quick inet  from any  to any  label "RULE 0 - DROP **"  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any  label "RULE 10000 - DROP **"  
+

@@ -1,0 +1,52 @@
+# 
+# Rule  0 (NAT)
+map eth1 from 192.168.1.10/32 to any -> 0/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.10/32 to any -> 0/32  
+map eth0 from 192.168.1.10/32 to any -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.10/32 to any -> 192.168.1.1/32  
+map eth2 from 192.168.1.10/32 to any -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.10/32 to any -> 192.168.2.1/32  
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32  
+# 
+# Rule  1 (NAT)
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32  
+# 
+# Rule  2 (NAT)
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.10/32 to any -> 222.222.222.222/32  
+# 
+# Rule  3 (NAT)
+map eth1 from 192.168.1.10/32 to any -> 0/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.10/32 to any -> 0/32  
+# 
+# Rule  5 (NAT)
+rdr  from any to any port = 22 -> 192.168.1.10 port 22 tcp 
+rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
+rdr  from any to 192.168.2.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
+rdr  from any to 222.222.222.222/32 port = 22 -> 192.168.1.10 port 22 tcp 
+# 
+# Rule  6 (NAT)
+rdr eth0 from 192.168.1.0/24 to any port = 80 -> 192.168.2.1 port 3128 tcp 
+rdr eth0 from 192.168.1.0/24 to any port = 443 -> 192.168.2.1 port 3128 tcp 
+# 
+# Rule  7 (NAT)
+rdr eth0 from 192.168.1.0/24 to any port = 80 -> 192.168.2.1 port 3128 tcp 
+rdr eth0 from 192.168.1.0/24 to any port = 443 -> 192.168.2.1 port 3128 tcp 
+# 
+# Rule  8 (NAT)
+rdr eth0 from any to any port = 80 -> 192.168.1.1 port 3128 tcp 
+rdr eth1 from any to any port = 80 -> 0/32 port 3128 tcp 
+rdr eth2 from any to any port = 80 -> 192.168.2.1 port 3128 tcp 
+rdr eth3 from any to any port = 80 -> 222.222.222.222 port 3128 tcp 
+rdr eth0 from any to any port = 443 -> 192.168.1.1 port 3128 tcp 
+rdr eth1 from any to any port = 443 -> 0/32 port 3128 tcp 
+rdr eth2 from any to any port = 443 -> 192.168.2.1 port 3128 tcp 
+rdr eth3 from any to any port = 443 -> 222.222.222.222 port 3128 tcp 
+# 
+# Rule  10 (NAT)
+map eth1 from any to any -> 0/32  proxy port 514 rcmd/tcp 
+# 
+# Rule  11 (NAT)
+map eth1 from 192.168.1.0/24 to any -> 0/32  proxy port 21 ftp/tcp 

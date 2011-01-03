@@ -1,0 +1,113 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:52:49 2011 PST by vadim
+#
+# files: * firewall5.fw
+# files:   firewall5-ipf.conf
+# files:   firewall5-nat.conf
+#
+# Compiled for ipf 
+#
+# Dynamic interface ppp0
+
+# firewall5:Policy:0: warning: Changing rule direction due to self reference
+
+FWDIR=`dirname $0`
+
+
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+
+getaddr() {
+  intf=$1
+  varname=$2
+  L=`ifconfig $1 | grep 'inet '`
+  if [ -z "$L" ]; then
+      L="inet 0.0.0.0/32"
+  fi
+  set $L
+  a=$2
+  eval "$varname=$a"
+}
+
+getaddr ppp0  i_ppp0
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    $SYSCTL -w net.inet.ip.forwarding=1
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:52:49 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$IPF -Fa
+$IPNAT -C
+
+cat ${FWDIR}/firewall5-ipf.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPF  -I -f -
+cat ${FWDIR}/firewall5-nat.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPNAT  -f -
+
+
+$IPF -s
+
+
+epilog_commands
+
+/sbin/kldstat -n ipl.ko > /dev/null 2>&1 || $IPF -E

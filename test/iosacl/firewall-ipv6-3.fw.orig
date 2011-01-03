@@ -1,0 +1,135 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:11 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * firewall-ipv6-3.fw
+!
+! test "safety net" install in case when there are many rulesets
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+! temporary access list for "safety net install"
+no ipv6 access-list tmp_acl
+ipv6 access-list tmp_acl
+  permit ipv6 fe80::21d:9ff:aaaa:bbbb/64 any 
+  permit icmp any any
+  deny ipv6 any any 
+exit
+interface Ethernet0/0
+  no ipv6 traffic-filter in
+  no ipv6 traffic-filter out
+  ipv6 traffic-filter tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended e0_0_in
+no ip access-list extended e0_0_out
+
+
+ip access-list extended e0_0_in
+! 
+! Rule  fw-ipv6-3-ipv4 1 (global)
+  permit 50  host 61.150.47.112 any  dscp af12 
+  permit 50  host 192.168.1.0 any  dscp af12 
+exit
+
+ip access-list extended e0_0_out
+  permit 50  host 61.150.47.112 any  dscp af12 
+  permit 50  host 192.168.1.0 any  dscp af12 
+exit
+
+
+interface Ethernet0/0
+  ip access-group e0_0_in in
+exit
+interface Ethernet0/0
+  ip access-group e0_0_out out
+exit
+
+
+
+! ================ IPv6
+
+
+no ipv6 access-list ipv6_e0_0_in
+no ipv6 access-list ipv6_e0_0_out
+
+
+ipv6 access-list ipv6_e0_0_in
+! 
+! Rule  fw-ipv6-3-ipv6-1 0 (global)
+  permit tcp  fe80::/64 any  eq 22 
+! 
+! Rule  fw-ipv6-3-ipv6-1 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+exit
+
+ipv6 access-list ipv6_e0_0_out
+! 
+! Rule  fw-ipv6-3-ipv6-1 0 (global)
+  permit tcp  fe80::/64 any  eq 22 
+! 
+! Rule  fw-ipv6-3-ipv6-1 1 (global)
+  permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
+  permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
+  permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
+exit
+
+
+interface Ethernet0/0
+  ipv6 traffic-filter ipv6_e0_0_in in
+exit
+interface Ethernet0/0
+  ipv6 traffic-filter ipv6_e0_0_out out
+exit
+
+
+
+! ================ IPv6
+
+
+no ipv6 access-list ipv6_fw-ipv6-3-ipv6-2_e0_0_in
+no ipv6 access-list ipv6_fw-ipv6-3-ipv6-2_e0_0_out
+
+
+ipv6 access-list ipv6_fw-ipv6-3-ipv6-2_e0_0_in
+! 
+! Rule  fw-ipv6-3-ipv6-2 0 (global)
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+exit
+
+ipv6 access-list ipv6_fw-ipv6-3-ipv6-2_e0_0_out
+  permit 50  host 2001:5c0:0:2::24 any  dscp af11 
+  permit 50  host 3ffe:1200:2001:1:8000::1 any  dscp af11 
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

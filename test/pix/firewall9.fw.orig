@@ -1,0 +1,108 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:17 2011 PST by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * firewall9.fw
+!
+! this firewall has no rules at all.
+
+
+
+!
+! Prolog script:
+!
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 outside security0
+
+nameif eth1 dmz security50
+
+nameif eth2 inside security100
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout rpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 absolute
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+no snmp-server enable traps
+
+
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+floodguard disable
+
+
+fixup protocol ctiqbe 2748
+fixup protocol dns maximum-length 65535
+fixup protocol ftp 21
+fixup protocol h323 h225 1720
+fixup protocol h323 ras 1718-1719
+fixup protocol http 80
+fixup protocol icmp error 
+fixup protocol ils 389
+fixup protocol mgcp 2427
+fixup protocol mgcp 2727
+fixup protocol pptp 1723
+fixup protocol rsh 
+fixup protocol rtsp 554
+fixup protocol sip 5060
+fixup protocol sip udp 
+fixup protocol skinny 2000
+fixup protocol smtp 25
+fixup protocol sqlnet 1521
+fixup protocol tftp 69
+
+
+!################
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

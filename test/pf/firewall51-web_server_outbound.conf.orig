@@ -1,0 +1,8 @@
+# 
+# Rule  web_server_outbound 0 (global)
+pass out  quick inet proto icmp  from any  to any icmp-type { 3 , 8 code 0  } keep state 
+# 
+# Rule  web_server_outbound 1 (global)
+pass out  quick inet proto tcp  from any  to any port 53 keep state 
+pass out  quick inet proto udp  from any  to any port 53 keep state 
+

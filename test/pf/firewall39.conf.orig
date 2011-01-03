@@ -1,0 +1,57 @@
+
+
+#
+# Scrub rules
+#
+scrub in all fragment reassemble
+
+# 
+# Rule  0 (NAT)
+nat on le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+nat on enc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.2.1 
+# 
+# Rule  1 (NAT)
+nat on le0 from 192.168.1.0/24 to any tagged ipsec_tag -> 192.168.1.1 
+nat on enc1 from 192.168.1.0/24 to any tagged ipsec_tag -> 192.168.2.1 
+
+# 
+# Rule  0 (le0)
+pass in  on le0 inet  from any  to any tag INTNET keep state 
+# 
+# Rule  1 (enc1)
+pass in   quick on enc1 inet  from any  to any keep state 
+# 
+# Rule  2 (enc0)
+# logging is not allowed with 'anchor'
+# compiler should not generate 'log' keyword
+anchor "rule2_branch" in  on enc0 inet proto 50  from any  to any 
+anchor "rule2_branch" in  on enc0 inet proto 51  from any  to any 
+# 
+# Rule  3 (enc0)
+anchor "rule3_branch" in  on enc0 inet proto tcp  from any  to any port 80 
+# 
+# Rule  4 (lo)
+pass  quick on lo inet  from any  to any keep state 
+# 
+# Rule  5 (global)
+anchor "rule5_branch" inet proto 50  from any  to any 
+anchor "rule5_branch" inet proto 51  from any  to any 
+# 
+# Rule  6 (global)
+pass  quick inet proto 50  from any  to any keep state 
+pass  quick inet proto 51  from any  to any keep state 
+# 
+# Rule  7 (global)
+pass  quick inet proto tcp  from any  to any port 80 keep state 
+pass  quick inet  from any  to any tagged ipsec_tag  keep state 
+# 
+# Rule  9 (global)
+pass  quick inet proto tcp  from 192.168.1.0/24  to any port 25 queue mail 
+# 
+# Rule  10 (global)
+block  log  quick inet  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

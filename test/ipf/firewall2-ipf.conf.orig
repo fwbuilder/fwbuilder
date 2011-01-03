@@ -1,0 +1,105 @@
+# Policy compiler errors and warnings:
+# firewall2:Policy:9: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (eth1)
+# Anti-spoofing rule
+block in   log  quick on eth1  from 22.22.22.22  to any 
+block in   log  quick on eth1  from 22.22.23.23  to any 
+block in   log  quick on eth1  from 192.168.1.1  to any 
+block in   log  quick on eth1  from 192.168.2.1  to any 
+block in   log  quick on eth1  from 192.168.1.0/24  to any 
+# 
+# Rule  1 (eth1)
+# Anti-spoofing rule
+skip 5 out on eth1  from 22.22.22.22  to any 
+skip 4 out on eth1  from 22.22.23.23  to any 
+skip 3 out on eth1  from 192.168.1.1  to any 
+skip 2 out on eth1  from 192.168.2.1  to any 
+skip 1 out on eth1  from 192.168.1.0/24  to any 
+block out  log  quick on eth1  from any  to any 
+# 
+# Rule  2 (global)
+# block fragments
+block in   log  quick  from any  to any  with short
+block out  log  quick  from any  to any  with short
+# 
+# Rule  3 (global)
+# sends TCP RST and makes custom record in the log
+block return-rst in   log  quick proto tcp  from any  to any port = 113 
+block out  log  quick proto tcp  from any  to any port = 113 
+# 
+# Rule  4 (global)
+# sends TCP RST and makes custom record in the log
+block return-icmp-as-dest (0) in   log  quick proto udp  from any  to any port = 161 
+block out  log  quick proto udp  from any  to any port = 161 
+# 
+# Rule  5 (global)
+pass  in  quick proto icmp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  in  quick proto icmp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  in  quick proto tcp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  in  quick proto tcp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  in  quick proto udp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  in  quick proto udp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  in  quick  from 192.168.1.10  to 200.200.200.200 
+pass  in  quick  from 192.168.1.20  to 200.200.200.200 
+pass  out quick proto icmp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  out quick proto icmp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  out quick proto tcp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  out quick proto tcp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  out quick proto udp  from 192.168.1.10  to 200.200.200.200 keep state 
+pass  out quick proto udp  from 192.168.1.20  to 200.200.200.200 keep state 
+pass  out quick  from 192.168.1.10  to 200.200.200.200 
+pass  out quick  from 192.168.1.20  to 200.200.200.200 
+# 
+# Rule  6 (global)
+pass  in  quick proto icmp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  in  quick proto icmp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  in  quick proto tcp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  in  quick proto tcp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  in  quick proto udp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  in  quick proto udp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  in  quick  from 200.200.200.200  to 192.168.1.10 
+pass  in  quick  from 200.200.200.200  to 192.168.1.20 
+pass  out quick proto icmp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  out quick proto icmp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  out quick proto tcp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  out quick proto tcp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  out quick proto udp  from 200.200.200.200  to 192.168.1.10 keep state 
+pass  out quick proto udp  from 200.200.200.200  to 192.168.1.20 keep state 
+pass  out quick  from 200.200.200.200  to 192.168.1.10 
+pass  out quick  from 200.200.200.200  to 192.168.1.20 
+# 
+# Rule  7 (global)
+# 'masquerading' rule
+pass  in  quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  in  quick proto tcp  from 192.168.1.0/24  to any keep state 
+pass  in  quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  in  quick  from 192.168.1.0/24  to any 
+pass  out quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  out quick proto tcp  from 192.168.1.0/24  to any keep state 
+pass  out quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  out quick  from 192.168.1.0/24  to any 
+# 
+# Rule  8 (global)
+# host-fw2 has the same address as 
+#         one of the firewall's interfaces
+pass  in   log  quick proto tcp  from any  to 22.22.22.22 port = 21 keep state 
+pass  out  log  quick proto tcp  from any  to 22.22.22.22 port = 21 keep state 
+# 
+# Rule  9 (global)
+# firewall2:Policy:9: warning: Changing rule direction due to self reference
+pass  in   log  quick proto tcp  from any  to 22.22.23.23 port = 21 keep state 
+# firewall2:Policy:9: warning: Changing rule direction due to self reference
+pass  in   log  quick proto tcp  from any  to 192.168.1.1 port = 21 keep state 
+# firewall2:Policy:9: warning: Changing rule direction due to self reference
+pass  in   log  quick proto tcp  from any  to 192.168.2.1 port = 21 keep state 
+# 
+# Rule  10 (global)
+# 'catch all' rule
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

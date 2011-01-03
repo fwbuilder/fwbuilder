@@ -1,0 +1,21 @@
+
+
+
+
+# Tables: (1)
+table <tbl.r0.d> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.1 } 
+
+# Policy compiler errors and warnings:
+# firewall6:Policy:1: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (eth1)
+block in   log  quick on eth1 inet  from any  to ! <tbl.r0.d> 
+# 
+# Rule  1 (global)
+# firewall6:Policy:1: warning: Changing rule direction due to self reference
+block in   quick inet  from any  to ! <tbl.r0.d> 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

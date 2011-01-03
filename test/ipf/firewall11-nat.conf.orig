@@ -1,0 +1,5 @@
+# 
+# Rule  0 (NAT)
+rdr  from any to any -> 10.0.0.1 ip 
+rdr  from any to any -> 10.0.0.1 ip 
+rdr  from any to 10.0.0.1/32 -> 10.0.0.1 ip 

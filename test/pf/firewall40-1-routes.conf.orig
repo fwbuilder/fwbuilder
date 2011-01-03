@@ -1,0 +1,64 @@
+# Policy compiler errors and warnings:
+# firewall40-1:routes:1: error: Interface specification is required for action Route.
+# firewall40-1:routes:1: error: Only one router specified with load balancing for rule action Route: 'route_reply_through'
+# firewall40-1:routes:2: error: Interface specification is required for action Route.
+# firewall40-1:routes:2: error: Only one router specified with load balancing for rule action Route: 'route_copy_through'
+# firewall40-1:routes:6: error: Interface specification is required for action Route.
+# firewall40-1:routes:6: error: More than one router specified without load balancing for rule action Route: 'route_through'
+# firewall40-1:routes:7: error: Interface specification is required for action Route.
+# firewall40-1:routes:8: error: Interface specification is required for action Route.
+# firewall40-1:routes:9: error: Interface specification is required for action Route.
+# firewall40-1:routes:10: error: Interface specification is required for action Route.
+# 
+# Rule  routes 0 (fxp0)
+# route_through, load balancing random
+pass in   quick on fxp0 route-to { ( le1 192.0.2.1 ) , ( le1 192.0.2.2 ) , ( le1 192.0.2.3 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 0 --  "  
+# 
+# Rule  routes 1 (fxp0)
+# error: interface is required
+pass in   quick on fxp0 reply-to { (  192.0.2.1 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 1 --  "  
+# 
+# Rule  routes 2 (fxp0)
+# error: interface is required
+pass in   quick on fxp0 dup-to { (  192.0.2.1 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 2 --  "  
+# 
+# Rule  routes 3 (fxp0)
+# fastroute
+pass in   quick on fxp0 fastroute inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 3 --  "  
+# 
+# Rule  routes 4 (fxp0)
+# fastroute
+pass in   quick on fxp0 fastroute inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 4 --  "  
+# 
+# Rule  routes 5 (fxp0)
+# fastroute
+pass in   quick on fxp0 fastroute inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 5 --  "  
+# 
+# Rule  routes 6 (fxp0)
+# route_through, load balancing none
+# error: interface is required
+pass in   quick on fxp0 route-to { (  192.0.2.1 ) , (  192.0.2.2 ) , (  192.0.2.3 ) } inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 6 --  "  
+# 
+# Rule  routes 7 (fxp0)
+# route_through, load balancing bitmask
+# error: interface is required
+pass in   quick on fxp0 route-to { (  192.0.2.1 ) , (  192.0.2.2 ) , (  192.0.2.3 ) } bitmask inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 7 --  "  
+# 
+# Rule  routes 8 (fxp0)
+# route_through, load balancing random
+# error: interface is required
+pass in   quick on fxp0 route-to { (  192.0.2.1 ) , (  192.0.2.2 ) , (  192.0.2.3 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 8 --  "  
+# 
+# Rule  routes 9 (fxp0)
+# route_through, load balancing source hash
+# error: interface is required
+pass in   quick on fxp0 route-to { (  192.0.2.1 ) , (  192.0.2.2 ) , (  192.0.2.3 ) } source-hash inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 9 --  "  
+# 
+# Rule  routes 10 (fxp0)
+# route_through, load balancing round robin
+# error: interface is required
+pass in   quick on fxp0 route-to { (  192.0.2.1 ) , (  192.0.2.2 ) , (  192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 10 --  "  
+# 
+# Rule  routes 11 (global)
+block  log  quick inet  from any  to any  label "RULE 11 -- DROP "  
+

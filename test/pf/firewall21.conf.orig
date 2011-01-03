@@ -1,0 +1,33 @@
+
+
+
+# NAT compiler errors and warnings:
+# firewall21:NAT:3: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+# 
+# Rule  0 (NAT)
+nat-anchor "ftp-proxy/*" 
+rdr-anchor "ftp-proxy/*" 
+# 
+# Rule  1 (NAT)
+rdr proto tcp from 192.168.1.0/24 to any port 21 -> 127.0.0.1 port 8021 
+# 
+# Rule  2 (NAT)
+nat-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+# 
+# Rule  3 (NAT)
+# firewall21:NAT:3: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+nat-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+
+# 
+# Rule  0 (global)
+anchor "ftp-proxy/*" inet  from any  to any no state 
+# 
+# Rule  1 (global)
+pass  quick inet proto tcp  from any  to 127.0.0.1 port 8021 flags any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state 
+

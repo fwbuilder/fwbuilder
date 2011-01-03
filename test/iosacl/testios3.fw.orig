@@ -1,0 +1,471 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_iosacl v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:51:13 2011 PST by vadim
+!
+! Compiled for iosacl 12.1
+!
+!# files: * testios3.fw
+!
+
+! testios3:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+hostname testios3
+
+! temporary access list for "safety net install"
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip 10.10.10.0 0.0.0.255 any 
+  deny ip any any 
+exit
+interface ethernet1
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+
+! ================ IPv4
+
+
+no ip access-list extended e0_in
+no ip access-list extended e0_out
+no ip access-list extended e1_in
+no ip access-list extended e1_out
+
+
+ip access-list extended e0_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  10.10.10.0 0.0.0.255 host 1.1.1.1 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 host 10.10.10.1 eq 22 
+! 
+! Rule  4 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e0_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 1.1.1.1 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  host 10.10.10.1 eq 22 10.10.10.0 0.0.0.255 
+! 
+! Rule  0 (ethernet0)
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.10.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.10.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.11.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.11.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.12.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.12.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+! 
+! Rule  1 (ethernet0)
+  deny   ip  10.10.10.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.174.113.2 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.174.113.2 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.174.113.2 log 
+! 
+! Rule  2 (ethernet0)
+  deny   ip  10.10.10.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.10.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.10.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.10.0 0.0.0.255 host 222.174.113.2 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.11.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.11.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.11.0 0.0.0.255 host 222.174.113.2 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.33.181.83 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.53.82.190 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 58.231.13.78 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 61.150.47.112 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 61.184.14.102 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 64.106.85.186 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 70.228.60.100 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.51.236.6 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.243.72.149 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 80.249.77.34 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 81.2.36.254 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 81.196.74.125 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.77.37.174 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.117.221.205 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 82.143.196.17 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 84.90.8.198 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 151.8.224.178 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 168.156.76.20 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.1 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.2 log 
+  deny   ip  10.10.12.0 0.0.0.255 192.168.1.3 0.0.0.3 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.200 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 192.168.1.201 log 
+  deny   ip  10.10.12.0 0.0.0.255 192.168.2.128 0.0.0.127 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 193.207.126.36 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 195.136.186.35 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 196.15.136.15 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.10.180.138 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.17.93.16 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 201.36.156.121 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 202.96.112.93 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 202.103.25.253 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 203.162.3.209 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 203.209.124.144 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 210.106.193.237 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 210.222.114.102 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.144.143.143 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.172.218.237 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 211.250.16.132 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 212.21.241.31 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 212.100.212.100 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.18.72.252 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.39.114.122 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.55.115.43 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 218.104.138.146 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 219.132.104.160 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.71.17.86 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.81.50.105 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 220.91.99.46 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.14.249.242 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.166.177.135 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.198.33.38 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.202.160.233 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.205.54.125 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 221.217.44.248 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.100.212.223 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.121.118.144 log 
+  deny   ip  10.10.12.0 0.0.0.255 host 222.174.113.2 log 
+! 
+! Rule  3 (ethernet0)
+! testios3:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+  deny   ip  10.10.10.0 0.0.0.255 192.0.2.0 0.0.0.255 log 
+! testios3:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+  deny   ip  10.10.11.0 0.0.0.255 192.0.2.0 0.0.0.255 log 
+! testios3:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+  deny   ip  10.10.12.0 0.0.0.255 192.0.2.0 0.0.0.255 log 
+! 
+! Rule  4 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e1_in
+! 
+! Rule  -1 backup ssh access rule (automatic)
+  permit tcp  10.10.10.0 0.0.0.255 host 1.1.1.1 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 host 10.10.10.1 eq 22 
+! 
+! Rule  4 (global)
+  deny   ip  any  any  log 
+exit
+
+ip access-list extended e1_out
+! 
+! Rule  -2 backup ssh access rule (out) (automatic)
+  permit tcp  host 1.1.1.1 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  host 10.10.10.1 eq 22 10.10.10.0 0.0.0.255 
+! 
+! Rule  4 (global)
+  deny   ip  any  any  log 
+exit
+
+
+interface ethernet0
+  ip access-group e0_in in
+exit
+interface ethernet0
+  ip access-group e0_out out
+exit
+interface ethernet1
+  ip access-group e1_in in
+exit
+interface ethernet1
+  ip access-group e1_out out
+exit
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

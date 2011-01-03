@@ -1,0 +1,140 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:07 2011 PST by vadim
+#
+# files: * host.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+# firewall protects host it is running on
+
+# host:Policy:4: warning: Changing rule direction due to self reference
+# host:Policy:5: warning: Changing rule direction due to self reference
+# host:Policy:6: warning: Changing rule direction due to self reference
+
+
+
+cd /etc || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:07 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (eth0)
+"$IPFW" add 10 set 1 permit  log all  from me  to me      via  eth0 keep-state  || exit 1
+# 
+# Rule  1 (lo)
+# allow everything on loopback
+"$IPFW" add 20 set 1 permit all  from any  to me  in  recv lo keep-state  || exit 1
+# 
+# Rule  2 (lo)
+# allow everything on loopback
+"$IPFW" add 30 set 1 permit all  from me  to any  out xmit lo keep-state  || exit 1
+# 
+# Rule  3 (lo)
+"$IPFW" add 40 set 1 permit  log all  from me  to me      via  lo keep-state  || exit 1
+# 
+# Rule  4 (global)
+# block fragments
+# host:Policy:4: warning: Changing rule direction due to self reference
+"$IPFW" add 50 set 1 drop    log all  from any  to me   frag in   || exit 1
+# 
+# Rule  5 (global)
+# host:Policy:5: warning: Changing rule direction due to self reference
+"$IPFW" add 60 set 1 permit icmp  from any  to me icmptypes 3 in  keep-state  || exit 1
+# host:Policy:5: warning: Changing rule direction due to self reference
+"$IPFW" add 70 set 1 permit tcp  from any  to me 25,80,22,21,23 in  setup keep-state  || exit 1
+# 
+# Rule  6 (global)
+# allow all outgoing connections
+# host:Policy:6: warning: Changing rule direction due to self reference
+"$IPFW" add 80 set 1 permit all  from me  to any  out keep-state  || exit 1
+# 
+# Rule  7 (global)
+# 'catch all' rule
+"$IPFW" add 90 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 100 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

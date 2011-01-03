@@ -1,0 +1,8 @@
+
+# Tables: (1)
+table <rule2_branch:tbl.r0.s> { 192.168.1.0/24 , 192.168.2.0/24 } 
+
+# 
+# Rule  rule2_branch 0 (global)
+block  log  quick inet  from ! <rule2_branch:tbl.r0.s>  to any 
+

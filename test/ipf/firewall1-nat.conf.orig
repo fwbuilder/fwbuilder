@@ -1,0 +1,26 @@
+# 
+# Rule  1 (NAT)
+map eth0 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.10/32 to any -> 22.22.22.23/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth1 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth2 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+map eth3 from 192.168.1.10/32 to any -> 22.22.22.23/32  
+# 
+# Rule  3 (NAT)
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32  
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32  
+map eth0 from 192.168.1.0/24 to any -> 192.168.1.1/32   portmap tcp/udp auto 
+map eth0 from 192.168.1.0/24 to any -> 192.168.1.1/32  
+map eth2 from 192.168.1.0/24 to any -> 192.168.2.1/32   portmap tcp/udp auto 
+map eth2 from 192.168.1.0/24 to any -> 192.168.2.1/32  
+# 
+# Rule  4 (NAT)
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32   portmap tcp/udp auto 
+map eth1 from 192.168.1.0/24 to any -> 22.22.22.22/32  
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32   portmap tcp/udp auto 
+map eth3 from 192.168.1.0/24 to any -> 22.22.23.23/32  

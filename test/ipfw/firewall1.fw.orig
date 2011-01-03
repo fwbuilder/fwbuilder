@@ -1,0 +1,218 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipfw v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:05 2011 PST by vadim
+#
+# files: * firewall1.fw
+#
+#
+#
+# Compiled for ipfw 
+#
+# this object is used to test all kinds of negation in policy rules
+
+# Currently negation in NAT is not supported for ipf, therefore all rules in NAT with
+# negation are disabled
+
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+# firewall1:Policy:13: warning: Changing rule direction due to self reference
+
+
+
+cd /etc || exit 1
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+IPFW="/Library/Application Support/PeerGuardian/ipfwFast"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:53:05 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+"$IPFW" set disable 1
+"$IPFW" add 1 set 1 check-state ip from any to any
+
+
+
+
+# ================ IPv4
+
+
+# ================ Rule set Policy
+# 
+# Rule  0 (eth0)
+"$IPFW" add 10 set 1 skipto 130 icmp  from 22.22.22.22  to 22.22.22.22      via  eth0  || exit 1
+"$IPFW" add 20 set 1 skipto 130 icmp  from 22.22.22.22  to 192.168.1.1      via  eth0  || exit 1
+"$IPFW" add 30 set 1 skipto 130 icmp  from 192.168.1.1  to 22.22.22.22      via  eth0  || exit 1
+"$IPFW" add 40 set 1 skipto 130 icmp  from 192.168.1.1  to 192.168.1.1      via  eth0  || exit 1
+"$IPFW" add 50 set 1 skipto 130 50  from 22.22.22.22  to 22.22.22.22      via  eth0  || exit 1
+"$IPFW" add 60 set 1 skipto 130 50  from 22.22.22.22  to 192.168.1.1      via  eth0  || exit 1
+"$IPFW" add 70 set 1 skipto 130 50  from 192.168.1.1  to 22.22.22.22      via  eth0  || exit 1
+"$IPFW" add 80 set 1 skipto 130 50  from 192.168.1.1  to 192.168.1.1      via  eth0  || exit 1
+"$IPFW" add 90 set 1 drop    log icmp  from 22.22.22.22  to any      via  eth0  || exit 1
+"$IPFW" add 100 set 1 drop    log icmp  from 192.168.1.1  to any      via  eth0  || exit 1
+"$IPFW" add 110 set 1 drop    log 50  from 22.22.22.22  to any      via  eth0  || exit 1
+"$IPFW" add 120 set 1 drop    log 50  from 192.168.1.1  to any      via  eth0  || exit 1
+# 
+# Rule  1 (eth0)
+"$IPFW" add 130 set 1 skipto 250 icmp  from 192.168.1.10  to 192.168.1.10      via  eth0  || exit 1
+"$IPFW" add 140 set 1 skipto 250 icmp  from 192.168.1.10  to 192.168.1.20      via  eth0  || exit 1
+"$IPFW" add 150 set 1 skipto 250 icmp  from 192.168.1.20  to 192.168.1.10      via  eth0  || exit 1
+"$IPFW" add 160 set 1 skipto 250 icmp  from 192.168.1.20  to 192.168.1.20      via  eth0  || exit 1
+"$IPFW" add 170 set 1 skipto 250 50  from 192.168.1.10  to 192.168.1.10      via  eth0  || exit 1
+"$IPFW" add 180 set 1 skipto 250 50  from 192.168.1.10  to 192.168.1.20      via  eth0  || exit 1
+"$IPFW" add 190 set 1 skipto 250 50  from 192.168.1.20  to 192.168.1.10      via  eth0  || exit 1
+"$IPFW" add 200 set 1 skipto 250 50  from 192.168.1.20  to 192.168.1.20      via  eth0  || exit 1
+"$IPFW" add 210 set 1 drop   icmp  from 192.168.1.10  to any      via  eth0  || exit 1
+"$IPFW" add 220 set 1 drop   icmp  from 192.168.1.20  to any      via  eth0  || exit 1
+"$IPFW" add 230 set 1 drop   50  from 192.168.1.10  to any      via  eth0  || exit 1
+"$IPFW" add 240 set 1 drop   50  from 192.168.1.20  to any      via  eth0  || exit 1
+# 
+# Rule  2 (eth1)
+# Anti-spoofing rule
+"$IPFW" add 250 set 1 drop    log all  from me  to any  in  recv eth1  || exit 1
+"$IPFW" add 260 set 1 drop    log all  from 192.168.1.0/24  to any  in  recv eth1  || exit 1
+# 
+# Rule  3 (eth1)
+# Anti-spoofing rule
+"$IPFW" add 270 set 1 skipto 290 all  from 192.168.1.0/24  to any  out xmit eth1  || exit 1
+"$IPFW" add 280 set 1 drop    log all  from any  to any  out xmit eth1  || exit 1
+# 
+# Rule  4 (lo)
+"$IPFW" add 290 set 1 permit all  from any  to any      via  lo keep-state  || exit 1
+# 
+# Rule  5 (global)
+"$IPFW" add 300 set 1 drop    log tcp  from any  to any  tcpflags !fin,syn,!rst,!psh,!ack,!urg      || exit 1
+# 
+# Rule  7 (global)
+# hostF has the same IP address as firewal.
+"$IPFW" add 310 set 1 permit  log icmp  from any  to 192.168.1.1 icmptypes 8     keep-state  || exit 1
+# 
+# Rule  8 (global)
+# testing negation in the policy rule
+"$IPFW" add 320 set 1 skipto 350 icmp  from 192.168.1.10  to any icmptypes 3      || exit 1
+"$IPFW" add 330 set 1 skipto 350 icmp  from 192.168.1.20  to any icmptypes 3      || exit 1
+"$IPFW" add 340 set 1 drop    log icmp  from any  to any icmptypes 3      || exit 1
+# 
+# Rule  9 (global)
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+"$IPFW" add 350 set 1 skipto 380 icmp  from 192.168.1.10  to me icmptypes 3 in   || exit 1
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+"$IPFW" add 360 set 1 skipto 380 icmp  from 192.168.1.20  to me icmptypes 3 in   || exit 1
+# firewall1:Policy:9: warning: Changing rule direction due to self reference
+"$IPFW" add 370 set 1 drop    log icmp  from any  to me icmptypes 3 in   || exit 1
+# 
+# Rule  10 (global)
+# firewall1:Policy:10: warning: Changing rule direction due to self reference
+"$IPFW" add 380 set 1 skipto 410 all  from me  to 192.168.1.0/24  out  || exit 1
+"$IPFW" add 390 set 1 skipto 410 all  from 192.168.2.0/24  to 192.168.1.0/24       || exit 1
+"$IPFW" add 400 set 1 drop    log all  from any  to 192.168.1.0/24       || exit 1
+# 
+# Rule  11 (global)
+"$IPFW" add 410 set 1 skipto 440 tcp  from 22.22.22.0/24  to 192.168.1.10 80      || exit 1
+"$IPFW" add 420 set 1 skipto 440 tcp  from 33.33.33.0/24  to 192.168.1.10 80      || exit 1
+"$IPFW" add 430 set 1 permit tcp  from any  to 192.168.1.10 80     setup keep-state  || exit 1
+# 
+# Rule  12 (global)
+"$IPFW" add 440 set 1 skipto 500 all  from 192.168.1.0/24  to 192.168.1.10       || exit 1
+"$IPFW" add 450 set 1 skipto 500 all  from 192.168.1.0/24  to 192.168.1.20       || exit 1
+"$IPFW" add 460 set 1 skipto 500 all  from 192.168.2.0/24  to 192.168.1.10       || exit 1
+"$IPFW" add 470 set 1 skipto 500 all  from 192.168.2.0/24  to 192.168.1.20       || exit 1
+"$IPFW" add 480 set 1 drop    log all  from 192.168.1.0/24  to any       || exit 1
+"$IPFW" add 490 set 1 drop    log all  from 192.168.2.0/24  to any       || exit 1
+# 
+# Rule  13 (global)
+# firewall1:Policy:13: warning: Changing rule direction due to self reference
+"$IPFW" add 500 set 1 skipto 520 all  from any  to me  in   || exit 1
+"$IPFW" add 510 set 1 drop   all  from any  to any       || exit 1
+# 
+# Rule  16 (global)
+"$IPFW" add 520 set 1 skipto 640 icmp  from 22.22.22.22  to 22.22.22.22       || exit 1
+"$IPFW" add 530 set 1 skipto 640 icmp  from 22.22.22.22  to 192.168.1.1       || exit 1
+"$IPFW" add 540 set 1 skipto 640 icmp  from 192.168.1.1  to 22.22.22.22       || exit 1
+"$IPFW" add 550 set 1 skipto 640 icmp  from 192.168.1.1  to 192.168.1.1       || exit 1
+"$IPFW" add 560 set 1 skipto 640 50  from 22.22.22.22  to 22.22.22.22       || exit 1
+"$IPFW" add 570 set 1 skipto 640 50  from 22.22.22.22  to 192.168.1.1       || exit 1
+"$IPFW" add 580 set 1 skipto 640 50  from 192.168.1.1  to 22.22.22.22       || exit 1
+"$IPFW" add 590 set 1 skipto 640 50  from 192.168.1.1  to 192.168.1.1       || exit 1
+"$IPFW" add 600 set 1 drop    log icmp  from 22.22.22.22  to any       || exit 1
+"$IPFW" add 610 set 1 drop    log icmp  from 192.168.1.1  to any       || exit 1
+"$IPFW" add 620 set 1 drop    log 50  from 22.22.22.22  to any       || exit 1
+"$IPFW" add 630 set 1 drop    log 50  from 192.168.1.1  to any       || exit 1
+# 
+# Rule  17 (global)
+# 'masquerading' rule
+"$IPFW" add 640 set 1 permit all  from 192.168.1.0/24  to any      keep-state  || exit 1
+# 
+# Rule  18 (global)
+# 'catch all' rule
+"$IPFW" add 650 set 1 drop    log all  from any  to any       || exit 1
+# 
+# Rule  fallback rule
+#    fallback rule 
+"$IPFW" add 660 set 1 drop   all  from any  to any       || exit 1
+
+epilog_commands
+
+"$IPFW" set swap 0 1 || exit 1
+"$IPFW" delete set 1

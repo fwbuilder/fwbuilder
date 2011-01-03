@@ -1,0 +1,104 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:34 2011 PST by vadim
+#
+# files: * firewall2-1.fw
+# files:   firewall2-1.conf
+#
+# Compiled for pf 
+#
+# testing different errors in NATCompiler_pf::VerifyRules
+
+# firewall2-1:NAT:17: warning: Rule set NAT of firewall firewall2-1 has branching rule that loops back to it
+
+# firewall2-1:NAT:0: error: There should be no more than one object in original destination
+# firewall2-1:NAT:1: error: Negation in original service is not supported.
+# firewall2-1:NAT:2: error: Can not translate 'any' into a specific service.
+# firewall2-1:NAT:3: error: Can not use negation in translated source.
+# firewall2-1:NAT:4: error: Can not use negation in translated destination.
+# firewall2-1:NAT:5: error: Can not use negation in translated service.
+# firewall2-1:NAT:6: error: Translated service should be 'Original' or should contain single object.
+# firewall2-1:NAT:7: error: Translated service should be 'Original' or should contain single object.
+# firewall2-1:NAT:9: error: Can not use unnumbered interface in Translated Source of a Source translation rule.
+# firewall2-1:NAT:12: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:13: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:15: error: Can not use network or address range object in translated destination.
+# firewall2-1:NAT:16: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+# firewall2-1:NAT:16: error: Action 'Branch' needs NAT rule set to point to
+# firewall2-1:NAT:17: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:34 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/firewall2-1.conf || exit 1
+
+
+
+epilog_commands

@@ -1,0 +1,190 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:59:53 2011 PST by vadim
+#
+# files: * firewall-base-rulesets.fw
+# files:   firewall-base-rulesets.conf
+# files:   firewall-base-rulesets-mail_server_inbound.conf
+# files:   firewall-base-rulesets-mail_server_outbound.conf
+# files:   firewall-base-rulesets-web_server_inbound.conf
+# files:   firewall-base-rulesets-web_server_outbound.conf
+#
+# Compiled for pf 
+#
+# this firewall is used to test a rule in the global policy of object "firewall"
+
+
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+    if echo "$addr" | grep -q ':'
+    then
+        inet="inet6"
+        addr=$(echo "$addr" | sed 's!/! prefixlen !')
+    else
+        inet="inet"
+        addr=$(echo "$addr" | sed 's!/! netmask !')
+    fi
+
+    parameter=""
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      parameter="alias"
+    }
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      parameter="delete"
+    }
+
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+
+    scope_regex="1"
+    if test -n "$scope"; then scope_regex=" \$0 !~ \"$scope\" "; fi
+
+    $IFCONFIG $interface | sed "s/%$interface//" | \
+      awk -v IGNORED="$ignore_list" \
+        "BEGIN {  
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $scope_regex && !(\$2 in ignored_dict)) {printf \"%s/%s\n\",\$2,\$4;}" | \
+        while read addr; do
+          echo "${addr}@$interface"
+        done | sort
+   
+}
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IFCONFIG $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface '' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scopeid .*' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    update_addresses_of_interface "en0 33.33.33.33/0xffffff00" ""
+    update_addresses_of_interface "en1 172.16.1.1/0xffffff00" ""
+    update_addresses_of_interface "en2 192.168.100.1/0xffffff00" ""
+}
+
+log "Activating firewall script generated Mon Jan  3 12:59:53 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/firewall-base-rulesets.conf || exit 1
+$PFCTL  -a mail_server_inbound \
+     -f \
+    ${FWDIR}/firewall-base-rulesets-mail_server_inbound.conf || exit 1
+$PFCTL  -a mail_server_outbound \
+     -f \
+    ${FWDIR}/firewall-base-rulesets-mail_server_outbound.conf || exit 1
+$PFCTL  -a web_server_inbound \
+     -f \
+    ${FWDIR}/firewall-base-rulesets-web_server_inbound.conf || exit 1
+$PFCTL  -a web_server_outbound \
+     -f \
+    ${FWDIR}/firewall-base-rulesets-web_server_outbound.conf || exit 1
+
+
+
+epilog_commands

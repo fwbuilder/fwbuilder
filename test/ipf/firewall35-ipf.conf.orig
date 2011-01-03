@@ -1,0 +1,22 @@
+# 
+# Rule  0 (le1)
+auth in  quick on le1  from 192.168.1.0/24  to any 
+# 
+# Rule  1 (le1)
+skip 1 in  on le1  from 192.168.1.0/24  to any 
+auth in  quick on le1  from any  to any 
+# 
+# Rule  2 (le1)
+pass  in  quick on le1 proto icmp  from 192.168.1.0/24  to any keep state 
+pass  in  quick on le1 proto tcp  from 192.168.1.0/24  to any flags S keep state 
+pass  in  quick on le1 proto udp  from 192.168.1.0/24  to any keep state 
+pass  in  quick on le1  from 192.168.1.0/24  to any 
+# 
+# Rule  3 (global)
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

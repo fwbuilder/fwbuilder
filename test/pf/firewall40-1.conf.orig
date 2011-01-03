@@ -1,0 +1,74 @@
+
+
+
+# 
+# Rule  0 (NAT)
+# Translate source address
+# for outgoing connections
+nat on le1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.0.2.1 
+# 
+# Rule  1 (NAT)
+# Translate source address
+# for outgoing connections
+nat on le2 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.0.3.1 
+
+# Policy compiler errors and warnings:
+# firewall40-1:Policy:9: error: Only one router specified with load balancing for rule action Route: 'route_through'
+# firewall40-1:Policy:10: error: Only one router specified with load balancing for rule action Route: 'route_through'
+# firewall40-1:Policy:11: error: Illegal IP address for next hop
+# firewall40-1:Policy:11: error: Only one router specified with load balancing for rule action Route: 'route_through'
+# 
+# Rule  0 (fxp0)
+pass in   quick on fxp0 route-to { ( le1 192.0.2.1 ) , ( le1 192.0.2.2 ) , ( le1 192.0.2.3 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 0 --  "  
+# 
+# Rule  1 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1 ) , ( le2 192.0.2.2 ) , ( le2 192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 1 --  "  
+# 
+# Rule  2 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1 ) , ( le2 192.0.2.2 ) , ( le2 192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 2 --  "  
+# 
+# Rule  3 (fxp0)
+pass in   quick on fxp0 route-to { ( le1 192.0.2.1 ) , ( le1 192.0.2.2 ) , ( le1 192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80  label "RULE 3 --  "  
+# 
+# Rule  4 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1 ) , ( le2 192.0.2.2 ) , ( le2 192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80  label "RULE 4 --  "  
+# 
+# Rule  5 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1 ) , ( le2 192.0.2.2 ) , ( le2 192.0.2.3 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80  label "RULE 5 --  "  
+# 
+# Rule  6 (fxp0)
+pass in   quick on fxp0 route-to { ( le1 192.0.2.0/24 ) } random inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 6 --  "  
+# 
+# Rule  7 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.0/24 ) } source-hash inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 7 --  "  
+# 
+# Rule  8 (fxp0)
+pass in   quick on fxp0 route-to { ( le2 192.0.2.0/255.255.255.0 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 8 --  "  
+# 
+# Rule  9 (fxp0)
+# this should fail because
+# it has one address for the next
+# hop and it is /32.
+# Run compiler with
+# command line argument -xt
+# to convert errors to warnings
+# and make it generate .conf 
+# file anyway
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 9 --  "  
+# 
+# Rule  10 (fxp0)
+# this should fail because
+# it has one address for the next
+# hop and it is /32.
+pass in   quick on fxp0 route-to { ( le2 192.0.2.1/32 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 10 --  "  
+# 
+# Rule  11 (fxp0)
+# this should fail because
+# it ip address in next hop
+# is illegal
+pass in   quick on fxp0 route-to { ( le2 192.0.300.1/32 ) } round-robin inet proto tcp  from 192.168.1.0/24  to any port 80 keep state  label "RULE 11 --  "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any  label "RULE 10000 -- DROP "  
+

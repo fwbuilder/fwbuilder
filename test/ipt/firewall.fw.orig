@@ -1,0 +1,1401 @@
+#!/bin/sh 
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipt v4.2.0.3425-{{build}}
+#
+#  Generated Mon Jan  3 12:53:22 2011 PST by vadim
+#
+# files: * firewall.fw
+#
+# Compiled for iptables (any version)
+#
+# this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule
+
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+# firewall:NAT:11: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
+# firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
+# firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
+
+# firewall:Policy:36: warning: Empty MAC address in rule
+# firewall:Policy:37: warning: Empty MAC address in rule
+# firewall:Policy:38: warning: Empty MAC address in rule
+# firewall:Policy:39: warning: Empty MAC address in rule
+# firewall:Policy:40: warning: Empty MAC address in rule
+# firewall:Policy:40: warning: Empty MAC address in rule
+# firewall:Policy:41: warning: Can not match MAC address of the firewall (chain OUTPUT) 
+# firewall:Policy:36: warning: Empty MAC address in rule
+# firewall:Policy:37: warning: Empty MAC address in rule
+# firewall:Policy:38: warning: Empty MAC address in rule
+# firewall:Policy:39: warning: Empty MAC address in rule
+# firewall:Policy:40: warning: Empty MAC address in rule
+# firewall:Policy:40: warning: Empty MAC address in rule
+
+
+FWBDEBUG=""
+
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:${PATH}"
+export PATH
+
+
+
+LSMOD="/sbin/lsmod"
+MODPROBE="/usr/local/sbin/modprobe"
+IPTABLES="/usr/local/sbin/iptables"
+IP6TABLES="/sbin/ip6tables"
+IPTABLES_RESTORE="/sbin/iptables-restore"
+IP6TABLES_RESTORE="/sbin/ip6tables-restore"
+IP="/usr/local/sbin/ip"
+IFCONFIG="/sbin/ifconfig"
+VCONFIG="/sbin/vconfig"
+BRCTL="/sbin/brctl"
+IFENSLAVE="/sbin/ifenslave"
+IPSET="/usr/sbin/ipset"
+LOGGER="/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+getaddr_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+getaddr() {
+    getaddr_internal $1 $2 "-4"
+}
+
+getaddr6() {
+    getaddr_internal $1 $2 "-6"
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+find_program() {
+  PGM=$1
+  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+    echo "$PGM not found"
+    exit 1
+  }
+}
+check_tools() {
+  find_program $IPTABLES 
+ find_program $MODPROBE 
+  find_program $IP 
+}
+reset_iptables_v4() {
+  $IPTABLES -P OUTPUT  DROP
+  $IPTABLES -P INPUT   DROP
+  $IPTABLES -P FORWARD DROP
+
+cat /proc/net/ip_tables_names | while read table; do
+  $IPTABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IPTABLES -t $table -F $chain
+      fi
+  done
+  $IPTABLES -t $table -X
+done
+}
+
+reset_iptables_v6() {
+  $IP6TABLES -P OUTPUT  DROP
+  $IP6TABLES -P INPUT   DROP
+  $IP6TABLES -P FORWARD DROP
+
+cat /proc/net/ip6_tables_names | while read table; do
+  $IP6TABLES -t $table -L -n | while read c chain rest; do
+      if test "X$c" = "XChain" ; then
+        $IP6TABLES -t $table -F $chain
+      fi
+  done
+  $IP6TABLES -t $table -X
+done
+}
+
+
+P2P_INTERFACE_WARNING=""
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+
+
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      echo $addr | grep -q ':' && {
+          $FWBDEBUG $IP addr $cmd $addr dev $interface
+      } || {
+          $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+      }
+    }
+
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      $FWBDEBUG $IP addr $cmd $addr dev $interface
+    }
+
+    $FWBDEBUG $IP link set $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+    $IP addr ls dev $interface | \
+      awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' | \
+        while read addr; do
+          echo "${addr}@$interface"
+	done | sort
+}
+
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IP link show dev $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+clear_addresses_except_known_interfaces() {
+    $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/state/ && !($2 in ignored_dict)) {print $2;}' | \
+         while read intf; do
+            echo "# Removing addresses not configured in fwbuilder from interface $intf"
+            $FWBDEBUG $IP addr flush dev $intf scope global
+            $FWBDEBUG $IP link set $intf down
+         done
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+check_run_time_address_table_files() {
+    :
+    
+}
+
+load_modules() {
+    :
+    OPTS=$1
+    MODULES_DIR="/lib/modules/`uname -r`/kernel/net/"
+    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
+    echo $OPTS | grep -q nat && {
+        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    echo $OPTS | grep -q ipv6 && {
+        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    for module in $MODULES; do 
+        if $LSMOD | grep ${module} >/dev/null; then continue; fi
+        $MODPROBE ${module} ||  exit 1 
+    done
+}
+
+verify_interfaces() {
+    :
+    echo "Verifying interfaces: eth1 eth0"
+    for i in eth1 eth0 ; do
+        $IP link show "$i" > /dev/null 2>&1 || {
+            log "Interface $i does not exist"
+            exit 1
+        }
+    done
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    # Configure interfaces
+    update_addresses_of_interface "eth1 222.222.222.222/24 222.222.222.0/32 222.222.222.1/32 222.222.222.2/32 222.222.222.3/32 222.222.222.4/32 222.222.222.5/32 222.222.222.6/32 222.222.222.7/32 222.222.222.8/32 222.222.222.9/32 222.222.222.10/32 222.222.222.11/32 222.222.222.12/32 222.222.222.13/32 222.222.222.14/32 222.222.222.15/32 222.222.222.16/32 222.222.222.17/32 222.222.222.18/32 222.222.222.19/32 222.222.222.20/32 222.222.222.21/32 222.222.222.22/32 222.222.222.23/32 222.222.222.24/32 222.222.222.25/32 222.222.222.26/32 222.222.222.27/32 222.222.222.28/32 222.222.222.29/32 222.222.222.30/32 222.222.222.31/32 222.222.222.32/32 222.222.222.33/32 222.222.222.34/32 222.222.222.35/32 222.222.222.36/32 222.222.222.37/32 222.222.222.38/32 222.222.222.39/32 222.222.222.40/32 222.222.222.41/32 222.222.222.42/32 222.222.222.43/32 222.222.222.44/32 222.222.222.45/32 222.222.222.46/32 222.222.222.47/32 222.222.222.48/32 222.222.222.49/32 222.222.222.50/32 222.222.222.51/32 222.222.222.52/32 222.222.222.53/32 222.222.222.54/32 222.222.222.55/32 222.222.222.56/32 222.222.222.57/32 222.222.222.58/32 222.222.222.59/32 222.222.222.60/32 222.222.222.61/32 222.222.222.62/32 222.222.222.63/32 222.222.222.64/32 222.222.222.65/32 222.222.222.66/32 222.222.222.67/32 222.222.222.68/32 222.222.222.69/32 222.222.222.70/32 222.222.222.71/32 222.222.222.72/32 222.222.222.73/32 222.222.222.74/32 222.222.222.75/32 222.222.222.76/32 222.222.222.77/32 222.222.222.78/32 222.222.222.79/32 222.222.222.80/32 222.222.222.81/32 222.222.222.82/32 222.222.222.83/32 222.222.222.84/32 222.222.222.85/32 222.222.222.86/32 222.222.222.87/32 222.222.222.88/32 222.222.222.89/32 222.222.222.90/32 222.222.222.91/32 222.222.222.92/32 222.222.222.93/32 222.222.222.94/32 222.222.222.95/32 222.222.222.96/32 222.222.222.97/32 222.222.222.98/32 222.222.222.99/32 222.222.222.100/32 222.222.222.101/32 222.222.222.102/32 222.222.222.103/32 222.222.222.104/32 222.222.222.105/32 222.222.222.106/32 222.222.222.107/32 222.222.222.108/32 222.222.222.109/32 222.222.222.110/32 222.222.222.111/32 222.222.222.112/32 222.222.222.113/32 222.222.222.114/32 222.222.222.115/32 222.222.222.116/32 222.222.222.117/32 222.222.222.118/32 222.222.222.119/32 222.222.222.120/32 222.222.222.121/32 222.222.222.122/32 222.222.222.123/32 222.222.222.124/32 222.222.222.125/32 222.222.222.126/32 222.222.222.127/32 222.222.222.128/32 222.222.222.129/32 222.222.222.130/32 222.222.222.131/32 222.222.222.132/32 222.222.222.133/32 222.222.222.134/32 222.222.222.135/32 222.222.222.136/32 222.222.222.137/32 222.222.222.138/32 222.222.222.139/32 222.222.222.140/32 222.222.222.141/32 222.222.222.142/32 222.222.222.143/32 222.222.222.144/32 222.222.222.145/32 222.222.222.146/32 222.222.222.147/32 222.222.222.148/32 222.222.222.149/32 222.222.222.150/32 222.222.222.151/32 222.222.222.152/32 222.222.222.153/32 222.222.222.154/32 222.222.222.155/32 222.222.222.156/32 222.222.222.157/32 222.222.222.158/32 222.222.222.159/32 222.222.222.160/32 222.222.222.161/32 222.222.222.162/32 222.222.222.163/32 222.222.222.164/32 222.222.222.165/32 222.222.222.166/32 222.222.222.167/32 222.222.222.168/32 222.222.222.169/32 222.222.222.170/32 222.222.222.171/32 222.222.222.172/32 222.222.222.173/32 222.222.222.174/32 222.222.222.175/32 222.222.222.176/32 222.222.222.177/32 222.222.222.178/32 222.222.222.179/32 222.222.222.180/32 222.222.222.181/32 222.222.222.182/32 222.222.222.183/32 222.222.222.184/32 222.222.222.185/32 222.222.222.186/32 222.222.222.187/32 222.222.222.188/32 222.222.222.189/32 222.222.222.190/32 222.222.222.191/32 222.222.222.192/32 222.222.222.193/32 222.222.222.194/32 222.222.222.195/32 222.222.222.196/32 222.222.222.197/32 222.222.222.198/32 222.222.222.199/32 222.222.222.200/32 222.222.222.201/32 222.222.222.202/32 222.222.222.203/32 222.222.222.204/32 222.222.222.205/32 222.222.222.206/32 222.222.222.207/32 222.222.222.208/32 222.222.222.209/32 222.222.222.210/32 222.222.222.211/32 222.222.222.212/32 222.222.222.213/32 222.222.222.214/32 222.222.222.215/32 222.222.222.216/32 222.222.222.217/32 222.222.222.218/32 222.222.222.219/32 222.222.222.220/32 222.222.222.221/32 222.222.222.222/32 222.222.222.223/32 222.222.222.224/32 222.222.222.225/32 222.222.222.226/32 222.222.222.227/32 222.222.222.228/32 222.222.222.229/32 222.222.222.230/32 222.222.222.231/32 222.222.222.232/32 222.222.222.233/32 222.222.222.234/32 222.222.222.235/32 222.222.222.236/32 222.222.222.237/32 222.222.222.238/32 222.222.222.239/32 222.222.222.240/32 222.222.222.241/32 222.222.222.242/32 222.222.222.243/32 222.222.222.244/32 222.222.222.245/32 222.222.222.246/32 222.222.222.247/32 222.222.222.248/32 222.222.222.249/32 222.222.222.250/32 222.222.222.251/32 222.222.222.252/32 222.222.222.253/32 222.222.222.254/32 222.222.222.40/24 222.222.222.41/24" ""
+    update_addresses_of_interface "eth0 192.168.1.1/24 192.168.1.20/24 192.168.1.10/24" ""
+}
+
+script_body() {
+    echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout 
+     echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_intvl 
+
+
+    # ================ IPv4
+
+
+    # ================ Table 'filter', automatic rules
+    # accept established sessions
+    $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    # backup ssh access
+    $IPTABLES -A INPUT  -p tcp -m tcp  -s 192.168.1.100/255.255.255.255  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT 
+    $IPTABLES -A OUTPUT  -p tcp -m tcp  -d 192.168.1.100/255.255.255.255  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    # drop TCP sessions opened prior firewall restart
+    $IPTABLES -A INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    # drop packets that do not match any valid state and log them
+    $IPTABLES -N drop_invalid
+    $IPTABLES -A OUTPUT   -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A INPUT    -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A FORWARD  -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A drop_invalid -j LOG --log-level debug --log-prefix "INVALID state -- DENY "
+    $IPTABLES -A drop_invalid -j DROP
+
+
+    # ================ Table 'nat',  rule set NAT
+    # 
+    # Rule 0 (NAT)
+    # 
+    echo "Rule 0 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.222
+    # 
+    # Rule 1 (NAT)
+    # 
+    echo "Rule 1 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING   -s 192.168.1.0/24  -j NETMAP --to 222.222.222.0/24
+    # 
+    # Rule 2 (NAT)
+    # 
+    echo "Rule 2 (NAT)"
+    # 
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10/31  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.12/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.16/28  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.32/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.64/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.96/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.100  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    # 
+    # Rule 4 (NAT)
+    # 
+    echo "Rule 4 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j DNAT --to-destination :3128
+    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp  -s 192.168.1.0/24   --dport 3128 -j SNAT --to-source 192.168.1.1
+    # 
+    # Rule 5 (NAT)
+    # 
+    echo "Rule 5 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp   -d 22.22.22.23  --dport 4000:4010 -j SNAT --to-source 192.168.1.10
+    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp   -d 22.22.22.23  --dport 3128 -j SNAT --to-source 192.168.1.10
+    # 
+    # Rule 6 (NAT)
+    # 
+    echo "Rule 6 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 25 -j DNAT --to-destination 192.168.1.10:25
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 222.222.222.222  --dport 25 -j DNAT --to-destination 192.168.1.10:25
+    # 
+    # Rule 7 (NAT)
+    # 
+    echo "Rule 7 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 192.168.1.1  --icmp-type 8/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 222.222.222.222  --icmp-type 8/0  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 8 (NAT)
+    # 
+    echo "Rule 8 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 192.168.1.1  --icmp-type 8/0  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p icmp -m icmp   -d 222.222.222.222  --icmp-type 8/0  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 9 (NAT)
+    # 
+    echo "Rule 9 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 1000:1010  -d 192.168.1.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 1000:1010  -d 222.222.222.222  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 10 (NAT)
+    # 
+    echo "Rule 10 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10  --sport 1000:1010  -j SNAT --to-source 222.222.222.222:1000-1010
+    # 
+    # Rule 11 (NAT)
+    # 
+    echo "Rule 11 (NAT)"
+    # 
+    # firewall:NAT:11: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 25 -j SNAT --to-source 222.222.222.222
+    # 
+    # Rule 12 (NAT)
+    # 
+    echo "Rule 12 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:70  -d 222.222.222.40  --dport 25 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:70  -d 222.222.222.41  --dport 25 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 13 (NAT)
+    # 
+    echo "Rule 13 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 222.222.222.40  --dport 25 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 222.222.222.41  --dport 25 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 14 (NAT)
+    # 
+    echo "Rule 14 (NAT)"
+    # 
+    $IPTABLES -t nat -N Cid445F52DE31658.0
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid445F52DE31658.0
+    $IPTABLES -t nat -A Cid445F52DE31658.0   -d 61.150.47.112  -j RETURN
+    $IPTABLES -t nat -A Cid445F52DE31658.0   -d 223.223.223.223  -j RETURN
+    $IPTABLES -t nat -A Cid445F52DE31658.0  -p tcp -m tcp   --dport 80 -j SNAT --to-source 222.222.222.222
+    # 
+    # Rule 15 (NAT)
+    # 
+    echo "Rule 15 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10:80
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 1024:65535  -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10:80
+    # 
+    # Rule 16 (NAT)
+    # 
+    echo "Rule 16 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 53  -d 192.168.1.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 53  -d 222.222.222.222  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 17 (NAT)
+    # 
+    echo "Rule 17 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 222.222.222.222  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
+    # 
+    # Rule 18 (NAT)
+    # 
+    echo "Rule 18 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 4000:4010 -j SNAT --to-source 222.222.222.222
+    # 
+    # Rule 19 (NAT)
+    # 
+    echo "Rule 19 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.10   --dport 3128 -j DNAT --to-destination :80
+    # 
+    # Rule 20 (NAT)
+    # 
+    echo "Rule 20 (NAT)"
+    # 
+    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   --dport 3128 -j DNAT --to-destination :80
+    # 
+    # Rule 21 (NAT)
+    # 
+    echo "Rule 21 (NAT)"
+    # 
+    # should use multiport
+    # and account for
+    # no more than 15 ports
+    # per rule
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 222.222.222.222  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 514,4321,465,1080,111,7100 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 22 (NAT)
+    # 
+    echo "Rule 22 (NAT)"
+    # 
+    # should use multiport
+    # and account for
+    # no more than 15 ports
+    # per rule
+    $IPTABLES -t nat -N Cid3EF4288E.0
+    $IPTABLES -t nat -A PREROUTING   -d 222.222.222.222  -j Cid3EF4288E.0
+    $IPTABLES -t nat -A Cid3EF4288E.0  -p tcp -m tcp   --dport 10000:11000 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0  -p tcp -m tcp -m multiport   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0  -p tcp -m tcp -m multiport   --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0  -p tcp -m tcp -m multiport   --dports 514,4321,465,1080,111,7100 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0   -j DNAT --to-destination 192.168.1.10
+
+
+
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (eth1)
+    # 
+    echo "Rule 0 (eth1)"
+    # 
+    # Automatically generated rule blocking short fragments
+    $IPTABLES -N In_RULE_0
+    $IPTABLES -A INPUT  -i eth1  -p all  -f   -j In_RULE_0
+    $IPTABLES -A FORWARD  -i eth1  -p all  -f   -j In_RULE_0
+    $IPTABLES -A In_RULE_0  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A In_RULE_0  -j DROP
+    # 
+    # Rule 1 (eth1)
+    # 
+    echo "Rule 1 (eth1)"
+    # 
+    # тестовый комментарий по-русски. Проверяем конвертацию из/в Utf8
+    $IPTABLES -N Cid3B09D29D.0
+    $IPTABLES -A INPUT  -i eth1  -p all  -f   -j Cid3B09D29D.0
+    $IPTABLES -N In_RULE_1
+    $IPTABLES -A Cid3B09D29D.0  -d 192.168.1.1   -j In_RULE_1
+    $IPTABLES -A Cid3B09D29D.0  -d 222.222.222.222   -j In_RULE_1
+    $IPTABLES -A In_RULE_1  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A In_RULE_1  -j DROP
+    # 
+    # Rule 2 (eth1)
+    # 
+    echo "Rule 2 (eth1)"
+    # 
+    # Automatically generated anti-spoofing rule
+    $IPTABLES -N In_RULE_2
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A INPUT  -i eth1   -s 222.222.222.222   -j In_RULE_2
+    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A FORWARD  -i eth1   -s 222.222.222.222   -j In_RULE_2
+    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A In_RULE_2  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A In_RULE_2  -j DROP
+    # 
+    # Rule 3 (eth1)
+    # 
+    echo "Rule 3 (eth1)"
+    # 
+    $IPTABLES -N Cid47421X33852.0
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.0
+    $IPTABLES -A Cid47421X33852.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid47421X33852.0  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid47421X33852.1
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.1
+    $IPTABLES -A Cid47421X33852.1  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid47421X33852.1  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 4 (eth1)
+    # 
+    echo "Rule 4 (eth1)"
+    # 
+    # rule in FORWARD chain with
+    # -o eth1 and dest address of the firewall
+    # is pretty much impossible
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 5 (eth1)
+    # 
+    echo "Rule 5 (eth1)"
+    # 
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 6 (eth1)
+    # 
+    echo "Rule 6 (eth1)"
+    # 
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 7 (eth1)
+    # 
+    echo "Rule 7 (eth1)"
+    # 
+    $IPTABLES -N Cid112281X33852.0
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.0
+    $IPTABLES -A Cid112281X33852.0  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid112281X33852.0  -s 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid112281X33852.1
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.1
+    $IPTABLES -A Cid112281X33852.1  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid112281X33852.1  -s 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid112281X33852.2
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.2
+    $IPTABLES -A Cid112281X33852.2  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid112281X33852.2  -s 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 8 (eth1)
+    # 
+    echo "Rule 8 (eth1)"
+    # 
+    # keep FORWARD chain
+    # because it is needed for anti-spoofing rules
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 9 (eth1)
+    # 
+    echo "Rule 9 (eth1)"
+    # 
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 10 (eth0)
+    # 
+    echo "Rule 10 (eth0)"
+    # 
+    $IPTABLES -N Cid3B92DFC5.0
+    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.0
+    $IPTABLES -A Cid3B92DFC5.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3B92DFC5.0  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid3B92DFC5.1
+    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.1
+    $IPTABLES -A Cid3B92DFC5.1  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3B92DFC5.1  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 11 (eth0)
+    # 
+    echo "Rule 11 (eth0)"
+    # 
+    # code should go into INPUT chain with 
+    # address in destination for comparison
+    $IPTABLES -N In_RULE_11
+    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 192.168.1.255   --dport 53  -j In_RULE_11
+    $IPTABLES -A In_RULE_11  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A In_RULE_11  -j DROP
+    # 
+    # Rule 12 (eth0)
+    # 
+    echo "Rule 12 (eth0)"
+    # 
+    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 13 (eth0,eth1)
+    # 
+    echo "Rule 13 (eth0,eth1)"
+    # 
+    # reject using connlimit
+    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    # 
+    # Rule 14 (eth0,eth1)
+    # 
+    echo "Rule 14 (eth0,eth1)"
+    # 
+    # reject using connlimit
+    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    # 
+    # Rule 15 (eth0,eth1)
+    # 
+    echo "Rule 15 (eth0,eth1)"
+    # 
+    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 16 (global)
+    # 
+    echo "Rule 16 (global)"
+    # 
+    # OUTPUT
+    $IPTABLES -N Cid469F1D0830391.0
+    $IPTABLES -A OUTPUT  -d 1.1.1.1   -j Cid469F1D0830391.0
+    $IPTABLES -A Cid469F1D0830391.0   -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469F1D0830391.0   -s 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 17 (global)
+    # 
+    echo "Rule 17 (global)"
+    # 
+    # INTPUT with "-i +"
+    # "-i +" is redundant if chain is INPUT,
+    # optimization removes it
+    $IPTABLES -N Cid469F1CF730391.0
+    $IPTABLES -A INPUT  -s 1.1.1.1   -j Cid469F1CF730391.0
+    $IPTABLES -A Cid469F1CF730391.0   -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469F1CF730391.0   -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 18 (global)
+    # 
+    echo "Rule 18 (global)"
+    # 
+    # OUTPUT + FORWARD
+    $IPTABLES -A OUTPUT  -d 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD  -o +   -d 1.1.1.1   -j ACCEPT
+    # 
+    # Rule 19 (global)
+    # 
+    echo "Rule 19 (global)"
+    # 
+    # INPUT + FORWARD
+    $IPTABLES -A INPUT  -s 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD  -i +   -s 1.1.1.1   -j ACCEPT
+    # 
+    # Rule 20 (global)
+    # 
+    echo "Rule 20 (global)"
+    # 
+    # OUTPUT + FORWARD
+    $IPTABLES -A OUTPUT  -d 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD  -d 1.1.1.1   -j ACCEPT
+    # 
+    # Rule 21 (global)
+    # 
+    echo "Rule 21 (global)"
+    # 
+    # INPUT + FORWARD
+    $IPTABLES -A INPUT  -s 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD  -s 1.1.1.1   -j ACCEPT
+    # 
+    # Rule 22 (global)
+    # 
+    echo "Rule 22 (global)"
+    # 
+    $IPTABLES -N RULE_22
+    $IPTABLES -A OUTPUT -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
+    $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
+    $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
+    $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
+    $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
+    $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
+    $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
+    $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
+    $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
+    $IPTABLES -A RULE_22  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_22  -j DROP
+    # 
+    # Rule 23 (global)
+    # 
+    echo "Rule 23 (global)"
+    # 
+    $IPTABLES -A OUTPUT -p all  -m ipv4options  --rr  -j DROP
+    $IPTABLES -A OUTPUT -p all  -m ipv4options  --lsrr --ssrr  -j DROP
+    $IPTABLES -A OUTPUT -p all  -m ipv4options  --ts  -j DROP
+    $IPTABLES -A INPUT -p all  -m ipv4options  --rr  -j DROP
+    $IPTABLES -A INPUT -p all  -m ipv4options  --lsrr --ssrr  -j DROP
+    $IPTABLES -A INPUT -p all  -m ipv4options  --ts  -j DROP
+    $IPTABLES -A FORWARD -p all  -m ipv4options  --rr  -j DROP
+    $IPTABLES -A FORWARD -p all  -m ipv4options  --lsrr --ssrr  -j DROP
+    $IPTABLES -A FORWARD -p all  -m ipv4options  --ts  -j DROP
+    # 
+    # Rule 24 (global)
+    # 
+    echo "Rule 24 (global)"
+    # 
+    $IPTABLES -A OUTPUT -p all  -m ipv4options  --any-opt  -j DROP
+    $IPTABLES -A INPUT -p all  -m ipv4options  --any-opt  -j DROP
+    $IPTABLES -A FORWARD -p all  -m ipv4options  --any-opt  -j DROP
+    # 
+    # Rule 25 (global)
+    # 
+    echo "Rule 25 (global)"
+    # 
+    $IPTABLES -A OUTPUT -p all  -m dscp --dscp-class AF4 -m ipv4options  --lsrr --ra  -j DROP
+    $IPTABLES -A INPUT -p all  -m dscp --dscp-class AF4 -m ipv4options  --lsrr --ra  -j DROP
+    $IPTABLES -A FORWARD -p all  -m dscp --dscp-class AF4 -m ipv4options  --lsrr --ra  -j DROP
+    # 
+    # Rule 26 (global)
+    # 
+    echo "Rule 26 (global)"
+    # 
+    $IPTABLES -N RULE_26
+    $IPTABLES -A OUTPUT  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,ACK,RST,URG ACK  -j RULE_26
+    $IPTABLES -A OUTPUT  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,FIN,RST,URG,PSH RST  -j RULE_26
+    $IPTABLES -A INPUT  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,ACK,RST,URG ACK  -j RULE_26
+    $IPTABLES -A INPUT  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,FIN,RST,URG,PSH RST  -j RULE_26
+    $IPTABLES -A FORWARD  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,ACK,RST,URG ACK  -j RULE_26
+    $IPTABLES -A FORWARD  -p tcp -m state --state ESTABLISHED --tcp-flags SYN,FIN,RST,URG,PSH RST  -j RULE_26
+    $IPTABLES -A RULE_26  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_26  -j DROP
+    # 
+    # Rule 28 (global)
+    # 
+    echo "Rule 28 (global)"
+    # 
+    # both src and dst have multiple interfaces
+    $IPTABLES -N Cid3EE24E9C.0
+    $IPTABLES -A INPUT  -s 192.168.1.1   -m state --state NEW  -j Cid3EE24E9C.0
+    $IPTABLES -A INPUT  -s 222.222.222.222   -m state --state NEW  -j Cid3EE24E9C.0
+    $IPTABLES -A Cid3EE24E9C.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.0  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid3EE24E9C.1
+    $IPTABLES -A OUTPUT  -s 192.168.1.1   -m state --state NEW  -j Cid3EE24E9C.1
+    $IPTABLES -A OUTPUT  -s 222.222.222.222   -m state --state NEW  -j Cid3EE24E9C.1
+    $IPTABLES -A Cid3EE24E9C.1  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.1  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid3EE24E9C.2
+    $IPTABLES -A OUTPUT  -s 192.168.1.1   -m state --state NEW  -j Cid3EE24E9C.2
+    $IPTABLES -A OUTPUT  -s 222.222.222.222   -m state --state NEW  -j Cid3EE24E9C.2
+    $IPTABLES -A Cid3EE24E9C.2  -d 33.33.33.33   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.2  -d 172.16.1.1   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.2  -d 192.168.100.1   -j ACCEPT
+    $IPTABLES -N Cid3EE24E9C.3
+    $IPTABLES -A INPUT  -d 192.168.1.1   -m state --state NEW  -j Cid3EE24E9C.3
+    $IPTABLES -A INPUT  -d 222.222.222.222   -m state --state NEW  -j Cid3EE24E9C.3
+    $IPTABLES -A Cid3EE24E9C.3  -s 33.33.33.33   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.3  -s 172.16.1.1   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.3  -s 192.168.100.1   -j ACCEPT
+    $IPTABLES -N Cid3EE24E9C.4
+    $IPTABLES -A FORWARD  -s 33.33.33.33   -m state --state NEW  -j Cid3EE24E9C.4
+    $IPTABLES -A FORWARD  -s 172.16.1.1   -m state --state NEW  -j Cid3EE24E9C.4
+    $IPTABLES -A FORWARD  -s 192.168.100.1   -m state --state NEW  -j Cid3EE24E9C.4
+    $IPTABLES -A Cid3EE24E9C.4  -d 33.33.33.33   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.4  -d 172.16.1.1   -j ACCEPT
+    $IPTABLES -A Cid3EE24E9C.4  -d 192.168.100.1   -j ACCEPT
+    # 
+    # Rule 29 (global)
+    # 
+    echo "Rule 29 (global)"
+    # 
+    $IPTABLES -A FORWARD  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -d 192.168.1.10   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 30 (global)
+    # 
+    echo "Rule 30 (global)"
+    # 
+    $IPTABLES -N Cid3E0AA611.0
+    $IPTABLES -A INPUT  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -m state --state NEW  -j Cid3E0AA611.0
+    $IPTABLES -A Cid3E0AA611.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3E0AA611.0  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 31 (global)
+    # 
+    echo "Rule 31 (global)"
+    # 
+    $IPTABLES -A FORWARD  -m mac --mac-source 00:10:4b:de:e9:70  -d 192.168.1.10   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 32 (global)
+    # 
+    echo "Rule 32 (global)"
+    # 
+    $IPTABLES -N Cid3E0AA504.0
+    $IPTABLES -A INPUT  -m mac --mac-source 00:10:4b:de:e9:70  -m state --state NEW  -j Cid3E0AA504.0
+    $IPTABLES -A Cid3E0AA504.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3E0AA504.0  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 33 (global)
+    # 
+    echo "Rule 33 (global)"
+    # 
+    $IPTABLES -A FORWARD  -m mac --mac-source 00:10:4b:de:e9:70  -d 200.200.200.200   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 34 (global)
+    # 
+    echo "Rule 34 (global)"
+    # 
+    $IPTABLES -N Cid3E0F40D5.0
+    $IPTABLES -A INPUT  -m mac --mac-source aa:bb:cc:dd:ee:ff  -s 192.168.1.15   -m state --state NEW  -j Cid3E0F40D5.0
+    $IPTABLES -A Cid3E0F40D5.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3E0F40D5.0  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 35 (global)
+    # 
+    echo "Rule 35 (global)"
+    # 
+    $IPTABLES -N Cid3E0F452C.0
+    $IPTABLES -A INPUT  -m mac --mac-source aa:bb:cc:dd:ee:ff  -m state --state NEW  -j Cid3E0F452C.0
+    $IPTABLES -A Cid3E0F452C.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3E0F452C.0  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 36 (global)
+    # 
+    echo "Rule 36 (global)"
+    # 
+    $IPTABLES -N Cid3DB0B422.0
+    $IPTABLES -A FORWARD  -d 192.168.1.10   -m state --state NEW  -j Cid3DB0B422.0
+    $IPTABLES -A Cid3DB0B422.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cid3DB0B422.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:36: warning: Empty MAC address in rule
+    $IPTABLES -A Cid3DB0B422.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cid3DB0B422.0  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    # 
+    # Rule 37 (global)
+    # 
+    echo "Rule 37 (global)"
+    # 
+    $IPTABLES -N Cid3DB0B628.0
+    $IPTABLES -A FORWARD  -d 192.168.1.10   -m state --state NEW  -j Cid3DB0B628.0
+    $IPTABLES -A Cid3DB0B628.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cid3DB0B628.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:37: warning: Empty MAC address in rule
+    $IPTABLES -A Cid3DB0B628.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cid3DB0B628.0  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    $IPTABLES -A Cid3DB0B628.0  -s 192.168.1.20   -j ACCEPT
+    # 
+    # Rule 38 (global)
+    # 
+    echo "Rule 38 (global)"
+    # 
+    $IPTABLES -N Cid3DE474B7.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  --sport 53  -d 192.168.1.10   -m state --state NEW  -j Cid3DE474B7.0
+    $IPTABLES -A Cid3DE474B7.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cid3DE474B7.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:38: warning: Empty MAC address in rule
+    $IPTABLES -A Cid3DE474B7.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cid3DE474B7.0  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    # 
+    # Rule 39 (global)
+    # 
+    echo "Rule 39 (global)"
+    # 
+    $IPTABLES -N Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -d 192.168.1.10   --dport 10000:11000  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 514,4321,465,1080,111,7100  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:39: warning: Empty MAC address in rule
+    $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    # 
+    # Rule 40 (global)
+    # 
+    echo "Rule 40 (global)"
+    # 
+    $IPTABLES -N Cid445FAA6D31658.0
+    $IPTABLES -A INPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid445FAA6D31658.0
+    $IPTABLES -A Cid445FAA6D31658.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cid445FAA6D31658.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:40: warning: Empty MAC address in rule
+    $IPTABLES -A Cid445FAA6D31658.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cid445FAA6D31658.0  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    $IPTABLES -N Cid445FAA6D31658.1
+    $IPTABLES -A FORWARD -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid445FAA6D31658.1
+    $IPTABLES -A Cid445FAA6D31658.1  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
+    $IPTABLES -A Cid445FAA6D31658.1  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
+    # firewall:Policy:40: warning: Empty MAC address in rule
+    $IPTABLES -A Cid445FAA6D31658.1  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
+    $IPTABLES -A Cid445FAA6D31658.1  -m mac --mac-source 00:10:4b:de:e9:6f  -s 192.168.1.10   -j ACCEPT
+    # 
+    # Rule 41 (global)
+    # 
+    echo "Rule 41 (global)"
+    # 
+    # firewall:Policy:41: warning: Can not match MAC address of the firewall (chain OUTPUT) 
+    $IPTABLES -A OUTPUT  -s 192.168.1.1   -d 192.168.1.10   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 42 (global)
+    # 
+    echo "Rule 42 (global)"
+    # 
+    $IPTABLES -N Cpol-firewall2-3.0
+    $IPTABLES -A FORWARD  -d 192.168.1.10   -m state --state NEW  -j Cpol-firewall2-3.0
+    $IPTABLES -N Cpol-firewall2-3.1
+    $IPTABLES -A Cpol-firewall2-3.0  -s 211.11.11.11   -j Cpol-firewall2-3.1
+    $IPTABLES -A Cpol-firewall2-3.0  -s 211.22.22.22   -j Cpol-firewall2-3.1
+    $IPTABLES -N RULE_42
+    $IPTABLES -A Cpol-firewall2-3.1 -m time  --timestart 18:00  --timestop 23:59  -j RULE_42
+    $IPTABLES -A Cpol-firewall2-3.1 -m time  --timestart 00:00  --timestop 23:59  --days Sat -j RULE_42
+    $IPTABLES -A Cpol-firewall2-3.1 -m time  --timestart 00:00  --timestop 23:59  --days Sun -j RULE_42
+    $IPTABLES -A Cpol-firewall2-3.1 -m time  --timestart 01:01  --timestop 02:02  --days Sun,Mon -j RULE_42
+    $IPTABLES -A RULE_42  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_42  -j ACCEPT
+    # 
+    # Rule 43 (global)
+    # 
+    echo "Rule 43 (global)"
+    # 
+    $IPTABLES -N Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 514,4321,465,1080,111,7100  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -N Cid3FB8455E.1
+    $IPTABLES -A Cid3FB8455E.0  -s 211.11.11.11   -j Cid3FB8455E.1
+    $IPTABLES -A Cid3FB8455E.0  -s 211.22.22.22   -j Cid3FB8455E.1
+    $IPTABLES -A Cid3FB8455E.1  -d 192.168.1.10   -j ACCEPT
+    $IPTABLES -A Cid3FB8455E.1  -d 192.168.1.20   -j ACCEPT
+    # 
+    # Rule 44 (global)
+    # 
+    echo "Rule 44 (global)"
+    # 
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.10   --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.10   --dport 80  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 45 (global)
+    # 
+    echo "Rule 45 (global)"
+    # 
+    # Rule #20 test: from Rock
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.10   --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --sport 53  -d 192.168.1.10   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 53,3128  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.10   --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p tcp -m tcp  --sport 53  -d 192.168.1.10   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 53,3128  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 46 (global)
+    # 
+    echo "Rule 46 (global)"
+    # 
+    $IPTABLES -N Cpol-firewall2-4.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.0
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    $IPTABLES -N Cpol-firewall2-4.1
+    $IPTABLES -A INPUT  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.1
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    $IPTABLES -N Cpol-firewall2-4.2
+    $IPTABLES -A FORWARD  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.2
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.2  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    # 
+    # Rule 47 (global)
+    # 
+    echo "Rule 47 (global)"
+    # 
+    $IPTABLES -N Cid3CD8770E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.0
+    $IPTABLES -A Cid3CD8770E.0 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    $IPTABLES -N Cid3CD8770E.1
+    $IPTABLES -A INPUT  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.1
+    $IPTABLES -A INPUT  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.1
+    $IPTABLES -A Cid3CD8770E.1 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    $IPTABLES -N Cid3CD8770E.2
+    $IPTABLES -A FORWARD  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.2
+    $IPTABLES -A FORWARD  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.2
+    $IPTABLES -A Cid3CD8770E.2 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.2  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    # 
+    # Rule 48 (global)
+    # 
+    echo "Rule 48 (global)"
+    # 
+    $IPTABLES -N Cid3CD87B1E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.11   -m state --state NEW  -j Cid3CD87B1E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.12   -m state --state NEW  -j Cid3CD87B1E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.13   -m state --state NEW  -j Cid3CD87B1E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.14   -m state --state NEW  -j Cid3CD87B1E.0
+    $IPTABLES -A OUTPUT  -d 192.168.1.15   -m state --state NEW  -j Cid3CD87B1E.0
+    $IPTABLES -A Cid3CD87B1E.0 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD87B1E.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    $IPTABLES -N Cid3CD87B1E.1
+    $IPTABLES -A FORWARD  -d 192.168.1.11   -m state --state NEW  -j Cid3CD87B1E.1
+    $IPTABLES -A FORWARD  -d 192.168.1.12   -m state --state NEW  -j Cid3CD87B1E.1
+    $IPTABLES -A FORWARD  -d 192.168.1.13   -m state --state NEW  -j Cid3CD87B1E.1
+    $IPTABLES -A FORWARD  -d 192.168.1.14   -m state --state NEW  -j Cid3CD87B1E.1
+    $IPTABLES -A FORWARD  -d 192.168.1.15   -m state --state NEW  -j Cid3CD87B1E.1
+    $IPTABLES -A Cid3CD87B1E.1 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD87B1E.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
+    # 
+    # Rule 49 (global)
+    # 
+    echo "Rule 49 (global)"
+    # 
+    # group "special combined srv"
+    # has couple of UDP services,
+    # plus "ALL UDP" service, which has
+    # empty ports specs. This is special
+    # case for multiport.
+    $IPTABLES -N Cid3E1FD93A.0
+    $IPTABLES -A INPUT -p udp -m udp  -s 192.168.1.0/24   -m state --state NEW  -j Cid3E1FD93A.0
+    $IPTABLES -A INPUT -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -m state --state NEW  -j Cid3E1FD93A.0
+    $IPTABLES -A Cid3E1FD93A.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3E1FD93A.0  -d 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 50 (global)
+    # 
+    echo "Rule 50 (global)"
+    # 
+    # another test case for multiport: this rule
+    # has 16 TCP services and should be split onto
+    # two rules. If both rules use "-m multiport", then 
+    # rule with a single service should use "--dports".
+    # It may be acceptable to not use multiport
+    # in the rule with a single service at all.
+    $IPTABLES -N Cid41D0F052.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.0
+    $IPTABLES -N RULE_50
+    $IPTABLES -A Cid41D0F052.0  -d 192.168.1.11   -j RULE_50
+    $IPTABLES -A Cid41D0F052.0  -d 192.168.1.12/30   -j RULE_50
+    $IPTABLES -N Cid41D0F052.1
+    $IPTABLES -A INPUT -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.1
+    $IPTABLES -A INPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.1
+    $IPTABLES -A Cid41D0F052.1  -d 192.168.1.11   -j RULE_50
+    $IPTABLES -A Cid41D0F052.1  -d 192.168.1.12/30   -j RULE_50
+    $IPTABLES -N Cid41D0F052.2
+    $IPTABLES -A FORWARD -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.2
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.2
+    $IPTABLES -A Cid41D0F052.2  -d 192.168.1.11   -j RULE_50
+    $IPTABLES -A Cid41D0F052.2  -d 192.168.1.12/30   -j RULE_50
+    $IPTABLES -A RULE_50  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_50  -j ACCEPT
+    # 
+    # Rule 51 (global)
+    # 
+    echo "Rule 51 (global)"
+    # 
+    $IPTABLES -N Cid3B58E180.0
+    $IPTABLES -A INPUT  -s 192.168.1.1   -m state --state NEW  -j Cid3B58E180.0
+    $IPTABLES -A INPUT  -s 222.222.222.222   -m state --state NEW  -j Cid3B58E180.0
+    $IPTABLES -N RULE_51
+    $IPTABLES -A Cid3B58E180.0  -d 192.168.1.1   -j RULE_51
+    $IPTABLES -A Cid3B58E180.0  -d 222.222.222.222   -j RULE_51
+    $IPTABLES -N Cid3B58E180.1
+    $IPTABLES -A OUTPUT  -s 192.168.1.1   -m state --state NEW  -j Cid3B58E180.1
+    $IPTABLES -A OUTPUT  -s 222.222.222.222   -m state --state NEW  -j Cid3B58E180.1
+    $IPTABLES -A Cid3B58E180.1  -d 192.168.1.1   -j RULE_51
+    $IPTABLES -A Cid3B58E180.1  -d 222.222.222.222   -j RULE_51
+    $IPTABLES -A RULE_51  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_51  -j ACCEPT
+    # 
+    # Rule 52 (global)
+    # 
+    echo "Rule 52 (global)"
+    # 
+    $IPTABLES -N Cid3D41A4F4.0
+    $IPTABLES -A INPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid3D41A4F4.0
+    $IPTABLES -N Cid3D41A4F4.1
+    $IPTABLES -A Cid3D41A4F4.0  -s 192.168.1.1   -j Cid3D41A4F4.1
+    $IPTABLES -A Cid3D41A4F4.0  -s 222.222.222.222   -j Cid3D41A4F4.1
+    $IPTABLES -A Cid3D41A4F4.1  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3D41A4F4.1  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid3D41A4F4.2
+    $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -m state --state NEW  -j Cid3D41A4F4.2
+    $IPTABLES -N Cid3D41A4F4.3
+    $IPTABLES -A Cid3D41A4F4.2  -s 192.168.1.1   -j Cid3D41A4F4.3
+    $IPTABLES -A Cid3D41A4F4.2  -s 222.222.222.222   -j Cid3D41A4F4.3
+    $IPTABLES -A Cid3D41A4F4.3  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3D41A4F4.3  -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -N Cid3D41A4F4.4
+    $IPTABLES -A OUTPUT -p udp -m udp  -d 200.200.200.200   --dport 161  -m state --state NEW  -j Cid3D41A4F4.4
+    $IPTABLES -A Cid3D41A4F4.4  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid3D41A4F4.4  -s 222.222.222.222   -j ACCEPT
+    # 
+    # Rule 53 (global)
+    # 
+    echo "Rule 53 (global)"
+    # 
+    # Automatically generated 'masquerading' rule
+    $IPTABLES -A INPUT  -s 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -s 222.222.222.222   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 222.222.222.222   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 54 (global)
+    # 
+    echo "Rule 54 (global)"
+    # 
+    # similar to a standard 'masquerading'
+    # rule, but not so permissive as it does 
+    # not allow access to the firewall
+    $IPTABLES -N Cid3CE894DA.0
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j Cid3CE894DA.0
+    $IPTABLES -A Cid3CE894DA.0  -d 192.168.1.1   -j RETURN
+    $IPTABLES -A Cid3CE894DA.0  -d 222.222.222.222   -j RETURN
+    $IPTABLES -A Cid3CE894DA.0  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 55 (global)
+    # 
+    echo "Rule 55 (global)"
+    # 
+    $IPTABLES -N Cid40F1CFA3.0
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j Cid40F1CFA3.0
+    $IPTABLES -A Cid40F1CFA3.0  -d 192.168.1.1   -j RETURN
+    $IPTABLES -A Cid40F1CFA3.0  -d 222.222.222.222   -j RETURN
+    $IPTABLES -A Cid40F1CFA3.0  -j ACCEPT
+    $IPTABLES -N Cid40F1CFA3.1
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j Cid40F1CFA3.1
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j Cid40F1CFA3.1
+    $IPTABLES -A Cid40F1CFA3.1  -d 33.33.33.0/24   -j RETURN
+    $IPTABLES -A Cid40F1CFA3.1  -j ACCEPT
+    # 
+    # Rule 56 (global)
+    # 
+    echo "Rule 56 (global)"
+    # 
+    $IPTABLES -N Cid413D6500.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j Cid413D6500.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 113  -m state --state NEW  -j Cid413D6500.0
+    $IPTABLES -A OUTPUT -p udp -m udp  -m multiport  --dports 53,161  -m state --state NEW  -j Cid413D6500.0
+    $IPTABLES -N Cid413D6500.1
+    $IPTABLES -A Cid413D6500.0  -s 192.168.1.0/24   -j Cid413D6500.1
+    $IPTABLES -A Cid413D6500.0  -s 192.168.2.0/24   -j Cid413D6500.1
+    $IPTABLES -A Cid413D6500.1  -d 192.168.1.0/24   -j ACCEPT
+    $IPTABLES -A Cid413D6500.1  -d 192.168.2.0/24   -j ACCEPT
+    $IPTABLES -N Cid413D6500.2
+    $IPTABLES -A INPUT -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j Cid413D6500.2
+    $IPTABLES -A INPUT -p tcp -m tcp  --dport 113  -m state --state NEW  -j Cid413D6500.2
+    $IPTABLES -A INPUT -p udp -m udp  -m multiport  --dports 53,161  -m state --state NEW  -j Cid413D6500.2
+    $IPTABLES -N Cid413D6500.3
+    $IPTABLES -A Cid413D6500.2  -s 192.168.1.0/24   -j Cid413D6500.3
+    $IPTABLES -A Cid413D6500.2  -s 192.168.2.0/24   -j Cid413D6500.3
+    $IPTABLES -A Cid413D6500.3  -d 192.168.1.0/24   -j ACCEPT
+    $IPTABLES -A Cid413D6500.3  -d 192.168.2.0/24   -j ACCEPT
+    $IPTABLES -N Cid413D6500.4
+    $IPTABLES -A FORWARD -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j Cid413D6500.4
+    $IPTABLES -A FORWARD -p tcp -m tcp  --dport 113  -m state --state NEW  -j Cid413D6500.4
+    $IPTABLES -A FORWARD -p udp -m udp  -m multiport  --dports 53,161  -m state --state NEW  -j Cid413D6500.4
+    $IPTABLES -N Cid413D6500.5
+    $IPTABLES -A Cid413D6500.4  -s 192.168.1.0/24   -j Cid413D6500.5
+    $IPTABLES -A Cid413D6500.4  -s 192.168.2.0/24   -j Cid413D6500.5
+    $IPTABLES -A Cid413D6500.5  -d 192.168.1.0/24   -j ACCEPT
+    $IPTABLES -A Cid413D6500.5  -d 192.168.2.0/24   -j ACCEPT
+    # 
+    # Rule 57 (global)
+    # 
+    echo "Rule 57 (global)"
+    # 
+    # Automatically generated 'catch all' rule
+    $IPTABLES -N RULE_57
+    $IPTABLES -A OUTPUT  -j RULE_57
+    $IPTABLES -A INPUT  -j RULE_57
+    $IPTABLES -A FORWARD  -j RULE_57
+    $IPTABLES -A RULE_57  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
+    $IPTABLES -A RULE_57  -j DROP
+}
+
+ip_forward() {
+    :
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+}
+
+reset_all() {
+    :
+    reset_iptables_v4
+}
+
+block_action() {
+    reset_all
+    # backup ssh access
+    $IPTABLES -A INPUT  -p tcp -m tcp  -s 192.168.1.100/255.255.255.255  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT
+    $IPTABLES -A OUTPUT  -p tcp -m tcp  -d 192.168.1.100/255.255.255.255  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT
+}
+
+stop_action() {
+    reset_all
+    $IPTABLES -P OUTPUT  ACCEPT
+    $IPTABLES -P INPUT   ACCEPT
+    $IPTABLES -P FORWARD ACCEPT
+}
+
+check_iptables() {
+    IP_TABLES="$1"
+    [ ! -e $IP_TABLES ] && return 151
+    NF_TABLES=$(cat $IP_TABLES 2>/dev/null)
+    [ -z "$NF_TABLES" ] && return 152
+    return 0
+}
+status_action() {
+    check_iptables "/proc/net/ip_tables_names"
+    ret_ipv4=$?
+    check_iptables "/proc/net/ip6_tables_names"
+    ret_ipv6=$?
+    [ $ret_ipv4 -eq 0 -o $ret_ipv6 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 -o $ret_ipv6 -eq 151 ] && {
+        echo "iptables modules are not loaded"
+    }
+    [ $ret_ipv4 -eq 152 -o $ret_ipv6 -eq 152 ] && {
+        echo "Firewall is not configured"
+    }
+    exit 3
+}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
+}
+
+case "$cmd" in
+    start)
+        log "Activating firewall script generated Mon Jan  3 12:53:22 2011 by vadim"
+        check_tools
+         prolog_commands 
+        check_run_time_address_table_files
+        
+        load_modules "nat "
+        configure_interfaces
+        verify_interfaces
+        
+         reset_all 
+        
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
+        ;;
+
+    stop)
+        stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
+        ;;
+
+    block)
+        block_action
+        RETVAL=$?
+        ;;
+
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+
+
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
+        ;;
+
+esac
+
+exit $RETVAL

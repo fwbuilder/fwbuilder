@@ -1,0 +1,163 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:09 2011 PST by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * firewall20.fw
+!
+! testing outbound ACLs
+! v6.3, emulation of outbound ACLs is on
+
+
+
+!
+! Prolog script:
+!
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 outside security0
+
+nameif eth1 dmz security50
+
+nameif eth2 inside security100
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout rpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:2:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+no snmp-server enable traps
+
+
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+floodguard enable
+
+
+fixup protocol ftp 21
+
+
+!################
+! 
+! Rule  0 (global)
+access-list outside_acl_in permit ip any host 192.168.1.10 
+access-list dmz_acl_in permit ip any host 192.168.1.10 
+access-list inside_acl_in permit ip any host 192.168.1.10 
+! 
+! Rule  1 (global)
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  2 (global)
+access-list dmz_acl_in permit ip 192.168.2.0 255.255.255.0 any 
+! 
+! Rule  3 (eth1)
+! dmz -> intnet
+access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  4 (eth2)
+! dmz -> intnet
+access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  5 (eth1,eth2)
+! dmz -> intnet
+access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list inside_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
+access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
+! 
+! Rule  6 (eth0,eth1)
+access-list outside_acl_in deny   ip host 10.5.70.20 any log 0 interval 300 
+access-list outside_acl_in deny   ip host 192.168.2.20 any log 0 interval 300 
+access-list outside_acl_in deny   ip host 192.168.1.20 any log 0 interval 300 
+access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
+access-list dmz_acl_in deny   ip host 10.5.70.20 any log 0 interval 300 
+access-list dmz_acl_in deny   ip host 192.168.2.20 any log 0 interval 300 
+access-list dmz_acl_in deny   ip host 192.168.1.20 any log 0 interval 300 
+access-list dmz_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
+! 
+! Rule  7 (eth0,eth1)
+access-list dmz_acl_in permit ip 192.168.2.0 255.255.255.0 any 
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  8 (global)
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+access-list inside_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id4528A51F20039.0 permit ip 192.168.1.0 255.255.255.0  any 
+nat (inside) 1 access-list id4528A51F20039.0 0 0
+! 
+! Rule  1 (NAT)
+access-list id4528A54A20039.0 permit ip 192.168.2.0 255.255.255.0  any 
+nat (dmz) 1 access-list id4528A54A20039.0 0 0
+! 
+! Rule  2 (NAT)
+access-list id4528A55820039.0 permit ip host 192.168.2.100   any 
+static (dmz,outside) interface  access-list id4528A55820039.0 0 0
+! 
+! Rule  3 (NAT)
+global (inside) 3 interface
+access-list id4528A56620039.0 permit ip 192.168.2.0 255.255.255.0  192.168.1.0 255.255.255.0 
+nat (dmz) 3 access-list id4528A56620039.0 outside
+! 
+! Rule  4 (NAT)
+global (dmz) 4 interface
+access-list id4528A57420039.0 permit ip 192.168.1.0 255.255.255.0  192.168.2.0 255.255.255.0 
+nat (inside) 4 access-list id4528A57420039.0 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

@@ -1,0 +1,55 @@
+# Policy compiler errors and warnings:
+# firewall9:Policy:5: warning: Changing rule direction due to self reference
+# 
+# Rule  0 (le1)
+skip 1 in  on le1  from 33.33.33.0/24  to any 
+block in   log  quick on le1  from any  to any 
+# 
+# Rule  1 (le1)
+pass  in  quick on le1 proto icmp  from 33.33.33.0/24  to 192.168.1.10 icmp-type 11 code 0  keep state 
+pass  in  quick on le1 proto icmp  from 33.33.33.0/24  to 192.168.1.10 icmp-type 11 code 1  keep state 
+pass  in  quick on le1 proto icmp  from 33.33.33.0/24  to 192.168.1.10 icmp-type 0 code 0  keep state 
+pass  in  quick on le1 proto icmp  from 33.33.33.0/24  to 192.168.1.10 icmp-type 3  keep state 
+pass  in  quick on le1 proto tcp  from 33.33.33.0/24  to 192.168.1.10 port = 22 flags S keep state 
+# 
+# Rule  2 (le1)
+skip 6 in  on le1  from 22.22.22.22  to any 
+skip 5 in  on le1  from 192.168.1.1  to any 
+skip 4 in  on le1  from 192.168.1.0/24  to any 
+pass  in  quick on le1 proto icmp  from any  to any keep state 
+pass  in  quick on le1 proto tcp  from any  to any flags S keep state 
+pass  in  quick on le1 proto udp  from any  to any keep state 
+pass  in  quick on le1  from any  to any 
+# 
+# Rule  3 (global)
+count in   from any  to any 
+count out  from any  to any 
+# 
+# Rule  4 (global)
+count in   log   from any  to any 
+count out  log   from any  to any 
+# 
+# Rule  5 (global)
+# firewall9:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 flags S keep state 
+# firewall9:Policy:5: warning: Changing rule direction due to self reference
+pass  in  quick proto tcp  from any  to 192.168.1.1 port = 22 flags S keep state 
+# 
+# Rule  6 (global)
+pass  in  quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  in  quick proto tcp  from 192.168.1.0/24  to any flags S keep state 
+pass  in  quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  in  quick  from 192.168.1.0/24  to any 
+pass  out quick proto icmp  from 192.168.1.0/24  to any keep state 
+pass  out quick proto tcp  from 192.168.1.0/24  to any flags S keep state 
+pass  out quick proto udp  from 192.168.1.0/24  to any keep state 
+pass  out quick  from 192.168.1.0/24  to any 
+# 
+# Rule  7 (global)
+block in   log  quick  from any  to any 
+block out  log  quick  from any  to any 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block in  quick  from any  to any 
+block out quick  from any  to any 

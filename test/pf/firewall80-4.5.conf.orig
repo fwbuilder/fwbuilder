@@ -1,0 +1,43 @@
+
+
+
+# 
+# Rule  0 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 no state 
+# 
+# Rule  1 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 keep state 
+# 
+# Rule  2 (global)
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 
+# 
+# Rule  3 (global)
+# activate source tracking
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 keep state ( max-src-nodes 10 )
+# 
+# Rule  4 (global)
+# modulate state
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 modulate state ( max-src-nodes 10 )
+# 
+# Rule  5 (global)
+# synproxy
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 synproxy state ( max-src-nodes 10 )
+# 
+# Rule  6 (global)
+# keep state, no-sync, pflow
+pass  quick inet proto tcp  from any  to 33.33.33.34 port 22 keep state ( no-sync, pflow, max-src-nodes 10 )
+# 
+# Rule  7 (global)
+pass  quick inet  from any  to 33.33.33.34 
+# 
+# Rule  8 (global)
+# synproxy
+pass  quick inet  from any  to any 
+# 
+# Rule  9 (global)
+block  log  quick inet  from any  to any no state 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state 
+

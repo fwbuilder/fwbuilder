@@ -1,0 +1,139 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425-{{build}}
+!
+!  Generated Mon Jan  3 12:50:16 2011 PST by vadim
+!
+! Compiled for pix 6.2
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * firewall8.fw
+!
+
+! N firewall8:NAT:5: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+! N firewall8:NAT:6: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+
+!
+! Prolog script:
+!
+no sysopt connection timewait
+no sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+!
+! End of prolog script:
+!
+
+
+
+
+nameif eth0 outside security0
+
+nameif eth1 dmz security50
+
+nameif eth2 inside security100
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout rpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:2:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+no snmp-server enable traps
+
+
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+sysopt security fragguard
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+sysopt route dnat
+floodguard enable
+
+
+fixup protocol ftp 21
+
+
+!################
+! 
+! Rule  0 (global)
+access-list outside_acl_in permit ip any host 192.168.1.10 
+access-list dmz_acl_in permit ip any host 192.168.1.10 
+access-list inside_acl_in permit ip any host 192.168.1.10 
+! 
+! Rule  1 (global)
+access-list outside_acl_in permit ip any 192.168.1.0 255.255.255.0 
+access-list dmz_acl_in permit ip any 192.168.1.0 255.255.255.0 
+access-list inside_acl_in permit ip any 192.168.1.0 255.255.255.0 
+! 
+! Rule  2 (global)
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+access-list inside_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+nat (inside) 1 192.168.1.0 255.255.255.0 0 0
+global (outside) 1 interface
+! 
+! 
+! Rule  1 (NAT)
+! 
+! 
+! Rule  2 (NAT)
+! 
+! 
+! Rule  3 (NAT)
+nat (dmz) 1 192.168.2.0 255.255.255.0 0 0
+! 
+! Rule  4 (NAT)
+static (dmz,outside) interface 192.168.2.100  0 0
+! 
+! Rule  5 (NAT)
+! firewall8:NAT:5: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+global (inside) 1 interface
+! 
+! 
+! Rule  6 (NAT)
+! firewall8:NAT:6: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+global (dmz) 1 interface
+!
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!
