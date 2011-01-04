@@ -113,15 +113,29 @@ bool PolicyCompiler_cisco::CreateObjectGroups::processNext()
         return true;
     }
 
+    string version = compiler->fw->getStr("version");
+    string platform = compiler->fw->getStr("platform");
+    bool supports_mixed_groups = Resources::platform_res[platform]->getResourceBool(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/supports_mixed_service_groups");
+
     BaseObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
         //obj_group= new BaseObjectGroup();
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
-        FWObject *o = re->front();
-        FWObject *obj = FWReference::getObject(o);
 
-        obj_group->setObjectGroupTypeFromFWObject(obj);
+        if (supports_mixed_groups)
+        {
+            obj_group->setObjectGroupType(BaseObjectGroup::MIXED_SERVICE);
+        } else
+        {
+            FWObject *o = re->front();
+            FWObject *obj = FWReference::getObject(o);
+            obj_group->setObjectGroupTypeFromFWObject(obj);
+        } 
+
+
         QStringList gn;
         if (!rule_iface->getLabel().empty())
             gn.push_back(rule_iface->getLabel().c_str());

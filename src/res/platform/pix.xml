@@ -45,6 +45,8 @@
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
 
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
@@ -122,6 +124,8 @@
           <pix_route_dnat_supported>true</pix_route_dnat_supported>
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
 
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
@@ -201,6 +205,8 @@
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
 
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
@@ -278,6 +284,8 @@
           <pix_route_dnat_supported>false</pix_route_dnat_supported>
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
+
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
 
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
@@ -358,6 +366,8 @@
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
 
+          <supports_mixed_service_groups>True</supports_mixed_service_groups>
+
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
@@ -436,6 +446,8 @@
           <pix_route_dnat_supported>false</pix_route_dnat_supported>
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
+
+          <supports_mixed_service_groups>True</supports_mixed_service_groups>
 
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>

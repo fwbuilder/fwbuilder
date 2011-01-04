@@ -654,8 +654,12 @@ void PolicyCompiler_pix::compile()
         add( new telnetToFirewall(
                  "separate rules controlling telnet to firewall"));
         add( new sshToFirewall("separate rules controlling ssh to firewall" ));
-        add( new splitServices("split rules with different protocols" ));
-        add( new PrepareForICMPCmd("prepare for icmp command" ));
+
+        if (XMLTools::version_compare(vers, "8.0")<0)
+        {
+            add( new splitServices("split rules with different protocols" ));
+            add( new PrepareForICMPCmd("prepare for icmp command" ));
+        }
 
         add( new replaceFWinSRCInterfacePolicy(
                  "replace fw with its interface in SRC in interface policy rules"));

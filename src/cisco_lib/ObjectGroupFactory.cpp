@@ -30,6 +30,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 
 #include "PIXObjectGroup.h"
+#include "PIX8ObjectGroup.h"
 #include "IOSObjectGroup.h"
 
 #include <string>
@@ -41,8 +42,16 @@ using namespace std;
 BaseObjectGroup* ObjectGroupFactory::createObjectGroup(
     Firewall *fw, BaseObjectGroup::object_group_type _gt)
 {
+    string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    if (platform == "pix" || platform == "fwsm") return new PIXObjectGroup(_gt);
+    if (platform == "pix" || platform == "fwsm")
+    {
+        if (XMLTools::version_compare(version, "8.0")<0)
+            return new PIXObjectGroup(_gt);
+        else
+            return new PIX8ObjectGroup(_gt);
+
+    }
     if (platform == "iosacl") return new IOSObjectGroup(_gt);
     return NULL;
 }

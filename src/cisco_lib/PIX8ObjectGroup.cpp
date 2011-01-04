@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include "PIXObjectGroup.h"
+#include "PIX8ObjectGroup.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -40,9 +40,9 @@
 using namespace libfwbuilder;
 using namespace std;
 
-const char *PIXObjectGroup::TYPENAME={"PIXObjectGroup"};
+const char *PIX8ObjectGroup::TYPENAME={"PIX8ObjectGroup"};
 
-string PIXObjectGroup::toString()  throw(FWException)
+string PIX8ObjectGroup::toString()  throw(FWException)
 {
     ostringstream ostr;
 
@@ -79,8 +79,8 @@ string PIXObjectGroup::toString()  throw(FWException)
 
             if (IPService::isA(obj))
             {
-                ostr << " protocol-object ";
-                Service *s=Service::cast(obj);
+                ostr << " service-object ";
+                Service *s = Service::cast(obj);
                 assert(s!=NULL);
                 ostr << s->getProtocolName();
                 ostr << endl;
@@ -89,11 +89,11 @@ string PIXObjectGroup::toString()  throw(FWException)
 
             if (ICMPService::isA(obj))
             {
-                ostr << " icmp-object ";
-                ICMPService *s=ICMPService::cast(obj);
+                ostr << " service-object icmp ";
+                ICMPService *s = ICMPService::cast(obj);
                 assert(s!=NULL);
                 if ( s->getInt("type")== -1)
-                    ostr << "any";
+                    ostr << "";  // no keyword "any" anymore
                 else
                     ostr << s->getInt("type");
                 ostr << endl;
@@ -102,15 +102,17 @@ string PIXObjectGroup::toString()  throw(FWException)
 
             if (TCPService::isA(obj) || UDPService::isA(obj))
             {
-                ostr << " port-object ";
-                Service *s=Service::cast(obj);
+                ostr << " service-object ";
+                ostr << ((TCPService::isA(obj))? "tcp " : "udp ");
+
+                Service *s = Service::cast(obj);
                 assert(s!=NULL);
 
-                int rs=TCPUDPService::cast(s)->getDstRangeStart();
-                int re=TCPUDPService::cast(s)->getDstRangeEnd();
+                int rs = TCPUDPService::cast(s)->getDstRangeStart();
+                int re = TCPUDPService::cast(s)->getDstRangeEnd();
 
-                if (rs<0) rs=0;
-                if (re<0) re=0;
+                if (rs<0) rs = 0;
+                if (re<0) re = 0;
 
                 if (rs>0 || re>0) {
                     if (rs==re)  ostr << "eq " << rs;
@@ -128,29 +130,20 @@ string PIXObjectGroup::toString()  throw(FWException)
     return ostr.str();
 }
 
-string PIXObjectGroup::getObjectGroupClass()
+string PIX8ObjectGroup::getObjectGroupClass()
 {
     switch (this->getObjectGroupType()) 
     {
     case NETWORK:        return "network";
-    case PROTO:          return "protocol";
-    case ICMP_TYPE:      return "icmp-type";
-    case TCP_SERVICE:    return "service";
-    case UDP_SERVICE:    return "service";
+    case MIXED_SERVICE:  return "service";;
     default: throw FWException("Unknown object group type");
     }
 }
 
-string PIXObjectGroup::getObjectGroupHeader()
+string PIX8ObjectGroup::getObjectGroupHeader()
 {
     ostringstream ostr;
     ostr << "object-group " << getObjectGroupClass() << " " << this->getName();
-    switch (this->getObjectGroupType()) 
-    {
-    case TCP_SERVICE: ostr << " tcp"; break;
-    case UDP_SERVICE: ostr << " udp"; break;
-    default: break;
-    }
     ostr << endl;
     return ostr.str();
 }

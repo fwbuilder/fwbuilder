@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Mon Jan  3 13:20:58 2011 PST by vadim
+!  Generated Mon Jan  3 17:15:41 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -252,6 +252,12 @@ object-group service outside.id4514304928543.srv.tcp.0 tcp
  port-object eq 7100
  exit
 
+
+object-group service outside.id4514306428543.srv.tcp.0 tcp
+ port-object eq 80
+ port-object range 0 65535
+ exit
+
 ! 
 ! Rule  2 (ethernet1)
 icmp permit any 3  outside
@@ -360,9 +366,12 @@ access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494
 access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494 
 ! 
 ! Rule  22 (global)
-access-list outside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list dmz_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group outside.id4514306428543.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group outside.id4514306428543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group outside.id4514306428543.srv.tcp.0 
+access-list outside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
+access-list inside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
+access-list dmz_acl_in permit udp any range 10000 10010 host 192.168.1.10 
 ! 
 ! Rule  25 (global)
 access-list outside_acl_in permit ip host 22.22.22.22 host 22.22.22.22 log 0 interval 300 

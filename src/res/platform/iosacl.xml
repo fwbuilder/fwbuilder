@@ -23,6 +23,7 @@
           <iosacl_include_comments>true</iosacl_include_comments>
           <iosacl_add_clear_statements>true</iosacl_add_clear_statements>
           <iosacl_assume_fw_part_of_any>true</iosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
           <iosacl_commands>
             <clear_acl>no access-list</clear_acl>
             <clear_ip_acl>no ip access-list extended</clear_ip_acl>
@@ -42,6 +43,7 @@ interface %in
           <iosacl_include_comments>true</iosacl_include_comments>
           <iosacl_add_clear_statements>true</iosacl_add_clear_statements>
           <iosacl_assume_fw_part_of_any>true</iosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
           <iosacl_commands>
             <clear_acl>no access-list</clear_acl>
             <clear_ip_acl>no ip access-list extended</clear_ip_acl>
@@ -61,6 +63,7 @@ interface %in
           <iosacl_include_comments>true</iosacl_include_comments>
           <iosacl_add_clear_statements>true</iosacl_add_clear_statements>
           <iosacl_assume_fw_part_of_any>true</iosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
           <iosacl_commands>
             <clear_acl>no access-list</clear_acl>
             <clear_ip_acl>no ip access-list extended</clear_ip_acl>
@@ -80,6 +83,7 @@ interface %in
           <iosacl_include_comments>true</iosacl_include_comments>
           <iosacl_add_clear_statements>true</iosacl_add_clear_statements>
           <iosacl_assume_fw_part_of_any>true</iosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
           <iosacl_commands>
             <clear_acl>no access-list</clear_acl>
             <clear_ip_acl>no ip access-list extended</clear_ip_acl>

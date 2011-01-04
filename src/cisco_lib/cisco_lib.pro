@@ -18,45 +18,47 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			PolicyCompiler_iosacl_writers.cpp  \
 			RoutingCompiler_iosacl.cpp         \
 			RoutingCompiler_iosacl_writers.cpp \
-			CompilerDriver_pix.cpp          \
-			CompilerDriver_pix_run.cpp      \
-			NATCompiler_pix.cpp             \
-			NATCompiler_pix_writers.cpp     \
-			OSConfigurator_pix_os.cpp       \
+			CompilerDriver_pix.cpp           \
+			CompilerDriver_pix_run.cpp       \
+			NATCompiler_pix.cpp              \
+			NATCompiler_pix_writers.cpp      \
+			OSConfigurator_pix_os.cpp        \
 			OSConfigurator_pix_os_fixups.cpp       \
 			CompilerDriver_procurve_acl.cpp	 \
 			CompilerDriver_procurve_acl_run.cpp \
-			OSConfigurator_procurve.cpp \
-			PolicyCompiler_procurve_acl.cpp \
+			OSConfigurator_procurve.cpp      \
+			PolicyCompiler_procurve_acl.cpp  \
 			PolicyCompiler_procurve_acl_writers.cpp  \
 			RoutingCompiler_procurve_acl.cpp \
 			BaseObjectGroup.cpp              \
-			PIXObjectGroup.cpp              \
-			IOSObjectGroup.cpp              \
-			ObjectGroupFactory.cpp          \
-			PolicyCompiler_pix.cpp          \
-			PolicyCompiler_pix_writers.cpp  \
-			PolicyCompiler_pix_v6_acls.cpp	\
-			RoutingCompiler_pix.cpp         \
+			PIXObjectGroup.cpp               \
+			PIX8ObjectGroup.cpp              \
+			IOSObjectGroup.cpp               \
+			ObjectGroupFactory.cpp           \
+			PolicyCompiler_pix.cpp           \
+			PolicyCompiler_pix_writers.cpp   \
+			PolicyCompiler_pix_v6_acls.cpp   \
+			RoutingCompiler_pix.cpp          \
 			RoutingCompiler_pix_writers.cpp
 
-HEADERS	 = ../../config.h \
-			ACL.h \
-			Helper.h \
-			PolicyCompiler_cisco.h \
-			RoutingCompiler_cisco.h \
+HEADERS	 = ../../config.h                    \
+			ACL.h                           \
+			Helper.h                        \
+			PolicyCompiler_cisco.h          \
+			RoutingCompiler_cisco.h         \
 			CompilerDriver_iosacl.h         \
 			OSConfigurator_ios.h            \
 			PolicyCompiler_iosacl.h         \
 			CompilerDriver_pix.h            \
 			NATCompiler_pix.h               \
 			OSConfigurator_pix_os.h         \
-			CompilerDriver_procurve_acl.h \
-			OSConfigurator_procurve.h \
-			PolicyCompiler_procurve_acl.h \
-			RoutingCompiler_procurve_acl.h \
+			CompilerDriver_procurve_acl.h   \
+			OSConfigurator_procurve.h       \
+			PolicyCompiler_procurve_acl.h   \
+			RoutingCompiler_procurve_acl.h  \
 			BaseObjectGroup.h               \
 			PIXObjectGroup.h                \
+			PIX8ObjectGroup.h               \
 			IOSObjectGroup.h                \
 			ObjectGroupFactory.h            \
 			PolicyCompiler_pix.h            \

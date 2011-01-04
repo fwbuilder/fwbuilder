@@ -51,12 +51,13 @@ string BaseObjectGroup::registerGroupName(const std::string &prefix)
 
     switch (getObjectGroupType())
     {
-    case UNKNOWN:      str << ".unknown"; break;
-    case NETWORK:      str << ".net";     break;
-    case PROTO:        str << ".proto";   break;
-    case ICMP_TYPE:    str << ".icmp";    break;
-    case TCP_SERVICE:  str << ".tcp";     break;
-    case UDP_SERVICE:  str << ".udp";     break;
+    case UNKNOWN:        str << ".unknown"; break;
+    case NETWORK:        str << ".net";     break;
+    case PROTO:          str << ".proto";   break;
+    case ICMP_TYPE:      str << ".icmp";    break;
+    case TCP_SERVICE:    str << ".tcp";     break;
+    case UDP_SERVICE:    str << ".udp";     break;
+    case MIXED_SERVICE:  str << "";         break;
     }
 
     int n=nc[str.str()];
@@ -83,11 +84,12 @@ bool BaseObjectGroup::isServiceGroup()
 {
     switch (getObjectGroupType())
     {
-    case PROTO:        return true;
-    case ICMP_TYPE:    return true;
-    case TCP_SERVICE:  return true;
-    case UDP_SERVICE:  return true;
-    default:           return false;
+    case PROTO:          return true;
+    case ICMP_TYPE:      return true;
+    case TCP_SERVICE:    return true;
+    case UDP_SERVICE:    return true;
+    case MIXED_SERVICE:  return true;
+    default:             return false;
     }
     return false;
 }
@@ -122,8 +124,9 @@ string BaseObjectGroup::getObjectGroupClass()
     case PROTO:
     case ICMP_TYPE:
     case TCP_SERVICE:
-    case UDP_SERVICE:  return "service";
-    default:           return "network";
+    case UDP_SERVICE:
+    case MIXED_SERVICE:  return "service";
+    default:             return "network";
     }
     return "";
 }

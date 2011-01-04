@@ -39,7 +39,8 @@ public:
                    PROTO, 
                    ICMP_TYPE, 
                    TCP_SERVICE, 
-                   UDP_SERVICE } object_group_type;
+                   UDP_SERVICE,
+                   MIXED_SERVICE } object_group_type;
 
 private:
     object_group_type gt;
@@ -49,7 +50,10 @@ protected:
     std::string registerGroupName(const std::string &prefix);
     
 public:
-    BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() { gt=_gt; }
+    BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
+        gt=_gt;
+    }
+    
     virtual ~BaseObjectGroup() {};
     DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
 

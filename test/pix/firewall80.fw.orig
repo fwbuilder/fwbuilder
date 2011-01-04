@@ -1,0 +1,159 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425
+!
+!  Generated Mon Jan  3 17:15:43 2011 PST by vadim
+!
+! Compiled for pix 8.0
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall80.fw
+!
+! testing rules with broadcasts
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+interface FastEthernet0
+  nameif outside
+  security-level 100
+exit
+
+interface FastEthernet1
+  nameif inside
+  security-level 0
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout sunrpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout uauth 2:0:0 absolute
+
+telnet timeout -1
+
+clear config ssh
+aaa authentication ssh console LOCAL
+ssh timeout -1
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+
+service-policy global_policy global
+
+
+!################
+clear config access-list
+clear config object-group
+clear config icmp
+clear config telnet
+
+object-group service outside.id19186X29796.srv.0
+ service-object udp eq 123
+ service-object udp eq 53
+ service-object tcp eq 53
+ service-object tcp eq 25
+ service-object icmp 8
+ service-object icmp 0
+ service-object 51
+ service-object 50
+ exit
+
+
+object-group service outside.id19083X1497.srv.0
+ service-object tcp eq 80
+ service-object udp range 0 65535
+ exit
+
+
+object-group service outside.id69378X1497.srv.0
+ service-object icmp 
+ service-object tcp range 0 65535
+ exit
+
+! 
+! Rule  0 (FastEthernet0)
+ssh    0.0.0.0 0.0.0.0 outside
+! 
+! Rule  1 (FastEthernet0)
+ssh    0.0.0.0 0.0.0.0 outside
+! 
+! Rule  2 (global)
+access-list outside_acl_in permit tcp any host 192.168.1.10 eq 22 
+access-list inside_acl_in permit tcp any host 192.168.1.10 eq 22 
+! 
+! Rule  3 (FastEthernet1)
+access-list inside_acl_in permit icmp any host 22.22.22.22 3 
+! 
+! Rule  4 (global)
+access-list outside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
+access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
+! 
+! Rule  5 (global)
+! matching source ports
+access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id19083X1497.srv.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id19083X1497.srv.0 
+! 
+! Rule  6 (global)
+! matching "any" icmp and "all" tcp 
+! in one service-group
+! 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
+! 
+! Rule  7 (global)
+access-list outside_acl_in deny   ip any any 
+access-list inside_acl_in deny   ip any any 
+
+
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!
