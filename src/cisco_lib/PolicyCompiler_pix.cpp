@@ -655,6 +655,8 @@ void PolicyCompiler_pix::compile()
                  "separate rules controlling telnet to firewall"));
         add( new sshToFirewall("separate rules controlling ssh to firewall" ));
 
+        add( new separateSrcPort("split rules matching source ports"));
+
         if (XMLTools::version_compare(vers, "8.0")<0)
         {
             add( new splitServices("split rules with different protocols" ));

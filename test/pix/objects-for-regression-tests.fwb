@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1294102926" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1294171704" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1322,6 +1322,7 @@
         <TCPService id="id431BD5EE" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp tst 3" comment="service with source port range" ro="False" src_range_start="1024" src_range_end="65535" dst_range_start="80" dst_range_end="80"/>
         <TCPService id="id47B71DEF21818" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp-2525" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="2525" dst_range_end="2525"/>
         <TCPService id="id272536X1497" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp tst 4" comment="" ro="False" src_range_start="20000" src_range_end="20020" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id19193X2900" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp tst 5" comment="" ro="False" src_range_start="30000" src_range_end="30030" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
         <UDPService id="id19120X1497" name="src_udp_ports" comment="" ro="False" src_range_start="10000" src_range_end="10010" dst_range_start="0" dst_range_end="0"/>
@@ -16906,7 +16907,7 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294102334" platform="pix" version="8.0" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294171726" platform="pix" version="8.0" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -17033,7 +17034,28 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id69378X1497" disabled="False" group="" log="False" position="6" action="Deny" direction="Both" comment="matching &quot;any&quot; icmp and &quot;all&quot; tcp &#10;in one service-group&#10;&#10;">
+          <PolicyRule id="id19147X2900" disabled="False" group="" log="False" position="6" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id272536X1497"/>
+              <ServiceRef ref="id19193X2900"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id69378X1497" disabled="False" group="" log="False" position="7" action="Deny" direction="Both" comment="matching &quot;any&quot; icmp and &quot;all&quot; tcp &#10;in one service-group&#10;&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -17054,7 +17076,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id18920X29796" disabled="False" log="False" position="7" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id18920X29796" disabled="False" log="False" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

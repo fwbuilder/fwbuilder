@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Mon Jan  3 17:15:43 2011 PST by vadim
+!  Generated Tue Jan  4 12:09:53 2011 PST by vadim
 !
 ! Compiled for pix 8.0
 ! Outbound ACLs: supported
@@ -98,12 +98,6 @@ object-group service outside.id19186X29796.srv.0
  exit
 
 
-object-group service outside.id19083X1497.srv.0
- service-object tcp eq 80
- service-object udp range 0 65535
- exit
-
-
 object-group service outside.id69378X1497.srv.0
  service-object icmp 
  service-object tcp range 0 65535
@@ -129,17 +123,25 @@ access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id1
 ! 
 ! Rule  5 (global)
 ! matching source ports
-access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id19083X1497.srv.0 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id19083X1497.srv.0 
+access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list inside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list outside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
+access-list inside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
 ! 
 ! Rule  6 (global)
+access-list outside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
+access-list inside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
+access-list outside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10 
+access-list inside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10 
+! 
+! Rule  7 (global)
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
 access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
 access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
 ! 
-! Rule  7 (global)
+! Rule  8 (global)
 access-list outside_acl_in deny   ip any any 
 access-list inside_acl_in deny   ip any any 
 
