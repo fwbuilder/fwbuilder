@@ -1,3 +1,23 @@
+2011-01-04  vadim  <vadim@netcitadel.com>
+
+	* PIX8ObjectGroup.cpp (toString): refs #1882 "Mixed service groups
+	in PIX8". Added pix versions 8.0 and 8.3; added support for mixed
+	servcie groups in pix 8.0 and later.
+
+	* PolicyCompiler_srvre_functions.cpp (processNext): fixed #1892
+	"move rule processor class separateServiceObject to
+	PolicyCompiler".  This rule processor used to be implemented only
+	in the compiler for PF, but since it has very general meaning, the
+	same function was duplicated in other compilers as well. Moved the
+	class to libfwbuilder and reimplemented several other rule
+	processors to inherit from this class to avoid further duplication
+	for code.
+
+	* PolicyCompiler_pix.cpp (compile): fixed #1891 "problems with TCP
+	and UDP services with source ports". Policy compiler for PIX did not
+	generate correct PIX ACL lines when one Policy rule tried to match
+	several TCP and/or UDP objects matching source ports.
+
 2010-12-29  vadim  <vadim@netcitadel.com>
 
 	* VERSION (VERSION): started 4.2.0
