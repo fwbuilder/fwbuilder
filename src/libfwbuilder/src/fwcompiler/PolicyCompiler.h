@@ -232,18 +232,104 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(splitServices);
 
+
+        /**
+	 * separate service object that satisfies condition
+	 * implemented in the virtual method "condition" so we have
+	 * exactly one such object per rule.
+	 */
+        class separateServiceObject : public PolicyRuleProcessor
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv) =0;
+            public:
+            separateServiceObject(const std::string &name);
+            virtual bool processNext();
+        };
+
 	/**
+	 * separate TCP/UDP services that specify source port (can
+	 * not be used in combination with destination port with
+	 * multiport)
+	 */
+        class separateSrcPort : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateSrcPort(const std::string &name) : separateServiceObject(name) {}
+        };
+        
+        /**
+	 * separate Tag services so we have exactly one per rule.
+	 */
+        class separateTagged : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTagged(const std::string &name) : separateServiceObject(name) {}
+        };
+
+        class separateUserServices : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateUserServices(const std::string &name) : separateServiceObject(name) {}
+        };
+
+        /**
+	 * separate IPService objects with tos attrubute so we have
+	 * exactly one per rule.
+	 */
+        class separateTOS : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTOS(const std::string &name) : separateServiceObject(name) {}
+        };
+
+        /**
 	 * split rules with more than one IPService object with
 	 * options, so that each rule has only one such service
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(splitIpOptions);
+        class splitIpOptions : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            splitIpOptions(const std::string &name) : separateServiceObject(name) {}
+        };
 
 	/**
 	 * separate TCP services with flags (can't use those in combination
 	 * with others in groups of services)
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(separateTCPWithFlags);
+        class separateTCPWithFlags : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTCPWithFlags(const std::string &name) :
+                separateServiceObject(name) {}
+        };
 
+        /**
+         * separate TCP and UDP services that match port ranges and
+         * "any tcp" or "any udp" objects
+         */
+        class separatePortRanges : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separatePortRanges(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+            
 	/**
 	 * verify if custom services used in rules are configured for
 	 * this platform

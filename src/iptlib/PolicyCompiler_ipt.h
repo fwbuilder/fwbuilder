@@ -762,24 +762,7 @@ protected:
         };
         friend class PolicyCompiler_ipt::checkForStatefulICMP6Rules;
 
-	/**
-	 * This processor separates TCP/UDP services with port ranges
-	 * (they can not be used with multiport). It also separates
-	 * rules using "Any UDP" and "Any TCP" objects (they have
-	 * all ports set to zero)
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(separatePortRanges);
-
-        DECLARE_POLICY_RULE_PROCESSOR(separateUserServices);
         
-	/**
-	 * separate TCP/UDP services that specify source port (can
-	 * not be used in combination with destination port with
-	 * multiport)
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(separateSrcPort);
-
-
 	/**
 	 * deals with special cases with some known custom services
 	 */

@@ -39,6 +39,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/UserService.h"
 #include "fwbuilder/CustomService.h"
+#include "fwbuilder/TagService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Firewall.h"
@@ -673,162 +674,7 @@ PolicyCompiler::find_more_specific_rule(
     return j;
 }
 
-bool PolicyCompiler::splitServices::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    RuleElementSrv *srv=rule->getSrv();
-
-    if (srv->size()==1)
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
-    map<int, list<Service*> > services;
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-
-        Service *s=Service::cast( o );
-        assert(s);
-
-        int proto = s->getProtocolNumber();
-        services[proto].push_back(s);
-    }
-
-    for (map<int, list<Service*> >::iterator i1=services.begin();
-         i1!=services.end(); i1++)
-    {
-        list<Service*> &sl=(*i1).second;
-
-        PolicyRule *r= compiler->dbcopy->createPolicyRule();
-        compiler->temp_ruleset->add(r);
-        r->duplicate(rule);
-        RuleElementSrv *nsrv=r->getSrv();
-        nsrv->clearChildren();
-
-        for (list<Service*>::iterator j=sl.begin(); j!=sl.end(); j++)
-        {
-           nsrv->addRef( (*j) );
-        }
-
-        tmp_queue.push_back(r);
-    }
-    return true;
-}
-
-bool PolicyCompiler::splitIpOptions::processNext()
-{
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *srv = rule->getSrv();
-
-    if (srv->size()==1)
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
-    list<Service*> ip_services_with_options;
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-
-        IPService *s = IPService::cast( o );
-        if (s==NULL) continue;
-
-        if (s->hasIpOptions()) ip_services_with_options.push_back(s);
-    }
-
-    for (list<Service*>::iterator i1=ip_services_with_options.begin();
-         i1!=ip_services_with_options.end(); i1++)
-    {
-        PolicyRule *r = compiler->dbcopy->createPolicyRule();
-        compiler->temp_ruleset->add(r);
-        r->duplicate(rule);
-        RuleElementSrv *nsrv = r->getSrv();
-        nsrv->clearChildren();
-        nsrv->addRef(*i1);
-        srv->removeRef(*i1);
-        tmp_queue.push_back(r);
-    }
-
-    tmp_queue.push_back(rule);
-
-    return true;
-}
-
-
-/*
- * processor splitServices should have been called eariler, so now all
- * services in Srv are of the same type
- */
-bool PolicyCompiler::separateTCPWithFlags::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *rel= rule->getSrv();
-
-    if (rel->size()==1)
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
-/* separate TCP services with TCP flags (can't use those in combination
- * with others in multiport 
- */
-    list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-	    
-        TCPService *s=TCPService::cast( o );
-        if (s==NULL) continue;
-
-        if ( s->inspectFlags() )
-        {
-            PolicyRule *r= compiler->dbcopy->createPolicyRule();
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            RuleElementSrv *nsrv=r->getSrv();
-            nsrv->clearChildren();
-            nsrv->addRef( s );
-            tmp_queue.push_back(r);
-            services.push_back(s);
-	    }
-    }
-    for (list<Service*>::iterator i1=services.begin(); i1!=services.end(); i1++)
-        rel->removeRef( (*i1) );
-
-    if (!rel->isAny())
-        tmp_queue.push_back(rule);
-
-    return true;
-}
-
-bool PolicyCompiler::verifyCustomServices::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-	assert(o!=NULL);
-	if (CustomService::isA(o) && 
-	    CustomService::cast(o)->getCodeForPlatform(compiler->myPlatformName()).empty())
-	    throw FWException("Custom service is not configured for the platform '"+compiler->myPlatformName()+"'. Rule "+rule->getLabel());
-    }
-
-    return true;
-}
 
 /*
  * checks if one of the children of RuleElement is a host, IPv4 or
@@ -1281,55 +1127,6 @@ bool PolicyCompiler::MACFiltering::processNext()
     return true;
 }
 
-
-bool PolicyCompiler::CheckForTCPEstablished::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-
-        TCPService *s = TCPService::cast( o );
-        if (s==NULL) continue;
-
-        if (s->getEstablished())
-            compiler->abort(
-                
-                    rule, 
-                    string("TCPService object with option \"established\" "
-                           "is not supported by firewall platform \"") +
-                    compiler->myPlatformName() +
-                    string("\". Use stateful rule instead."));
-    }
-
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
-    {
-        FWObject *o = FWReference::getObject(*i);
-
-        if (UserService::isA(o))
-            compiler->abort(
-                
-                    rule, 
-                    string("UserService object is not supported by ") +
-                    compiler->myPlatformName());
-    }
-
-    tmp_queue.push_back(rule);
-    return true;
-}
 
 /* keep only rules that have ipv4 addresses in src and dst
  * 
