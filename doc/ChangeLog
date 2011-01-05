@@ -1,7 +1,7 @@
 2011-01-04  vadim  <vadim@netcitadel.com>
 
 	* OSConfigurator_pix_os_inspectors_pix8.cpp (_printPolicyMapTypeInspect):
-	refs #1893 fixes #1882 "inspect ip options in pix8". Added support for
+	refs #1893 fixes #1883 "inspect ip options in pix8". Added support for
 	"policy-map type inspect ip-options" command in PIX v8.2 and later.
 	At this time, of all possible types of "policy-map type inspect"
 	command only "ip-options" is implemented.
