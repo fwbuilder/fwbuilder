@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>829</width>
-    <height>592</height>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,7 +82,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -1486,7 +1486,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="textLabel1_4">
          <property name="text">
-          <string>Policy compiler generates 'fixup' commands for PIX v6.1-6.3 and FWSM v2.3. For PIX 7.0 it generates 'class-map' and 'inspect' commands assigned to the 'policy-map' under either default or custom inspection classes.</string>
+          <string>Policy compiler generates 'fixup' commands for PIX/ASA v6.1-6.3 and FWSM v2.3. For v7.x and v8.x it generates 'class-map' and 'inspect' commands assigned to the 'policy-map' under either default or custom inspection classes.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignVCenter</set>
@@ -1536,7 +1536,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>18</number>
+          <number>19</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -1549,7 +1549,16 @@
            <string>ctiqbe</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="0" column="0">
@@ -1636,7 +1645,16 @@
            <string>dns</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -1723,7 +1741,16 @@
            <string>esp ike</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="2">
@@ -1781,7 +1808,16 @@
            <string>ftp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="0" column="4">
@@ -1888,7 +1924,16 @@
            <string>h323 h225</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -2001,7 +2046,16 @@
            <string>h323 ras</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -2114,7 +2168,16 @@
            <string>http</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -2227,7 +2290,16 @@
            <string>icmp error</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="2">
@@ -2285,7 +2357,16 @@
            <string>ils</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -2398,7 +2479,16 @@
            <string>mgcp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="3" column="0" colspan="3">
@@ -2527,7 +2617,16 @@
            <string>pptp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -2614,7 +2713,16 @@
            <string>rsh</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -2698,7 +2806,16 @@
            <string>rtsp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -2785,7 +2902,16 @@
            <string>sip</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -2898,7 +3024,16 @@
            <string>sip udp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -2982,7 +3117,16 @@
            <string>skinny</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -3095,7 +3239,16 @@
            <string>smtp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -3208,7 +3361,16 @@
            <string>sqlnet</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="6">
@@ -3321,7 +3483,16 @@
            <string>tftp</string>
           </attribute>
           <layout class="QGridLayout">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item row="1" column="0" colspan="4">
@@ -3397,6 +3568,125 @@
              <item>
               <property name="text">
                <string>disable</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>IP options</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout">
+           <property name="horizontalSpacing">
+            <number>20</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>End of Options List (EOOL) </string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="pix_ip_options_eool_switch">
+             <item>
+              <property name="text">
+               <string>skip</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>allow</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>drop</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>clear</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="2" rowspan="2">
+            <widget class="QLabel" name="label_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>IP Options analysis is only available in PIX 8.2 and later and olnly EOOL, NOP and RTRALT options can be inspected. The firewall can allow IP packet with one of the options through or clear the option and then forward the packet, or drop the packet. Packets with any other option are always dropped.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>No Operation (NOP) </string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="pix_ip_options_nop_switch">
+             <item>
+              <property name="text">
+               <string>skip</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>allow</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>drop</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>clear</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Router Alert (RTRALT)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="pix_ip_options_rtralt_switch">
+             <item>
+              <property name="text">
+               <string>skip</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>allow</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>drop</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>clear</string>
               </property>
              </item>
             </widget>

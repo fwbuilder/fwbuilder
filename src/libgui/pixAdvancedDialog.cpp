@@ -473,19 +473,43 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
                             NULL, 
                             "tftp_fixup", "tftp", 18));
 
-    string lst=Resources::platform_res[platform]->getResourceStr(
-            "/FWBuilderResources/Target/options/"+vers+"/fixups/list");
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ip_options_eool_switch, 
+                            NULL,
+                            NULL, 
+                            NULL, 
+                            "ip_options_eool_fixup", "IP options", 19));
+
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ip_options_nop_switch, 
+                            NULL,
+                            NULL, 
+                            NULL, 
+                            "ip_options_nop_fixup", "IP options", 20));
+
+    allFixups.push_back(fixupControl(
+                            m_dialog->pix_ip_options_rtralt_switch, 
+                            NULL,
+                            NULL, 
+                            NULL, 
+                            "ip_options_rtralt_fixup", "IP options", 21));
+
+    QStringList allowed_fixups = 
+        QString(Resources::platform_res[platform]->getResourceStr(
+                    "/FWBuilderResources/Target/options/" + vers +
+                    "/fixups/list").c_str()).split(",");
 
     if (fwbdebug)
-        qDebug("pixAdvancedDialog::pixAdvancedDialog lst = %s",lst.c_str());
+        qDebug() << "pixAdvancedDialog::pixAdvancedDialog allowed_fixups:"
+                 << allowed_fixups;
 
 
     for (list<fixupControl>::iterator fi=allFixups.begin();
          fi!=allFixups.end(); fi++)
     {
         if (fwbdebug)
-            qDebug("pixAdvancedDialog::pixAdvancedDialog fwopt = %s",
-                   fi->fwoption.toAscii().constData());
+            qDebug() << "pixAdvancedDialog::pixAdvancedDialog fwopt:"
+                     << fi->fwoption;
 
         if (fi->switch_widget!=NULL)
             connect( fi->switch_widget, SIGNAL(activated(int)),
@@ -500,22 +524,11 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
         if (fi->arg3!=NULL) connect( fi->arg3, SIGNAL(clicked()),
                                      this, SLOT(fixupCmdChanged()));
 
-        string::size_type i,j;
-        i=0;
-        bool present=false;
-        while ( i<lst.size() )
-        {
-            j=lst.find(",",i);
-            if (QString(lst.substr(i,j-i).c_str())==fi->fwoption)
-            { present=true; break; }
-            if (j==string::npos) break;
-            i=j+1;
-        }
-        if (!present)
-        {
-            fi->active=false;
-            m_dialog->fixup_notebook->setTabEnabled( fi->page, false);
-        }
+        bool active = allowed_fixups.contains(fi->fwoption);
+
+        fi->active = active;
+        m_dialog->fixup_notebook->setTabEnabled( fi->page, active);
+
     }
 
 /* page Logging */
@@ -605,11 +618,13 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
 
     m_dialog->fragguard->setEnabled(
         Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/"+vers+"/pix_security_fragguard_supported"));
+            "/FWBuilderResources/Target/options/" + vers +
+            "/pix_security_fragguard_supported"));
 
     m_dialog->route_dnat->setEnabled(
         Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/"+vers+"/pix_route_dnat_supported"));
+            "/FWBuilderResources/Target/options/" + vers +
+            "/pix_route_dnat_supported"));
 
     data.registerOption( m_dialog->fragguard, fwoptions, "pix_fragguard");
     data.registerOption( m_dialog->route_dnat, fwoptions, "pix_route_dnat");
@@ -617,10 +632,13 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     data.registerOption( m_dialog->resetinbound, fwoptions, "pix_resetinbound");
     data.registerOption( m_dialog->resetoutside, fwoptions, "pix_resetoutside");
 
-    data.registerOption( m_dialog->connection_timewait, fwoptions, "pix_connection_timewait");
+    data.registerOption( m_dialog->connection_timewait, fwoptions,
+                         "pix_connection_timewait");
     data.registerOption( m_dialog->floodguard, fwoptions, "pix_floodguard");
-    data.registerOption( m_dialog->nodnsalias_inbound, fwoptions, "pix_nodnsalias_inbound");
-    data.registerOption( m_dialog->nodnsalias_outbound, fwoptions, "pix_nodnsalias_outbound");
+    data.registerOption( m_dialog->nodnsalias_inbound, fwoptions,
+                         "pix_nodnsalias_inbound");
+    data.registerOption( m_dialog->nodnsalias_outbound, fwoptions,
+                         "pix_nodnsalias_outbound");
 
     data.registerOption( m_dialog->max_conns, fwoptions, "pix_max_conns");
     data.registerOption( m_dialog->emb_limit, fwoptions, "pix_emb_limit");
@@ -639,22 +657,27 @@ pixAdvancedDialog::~pixAdvancedDialog()
 }
 
 /*
- * items in the switch_widget (QComboBox) are layed out as follows:
+ * items in the switch_widget (QComboBox) | values in FirewallOptions object
+ *                                        |
+ * Skip (item 0)                          |  2
+ * Enable (item 1)                        |  0
+ * Disable (item 2)                       |  1
  *
- * Skip      - item 0
- * Enable    - item 1
- * Disable   - item 2
+ * this strange mapping is historical.
  *
- * values in the attribute in the FirewallOptions object are as follows:
+ * ip options switch has the following items:
  *
- * 0  - enable
- * 1  - disable
- * 2  - skip
+ * skip
+ * allow
+ * drop
+ * clear
  *
- * this is historical.
+ * The last item is just added at the bottom and is mapped to FirewallOptions
+ * value "3"
+ * 
  */
-static int fixupOpt2Widget[] = { 1, 2, 0 };
-static int fixupWidget2Opt[] = { 2, 0, 1 };
+static int fixupOpt2Widget[] = { 1, 2, 0, 3 };
+static int fixupWidget2Opt[] = { 2, 0, 1, 3 };
 
 int pixAdvancedDialog::translateFixupSwitchFromOptionToWidget(int o)
 {
@@ -690,7 +713,7 @@ void pixAdvancedDialog::loadFixups()
     for (list<fixupControl>::iterator fi=allFixups.begin(); fi!=allFixups.end(); fi++)
     {
         if (!fi->active) continue;
-        string f=options->getStr(fi->fwoption.toLatin1().constData());
+        string f = options->getStr(fi->fwoption.toLatin1().constData());
         if (!f.empty())
         {
 // "0" means "fixup" or "enable" in a pop-down menu (historical)
@@ -710,13 +733,15 @@ void pixAdvancedDialog::loadFixups()
             fi->switch_widget->setCurrentIndex(
                 translateFixupSwitchFromOptionToWidget(sw) );
 
-/* if values are 0 in the data file, we stick with defaults. Defaults are preconfigured
- * in the GUI (via appropriate settings in pix.glade file */
+/* if values are 0 in the data file, we stick with defaults. Defaults
+ * are preconfigured in the GUI
+ */
             if (fi->arg1 && p1!=0) fi->arg1->setValue(p1);
             if (fi->arg2 && p2!=0) fi->arg2->setValue(p2);
             if (fi->arg3) fi->arg3->setChecked(arg3v);
 
-        } else {
+        } else
+        {
             fi->switch_widget->setCurrentIndex(0);
         }
     }

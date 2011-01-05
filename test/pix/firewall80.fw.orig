@@ -3,9 +3,9 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Tue Jan  4 12:09:53 2011 PST by vadim
+!  Generated Tue Jan  4 17:00:23 2011 PST by vadim
 !
-! Compiled for pix 8.0
+! Compiled for pix 8.2
 ! Outbound ACLs: supported
 ! Emulate outbound ACLs: yes
 ! Generating outbound ACLs: no
@@ -51,13 +51,13 @@ timeout udp 0:2:0
 timeout sunrpc 0:10:0 
 timeout h323 0:5:0 
 timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
 timeout uauth 2:0:0 absolute
 
-telnet timeout -1
 
 clear config ssh
 aaa authentication ssh console LOCAL
-ssh timeout -1
 
 clear config snmp-server
 no snmp-server enable traps
@@ -72,10 +72,16 @@ no sysopt nodnsalias inbound
 no sysopt nodnsalias outbound
 
 
+policy-map type inspect ip-options ip-options-map
+parameters
+  eool action allow
+  router-alert action clear
+
 class-map inspection_default
   match default-inspection-traffic
 
 policy-map global_policy
+  class inspection_default
 
 service-policy global_policy global
 

@@ -11,6 +11,8 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			RoutingCompiler_cisco_writers.cpp \
 			ACL.cpp \
 			Helper.cpp \
+			inspectionProtocol.cpp             \
+			InspectionClassMap.cpp             \
 			OSConfigurator_ios.cpp             \
 			CompilerDriver_iosacl.cpp          \
 			CompilerDriver_iosacl_run.cpp      \
@@ -24,6 +26,8 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			NATCompiler_pix_writers.cpp      \
 			OSConfigurator_pix_os.cpp        \
 			OSConfigurator_pix_os_fixups.cpp       \
+			OSConfigurator_pix_os_inspectors.cpp       \
+			OSConfigurator_pix_os_inspectors_pix8.cpp \
 			CompilerDriver_procurve_acl.cpp	 \
 			CompilerDriver_procurve_acl_run.cpp \
 			OSConfigurator_procurve.cpp      \
@@ -44,6 +48,8 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 HEADERS	 = ../../config.h                    \
 			ACL.h                           \
 			Helper.h                        \
+			inspectionProtocol.h            \
+			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \
 			RoutingCompiler_cisco.h         \
 			CompilerDriver_iosacl.h         \

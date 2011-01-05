@@ -79,8 +79,9 @@ namespace fwcompiler {
                                        int   arg2,
                                        bool  ov);
         std::string _printFixups();
-        std::string _printMPF();
-
+        std::string _printPolicyMapGlobalPolicy();
+        std::string _printPolicyMapTypeInspect();
+        
 	public:
 
 	virtual ~OSConfigurator_pix_os() {};
