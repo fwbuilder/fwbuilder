@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Tue Jan  4 17:00:25 2011 PST by vadim
+!  Generated Tue Jan  4 19:05:45 2011 PST by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -82,17 +82,28 @@ sysopt nodnsalias outbound
 floodguard disable
 
 
-fixup protocol ftp 21
-fixup protocol h323 h225 1720
-fixup protocol h323 ras 1718-1719
-fixup protocol http 80
-fixup protocol ils 389
-fixup protocol rsh 514
-fixup protocol rtsp 554
-fixup protocol sip 5060
-fixup protocol skinny 2000
-fixup protocol smtp 25
-fixup protocol sqlnet 1521
+class-map inspection_default
+  match default-inspection-traffic
+
+class-map custom_espike_inspection
+  match port  
+
+
+policy-map global_policy
+  class inspection_default
+    inspect ftp
+    inspect h323 h225
+    inspect h323 ras
+    inspect http
+    inspect ils
+    inspect rsh
+    inspect rtsp
+    inspect sip
+    inspect skinny
+    inspect esmtp
+    inspect sqlnet
+
+service-policy global_policy global
 
 
 !################

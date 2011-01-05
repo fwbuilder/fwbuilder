@@ -104,7 +104,9 @@
     
           <fixups>
             <list>ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup</list>
-            <use_policy_map_global_policy>false</use_policy_map_global_policy>
+
+            <use_fixup_commands>true</use_fixup_commands>
+            <use_mpf_policy_map>false</use_mpf_policy_map>
             <use_policy_map_type_inspect>false</use_policy_map_type_inspect>
           </fixups>
         </version_6.1>
@@ -185,7 +187,9 @@
         
           <fixups>
             <list>ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,ils_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup</list>
-            <use_policy_map_global_policy>false</use_policy_map_global_policy>
+
+            <use_fixup_commands>true</use_fixup_commands>
+            <use_mpf_policy_map>false</use_mpf_policy_map>
             <use_policy_map_type_inspect>false</use_policy_map_type_inspect>
           </fixups>
         </version_6.2>
@@ -266,7 +270,9 @@
         
           <fixups>
             <list>ctiqbe_fixup,dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,pptp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
-            <use_policy_map_global_policy>false</use_policy_map_global_policy>
+
+            <use_fixup_commands>true</use_fixup_commands>
+            <use_mpf_policy_map>false</use_mpf_policy_map>
             <use_policy_map_type_inspect>false</use_policy_map_type_inspect>
           </fixups>
         </version_6.3>
@@ -348,7 +354,8 @@
           <fixups>
             <list>ctiqbe_fixup,dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
 
-            <use_policy_map_global_policy>true</use_policy_map_global_policy>
+            <use_fixup_commands>false</use_fixup_commands>
+            <use_mpf_policy_map>true</use_mpf_policy_map>
             <use_policy_map_type_inspect>false</use_policy_map_type_inspect>
           </fixups>
         </version_7.0>
@@ -431,7 +438,8 @@
           <fixups>
             <list>ctiqbe_fixup,dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
 
-            <use_policy_map_global_policy>false</use_policy_map_global_policy>
+            <use_fixup_commands>false</use_fixup_commands>
+            <use_mpf_policy_map>true</use_mpf_policy_map>
             <use_policy_map_type_inspect>true</use_policy_map_type_inspect>
           </fixups>
         </version_8.0>
@@ -514,7 +522,8 @@
           <fixups>
             <list>ctiqbe_fixup,dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup,ip_options_eool_fixup,ip_options_nop_fixup,ip_options_rtralt_fixup</list>
 
-            <use_policy_map_global_policy>false</use_policy_map_global_policy>
+            <use_fixup_commands>false</use_fixup_commands>
+            <use_mpf_policy_map>true</use_mpf_policy_map>
             <use_policy_map_type_inspect>true</use_policy_map_type_inspect>
           </fixups>
         </version_8.2>
@@ -597,7 +606,10 @@
         
           <fixups>
             <list>ctiqbe_fixup,dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup,ip_options_eool_fixup,ip_options_nop_fixup,ip_options_rtralt_fixup</list>
-            <use_policy_map_global_policy>true</use_policy_map_global_policy>
+
+            <use_fixup_commands>false</use_fixup_commands>
+            <use_mpf_policy_map>true</use_mpf_policy_map>
+            <use_policy_map_type_inspect>true</use_policy_map_type_inspect>
           </fixups>
         </version_8.3>
 

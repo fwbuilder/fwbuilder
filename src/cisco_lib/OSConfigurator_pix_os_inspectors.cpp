@@ -55,7 +55,7 @@ using namespace std;
  * ********************************************************************/
 
 
-string OSConfigurator_pix_os::_printPolicyMapGlobalPolicy()
+string OSConfigurator_pix_os::_printMPFPolicyMap()
 {
     ostringstream res;
     string platform = fw->getStr("platform");
@@ -167,9 +167,10 @@ string OSConfigurator_pix_os::_printPolicyMapGlobalPolicy()
             }
         }
     }
-    res << endl;
 
+    res << endl;
     res << "service-policy global_policy global" << endl;
+    res << endl;
 
     return res.str();
 }

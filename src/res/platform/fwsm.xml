@@ -112,7 +112,11 @@ nameif %in %il security%sl
         
           <fixups>
             <list>dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
-            <use_mpf>false</use_mpf>
+
+            <use_fixup_commands>true</use_fixup_commands>
+            <use_mpf_policy_map>false</use_mpf_policy_map>
+            <use_policy_map_type_inspect>false</use_policy_map_type_inspect>
+
           </fixups>
         </version_2.3>
 
@@ -202,8 +206,13 @@ nameif %in %il security%sl
         
           <fixups>
             <list>dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
-            <use_mpf>false</use_mpf>
+
+            <use_fixup_commands>false</use_fixup_commands>
+            <use_mpf_policy_map>true</use_mpf_policy_map>
+            <use_policy_map_type_inspect>true</use_policy_map_type_inspect>
+
           </fixups>
+
         </version_4.x>
 
 

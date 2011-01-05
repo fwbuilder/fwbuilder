@@ -1,5 +1,8 @@
 2011-01-04  vadim  <vadim@netcitadel.com>
 
+	* platform/fwsm.xml: FWSM v4.x does not have "fixup" command, instead,
+	we should use policy-map and class commands.
+
 	* OSConfigurator_pix_os_inspectors_pix8.cpp (_printPolicyMapTypeInspect):
 	refs #1893 fixes #1883 "inspect ip options in pix8". Added support for
 	"policy-map type inspect ip-options" command in PIX v8.2 and later.

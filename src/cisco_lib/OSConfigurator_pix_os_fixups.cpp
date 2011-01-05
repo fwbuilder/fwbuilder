@@ -173,15 +173,22 @@ string OSConfigurator_pix_os::getProtocolInspectionCommands()
     string platform = fw->getStr("platform");
     string version = fw->getStr("version");
 
+    ostringstream res;
+
     if (Resources::platform_res[platform]->getResourceBool(
             "/FWBuilderResources/Target/options/version_" + version +
-            "/fixups/use_policy_map_global_policy"))
-        return _printPolicyMapGlobalPolicy();
+            "/fixups/use_fixup_commands"))
+        res << _printFixups();
+
+    if (Resources::platform_res[platform]->getResourceBool(
+            "/FWBuilderResources/Target/options/version_" + version +
+            "/fixups/use_mpf_policy_map"))
+        res << _printMPFPolicyMap();
 
     if (Resources::platform_res[platform]->getResourceBool(
             "/FWBuilderResources/Target/options/version_" + version +
             "/fixups/use_policy_map_type_inspect"))
-        return _printPolicyMapTypeInspect();
+        res << _printPolicyMapTypeInspect();
 
-    return _printFixups();
+    return res.str();
 }

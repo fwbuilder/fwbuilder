@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Tue Jan  4 17:00:23 2011 PST by vadim
+!  Generated Tue Jan  4 19:05:43 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -72,11 +72,6 @@ no sysopt nodnsalias inbound
 no sysopt nodnsalias outbound
 
 
-policy-map type inspect ip-options ip-options-map
-parameters
-  eool action allow
-  router-alert action clear
-
 class-map inspection_default
   match default-inspection-traffic
 
@@ -84,6 +79,11 @@ policy-map global_policy
   class inspection_default
 
 service-policy global_policy global
+
+policy-map type inspect ip-options ip-options-map
+parameters
+  eool action allow
+  router-alert action clear
 
 
 !################

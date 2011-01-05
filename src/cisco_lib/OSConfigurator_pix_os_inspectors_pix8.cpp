@@ -126,9 +126,6 @@ string OSConfigurator_pix_os::_printPolicyMapTypeInspect()
 
     res << endl;
 
-    // now generate class-map and "policy-map global_policy" commands
-    res << _printPolicyMapGlobalPolicy();
-
     return res.str();
 }
 

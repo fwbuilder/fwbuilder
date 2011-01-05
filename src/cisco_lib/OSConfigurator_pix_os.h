@@ -79,7 +79,7 @@ namespace fwcompiler {
                                        int   arg2,
                                        bool  ov);
         std::string _printFixups();
-        std::string _printPolicyMapGlobalPolicy();
+        std::string _printMPFPolicyMap();
         std::string _printPolicyMapTypeInspect();
         
 	public:
