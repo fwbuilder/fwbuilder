@@ -616,10 +616,18 @@ void PolicyCompiler_pix::compile()
 
         add( new SplitSRCForICMPCmd( "split SRC for icmp commands" ));
 
-	if ( fwopt->getBool("pix_replace_natted_objects"))
-            add( new replaceTranslatedAddresses(
-                  "replace objects in DST that are TDst in DNAT translations"));
-
+        if (XMLTools::version_compare(vers, "8.3")<0)
+        {
+            if ( fwopt->getBool("pix_replace_natted_objects"))
+                add( new replaceTranslatedAddresses(
+                         "replace objects in DST that are TDst in DNAT "
+                         "translations"));
+        } else
+        {
+            add( new warnWhenTranslatedAddressesAreUsed(
+                     "warng when addresses that are ODst in DNAT translations "
+                     "are used in DST"));
+        }
 
         if (outbound_acl_supported )
             // first arg is false because we are not using

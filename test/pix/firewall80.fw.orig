@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Thu Jan  6 12:53:22 2011 PST by vadim
+!  Generated Thu Jan  6 13:23:25 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -29,12 +29,12 @@
 
 
 interface FastEthernet0
-  nameif outside
+  nameif inside
   security-level 100
 exit
 
 interface FastEthernet1
-  nameif inside
+  nameif outside
   security-level 0
 exit
 
@@ -92,7 +92,7 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group service outside.id19186X29796.srv.0
+object-group service inside.id19186X29796.srv.0
  service-object udp eq 123
  service-object udp eq 53
  service-object tcp eq 53
@@ -104,52 +104,52 @@ object-group service outside.id19186X29796.srv.0
  exit
 
 
-object-group service outside.id69378X1497.srv.0
+object-group service inside.id69378X1497.srv.0
  service-object icmp 
  service-object tcp range 0 65535
  exit
 
 ! 
 ! Rule  0 (FastEthernet0)
-ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 inside
 ! 
 ! Rule  1 (FastEthernet0)
-ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 inside
 ! 
 ! Rule  2 (global)
-access-list outside_acl_in permit tcp any host 192.168.1.10 eq 22 
 access-list inside_acl_in permit tcp any host 192.168.1.10 eq 22 
+access-list outside_acl_in permit tcp any host 192.168.1.10 eq 22 
 ! 
 ! Rule  3 (FastEthernet1)
-access-list inside_acl_in permit icmp any host 22.22.22.22 3 
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
 ! 
 ! Rule  4 (global)
-access-list outside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
-access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
+access-list inside_acl_in permit  any host 192.168.1.10 object-group inside.id19186X29796.srv.0 
+access-list outside_acl_in permit  any host 192.168.1.10 object-group inside.id19186X29796.srv.0 
 ! 
 ! Rule  5 (global)
 ! matching source ports
-access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
 access-list inside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list outside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
+access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
 access-list inside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
+access-list outside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
 ! 
 ! Rule  6 (global)
-access-list outside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
 access-list inside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
-access-list outside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10 
+access-list outside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
 access-list inside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10 
+access-list outside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10 
 ! 
 ! Rule  7 (global)
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id69378X1497.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id69378X1497.srv.0 
 ! 
 ! Rule  8 (global)
-access-list outside_acl_in deny   ip any any 
 access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
 
 
 access-group inside_acl_in in interface inside

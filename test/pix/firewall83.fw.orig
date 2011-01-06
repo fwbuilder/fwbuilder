@@ -1,0 +1,147 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425
+!
+!  Generated Thu Jan  6 13:23:27 2011 PST by vadim
+!
+! Compiled for pix 8.3
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall83.fw
+!
+! test for the warning issued when translated address is used in
+! policy rule. Here we have SNAT rule and warning should not be issued
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+interface FastEthernet0
+  nameif inside
+  security-level 100
+exit
+
+interface FastEthernet1
+  nameif outside
+  security-level 0
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout sunrpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+policy-map type inspect ip-options ip-options-map
+parameters
+  eool action allow
+  router-alert action clear
+
+
+!################
+clear config access-list
+clear config object-group
+clear config icmp
+clear config telnet
+
+object-group service inside.id923813X27607.srv.0
+ service-object icmp 
+ service-object tcp range 0 65535
+ exit
+
+! 
+! Rule  0 (global)
+! matching "any" icmp and "all" tcp 
+! in one service-group
+! 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
+! 
+! Rule  1 (FastEthernet1)
+! test rule using translated address in dst
+access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
+! 
+! Rule  2 (global)
+! test rule using translated address in dst
+access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
+! 
+! Rule  3 (global)
+! test rule using translated address in dst
+access-list inside_acl_in permit tcp any host 192.168.1.1 eq 80 
+access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
+! 
+! Rule  4 (global)
+access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
+
+
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear config static
+clear config global
+clear config nat
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id923876X27607.0 permit tcp host 192.168.1.10   any eq 80
+nat (inside) 1 access-list id923876X27607.0 tcp 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!
