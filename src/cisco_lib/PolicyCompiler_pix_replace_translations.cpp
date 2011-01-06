@@ -45,7 +45,6 @@ bool PolicyCompiler_pix::matchTranslatedAddresses::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     string version = compiler->fw->getStr("version");
-    bool v83_behavior = XMLTools::version_compare(version, "8.3")>=0;
 
     transformed_rules.clear();
 

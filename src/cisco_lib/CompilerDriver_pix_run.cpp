@@ -39,6 +39,7 @@
 #include "CompilerDriver_pix.h"
 #include "PolicyCompiler_pix.h"
 #include "NATCompiler_pix.h"
+#include "NATCompiler_asa8.h"
 #include "RoutingCompiler_pix.h"
 #include "OSConfigurator_pix_os.h"
 
@@ -353,9 +354,15 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
 
 /* create compilers and run the whole thing */
+        string version = fw->getStr("version");
 
-        std::auto_ptr<NATCompiler_pix> n(
-            new NATCompiler_pix(objdb, fw, false, oscnf.get()));
+        std::auto_ptr<NATCompiler_pix> n;
+        if (XMLTools::version_compare(version, "8.3")>=0)
+            n = std::auto_ptr<NATCompiler_pix>(
+                new NATCompiler_asa8(objdb, fw, false, oscnf.get()));
+        else
+            n = std::auto_ptr<NATCompiler_pix>(
+                new NATCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)

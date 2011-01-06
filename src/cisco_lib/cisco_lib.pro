@@ -25,6 +25,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			NATCompiler_pix.cpp              \
 			NATCompiler_pix_find_translations.cpp      \
 			NATCompiler_pix_writers.cpp      \
+			NATCompiler_asa8.cpp             \
 			OSConfigurator_pix_os.cpp        \
 			OSConfigurator_pix_os_fixups.cpp       \
 			OSConfigurator_pix_os_inspectors.cpp       \
@@ -59,6 +60,7 @@ HEADERS	 = ../../config.h                    \
 			PolicyCompiler_iosacl.h         \
 			CompilerDriver_pix.h            \
 			NATCompiler_pix.h               \
+			NATCompiler_asa8.h              \
 			OSConfigurator_pix_os.h         \
 			CompilerDriver_procurve_acl.h   \
 			OSConfigurator_procurve.h       \

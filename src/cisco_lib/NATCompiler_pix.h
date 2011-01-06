@@ -72,7 +72,9 @@ namespace fwcompiler {
         StaticCmd() { };
     };
 
-    class NATCompiler_pix : public NATCompiler {
+    class NATCompiler_pix : public NATCompiler
+    {
+        protected:
 
         Helper                          helper;
 
