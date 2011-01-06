@@ -366,7 +366,7 @@ bool PolicyCompiler_pix::RejectAction::processNext()
     return true;
 }
 
-bool PolicyCompiler_pix::replaceNATtedObjects::processNext()
+bool PolicyCompiler_pix::replaceTranslatedAddresses::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
@@ -649,7 +649,7 @@ void PolicyCompiler_pix::compile()
 // add( new fillDirection_v6 ("determine directions" ));
 
 //	if ( fwopt->getBool("pix_replace_natted_objects"))
-// add( new replaceNATtedObjects ("replace objects in DST that are TDst in DNAT translations" ));
+// add( new replaceTranslatedAddresses ("replace objects in DST that are TDst in DNAT translations" ));
 
         add( new telnetToFirewall(
                  "separate rules controlling telnet to firewall"));
@@ -711,7 +711,7 @@ void PolicyCompiler_pix::compile()
         add( new SplitSRCForICMPCmd( "split SRC for icmp commands" ));
 
 	if ( fwopt->getBool("pix_replace_natted_objects"))
-            add( new replaceNATtedObjects(
+            add( new replaceTranslatedAddresses(
                   "replace objects in DST that are TDst in DNAT translations"));
 
 

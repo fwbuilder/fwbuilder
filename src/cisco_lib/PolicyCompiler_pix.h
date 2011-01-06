@@ -186,13 +186,13 @@ namespace fwcompiler {
 	 * DNAT rule in a NAT policy. Call _after_ telnetToFirewall,
          * sshToFirewall and PrepareForICMPCmd
 	 */
-        class replaceNATtedObjects : public PolicyRuleProcessor
+        class replaceTranslatedAddresses : public PolicyRuleProcessor
         {
             public:
-            replaceNATtedObjects(const std::string &n):PolicyRuleProcessor(n) {}
+            replaceTranslatedAddresses(const std::string &n):PolicyRuleProcessor(n) {}
             virtual bool processNext();
         };
-        friend class PolicyCompiler_pix::replaceNATtedObjects;
+        friend class PolicyCompiler_pix::replaceTranslatedAddresses;
 
         /**
          * can not use object-group in "icmp", "telnet" and "ssh" commands
