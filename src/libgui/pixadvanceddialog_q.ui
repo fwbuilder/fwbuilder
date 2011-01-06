@@ -227,7 +227,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>In configurations using NAT, starting with v8.3, ASA expects real IP addresses in the policy rules. Older versions used translated addresses instead. Firewall Builder can emulate newer behavior and let you use real addresses in policy rules even if the firewall expects translated addresses. This emulation is only needed if your firewall runs ASA software older than v8.3</string>
+             <string>In configurations using NAT, starting with v8.3, ASA requires using real IP addresses in the firewall policy rules. Prior to v8.3 ASA/PIX required using translated IP addresses in firewall policy rules. Firewall Builder can emulate v8.3 behavior for older versions of ASA/PIX letting you use real IP addresses in policy rules. This emulation is only needed if your firewall runs ASA software older than v8.3 and you want to use real IP addresses in firewall policy rules.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
