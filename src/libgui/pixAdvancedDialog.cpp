@@ -75,7 +75,8 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     m_dialog->setupUi(static_cast<QDialog*>(this));
     obj = o;
 
-    string vers="version_"+obj->getStr("version");
+    string version = obj->getStr("version");
+    string vers = "version_" + obj->getStr("version");
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
 
     QString      s;
@@ -219,8 +220,17 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     data.registerOption( m_dialog->pix_assume_fw_part_of_any, fwoptions,
                          "pix_assume_fw_part_of_any");
 
-    data.registerOption( m_dialog->pix_replace_natted_objects, fwoptions,
-                         "pix_replace_natted_objects");
+    if (XMLTools::version_compare(version, "8.3") >= 0)
+    {
+        m_dialog->pix_replace_natted_objects->setChecked(false);
+        m_dialog->pix_replace_natted_objects->setEnabled(false);
+    } else
+    {
+        m_dialog->pix_replace_natted_objects->setEnabled(true);
+
+        data.registerOption( m_dialog->pix_replace_natted_objects, fwoptions,
+                             "pix_replace_natted_objects");
+    }
 
     data.registerOption( m_dialog->pix_emulate_out_acl, fwoptions,
                          "pix_emulate_out_acl");

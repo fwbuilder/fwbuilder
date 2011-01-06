@@ -82,7 +82,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -94,10 +94,7 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_18">
-       <property name="verticalSpacing">
-        <number>20</number>
-       </property>
+      <layout class="QGridLayout" name="gridLayout_20">
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="textLabel1_5">
          <property name="sizePolicy">
@@ -140,18 +137,121 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="1">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="frame114">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="maximumSize">
           <size>
-           <width>20</width>
-           <height>19</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
-        </spacer>
+         <property name="title">
+          <string>Policy Compiler Options</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pix_assume_fw_part_of_any">
+            <property name="toolTip">
+             <string>Generate rules assuming the firewall is part of &quot;Any&quot;. This makes a difference in rules that use services 'ssh' and 'telnet' since PIX uses special commands to control ssh and telnet access to the firewall machine</string>
+            </property>
+            <property name="text">
+             <string>Assume firewall is part of 'any'</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="pix_check_shadowing">
+            <property name="toolTip">
+             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+            </property>
+            <property name="text">
+             <string>Detect rule shadowing in the policy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" rowspan="2">
+           <widget class="QCheckBox" name="pix_emulate_out_acl">
+            <property name="toolTip">
+             <string>Normally PIX does not support outbound ACL, however policy compiler can emulate them if this option is turned on</string>
+            </property>
+            <property name="text">
+             <string>Emulate outbound ACLs</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="pix_generate_out_acl">
+            <property name="toolTip">
+             <string>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</string>
+            </property>
+            <property name="text">
+             <string>Generate outbound ACLs</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" rowspan="2">
+           <widget class="QCheckBox" name="pix_ignore_empty_groups">
+            <property name="toolTip">
+             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+            </property>
+            <property name="text">
+             <string>Ignore empty groups in rules</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="pix_optimize_default_nat">
+            <property name="toolTip">
+             <string>In nat rules where network zone object is used in OSrc, ODst and OSrv are 'any' and TSrc defines a global pool for the translation, replace object in OSrc with 'any' to produce PIX command &quot;nat (interface) N 0.0.0.0 0.0.0.0&quot;</string>
+            </property>
+            <property name="text">
+             <string>Optimize 'default nat' rules</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Address Translation</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_18">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>In configurations using NAT, starting with v8.3, ASA expects real IP addresses in the policy rules. Older versions used translated addresses instead. Firewall Builder can emulate newer behavior and let you use real addresses in policy rules even if the firewall expects translated addresses. This emulation is only needed if your firewall runs ASA software older than v8.3</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pix_replace_natted_objects">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>PIX inspects packets with ACLs before it does NAT, while many other firewalls do NAT first and then apply ACLs. Policy compiler can emulate the latter behaviour if this options is turned on.</string>
+            </property>
+            <property name="text">
+             <string>Replace NAT'ted objects with their translations in policy rules</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item row="4" column="0" colspan="2">
         <widget class="QGroupBox" name="frame153">
@@ -172,7 +272,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
           <property name="verticalSpacing">
-           <number>12</number>
+           <number>-1</number>
           </property>
           <item row="0" column="0">
            <widget class="QCheckBox" name="pix_check_duplicate_nat">
@@ -272,109 +372,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QGroupBox" name="frame114">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Policy Compiler Options</string>
-         </property>
-         <layout class="QGridLayout">
-          <property name="verticalSpacing">
-           <number>12</number>
-          </property>
-          <property name="margin">
-           <number>12</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="pix_assume_fw_part_of_any">
-            <property name="toolTip">
-             <string>Generate rules assuming the firewall is part of &quot;Any&quot;. This makes a difference in rules that use services 'ssh' and 'telnet' since PIX uses special commands to control ssh and telnet access to the firewall machine</string>
-            </property>
-            <property name="text">
-             <string>Assume firewall is part of 'any'</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="pix_emulate_out_acl">
-            <property name="toolTip">
-             <string>Normally PIX does not support outbound ACL, however policy compiler can emulate them if this option is turned on</string>
-            </property>
-            <property name="text">
-             <string>Emulate outbound ACLs</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="pix_optimize_default_nat">
-            <property name="toolTip">
-             <string>In nat rules where network zone object is used in OSrc, ODst and OSrv are 'any' and TSrc defines a global pool for the translation, replace object in OSrc with 'any' to produce PIX command &quot;nat (interface) N 0.0.0.0 0.0.0.0&quot;</string>
-            </property>
-            <property name="text">
-             <string>Optimize 'default nat' rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="pix_check_shadowing">
-            <property name="toolTip">
-             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-            </property>
-            <property name="text">
-             <string>Detect rule shadowing in the policy</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="pix_replace_natted_objects">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>PIX inspects packets with ACLs before it does NAT, while many other firewalls do NAT first and then apply ACLs. Policy compiler can emulate the latter behaviour if this options is turned on.</string>
-            </property>
-            <property name="text">
-             <string>Replace NAT'ted objects with their translations in policy rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="pix_generate_out_acl">
-            <property name="toolTip">
-             <string>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</string>
-            </property>
-            <property name="text">
-             <string>Generate outbound ACLs</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QCheckBox" name="pix_ignore_empty_groups">
-            <property name="toolTip">
-             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-            </property>
-            <property name="text">
-             <string>Ignore empty groups in rules</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
        </item>
       </layout>
      </widget>
