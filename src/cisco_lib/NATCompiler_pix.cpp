@@ -291,60 +291,6 @@ bool NATCompiler_pix::storeProcessedRules::processNext()
     return true;
 }
 
-list<triplet> NATCompiler_pix::findDNATForAddress(Address *src,
-                                                  Address *dst,
-                                                  Service *srv)
-{
-    list<triplet> res;
-    map<string,triplet> res_dict;
-
-    for (FWObject::iterator i=final_ruleset->begin();
-         i!=final_ruleset->end(); ++i)
-    {
-        NATRule *rule=NATRule::cast(*i);
-        if (rule == NULL) continue; // skip RuleSetOptions object
-
-        switch (rule->getRuleType())
-        {
-        case NATRule::DNAT:
-        {
-            Address  *osrc=getFirstOSrc(rule);  assert(osrc);
-            Address  *odst=getFirstODst(rule);  assert(odst);
-            Service  *osrv=getFirstOSrv(rule);  assert(osrv);
-                           
-            Address  *tsrc=getFirstTSrc(rule);  assert(tsrc);
-            Address  *tdst=getFirstTDst(rule);  assert(tdst);
-            Service  *tsrv=getFirstTSrv(rule);  assert(tsrv);
-
-            if (*(src->getAddressPtr()) == *(osrc->getAddressPtr()) &&
-                (osrv->isAny() || srv->getId()==tsrv->getId()) &&
-                *(dst->getAddressPtr()) == *(tdst->getAddressPtr()))
-            {
-                if (osrv->isAny())
-                {
-                    triplet tr(src,odst,srv);
-                    res_dict[tr.hash()] = tr;
-                }
-                else
-                {
-                    triplet tr(src,odst,osrv);
-                    res_dict[tr.hash()] = tr;
-                }
-            }
-        }
-        break;
-        default: ;    // TODO: should actually be always_assert
-        }
-    }
-    for (map<string,triplet>::iterator i=res_dict.begin(); 
-         i!=res_dict.end(); ++i)
-    {
-        res.push_back(i->second);
-    }
-    return res;
-}
-	
-
 bool NATCompiler_pix::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;

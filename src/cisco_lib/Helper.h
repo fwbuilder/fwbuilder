@@ -78,19 +78,5 @@ namespace fwcompiler {
 
 };
 
-class triplet {
-    public:
-            libfwbuilder::Address *src;
-            libfwbuilder::Address *dst;
-            libfwbuilder::Service *srv;
-            triplet() {src=NULL; dst=NULL; srv=NULL;}
-            triplet(libfwbuilder::Address *s,
-                    libfwbuilder::Address *d,
-                    libfwbuilder::Service *v) {src=s; dst=d; srv=v;}
-
-            std::string hash();
-};
-
-
 
 #endif

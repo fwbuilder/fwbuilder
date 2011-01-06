@@ -496,14 +496,17 @@ namespace fwcompiler {
         /**
          * scans all rules in combined_ruleset and finds rules (if
          * any) that define DNAT translation for a combination of
-         * src,dst and srv (that is, src is equival OSrc, srv is equal
-         * OSrv and dst is equal TDst).  If such rule could be found,
-         * returns a list of triplets (src,odst,osrv)
+         * src,dst and srv where src matches OSrc, srv matches OSrv
+         * and dst matches rule element defined by argument
+         * nat_re_type_to_match_dst.  If such rules could be found, returns
+         * a list of triplets (src,odst,osrv)
          */
-        std::list<triplet> findDNATForAddress(
+        std::list<libfwbuilder::NATRule*> findMatchingDNATRules(
             libfwbuilder::Address *src,
             libfwbuilder::Address *dst,
-            libfwbuilder::Service *srv);
+            libfwbuilder::Service *srv,
+            const std::string &nat_re_type_to_match_dst);
+	
 	
 //	virtual string atomicRuleToString(libfwbuilder::Rule *r);
 

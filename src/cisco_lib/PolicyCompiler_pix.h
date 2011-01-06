@@ -180,20 +180,77 @@ namespace fwcompiler {
 	DECLARE_POLICY_RULE_PROCESSOR( RejectAction );
         friend class PolicyCompiler_pix::RejectAction;
 
-        
+
+        /*
+         * Rule processors that inherit this class match objects used
+         * in policy rules to the nat rules and do something about
+         * them.
+         */
+        class matchTranslatedAddresses : public PolicyRuleProcessor
+        {
+        protected:
+            std::list<libfwbuilder::PolicyRule*> transformed_rules;
+        public:
+            matchTranslatedAddresses(const std::string &n):PolicyRuleProcessor(n) {}
+            virtual bool processNext();
+            virtual std::list<libfwbuilder::NATRule*> findMatchingNATRules(
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
+            virtual void action(
+                libfwbuilder::PolicyRule* policy_rule,
+                libfwbuilder::NATRule* nat_rule,
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
+        };
+
         /**
 	 * this processor replaces objects in dst for which we have
 	 * DNAT rule in a NAT policy. Call _after_ telnetToFirewall,
          * sshToFirewall and PrepareForICMPCmd
 	 */
-        class replaceTranslatedAddresses : public PolicyRuleProcessor
+        class replaceTranslatedAddresses : public matchTranslatedAddresses
         {
             public:
-            replaceTranslatedAddresses(const std::string &n):PolicyRuleProcessor(n) {}
-            virtual bool processNext();
+            replaceTranslatedAddresses(const std::string &n) :
+                matchTranslatedAddresses(n) {}
+            virtual std::list<libfwbuilder::NATRule*> findMatchingNATRules(
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
+            virtual void action(
+                libfwbuilder::PolicyRule* policy_rule,
+                libfwbuilder::NATRule* nat_rule,
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
         };
         friend class PolicyCompiler_pix::replaceTranslatedAddresses;
 
+        /**
+	 * this processor issues warning when translated addresses are
+	 * used in policy rules. Use for PIX 8.3 and later.
+	 */
+        class warnWhenTranslatedAddressesAreUsed : public matchTranslatedAddresses
+        {
+            public:
+            warnWhenTranslatedAddressesAreUsed(const std::string &n) :
+                matchTranslatedAddresses(n) {}
+            virtual std::list<libfwbuilder::NATRule*> findMatchingNATRules(
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
+            virtual void action(
+                libfwbuilder::PolicyRule* policy_rule,
+                libfwbuilder::NATRule* nat_rule,
+                libfwbuilder::Address *src,
+                libfwbuilder::Address *dst,
+                libfwbuilder::Service *srv);
+        };
+        friend class PolicyCompiler_pix::warnWhenTranslatedAddressesAreUsed;
+
+        
         /**
          * can not use object-group in "icmp", "telnet" and "ssh" commands
          */

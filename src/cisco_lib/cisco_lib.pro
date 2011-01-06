@@ -23,6 +23,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			CompilerDriver_pix.cpp           \
 			CompilerDriver_pix_run.cpp       \
 			NATCompiler_pix.cpp              \
+			NATCompiler_pix_find_translations.cpp      \
 			NATCompiler_pix_writers.cpp      \
 			OSConfigurator_pix_os.cpp        \
 			OSConfigurator_pix_os_fixups.cpp       \
@@ -42,6 +43,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			PolicyCompiler_pix.cpp           \
 			PolicyCompiler_pix_writers.cpp   \
 			PolicyCompiler_pix_v6_acls.cpp   \
+			PolicyCompiler_pix_replace_translations.cpp   \
 			RoutingCompiler_pix.cpp          \
 			RoutingCompiler_pix_writers.cpp
 
