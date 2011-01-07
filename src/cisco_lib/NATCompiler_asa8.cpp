@@ -130,7 +130,10 @@ void NATCompiler_asa8::compile()
         // Also using overloaded virtual function  _expand_interface
         add( new ExpandMultipleAddresses("expand multiple addresses"));
         add( new MACFiltering( "check for MAC address filtering"));
-        add( new ExpandAddressRanges("expand address range objects"));
+
+        // ASA8 nat commands support address range directly.
+        // add( new ExpandAddressRanges("expand address range objects"));
+
         add( new checkForUnnumbered("check for unnumbered interfaces"));
 
         add( new ConvertToAtomic("convert to atomic rules" ));

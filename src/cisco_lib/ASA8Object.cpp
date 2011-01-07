@@ -32,7 +32,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Network.h"
-#include "fwbuilder/Resources.h"
+#include "fwbuilder/Interface.h"
 
 #include <assert.h>
 #include <sstream>
@@ -51,6 +51,20 @@ ASA8Object::ASA8Object(const FWObject *_obj)
     name = sanitizeObjectName(obj->getName().c_str());
 }
 
+QString ASA8Object::getCommandWord()
+{
+    if (Address::constcast(obj)!=NULL && Address::constcast(obj)->isAny())
+        return "any";
+
+    if (Service::constcast(obj)!=NULL && Service::constcast(obj)->isAny())
+        return "any";
+
+    if (Interface::constcast(obj))
+        return "interface";
+
+    return name;
+}
+
 QString ASA8Object::sanitizeObjectName(const QString &name)
 {
     QString qs = name;
@@ -60,14 +74,34 @@ QString ASA8Object::sanitizeObjectName(const QString &name)
 QString ASA8Object::createNetworkObjectCommand(const Address *addr_obj)
 {
     if (addr_obj == NULL) return "";
+    if (addr_obj->isAny()) return "";
+    if (Interface::constcast(obj)) return "";
 
     QStringList res;
 
-    string addr = addr_obj->getAddressPtr()->toString();
-    string netm = addr_obj->getNetmaskPtr()->toString();
-
     res << QString("object network %1") .arg(name);
-    res << QString("  subnet %1 %2").arg(addr.c_str()).arg(netm.c_str());
+
+    if (IPv4::isA(addr_obj) && Interface::isA(addr_obj->getParent()))
+    {
+        string addr = addr_obj->getAddressPtr()->toString();
+        res << QString("  host %1").arg(addr.c_str());
+    } else
+    {
+        if (AddressRange::isA(addr_obj))
+        {
+            const AddressRange *ar = AddressRange::constcast(addr_obj);
+            res << QString("  range %1 %2")
+                .arg(ar->getRangeStart().toString().c_str())
+                .arg(ar->getRangeEnd().toString().c_str());
+        } else
+        {
+            string addr = addr_obj->getAddressPtr()->toString();
+            string netm = addr_obj->getNetmaskPtr()->toString();
+            res << QString("  subnet %1 %2").arg(addr.c_str()).arg(netm.c_str());
+        }
+    }
+
+    res << "quit";
     res << "";
     return res.join("\n");
 }
@@ -96,6 +130,7 @@ QString ASA8Object::printPorts(int rs, int re)
 QString ASA8Object::createServiceObjectCommand(const Service *serv_obj)
 {
     if (serv_obj == NULL) return "";
+    if (serv_obj->isAny()) return "";
 
     QStringList res;
 
@@ -105,7 +140,7 @@ QString ASA8Object::createServiceObjectCommand(const Service *serv_obj)
 
     QStringList service_line;
 
-    service_line << "service" << proto_name;
+    service_line << "  service" << proto_name;
 
     if (TCPService::isA(serv_obj) || UDPService::isA(serv_obj))
     {
@@ -130,6 +165,7 @@ QString ASA8Object::createServiceObjectCommand(const Service *serv_obj)
     }
 
     res << service_line.join(" ");
+    res << "quit";
     res << "";
     return res.join("\n");
 }

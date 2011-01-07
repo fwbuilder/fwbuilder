@@ -557,7 +557,7 @@
             <clear_ssh>clear config ssh</clear_ssh>
             <clear_xlate>clear xlate</clear_xlate>
             <clear_static></clear_static>
-            <clear_global></clear_global>
+            <clear_global>clear config object</clear_global>
             <clear_nat>clear config nat</clear_nat>
           </pix_commands>
     

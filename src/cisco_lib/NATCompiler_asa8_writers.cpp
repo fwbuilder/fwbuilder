@@ -104,21 +104,34 @@ void NATCompiler_asa8::PrintRule::printSNAT(libfwbuilder::NATRule *rule)
     NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
     QStringList cmd;
 
-    cmd << "nat ("
-        << natcmd->o_iface->getLabel().c_str()
-        << ","
-        << natcmd->t_iface->getLabel().c_str()
-        << ") ";
+    cmd << QString("nat (%1,%2)")
+        .arg(natcmd->o_iface->getLabel().c_str())
+        .arg(natcmd->t_iface->getLabel().c_str());
 
     cmd << "source" <<  "dynamic";
-    cmd << pix_comp->getASA8Object(natcmd->o_src)->getName();
-    cmd << pix_comp->getASA8Object(natcmd->t_addr)->getName();
-    cmd << "destination" << "static";
-    cmd << pix_comp->getASA8Object(natcmd->o_dst)->getName();
-    // the same object second time. If this is different object, the rule
-    // defines destination translation as well (DNAT or SDNAT in our terms)
-    cmd << pix_comp->getASA8Object(natcmd->o_dst)->getName();
-    compiler->output << cmd.join(" ").toStdString();
+    cmd << pix_comp->getASA8Object(natcmd->o_src)->getCommandWord();
+    cmd << pix_comp->getASA8Object(natcmd->t_addr)->getCommandWord();
+
+    // only need "destination" part if ODst is not any
+    if (!natcmd->o_dst->isAny())
+    {
+        cmd << "destination" << "static";
+        cmd << pix_comp->getASA8Object(natcmd->o_dst)->getCommandWord();
+        // the same object second time. If this is different object, the rule
+        // defines destination translation as well (DNAT or SDNAT in our terms)
+        cmd << pix_comp->getASA8Object(natcmd->o_dst)->getCommandWord();
+    }
+
+    if (!natcmd->o_srv->isAny())
+    {
+        cmd << "service";
+        cmd << pix_comp->getASA8Object(natcmd->o_srv)->getCommandWord();
+        // so far we do not support service translation in SNAT rules.
+        // Therefore add the same service object second time
+        cmd << pix_comp->getASA8Object(natcmd->o_srv)->getCommandWord();
+    }
+
+    compiler->output << cmd.join(" ").toStdString() << endl;
 }
 
 void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
