@@ -79,7 +79,7 @@ void IPService::setProtocolNumber(int n)
     setInt("protocol_num", n);
 }
 
-string IPService::getProtocolName()
+string IPService::getProtocolName()  const
 {
     int proto_num = getInt("protocol_num");
 

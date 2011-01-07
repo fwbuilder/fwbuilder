@@ -54,7 +54,7 @@ TCPUDPService::TCPUDPService(const FWObjectDatabase *root, bool prepopulate) :
 
 TCPUDPService::~TCPUDPService() {}
 
-string TCPUDPService::getProtocolName()         {    return ""; }
+string TCPUDPService::getProtocolName() const   {    return ""; }
 int    TCPUDPService::getProtocolNumber() const {    return -1;    }
 
 void TCPUDPService::fromXML(xmlNodePtr root) throw(FWException)

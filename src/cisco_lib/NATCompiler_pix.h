@@ -36,11 +36,16 @@
 namespace fwcompiler {
 
 
-    typedef enum { UNKNOWN, INTERFACE, SINGLE_ADDRESS, NETWORK_ADDRESS, ADDRESS_RANGE } global_pool_type;
+    typedef enum { UNKNOWN,
+                   INTERFACE,
+                   SINGLE_ADDRESS,
+                   NETWORK_ADDRESS,
+                   ADDRESS_RANGE } global_pool_type;
+
     typedef enum { NONAT_NAT0, NONAT_STATIC } nonat_types;
 
-    struct NATCmd {
-
+    struct NATCmd
+    {
         bool        ignore_nat;
         bool        ignore_nat_and_print_acl;
         bool        ignore_global;
@@ -60,7 +65,8 @@ namespace fwcompiler {
         global_pool_type          type;
     };
 
-    struct StaticCmd {
+    struct StaticCmd
+    {
         bool        ignore_scmd_and_print_acl;
         std::string             acl_name;
         std::string             rule;
@@ -74,15 +80,16 @@ namespace fwcompiler {
 
     class NATCompiler_pix : public NATCompiler
     {
-        protected:
+        public:
 
-        Helper                          helper;
+        Helper helper;
 
-	int                        global_pool_no;
-        std::map<int,NATCmd*>      nat_commands;
-        std::map<int,StaticCmd*>   static_commands;
+	int global_pool_no;
+        std::map<int,NATCmd*> nat_commands;
+        std::map<int,StaticCmd*> static_commands;
 
-        struct nonat {
+        struct nonat
+        {
             std::string              acl_name;
             libfwbuilder::Interface *i_iface;
             libfwbuilder::Interface *o_iface;
@@ -97,7 +104,7 @@ namespace fwcompiler {
 //  first: interface->getId(), second: rule->getId()
         std::map<int,int> first_nonat_rule_id;
 
-        libfwbuilder::RuleSet             *final_ruleset;
+        libfwbuilder::RuleSet *final_ruleset;
 
 
 
@@ -362,18 +369,24 @@ namespace fwcompiler {
         class PrintRule : public NATRuleProcessor
         {
             protected:
-            bool               init;
-            std::string        current_rule_label;
+
+            bool          init;
+            std::string   current_rule_label;
             std::string  _printSrcService(libfwbuilder::Service *srv);
             std::string  _printDstService(libfwbuilder::Service *srv);
             virtual void _printPort(libfwbuilder::Service *srv);
             std::string  _printAddress(libfwbuilder::Address *a,bool print_netmask);
-            void         _printNONAT(libfwbuilder::NATRule *rule);
             std::string  _printConnOptions(libfwbuilder::NATRule *rule);
             std::map<int,bool> printed_global_pools;
+
             public:
+            
             PrintRule(const std::string &n);
             virtual bool processNext();
+            virtual void printNONAT(libfwbuilder::NATRule *rule);
+            virtual void printSNAT(libfwbuilder::NATRule *rule);
+            virtual void printDNAT(libfwbuilder::NATRule *rule);
+            
         };
         friend class NATCompiler_pix::PrintRule;
 

@@ -63,7 +63,7 @@ class TagService : public Service
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
     
-    virtual std::string getProtocolName();
+    virtual std::string getProtocolName() const;
     virtual int getProtocolNumber() const;
 
     //virtual FWReference* createRef();

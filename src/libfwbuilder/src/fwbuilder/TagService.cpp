@@ -37,7 +37,7 @@ using namespace std;
 
 const char *TagService::TYPENAME={"TagService"};
 
-string TagService::getProtocolName()           {    return "tag_service";}
+string TagService::getProtocolName() const     {    return "tag_service";}
 int    TagService::getProtocolNumber() const   {    return 65001; }
 
 TagService::TagService() 

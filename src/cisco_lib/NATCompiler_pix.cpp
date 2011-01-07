@@ -84,7 +84,6 @@ void NATCompiler_pix::_expand_addr_recursive_pix(Rule *rule,
                                                  list<FWObject*> &ol,
                                                  bool expand_cluster_interfaces_fully)
 {
-    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
     bool odst_or_tsrc = (re->getTypeName() == RuleElementODst::TYPENAME ||
                          re->getTypeName() == RuleElementTSrc::TYPENAME);
 

@@ -42,7 +42,7 @@ UserService::UserService(const FWObjectDatabase *root, bool prepopulate) :
     Service(root, prepopulate) {}
 UserService::~UserService() {}
 
-string UserService::getProtocolName()           {    return "user_service";}
+string UserService::getProtocolName() const     {    return "user_service";}
 int    UserService::getProtocolNumber() const   {    return 65002; }
 
 FWObject& UserService::shallowDuplicate(const FWObject *x,

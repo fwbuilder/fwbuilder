@@ -77,9 +77,11 @@ void NATCompiler_asa8::compile()
 
         add( new singleRuleFilter());
 
+/* REMOVE_OLD_OPTIMIZATIONS
         if (fw->getOptionsObject()->getBool( "pix_optimize_default_nat"))
             add (new optimizeDefaultNAT(
                      "optimize commands 'nat (interface) 0.0.0.0 0.0.0.0'"));
+*/
 
         add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
         add( new recursiveGroupsInODst("check for recursive groups in ODST"));
@@ -139,24 +141,30 @@ void NATCompiler_asa8::compile()
                  "verify rule elements for static NAT rules"));
         add( new processNONATRules("process NONAT" ));
 
+/* REMOVE_OLD_OPTIMIZATIONS
         if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
             add (new clearOSrc ("clear OSrc" ));
+*/
 
         add( new createNATCmd ("create NAT commands" ));
         add( new createStaticCmd ("create static commands" ));
+
+/* REMOVE_OLD_OPTIMIZATIONS
         add( new mergeNATCmd ("merge NAT commands" ));
         add( new SuppressDuplicateNONATStatics(
                  "suppress duplicate NONAT statics" ));
 
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
+*/
 
-        add( new PrintClearCommands( "Clear ACLs" ));
-
-        add( new PrintRule ("generate PIX code" ));
+        add( new PrintClearCommands("Clear ACLs" ));
+        add( new PrintObjectsForNat("generate objects for nat commands"));
+        add( new PrintRule("generate PIX code" ));
         add( new storeProcessedRules ("store processed rules" ));
         add( new simplePrintProgress ());
 
+/* REMOVE_OLD_OPTIMIZATIONS
         bool pix_check_duplicate_nat = 
             fw->getOptionsObject()->getBool("pix_check_duplicate_nat");
         bool pix_check_overlapping_global_pools =
@@ -190,7 +198,7 @@ void NATCompiler_asa8::compile()
 
             add( new simplePrintProgress ( ));
         }
-
+*/
         runRuleProcessors();
 
     } catch (FWException &ex)

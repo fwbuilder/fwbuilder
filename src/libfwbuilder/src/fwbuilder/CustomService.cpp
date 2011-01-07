@@ -43,7 +43,11 @@ CustomService::CustomService(const FWObjectDatabase *root,bool prepopulate) :
     Service(root, prepopulate) { address_family = AF_INET;}
 CustomService::~CustomService() {}
 
-string CustomService::getProtocolName()   { return getProtocol(); }
+string CustomService::getProtocolName() const
+{
+    if (protocol.empty()) return "any";
+    return protocol;
+}
 int    CustomService::getProtocolNumber() const { return 65000; }
 
 

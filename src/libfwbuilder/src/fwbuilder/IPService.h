@@ -54,7 +54,7 @@ class IPService : public Service
 
     DECLARE_DISPATCH_METHODS(IPService);
     
-    virtual std::string getProtocolName();
+    virtual std::string getProtocolName() const;
     virtual int getProtocolNumber() const;
 
     void setProtocolNumber(int n);

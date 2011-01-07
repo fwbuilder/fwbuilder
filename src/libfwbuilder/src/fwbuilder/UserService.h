@@ -59,7 +59,7 @@ class UserService : public Service
 
     DECLARE_DISPATCH_METHODS(UserService);
     
-    virtual std::string getProtocolName();
+    virtual std::string getProtocolName() const;
     virtual int getProtocolNumber() const;
    
     const std::string& getUserId() const { return userid; } 

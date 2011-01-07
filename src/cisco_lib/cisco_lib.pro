@@ -4,13 +4,14 @@ include(../../qmake.inc)
 #
 TEMPLATE = lib
 #
-SOURCES	 =  PolicyCompiler_cisco.cpp \
-			PolicyCompiler_cisco_acls.cpp \
+SOURCES	 =  PolicyCompiler_cisco.cpp           \
+			PolicyCompiler_cisco_acls.cpp      \
 			PolicyCompiler_cisco_object_groups.cpp \
-			RoutingCompiler_cisco.cpp         \
-			RoutingCompiler_cisco_writers.cpp \
-			ACL.cpp \
-			Helper.cpp \
+			RoutingCompiler_cisco.cpp          \
+			RoutingCompiler_cisco_writers.cpp  \
+			ACL.cpp                            \
+			ASA8Object.cpp                     \
+			Helper.cpp                         \
 			inspectionProtocol.cpp             \
 			InspectionClassMap.cpp             \
 			OSConfigurator_ios.cpp             \
@@ -20,22 +21,23 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			PolicyCompiler_iosacl_writers.cpp  \
 			RoutingCompiler_iosacl.cpp         \
 			RoutingCompiler_iosacl_writers.cpp \
-			CompilerDriver_pix.cpp           \
-			CompilerDriver_pix_run.cpp       \
-			NATCompiler_pix.cpp              \
+			CompilerDriver_pix.cpp             \
+			CompilerDriver_pix_run.cpp         \
+			NATCompiler_pix.cpp                \
 			NATCompiler_pix_find_translations.cpp      \
-			NATCompiler_pix_writers.cpp      \
-			NATCompiler_asa8.cpp             \
-			OSConfigurator_pix_os.cpp        \
-			OSConfigurator_pix_os_fixups.cpp       \
+			NATCompiler_pix_writers.cpp        \
+			NATCompiler_asa8.cpp               \
+			NATCompiler_asa8_writers.cpp       \
+			OSConfigurator_pix_os.cpp          \
+			OSConfigurator_pix_os_fixups.cpp   \
 			OSConfigurator_pix_os_inspectors.cpp       \
 			OSConfigurator_pix_os_inspectors_pix8.cpp \
-			CompilerDriver_procurve_acl.cpp	 \
-			CompilerDriver_procurve_acl_run.cpp \
-			OSConfigurator_procurve.cpp      \
-			PolicyCompiler_procurve_acl.cpp  \
+			CompilerDriver_procurve_acl.cpp	   \
+			CompilerDriver_procurve_acl_run.cpp\
+			OSConfigurator_procurve.cpp        \
+			PolicyCompiler_procurve_acl.cpp    \
 			PolicyCompiler_procurve_acl_writers.cpp  \
-			RoutingCompiler_procurve_acl.cpp \
+			RoutingCompiler_procurve_acl.cpp   \
 			BaseObjectGroup.cpp              \
 			PIXObjectGroup.cpp               \
 			PIX8ObjectGroup.cpp              \
@@ -48,9 +50,10 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			RoutingCompiler_pix.cpp          \
 			RoutingCompiler_pix_writers.cpp
 
-HEADERS	 = ../../config.h                    \
+HEADERS	 = ../../config.h                   \
 			ACL.h                           \
 			Helper.h                        \
+			ASA8Object.h                    \
 			inspectionProtocol.h            \
 			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \

@@ -74,7 +74,7 @@ class CustomService : public Service
 
     DECLARE_DISPATCH_METHODS(CustomService);
     
-    virtual std::string getProtocolName();
+    virtual std::string getProtocolName() const;
     virtual int getProtocolNumber() const;
 
     void setCodeForPlatform(const std::string& platform,

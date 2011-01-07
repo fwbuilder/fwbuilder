@@ -25,6 +25,11 @@
 #define _NATCOMPILER_ASA8_HH
 
 #include "NATCompiler_pix.h"
+#include "ASA8Object.h"
+
+#include <QString>
+
+#include <map>
 
 
 namespace fwcompiler {
@@ -32,6 +37,39 @@ namespace fwcompiler {
     class NATCompiler_asa8 : public NATCompiler_pix
     {
 	public:
+
+        std::map<int, ASA8Object*> asa8_object_registry;
+
+        void addASA8Object(const libfwbuilder::FWObject *obj);
+        ASA8Object* getASA8Object(const libfwbuilder::FWObject *obj);
+        
+        QString sanitizeObjectName(const QString &name);
+        std::string createNetworkObjectCommand(libfwbuilder::Address *addr);
+        std::string createServiceObjectCommand(libfwbuilder::Service *addr);
+
+        
+        DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
+            
+        /**
+         *  prints single policy rule, assuming all groups have been
+         *  expanded, so source, destination and service hold exactly
+         *  one object each, and this object is not a group.  Negation
+         *  should also have been taken care of before this method is
+         *  called.
+         */
+        friend class PrintRule;
+        class PrintRule : public NATCompiler_pix::PrintRule
+        {
+        public:
+            
+            PrintRule(const std::string &n);
+            virtual void printNONAT(libfwbuilder::NATRule *rule);
+            virtual void printSNAT(libfwbuilder::NATRule *rule);
+            virtual void printDNAT(libfwbuilder::NATRule *rule);
+        };
+        friend class NATCompiler_asa8::PrintRule;
+
+
 
 	NATCompiler_asa8(libfwbuilder::FWObjectDatabase *_db,
                          libfwbuilder::Firewall *fw,

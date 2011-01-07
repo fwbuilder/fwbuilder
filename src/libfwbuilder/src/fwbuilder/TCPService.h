@@ -59,7 +59,7 @@ public:
 
     DECLARE_DISPATCH_METHODS(TCPService);
     
-    virtual std::string getProtocolName();
+    virtual std::string getProtocolName() const;
     virtual int getProtocolNumber() const;
 
 /**

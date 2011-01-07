@@ -50,7 +50,7 @@ ICMPService::ICMPService(const FWObjectDatabase *root,bool prepopulate) : Servic
 
 ICMPService::~ICMPService() {}
 
-string ICMPService::getProtocolName()          {    return "icmp";}
+string ICMPService::getProtocolName() const    {    return "icmp";}
 int    ICMPService::getProtocolNumber() const  {    return 1;     }
 
 void ICMPService::fromXML(xmlNodePtr root) throw(FWException)
