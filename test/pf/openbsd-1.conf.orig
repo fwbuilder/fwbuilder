@@ -1,0 +1,71 @@
+
+
+
+
+# Tables: (2)
+table <tbl.r1.d> { 172.24.0.1 , 172.24.0.2 , 192.168.1.1 , 192.168.1.2 } 
+table <tbl.r2.s> { 172.24.0.1 , 172.24.0.2 } 
+
+# 
+# Rule  0 (NAT)
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
+# 
+# Rule  1 (NAT)
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
+# 
+# Rule  2 (NAT)
+nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
+# 
+# Rule  3 (NAT)
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 172.24.0.2 , 172.24.0.3 } 
+# 
+# Rule  4 (NAT)
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.2 
+# 
+# Rule  5 (NAT)
+nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.3 
+# 
+# Rule  6 (NAT)
+rdr on en0 proto tcp from any to 172.24.0.1 port 80 -> 172.24.0.100 port 80 
+# 
+# Rule  7 (NAT)
+rdr on en0 proto tcp from any to 172.24.0.1 port 80 -> 172.24.0.100 port 80 
+# 
+# Rule  8 (NAT)
+rdr proto tcp from any to 172.24.0.1 port 80 -> 172.24.0.100 port 80 
+
+# 
+# Rule  -3 pfsync (automatic)
+pass  quick on en0 inet proto pfsync  from any  to any  label "RULE -3 -- ACCEPT "  
+# 
+# Rule  -2 CARP (automatic)
+pass  quick on en1 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "  
+# 
+# Rule  -1 CARP (automatic)
+pass  quick on en0 inet proto carp  from any  to any  label "RULE -1 -- ACCEPT "  
+# 
+# Rule  0 (lo)
+pass  quick on lo inet  from any  to any  label "RULE 0 -- ACCEPT "  
+# 
+# Rule  1 (global)
+pass  quick inet  from any  to <tbl.r1.d>  label "RULE 1 -- ACCEPT "  
+# 
+# Rule  2 (global)
+pass  quick inet  from <tbl.r2.s>  to any  label "RULE 2 -- ACCEPT "  
+# 
+# Rule  3 (global)
+pass  quick inet  from any  to <tbl.r2.s>  label "RULE 3 -- ACCEPT "  
+# 
+# Rule  4 (carp0)
+pass in   quick on en0 inet  from any  to any  label "RULE 4 -- ACCEPT "  
+# 
+# Rule  5 (carp0)
+pass in   quick on en1 inet  from any  to any  label "RULE 5 -- ACCEPT "  
+# 
+# Rule  6 (global)
+block  log  quick inet  from any  to any no state  label "RULE 6 -- DROP "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE 10000 -- DROP "  
+

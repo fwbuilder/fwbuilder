@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3425
 #
-#  Generated Tue Jan  4 11:52:33 2011 PST by vadim
+#  Generated Fri Jan  7 13:21:14 2011 PST by vadim
 #
 # files: * firewall33-1.fw
 #
@@ -393,10 +393,11 @@ script_body() {
     # 
     $IPTABLES -N Cid438728A918346.0
     $IPTABLES -A Policy  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.19.99   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.19.103   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.19.104   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.19.147   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
@@ -521,7 +522,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Jan  4 11:52:33 2011 by vadim"
+        log "Activating firewall script generated Fri Jan  7 13:21:14 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3425
 #
-#  Generated Tue Jan  4 11:53:21 2011 PST by vadim
+#  Generated Fri Jan  7 13:22:02 2011 PST by vadim
 #
 # files: * firewall41-2.fw
 #
@@ -483,7 +483,7 @@ status_action() {
 }
 
 start() {
-    log "Activating firewall script generated Tue Jan  4 11:53:21 2011 by vadim"
+    log "Activating firewall script generated Fri Jan  7 13:22:02 2011 by vadim"
     check_tools
      prolog_commands 
     check_run_time_address_table_files

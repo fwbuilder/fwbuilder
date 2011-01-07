@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3425
 #
-#  Generated Tue Jan  4 11:55:59 2011 PST by vadim
+#  Generated Fri Jan  7 13:24:39 2011 PST by vadim
 #
 # files: * heartbeat_cluster_1_linux-2.fw
 #
@@ -317,6 +317,18 @@ script_body() {
     echo "Rule 1 (NAT)"
     # 
     $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 172.24.0.1
+    # 
+    # Rule 2 (NAT)
+    # 
+    echo "Rule 2 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 172.24.0.1  --dport 22 -j DNAT --to-destination 192.168.1.100
+    # 
+    # Rule 3 (NAT)
+    # 
+    echo "Rule 3 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 172.24.0.1  --dport 22 -j DNAT --to-destination 192.168.1.100
 
 
 
@@ -729,7 +741,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Jan  4 11:55:59 2011 by vadim"
+        log "Activating firewall script generated Fri Jan  7 13:24:39 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

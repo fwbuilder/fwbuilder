@@ -1,0 +1,308 @@
+#!/bin/sh
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3425
+#
+#  Generated Fri Jan  7 13:02:11 2011 PST by vadim
+#
+# files: * openbsd-1.fw
+# files:   openbsd-1.conf
+#
+# Compiled for pf 4.x
+#
+
+
+
+
+
+FWDIR=`dirname $0`
+
+IFCONFIG="/sbin/ifconfig"
+PFCTL="/sbin/pfctl"
+SYSCTL="/sbin/sysctl"
+LOGGER="/usr/bin/logger"
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+    if echo "$addr" | grep -q ':'
+    then
+        inet="inet6"
+        addr=$(echo "$addr" | sed 's!/! prefixlen !')
+    else
+        inet="inet"
+        addr=$(echo "$addr" | sed 's!/! netmask !')
+    fi
+
+    parameter=""
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      parameter="alias"
+    }
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      parameter="delete"
+    }
+
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+
+    scope_regex="1"
+    if test -n "$scope"; then scope_regex=" \$0 !~ \"$scope\" "; fi
+
+    $IFCONFIG $interface | sed "s/%$interface//" | \
+      awk -v IGNORED="$ignore_list" \
+        "BEGIN {  
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $scope_regex && !(\$2 in ignored_dict)) {printf \"%s/%s\n\",\$2,\$4;}" | \
+        while read addr; do
+          echo "${addr}@$interface"
+        done | sort
+   
+}
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IFCONFIG $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface '' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scopeid .*' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+missing_vlan() {
+    vlan=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $vlan
+    subint=$1
+    parent=$2
+    IFS=$oldIFS
+
+    vlan_id=$(echo $subint | sed 's/vlan//')
+    test "$cmd" = "add" && {
+        echo "# Adding VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent
+        $FWBDEBUG $IFCONFIG $subint up
+    }
+    test "$cmd" = "rem" && {
+        echo "# Removing VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev
+        $FWBDEBUG $IFCONFIG $subint destroy
+    }
+}
+
+parse_fwb_vlans() {
+    set $1 
+    vlan_parent_interface=$1 
+    shift
+
+    FWB_VLANS=$(
+      for subint in $*; do
+        echo "${subint}@$vlan_parent_interface"
+      done | sort
+    )
+    echo $FWB_VLANS
+}
+
+parse_current_vlans() {
+    vlan_parent_interface=$1
+    $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    while read x vlan_id parent
+    do
+       test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
+    done | sort
+}
+
+update_vlans_of_interface() {
+    args="$1"
+    set $1 
+    vlan_parent_interface=$1 
+
+    FWB_VLANS=$(parse_fwb_vlans "$args")
+    CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
+
+    $IFCONFIG $vlan_parent_interface up
+    diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
+    diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
+}
+
+sync_vlan_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^vlan[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting vlan interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating vlan interface $intf"
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
+
+
+sync_carp_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^carp[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting carp interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating carp interface $intf"
+            $SYSCTL -w net.inet.carp.allow=1
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
+
+
+sync_pfsync_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^pfsync[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting pfsync interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating pfsync interface $intf"
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+set_kernel_vars() {
+    :
+    $SYSCTL -w net.inet.ip.forwarding=1
+}
+
+prolog_commands() {
+    :
+    
+}
+
+epilog_commands() {
+    :
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    sync_vlan_interfaces 
+    sync_carp_interfaces carp0 carp1
+    $IFCONFIG carp0 vhid 101 pass secret    carpdev en0
+    $IFCONFIG carp1 vhid 100 pass secret    carpdev en1
+
+
+    update_addresses_of_interface "en0 172.24.0.2/0xffffff00 172.24.0.3/0xffffff00" ""
+    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
+    update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
+    update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
+
+    sync_pfsync_interfaces pfsync0
+    $IFCONFIG pfsync0 syncdev en0  syncpeer 172.24.0.3
+    $IFCONFIG pfsync0 up
+}
+
+log "Activating firewall script generated Fri Jan  7 13:02:11 2011 by vadim"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$PFCTL   \
+     -f \
+    ${FWDIR}/openbsd-1.conf || exit 1
+
+
+
+
+
+epilog_commands

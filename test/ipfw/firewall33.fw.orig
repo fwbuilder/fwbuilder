@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3425
 #
-#  Generated Tue Jan  4 11:17:57 2011 PST by vadim
+#  Generated Fri Jan  7 12:51:58 2011 PST by vadim
 #
 # files: * firewall33.fw
 #
@@ -163,7 +163,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Tue Jan  4 11:17:57 2011 by vadim"
+log "Activating firewall script generated Fri Jan  7 12:51:58 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -221,39 +221,40 @@ prolog_commands
 "$IPFW" add 220 set 1 permit all  from any  to any      keep-state  || exit 1
 # 
 # Rule  8 (global)
-"$IPFW" add 230 set 1 skipto 340 all  from any  to 74.125.19.99       || exit 1
-"$IPFW" add 240 set 1 skipto 340 all  from any  to 74.125.19.103       || exit 1
-"$IPFW" add 250 set 1 skipto 340 all  from any  to 74.125.19.104       || exit 1
-"$IPFW" add 260 set 1 skipto 340 all  from any  to 74.125.19.147       || exit 1
-"$IPFW" add 270 set 1 skipto 340 all  from any  to 157.166.224.25       || exit 1
-"$IPFW" add 280 set 1 skipto 340 all  from any  to 157.166.224.26       || exit 1
-"$IPFW" add 290 set 1 skipto 340 all  from any  to 157.166.226.25       || exit 1
-"$IPFW" add 300 set 1 skipto 340 all  from any  to 157.166.226.26       || exit 1
-"$IPFW" add 310 set 1 skipto 340 all  from any  to 157.166.255.18       || exit 1
-"$IPFW" add 320 set 1 skipto 340 all  from any  to 157.166.255.19       || exit 1
-"$IPFW" add 330 set 1 permit all  from any  to any      keep-state  || exit 1
+"$IPFW" add 230 set 1 skipto 350 all  from any  to 74.125.224.48       || exit 1
+"$IPFW" add 240 set 1 skipto 350 all  from any  to 74.125.224.49       || exit 1
+"$IPFW" add 250 set 1 skipto 350 all  from any  to 74.125.224.50       || exit 1
+"$IPFW" add 260 set 1 skipto 350 all  from any  to 74.125.224.51       || exit 1
+"$IPFW" add 270 set 1 skipto 350 all  from any  to 74.125.224.52       || exit 1
+"$IPFW" add 280 set 1 skipto 350 all  from any  to 157.166.224.25       || exit 1
+"$IPFW" add 290 set 1 skipto 350 all  from any  to 157.166.224.26       || exit 1
+"$IPFW" add 300 set 1 skipto 350 all  from any  to 157.166.226.25       || exit 1
+"$IPFW" add 310 set 1 skipto 350 all  from any  to 157.166.226.26       || exit 1
+"$IPFW" add 320 set 1 skipto 350 all  from any  to 157.166.255.18       || exit 1
+"$IPFW" add 330 set 1 skipto 350 all  from any  to 157.166.255.19       || exit 1
+"$IPFW" add 340 set 1 permit all  from any  to any      keep-state  || exit 1
 # 
 # Rule  9 (global)
-"$IPFW" add 340 set 1 skipto 370 all  from any  to www.google.com       || exit 1
-"$IPFW" add 350 set 1 skipto 370 all  from any  to www.cnn.com       || exit 1
-"$IPFW" add 360 set 1 permit all  from any  to any      keep-state  || exit 1
+"$IPFW" add 350 set 1 skipto 380 all  from any  to www.google.com       || exit 1
+"$IPFW" add 360 set 1 skipto 380 all  from any  to www.cnn.com       || exit 1
+"$IPFW" add 370 set 1 permit all  from any  to any      keep-state  || exit 1
 # 
 # Rule  10 (global)
-"$IPFW" add 370 set 1 skipto 450 all  from any  to www.google.com       || exit 1
-"$IPFW" add 380 set 1 skipto 450 all  from any  to 157.166.224.25       || exit 1
-"$IPFW" add 390 set 1 skipto 450 all  from any  to 157.166.224.26       || exit 1
-"$IPFW" add 400 set 1 skipto 450 all  from any  to 157.166.226.25       || exit 1
-"$IPFW" add 410 set 1 skipto 450 all  from any  to 157.166.226.26       || exit 1
-"$IPFW" add 420 set 1 skipto 450 all  from any  to 157.166.255.18       || exit 1
-"$IPFW" add 430 set 1 skipto 450 all  from any  to 157.166.255.19       || exit 1
-"$IPFW" add 440 set 1 permit all  from any  to any      keep-state  || exit 1
+"$IPFW" add 380 set 1 skipto 460 all  from any  to www.google.com       || exit 1
+"$IPFW" add 390 set 1 skipto 460 all  from any  to 157.166.224.25       || exit 1
+"$IPFW" add 400 set 1 skipto 460 all  from any  to 157.166.224.26       || exit 1
+"$IPFW" add 410 set 1 skipto 460 all  from any  to 157.166.226.25       || exit 1
+"$IPFW" add 420 set 1 skipto 460 all  from any  to 157.166.226.26       || exit 1
+"$IPFW" add 430 set 1 skipto 460 all  from any  to 157.166.255.18       || exit 1
+"$IPFW" add 440 set 1 skipto 460 all  from any  to 157.166.255.19       || exit 1
+"$IPFW" add 450 set 1 permit all  from any  to any      keep-state  || exit 1
 # 
 # Rule  11 (global)
-"$IPFW" add 450 set 1 drop    log all  from any  to any       || exit 1
+"$IPFW" add 460 set 1 drop    log all  from any  to any       || exit 1
 # 
 # Rule  fallback rule
 #    fallback rule 
-"$IPFW" add 460 set 1 drop   all  from any  to any       || exit 1
+"$IPFW" add 470 set 1 drop   all  from any  to any       || exit 1
 
 epilog_commands
 

@@ -343,31 +343,43 @@ bool NATCompiler::ExpandMultipleAddresses::processNext()
     tmp_queue.push_back(rule);
 
     RuleElement *rel;
-    if (rule->getRuleType()==NATRule::NONAT ||
-        rule->getRuleType()==NATRule::Return)
+
+    switch (rule->getRuleType())
+    {
+    case NATRule::NONAT:
+    case NATRule::Return:
     {
 	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
 	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
+        break;
     }
-    if (rule->getRuleType()==NATRule::SNAT)
+
+    case NATRule::SNAT:
+    case NATRule::SDNAT:
     {
 	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
 	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
 	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
 	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+        break;
     }
-    if (rule->getRuleType()==NATRule::DNAT)
+
+    case NATRule::DNAT:
     {
 	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
 	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
 	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
 	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+        break;
     }
-    if (rule->getRuleType()==NATRule::Redirect)
+
+    case NATRule::Redirect:
     {
 	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
 	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
 	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
+        break;
+    }
     }
     return true;
 }
