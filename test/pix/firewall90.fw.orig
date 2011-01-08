@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Fri Jan  7 16:23:21 2011 PST by vadim
+!  Generated Fri Jan  7 16:23:22 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -11,10 +11,10 @@
 ! Generating outbound ACLs: no
 ! Assume firewall is part of any: yes
 !
-!# files: * firewall83.fw
+!# files: * firewall90.fw
 !
-! test for the warning issued when translated address is used in
-! policy rule. Here we have SNAT rule and warning should not be issued
+! testing new style ASA 8.3 nat commands
+! SNAT rules
 
 
 
@@ -92,34 +92,8 @@ clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
-
-object-group service inside.id923813X27607.srv.0
- service-object icmp 
- service-object tcp range 0 65535
- exit
-
 ! 
 ! Rule  0 (global)
-! matching "any" icmp and "all" tcp 
-! in one service-group
-! 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
-! 
-! Rule  1 (FastEthernet1)
-! test rule using translated address in dst
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  2 (global)
-! test rule using translated address in dst
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  3 (global)
-! test rule using translated address in dst
-access-list inside_acl_in permit tcp any host 192.168.1.1 eq 80 
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  4 (global)
 access-list inside_acl_in deny   ip any any 
 access-list outside_acl_in deny   ip any any 
 
@@ -131,15 +105,58 @@ clear xlate
 clear config nat
 clear config object
 
-object network hostA:eth0
-  host 192.168.1.10
+object network Internal_net
+  subnet 192.168.1.0 255.255.255.0
 quit
 object service http
   service tcp destination eq 80
 quit
+object network hostA:eth0
+  host 192.168.1.10
+quit
+object network spamhost1
+  host 61.150.47.112
+quit
+object service smtp
+  service tcp destination eq 25
+quit
+object network firewall90:FastEthernet1:ip-1
+  host 22.22.22.23
+quit
+object network internal_subnet_1
+  subnet 192.168.1.0 255.255.255.192
+quit
+object network internal_subnet_2
+  subnet 192.168.1.64 255.255.255.192
+quit
+object network test_range_1
+  range 192.168.1.11 192.168.1.15
+quit
+object network external_gw_1
+  host 22.22.22.254
+quit
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source dynamic hostA:eth0 interface service http http
+nat (inside,outside) source dynamic Internal_net interface service http http
+! 
+! Rule  1 (NAT)
+nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 service smtp smtp
+! 
+! Rule  2 (NAT)
+nat (inside,outside) source dynamic hostA:eth0 interface service smtp smtp
+! 
+! Rule  3 (NAT)
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (inside,outside) source dynamic internal_subnet_2 firewall90:FastEthernet1:ip-1 service smtp smtp
+! 
+! Rule  4 (NAT)
+nat (inside,outside) source dynamic test_range_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 service smtp smtp
+! 
+! Rule  5 (NAT)
+! double nat. Not supported yet, but with
+! double nat feature in asa 8,3 we could 
+! support them
+nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 external_gw_1 service smtp smtp
 
 
 

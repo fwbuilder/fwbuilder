@@ -1,3 +1,16 @@
+2011-01-07  vadim  <vadim@netcitadel.com>
+
+	* ASA8Object.cpp (ASA8Object): refs #1885 "named network and
+	service objects in pix8". So far, these objects are only used
+	for nat configuration.
+
+	* NATCompiler_asa8_writers.cpp (processNext): fixes #1903 "correct
+	order of clear commands for ASA 8.3"
+
+	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1886 "new nat
+	configuration in pix 8.3". Initial support for new style nat
+	configuation.
+
 2011-01-04  vadim  <vadim@netcitadel.com>
 
 	* platform/fwsm.xml: FWSM v4.x does not have "fixup" command, instead,

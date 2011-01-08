@@ -64,6 +64,121 @@ NATCompiler_asa8::NATCompiler_asa8(FWObjectDatabase *_db,
 { 
 }
 
+bool NATCompiler_asa8::VerifyRules::processNext()
+{
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+    string version = compiler->fw->getStr("version");
+
+    // if (rule->getRuleType()==NATRule::SDNAT) 
+    // {
+    //     compiler->abort(
+    //         rule, 
+    //         "Rules that translate both source and destination are not supported.");
+    //     return true;
+    // }
+
+
+    RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
+    RuleElementODst  *odst=rule->getODst();  assert(odst);
+    RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
+
+    RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
+    RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
+    RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
+
+    if (rule->getRuleType()==NATRule::LB)
+    {
+        compiler->abort(
+            rule, 
+            "Load balancing rules are not supported.");
+        return true;
+    }
+
+    if (rule->getRuleType()==NATRule::NONAT && (!osrv->isAny() || !tsrv->isAny()))
+    {
+        compiler->abort(
+                rule, 
+                "'no nat' rules should have no services");
+        return true;
+    }
+
+    if (osrc->getNeg() ||
+        odst->getNeg() ||
+        osrv->getNeg() ||
+        tsrc->getNeg() ||
+        tdst->getNeg() ||
+        tsrv->getNeg())
+    {
+        compiler->abort(
+                rule, 
+                "Negation is not supported in NAT rules.");
+        return true;
+    }
+
+    if (osrv->size()!=1 && !tsrv->isAny())
+    {
+        compiler->abort(
+            rule, 
+            "Can not translate multiple services into one service in one rule. ");
+        return true;
+    }
+
+    if (tsrv->size()!=1)
+    {
+        compiler->abort(
+            rule, 
+            "Translated service should be 'Original' or should contain "
+            "single object.");
+        return true;
+    }
+
+    if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
+    {
+        compiler->abort(
+                rule, 
+                "Can not use group in translated service.");
+        return true;
+    }
+
+    if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 
+    {
+        Network *a1=Network::cast(compiler->getFirstOSrc(rule));
+        Network *a2=Network::cast(compiler->getFirstTSrc(rule));
+        if ( a1==NULL || a2==NULL ||
+             a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
+            compiler->abort(
+                rule, 
+                "Original and translated source should both be networks "
+                "of the same size");
+            return true;
+        }
+    }
+
+    if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
+    {
+        Network *a1=Network::cast(compiler->getFirstODst(rule));
+        Network *a2=Network::cast(compiler->getFirstTDst(rule));
+        if ( a1==NULL || a2==NULL ||
+             a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
+            compiler->abort(
+                rule, 
+                "Original and translated destination should both be networks "
+                "of the same size.");
+            return true;
+        }
+    }
+
+    if (rule->getRuleType()==NATRule::SNetnat) rule->setRuleType(NATRule::SNAT);
+    if (rule->getRuleType()==NATRule::DNetnat) rule->setRuleType(NATRule::DNAT);
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 void NATCompiler_asa8::compile()
 {
     info(" Compiling NAT rules for " + fw->getName());

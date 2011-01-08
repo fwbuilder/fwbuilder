@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Thu Jan  6 15:03:08 2011 PST by vadim
+!  Generated Fri Jan  7 16:23:20 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -133,13 +133,18 @@ access-group inside_acl_in in interface inside
 access-group outside_acl_in in interface outside
 
 clear xlate
-clear config static
-clear config global
 clear config nat
+clear config object
+
+object service http
+  service tcp destination eq 80
+quit
+object network hostA:eth0
+  host 192.168.1.10
+quit
 ! 
 ! Rule  0 (NAT)
-access-list id923688X27607.0 permit tcp host 192.168.1.10  eq 80 any 
-static (inside,outside) tcp interface 80  access-list id923688X27607.0 tcp 0 0
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
 
 
 

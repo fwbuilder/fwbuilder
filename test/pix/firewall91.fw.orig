@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3425
 !
-!  Generated Fri Jan  7 16:23:21 2011 PST by vadim
+!  Generated Fri Jan  7 16:23:22 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -11,10 +11,10 @@
 ! Generating outbound ACLs: no
 ! Assume firewall is part of any: yes
 !
-!# files: * firewall83.fw
+!# files: * firewall91.fw
 !
-! test for the warning issued when translated address is used in
-! policy rule. Here we have SNAT rule and warning should not be issued
+! testing new style ASA 8.3 nat commands
+! DNAT rules
 
 
 
@@ -92,34 +92,8 @@ clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
-
-object-group service inside.id923813X27607.srv.0
- service-object icmp 
- service-object tcp range 0 65535
- exit
-
 ! 
 ! Rule  0 (global)
-! matching "any" icmp and "all" tcp 
-! in one service-group
-! 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id923813X27607.srv.0 
-! 
-! Rule  1 (FastEthernet1)
-! test rule using translated address in dst
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  2 (global)
-! test rule using translated address in dst
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  3 (global)
-! test rule using translated address in dst
-access-list inside_acl_in permit tcp any host 192.168.1.1 eq 80 
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
-! 
-! Rule  4 (global)
 access-list inside_acl_in deny   ip any any 
 access-list outside_acl_in deny   ip any any 
 
@@ -137,9 +111,24 @@ quit
 object service http
   service tcp destination eq 80
 quit
+object service squid
+  service tcp destination eq 3128
+quit
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source dynamic hostA:eth0 interface service http http
+nat (outside,inside) source static any any destination static interface hostA:eth0
+! 
+! Rule  1 (NAT)
+nat (outside,inside) source static any any destination static interface hostA:eth0
+! 
+! Rule  2 (NAT)
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
+! 
+! Rule  3 (NAT)
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
+! 
+! Rule  4 (NAT)
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
 
 
 

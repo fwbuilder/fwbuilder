@@ -385,6 +385,7 @@ namespace fwcompiler {
             virtual bool processNext();
             virtual void printNONAT(libfwbuilder::NATRule *rule);
             virtual void printSNAT(libfwbuilder::NATRule *rule);
+            virtual void printSDNAT(libfwbuilder::NATRule *rule);
             virtual void printDNAT(libfwbuilder::NATRule *rule);
             
         };

@@ -556,8 +556,7 @@
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
             <clear_xlate>clear xlate</clear_xlate>
-            <clear_static></clear_static>
-            <clear_global>clear config object</clear_global>
+            <clear_object>clear config object</clear_object>
             <clear_nat>clear config nat</clear_nat>
           </pix_commands>
     

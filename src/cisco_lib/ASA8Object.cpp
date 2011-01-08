@@ -81,25 +81,30 @@ QString ASA8Object::createNetworkObjectCommand(const Address *addr_obj)
 
     res << QString("object network %1") .arg(name);
 
-    if (IPv4::isA(addr_obj) && Interface::isA(addr_obj->getParent()))
+    if (AddressRange::isA(addr_obj))
     {
-        string addr = addr_obj->getAddressPtr()->toString();
-        res << QString("  host %1").arg(addr.c_str());
+        const AddressRange *ar = AddressRange::constcast(addr_obj);
+        res << QString("  range %1 %2")
+            .arg(ar->getRangeStart().toString().c_str())
+            .arg(ar->getRangeEnd().toString().c_str());
     } else
     {
-        if (AddressRange::isA(addr_obj))
+        string addr = addr_obj->getAddressPtr()->toString();
+
+        if (IPv4::isA(addr_obj))
         {
-            const AddressRange *ar = AddressRange::constcast(addr_obj);
-            res << QString("  range %1 %2")
-                .arg(ar->getRangeStart().toString().c_str())
-                .arg(ar->getRangeEnd().toString().c_str());
-        } else
+            res << QString("  host %1").arg(addr.c_str());
+        }
+
+        if (Network::isA(addr_obj))
         {
-            string addr = addr_obj->getAddressPtr()->toString();
             string netm = addr_obj->getNetmaskPtr()->toString();
-            res << QString("  subnet %1 %2").arg(addr.c_str()).arg(netm.c_str());
+            res << QString("  subnet %1 %2")
+                .arg(addr.c_str())
+                .arg(netm.c_str());
         }
     }
+
 
     res << "quit";
     res << "";

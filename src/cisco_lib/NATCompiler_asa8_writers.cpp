@@ -50,16 +50,18 @@ using namespace std;
 
 void NATCompiler_asa8::addASA8Object(const FWObject *obj)
 {
-    ASA8Object *asa8obj = new ASA8Object(obj);
-    output << asa8obj->getCommand().toStdString();
-    asa8_object_registry[obj->getId()] = asa8obj;
+    if (asa8_object_registry[obj->getId()] == NULL)
+    {
+        ASA8Object *asa8obj = new ASA8Object(obj);
+        output << asa8obj->getCommand().toStdString();
+        asa8_object_registry[obj->getId()] = asa8obj;
+    }
 }
         
 ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
 {
     return asa8_object_registry[obj->getId()];
 }
-
 
 bool NATCompiler_asa8::PrintObjectsForNat::processNext()
 {
@@ -72,17 +74,52 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
 
     compiler->output << endl;
 
-    std::map<int,NATCmd*>::iterator it;
-    for (it=pix_comp->nat_commands.begin(); it!=pix_comp->nat_commands.end(); ++it)
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
-        NATCmd *natcmd = it->second;
+        NATRule *rule = NATRule::cast( *k );
+        // NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
-        pix_comp->addASA8Object(natcmd->o_src);
-        pix_comp->addASA8Object(natcmd->o_dst);
-        pix_comp->addASA8Object(natcmd->t_addr);
-        pix_comp->addASA8Object(natcmd->o_srv);
+        Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+        Address  *odst = compiler->getFirstODst(rule);  assert(odst);
+        Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+                                      
+        Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+        Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
+        Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
+        pix_comp->addASA8Object(osrc);
+        pix_comp->addASA8Object(odst);
+        pix_comp->addASA8Object(osrv);
+        pix_comp->addASA8Object(tsrc);
+        pix_comp->addASA8Object(tdst);
+        pix_comp->addASA8Object(tsrv);
+    }
 
+    return true;
+}
+
+bool NATCompiler_asa8::PrintClearCommands::processNext()
+{
+    string version = compiler->fw->getStr("version");
+    string platform = compiler->fw->getStr("platform");
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    compiler->output << endl;
+
+    if ( !compiler->fw->getOptionsObject()->getBool("pix_acl_no_clear") &&
+         !compiler->inSingleRuleCompileMode())
+    {
+        compiler->output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version + "/pix_commands/clear_xlate") << endl;
+        compiler->output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version + "/pix_commands/clear_nat") << endl;
+        compiler->output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version+"/pix_commands/clear_object") << endl;
     }
 
     return true;
@@ -100,42 +137,72 @@ void NATCompiler_asa8::PrintRule::printNONAT(libfwbuilder::NATRule *rule)
 
 void NATCompiler_asa8::PrintRule::printSNAT(libfwbuilder::NATRule *rule)
 {
+    printSDNAT(rule);
+}
+
+void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
+{
+    printSDNAT(rule);
+}
+
+void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
+{
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-    NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
+    // NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
+
     QStringList cmd;
 
-    cmd << QString("nat (%1,%2)")
-        .arg(natcmd->o_iface->getLabel().c_str())
-        .arg(natcmd->t_iface->getLabel().c_str());
+    Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+    Address  *odst = compiler->getFirstODst(rule);  assert(odst);
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+                                      
+    Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+    Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
+    Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    cmd << "source" <<  "dynamic";
-    cmd << pix_comp->getASA8Object(natcmd->o_src)->getCommandWord();
-    cmd << pix_comp->getASA8Object(natcmd->t_addr)->getCommandWord();
+    Interface *o_iface = Interface::cast(compiler->dbcopy->findInIndex(
+                                             rule->getInt("nat_iface_orig")));
+    Interface *t_iface = Interface::cast(compiler->dbcopy->findInIndex(
+                                             rule->getInt("nat_iface_trn")));
+
+    cmd << QString("nat (%1,%2)")
+        .arg(o_iface->getLabel().c_str())
+        .arg(t_iface->getLabel().c_str());
+
+    cmd << "source";
+
+    if (!tsrc->isAny()) cmd << "dynamic";
+    else cmd << "static";
+
+    cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
+    cmd << pix_comp->getASA8Object(tsrc)->getCommandWord();
 
     // only need "destination" part if ODst is not any
-    if (!natcmd->o_dst->isAny())
+    if (!odst->isAny())
     {
+        // ASA documentation says destination translation is always "static"
         cmd << "destination" << "static";
-        cmd << pix_comp->getASA8Object(natcmd->o_dst)->getCommandWord();
-        // the same object second time. If this is different object, the rule
-        // defines destination translation as well (DNAT or SDNAT in our terms)
-        cmd << pix_comp->getASA8Object(natcmd->o_dst)->getCommandWord();
+        cmd << pix_comp->getASA8Object(odst)->getCommandWord();
+
+        if (tdst->isAny())
+            cmd << pix_comp->getASA8Object(odst)->getCommandWord();
+        else
+            cmd << pix_comp->getASA8Object(tdst)->getCommandWord();
     }
 
-    if (!natcmd->o_srv->isAny())
+    if (!osrv->isAny())
     {
         cmd << "service";
-        cmd << pix_comp->getASA8Object(natcmd->o_srv)->getCommandWord();
-        // so far we do not support service translation in SNAT rules.
-        // Therefore add the same service object second time
-        cmd << pix_comp->getASA8Object(natcmd->o_srv)->getCommandWord();
+        cmd << pix_comp->getASA8Object(osrv)->getCommandWord();
+        if (tsrv->isAny())
+            cmd << pix_comp->getASA8Object(osrv)->getCommandWord();
+        else
+            cmd << pix_comp->getASA8Object(tsrv)->getCommandWord();
     }
 
     compiler->output << cmd.join(" ").toStdString() << endl;
 }
 
-void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
-{
-}
+
 
 

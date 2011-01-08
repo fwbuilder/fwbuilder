@@ -199,7 +199,7 @@ string NATCompiler_pix::PrintRule::_printConnOptions(NATRule *rule)
 
 
 
-void NATCompiler_pix::PrintRule::printNONAT(libfwbuilder::NATRule *rule)
+void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
 {
     Helper helper(compiler);
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
@@ -298,7 +298,7 @@ void NATCompiler_pix::PrintRule::printNONAT(libfwbuilder::NATRule *rule)
     }
 }
 
-void NATCompiler_pix::PrintRule::printSNAT(libfwbuilder::NATRule *rule)
+void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
 {
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
     NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
@@ -422,7 +422,11 @@ void NATCompiler_pix::PrintRule::printSNAT(libfwbuilder::NATRule *rule)
     }
 }
 
-void NATCompiler_pix::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
+void NATCompiler_pix::PrintRule::printSDNAT(NATRule*)
+{
+}
+
+void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
 {
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
     string platform = compiler->fw->getStr("platform");
@@ -579,6 +583,12 @@ bool NATCompiler_pix::PrintRule::processNext()
     case NATRule::SNAT:
     {
         printSNAT(rule);
+        break;
+    }
+
+    case NATRule::SDNAT:
+    {
+        printSDNAT(rule);
         break;
     }
 

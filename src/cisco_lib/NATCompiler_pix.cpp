@@ -224,8 +224,8 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
     case NATRule::SNAT:
     {
         if ( ! rule->exists("nat_cmd") ) break;
-        NATCmd *natcmd=nat_commands[ rule->getInt("nat_cmd") ];
-        if (natcmd!=NULL)
+        NATCmd *natcmd = nat_commands[ rule->getInt("nat_cmd") ];
+        if (natcmd != NULL)
         {
             os <<" NATCmd: ";
             os << " rule=[" << natcmd->rule_label << "]";
@@ -446,7 +446,7 @@ bool NATCompiler_pix::AssignInterface::processNext()
     Address  *a1 = NULL;
     Address  *a2 = NULL;
 
-    if (rule->getRuleType()==NATRule::SNAT)
+    if (rule->getRuleType()==NATRule::SNAT || rule->getRuleType()==NATRule::SDNAT)
     {
 	a1 = compiler->getFirstOSrc(rule);
 	a2 = compiler->getFirstTSrc(rule);
@@ -897,8 +897,8 @@ bool NATCompiler_pix::processNONATRules::processNext()
 bool NATCompiler_pix::createNATCmd::processNext()
 {
 //    Helper helper(compiler);
-    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
+    NATRule *rule = getNext(); if (rule==NULL) return false;
 
     bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
     Cluster *cluster = NULL;
@@ -908,15 +908,15 @@ bool NATCompiler_pix::createNATCmd::processNext()
 
     if (rule->getRuleType()==NATRule::SNAT) 
     {
-	Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
-	Address  *odst=compiler->getFirstODst(rule);  assert(osrc);
-	Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
-	Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
+	Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+	Address  *odst = compiler->getFirstODst(rule);  assert(osrc);
+	Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+	Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
 
-	NATCmd *natcmd=new NATCmd();
+	NATCmd *natcmd = new NATCmd();
 
-        natcmd->nat_id=nat_id_counter;
-        natcmd->rule_label=rule->getLabel();
+        natcmd->nat_id = nat_id_counter;
+        natcmd->rule_label = rule->getLabel();
 
         natcmd->o_src   = osrc;
         natcmd->o_dst   = odst;
@@ -1030,7 +1030,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
     {
         NATRule *rule = NATRule::cast( *k );
 
-        if (rule->getRuleType()==NATRule::DNAT)
+        if (rule->getRuleType() == NATRule::DNAT)
         {
             StaticCmd *scmd = pix_comp->static_commands[rule->getInt("sc_cmd")];
 
@@ -1057,7 +1057,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
             }
         }
 
-	if (rule->getRuleType()==NATRule::SNAT) 
+	if (rule->getRuleType()==NATRule::SNAT)
         { 
             NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
@@ -1366,20 +1366,19 @@ bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
 
     if (rule->getRuleType()== NATRule::SNAT )
     {
-        NATCmd *natcmd=pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
+        NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
         if (natcmd->ignore_global) return true;
 
-        if (natcmd->type!= INTERFACE) 
+        if (natcmd->type != INTERFACE)
         {
             if (checkOverlapping(*(natcmd->t_addr),
                                  *(natcmd->t_iface->getAddressPtr())))
                 compiler->abort(
-                    
-                        rule, 
-                        "Global pool "
-                        +printGlobalPoolAddress(*(natcmd->t_addr)) 
-                        +" overlaps with interface address.");
+                    rule, 
+                    "Global pool "
+                    + printGlobalPoolAddress(*(natcmd->t_addr)) 
+                    + " overlaps with interface address.");
 
             if (checkOverlapping(*(natcmd->t_addr),
                                  *(natcmd->t_iface->getBroadcastAddressPtr()))
@@ -1387,11 +1386,10 @@ bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
                 checkOverlapping(*(natcmd->t_addr),
                                  *(natcmd->t_iface->getAddressPtr())) )
                 compiler->warning(
-                    
-                        rule, 
-                        "Global pool "
-                        +printGlobalPoolAddress(*(natcmd->t_addr)) 
-                        +" overlaps with broadcast address.");
+                    rule, 
+                    "Global pool "
+                    + printGlobalPoolAddress(*(natcmd->t_addr)) 
+                    + " overlaps with broadcast address.");
         }
 
         for (map<int,NATCmd*>::iterator i1=pix_comp->nat_commands.begin();
@@ -1412,13 +1410,12 @@ bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
                 if ( ! fwcompiler::_find_obj_intersection(natcmd->t_addr,nc->t_addr).empty() )
                 {
                     compiler->abort(
-                        
-                            rule, 
-                            string("Global pool overlap: ")
-                            + rule->getLabel() + " : "
-                            + printGlobalPoolAddress(*(natcmd->t_addr)) 
-                            + nc->rule_label + " : "
-                            + printGlobalPoolAddress(*(nc->t_addr)) );
+                        rule, 
+                        string("Global pool overlap: ")
+                        + rule->getLabel() + " : "
+                        + printGlobalPoolAddress(*(natcmd->t_addr)) 
+                        + nc->rule_label + " : "
+                        + printGlobalPoolAddress(*(nc->t_addr)) );
                 }
             }
 

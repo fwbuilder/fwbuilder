@@ -48,8 +48,37 @@ namespace fwcompiler {
         std::string createServiceObjectCommand(libfwbuilder::Service *addr);
 
         
+        /**
+         *  verifies correctness of the NAT rules. Some rule types
+         *  that were not supported in PIX v <8.3 are supported now,
+         *  so this rule processor is slightly different from
+         *  NATCompiler_pix::VerifyRules
+         */
+        DECLARE_NAT_RULE_PROCESSOR(VerifyRules);
+
         DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
             
+	/**
+	 * this processor accumulates all rules fed to it by previous
+	 * processors, then prints PIX commands to clear
+	 * access-lists, then feeds all rules to the next
+	 * processor. Usually this processor is in chain right
+	 * before PrintRules.
+         *
+         * We use this processor to print "clear" commands because
+         * they need to be generated when all access lists have been
+         * created but before they are printed.
+         *
+         * "Clear" commands on ASA 8.3 are different from older PIX.
+	 */
+        class PrintClearCommands : public NATRuleProcessor
+        {
+            public:
+            PrintClearCommands(const std::string &n) : NATRuleProcessor(n) {}
+            virtual bool processNext();
+        };
+        friend class NATCompiler_pix::PrintClearCommands;
+
         /**
          *  prints single policy rule, assuming all groups have been
          *  expanded, so source, destination and service hold exactly
@@ -65,6 +94,7 @@ namespace fwcompiler {
             PrintRule(const std::string &n);
             virtual void printNONAT(libfwbuilder::NATRule *rule);
             virtual void printSNAT(libfwbuilder::NATRule *rule);
+            virtual void printSDNAT(libfwbuilder::NATRule *rule);
             virtual void printDNAT(libfwbuilder::NATRule *rule);
         };
         friend class NATCompiler_asa8::PrintRule;
