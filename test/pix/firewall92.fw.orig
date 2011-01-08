@@ -1,0 +1,156 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3425
+!
+!  Generated Fri Jan  7 16:37:17 2011 PST by vadim
+!
+! Compiled for pix 8.3
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall92.fw
+!
+! testing new style ASA 8.3 nat commands
+! no-nat rules ("identity nat")
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+interface FastEthernet0
+  nameif inside
+  security-level 100
+exit
+
+interface FastEthernet1
+  nameif outside
+  security-level 0
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout sunrpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+policy-map type inspect ip-options ip-options-map
+parameters
+  eool action allow
+  router-alert action clear
+
+
+!################
+clear config access-list
+clear config object-group
+clear config icmp
+clear config telnet
+! 
+! Rule  0 (global)
+access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any 
+
+
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+clear xlate
+clear config nat
+clear config object
+
+object network Internal_net
+  subnet 192.168.1.0 255.255.255.0
+quit
+object service http
+  service tcp destination eq 80
+quit
+object network hostA:eth0
+  host 192.168.1.10
+quit
+object service smtp
+  service tcp destination eq 25
+quit
+object network spamhost1
+  host 61.150.47.112
+quit
+object network internal_subnet_1
+  subnet 192.168.1.0 255.255.255.192
+quit
+object network internal_subnet_2
+  subnet 192.168.1.64 255.255.255.192
+quit
+object network test_range_1
+  range 192.168.1.11 192.168.1.15
+quit
+! 
+! Rule  0 (NAT)
+nat (inside,outside) source static Internal_net Internal_net
+! 
+! Rule  1 (NAT)
+nat (inside,outside) source static hostA:eth0 hostA:eth0
+! 
+! Rule  2 (NAT)
+nat (inside,outside) source static hostA:eth0 hostA:eth0 destination static spamhost1 spamhost1
+! 
+! Rule  3 (NAT)
+nat (inside,outside) source static internal_subnet_1 internal_subnet_1
+nat (inside,outside) source static internal_subnet_2 internal_subnet_2
+! 
+! Rule  4 (NAT)
+nat (inside,outside) source static test_range_1 test_range_1 destination static spamhost1 spamhost1
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

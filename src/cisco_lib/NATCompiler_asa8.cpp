@@ -94,13 +94,13 @@ bool NATCompiler_asa8::VerifyRules::processNext()
         return true;
     }
 
-    if (rule->getRuleType()==NATRule::NONAT && (!osrv->isAny() || !tsrv->isAny()))
-    {
-        compiler->abort(
-                rule, 
-                "'no nat' rules should have no services");
-        return true;
-    }
+    // if (rule->getRuleType()==NATRule::NONAT && (!osrv->isAny() || !tsrv->isAny()))
+    // {
+    //     compiler->abort(
+    //             rule, 
+    //             "'no nat' rules should have no services");
+    //     return true;
+    // }
 
     if (osrc->getNeg() ||
         odst->getNeg() ||

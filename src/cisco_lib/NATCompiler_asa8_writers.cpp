@@ -133,6 +133,7 @@ NATCompiler_asa8::PrintRule::PrintRule(const std::string &name) :
 
 void NATCompiler_asa8::PrintRule::printNONAT(libfwbuilder::NATRule *rule)
 {
+    printSDNAT(rule);
 }
 
 void NATCompiler_asa8::PrintRule::printSNAT(libfwbuilder::NATRule *rule)
@@ -171,11 +172,14 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 
     cmd << "source";
 
-    if (!tsrc->isAny()) cmd << "dynamic";
-    else cmd << "static";
+    if (tsrc->isAny()) cmd << "static";
+    else cmd << "dynamic";
 
     cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
-    cmd << pix_comp->getASA8Object(tsrc)->getCommandWord();
+    if (tsrc->isAny())
+        cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
+    else
+        cmd << pix_comp->getASA8Object(tsrc)->getCommandWord();
 
     // only need "destination" part if ODst is not any
     if (!odst->isAny())
@@ -190,7 +194,7 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
             cmd << pix_comp->getASA8Object(tdst)->getCommandWord();
     }
 
-    if (!osrv->isAny())
+    if (!osrv->isAny() && osrv->getId() != tsrv->getId())
     {
         cmd << "service";
         cmd << pix_comp->getASA8Object(osrv)->getCommandWord();
