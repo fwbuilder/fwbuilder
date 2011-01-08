@@ -23,18 +23,18 @@
 
 */
 
-#ifndef __PIX8OBJECTGROUP_HH
-#define __PIX8OBJECTGROUP_HH
+#ifndef __ASA8OBJECTGROUP_HH
+#define __ASA8OBJECTGROUP_HH
 
 #include "PIXObjectGroup.h"
 
 
-class PIX8ObjectGroup : public PIXObjectGroup {
+class ASA8ObjectGroup : public PIXObjectGroup {
     
     public:
-    PIX8ObjectGroup(object_group_type _gt=UNKNOWN) : PIXObjectGroup(_gt) { }
-    virtual ~PIX8ObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(PIX8ObjectGroup);
+    ASA8ObjectGroup(object_group_type _gt=UNKNOWN) : PIXObjectGroup(_gt) { }
+    virtual ~ASA8ObjectGroup() {};
+    DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
 
     virtual std::string getObjectGroupClass();
     virtual std::string getObjectGroupHeader();

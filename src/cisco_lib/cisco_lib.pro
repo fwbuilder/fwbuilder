@@ -40,7 +40,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			RoutingCompiler_procurve_acl.cpp   \
 			BaseObjectGroup.cpp              \
 			PIXObjectGroup.cpp               \
-			PIX8ObjectGroup.cpp              \
+			ASA8ObjectGroup.cpp              \
 			IOSObjectGroup.cpp               \
 			ObjectGroupFactory.cpp           \
 			PolicyCompiler_pix.cpp           \
@@ -71,7 +71,7 @@ HEADERS	 = ../../config.h                   \
 			RoutingCompiler_procurve_acl.h  \
 			BaseObjectGroup.h               \
 			PIXObjectGroup.h                \
-			PIX8ObjectGroup.h               \
+			ASA8ObjectGroup.h               \
 			IOSObjectGroup.h                \
 			ObjectGroupFactory.h            \
 			PolicyCompiler_pix.h            \

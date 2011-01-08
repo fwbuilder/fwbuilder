@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include "PIX8ObjectGroup.h"
+#include "ASA8ObjectGroup.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -40,9 +40,9 @@
 using namespace libfwbuilder;
 using namespace std;
 
-const char *PIX8ObjectGroup::TYPENAME={"PIX8ObjectGroup"};
+const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
-string PIX8ObjectGroup::toString()  throw(FWException)
+string ASA8ObjectGroup::toString()  throw(FWException)
 {
     ostringstream ostr;
 
@@ -130,7 +130,7 @@ string PIX8ObjectGroup::toString()  throw(FWException)
     return ostr.str();
 }
 
-string PIX8ObjectGroup::getObjectGroupClass()
+string ASA8ObjectGroup::getObjectGroupClass()
 {
     switch (this->getObjectGroupType()) 
     {
@@ -140,7 +140,7 @@ string PIX8ObjectGroup::getObjectGroupClass()
     }
 }
 
-string PIX8ObjectGroup::getObjectGroupHeader()
+string ASA8ObjectGroup::getObjectGroupHeader()
 {
     ostringstream ostr;
     ostr << "object-group " << getObjectGroupClass() << " " << this->getName();
