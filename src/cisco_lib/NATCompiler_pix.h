@@ -502,7 +502,8 @@ namespace fwcompiler {
                         libfwbuilder::Firewall *fw,
                         bool ipv6_policy,
                         fwcompiler::OSConfigurator *_oscnf);
-
+        virtual ~NATCompiler_pix();
+        
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();

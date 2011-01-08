@@ -73,6 +73,26 @@ NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
 { 
 }
 
+NATCompiler_pix::~NATCompiler_pix()
+{
+    std::map<int,NATCmd*>::iterator it1;
+    for (it1=nat_commands.begin(); it1!=nat_commands.end(); ++it1)
+    {
+        delete it1->second;
+    }
+    nat_commands.clear();
+
+    std::map<int,StaticCmd*>::iterator it2;
+    for (it2=static_commands.begin(); it2!=static_commands.end(); ++it2)
+    {
+        delete it2->second;
+    }
+    static_commands.clear();
+    nonat_rules.clear();
+    first_nonat_rule_id.clear();
+    if (final_ruleset != NULL) delete final_ruleset;
+
+}
 
 /*
  * Do not expand interfaces in ODst and TSrc

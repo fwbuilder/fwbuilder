@@ -1,5 +1,9 @@
 2011-01-07  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_pix.cpp (NATCompiler_pix): fixes #1901 "add
+	destructor to NATCompiler_pix and NATCompiler_asa8". This
+	eliminates memory leak.
+
 	* ASA8Object.cpp (ASA8Object): refs #1885 "named network and
 	service objects in pix8". So far, these objects are only used
 	for nat configuration.

@@ -57,6 +57,16 @@ void NATCompiler_asa8::addASA8Object(const FWObject *obj)
         asa8_object_registry[obj->getId()] = asa8obj;
     }
 }
+
+NATCompiler_asa8::~NATCompiler_asa8()
+{
+    std::map<int, ASA8Object*>::iterator it;
+    for (it=asa8_object_registry.begin(); it!=asa8_object_registry.end(); ++it)
+    {
+        delete it->second;
+    }
+    asa8_object_registry.clear();
+}
         
 ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
 {

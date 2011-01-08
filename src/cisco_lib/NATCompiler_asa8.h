@@ -105,7 +105,8 @@ namespace fwcompiler {
                          libfwbuilder::Firewall *fw,
                          bool ipv6_policy,
                          fwcompiler::OSConfigurator *_oscnf);
-
+        virtual ~NATCompiler_asa8();
+        
 	virtual void compile();
 
     };
