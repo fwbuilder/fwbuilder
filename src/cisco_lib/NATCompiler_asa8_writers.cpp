@@ -204,7 +204,7 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
             cmd << pix_comp->getASA8Object(tdst)->getCommandWord();
     }
 
-    if (!osrv->isAny() && osrv->getId() != tsrv->getId())
+    if (!osrv->isAny())
     {
         cmd << "service";
         cmd << pix_comp->getASA8Object(osrv)->getCommandWord();

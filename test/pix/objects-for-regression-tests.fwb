@@ -18558,7 +18558,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id20098X3981" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294445323" platform="pix" version="8.3" name="firewall91" comment="testing new style ASA 8.3 nat commands&#10;DNAT rules&#10;" ro="False">
+      <Firewall id="id20098X3981" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294767697" platform="pix" version="8.3" name="firewall91" comment="testing new style ASA 8.3 nat commands&#10;DNAT rules&#10;" ro="False">
         <NAT id="id20132X3981" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id20285X3981" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18602,7 +18602,28 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id128151X3981" disabled="False" group="" position="2" action="Translate" comment="">
+          <NATRule id="id455273X26333" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id23297X67574"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id128151X3981" disabled="False" group="" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -18623,7 +18644,28 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id128216X3981" disabled="False" group="" position="3" action="Translate" comment="">
+          <NATRule id="id183354X26333" disabled="False" group="" position="4" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id20111X3981"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id128216X3981" disabled="False" group="" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -18644,7 +18686,28 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id128251X3981" disabled="False" group="" position="4" action="Translate" comment="">
+          <NATRule id="id347522X26910" disabled="False" group="" position="6" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id20111X3981"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id128251X3981" disabled="False" group="" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -18662,6 +18725,50 @@ no sysopt nodnsalias outbound
             </TDst>
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id456798X26910" disabled="False" group="" position="8" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id20111X3981"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id493377X26910" disabled="False" group="" position="9" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id20111X3981"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FED69"/>
+              <ServiceRef ref="tcp-HTTP"/>
             </TSrv>
             <NATRuleOptions/>
           </NATRule>

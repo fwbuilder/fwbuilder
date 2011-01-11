@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3426
+!  Firewall Builder  fwb_pix v4.2.0.3427
 !
-!  Generated Mon Jan 10 17:32:13 2011 PST by vadim
+!  Generated Tue Jan 11 09:43:27 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -137,23 +137,23 @@ object network external_gw_1
 quit
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source dynamic Internal_net interface
+nat (inside,outside) source dynamic Internal_net interface service http http
 ! 
 ! Rule  1 (NAT)
-nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1
+nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 service smtp smtp
 ! 
 ! Rule  2 (NAT)
-nat (inside,outside) source dynamic hostA:eth0 interface
+nat (inside,outside) source dynamic hostA:eth0 interface service smtp smtp
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1
-nat (inside,outside) source dynamic internal_subnet_2 firewall90:FastEthernet1:ip-1
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (inside,outside) source dynamic internal_subnet_2 firewall90:FastEthernet1:ip-1 service smtp smtp
 ! 
 ! Rule  4 (NAT)
-nat (inside,outside) source dynamic test_range_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1
+nat (inside,outside) source dynamic test_range_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 service smtp smtp
 ! 
 ! Rule  5 (NAT)
-nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 external_gw_1
+nat (inside,outside) source dynamic hostA:eth0 firewall90:FastEthernet1:ip-1 destination static spamhost1 external_gw_1 service smtp smtp
 
 
 
