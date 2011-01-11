@@ -64,19 +64,43 @@ NATCompiler_asa8::NATCompiler_asa8(FWObjectDatabase *_db,
 { 
 }
 
+/*
+ * Option "translate dns" can not be used if the rule has "destination"
+ * part.
+ */
+bool NATCompiler_asa8::VerifyValidityOfDNSOption::processNext()
+{
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+    FWOptions *ropt = rule->getOptionsObject();
+
+    if (ropt->getBool("asa8_nat_dns"))
+    {
+        Address *odst = compiler->getFirstODst(rule);  assert(odst);
+        if (!odst->isAny())
+        {
+            compiler->abort(rule,
+                            "Option 'translate dns' can not be used in combination "
+                            "with destination matching or translation");
+        }
+
+        Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+        if (!osrv->isAny())
+        {
+            compiler->abort(rule,
+                            "Option 'translate dns' can not be used in combination "
+                            "with service matching or translation");
+        }
+
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 bool NATCompiler_asa8::VerifyRules::processNext()
 {
     NATRule *rule = getNext(); if (rule==NULL) return false;
     string version = compiler->fw->getStr("version");
-
-    // if (rule->getRuleType()==NATRule::SDNAT) 
-    // {
-    //     compiler->abort(
-    //         rule, 
-    //         "Rules that translate both source and destination are not supported.");
-    //     return true;
-    // }
-
 
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
@@ -263,6 +287,8 @@ void NATCompiler_asa8::compile()
     add( new verifyRuleElements(
              "verify rule elements for static NAT rules"));
     add( new processNONATRules("process NONAT" ));
+
+    add( new VerifyValidityOfDNSOption("Check validity of 'translate dns' option"));
 
 /* REMOVE_OLD_OPTIMIZATIONS
    if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))

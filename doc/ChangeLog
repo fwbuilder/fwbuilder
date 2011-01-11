@@ -1,5 +1,9 @@
 2011-01-11  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1902 "Add NAT
+	rule option "translate dns" for PIX". The option is only available
+	for ASA 8.3 or later.
+
 	* NATCompiler_asa8_writers.cpp (printSDNAT): fixed #1909 "ASA NAT
 	- static nat port translation where service is the same for
 	original service and translated service not generated correctly"

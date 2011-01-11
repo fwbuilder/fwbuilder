@@ -360,6 +360,11 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
                      ! opt->getBool("pf_round_robin")  &&
                      ! opt->getBool("pf_static_port") ) );
 	}
+
+	if (platform=="pix" || platform=="fwsm")
+        {
+            res = (!opt->getBool("asa8_nat_dns"));
+        }
     }
     return res;
 }

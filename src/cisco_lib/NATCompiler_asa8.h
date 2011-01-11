@@ -57,7 +57,12 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(VerifyRules);
 
         DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
-            
+
+        /*
+         * Check if "translate dns" option can be used with the rule
+         */
+        DECLARE_NAT_RULE_PROCESSOR(VerifyValidityOfDNSOption);
+
 	/**
 	 * this processor accumulates all rules fed to it by previous
 	 * processors, then prints PIX commands to clear

@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3427
 !
-!  Generated Tue Jan 11 10:26:15 2011 PST by vadim
+!  Generated Tue Jan 11 10:54:21 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -16,7 +16,8 @@
 ! testing new style ASA 8.3 nat commands
 ! SNAT rules
 
-
+! N firewall90:NAT:10: error: Option 'translate dns' can not be used in combination with destination matching or translation
+! N firewall90:NAT:11: error: Option 'translate dns' can not be used in combination with service matching or translation
 
 !
 ! Prolog script:
@@ -180,6 +181,22 @@ nat (inside,outside) source dynamic hostA:eth0 external_gw2 service smtp smtp
 ! For #1907
 nat (inside,outside) source dynamic hostA:eth0 outside_range service smtp smtp
 nat (inside,outside) source dynamic hostA:eth0 interface service smtp smtp
+! 
+! Rule  9 (NAT)
+! for #1902
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 dns
+! 
+! Rule  10 (NAT)
+! for #1902
+! can't use dns with destination matching or translation
+! firewall90:NAT:10: error: Option 'translate dns' can not be used in combination with destination matching or translation
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 dns
+! 
+! Rule  11 (NAT)
+! for #1902
+! cant use dns with service translation either
+! firewall90:NAT:11: error: Option 'translate dns' can not be used in combination with service matching or translation
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp dns
 
 
 

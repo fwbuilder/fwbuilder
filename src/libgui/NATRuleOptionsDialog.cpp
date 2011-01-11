@@ -71,11 +71,13 @@ void NATRuleOptionsDialog::getHelpName(QString *str)
 
 void NATRuleOptionsDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
+    obj = o;
 
-    FWObject *p=obj;
-    while ( !Firewall::cast(p) ) p=p->getParent();
-    platform=p->getStr("platform").c_str();
+    FWObject *p = obj;
+    while ( !Firewall::cast(p) ) p = p->getParent();
+    platform = p->getStr("platform").c_str();
+
+    string version = p->getStr("version");
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
@@ -85,10 +87,10 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
     //         .arg(rule->getTypeName().c_str())
     //         .arg(rule->getPosition()));
 
-    int wid=0;
+    int wid = 0;
     if (platform=="ipf")      wid=0;
     if (platform=="ipfw")     wid=0;
-    if (platform=="pix" || platform=="fwsm") wid=0;
+    if (platform=="pix" || platform=="fwsm") wid = 3;
     if (platform=="iptables") wid=1;
     if (platform=="pf")       wid=2;
 
@@ -102,12 +104,12 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipt_use_snat_instead_of_masq, ropt,
                             "ipt_use_snat_instead_of_masq");
         data.registerOption(m_dialog->ipt_nat_random, ropt, "ipt_nat_random");
-        data.registerOption(m_dialog->ipt_nat_persistent, ropt, "ipt_nat_persistent");
+        data.registerOption(m_dialog->ipt_nat_persistent,ropt,"ipt_nat_persistent");
     }
 
     if (platform=="pf")
     {
-        data.registerOption(m_dialog->pf_pool_type_none, ropt,  "pf_pool_type_none" );
+        data.registerOption(m_dialog->pf_pool_type_none, ropt, "pf_pool_type_none");
         data.registerOption(m_dialog->pf_bitmask       , ropt,  "pf_bitmask" );
         data.registerOption(m_dialog->pf_random        , ropt,  "pf_random" );
         data.registerOption(m_dialog->pf_source_hash   , ropt,  "pf_source_hash" );
@@ -115,7 +117,14 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->pf_static_port   , ropt,  "pf_static_port" );
     }
 
-    init=true;
+    if (platform=="pix" || platform=="fwsm")
+    {
+        m_dialog->asa8_nat_dns->setEnabled(
+            libfwbuilder::XMLTools::version_compare(version,"8.3")>=0);
+        data.registerOption(m_dialog->asa8_nat_dns   , ropt,  "asa8_nat_dns" );
+    }
+
+    init = true;
     data.loadAll();
     //apply->setEnabled( false );
     init=false;

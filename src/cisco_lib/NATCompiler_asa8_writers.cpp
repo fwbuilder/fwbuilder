@@ -161,6 +161,8 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
     // NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
+    FWOptions *ropt = rule->getOptionsObject();
+
     QStringList cmd;
 
     Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
@@ -213,6 +215,8 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
         else
             cmd << pix_comp->getASA8Object(tsrv)->getCommandWord();
     }
+
+    if (ropt->getBool("asa8_nat_dns")) cmd << "dns";
 
     compiler->output << cmd.join(" ").toStdString() << endl;
 }
