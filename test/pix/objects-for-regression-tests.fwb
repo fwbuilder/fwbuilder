@@ -18228,7 +18228,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294446761" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294770341" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18356,6 +18356,80 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id130599X29063" disabled="False" group="" position="6" action="Translate" comment="For #1907&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3D196750"/>
+              <ObjectRef ref="id19855X26146"/>
+              <ObjectRef ref="id23297X67574"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id20720X27505" disabled="False" group="" position="7" action="Translate" comment="For #1907&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3D196750"/>
+              <ObjectRef ref="id23297X67574"/>
+              <ObjectRef ref="id20111X3981"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id241772X29764" disabled="False" group="" position="8" action="Translate" comment="For #1907&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3D196750"/>
+              <ObjectRef ref="id20111X3981"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </NATRuleOptions>
           </NATRule>
           <RuleSetOptions/>
         </NAT>

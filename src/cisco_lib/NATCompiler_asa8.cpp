@@ -249,7 +249,14 @@ void NATCompiler_asa8::compile()
 
     add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-    add( new ConvertToAtomic("convert to atomic rules" ));
+//    add( new ConvertToAtomic("convert to atomic rules" ));
+    add( new ConvertToAtomicForOriginal("convert to atomic for OSrc, ODst, OSrv"));
+    // remove ConvertToAtomicForTSrc if we figure out a way to support multiple
+    // translated soruces per #1907
+    add( new ConvertToAtomicForTSrc("convert to atomic for TSrc"));
+    add( new ConvertToAtomicForTDst("convert to atomic for TDst"));
+    add( new ConvertToAtomicForTSrv("convert to atomic for TSrv"));
+
     add( new AssignInterface("assign rules to interfaces" ));
     add( new verifyInterfaces("verify interfaces assignment" ));
     add( new fillTranslatedSrv("fill translated service element" ));
