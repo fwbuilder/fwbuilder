@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3426
 !
-!  Generated Mon Jan 10 17:14:41 2011 PST by vadim
+!  Generated Mon Jan 10 17:32:05 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -16,8 +16,12 @@
 ! testing DNSName object
 
 ! C firewall33:Policy:3: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+! C firewall33:Policy:4: error: Run-time AddressTable and DNSName objects are not supported.
 ! C firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 ! C firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+! C firewall33:Policy:8: error: Run-time AddressTable and DNSName objects are not supported.
+
+! N firewall33:NAT:2: error: Run-time AddressTable and DNSName objects are not supported.
 
 !
 ! Prolog script:

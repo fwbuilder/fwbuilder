@@ -493,8 +493,17 @@ void PolicyCompiler_pix::compile()
         add( new eliminateDuplicatesInSRC ("eliminate duplicates in SRC" ));
         add( new eliminateDuplicatesInDST ("eliminate duplicates in DST" ));
         add( new eliminateDuplicatesInSRV ("eliminate duplicates in SRV" ));
-        add( new ExpandMultipleAddressesInSrc("expand objects with multiple addresses in SRC" ));
-        add( new ExpandMultipleAddressesInDst("expand objects with multiple addresses in DST" ));
+
+        add( new processMultiAddressObjectsInSrc(
+                 "process MultiAddress objects in Src"));
+        add( new processMultiAddressObjectsInDst(
+                 "process MultiAddress objects in Dst"));
+
+        add( new ExpandMultipleAddressesInSrc(
+                 "expand objects with multiple addresses in SRC" ));
+        add( new ExpandMultipleAddressesInDst(
+                 "expand objects with multiple addresses in DST" ));
+
         add( new ConvertToAtomic ("convert to atomic rules" ));
 
         add( new checkForObjectsWithErrors(

@@ -1,5 +1,10 @@
 2011-01-10  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): fixed #1862 "fwb_pix crash".
+	Compiler fwb_pix crashed when DNSName run-time object was used in
+	a rule, but worked fine and issued an error when used in
+	single-rule compile mode.
+
 	* Helper.cpp (findInterfaceByNetzone): fixed #1906 "ASA NAT -
 	Address objects are not properly identified by network zone and
 	have the wrong real interface". The problem should have affected

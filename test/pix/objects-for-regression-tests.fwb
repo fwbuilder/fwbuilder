@@ -10094,7 +10094,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43867C1018346" host_OS="pix_os" inactive="False" lastCompiled="1147841360" lastInstalled="1142003872" lastModified="1147842629" platform="pix" version="6.3" name="firewall33" comment="testing DNSName object" ro="False">
+      <Firewall id="id43867C1018346" host_OS="pix_os" inactive="False" lastCompiled="1147841360" lastInstalled="1142003872" lastModified="1294709501" platform="pix" version="6.3" name="firewall33" comment="testing DNSName object" ro="False">
         <NAT id="id43867C4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43867C4918346" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -10138,7 +10138,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E5218346" disabled="True" position="2" action="Translate" comment="rule-time&#10;objects are not supported">
+          <NATRule id="id43876E5218346" disabled="False" position="2" action="Translate" comment="rule-time&#10;objects are not supported">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -10281,7 +10281,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id43869EAA18346" disabled="True" log="False" position="4" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43869EAA18346" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8F18346"/>
             </Src>
@@ -10357,7 +10357,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4386C10D18346" disabled="True" log="False" position="8" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4386C10D18346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
