@@ -198,7 +198,12 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr,
 
 int  Helper::findInterfaceByNetzone(Address *obj)
 {
-    return findInterfaceByNetzone(obj->getAddressPtr(), obj->getNetmaskPtr());
+    if (IPv4::isA(obj))
+    {
+        InetAddr host_netmask("255.255.255.255");
+        return findInterfaceByNetzone(obj->getAddressPtr(), &host_netmask);
+    } else
+        return findInterfaceByNetzone(obj->getAddressPtr(), obj->getNetmaskPtr());
 }
 
 /**

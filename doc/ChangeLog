@@ -1,5 +1,13 @@
 2011-01-10  vadim  <vadim@netcitadel.com>
 
+	* Helper.cpp (findInterfaceByNetzone): fixed #1906 "ASA NAT -
+	Address objects are not properly identified by network zone and
+	have the wrong real interface". The problem should have affected
+	both "old" (PIX 6 and 7) and "new" (ASA 8.3) configuration. When
+	an Address object was used in Original Source of a NAT rule,
+	compiler used wrong interface in the (interfac1,interface2) pair
+	in "nat" command.
+
 	* CompilerDriver_pix_run.cpp (run): fixed #1905 "fwbuilder crash
 	when compiling a rule with hosts folder as destination". Compiler
 	issues a warning when an empty group object is used in a rule, but
