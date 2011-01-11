@@ -138,10 +138,23 @@ void BaseCompiler::printError(const string &errstr)
     errors_buffer << errstr << endl;
 }
 
+/*
+ * Note that when this code runs as part of the command line compiler
+ * rather than as a single-rule compile function inside the GUI (that
+ * is, it is not in embedded mode) and if test mode was activated
+ * (usually via command line flag "-xt"), then abort() behaves as
+ * error(), that is, it prints error message but does not terminate
+ * the process but just returns. In embedded mode it always throws
+ * exception to stop compiling
+ */
 void BaseCompiler::abort(const string &errstr) throw(FWException)
 {
     printError(errstr);
-    if (!test_mode) throw FWException("Fatal error");
+    if (inEmbeddedMode())
+        throw FatalErrorInSingleRuleCompileMode(errors_buffer.str());
+
+    if (test_mode) return;
+    throw FWException("Fatal error");
 }
 
 void BaseCompiler::abort(FWObject *fw,
@@ -150,7 +163,11 @@ void BaseCompiler::abort(FWObject *fw,
                          const string &errstr) throw(FWException)
 {
     message("error", fw, ruleset, rule, errstr);
-    if (!test_mode) throw FWException("Fatal error");
+    if (inEmbeddedMode())
+        throw FatalErrorInSingleRuleCompileMode(errors_buffer.str());
+
+    if (test_mode) return;
+    throw FWException("Fatal error");
 }
 
 void BaseCompiler::error(const string &str)

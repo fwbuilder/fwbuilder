@@ -198,68 +198,61 @@ void RoutingCompiler_ipt::compile()
     string banner = " Compiling routing rules for " + fw->getName();
     info(banner);
 
-    try {
+    Compiler::compile();
+    //bool check_for_recursive_groups=true;
 
-	Compiler::compile();
-        //bool check_for_recursive_groups=true;
-
-        add(new RoutingCompiler::Begin());
-        add(new printTotalNumberOfRules());
+    add(new RoutingCompiler::Begin());
+    add(new printTotalNumberOfRules());
         
-        add( new singleRuleFilter());
+    add( new singleRuleFilter());
 
-        add(new recursiveGroupsInRDst("Check for recursive Groups in RDst"));
-        add(new emptyGroupsInRDst("Check for empty Groups in RDst"));
-        add(new emptyRDstAndRItf("Check if RDst and RItf are both empty"));
-        add(new singleAdressInRGtw(
-                "Check if RGtw object has exactly one IP adress"));
-        add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
-        add(new validateNetwork("Validate network addresses"));
-        add(new reachableAddressInRGtw(
-                "Check if RGtw is reachable via local networks"));
-        add(new contradictionRGtwAndRItf(
-                "Check if RGtw is in a network of RItf"));
+    add(new recursiveGroupsInRDst("Check for recursive Groups in RDst"));
+    add(new emptyGroupsInRDst("Check for empty Groups in RDst"));
+    add(new emptyRDstAndRItf("Check if RDst and RItf are both empty"));
+    add(new singleAdressInRGtw(
+            "Check if RGtw object has exactly one IP adress"));
+    add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
+    add(new validateNetwork("Validate network addresses"));
+    add(new reachableAddressInRGtw(
+            "Check if RGtw is reachable via local networks"));
+    add(new contradictionRGtwAndRItf(
+            "Check if RGtw is in a network of RItf"));
 
-        add(new ExpandGroups("Expand groups in DST"));
-        add(new ExpandMultipleAddresses(
-                "Expand objects with multiple addresses in DST"));
+    add(new ExpandGroups("Expand groups in DST"));
+    add(new ExpandMultipleAddresses(
+            "Expand objects with multiple addresses in DST"));
 
-        add(new addressRangesInDst("process address ranges"));
+    add(new addressRangesInDst("process address ranges"));
 
-        add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
+    add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
         
-        add(new FindDefaultRoute("Find rules that install default route"));
+    add(new FindDefaultRoute("Find rules that install default route"));
 
-        add(new createSortedDstIdsLabel(
-                "Create label with a sorted dst-id-list for 'competingRules'"));
-        add(new competingRules("Check for competing rules"));
+    add(new createSortedDstIdsLabel(
+            "Create label with a sorted dst-id-list for 'competingRules'"));
+    add(new competingRules("Check for competing rules"));
 
-        add(new ConvertToAtomicForDST(
-                "Convert to atomic rules by dst address elements"));
+    add(new ConvertToAtomicForDST(
+            "Convert to atomic rules by dst address elements"));
 
-        add(new createSortedDstIdsLabel(
-                "Create label with a sorted dst-id-list for 'classifyRoutingRules'"));
-        add(new classifyRoutingRules(
-                "Classify into single path or part of a multi path rule"));
+    add(new createSortedDstIdsLabel(
+            "Create label with a sorted dst-id-list for 'classifyRoutingRules'"));
+    add(new classifyRoutingRules(
+            "Classify into single path or part of a multi path rule"));
         
-        add(new optimize3(
-                "Eliminate duplicate rules generated from a single gui-rule"));
-        add(new eliminateDuplicateRules(
-                "Eliminate duplicate rules over the whole table"));
+    add(new optimize3(
+            "Eliminate duplicate rules generated from a single gui-rule"));
+    add(new eliminateDuplicateRules(
+            "Eliminate duplicate rules over the whole table"));
         
-        add( new checkForObjectsWithErrors(
-                 "check if we have objects with errors in rule elements"));
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
 
-        add(new PrintRule("generate ip code"));
-        add(new simplePrintProgress());
+    add(new PrintRule("generate ip code"));
+    add(new simplePrintProgress());
 
-        runRuleProcessors();
+    runRuleProcessors();
 
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-	exit(1);
-    }
 }
 
 string RoutingCompiler_ipt::debugPrintRule(Rule *r)

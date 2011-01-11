@@ -58,6 +58,7 @@
 #include "fwbuilder/NAT.h"
 
 #include "fwcompiler/Preprocessor.h"
+#include "fwcompiler/exceptions.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -608,12 +609,13 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         } else
         {
             QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
-            abort(err.arg(fw_file.fileName()).arg(fw_file.error()).arg(QDir::current().path()).toStdString());
+            abort(err.arg(fw_file.fileName())
+                  .arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
     }
-    catch (FatalErrorInSingleRuleCompileMode &ex)
+    catch (FWException &ex)
     {
-        return QString::fromUtf8(getErrors("").c_str());
+        return QString::fromUtf8(ex.toString().c_str());
     }
 
     return "";

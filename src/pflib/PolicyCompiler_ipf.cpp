@@ -420,87 +420,27 @@ void PolicyCompiler_ipf::compile()
 {
     info(" Compiling policy for " + fw->getName());
 
-    try {
+    Compiler::compile();
 
-	Compiler::compile();
+    addDefaultPolicyRule();
+    bool check_for_recursive_groups=true;
 
-	addDefaultPolicyRule();
-        bool check_for_recursive_groups=true;
-
-        if ( fw->getOptionsObject()->getBool ("check_shading") &&
-             ! inSingleRuleCompileMode())
-        {
-            add( new Begin ("Detecting rule shadowing"              ) );
-            add( new printTotalNumberOfRules( ) );
-
-            add( new ItfNegation("process negation in Itf"  ) );
-            add( new InterfacePolicyRules(
-                     "process interface policy rules and store interface ids"));
-
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
-            check_for_recursive_groups=false;
-
-            add( new ExpandGroups("expand groups") );
-            add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
-            add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
-            add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
-
-            add( new swapMultiAddressObjectsInSrc(
-                     " swap MultiAddress -> MultiAddressRunTime in Src") );
-            add( new swapMultiAddressObjectsInDst(
-                     " swap MultiAddress -> MultiAddressRunTime in Dst") );
-
-            add( new ExpandMultipleAddressesInSrc(
-                     "expand objects with multiple addresses in SRC" ) );
-            add( new ExpandMultipleAddressesInDst(
-                     "expand objects with multiple addresses in DST" ) );
-            add( new ConvertToAtomic("convert to atomic rules" ) );
-
-            add( new checkForObjectsWithErrors(
-                     "check if we have objects with errors in rule elements"));
-
-            add( new DetectShadowing("Detect shadowing" ) );
-            add( new simplePrintProgress() );
-
-            runRuleProcessors();
-            deleteRuleProcessors();
-        }
-
-
-        add( new Begin());
-        add( new printTotalNumberOfRules() );
-
-        add( new singleRuleFilter());
-
-//        add( new MACFiltering(                "verify for MAC address filtering"                ) );
-        add( new setQuickFlag("set 'quick' flag") );
-
-        if (check_for_recursive_groups)
-        {
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
-        }
-
-        add( new emptyGroupsInSrc("check for empty groups in SRC") );
-        add( new emptyGroupsInDst("check for empty groups in DST") );
-        add( new emptyGroupsInSrv("check for empty groups in SRV") );
+    if ( fw->getOptionsObject()->getBool ("check_shading") &&
+         ! inSingleRuleCompileMode())
+    {
+        add( new Begin ("Detecting rule shadowing"              ) );
+        add( new printTotalNumberOfRules( ) );
 
         add( new ItfNegation("process negation in Itf"  ) );
         add( new InterfacePolicyRules(
-                 "process interface policy rules and store interface ids") );
+                 "process interface policy rules and store interface ids"));
 
-        add( new doSrcNegation("process negation in Src") );
-        add( new doDstNegation("process negation in Dst") );
-        add( new doSrvNegation("process negation in Srv") );
-        add( new ExpandGroups( "expand groups") );
+        add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add( new recursiveGroupsInDst("check for recursive groups in DST"));
+        add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+        check_for_recursive_groups=false;
 
-        add( new CheckForTCPEstablished(
-                 "check for TCPService objects with flag \"established\"") );
-        add( new CheckForUnsupportedUserService("check for user service") );
-            
+        add( new ExpandGroups("expand groups") );
         add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
         add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
         add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
@@ -510,66 +450,118 @@ void PolicyCompiler_ipf::compile()
         add( new swapMultiAddressObjectsInDst(
                  " swap MultiAddress -> MultiAddressRunTime in Dst") );
 
-        add( new processMultiAddressObjectsInSrc(
-                 "process MultiAddress objects in Src") );
-        add( new processMultiAddressObjectsInDst(
-                 "process MultiAddress objects in Dst") );
-
-        add( new splitIfFirewallInSrc("split rule if firewall is in Src") );
-        add( new splitIfFirewallInDst("split rule if firewall is in Dst") );
-        add( new fillDirection("determine directions") );
-        add( new SplitDirectionIpfilter("split rules with direction 'both'" ) );
-        add( new ExpandMultipleAddresses(
-                 "expand objects with multiple addresses") );
-        add( new checkForDynamicInterfacesOfOtherObjects(
-                 "check for dynamic interfaces of other hosts and firewalls" ));
-        add( new MACFiltering("verify for MAC address filtering" ) );
-        add( new checkForUnnumbered("check for unnumbered interfaces") );
-        add( new specialCaseWithDynInterface(
-                 "check for a special cases with dynamic interface") );
-        add( new addressRanges("expand address range objects") );
-        add( new splitServices("split rules with different protocols") );
-        add( new separateTCPWithFlags("separate TCP services with flags" ) );
-        add( new separateSrcPort("split on TCP and UDP with source ports"));
-        add( new verifyCustomServices(
-                 "verify custom services for this platform") );
-        add( new SpecialServices("check for special services" ) );
-        add( new expandAnyService("expand ANY service for stateful rules") );
-/*
- * it may make sense to do optimization even before we expand groups
- * (before ExpandGroups). Need to test this idea.
- */
-        if ( fw->getOptionsObject()->getBool ("optimize") )
-        {
-            add( new optimizeSrc("optimization in SRC") );
-            add( new optimizeDst("optimization in DST") );
-            add( new optimizeSrv("optimization in SRV") );
-        }
-
-        add( new ConvertToAtomic("convert to atomic rules") );
-        add( new checkForZeroAddr("check for zero addresses" ) );
-
-        if ( fw->getOptionsObject()->getBool ("eliminate_duplicates") ) 
-            add( new eliminateDuplicateRules("eliminate duplicate rules" ) );
-
-	add( new calculateSkip("calculate argument for skip") );
-        add( new checkForKeepState("check for 'keep state'") );
-        add( new convertInterfaceIdToStr("prepare interface assignments") );
+        add( new ExpandMultipleAddressesInSrc(
+                 "expand objects with multiple addresses in SRC" ) );
+        add( new ExpandMultipleAddressesInDst(
+                 "expand objects with multiple addresses in DST" ) );
+        add( new ConvertToAtomic("convert to atomic rules" ) );
 
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
 
-        add( new PrintRule("generate ipf code") );
+        add( new DetectShadowing("Detect shadowing" ) );
         add( new simplePrintProgress() );
 
         runRuleProcessors();
-
-
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-	exit(1);
+        deleteRuleProcessors();
     }
+
+
+    add( new Begin());
+    add( new printTotalNumberOfRules() );
+
+    add( new singleRuleFilter());
+
+//        add( new MACFiltering(                "verify for MAC address filtering"                ) );
+    add( new setQuickFlag("set 'quick' flag") );
+
+    if (check_for_recursive_groups)
+    {
+        add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add( new recursiveGroupsInDst("check for recursive groups in DST"));
+        add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+    }
+
+    add( new emptyGroupsInSrc("check for empty groups in SRC") );
+    add( new emptyGroupsInDst("check for empty groups in DST") );
+    add( new emptyGroupsInSrv("check for empty groups in SRV") );
+
+    add( new ItfNegation("process negation in Itf"  ) );
+    add( new InterfacePolicyRules(
+             "process interface policy rules and store interface ids") );
+
+    add( new doSrcNegation("process negation in Src") );
+    add( new doDstNegation("process negation in Dst") );
+    add( new doSrvNegation("process negation in Srv") );
+    add( new ExpandGroups( "expand groups") );
+
+    add( new CheckForTCPEstablished(
+             "check for TCPService objects with flag \"established\"") );
+    add( new CheckForUnsupportedUserService("check for user service") );
+            
+    add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
+    add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
+    add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
+
+    add( new swapMultiAddressObjectsInSrc(
+             " swap MultiAddress -> MultiAddressRunTime in Src") );
+    add( new swapMultiAddressObjectsInDst(
+             " swap MultiAddress -> MultiAddressRunTime in Dst") );
+
+    add( new processMultiAddressObjectsInSrc(
+             "process MultiAddress objects in Src") );
+    add( new processMultiAddressObjectsInDst(
+             "process MultiAddress objects in Dst") );
+
+    add( new splitIfFirewallInSrc("split rule if firewall is in Src") );
+    add( new splitIfFirewallInDst("split rule if firewall is in Dst") );
+    add( new fillDirection("determine directions") );
+    add( new SplitDirectionIpfilter("split rules with direction 'both'" ) );
+    add( new ExpandMultipleAddresses(
+             "expand objects with multiple addresses") );
+    add( new checkForDynamicInterfacesOfOtherObjects(
+             "check for dynamic interfaces of other hosts and firewalls" ));
+    add( new MACFiltering("verify for MAC address filtering" ) );
+    add( new checkForUnnumbered("check for unnumbered interfaces") );
+    add( new specialCaseWithDynInterface(
+             "check for a special cases with dynamic interface") );
+    add( new addressRanges("expand address range objects") );
+    add( new splitServices("split rules with different protocols") );
+    add( new separateTCPWithFlags("separate TCP services with flags" ) );
+    add( new separateSrcPort("split on TCP and UDP with source ports"));
+    add( new verifyCustomServices(
+             "verify custom services for this platform") );
+    add( new SpecialServices("check for special services" ) );
+    add( new expandAnyService("expand ANY service for stateful rules") );
+/*
+ * it may make sense to do optimization even before we expand groups
+ * (before ExpandGroups). Need to test this idea.
+ */
+    if ( fw->getOptionsObject()->getBool ("optimize") )
+    {
+        add( new optimizeSrc("optimization in SRC") );
+        add( new optimizeDst("optimization in DST") );
+        add( new optimizeSrv("optimization in SRV") );
+    }
+
+    add( new ConvertToAtomic("convert to atomic rules") );
+    add( new checkForZeroAddr("check for zero addresses" ) );
+
+    if ( fw->getOptionsObject()->getBool ("eliminate_duplicates") ) 
+        add( new eliminateDuplicateRules("eliminate duplicate rules" ) );
+
+    add( new calculateSkip("calculate argument for skip") );
+    add( new checkForKeepState("check for 'keep state'") );
+    add( new convertInterfaceIdToStr("prepare interface assignments") );
+
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
+
+    add( new PrintRule("generate ipf code") );
+    add( new simplePrintProgress() );
+
+    runRuleProcessors();
+
 }
 
 string PolicyCompiler_ipf::debugPrintRule(Rule *r)

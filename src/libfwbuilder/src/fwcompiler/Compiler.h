@@ -31,6 +31,7 @@
 
 #include "fwcompiler/BaseCompiler.h"
 #include "fwcompiler/RuleProcessor.h"
+#include "fwcompiler/exceptions.h"
 
 #include <list>
 #include <vector>
@@ -118,14 +119,6 @@ namespace fwcompiler {
         libfwbuilder::Service *srv;
     };
 
-    class FatalErrorInSingleRuleCompileMode : public libfwbuilder::FWException
-    {
-public:
-        FatalErrorInSingleRuleCompileMode() : libfwbuilder::FWException("") {};
-        FatalErrorInSingleRuleCompileMode(const std::string &err) : libfwbuilder::FWException(err) {};
-    };
-    
-   
     class Compiler : public BaseCompiler
     {
         void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);

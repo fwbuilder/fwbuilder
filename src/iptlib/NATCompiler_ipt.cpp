@@ -2598,190 +2598,182 @@ void NATCompiler_ipt::compile()
     if (ipv6) banner += ", IPv6";
     info(banner);
 
-    try
-    {
-	Compiler::compile();
+    Compiler::compile();
 
-        add( new NATCompiler::Begin());
+    add( new NATCompiler::Begin());
 
-        add( new printTotalNumberOfRules());
+    add( new printTotalNumberOfRules());
 
-        add( new singleRuleFilter());
+    add( new singleRuleFilter());
     
-        add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
-        add( new recursiveGroupsInODst("check for recursive groups in ODST"));
-        add( new recursiveGroupsInOSrv("check for recursive groups in OSRV"));
+    add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
+    add( new recursiveGroupsInODst("check for recursive groups in ODST"));
+    add( new recursiveGroupsInOSrv("check for recursive groups in OSRV"));
 
-        add( new recursiveGroupsInTSrc("check for recursive groups in TSRC"));
-        add( new recursiveGroupsInTDst("check for recursive groups in TDST"));
-        add( new recursiveGroupsInTSrv("check for recursive groups in TSRV"));
+    add( new recursiveGroupsInTSrc("check for recursive groups in TSRC"));
+    add( new recursiveGroupsInTDst("check for recursive groups in TDST"));
+    add( new recursiveGroupsInTSrv("check for recursive groups in TSRV"));
 
-        add( new emptyGroupsInOSrc("check for empty groups in OSRC" ));
-        add( new emptyGroupsInODst("check for empty groups in ODST" ));
-        add( new emptyGroupsInOSrv("check for empty groups in OSRV" ));
+    add( new emptyGroupsInOSrc("check for empty groups in OSRC" ));
+    add( new emptyGroupsInODst("check for empty groups in ODST" ));
+    add( new emptyGroupsInOSrv("check for empty groups in OSRV" ));
 
-        add( new emptyGroupsInTSrc("check for empty groups in TSRC" ));
-        add( new emptyGroupsInTDst("check for empty groups in TDST" ));
-        add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
+    add( new emptyGroupsInTSrc("check for empty groups in TSRC" ));
+    add( new emptyGroupsInTDst("check for empty groups in TDST" ));
+    add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
 
-	add( new ExpandGroups("Expand groups"));
+    add( new ExpandGroups("Expand groups"));
 
-        // processors that expand objects with multiple addresses
-        // check addresses against current address family using member
-        // ipv6. If all addresses do not match, we may end up with
-        // empty rule element.
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    // processors that expand objects with multiple addresses
+    // check addresses against current address family using member
+    // ipv6. If all addresses do not match, we may end up with
+    // empty rule element.
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        if (ipv6)
-            add( new DropIPv4Rules("drop ipv4 rules"));
-        else
-            add( new DropIPv6Rules("drop ipv6 rules"));
+    if (ipv6)
+        add( new DropIPv4Rules("drop ipv4 rules"));
+    else
+        add( new DropIPv6Rules("drop ipv6 rules"));
 
-        add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
-        add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
-        add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
+    add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
+    add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
+    add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
 
-        add( new swapMultiAddressObjectsInOSrc(
-                 " swap MultiAddress -> MultiAddressRunTime in OSrc") );
-        add( new swapMultiAddressObjectsInODst(
-                 " swap MultiAddress -> MultiAddressRunTime in ODst") );
-        add( new swapMultiAddressObjectsInTSrc(
-                 " swap MultiAddress -> MultiAddressRunTime in TSrc") );
-        add( new swapMultiAddressObjectsInTDst(
-                 " swap MultiAddress -> MultiAddressRunTime in TDst") );
+    add( new swapMultiAddressObjectsInOSrc(
+             " swap MultiAddress -> MultiAddressRunTime in OSrc") );
+    add( new swapMultiAddressObjectsInODst(
+             " swap MultiAddress -> MultiAddressRunTime in ODst") );
+    add( new swapMultiAddressObjectsInTSrc(
+             " swap MultiAddress -> MultiAddressRunTime in TSrc") );
+    add( new swapMultiAddressObjectsInTDst(
+             " swap MultiAddress -> MultiAddressRunTime in TDst") );
 
-        add( new processMultiAddressObjectsInOSrc(
-                 "process MultiAddress objects in OSrc") );
-        add( new processMultiAddressObjectsInODst(
-                 "process MultiAddress objects in ODst") );
-        add( new processMultiAddressObjectsInTSrc(
-                 "process MultiAddress objects in TSrc") );
-        add( new processMultiAddressObjectsInTDst(
-                 "process MultiAddress objects in TDst") );
+    add( new processMultiAddressObjectsInOSrc(
+             "process MultiAddress objects in OSrc") );
+    add( new processMultiAddressObjectsInODst(
+             "process MultiAddress objects in ODst") );
+    add( new processMultiAddressObjectsInTSrc(
+             "process MultiAddress objects in TSrc") );
+    add( new processMultiAddressObjectsInTDst(
+             "process MultiAddress objects in TDst") );
 
-        add( new doOSrvNegation( "process negation in OSrv" ));
+    add( new doOSrvNegation( "process negation in OSrv" ));
 
-        add( new convertToAtomicportForOSrv("convert to atomic rules in OSrv"));
+    add( new convertToAtomicportForOSrv("convert to atomic rules in OSrv"));
 
-        add( new classifyNATRule( "classify NAT rule" ));
-        add( new splitSDNATRule( "split SDNAT rules" ));
-        add( new classifyNATRule( "reclassify rules" ));
-        add( new ConvertLoadBalancingRules( "convert load balancing rules"));
-        add( new VerifyRules( "verify rules" ));
+    add( new classifyNATRule( "classify NAT rule" ));
+    add( new splitSDNATRule( "split SDNAT rules" ));
+    add( new classifyNATRule( "reclassify rules" ));
+    add( new ConvertLoadBalancingRules( "convert load balancing rules"));
+    add( new VerifyRules( "verify rules" ));
 
-        add( new singleObjectNegationOSrc(
-                 "negation in OSrc if it holds single object"));
-        add( new singleObjectNegationODst(
-                 "negation in ODst if it holds single object"));
+    add( new singleObjectNegationOSrc(
+             "negation in OSrc if it holds single object"));
+    add( new singleObjectNegationODst(
+             "negation in ODst if it holds single object"));
 
-        add( new doOSrcNegation( "process negation in OSrc" ));
-        add( new doODstNegation( "process negation in ODst" ));
+    add( new doOSrcNegation( "process negation in OSrc" ));
+    add( new doODstNegation( "process negation in ODst" ));
 
 /* call splitOnODst after processing negation */
-        add( new splitOnODst( "split on ODst" ));
+    add( new splitOnODst( "split on ODst" ));
 
-        add( new portTranslationRules( "port translation rules" ));
-        add( new specialCaseWithRedirect(
-                 "special case with redirecting port translation rules" ) );
+    add( new portTranslationRules( "port translation rules" ));
+    add( new specialCaseWithRedirect(
+             "special case with redirecting port translation rules" ) );
 
-        if (fwopt->getBool("local_nat") )
-        {
-            if ( fwopt->getBool("firewall_is_part_of_any_and_networks") )
-                add( new splitIfOSrcAny( "split rule if OSrc is any" ));
+    if (fwopt->getBool("local_nat") )
+    {
+        if ( fwopt->getBool("firewall_is_part_of_any_and_networks") )
+            add( new splitIfOSrcAny( "split rule if OSrc is any" ));
 
-            add( new splitIfOSrcMatchesFw("split rule if OSrc matches FW" ));
-        }
+        add( new splitIfOSrcMatchesFw("split rule if OSrc matches FW" ));
+    }
 
-        add( new splitNONATRule("NAT rules that request no translation"));
-        add( new splitNATBranchRule("Split Branch rules to use all chains"));
-        add( new localNATRule("process local NAT rules"));
+    add( new splitNONATRule("NAT rules that request no translation"));
+    add( new splitNATBranchRule("Split Branch rules to use all chains"));
+    add( new localNATRule("process local NAT rules"));
 // add( new DNATforFW("process DNAT rules for packets originated on the firewall"));
-        add( new decideOnChain( "decide on chain" ) );
-        add( new decideOnTarget( "decide on target" ) );
+    add( new decideOnChain( "decide on chain" ) );
+    add( new decideOnTarget( "decide on target" ) );
 
 
 // ----------- 10/18/2008
-        add( new splitODstForSNAT(
-                 "split rule if objects in ODst belong to different subnets") );
-        add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
-	add( new ReplaceFirewallObjectsTSrc("replace firewall in TSrc" ) );
-        add( new splitOnDynamicInterfaceInODst(
-                 "split rule if ODst is dynamic interface" ) );
-        add( new splitOnDynamicInterfaceInTSrc(
-                 "split rule if TSrc is dynamic interface" ) );
+    add( new splitODstForSNAT(
+             "split rule if objects in ODst belong to different subnets") );
+    add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
+    add( new ReplaceFirewallObjectsTSrc("replace firewall in TSrc" ) );
+    add( new splitOnDynamicInterfaceInODst(
+             "split rule if ODst is dynamic interface" ) );
+    add( new splitOnDynamicInterfaceInTSrc(
+             "split rule if TSrc is dynamic interface" ) );
 
-        add( new ExpandMultipleAddresses("expand multiple addresses") );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
-
-        if (ipv6)
-            add( new DropIPv4Rules("drop ipv4 rules"));
-        else
-            add( new DropIPv6Rules("drop ipv6 rules"));
-
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
-        add( new specialCaseWithUnnumberedInterface(
-                 "special cases with dynamic and unnumbered interfaces" ) );
-        add( new checkForDynamicInterfacesOfOtherObjects(
-                 "dynamic interfaces of other hosts and firewalls" ) );
-
-        add( new verifyRuleWithMAC("verify rules using MAC address filtering"));
-        add( new ExpandAddressRanges("expand address ranges") );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
-        add( new splitMultiSrcAndDst(
-                 "split rules where multiple srcs and dsts are present" ) );
-
-        add( new splitServices("split on services") );
-        add( new VerifyRules2("check correctness of TSrv") );
-        add( new separatePortRanges("separate port ranges") );
-        add( new separateSourcePorts("separate objects with src") );
-        add( new separateSourceAndDestinationPorts(
-                 "separate objects with both src and dest ports" ) );
-        add( new prepareForMultiport("prepare for multiport") );
-        add( new splitMultipleICMP("split rule with multiple ICMP services") );
-
-        add( new ConvertToAtomicForAddresses("convert to atomic rules") );
-
-        add( new addVirtualAddress("add virtual addresses") );
-
-        add( new AssignInterface("assign rules to interfaces") );
-        add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
-	add( new dynamicInterfaceInTSrc(
-                 "set target if dynamic interface in TSrc" ) );
-        add( new convertInterfaceIdToStr("prepare interface assignments") );
-
-        add( new checkForObjectsWithErrors(
-                 "check if we have objects with errors in rule elements"));
-
-        add( new countChainUsage("Count chain usage"));
-
-        if (fwopt->getBool("use_iptables_restore"))
-        {
-            // bug #1812295: we should use PrintRuleIptRstEcho not only
-            // when we have dynamic interfaces, but also when we have
-            // address tables expanded at run time. Instead of checking
-            // for all these conditions, just always use PrintRuleIptRstEcho
-            printRule=new PrintRuleIptRstEcho(
-                "generate code for iptables-restore using echo");
-        } else
-            printRule=new PrintRule("generate iptables shell script");
-
-        printRule->setContext(this);
-        printRule->initialize();
-        add( printRule );
-
-        add( new simplePrintProgress() );
-
-        runRuleProcessors();
+    add( new ExpandMultipleAddresses("expand multiple addresses") );
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
 
-    } catch (FWException &ex)
+    if (ipv6)
+        add( new DropIPv4Rules("drop ipv4 rules"));
+    else
+        add( new DropIPv6Rules("drop ipv6 rules"));
+
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+    add( new specialCaseWithUnnumberedInterface(
+             "special cases with dynamic and unnumbered interfaces" ) );
+    add( new checkForDynamicInterfacesOfOtherObjects(
+             "dynamic interfaces of other hosts and firewalls" ) );
+
+    add( new verifyRuleWithMAC("verify rules using MAC address filtering"));
+    add( new ExpandAddressRanges("expand address ranges") );
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+    add( new splitMultiSrcAndDst(
+             "split rules where multiple srcs and dsts are present" ) );
+
+    add( new splitServices("split on services") );
+    add( new VerifyRules2("check correctness of TSrv") );
+    add( new separatePortRanges("separate port ranges") );
+    add( new separateSourcePorts("separate objects with src") );
+    add( new separateSourceAndDestinationPorts(
+             "separate objects with both src and dest ports" ) );
+    add( new prepareForMultiport("prepare for multiport") );
+    add( new splitMultipleICMP("split rule with multiple ICMP services") );
+
+    add( new ConvertToAtomicForAddresses("convert to atomic rules") );
+
+    add( new addVirtualAddress("add virtual addresses") );
+
+    add( new AssignInterface("assign rules to interfaces") );
+    add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
+    add( new dynamicInterfaceInTSrc(
+             "set target if dynamic interface in TSrc" ) );
+    add( new convertInterfaceIdToStr("prepare interface assignments") );
+
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
+
+    add( new countChainUsage("Count chain usage"));
+
+    if (fwopt->getBool("use_iptables_restore"))
     {
-	error(ex.toString());
-	exit(1);
-    }
+        // bug #1812295: we should use PrintRuleIptRstEcho not only
+        // when we have dynamic interfaces, but also when we have
+        // address tables expanded at run time. Instead of checking
+        // for all these conditions, just always use PrintRuleIptRstEcho
+        printRule=new PrintRuleIptRstEcho(
+            "generate code for iptables-restore using echo");
+    } else
+        printRule=new PrintRule("generate iptables shell script");
+
+    printRule->setContext(this);
+    printRule->initialize();
+    add( printRule );
+
+    add( new simplePrintProgress() );
+
+    runRuleProcessors();
+
 }
 
 

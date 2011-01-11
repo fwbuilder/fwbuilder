@@ -30,6 +30,8 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Rule.h"
 
+#include "fwcompiler/exceptions.h"
+
 #include <sstream>
 
 namespace fwcompiler {

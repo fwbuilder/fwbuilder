@@ -457,99 +457,97 @@ void PolicyCompiler_pix::compile()
     if (ipv6) banner += ", IPv6";
     info(banner);
 
-    try 
+    string vers = fw->getStr("version");
+    string platform = fw->getStr("platform");
+    bool   outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+
+        "/pix_outbound_acl_supported");
+    bool generate_out_acl = fw->getOptionsObject()->getBool("pix_generate_out_acl");
+
+    if (outbound_acl_supported && !generate_out_acl)
     {
-        string vers = fw->getStr("version");
-        string platform = fw->getStr("platform");
-        bool   outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
-            string("/FWBuilderResources/Target/options/")+
-            "version_"+vers+
-            "/pix_outbound_acl_supported");
-        bool generate_out_acl = fw->getOptionsObject()->getBool("pix_generate_out_acl");
+        // behave like if outbound acls are not supported but are emulated
+        outbound_acl_supported = false;
+        fw->getOptionsObject()->setBool("pix_emulate_out_acl", true);
+    }
 
-        if (outbound_acl_supported && !generate_out_acl)
-        {
-            // behave like if outbound acls are not supported but are emulated
-            outbound_acl_supported = false;
-            fw->getOptionsObject()->setBool("pix_emulate_out_acl", true);
-        }
+    Compiler::compile();
 
-	Compiler::compile();
+    addDefaultPolicyRule();
 
-	addDefaultPolicyRule();
-
-        if ( fw->getOptionsObject()->getBool ("check_shading") &&
-             ! inSingleRuleCompileMode())
-        {
-            add( new Begin ("Detecting rule shadowing" ));
-            add( new printTotalNumberOfRules ( ));
-
-            add( new ItfNegation( "process negation in Itf" ));
-            add( new InterfacePolicyRules("process interface policy rules and store interface ids"));
-
-            add( new recursiveGroupsInSrc( "check for recursive groups in SRC" ));
-            add( new recursiveGroupsInDst( "check for recursive groups in DST" ));
-            add( new recursiveGroupsInSrv( "check for recursive groups in SRV" ));
-
-            add( new ExpandGroups ("expand groups" ));
-            add( new eliminateDuplicatesInSRC ("eliminate duplicates in SRC" ));
-            add( new eliminateDuplicatesInDST ("eliminate duplicates in DST" ));
-            add( new eliminateDuplicatesInSRV ("eliminate duplicates in SRV" ));
-            add( new ExpandMultipleAddressesInSrc("expand objects with multiple addresses in SRC" ));
-            add( new ExpandMultipleAddressesInDst("expand objects with multiple addresses in DST" ));
-            add( new ConvertToAtomic ("convert to atomic rules" ));
-
-            add( new checkForObjectsWithErrors(
-                     "check if we have objects with errors in rule elements"));
-
-            add( new DetectShadowing ("Detect shadowing" ));
-            add( new simplePrintProgress ( ));
-
-            runRuleProcessors();
-            deleteRuleProcessors();
-        }
-
-
-        add( new Begin (" Start processing rules" ));
+    if ( fw->getOptionsObject()->getBool ("check_shading") &&
+         ! inSingleRuleCompileMode())
+    {
+        add( new Begin ("Detecting rule shadowing" ));
         add( new printTotalNumberOfRules ( ));
 
-        add( new singleRuleFilter());
-
-        add( new RejectAction ("check for action 'Reject'" ));
+        add( new ItfNegation( "process negation in Itf" ));
+        add( new InterfacePolicyRules("process interface policy rules and store interface ids"));
 
         add( new recursiveGroupsInSrc( "check for recursive groups in SRC" ));
         add( new recursiveGroupsInDst( "check for recursive groups in DST" ));
         add( new recursiveGroupsInSrv( "check for recursive groups in SRV" ));
 
-        add( new emptyGroupsInSrc( "check for empty groups in SRC" ));
-        add( new emptyGroupsInDst( "check for empty groups in DST" ));
-        add( new emptyGroupsInSrv( "check for empty groups in SRV" ));
-
         add( new ExpandGroups ("expand groups" ));
-        add( new eliminateDuplicatesInSRC( "eliminate duplicates in SRC" ));
-        add( new eliminateDuplicatesInDST( "eliminate duplicates in DST" ));
-        add( new eliminateDuplicatesInSRV( "eliminate duplicates in SRV" ));
+        add( new eliminateDuplicatesInSRC ("eliminate duplicates in SRC" ));
+        add( new eliminateDuplicatesInDST ("eliminate duplicates in DST" ));
+        add( new eliminateDuplicatesInSRV ("eliminate duplicates in SRV" ));
+        add( new ExpandMultipleAddressesInSrc("expand objects with multiple addresses in SRC" ));
+        add( new ExpandMultipleAddressesInDst("expand objects with multiple addresses in DST" ));
+        add( new ConvertToAtomic ("convert to atomic rules" ));
 
-        add( new processMultiAddressObjectsInSrc(
-                 "process MultiAddress objects in Src"));
-        add( new processMultiAddressObjectsInDst(
-                 "process MultiAddress objects in Dst"));
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
 
-        add( new expandGroupsInItf("expand groups in Interface" ));
-        add( new replaceClusterInterfaceInItf(
-                 "replace cluster interfaces with member interfaces in the Interface rule element"));
-        add( new ItfNegation( "process negation in Itf" ));
-        add( new InterfacePolicyRules(
-                 "process interface policy rules and store interface ids"));
+        add( new DetectShadowing ("Detect shadowing" ));
+        add( new simplePrintProgress ( ));
 
-	if ( fwopt->getBool("pix_assume_fw_part_of_any"))
-        {
+        runRuleProcessors();
+        deleteRuleProcessors();
+    }
+
+
+    add( new Begin (" Start processing rules" ));
+    add( new printTotalNumberOfRules ( ));
+
+    add( new singleRuleFilter());
+
+    add( new RejectAction ("check for action 'Reject'" ));
+
+    add( new recursiveGroupsInSrc( "check for recursive groups in SRC" ));
+    add( new recursiveGroupsInDst( "check for recursive groups in DST" ));
+    add( new recursiveGroupsInSrv( "check for recursive groups in SRV" ));
+
+    add( new emptyGroupsInSrc( "check for empty groups in SRC" ));
+    add( new emptyGroupsInDst( "check for empty groups in DST" ));
+    add( new emptyGroupsInSrv( "check for empty groups in SRV" ));
+
+    add( new ExpandGroups ("expand groups" ));
+    add( new eliminateDuplicatesInSRC( "eliminate duplicates in SRC" ));
+    add( new eliminateDuplicatesInDST( "eliminate duplicates in DST" ));
+    add( new eliminateDuplicatesInSRV( "eliminate duplicates in SRV" ));
+
+    add( new processMultiAddressObjectsInSrc(
+             "process MultiAddress objects in Src"));
+    add( new processMultiAddressObjectsInDst(
+             "process MultiAddress objects in Dst"));
+
+    add( new expandGroupsInItf("expand groups in Interface" ));
+    add( new replaceClusterInterfaceInItf(
+             "replace cluster interfaces with member interfaces in the Interface rule element"));
+    add( new ItfNegation( "process negation in Itf" ));
+    add( new InterfacePolicyRules(
+             "process interface policy rules and store interface ids"));
+
+    if ( fwopt->getBool("pix_assume_fw_part_of_any"))
+    {
 // add( new splitIfSrcAny( "split rule if src is any" ));
-            add( new splitIfDstAny( "split rule if dst is any" ));
-        }
+        add( new splitIfDstAny( "split rule if dst is any" ));
+    }
 
-        add( new splitIfSrcMatchesFw ("split rule if Src matches FW" ));
-        add( new splitIfDstMatchesFw ("split rule if Dst matches FW" ));
+    add( new splitIfSrcMatchesFw ("split rule if Src matches FW" ));
+    add( new splitIfDstMatchesFw ("split rule if Dst matches FW" ));
 
 // if ( !outbound_acl_supported )
 // add( new fillDirection_v6 ("determine directions" ));
@@ -557,118 +555,118 @@ void PolicyCompiler_pix::compile()
 //	if ( fwopt->getBool("pix_replace_natted_objects"))
 // add( new replaceTranslatedAddresses ("replace objects in DST that are TDst in DNAT translations" ));
 
-        add( new telnetToFirewall(
-                 "separate rules controlling telnet to firewall"));
-        add( new sshToFirewall("separate rules controlling ssh to firewall" ));
+    add( new telnetToFirewall(
+             "separate rules controlling telnet to firewall"));
+    add( new sshToFirewall("separate rules controlling ssh to firewall" ));
 
-        add( new separateSrcPort("split rules matching source ports"));
+    add( new separateSrcPort("split rules matching source ports"));
 
-        if (XMLTools::version_compare(vers, "8.0")<0)
-        {
-            add( new splitServices("split rules with different protocols" ));
-            add( new PrepareForICMPCmd("prepare for icmp command" ));
-        }
+    if (XMLTools::version_compare(vers, "8.0")<0)
+    {
+        add( new splitServices("split rules with different protocols" ));
+        add( new PrepareForICMPCmd("prepare for icmp command" ));
+    }
 
-        add( new replaceFWinSRCInterfacePolicy(
-                 "replace fw with its interface in SRC in interface policy rules"));
-        add( new replaceFWinDSTInterfacePolicy(
-                 "replace fw with its interface in DST in interface policy rules"));
+    add( new replaceFWinSRCInterfacePolicy(
+             "replace fw with its interface in SRC in interface policy rules"));
+    add( new replaceFWinDSTInterfacePolicy(
+             "replace fw with its interface in DST in interface policy rules"));
 
-        add( new ExpandMultipleAddressesInSrc(
-                 "expand objects with multiple addresses in SRC" ));
-        add( new MACFiltering("check for MAC address filtering" ));
-        add( new splitByNetworkZonesForSrc(
-                 "split rule if objects in Src belong to different network zones " ));
-        add( new replaceFWinDSTPolicy(
-                 "replace fw with its interface in DST in global policy rules"));
+    add( new ExpandMultipleAddressesInSrc(
+             "expand objects with multiple addresses in SRC" ));
+    add( new MACFiltering("check for MAC address filtering" ));
+    add( new splitByNetworkZonesForSrc(
+             "split rule if objects in Src belong to different network zones " ));
+    add( new replaceFWinDSTPolicy(
+             "replace fw with its interface in DST in global policy rules"));
 
-        add( new ExpandMultipleAddressesInDst(
-                 "expand objects with multiple addresses in DST" ));
-        add( new MACFiltering("check for MAC address filtering" ));
-        add( new splitByNetworkZonesForDst(
-                 "split rule if objects in Dst belong to different network zones " ));
+    add( new ExpandMultipleAddressesInDst(
+             "expand objects with multiple addresses in DST" ));
+    add( new MACFiltering("check for MAC address filtering" ));
+    add( new splitByNetworkZonesForDst(
+             "split rule if objects in Dst belong to different network zones " ));
 
-        add( new checkForUnnumbered( "check for unnumbered interfaces" ));
+    add( new checkForUnnumbered( "check for unnumbered interfaces" ));
 
-        add( new addressRanges("process address ranges" ));
+    add( new addressRanges("process address ranges" ));
 
-        if (outbound_acl_supported )
-        {
-            // Call these after splitIfSrcMatchesFw and splitIfDstMatchesFw
-            add( new setInterfaceAndDirectionBySrc(
-                     "Set interface and direction for rules with interface 'all' using SRC; v7"));
-            add( new setInterfaceAndDirectionByDst(
-                     "Set interface and direction for rules with interface 'all' using DST; v7"));
-            add(new setInterfaceAndDirectionIfInterfaceSet(
-                    "Set direction for rules with interface not 'all'; v7"));
-        } else
-        {
-            add( new SplitDirection_v6("split rules with direction 'both'" ));
+    if (outbound_acl_supported )
+    {
+        // Call these after splitIfSrcMatchesFw and splitIfDstMatchesFw
+        add( new setInterfaceAndDirectionBySrc(
+                 "Set interface and direction for rules with interface 'all' using SRC; v7"));
+        add( new setInterfaceAndDirectionByDst(
+                 "Set interface and direction for rules with interface 'all' using DST; v7"));
+        add(new setInterfaceAndDirectionIfInterfaceSet(
+                "Set direction for rules with interface not 'all'; v7"));
+    } else
+    {
+        add( new SplitDirection_v6("split rules with direction 'both'" ));
 // add( new assignRuleToInterface ("assign rules to interfaces" ));
-            add( new EmulateOutboundACL_v6("emulate outbound ACL" ));
-            add( new assignRuleToInterface_v6("assign rules to interfaces" ));
-            add( new InterfaceAndDirection_v6(
-                     "check for combinations of interface and direction"));
-        }
+        add( new EmulateOutboundACL_v6("emulate outbound ACL" ));
+        add( new assignRuleToInterface_v6("assign rules to interfaces" ));
+        add( new InterfaceAndDirection_v6(
+                 "check for combinations of interface and direction"));
+    }
 
-        add( new specialCaseWithDynInterface(
-                 "check for a special cases with dynamic interface" ));
+    add( new specialCaseWithDynInterface(
+             "check for a special cases with dynamic interface" ));
 
-        add( new SplitSRCForICMPCmd( "split SRC for icmp commands" ));
+    add( new SplitSRCForICMPCmd( "split SRC for icmp commands" ));
 
-        if (XMLTools::version_compare(vers, "8.3")<0)
-        {
-            if ( fwopt->getBool("pix_replace_natted_objects"))
-                add( new replaceTranslatedAddresses(
-                         "replace objects in DST that are TDst in DNAT "
-                         "translations"));
-        } else
-        {
-            add( new warnWhenTranslatedAddressesAreUsed(
-                     "warng when addresses that are ODst in DNAT translations "
-                     "are used in DST"));
-        }
+    if (XMLTools::version_compare(vers, "8.3")<0)
+    {
+        if ( fwopt->getBool("pix_replace_natted_objects"))
+            add( new replaceTranslatedAddresses(
+                     "replace objects in DST that are TDst in DNAT "
+                     "translations"));
+    } else
+    {
+        add( new warnWhenTranslatedAddressesAreUsed(
+                 "warng when addresses that are ODst in DNAT translations "
+                 "are used in DST"));
+    }
 
-        if (outbound_acl_supported )
-            // first arg is false because we are not using
-            // "ip access-list" for PIX.
-            add( new pickACL( false, "assign ACLs for v7" ));
-        else
-            add( new pickACL_v6( "assign ACLs for v6" ));
+    if (outbound_acl_supported )
+        // first arg is false because we are not using
+        // "ip access-list" for PIX.
+        add( new pickACL( false, "assign ACLs for v7" ));
+    else
+        add( new pickACL_v6( "assign ACLs for v6" ));
 
-        add( new SpecialServices( "check for special services" ));
-        add( new CheckForUnsupportedUserService("check for user service") );
-        add( new checkForZeroAddr( "check for zero addresses" ));
-        add( new checkVersionAndDynamicInterface(
-                 "check for dynamic interfaces in policy rule and verify version of PIX OS"));
+    add( new SpecialServices( "check for special services" ));
+    add( new CheckForUnsupportedUserService("check for user service") );
+    add( new checkForZeroAddr( "check for zero addresses" ));
+    add( new checkVersionAndDynamicInterface(
+             "check for dynamic interfaces in policy rule and verify version of PIX OS"));
 
-        add( new splitIfTelnetSSHICMPtoFw(
-                 "split rule if there are multiple objects in src and it controlls access to the firewall"));
+    add( new splitIfTelnetSSHICMPtoFw(
+             "split rule if there are multiple objects in src and it controlls access to the firewall"));
 
-        /* remove redundant objects only after all splits has been
-         * done, right before object groups are created
-         */
-        add( new removeRedundantAddressesFromSrc(
-                 "remove redundant addresses from Src"));
-        add( new removeRedundantAddressesFromDst(
-                 "remove redundant addresses from Dst"));
+    /* remove redundant objects only after all splits has been
+     * done, right before object groups are created
+     */
+    add( new removeRedundantAddressesFromSrc(
+             "remove redundant addresses from Src"));
+    add( new removeRedundantAddressesFromDst(
+             "remove redundant addresses from Dst"));
 
-        add( new checkForObjectsWithErrors(
-                 "check if we have objects with errors in rule elements"));
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
 
 // add( new AvoidObjectGroup("avoid object groups for certain cases"));
-        add( new CreateObjectGroupsForSrc("create object groups for Src"));
-        add( new CreateObjectGroupsForDst("create object groups for Dst"));
-        add( new CreateObjectGroupsForSrv("create object groups for Srv"));
+    add( new CreateObjectGroupsForSrc("create object groups for Src"));
+    add( new CreateObjectGroupsForDst("create object groups for Dst"));
+    add( new CreateObjectGroupsForSrv("create object groups for Srv"));
 
-        add( new simplePrintProgress());
+    add( new simplePrintProgress());
 
-        add( new createNewCompilerPass("Creating object groups and ACLs ..."));
+    add( new createNewCompilerPass("Creating object groups and ACLs ..."));
 
-        add( new printClearCommands("Clear ACLs and object groups"));
-        add( new printObjectGroups("generate code for object groups"));
-        add( new PrintRule("generate code for ACLs"));
-        add( new simplePrintProgress());
+    add( new printClearCommands("Clear ACLs and object groups"));
+    add( new printObjectGroups("generate code for object groups"));
+    add( new PrintRule("generate code for ACLs"));
+    add( new simplePrintProgress());
 
 /*
   if ( fw->getOptionsObject()->getBool("pix_check_rule_shadowing")) 
@@ -680,13 +678,7 @@ void PolicyCompiler_pix::compile()
   add( new simplePrintProgress ( ));
   }
 */
-        runRuleProcessors();
-
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-        exit(1);
-    }
+    runRuleProcessors();
 }
 
 string PolicyCompiler_pix::printAccessGroupCmd(ciscoACL *acl)

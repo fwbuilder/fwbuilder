@@ -82,7 +82,7 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
 
 }
 
-void CompilerDriver_ipt::findBranchesInMangleTable(Firewall*,
+void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
                                                    list<FWObject*> &all_policies)
 {
     // special but common case: if we only have one policy, there is
@@ -103,6 +103,12 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall*,
                     ruleopt->getBool("ipt_branch_in_mangle"))
                 {
                     RuleSet *ruleset = rule->getBranch();
+                    if (ruleset == NULL)
+                    {
+                        abort(fw, *i, rule,
+                              "Action branch does not point to any rule set");
+                    }
+
                     for (list<FWObject*>::iterator br=ruleset->begin();
                          br!=ruleset->end(); ++br)
                     {

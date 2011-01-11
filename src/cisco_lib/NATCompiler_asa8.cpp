@@ -183,146 +183,139 @@ void NATCompiler_asa8::compile()
 {
     info(" Compiling NAT rules for " + fw->getName());
 
-    try {
+    Compiler::compile();
 
-	Compiler::compile();
+    add( new Begin( "Begin processing"));
+    add( new printTotalNumberOfRules());
 
-        add( new Begin( "Begin processing"));
-        add( new printTotalNumberOfRules());
-
-        add( new singleRuleFilter());
+    add( new singleRuleFilter());
 
 /* REMOVE_OLD_OPTIMIZATIONS
-        if (fw->getOptionsObject()->getBool( "pix_optimize_default_nat"))
-            add (new optimizeDefaultNAT(
-                     "optimize commands 'nat (interface) 0.0.0.0 0.0.0.0'"));
+   if (fw->getOptionsObject()->getBool( "pix_optimize_default_nat"))
+   add (new optimizeDefaultNAT(
+   "optimize commands 'nat (interface) 0.0.0.0 0.0.0.0'"));
 */
 
-        add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
-        add( new recursiveGroupsInODst("check for recursive groups in ODST"));
-        add( new recursiveGroupsInOSrv("check for recursive groups in OSRV"));
+    add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
+    add( new recursiveGroupsInODst("check for recursive groups in ODST"));
+    add( new recursiveGroupsInOSrv("check for recursive groups in OSRV"));
 
-        add( new recursiveGroupsInTSrc("check for recursive groups in TSRC"));
-        add( new recursiveGroupsInTDst("check for recursive groups in TDST"));
-        add( new recursiveGroupsInTSrv("check for recursive groups in TSRV"));
+    add( new recursiveGroupsInTSrc("check for recursive groups in TSRC"));
+    add( new recursiveGroupsInTDst("check for recursive groups in TDST"));
+    add( new recursiveGroupsInTSrv("check for recursive groups in TSRV"));
 
 
-        add( new emptyGroupsInOSrc("check for empty groups in OSRC"));
-        add( new emptyGroupsInODst("check for empty groups in ODST"));
-        add( new emptyGroupsInOSrv("check for empty groups in OSRV"));
+    add( new emptyGroupsInOSrc("check for empty groups in OSRC"));
+    add( new emptyGroupsInODst("check for empty groups in ODST"));
+    add( new emptyGroupsInOSrv("check for empty groups in OSRV"));
 
-        add( new emptyGroupsInTSrc("check for empty groups in TSRC"));
-        add( new emptyGroupsInTDst("check for empty groups in TDST"));
-        add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
+    add( new emptyGroupsInTSrc("check for empty groups in TSRC"));
+    add( new emptyGroupsInTDst("check for empty groups in TDST"));
+    add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
 
-        add( new ExpandGroups("expand groups"));
+    add( new ExpandGroups("expand groups"));
 
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
-        add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
-        add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
+    add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
+    add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
+    add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));
 
-        add( new processMultiAddressObjectsInOSrc(
-                 "process MultiAddress objects in OSrc"));
-        add( new processMultiAddressObjectsInODst(
-                 "process MultiAddress objects in ODst"));
+    add( new processMultiAddressObjectsInOSrc(
+             "process MultiAddress objects in OSrc"));
+    add( new processMultiAddressObjectsInODst(
+             "process MultiAddress objects in ODst"));
 
-        add( new classifyNATRule("determine NAT rule types"));
-        add( new VerifyRules("verify rules" ));
+    add( new classifyNATRule("determine NAT rule types"));
+    add( new VerifyRules("verify rules" ));
 
-        // ReplaceFirewallObjectsODst, ReplaceFirewallObjectsODst and
-        // UseFirewallInterfaces assume there is one object in ODst,
-        // TSrc and TDst rule elements. This should have been assured
-        // by inspector VerifyRules
-        add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
-        add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
-        add( new UseFirewallInterfaces(
-                 "replace host objects with firewall's interfaces if the have the same address"));
+    // ReplaceFirewallObjectsODst, ReplaceFirewallObjectsODst and
+    // UseFirewallInterfaces assume there is one object in ODst,
+    // TSrc and TDst rule elements. This should have been assured
+    // by inspector VerifyRules
+    add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
+    add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
+    add( new UseFirewallInterfaces(
+             "replace host objects with firewall's interfaces if the have the same address"));
 
-        // ExpandMultipleAddresses acts on different rule elements
-        // depending on the rule type.
-        // Also using overloaded virtual function  _expand_interface
-        add( new ExpandMultipleAddresses("expand multiple addresses"));
-        add( new MACFiltering( "check for MAC address filtering"));
+    // ExpandMultipleAddresses acts on different rule elements
+    // depending on the rule type.
+    // Also using overloaded virtual function  _expand_interface
+    add( new ExpandMultipleAddresses("expand multiple addresses"));
+    add( new MACFiltering( "check for MAC address filtering"));
 
-        // ASA8 nat commands support address range directly.
-        // add( new ExpandAddressRanges("expand address range objects"));
+    // ASA8 nat commands support address range directly.
+    // add( new ExpandAddressRanges("expand address range objects"));
 
-        add( new checkForUnnumbered("check for unnumbered interfaces"));
+    add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-        add( new ConvertToAtomic("convert to atomic rules" ));
-        add( new AssignInterface("assign rules to interfaces" ));
-        add( new verifyInterfaces("verify interfaces assignment" ));
-        add( new fillTranslatedSrv("fill translated service element" ));
-        add( new verifyRuleElements(
-                 "verify rule elements for static NAT rules"));
-        add( new processNONATRules("process NONAT" ));
+    add( new ConvertToAtomic("convert to atomic rules" ));
+    add( new AssignInterface("assign rules to interfaces" ));
+    add( new verifyInterfaces("verify interfaces assignment" ));
+    add( new fillTranslatedSrv("fill translated service element" ));
+    add( new verifyRuleElements(
+             "verify rule elements for static NAT rules"));
+    add( new processNONATRules("process NONAT" ));
 
 /* REMOVE_OLD_OPTIMIZATIONS
-        if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
-            add (new clearOSrc ("clear OSrc" ));
+   if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
+   add (new clearOSrc ("clear OSrc" ));
 */
 
-        add( new createNATCmd ("create NAT commands" ));
-        add( new createStaticCmd ("create static commands" ));
+    add( new createNATCmd ("create NAT commands" ));
+    add( new createStaticCmd ("create static commands" ));
 
 /* REMOVE_OLD_OPTIMIZATIONS
-        add( new mergeNATCmd ("merge NAT commands" ));
-        add( new SuppressDuplicateNONATStatics(
-                 "suppress duplicate NONAT statics" ));
+   add( new mergeNATCmd ("merge NAT commands" ));
+   add( new SuppressDuplicateNONATStatics(
+   "suppress duplicate NONAT statics" ));
 
-        add( new checkForObjectsWithErrors(
-                 "check if we have objects with errors in rule elements"));
+   add( new checkForObjectsWithErrors(
+   "check if we have objects with errors in rule elements"));
 */
 
-        add( new PrintClearCommands("Clear ACLs" ));
-        add( new PrintObjectsForNat("generate objects for nat commands"));
-        add( new PrintRule("generate PIX code" ));
-        add( new storeProcessedRules ("store processed rules" ));
-        add( new simplePrintProgress ());
+    add( new PrintClearCommands("Clear ACLs" ));
+    add( new PrintObjectsForNat("generate objects for nat commands"));
+    add( new PrintRule("generate PIX code" ));
+    add( new storeProcessedRules ("store processed rules" ));
+    add( new simplePrintProgress ());
 
 /* REMOVE_OLD_OPTIMIZATIONS
-        bool pix_check_duplicate_nat = 
-            fw->getOptionsObject()->getBool("pix_check_duplicate_nat");
-        bool pix_check_overlapping_global_pools =
-            fw->getOptionsObject()->getBool("pix_check_overlapping_global_pools");
-        bool pix_check_overlapping_statics =
-            fw->getOptionsObject()->getBool("pix_check_overlapping_statics");
-        bool pix_check_overlapping_global_statics =
-            fw->getOptionsObject()->getBool("pix_check_overlapping_global_statics");
+   bool pix_check_duplicate_nat = 
+   fw->getOptionsObject()->getBool("pix_check_duplicate_nat");
+   bool pix_check_overlapping_global_pools =
+   fw->getOptionsObject()->getBool("pix_check_overlapping_global_pools");
+   bool pix_check_overlapping_statics =
+   fw->getOptionsObject()->getBool("pix_check_overlapping_statics");
+   bool pix_check_overlapping_global_statics =
+   fw->getOptionsObject()->getBool("pix_check_overlapping_global_statics");
 
-        if ( pix_check_duplicate_nat || 
-             pix_check_overlapping_global_pools ||
-             pix_check_overlapping_statics ||
-             pix_check_overlapping_global_statics )
-        {
-            add( new createNewCompilerPass(" Detecting nat problems  ..."));
+   if ( pix_check_duplicate_nat || 
+   pix_check_overlapping_global_pools ||
+   pix_check_overlapping_statics ||
+   pix_check_overlapping_global_statics )
+   {
+   add( new createNewCompilerPass(" Detecting nat problems  ..."));
 
-            if ( pix_check_duplicate_nat )
-                add( new DetectDuplicateNAT(" Detect duplicate nat entries"));
+   if ( pix_check_duplicate_nat )
+   add( new DetectDuplicateNAT(" Detect duplicate nat entries"));
 
-            if ( pix_check_overlapping_global_pools )
-                add( new DetectGlobalPoolProblems(
-                         " Detect global pool overlapping" ));
+   if ( pix_check_overlapping_global_pools )
+   add( new DetectGlobalPoolProblems(
+   " Detect global pool overlapping" ));
 
-            if ( pix_check_overlapping_statics )
-                add( new DetectOverlappingStatics(
-                         " Detect overlapping statics" ));
+   if ( pix_check_overlapping_statics )
+   add( new DetectOverlappingStatics(
+   " Detect overlapping statics" ));
 
-            if ( pix_check_overlapping_global_statics )
-                add( new DetectOverlappingGlobalPoolsAndStaticRules(
-                         " Detect overlapping global pools and statics" ));
+   if ( pix_check_overlapping_global_statics )
+   add( new DetectOverlappingGlobalPoolsAndStaticRules(
+   " Detect overlapping global pools and statics" ));
 
-            add( new simplePrintProgress ( ));
-        }
+   add( new simplePrintProgress ( ));
+   }
 */
-        runRuleProcessors();
+    runRuleProcessors();
 
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-        exit(1);
-    }
 }
 

@@ -917,173 +917,166 @@ void PolicyCompiler_pf::compile()
     if (ipv6) banner += ", IPv6";
     info(banner);
 
-    try 
+    Compiler::compile();
+
+    addDefaultPolicyRule();
+    bool check_for_recursive_groups=true;
+
+    if (fw->getOptionsObject()->getBool("check_shading") &&
+        ! inSingleRuleCompileMode())
     {
-	Compiler::compile();
-
-	addDefaultPolicyRule();
-        bool check_for_recursive_groups=true;
-
-        if (fw->getOptionsObject()->getBool("check_shading") &&
-            ! inSingleRuleCompileMode())
-        {
-            add(new Begin("Detecting rule shadowing"));
-            add(new printTotalNumberOfRules());
-
-            add(new ItfNegation("process negation in Itf"));
-            add(new InterfacePolicyRules(
-                     "process interface policy rules and store interface ids"));
-
-            add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add(new recursiveGroupsInDst("check for recursive groups in DST"));
-            add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
-            check_for_recursive_groups=false;
-
-            add(new ExpandGroups("expand groups"));
-            add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-            add(new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
-            add(new eliminateDuplicatesInDST("eliminate duplicates in DST"));
-            add(new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
-
-            add(new swapAddressTableObjectsInSrc(
-                     "AddressTable -> MultiAddressRunTime in Src"));
-            add(new swapAddressTableObjectsInDst(
-                     "AddressTable -> MultiAddressRunTime in Dst"));
-
-            add(new swapMultiAddressObjectsInSrc(
-                     "MultiAddress -> MultiAddressRunTime in Src"));
-            add(new swapMultiAddressObjectsInDst(
-                     "MultiAddress -> MultiAddressRunTime in Dst"));
-
-            add(new ExpandMultipleAddressesInSrc(
-                     "expand objects with multiple addresses in SRC"));
-            add(new ExpandMultipleAddressesInDst(
-                     "expand objects with multiple addresses in DST"));
-            add(new dropRuleWithEmptyRE(
-                     "drop rules with empty rule elements"));
-            add(new ConvertToAtomic("convert to atomic rules"));
-
-            add( new checkForObjectsWithErrors(
-                     "check if we have objects with errors in rule elements"));
-
-            add(new DetectShadowing("Detect shadowing"));
-            add(new simplePrintProgress());
-
-            runRuleProcessors();
-            deleteRuleProcessors();
-        }
-
-        add(new Begin());
+        add(new Begin("Detecting rule shadowing"));
         add(new printTotalNumberOfRules());
 
-        add( new singleRuleFilter());
+        add(new ItfNegation("process negation in Itf"));
+        add(new InterfacePolicyRules(
+                "process interface policy rules and store interface ids"));
 
-//        add(new printScrubRule(" Defragmentation"));
-        if (check_for_recursive_groups)
-        {
-            add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add(new recursiveGroupsInDst("check for recursive groups in DST"));
-            add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
-        }
+        add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add(new recursiveGroupsInDst("check for recursive groups in DST"));
+        add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
+        check_for_recursive_groups=false;
 
-        add(new emptyGroupsInSrc("check for empty groups in SRC"));
-        add(new emptyGroupsInDst("check for empty groups in DST"));
-        add(new emptyGroupsInSrv("check for empty groups in SRV"));
-
-//        add(new doSrcNegation("process negation in Src"));
-//        add(new doDstNegation("process negation in Dst"));
-	add(new doSrvNegation("process negation in Srv"));
-
-// ExpandGroups opens groups, as well as groups in groups etc.
         add(new ExpandGroups("expand groups"));
         add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
-        add(new CheckForTCPEstablished(
-                 "check for TCPService objects with flag \"established\""));
-            
         add(new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
         add(new eliminateDuplicatesInDST("eliminate duplicates in DST"));
         add(new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
 
         add(new swapAddressTableObjectsInSrc(
-                 "AddressTable -> MultiAddressRunTime in Src"));
+                "AddressTable -> MultiAddressRunTime in Src"));
         add(new swapAddressTableObjectsInDst(
-                 "AddressTable -> MultiAddressRunTime in Dst"));
+                "AddressTable -> MultiAddressRunTime in Dst"));
 
         add(new swapMultiAddressObjectsInSrc(
-                 "MultiAddress -> MultiAddressRunTime in Src"));
+                "MultiAddress -> MultiAddressRunTime in Src"));
         add(new swapMultiAddressObjectsInDst(
-                 "MultiAddress -> MultiAddressRunTime in Dst"));
+                "MultiAddress -> MultiAddressRunTime in Dst"));
 
-        add(new processMultiAddressObjectsInSrc(
-                 "process MultiAddress objects in Src"));
-        add(new processMultiAddressObjectsInDst(
-                 "process MultiAddress objects in Dst"));
-
-        add(new replaceFailoverInterfaceInItf("replace carp interfaces"));
-
-
-        add(new expandGroupsInItf("expand groups in Interface"));
-        add(new replaceClusterInterfaceInItf(
-                "replace cluster interfaces with member interfaces in the Interface rule element"));
-        add(new ItfNegation("process negation in Itf"));
-
-        //add(new InterfacePolicyRules(
-        //    "process interface policy rules and store interface ids"));
-
-	add(new splitIfFirewallInSrc("split rule if firewall is in Src"));
-	add(new splitIfFirewallInDst("split rule if firewall is in Dst"));
-	add(new fillDirection("determine directions"));
-
-// commented out for bug #2828602
-// ... and put back per #2844561
-// both bug reports/patches are by Tom Judge (tomjudge on sourceforge)
-	add( new SplitDirection("split rules with direction 'both'"  ));
-
-        add(new addLoopbackForRedirect(
-                 "add loopback to rules that permit redirected services"));
-	add(new ExpandMultipleAddresses(
-                 "expand objects with multiple addresses"));
-        add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-        add(new checkForDynamicInterfacesOfOtherObjects(
-                 "check for dynamic interfaces of other hosts and firewalls"));
-        add(new MACFiltering("verify for MAC address filtering"));
-        add(new checkForUnnumbered("check for unnumbered interfaces"));
-	add(new addressRanges("expand address range objects"));
-	add(new splitServices("split rules with different protocols"));
-	add(new separateTCPWithFlags("separate TCP services with flags"));
-        add(new separateSrcPort("split on TCP and UDP with source ports"));
-        add(new separateTagged("split on TagService"));
-        add(new separateTOS("split on IPService with TOS"));
-
-        if (ipv6)
-            add( new DropIPv4Rules("drop ipv4 rules"));
-        else
-            add( new DropIPv6Rules("drop ipv6 rules"));
-
-	add(new verifyCustomServices("verify custom services for this platform"));
-//	add(new ProcessScrubOption("process 'scrub' option"));
-	add(new SpecialServices("check for special services"));
-	add(new setQuickFlag("set 'quick' flag"));
-        add(new checkForZeroAddr("check for zero addresses"));
-        add(new convertInterfaceIdToStr("prepare interface assignments"));
+        add(new ExpandMultipleAddressesInSrc(
+                "expand objects with multiple addresses in SRC"));
+        add(new ExpandMultipleAddressesInDst(
+                "expand objects with multiple addresses in DST"));
+        add(new dropRuleWithEmptyRE(
+                "drop rules with empty rule elements"));
+        add(new ConvertToAtomic("convert to atomic rules"));
 
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
 
-        add(new createTables("create tables"));
-//        add(new PrintTables("print tables"));
-
-        add(new PrintRule("generate pf code"));
+        add(new DetectShadowing("Detect shadowing"));
         add(new simplePrintProgress());
 
         runRuleProcessors();
-
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-	exit(1);
+        deleteRuleProcessors();
     }
+
+    add(new Begin());
+    add(new printTotalNumberOfRules());
+
+    add( new singleRuleFilter());
+
+//        add(new printScrubRule(" Defragmentation"));
+    if (check_for_recursive_groups)
+    {
+        add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
+        add(new recursiveGroupsInDst("check for recursive groups in DST"));
+        add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
+    }
+
+    add(new emptyGroupsInSrc("check for empty groups in SRC"));
+    add(new emptyGroupsInDst("check for empty groups in DST"));
+    add(new emptyGroupsInSrv("check for empty groups in SRV"));
+
+//        add(new doSrcNegation("process negation in Src"));
+//        add(new doDstNegation("process negation in Dst"));
+    add(new doSrvNegation("process negation in Srv"));
+
+// ExpandGroups opens groups, as well as groups in groups etc.
+    add(new ExpandGroups("expand groups"));
+    add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+    add(new CheckForTCPEstablished(
+            "check for TCPService objects with flag \"established\""));
+            
+    add(new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
+    add(new eliminateDuplicatesInDST("eliminate duplicates in DST"));
+    add(new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
+
+    add(new swapAddressTableObjectsInSrc(
+            "AddressTable -> MultiAddressRunTime in Src"));
+    add(new swapAddressTableObjectsInDst(
+            "AddressTable -> MultiAddressRunTime in Dst"));
+
+    add(new swapMultiAddressObjectsInSrc(
+            "MultiAddress -> MultiAddressRunTime in Src"));
+    add(new swapMultiAddressObjectsInDst(
+            "MultiAddress -> MultiAddressRunTime in Dst"));
+
+    add(new processMultiAddressObjectsInSrc(
+            "process MultiAddress objects in Src"));
+    add(new processMultiAddressObjectsInDst(
+            "process MultiAddress objects in Dst"));
+
+    add(new replaceFailoverInterfaceInItf("replace carp interfaces"));
+
+
+    add(new expandGroupsInItf("expand groups in Interface"));
+    add(new replaceClusterInterfaceInItf(
+            "replace cluster interfaces with member interfaces in the Interface rule element"));
+    add(new ItfNegation("process negation in Itf"));
+
+    //add(new InterfacePolicyRules(
+    //    "process interface policy rules and store interface ids"));
+
+    add(new splitIfFirewallInSrc("split rule if firewall is in Src"));
+    add(new splitIfFirewallInDst("split rule if firewall is in Dst"));
+    add(new fillDirection("determine directions"));
+
+// commented out for bug #2828602
+// ... and put back per #2844561
+// both bug reports/patches are by Tom Judge (tomjudge on sourceforge)
+    add( new SplitDirection("split rules with direction 'both'"  ));
+
+    add(new addLoopbackForRedirect(
+            "add loopback to rules that permit redirected services"));
+    add(new ExpandMultipleAddresses(
+            "expand objects with multiple addresses"));
+    add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add(new checkForDynamicInterfacesOfOtherObjects(
+            "check for dynamic interfaces of other hosts and firewalls"));
+    add(new MACFiltering("verify for MAC address filtering"));
+    add(new checkForUnnumbered("check for unnumbered interfaces"));
+    add(new addressRanges("expand address range objects"));
+    add(new splitServices("split rules with different protocols"));
+    add(new separateTCPWithFlags("separate TCP services with flags"));
+    add(new separateSrcPort("split on TCP and UDP with source ports"));
+    add(new separateTagged("split on TagService"));
+    add(new separateTOS("split on IPService with TOS"));
+
+    if (ipv6)
+        add( new DropIPv4Rules("drop ipv4 rules"));
+    else
+        add( new DropIPv6Rules("drop ipv6 rules"));
+
+    add(new verifyCustomServices("verify custom services for this platform"));
+//	add(new ProcessScrubOption("process 'scrub' option"));
+    add(new SpecialServices("check for special services"));
+    add(new setQuickFlag("set 'quick' flag"));
+    add(new checkForZeroAddr("check for zero addresses"));
+    add(new convertInterfaceIdToStr("prepare interface assignments"));
+
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
+
+    add(new createTables("create tables"));
+//        add(new PrintTables("print tables"));
+
+    add(new PrintRule("generate pf code"));
+    add(new simplePrintProgress());
+
+    runRuleProcessors();
+
 }
 
 

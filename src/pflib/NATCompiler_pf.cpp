@@ -1175,113 +1175,105 @@ void NATCompiler_pf::compile()
     if (ipv6) banner += ", IPv6";
     info(banner);
 
-    try {
+    Compiler::compile();
 
-	Compiler::compile();
+    add( new Begin());
+    add( new printTotalNumberOfRules() );
 
-        add( new Begin());
-        add( new printTotalNumberOfRules() );
-
-        add( new singleRuleFilter());
+    add( new singleRuleFilter());
     
-        add( new recursiveGroupsInOSrc("check for recursive groups in OSRC") );
-        add( new recursiveGroupsInODst("check for recursive groups in ODST") );
-        add( new recursiveGroupsInOSrv("check for recursive groups in OSRV") );
+    add( new recursiveGroupsInOSrc("check for recursive groups in OSRC") );
+    add( new recursiveGroupsInODst("check for recursive groups in ODST") );
+    add( new recursiveGroupsInOSrv("check for recursive groups in OSRV") );
 
-        add( new recursiveGroupsInTSrc("check for recursive groups in TSRC") );
-        add( new recursiveGroupsInTDst("check for recursive groups in TDST") );
-        add( new recursiveGroupsInTSrv("check for recursive groups in TSRV") );
+    add( new recursiveGroupsInTSrc("check for recursive groups in TSRC") );
+    add( new recursiveGroupsInTDst("check for recursive groups in TDST") );
+    add( new recursiveGroupsInTSrv("check for recursive groups in TSRV") );
 
-        add( new emptyGroupsInOSrc(    "check for empty groups in OSRC"    ) );
-        add( new emptyGroupsInODst(    "check for empty groups in ODST"    ) );
-        add( new emptyGroupsInOSrv(    "check for empty groups in OSRV"    ) );
+    add( new emptyGroupsInOSrc(    "check for empty groups in OSRC"    ) );
+    add( new emptyGroupsInODst(    "check for empty groups in ODST"    ) );
+    add( new emptyGroupsInOSrv(    "check for empty groups in OSRV"    ) );
 
-        add( new emptyGroupsInTSrc(    "check for empty groups in TSRC"    ) );
-        add( new emptyGroupsInTDst(    "check for empty groups in TDST"    ) );
-        add( new emptyGroupsInTSrv(    "check for empty groups in TSRV"    ) );
+    add( new emptyGroupsInTSrc(    "check for empty groups in TSRC"    ) );
+    add( new emptyGroupsInTDst(    "check for empty groups in TDST"    ) );
+    add( new emptyGroupsInTSrv(    "check for empty groups in TSRV"    ) );
 
-        add( new ExpandGroups( "expand groups" ) );
-        add( new eliminateDuplicatesInOSRC(  "eliminate duplicates in OSRC") );
-        add( new eliminateDuplicatesInODST(  "eliminate duplicates in ODST") );
-        add( new eliminateDuplicatesInOSRV(  "eliminate duplicates in OSRV") );
+    add( new ExpandGroups( "expand groups" ) );
+    add( new eliminateDuplicatesInOSRC(  "eliminate duplicates in OSRC") );
+    add( new eliminateDuplicatesInODST(  "eliminate duplicates in ODST") );
+    add( new eliminateDuplicatesInOSRV(  "eliminate duplicates in OSRV") );
 
-        add( new swapMultiAddressObjectsInOSrc(
-                 " swap MultiAddress -> MultiAddressRunTime in OSrc") );
-        add( new swapMultiAddressObjectsInODst(
-                 " swap MultiAddress -> MultiAddressRunTime in ODst") );
+    add( new swapMultiAddressObjectsInOSrc(
+             " swap MultiAddress -> MultiAddressRunTime in OSrc") );
+    add( new swapMultiAddressObjectsInODst(
+             " swap MultiAddress -> MultiAddressRunTime in ODst") );
 
-        add( new swapAddressTableObjectsInOSrc(
-                 "AddressTable -> MultiAddressRunTime in OSrc") );
-        add( new swapAddressTableObjectsInODst(
-                 "AddressTable -> MultiAddressRunTime in ODst") );
-        add( new swapAddressTableObjectsInTDst(
-                 "AddressTable -> MultiAddressRunTime in TDst") );
+    add( new swapAddressTableObjectsInOSrc(
+             "AddressTable -> MultiAddressRunTime in OSrc") );
+    add( new swapAddressTableObjectsInODst(
+             "AddressTable -> MultiAddressRunTime in ODst") );
+    add( new swapAddressTableObjectsInTDst(
+             "AddressTable -> MultiAddressRunTime in TDst") );
 
-        add( new processMultiAddressObjectsInOSrc(
-                 "process MultiAddress objects in OSrc") );
-        add( new processMultiAddressObjectsInODst(
-                 "process MultiAddress objects in ODst") );
-        add( new processMultiAddressObjectsInTDst(
-                 "process MultiAddress objects in TDst") );
+    add( new processMultiAddressObjectsInOSrc(
+             "process MultiAddress objects in OSrc") );
+    add( new processMultiAddressObjectsInODst(
+             "process MultiAddress objects in ODst") );
+    add( new processMultiAddressObjectsInTDst(
+             "process MultiAddress objects in TDst") );
 
-        add( new splitOnOSrv( "split rule on original service" ) );
-        add( new fillTranslatedSrv( "fill translated service" ) );
+    add( new splitOnOSrv( "split rule on original service" ) );
+    add( new fillTranslatedSrv( "fill translated service" ) );
 
-        //add( new doOSrcNegation( "process negation in OSrc" ) );
-        //add( new doODstNegation( "process negation in ODst" ) );
-        //add( new doOSrvNegation( "process negation in OSrv" ) );
+    //add( new doOSrcNegation( "process negation in OSrc" ) );
+    //add( new doODstNegation( "process negation in ODst" ) );
+    //add( new doOSrvNegation( "process negation in OSrv" ) );
 
-        add( new NATRuleType( "determine NAT rule types" ) );
-        add( new splitSDNATRule("split SDNAT rules"      ) );
-        add( new NATRuleType( "determine NAT rule types" ) );
-        add( new VerifyRules( "verify NAT rules" ) );
-        //add( new splitODstForSNAT(
-        //       "split rule if objects in ODst belong to different subnets"));
-        add( new ReplaceFirewallObjectsODst(
-                 "replace references to the firewall in ODst" ) );
-        add( new ReplaceFirewallObjectsTSrc(
-                 "replace references to the firewall in TSrc" ) );
-        add( new ReplaceObjectsTDst( "replace objects in TDst" ) );
+    add( new NATRuleType( "determine NAT rule types" ) );
+    add( new splitSDNATRule("split SDNAT rules"      ) );
+    add( new NATRuleType( "determine NAT rule types" ) );
+    add( new VerifyRules( "verify NAT rules" ) );
+    //add( new splitODstForSNAT(
+    //       "split rule if objects in ODst belong to different subnets"));
+    add( new ReplaceFirewallObjectsODst(
+             "replace references to the firewall in ODst" ) );
+    add( new ReplaceFirewallObjectsTSrc(
+             "replace references to the firewall in TSrc" ) );
+    add( new ReplaceObjectsTDst( "replace objects in TDst" ) );
 
-        add( new ExpandMultipleAddresses( "expand multiple addresses" ) );
+    add( new ExpandMultipleAddresses( "expand multiple addresses" ) );
 
-        // we might get empty RE after expanding multiple addresses,
-        // for example when unnumbered interface is used in TSRC. Note
-        // that VerifyRules should not allow this, but we may still
-        // get here in the test mode. Calling dropRuleWithEmptyRE works
-        // as a fail-safe and prevents crash.
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    // we might get empty RE after expanding multiple addresses,
+    // for example when unnumbered interface is used in TSRC. Note
+    // that VerifyRules should not allow this, but we may still
+    // get here in the test mode. Calling dropRuleWithEmptyRE works
+    // as a fail-safe and prevents crash.
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-	if ( manage_virtual_addr )
-            add( new addVirtualAddress("add virtual addresses for NAT rules"));
+    if ( manage_virtual_addr )
+        add( new addVirtualAddress("add virtual addresses for NAT rules"));
 
-        add( new checkForUnnumbered("check for unnumbered interfaces" ) );
-        add( new checkForDynamicInterfacesOfOtherObjects(
-                 "check for dynamic interfaces of other hosts and firewalls"));
-        add( new ExpandAddressRanges( "expand address range objects" ) );
-        //add( new ConvertToAtomicForTSrc( "convert to atomic rules" ) );
-        add( new splitForTSrc(
-                 "split if addresses in TSrc belong to different networks" ));
-        add( new AssignInterface( "assign rules to interfaces" ) );
-        add( new convertInterfaceIdToStr("prepare interface assignments") );
+    add( new checkForUnnumbered("check for unnumbered interfaces" ) );
+    add( new checkForDynamicInterfacesOfOtherObjects(
+             "check for dynamic interfaces of other hosts and firewalls"));
+    add( new ExpandAddressRanges( "expand address range objects" ) );
+    //add( new ConvertToAtomicForTSrc( "convert to atomic rules" ) );
+    add( new splitForTSrc(
+             "split if addresses in TSrc belong to different networks" ));
+    add( new AssignInterface( "assign rules to interfaces" ) );
+    add( new convertInterfaceIdToStr("prepare interface assignments") );
 
-        add( new checkForObjectsWithErrors(
-                 "check if we have objects with errors in rule elements"));
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
 
-        add( new createTables("create tables"));
+    add( new createTables("create tables"));
 //        add( new PrintTables(       "print tables"     ) );
 
-        add( new PrintRule("generate pf code") );
-        add( new simplePrintProgress() );
+    add( new PrintRule("generate pf code") );
+    add( new simplePrintProgress() );
 
-        runRuleProcessors();
+    runRuleProcessors();
 
-
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-	exit(1);
-    }
 }
 
 

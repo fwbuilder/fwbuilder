@@ -63,22 +63,15 @@ void NATCompiler_ipfw::compile()
 {
     info(" Compiling NAT rules for " + fw->getName());
 
-    try {
+    Compiler::compile();
 
-	Compiler::compile();
+    add( new Begin());
+    add( new printTotalNumberOfRules() );
 
-        add( new Begin());
-        add( new printTotalNumberOfRules() );
+    add( new simplePrintProgress() );
 
-        add( new simplePrintProgress() );
+    runRuleProcessors();
 
-        runRuleProcessors();
-
-    } catch (FWException &ex)
-    {
-	error(ex.toString());
-	exit(1);
-    }
 }
 
 

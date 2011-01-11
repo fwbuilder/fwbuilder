@@ -25,7 +25,9 @@ HEADERS  = 	BaseCompiler.h \
 			OSConfigurator.h \
 			PolicyCompiler.h \
 			RuleProcessor.h \
-			RoutingCompiler.h
+			RoutingCompiler.h \
+			exceptions.h
+
 
 TARGET = fwcompiler
 # target.path = "$$prefix/lib"

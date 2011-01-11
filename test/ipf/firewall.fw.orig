@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3425
+#  Firewall Builder  fwb_ipf v4.2.0.3426
 #
-#  Generated Mon Jan  3 13:15:01 2011 PST by vadim
+#  Generated Mon Jan 10 16:30:51 2011 PST by vadim
 #
 # files: * firewall.fw ipf.fw
 # files:   firewall-ipf.conf ipf.conf
@@ -169,7 +169,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Mon Jan  3 13:15:01 2011 by vadim"
+log "Activating firewall script generated Mon Jan 10 16:30:51 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

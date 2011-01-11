@@ -229,10 +229,16 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 #endif
 
 
-    QString ofname = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
+    QString ofname = determineOutputFileName(
+        cluster, fw, !cluster_id.empty(), ".fw");
     FWOptions* options = fw->getOptionsObject();
 
     QString script_buffer;
+
+    std::auto_ptr<NATCompiler_pix> n;
+    std::auto_ptr<PolicyCompiler_pix> c;
+    std::auto_ptr<RoutingCompiler_pix> r;
+
 
     try
     {
@@ -356,7 +362,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 /* create compilers and run the whole thing */
         string version = fw->getStr("version");
 
-        std::auto_ptr<NATCompiler_pix> n;
         if (XMLTools::version_compare(version, "8.3")>=0)
             n = std::auto_ptr<NATCompiler_pix>(
                 new NATCompiler_asa8(objdb, fw, false, oscnf.get()));
@@ -385,7 +390,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in NAT");
         }
 
-        std::auto_ptr<PolicyCompiler_pix> c(
+        c = std::auto_ptr<PolicyCompiler_pix>(
             new PolicyCompiler_pix(objdb, fw, false, oscnf.get() , n.get()));
 
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
@@ -409,7 +414,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in Policy");
         }
 
-        std::auto_ptr<RoutingCompiler_pix> r(
+        r = std::auto_ptr<RoutingCompiler_pix>(
             new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
@@ -479,12 +484,13 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         } else
         {
             QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
-            abort(err.arg(fw_file.fileName()).arg(fw_file.error()).arg(QDir::current().path()).toStdString());
+            abort(err.arg(fw_file.fileName())
+                  .arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
     }
-    catch (FatalErrorInSingleRuleCompileMode &ex)
+    catch (FWException &ex)
     {
-        return QString::fromUtf8(getErrors("").c_str());
+        return QString::fromUtf8(ex.toString().c_str());
     }
 
     return "";

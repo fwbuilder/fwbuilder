@@ -1008,16 +1008,13 @@ bool Compiler::emptyGroupsInRE::processNext()
                 gr += o->getName();
                 cntr++;
             }
-            string sfx = "";
-            if (cntr>0) sfx = "s";
 
             ostringstream  str;
             str << "Empty group or address table object"
-                << sfx
                 << " '"
                 << gr
-                << "'"
-                << " and option 'Ignore rules with empty groups' is off";
+                << "' is used in the rule"
+                << " but option 'Ignore rules with empty groups' is off";
             compiler->abort(rule, str.str());
         }
     }
