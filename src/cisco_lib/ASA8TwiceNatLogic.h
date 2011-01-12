@@ -30,12 +30,14 @@
 class ASA8TwiceNatStaticLogic
 {
     libfwbuilder::NATRule *rule;
-
+    
 public:
+    enum TwiceNatRuleType {STATIC, DYNAMIC};
     
     ASA8TwiceNatStaticLogic(libfwbuilder::NATRule *rule);
-    bool isStatic();
-    
+
+    TwiceNatRuleType getAutomaticType();
+    TwiceNatRuleType getType();
 };
 
 #endif

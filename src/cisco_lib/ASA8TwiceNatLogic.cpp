@@ -26,6 +26,8 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FWOptions.h"
 
+#include <QtDebug>
+
 
 using namespace libfwbuilder;
 using namespace std;
@@ -36,19 +38,17 @@ ASA8TwiceNatStaticLogic::ASA8TwiceNatStaticLogic(NATRule *_rule)
     rule = _rule;
 }
 
-bool ASA8TwiceNatStaticLogic::isStatic()
+ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticType()
 {
     RuleElementOSrc *osrc_re = rule->getOSrc();
     assert(osrc_re!=NULL);
     Address  *osrc = Address::cast(FWReference::getObject(osrc_re->front()));
 
-    RuleElementOSrc *tsrc_re = rule->getOSrc();
+    RuleElementTSrc *tsrc_re = rule->getTSrc();
     assert(tsrc_re!=NULL);
     Address  *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
 
-    FWOptions *ropt = rule->getOptionsObject();
-
-    if (tsrc->isAny()) return true;
+    if (tsrc->isAny()) return STATIC;
     else
     {
         /*
@@ -56,12 +56,20 @@ bool ASA8TwiceNatStaticLogic::isStatic()
          * that in TSrc, then use "static". Otherwise use "dynamic". However if
          * rule option "asa8_nat_static" is true, use "static".
          */
-        if (osrc->dimension() == tsrc->dimension()) return true;
-        else
-        {
-            if (ropt->getBool("asa8_nat_static")) return true;
-            else  return false;
-        }
+        if (osrc->dimension() == tsrc->dimension()) return STATIC;
+        else return DYNAMIC;
     }
-    return false;
+    return DYNAMIC;
 }
+
+ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getType()
+{
+    TwiceNatRuleType res = getAutomaticType();
+    FWOptions *ropt = rule->getOptionsObject();
+
+    if (ropt->getBool("asa8_nat_dynamic")) res = DYNAMIC;
+    if (ropt->getBool("asa8_nat_static")) res = STATIC;
+    
+    return res;
+}
+

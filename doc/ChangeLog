@@ -3,17 +3,16 @@
 	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1908 "ASA NAT -
 	cannot configure static NAT translations with (inside,outside)".
 	Added NAT rule option to make source nat rules "static". The
-	option is presented to the user as a checkbox in a NAT rule
-	options dialog which is only enabled when platform is "pix" and
-	version >= 8.3. Policy compiler generates "twice nat" rules with
-	keyword "static" in the following cases: when TSrc is "original",
-	so the rule translates destination and not source or when numbers
-	of ip addresses represented by OSrc and TSrc are equal. If TSrc is
-	not "original" and represents different number of ip addresses
-	than OSrc, compiler looks at the new rule option. If the checkbox
-	is turned off, then it generates "twice nat" rule with option
-	"dynamic". If the checkbox is turned on, then it generates the
-	rule with option "static".
+	option is presented to the user as three radio buttons in the NAT
+	rule options dialog which is only enabled when platform is "pix"
+	and version >= 8.3. Policy compiler generates "twice nat" rules
+	with keyword "static" in the following cases: when TSrc is
+	"original", so the rule translates destination and not source or
+	when numbers of ip addresses represented by OSrc and TSrc are
+	equal. If TSrc is not "original" and represents different number
+	of ip addresses than OSrc, compiler looks at the new rule
+	option. User can use or override automatic algorithm using radio
+	buttons in the NAT rule options dialog.
 
 	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1902 "Add NAT
 	rule option "translate dns" for PIX". The option is only available

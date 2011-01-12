@@ -364,7 +364,9 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 	if (platform=="pix" || platform=="fwsm")
         {
             res = (! opt->getBool("asa8_nat_dns") &&
-                   ! opt->getBool("asa8_nat_static"));
+                   ! opt->getBool("asa8_nat_static") &&
+                   ! opt->getBool("asa8_nat_dynamic"));
+
         }
     }
     return res;

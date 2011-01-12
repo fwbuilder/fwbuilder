@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3429
+!  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Tue Jan 11 18:31:34 2011 PST by vadim
+!  Generated Wed Jan 12 15:01:01 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -94,7 +94,7 @@ clear config object-group
 clear config icmp
 clear config telnet
 ! 
-! Rule  0 (global)
+! Rule  1 (global)
 access-list inside_acl_in deny   ip any any 
 access-list outside_acl_in deny   ip any any 
 
@@ -144,6 +144,9 @@ object network firewall90:FastEthernet1:ip
 quit
 object network external_gw2
   host 22.22.22.100
+quit
+object service squid
+  service tcp destination eq 3128
 quit
 ! 
 ! Rule  0 (NAT)
@@ -222,6 +225,9 @@ nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:i
 ! for #1908
 ! "static" vs "dynamic"
 nat (inside,outside) source static internal_subnet_1 firewall90:FastEthernet1:ip-1
+! 
+! Rule  17 (NAT)
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
 
 
 

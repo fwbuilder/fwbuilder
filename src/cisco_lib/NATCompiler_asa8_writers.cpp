@@ -206,8 +206,15 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 
     cmd << "source";
 
-    if (ASA8TwiceNatStaticLogic(rule).isStatic()) cmd << "static";
-    else cmd << "ddynamic";
+    switch (ASA8TwiceNatStaticLogic(rule).getType())
+    {
+    case ASA8TwiceNatStaticLogic::STATIC:
+        cmd << "static";
+        break;
+    case ASA8TwiceNatStaticLogic::DYNAMIC:
+        cmd << "dynamic";
+        break;
+    }
 
     cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
     if (tsrc->isAny())
