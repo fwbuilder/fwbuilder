@@ -1339,7 +1339,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1286404854" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1294851704" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18228,7 +18228,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294798951" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294851771" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18627,7 +18627,28 @@ no sysopt nodnsalias outbound
           <RuleSetOptions/>
         </NAT>
         <Policy id="id19857X26146" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id19907X26146" disabled="False" log="False" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id78630X30274" disabled="False" group="" log="False" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3FA34EFA"/>
+              <ObjectRef ref="id68966X11724"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id19907X26146" disabled="False" log="False" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
