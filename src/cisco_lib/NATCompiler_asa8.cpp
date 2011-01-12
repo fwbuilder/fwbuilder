@@ -24,6 +24,8 @@
 #include "config.h"
 
 #include "NATCompiler_asa8.h"
+#include "ASA8Object.h"
+#include "ASA8ObjectGroup.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -64,6 +66,17 @@ NATCompiler_asa8::NATCompiler_asa8(FWObjectDatabase *_db,
 { 
 }
 
+NATCompiler_asa8::~NATCompiler_asa8()
+{
+    std::map<int, ASA8Object*>::iterator it1;
+    for (it1=asa8_object_registry.begin();
+         it1!=asa8_object_registry.end(); ++it1)
+    {
+        delete it1->second;
+    }
+    asa8_object_registry.clear();
+}
+        
 /*
  * Option "translate dns" can not be used if the rule has "destination"
  * part.
@@ -273,7 +286,6 @@ void NATCompiler_asa8::compile()
 
     add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-//    add( new ConvertToAtomic("convert to atomic rules" ));
     add( new ConvertToAtomicForOriginal("convert to atomic for OSrc, ODst, OSrv"));
     // remove ConvertToAtomicForTSrc if we figure out a way to support multiple
     // translated soruces per #1907
@@ -309,6 +321,7 @@ void NATCompiler_asa8::compile()
 
     add( new PrintClearCommands("Clear ACLs" ));
     add( new PrintObjectsForNat("generate objects for nat commands"));
+    // add( new PrintObjectsForTSrc("generate object groups and objects for TSrc"));
     add( new PrintRule("generate PIX code" ));
     add( new storeProcessedRules ("store processed rules" ));
     add( new simplePrintProgress ());

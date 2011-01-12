@@ -23,23 +23,26 @@
 
 */
 
-#ifndef __ASA8OBJECTGROUP_HH
-#define __ASA8OBJECTGROUP_HH
+#ifndef _ASA8_OBJECT_GROUP_HH
+#define _ASA8_OBJECT_GROUP_HH
 
 #include "PIXObjectGroup.h"
 
 
-class ASA8ObjectGroup : public PIXObjectGroup {
-    
-    public:
-    ASA8ObjectGroup(object_group_type _gt=UNKNOWN) : PIXObjectGroup(_gt) { }
-    virtual ~ASA8ObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
+namespace fwcompiler {
 
-    virtual std::string getObjectGroupClass();
-    virtual std::string getObjectGroupHeader();
-    virtual std::string toString() throw(libfwbuilder::FWException);
+    class ASA8ObjectGroup : public PIXObjectGroup {
     
-};
+public:
+        ASA8ObjectGroup(object_group_type _gt=UNKNOWN) : PIXObjectGroup(_gt) { }
+        virtual ~ASA8ObjectGroup() {};
+        DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
+
+        virtual std::string getObjectGroupClass();
+        virtual std::string getObjectGroupHeader();
+        virtual std::string toString() throw(libfwbuilder::FWException);
+    
+    };
+}
 
 #endif

@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "NATCompiler_pix.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -71,6 +72,8 @@ NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
                                  OSConfigurator *_oscnf) : 
     NATCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 { 
+    // initialize object groups support
+    CreateObjectGroups::init(dbcopy);
 }
 
 NATCompiler_pix::~NATCompiler_pix()
@@ -216,9 +219,9 @@ string NATCompiler_pix::getNATACLname(Rule *rule,string suffix)
 
 int NATCompiler_pix::prolog()
 {
-    global_pool_no=1;
+    global_pool_no = 1;
 
-    final_ruleset=new NAT();
+    final_ruleset = new NAT();
     fw->add( final_ruleset );
 
     return NATCompiler::prolog();

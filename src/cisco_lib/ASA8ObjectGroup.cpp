@@ -39,6 +39,7 @@
 
 using namespace libfwbuilder;
 using namespace std;
+using namespace fwcompiler;
 
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 

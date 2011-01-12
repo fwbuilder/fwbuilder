@@ -41,6 +41,7 @@
 #include "PolicyCompiler_procurve_acl.h"
 #include "RoutingCompiler_procurve_acl.h"
 #include "OSConfigurator_procurve.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"

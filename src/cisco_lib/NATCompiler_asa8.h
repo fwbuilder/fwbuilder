@@ -25,7 +25,6 @@
 #define _NATCOMPILER_ASA8_HH
 
 #include "NATCompiler_pix.h"
-#include "ASA8Object.h"
 
 #include <QString>
 
@@ -34,6 +33,9 @@
 
 namespace fwcompiler {
 
+    class ASA8Object;
+    class ASA8ObjectGroup;
+    
     class NATCompiler_asa8 : public NATCompiler_pix
     {
 	public:
@@ -58,6 +60,13 @@ namespace fwcompiler {
 
         DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
 
+        /**
+         * TSrc may contain multiple objects, so we should group them
+         * in order to put all addresses, address ranges and subnets
+         * into an object-group and keep interfaces separate.
+         */
+        DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForTSrc);
+        
         /*
          * Check if "translate dns" option can be used with the rule
          */

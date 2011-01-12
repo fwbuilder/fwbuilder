@@ -447,7 +447,7 @@ protected:
                 processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
-
+#ifdef OLD_STYLE_OBJECT_GROUP_SUPPORT
 	/**
 	 * this processor creates PIX-specific object groups
          * (PIX CLI command "object-group") for rules with
@@ -457,7 +457,7 @@ protected:
         {
             std::string re_type;
             std::string name_suffix;
-            BaseObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
+
             public:
             CreateObjectGroups(const std::string &name,
                                const std::string &_ns,
@@ -503,14 +503,13 @@ protected:
         };
         friend class PolicyCompiler_cisco::printObjectGroups;
 
-
+#endif
+        
         
 protected:
 
         Helper helper;
 	std::map<std::string,ciscoACL*> acls;
-// storage for object groups created to be used with PIX command object-group
-        libfwbuilder::Group *object_groups;
 
 	virtual std::string myPlatformName();
 

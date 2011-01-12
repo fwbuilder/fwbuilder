@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include "PolicyCompiler_cisco.h"
+#include "ObjectGroupsSupport.h"
 #include "ObjectGroupFactory.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -40,6 +40,9 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Firewall.h"
+
+#include "fwcompiler/Compiler.h"
 
 #include <iostream>
 #include <algorithm>
@@ -55,13 +58,17 @@ using namespace fwcompiler;
 using namespace std;
 
 
+Group *CreateObjectGroups::object_groups = NULL;
 
 
-BaseObjectGroup* PolicyCompiler_cisco::CreateObjectGroups::findObjectGroup(
-    RuleElement *re)
+void CreateObjectGroups::init(FWObjectDatabase *db)
 {
-    PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    object_groups = new Group();
+    db->add( object_groups );
+}
 
+BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
+{
     list<FWObject*> relement;
 
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
@@ -72,8 +79,7 @@ BaseObjectGroup* PolicyCompiler_cisco::CreateObjectGroups::findObjectGroup(
     }
 
 
-    for (FWObject::iterator i=cisco_comp->object_groups->begin();
-         i!=cisco_comp->object_groups->end(); ++i)
+    for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og=dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);
@@ -98,10 +104,10 @@ BaseObjectGroup* PolicyCompiler_cisco::CreateObjectGroups::findObjectGroup(
     return NULL;
 }
 
-bool PolicyCompiler_cisco::CreateObjectGroups::processNext()
+bool CreateObjectGroups::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
     Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(
                                                 rule->getInterfaceId()));
     assert(rule_iface);
@@ -143,7 +149,7 @@ bool PolicyCompiler_cisco::CreateObjectGroups::processNext()
         gn.push_back(name_suffix.c_str());
         obj_group->setName(gn.join(".").toStdString());
 
-        cisco_comp->object_groups->add(obj_group);
+        object_groups->add(obj_group);
 
         for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         {
@@ -163,23 +169,21 @@ bool PolicyCompiler_cisco::CreateObjectGroups::processNext()
     return true;
 }
 
-bool PolicyCompiler_cisco::printObjectGroups::processNext()
+bool printObjectGroups::processNext()
 {
-    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(compiler);
-
     slurp();
     if (tmp_queue.size()==0) return false;
 
-    for (FWObject::iterator i=cisco_comp->object_groups->begin();
-         i!=cisco_comp->object_groups->end(); ++i)
+    for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
+         i!=CreateObjectGroups::object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);
         if (og->size()==0) continue;
-        cisco_comp->output << endl;
+        compiler->output << endl;
         try
         {
-            cisco_comp->output << og->toString();
+            compiler->output << og->toString();
         } catch (FWException &ex)
         {
             compiler->abort(ex.toString());

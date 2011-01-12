@@ -58,16 +58,6 @@ void NATCompiler_asa8::addASA8Object(const FWObject *obj)
     }
 }
 
-NATCompiler_asa8::~NATCompiler_asa8()
-{
-    std::map<int, ASA8Object*>::iterator it;
-    for (it=asa8_object_registry.begin(); it!=asa8_object_registry.end(); ++it)
-    {
-        delete it->second;
-    }
-    asa8_object_registry.clear();
-}
-        
 ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
 {
     return asa8_object_registry[obj->getId()];
@@ -76,8 +66,6 @@ ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
 bool NATCompiler_asa8::PrintObjectsForNat::processNext()
 {
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-    string version = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
 
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -87,7 +75,6 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
         NATRule *rule = NATRule::cast( *k );
-        // NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
         Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
         Address  *odst = compiler->getFirstODst(rule);  assert(odst);
@@ -107,6 +94,40 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
 
     return true;
 }
+
+bool NATCompiler_asa8::PrintObjectsForTSrc::processNext()
+{
+    NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    compiler->output << endl;
+
+    /*
+     * Gather all objects that are not interface in an object-group,
+     * then replace them with reference to this group in rule
+     * element. Leave interface object(s) alone. There should be just
+     * one interface that is the child of the firewall at this point
+     * but I do not verify this in this rule processor.
+     */
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        NATRule *rule = NATRule::cast( *k );
+
+        RuleElementTSrc *tsrc = rule->getTSrc();  assert(tsrc);
+
+        for (FWObject::iterator it=tsrc->begin(); it!=tsrc->end(); ++it)
+        {
+            FWObject *obj = FWReference::getObject(*it);
+
+        }
+
+    }
+
+    return true;
+}
+
 
 bool NATCompiler_asa8::PrintClearCommands::processNext()
 {

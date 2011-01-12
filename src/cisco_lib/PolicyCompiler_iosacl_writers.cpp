@@ -25,6 +25,7 @@
 
 #include "PolicyCompiler_iosacl.h"
 #include "IOSObjectGroup.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"
@@ -150,7 +151,8 @@ void PolicyCompiler_iosacl::_printClearCommands()
             }
             output << endl;
 
-            for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
+            for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
+                 i!=CreateObjectGroups::object_groups->end(); ++i)
             {
                 BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
                 assert(og!=NULL);

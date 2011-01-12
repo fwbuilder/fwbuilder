@@ -30,6 +30,7 @@
 #include "PolicyCompiler_pix.h"
 #include "NATCompiler_pix.h"
 #include "PIXObjectGroup.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"

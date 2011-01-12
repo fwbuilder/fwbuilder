@@ -37,6 +37,7 @@
 
 using namespace libfwbuilder;
 using namespace std;
+using namespace fwcompiler;
 
 
 BaseObjectGroup* ObjectGroupFactory::createObjectGroup(

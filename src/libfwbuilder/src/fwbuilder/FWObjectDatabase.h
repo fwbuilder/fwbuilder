@@ -448,6 +448,7 @@ public:
         DECLARE_CREATE_OBJ_METHOD(UDPService);
         DECLARE_CREATE_OBJ_METHOD(UserService);
         DECLARE_CREATE_OBJ_METHOD(physAddress);
+        DECLARE_CREATE_OBJ_METHOD(Group);
     };
 
 }

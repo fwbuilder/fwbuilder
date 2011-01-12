@@ -238,6 +238,9 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectUserService;
         create_methods["physAddress"] =
             &FWObjectDatabase::createFWObjectphysAddress;
+
+        create_methods["Group"] =
+            &FWObjectDatabase::createFWObjectGroup;
     }
 }
 
@@ -372,3 +375,4 @@ CREATE_OBJ_METHOD(TagService);
 CREATE_OBJ_METHOD(UDPService);
 CREATE_OBJ_METHOD(UserService);
 CREATE_OBJ_METHOD(physAddress);
+CREATE_OBJ_METHOD(Group);

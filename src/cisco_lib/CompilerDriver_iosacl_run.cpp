@@ -41,6 +41,7 @@
 #include "PolicyCompiler_iosacl.h"
 #include "RoutingCompiler_iosacl.h"
 #include "OSConfigurator_ios.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"

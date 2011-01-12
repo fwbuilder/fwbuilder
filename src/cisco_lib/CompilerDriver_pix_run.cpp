@@ -42,6 +42,7 @@
 #include "NATCompiler_asa8.h"
 #include "RoutingCompiler_pix.h"
 #include "OSConfigurator_pix_os.h"
+#include "ObjectGroupsSupport.h"
 
 #include "Helper.h"
 

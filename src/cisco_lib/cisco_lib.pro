@@ -6,7 +6,7 @@ TEMPLATE = lib
 #
 SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PolicyCompiler_cisco_acls.cpp      \
-			PolicyCompiler_cisco_object_groups.cpp \
+			ObjectGroupsSupport.cpp            \
 			RoutingCompiler_cisco.cpp          \
 			RoutingCompiler_cisco_writers.cpp  \
 			ACL.cpp                            \
@@ -54,6 +54,7 @@ HEADERS	 = ../../config.h                   \
 			ACL.h                           \
 			Helper.h                        \
 			ASA8Object.h                    \
+			ObjectGroupsSupport.h           \
 			inspectionProtocol.h            \
 			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \

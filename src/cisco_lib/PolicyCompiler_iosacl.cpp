@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "PolicyCompiler_iosacl.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -85,8 +86,8 @@ int PolicyCompiler_iosacl::prolog()
         "use_acl_remarks",
         fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"));
 
-    object_groups = new Group();
-    dbcopy->add( object_groups );
+    // object_groups = new Group();
+    // dbcopy->add( object_groups );
 
     setAllNetworkZonesToNone();
 

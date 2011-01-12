@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "PolicyCompiler_cisco.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -59,8 +60,8 @@ PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
                                            OSConfigurator *_oscnf) :
     PolicyCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 {
-    object_groups = new Group();
-    dbcopy->add( object_groups );
+    // initialize object groups support
+    CreateObjectGroups::init(dbcopy);
 }
 
 int PolicyCompiler_cisco::prolog()
@@ -811,7 +812,6 @@ bool PolicyCompiler_cisco::processMultiAddressObjectsInRE::processNext()
     tmp_queue.push_back(rule);
     return true;
 }
-
 
 void PolicyCompiler_cisco::compile()
 {
