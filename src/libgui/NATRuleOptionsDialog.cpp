@@ -119,9 +119,17 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="pix" || platform=="fwsm")
     {
-        m_dialog->asa8_nat_dns->setEnabled(
-            libfwbuilder::XMLTools::version_compare(version,"8.3")>=0);
-        data.registerOption(m_dialog->asa8_nat_dns   , ropt,  "asa8_nat_dns" );
+        if (libfwbuilder::XMLTools::version_compare(version,"8.3")>=0)
+        {
+            m_dialog->asa8_nat_dns->setEnabled(true);
+            m_dialog->asa8_nat_static->setEnabled(true);
+            data.registerOption(m_dialog->asa8_nat_dns, ropt, "asa8_nat_dns");
+            data.registerOption(m_dialog->asa8_nat_static, ropt, "asa8_nat_static");
+        } else
+        {
+            m_dialog->asa8_nat_dns->setEnabled(false);
+            m_dialog->asa8_nat_static->setEnabled(false);
+        }
     }
 
     init = true;
