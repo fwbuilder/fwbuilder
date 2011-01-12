@@ -25,6 +25,7 @@
 
 #include "NATCompiler_asa8.h"
 #include "ASA8Object.h"
+#include "ASA8TwiceNatLogic.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -205,21 +206,8 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 
     cmd << "source";
 
-    if (tsrc->isAny()) cmd << "static";
-    else
-    {
-        /*
-         * Default behavior: if the number of ip addresses in OSrc is equal to
-         * that in TSrc, then use "static". Otherwise use "dynamic". However if
-         * rule option "asa8_nat_static" is true, use "static".
-         */
-        if (osrc->dimension() == tsrc->dimension()) cmd << "static";
-        else
-        {
-            if (ropt->getBool("asa8_nat_static")) cmd << "static";
-            else  cmd << "dynamic";
-        }
-    }
+    if (ASA8TwiceNatStaticLogic(rule).isStatic()) cmd << "static";
+    else cmd << "ddynamic";
 
     cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
     if (tsrc->isAny())

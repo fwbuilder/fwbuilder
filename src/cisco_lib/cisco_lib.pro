@@ -11,6 +11,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			RoutingCompiler_cisco_writers.cpp  \
 			ACL.cpp                            \
 			ASA8Object.cpp                     \
+			ASA8TwiceNatLogic.cpp              \
 			Helper.cpp                         \
 			inspectionProtocol.cpp             \
 			InspectionClassMap.cpp             \
@@ -54,6 +55,7 @@ HEADERS	 = ../../config.h                   \
 			ACL.h                           \
 			Helper.h                        \
 			ASA8Object.h                    \
+			ASA8TwiceNatLogic.h             \
 			ObjectGroupsSupport.h           \
 			inspectionProtocol.h            \
 			InspectionClassMap.h            \
