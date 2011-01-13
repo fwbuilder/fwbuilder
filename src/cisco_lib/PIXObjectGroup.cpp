@@ -38,11 +38,12 @@
 #include <sstream>
 
 using namespace libfwbuilder;
+using namespace fwcompiler;
 using namespace std;
 
 const char *PIXObjectGroup::TYPENAME={"PIXObjectGroup"};
 
-string PIXObjectGroup::toString()  throw(FWException)
+string PIXObjectGroup::toString(std::map<int, ASA8Object*>&)  throw(FWException)
 {
     ostringstream ostr;
 

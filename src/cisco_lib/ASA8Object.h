@@ -47,6 +47,7 @@ public:
 
         ASA8Object(const libfwbuilder::FWObject *obj);
         virtual QString getCommand();
+        virtual QString getCommandWhenObjectGroupMember();
         QString getName() { return name; }
         QString getCommandWord();
     };

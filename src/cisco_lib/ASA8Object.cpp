@@ -187,4 +187,11 @@ QString ASA8Object::getCommand()
     return "";
 }
 
+QString ASA8Object::getCommandWhenObjectGroupMember()
+{
+    if (Address::constcast(obj)!=NULL) return "network-object object " + name;
+    if (Service::constcast(obj)!=NULL) return "service-object object " + name;
+    return "";
+}
+
 

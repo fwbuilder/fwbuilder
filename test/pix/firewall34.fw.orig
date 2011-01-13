@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Thu Jan 13 10:33:35 2011 PST by vadim
+!  Generated Thu Jan 13 12:44:12 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -76,7 +76,6 @@ object-group network outside.id4390C25825682.dst.net.0
  network-object 58.53.82.190 255.255.255.255 
  network-object 58.231.13.78 255.255.255.255 
  network-object  host 61.150.47.112 
- network-object 61.150.47.112 255.255.255.255 
  network-object 61.184.14.102 255.255.255.255 
  network-object 64.106.85.186 255.255.255.255 
  network-object 70.228.60.100 255.255.255.255 

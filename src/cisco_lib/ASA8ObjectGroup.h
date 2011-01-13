@@ -40,7 +40,8 @@ public:
 
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();
-        virtual std::string toString() throw(libfwbuilder::FWException);
+        virtual std::string toString(std::map<int, ASA8Object*> &named_objects_registry)
+            throw(libfwbuilder::FWException);
     
     };
 }

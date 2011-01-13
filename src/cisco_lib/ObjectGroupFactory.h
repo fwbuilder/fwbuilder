@@ -32,11 +32,14 @@ namespace libfwbuilder {
     class Firewall;
 };
 
-class ObjectGroupFactory {
+namespace fwcompiler {
+
+    class ObjectGroupFactory {
 public:
-    static BaseObjectGroup *createObjectGroup(
-        libfwbuilder::Firewall *fw,
-        BaseObjectGroup::object_group_type _gt=BaseObjectGroup::UNKNOWN);
-};
+        static BaseObjectGroup *createObjectGroup(
+            libfwbuilder::Firewall *fw,
+            BaseObjectGroup::object_group_type _gt=BaseObjectGroup::UNKNOWN);
+    };
+}
 
 #endif

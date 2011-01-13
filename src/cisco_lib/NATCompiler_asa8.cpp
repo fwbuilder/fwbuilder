@@ -69,13 +69,6 @@ NATCompiler_asa8::NATCompiler_asa8(FWObjectDatabase *_db,
 
 NATCompiler_asa8::~NATCompiler_asa8()
 {
-    std::map<int, ASA8Object*>::iterator it1;
-    for (it1=asa8_object_registry.begin();
-         it1!=asa8_object_registry.end(); ++it1)
-    {
-        delete it1->second;
-    }
-    asa8_object_registry.clear();
 }
         
 /*

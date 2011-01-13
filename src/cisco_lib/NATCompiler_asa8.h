@@ -40,8 +40,6 @@ namespace fwcompiler {
     {
 	public:
 
-        std::map<int, ASA8Object*> asa8_object_registry;
-
         void addASA8Object(const libfwbuilder::FWObject *obj);
         ASA8Object* getASA8Object(const libfwbuilder::FWObject *obj);
         

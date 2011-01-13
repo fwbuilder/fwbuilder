@@ -52,17 +52,24 @@ using namespace std;
 
 void NATCompiler_asa8::addASA8Object(const FWObject *obj)
 {
-    if (asa8_object_registry[obj->getId()] == NULL)
+    if (BaseObjectGroup::constcast(obj)!=NULL)
+    {
+        for (FWObject::const_iterator i=obj->begin(); i!=obj->end(); ++i)
+        {
+            addASA8Object(FWReference::getObject(*i));
+        }
+    }
+    if (CreateObjectGroups::named_objects[obj->getId()] == NULL)
     {
         ASA8Object *asa8obj = new ASA8Object(obj);
         output << asa8obj->getCommand().toStdString();
-        asa8_object_registry[obj->getId()] = asa8obj;
+        CreateObjectGroups::named_objects[obj->getId()] = asa8obj;
     }
 }
 
 ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
 {
-    return asa8_object_registry[obj->getId()];
+    return CreateObjectGroups::named_objects[obj->getId()];
 }
 
 bool NATCompiler_asa8::PrintObjectsForNat::processNext()

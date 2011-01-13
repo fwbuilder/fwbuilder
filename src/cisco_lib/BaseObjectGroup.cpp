@@ -38,6 +38,7 @@
 #include <sstream>
 
 using namespace libfwbuilder;
+using namespace fwcompiler;
 using namespace std;
 
 map<string,int>  BaseObjectGroup::nc;
@@ -131,7 +132,7 @@ string BaseObjectGroup::getObjectGroupClass()
     return "";
 }
 
-string BaseObjectGroup::toString()  throw(FWException)
+string BaseObjectGroup::toString(std::map<int, ASA8Object*>&)  throw(FWException)
 {
     return "";
 }

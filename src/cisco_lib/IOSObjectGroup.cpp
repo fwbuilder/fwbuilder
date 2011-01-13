@@ -39,11 +39,13 @@
 #include <sstream>
 
 using namespace libfwbuilder;
+using namespace fwcompiler;
 using namespace std;
+
 
 const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
-string IOSObjectGroup::toString()  throw(FWException)
+string IOSObjectGroup::toString(std::map<int, ASA8Object*>&)  throw(FWException)
 {
     ostringstream ostr;
 

@@ -1,3 +1,9 @@
+2011-01-13  vadim  <vadim@netcitadel.com>
+
+	* ASA8ObjectGroup.cpp (toString): refs #1885 Compiler uses named
+	objects and objects groups to build configurations that use
+	address ranges in TSrc in NAT rules. (only ASA 8.3 and later)
+
 2011-01-12  Vadim Kurland  <vadim@netcitadel.com>
 
 	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1907 "ASA NAT -

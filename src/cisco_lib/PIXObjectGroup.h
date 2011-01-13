@@ -28,18 +28,21 @@
 
 #include "BaseObjectGroup.h"
 
-
-class PIXObjectGroup : public BaseObjectGroup {
+namespace fwcompiler {
     
-    public:
-    PIXObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
-    virtual ~PIXObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
-
-    virtual std::string getObjectGroupClass();
-    virtual std::string getObjectGroupHeader();
-    virtual std::string toString() throw(libfwbuilder::FWException);
+    class PIXObjectGroup : public BaseObjectGroup {
     
-};
+public:
+        PIXObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
+        virtual ~PIXObjectGroup() {};
+        DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
+
+        virtual std::string getObjectGroupClass();
+        virtual std::string getObjectGroupHeader();
+        virtual std::string toString(std::map<int, ASA8Object*> &named_objects_registry)
+            throw(libfwbuilder::FWException);
+    
+    };
+}
 
 #endif

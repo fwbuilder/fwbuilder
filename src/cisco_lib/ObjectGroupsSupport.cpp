@@ -58,13 +58,30 @@ using namespace fwcompiler;
 using namespace std;
 
 
-Group *CreateObjectGroups::object_groups = NULL;
+Group* CreateObjectGroups::object_groups = NULL;
+map<int, ASA8Object*> CreateObjectGroups::named_objects;
 
 
 void CreateObjectGroups::init(FWObjectDatabase *db)
 {
     object_groups = new Group();
     db->add( object_groups );
+    if (named_objects.size() > 0) clearNamedObjectsRegistry();
+}
+
+void CreateObjectGroups::clearNamedObjectsRegistry()
+{
+    std::map<int, ASA8Object*>::iterator it1;
+    for (it1=named_objects.begin(); it1!=named_objects.end(); ++it1)
+    {
+        delete it1->second;
+    }
+    named_objects.clear();
+}
+
+CreateObjectGroups::~CreateObjectGroups()
+{
+    clearNamedObjectsRegistry();
 }
 
 BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
@@ -230,7 +247,7 @@ bool printObjectGroups::processNext()
         compiler->output << endl;
         try
         {
-            compiler->output << og->toString();
+            compiler->output << og->toString(CreateObjectGroups::named_objects);
         } catch (FWException &ex)
         {
             compiler->abort(ex.toString());

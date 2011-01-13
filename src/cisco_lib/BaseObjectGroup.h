@@ -26,54 +26,60 @@
 #ifndef __BASEOBJECTGROUP_HH
 #define __BASEOBJECTGROUP_HH
 
+#include "ASA8Object.h"
+
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/FWException.h"
 
-class BaseObjectGroup : public libfwbuilder::Group {
+namespace fwcompiler {
+
+    class BaseObjectGroup : public libfwbuilder::Group {
 public:
 
-    typedef enum { UNKNOWN, 
-                   NETWORK, 
-                   PROTO, 
-                   ICMP_TYPE, 
-                   TCP_SERVICE, 
-                   UDP_SERVICE,
-                   MIXED_SERVICE } object_group_type;
+        typedef enum { UNKNOWN, 
+                       NETWORK, 
+                       PROTO, 
+                       ICMP_TYPE, 
+                       TCP_SERVICE, 
+                       UDP_SERVICE,
+                       MIXED_SERVICE } object_group_type;
 
 private:
-    object_group_type gt;
-    static std::map<std::string,int>  nc;
+        object_group_type gt;
+        static std::map<std::string,int>  nc;
 
 protected:
-    std::string registerGroupName(const std::string &prefix);
+        std::string registerGroupName(const std::string &prefix);
     
 public:
-    BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
-        gt=_gt;
-    }
+BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
+            gt=_gt;
+        }
     
-    virtual ~BaseObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
+        virtual ~BaseObjectGroup() {};
+        DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
 
-    virtual bool  validateChild(FWObject*) { return true; }
+        virtual bool  validateChild(FWObject*) { return true; }
 
-    void setObjectGroupType(object_group_type _gt) { gt=_gt; }
-    object_group_type getObjectGroupType() { return gt; }
+        void setObjectGroupType(object_group_type _gt) { gt=_gt; }
+        object_group_type getObjectGroupType() { return gt; }
 
-    void setObjectGroupTypeFromFWObject(libfwbuilder::FWObject *obj);
+        void setObjectGroupTypeFromFWObject(libfwbuilder::FWObject *obj);
 
-    virtual void setName(const std::string &prefix);
+        virtual void setName(const std::string &prefix);
 
-    bool isServiceGroup();
-    bool isObjectGroup();
-    std::string getSrvTypeName();
+        bool isServiceGroup();
+        bool isObjectGroup();
+        std::string getSrvTypeName();
     
-    virtual std::string getObjectGroupClass();
-    virtual std::string getObjectGroupHeader();
-    virtual std::string toString() throw(libfwbuilder::FWException);
-};
+        virtual std::string getObjectGroupClass();
+        virtual std::string getObjectGroupHeader();
+        virtual std::string toString(std::map<int, ASA8Object*> &named_objects_registry)
+            throw(libfwbuilder::FWException);
+    };
 
+}
 
 #endif

@@ -43,7 +43,8 @@ using namespace fwcompiler;
 
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
-string ASA8ObjectGroup::toString()  throw(FWException)
+string ASA8ObjectGroup::toString(std::map<int, ASA8Object*> &named_objects_registry)
+    throw(FWException)
 {
     ostringstream ostr;
 
@@ -56,6 +57,15 @@ string ASA8ObjectGroup::toString()  throw(FWException)
         FWObject *o   = *i1;
         FWObject *obj = o;
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+
+        ASA8Object *named_object = named_objects_registry[obj->getId()];
+        if (named_object)
+        {
+            ostr << " "
+                 << named_object->getCommandWhenObjectGroupMember().toStdString();
+            ostr << endl;
+            continue;
+        }
 
         if (this->getObjectGroupType() == NETWORK)
         {

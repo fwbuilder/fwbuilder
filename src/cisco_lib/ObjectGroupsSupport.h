@@ -27,6 +27,7 @@
 #include "config.h"
 
 #include "BaseObjectGroup.h"
+#include "ASA8Object.h"
 
 #include "fwbuilder/Group.h"
 #include "fwbuilder/RuleElement.h"
@@ -40,6 +41,8 @@ namespace fwcompiler
 
     class CreateObjectGroups : public BasicRuleProcessor
     {
+        static void clearNamedObjectsRegistry();
+        
 protected:
 
         std::string re_type;
@@ -53,11 +56,15 @@ protected:
 public:
 // storage for object groups created to be used with PIX command object-group
         static libfwbuilder::Group *object_groups;
+        static std::map<int, ASA8Object*> named_objects;
+
 
         CreateObjectGroups(const std::string &name,
                    const std::string &_ns,
                    const std::string &_type) :
-        BasicRuleProcessor(name) {re_type=_type; name_suffix=_ns; }
+            BasicRuleProcessor(name) {re_type=_type; name_suffix=_ns; }
+
+        virtual ~CreateObjectGroups();
         virtual bool processNext();
 
         static void init(libfwbuilder::FWObjectDatabase *db);
