@@ -58,6 +58,7 @@ ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticT
          * assume it has different number of addresses and we fall
          * back to dynamic
          */
+        if (tsrc_re->size() > 1) return DYNAMIC;
         if (tsrc == NULL) return DYNAMIC;
         if (osrc->dimension() == tsrc->dimension()) return STATIC;
         else return DYNAMIC;

@@ -278,8 +278,8 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
                     cmd << printSingleObject(obj);
                     break;
                 }
-                if (have_interface) cmd << "interface";
             }
+            if (have_interface) cmd << "interface";
         }
     }
 

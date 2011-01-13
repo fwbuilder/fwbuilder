@@ -153,7 +153,7 @@ bool CreateObjectGroups::processNext()
 
         if (libfwbuilder::XMLTools::version_compare(
                 compiler->fw->getStr("version"), "8.3")>=0 &&
-            re->getTypeName() == RuleElementTSrc::TYPENAME)
+            re_type == RuleElementTSrc::TYPENAME)
         {
             // put all objects inside of the group, except for the interface
             // if it belongs to the firewall
@@ -193,7 +193,7 @@ bool CreateObjectGroups::processNext()
 
     re->addRef(obj_group);
 
-    assert(re->size()==1);
+//    assert(re->size()==1);
 
     tmp_queue.push_back(rule);
     return true;
