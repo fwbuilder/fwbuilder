@@ -189,6 +189,9 @@ bool CreateObjectGroups::processNext()
             }
             re->clearChildren(false); //do not want to destroy children objects
         }
+    } else
+    {
+        re->clearChildren(false); //do not want to destroy children objects
     }
 
     re->addRef(obj_group);

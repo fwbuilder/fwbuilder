@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 17:40:28 2011 PST by vadim
+!  Generated Thu Jan 13 10:09:26 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -130,9 +130,6 @@ quit
 object service smtp
   service tcp destination eq 25
 quit
-object network firewall90:FastEthernet1:ip-1
-  host 22.22.22.23
-quit
 object network internal_subnet_1
   subnet 192.168.1.0 255.255.255.192
 quit
@@ -150,6 +147,10 @@ object network outside_range
 quit
 object service squid
   service tcp destination eq 3128
+quit
+
+object network firewall90:FastEthernet1:ip-1
+  host 22.22.22.23
 quit
 
 object-group network outside.id130599X29063.tsrc.net.0
@@ -173,14 +174,12 @@ object-group network outside.id241772X29764.tsrc.net.0
 
 
 object-group network outside.id21121X3710.tsrc.net.0
- network-object  host 22.22.22.22 
  network-object  host 22.22.22.30 
  network-object  host 22.22.22.100 
  exit
 
 
 object-group network outside.id21177X3720.tsrc.net.0
- network-object  host 22.22.22.22 
  network-object 22.22.22.128 255.255.255.224 
  exit
 
@@ -246,12 +245,12 @@ nat (inside,outside) source dynamic hostA:eth0 outside_range
 ! for #1908  "static" vs "dynamic"
 ! for #1885 "named object" - create 
 ! network object to define address range, then add it to object-group
-nat (inside,outside) source dynamic hostA:eth0 outside.id21121X3710.tsrc.net.0
+nat (inside,outside) source dynamic hostA:eth0 outside.id21121X3710.tsrc.net.0 interface
 ! 
 ! Rule  15 (NAT)
 ! for #1908, #1916
 ! "static" vs "dynamic"
-nat (inside,outside) source dynamic hostA:eth0 outside.id21177X3720.tsrc.net.0
+nat (inside,outside) source dynamic hostA:eth0 outside.id21177X3720.tsrc.net.0 interface
 ! 
 ! Rule  16 (NAT)
 ! for #1908
