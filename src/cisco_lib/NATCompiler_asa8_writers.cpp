@@ -91,8 +91,8 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
         Service *osrv = compiler->getFirstOSrv(rule);
         if (osrv) pix_comp->addASA8Object(osrv);
 
-        Address *tsrc = compiler->getFirstTSrc(rule);
-        if (tsrc) pix_comp->addASA8Object(tsrc);
+        // Address *tsrc = compiler->getFirstTSrc(rule);
+        // if (tsrc) pix_comp->addASA8Object(tsrc);
 
         Address *tdst = compiler->getFirstTDst(rule);  assert(tdst);
         pix_comp->addASA8Object(tdst);
@@ -115,24 +115,21 @@ bool NATCompiler_asa8::PrintObjectsForTSrc::processNext()
     compiler->output << endl;
 
     /*
-     * Gather all objects that are not interface in an object-group,
-     * then replace them with reference to this group in rule
-     * element. Leave interface object(s) alone. There should be just
-     * one interface that is the child of the firewall at this point
-     * but I do not verify this in this rule processor.
+     * Print definitions of all objects that are not interface
      */
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
         NATRule *rule = NATRule::cast( *k );
 
-        RuleElementTSrc *tsrc = rule->getTSrc();  assert(tsrc);
+        RuleElementTSrc *tsrc_re = rule->getTSrc();  assert(tsrc_re);
+        if (tsrc_re->isAny()) continue;
 
-        for (FWObject::iterator it=tsrc->begin(); it!=tsrc->end(); ++it)
+        for (FWObject::iterator it=tsrc_re->begin(); it!=tsrc_re->end(); ++it)
         {
             FWObject *obj = FWReference::getObject(*it);
-
+            if (Interface::isA(obj)) continue;
+            pix_comp->addASA8Object(obj);
         }
-
     }
 
     return true;
@@ -228,7 +225,6 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 
     RuleElementTSrc *tsrc_re = rule->getTSrc();
     assert(tsrc_re!=NULL);
-    FWObject *tsrc = FWReference::getObject(tsrc_re->front());
 
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
@@ -259,7 +255,33 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
     if (tsrc_re->isAny())
         cmd << printSingleObject(osrc);
     else
-        cmd << printSingleObject(tsrc);
+    {
+        // TSrc can have one object, which can be either an address or
+        // a group, or two objects in which case one must be an interface
+        if (tsrc_re->size() == 1)
+        {
+            FWObject *tsrc = FWReference::getObject(tsrc_re->front());
+            cmd << printSingleObject(tsrc);
+        } else
+        {
+            // first, print name of the address or group, then interface
+            bool have_interface = false;
+            for (FWObject::iterator it=tsrc_re->begin(); it!=tsrc_re->end(); ++it)
+            {
+                FWObject *obj = FWReference::getObject(*it);
+                if (Interface::isA(obj))
+                {
+                    have_interface = true;
+                    continue;
+                } else
+                {
+                    cmd << printSingleObject(obj);
+                    break;
+                }
+                if (have_interface) cmd << "interface";
+            }
+        }
+    }
 
     // only need "destination" part if ODst is not any
     if (!odst_re->isAny())

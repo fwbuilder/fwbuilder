@@ -329,8 +329,8 @@ void NATCompiler_asa8::compile()
 
     add( new PrintClearCommands("Clear ACLs" ));
     add( new PrintObjectsForNat("generate objects for nat commands"));
-    //add( new PrintObjectsForTSrc(
-    //         "generate object groups and objects for TSrc"));
+    add( new PrintObjectsForTSrc(
+             "generate object groups and objects for TSrc"));
     add( new printObjectGroups("generate code for object groups"));
     add( new PrintRule("generate PIX code" ));
     add( new storeProcessedRules ("store processed rules" ));
