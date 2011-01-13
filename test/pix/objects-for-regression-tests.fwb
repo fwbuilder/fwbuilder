@@ -18228,7 +18228,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294873229" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294875498" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18670,7 +18670,7 @@ no sysopt nodnsalias outbound
           <RuleSetOptions/>
         </NAT>
         <Policy id="id19857X26146" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id78630X30274" disabled="True" group="" log="False" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id78630X30274" disabled="False" group="" log="False" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3FA34EFA"/>
               <ObjectRef ref="id68966X11724"/>

@@ -124,7 +124,7 @@ string ASA8ObjectGroup::toString()  throw(FWException)
                 continue;
             }
 
-            throw FWException("Unknown object group type");
+            throw FWException("ASA8ObjectGroup: Unknown object group type");
         }
     }
     ostr << " exit" << endl << endl;
@@ -137,7 +137,8 @@ string ASA8ObjectGroup::getObjectGroupClass()
     {
     case NETWORK:        return "network";
     case MIXED_SERVICE:  return "service";;
-    default: throw FWException("Unknown object group type");
+    default:
+        throw FWException("ASA8ObjectGroup: Unknown object group type");
     }
 }
 

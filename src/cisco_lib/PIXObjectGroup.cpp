@@ -121,7 +121,7 @@ string PIXObjectGroup::toString()  throw(FWException)
                 continue;
             }
 
-            throw FWException("Unknown object group type");
+            throw FWException("PIXObjectGroup: Unknown object group type");
         }
     }
     ostr << " exit" << endl << endl;
@@ -137,7 +137,8 @@ string PIXObjectGroup::getObjectGroupClass()
     case ICMP_TYPE:      return "icmp-type";
     case TCP_SERVICE:    return "service";
     case UDP_SERVICE:    return "service";
-    default: throw FWException("Unknown object group type");
+    default:
+        throw FWException("PIXObjectGroup: Unknown object group type");
     }
 }
 

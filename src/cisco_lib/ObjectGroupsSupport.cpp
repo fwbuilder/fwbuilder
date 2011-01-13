@@ -121,9 +121,10 @@ bool CreateObjectGroups::processNext()
 
     string version = compiler->fw->getStr("version");
     string platform = compiler->fw->getStr("platform");
-    bool supports_mixed_groups = Resources::platform_res[platform]->getResourceBool(
-        string("/FWBuilderResources/Target/options/") +
-        "version_" + version + "/supports_mixed_service_groups");
+    bool supports_mixed_groups =
+        Resources::platform_res[platform]->getResourceBool(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version + "/supports_mixed_service_groups");
 
     BaseObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
@@ -131,20 +132,19 @@ bool CreateObjectGroups::processNext()
         //obj_group= new BaseObjectGroup();
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
 
-        if (supports_mixed_groups)
+        FWObject *o = re->front();
+        FWObject *obj = FWReference::getObject(o);
+        obj_group->setObjectGroupTypeFromFWObject(obj);
+
+        if (obj_group->isServiceGroup() && supports_mixed_groups)
         {
             obj_group->setObjectGroupType(BaseObjectGroup::MIXED_SERVICE);
-        } else
-        {
-            FWObject *o = re->front();
-            FWObject *obj = FWReference::getObject(o);
-            obj_group->setObjectGroupTypeFromFWObject(obj);
-        } 
-
+        }
 
         QStringList gn;
         if (!rule_iface->getLabel().empty())
             gn.push_back(rule_iface->getLabel().c_str());
+
         gn.push_back(rule->getUniqueId().c_str());
         gn.push_back(name_suffix.c_str());
         obj_group->setName(gn.join(".").toStdString());
@@ -153,10 +153,11 @@ bool CreateObjectGroups::processNext()
 
         for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         {
-            FWObject *o   = *i1;
+            FWObject *o = *i1;
             FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-            obj_group->addRef( obj );
+            if (FWReference::cast(o)!=NULL)
+                obj = FWReference::cast(o)->getPointer();
+            obj_group->addRef(obj);
         }
     }
     re->clearChildren(false);   // do not want to destroy children objects
