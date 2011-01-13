@@ -48,6 +48,9 @@
 #include <cstring>
 #include <assert.h>
 
+#include <QtDebug>
+
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -756,34 +759,36 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
         return true;
     }
 
-    std::map<Address*,FWObject*>  addrmap;
-    std::list<FWObject*> cl;
+    map<Address*, bool> status;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         Address *a = Address::cast(FWReference::getObject(*i1));
         assert(a!=NULL);   // assuming all objects are addresses.
-        addrmap[a] = *i1;
+        status[a] = false;
     }
 
-    for (std::map<Address*,FWObject*>::iterator i1=addrmap.begin();
-         i1!=addrmap.end(); ++i1)
+    map<Address*,bool>::iterator i1;
+    map<Address*,bool>::iterator i2;
+    for (i1=status.begin(); i1!=status.end(); ++i1)
     {
         Address *a1 = i1->first;
         const InetAddrMask* am1 = a1->getInetAddrMaskObjectPtr();
-        for (std::map<Address*,FWObject*>::iterator i2=addrmap.begin();
-             i2!=addrmap.end(); ++i2)
+
+        for (i2=status.begin(); i2!=status.end(); ++i2)
         {
+            if (i2->second) continue;
             Address *a2 = i2->first;
             const InetAddrMask* am2 = a2->getInetAddrMaskObjectPtr();
+
             if (am1 && am2 && am1->toString() == am2->toString()) continue;
-            if (compiler->checkForShadowing(*a1, *a2) ) cl.push_back(i1->second);
+
+            if (compiler->checkForShadowing(*a1, *a2) ) status[a1] = true;
         }
     }
 
-    if (!cl.empty())
+    for (i1=status.begin(); i1!=status.end(); ++i1)
     {
-        for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
-            re->remove( (*i1) );
+        if (i1->second) re->removeRef(i1->first);
     }
 
     tmp_queue.push_back(rule);
