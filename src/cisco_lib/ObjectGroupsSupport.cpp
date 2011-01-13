@@ -151,55 +151,69 @@ bool CreateObjectGroups::processNext()
 
         object_groups->add(obj_group);
 
-        if (libfwbuilder::XMLTools::version_compare(
-                compiler->fw->getStr("version"), "8.3")>=0 &&
-            re_type == RuleElementTSrc::TYPENAME)
-        {
-            // put all objects inside of the group, except for the interface
-            // if it belongs to the firewall
-            FWObject *re_interface = NULL;
-            for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-            {
-                FWObject *o = *i1;
-                FWObject *obj = o;
-                if (FWReference::cast(o)!=NULL)
-                    obj = FWReference::cast(o)->getPointer();
-                if (Interface::isA(obj) && obj->isChildOf(compiler->fw))
-                {
-                    re_interface = obj;
-                    continue;
-                }
-                obj_group->addRef(obj);
-            }
-            re->clearChildren(false); //do not want to destroy children objects
-            if (re_interface)
-            {
-                // add interface back.
-                re->addRef(re_interface);
-            }
-        } else
-        {
-            for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-            {
-                FWObject *o = *i1;
-                FWObject *obj = o;
-                if (FWReference::cast(o)!=NULL)
-                    obj = FWReference::cast(o)->getPointer();
-                obj_group->addRef(obj);
-            }
-            re->clearChildren(false); //do not want to destroy children objects
-        }
+        packObjects(re, obj_group);
+
     } else
     {
         re->clearChildren(false); //do not want to destroy children objects
+        re->addRef(obj_group);
     }
 
-    re->addRef(obj_group);
 
 //    assert(re->size()==1);
 
     tmp_queue.push_back(rule);
     return true;
+}
+
+void CreateObjectGroups::packObjects(RuleElement *re, BaseObjectGroup *obj_group)
+{
+    for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
+    {
+        FWObject *o = *i1;
+        FWObject *obj = o;
+        if (FWReference::cast(o)!=NULL)
+            obj = FWReference::cast(o)->getPointer();
+        obj_group->addRef(obj);
+    }
+    re->clearChildren(false); //do not want to destroy children objects
+    re->addRef(obj_group);
+}
+
+void CreateObjectGroupsForTSrc::packObjects(RuleElement *re,
+                                            BaseObjectGroup *obj_group)
+{
+    if (libfwbuilder::XMLTools::version_compare(
+            compiler->fw->getStr("version"), "8.3")>=0 &&
+        re_type == RuleElementTSrc::TYPENAME)
+    {
+        // put all objects inside of the group, except for the interface
+        // if it belongs to the firewall
+        FWObject *re_interface = NULL;
+        for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
+        {
+            FWObject *o = *i1;
+            FWObject *obj = o;
+            if (FWReference::cast(o)!=NULL)
+                obj = FWReference::cast(o)->getPointer();
+            if (Interface::isA(obj) && obj->isChildOf(compiler->fw))
+            {
+                re_interface = obj;
+                continue;
+            }
+            obj_group->addRef(obj);
+        }
+        re->clearChildren(false); //do not want to destroy children objects
+        if (re_interface)
+        {
+            // add interface back.
+            re->addRef(re_interface);
+        }
+        re->addRef(obj_group);
+    } else
+    {
+        CreateObjectGroups::packObjects(re, obj_group);
+    }
 }
 
 bool printObjectGroups::processNext()

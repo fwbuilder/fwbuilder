@@ -40,11 +40,16 @@ namespace fwcompiler
 
     class CreateObjectGroups : public BasicRuleProcessor
     {
+protected:
+
         std::string re_type;
         std::string name_suffix;
 
         BaseObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
-        
+
+        virtual void packObjects(libfwbuilder::RuleElement *re,
+                                 BaseObjectGroup *obj_group);
+
 public:
 // storage for object groups created to be used with PIX command object-group
         static libfwbuilder::Group *object_groups;
@@ -82,6 +87,11 @@ public:
     
     class CreateObjectGroupsForTSrc : public CreateObjectGroups
     {
+protected:
+
+        virtual void packObjects(libfwbuilder::RuleElement *re,
+                                 BaseObjectGroup *obj_group);
+
 public:
         CreateObjectGroupsForTSrc(const std::string &n) : 
           CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME) {}
