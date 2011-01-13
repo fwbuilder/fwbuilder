@@ -25,7 +25,7 @@
 
 #include "PolicyCompiler_iosacl.h"
 #include "IOSObjectGroup.h"
-#include "ObjectGroupsSupport.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"

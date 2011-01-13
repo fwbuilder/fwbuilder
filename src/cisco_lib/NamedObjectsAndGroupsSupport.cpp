@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include "ObjectGroupsSupport.h"
+#include "NamedObjectsAndGroupsSupport.h"
 #include "ObjectGroupFactory.h"
 
 #include "fwbuilder/FWObjectDatabase.h"

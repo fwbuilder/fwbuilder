@@ -26,7 +26,7 @@
 #include "config.h"
 
 #include "NATCompiler_pix.h"
-#include "ObjectGroupsSupport.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"

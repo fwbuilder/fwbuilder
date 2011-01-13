@@ -6,11 +6,11 @@ TEMPLATE = lib
 #
 SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PolicyCompiler_cisco_acls.cpp      \
-			ObjectGroupsSupport.cpp            \
+			NamedObjectsAndGroupsSupport.cpp   \
 			RoutingCompiler_cisco.cpp          \
 			RoutingCompiler_cisco_writers.cpp  \
 			ACL.cpp                            \
-			NamedObject.cpp                     \
+			NamedObject.cpp                    \
 			ASA8TwiceNatLogic.cpp              \
 			Helper.cpp                         \
 			inspectionProtocol.cpp             \
@@ -56,7 +56,7 @@ HEADERS	 = ../../config.h                   \
 			Helper.h                        \
 			NamedObject.h                   \
 			ASA8TwiceNatLogic.h             \
-			ObjectGroupsSupport.h           \
+			NamedObjectsAndGroupsSupport.h  \
 			inspectionProtocol.h            \
 			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \

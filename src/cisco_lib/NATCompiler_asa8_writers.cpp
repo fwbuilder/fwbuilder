@@ -26,7 +26,7 @@
 #include "NATCompiler_asa8.h"
 #include "NamedObject.h"
 #include "ASA8TwiceNatLogic.h"
-#include "ObjectGroupsSupport.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
