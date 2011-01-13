@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:13 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:17 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -117,8 +117,8 @@ access-list outside_acl_in permit ip any object-group outside.id438728A918346.ds
 access-list inside_acl_in permit ip any object-group outside.id438728A918346.dst.net.0 
 ! 
 ! Rule  11 (global)
-access-list outside_acl_in deny   ip any any 
-access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any log 6 interval 300
+access-list inside_acl_in deny   ip any any log 6 interval 300
 
 
 access-group inside_acl_in in interface inside

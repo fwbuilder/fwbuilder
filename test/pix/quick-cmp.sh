@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-DIFFCMD="diff -C 5 -c -b -B -w -I \"!  Generated\" -I 'Activating ' -I '!  Firewall Builder  fwb_pix v' -I 'Can not find file' -I '====' -I 'log '"
+DIFFCMD="diff -C 5 -c -b -B -w -I \"!  Generated\" -I 'Activating ' -I '!  Firewall Builder  fwb_pix v' -I 'Can not find file' -I '===='"
 
 for f in $(ls *.fw.orig)
 do

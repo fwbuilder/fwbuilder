@@ -1,5 +1,10 @@
 2011-01-12  Vadim Kurland  <vadim@netcitadel.com>
 
+	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1907 "ASA NAT -
+	fwbuilder doesn't support multiple translated sources in a single
+	NAT rule". Compiler uses object-group to translate NAT rules that
+	have multiple objects in Translated Source.
+
 	* PolicyCompiler_pix_writers.cpp (_printLog): fixed #1913 "ASA/PIX
 	rules with logging enabled don't have log set unless user modifies
 	Firewall Settings". Added default log level setting to the

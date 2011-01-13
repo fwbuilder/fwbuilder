@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:10 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:14 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -152,14 +152,14 @@ access-list inside_acl_in permit ip host 192.168.2.23 host 192.168.1.10
 access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
 ! 
 ! Rule  19 (eth0,eth1)
-access-list outside_acl_in deny   ip host 10.5.70.20 any log 0 interval 300 
-access-list outside_acl_in deny   ip host 192.168.2.20 any log 0 interval 300 
-access-list outside_acl_in deny   ip host 192.168.1.20 any log 0 interval 300 
-access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
-access-list dmz_acl_in deny   ip host 10.5.70.20 any log 0 interval 300 
-access-list dmz_acl_in deny   ip host 192.168.2.20 any log 0 interval 300 
-access-list dmz_acl_in deny   ip host 192.168.1.20 any log 0 interval 300 
-access-list dmz_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300 
+access-list outside_acl_in deny   ip host 10.5.70.20 any log 0 interval 300
+access-list outside_acl_in deny   ip host 192.168.2.20 any log 0 interval 300
+access-list outside_acl_in deny   ip host 192.168.1.20 any log 0 interval 300
+access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300
+access-list dmz_acl_in deny   ip host 10.5.70.20 any log 0 interval 300
+access-list dmz_acl_in deny   ip host 192.168.2.20 any log 0 interval 300
+access-list dmz_acl_in deny   ip host 192.168.1.20 any log 0 interval 300
+access-list dmz_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300
 ! 
 ! Rule  20 (eth0,eth1)
 access-list dmz_acl_in permit ip 192.168.2.0 255.255.255.0 any 

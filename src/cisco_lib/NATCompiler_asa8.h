@@ -103,7 +103,8 @@ namespace fwcompiler {
         friend class PrintRule;
         class PrintRule : public NATCompiler_pix::PrintRule
         {
-        public:
+            QString printSingleObject(libfwbuilder::FWObject *obj);
+    public:
             
             PrintRule(const std::string &n);
             virtual void printNONAT(libfwbuilder::NATRule *rule);

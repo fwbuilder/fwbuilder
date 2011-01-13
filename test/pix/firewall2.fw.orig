@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:07 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:11 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -82,14 +82,14 @@ object-group network inside.id3D8FCCDE.src.net.0
 ! 
 ! Rule  0 (eth1)
 ! Anti-spoofing rule
-access-list outside_acl_in deny   ip host 192.168.1.1 any 
-access-list outside_acl_in deny   ip host 22.22.22.22 any 
-access-list outside_acl_in deny   ip host 192.168.2.1 any 
-access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
+access-list outside_acl_in deny   ip host 192.168.1.1 any log 6 interval 300
+access-list outside_acl_in deny   ip host 22.22.22.22 any log 6 interval 300
+access-list outside_acl_in deny   ip host 192.168.2.1 any log 6 interval 300
+access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 6 interval 300
 ! 
 ! Rule  1 (eth1)
 ! Anti-spoofing rule
-access-list inside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
+access-list inside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 6 interval 300
 ! 
 ! Rule  2 (global)
 access-list inside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 

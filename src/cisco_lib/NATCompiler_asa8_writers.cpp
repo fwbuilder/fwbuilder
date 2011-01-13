@@ -26,6 +26,7 @@
 #include "NATCompiler_asa8.h"
 #include "ASA8Object.h"
 #include "ASA8TwiceNatLogic.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -77,20 +78,28 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
     {
         NATRule *rule = NATRule::cast( *k );
 
-        Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
-        Address  *odst = compiler->getFirstODst(rule);  assert(odst);
-        Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
-                                      
-        Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
-        Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
-        Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+        // OSrc, ODst, OSrv and TSrc may be either a single
+        // address/service object or a group. We print group
+        // definitions in rule processor printObjectGroups
 
-        pix_comp->addASA8Object(osrc);
-        pix_comp->addASA8Object(odst);
-        pix_comp->addASA8Object(osrv);
-        pix_comp->addASA8Object(tsrc);
+        Address *osrc = compiler->getFirstOSrc(rule);
+        if (osrc) pix_comp->addASA8Object(osrc);
+
+        Address *odst = compiler->getFirstODst(rule);
+        if (odst) pix_comp->addASA8Object(odst);
+
+        Service *osrv = compiler->getFirstOSrv(rule);
+        if (osrv) pix_comp->addASA8Object(osrv);
+
+        Address *tsrc = compiler->getFirstTSrc(rule);
+        if (tsrc) pix_comp->addASA8Object(tsrc);
+
+        Address *tdst = compiler->getFirstTDst(rule);  assert(tdst);
         pix_comp->addASA8Object(tdst);
+
+        Service *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
         pix_comp->addASA8Object(tsrv);
+
     }
 
     return true;
@@ -178,20 +187,49 @@ void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
     printSDNAT(rule);
 }
 
+QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
+{
+    NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
+    ASA8Object* asa8_object = pix_comp->getASA8Object(obj);
+    if (asa8_object) return asa8_object->getCommandWord();
+
+    for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
+         i!=CreateObjectGroups::object_groups->end(); ++i)
+    {
+        BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
+        assert(og!=NULL);
+        if (og->getId() == obj->getId()) return obj->getName().c_str();
+    }
+
+    QString err("Found unknown object '%1' in the NAT rule: it is not "
+                "an ASA8 object nor object group");
+    throw FWException(err.arg(obj->getName().c_str()).toStdString());
+}
+
 void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 {
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-    // NATCmd *natcmd = pix_comp->nat_commands[ rule->getInt("nat_cmd") ];
 
     FWOptions *ropt = rule->getOptionsObject();
 
     QStringList cmd;
 
-    Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
-    Address  *odst = compiler->getFirstODst(rule);  assert(odst);
-    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
-                                      
-    Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+    RuleElementOSrc *osrc_re = rule->getOSrc();
+    assert(osrc_re!=NULL);
+    FWObject *osrc = FWReference::getObject(osrc_re->front());
+
+    RuleElementODst *odst_re = rule->getODst();
+    assert(odst_re!=NULL);
+    FWObject *odst = FWReference::getObject(odst_re->front());
+
+    RuleElementOSrv *osrv_re = rule->getOSrv();
+    assert(osrv_re!=NULL);
+    FWObject *osrv = FWReference::getObject(osrv_re->front());
+
+    RuleElementTSrc *tsrc_re = rule->getTSrc();
+    assert(tsrc_re!=NULL);
+    FWObject *tsrc = FWReference::getObject(tsrc_re->front());
+
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
@@ -216,33 +254,34 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
         break;
     }
 
-    cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
-    if (tsrc->isAny())
-        cmd << pix_comp->getASA8Object(osrc)->getCommandWord();
+    cmd << printSingleObject(osrc);
+
+    if (tsrc_re->isAny())
+        cmd << printSingleObject(osrc);
     else
-        cmd << pix_comp->getASA8Object(tsrc)->getCommandWord();
+        cmd << printSingleObject(tsrc);
 
     // only need "destination" part if ODst is not any
-    if (!odst->isAny())
+    if (!odst_re->isAny())
     {
         // ASA documentation says destination translation is always "static"
         cmd << "destination" << "static";
-        cmd << pix_comp->getASA8Object(odst)->getCommandWord();
+        cmd << printSingleObject(odst);
 
         if (tdst->isAny())
-            cmd << pix_comp->getASA8Object(odst)->getCommandWord();
+            cmd << printSingleObject(odst);
         else
-            cmd << pix_comp->getASA8Object(tdst)->getCommandWord();
+            cmd << printSingleObject(tdst);
     }
 
-    if (!osrv->isAny())
+    if (!osrv_re->isAny())
     {
         cmd << "service";
-        cmd << pix_comp->getASA8Object(osrv)->getCommandWord();
+        cmd << printSingleObject(osrv);
         if (tsrv->isAny())
-            cmd << pix_comp->getASA8Object(osrv)->getCommandWord();
+            cmd << printSingleObject(osrv);
         else
-            cmd << pix_comp->getASA8Object(tsrv)->getCommandWord();
+            cmd << printSingleObject(tsrv);
     }
 
     if (ropt->getBool("asa8_nat_dns")) cmd << "dns";

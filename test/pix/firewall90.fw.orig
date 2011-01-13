@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:25 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:28 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -148,15 +148,42 @@ quit
 object network outside_range
   range 22.22.22.21 22.22.22.25
 quit
-object network firewall90:FastEthernet1:ip
-  host 22.22.22.22
-quit
-object network external_gw2
-  host 22.22.22.100
-quit
 object service squid
   service tcp destination eq 3128
 quit
+
+object-group network outside.id130599X29063.tsrc.net.0
+ network-object  host 22.22.22.21 
+ network-object  host 22.22.22.22 
+ network-object  host 22.22.22.100 
+ exit
+
+
+object-group network outside.id20720X27505.tsrc.net.0
+ network-object  host 22.22.22.21 
+ network-object  host 22.22.22.22 
+ network-object  host 22.22.22.100 
+ exit
+
+
+object-group network outside.id241772X29764.tsrc.net.0
+ network-object  host 22.22.22.21 
+ network-object  host 22.22.22.22 
+ exit
+
+
+object-group network outside.id21121X3710.tsrc.net.0
+ network-object  host 22.22.22.22 
+ network-object  host 22.22.22.30 
+ network-object  host 22.22.22.100 
+ exit
+
+
+object-group network outside.id21177X3720.tsrc.net.0
+ network-object  host 22.22.22.22 
+ network-object 22.22.22.128 255.255.255.224 
+ exit
+
 ! 
 ! Rule  0 (NAT)
 nat (inside,outside) source dynamic Internal_net interface service http http
@@ -179,20 +206,15 @@ nat (inside,outside) source static hostA:eth0 firewall90:FastEthernet1:ip-1 dest
 ! 
 ! Rule  6 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0 outside_range service smtp smtp
-nat (inside,outside) source static hostA:eth0 firewall90:FastEthernet1:ip service smtp smtp
-nat (inside,outside) source static hostA:eth0 external_gw2 service smtp smtp
+nat (inside,outside) source dynamic hostA:eth0 outside.id130599X29063.tsrc.net.0 service smtp smtp
 ! 
 ! Rule  7 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0 outside_range service smtp smtp
-nat (inside,outside) source static hostA:eth0 interface service smtp smtp
-nat (inside,outside) source static hostA:eth0 external_gw2 service smtp smtp
+nat (inside,outside) source dynamic hostA:eth0 outside.id20720X27505.tsrc.net.0 service smtp smtp
 ! 
 ! Rule  8 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0 outside_range service smtp smtp
-nat (inside,outside) source static hostA:eth0 interface service smtp smtp
+nat (inside,outside) source dynamic hostA:eth0 outside.id241772X29764.tsrc.net.0 service smtp smtp
 ! 
 ! Rule  9 (NAT)
 ! for #1902
@@ -221,21 +243,32 @@ nat (inside,outside) source static hostA:eth0 firewall90:FastEthernet1:ip-1
 nat (inside,outside) source dynamic hostA:eth0 outside_range
 ! 
 ! Rule  14 (NAT)
-! for #1908
-! "static" vs "dynamic"
-nat (outside,outside) source dynamic outside_range firewall90:FastEthernet1:ip-1
+! for #1908  "static" vs "dynamic"
+! for #1885 "named object" - create 
+! network object to define address range, then add it to object-group
+nat (inside,outside) source dynamic hostA:eth0 outside.id21121X3710.tsrc.net.0
 ! 
 ! Rule  15 (NAT)
-! for #1908
+! for #1908, #1916
 ! "static" vs "dynamic"
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1
+nat (inside,outside) source dynamic hostA:eth0 outside.id21177X3720.tsrc.net.0
 ! 
 ! Rule  16 (NAT)
 ! for #1908
 ! "static" vs "dynamic"
-nat (inside,outside) source static internal_subnet_1 firewall90:FastEthernet1:ip-1
+nat (outside,outside) source dynamic outside_range firewall90:FastEthernet1:ip-1
 ! 
 ! Rule  17 (NAT)
+! for #1908
+! "static" vs "dynamic"
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1
+! 
+! Rule  18 (NAT)
+! for #1908
+! "static" vs "dynamic"
+nat (inside,outside) source static internal_subnet_1 firewall90:FastEthernet1:ip-1
+! 
+! Rule  19 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
 
 

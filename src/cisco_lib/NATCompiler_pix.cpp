@@ -489,8 +489,11 @@ bool NATCompiler_pix::AssignInterface::processNext()
 
     assert(a1!=NULL && a2!=NULL);
 
-    rule->setInt("nat_iface_orig", helper.findInterfaceByNetzone(a1));
-    rule->setInt("nat_iface_trn",  helper.findInterfaceByNetzone(a2));
+    int org_intf_id = helper.findInterfaceByNetzone(a1);
+    int trn_intf_id = helper.findInterfaceByNetzone(a2);
+    rule->setInt("nat_iface_orig", org_intf_id);
+    rule->setInt("nat_iface_trn",  trn_intf_id);
+    rule->setInterfaceId(trn_intf_id);
 
     if ( rule->getInt("nat_iface_orig")==-1 )
     {

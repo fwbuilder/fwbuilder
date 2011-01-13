@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:14 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:18 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -197,18 +197,18 @@ access-list outside_acl_in permit ip any 192.0.2.0 255.255.255.0
 access-list inside_acl_in permit ip any 192.0.2.0 255.255.255.0 
 ! 
 ! Rule  2 (global)
-access-list outside_acl_in deny   ip any object-group outside.id4390C25825682.dst.net.0 
-access-list inside_acl_in deny   ip any object-group outside.id4390C25825682.dst.net.0 
+access-list outside_acl_in deny   ip any object-group outside.id4390C25825682.dst.net.0 log 6 interval 300
+access-list inside_acl_in deny   ip any object-group outside.id4390C25825682.dst.net.0 log 6 interval 300
 ! 
 ! Rule  3 (global)
 access-list outside_acl_in deny   tcp any object-group outside.id4390C25825682.dst.net.0 eq 25 
 access-list inside_acl_in deny   tcp any object-group outside.id4390C25825682.dst.net.0 eq 25 
 ! 
 ! Rule  5 (global)
-access-list outside_acl_in deny   ip object-group outside.id4388CFF8674.src.net.0 any 
+access-list outside_acl_in deny   ip object-group outside.id4388CFF8674.src.net.0 any log 6 interval 300
 ! 
 ! Rule  6 (global)
-access-list outside_acl_in deny   ip object-group outside.id4390C25825682.dst.net.0 any 
+access-list outside_acl_in deny   ip object-group outside.id4390C25825682.dst.net.0 any log 6 interval 300
 ! 
 ! Rule  7 (global)
 access-list outside_acl_in permit ip object-group outside.id4390C25825682.dst.net.0 any 
@@ -221,8 +221,8 @@ access-list inside_acl_in permit tcp any host 192.168.1.10 eq 25
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
 ! 
 ! Rule  11 (global)
-access-list outside_acl_in deny   ip any any 
-access-list inside_acl_in deny   ip any any 
+access-list outside_acl_in deny   ip any any log 6 interval 300
+access-list inside_acl_in deny   ip any any log 6 interval 300
 
 
 access-group inside_acl_in in interface inside

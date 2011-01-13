@@ -26,6 +26,7 @@
 #include "NATCompiler_asa8.h"
 #include "ASA8Object.h"
 #include "ASA8ObjectGroup.h"
+#include "ObjectGroupsSupport.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -286,10 +287,12 @@ void NATCompiler_asa8::compile()
 
     add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-    add( new ConvertToAtomicForOriginal("convert to atomic for OSrc, ODst, OSrv"));
+    add( new ConvertToAtomicForOriginal(
+             "convert to atomic for OSrc, ODst, OSrv"));
+
     // remove ConvertToAtomicForTSrc if we figure out a way to support multiple
     // translated soruces per #1907
-    add( new ConvertToAtomicForTSrc("convert to atomic for TSrc"));
+    // add( new ConvertToAtomicForTSrc("convert to atomic for TSrc"));
     add( new ConvertToAtomicForTDst("convert to atomic for TDst"));
     add( new ConvertToAtomicForTSrv("convert to atomic for TSrv"));
 
@@ -300,15 +303,20 @@ void NATCompiler_asa8::compile()
              "verify rule elements for static NAT rules"));
     add( new processNONATRules("process NONAT" ));
 
-    add( new VerifyValidityOfDNSOption("Check validity of 'translate dns' option"));
+    add( new VerifyValidityOfDNSOption(
+             "Check validity of 'translate dns' option"));
+
+    add( new CreateObjectGroupsForTSrc("create object groups for TSrc"));
 
 /* REMOVE_OLD_OPTIMIZATIONS
    if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
    add (new clearOSrc ("clear OSrc" ));
 */
 
+/* WE_DO_NOT_USE_NATCMD_FOR_ASA8
     add( new createNATCmd ("create NAT commands" ));
     add( new createStaticCmd ("create static commands" ));
+*/
 
 /* REMOVE_OLD_OPTIMIZATIONS
    add( new mergeNATCmd ("merge NAT commands" ));
@@ -321,7 +329,9 @@ void NATCompiler_asa8::compile()
 
     add( new PrintClearCommands("Clear ACLs" ));
     add( new PrintObjectsForNat("generate objects for nat commands"));
-    // add( new PrintObjectsForTSrc("generate object groups and objects for TSrc"));
+    //add( new PrintObjectsForTSrc(
+    //         "generate object groups and objects for TSrc"));
+    add( new printObjectGroups("generate code for object groups"));
     add( new PrintRule("generate PIX code" ));
     add( new storeProcessedRules ("store processed rules" ));
     add( new simplePrintProgress ());

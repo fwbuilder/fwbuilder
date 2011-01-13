@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Wed Jan 12 16:02:04 2011 PST by vadim
+!  Generated Wed Jan 12 17:40:08 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -146,11 +146,11 @@ access-list dmz50_acl_in permit tcp any host 192.0.2.1 eq 80
 ! 
 ! Rule  6 (global)
 access-list outside_acl_in  remark 6 (global)
-access-list outside_acl_in deny   ip any any log 5 interval 120 
+access-list outside_acl_in deny   ip any any log 5 interval 120
 access-list inside_acl_in  remark 6 (global)
-access-list inside_acl_in deny   ip any any log 5 interval 120 
+access-list inside_acl_in deny   ip any any log 5 interval 120
 access-list dmz50_acl_in  remark 6 (global)
-access-list dmz50_acl_in deny   ip any any log 5 interval 120 
+access-list dmz50_acl_in deny   ip any any log 5 interval 120
 
 
 access-group dmz50_acl_in in interface dmz50

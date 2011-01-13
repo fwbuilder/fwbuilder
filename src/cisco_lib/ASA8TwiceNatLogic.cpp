@@ -48,14 +48,17 @@ ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticT
     assert(tsrc_re!=NULL);
     Address  *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
 
-    if (tsrc->isAny()) return STATIC;
+    if (tsrc_re->isAny()) return STATIC;
     else
     {
         /*
-         * Default behavior: if the number of ip addresses in OSrc is equal to
-         * that in TSrc, then use "static". Otherwise use "dynamic". However if
-         * rule option "asa8_nat_static" is true, use "static".
+         * Default behavior: if the number of ip addresses in OSrc is
+         * equal to that in TSrc, then use "static". Otherwise use
+         * "dynamic". Note that TSrc may be a group, in which case we
+         * assume it has different number of addresses and we fall
+         * back to dynamic
          */
+        if (tsrc == NULL) return DYNAMIC;
         if (osrc->dimension() == tsrc->dimension()) return STATIC;
         else return DYNAMIC;
     }

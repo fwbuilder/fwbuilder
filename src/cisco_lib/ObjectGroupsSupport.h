@@ -62,24 +62,31 @@ public:
     class CreateObjectGroupsForSrc : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForSrc(const std::string &n):
-        CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME) {}
+        CreateObjectGroupsForSrc(const std::string &n) : 
+          CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME) {}
     };
 
     class CreateObjectGroupsForDst : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForDst(const std::string &n):
-        CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME) {}
+        CreateObjectGroupsForDst(const std::string &n) : 
+          CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME) {}
     };
 
     class CreateObjectGroupsForSrv : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForSrv(const std::string &n):
-        CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
+        CreateObjectGroupsForSrv(const std::string &n) : 
+          CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
     };
     
+    class CreateObjectGroupsForTSrc : public CreateObjectGroups
+    {
+public:
+        CreateObjectGroupsForTSrc(const std::string &n) : 
+          CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME) {}
+    };
+
     /**
      * this processor accumulates all rules fed to it by previous
      * processors, then prints all object groups and feeds all
