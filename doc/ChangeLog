@@ -1,5 +1,11 @@
 2011-01-13  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_cisco.cpp (removeRedundantAddresses): fixed #1917
+	"Duplicate objects are not detected". Compiler should detect
+	duplicate objects that may be created in a rule element when user
+	combines Address Table object with other address or network
+	objects there.
+
 	* ASA8ObjectGroup.cpp (toString): refs #1885 Compiler uses named
 	objects and objects groups to build configurations that use
 	address ranges in TSrc in NAT rules. (only ASA 8.3 and later)

@@ -772,15 +772,17 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
     for (i1=status.begin(); i1!=status.end(); ++i1)
     {
         Address *a1 = i1->first;
-        const InetAddrMask* am1 = a1->getInetAddrMaskObjectPtr();
+        // const InetAddrMask* am1 = a1->getInetAddrMaskObjectPtr();
 
         for (i2=status.begin(); i2!=status.end(); ++i2)
         {
             if (i2->second) continue;
-            Address *a2 = i2->first;
-            const InetAddrMask* am2 = a2->getInetAddrMaskObjectPtr();
 
-            if (am1 && am2 && am1->toString() == am2->toString()) continue;
+            Address *a2 = i2->first;
+            if (a1->getId() == a2->getId()) continue;
+
+            // const InetAddrMask* am2 = a2->getInetAddrMaskObjectPtr();
+            // if (am1 && am2 && am1->toString() == am2->toString()) continue;
 
             if (compiler->checkForShadowing(*a1, *a2) ) status[a1] = true;
         }

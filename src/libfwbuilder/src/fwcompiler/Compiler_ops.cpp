@@ -545,10 +545,10 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
     }
 
 #if 0
-    cerr << "# o1=" << o1.getName() << " [" << o1.toString() << "] "
+    cerr << "# o1=" << o1.getName() << " [" << o1.getTypeName() << "] "
          << o1b->toString() << "-" << o1e->toString()
          << "(" << o1.dimension() << ")"
-         << " o2=" << o2.getName() << " [" << o2.toString() << "] "
+         << " o2=" << o2.getName() << " [" << o2.getTypeName() << "] "
          << o2b->toString() << "-" << o2e->toString()
          << "(" << o2.dimension() << ")"
          << " " << int( ((*o1b)>(*o2b) || (*o1b)==(*o2b)) &&
