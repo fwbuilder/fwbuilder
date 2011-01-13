@@ -31,7 +31,7 @@
 
 namespace fwcompiler {
 
-    class ASA8Object
+    class NamedObject
     {
         const libfwbuilder::FWObject *obj;
         QString name;
@@ -45,7 +45,7 @@ protected:
 
 public:
 
-        ASA8Object(const libfwbuilder::FWObject *obj);
+        NamedObject(const libfwbuilder::FWObject *obj);
         virtual QString getCommand();
         virtual QString getCommandWhenObjectGroupMember();
         QString getName() { return name; }

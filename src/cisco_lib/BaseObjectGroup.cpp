@@ -132,7 +132,7 @@ string BaseObjectGroup::getObjectGroupClass()
     return "";
 }
 
-string BaseObjectGroup::toString(std::map<int, ASA8Object*>&)  throw(FWException)
+string BaseObjectGroup::toString(std::map<int, NamedObject*>&)  throw(FWException)
 {
     return "";
 }

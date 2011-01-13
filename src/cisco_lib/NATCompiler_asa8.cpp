@@ -24,7 +24,7 @@
 #include "config.h"
 
 #include "NATCompiler_asa8.h"
-#include "ASA8Object.h"
+#include "NamedObject.h"
 #include "ASA8ObjectGroup.h"
 #include "ObjectGroupsSupport.h"
 

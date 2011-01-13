@@ -27,7 +27,7 @@
 #include "config.h"
 
 #include "BaseObjectGroup.h"
-#include "ASA8Object.h"
+#include "NamedObject.h"
 
 #include "fwbuilder/Group.h"
 #include "fwbuilder/RuleElement.h"
@@ -56,7 +56,7 @@ protected:
 public:
 // storage for object groups created to be used with PIX command object-group
         static libfwbuilder::Group *object_groups;
-        static std::map<int, ASA8Object*> named_objects;
+        static std::map<int, NamedObject*> named_objects;
 
 
         CreateObjectGroups(const std::string &name,

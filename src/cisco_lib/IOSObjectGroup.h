@@ -30,16 +30,17 @@
 
 namespace fwcompiler {
 
-    class IOSObjectGroup : public BaseObjectGroup {
+    class IOSObjectGroup : public BaseObjectGroup
+    {
     
 public:
-IOSObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
+        IOSObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
         virtual ~IOSObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(IOSObjectGroup);
 
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();
-        virtual std::string toString(std::map<int, ASA8Object*> &named_objects_registry)
+        virtual std::string toString(std::map<int, NamedObject*> &named_objects_registry)
             throw(libfwbuilder::FWException);
     
     };

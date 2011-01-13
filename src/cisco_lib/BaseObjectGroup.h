@@ -26,7 +26,7 @@
 #ifndef __BASEOBJECTGROUP_HH
 #define __BASEOBJECTGROUP_HH
 
-#include "ASA8Object.h"
+#include "NamedObject.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/ObjectGroup.h"
@@ -76,7 +76,7 @@ BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
     
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();
-        virtual std::string toString(std::map<int, ASA8Object*> &named_objects_registry)
+        virtual std::string toString(std::map<int, NamedObject*> &named_objects_registry)
             throw(libfwbuilder::FWException);
     };
 

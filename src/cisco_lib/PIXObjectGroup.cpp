@@ -43,7 +43,7 @@ using namespace std;
 
 const char *PIXObjectGroup::TYPENAME={"PIXObjectGroup"};
 
-string PIXObjectGroup::toString(std::map<int, ASA8Object*>&)  throw(FWException)
+string PIXObjectGroup::toString(std::map<int, NamedObject*>&)  throw(FWException)
 {
     ostringstream ostr;
 

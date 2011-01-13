@@ -33,15 +33,15 @@
 
 namespace fwcompiler {
 
-    class ASA8Object;
+    class NamedObject;
     class ASA8ObjectGroup;
     
     class NATCompiler_asa8 : public NATCompiler_pix
     {
 	public:
 
-        void addASA8Object(const libfwbuilder::FWObject *obj);
-        ASA8Object* getASA8Object(const libfwbuilder::FWObject *obj);
+        void addNamedObject(const libfwbuilder::FWObject *obj);
+        NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
         
         QString sanitizeObjectName(const QString &name);
         std::string createNetworkObjectCommand(libfwbuilder::Address *addr);

@@ -23,7 +23,7 @@
 
 #include "config.h"
 
-#include "ASA8Object.h"
+#include "NamedObject.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/ICMPService.h"
@@ -45,13 +45,13 @@ using namespace fwcompiler;
 using namespace std;
 
 
-ASA8Object::ASA8Object(const FWObject *_obj)
+NamedObject::NamedObject(const FWObject *_obj)
 {
     obj = _obj;
     name = sanitizeObjectName(obj->getName().c_str());
 }
 
-QString ASA8Object::getCommandWord()
+QString NamedObject::getCommandWord()
 {
     if (Address::constcast(obj)!=NULL && Address::constcast(obj)->isAny())
         return "any";
@@ -65,13 +65,13 @@ QString ASA8Object::getCommandWord()
     return name;
 }
 
-QString ASA8Object::sanitizeObjectName(const QString &name)
+QString NamedObject::sanitizeObjectName(const QString &name)
 {
     QString qs = name;
     return qs.replace(" ", "_").replace("/", "_").left(64);
 }
 
-QString ASA8Object::createNetworkObjectCommand(const Address *addr_obj)
+QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)
 {
     if (addr_obj == NULL) return "";
     if (addr_obj->isAny()) return "";
@@ -111,7 +111,7 @@ QString ASA8Object::createNetworkObjectCommand(const Address *addr_obj)
     return res.join("\n");
 }
 
-QString ASA8Object::printPorts(int rs, int re)
+QString NamedObject::printPorts(int rs, int re)
 {
     QStringList res;
 
@@ -132,7 +132,7 @@ QString ASA8Object::printPorts(int rs, int re)
     return res.join(" ");
 }
 
-QString ASA8Object::createServiceObjectCommand(const Service *serv_obj)
+QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 {
     if (serv_obj == NULL) return "";
     if (serv_obj->isAny()) return "";
@@ -176,7 +176,7 @@ QString ASA8Object::createServiceObjectCommand(const Service *serv_obj)
 }
 
 
-QString ASA8Object::getCommand()
+QString NamedObject::getCommand()
 {
     if (Address::constcast(obj)!=NULL)
         return createNetworkObjectCommand(Address::constcast(obj));
@@ -187,7 +187,7 @@ QString ASA8Object::getCommand()
     return "";
 }
 
-QString ASA8Object::getCommandWhenObjectGroupMember()
+QString NamedObject::getCommandWhenObjectGroupMember()
 {
     if (Address::constcast(obj)!=NULL) return "network-object object " + name;
     if (Service::constcast(obj)!=NULL) return "service-object object " + name;

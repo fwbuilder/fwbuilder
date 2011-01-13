@@ -24,7 +24,7 @@
 #include "config.h"
 
 #include "NATCompiler_asa8.h"
-#include "ASA8Object.h"
+#include "NamedObject.h"
 #include "ASA8TwiceNatLogic.h"
 #include "ObjectGroupsSupport.h"
 
@@ -50,24 +50,24 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-void NATCompiler_asa8::addASA8Object(const FWObject *obj)
+void NATCompiler_asa8::addNamedObject(const FWObject *obj)
 {
     if (BaseObjectGroup::constcast(obj)!=NULL)
     {
         for (FWObject::const_iterator i=obj->begin(); i!=obj->end(); ++i)
         {
-            addASA8Object(FWReference::getObject(*i));
+            addNamedObject(FWReference::getObject(*i));
         }
     }
     if (CreateObjectGroups::named_objects[obj->getId()] == NULL)
     {
-        ASA8Object *asa8obj = new ASA8Object(obj);
+        NamedObject *asa8obj = new NamedObject(obj);
         output << asa8obj->getCommand().toStdString();
         CreateObjectGroups::named_objects[obj->getId()] = asa8obj;
     }
 }
 
-ASA8Object* NATCompiler_asa8::getASA8Object(const FWObject *obj)
+NamedObject* NATCompiler_asa8::getNamedObject(const FWObject *obj)
 {
     return CreateObjectGroups::named_objects[obj->getId()];
 }
@@ -90,22 +90,22 @@ bool NATCompiler_asa8::PrintObjectsForNat::processNext()
         // definitions in rule processor printObjectGroups
 
         Address *osrc = compiler->getFirstOSrc(rule);
-        if (osrc) pix_comp->addASA8Object(osrc);
+        if (osrc) pix_comp->addNamedObject(osrc);
 
         Address *odst = compiler->getFirstODst(rule);
-        if (odst) pix_comp->addASA8Object(odst);
+        if (odst) pix_comp->addNamedObject(odst);
 
         Service *osrv = compiler->getFirstOSrv(rule);
-        if (osrv) pix_comp->addASA8Object(osrv);
+        if (osrv) pix_comp->addNamedObject(osrv);
 
         // Address *tsrc = compiler->getFirstTSrc(rule);
-        // if (tsrc) pix_comp->addASA8Object(tsrc);
+        // if (tsrc) pix_comp->addNamedObject(tsrc);
 
         Address *tdst = compiler->getFirstTDst(rule);  assert(tdst);
-        pix_comp->addASA8Object(tdst);
+        pix_comp->addNamedObject(tdst);
 
         Service *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
-        pix_comp->addASA8Object(tsrv);
+        pix_comp->addNamedObject(tsrv);
 
     }
 
@@ -135,7 +135,7 @@ bool NATCompiler_asa8::PrintObjectsForTSrc::processNext()
         {
             FWObject *obj = FWReference::getObject(*it);
             if (Interface::isA(obj)) continue;
-            pix_comp->addASA8Object(obj);
+            pix_comp->addNamedObject(obj);
         }
     }
 
@@ -194,7 +194,7 @@ void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
 QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
 {
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-    ASA8Object* asa8_object = pix_comp->getASA8Object(obj);
+    NamedObject* asa8_object = pix_comp->getNamedObject(obj);
     if (asa8_object) return asa8_object->getCommandWord();
 
     for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();

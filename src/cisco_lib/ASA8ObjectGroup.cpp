@@ -43,7 +43,7 @@ using namespace fwcompiler;
 
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
-string ASA8ObjectGroup::toString(std::map<int, ASA8Object*> &named_objects_registry)
+string ASA8ObjectGroup::toString(std::map<int, NamedObject*> &named_objects_registry)
     throw(FWException)
 {
     ostringstream ostr;
@@ -58,7 +58,7 @@ string ASA8ObjectGroup::toString(std::map<int, ASA8Object*> &named_objects_regis
         FWObject *obj = o;
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 
-        ASA8Object *named_object = named_objects_registry[obj->getId()];
+        NamedObject *named_object = named_objects_registry[obj->getId()];
         if (named_object)
         {
             ostr << " "

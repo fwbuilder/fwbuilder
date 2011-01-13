@@ -59,7 +59,7 @@ using namespace std;
 
 
 Group* CreateObjectGroups::object_groups = NULL;
-map<int, ASA8Object*> CreateObjectGroups::named_objects;
+map<int, NamedObject*> CreateObjectGroups::named_objects;
 
 
 void CreateObjectGroups::init(FWObjectDatabase *db)
@@ -71,7 +71,7 @@ void CreateObjectGroups::init(FWObjectDatabase *db)
 
 void CreateObjectGroups::clearNamedObjectsRegistry()
 {
-    std::map<int, ASA8Object*>::iterator it1;
+    std::map<int, NamedObject*>::iterator it1;
     for (it1=named_objects.begin(); it1!=named_objects.end(); ++it1)
     {
         delete it1->second;
