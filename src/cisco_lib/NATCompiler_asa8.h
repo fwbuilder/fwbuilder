@@ -60,6 +60,12 @@ namespace fwcompiler {
 
         DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
 
+        /*
+         * Check that TSrc has right combination of objects after
+         * object group has been created. Call after CreateObjectGroupsForTSrc
+         */
+        DECLARE_NAT_RULE_PROCESSOR(VerifyValidityOfTSrc);
+
         /**
          * TSrc may contain multiple objects, so we should group them
          * in order to put all addresses, address ranges and subnets

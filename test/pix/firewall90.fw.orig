@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3430
 !
-!  Generated Thu Jan 13 10:09:26 2011 PST by vadim
+!  Generated Thu Jan 13 10:33:42 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -16,8 +16,8 @@
 ! testing new style ASA 8.3 nat commands
 ! SNAT rules
 
-! N firewall90:NAT:10: error: Option 'translate dns' can not be used in combination with destination matching or translation
-! N firewall90:NAT:11: error: Option 'translate dns' can not be used in combination with service matching or translation
+! N firewall90:NAT:12: error: Option 'translate dns' can not be used in combination with destination matching or translation
+! N firewall90:NAT:13: error: Option 'translate dns' can not be used in combination with service matching or translation
 
 !
 ! Prolog script:
@@ -162,14 +162,23 @@ object-group network outside.id130599X29063.tsrc.net.0
 
 object-group network outside.id20720X27505.tsrc.net.0
  network-object  host 22.22.22.21 
- network-object  host 22.22.22.22 
  network-object  host 22.22.22.100 
  exit
 
 
 object-group network outside.id241772X29764.tsrc.net.0
  network-object  host 22.22.22.21 
- network-object  host 22.22.22.22 
+ exit
+
+
+object-group network outside.id643024X27990.tsrc.net.0
+ network-object  host 22.22.22.30 
+ network-object  host 22.22.22.100 
+ exit
+
+
+object-group network outside.id643092X27990.tsrc.net.0
+ network-object 22.22.22.128 255.255.255.224 
  exit
 
 
@@ -209,65 +218,74 @@ nat (inside,outside) source dynamic hostA:eth0 outside.id130599X29063.tsrc.net.0
 ! 
 ! Rule  7 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0 outside.id20720X27505.tsrc.net.0 service smtp smtp
+nat (inside,outside) source dynamic hostA:eth0 outside.id20720X27505.tsrc.net.0 interface service smtp smtp
 ! 
 ! Rule  8 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0 outside.id241772X29764.tsrc.net.0 service smtp smtp
+nat (inside,outside) source dynamic hostA:eth0 outside.id241772X29764.tsrc.net.0 interface service smtp smtp
 ! 
 ! Rule  9 (NAT)
-! for #1902
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 dns
+! For #1907
+nat (inside,outside) source dynamic hostA:eth0 outside.id643024X27990.tsrc.net.0 interface service smtp smtp
 ! 
 ! Rule  10 (NAT)
-! for #1902
-! can't use dns with destination matching or translation
-! firewall90:NAT:10: error: Option 'translate dns' can not be used in combination with destination matching or translation
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 dns
+! For #1907
+nat (inside,outside) source dynamic hostA:eth0 outside.id643092X27990.tsrc.net.0 interface service smtp smtp
 ! 
 ! Rule  11 (NAT)
 ! for #1902
-! cant use dns with service translation either
-! firewall90:NAT:11: error: Option 'translate dns' can not be used in combination with service matching or translation
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp dns
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 dns
 ! 
 ! Rule  12 (NAT)
+! for #1902
+! can't use dns with destination matching or translation
+! firewall90:NAT:12: error: Option 'translate dns' can not be used in combination with destination matching or translation
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 dns
+! 
+! Rule  13 (NAT)
+! for #1902
+! cant use dns with service translation either
+! firewall90:NAT:13: error: Option 'translate dns' can not be used in combination with service matching or translation
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp dns
+! 
+! Rule  14 (NAT)
 ! for #1908
 ! "static" vs "dynamic"
 nat (inside,outside) source static hostA:eth0 firewall90:FastEthernet1:ip-1
 ! 
-! Rule  13 (NAT)
+! Rule  15 (NAT)
 ! for #1908
 ! "static" vs "dynamic"
 nat (inside,outside) source dynamic hostA:eth0 outside_range
 ! 
-! Rule  14 (NAT)
+! Rule  16 (NAT)
 ! for #1908  "static" vs "dynamic"
 ! for #1885 "named object" - create 
+! for #1907 "multiple objects in TSrc"
 ! network object to define address range, then add it to object-group
 nat (inside,outside) source dynamic hostA:eth0 outside.id21121X3710.tsrc.net.0 interface
 ! 
-! Rule  15 (NAT)
-! for #1908, #1916
-! "static" vs "dynamic"
-nat (inside,outside) source dynamic hostA:eth0 outside.id21177X3720.tsrc.net.0 interface
-! 
-! Rule  16 (NAT)
-! for #1908
-! "static" vs "dynamic"
-nat (outside,outside) source dynamic outside_range firewall90:FastEthernet1:ip-1
-! 
 ! Rule  17 (NAT)
-! for #1908
-! "static" vs "dynamic"
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1
+! for #1908, #1916 "static" vs "dynamic"
+! for #1907 "multiple objects in TSrc"
+nat (inside,outside) source dynamic hostA:eth0 outside.id21177X3720.tsrc.net.0 interface
 ! 
 ! Rule  18 (NAT)
 ! for #1908
 ! "static" vs "dynamic"
-nat (inside,outside) source static internal_subnet_1 firewall90:FastEthernet1:ip-1
+nat (outside,outside) source dynamic outside_range firewall90:FastEthernet1:ip-1
 ! 
 ! Rule  19 (NAT)
+! for #1908
+! "static" vs "dynamic"
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1
+! 
+! Rule  20 (NAT)
+! for #1908
+! "static" vs "dynamic"
+nat (inside,outside) source static internal_subnet_1 firewall90:FastEthernet1:ip-1
+! 
+! Rule  21 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
 
 

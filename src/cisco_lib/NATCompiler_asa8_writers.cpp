@@ -198,8 +198,10 @@ QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
         if (og->getId() == obj->getId()) return obj->getName().c_str();
     }
 
+    if (Interface::isA(obj) && obj->isChildOf(compiler->fw)) return "interface";
+
     QString err("Found unknown object '%1' in the NAT rule: it is not "
-                "an ASA8 object nor object group");
+                "an ASA8 object, object group or an interface of the firewall");
     throw FWException(err.arg(obj->getName().c_str()).toStdString());
 }
 

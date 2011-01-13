@@ -111,6 +111,52 @@ bool NATCompiler_asa8::VerifyValidityOfDNSOption::processNext()
     return true;
 }
 
+/*
+ * After we call CreateObjectGroupsForTSrc to create object group for
+ * TSrc, it can be one of the following:
+ *
+ *  - any
+ *  - single address
+ *  - single group (object group that was created by CreateObjectGroupsForTSrc)
+ *  - an address and interface
+ *  - a group and interface
+ *
+ * CreateObjectGroups::processNext() always puts interface first and group or
+ * address second in TSrc
+ */
+bool NATCompiler_asa8::VerifyValidityOfTSrc::processNext()
+{
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+
+    tmp_queue.push_back(rule);
+
+    RuleElementTSrc  *tsrc_re = rule->getTSrc();  assert(tsrc_re);
+    if (tsrc_re->isAny()) return true;
+    if (tsrc_re->size()==1) return true;
+    if (tsrc_re->size()==2)
+    {
+        FWObject *obj1 = NULL;
+        FWObject *obj2 = NULL;
+        for (FWObject::iterator it=tsrc_re->begin(); it!=tsrc_re->end(); ++it)
+        {
+            if (obj1 == NULL) obj1 = FWReference::getObject(*it);
+            if (obj2 == NULL) obj2 = FWReference::getObject(*it);
+        }
+        if (Interface::isA(obj1) && Address::cast(obj2)!=NULL) return true;
+        if (Interface::isA(obj1) && Group::cast(obj2)!=NULL) return true;
+        QString err("Invalid combination of objects in TSrc: %1 (%2) and %3 (%4) ");
+        compiler->abort(
+            rule,
+            err.arg(obj1->getName().c_str()).arg(obj1->getTypeName().c_str())
+            .arg(obj2->getName().c_str()).arg(obj2->getTypeName().c_str())
+            .toStdString());
+    }
+
+    compiler->abort(rule, "TSrc has >2 objects");
+
+    return true;
+}
+
 bool NATCompiler_asa8::VerifyRules::processNext()
 {
     NATRule *rule = getNext(); if (rule==NULL) return false;
@@ -307,6 +353,7 @@ void NATCompiler_asa8::compile()
              "Check validity of 'translate dns' option"));
 
     add( new CreateObjectGroupsForTSrc("create object groups for TSrc"));
+    add( new VerifyValidityOfTSrc("verify objects in TSrc"));
 
 /* REMOVE_OLD_OPTIMIZATIONS
    if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
