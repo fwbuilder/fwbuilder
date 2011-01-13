@@ -1,3 +1,14 @@
+2011-01-12  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pix_writers.cpp (_printLog): fixed #1913 "ASA/PIX
+	rules with logging enabled don't have log set unless user modifies
+	Firewall Settings". Added default log level setting to the
+	resource xml file for platform "pix", set to "informational". ACL
+	lines now get "log " keyword followed by the log level taken from
+	the rule options, or if that was not configured, from the
+	firewall object settings, or if that is not configured, the
+	default.
+
 2011-01-11  vadim  <vadim@netcitadel.com>
 
 	* NATCompiler_asa8_writers.cpp (printSDNAT): refs #1908 "ASA NAT -

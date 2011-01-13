@@ -20,6 +20,7 @@
           <pix_add_clear_statements>true</pix_add_clear_statements>
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>false</pix_emblem_log_format>
           <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
@@ -36,6 +37,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>true</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>false</pix_emblem_log_format>
           <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
@@ -119,6 +121,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>true</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>false</pix_emblem_log_format>
           <pix_rule_syslog_settings>false</pix_rule_syslog_settings>
@@ -202,6 +205,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>true</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>true</pix_emblem_log_format>
           <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
@@ -285,6 +289,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>false</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>true</pix_emblem_log_format>
           <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
@@ -369,6 +374,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>false</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>true</pix_emblem_log_format>
           <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
@@ -453,6 +459,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>false</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>true</pix_emblem_log_format>
           <pix_rule_syslog_settings>true</pix_rule_syslog_settings>
@@ -538,6 +545,7 @@
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
           <pix_floodguard_supported>false</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
+          <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
           <pix_emblem_log_format>true</pix_emblem_log_format>
           <pix_rule_syslog_settings>true</pix_rule_syslog_settings>

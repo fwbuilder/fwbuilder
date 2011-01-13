@@ -44,13 +44,6 @@
 #include "fwbuilder/Resources.h"
 
 #include <iostream>
-#if __GNUC__ > 3 || \
-    (__GNUC__ == 3 && (__GNUC_MINOR__ > 2 || (__GNUC_MINOR__ == 2 ) ) ) || \
-    _MSC_VER
-#  include <streambuf>
-#else
-#  include <streambuf.h>
-#endif
 #include <iomanip>
 #include <fstream>
 #include <sstream>
@@ -58,6 +51,9 @@
 #include <functional>
 
 #include <assert.h>
+
+#include <QStringList>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -144,49 +140,58 @@ string PolicyCompiler_pix::PrintRule::_printACL(PolicyRule *rule)
 
 string PolicyCompiler_pix::PrintRule::_printLog(PolicyRule *rule)
 {
-    string platform=compiler->fw->getStr("platform");
-    string vers=compiler->fw->getStr("version");
+    string platform = compiler->fw->getStr("platform");
+    string vers = compiler->fw->getStr("version");
     if (platform=="pix" && (vers=="6.1" || vers=="6.2")) return "";
 
 //    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
     FWOptions  *ruleopt =rule->getOptionsObject();
-    ostringstream  str;
+    QStringList str;
 
     if (ruleopt->getBool("disable_logging_for_this_rule"))
         return "log disable ";
 
     if (rule->getLogging())
     {
-        string level=ruleopt->getStr("log_level");
-        int    logint=ruleopt->getInt("log_interval");
+        string level = ruleopt->getStr("log_level");
+        int    logint = ruleopt->getInt("log_interval");
 /*
  *  PIX always adds logging interval in "show * access-list" command,
  *  so we should always add it, too. Otherwise ACL lines look
  *  different when diff is generated.
  */
         if (logint<=0)
-            logint=Resources::platform_res[platform]->getResourceInt(
-                string("/FWBuilderResources/Target/options/")+
-                "version_"+compiler->fw->getStr("version")+
+            logint = Resources::platform_res[platform]->getResourceInt(
+                string("/FWBuilderResources/Target/options/") +
+                "version_" + compiler->fw->getStr("version") +
                 "/pix_default_logint");
 
-        if (level.empty()) level= compiler->fw->getOptionsObject()->getStr("pix_logging_trap_level");
+        if (level.empty())
+            level = compiler->fw->getOptionsObject()->getStr(
+                "pix_logging_trap_level");
 
-        if (!level.empty())
+        if (level.empty())
+            level = Resources::platform_res[platform]->getResourceStr(
+                string("/FWBuilderResources/Target/options/") +
+                "version_" + compiler->fw->getStr("version") +
+                "/pix_default_loglevel");
+
+        if (level=="alert")   level = "1";
+        if (level=="crit")    level = "2";
+        if (level=="error")   level = "3";
+        if (level=="warning") level = "4";
+        if (level=="notice")  level = "5";
+        if (level=="info")    level = "6";
+        if (level=="debug")   level = "7";
+
+        str << "log" << level.c_str();
+
+        if (logint>0 || platform=="pix") // can't use "interval 0" on fwsm
         {
-            if (level=="alert")   level="1";
-            if (level=="crit")    level="2";
-            if (level=="error")   level="3";
-            if (level=="warning") level="4";
-            if (level=="notice")  level="5";
-            if (level=="info")    level="6";
-            if (level=="debug")   level="7";
-            str << "log " << level << " ";
-            if (logint>0 || platform=="pix") // can't use "interval 0" on fwsm
-                str << "interval " << logint << " ";
+            str << "interval" << QString().setNum(logint);
         }
     }
-    return str.str();
+    return str.join(" ").toStdString();
 }
 
 string PolicyCompiler_pix::PrintRule::_printSrcService(Service *srv)
