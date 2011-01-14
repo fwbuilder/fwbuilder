@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1294953234" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1294970408" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -534,6 +534,14 @@
         <ObjectGroup id="id21119X3720" name="outside_group_2" comment="" ro="False">
           <ObjectRef ref="id19852X26146"/>
           <ObjectRef ref="id21130X3720"/>
+        </ObjectGroup>
+        <ObjectGroup id="id21286X4994" name="inside_group" comment="" ro="False">
+          <ObjectRef ref="id178241X29963"/>
+          <ObjectRef ref="id178250X29963"/>
+          <ObjectRef ref="id21304X4994"/>
+        </ObjectGroup>
+        <ObjectGroup id="id21304X4994" name="inside_group_2" comment="" ro="False">
+          <ObjectRef ref="net-Internal_net"/>
         </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts" comment="" ro="False">
@@ -18263,7 +18271,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294948743" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294970497" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18352,7 +18360,31 @@ no sysopt nodnsalias outbound
               <Option name="asa8_nat_dns">False</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id20069X32406" disabled="False" group="" position="4" action="Translate" comment="">
+          <NATRule id="id21353X4994" disabled="False" group="" position="4" action="Translate" comment="for #1928&#10;note that group in OSrc includes another group&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="id21286X4994"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id20049X29963"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="asa8_nat_auto">True</Option>
+              <Option name="asa8_nat_dns">False</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id20069X32406" disabled="False" group="" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3CD8769F"/>
             </OSrc>
@@ -18375,7 +18407,7 @@ no sysopt nodnsalias outbound
               <Option name="asa8_nat_dns">False</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id178073X29963" disabled="False" group="" position="5" action="Translate" comment="">
+          <NATRule id="id178073X29963" disabled="False" group="" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18396,7 +18428,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id130599X29063" disabled="False" group="" position="6" action="Translate" comment="For #1907&#10;">
+          <NATRule id="id130599X29063" disabled="False" group="" position="7" action="Translate" comment="For #1907&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18421,7 +18453,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id20720X27505" disabled="False" group="" position="7" action="Translate" comment="For #1907&#10;">
+          <NATRule id="id20720X27505" disabled="False" group="" position="8" action="Translate" comment="For #1907&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18446,7 +18478,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id241772X29764" disabled="False" group="" position="8" action="Translate" comment="For #1907&#10;">
+          <NATRule id="id241772X29764" disabled="False" group="" position="9" action="Translate" comment="For #1907&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18470,7 +18502,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id643024X27990" disabled="False" group="" position="9" action="Translate" comment="For #1907&#10;">
+          <NATRule id="id643024X27990" disabled="False" group="" position="10" action="Translate" comment="For #1907&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18493,7 +18525,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id643092X27990" disabled="False" group="" position="10" action="Translate" comment="For #1907&#10;">
+          <NATRule id="id643092X27990" disabled="False" group="" position="11" action="Translate" comment="For #1907&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18516,7 +18548,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id168272X32146" disabled="False" group="" position="11" action="Translate" comment="for #1902&#10;">
+          <NATRule id="id168272X32146" disabled="False" group="" position="12" action="Translate" comment="for #1902&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
             </OSrc>
@@ -18536,11 +18568,12 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
+              <Option name="asa8_nat_auto">True</Option>
               <Option name="asa8_nat_dns">True</Option>
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id168336X32146" disabled="False" group="" position="12" action="Translate" comment="for #1902&#10;can't use dns with destination matching or translation&#10;">
+          <NATRule id="id168336X32146" disabled="False" group="" position="13" action="Translate" comment="for #1902&#10;can't use dns with destination matching or translation&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
             </OSrc>
@@ -18560,11 +18593,12 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
+              <Option name="asa8_nat_auto">True</Option>
               <Option name="asa8_nat_dns">True</Option>
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id168390X32146" disabled="False" group="" position="13" action="Translate" comment="for #1902&#10;cant use dns with service translation either&#10;">
+          <NATRule id="id168390X32146" disabled="False" group="" position="14" action="Translate" comment="for #1902&#10;cant use dns with service translation either&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
             </OSrc>
@@ -18589,7 +18623,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id20877X22142" disabled="False" group="" position="14" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
+          <NATRule id="id20877X22142" disabled="False" group="" position="15" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18616,7 +18650,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id76573X22142" disabled="False" group="" position="15" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
+          <NATRule id="id76573X22142" disabled="False" group="" position="16" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18643,7 +18677,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id21121X3710" disabled="False" group="" position="16" action="Translate" comment="for #1908  &quot;static&quot; vs &quot;dynamic&quot;&#10;for #1885 &quot;named object&quot; - create &#10;for #1907 &quot;multiple objects in TSrc&quot;&#10;network object to define address range, then add it to object-group">
+          <NATRule id="id21121X3710" disabled="False" group="" position="17" action="Translate" comment="for #1908  &quot;static&quot; vs &quot;dynamic&quot;&#10;for #1885 &quot;named object&quot; - create &#10;for #1907 &quot;multiple objects in TSrc&quot;&#10;network object to define address range, then add it to object-group">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18670,7 +18704,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id21177X3720" disabled="False" group="" position="17" action="Translate" comment="for #1908, #1916 &quot;static&quot; vs &quot;dynamic&quot;&#10;for #1907 &quot;multiple objects in TSrc&quot;&#10;">
+          <NATRule id="id21177X3720" disabled="False" group="" position="18" action="Translate" comment="for #1908, #1916 &quot;static&quot; vs &quot;dynamic&quot;&#10;for #1907 &quot;multiple objects in TSrc&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -18697,7 +18731,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id132365X22142" disabled="False" group="" position="18" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
+          <NATRule id="id132365X22142" disabled="False" group="" position="19" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id3D196750"/>
             </OSrc>
@@ -18724,7 +18758,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id188268X22142" disabled="False" group="" position="19" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
+          <NATRule id="id188268X22142" disabled="False" group="" position="20" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
             </OSrc>
@@ -18748,7 +18782,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id244282X22142" disabled="False" group="" position="20" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
+          <NATRule id="id244282X22142" disabled="False" group="" position="21" action="Translate" comment="for #1908&#10;&quot;static&quot; vs &quot;dynamic&quot;&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
             </OSrc>
@@ -18775,7 +18809,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id301880X21607" disabled="False" group="" position="21" action="Translate" comment="">
+          <NATRule id="id301880X21607" disabled="False" group="" position="22" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -18802,7 +18836,7 @@ no sysopt nodnsalias outbound
               <Option name="color">#7694C0</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id77971X5929" disabled="False" group="" position="22" action="Translate" comment="multiple objects in OSrc, ODst, OSrv and TSrc in various combinations&#10;">
+          <NATRule id="id77971X5929" disabled="False" group="" position="23" action="Translate" comment="multiple objects in OSrc, ODst, OSrv and TSrc in various combinations&#10;">
             <OSrc neg="False">
               <ObjectRef ref="id178241X29963"/>
               <ObjectRef ref="id178250X29963"/>
