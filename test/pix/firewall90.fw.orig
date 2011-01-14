@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3431
 !
-!  Generated Thu Jan 13 18:02:25 2011 PST by vadim
+!  Generated Thu Jan 13 19:02:51 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -130,6 +130,9 @@ quit
 object service smtp
   service tcp destination eq 25
 quit
+object network firewall90:FastEthernet1:ip-1
+  host 22.22.22.23
+quit
 object network internal_subnet_1
   subnet 192.168.1.0 255.255.255.192
 quit
@@ -145,19 +148,6 @@ quit
 object network outside_range
   range 22.22.22.21 22.22.22.25
 quit
-object service squid
-  service tcp destination eq 3128
-quit
-object service smtps
-  service tcp destination eq 465
-quit
-object network spamhost2
-  host 61.150.47.113
-quit
-
-object network firewall90:FastEthernet1:ip-1
-  host 22.22.22.23
-quit
 object network firewall90:FastEthernet1:ip
   host 22.22.22.22
 quit
@@ -170,6 +160,28 @@ quit
 object network outside_range-1
   range 22.22.22.30 22.22.22.40
 quit
+object service squid
+  service tcp destination eq 3128
+quit
+object network spamhost2
+  host 61.150.47.113
+quit
+object service smtps
+  service tcp destination eq 465
+quit
+
+object-group network outside.id178211X29963.osrc.net.0
+ network-object object internal_subnet_1
+ network-object object internal_subnet_2
+ exit
+
+
+object-group network outside.id21353X4994.osrc.net.0
+ network-object object internal_subnet_1
+ network-object object Internal_net
+ network-object object internal_subnet_2
+ exit
+
 
 object-group network outside.id130599X29063.tsrc.net.0
  network-object object outside_range
@@ -205,6 +217,12 @@ object-group network outside.id21177X3720.tsrc.net.0
  exit
 
 
+object-group network outside.id77971X5929.odst.net.0
+ network-object object spamhost1
+ network-object object spamhost2
+ exit
+
+
 object-group network outside.id77971X5929.tsrc.net.0
  network-object object outside_range-1
  network-object object external_gw2
@@ -212,42 +230,6 @@ object-group network outside.id77971X5929.tsrc.net.0
 
 
 object-group network outside.id77971X5929.tsrc.net.1
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.2
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.3
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.4
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.5
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.6
- network-object object outside_range-1
- network-object object external_gw2
- exit
-
-
-object-group network outside.id77971X5929.tsrc.net.7
  network-object object outside_range-1
  network-object object external_gw2
  exit
@@ -263,15 +245,12 @@ nat (inside,outside) source static hostA:eth0 firewall90:FastEthernet1:ip-1 dest
 nat (inside,outside) source static hostA:eth0 interface service smtp smtp
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_2 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
 ! 
 ! Rule  4 (NAT)
 ! for #1928
 ! note that group in OSrc includes another group
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (inside,outside) source dynamic Internal_net firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_2 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (inside,outside) source dynamic outside.id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
 ! 
 ! Rule  5 (NAT)
 nat (inside,outside) source dynamic test_range_1 firewall90:FastEthernet1:ip-1 destination static spamhost1 spamhost1 service smtp smtp
@@ -357,14 +336,8 @@ nat (outside,inside) source static any any destination static interface hostA:et
 ! 
 ! Rule  23 (NAT)
 ! multiple objects in OSrc, ODst, OSrv and TSrc in various combinations
-nat (inside,outside) source dynamic internal_subnet_1 outside.id77971X5929.tsrc.net.0 interface destination static spamhost1 spamhost1 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_1 outside.id77971X5929.tsrc.net.1 interface destination static spamhost1 spamhost1 service smtps smtps
-nat (inside,outside) source dynamic internal_subnet_1 outside.id77971X5929.tsrc.net.2 interface destination static spamhost2 spamhost2 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_1 outside.id77971X5929.tsrc.net.3 interface destination static spamhost2 spamhost2 service smtps smtps
-nat (inside,outside) source dynamic internal_subnet_2 outside.id77971X5929.tsrc.net.4 interface destination static spamhost1 spamhost1 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_2 outside.id77971X5929.tsrc.net.5 interface destination static spamhost1 spamhost1 service smtps smtps
-nat (inside,outside) source dynamic internal_subnet_2 outside.id77971X5929.tsrc.net.6 interface destination static spamhost2 spamhost2 service smtp smtp
-nat (inside,outside) source dynamic internal_subnet_2 outside.id77971X5929.tsrc.net.7 interface destination static spamhost2 spamhost2 service smtps smtps
+nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp smtp
+nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps smtps
 
 
 

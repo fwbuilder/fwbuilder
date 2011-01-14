@@ -39,6 +39,13 @@
 namespace fwcompiler
 {
 
+    class NamedObjectManager
+    {
+public:
+        static std::string addNamedObject(const libfwbuilder::FWObject *obj);
+        static NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
+    };
+    
     class CreateObjectGroups : public BasicRuleProcessor
     {
         static void clearNamedObjectsRegistry();
@@ -92,6 +99,31 @@ public:
           CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
     };
     
+
+    // ################################################################
+    // OSrc, ODst, OSrv, TSrc
+    
+    class CreateObjectGroupsForOSrc : public CreateObjectGroups
+    {
+public:
+        CreateObjectGroupsForOSrc(const std::string &n) : 
+          CreateObjectGroups(n,"osrc",libfwbuilder::RuleElementOSrc::TYPENAME) {}
+    };
+
+    class CreateObjectGroupsForODst : public CreateObjectGroups
+    {
+public:
+        CreateObjectGroupsForODst(const std::string &n) : 
+          CreateObjectGroups(n,"odst",libfwbuilder::RuleElementODst::TYPENAME) {}
+    };
+
+    class CreateObjectGroupsForOSrv : public CreateObjectGroups
+    {
+public:
+        CreateObjectGroupsForOSrv(const std::string &n) : 
+          CreateObjectGroups(n,"osrv",libfwbuilder::RuleElementOSrv::TYPENAME) {}
+    };
+    
     class CreateObjectGroupsForTSrc : public CreateObjectGroups
     {
 protected:
@@ -104,6 +136,9 @@ public:
           CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME) {}
     };
 
+
+
+    
     /**
      * this processor accumulates all rules fed to it by previous
      * processors, then prints all object groups and feeds all
@@ -118,6 +153,17 @@ public:
         virtual bool processNext();
     };
 
+    class printNamedObjects :  public BasicRuleProcessor
+    {
+        void printObjectsForRE(libfwbuilder::RuleElement *re);
+
+public:
+        printNamedObjects(const std::string &n) : BasicRuleProcessor(n) {}
+        virtual bool processNext();
+    };
+
+    
+    
 }
 
 #endif

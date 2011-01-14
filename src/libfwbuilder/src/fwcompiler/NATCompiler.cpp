@@ -546,6 +546,29 @@ bool NATCompiler::ConvertToAtomicForAddresses::processNext()
     return true;
 }
 
+bool NATCompiler::ConvertToAtomicForOSrv::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementOSrv *osrv=rule->getOSrv();    assert(osrv);
+
+    for (FWObject::iterator i1=osrv->begin(); i1!=osrv->end(); ++i1) 
+    {
+        NATRule *r = compiler->dbcopy->createNATRule();
+        r->duplicate(rule);
+        compiler->temp_ruleset->add(r);
+
+        FWObject *s;
+
+        s=r->getOSrv();	assert(s);
+        s->clearChildren();
+        s->addCopyOf( *i1 );
+
+        tmp_queue.push_back(r);
+    }
+
+    return true;
+}
 
 bool NATCompiler::ConvertToAtomicForTSrc::processNext()
 {

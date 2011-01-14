@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3431
 !
-!  Generated Thu Jan 13 18:02:25 2011 PST by vadim
+!  Generated Thu Jan 13 19:02:51 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -121,7 +121,6 @@ quit
 object service https
   service tcp destination eq 443
 quit
-
 ! 
 ! Rule  0 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0

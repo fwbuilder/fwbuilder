@@ -326,12 +326,7 @@ void NATCompiler_asa8::compile()
 
     add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-    add( new ConvertToAtomicForOriginal(
-             "convert to atomic for OSrc, ODst, OSrv"));
-
-    // remove ConvertToAtomicForTSrc if we figure out a way to support multiple
-    // translated soruces per #1907
-    // add( new ConvertToAtomicForTSrc("convert to atomic for TSrc"));
+    add( new ConvertToAtomicForOSrv("convert to atomic for OSrv"));
     add( new ConvertToAtomicForTDst("convert to atomic for TDst"));
     add( new ConvertToAtomicForTSrv("convert to atomic for TSrv"));
 
@@ -345,7 +340,14 @@ void NATCompiler_asa8::compile()
     add( new VerifyValidityOfDNSOption(
              "Check validity of 'translate dns' option"));
 
+    add( new CreateObjectGroupsForOSrc("create object groups for OSrc"));
+    add( new CreateObjectGroupsForODst("create object groups for ODst"));
+    add( new CreateObjectGroupsForOSrv("create object groups for OSrv"));
+
+    // need special rule processor to create object groups in TSrc
+    // because of a special tratment that an Interface object gets in TSrc
     add( new CreateObjectGroupsForTSrc("create object groups for TSrc"));
+
     add( new VerifyValidityOfTSrc("verify objects in TSrc"));
 
 /* REMOVE_OLD_OPTIMIZATIONS
@@ -368,10 +370,8 @@ void NATCompiler_asa8::compile()
 */
 
     add( new PrintClearCommands("Clear ACLs" ));
-    add( new PrintObjectsForNat("generate objects for nat commands"));
-    add( new PrintObjectsForTSrc(
-             "generate object groups and objects for TSrc"));
-    add( new printObjectGroups("generate code for object groups"));
+    add( new printNamedObjects("definitions of named objects"));
+    add( new printObjectGroups("definitions of object groups"));
     add( new PrintRule("generate PIX code" ));
     add( new storeProcessedRules ("store processed rules" ));
     add( new simplePrintProgress ());

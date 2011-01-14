@@ -62,6 +62,33 @@ Group* CreateObjectGroups::object_groups = NULL;
 map<int, NamedObject*> CreateObjectGroups::named_objects;
 
 
+string NamedObjectManager::addNamedObject(const FWObject *obj)
+{
+    string res;
+    if (BaseObjectGroup::constcast(obj)!=NULL)
+    {
+        for (FWObject::const_iterator i=obj->begin(); i!=obj->end(); ++i)
+        {
+            res += addNamedObject(FWReference::getObject(*i));
+        }
+        return res;
+    }
+    if (CreateObjectGroups::named_objects[obj->getId()] == NULL)
+    {
+        NamedObject *asa8obj = new NamedObject(obj);
+        res = asa8obj->getCommand().toStdString();
+        CreateObjectGroups::named_objects[obj->getId()] = asa8obj;
+    }
+    return res;
+}
+
+NamedObject* NamedObjectManager::getNamedObject(const FWObject *obj)
+{
+    return CreateObjectGroups::named_objects[obj->getId()];
+}
+
+
+
 void CreateObjectGroups::init(FWObjectDatabase *db)
 {
     object_groups = new Group();
@@ -201,8 +228,7 @@ void CreateObjectGroupsForTSrc::packObjects(RuleElement *re,
                                             BaseObjectGroup *obj_group)
 {
     if (libfwbuilder::XMLTools::version_compare(
-            compiler->fw->getStr("version"), "8.3")>=0 &&
-        re_type == RuleElementTSrc::TYPENAME)
+            compiler->fw->getStr("version"), "8.3")>=0)
     {
         // put all objects inside of the group, except for the interface
         // if it belongs to the firewall
@@ -252,6 +278,52 @@ bool printObjectGroups::processNext()
         {
             compiler->abort(ex.toString());
         }
+    }
+
+    return true;
+}
+
+void printNamedObjects::printObjectsForRE(RuleElement *re)
+{
+    if (re->isAny()) return;
+
+    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+    {
+        FWObject *obj = FWReference::getObject(*it);
+        if (Interface::isA(obj)) continue;
+        compiler->output << NamedObjectManager::addNamedObject(obj);
+    }
+}
+
+bool printNamedObjects::processNext()
+{
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    compiler->output << endl;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        NATRule *rule = NATRule::cast( *k );
+
+        RuleElementOSrc *osrc_re = rule->getOSrc();  assert(osrc_re);
+        printObjectsForRE(osrc_re);
+
+        RuleElementODst *odst_re = rule->getODst();  assert(odst_re);
+        printObjectsForRE(odst_re);
+
+        RuleElementOSrv *osrv_re = rule->getOSrv();  assert(osrv_re);
+        printObjectsForRE(osrv_re);
+
+        RuleElementTSrc *tsrc_re = rule->getTSrc();  assert(tsrc_re);
+        printObjectsForRE(tsrc_re);
+
+        RuleElementTDst *tdst_re = rule->getTDst();  assert(tdst_re);
+        printObjectsForRE(tdst_re);
+
+        RuleElementTSrv *tsrv_re = rule->getTSrv();  assert(tsrv_re);
+        printObjectsForRE(tsrv_re);
+
     }
 
     return true;

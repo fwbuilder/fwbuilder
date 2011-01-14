@@ -1,5 +1,9 @@
 2011-01-13  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_asa8.cpp (compile): refs #1928 "Support for
+	object-group in OSrc". Implemented support for object-group
+	and named objects for Osrc and ODst in ASA 8.3 NAT rules.
+
 	* PolicyCompiler_cisco.cpp (removeRedundantAddresses): fixed #1917
 	"Duplicate objects are not detected". Compiler should detect
 	duplicate objects that may be created in a rule element when user

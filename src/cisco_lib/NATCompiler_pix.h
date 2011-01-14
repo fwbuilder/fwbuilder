@@ -107,7 +107,6 @@ namespace fwcompiler {
         libfwbuilder::RuleSet *final_ruleset;
 
 
-
         std::string debugPrintRule(libfwbuilder::Rule *r);
 
         void _expand_addr_recursive_pix(libfwbuilder::Rule *rule,

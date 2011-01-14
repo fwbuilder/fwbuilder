@@ -40,9 +40,6 @@ namespace fwcompiler {
     {
 	public:
 
-        void addNamedObject(const libfwbuilder::FWObject *obj);
-        NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
-        
         QString sanitizeObjectName(const QString &name);
         std::string createNetworkObjectCommand(libfwbuilder::Address *addr);
         std::string createServiceObjectCommand(libfwbuilder::Service *addr);
@@ -56,21 +53,12 @@ namespace fwcompiler {
          */
         DECLARE_NAT_RULE_PROCESSOR(VerifyRules);
 
-        DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForNat);
-
         /*
          * Check that TSrc has right combination of objects after
          * object group has been created. Call after CreateObjectGroupsForTSrc
          */
         DECLARE_NAT_RULE_PROCESSOR(VerifyValidityOfTSrc);
 
-        /**
-         * TSrc may contain multiple objects, so we should group them
-         * in order to put all addresses, address ranges and subnets
-         * into an object-group and keep interfaces separate.
-         */
-        DECLARE_NAT_RULE_PROCESSOR(PrintObjectsForTSrc);
-        
         /*
          * Check if "translate dns" option can be used with the rule
          */

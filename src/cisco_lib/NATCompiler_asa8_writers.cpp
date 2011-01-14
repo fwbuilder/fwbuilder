@@ -50,98 +50,6 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-void NATCompiler_asa8::addNamedObject(const FWObject *obj)
-{
-    if (BaseObjectGroup::constcast(obj)!=NULL)
-    {
-        for (FWObject::const_iterator i=obj->begin(); i!=obj->end(); ++i)
-        {
-            addNamedObject(FWReference::getObject(*i));
-        }
-    }
-    if (CreateObjectGroups::named_objects[obj->getId()] == NULL)
-    {
-        NamedObject *asa8obj = new NamedObject(obj);
-        output << asa8obj->getCommand().toStdString();
-        CreateObjectGroups::named_objects[obj->getId()] = asa8obj;
-    }
-}
-
-NamedObject* NATCompiler_asa8::getNamedObject(const FWObject *obj)
-{
-    return CreateObjectGroups::named_objects[obj->getId()];
-}
-
-bool NATCompiler_asa8::PrintObjectsForNat::processNext()
-{
-    NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    compiler->output << endl;
-
-    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
-    {
-        NATRule *rule = NATRule::cast( *k );
-
-        // OSrc, ODst, OSrv and TSrc may be either a single
-        // address/service object or a group. We print group
-        // definitions in rule processor printObjectGroups
-
-        Address *osrc = compiler->getFirstOSrc(rule);
-        if (osrc) pix_comp->addNamedObject(osrc);
-
-        Address *odst = compiler->getFirstODst(rule);
-        if (odst) pix_comp->addNamedObject(odst);
-
-        Service *osrv = compiler->getFirstOSrv(rule);
-        if (osrv) pix_comp->addNamedObject(osrv);
-
-        // Address *tsrc = compiler->getFirstTSrc(rule);
-        // if (tsrc) pix_comp->addNamedObject(tsrc);
-
-        Address *tdst = compiler->getFirstTDst(rule);  assert(tdst);
-        pix_comp->addNamedObject(tdst);
-
-        Service *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
-        pix_comp->addNamedObject(tsrv);
-
-    }
-
-    return true;
-}
-
-bool NATCompiler_asa8::PrintObjectsForTSrc::processNext()
-{
-    NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    compiler->output << endl;
-
-    /*
-     * Print definitions of all objects that are not interface
-     */
-    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
-    {
-        NATRule *rule = NATRule::cast( *k );
-
-        RuleElementTSrc *tsrc_re = rule->getTSrc();  assert(tsrc_re);
-        if (tsrc_re->isAny()) continue;
-
-        for (FWObject::iterator it=tsrc_re->begin(); it!=tsrc_re->end(); ++it)
-        {
-            FWObject *obj = FWReference::getObject(*it);
-            if (Interface::isA(obj)) continue;
-            pix_comp->addNamedObject(obj);
-        }
-    }
-
-    return true;
-}
-
 
 bool NATCompiler_asa8::PrintClearCommands::processNext()
 {
@@ -194,7 +102,10 @@ void NATCompiler_asa8::PrintRule::printDNAT(libfwbuilder::NATRule *rule)
 QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
 {
     NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-    NamedObject* asa8_object = pix_comp->getNamedObject(obj);
+
+    if (Address::cast(obj) && Address::cast(obj)->isAny()) return "any";
+
+    NamedObject* asa8_object = NamedObjectManager::getNamedObject(obj);
     if (asa8_object) return asa8_object->getCommandWord();
 
     for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
