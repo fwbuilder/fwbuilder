@@ -38,15 +38,32 @@ ASA8TwiceNatStaticLogic::ASA8TwiceNatStaticLogic(NATRule *_rule)
     rule = _rule;
 }
 
+int ASA8TwiceNatStaticLogic::countAddresses(FWObject *re)
+{
+    int res = 0;
+    for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
+    {
+        FWObject *o = FWReference::getObject(*i1);
+        if (Group::cast(o) != NULL) res += countAddresses(o);
+        else
+        {
+            Address *addr = Address::cast(o);
+            assert(addr);
+            res += addr->dimension();
+        }
+    }
+    return res;
+}
+
 ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticType()
 {
     RuleElementOSrc *osrc_re = rule->getOSrc();
     assert(osrc_re!=NULL);
-    Address  *osrc = Address::cast(FWReference::getObject(osrc_re->front()));
+    //Address  *osrc = Address::cast(FWReference::getObject(osrc_re->front()));
 
     RuleElementTSrc *tsrc_re = rule->getTSrc();
     assert(tsrc_re!=NULL);
-    Address  *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
+    //Address  *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
 
     if (tsrc_re->isAny()) return STATIC;
     else
@@ -59,8 +76,9 @@ ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticT
          * back to dynamic
          */
         if (tsrc_re->size() > 1) return DYNAMIC;
-        if (tsrc == NULL) return DYNAMIC;
-        if (osrc->dimension() == tsrc->dimension()) return STATIC;
+        //if (tsrc == NULL) return DYNAMIC;
+
+        if (countAddresses(osrc_re) == countAddresses(tsrc_re)) return STATIC;
         else return DYNAMIC;
     }
     return DYNAMIC;

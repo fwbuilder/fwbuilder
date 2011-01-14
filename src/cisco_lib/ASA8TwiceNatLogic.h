@@ -30,6 +30,8 @@
 class ASA8TwiceNatStaticLogic
 {
     libfwbuilder::NATRule *rule;
+
+    int countAddresses(libfwbuilder::FWObject *re);
     
 public:
     enum TwiceNatRuleType {STATIC, DYNAMIC};
