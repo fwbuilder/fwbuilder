@@ -19,8 +19,9 @@ DEPENDPATH = ../common \
              ../libfwbuilder/src/fwbuilder \
              ../libfwbuilder/src/fwcompiler
 
-!win32:LIBS += ../common/libcommon.a \
-	../libfwbuilder/src/fwbuilder/libfwbuilder.a
+!win32:LIBS = ../common/libcommon.a \
+	../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+    $$LIBS
 
 !win32:PRE_TARGETDEPS = ../common/libcommon.a \
 	../libfwbuilder/src/fwbuilder/libfwbuilder.a

@@ -17,9 +17,10 @@ contains( HAVE_QTDBUS, 1 ):unix {
 
 !win32 {
 	QMAKE_COPY = ../../../install.sh -m 0755 -s
-    LIBS  += ../../fwtransfer/libfwtransfer.a  \  # -lQtDBus
+    LIBS  = ../../fwtransfer/libfwtransfer.a  \  # -lQtDBus
         ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-        ../../libfwbuilder/src/fwbuilder/libfwbuilder.a
+        ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+      $$LIBS
 }
 
 win32 {

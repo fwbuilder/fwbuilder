@@ -22,11 +22,12 @@ win32:LIBS  += ../common/release/common.lib \
       ../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
       ../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
 
-!win32:LIBS += ../common/libcommon.a \
+!win32:LIBS = ../common/libcommon.a \
       ../pflib/libfwbpf.a \
       ../compiler_lib/libcompilerdriver.a \
       ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-      ../libfwbuilder/src/fwbuilder/libfwbuilder.a
+      ../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+      $$LIBS
 
 win32:PRE_TARGETDEPS  = ../common/release/common.lib \
       ../pflib/release/fwbpf.lib \

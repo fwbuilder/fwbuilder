@@ -57,7 +57,7 @@ unix {
         res_configlets.path = $$res.path/configlets
 
         # INSTALLS += icns
-        LIBS += @LIBS@
+        # LIBS += @LIBS@
 
         PKGLOCALEDIR = $$res.path/locale
 
