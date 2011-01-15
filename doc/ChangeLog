@@ -1,5 +1,11 @@
 2011-01-14  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_asa8_writers.cpp (printSDNAT): fixes #1932 "Add
+	description field to generated NAT rules for ASA". NAT rules
+	generated for ASA 8.3 and later will have "description" keyword
+	added, with rule label as an argument. Rule label includes
+	word "NAT" and rule number.
+
 	* libfwbuilder/src/fwbuilder/InetAddrMask.cpp (getOverlap): fixes
 	#1934 "libfwbuilder::getOverlap() incorrectly calculates overlap
 	between ipv4 networks". This should also fix SF bug 3156376 "Can

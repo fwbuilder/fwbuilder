@@ -228,6 +228,8 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 
     if (ropt->getBool("asa8_nat_dns")) cmd << "dns";
 
+    cmd << QString("description \"%1\"").arg(rule->getLabel().c_str());
+
     compiler->output << cmd.join(" ").toStdString() << endl;
 }
 

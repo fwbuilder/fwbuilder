@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3432
 !
-!  Generated Fri Jan 14 18:41:15 2011 PST by vadim
+!  Generated Fri Jan 14 18:48:38 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -123,28 +123,28 @@ object service https
 quit
 ! 
 ! Rule  0 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0
+nat (outside,inside) source static any any destination static interface hostA:eth0 description "0 (NAT)"
 ! 
 ! Rule  1 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0
+nat (outside,inside) source static any any destination static interface hostA:eth0 description "1 (NAT)"
 ! 
 ! Rule  2 (NAT)
-nat (outside,inside) source static any any destination static external_gw2 hostA:eth0
+nat (outside,inside) source static any any destination static external_gw2 hostA:eth0 description "2 (NAT)"
 ! 
 ! Rule  3 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http description "3 (NAT)"
 ! 
 ! Rule  4 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http description "4 (NAT)"
 ! 
 ! Rule  5 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid description "5 (NAT)"
 ! 
 ! Rule  6 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0 service https https
+nat (outside,inside) source static any any destination static interface hostA:eth0 service https https description "6 (NAT)"
 ! 
 ! Rule  7 (NAT)
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http http
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http http description "7 (NAT)"
 
 
 

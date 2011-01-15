@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3432
 !
-!  Generated Fri Jan 14 18:41:16 2011 PST by vadim
+!  Generated Fri Jan 14 18:48:39 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -137,19 +137,19 @@ object-group network outside.id20655X6113.osrc.net.0
 
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source static Internal_net Internal_net service http http
+nat (inside,outside) source static Internal_net Internal_net service http http description "0 (NAT)"
 ! 
 ! Rule  1 (NAT)
-nat (inside,outside) source static hostA:eth0 hostA:eth0 service smtp smtp
+nat (inside,outside) source static hostA:eth0 hostA:eth0 service smtp smtp description "1 (NAT)"
 ! 
 ! Rule  2 (NAT)
-nat (inside,outside) source static hostA:eth0 hostA:eth0 destination static spamhost1 spamhost1 service smtp smtp
+nat (inside,outside) source static hostA:eth0 hostA:eth0 destination static spamhost1 spamhost1 service smtp smtp description "2 (NAT)"
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source static outside.id20655X6113.osrc.net.0 outside.id20655X6113.osrc.net.0 service smtp smtp
+nat (inside,outside) source static outside.id20655X6113.osrc.net.0 outside.id20655X6113.osrc.net.0 service smtp smtp description "3 (NAT)"
 ! 
 ! Rule  4 (NAT)
-nat (inside,outside) source static test_range_1 test_range_1 destination static spamhost1 spamhost1 service smtp smtp
+nat (inside,outside) source static test_range_1 test_range_1 destination static spamhost1 spamhost1 service smtp smtp description "4 (NAT)"
 
 
 
