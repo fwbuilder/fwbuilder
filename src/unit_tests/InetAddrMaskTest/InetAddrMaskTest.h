@@ -28,18 +28,24 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include "fwbuilder/InetAddrMask.h"
+
+#include <vector>
+
+
 
 class InetAddrMaskTest : public CppUnit::TestFixture
 {
 public:
-
+    std::string vectorInetAddrMaskToString(
+        std::vector<libfwbuilder::InetAddrMask> vect);
     
     void testIntToInetAddr();
     void testStringToInetAddr();
     void testStringToInetAddrExceptions();
     void testStringToInetAddrMask();
     void testInetAddressOps();
-
+    void testIPv4Overlap();
 
     CPPUNIT_TEST_SUITE(InetAddrMaskTest);
 
@@ -48,7 +54,8 @@ public:
     CPPUNIT_TEST(testStringToInetAddr);
     CPPUNIT_TEST(testStringToInetAddrMask);
     CPPUNIT_TEST(testInetAddressOps);
-
+    CPPUNIT_TEST(testIPv4Overlap);
+    
     CPPUNIT_TEST_SUITE_END();
 
 };

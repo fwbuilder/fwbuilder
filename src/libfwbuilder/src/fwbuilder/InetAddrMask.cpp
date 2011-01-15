@@ -346,30 +346,75 @@ vector<InetAddrMask> libfwbuilder::getOverlap(const InetAddrMask &n1,
 
     if (s1 == s2 && e1 == e2)
     {
-        // libfwbuilder::_convert_range_to_networks(s1, e1, res);
+        // subnets are identical
         res.push_back(n1);
         return res;
     }
 
     if (e2 == s1)
     {
+        // end of n2 == start of n1, overlap is just 1 address
         res.push_back(InetAddrMask(s1, InetAddr::getAllOnes(s1.addressFamily())));
         return res;
     }
 
     if (e1 == s2)
     {
+        // end of n1 == start of n2, overlap is just 1 address
         res.push_back(InetAddrMask(s2, InetAddr::getAllOnes(s2.addressFamily())));
         return res;
     }
 
+    if (s1 == s2 && e1 < e2)
+    {
+        // both subnets have the same start address, but n1 is smaller
+        res.push_back(n1);
+        return res;
+    }
+
+    if (s1 == s2 && e2 < e1)
+    {
+        // both subnets have the same start address, but n2 is smaller
+        res.push_back(n2);
+        return res;
+    }
+
+    if (s2 < s1 && e1 == e2)
+    {
+        // both subnets have the same end address, but n1 is smaller
+        res.push_back(n1);
+        return res;
+    }
+
+    if (s1 < s2 && e1 == e2)
+    {
+        // both subnets have the same end address, but n2 is smaller
+        res.push_back(n2);
+        return res;
+    }
+    
+    if (s1 > s2 && e1 < e2)
+    {
+        // n1 fits inside of n2
+        res.push_back(n1);
+        return res;
+    }
+
+    if (s2 > s1 && e2 < e1)
+    {
+        // n2 fits inside of n1
+        res.push_back(n2);
+        return res;
+    }
+
+
     InetAddr rs, re;
 
-    if (s1 == s2) { rs = s1; }
+    // if (s1 == s2) { rs = s1; }
     if (s1 < s2)  { rs = s2; }
     if (s2 < s1)  { rs = s1; }
 
-    if (e1 == e2) { re = e1; }
+    // if (e1 == e2) { re = e1; }
     if (e1 < e2)  { re = e1; }
     if (e2 < e1)  { re = e2; }
 

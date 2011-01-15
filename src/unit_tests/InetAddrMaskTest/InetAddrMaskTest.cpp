@@ -197,3 +197,107 @@ void InetAddrMaskTest::testStringToInetAddrMask()
     CPPUNIT_ASSERT(a5->dimension()==256);
 
 }
+
+string InetAddrMaskTest::vectorInetAddrMaskToString(vector<InetAddrMask> vect)
+{
+    string res;
+    vector<InetAddrMask>::iterator it;
+    for (it=vect.begin(); it!=vect.end(); ++it)
+    {
+        res += it->toString() + " ";
+    }
+    return res;
+}
+
+void InetAddrMaskTest::testIPv4Overlap()
+{
+    string res;
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.0 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")),
+            InetAddrMask(InetAddr("10.0.0.255"), InetAddr("255.255.255.255"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.255/255.255.255.255 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.255"), InetAddr("255.255.255.255")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.255/255.255.255.255 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.254")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.254 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.254"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.254 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.252"), InetAddr("255.255.255.252")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.252/255.255.255.252 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")),
+            InetAddrMask(InetAddr("10.0.0.252"), InetAddr("255.255.255.252"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.252/255.255.255.252 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.128"), InetAddr("255.255.255.252")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.128/255.255.255.252 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")),
+            InetAddrMask(InetAddr("10.0.0.128"), InetAddr("255.255.255.252"))
+        )
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.128/255.255.255.252 ");
+
+    // test specifically for #1934
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.2"), InetAddr("255.255.255.254")),
+            InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")))
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.2/255.255.255.254 ");
+
+    res = vectorInetAddrMaskToString(
+        libfwbuilder::getOverlap(
+            InetAddrMask(InetAddr("10.0.0.2"), InetAddr("255.255.255.254")),
+            InetAddrMask(InetAddr("0.0.0.0"), InetAddr("0.0.0.0")))
+    );
+    CPPUNIT_ASSERT(res=="10.0.0.2/255.255.255.254 ");
+
+}
