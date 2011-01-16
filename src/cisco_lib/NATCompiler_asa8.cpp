@@ -250,6 +250,17 @@ bool NATCompiler_asa8::VerifyRules::processNext()
     if (rule->getRuleType()==NATRule::SNetnat) rule->setRuleType(NATRule::SNAT);
     if (rule->getRuleType()==NATRule::DNetnat) rule->setRuleType(NATRule::DNAT);
 
+    if ((rule->getRuleType()==NATRule::DNAT || 
+         rule->getRuleType()==NATRule::SDNAT) &&
+        odst->isAny())
+    {
+            compiler->abort(
+                rule, 
+                "Oiginal destination can not be \"any\" in rules that translate "
+                "destination");
+            return true;
+    }
+
     tmp_queue.push_back(rule);
 
     return true;

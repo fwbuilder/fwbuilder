@@ -19084,7 +19084,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id20098X3981" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294767697" platform="pix" version="8.3" name="firewall91" comment="testing new style ASA 8.3 nat commands&#10;DNAT rules&#10;" ro="False">
+      <Firewall id="id20098X3981" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295219041" platform="pix" version="8.3" name="firewall91" comment="testing new style ASA 8.3 nat commands&#10;DNAT rules&#10;" ro="False">
         <NAT id="id20132X3981" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id20285X3981" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -19297,6 +19297,99 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="tcp-HTTP"/>
             </TSrv>
             <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id21329X8588" disabled="False" group="" position="10" action="Translate" comment="for #1927">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id23261X67574"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C86E6E</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id21378X8588" disabled="False" group="" position="11" action="Translate" comment="for #1927">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id23261X67574"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C86E6E</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id97464X8588" disabled="False" group="" position="12" action="Translate" comment="for #1927">
+            <OSrc neg="False">
+              <ObjectRef ref="id178241X29963"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id20111X3981"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id23261X67574"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C86E6E</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id97410X8588" disabled="False" group="" position="13" action="Translate" comment="for #1927">
+            <OSrc neg="False">
+              <ObjectRef ref="id178241X29963"/>
+              <ObjectRef ref="id178250X29963"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id20115X3981"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id23261X67574"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="color">#C86E6E</Option>
+            </NATRuleOptions>
           </NATRule>
           <RuleSetOptions/>
         </NAT>

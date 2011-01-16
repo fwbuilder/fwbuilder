@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3432
+!  Firewall Builder  fwb_pix v4.2.0.3434
 !
-!  Generated Fri Jan 14 18:48:38 2011 PST by vadim
+!  Generated Sun Jan 16 15:04:33 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -18,6 +18,10 @@
 
 ! N firewall91:NAT:8: error: Can not translate multiple services into one service in one rule. 
 ! N firewall91:NAT:9: error: Translated service should be 'Original' or should contain single object.
+! N firewall91:NAT:10: error: Oiginal destination can not be "any" in rules that translate destination
+! N firewall91:NAT:11: error: Oiginal destination can not be "any" in rules that translate destination
+! N firewall91:NAT:12: error: Oiginal destination can not be "any" in rules that translate destination
+! N firewall91:NAT:13: error: Oiginal destination can not be "any" in rules that translate destination
 
 !
 ! Prolog script:
