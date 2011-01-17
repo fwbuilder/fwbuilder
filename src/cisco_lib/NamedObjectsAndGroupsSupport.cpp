@@ -199,13 +199,23 @@ bool CreateObjectGroups::processNext()
         //obj_group= new BaseObjectGroup();
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
 
-        FWObject *o = re->front();
-        FWObject *obj = FWReference::getObject(o);
-        obj_group->setObjectGroupTypeFromFWObject(obj);
+        FWObject *obj = FWReference::getObject(re->front());
+        BaseObjectGroup::object_group_type og_type =
+            obj_group->getObjectGroupTypeFromFWObject(obj);
+        obj_group->setObjectGroupType(og_type);
 
-        if (obj_group->isServiceGroup() && supports_mixed_groups)
+        if (obj_group->isServiceGroup() && supports_mixed_groups && re->size() > 1)
         {
-            obj_group->setObjectGroupType(BaseObjectGroup::MIXED_SERVICE);
+            // rule element contains >1 object, check if they are of different types
+            for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
+            {
+                FWObject *obj = FWReference::getObject(*i1);
+                if (og_type != obj_group->getObjectGroupTypeFromFWObject(obj))
+                {
+                    obj_group->setObjectGroupType(BaseObjectGroup::MIXED_SERVICE);
+                    break;
+                }
+            }
         }
 
         QStringList gn;

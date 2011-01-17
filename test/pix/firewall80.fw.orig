@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3436
 !
-!  Generated Mon Jan 17 12:06:34 2011 PST by vadim
+!  Generated Mon Jan 17 12:57:50 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -110,13 +110,13 @@ object-group service outside.id69378X1497.srv.0
  exit
 
 
-object-group service inside.id21447X11252.srv.0
+object-group service inside.id21447X11252.srv.icmp.0
  service-object icmp 8
  service-object icmp 3
  exit
 
 
-object-group service inside.id21447X11252.srv.1
+object-group service inside.id21447X11252.srv.0
  service-object icmp 8
  service-object icmp 3
  service-object udp eq 53
@@ -168,8 +168,8 @@ access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id6
 ! mixed services
 icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
-access-list inside_acl_in permit  192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.0 
-access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.1 
+access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.icmp.0 
+access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.0 
 ! 
 ! Rule  9 (global)
 ! for #1942

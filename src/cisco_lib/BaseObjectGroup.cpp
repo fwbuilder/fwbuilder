@@ -68,14 +68,20 @@ string BaseObjectGroup::registerGroupName(const std::string &prefix)
     return str.str();
 }
 
+BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(FWObject *obj)
+{
+    if (Address::cast(obj)!=NULL)     return NETWORK;
+    if (IPService::cast(obj)!=NULL)   return PROTO;
+    if (ICMPService::cast(obj)!=NULL) return ICMP_TYPE;
+    if (TCPService::cast(obj)!=NULL)  return TCP_SERVICE;
+    if (UDPService::cast(obj)!=NULL)  return UDP_SERVICE;
+    if (CustomService::cast(obj)!=NULL)  return MIXED_SERVICE;
+    return UNKNOWN;
+}
+
 void BaseObjectGroup::setObjectGroupTypeFromFWObject(FWObject *obj)
 {
-    if (Address::cast(obj)!=NULL)     setObjectGroupType(NETWORK);
-    if (IPService::cast(obj)!=NULL)   setObjectGroupType(PROTO);
-    if (ICMPService::cast(obj)!=NULL) setObjectGroupType(ICMP_TYPE);
-    if (TCPService::cast(obj)!=NULL)  setObjectGroupType(TCP_SERVICE);
-    if (UDPService::cast(obj)!=NULL)  setObjectGroupType(UDP_SERVICE);
-    if (CustomService::cast(obj)!=NULL)  setObjectGroupType(MIXED_SERVICE);
+    setObjectGroupType(getObjectGroupTypeFromFWObject(obj));
 }
 
 void BaseObjectGroup::setName(const std::string &prefix)

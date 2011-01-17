@@ -535,8 +535,9 @@ bool PolicyCompiler_pix::PrintRule::processNext()
     PIXObjectGroup *pgdst = PIXObjectGroup::cast(dstobj);
 
     if ( pgsrv!=NULL && pgsrv->isServiceGroup())
+    {
         aclstr << pgsrv->getSrvTypeName();
-    else
+    } else
         aclstr << Service::cast(srvobj)->getProtocolName();
 
     aclstr << " ";

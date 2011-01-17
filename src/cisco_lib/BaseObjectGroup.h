@@ -56,7 +56,8 @@ protected:
         std::string registerGroupName(const std::string &prefix);
     
 public:
-BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
+        BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group()
+        {
             gt=_gt;
         }
     
@@ -67,6 +68,8 @@ BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
 
         void setObjectGroupType(object_group_type _gt) { gt=_gt; }
         object_group_type getObjectGroupType() { return gt; }
+
+        object_group_type getObjectGroupTypeFromFWObject(libfwbuilder::FWObject *o);
 
         void setObjectGroupTypeFromFWObject(libfwbuilder::FWObject *obj);
 
