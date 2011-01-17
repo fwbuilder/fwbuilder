@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3435
 !
-!  Generated Sun Jan 16 20:18:02 2011 PST by vadim
+!  Generated Sun Jan 16 22:59:22 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -15,7 +15,7 @@
 !
 ! testing rules with broadcasts
 
-
+! C firewall80:Policy:: error: ASA8ObjectGroup: Unsupported object 'custom serv 1' found in object group
 
 !
 ! Prolog script:
@@ -123,6 +123,7 @@ object-group service inside.id21447X11252.srv.1
  service-object tcp eq 3128
  exit
 
+
 ! 
 ! Rule  0 (FastEthernet1)
 ssh    0.0.0.0 0.0.0.0 inside
@@ -171,6 +172,18 @@ access-list inside_acl_in permit  192.168.1.0 255.255.255.192 host 192.168.1.1 o
 access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.1 
 ! 
 ! Rule  9 (global)
+! for #1942
+! using custom service
+access-list outside_acl_in deny   any any host 192.168.1.10 
+access-list inside_acl_in deny   any any host 192.168.1.10 
+! 
+! Rule  10 (global)
+! for #1942
+! using custom service
+access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.0 
+! 
+! Rule  11 (global)
 access-list outside_acl_in deny   ip any any 
 access-list inside_acl_in deny   ip any any 
 

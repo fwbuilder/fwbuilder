@@ -29,6 +29,7 @@
 #include "fwcompiler/NATCompiler.h"
 
 #include "Helper.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include <map>
 #include <deque>
@@ -83,6 +84,7 @@ namespace fwcompiler {
         public:
 
         Helper helper;
+        NamedObjectManager *named_objects_manager;
 
 	int global_pool_no;
         std::map<int,NATCmd*> nat_commands;
@@ -539,7 +541,12 @@ namespace fwcompiler {
         void setACLFlag(const std::string& acl_name, int f) {
             nat_acl_names[acl_name] = f;
         }
-    };
+
+        void setNamedObjectManager(NamedObjectManager *mgr)
+        {
+            named_objects_manager = mgr;
+        }
+};
 
 
 }

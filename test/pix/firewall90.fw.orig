@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3435
 !
-!  Generated Sun Jan 16 20:18:05 2011 PST by vadim
+!  Generated Sun Jan 16 22:59:25 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -94,6 +94,7 @@ clear config object-group
 clear config icmp
 clear config telnet
 
+
 object-group network outside.id78630X30274.src.net.0
  network-object 10.1.2.0 255.255.255.0 
  network-object 10.1.3.0 255.255.255.0 
@@ -169,6 +170,9 @@ quit
 object service smtps
   service tcp destination eq 465
 quit
+object service custom_serv_1
+  service resetinbound interface outside
+quit
 
 object-group network outside.id178211X29963.osrc.net.0
  network-object object internal_subnet_1
@@ -232,6 +236,11 @@ object-group network outside.id77971X5929.tsrc.net.0
 object-group network outside.id77971X5929.tsrc.net.1
  network-object object outside_range-1
  network-object object external_gw2
+ exit
+
+
+object-group service outside.id127056X21575.osrv.0
+ service-object object custom_serv_1
  exit
 
 ! 
@@ -338,6 +347,12 @@ nat (outside,inside) source static any any destination static interface hostA:et
 ! multiple objects in OSrc, ODst, OSrv and TSrc in various combinations
 nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp smtp description "23 (NAT)"
 nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps smtps description "23 (NAT)"
+! 
+! Rule  24 (NAT)
+! for #1942
+! using custom service
+! note that the rule makese no sense at all
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service outside.id127056X21575.osrv.0 custom_serv_1 description "24 (NAT)"
 
 
 

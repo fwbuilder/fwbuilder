@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3435
 !
-!  Generated Sun Jan 16 20:18:02 2011 PST by vadim
+!  Generated Sun Jan 16 22:59:23 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -95,9 +95,27 @@ clear config object-group
 clear config icmp
 clear config telnet
 
+object service custom_serv_1
+  service resetinbound interface outside
+quit
+object service squid
+  service tcp destination eq 3128
+quit
+
 object-group service inside.id86733X27607.srv.0
  service-object icmp 
  service-object tcp range 0 65535
+ exit
+
+
+object-group service inside.id127389X26962.srv.0
+ service-object object custom_serv_1
+ exit
+
+
+object-group service inside.id127342X26962.srv.0
+ service-object object custom_serv_1
+ service-object object squid
  exit
 
 ! 
@@ -125,6 +143,18 @@ access-list inside_acl_in permit tcp any host 192.168.1.1 eq 80
 access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
 ! 
 ! Rule  4 (global)
+! for #1942
+! using custom service
+access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id127389X26962.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id127389X26962.srv.0 
+! 
+! Rule  5 (global)
+! for #1942
+! using custom service
+access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id127342X26962.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id127342X26962.srv.0 
+! 
+! Rule  6 (global)
 access-list inside_acl_in deny   ip any any 
 access-list outside_acl_in deny   ip any any 
 

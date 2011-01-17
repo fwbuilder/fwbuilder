@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "ASA8ObjectGroup.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -41,9 +42,10 @@ using namespace libfwbuilder;
 using namespace std;
 using namespace fwcompiler;
 
+
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
-string ASA8ObjectGroup::toString(std::map<int, NamedObject*> &named_objects_registry)
+string ASA8ObjectGroup::toString(NamedObjectManager *named_object_manager)
     throw(FWException)
 {
     ostringstream ostr;
@@ -58,11 +60,14 @@ string ASA8ObjectGroup::toString(std::map<int, NamedObject*> &named_objects_regi
         FWObject *obj = o;
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 
-        NamedObject *named_object = named_objects_registry[obj->getId()];
+        NamedObject *named_object =
+            named_object_manager->named_objects[obj->getId()];
+
         if (named_object)
         {
             ostr << " "
-                 << named_object->getCommandWhenObjectGroupMember().toStdString();
+                 << named_object->getCommandWhenObjectGroupMember(
+                 named_object_manager->fw).toStdString();
             ostr << endl;
             continue;
         }
@@ -134,7 +139,8 @@ string ASA8ObjectGroup::toString(std::map<int, NamedObject*> &named_objects_regi
                 continue;
             }
 
-            throw FWException("ASA8ObjectGroup: Unknown object group type");
+            QString err("ASA8ObjectGroup: Unsupported object '%1' found in object group");
+            throw FWException(err.arg(obj->getName().c_str()).toStdString());
         }
     }
     ostr << " exit" << endl << endl;
@@ -145,10 +151,8 @@ string ASA8ObjectGroup::getObjectGroupClass()
 {
     switch (this->getObjectGroupType()) 
     {
-    case NETWORK:        return "network";
     case MIXED_SERVICE:  return "service";;
-    default:
-        throw FWException("ASA8ObjectGroup: Unknown object group type");
+    default: return BaseObjectGroup::getObjectGroupClass();
     }
 }
 

@@ -34,6 +34,7 @@
 #include "Helper.h"
 #include "ACL.h"
 #include "BaseObjectGroup.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 namespace libfwbuilder {
     class IPService;
@@ -509,6 +510,7 @@ protected:
 protected:
 
         Helper helper;
+        NamedObjectManager *named_objects_manager;
 	std::map<std::string,ciscoACL*> acls;
 
 	virtual std::string myPlatformName();
@@ -536,7 +538,11 @@ public:
          * in some kind of 'natural' order. Useful for both IOS and PIX
          */
         void regroup();
-	
+
+        void setNamedObjectManager(NamedObjectManager *mgr)
+        {
+            named_objects_manager = mgr;
+        }
     };
 
 

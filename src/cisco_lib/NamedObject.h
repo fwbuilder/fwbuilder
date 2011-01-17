@@ -25,6 +25,7 @@
 #define _ASA8_OBJECT_HH
 
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/Firewall.h"
 
 #include <QString>
 #include <QSet>
@@ -42,14 +43,17 @@ namespace fwcompiler {
         
 protected:
         QString sanitizeObjectName(const QString &name);
-        QString createNetworkObjectCommand(const libfwbuilder::Address *addr);
-        QString createServiceObjectCommand(const libfwbuilder::Service *addr);
+        QString createNetworkObjectCommand(const libfwbuilder::Address *addr,
+                                           const libfwbuilder::Firewall *fw);
+        QString createServiceObjectCommand(const libfwbuilder::Service *addr,
+                                           const libfwbuilder::Firewall *fw);
 
 public:
 
         NamedObject(const libfwbuilder::FWObject *obj);
-        virtual QString getCommand();
-        virtual QString getCommandWhenObjectGroupMember();
+        virtual QString getCommand(const libfwbuilder::Firewall *fw);
+        virtual QString getCommandWhenObjectGroupMember(
+            const libfwbuilder::Firewall *fw);
         QString getName() { return name; }
         QString getCommandWord();
     };

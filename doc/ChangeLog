@@ -1,5 +1,15 @@
 2011-01-16  vadim  <vadim@netcitadel.com>
 
+	* NamedObjectsAndGroupsSupport.cpp (processNext): Added support for
+	CustomService objects in policy and nat rules for asa 8.3 using
+	named objects and object-groups.
+	 -- see #1942 "ASA NAT - if custom service is included in service
+	group incorrect config generated"
+	 -- see #1929 "move map named_objects inside class NamedObjectManager"
+	 -- see #1946 "restrict generation of the named objects by
+	PolicyCompiler_pix to ASA 8"
+	 -- see #1885 "named network and service objects in pix8"
+
 	* NATCompiler_pix.cpp (processNext): see #1941 "ASA NAT - compiler
 	complains about range in original destination". NAT rules
 	translating destination allow Address Range objects in ODst or TDst

@@ -45,7 +45,7 @@ using namespace std;
 
 const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
-string IOSObjectGroup::toString(std::map<int, NamedObject*>&)  throw(FWException)
+string IOSObjectGroup::toString(NamedObjectManager*)  throw(FWException)
 {
     ostringstream ostr;
 

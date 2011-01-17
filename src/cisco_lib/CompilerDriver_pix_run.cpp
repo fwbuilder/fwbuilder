@@ -288,6 +288,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             copies_of_cluster_interfaces.pop_front();
         }
 
+        NamedObjectManager named_object_manager(fw);
+
         all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
         for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
@@ -373,6 +375,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)
         {
+            n->setNamedObjectManager(&named_object_manager);
             n->setSourceRuleSet(nat);
             n->setRuleSetName(nat->getName());
 
@@ -397,6 +400,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
         if (policy)
         {
+            c->setNamedObjectManager(&named_object_manager);
             c->setSourceRuleSet(policy);
             c->setRuleSetName(policy->getName());
 
@@ -421,6 +425,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)
         {
+            r->setNamedObjectManager(&named_object_manager);
             r->setSourceRuleSet(routing);
             r->setRuleSetName(routing->getName());
 

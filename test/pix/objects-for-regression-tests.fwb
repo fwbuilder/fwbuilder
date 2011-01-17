@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1294970408" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1295243227" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1353,11 +1353,22 @@
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
         <UDPService id="id19120X1497" name="src_udp_ports" comment="" ro="False" src_range_start="10000" src_range_end="10010" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid13_1" name="Custom_Services" comment="" ro="False">
+      <ServiceGroup id="stdid13_1" name="Custom" comment="" ro="False">
         <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
           <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
+        </CustomService>
+        <CustomService id="id21571X21575" name="custom serv 1" comment="" ro="False" protocol="any" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix">resetinbound interface outside</CustomServiceCommand>
+          <CustomServiceCommand platform="procurve_acl"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
@@ -16996,7 +17007,7 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295222851" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295243635" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -17188,7 +17199,50 @@ no sysopt nodnsalias outbound
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id18920X29796" disabled="False" log="False" position="9" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id21584X21575" disabled="False" group="" log="False" position="9" action="Deny" direction="Both" comment="for #1942&#10;using custom service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id79024X21575" disabled="False" group="" log="False" position="10" action="Deny" direction="Both" comment="for #1942&#10;using custom service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+              <ServiceRef ref="id3B5009F7"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18920X29796" disabled="False" log="False" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -17385,7 +17439,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294348905" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
+      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295245802" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
         <NAT id="id86771X27607" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id138353X27607" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -17492,7 +17546,50 @@ no sysopt nodnsalias outbound
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id86758X27607" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id127389X26962" disabled="False" group="" log="False" position="4" action="Deny" direction="Both" comment="for #1942&#10;using custom service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id127342X26962" disabled="False" group="" log="False" position="5" action="Deny" direction="Both" comment="for #1942&#10;using custom service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+              <ServiceRef ref="id3B5009F7"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id86758X27607" disabled="False" log="False" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -18297,7 +18394,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294970497" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295243536" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18887,6 +18984,27 @@ no sysopt nodnsalias outbound
             <NATRuleOptions>
               <Option name="color">#C0C0C0</Option>
             </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id127056X21575" disabled="False" group="" position="24" action="Translate" comment="for #1942&#10;using custom service&#10;note that the rule makese no sense at all">
+            <OSrc neg="False">
+              <ObjectRef ref="id178241X29963"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id20049X29963"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>

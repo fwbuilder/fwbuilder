@@ -15,6 +15,7 @@
  */
 
 #include "RoutingCompiler_cisco.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Routing.h"

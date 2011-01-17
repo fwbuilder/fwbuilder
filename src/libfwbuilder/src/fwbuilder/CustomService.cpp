@@ -179,9 +179,11 @@ void  CustomService::setCodeForPlatform(const string& platform,
     codes[platform]=code;
 }
 
-const string& CustomService::getCodeForPlatform(const string& platform)
+const string CustomService::getCodeForPlatform(const string& platform) const
 {
-    return codes[platform];
+    std::map<std::string,std::string>::const_iterator it = codes.find(platform);
+    if (it == codes.end()) return "";
+    return it->second;
 }
 
 void  CustomService::setProtocol(const string& proto)

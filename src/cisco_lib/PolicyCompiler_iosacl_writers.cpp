@@ -218,7 +218,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     PolicyCompiler_iosacl *iosacl_comp = 
         dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     string platform = compiler->fw->getStr("platform");
-    FWOptions  *ruleopt =rule->getOptionsObject();
+    //FWOptions  *ruleopt =rule->getOptionsObject();
     bool write_comments = compiler->fw->getOptionsObject()->getBool(
         platform + "_include_comments");
 

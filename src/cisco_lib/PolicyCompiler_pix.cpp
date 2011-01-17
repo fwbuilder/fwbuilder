@@ -679,7 +679,15 @@ void PolicyCompiler_pix::compile()
     add( new createNewCompilerPass("Creating object groups and ACLs ..."));
 
     add( new printClearCommands("Clear ACLs and object groups"));
-    add( new printObjectGroups("generate code for object groups"));
+
+    if (XMLTools::version_compare(vers, "8.3")>=0)
+    {
+        add( new printNamedObjectsForPolicy(
+                 "definitions of named objects", named_objects_manager));
+    }
+
+    add( new printObjectGroups(
+             "generate code for object groups", named_objects_manager));
     add( new PrintRule("generate code for ACLs"));
     add( new simplePrintProgress());
 

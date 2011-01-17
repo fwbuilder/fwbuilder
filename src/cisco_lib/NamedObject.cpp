@@ -29,6 +29,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Network.h"
@@ -253,7 +254,8 @@ QString NamedObject::sanitizeObjectName(const QString &name)
     return qs;
 }
 
-QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)
+QString NamedObject::createNetworkObjectCommand(const Address *addr_obj,
+                                                const Firewall*)
 {
     if (addr_obj == NULL) return "";
     if (addr_obj->isAny()) return "";
@@ -314,7 +316,8 @@ QString NamedObject::printPorts(int rs, int re)
     return res.join(" ");
 }
 
-QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
+QString NamedObject::createServiceObjectCommand(const Service *serv_obj,
+                                                const Firewall *fw)
 {
     if (serv_obj == NULL) return "";
     if (serv_obj->isAny()) return "";
@@ -327,10 +330,12 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 
     QStringList service_line;
 
-    service_line << "  service" << proto_name;
+    service_line << "  service";
 
     if (TCPService::isA(serv_obj) || UDPService::isA(serv_obj))
     {
+        service_line << proto_name;
+
 	int rs = TCPUDPService::constcast(serv_obj)->getSrcRangeStart();
 	int re = TCPUDPService::constcast(serv_obj)->getSrcRangeEnd();
         if (rs != 0 || re != 0)
@@ -346,9 +351,17 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
         }
     }
 
-    if (ICMPService::isA(serv_obj) && serv_obj->getInt("type")!=-1)
+    if (ICMPService::isA(serv_obj))
     {
-        service_line << QString::number(serv_obj->getInt("type"));
+        service_line << proto_name;
+        if (serv_obj->getInt("type")!=-1)
+            service_line << QString::number(serv_obj->getInt("type"));
+    }
+
+    if (CustomService::isA(serv_obj))
+    {
+        service_line << CustomService::constcast(serv_obj)->getCodeForPlatform(
+            fw->getStr("platform")).c_str();
     }
 
     res << service_line.join(" ");
@@ -358,18 +371,18 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 }
 
 
-QString NamedObject::getCommand()
+QString NamedObject::getCommand(const Firewall *fw)
 {
     if (Address::constcast(obj)!=NULL)
-        return createNetworkObjectCommand(Address::constcast(obj));
+        return createNetworkObjectCommand(Address::constcast(obj), fw);
 
     if (Service::constcast(obj)!=NULL)
-        return createServiceObjectCommand(Service::constcast(obj));
+        return createServiceObjectCommand(Service::constcast(obj), fw);
 
     return "";
 }
 
-QString NamedObject::getCommandWhenObjectGroupMember()
+QString NamedObject::getCommandWhenObjectGroupMember(const Firewall*)
 {
     if (Address::constcast(obj)!=NULL) return "network-object object " + name;
     if (Service::constcast(obj)!=NULL) return "service-object object " + name;

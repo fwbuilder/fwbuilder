@@ -35,6 +35,8 @@
 
 namespace fwcompiler {
 
+    class NamedObjectManager;
+    
     class BaseObjectGroup : public libfwbuilder::Group {
 public:
 
@@ -76,7 +78,7 @@ BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() {
     
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();
-        virtual std::string toString(std::map<int, NamedObject*> &named_objects_registry)
+        virtual std::string toString(NamedObjectManager *named_obj_manager)
             throw(libfwbuilder::FWException);
     };
 

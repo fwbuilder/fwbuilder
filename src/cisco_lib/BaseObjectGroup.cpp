@@ -33,6 +33,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 
 #include <iostream>
 #include <sstream>
@@ -74,6 +75,7 @@ void BaseObjectGroup::setObjectGroupTypeFromFWObject(FWObject *obj)
     if (ICMPService::cast(obj)!=NULL) setObjectGroupType(ICMP_TYPE);
     if (TCPService::cast(obj)!=NULL)  setObjectGroupType(TCP_SERVICE);
     if (UDPService::cast(obj)!=NULL)  setObjectGroupType(UDP_SERVICE);
+    if (CustomService::cast(obj)!=NULL)  setObjectGroupType(MIXED_SERVICE);
 }
 
 void BaseObjectGroup::setName(const std::string &prefix)
@@ -132,7 +134,7 @@ string BaseObjectGroup::getObjectGroupClass()
     return "";
 }
 
-string BaseObjectGroup::toString(std::map<int, NamedObject*>&)  throw(FWException)
+string BaseObjectGroup::toString(NamedObjectManager*)  throw(FWException)
 {
     return "";
 }

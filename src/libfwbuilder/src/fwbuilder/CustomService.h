@@ -79,7 +79,7 @@ class CustomService : public Service
 
     void setCodeForPlatform(const std::string& platform,
                             const std::string& code);
-    const std::string& getCodeForPlatform(const std::string& platform);
+    const std::string getCodeForPlatform(const std::string& platform) const;
 
     void setProtocol(const std::string& proto);
     const std::string& getProtocol();

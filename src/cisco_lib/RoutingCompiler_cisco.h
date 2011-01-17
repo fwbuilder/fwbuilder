@@ -23,6 +23,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "config.h"
 
+#include "NamedObjectsAndGroupsSupport.h"
 
 namespace libfwbuilder {
     class RuleElementRDst;
@@ -38,6 +39,8 @@ namespace fwcompiler
 
     protected:
      
+        NamedObjectManager *named_objects_manager;
+
         /**
          * prints rule in some universal format (close to that visible
          * to user in the GUI). Used for debugging purposes. This method
@@ -120,7 +123,12 @@ namespace fwcompiler
 
 	virtual int  prolog();
 	virtual void compile();
-    };
+
+        void setNamedObjectManager(NamedObjectManager *mgr)
+        {
+            named_objects_manager = mgr;
+        }
+};
 
 }
 

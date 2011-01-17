@@ -34,6 +34,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Interface.h"
@@ -59,8 +60,23 @@ using namespace std;
 
 
 Group* CreateObjectGroups::object_groups = NULL;
-map<int, NamedObject*> CreateObjectGroups::named_objects;
+map<int, NamedObject*> NamedObjectManager::named_objects;
 
+
+NamedObjectManager::NamedObjectManager(const libfwbuilder::Firewall *_fw)
+{
+    fw = _fw;
+}
+
+NamedObjectManager::~NamedObjectManager()
+{
+    std::map<int, NamedObject*>::iterator it1;
+    for (it1=named_objects.begin(); it1!=named_objects.end(); ++it1)
+    {
+        delete it1->second;
+    }
+    named_objects.clear();
+}
 
 string NamedObjectManager::addNamedObject(const FWObject *obj)
 {
@@ -73,18 +89,18 @@ string NamedObjectManager::addNamedObject(const FWObject *obj)
         }
         return res;
     }
-    if (CreateObjectGroups::named_objects[obj->getId()] == NULL)
+    if (named_objects[obj->getId()] == NULL)
     {
         NamedObject *asa8obj = new NamedObject(obj);
-        res = asa8obj->getCommand().toStdString();
-        CreateObjectGroups::named_objects[obj->getId()] = asa8obj;
+        res = asa8obj->getCommand(fw).toStdString();
+        named_objects[obj->getId()] = asa8obj;
     }
     return res;
 }
 
 NamedObject* NamedObjectManager::getNamedObject(const FWObject *obj)
 {
-    return CreateObjectGroups::named_objects[obj->getId()];
+    return named_objects[obj->getId()];
 }
 
 
@@ -93,22 +109,11 @@ void CreateObjectGroups::init(FWObjectDatabase *db)
 {
     object_groups = new Group();
     db->add( object_groups );
-    if (named_objects.size() > 0) clearNamedObjectsRegistry();
-}
-
-void CreateObjectGroups::clearNamedObjectsRegistry()
-{
-    std::map<int, NamedObject*>::iterator it1;
-    for (it1=named_objects.begin(); it1!=named_objects.end(); ++it1)
-    {
-        delete it1->second;
-    }
-    named_objects.clear();
+    //if (named_objects.size() > 0) clearNamedObjectsRegistry();
 }
 
 CreateObjectGroups::~CreateObjectGroups()
 {
-    clearNamedObjectsRegistry();
 }
 
 BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
@@ -151,20 +156,38 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
 bool CreateObjectGroups::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string version = compiler->fw->getStr("version");
+    string platform = compiler->fw->getStr("platform");
 
     Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(
                                                 rule->getInterfaceId()));
     assert(rule_iface);
 
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
-    if (re->size()==1)  // no need to create object-group since there is single object in the rule element
+
+
+    /*
+     * If rule element holds just one object, then there is no need to create
+     * object group. However if this one object is CustomService, then we
+     * should create the group anyway.
+     */
+    if (re->size()==1)
     {
-        tmp_queue.push_back(rule);
-        return true;
+        if (XMLTools::version_compare(version, "8.3")>=0)
+        {
+            FWObject *obj = FWReference::getObject(re->front());
+            if (!CustomService::isA(obj))
+            {
+                tmp_queue.push_back(rule);
+                return true;
+            }
+        } else
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        }
     }
 
-    string version = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
     bool supports_mixed_groups =
         Resources::platform_res[platform]->getResourceBool(
             string("/FWBuilderResources/Target/options/") +
@@ -273,7 +296,7 @@ bool printObjectGroups::processNext()
         compiler->output << endl;
         try
         {
-            compiler->output << og->toString(CreateObjectGroups::named_objects);
+            compiler->output << og->toString(named_objects_manager);
         } catch (FWException &ex)
         {
             compiler->abort(ex.toString());
@@ -283,7 +306,7 @@ bool printObjectGroups::processNext()
     return true;
 }
 
-void printNamedObjects::printObjectsForRE(RuleElement *re)
+void printNamedObjectsCommon::printObjectsForRE(RuleElement *re)
 {
     if (re->isAny()) return;
 
@@ -291,11 +314,27 @@ void printNamedObjects::printObjectsForRE(RuleElement *re)
     {
         FWObject *obj = FWReference::getObject(*it);
         if (Interface::isA(obj)) continue;
-        compiler->output << NamedObjectManager::addNamedObject(obj);
+        compiler->output << named_objects_manager->addNamedObject(obj);
     }
 }
 
-bool printNamedObjects::processNext()
+bool printNamedObjectsForPolicy::haveCustomService(FWObject *grp)
+{
+    for (FWObject::iterator it=grp->begin(); it!=grp->end(); ++it)
+    {
+        FWObject *obj = FWReference::getObject(*it);
+        if (BaseObjectGroup::constcast(obj)!=NULL)
+        {
+            if (haveCustomService(obj)) return true;
+        } else
+        {
+            if (CustomService::isA(obj)) return true;
+        }
+    }
+    return false;
+}
+
+bool printNamedObjectsForPolicy::processNext()
 {
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -304,25 +343,56 @@ bool printNamedObjects::processNext()
 
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
-        NATRule *rule = NATRule::cast( *k );
+        PolicyRule *policy_rule = PolicyRule::cast( *k );
+        if (policy_rule)
+        {
+            // At this time, we only need object groups in policy rules
+            // when CustomService object is used in Service
 
-        RuleElementOSrc *osrc_re = rule->getOSrc();  assert(osrc_re);
-        printObjectsForRE(osrc_re);
+            // RuleElementSrc *src_re = policy_rule->getSrc();  assert(src_re);
+            // printObjectsForRE(src_re);
+            // RuleElementDst *dst_re = policy_rule->getDst();  assert(dst_re);
+            // printObjectsForRE(dst_re);
 
-        RuleElementODst *odst_re = rule->getODst();  assert(odst_re);
-        printObjectsForRE(odst_re);
+            RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
+            if (haveCustomService(srv_re)) printObjectsForRE(srv_re);
+        }
+    }
 
-        RuleElementOSrv *osrv_re = rule->getOSrv();  assert(osrv_re);
-        printObjectsForRE(osrv_re);
+    return true;
+}
 
-        RuleElementTSrc *tsrc_re = rule->getTSrc();  assert(tsrc_re);
-        printObjectsForRE(tsrc_re);
 
-        RuleElementTDst *tdst_re = rule->getTDst();  assert(tdst_re);
-        printObjectsForRE(tdst_re);
+bool printNamedObjectsForNAT::processNext()
+{
+    slurp();
+    if (tmp_queue.size()==0) return false;
 
-        RuleElementTSrv *tsrv_re = rule->getTSrv();  assert(tsrv_re);
-        printObjectsForRE(tsrv_re);
+    compiler->output << endl;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        NATRule *nat_rule = NATRule::cast( *k );
+        if (nat_rule)
+        {
+            RuleElementOSrc *osrc_re = nat_rule->getOSrc();  assert(osrc_re);
+            printObjectsForRE(osrc_re);
+
+            RuleElementODst *odst_re = nat_rule->getODst();  assert(odst_re);
+            printObjectsForRE(odst_re);
+
+            RuleElementOSrv *osrv_re = nat_rule->getOSrv();  assert(osrv_re);
+            printObjectsForRE(osrv_re);
+
+            RuleElementTSrc *tsrc_re = nat_rule->getTSrc();  assert(tsrc_re);
+            printObjectsForRE(tsrc_re);
+
+            RuleElementTDst *tdst_re = nat_rule->getTDst();  assert(tdst_re);
+            printObjectsForRE(tdst_re);
+
+            RuleElementTSrv *tsrv_re = nat_rule->getTSrv();  assert(tsrv_re);
+            printObjectsForRE(tsrv_re);
+        }
 
     }
 

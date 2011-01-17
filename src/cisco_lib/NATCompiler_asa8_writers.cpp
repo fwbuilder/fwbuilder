@@ -105,7 +105,7 @@ QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
 
     if (Address::cast(obj) && Address::cast(obj)->isAny()) return "any";
 
-    NamedObject* asa8_object = NamedObjectManager::getNamedObject(obj);
+    NamedObject* asa8_object = pix_comp->named_objects_manager->getNamedObject(obj);
     if (asa8_object) return asa8_object->getCommandWord();
 
     for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
@@ -125,7 +125,7 @@ QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
 
 void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 {
-    NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
+    //NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
 
     FWOptions *ropt = rule->getOptionsObject();
 

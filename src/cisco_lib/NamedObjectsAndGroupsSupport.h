@@ -32,6 +32,7 @@
 #include "fwbuilder/Group.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
 
 #include "fwcompiler/RuleProcessor.h"
 
@@ -42,14 +43,18 @@ namespace fwcompiler
     class NamedObjectManager
     {
 public:
-        static std::string addNamedObject(const libfwbuilder::FWObject *obj);
-        static NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
+        static std::map<int, NamedObject*> named_objects;
+
+        const libfwbuilder::Firewall *fw;
+
+        NamedObjectManager(const libfwbuilder::Firewall *_fw);
+        virtual ~NamedObjectManager();
+        std::string addNamedObject(const libfwbuilder::FWObject *obj);
+        NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
     };
     
     class CreateObjectGroups : public BasicRuleProcessor
     {
-        static void clearNamedObjectsRegistry();
-        
 protected:
 
         std::string re_type;
@@ -63,7 +68,6 @@ protected:
 public:
 // storage for object groups created to be used with PIX command object-group
         static libfwbuilder::Group *object_groups;
-        static std::map<int, NamedObject*> named_objects;
 
 
         CreateObjectGroups(const std::string &name,
@@ -148,21 +152,45 @@ public:
      */
     class printObjectGroups : public BasicRuleProcessor
     {
+        NamedObjectManager *named_objects_manager;
 public:
-        printObjectGroups(const std::string &n) : BasicRuleProcessor(n) {}
+        printObjectGroups(const std::string &n,
+            NamedObjectManager *_m) : BasicRuleProcessor(n)
+        {
+            named_objects_manager = _m;
+        }
         virtual bool processNext();
     };
 
-    class printNamedObjects :  public BasicRuleProcessor
+    class printNamedObjectsCommon :  public BasicRuleProcessor
     {
+protected:
         void printObjectsForRE(libfwbuilder::RuleElement *re);
-
+        NamedObjectManager *named_objects_manager;
 public:
-        printNamedObjects(const std::string &n) : BasicRuleProcessor(n) {}
-        virtual bool processNext();
+        printNamedObjectsCommon(const std::string &n,
+            NamedObjectManager *_m) : BasicRuleProcessor(n)
+        {
+            named_objects_manager = _m;
+        }
     };
 
+    class printNamedObjectsForPolicy :  public printNamedObjectsCommon
+    {
+        bool haveCustomService(libfwbuilder::FWObject *grp);
+public:
+        printNamedObjectsForPolicy(const std::string &n,
+            NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}
+        virtual bool processNext();
+    };
     
+    class printNamedObjectsForNAT :  public printNamedObjectsCommon
+    {
+public:
+        printNamedObjectsForNAT(const std::string &n,
+            NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}
+        virtual bool processNext();
+    };
     
 }
 
