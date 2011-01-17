@@ -1,5 +1,8 @@
 2011-01-16  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): fixed #1938 "icmp" commands
+	were not generated for ASA 8.x policy rules.
+
 	* NATCompiler_asa8.cpp (processNext): See #1927. Added check for
 	NAT rules that request translation of destination address but have
 	ODst "any". This only applies to ASA 8.3; these rules are

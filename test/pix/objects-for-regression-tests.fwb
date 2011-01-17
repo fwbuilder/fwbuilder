@@ -423,7 +423,10 @@
       <Interval id="id3C63479E" days_of_week="0" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="0" from_year="-1" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1" name="Sun" comment="" ro="False"/>
     </IntervalGroup>
   </Library>
-  <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
+    <IPv4 id="id18881X29796" name="firewall80:FastEthernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+    <IPv4 id="id18876X29796" name="firewall80:FastEthernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+  </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -1324,7 +1327,7 @@
       </ServiceGroup>
       <ServiceGroup id="stdid07_1" name="ICMP" comment="" ro="False">
         <ICMPService id="id3C1A5D46" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
-        <ICMPService id="id3D0E8383" code="0" type="3" name="all unreachables" comment="" ro="False"/>
+        <ICMPService id="id3D0E8383" code="-1" type="3" name="all unreachables" comment="" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid06_1" name="IP" comment="" ro="False">
         <IPService id="id3B457561" fragm="False" lsrr="False" protocol_num="1" rr="False" short_fragm="False" ssrr="False" ts="False" name="ICMP" comment="" ro="False"/>
@@ -1360,7 +1363,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1294851704" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1295222056" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3251,7 +3254,7 @@
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3DB0F914" host_OS="pix_os" lastCompiled="1152028938" lastInstalled="0" lastModified="1152028917" platform="pix" version="6.3" name="firewall10" comment="big policy. Testing compiler performance" ro="False">
+      <Firewall id="id3DB0F914" host_OS="pix_os" lastCompiled="1152028938" lastInstalled="0" lastModified="1295222056" platform="pix" version="6.3" name="firewall10" comment="big policy. Testing compiler performance" ro="False">
         <NAT id="id3DB0F915" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3DB0F916" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -7503,7 +7506,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3C69BD4F" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="6.2" name="firewall7" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id3C69BD4F" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="1295222056" platform="pix" version="6.2" name="firewall7" comment="testing rules with broadcasts" ro="False">
         <NAT id="id3C69BD50" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3DAD0E47" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -9055,7 +9058,7 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id444A039E9567" host_OS="fwsm_os" inactive="False" lastCompiled="1145688917" lastInstalled="0" lastModified="1145688781" platform="fwsm" version="2.3" name="fwsm1" comment="" ro="False">
+      <Firewall id="id444A039E9567" host_OS="fwsm_os" inactive="False" lastCompiled="1145688917" lastInstalled="0" lastModified="1295222056" platform="fwsm" version="2.3" name="fwsm1" comment="" ro="False">
         <NAT id="id444A04E59567" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id444A04E69567" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -10960,7 +10963,7 @@ no sysopt nodnsalias outbound
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id45142F6628543" host_OS="pix_os" inactive="False" lastCompiled="1203135478" lastInstalled="0" lastModified="1294102939" platform="pix" version="7.0" name="firewall50" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule. PIX 7.0" ro="False">
+      <Firewall id="id45142F6628543" host_OS="pix_os" inactive="False" lastCompiled="1203135478" lastInstalled="0" lastModified="1295222056" platform="pix" version="7.0" name="firewall50" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule. PIX 7.0" ro="False">
         <NAT id="id451430AD28543" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id451430AE28543" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -15192,7 +15195,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id17217X54624" host_OS="fwsm_os" inactive="False" lastCompiled="1145688917" lastInstalled="0" lastModified="1269037889" platform="fwsm" version="4.x" name="fwsm2" comment="" ro="False">
+      <Firewall id="id17217X54624" host_OS="fwsm_os" inactive="False" lastCompiled="1145688917" lastInstalled="0" lastModified="1295222056" platform="fwsm" version="4.x" name="fwsm2" comment="" ro="False">
         <NAT id="id17562X54624" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id17563X54624" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -16993,7 +16996,7 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1294347798" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295222851" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -17009,7 +17012,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="id3D91665B"/>
             </Srv>
             <Itf neg="False">
-              <ObjectRef ref="id18873X29796"/>
+              <ObjectRef ref="id18878X29796"/>
             </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
@@ -17029,7 +17032,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="id3D91665B"/>
             </Srv>
             <Itf neg="False">
-              <ObjectRef ref="id18873X29796"/>
+              <ObjectRef ref="id18878X29796"/>
             </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
@@ -17162,7 +17165,30 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id18920X29796" disabled="False" log="False" position="8" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id21447X11252" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="for #1938 matching&#10;mixed services">
+            <Src neg="False">
+              <ObjectRef ref="id178241X29963"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="icmp-Unreachables"/>
+              <ServiceRef ref="udp-DNS"/>
+              <ServiceRef ref="id3B5009F7"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18920X29796" disabled="False" log="False" position="9" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -17187,12 +17213,12 @@ no sysopt nodnsalias outbound
         <Routing id="id18963X29796" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id18873X29796" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="FastEthernet0" comment="" ro="False">
-          <IPv4 id="id18876X29796" name="firewall80:FastEthernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Interface id="id18873X29796" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="FastEthernet0" comment="" ro="False">
+          <IPv4 id="id21478X13826" name="firewall80:FastEthernet0:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id18878X29796" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="net-Internal_net" security_level="0" unnum="False" unprotected="False" name="FastEthernet1" comment="" ro="False">
-          <IPv4 id="id18881X29796" name="firewall80:FastEthernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+        <Interface id="id18878X29796" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="net-Internal_net" security_level="0" unnum="False" unprotected="False" name="FastEthernet1" comment="" ro="False">
+          <IPv4 id="id21483X13826" name="firewall80:FastEthernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Management address="22.22.22.22">

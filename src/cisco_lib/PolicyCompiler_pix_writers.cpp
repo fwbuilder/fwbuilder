@@ -308,7 +308,7 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 bool PolicyCompiler_pix::PrintRule::suppressDuplicateICMPCommands(const string &cmd)
 {
     list<string>::iterator i;
-    i=std::find(seen_icmp_commands.begin(),seen_icmp_commands.end(),cmd);
+    i = std::find(seen_icmp_commands.begin(), seen_icmp_commands.end(), cmd);
     if (i!=seen_icmp_commands.end()) return true;
     seen_icmp_commands.push_back(cmd);
     return false;
@@ -317,26 +317,20 @@ bool PolicyCompiler_pix::PrintRule::suppressDuplicateICMPCommands(const string &
 string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
 {
     ostringstream  str;
+    Address *src = compiler->getFirstSrc(rule);
+    RuleElementSrv *srvrel = rule->getSrv();
+    FWObject *srv = srvrel->front();
+    if (FWReference::cast(srv)!=NULL) srv = FWReference::cast(srv)->getPointer();
 
-    Address *src   =compiler->getFirstSrc(rule);
-
-    RuleElementSrv *srvrel=rule->getSrv();
-    FWObject       *srv=srvrel->front();
-    if (FWReference::cast(srv)!=NULL) srv=FWReference::cast(srv)->getPointer();
-
-    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+    Interface *rule_iface =
+        Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
     assert(rule_iface);
 
-    if ( PIXObjectGroup::cast(srv)!=NULL && 
-         PIXObjectGroup::cast(srv)->getObjectGroupType()==BaseObjectGroup::ICMP_TYPE)
+    if (PIXObjectGroup::cast(srv)!=NULL)
     {
         for (FWObject::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
         {
-            FWObject *o   = *i1;
-            FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-
-            ICMPService *s=ICMPService::cast(obj);
+            ICMPService *s = ICMPService::cast(FWReference::getObject(*i1));
             assert(s!=NULL);
 
             ostringstream  str1;
@@ -361,13 +355,14 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
         str << " ";
         str << rule_iface->getLabel();
         str << endl;
+
         if ( ! suppressDuplicateICMPCommands(str.str()))  return str.str();
     }
 
     return "";
 }
 
-string    PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
+string PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
 {
 //    Helper helper(this);
 
@@ -445,13 +440,12 @@ string PolicyCompiler_pix::PrintRule::_printSingleSSHTelnetCommand(int port,
  */
 bool PolicyCompiler_pix::PrintRule::processNext()
 {
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    //bool write_comments= compiler->fw->getOptionsObject()->getBool("pix_include_comments");
+    PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
 
-    ostringstream  comment;
+    ostringstream comment;
     
     compiler->output << compiler->printComment(rule, current_rule_label1, "!");
 

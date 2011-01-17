@@ -209,6 +209,11 @@ bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
     return true;
 }
 
+/*
+ * This splits the rule if Dst==any and one or more icmp services are
+ * found in Srv. The name of this rule processor needs to be more
+ * descriptive.
+ */
 bool PolicyCompiler_cisco::splitIfDstAny::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;

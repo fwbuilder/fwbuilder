@@ -553,6 +553,9 @@ void PolicyCompiler_pix::compile()
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
 // add( new splitIfSrcAny( "split rule if src is any" ));
+        // Note that this splits the rule if Dst==any and one or more
+        // icmp services are found in Srv. The name of this rule
+        // processor needs to be more descriptive.
         add( new splitIfDstAny( "split rule if dst is any" ));
     }
 
@@ -574,8 +577,10 @@ void PolicyCompiler_pix::compile()
     if (XMLTools::version_compare(vers, "8.0")<0)
     {
         add( new splitServices("split rules with different protocols" ));
-        add( new PrepareForICMPCmd("prepare for icmp command" ));
     }
+
+    add( new PrepareForICMPCmd("prepare for icmp command" ));
+    
 
     add( new replaceFWinSRCInterfacePolicy(
              "replace fw with its interface in SRC in interface policy rules"));
