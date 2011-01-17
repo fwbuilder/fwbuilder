@@ -337,6 +337,8 @@ void NATCompiler_asa8::compile()
 
     add( new checkForUnnumbered("check for unnumbered interfaces"));
 
+    add( new splitByNetworkZonesForOSrc("split by netzone for OSrc"));
+
     add( new ConvertToAtomicForOSrv("convert to atomic for OSrv"));
     add( new ConvertToAtomicForTDst("convert to atomic for TDst"));
     add( new ConvertToAtomicForTSrv("convert to atomic for TSrv"));

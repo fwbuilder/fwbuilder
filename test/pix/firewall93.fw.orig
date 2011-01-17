@@ -1,0 +1,115 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3436
+!
+!  Generated Mon Jan 17 12:06:40 2011 PST by vadim
+!
+! Compiled for pix 8.3
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall93.fw
+!
+! test for #1949
+! split NAT rule by OSrc to make sure objects in OSrc match network zones of
+! inetrfaces
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+interface Ethernet0/0
+  nameif outside
+  security-level 0
+exit
+
+interface Ethernet0/1
+  nameif inside
+  security-level 100
+exit
+
+interface Ethernet0/2
+  nameif dmz
+  security-level 10
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+!################
+
+clear xlate
+clear config nat
+clear config object
+
+object network inside-range-1
+  range 10.0.0.1 10.0.0.5
+quit
+object network dmz-range-1
+  range 172.16.0.10 172.16.0.15
+quit
+! 
+! Rule  0 (NAT)
+nat (inside,outside) source dynamic inside-range-1 interface description "0 (NAT)"
+nat (dmz,outside) source dynamic dmz-range-1 interface description "0 (NAT)"
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

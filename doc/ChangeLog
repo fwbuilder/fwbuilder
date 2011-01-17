@@ -1,3 +1,9 @@
+2011-01-17  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_asa8.h (fwcompiler): see #1949 "ASA NAT - split
+	objects if OSrc contains objects that are in more than one network
+	zone".
+
 2011-01-16  vadim  <vadim@netcitadel.com>
 
 	* NamedObjectsAndGroupsSupport.cpp (processNext): Added support for

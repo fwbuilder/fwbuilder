@@ -30,6 +30,7 @@
 
 #include "Helper.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "splitByNetworkZonesForRE.h"
 
 #include <map>
 #include <deque>

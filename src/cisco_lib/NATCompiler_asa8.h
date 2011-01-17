@@ -64,6 +64,21 @@ namespace fwcompiler {
          */
         DECLARE_NAT_RULE_PROCESSOR(VerifyValidityOfDNSOption);
 
+        /**
+         * Split rule to make sure objects in OSrc match network zones
+         * of interfaces. We only need to do this for ASA 8.3 where we
+         * support object-groups in "nat" rules. Older versions did
+         * not support groups and so required all nat rules to be
+         * atomic which achieved the same effect.
+         */
+        class splitByNetworkZonesForOSrc : public splitByNetworkZonesForRE
+        {
+            public:
+            splitByNetworkZonesForOSrc(const std::string &n) :
+                splitByNetworkZonesForRE(n, libfwbuilder::RuleElementOSrc::TYPENAME)
+                {}
+        };
+
 	/**
 	 * this processor accumulates all rules fed to it by previous
 	 * processors, then prints PIX commands to clear

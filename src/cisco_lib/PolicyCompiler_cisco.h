@@ -35,6 +35,8 @@
 #include "ACL.h"
 #include "BaseObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "splitByNetworkZonesForRE.h"
+
 
 namespace libfwbuilder {
     class IPService;
@@ -329,24 +331,6 @@ protected:
          * policy rule
          */
         DECLARE_POLICY_RULE_PROCESSOR( replaceFWinDSTPolicy );
-
-
-        /**
-         * this processor splits rules if objects in rule element
-         * re_type belong to different network zones
-         */
-        class splitByNetworkZonesForRE : public PolicyRuleProcessor
-        {
-            std::string re_type;
-            std::map<int,libfwbuilder::PolicyRule*> rules;
-            void AddToInterface(int interface_id,
-                                libfwbuilder::Address *addr,
-                                libfwbuilder::PolicyRule *rule);
-            public:
-            splitByNetworkZonesForRE(const std::string &name,const std::string &_type) :
-                PolicyRuleProcessor(name) {re_type=_type; }
-            virtual bool processNext();
-        };
 
 
         class splitByNetworkZonesForSrc : public splitByNetworkZonesForRE
