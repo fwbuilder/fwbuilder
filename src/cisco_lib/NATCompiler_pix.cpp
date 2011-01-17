@@ -316,7 +316,7 @@ bool NATCompiler_pix::storeProcessedRules::processNext()
 bool NATCompiler_pix::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
-    string vers=compiler->fw->getStr("version");
+    string version = compiler->fw->getStr("version");
 
     if (rule->getRuleType()==NATRule::SDNAT) 
     {
@@ -326,9 +326,9 @@ bool NATCompiler_pix::VerifyRules::processNext()
         return true;
     }
 
-    bool  version_lt_63= ( compiler->fw->getStr("platform")=="pix" &&
-                           libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.3")<0);  // fwsm is always above 6.3 - its OS is based on 6.3
-
+    bool  version_lt_63= (
+        compiler->fw->getStr("platform")=="pix" &&
+        libfwbuilder::XMLTools::version_compare(version, "6.3")<0);  // fwsm is always above 6.3 - its OS is based on 6.3
 
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
@@ -536,12 +536,12 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    bool version_lt_63 = libfwbuilder::XMLTools::version_compare(
-        compiler->fw->getStr("version"),"6.3")<0;
+    string version = compiler->fw->getStr("version");
 
     if (rule->getRuleType()==NATRule::SNAT)
     {
-	if ((! osrv->isAny() || ! tsrv->isAny()) && version_lt_63)
+	if ((! osrv->isAny() || ! tsrv->isAny()) &&
+            libfwbuilder::XMLTools::version_compare(version, "6.3")<0)
         {
 	    compiler->abort(
                     rule, 
@@ -552,7 +552,8 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 
     if (rule->getRuleType()==NATRule::DNAT)
     {
-	if (AddressRange::cast(odst) || AddressRange::cast(tdst)) 
+	if ((AddressRange::cast(odst) || AddressRange::cast(tdst)) &&
+            libfwbuilder::XMLTools::version_compare(version, "8.3")<0)
         {
 	    compiler->abort(
                     rule, 
@@ -925,6 +926,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
 //    Helper helper(compiler);
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
     NATRule *rule = getNext(); if (rule==NULL) return false;
+    string version = compiler->fw->getStr("version");
 
     bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
     Cluster *cluster = NULL;
@@ -981,7 +983,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
             ( natcmd->o_iface->getSecurityLevel() < natcmd->t_iface->getSecurityLevel());
 
         if (natcmd->outside && compiler->fw->getStr("platform")=="pix" &&
-            libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.2")<0 )
+            libfwbuilder::XMLTools::version_compare(version, "6.2")<0 )
         {
             compiler->abort(
                     rule, 

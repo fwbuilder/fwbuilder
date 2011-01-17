@@ -1,5 +1,10 @@
 2011-01-16  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_pix.cpp (processNext): see #1941 "ASA NAT - compiler
+	complains about range in original destination". NAT rules
+	translating destination allow Address Range objects in ODst or TDst
+	for ASA 8.3
+
 	* NamedObject.cpp (NamedObject): see #1940 "ASA NAT - fwbuilder
 	host objects interface ip is reserved keyword". Added list of
 	reserved words used in IOS and ASA software to make sure generated
