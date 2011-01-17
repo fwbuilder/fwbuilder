@@ -34,6 +34,7 @@
 #include "Helper.h"
 #include "ACL.h"
 #include "PolicyCompiler_cisco.h"
+#include "specialServices.h"
 
 namespace libfwbuilder {
     class IPService;
@@ -149,19 +150,14 @@ namespace fwcompiler {
          *************************************************************************
          */
 
-	/**
-	 * this processor checks for the services which require
-	 * special treatment.  Some of these will be checking for
-	 * source or destination object as well because special
-	 * command may need to be generated in case source or
-	 * destination is a firewall itself. Therefore this processor
-	 * should be called after converting to atomic rules, but
-	 * before interface addresses in source and destination are
-	 * expanded.
-	 */
-	DECLARE_POLICY_RULE_PROCESSOR( SpecialServices );
-        friend class PolicyCompiler_pix::SpecialServices;
-
+        class SpecialServicesSrv : public SpecialServices
+        {
+            public:
+            SpecialServicesSrv(const std::string &n):
+                SpecialServices(n, libfwbuilder::RuleElementSrv::TYPENAME) {}
+        };
+        friend class SpecialServices;
+        
 	/**
 	 * sets boolean flag icmp_cmd to be able to generate command
 	 * "icmp" instead of "access-list" later. Call this processor

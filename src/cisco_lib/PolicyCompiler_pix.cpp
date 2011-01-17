@@ -38,6 +38,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Interface.h"
@@ -248,46 +249,6 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
         findDynamicInterface(rule,rule->getDst()))
         tmp_queue.push_back(rule);
 
-    return true;
-}
-
-bool PolicyCompiler_pix::SpecialServices::processNext()
-{
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Service    *s=compiler->getFirstSrv(rule);
-
-    if (IPService::cast(s)!=NULL) {
-	if (s->getBool("short_fragm") ||
-	    s->getBool("fragm") ) {
-
-	    pix_comp->fragguard=true;
-	    return true;   // do not copy the rule
-	}
-	if (s->getBool("rr")        ||
-	    s->getBool("ssrr")      ||
-	    s->getBool("ts") )
-        {
-	    compiler->abort(
-                    rule, 
-                    "PIX does not support checking for IP options in ACLs.");
-            return true;
-        }
-    }
-    if (TCPService::cast(s)!=NULL) {
-	if (s->getBool("ack_flag")  ||
-	    s->getBool("fin_flag")  ||
-	    s->getBool("rst_flag")  ||
-	    s->getBool("syn_flag") )
-        {
-	    compiler->abort(
-                    rule, 
-                    "PIX does not support checking for TCP options in ACLs.");
-            return true;
-        }
-    }
-
-    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -651,7 +612,7 @@ void PolicyCompiler_pix::compile()
     else
         add( new pickACL_v6( "assign ACLs for v6" ));
 
-    add( new SpecialServices( "check for special services" ));
+    add( new SpecialServicesSrv( "check for special services" ));
     add( new CheckForUnsupportedUserService("check for user service") );
     add( new checkForZeroAddr( "check for zero addresses" ));
     add( new checkVersionAndDynamicInterface(

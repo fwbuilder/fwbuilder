@@ -10,6 +10,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			RoutingCompiler_cisco.cpp          \
 			RoutingCompiler_cisco_writers.cpp  \
 			splitByNetworkZonesForRE.cpp       \
+			specialServices.cpp                \
 			ACL.cpp                            \
 			NamedObject.cpp                    \
 			ASA8TwiceNatLogic.cpp              \
@@ -54,6 +55,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 
 HEADERS	 = ../../config.h                   \
 			splitByNetworkZonesForRE.h      \
+			specialServices.h               \
 			ACL.h                           \
 			Helper.h                        \
 			NamedObject.h                   \

@@ -17021,8 +17021,29 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295243635" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295302047" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id70310X19497" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id86637X27607"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="id21571X21575"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id18883X29796" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">

@@ -352,6 +352,7 @@ void NATCompiler_asa8::compile()
 
     add( new VerifyValidityOfDNSOption(
              "Check validity of 'translate dns' option"));
+    add( new SpecialServicesOSrv( "check for special services" ));
 
     add( new CreateObjectGroupsForOSrc("create object groups for OSrc"));
     add( new CreateObjectGroupsForODst("create object groups for ODst"));

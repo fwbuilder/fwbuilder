@@ -1728,6 +1728,8 @@ void NATCompiler_pix::compile()
     if (fw->getOptionsObject()->getBool("pix_optimize_default_nat"))
         add (new clearOSrc ("clear OSrc" ));
 
+    add( new SpecialServicesOSrv( "check for special services" ));
+
     add( new createNATCmd ("create NAT commands" ));
     add( new createStaticCmd ("create static commands" ));
     add( new mergeNATCmd ("merge NAT commands" ));

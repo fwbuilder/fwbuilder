@@ -31,6 +31,7 @@
 #include "Helper.h"
 #include "NamedObjectsAndGroupsSupport.h"
 #include "splitByNetworkZonesForRE.h"
+#include "specialServices.h"
 
 #include <map>
 #include <deque>
@@ -277,6 +278,13 @@ namespace fwcompiler {
          */
 	DECLARE_NAT_RULE_PROCESSOR( clearOSrc );
         friend class NATCompiler_pix::clearOSrc;
+
+        class SpecialServicesOSrv : public SpecialServices
+        {
+            public:
+            SpecialServicesOSrv(const std::string &n):
+                SpecialServices(n, libfwbuilder::RuleElementOSrv::TYPENAME) {}
+        };
 
         /**
          *  eliminates duplicate objects in SRC. Uses default comparison
