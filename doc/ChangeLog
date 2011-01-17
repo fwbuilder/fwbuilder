@@ -1,5 +1,11 @@
 2011-01-17  vadim  <vadim@netcitadel.com>
 
+	* NamedObjectsAndGroupsSupport.cpp (init): fixes #1945
+	"object-group names include ever-growing suffix". Object-groups
+	created by the compiler for PIX/ASA had numerical suffix that was
+	constantly increasing when user used single-rule compile function
+	in the GUI.
+
 	* PolicyCompiler_pix.cpp (compile): fixed #1944 "ASA Policy -
 	duplicate network object groups created for mixed service group
 	with TCP dst and TCP src port range objects". Need to convert

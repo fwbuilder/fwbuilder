@@ -42,7 +42,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-map<string,int>  BaseObjectGroup::nc;
+map<string,int>  BaseObjectGroup::name_disambiguation;
 
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
@@ -59,11 +59,11 @@ string BaseObjectGroup::registerGroupName(const std::string &prefix)
     case ICMP_TYPE:      str << ".icmp";    break;
     case TCP_SERVICE:    str << ".tcp";     break;
     case UDP_SERVICE:    str << ".udp";     break;
-    case MIXED_SERVICE:  str << "";         break;
+    case MIXED_SERVICE:  str << ".mixed";   break;
     }
 
-    int n=nc[str.str()];
-    nc[str.str()]=n+1;
+    int n = name_disambiguation[str.str()];
+    name_disambiguation[str.str()]=n+1;
     str << "." << n;
     return str.str();
 }

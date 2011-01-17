@@ -109,6 +109,7 @@ void CreateObjectGroups::init(FWObjectDatabase *db)
 {
     object_groups = new Group();
     db->add( object_groups );
+    BaseObjectGroup::name_disambiguation.clear();
     //if (named_objects.size() > 0) clearNamedObjectsRegistry();
 }
 
@@ -133,9 +134,8 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
         bool match = true;
         for (FWObject::iterator i1=og->begin(); i1!=og->end(); ++i1) 
         {
-            FWObject *obj = FWReference::getObject(*i1);
-
-            if ( find(relement.begin(), relement.end(), obj)==relement.end() )
+            if ( find(relement.begin(), relement.end(),
+                      FWReference::getObject(*i1))==relement.end() )
             {
                 match = false;
                 break;
@@ -217,8 +217,9 @@ bool CreateObjectGroups::processNext()
 
         gn.push_back(rule->getUniqueId().c_str());
         gn.push_back(name_suffix.c_str());
-        obj_group->setName(gn.join(".").toStdString());
 
+        string new_name = gn.join(".").toStdString();
+        obj_group->setName(new_name);
         object_groups->add(obj_group);
 
         packObjects(re, obj_group);

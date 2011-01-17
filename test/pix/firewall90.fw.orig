@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3436
 !
-!  Generated Mon Jan 17 13:17:12 2011 PST by vadim
+!  Generated Mon Jan 17 13:49:18 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -239,7 +239,7 @@ object-group network outside.id77971X5929.tsrc.net.1
  exit
 
 
-object-group service outside.id127056X21575.osrv.0
+object-group service outside.id127056X21575.osrv.mixed.0
  service-object object custom_serv_1
  exit
 
@@ -352,7 +352,7 @@ nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id
 ! for #1942
 ! using custom service
 ! note that the rule makese no sense at all
-nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service outside.id127056X21575.osrv.0 custom_serv_1 description "24 (NAT)"
+nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service outside.id127056X21575.osrv.mixed.0 custom_serv_1 description "24 (NAT)"
 
 
 

@@ -50,12 +50,14 @@ public:
 
 private:
         object_group_type gt;
-        static std::map<std::string,int>  nc;
 
 protected:
         std::string registerGroupName(const std::string &prefix);
     
 public:
+
+        static std::map<std::string,int> name_disambiguation;
+
         BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group()
         {
             gt=_gt;

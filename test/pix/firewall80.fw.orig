@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3436
 !
-!  Generated Mon Jan 17 13:17:09 2011 PST by vadim
+!  Generated Mon Jan 17 13:49:15 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -92,7 +92,7 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group service outside.id19186X29796.srv.0
+object-group service outside.id19186X29796.srv.mixed.0
  service-object udp eq 123
  service-object udp eq 53
  service-object tcp eq 53
@@ -104,7 +104,7 @@ object-group service outside.id19186X29796.srv.0
  exit
 
 
-object-group service outside.id69378X1497.srv.0
+object-group service outside.id69378X1497.srv.mixed.0
  service-object icmp 
  service-object tcp range 0 65535
  exit
@@ -116,7 +116,7 @@ object-group service inside.id21447X11252.srv.icmp.0
  exit
 
 
-object-group service inside.id21447X11252.srv.0
+object-group service inside.id21447X11252.srv.mixed.0
  service-object icmp 8
  service-object icmp 3
  service-object udp eq 53
@@ -140,8 +140,8 @@ icmp permit any 3  inside
 access-list inside_acl_in permit icmp any host 192.168.1.1 3 
 ! 
 ! Rule  4 (global)
-access-list outside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
-access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.0 
+access-list outside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.mixed.0 
+access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.mixed.0 
 ! 
 ! Rule  5 (global)
 ! matching source ports
@@ -160,8 +160,8 @@ access-list inside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.mixed.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.mixed.0 
 ! 
 ! Rule  8 (global)
 ! for #1938 matching
@@ -169,7 +169,7 @@ access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id6
 icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
 access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.icmp.0 
-access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.0 
+access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.mixed.0 
 ! 
 ! Rule  9 (global)
 ! for #1942
@@ -180,8 +180,8 @@ access-list inside_acl_in deny   any any host 192.168.1.10
 ! Rule  10 (global)
 ! for #1942
 ! using custom service
-access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.0 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.mixed.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id79024X21575.srv.mixed.0 
 ! 
 ! Rule  11 (global)
 access-list outside_acl_in deny   ip any any 

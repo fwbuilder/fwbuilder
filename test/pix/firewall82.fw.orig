@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3436
 !
-!  Generated Mon Jan 17 13:17:10 2011 PST by vadim
+!  Generated Mon Jan 17 13:49:16 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -96,7 +96,7 @@ clear config icmp
 clear config telnet
 
 
-object-group service inside.id923611X27607.srv.0
+object-group service inside.id923611X27607.srv.mixed.0
  service-object icmp 
  service-object tcp range 0 65535
  exit
@@ -106,8 +106,8 @@ object-group service inside.id923611X27607.srv.0
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id923611X27607.srv.0 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id923611X27607.srv.0 
+access-list inside_acl_in deny    any host 192.168.1.10 object-group inside.id923611X27607.srv.mixed.0 
+access-list outside_acl_in deny    any host 192.168.1.10 object-group inside.id923611X27607.srv.mixed.0 
 ! 
 ! Rule  1 (FastEthernet1)
 ! test rule using translated address in dst
