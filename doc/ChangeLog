@@ -1,5 +1,12 @@
 2011-01-16  vadim  <vadim@netcitadel.com>
 
+	* NamedObject.cpp (NamedObject): see #1940 "ASA NAT - fwbuilder
+	host objects interface ip is reserved keyword". Added list of
+	reserved words used in IOS and ASA software to make sure generated
+	named objects do not conflict. Will maintain single super-set
+	of reserved words instead of separate set for each version of IOS
+	and ASA.
+
 	* PolicyCompiler_pix.cpp (compile): fixed #1938 "icmp" commands
 	were not generated for ASA 8.x policy rules.
 

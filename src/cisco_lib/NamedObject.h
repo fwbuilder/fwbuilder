@@ -27,6 +27,7 @@
 #include "fwbuilder/FWObject.h"
 
 #include <QString>
+#include <QSet>
 
 
 namespace fwcompiler {
@@ -35,6 +36,7 @@ namespace fwcompiler {
     {
         const libfwbuilder::FWObject *obj;
         QString name;
+        static QSet<QString> reserved_words;
 
         QString printPorts(int port_range_start, int port_range_end);
         

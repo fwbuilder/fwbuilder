@@ -38,17 +38,193 @@
 #include <sstream>
 
 #include <QStringList>
+#include <QSet>
 
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+/*
+ * Reserved words for all versions of IOS and ASA that support named
+ * objects. It does not make sense to maintain sets of reserved words
+ * separately for each version because it would take a lot of effort
+ * for very little gain. We will maintain super-set of words that
+ * corresponds to the version that has most extensive set.
+ */
+const char* rw[] = {
+    "ah",
+    "eigrp",
+    "esp",
+    "gre",
+    "icmp",
+    "icmp6",
+    "igmp",
+    "igrp",
+    "ip",
+    "ipinip",
+    "ipsec",
+    "nos",
+    "ospf",
+    "pcp",
+    "pim",
+    "pptp",
+    "snp",
+    "tcp",
+    "udp",
+    "tcp-aol",
+    "tcp-bgp",
+    "tcp-chargen",
+    "tcp-cifs",
+    "tcp-citrix-ica",
+    "tcp-ctiqbe",
+    "tcp-daytime",
+    "tcp-discard",
+    "tcp-domain",
+    "tcp-echo",
+    "tcp-exec",
+    "tcp-finger",
+    "tcp-ftp",
+    "tcp-ftp-data",
+    "tcp-gopher",
+    "tcp-ident",
+    "tcp-imap4",
+    "tcp-irc",
+    "tcp-hostname",
+    "tcp-kerberos",
+    "tcp-klogin",
+    "tcp-kshell",
+    "tcp-ldap",
+    "tcp-ldaps",
+    "tcp-login",
+    "tcp-lotusnotes",
+    "tcp-nfs",
+    "tcp-netbios-ssn",
+    "tcp-whois",
+    "tcp-nntp",
+    "tcp-pcanywhere-data",
+    "tcp-pim-auto-rp",
+    "tcp-pop2",
+    "tcp-pop3",
+    "tcp-pptp",
+    "tcp-lpd",
+    "tcp-rsh",
+    "tcp-rtsp",
+    "tcp-sip",
+    "tcp-smtp",
+    "tcp-ssh",
+    "tcp-sunrpc",
+    "tcp-tacacs",
+    "tcp-talk",
+    "tcp-telnet",
+    "tcp-uucp",
+    "tcp-www",
+    "tcp-http",
+    "tcp-https",
+    "tcp-cmd",
+    "tcp-sqlnet",
+    "tcp-h323",
+    "tcp-udp-cifs",
+    "tcp-udp-discard",
+    "tcp-udp-domain",
+    "tcp-udp-echo",
+    "tcp-udp-kerberos",
+    "tcp-udp-nfs",
+    "tcp-udp-pim-auto-rp",
+    "tcp-udp-sip",
+    "tcp-udp-sunrpc",
+    "tcp-udp-tacacs",
+    "tcp-udp-www",
+    "tcp-udp-http",
+    "tcp-udp-talk",
+    "udp-biff",
+    "udp-bootpc",
+    "udp-bootps",
+    "udp-cifs",
+    "udp-discard",
+    "udp-domain",
+    "udp-dnsix",
+    "udp-echo",
+    "udp-www",
+    "udp-http",
+    "udp-nameserver",
+    "udp-kerberos",
+    "udp-mobile-ip",
+    "udp-nfs",
+    "udp-netbios-ns",
+    "udp-netbios-dgm",
+    "udp-ntp",
+    "udp-pcanywhere-status",
+    "udp-pim-auto-rp",
+    "udp-radius",
+    "udp-radius-acct",
+    "udp-rip",
+    "udp-secureid-udp",
+    "udp-sip",
+    "udp-snmp",
+    "udp-snmptrap",
+    "udp-sunrpc",
+    "udp-syslog",
+    "udp-tacacs",
+    "udp-talk",
+    "udp-tftp",
+    "udp-time",
+    "udp-who",
+    "udp-xdmcp",
+    "udp-isakmp",
+    "icmp6-unreachable",
+    "icmp6-packet-too-big",
+    "icmp6-time-exceeded",
+    "icmp6-parameter-problem",
+    "icmp6-echo",
+    "icmp6-echo-reply",
+    "icmp6-membership-query",
+    "icmp6-membership-report",
+    "icmp6-membership-reduction",
+    "icmp6-router-renumbering",
+    "icmp6-router-solicitation",
+    "icmp6-router-advertisement",
+    "icmp6-neighbor-solicitation",
+    "icmp6-neighbor-advertisement",
+    "icmp6-neighbor-redirect",
+    "icmp-echo",
+    "icmp-echo-reply",
+    "icmp-unreachable",
+    "icmp-source-quench",
+    "icmp-redirect",
+    "icmp-alternate-address",
+    "icmp-router-advertisement",
+    "icmp-router-solicitation",
+    "icmp-time-exceeded",
+    "icmp-parameter-problem",
+    "icmp-timestamp-request",
+    "icmp-timestamp-reply",
+    "icmp-information-request",
+    "icmp-information-reply",
+    "icmp-mask-request",
+    "icmp-mask-reply",
+    "icmp-traceroute",
+    "icmp-conversion-error",
+    "icmp-mobile-redirect",
+    NULL
+    };
+
+QSet<QString> NamedObject::reserved_words;
+
 
 NamedObject::NamedObject(const FWObject *_obj)
 {
     obj = _obj;
     name = sanitizeObjectName(obj->getName().c_str());
+    if (reserved_words.empty())
+    {
+        const char** cptr = rw;
+        while (*cptr!=NULL)
+        {
+            reserved_words.insert(QString(*cptr));
+            cptr++;
+        }
+    }
 }
 
 QString NamedObject::getCommandWord()
@@ -68,7 +244,13 @@ QString NamedObject::getCommandWord()
 QString NamedObject::sanitizeObjectName(const QString &name)
 {
     QString qs = name;
-    return qs.replace(" ", "_").replace("/", "_").left(64);
+    qs = qs.replace(" ", "_").replace("/", "_").left(64);
+
+    if (reserved_words.contains(qs))
+    {
+        qs = qs + "_obj";
+    }
+    return qs;
 }
 
 QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)

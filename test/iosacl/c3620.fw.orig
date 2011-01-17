@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3429
+!  Firewall Builder  fwb_iosacl v4.2.0.3434
 !
-!  Generated Tue Jan 11 20:40:13 2011 PST by vadim
+!  Generated Sun Jan 16 16:41:53 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -41,8 +41,6 @@ ip access-list extended e1_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
@@ -83,8 +81,6 @@ ip access-list extended e1_0_out
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
   permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 ! 
@@ -105,8 +101,6 @@ ip access-list extended e1_1_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
@@ -143,8 +137,6 @@ ip access-list extended e1_1_out
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
   permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 exit
@@ -153,8 +145,6 @@ ip access-list extended fe0_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
@@ -186,8 +176,6 @@ ip access-list extended fe0_0_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
