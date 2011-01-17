@@ -121,30 +121,23 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
     list<FWObject*> relement;
 
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-    {
-        FWObject *o   = *i1;
-        FWObject *obj = FWReference::getObject(o);
-        relement.push_back(obj);
-    }
-
+        relement.push_back(FWReference::getObject(*i1));
 
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
-        BaseObjectGroup *og=dynamic_cast<BaseObjectGroup*>(*i);
+        BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);
 
         if (og->size()==0 || (og->size()!=re->size()) ) continue;
 
-        bool match=true;
+        bool match = true;
         for (FWObject::iterator i1=og->begin(); i1!=og->end(); ++i1) 
         {
-            FWObject *o   = *i1;
-            FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            FWObject *obj = FWReference::getObject(*i1);
 
             if ( find(relement.begin(), relement.end(), obj)==relement.end() )
             {
-                match=false;
+                match = false;
                 break;
             }
         }

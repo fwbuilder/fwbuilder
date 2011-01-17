@@ -550,6 +550,8 @@ void PolicyCompiler_pix::compile()
     add( new InterfacePolicyRules(
              "process interface policy rules and store interface ids"));
 
+    add( new addressRanges("process address ranges" ));
+
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
 // add( new splitIfSrcAny( "split rule if src is any" ));
@@ -603,7 +605,7 @@ void PolicyCompiler_pix::compile()
 
     add( new checkForUnnumbered( "check for unnumbered interfaces" ));
 
-    add( new addressRanges("process address ranges" ));
+    //add( new addressRanges("process address ranges" ));
 
     if (outbound_acl_supported )
     {

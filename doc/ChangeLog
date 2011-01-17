@@ -1,5 +1,12 @@
 2011-01-17  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): fixed #1944 "ASA Policy -
+	duplicate network object groups created for mixed service group
+	with TCP dst and TCP src port range objects". Need to convert
+	address range objects to subnets early, before the rule is split
+	for any reason, to make sure object groups created later match
+	and are reused.
+
 	* NamedObjectsAndGroupsSupport.cpp (processNext): See #1943 "ASA
 	Policy - mixed service group with TCP destination port range and
 	standard TCP object generates invalid config". Protocol word "tcp"
