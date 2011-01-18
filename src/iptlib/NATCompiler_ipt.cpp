@@ -1427,64 +1427,6 @@ bool NATCompiler_ipt::splitServices::processNext()
     return true;
 }
 
-bool NATCompiler_ipt::separateSourceAndDestinationPorts::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementOSrv *rel= rule->getOSrv();
-
-    if (rel->size()==1) {
-	tmp_queue.push_back(rule);
-	return true;
-    }
-
-    NATRule         *nrule=NULL;
-    RuleElementOSrv *nsrv = NULL;
-
-    list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
-    {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	Service *s=Service::cast(o);
-	assert(s!=NULL);
-
-	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
-            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
-            int drs=TCPUDPService::cast(s)->getDstRangeStart();
-            int dre=TCPUDPService::cast(s)->getDstRangeEnd();
-
-            compiler->normalizePortRange(srs,sre);
-            compiler->normalizePortRange(drs,dre);
-
-            if ( (srs!=0 || sre!=0) && (drs!=0 || dre!=0) )
-            {
-                if (nrule==NULL)
-                {
-                    nrule= compiler->dbcopy->createNATRule();
-                    compiler->temp_ruleset->add(nrule);
-                    nrule->duplicate(rule);
-                    nsrv=nrule->getOSrv();
-                    nsrv->clearChildren();
-                    tmp_queue.push_back(nrule);
-                }
-                assert(nsrv!=NULL);
-                nsrv->addRef( s );
-                services.push_back(s);
-            } 
-        }
-    }
-    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
-	rel->removeRef( (*i) );
-
-    if (!rel->isAny())
-	tmp_queue.push_back(rule);
-
-    return true;
-}
-
-
 bool NATCompiler_ipt::prepareForMultiport::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -2632,10 +2574,10 @@ void NATCompiler_ipt::compile()
     add( new VerifyRules2("check correctness of TSrv") );
     add( new separatePortRanges("separate port ranges") );
 
-    add( new separateSrcPort("separate objects with src") );
+    add( new separateSrcPort("separate objects with src ports") );
 
-    add( new separateSourceAndDestinationPorts(
-             "separate objects with both src and dest ports" ) );
+    add( new separateSrcAndDstPort("separate objects with src and dest ports"));
+
     add( new prepareForMultiport("prepare for multiport") );
     add( new splitMultipleICMP("split rule with multiple ICMP services") );
 

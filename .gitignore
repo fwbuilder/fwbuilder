@@ -23,6 +23,7 @@ core
 build_num
 test/ipt/secuwall-1
 Makefile
+!test/ipt/Makefile
 install*
 ltmain.sh
 configure

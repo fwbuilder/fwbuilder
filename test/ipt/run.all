@@ -1,5 +1,10 @@
 #!/bin/sh
 
+make -j2 -k all
+
+exit 0
+
+
 XMLFILE="objects-for-regression-tests.fwb"
 fwbedit list -f $XMLFILE -o /User/Firewalls -c -F%name% | \
     sort | while read fwobj

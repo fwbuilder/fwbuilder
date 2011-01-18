@@ -292,12 +292,6 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(splitServices);
 
 	/**
-	 * for TCP/UDP services separate objects that have both source
-	 * and destination ports
-	 */
-        DECLARE_NAT_RULE_PROCESSOR(separateSourceAndDestinationPorts);
-
-	/**
 	 * splits rules so multiport module can be used (only works for UDP and TCP)
 	 */
         DECLARE_NAT_RULE_PROCESSOR(prepareForMultiport);

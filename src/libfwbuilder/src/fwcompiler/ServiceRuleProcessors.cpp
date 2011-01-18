@@ -84,7 +84,7 @@ bool Compiler::splitServices::processNext()
     {
         list<Service*> &sl=(*i1).second;
 
-        PolicyRule *r = compiler->dbcopy->createPolicyRule();
+        Rule *r = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         RuleElement *nsrv = RuleElement::cast(r->getFirstByType(re_type));
@@ -130,7 +130,7 @@ bool Compiler::separateServiceObject::processNext()
 
 	if (condition(s))
         {
-            PolicyRule *r = compiler->dbcopy->createPolicyRule();
+            Rule *r = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             RuleElement *nsrv = RuleElement::cast(r->getFirstByType(re_type));
@@ -165,6 +165,23 @@ bool Compiler::separateSrcPort::condition(const Service *srv)
         compiler->normalizePortRange(srs,sre);
 
         return (srs!=0 || sre!=0);
+    }
+    return false;
+}
+
+bool Compiler::separateSrcAndDstPort::condition(const Service *srv)
+{
+    if ( TCPService::isA(srv) || UDPService::isA(srv))
+    {
+        int srs = TCPUDPService::constcast(srv)->getSrcRangeStart();
+        int sre = TCPUDPService::constcast(srv)->getSrcRangeEnd();
+        int drs = TCPUDPService::constcast(srv)->getDstRangeStart();
+        int dre = TCPUDPService::constcast(srv)->getDstRangeEnd();
+
+        compiler->normalizePortRange(srs,sre);
+        compiler->normalizePortRange(drs,dre);
+
+        return ( (srs!=0 || sre!=0) && (drs!=0 || dre!=0) );
     }
     return false;
 }

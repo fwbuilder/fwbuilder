@@ -553,6 +553,18 @@ protected:
                 separateServiceObject(name) {}
         };
         
+	/**
+	 * separate TCP/UDP services that specify both source and
+	 * destination port
+	 */
+        class separateSrcAndDstPort : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateSrcAndDstPort(const std::string &name) :
+                separateServiceObject(name) {}
+        };
         /**
 	 * separate Tag services so we have exactly one per rule.
 	 */
