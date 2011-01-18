@@ -512,6 +512,163 @@ protected:
             virtual bool processNext();
         };
 
+
+	/**
+	 * split rules with more than one service object, so that each
+	 * rule has services with the same protocol
+	 */
+        class splitServices : public BasicRuleProcessor
+        {
+            protected:
+            public:
+            splitServices(const std::string &name) : BasicRuleProcessor(name) {} 
+            virtual bool processNext();
+        };
+
+        /**
+	 * separate service object that satisfies condition
+	 * implemented in the virtual method "condition" so we have
+	 * exactly one such object per rule.
+	 */
+        class separateServiceObject : public BasicRuleProcessor
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv) =0;
+            public:
+            separateServiceObject(const std::string &name);
+            virtual bool processNext();
+        };
+
+	/**
+	 * separate TCP/UDP services that specify source port (can
+	 * not be used in combination with destination port with
+	 * multiport)
+	 */
+        class separateSrcPort : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateSrcPort(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+        
+        /**
+	 * separate Tag services so we have exactly one per rule.
+	 */
+        class separateTagged : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTagged(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+        class separateUserServices : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateUserServices(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+        /**
+	 * separate IPService objects with tos attrubute so we have
+	 * exactly one per rule.
+	 */
+        class separateTOS : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTOS(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+        /**
+	 * split rules with more than one IPService object with
+	 * options, so that each rule has only one such service
+	 */
+        class splitIpOptions : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            splitIpOptions(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+	/**
+	 * separate TCP services with flags (can't use those in combination
+	 * with others in groups of services)
+	 */
+        class separateTCPWithFlags : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTCPWithFlags(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
+        /**
+         * separate TCP and UDP services that match port ranges and
+         * "any tcp" or "any udp" objects
+         */
+        class separatePortRanges : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separatePortRanges(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+            
+	/**
+	 * verify if custom services used in rules are configured for
+	 * this platform
+	 */
+        class verifyCustomServices : public BasicRuleProcessor
+        {
+            public:
+            verifyCustomServices(const std::string &name) :
+                BasicRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
+	/**
+	 * simply check if TCPService object with "established" flag
+         * set is used in Service and abort with an error saying that
+         * target firewall does not support this. Use for pretty much
+         * every platform except ipfw and router ACLs
+	 */
+        class CheckForTCPEstablished : public BasicRuleProcessor
+        {
+            public:
+            CheckForTCPEstablished(const std::string &name) :
+                BasicRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
+	/**
+	 * simply check if UserService objectis used in Service and
+         * abort with an error saying that target firewall does not
+         * support this.
+	 */
+        class CheckForUnsupportedUserService : public BasicRuleProcessor
+        {
+            public:
+            CheckForUnsupportedUserService(const std::string &name) :
+                BasicRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
+
+
+
+        
 	/**
 	 * prepare interface string
 	 */

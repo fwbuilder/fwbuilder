@@ -15,7 +15,7 @@ SOURCES  = 	BaseCompiler.cpp \
 			NATCompiler.cpp \
 			OSConfigurator.cpp \
 			PolicyCompiler.cpp \
-			PolicyCompiler_srvre_functions.cpp \
+			ServiceRuleProcessors.cpp \
 			RoutingCompiler.cpp
 
 HEADERS  = 	BaseCompiler.h \

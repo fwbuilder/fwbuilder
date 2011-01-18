@@ -25,7 +25,7 @@
 
 #include <assert.h>
 
-#include "PolicyCompiler.h"
+#include "Compiler.h"
 
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
@@ -50,14 +50,19 @@ using namespace libfwbuilder;
 using namespace std;
 
 
+/*
+ *  These rule processors should work for both Policy and NAT rules
+ *  without having to build specialized classes inheriting from these.
+ */
 
-bool PolicyCompiler::splitServices::processNext()
+bool Compiler::splitServices::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string re_type = PolicyRule::isA(rule) ?
+        RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
+    RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
 
-    RuleElementSrv *srv=rule->getSrv();
-
-    if (srv->size()==1)
+    if (re_srv->size()==1)
     {
         tmp_queue.push_back(rule);
         return true;
@@ -65,11 +70,9 @@ bool PolicyCompiler::splitServices::processNext()
 
     map<int, list<Service*> > services;
 
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
-        FWObject *o = FWReference::getObject(*i);
-
-        Service *s=Service::cast( o );
+        Service *s = Service::cast(FWReference::getObject(*i));
         assert(s);
 
         int proto = s->getProtocolNumber();
@@ -81,10 +84,10 @@ bool PolicyCompiler::splitServices::processNext()
     {
         list<Service*> &sl=(*i1).second;
 
-        PolicyRule *r= compiler->dbcopy->createPolicyRule();
+        PolicyRule *r = compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
-        RuleElementSrv *nsrv=r->getSrv();
+        RuleElement *nsrv = RuleElement::cast(r->getFirstByType(re_type));
         nsrv->clearChildren();
 
         for (list<Service*>::iterator j=sl.begin(); j!=sl.end(); j++)
@@ -99,24 +102,26 @@ bool PolicyCompiler::splitServices::processNext()
 
 
 
-PolicyCompiler::separateServiceObject::separateServiceObject(
-    const string &name) : PolicyRuleProcessor(name)
+Compiler::separateServiceObject::separateServiceObject(
+    const string &name) : BasicRuleProcessor(name)
 {
 }
 
-bool PolicyCompiler::separateServiceObject::processNext()
+bool Compiler::separateServiceObject::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string re_type = PolicyRule::isA(rule) ?
+        RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
+    RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
 
-    RuleElementSrv *rel= rule->getSrv();
-
-    if (rel->size()==1) {
+    if (re_srv->size()==1)
+    {
 	tmp_queue.push_back(rule);
 	return true;
     }
 
     list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
+    for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
 	FWObject *o= *i;
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -128,7 +133,7 @@ bool PolicyCompiler::separateServiceObject::processNext()
             PolicyRule *r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            RuleElementSrv *nsrv=r->getSrv();
+            RuleElement *nsrv = RuleElement::cast(r->getFirstByType(re_type));
             nsrv->clearChildren();
             nsrv->addRef( s );
             tmp_queue.push_back(r);
@@ -136,9 +141,9 @@ bool PolicyCompiler::separateServiceObject::processNext()
         }
     }
     for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
-	rel->removeRef( (*i) );
+	re_srv->removeRef( (*i) );
 
-    if (!rel->isAny())
+    if (!re_srv->isAny())
 	tmp_queue.push_back(rule);
 
     return true;
@@ -150,7 +155,7 @@ bool PolicyCompiler::separateServiceObject::processNext()
  * not be used in combination with destination port with
  * multiport)
  */
-bool PolicyCompiler::separateSrcPort::condition(const Service *srv)
+bool Compiler::separateSrcPort::condition(const Service *srv)
 {
     if ( TCPService::isA(srv) || UDPService::isA(srv))
     {
@@ -164,35 +169,35 @@ bool PolicyCompiler::separateSrcPort::condition(const Service *srv)
     return false;
 }
 
-bool PolicyCompiler::separateTagged::condition(const Service *srv)
+bool Compiler::separateTagged::condition(const Service *srv)
 {
     return ( TagService::isA(srv));
 }
 
-bool PolicyCompiler::separateUserServices::condition(const Service *srv)
+bool Compiler::separateUserServices::condition(const Service *srv)
 {
     return ( UserService::isA(srv));
 }
 
-bool PolicyCompiler::separateTOS::condition(const Service *srv)
+bool Compiler::separateTOS::condition(const Service *srv)
 {
     const IPService *ip = IPService::constcast(srv);
     return (ip && !ip->getTOSCode().empty());
 }
 
-bool PolicyCompiler::splitIpOptions::condition(const Service *srv)
+bool Compiler::splitIpOptions::condition(const Service *srv)
 {
     const IPService *ip = IPService::constcast(srv);
     return (ip && ip->hasIpOptions());
 }
 
-bool PolicyCompiler::separateTCPWithFlags::condition(const Service *srv)
+bool Compiler::separateTCPWithFlags::condition(const Service *srv)
 {
     const TCPService *s = TCPService::constcast(srv);
     return (s && s->inspectFlags() );
 }
 
-bool PolicyCompiler::separatePortRanges::condition(const Service *srv)
+bool Compiler::separatePortRanges::condition(const Service *srv)
 {
     if ( TCPService::isA(srv) || UDPService::isA(srv) ) 
     {
@@ -226,15 +231,16 @@ bool PolicyCompiler::separatePortRanges::condition(const Service *srv)
 
 
 
-bool PolicyCompiler::verifyCustomServices::processNext()
+bool Compiler::verifyCustomServices::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string re_type = PolicyRule::isA(rule) ?
+        RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
+    RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
 
     tmp_queue.push_back(rule);
 
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
         FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
@@ -246,16 +252,14 @@ bool PolicyCompiler::verifyCustomServices::processNext()
     return true;
 }
 
-
-
-
-bool PolicyCompiler::CheckForTCPEstablished::processNext()
+bool Compiler::CheckForTCPEstablished::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string re_type = PolicyRule::isA(rule) ?
+        RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
+    RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
 
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
         FWObject *o = FWReference::getObject(*i);
 
@@ -264,34 +268,33 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
 
         if (s->getEstablished())
             compiler->abort(
-                
-                    rule, 
-                    string("TCPService object with option \"established\" "
-                           "is not supported by firewall platform \"") +
-                    compiler->myPlatformName() +
-                    string("\". Use stateful rule instead."));
+                rule, 
+                string("TCPService object with option \"established\" "
+                       "is not supported by firewall platform \"") +
+                compiler->myPlatformName() +
+                string("\". Use stateful rule instead."));
     }
 
     tmp_queue.push_back(rule);
     return true;
 }
 
-bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
+bool Compiler::CheckForUnsupportedUserService::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    string re_type = PolicyRule::isA(rule) ?
+        RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
+    RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
 
-    RuleElementSrv *srv=rule->getSrv();
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
         FWObject *o = FWReference::getObject(*i);
 
         if (UserService::isA(o))
             compiler->abort(
-                
-                    rule, 
-                    string("UserService object is not supported by ") +
-                    compiler->myPlatformName());
+                rule, 
+                string("UserService object is not supported by ") +
+                compiler->myPlatformName());
     }
 
     tmp_queue.push_back(rule);
