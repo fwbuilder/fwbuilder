@@ -387,7 +387,7 @@ void PolicyCompiler_iosacl::compile()
     add( new InterfacePolicyRules(
              "process interface policy rules and store interface ids") );
 
-    add( new splitServices ("split rules with different protocols" ) );
+    add( new groupServicesByProtocol ("split rules with different protocols" ) );
 
     add( new ExpandMultipleAddressesInSrc(
              "expand objects with multiple addresses in SRC" ) );

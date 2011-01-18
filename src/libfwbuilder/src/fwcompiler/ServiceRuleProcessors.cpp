@@ -55,7 +55,7 @@ using namespace std;
  *  without having to build specialized classes inheriting from these.
  */
 
-bool Compiler::splitServices::processNext()
+bool Compiler::groupServices::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
     string re_type = PolicyRule::isA(rule) ?
@@ -75,7 +75,7 @@ bool Compiler::splitServices::processNext()
         Service *s = Service::cast(FWReference::getObject(*i));
         assert(s);
 
-        int proto = s->getProtocolNumber();
+        int proto = groupingCode(s);
         services[proto].push_back(s);
     }
 
@@ -100,7 +100,10 @@ bool Compiler::splitServices::processNext()
     return true;
 }
 
-
+int Compiler::groupServicesByProtocol::groupingCode(const Service *srv)
+{
+    return srv->getProtocolNumber();
+}
 
 Compiler::separateServiceObject::separateServiceObject(
     const string &name) : BasicRuleProcessor(name)
@@ -184,6 +187,11 @@ bool Compiler::separateSrcAndDstPort::condition(const Service *srv)
         return ( (srs!=0 || sre!=0) && (drs!=0 || dre!=0) );
     }
     return false;
+}
+
+bool Compiler::separateTCPUDP::condition(const Service *srv)
+{
+    return ( TCPService::isA(srv) || UDPService::isA(srv));
 }
 
 bool Compiler::separateTagged::condition(const Service *srv)

@@ -1048,7 +1048,7 @@ void PolicyCompiler_pf::compile()
     add(new MACFiltering("verify for MAC address filtering"));
     add(new checkForUnnumbered("check for unnumbered interfaces"));
     add(new addressRanges("expand address range objects"));
-    add(new splitServices("split rules with different protocols"));
+    add(new groupServicesByProtocol("split rules with different protocols"));
     add(new separateTCPWithFlags("separate TCP services with flags"));
     add(new separateSrcPort("split on TCP and UDP with source ports"));
     add(new separateTagged("split on TagService"));

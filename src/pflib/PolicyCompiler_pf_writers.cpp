@@ -980,9 +980,10 @@ bool PolicyCompiler_pf::PrintRule::processNext()
  * Dealing with "keep state" and "modulate state" flags
  *
  * 1. both flags do not apply to deny/reject rules.
- * 2. modulate state applies only to TCP services. Since we use splitServices,
- *    all services in a rule are of the same protocol, therefore we can simply
- *    check type of srv
+ *
+ * 2. modulate state applies only to TCP services. Since we use
+ *    groupServicesByProtocol, all services in a rule are of the same
+ *    protocol, therefore we can simply check type of srv
  */
     if ( ! ruleopt->getBool("stateless") )
     {

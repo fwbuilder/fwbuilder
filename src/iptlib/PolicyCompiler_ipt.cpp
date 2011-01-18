@@ -3653,7 +3653,7 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
 }
 
 /*
- * processor splitServices should have been called eariler, so now all
+ * processor groupServicesByProtocol should have been called eariler, so now all
  * services in Srv are of the same type
  */
 bool PolicyCompiler_ipt::prepareForMultiport::processNext()
@@ -3731,7 +3731,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 }
 
 /*
- *  processor splitServices should have been called before, it makes sure
+ *  processor groupServicesByProtocol should have been called before, it makes sure
  *  all objects in Service are of the same type.
  *
  *  One special case is custom service "ESTABLISHED". This processor
@@ -4404,17 +4404,16 @@ void PolicyCompiler_ipt::compile()
         add( new bridgingFw("handle bridging firewall cases"));
 
     add( new specialCaseWithUnnumberedInterface(
-             "check for a special cases with unnumbered interface" ) );
+             "check for a special cases with unnumbered interface"));
 
-//        add( new splitServices(              "split on services"       ) );
-//        add( new prepareForMultiport("prepare for multiport"           ) );
+//        add( new groupServicesByProtocol("split on services"));
+//        add( new prepareForMultiport("prepare for multiport"));
 
-    add( new optimize1(        "optimization 1, pass 1"              ) );
-    add( new optimize1(        "optimization 1, pass 2"              ) );
-    add( new optimize1(        "optimization 1, pass 3"              ) );
+    add( new optimize1("optimization 1, pass 1"));
+    add( new optimize1("optimization 1, pass 2"));
+    add( new optimize1("optimization 1, pass 3"));
 
-
-    add( new splitServices("split on services"));
+    add( new groupServicesByProtocol("split on services"));
     add( new separateTCPWithFlags("split on TCP services with flags"));
     add( new verifyCustomServices("verify custom services"));
     add( new specialCasesWithCustomServices(

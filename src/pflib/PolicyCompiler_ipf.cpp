@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "PolicyCompiler_ipf.h"
+#include "fwcompiler/Compiler.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -526,7 +527,7 @@ void PolicyCompiler_ipf::compile()
     add( new specialCaseWithDynInterface(
              "check for a special cases with dynamic interface") );
     add( new addressRanges("expand address range objects") );
-    add( new splitServices("split rules with different protocols") );
+    add( new groupServicesByProtocol("split rules with different protocols") );
     add( new separateTCPWithFlags("separate TCP services with flags" ) );
     add( new separateSrcPort("split on TCP and UDP with source ports"));
     add( new verifyCustomServices(

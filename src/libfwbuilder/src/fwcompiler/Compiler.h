@@ -512,19 +512,32 @@ protected:
             virtual bool processNext();
         };
 
+	/**
+	 * split rules with more than one service object, so that each
+	 * rule has services that satisfy some common criteria defined by
+         * the virtual function groupingCode()
+	 */
+        class groupServices : public BasicRuleProcessor
+        {
+            protected:
+            virtual int groupingCode(const libfwbuilder::Service *srv) =0;
+            public:
+            groupServices(const std::string &name) : BasicRuleProcessor(name) {} 
+            virtual bool processNext();
+        };
 
 	/**
 	 * split rules with more than one service object, so that each
 	 * rule has services with the same protocol
 	 */
-        class splitServices : public BasicRuleProcessor
+        class groupServicesByProtocol: public groupServices
         {
             protected:
+            virtual int groupingCode(const libfwbuilder::Service *srv);
             public:
-            splitServices(const std::string &name) : BasicRuleProcessor(name) {} 
-            virtual bool processNext();
+            groupServicesByProtocol(const std::string &name) : groupServices(name){}
         };
-
+        
         /**
 	 * separate service object that satisfies condition
 	 * implemented in the virtual method "condition" so we have
@@ -539,6 +552,19 @@ protected:
             virtual bool processNext();
         };
 
+	/**
+	 * separate TCP/UDP services (regardless of their source or
+	 * destination port configuration)
+	 */
+        class separateTCPUDP : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateTCPUDP(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+        
 	/**
 	 * separate TCP/UDP services that specify source port (can
 	 * not be used in combination with destination port with

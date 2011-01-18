@@ -521,13 +521,14 @@ bool PolicyCompiler_pix::PrintRule::processNext()
     aclstr << _printAction(rule);
 
     /*
-     * processor splitServices guaranties that rule has services of
-     * the same type (that is, the same protocol, like all tcp, all
-     * udp, all icmp or all IP with the same protocol number). PIX can
-     * use object-group for protocol only if protocol numbers are
-     * different and these are not icmp/tcp/udp protocols. This means
-     * that because of processor splitServices we never use
-     * object-group in protocol part of ACL.
+     * processor groupServicesByProtocol guaranties that rule has
+     * services of the same type (that is, the same protocol, like all
+     * tcp, all udp, all icmp or all IP with the same protocol
+     * number). PIX can use object-group for protocol only if protocol
+     * numbers are different and these are not icmp/tcp/udp
+     * protocols. This means that because of processor
+     * groupServicesByProtocol we never use object-group in protocol
+     * part of ACL.
      */
 
     PIXObjectGroup *pgsrv = PIXObjectGroup::cast(srvobj);

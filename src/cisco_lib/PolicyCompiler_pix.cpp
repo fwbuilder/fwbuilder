@@ -540,8 +540,10 @@ void PolicyCompiler_pix::compile()
 
     if (XMLTools::version_compare(vers, "8.0")<0)
     {
-        add( new splitServices("split rules with different protocols" ));
-    }
+        add( new groupServicesByProtocol("split rules with different protocols"));
+    } 
+    //else
+    //    add( new groupTCPUDP("split rules with TCP or UDP services"));
 
     add( new PrepareForICMPCmd("prepare for icmp command" ));
     
