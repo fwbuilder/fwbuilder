@@ -79,7 +79,7 @@ public:
 
         bool isServiceGroup();
         bool isObjectGroup();
-        std::string getSrvTypeName();
+        virtual std::string getSrvTypeName();
     
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();

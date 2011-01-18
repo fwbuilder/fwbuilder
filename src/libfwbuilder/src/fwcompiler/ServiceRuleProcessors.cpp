@@ -174,6 +174,11 @@ bool Compiler::separateTagged::condition(const Service *srv)
     return ( TagService::isA(srv));
 }
 
+bool Compiler::separateCustom::condition(const Service *srv)
+{
+    return ( CustomService::isA(srv));
+}
+
 bool Compiler::separateUserServices::condition(const Service *srv)
 {
     return ( UserService::isA(srv));

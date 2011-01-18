@@ -565,6 +565,18 @@ protected:
                 separateServiceObject(name) {}
         };
 
+        /**
+	 * separate Custom services so we have exactly one per rule.
+	 */
+        class separateCustom : public separateServiceObject
+        {
+            protected:
+            virtual bool condition(const libfwbuilder::Service *srv);
+            public:
+            separateCustom(const std::string &name) :
+                separateServiceObject(name) {}
+        };
+
         class separateUserServices : public separateServiceObject
         {
             protected:

@@ -34,6 +34,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 
 #include <iostream>
 #include <sstream>
@@ -163,4 +164,21 @@ string ASA8ObjectGroup::getObjectGroupHeader()
     ostr << endl;
     return ostr.str();
 }
+
+/*
+ * We support CustomService objects in ASA8 object groups. If this group
+ * has custom service object, get protocol from it. Rule processors should
+ * ensure that there is only one custom service object in the group
+ */
+string ASA8ObjectGroup::getSrvTypeName()
+{
+    FWObject *obj = FWReference::getObject(this->front());
+
+    if (isServiceGroup() && CustomService::isA(obj))
+    {
+        return CustomService::cast(obj)->getProtocol();
+    } else
+        return PIXObjectGroup::getSrvTypeName();
+}
+
 

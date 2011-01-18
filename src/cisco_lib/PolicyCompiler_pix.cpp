@@ -536,6 +536,7 @@ void PolicyCompiler_pix::compile()
     add( new sshToFirewall("separate rules controlling ssh to firewall" ));
 
     add( new separateSrcPort("split rules matching source ports"));
+    add( new separateCustom("split rules matching custom services"));
 
     if (XMLTools::version_compare(vers, "8.0")<0)
     {
