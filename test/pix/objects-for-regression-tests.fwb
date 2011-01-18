@@ -1373,7 +1373,7 @@
           <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
         </CustomService>
-        <CustomService id="id21571X21575" name="custom serv 1" comment="" ro="False" protocol="any" address_family="ipv4">
+        <CustomService id="id21571X21575" name="custom serv 1" comment="" ro="False" protocol="tcp" address_family="ipv4">
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
@@ -17021,7 +17021,7 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295302047" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295315133" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id70310X19497" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -17474,7 +17474,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295245802" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
+      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295315133" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
         <NAT id="id86771X27607" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id138353X27607" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -18429,7 +18429,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295243536" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295315133" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">

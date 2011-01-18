@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3436
+!  Firewall Builder  fwb_pix v4.2.0.3437
 !
-!  Generated Mon Jan 17 14:34:58 2011 PST by vadim
+!  Generated Mon Jan 17 17:44:32 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -174,6 +174,12 @@ icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
 access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.icmp.0 
 access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.mixed.0 
+! 
+! Rule  10 (global)
+! for #1942
+! using custom service
+access-list outside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
+access-list inside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
 ! 
 ! Rule  11 (global)
 access-list outside_acl_in deny   ip any any 
