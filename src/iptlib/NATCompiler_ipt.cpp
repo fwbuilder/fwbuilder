@@ -1427,55 +1427,6 @@ bool NATCompiler_ipt::splitServices::processNext()
     return true;
 }
 
-bool NATCompiler_ipt::separatePortRanges::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementOSrv *rel= rule->getOSrv();
-
-    if (rel->size()==1) {
-	tmp_queue.push_back(rule);
-	return true;
-    }
-
-    list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) {
-	    
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	Service *s=Service::cast(o);
-	assert(s!=NULL);
-
-	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
-            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
-            int drs=TCPUDPService::cast(s)->getDstRangeStart();
-            int dre=TCPUDPService::cast(s)->getDstRangeEnd();
-
-            compiler->normalizePortRange(srs,sre);
-            compiler->normalizePortRange(drs,dre);
-
-            if (srs!=sre || drs!=dre) {
-                NATRule *r= compiler->dbcopy->createNATRule();
-                compiler->temp_ruleset->add(r);
-                r->duplicate(rule);
-                RuleElementOSrv *nsrv=r->getOSrv();
-                nsrv->clearChildren();
-                nsrv->addRef( s );
-                tmp_queue.push_back(r);
-                services.push_back(s);
-            } 
-        }
-    }
-    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
-	rel->removeRef( (*i) );
-
-    if (!rel->isAny())
-	tmp_queue.push_back(rule);
-
-    return true;
-}
-
 bool NATCompiler_ipt::separateSourcePorts::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;

@@ -292,11 +292,6 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(splitServices);
 
 	/**
-	 * separate TCP/UDP services with port ranges (can not be used with multiport)
-	 */
-        DECLARE_NAT_RULE_PROCESSOR(separatePortRanges);
-
-	/**
 	 * for TCP/UDP services separate objects with source ports
          * from objects with destination ports
 	 */
