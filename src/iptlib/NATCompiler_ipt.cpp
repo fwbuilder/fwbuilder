@@ -656,7 +656,7 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 }
 
 /*
- * this should be called only after splitServices, so that we have
+ * this should be called only after groupServicesByProtocol, so that we have
  * objects of the same type in OSrv and either "any" or a single
  * object in TSrv
  */
@@ -1366,7 +1366,6 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
     }
 }
 
-
 bool NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -1377,53 +1376,6 @@ bool NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
     findDynamicInterfaces( rule->getTDst() , rule );
 
     tmp_queue.push_back(rule);
-    return true;
-}
-
-
-
-
-bool NATCompiler_ipt::splitServices::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementOSrv *srv=rule->getOSrv();
-
-    if (srv->size()==1) {
-	tmp_queue.push_back(rule);
-	return true;
-    }
-
-    map<int, list<Service*> > services;
-
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) 
-    {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-
-	Service *s=Service::cast( o );
-	assert(s);
-
-	int proto=s->getProtocolNumber();
-	services[proto].push_back(s);
-    }
-
-    for (map<int, list<Service*> >::iterator i=services.begin(); i!=services.end(); i++) {
-	list<Service*> &sl=(*i).second;
-
-	NATRule *r= compiler->dbcopy->createNATRule();
-	compiler->temp_ruleset->add(r);
-	r->duplicate(rule);
-	RuleElementOSrv *nsrv=r->getOSrv();
-	nsrv->clearChildren();
-
-	for (list<Service*>::iterator j=sl.begin(); j!=sl.end(); j++) {
-	    nsrv->addRef( (*j) );
-	}
-
-	tmp_queue.push_back(r);
-
-    }
     return true;
 }
 
@@ -1440,7 +1392,7 @@ bool NATCompiler_ipt::prepareForMultiport::processNext()
     }
 
 /*
- * processor splitServices should have been called eariler, so now all
+ * processor groupServicesByProtocol should have been called eariler, so now all
  * services in Srv are of the same type
  */
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
@@ -2570,7 +2522,7 @@ void NATCompiler_ipt::compile()
     add( new splitMultiSrcAndDst(
              "split rules where multiple srcs and dsts are present" ) );
 
-    add( new splitServices("split on services") );
+    add( new groupServicesByProtocol("group services by protocol") );
     add( new VerifyRules2("check correctness of TSrv") );
     add( new separatePortRanges("separate port ranges") );
 

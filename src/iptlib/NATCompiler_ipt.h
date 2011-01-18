@@ -286,12 +286,6 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(ExpandAddressRanges);
 
 	/**
-	 * split rules with more than one service object, so that each
-	 * rule has services with the same protocol
-	 */
-        DECLARE_NAT_RULE_PROCESSOR(splitServices);
-
-	/**
 	 * splits rules so multiport module can be used (only works for UDP and TCP)
 	 */
         DECLARE_NAT_RULE_PROCESSOR(prepareForMultiport);
