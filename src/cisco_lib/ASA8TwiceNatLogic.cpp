@@ -25,6 +25,7 @@
 
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Network.h"
 
 #include <QtDebug>
 
@@ -78,6 +79,11 @@ ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticT
         if (tsrc_re->size() > 1) return DYNAMIC;
         //if (tsrc == NULL) return DYNAMIC;
 
+        Address *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
+        // ASA sez: "ERROR: Subnet can not be used as mapped source in
+        // dynamic NAT policy."
+        if (Network::isA(tsrc)) return STATIC;
+        // If we tranlate one-to-one, then use static as well
         if (countAddresses(osrc_re) == countAddresses(tsrc_re)) return STATIC;
         else return DYNAMIC;
     }

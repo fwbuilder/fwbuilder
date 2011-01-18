@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3437
 !
-!  Generated Mon Jan 17 17:42:00 2011 PST by vadim
+!  Generated Mon Jan 17 17:54:11 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -172,6 +172,9 @@ object service smtps
 quit
 object service custom_serv_1
   service resetinbound interface outside
+quit
+object network ext_subnet-192
+  subnet 22.22.22.128 255.255.255.192
 quit
 
 object-group network outside.id178211X29963.osrc.net.0
@@ -353,6 +356,11 @@ nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id
 ! using custom service
 ! note that the rule makese no sense at all
 nat (inside,outside) source dynamic internal_subnet_1 firewall90:FastEthernet1:ip-1 service outside.id127056X21575.osrv.mixed.0 custom_serv_1 description "24 (NAT)"
+! 
+! Rule  25 (NAT)
+! for #1916
+! "static" vs "dynamic" when TSrc is subnet
+nat (inside,outside) source static internal_subnet_1 ext_subnet-192 description "25 (NAT)"
 
 
 

@@ -1,5 +1,8 @@
 2011-01-17  vadim  <vadim@netcitadel.com>
 
+	* ASA8TwiceNatLogic.cpp (getAutomaticType): fixes #1916 "nat rule
+	must be "static" when subnet is present in TSrc"
+
 	* ServiceRuleProcessors.cpp (condition): see #1942 improved
 	support for CustomService objects for ASA 8.3. Generate separate
 	named object and object-group for these objects, then split policy

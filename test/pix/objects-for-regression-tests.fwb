@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1295243227" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1295315379" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1258,6 +1258,7 @@
         <Network id="id21130X3720" name="ext_subnet" comment="" ro="False" address="22.22.22.128" netmask="255.255.255.224"/>
         <Network id="id26248X5313" name="Network-0" comment="" ro="False" address="10.0.0.0" netmask="255.255.255.0"/>
         <Network id="id26250X5313" name="Network-1" comment="" ro="False" address="10.1.0.0" netmask="255.255.255.0"/>
+        <Network id="id354409X25872" name="ext_subnet-192" comment="" ro="False" address="22.22.22.128" netmask="255.255.255.192"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15_1" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3CD8769F" name="test_range_1" comment="" ro="False" start_address="192.168.1.11" end_address="192.168.1.15"/>
@@ -18429,7 +18430,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295315133" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
+      <Firewall id="id19839X26146" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295315390" platform="pix" version="8.3" name="firewall90" comment="testing new style ASA 8.3 nat commands&#10;SNAT rules&#10;" ro="False">
         <NAT id="id19920X26146" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id19921X26146" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -19040,6 +19041,33 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id315032X25872" disabled="False" group="" position="25" action="Translate" comment="for #1916&#10;&quot;static&quot; vs &quot;dynamic&quot; when TSrc is subnet&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="id178241X29963"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id354409X25872"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="asa8_nat_auto">False</Option>
+              <Option name="asa8_nat_dns">False</Option>
+              <Option name="asa8_nat_dynamic">False</Option>
+              <Option name="asa8_nat_static">True</Option>
+              <Option name="color">#7694C0</Option>
+            </NATRuleOptions>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
