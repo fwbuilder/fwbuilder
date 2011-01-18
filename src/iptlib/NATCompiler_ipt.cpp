@@ -1427,60 +1427,6 @@ bool NATCompiler_ipt::splitServices::processNext()
     return true;
 }
 
-bool NATCompiler_ipt::separateSourcePorts::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementOSrv *rel= rule->getOSrv();
-
-    if (rel->size()==1) {
-	tmp_queue.push_back(rule);
-	return true;
-    }
-
-    NATRule         *rule_4_src_ports=NULL;
-    RuleElementOSrv *nsrv = NULL;
-
-    list<Service*> services;
-    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
-    {
-	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	Service *s=Service::cast(o);
-	assert(s!=NULL);
-
-	if ( TCPService::isA(s) || UDPService::isA(s) ) {
-            int srs=TCPUDPService::cast(s)->getSrcRangeStart();
-            int sre=TCPUDPService::cast(s)->getSrcRangeEnd();
-
-            compiler->normalizePortRange(srs,sre);
-
-            if (srs!=0 || sre!=0)
-            {
-                if (rule_4_src_ports==NULL)
-                {
-                    rule_4_src_ports= compiler->dbcopy->createNATRule();
-                    compiler->temp_ruleset->add(rule_4_src_ports);
-                    rule_4_src_ports->duplicate(rule);
-                    nsrv=rule_4_src_ports->getOSrv();
-                    nsrv->clearChildren();
-                    tmp_queue.push_back(rule_4_src_ports);
-                }
-                assert(nsrv!=NULL);
-                nsrv->addRef( s );
-                services.push_back(s);
-            }
-        }
-    }
-    for (list<Service*>::iterator i=services.begin(); i!=services.end(); i++) 
-	rel->removeRef( (*i) );
-
-    if (!rel->isAny())
-	tmp_queue.push_back(rule);
-
-    return true;
-}
-
 bool NATCompiler_ipt::separateSourceAndDestinationPorts::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -2685,7 +2631,9 @@ void NATCompiler_ipt::compile()
     add( new splitServices("split on services") );
     add( new VerifyRules2("check correctness of TSrv") );
     add( new separatePortRanges("separate port ranges") );
-    add( new separateSourcePorts("separate objects with src") );
+
+    add( new separateSrcPort("separate objects with src") );
+
     add( new separateSourceAndDestinationPorts(
              "separate objects with both src and dest ports" ) );
     add( new prepareForMultiport("prepare for multiport") );
