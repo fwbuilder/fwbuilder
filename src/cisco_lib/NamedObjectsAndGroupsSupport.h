@@ -59,6 +59,7 @@ protected:
 
         std::string re_type;
         std::string name_suffix;
+        NamedObjectManager *named_objects_manager;
 
         BaseObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
 
@@ -71,9 +72,15 @@ public:
 
 
         CreateObjectGroups(const std::string &name,
-                   const std::string &_ns,
-                   const std::string &_type) :
-            BasicRuleProcessor(name) {re_type=_type; name_suffix=_ns; }
+                           const std::string &_ns,
+                           const std::string &_type,
+                           NamedObjectManager *m) :
+            BasicRuleProcessor(name)
+            {
+                re_type=_type;
+                name_suffix=_ns;
+                named_objects_manager = m;
+            }
 
         virtual ~CreateObjectGroups();
         virtual bool processNext();
@@ -85,22 +92,22 @@ public:
     class CreateObjectGroupsForSrc : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForSrc(const std::string &n) : 
-          CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME) {}
+CreateObjectGroupsForSrc(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME, m) {}
     };
 
     class CreateObjectGroupsForDst : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForDst(const std::string &n) : 
-          CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME) {}
+        CreateObjectGroupsForDst(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME, m) {}
     };
 
     class CreateObjectGroupsForSrv : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForSrv(const std::string &n) : 
-          CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
+        CreateObjectGroupsForSrv(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME, m) {}
     };
     
 
@@ -110,22 +117,22 @@ public:
     class CreateObjectGroupsForOSrc : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForOSrc(const std::string &n) : 
-          CreateObjectGroups(n,"osrc",libfwbuilder::RuleElementOSrc::TYPENAME) {}
+        CreateObjectGroupsForOSrc(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"osrc",libfwbuilder::RuleElementOSrc::TYPENAME, m){}
     };
 
     class CreateObjectGroupsForODst : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForODst(const std::string &n) : 
-          CreateObjectGroups(n,"odst",libfwbuilder::RuleElementODst::TYPENAME) {}
+        CreateObjectGroupsForODst(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"odst",libfwbuilder::RuleElementODst::TYPENAME, m){}
     };
 
     class CreateObjectGroupsForOSrv : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForOSrv(const std::string &n) : 
-          CreateObjectGroups(n,"osrv",libfwbuilder::RuleElementOSrv::TYPENAME) {}
+        CreateObjectGroupsForOSrv(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"osrv",libfwbuilder::RuleElementOSrv::TYPENAME, m){}
     };
     
     class CreateObjectGroupsForTSrc : public CreateObjectGroups
@@ -136,8 +143,8 @@ protected:
                                  BaseObjectGroup *obj_group);
 
 public:
-        CreateObjectGroupsForTSrc(const std::string &n) : 
-          CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME) {}
+        CreateObjectGroupsForTSrc(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME, m){}
     };
 
 
@@ -177,7 +184,6 @@ public:
 
     class printNamedObjectsForPolicy :  public printNamedObjectsCommon
     {
-        bool haveCustomService(libfwbuilder::FWObject *grp);
 public:
         printNamedObjectsForPolicy(const std::string &n,
             NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}

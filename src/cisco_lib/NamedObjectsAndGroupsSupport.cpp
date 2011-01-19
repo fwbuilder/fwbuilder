@@ -158,58 +158,22 @@ bool CreateObjectGroups::processNext()
 
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-
-    /*
-     * If rule element holds just one object, then there is no need to create
-     * object group. However if this one object is CustomService, then we
-     * should create the group anyway.
-     */
     if (re->size()==1)
     {
-        if (XMLTools::version_compare(version, "8.3")>=0)
-        {
-            FWObject *obj = FWReference::getObject(re->front());
-            if (!CustomService::isA(obj))
-            {
-                tmp_queue.push_back(rule);
-                return true;
-            }
-        } else
-        {
-            tmp_queue.push_back(rule);
-            return true;
-        }
+        tmp_queue.push_back(rule);
+        return true;
     }
-
-    bool supports_mixed_groups =
-        Resources::platform_res[platform]->getResourceBool(
-            string("/FWBuilderResources/Target/options/") +
-            "version_" + version + "/supports_mixed_service_groups");
 
     BaseObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
         //obj_group= new BaseObjectGroup();
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
+        object_groups->add(obj_group);
 
-        FWObject *obj = FWReference::getObject(re->front());
-        BaseObjectGroup::object_group_type og_type =
-            obj_group->getObjectGroupTypeFromFWObject(obj);
-        obj_group->setObjectGroupType(og_type);
+        packObjects(re, obj_group);
 
-        if (obj_group->isServiceGroup() && supports_mixed_groups && re->size() > 1)
-        {
-            // rule element contains >1 object, check if they are of different types
-            for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-            {
-                FWObject *obj = FWReference::getObject(*i1);
-                if (og_type != obj_group->getObjectGroupTypeFromFWObject(obj))
-                {
-                    obj_group->setObjectGroupType(BaseObjectGroup::MIXED_SERVICE);
-                    break;
-                }
-            }
-        }
+        obj_group->setObjectGroupTypeFromMembers(named_objects_manager);
 
         QStringList gn;
         if (!rule_iface->getLabel().empty())
@@ -218,11 +182,9 @@ bool CreateObjectGroups::processNext()
         gn.push_back(rule->getUniqueId().c_str());
         gn.push_back(name_suffix.c_str());
 
-        string new_name = gn.join(".").toStdString();
-        obj_group->setName(new_name);
-        object_groups->add(obj_group);
-
-        packObjects(re, obj_group);
+        string group_name = BaseObjectGroup::registerGroupName(
+            gn.join(".").toStdString(), obj_group->getObjectGroupType());
+        obj_group->setName(group_name);
 
     } else
     {
@@ -322,22 +284,9 @@ void printNamedObjectsCommon::printObjectsForRE(RuleElement *re)
     }
 }
 
-bool printNamedObjectsForPolicy::haveCustomService(FWObject *grp)
-{
-    for (FWObject::iterator it=grp->begin(); it!=grp->end(); ++it)
-    {
-        FWObject *obj = FWReference::getObject(*it);
-        if (BaseObjectGroup::constcast(obj)!=NULL)
-        {
-            if (haveCustomService(obj)) return true;
-        } else
-        {
-            if (CustomService::isA(obj)) return true;
-        }
-    }
-    return false;
-}
-
+/*
+ * We do not need object-groups for policy rules.
+ */
 bool printNamedObjectsForPolicy::processNext()
 {
     slurp();
@@ -350,16 +299,12 @@ bool printNamedObjectsForPolicy::processNext()
         PolicyRule *policy_rule = PolicyRule::cast( *k );
         if (policy_rule)
         {
-            // At this time, we only need object groups in policy rules
-            // when CustomService object is used in Service
-
             // RuleElementSrc *src_re = policy_rule->getSrc();  assert(src_re);
             // printObjectsForRE(src_re);
             // RuleElementDst *dst_re = policy_rule->getDst();  assert(dst_re);
             // printObjectsForRE(dst_re);
-
-            RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
-            if (haveCustomService(srv_re)) printObjectsForRE(srv_re);
+            // RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
+            // if (haveCustomService(srv_re)) printObjectsForRE(srv_re);
         }
     }
 

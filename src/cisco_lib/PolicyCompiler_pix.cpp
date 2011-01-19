@@ -515,7 +515,6 @@ void PolicyCompiler_pix::compile()
 
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
-// add( new splitIfSrcAny( "split rule if src is any" ));
         // Note that this splits the rule if Dst==any and one or more
         // icmp services are found in Srv. The name of this rule
         // processor needs to be more descriptive.
@@ -525,12 +524,6 @@ void PolicyCompiler_pix::compile()
     add( new splitIfSrcMatchesFw ("split rule if Src matches FW" ));
     add( new splitIfDstMatchesFw ("split rule if Dst matches FW" ));
 
-// if ( !outbound_acl_supported )
-// add( new fillDirection_v6 ("determine directions" ));
-
-//	if ( fwopt->getBool("pix_replace_natted_objects"))
-// add( new replaceTranslatedAddresses ("replace objects in DST that are TDst in DNAT translations" ));
-
     add( new telnetToFirewall(
              "separate rules controlling telnet to firewall"));
     add( new sshToFirewall("separate rules controlling ssh to firewall" ));
@@ -538,12 +531,12 @@ void PolicyCompiler_pix::compile()
     add( new separateSrcPort("split rules matching source ports"));
     add( new separateCustom("split rules matching custom services"));
 
-    if (XMLTools::version_compare(vers, "8.0")<0)
-    {
+//    if (XMLTools::version_compare(vers, "8.0")<0)
         add( new groupServicesByProtocol("split rules with different protocols"));
-    } 
-    //else
-    //    add( new groupTCPUDP("split rules with TCP or UDP services"));
+//    else
+//        add( new groupTCPUDPServices(
+//                 "split rules to keep TCP and UDP services separate "
+//                 "from other protocols"));
 
     add( new PrepareForICMPCmd("prepare for icmp command" ));
     
@@ -636,9 +629,12 @@ void PolicyCompiler_pix::compile()
              "check if we have objects with errors in rule elements"));
 
 // add( new AvoidObjectGroup("avoid object groups for certain cases"));
-    add( new CreateObjectGroupsForSrc("create object groups for Src"));
-    add( new CreateObjectGroupsForDst("create object groups for Dst"));
-    add( new CreateObjectGroupsForSrv("create object groups for Srv"));
+    add( new CreateObjectGroupsForSrc("create object groups for Src",
+                                      named_objects_manager));
+    add( new CreateObjectGroupsForDst("create object groups for Dst",
+                                      named_objects_manager));
+    add( new CreateObjectGroupsForSrv("create object groups for Srv",
+                                      named_objects_manager));
 
     add( new simplePrintProgress());
 
@@ -646,11 +642,11 @@ void PolicyCompiler_pix::compile()
 
     add( new printClearCommands("Clear ACLs and object groups"));
 
-    if (XMLTools::version_compare(vers, "8.3")>=0)
-    {
-        add( new printNamedObjectsForPolicy(
-                 "definitions of named objects", named_objects_manager));
-    }
+    //if (XMLTools::version_compare(vers, "8.3")>=0)
+    //{
+    //    add( new printNamedObjectsForPolicy(
+    //             "definitions of named objects", named_objects_manager));
+    //}
 
     add( new printObjectGroups(
              "generate code for object groups", named_objects_manager));

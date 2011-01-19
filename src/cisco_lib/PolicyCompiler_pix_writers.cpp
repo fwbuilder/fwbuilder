@@ -534,12 +534,14 @@ bool PolicyCompiler_pix::PrintRule::processNext()
     PIXObjectGroup *pgsrv = PIXObjectGroup::cast(srvobj);
     PIXObjectGroup *pgsrc = PIXObjectGroup::cast(srcobj);
     PIXObjectGroup *pgdst = PIXObjectGroup::cast(dstobj);
+    Service *srv_s = Service::cast(srvobj);
+    assert(pgsrv!=NULL || srv_s!=NULL);
 
     if ( pgsrv!=NULL && pgsrv->isServiceGroup())
     {
         aclstr << pgsrv->getSrvTypeName();
     } else
-        aclstr << Service::cast(srvobj)->getProtocolName();
+        aclstr << srv_s->getProtocolName();
 
     aclstr << " ";
 

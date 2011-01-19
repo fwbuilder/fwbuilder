@@ -1,3 +1,13 @@
+2011-01-18  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PIXObjectGroup.cpp: see #1942, #1943 fixed generation of the
+	"object-group" statements by adding protocol keyword at the end so
+	that the group can be used in access-list commands. It looks like
+	mixed service groups that have no protocol keyword at the end of
+	the line that defines them cause error "specified object group
+	<foo> has wrong type; expecting service type". I am going to avoid
+	using mixed service groups because of this.
+
 2011-01-17  vadim  <vadim@netcitadel.com>
 
 	* ASA8TwiceNatLogic.cpp (getAutomaticType): fixes #1916 "nat rule

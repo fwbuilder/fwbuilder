@@ -458,9 +458,12 @@ void PolicyCompiler_iosacl::compile()
         add( new splitTCPServiceWithFlags(
                  "separate TCP service with tcp flags"));
 
-        add( new CreateObjectGroupsForSrc("create object groups for Src"));
-        add( new CreateObjectGroupsForDst("create object groups for Dst"));
-        add( new CreateObjectGroupsForSrv("create object groups for Srv"));
+        add( new CreateObjectGroupsForSrc("create object groups for Src",
+                                          named_objects_manager));
+        add( new CreateObjectGroupsForDst("create object groups for Dst",
+                                          named_objects_manager));
+        add( new CreateObjectGroupsForSrv("create object groups for Srv",
+                                          named_objects_manager));
     } else
     {
         add( new ConvertToAtomic ("convert to atomic rules" ) );

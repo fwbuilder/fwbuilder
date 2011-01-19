@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "BaseObjectGroup.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -35,70 +36,129 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
 
-#include <iostream>
 #include <sstream>
+
+#include <QStringList>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+
 map<string,int>  BaseObjectGroup::name_disambiguation;
 
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
-string BaseObjectGroup::registerGroupName(const std::string &prefix)
+string BaseObjectGroup::registerGroupName(const std::string &prefix,
+                                          object_group_type gt)
 {
     ostringstream  str;
     str << prefix;
 
-    switch (getObjectGroupType())
+    switch (gt)
     {
-    case UNKNOWN:        str << ".unknown"; break;
-    case NETWORK:        str << ".net";     break;
-    case PROTO:          str << ".proto";   break;
-    case ICMP_TYPE:      str << ".icmp";    break;
-    case TCP_SERVICE:    str << ".tcp";     break;
-    case UDP_SERVICE:    str << ".udp";     break;
-    case MIXED_SERVICE:  str << ".mixed";   break;
+    case UNKNOWN:         str << ".unknown"; break;
+    case NETWORK:         str << ".net";     break;
+    case PROTO:           str << ".proto";   break;
+    case ICMP_TYPE:       str << ".icmp";    break;
+    case TCP_SERVICE:     str << ".tcp";     break;
+    case UDP_SERVICE:     str << ".udp";     break;
+    case TCP_UDP_SERVICE: str << ".tcpudp";  break;
+    case MIXED_SERVICE:   str << ".mixed";   break;
     }
 
     int n = name_disambiguation[str.str()];
-    name_disambiguation[str.str()]=n+1;
+    name_disambiguation[str.str()] = n + 1;
     str << "." << n;
     return str.str();
 }
 
-BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(FWObject *obj)
+BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(
+    const FWObject *obj)
 {
-    if (Address::cast(obj)!=NULL)     return NETWORK;
-    if (IPService::cast(obj)!=NULL)   return PROTO;
-    if (ICMPService::cast(obj)!=NULL) return ICMP_TYPE;
-    if (TCPService::cast(obj)!=NULL)  return TCP_SERVICE;
-    if (UDPService::cast(obj)!=NULL)  return UDP_SERVICE;
-    if (CustomService::cast(obj)!=NULL)  return MIXED_SERVICE;
+    if (Address::constcast(obj)!=NULL)     return NETWORK;
+    if (IPService::constcast(obj)!=NULL)   return PROTO;
+    if (ICMPService::constcast(obj)!=NULL) return ICMP_TYPE;
+    if (TCPService::constcast(obj)!=NULL)  return TCP_SERVICE;
+    if (UDPService::constcast(obj)!=NULL)  return UDP_SERVICE;
     return UNKNOWN;
 }
 
-void BaseObjectGroup::setObjectGroupTypeFromFWObject(FWObject *obj)
+void BaseObjectGroup::setObjectGroupTypeFromFWObject(const FWObject *obj)
 {
     setObjectGroupType(getObjectGroupTypeFromFWObject(obj));
 }
 
-void BaseObjectGroup::setName(const std::string &prefix)
+void BaseObjectGroup::setObjectGroupTypeFromMembers(
+    NamedObjectManager *named_object_manager)
 {
-    FWObject::setName( registerGroupName(prefix) );
+    object_group_type my_type = UNKNOWN;
+    std::map<int, int> type_counters;
+    for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
+    {
+        const FWObject *obj = FWReference::getObject(*i1);
+
+        NamedObject *named_object =
+            named_object_manager->named_objects[obj->getId()];
+
+        if (named_object)
+            obj = named_object->getObject();
+
+        object_group_type t = getObjectGroupTypeFromFWObject(obj);
+        if (type_counters.count(t) == 0) type_counters[t] = 1;
+        else type_counters[t]++;
+    }
+
+    if (type_counters[NETWORK]!=0 &&
+        (type_counters[PROTO]!=0 ||
+         type_counters[ICMP_TYPE]!=0 ||
+         type_counters[TCP_SERVICE]!=0 ||
+         type_counters[UDP_SERVICE]!=0 ||
+         type_counters[MIXED_SERVICE]!=0))
+        throw FWException("Object group should not contain both "
+                          "network and service objects");
+
+    if (type_counters[NETWORK]!=0) my_type = NETWORK;
+    
+    if (type_counters[PROTO]==0 &&
+        type_counters[ICMP_TYPE]==0 &&
+        (type_counters[TCP_SERVICE]!=0 ||
+         type_counters[UDP_SERVICE]!=0) &&
+        type_counters[MIXED_SERVICE]==0)
+    {
+        if (type_counters[TCP_SERVICE]!=0 && type_counters[UDP_SERVICE]!=0)
+            my_type = TCP_UDP_SERVICE;
+        if (type_counters[TCP_SERVICE]!=0 && type_counters[UDP_SERVICE]==0)
+            my_type = TCP_SERVICE;
+        if (type_counters[TCP_SERVICE]==0 && type_counters[UDP_SERVICE]!=0)
+            my_type = UDP_SERVICE;
+    }
+
+    if (type_counters[PROTO]!=0 &&
+        type_counters[ICMP_TYPE]==0 &&
+        type_counters[MIXED_SERVICE]==0) my_type = PROTO;
+
+    if (type_counters[PROTO]==0 &&
+        type_counters[ICMP_TYPE]!=0 &&
+        type_counters[MIXED_SERVICE]==0) my_type = ICMP_TYPE;
+
+    if (my_type==UNKNOWN) my_type = MIXED_SERVICE;
+
+    setObjectGroupType(my_type);
 }
 
 bool BaseObjectGroup::isServiceGroup()
 {
     switch (getObjectGroupType())
     {
-    case PROTO:          return true;
-    case ICMP_TYPE:      return true;
-    case TCP_SERVICE:    return true;
-    case UDP_SERVICE:    return true;
-    case MIXED_SERVICE:  return true;
-    default:             return false;
+    case PROTO:           return true;
+    case ICMP_TYPE:       return true;
+    case TCP_SERVICE:     return true;
+    case UDP_SERVICE:     return true;
+    case TCP_UDP_SERVICE: return true;
+    case MIXED_SERVICE:   return true;
+    default:              return false;
     }
     return false;
 }
@@ -121,6 +181,7 @@ string BaseObjectGroup::getSrvTypeName()
     case ICMP_TYPE:    return "icmp";
     case TCP_SERVICE:  return "tcp";
     case UDP_SERVICE:  return "udp";
+    case TCP_UDP_SERVICE:  return "tcp-udp";
     default:           break;
     }
     return "";
@@ -134,18 +195,40 @@ string BaseObjectGroup::getObjectGroupClass()
     case ICMP_TYPE:
     case TCP_SERVICE:
     case UDP_SERVICE:
+    case TCP_UDP_SERVICE:
     case MIXED_SERVICE:  return "service";
     default:             return "network";
     }
     return "";
 }
 
-string BaseObjectGroup::toString(NamedObjectManager*)  throw(FWException)
+string BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectManager*)
+    throw(libfwbuilder::FWException)
 {
     return "";
 }
 
+string BaseObjectGroup::toString(NamedObjectManager *nm)  throw(FWException)
+{
+    QStringList res;
+    if (this->size()==0) return "";
+    res << getObjectGroupHeader().c_str();
+    for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
+    {
+        res << QString("  %1").arg(
+            groupMemberToString(FWReference::getObject(*i1), nm).c_str());
+    }
+    res << getObjectGroupFooter().c_str();
+    res << "";
+    return res.join("\n").toStdString();
+}
+
 string BaseObjectGroup::getObjectGroupHeader()
+{
+    return "";
+}
+
+string BaseObjectGroup::getObjectGroupFooter()
 {
     return "";
 }

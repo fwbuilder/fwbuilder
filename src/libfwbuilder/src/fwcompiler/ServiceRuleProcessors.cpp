@@ -105,6 +105,11 @@ int Compiler::groupServicesByProtocol::groupingCode(const Service *srv)
     return srv->getProtocolNumber();
 }
 
+int Compiler::groupTCPUDPServices::groupingCode(const Service *srv)
+{
+    return ( TCPService::isA(srv) || UDPService::isA(srv));
+}
+
 Compiler::separateServiceObject::separateServiceObject(
     const string &name) : BasicRuleProcessor(name)
 {

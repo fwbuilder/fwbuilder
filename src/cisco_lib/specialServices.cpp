@@ -78,12 +78,11 @@ bool SpecialServices::processNext()
         }
     }
 
-    if (CustomService::cast(s)!=NULL &&
-        XMLTools::version_compare(version, "8.3")<0)
+    if (CustomService::cast(s)!=NULL)
     {
         compiler->abort(
             rule, 
-            "CustomService objects are only supported for ASA 8.3 and later");
+            "CustomService objects are not supported");
         return true;
     }
 

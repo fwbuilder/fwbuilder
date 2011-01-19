@@ -537,6 +537,19 @@ protected:
             public:
             groupServicesByProtocol(const std::string &name) : groupServices(name){}
         };
+
+	/**
+	 * split rules with more than one service object, so that all
+	 * tcp and udp services are in one rule and all other
+	 * protocols are in the other
+	 */
+        class groupTCPUDPServices: public groupServices
+        {
+            protected:
+            virtual int groupingCode(const libfwbuilder::Service *srv);
+            public:
+            groupTCPUDPServices(const std::string &name) : groupServices(name){}
+        };
         
         /**
 	 * separate service object that satisfies condition

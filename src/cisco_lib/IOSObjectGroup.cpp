@@ -45,95 +45,81 @@ using namespace std;
 
 const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
-string IOSObjectGroup::toString(NamedObjectManager*)  throw(FWException)
+string IOSObjectGroup::groupMemberToString(FWObject *obj,
+                                           NamedObjectManager*)
+    throw(libfwbuilder::FWException)
 {
     ostringstream ostr;
 
-    if (this->size()==0) return "";
-
-    ostr << getObjectGroupHeader();
-
-    for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
+    switch (getObjectGroupType()) 
     {
-        FWObject *o   = *i1;
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-
-        ostr << "  ";
-
-        switch (getObjectGroupType()) 
+    case NETWORK:
+    {
+        Address *a = Address::cast(obj);
+        assert(a!=NULL);
+        if (AddressRange::cast(a))
         {
-        case NETWORK:
+            const InetAddr &start = AddressRange::cast(a)->getRangeStart();
+            const InetAddr &end = AddressRange::cast(a)->getRangeEnd();
+            ostr << "range " << start.toString() << " " << end.toString();
+        } else
         {
-            Address *a = Address::cast(obj);
-            assert(a!=NULL);
-            if (AddressRange::cast(a))
+            const InetAddr *addr = a->getAddressPtr();
+            if (Network::cast(obj)!=NULL)
             {
-                const InetAddr &start = AddressRange::cast(a)->getRangeStart();
-                const InetAddr &end = AddressRange::cast(a)->getRangeEnd();
-                ostr << "range " << start.toString() << " " << end.toString();
-            } else
-            {
-                const InetAddr *addr = a->getAddressPtr();
-                if (Network::cast(obj)!=NULL)
-                {
-                    const InetAddr *mask = a->getNetmaskPtr();
-                    // Note: the syntax is "A.B.C.D /NN" (there must be space before /)
-                    ostr << addr->toString() << " /" << mask->getLength();
-                } else {
-                    ostr << "host " << addr->toString();
-                }
+                const InetAddr *mask = a->getNetmaskPtr();
+                // Note: the syntax is "A.B.C.D /NN" (there must be space before /)
+                ostr << addr->toString() << " /" << mask->getLength();
+            } else {
+                ostr << "host " << addr->toString();
             }
-            break;
         }
-
-        case PROTO:
-        {
-            Service *s = Service::cast(obj);
-            assert(s!=NULL);
-            ostr << s->getProtocolNumber();
-            break;
-        }
-
-        case ICMP_TYPE:
-        {
-            ostr << "icmp ";
-            ICMPService *s = ICMPService::cast(obj);
-            assert(s!=NULL);
-            if ( s->getInt("type")== -1) ostr << "";
-            else ostr << s->getInt("type");
-            break;
-        }
-
-        case TCP_SERVICE:
-        case UDP_SERVICE:
-        {
-            if (getObjectGroupType()==TCP_SERVICE) ostr << "tcp ";
-            else ostr << "udp ";
-
-            TCPUDPService *s = TCPUDPService::cast(obj);
-            assert(s!=NULL);
-
-            int rs = s->getDstRangeStart();
-            int re = s->getDstRangeEnd();
-
-            if (rs<0) rs = 0;
-            if (re<0) re = 0;
-
-            if (rs>0 || re>0) {
-                if (rs==re)  ostr << "eq " << rs;
-                else         ostr << "range " << rs << " " << re;
-            }
-            else ostr << "range 0 65535";
-            break;
-        }
-        default:
-            throw FWException("Unknown object group type");
-        }
-        ostr << endl;
-
+        break;
     }
-    ostr << "exit" << endl << endl;
+
+    case PROTO:
+    {
+        Service *s = Service::cast(obj);
+        assert(s!=NULL);
+        ostr << s->getProtocolNumber();
+        break;
+    }
+
+    case ICMP_TYPE:
+    {
+        ostr << "icmp ";
+        ICMPService *s = ICMPService::cast(obj);
+        assert(s!=NULL);
+        if ( s->getInt("type")== -1) ostr << "";
+        else ostr << s->getInt("type");
+        break;
+    }
+
+    case TCP_SERVICE:
+    case UDP_SERVICE:
+    {
+        if (getObjectGroupType()==TCP_SERVICE) ostr << "tcp ";
+        else ostr << "udp ";
+
+        TCPUDPService *s = TCPUDPService::cast(obj);
+        assert(s!=NULL);
+
+        int rs = s->getDstRangeStart();
+        int re = s->getDstRangeEnd();
+
+        if (rs<0) rs = 0;
+        if (re<0) re = 0;
+
+        if (rs>0 || re>0) {
+            if (rs==re)  ostr << "eq " << rs;
+            else         ostr << "range " << rs << " " << re;
+        }
+        else ostr << "range 0 65535";
+        break;
+    }
+    default:
+        throw FWException("Unknown object group type");
+    }
     return ostr.str();
 }
 
@@ -154,7 +140,11 @@ string IOSObjectGroup::getObjectGroupHeader()
 {
     ostringstream ostr;
     ostr << "object-group " << getObjectGroupClass() << " " << this->getName();
-    ostr << endl;
     return ostr.str();
+}
+
+string IOSObjectGroup::getObjectGroupFooter()
+{
+    return "exit";
 }
 

@@ -46,106 +46,21 @@ using namespace fwcompiler;
 
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
-string ASA8ObjectGroup::toString(NamedObjectManager *named_object_manager)
-    throw(FWException)
+
+string ASA8ObjectGroup::groupMemberToString(
+    FWObject *obj, NamedObjectManager *named_object_manager)
+    throw(libfwbuilder::FWException)
 {
-    ostringstream ostr;
+    NamedObject *named_object =
+        named_object_manager->named_objects[obj->getId()];
 
-    if (this->size()==0) return "";
-
-    ostr << getObjectGroupHeader();
-
-    for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
+    if (named_object)
     {
-        FWObject *o   = *i1;
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-
-        NamedObject *named_object =
-            named_object_manager->named_objects[obj->getId()];
-
-        if (named_object)
-        {
-            ostr << " "
-                 << named_object->getCommandWhenObjectGroupMember(
-                 named_object_manager->fw).toStdString();
-            ostr << endl;
-            continue;
-        }
-
-        if (this->getObjectGroupType() == NETWORK)
-        {
-            Address *a = Address::cast(obj);
-            assert(a!=NULL);
-            const InetAddr *addr = a->getAddressPtr();
-            ostr << " network-object ";
-            if (Network::cast(obj)!=NULL)
-            {
-                const InetAddr *mask = a->getNetmaskPtr();
-                ostr << addr->toString() << " ";
-                ostr << mask->toString() << " ";
-            } else {
-                ostr << " host ";
-                ostr << addr->toString() << " ";
-            }
-            ostr << endl;
-            continue;
-
-        } else
-        {
-
-            if (IPService::isA(obj))
-            {
-                ostr << " service-object ";
-                Service *s = Service::cast(obj);
-                assert(s!=NULL);
-                ostr << s->getProtocolName();
-                ostr << endl;
-                continue;
-            }
-
-            if (ICMPService::isA(obj))
-            {
-                ostr << " service-object icmp ";
-                ICMPService *s = ICMPService::cast(obj);
-                assert(s!=NULL);
-                if ( s->getInt("type")== -1)
-                    ostr << "";  // no keyword "any" anymore
-                else
-                    ostr << s->getInt("type");
-                ostr << endl;
-                continue;
-            }
-
-            if (TCPService::isA(obj) || UDPService::isA(obj))
-            {
-                ostr << " service-object ";
-                ostr << ((TCPService::isA(obj))? "tcp " : "udp ");
-
-                Service *s = Service::cast(obj);
-                assert(s!=NULL);
-
-                int rs = TCPUDPService::cast(s)->getDstRangeStart();
-                int re = TCPUDPService::cast(s)->getDstRangeEnd();
-
-                if (rs<0) rs = 0;
-                if (re<0) re = 0;
-
-                if (rs>0 || re>0) {
-                    if (rs==re)  ostr << "eq " << rs;
-                    else         ostr << "range " << rs << " " << re;
-                }
-                else ostr << "range 0 65535";
-                ostr << endl;
-                continue;
-            }
-
-            QString err("ASA8ObjectGroup: Unsupported object '%1' found in object group");
-            throw FWException(err.arg(obj->getName().c_str()).toStdString());
-        }
+        return named_object->getCommandWhenObjectGroupMember(
+            named_object_manager->fw).toStdString();
     }
-    ostr << " exit" << endl << endl;
-    return ostr.str();
+        
+    return PIXObjectGroup::groupMemberToString(obj, named_object_manager);
 }
 
 string ASA8ObjectGroup::getObjectGroupClass()
@@ -156,29 +71,4 @@ string ASA8ObjectGroup::getObjectGroupClass()
     default: return BaseObjectGroup::getObjectGroupClass();
     }
 }
-
-string ASA8ObjectGroup::getObjectGroupHeader()
-{
-    ostringstream ostr;
-    ostr << "object-group " << getObjectGroupClass() << " " << this->getName();
-    ostr << endl;
-    return ostr.str();
-}
-
-/*
- * We support CustomService objects in ASA8 object groups. If this group
- * has custom service object, get protocol from it. Rule processors should
- * ensure that there is only one custom service object in the group
- */
-string ASA8ObjectGroup::getSrvTypeName()
-{
-    FWObject *obj = FWReference::getObject(this->front());
-
-    if (isServiceGroup() && CustomService::isA(obj))
-    {
-        return CustomService::cast(obj)->getProtocol();
-    } else
-        return PIXObjectGroup::getSrvTypeName();
-}
-
 

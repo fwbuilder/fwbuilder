@@ -47,6 +47,8 @@ BaseObjectGroup* ObjectGroupFactory::createObjectGroup(
     string platform = fw->getStr("platform");
     if (platform == "pix" || platform == "fwsm")
     {
+        //return new PIXObjectGroup(_gt);
+
         if (XMLTools::version_compare(version, "8.0")<0)
             return new PIXObjectGroup(_gt);
         else

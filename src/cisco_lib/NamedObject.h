@@ -56,6 +56,7 @@ public:
             const libfwbuilder::Firewall *fw);
         QString getName() { return name; }
         QString getCommandWord();
+        const libfwbuilder::FWObject* getObject() { return obj; }
     };
 }
 

@@ -39,11 +39,13 @@ public:
         DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
 
         virtual std::string getObjectGroupClass();
-        virtual std::string getObjectGroupHeader();
-        virtual std::string getSrvTypeName();
-        virtual std::string toString(NamedObjectManager *named_obj_manager)
+        //virtual std::string getObjectGroupHeader();
+        //virtual std::string getSrvTypeName();
+
+        virtual std::string groupMemberToString(
+            libfwbuilder::FWObject *obj, NamedObjectManager *named_obj_manager)
             throw(libfwbuilder::FWException);
-    
+
     };
 }
 

@@ -323,8 +323,10 @@ void NATCompiler_asa8::compile()
     // by inspector VerifyRules
     add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
     add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
+
     add( new UseFirewallInterfaces(
-             "replace host objects with firewall's interfaces if the have the same address"));
+             "replace host objects with firewall's interfaces if "
+             "the have the same address"));
 
     // ExpandMultipleAddresses acts on different rule elements
     // depending on the rule type.
@@ -339,6 +341,7 @@ void NATCompiler_asa8::compile()
 
     add( new splitByNetworkZonesForOSrc("split by netzone for OSrc"));
 
+    //add( new groupServicesByProtocol("group services by protocol in OSrv"));
     add( new ConvertToAtomicForOSrv("convert to atomic for OSrv"));
     add( new ConvertToAtomicForTDst("convert to atomic for TDst"));
     add( new ConvertToAtomicForTSrv("convert to atomic for TSrv"));
@@ -357,13 +360,17 @@ void NATCompiler_asa8::compile()
 
     add( new SpecialServicesOSrv( "check for special services" ));
 
-    add( new CreateObjectGroupsForOSrc("create object groups for OSrc"));
-    add( new CreateObjectGroupsForODst("create object groups for ODst"));
-    add( new CreateObjectGroupsForOSrv("create object groups for OSrv"));
+    add( new CreateObjectGroupsForOSrc("create object groups for OSrc",
+                                       named_objects_manager));
+    add( new CreateObjectGroupsForODst("create object groups for ODst",
+                                       named_objects_manager));
+    add( new CreateObjectGroupsForOSrv("create object groups for OSrv",
+                                       named_objects_manager));
 
     // need special rule processor to create object groups in TSrc
     // because of a special tratment that an Interface object gets in TSrc
-    add( new CreateObjectGroupsForTSrc("create object groups for TSrc"));
+    add( new CreateObjectGroupsForTSrc("create object groups for TSrc",
+                                       named_objects_manager));
 
     add( new VerifyValidityOfTSrc("verify objects in TSrc"));
 

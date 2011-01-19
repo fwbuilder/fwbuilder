@@ -46,18 +46,19 @@ public:
                        ICMP_TYPE, 
                        TCP_SERVICE, 
                        UDP_SERVICE,
+                       TCP_UDP_SERVICE,
                        MIXED_SERVICE } object_group_type;
 
 private:
         object_group_type gt;
 
-protected:
-        std::string registerGroupName(const std::string &prefix);
-    
 public:
 
         static std::map<std::string,int> name_disambiguation;
 
+        static std::string registerGroupName(const std::string &prefix,
+                                             object_group_type gt);
+    
         BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group()
         {
             gt=_gt;
@@ -71,11 +72,10 @@ public:
         void setObjectGroupType(object_group_type _gt) { gt=_gt; }
         object_group_type getObjectGroupType() { return gt; }
 
-        object_group_type getObjectGroupTypeFromFWObject(libfwbuilder::FWObject *o);
-
-        void setObjectGroupTypeFromFWObject(libfwbuilder::FWObject *obj);
-
-        virtual void setName(const std::string &prefix);
+        void setObjectGroupTypeFromMembers(NamedObjectManager *named_obj_manager);
+        object_group_type getObjectGroupTypeFromFWObject(
+            const libfwbuilder::FWObject *o);
+        void setObjectGroupTypeFromFWObject(const libfwbuilder::FWObject *obj);
 
         bool isServiceGroup();
         bool isObjectGroup();
@@ -83,6 +83,12 @@ public:
     
         virtual std::string getObjectGroupClass();
         virtual std::string getObjectGroupHeader();
+        virtual std::string getObjectGroupFooter();
+
+        virtual std::string groupMemberToString(
+            libfwbuilder::FWObject *obj, NamedObjectManager *named_obj_manager)
+            throw(libfwbuilder::FWException);
+
         virtual std::string toString(NamedObjectManager *named_obj_manager)
             throw(libfwbuilder::FWException);
     };
