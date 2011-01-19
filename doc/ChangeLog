@@ -1,3 +1,12 @@
+2011-01-19  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pix_writers.cpp: see #1960 add support for
+	CustomService for PIX policy rules. Note that CustomService
+	objects are only supported in Policy rules since nat commands in
+	ASA 8.3 require use of named objects and it is difficult to
+	implement correct named objects and object-groups with protocol
+	parameter and custom services.
+
 2011-01-18  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PIXObjectGroup.cpp: ASA 8.3 see #1942, #1943 fixed generation of
@@ -17,7 +26,9 @@
 	support for CustomService objects for ASA 8.3. Generate separate
 	named object and object-group for these objects, then split policy
 	and nat rules so that only one custom service object is left in
-	each rule and then use object-group to match it.
+	each rule and then use object-group to match it. Note: this has
+	been rolled back. There is no support for CustomService objects in
+	NAT rules.
 
 	* PolicyCompiler_pix.cpp (processNext): fixes #1948 "incorrect
 	configuration created when a CustomService object is used in a
@@ -58,6 +69,8 @@
 	 -- see #1946 "restrict generation of the named objects by
 	PolicyCompiler_pix to ASA 8"
 	 -- see #1885 "named network and service objects in pix8"
+	Note: this has been rolled back. There is no support for
+	CustomService objects in NAT rules.
 
 	* NATCompiler_pix.cpp (processNext): see #1941 "ASA NAT - compiler
 	complains about range in original destination". NAT rules

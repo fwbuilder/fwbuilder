@@ -78,11 +78,11 @@ bool SpecialServices::processNext()
         }
     }
 
-    if (CustomService::cast(s)!=NULL)
+    if (CustomService::cast(s)!=NULL && pix_comp==NULL)
     {
         compiler->abort(
             rule, 
-            "CustomService objects are not supported");
+            "CustomService objects are not supported in NAT rules");
         return true;
     }
 

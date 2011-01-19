@@ -246,6 +246,10 @@ string PolicyCompiler_pix::PrintRule::_printDstService(Service *srv)
     if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
 	    str << srv->getStr("type") << " ";
 
+    if (CustomService::isA(srv)) 
+	str << CustomService::cast(srv)->getCodeForPlatform(
+            compiler->myPlatformName() ) << " ";
+
     const IPService *ip_srv = IPService::constcast(srv);
     if (ip_srv && ip_srv->hasIpOptions())
         compiler->warning("PIX can not match IP options");
