@@ -68,7 +68,7 @@ string ASA8ObjectGroup::getObjectGroupClass()
     switch (this->getObjectGroupType()) 
     {
     case MIXED_SERVICE:  return "service";;
-    default: return BaseObjectGroup::getObjectGroupClass();
+    default: return PIXObjectGroup::getObjectGroupClass();
     }
 }
 
