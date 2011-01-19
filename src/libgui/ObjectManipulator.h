@@ -142,7 +142,6 @@ class ObjectManipulator : public QWidget
         libfwbuilder::FWObject *copyFrom=NULL,
         QUndoCommand* macro = 0);
 
-    void autorename(libfwbuilder::FWObject *obj);
     void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
                                    std::set<libfwbuilder::Firewall*> &fo);
 
@@ -286,6 +285,7 @@ public:
      QString makeNameUnique(libfwbuilder::FWObject* parent,
                             const QString &obj_name, const QString &obj_type);
 
+     void autorename(libfwbuilder::FWObject *obj);
      void autorename(std::list<libfwbuilder::FWObject*> &obj_list,
                      const std::string &objtype,
                      const std::string &namesuffix);

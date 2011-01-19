@@ -1,5 +1,17 @@
 2011-01-19  Vadim Kurland  <vadim@netcitadel.com>
 
+	* NamedObject.cpp (sanitizeObjectName): see #1953 "ASA NAT - two
+	host objects in the same rule result in incorrect config". We now
+	register and keep track of all named objects to make sure their
+	names are unique.
+
+	* newHostDialog.cpp (finishClicked): see #1953 "ASA NAT - two host
+	objects in the same rule result in incorrect config". Objects that
+	represent addresses of interfaces of a host object created using
+	template will be automatically renamed to follow standard naming
+	convention "host_name:interface_name:ip" to avoid creating
+	duplicate names.
+
 	* PolicyCompiler_pix_writers.cpp: see #1960 add support for
 	CustomService for PIX policy rules. Note that CustomService
 	objects are only supported in Policy rules since nat commands in

@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObject.h"
 #include "ObjectGroupFactory.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -92,7 +93,7 @@ string NamedObjectManager::addNamedObject(const FWObject *obj)
     if (named_objects[obj->getId()] == NULL)
     {
         NamedObject *asa8obj = new NamedObject(obj);
-        res = asa8obj->getCommand(fw).toStdString();
+        res = asa8obj->getCommand(fw).toUtf8().constData();
         named_objects[obj->getId()] = asa8obj;
     }
     return res;
@@ -110,6 +111,7 @@ void CreateObjectGroups::init(FWObjectDatabase *db)
     object_groups = new Group();
     db->add( object_groups );
     BaseObjectGroup::name_disambiguation.clear();
+    NamedObject::name_disambiguation.clear();
     //if (named_objects.size() > 0) clearNamedObjectsRegistry();
 }
 
@@ -175,15 +177,16 @@ bool CreateObjectGroups::processNext()
 
         obj_group->setObjectGroupTypeFromMembers(named_objects_manager);
 
-        QStringList gn;
+        QStringList group_name_prefix;
         if (!rule_iface->getLabel().empty())
-            gn.push_back(rule_iface->getLabel().c_str());
+            group_name_prefix.push_back(rule_iface->getLabel().c_str());
 
-        gn.push_back(rule->getUniqueId().c_str());
-        gn.push_back(name_suffix.c_str());
+        group_name_prefix.push_back(rule->getUniqueId().c_str());
+        group_name_prefix.push_back(name_suffix.c_str());
 
         string group_name = BaseObjectGroup::registerGroupName(
-            gn.join(".").toStdString(), obj_group->getObjectGroupType());
+            group_name_prefix.join(".").toStdString(),
+            obj_group->getObjectGroupType());
         obj_group->setName(group_name);
 
     } else

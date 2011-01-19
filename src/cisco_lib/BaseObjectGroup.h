@@ -33,6 +33,9 @@
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/FWException.h"
 
+#include <QString>
+
+
 namespace fwcompiler {
 
     class NamedObjectManager;
@@ -54,7 +57,7 @@ private:
 
 public:
 
-        static std::map<std::string,int> name_disambiguation;
+        static std::map<QString,int> name_disambiguation;
 
         static std::string registerGroupName(const std::string &prefix,
                                              object_group_type gt);

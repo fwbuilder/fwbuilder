@@ -46,32 +46,33 @@ using namespace fwcompiler;
 using namespace std;
 
 
-map<string,int>  BaseObjectGroup::name_disambiguation;
+map<QString,int>  BaseObjectGroup::name_disambiguation;
 
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
-string BaseObjectGroup::registerGroupName(const std::string &prefix,
+string BaseObjectGroup::registerGroupName(const string &prefix,
                                           object_group_type gt)
 {
-    ostringstream  str;
-    str << prefix;
+    QStringList  str;
+    str << QString::fromUtf8(prefix.c_str());
 
     switch (gt)
     {
-    case UNKNOWN:         str << ".unknown"; break;
-    case NETWORK:         str << ".net";     break;
-    case PROTO:           str << ".proto";   break;
-    case ICMP_TYPE:       str << ".icmp";    break;
-    case TCP_SERVICE:     str << ".tcp";     break;
-    case UDP_SERVICE:     str << ".udp";     break;
-    case TCP_UDP_SERVICE: str << ".tcpudp";  break;
-    case MIXED_SERVICE:   str << ".mixed";   break;
+    case UNKNOWN:         str << "unknown"; break;
+    case NETWORK:         str << "net";     break;
+    case PROTO:           str << "proto";   break;
+    case ICMP_TYPE:       str << "icmp";    break;
+    case TCP_SERVICE:     str << "tcp";     break;
+    case UDP_SERVICE:     str << "udp";     break;
+    case TCP_UDP_SERVICE: str << "tcpudp";  break;
+    case MIXED_SERVICE:   str << "mixed";   break;
     }
 
-    int n = name_disambiguation[str.str()];
-    name_disambiguation[str.str()] = n + 1;
-    str << "." << n;
-    return str.str();
+    QString name_prefix = str.join(".");
+    int n = name_disambiguation[name_prefix];
+    name_disambiguation[name_prefix] = n + 1;
+    str << QString().setNum(n);
+    return str.join(".").toUtf8().constData();
 }
 
 BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(

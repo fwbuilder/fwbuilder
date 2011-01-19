@@ -578,11 +578,8 @@ void newHostDialog::finishClicked()
         no->duplicate(o, true);
         no->setName(m_dialog->obj_name->text().toUtf8().constData());
 
-        if (no==NULL)
-        {
-          QDialog::accept();
-          return;
-        }
+        mw->activeProject()->m_panel->om->autorename(no);
+
         nhst = Host::cast(no);
     } else
     {
@@ -624,7 +621,8 @@ void newHostDialog::finishClicked()
             {
                 QString addrname=QString("%1:%2:mac")
                     .arg(m_dialog->obj_name->text()).arg(name);
-                physAddress* pa = physAddress::cast(db->create(physAddress::TYPENAME));
+                physAddress* pa = physAddress::cast(
+                    db->create(physAddress::TYPENAME));
                 pa->setName(addrname.toUtf8().constData());
                 oi->add(pa);
                 pa->setPhysAddress(physaddr.toLatin1().constData());
@@ -636,11 +634,14 @@ void newHostDialog::finishClicked()
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
                     {
-                        string addrname = string( QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name).toUtf8() );
+                        string addrname = string(
+                            QString("%1:%2:ip")
+                            .arg(m_dialog->obj_name->text()).arg(name).toUtf8());
                         IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname);
-                        oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
+                        oa->setAddress(
+                            InetAddr(address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);
                         if (ok)
@@ -649,16 +650,21 @@ void newHostDialog::finishClicked()
                         }
                         else
                         {
-                            oa->setNetmask( InetAddr(address.netmask.toLatin1().constData()) );
+                            oa->setNetmask(
+                                InetAddr(address.netmask.toLatin1().constData()) );
                         }
                     }
                     else
                     {
-                        string addrname = string( QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name).toUtf8() );
+                        string addrname = string(
+                            QString("%1:%2:ip6")
+                            .arg(m_dialog->obj_name->text()).arg(name).toUtf8() );
                         IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname);
-                        oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
+                        oa->setAddress(
+                            InetAddr(AF_INET6,
+                                     address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);
                         if (ok)
@@ -667,7 +673,9 @@ void newHostDialog::finishClicked()
                         }
                         else
                         {
-                            oa->setNetmask(InetAddr(AF_INET6, address.netmask.toLatin1().constData()));
+                            oa->setNetmask(
+                                InetAddr(AF_INET6,
+                                         address.netmask.toLatin1().constData()));
                         }
                     }
                 }

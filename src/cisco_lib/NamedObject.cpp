@@ -211,12 +211,12 @@ const char* rw[] = {
     };
 
 QSet<QString> NamedObject::reserved_words;
+map<QString,int> NamedObject::name_disambiguation;
 
 
 NamedObject::NamedObject(const FWObject *_obj)
 {
     obj = _obj;
-    name = sanitizeObjectName(obj->getName().c_str());
     if (reserved_words.empty())
     {
         const char** cptr = rw;
@@ -226,6 +226,7 @@ NamedObject::NamedObject(const FWObject *_obj)
             cptr++;
         }
     }
+    name = sanitizeObjectName(QString::fromUtf8(obj->getName().c_str()));
 }
 
 QString NamedObject::getCommandWord()
@@ -251,6 +252,11 @@ QString NamedObject::sanitizeObjectName(const QString &name)
     {
         qs = qs + "_obj";
     }
+
+    int n = name_disambiguation[qs];
+    name_disambiguation[qs] = n + 1;
+    qs = QString("%1.%2").arg(qs).arg(n);
+
     return qs;
 }
 

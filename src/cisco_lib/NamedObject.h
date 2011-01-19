@@ -38,7 +38,7 @@ namespace fwcompiler {
         const libfwbuilder::FWObject *obj;
         QString name;
         static QSet<QString> reserved_words;
-
+        
         QString printPorts(int port_range_start, int port_range_end);
         
 protected:
@@ -49,6 +49,8 @@ protected:
                                            const libfwbuilder::Firewall *fw);
 
 public:
+
+        static std::map<QString,int> name_disambiguation;
 
         NamedObject(const libfwbuilder::FWObject *obj);
         virtual QString getCommand(const libfwbuilder::Firewall *fw);
