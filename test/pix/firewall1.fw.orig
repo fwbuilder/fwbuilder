@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:53:54 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:13 2011 PST by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -69,10 +69,9 @@ floodguard disable
 !################
 
 object-group icmp-type outside.id3D50B022.srv.icmp.0
- icmp-object 8
- icmp-object 11
- exit
-
+  icmp-object 8
+  icmp-object 11
+exit
 ! 
 ! Rule  2 (eth1)
 ! Anti-spoofing rule

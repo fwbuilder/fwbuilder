@@ -65,6 +65,13 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(VerifyValidityOfDNSOption);
 
         /**
+         * for #1954 Issue a warning when nat rule with the same interface
+         * is used for the real and mapped interface, as in
+         * nat (outside,outside)
+         */
+	DECLARE_NAT_RULE_PROCESSOR(verifyInterfacesInNatRule);
+        
+        /**
          * Split rule to make sure objects in OSrc match network zones
          * of interfaces. We only need to do this for ASA 8.3 where we
          * support object-groups in "nat" rules. Older versions did

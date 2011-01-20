@@ -1,3 +1,13 @@
+2011-01-19  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_asa8.cpp (processNext): see #1954 "ASA NAT -
+	generate warning if nat rule is split and one of the resulting nat
+	rules have the same real interface and mapped interface". Compiler
+	issues warning when objects used in OSrc and TSrc of a NAT rule
+	make it use the same interface as both real and mapped interface
+	in the generated nat command. This check is only done for ASA 8.3
+	NAT rules.
+
 2011-01-19  Vadim Kurland  <vadim@netcitadel.com>
 
 	* NamedObject.cpp (sanitizeObjectName): see #1953 "ASA NAT - two

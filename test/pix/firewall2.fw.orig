@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:53:58 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:16 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -69,16 +69,14 @@ clear icmp
 clear telnet
 
 object-group service inside.id3D6EF08C.srv.tcp.0 tcp
- port-object eq 80
- port-object eq 119
- exit
-
+  port-object eq 80
+  port-object eq 119
+exit
 
 object-group network inside.id3D8FCCDE.src.net.0
- network-object  host 192.168.1.10 
- network-object  host 192.168.1.20 
- exit
-
+  network-object host 192.168.1.10 
+  network-object host 192.168.1.20 
+exit
 ! 
 ! Rule  0 (eth1)
 ! Anti-spoofing rule

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:54:13 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:24 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -92,7 +92,6 @@ clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
-
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in deny   ip any any 
@@ -106,51 +105,50 @@ clear xlate
 clear config nat
 clear config object
 
-object network Internal_net
+object network Internal_net.0
   subnet 192.168.1.0 255.255.255.0
 quit
-object service http
+object service http.0
   service tcp destination eq 80
 quit
-object network hostA:eth0
+object network hostA:eth0.0
   host 192.168.1.10
 quit
-object service smtp
+object service smtp.0
   service tcp destination eq 25
 quit
-object network spamhost1
+object network spamhost1.0
   host 61.150.47.112
 quit
-object network internal_subnet_1
+object network internal_subnet_1.0
   subnet 192.168.1.0 255.255.255.192
 quit
-object network internal_subnet_2
+object network internal_subnet_2.0
   subnet 192.168.1.64 255.255.255.192
 quit
-object network test_range_1
+object network test_range_1.0
   range 192.168.1.11 192.168.1.15
 quit
 
 object-group network outside.id20655X6113.osrc.net.0
- network-object object internal_subnet_1
- network-object object internal_subnet_2
- exit
-
+  network-object object internal_subnet_1.0
+  network-object object internal_subnet_2.0
+exit
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source static Internal_net Internal_net service http http description "0 (NAT)"
+nat (inside,outside) source static Internal_net.0 Internal_net.0 service http.0 http.0 description "0 (NAT)"
 ! 
 ! Rule  1 (NAT)
-nat (inside,outside) source static hostA:eth0 hostA:eth0 service smtp smtp description "1 (NAT)"
+nat (inside,outside) source static hostA:eth0.0 hostA:eth0.0 service smtp.0 smtp.0 description "1 (NAT)"
 ! 
 ! Rule  2 (NAT)
-nat (inside,outside) source static hostA:eth0 hostA:eth0 destination static spamhost1 spamhost1 service smtp smtp description "2 (NAT)"
+nat (inside,outside) source static hostA:eth0.0 hostA:eth0.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "2 (NAT)"
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source static outside.id20655X6113.osrc.net.0 outside.id20655X6113.osrc.net.0 service smtp smtp description "3 (NAT)"
+nat (inside,outside) source static outside.id20655X6113.osrc.net.0 outside.id20655X6113.osrc.net.0 service smtp.0 smtp.0 description "3 (NAT)"
 ! 
 ! Rule  4 (NAT)
-nat (inside,outside) source static test_range_1 test_range_1 destination static spamhost1 spamhost1 service smtp smtp description "4 (NAT)"
+nat (inside,outside) source static test_range_1.0 test_range_1.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "4 (NAT)"
 
 
 

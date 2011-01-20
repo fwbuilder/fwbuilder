@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:53:55 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:14 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -95,146 +95,132 @@ fixup protocol sqlnet 1521
 !################
 
 object-group network inside.id3DB0FA90.dst.net.0
- network-object  host 211.11.11.11 
- network-object  host 211.22.22.22 
- exit
-
+  network-object host 211.11.11.11 
+  network-object host 211.22.22.22 
+exit
 
 object-group service inside.id3DB0FA90.srv.tcp.0 tcp
- port-object eq 113
- port-object eq 80
- port-object eq 25
- port-object eq 22
- port-object eq 540
- port-object eq 443
- port-object eq 143
- exit
-
+  port-object eq 113
+  port-object eq 80
+  port-object eq 25
+  port-object eq 22
+  port-object eq 540
+  port-object eq 443
+  port-object eq 143
+exit
 
 object-group icmp-type outside.id3DB0F9C7.srv.icmp.0
- icmp-object 11
- icmp-object 0
- icmp-object 3
- exit
-
+  icmp-object 11
+  icmp-object 0
+  icmp-object 3
+exit
 
 object-group service outside.id3DB0F9BD.srv.tcp.0 tcp
- port-object eq 3128
- port-object eq 70
- port-object eq 6667
- port-object eq 23
- exit
-
+  port-object eq 3128
+  port-object eq 70
+  port-object eq 6667
+  port-object eq 23
+exit
 
 object-group service outside.id3DB0F9BD.srv.udp.0 udp
- port-object eq 161
- port-object eq 53
- exit
-
+  port-object eq 161
+  port-object eq 53
+exit
 
 object-group network outside.id3DB0F9E6.dst.net.0
- network-object  host 192.168.1.10 
- network-object  host 192.168.1.20 
- exit
-
+  network-object host 192.168.1.10 
+  network-object host 192.168.1.20 
+exit
 
 object-group network inside.id3DB10695.src.net.0
- network-object 192.168.1.0 255.255.255.0 
- network-object 192.168.10.0 255.255.255.0 
- network-object 192.168.20.0 255.255.255.0 
- exit
-
+  network-object 192.168.1.0 255.255.255.0 
+  network-object 192.168.10.0 255.255.255.0 
+  network-object 192.168.20.0 255.255.255.0 
+exit
 
 object-group network dmz.id3DB10695.src.net.0
- network-object 192.168.2.0 255.255.255.0 
- network-object 192.168.3.0 255.255.255.0 
- exit
-
+  network-object 192.168.2.0 255.255.255.0 
+  network-object 192.168.3.0 255.255.255.0 
+exit
 
 object-group network outside.id3DB10695.dst.net.0
- network-object  host 192.168.1.10 
- network-object  host 192.168.1.11 
- network-object  host 192.168.1.12 
- network-object  host 192.168.1.13 
- network-object  host 192.168.1.14 
- network-object  host 192.168.1.15 
- network-object  host 192.168.1.20 
- exit
-
+  network-object host 192.168.1.10 
+  network-object host 192.168.1.11 
+  network-object host 192.168.1.12 
+  network-object host 192.168.1.13 
+  network-object host 192.168.1.14 
+  network-object host 192.168.1.15 
+  network-object host 192.168.1.20 
+exit
 
 object-group network outside.id3DB0F9F2.dst.net.0
- network-object 192.168.1.250 255.255.255.254 
- network-object 192.168.1.252 255.255.255.252 
- exit
-
+  network-object 192.168.1.250 255.255.255.254 
+  network-object 192.168.1.252 255.255.255.252 
+exit
 
 object-group network outside.id3DB0F9FC.dst.net.0
- network-object  host 192.168.1.11 
- network-object  host 192.168.1.12 
- network-object  host 192.168.1.13 
- network-object  host 192.168.1.14 
- network-object  host 192.168.1.15 
- exit
-
+  network-object host 192.168.1.11 
+  network-object host 192.168.1.12 
+  network-object host 192.168.1.13 
+  network-object host 192.168.1.14 
+  network-object host 192.168.1.15 
+exit
 
 object-group service outside.id3DB0F9FC.srv.tcp.0 tcp
- port-object eq 113
- port-object eq 80
- port-object eq 25
- port-object eq 22
- port-object eq 540
- port-object eq 443
- port-object eq 143
- port-object eq 3128
- exit
-
+  port-object eq 113
+  port-object eq 80
+  port-object eq 25
+  port-object eq 22
+  port-object eq 540
+  port-object eq 443
+  port-object eq 143
+  port-object eq 3128
+exit
 
 object-group network outside.id3DB0FA07.dst.net.0
- network-object 192.168.1.11 255.255.255.255 
- network-object 192.168.1.12 255.255.255.252 
- exit
-
+  network-object 192.168.1.11 255.255.255.255 
+  network-object 192.168.1.12 255.255.255.252 
+exit
 
 object-group service outside.id3DB0FA12.srv.tcp.0 tcp
- port-object eq 3128
- port-object range 10000 11000
- port-object eq 6667
- port-object eq 113
- port-object eq 53
- port-object eq 21
- port-object eq 80
- port-object eq 119
- port-object eq 25
- port-object eq 22
- port-object eq 23
- port-object eq 540
- port-object eq 70
- port-object eq 13
- port-object eq 2105
- port-object eq 443
- port-object eq 143
- port-object eq 993
- port-object eq 6667
- port-object eq 543
- port-object eq 544
- port-object eq 389
- port-object eq 98
- port-object eq 3306
- port-object eq 2049
- port-object eq 110
- port-object eq 5432
- port-object eq 515
- port-object eq 26000
- port-object eq 512
- port-object eq 513
- port-object eq 514
- port-object eq 4321
- port-object eq 465
- port-object eq 1080
- port-object eq 111
- port-object eq 7100
- exit
-
+  port-object eq 3128
+  port-object range 10000 11000
+  port-object eq 6667
+  port-object eq 113
+  port-object eq 53
+  port-object eq 21
+  port-object eq 80
+  port-object eq 119
+  port-object eq 25
+  port-object eq 22
+  port-object eq 23
+  port-object eq 540
+  port-object eq 70
+  port-object eq 13
+  port-object eq 2105
+  port-object eq 443
+  port-object eq 143
+  port-object eq 993
+  port-object eq 6667
+  port-object eq 543
+  port-object eq 544
+  port-object eq 389
+  port-object eq 98
+  port-object eq 3306
+  port-object eq 2049
+  port-object eq 110
+  port-object eq 5432
+  port-object eq 515
+  port-object eq 26000
+  port-object eq 512
+  port-object eq 513
+  port-object eq 514
+  port-object eq 4321
+  port-object eq 465
+  port-object eq 1080
+  port-object eq 111
+  port-object eq 7100
+exit
 ! 
 ! Rule  3 (ethernet1)
 ! anti-spoofing rule

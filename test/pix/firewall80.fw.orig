@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:54:08 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:21 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -15,12 +15,7 @@
 !
 ! testing rules with broadcasts
 
-! C firewall80:Policy:9: error: CustomService objects are only supported for ASA 8.3 and later
-! C firewall80:Policy:9: error: CustomService objects are only supported for ASA 8.3 and later
-! C firewall80:Policy:10: error: CustomService objects are only supported for ASA 8.3 and later
-! C firewall80:Policy:10: error: CustomService objects are only supported for ASA 8.3 and later
-
-! N firewall80:NAT:0: error: CustomService objects are only supported for ASA 8.3 and later
+! N firewall80:NAT:0: error: CustomService objects are not supported in NAT rules
 
 !
 ! Prolog script:
@@ -97,37 +92,25 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group service outside.id19186X29796.srv.mixed.0
- service-object udp eq 123
- service-object udp eq 53
- service-object tcp eq 53
- service-object tcp eq 25
- service-object icmp 8
- service-object icmp 0
- service-object 51
- service-object 50
- exit
+object-group icmp-type outside.id19186X29796.srv.icmp.0
+  icmp-object 8
+  icmp-object 0
+exit
 
+object-group service outside.id19186X29796.srv.tcp.0 tcp
+  port-object eq 53
+  port-object eq 25
+exit
 
-object-group service outside.id69378X1497.srv.mixed.0
- service-object icmp 
- service-object tcp range 0 65535
- exit
+object-group service outside.id19186X29796.srv.udp.0 udp
+  port-object eq 123
+  port-object eq 53
+exit
 
-
-object-group service inside.id21447X11252.srv.icmp.0
- service-object icmp 8
- service-object icmp 3
- exit
-
-
-object-group service inside.id21447X11252.srv.mixed.0
- service-object icmp 8
- service-object icmp 3
- service-object udp eq 53
- service-object tcp eq 3128
- exit
-
+object-group icmp-type inside.id21447X11252.srv.icmp.0
+  icmp-object 8
+  icmp-object 3
+exit
 ! 
 ! Rule  0 (FastEthernet1)
 ssh    0.0.0.0 0.0.0.0 inside
@@ -144,8 +127,16 @@ icmp permit any 3  inside
 access-list inside_acl_in permit icmp any host 192.168.1.1 3 
 ! 
 ! Rule  4 (global)
-access-list outside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.mixed.0 
-access-list inside_acl_in permit  any host 192.168.1.10 object-group outside.id19186X29796.srv.mixed.0 
+access-list outside_acl_in permit icmp any host 192.168.1.10 object-group outside.id19186X29796.srv.icmp.0 
+access-list inside_acl_in permit icmp any host 192.168.1.10 object-group outside.id19186X29796.srv.icmp.0 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group outside.id19186X29796.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group outside.id19186X29796.srv.tcp.0 
+access-list outside_acl_in permit udp any host 192.168.1.10 object-group outside.id19186X29796.srv.udp.0 
+access-list inside_acl_in permit udp any host 192.168.1.10 object-group outside.id19186X29796.srv.udp.0 
+access-list outside_acl_in permit 50 any host 192.168.1.10 
+access-list inside_acl_in permit 50 any host 192.168.1.10 
+access-list outside_acl_in permit 51 any host 192.168.1.10 
+access-list inside_acl_in permit 51 any host 192.168.1.10 
 ! 
 ! Rule  5 (global)
 ! matching source ports
@@ -164,8 +155,10 @@ access-list inside_acl_in deny   tcp any range 30000 30030 host 192.168.1.10
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list outside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.mixed.0 
-access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id69378X1497.srv.mixed.0 
+access-list outside_acl_in deny   icmp any host 192.168.1.10 
+access-list inside_acl_in deny   icmp any host 192.168.1.10 
+access-list outside_acl_in deny   tcp any host 192.168.1.10 
+access-list inside_acl_in deny   tcp any host 192.168.1.10 
 ! 
 ! Rule  8 (global)
 ! for #1938 matching
@@ -173,11 +166,21 @@ access-list inside_acl_in deny    any host 192.168.1.10 object-group outside.id6
 icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
 access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.icmp.0 
-access-list inside_acl_in permit  192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.mixed.0 
+access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.icmp.0 
+access-list inside_acl_in permit tcp 192.168.1.0 255.255.255.192 any eq 3128 
+access-list inside_acl_in permit udp 192.168.1.0 255.255.255.192 any eq 53 
+! 
+! Rule  9 (global)
+! for #1942
+! using custom service
+access-list outside_acl_in deny   tcp any host 192.168.1.10 neq 8080 
+access-list inside_acl_in deny   tcp any host 192.168.1.10 neq 8080 
 ! 
 ! Rule  10 (global)
 ! for #1942
 ! using custom service
+access-list outside_acl_in deny   tcp any host 192.168.1.10 neq 8080 
+access-list inside_acl_in deny   tcp any host 192.168.1.10 neq 8080 
 access-list outside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
 access-list inside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
 ! 

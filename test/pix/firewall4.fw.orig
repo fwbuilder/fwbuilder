@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3437
+!  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Mon Jan 17 17:54:04 2011 PST by vadim
+!  Generated Wed Jan 19 18:23:19 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -81,16 +81,14 @@ clear icmp
 clear telnet
 
 object-group service inside.id3D79A1C2.srv.tcp.0 tcp
- port-object eq 22
- port-object eq 80
- exit
-
+  port-object eq 22
+  port-object eq 80
+exit
 
 object-group network inside.id3D79A1E4.dst.net.0
- network-object  host 192.168.1.10 
- network-object  host 192.168.1.20 
- exit
-
+  network-object host 192.168.1.10 
+  network-object host 192.168.1.20 
+exit
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in permit tcp any host 192.168.1.10 eq 22 
