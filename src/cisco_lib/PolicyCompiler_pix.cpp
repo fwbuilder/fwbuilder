@@ -656,8 +656,8 @@ void PolicyCompiler_pix::compile()
 
     if (XMLTools::version_compare(vers, "8.3")>=0)
     {
-        add( new printNamedObjectsForPolicy(
-                 "definitions of named objects", named_objects_manager));
+        add( new createNamedObjectsForPolicy(
+                 "create named objects", named_objects_manager));
     }
 
     add( new printObjectGroups(

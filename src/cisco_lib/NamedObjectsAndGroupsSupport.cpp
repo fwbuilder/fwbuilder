@@ -271,7 +271,7 @@ bool printObjectGroups::processNext()
     return true;
 }
 
-void printNamedObjectsCommon::printObjectsForRE(FWObject *re)
+void createNamedObjectsCommon::printObjectsForRE(FWObject *re)
 {
     if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
 
@@ -289,7 +289,7 @@ void printNamedObjectsCommon::printObjectsForRE(FWObject *re)
  * at this time, we have decided to not create named objects for
  * everything and use them only in cases where it is inevitable.
  */
-void printNamedObjectsForPolicy::printObjectsForRE(FWObject *re)
+void createNamedObjectsForPolicy::printObjectsForRE(FWObject *re)
 {
     if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
 
@@ -309,7 +309,7 @@ void printNamedObjectsForPolicy::printObjectsForRE(FWObject *re)
  * See #1962, it looks like ASA 8.3 does not support named objects or
  * object-groups in place of port specification in access-list commands.
  */
-bool printNamedObjectsForPolicy::processNext()
+bool createNamedObjectsForPolicy::processNext()
 {
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -334,7 +334,7 @@ bool printNamedObjectsForPolicy::processNext()
 }
 
 
-bool printNamedObjectsForNAT::processNext()
+bool createNamedObjectsForNAT::processNext()
 {
     slurp();
     if (tmp_queue.size()==0) return false;

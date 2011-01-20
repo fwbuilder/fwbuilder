@@ -417,8 +417,8 @@ void NATCompiler_asa8::compile()
 */
 
     add( new PrintClearCommands("Clear ACLs" ));
-    add( new printNamedObjectsForNAT(
-             "definitions of named objects", named_objects_manager));
+    add( new createNamedObjectsForNAT(
+             "create named objects", named_objects_manager));
     add( new printObjectGroups(
              "definitions of object groups", named_objects_manager));
     add( new PrintRule("generate PIX code" ));

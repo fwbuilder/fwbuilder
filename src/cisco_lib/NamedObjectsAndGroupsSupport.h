@@ -171,34 +171,34 @@ public:
         virtual bool processNext();
     };
 
-    class printNamedObjectsCommon :  public BasicRuleProcessor
+    class createNamedObjectsCommon :  public BasicRuleProcessor
     {
 protected:
         virtual void printObjectsForRE(libfwbuilder::FWObject *re);
         NamedObjectManager *named_objects_manager;
 public:
-        printNamedObjectsCommon(const std::string &n,
+        createNamedObjectsCommon(const std::string &n,
             NamedObjectManager *_m) : BasicRuleProcessor(n)
         {
             named_objects_manager = _m;
         }
     };
 
-    class printNamedObjectsForPolicy :  public printNamedObjectsCommon
+    class createNamedObjectsForPolicy :  public createNamedObjectsCommon
     {
 protected:
         virtual void printObjectsForRE(libfwbuilder::FWObject *re);
 public:
-        printNamedObjectsForPolicy(const std::string &n,
-            NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}
+        createNamedObjectsForPolicy(const std::string &n,
+            NamedObjectManager *m) : createNamedObjectsCommon(n, m) {}
         virtual bool processNext();
     };
     
-    class printNamedObjectsForNAT :  public printNamedObjectsCommon
+    class createNamedObjectsForNAT :  public createNamedObjectsCommon
     {
 public:
-        printNamedObjectsForNAT(const std::string &n,
-            NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}
+        createNamedObjectsForNAT(const std::string &n,
+            NamedObjectManager *m) : createNamedObjectsCommon(n, m) {}
         virtual bool processNext();
     };
     
