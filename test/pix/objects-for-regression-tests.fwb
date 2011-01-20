@@ -17486,7 +17486,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295404811" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
+      <Firewall id="id86621X27607" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295497261" platform="pix" version="8.3" name="firewall81" comment="test for the warning issued when translated address is used in&#10;policy rule&#10;" ro="False">
         <NAT id="id86771X27607" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id138353X27607" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -17601,7 +17601,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="host-hostA"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id21571X21575"/>
+              <ServiceRef ref="id80355X18586"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -17622,8 +17622,8 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="host-hostA"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id21571X21575"/>
               <ServiceRef ref="id3B5009F7"/>
+              <ServiceRef ref="id80355X18586"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>

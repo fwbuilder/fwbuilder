@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Wed Jan 19 18:23:22 2011 PST by vadim
+!  Generated Wed Jan 19 20:21:33 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -89,20 +89,30 @@ parameters
   router-alert action clear
 
 
+object service http.0
+  service tcp destination eq 80
+quit
+
+object network hostA:eth0.0
+  host 192.168.1.10
+quit
+
+
 !################
 clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
+
 ! 
 ! Rule  0 (global)
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list inside_acl_in deny   icmp any host 192.168.1.10 
-access-list outside_acl_in deny   icmp any host 192.168.1.10 
-access-list inside_acl_in deny   tcp any host 192.168.1.10 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 
+access-list inside_acl_in deny   icmp any object hostA:eth0.0 
+access-list outside_acl_in deny   icmp any object hostA:eth0.0 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 
 ! 
 ! Rule  1 (FastEthernet1)
 ! test rule using translated address in dst
@@ -123,16 +133,16 @@ access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80
 ! Rule  4 (global)
 ! for #1942
 ! using custom service
-access-list inside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 neq 8080 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 neq 8080 
 ! 
 ! Rule  5 (global)
 ! for #1942
 ! using custom service
-access-list inside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list inside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 neq 8080 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 neq 8080 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 eq 3128 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 eq 3128 
 ! 
 ! Rule  6 (global)
 access-list inside_acl_in deny   ip any any 
@@ -146,12 +156,6 @@ clear xlate
 clear config nat
 clear config object
 
-object service http.0
-  service tcp destination eq 80
-quit
-object network hostA:eth0.0
-  host 192.168.1.10
-quit
 ! 
 ! Rule  0 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0.0 service http.0 http.0 description "0 (NAT)"

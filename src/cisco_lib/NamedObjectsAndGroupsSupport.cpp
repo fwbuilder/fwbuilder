@@ -42,6 +42,7 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Firewall.h"
 
 #include "fwcompiler/Compiler.h"
@@ -104,6 +105,19 @@ NamedObject* NamedObjectManager::getNamedObject(const FWObject *obj)
     return named_objects[obj->getId()];
 }
 
+string NamedObjectManager::getNamedObjectsDefinitions()
+{
+    QStringList output;
+    map<int, NamedObject*>::iterator it;
+
+    for (it=named_objects.begin(); it!=named_objects.end(); ++it)
+    {
+        NamedObject *nobj = it->second;
+        if (nobj==NULL) continue;
+        output << nobj->getCommand(fw);
+    }
+    return output.join("\n").toUtf8().constData();
+}
 
 
 void CreateObjectGroups::init(FWObjectDatabase *db)
@@ -283,12 +297,17 @@ void printNamedObjectsCommon::printObjectsForRE(RuleElement *re)
     {
         FWObject *obj = FWReference::getObject(*it);
         if (Interface::isA(obj)) continue;
-        compiler->output << named_objects_manager->addNamedObject(obj);
+        //compiler->output << named_objects_manager->addNamedObject(obj);
+        named_objects_manager->addNamedObject(obj);
     }
 }
 
 /*
- * We do not need object-groups for policy rules.
+ * We support named objects only for ASA 8.3 and in policy rules, only for
+ * address ranges.
+ *
+ * See #1962, it looks like ASA 8.3 does not support named objects or
+ * object-groups in place of port specification in access-list commands.
  */
 bool printNamedObjectsForPolicy::processNext()
 {
@@ -302,12 +321,16 @@ bool printNamedObjectsForPolicy::processNext()
         PolicyRule *policy_rule = PolicyRule::cast( *k );
         if (policy_rule)
         {
-            // RuleElementSrc *src_re = policy_rule->getSrc();  assert(src_re);
-            // printObjectsForRE(src_re);
-            // RuleElementDst *dst_re = policy_rule->getDst();  assert(dst_re);
-            // printObjectsForRE(dst_re);
-            // RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
-            // if (haveCustomService(srv_re)) printObjectsForRE(srv_re);
+            RuleElementSrc *src_re = policy_rule->getSrc();  assert(src_re);
+            FWObject *srcobj = FWReference::getObject(src_re->front());
+            if (AddressRange::isA(srcobj)) printObjectsForRE(src_re);
+
+            RuleElementDst *dst_re = policy_rule->getDst();  assert(dst_re);
+            FWObject *dstobj = FWReference::getObject(dst_re->front());
+            if (AddressRange::isA(srcobj)) printObjectsForRE(dst_re);
+
+            //RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
+            //printObjectsForRE(srv_re);
         }
     }
 

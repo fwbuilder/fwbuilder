@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Wed Jan 19 18:23:22 2011 PST by vadim
+!  Generated Wed Jan 19 20:15:51 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -87,20 +87,30 @@ parameters
   router-alert action clear
 
 
+object service http.0
+  service tcp destination eq 80
+quit
+
+object network hostA:eth0.0
+  host 192.168.1.10
+quit
+
+
 !################
 clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
+
 ! 
 ! Rule  0 (global)
 ! matching "any" icmp and "all" tcp 
 ! in one service-group
 ! 
-access-list inside_acl_in deny   icmp any host 192.168.1.10 
-access-list outside_acl_in deny   icmp any host 192.168.1.10 
-access-list inside_acl_in deny   tcp any host 192.168.1.10 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 
+access-list inside_acl_in deny   icmp any object hostA:eth0.0 
+access-list outside_acl_in deny   icmp any object hostA:eth0.0 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 
 ! 
 ! Rule  1 (FastEthernet1)
 ! test rule using translated address in dst
@@ -127,12 +137,6 @@ clear xlate
 clear config nat
 clear config object
 
-object network hostA:eth0.0
-  host 192.168.1.10
-quit
-object service http.0
-  service tcp destination eq 80
-quit
 ! 
 ! Rule  0 (NAT)
 nat (inside,outside) source static hostA:eth0.0 interface service http.0 http.0 description "0 (NAT)"

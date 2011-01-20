@@ -450,6 +450,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         }
 
         system_configuration_script = oscnf->getCompiledScript();
+        system_configuration_script +=
+            named_object_manager.getNamedObjectsDefinitions();
         policy_script = c->getCompiledScript();
         nat_script = n->getCompiledScript();
         routing_script = r->getCompiledScript();
@@ -468,7 +470,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         {
             return formSingleRuleCompileOutput(
                 QString::fromUtf8(
-                    (policy_script + nat_script + routing_script).c_str()));
+                    (named_object_manager.getNamedObjectsDefinitions() +
+                     policy_script + nat_script + routing_script).c_str()));
         }
 
         ofname = getAbsOutputFileName(ofname);

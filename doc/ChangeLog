@@ -1,5 +1,24 @@
 2011-01-19  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): See #1959 "ASA Policy - ranges
+	are broken into composite network instead of using range command."
+	Added support for address ranges using named network object with
+	parameter "range" for ASA 8.3 and later. NOTE: if a network or ip
+	address object is used in a nat rule for ASA 8.3, a named object
+	has to be created for it since ASA 8.3 does not accept ip
+	addresses or subnets in "nat" commands. In the situation like
+	this, if the same address or network object is used in any Policy
+	rule, the same named object will be used in the generated
+	access-lists command.
+
+	* NamedObjectsAndGroupsSupport.cpp (getNamedObjectsDefinitions):
+	see #1959 Moved generation of the code that defines named objects
+	to class NamedObjectManager. This allows me to put all named
+	object commands on top of the generated policy, nat and routing
+	configurations and make sure each object is defined only once.
+	Still need to do #1963 - move code that generates commands to
+	define object-groups to class NamedObjectManager.
+
 	* NATCompiler_asa8.cpp (processNext): see #1954 "ASA NAT -
 	generate warning if nat rule is split and one of the resulting nat
 	rules have the same real interface and mapped interface". Compiler

@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Wed Jan 19 18:23:23 2011 PST by vadim
+!  Generated Wed Jan 19 20:15:51 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -90,11 +90,89 @@ parameters
   router-alert action clear
 
 
+object service http.0
+  service tcp destination eq 80
+quit
+
+object service smtp.0
+  service tcp destination eq 25
+quit
+
+object service smtps.0
+  service tcp destination eq 465
+quit
+
+object service squid.0
+  service tcp destination eq 3128
+quit
+
+object network spamhost1.0
+  host 61.150.47.112
+quit
+
+object network external_gw_1.0
+  host 22.22.22.254
+quit
+
+object network external_gw2.0
+  host 22.22.22.100
+quit
+
+object network spamhost2.0
+  host 61.150.47.113
+quit
+
+object network hostA:eth0.0
+  host 192.168.1.10
+quit
+
+object network Internal_net.0
+  subnet 192.168.1.0 255.255.255.0
+quit
+
+object network internal_subnet_1.0
+  subnet 192.168.1.0 255.255.255.192
+quit
+
+object network internal_subnet_2.0
+  subnet 192.168.1.64 255.255.255.192
+quit
+
+object network ext_subnet.0
+  subnet 22.22.22.128 255.255.255.224
+quit
+
+object network ext_subnet-192.0
+  subnet 22.22.22.128 255.255.255.192
+quit
+
+object network test_range_1.0
+  range 192.168.1.11 192.168.1.15
+quit
+
+object network outside_range.0
+  range 22.22.22.21 22.22.22.25
+quit
+
+object network outside_range-1.0
+  range 22.22.22.30 22.22.22.40
+quit
+
+object network firewall90:FastEthernet1:ip.0
+  host 22.22.22.22
+quit
+
+object network firewall90:FastEthernet1:ip-1.0
+  host 22.22.22.23
+quit
+
+
 !################
 clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
+
 
 object-group network outside.id78630X30274.src.net.0
   network-object 10.1.2.0 255.255.255.0 
@@ -107,16 +185,16 @@ access-list outside_acl_in deny   ip object-group outside.id78630X30274.src.net.
 ! Rule  1 (global)
 ! for #1942
 ! using custom service
-access-list inside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 tcp destination neq 8080 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 tcp destination neq 8080 
 ! 
 ! Rule  2 (global)
 ! for #1942
 ! using custom service
-access-list inside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 tcp destination neq 8080 
-access-list inside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
-access-list outside_acl_in deny   tcp any host 192.168.1.10 eq 3128 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 tcp destination neq 8080 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 tcp destination neq 8080 
+access-list inside_acl_in deny   tcp any object hostA:eth0.0 eq 3128 
+access-list outside_acl_in deny   tcp any object hostA:eth0.0 eq 3128 
 ! 
 ! Rule  3 (global)
 access-list inside_acl_in deny   ip any any 
@@ -130,63 +208,6 @@ clear xlate
 clear config nat
 clear config object
 
-object network Internal_net.0
-  subnet 192.168.1.0 255.255.255.0
-quit
-object service http.0
-  service tcp destination eq 80
-quit
-object network hostA:eth0.0
-  host 192.168.1.10
-quit
-object network spamhost1.0
-  host 61.150.47.112
-quit
-object service smtp.0
-  service tcp destination eq 25
-quit
-object network firewall90:FastEthernet1:ip-1.0
-  host 22.22.22.23
-quit
-object network internal_subnet_1.0
-  subnet 192.168.1.0 255.255.255.192
-quit
-object network internal_subnet_2.0
-  subnet 192.168.1.64 255.255.255.192
-quit
-object network test_range_1.0
-  range 192.168.1.11 192.168.1.15
-quit
-object network external_gw_1.0
-  host 22.22.22.254
-quit
-object network outside_range.0
-  range 22.22.22.21 22.22.22.25
-quit
-object network firewall90:FastEthernet1:ip.0
-  host 22.22.22.22
-quit
-object network external_gw2.0
-  host 22.22.22.100
-quit
-object network ext_subnet.0
-  subnet 22.22.22.128 255.255.255.224
-quit
-object network outside_range-1.0
-  range 22.22.22.30 22.22.22.40
-quit
-object service squid.0
-  service tcp destination eq 3128
-quit
-object network spamhost2.0
-  host 61.150.47.113
-quit
-object service smtps.0
-  service tcp destination eq 465
-quit
-object network ext_subnet-192.0
-  subnet 22.22.22.128 255.255.255.192
-quit
 
 object-group network outside.id178211X29963.osrc.net.0
   network-object object internal_subnet_1.0

@@ -511,7 +511,8 @@ void PolicyCompiler_pix::compile()
     add( new InterfacePolicyRules(
              "process interface policy rules and store interface ids"));
 
-    add( new addressRanges("process address ranges" ));
+    if (XMLTools::version_compare(vers, "8.3")<0)
+        add( new addressRanges("process address ranges" ));
 
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
@@ -642,11 +643,11 @@ void PolicyCompiler_pix::compile()
 
     add( new printClearCommands("Clear ACLs and object groups"));
 
-    //if (XMLTools::version_compare(vers, "8.3")>=0)
-    //{
-    //    add( new printNamedObjectsForPolicy(
-    //             "definitions of named objects", named_objects_manager));
-    //}
+    if (XMLTools::version_compare(vers, "8.3")>=0)
+    {
+        add( new printNamedObjectsForPolicy(
+                 "definitions of named objects", named_objects_manager));
+    }
 
     add( new printObjectGroups(
              "generate code for object groups", named_objects_manager));

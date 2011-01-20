@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3439
 !
-!  Generated Wed Jan 19 18:23:23 2011 PST by vadim
+!  Generated Wed Jan 19 20:15:52 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -92,11 +92,45 @@ parameters
   router-alert action clear
 
 
+object service http.0
+  service tcp destination eq 80
+quit
+
+object service https.0
+  service tcp destination eq 443
+quit
+
+object service squid.0
+  service tcp destination eq 3128
+quit
+
+object network external_gw2.0
+  host 22.22.22.100
+quit
+
+object network hostA:eth0.0
+  host 192.168.1.10
+quit
+
+object network internal_subnet_1.0
+  subnet 192.168.1.0 255.255.255.192
+quit
+
+object network test_range_1.0
+  range 192.168.1.11 192.168.1.15
+quit
+
+object network outside_range.0
+  range 22.22.22.21 22.22.22.25
+quit
+
+
 !################
 clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
+
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in deny   ip any any 
@@ -110,30 +144,6 @@ clear xlate
 clear config nat
 clear config object
 
-object network hostA:eth0.0
-  host 192.168.1.10
-quit
-object network external_gw2.0
-  host 22.22.22.100
-quit
-object service http.0
-  service tcp destination eq 80
-quit
-object service squid.0
-  service tcp destination eq 3128
-quit
-object service https.0
-  service tcp destination eq 443
-quit
-object network outside_range.0
-  range 22.22.22.21 22.22.22.25
-quit
-object network internal_subnet_1.0
-  subnet 192.168.1.0 255.255.255.192
-quit
-object network test_range_1.0
-  range 192.168.1.11 192.168.1.15
-quit
 ! 
 ! Rule  0 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0.0 description "0 (NAT)"

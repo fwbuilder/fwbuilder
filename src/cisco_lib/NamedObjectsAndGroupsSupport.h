@@ -51,6 +51,8 @@ public:
         virtual ~NamedObjectManager();
         std::string addNamedObject(const libfwbuilder::FWObject *obj);
         NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
+
+        std::string getNamedObjectsDefinitions();
     };
     
     class CreateObjectGroups : public BasicRuleProcessor

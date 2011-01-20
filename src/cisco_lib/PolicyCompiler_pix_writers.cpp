@@ -473,42 +473,26 @@ bool PolicyCompiler_pix::PrintRule::processNext()
      * be either group (in case processor CreateObjectGroups created
      * object group for it) or a regular object
      */
-    RuleElementSrc *src=rule->getSrc();
-    RuleElementDst *dst=rule->getDst();
-    RuleElementSrv *srv=rule->getSrv();
+    RuleElementSrc *src = rule->getSrc();
+    RuleElementDst *dst = rule->getDst();
+    RuleElementSrv *srv = rule->getSrv();
 
     assert(src->size()==1);
     assert(dst->size()==1);
     assert(srv->size()==1);
 
-    FWObject *srcobj=src->front();
-    FWObject *dstobj=dst->front();
-    FWObject *srvobj=srv->front();
+    FWObject *srcobj = FWReference::getObject(src->front());
+    FWObject *dstobj = FWReference::getObject(dst->front());
+    FWObject *srvobj = FWReference::getObject(srv->front());
 
     assert(srcobj);
     assert(dstobj);
     assert(srvobj);
 
-    if (FWReference::cast(srcobj)!=NULL)
-    {
-        srcobj=FWReference::cast(srcobj)->getPointer();
-        assert(srcobj);
-    }
-    if (FWReference::cast(dstobj)!=NULL)
-    {
-        dstobj=FWReference::cast(dstobj)->getPointer();
-        assert(dstobj);
-    }
-    if (FWReference::cast(srvobj)!=NULL)
-    {
-        srvobj=FWReference::cast(srvobj)->getPointer();
-        assert(srvobj);
-    }
-
     ostringstream  aclstr;
 
-    string acl_name=rule->getStr("acl");
-    assert (acl_name!="");
+    string acl_name = rule->getStr("acl");
+    assert(acl_name!="");
 
     ciscoACL *acl = pix_comp->acls[acl_name];
     assert(acl!=NULL);
@@ -549,32 +533,48 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 
     aclstr << " ";
 
-    if ( pgsrc!=NULL && pgsrc->isObjectGroup())
+    NamedObject* asa8_object;
+
+    asa8_object = pix_comp->named_objects_manager->getNamedObject(srcobj);
+    if (asa8_object)
     {
-        aclstr << "object-group " << srcobj->getName();
-        aclstr << " ";
+        aclstr << "object " << asa8_object->getCommandWord().toStdString() << " ";
     } else
     {
-        aclstr << _printAddr( compiler->getFirstSrc(rule) );
+        if (pgsrc!=NULL)
+        {
+            aclstr << "object-group " << srcobj->getName() << " ";
+        } else
+        {
+            aclstr << _printAddr(Address::cast(srcobj));
+        }
     }
 
     if ( pgsrv==NULL ) 
         aclstr << _printSrcService( compiler->getFirstSrv(rule) );
 
-    if ( pgdst!=NULL && pgdst->isObjectGroup())
+    asa8_object = pix_comp->named_objects_manager->getNamedObject(dstobj);
+    if (asa8_object)
     {
-        aclstr << "object-group " << dstobj->getName();
-        aclstr << " ";
-    } else 
-        aclstr << _printAddr( compiler->getFirstDst(rule) );
-
-
-    if ( pgsrv!=NULL )
+        aclstr << "object "  << asa8_object->getCommandWord().toStdString() << " ";
+    } else
     {
-        aclstr << "object-group " << srvobj->getName();
-        aclstr << " ";
-    } else 
-        aclstr << _printDstService( compiler->getFirstSrv(rule) );
+        if (pgdst!=NULL)
+        {
+            aclstr << "object-group " << dstobj->getName() << " ";
+        } else
+        {
+            aclstr << _printAddr(Address::cast(dstobj));
+        }
+    }
+
+    if (pgsrv!=NULL)
+    {
+        aclstr << "object-group " << srvobj->getName() << " ";
+    } else
+    {
+        aclstr << _printDstService(Service::cast(srvobj));
+    }
 
     aclstr << _printLog( rule );
 

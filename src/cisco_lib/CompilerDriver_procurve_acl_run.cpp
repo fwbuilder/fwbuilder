@@ -305,11 +305,15 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
             all_errors.push_front(getErrors("").c_str());
         }
 
+        system_configuration_script +=
+            named_object_manager.getNamedObjectsDefinitions();
 
         if (single_rule_compile_on)
         {
             return formSingleRuleCompileOutput(
-                QString::fromUtf8((policy_script + routing_script).c_str()));
+                QString::fromUtf8(
+                    (named_object_manager.getNamedObjectsDefinitions() +
+                     policy_script + routing_script).c_str()));
         }
 
         QString script_buffer = assembleFwScript(
