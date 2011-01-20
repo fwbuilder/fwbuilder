@@ -192,8 +192,8 @@ bool CreateObjectGroups::processNext()
         obj_group->setObjectGroupTypeFromMembers(named_objects_manager);
 
         QStringList group_name_prefix;
-        if (!rule_iface->getLabel().empty())
-            group_name_prefix.push_back(rule_iface->getLabel().c_str());
+        // if (!rule_iface->getLabel().empty())
+        //     group_name_prefix.push_back(rule_iface->getLabel().c_str());
 
         group_name_prefix.push_back(rule->getUniqueId().c_str());
         group_name_prefix.push_back(name_suffix.c_str());

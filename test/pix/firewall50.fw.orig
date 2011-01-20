@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:48 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:24 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -129,12 +129,12 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group network inside.id45142FA628543.dst.net.0
+object-group network id45142FA628543.dst.net.0
   network-object host 211.11.11.11 
   network-object host 211.22.22.22 
 exit
 
-object-group service inside.id45142FA628543.srv.tcp.0 tcp
+object-group service id45142FA628543.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
   port-object eq 25
@@ -144,40 +144,40 @@ object-group service inside.id45142FA628543.srv.tcp.0 tcp
   port-object eq 143
 exit
 
-object-group icmp-type outside.id45142FCB28543.srv.icmp.0
+object-group icmp-type id45142FCB28543.srv.icmp.0
   icmp-object 11
   icmp-object 0
   icmp-object 3
 exit
 
-object-group service outside.id45142FD728543.srv.tcp.0 tcp
+object-group service id45142FD728543.srv.tcp.0 tcp
   port-object eq 3128
   port-object eq 70
   port-object eq 6667
   port-object eq 23
 exit
 
-object-group service outside.id45142FD728543.srv.udp.0 udp
+object-group service id45142FD728543.srv.udp.0 udp
   port-object eq 161
   port-object eq 53
 exit
 
-object-group network outside.id45142FFC28543.dst.net.0
+object-group network id45142FFC28543.dst.net.0
   network-object host 192.168.1.10 
   network-object host 192.168.1.20 
 exit
 
-object-group network inside.id4514300A28543.dst.net.0
+object-group network id4514300A28543.dst.net.0
   network-object 192.168.1.250 255.255.255.254 
   network-object 192.168.1.252 255.255.255.252 
 exit
 
-object-group network outside.id4514301628543.dst.net.0
+object-group network id4514301628543.dst.net.0
   network-object 192.168.1.250 255.255.255.254 
   network-object 192.168.1.252 255.255.255.252 
 exit
 
-object-group network outside.id4514302F28543.dst.net.0
+object-group network id4514302F28543.dst.net.0
   network-object host 192.168.1.11 
   network-object host 192.168.1.12 
   network-object host 192.168.1.13 
@@ -185,7 +185,7 @@ object-group network outside.id4514302F28543.dst.net.0
   network-object host 192.168.1.15 
 exit
 
-object-group service outside.id4514302F28543.srv.tcp.0 tcp
+object-group service id4514302F28543.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
   port-object eq 25
@@ -196,12 +196,12 @@ object-group service outside.id4514302F28543.srv.tcp.0 tcp
   port-object eq 3128
 exit
 
-object-group network outside.id4514303C28543.dst.net.0
+object-group network id4514303C28543.dst.net.0
   network-object 192.168.1.11 255.255.255.255 
   network-object 192.168.1.12 255.255.255.252 
 exit
 
-object-group service outside.id4514304928543.srv.tcp.0 tcp
+object-group service id4514304928543.srv.tcp.0 tcp
   port-object eq 3128
   port-object range 10000 11000
   port-object eq 6667
@@ -254,9 +254,9 @@ access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 0 interval
 ssh    192.168.1.0 255.255.255.0 inside
 ! 
 ! Rule  5 (ethernet0)
-access-list inside_acl_in permit tcp any object-group inside.id45142FA628543.dst.net.0 object-group inside.id45142FA628543.srv.tcp.0 
-access-list inside_acl_in permit tcp any object-group inside.id45142FA628543.dst.net.0 object-group inside.id45142FA628543.srv.tcp.0 
-access-list dmz_acl_in permit tcp any object-group inside.id45142FA628543.dst.net.0 object-group inside.id45142FA628543.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id45142FA628543.dst.net.0 object-group id45142FA628543.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id45142FA628543.dst.net.0 object-group id45142FA628543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id45142FA628543.dst.net.0 object-group id45142FA628543.srv.tcp.0 
 ! 
 ! Rule  6 (ethernet0)
 access-list inside_acl_in deny   ip any host 192.168.1.255 
@@ -270,20 +270,20 @@ access-list inside_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22
 access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 ! 
 ! Rule  10 (global)
-access-list outside_acl_in permit icmp any host 192.168.1.10 object-group outside.id45142FCB28543.srv.icmp.0 
-access-list inside_acl_in permit icmp any host 192.168.1.10 object-group outside.id45142FCB28543.srv.icmp.0 
-access-list dmz_acl_in permit icmp any host 192.168.1.10 object-group outside.id45142FCB28543.srv.icmp.0 
+access-list outside_acl_in permit icmp any host 192.168.1.10 object-group id45142FCB28543.srv.icmp.0 
+access-list inside_acl_in permit icmp any host 192.168.1.10 object-group id45142FCB28543.srv.icmp.0 
+access-list dmz_acl_in permit icmp any host 192.168.1.10 object-group id45142FCB28543.srv.icmp.0 
 ! 
 ! Rule  11 (global)
 access-list outside_acl_in permit icmp any host 192.168.1.10 
 access-list inside_acl_in permit icmp any host 192.168.1.10 
 access-list dmz_acl_in permit icmp any host 192.168.1.10 
-access-list outside_acl_in permit tcp any host 192.168.1.10 object-group outside.id45142FD728543.srv.tcp.0 
-access-list inside_acl_in permit tcp any host 192.168.1.10 object-group outside.id45142FD728543.srv.tcp.0 
-access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group outside.id45142FD728543.srv.tcp.0 
-access-list outside_acl_in permit udp any host 192.168.1.10 object-group outside.id45142FD728543.srv.udp.0 
-access-list inside_acl_in permit udp any host 192.168.1.10 object-group outside.id45142FD728543.srv.udp.0 
-access-list dmz_acl_in permit udp any host 192.168.1.10 object-group outside.id45142FD728543.srv.udp.0 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group id45142FD728543.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group id45142FD728543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group id45142FD728543.srv.tcp.0 
+access-list outside_acl_in permit udp any host 192.168.1.10 object-group id45142FD728543.srv.udp.0 
+access-list inside_acl_in permit udp any host 192.168.1.10 object-group id45142FD728543.srv.udp.0 
+access-list dmz_acl_in permit udp any host 192.168.1.10 object-group id45142FD728543.srv.udp.0 
 access-list outside_acl_in permit 47 any host 192.168.1.10 
 access-list inside_acl_in permit 47 any host 192.168.1.10 
 access-list dmz_acl_in permit 47 any host 192.168.1.10 
@@ -305,16 +305,16 @@ access-list inside_acl_in permit 50 any any log 0 interval 300
 access-list dmz_acl_in permit 50 any any log 0 interval 300
 ! 
 ! Rule  14 (global)
-access-list outside_acl_in permit ip object-group inside.id45142FA628543.dst.net.0 object-group outside.id45142FFC28543.dst.net.0 
+access-list outside_acl_in permit ip object-group id45142FA628543.dst.net.0 object-group id45142FFC28543.dst.net.0 
 ! 
 ! Rule  15 (global)
 ! firewall50:Policy:15: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
-access-list inside_acl_in permit tcp host 192.168.1.10 object-group inside.id4514300A28543.dst.net.0 eq 3128 
+access-list inside_acl_in permit tcp host 192.168.1.10 object-group id4514300A28543.dst.net.0 eq 3128 
 ! 
 ! Rule  16 (global)
-access-list outside_acl_in permit tcp any object-group outside.id4514301628543.dst.net.0 eq 3128 
-access-list inside_acl_in permit tcp any object-group outside.id4514301628543.dst.net.0 eq 3128 
-access-list dmz_acl_in permit tcp any object-group outside.id4514301628543.dst.net.0 eq 3128 
+access-list outside_acl_in permit tcp any object-group id4514301628543.dst.net.0 eq 3128 
+access-list inside_acl_in permit tcp any object-group id4514301628543.dst.net.0 eq 3128 
+access-list dmz_acl_in permit tcp any object-group id4514301628543.dst.net.0 eq 3128 
 ! 
 ! Rule  17 (global)
 ssh    0.0.0.0 0.0.0.0 outside
@@ -325,19 +325,19 @@ access-list inside_acl_in permit icmp any host 192.168.1.1 3
 access-list dmz_acl_in permit icmp any host 192.168.2.1 3 
 ! 
 ! Rule  18 (global)
-access-list outside_acl_in permit tcp any object-group outside.id4514302F28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
-access-list inside_acl_in permit tcp any object-group outside.id4514302F28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
-access-list dmz_acl_in permit tcp any object-group outside.id4514302F28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
+access-list outside_acl_in permit tcp any object-group id4514302F28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id4514302F28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id4514302F28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
 ! 
 ! Rule  19 (global)
-access-list outside_acl_in permit tcp any object-group outside.id4514303C28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
-access-list inside_acl_in permit tcp any object-group outside.id4514303C28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
-access-list dmz_acl_in permit tcp any object-group outside.id4514303C28543.dst.net.0 object-group outside.id4514302F28543.srv.tcp.0 
+access-list outside_acl_in permit tcp any object-group id4514303C28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id4514303C28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id4514303C28543.dst.net.0 object-group id4514302F28543.srv.tcp.0 
 ! 
 ! Rule  20 (global)
-access-list outside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group outside.id4514304928543.srv.tcp.0 
-access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group outside.id4514304928543.srv.tcp.0 
-access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group outside.id4514304928543.srv.tcp.0 
+access-list outside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id4514304928543.srv.tcp.0 
+access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id4514304928543.srv.tcp.0 
+access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id4514304928543.srv.tcp.0 
 ! 
 ! Rule  21 (global)
 ! objects hostA and hostB are

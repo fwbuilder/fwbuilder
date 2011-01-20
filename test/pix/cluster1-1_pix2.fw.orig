@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:56 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:31 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -120,33 +120,33 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group network outside.id56590X61097.src.net.0
+object-group network id56590X61097.src.net.0
   network-object host 10.3.14.206 
   network-object host 10.3.14.207 
 exit
 
-object-group network outside.id56590X61097.src.net.1
+object-group network id56590X61097.src.net.1
   network-object host 172.17.1.253 
   network-object host 172.17.1.254 
   network-object host 192.0.2.253 
   network-object host 192.0.2.254 
 exit
 
-object-group network outside.id56590X61097.src.net.2
+object-group network id56590X61097.src.net.2
   network-object host 10.0.0.253 
   network-object host 10.0.0.254 
 exit
 
-object-group network inside.id56627X61097.src.net.0
+object-group network id56627X61097.src.net.0
   network-object host 172.17.1.253 
   network-object host 192.0.2.253 
 exit
 ! 
 ! Rule  0 (Ethernet0.101)
 ! anti spoofing rule
-access-list outside_in deny   ip object-group outside.id56590X61097.src.net.0 any log 3 interval 300
-access-list outside_in deny   ip object-group outside.id56590X61097.src.net.1 any log 3 interval 300
-access-list outside_in deny   ip object-group outside.id56590X61097.src.net.2 any log 3 interval 300
+access-list outside_in deny   ip object-group id56590X61097.src.net.0 any log 3 interval 300
+access-list outside_in deny   ip object-group id56590X61097.src.net.1 any log 3 interval 300
+access-list outside_in deny   ip object-group id56590X61097.src.net.2 any log 3 interval 300
 access-list outside_in deny   ip 10.3.14.0 255.255.255.0 any log 3 interval 300
 ! 
 ! Rule  1 (global)
@@ -161,22 +161,22 @@ ssh    10.3.14.0 255.255.255.0 inside
 ! Firewall uses one of the machines
 ! on internal network for DNS
 access-list inside_out permit udp host 10.3.14.206 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
-access-list inside_out permit udp object-group inside.id56627X61097.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
+access-list inside_out permit udp object-group id56627X61097.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
 access-list inside_out permit udp host 10.0.0.253 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
 ! 
 ! Rule  4 (global)
 ! Firewall uses one of the machines
 ! on internal network for DNS
-access-list inside_out permit udp object-group outside.id56590X61097.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
-access-list inside_out permit udp object-group outside.id56590X61097.src.net.1 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
-access-list inside_out permit udp object-group outside.id56590X61097.src.net.2 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
+access-list inside_out permit udp object-group id56590X61097.src.net.0 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
+access-list inside_out permit udp object-group id56590X61097.src.net.1 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
+access-list inside_out permit udp object-group id56590X61097.src.net.2 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
 ! 
 ! Rule  5 (global)
 ! All other attempts to connect to
 ! the firewall are denied and logged
-access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.0 log 3 interval 300
-access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.1 log 3 interval 300
-access-list inside_in deny   ip any object-group outside.id56590X61097.src.net.2 log 3 interval 300
+access-list inside_in deny   ip any object-group id56590X61097.src.net.0 log 3 interval 300
+access-list inside_in deny   ip any object-group id56590X61097.src.net.1 log 3 interval 300
+access-list inside_in deny   ip any object-group id56590X61097.src.net.2 log 3 interval 300
 ! 
 ! Rule  6 (global)
 access-list inside_in permit ip 10.3.14.0 255.255.255.0 any 

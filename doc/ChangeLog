@@ -1,3 +1,9 @@
+2011-01-20  vadim  <vadim@netcitadel.com>
+
+	* NamedObjectsAndGroupsSupport.cpp (processNext): made names
+	automatically assigned to object-groups in generated PIX
+	configuration shorter by removing interface label prefix.
+
 2011-01-19  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_pix.cpp (compile): See #1959 "ASA Policy - ranges

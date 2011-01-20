@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:41 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:17 2011 PST by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -68,7 +68,7 @@ floodguard disable
 
 !################
 
-object-group icmp-type outside.id3D50B022.srv.icmp.0
+object-group icmp-type id3D50B022.srv.icmp.0
   icmp-object 8
   icmp-object 11
 exit
@@ -85,16 +85,16 @@ access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any
 ! Rule  4 (eth1)
 icmp permit any 8 outside
 icmp permit any 11 outside
-access-list outside_acl_in permit icmp any interface outside object-group outside.id3D50B022.srv.icmp.0 
+access-list outside_acl_in permit icmp any interface outside object-group id3D50B022.srv.icmp.0 
 ! 
 ! Rule  5 (eth1)
-access-list outside_acl_in permit icmp any any object-group outside.id3D50B022.srv.icmp.0 
+access-list outside_acl_in permit icmp any any object-group id3D50B022.srv.icmp.0 
 ! 
 ! Rule  6 (eth1,eth2)
-access-list outside_acl_in permit icmp any interface outside object-group outside.id3D50B022.srv.icmp.0 
+access-list outside_acl_in permit icmp any interface outside object-group id3D50B022.srv.icmp.0 
 icmp permit any 8 dmz
 icmp permit any 11 dmz
-access-list dmz_acl_in permit icmp any host 192.168.2.1 object-group outside.id3D50B022.srv.icmp.0 
+access-list dmz_acl_in permit icmp any host 192.168.2.1 object-group id3D50B022.srv.icmp.0 
 ! 
 ! Rule  9 (global)
 telnet 0.0.0.0 0.0.0.0 inside

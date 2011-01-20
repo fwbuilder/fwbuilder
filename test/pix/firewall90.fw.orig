@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:51 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:27 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -174,13 +174,13 @@ clear config icmp
 clear config telnet
 
 
-object-group network outside.id78630X30274.src.net.0
+object-group network id78630X30274.src.net.0
   network-object 10.1.2.0 255.255.255.0 
   network-object 10.1.3.0 255.255.255.0 
 exit
 ! 
 ! Rule  0 (global)
-access-list outside_acl_in deny   ip object-group outside.id78630X30274.src.net.0 any 
+access-list outside_acl_in deny   ip object-group id78630X30274.src.net.0 any 
 ! 
 ! Rule  1 (global)
 ! for #1942
@@ -209,56 +209,56 @@ clear config nat
 clear config object
 
 
-object-group network outside.id178211X29963.osrc.net.0
+object-group network id178211X29963.osrc.net.0
   network-object object internal_subnet_1.0
   network-object object internal_subnet_2.0
 exit
 
-object-group network outside.id21353X4994.osrc.net.0
+object-group network id21353X4994.osrc.net.0
   network-object object internal_subnet_1.0
   network-object object Internal_net.0
   network-object object internal_subnet_2.0
 exit
 
-object-group network outside.id130599X29063.tsrc.net.0
+object-group network id130599X29063.tsrc.net.0
   network-object object outside_range.0
   network-object object firewall90:FastEthernet1:ip.0
   network-object object external_gw2.0
 exit
 
-object-group network outside.id20720X27505.tsrc.net.0
+object-group network id20720X27505.tsrc.net.0
   network-object object outside_range.0
   network-object object external_gw2.0
 exit
 
-object-group network outside.id241772X29764.tsrc.net.0
+object-group network id241772X29764.tsrc.net.0
   network-object object outside_range.0
 exit
 
-object-group network outside.id643092X27990.tsrc.net.0
+object-group network id643092X27990.tsrc.net.0
   network-object object ext_subnet.0
 exit
 
-object-group network outside.id21121X3710.tsrc.net.0
+object-group network id21121X3710.tsrc.net.0
   network-object object outside_range-1.0
   network-object object external_gw2.0
 exit
 
-object-group network outside.id21177X3720.tsrc.net.0
+object-group network id21177X3720.tsrc.net.0
   network-object object ext_subnet.0
 exit
 
-object-group network outside.id77971X5929.odst.net.0
+object-group network id77971X5929.odst.net.0
   network-object object spamhost1.0
   network-object object spamhost2.0
 exit
 
-object-group network outside.id77971X5929.tsrc.net.0
+object-group network id77971X5929.tsrc.net.0
   network-object object outside_range-1.0
   network-object object external_gw2.0
 exit
 
-object-group network outside.id77971X5929.tsrc.net.1
+object-group network id77971X5929.tsrc.net.1
   network-object object outside_range-1.0
   network-object object external_gw2.0
 exit
@@ -273,12 +273,12 @@ nat (inside,outside) source static hostA:eth0.0 firewall90:FastEthernet1:ip-1.0 
 nat (inside,outside) source static hostA:eth0.0 interface service smtp.0 smtp.0 description "2 (NAT)"
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 description "3 (NAT)"
+nat (inside,outside) source dynamic id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 description "3 (NAT)"
 ! 
 ! Rule  4 (NAT)
 ! for #1928
 ! note that group in OSrc includes another group
-nat (inside,outside) source dynamic outside.id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 description "4 (NAT)"
+nat (inside,outside) source dynamic id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 description "4 (NAT)"
 ! 
 ! Rule  5 (NAT)
 nat (inside,outside) source dynamic test_range_1.0 firewall90:FastEthernet1:ip-1.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "5 (NAT)"
@@ -288,15 +288,15 @@ nat (inside,outside) source static hostA:eth0.0 firewall90:FastEthernet1:ip-1.0 
 ! 
 ! Rule  7 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id130599X29063.tsrc.net.0 service smtp.0 smtp.0 description "7 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id130599X29063.tsrc.net.0 service smtp.0 smtp.0 description "7 (NAT)"
 ! 
 ! Rule  8 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id20720X27505.tsrc.net.0 interface service smtp.0 smtp.0 description "8 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id20720X27505.tsrc.net.0 interface service smtp.0 smtp.0 description "8 (NAT)"
 ! 
 ! Rule  9 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id241772X29764.tsrc.net.0 interface service smtp.0 smtp.0 description "9 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id241772X29764.tsrc.net.0 interface service smtp.0 smtp.0 description "9 (NAT)"
 ! 
 ! Rule  10 (NAT)
 ! For #1907
@@ -304,7 +304,7 @@ nat (inside,outside) source static hostA:eth0.0 hostA:eth0.0 service smtp.0 smtp
 ! 
 ! Rule  11 (NAT)
 ! For #1907
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id643092X27990.tsrc.net.0 interface service smtp.0 smtp.0 description "11 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id643092X27990.tsrc.net.0 interface service smtp.0 smtp.0 description "11 (NAT)"
 ! 
 ! Rule  12 (NAT)
 ! for #1902
@@ -337,12 +337,12 @@ nat (inside,outside) source dynamic hostA:eth0.0 outside_range.0 description "16
 ! for #1885 "named object" - create 
 ! for #1907 "multiple objects in TSrc"
 ! network object to define address range, then add it to object-group
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id21121X3710.tsrc.net.0 interface description "17 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id21121X3710.tsrc.net.0 interface description "17 (NAT)"
 ! 
 ! Rule  18 (NAT)
 ! for #1908, #1916 "static" vs "dynamic"
 ! for #1907 "multiple objects in TSrc"
-nat (inside,outside) source dynamic hostA:eth0.0 outside.id21177X3720.tsrc.net.0 interface description "18 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id21177X3720.tsrc.net.0 interface description "18 (NAT)"
 ! 
 ! Rule  19 (NAT)
 ! for #1908
@@ -365,8 +365,8 @@ nat (outside,inside) source static any any destination static interface hostA:et
 ! 
 ! Rule  23 (NAT)
 ! multiple objects in OSrc, ODst, OSrv and TSrc in various combinations
-nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp.0 smtp.0 description "23 (NAT)"
-nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps.0 smtps.0 description "23 (NAT)"
+nat (inside,outside) source dynamic id178211X29963.osrc.net.0 id77971X5929.tsrc.net.0 interface destination static id77971X5929.odst.net.0 id77971X5929.odst.net.0 service smtp.0 smtp.0 description "23 (NAT)"
+nat (inside,outside) source dynamic id178211X29963.osrc.net.0 id77971X5929.tsrc.net.1 interface destination static id77971X5929.odst.net.0 id77971X5929.odst.net.0 service smtps.0 smtps.0 description "23 (NAT)"
 ! 
 ! Rule  25 (NAT)
 ! for #1916

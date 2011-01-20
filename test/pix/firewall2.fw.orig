@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:44 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:20 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -68,12 +68,12 @@ clear object-group
 clear icmp
 clear telnet
 
-object-group service inside.id3D6EF08C.srv.tcp.0 tcp
+object-group service id3D6EF08C.srv.tcp.0 tcp
   port-object eq 80
   port-object eq 119
 exit
 
-object-group network inside.id3D8FCCDE.src.net.0
+object-group network id3D8FCCDE.src.net.0
   network-object host 192.168.1.10 
   network-object host 192.168.1.20 
 exit
@@ -90,17 +90,17 @@ access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 6 interva
 access-list inside_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 6 interval 300
 ! 
 ! Rule  2 (global)
-access-list inside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group id3D6EF08C.srv.tcp.0 
 access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
 access-list outside_acl_in permit tcp any host 22.22.22.22 eq 119 
-access-list outside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
-access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D6EF08C.srv.tcp.0 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group id3D6EF08C.srv.tcp.0 
+access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group id3D6EF08C.srv.tcp.0 
 ! 
 ! Rule  3 (global)
-access-list inside_acl_in permit ip object-group inside.id3D8FCCDE.src.net.0 host 200.200.200.200 
+access-list inside_acl_in permit ip object-group id3D8FCCDE.src.net.0 host 200.200.200.200 
 ! 
 ! Rule  4 (global)
-access-list outside_acl_in permit ip host 200.200.200.200 object-group inside.id3D8FCCDE.src.net.0 
+access-list outside_acl_in permit ip host 200.200.200.200 object-group id3D8FCCDE.src.net.0 
 ! 
 ! Rule  6 (global)
 access-list inside_acl_in deny   ip any any 

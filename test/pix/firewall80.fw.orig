@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:49 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:25 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -92,22 +92,22 @@ clear config object-group
 clear config icmp
 clear config telnet
 
-object-group icmp-type outside.id19186X29796.srv.icmp.0
+object-group icmp-type id19186X29796.srv.icmp.0
   icmp-object 8
   icmp-object 0
 exit
 
-object-group service outside.id19186X29796.srv.tcp.0 tcp
+object-group service id19186X29796.srv.tcp.0 tcp
   port-object eq 53
   port-object eq 25
 exit
 
-object-group service outside.id19186X29796.srv.udp.0 udp
+object-group service id19186X29796.srv.udp.0 udp
   port-object eq 123
   port-object eq 53
 exit
 
-object-group icmp-type inside.id21447X11252.srv.icmp.0
+object-group icmp-type id21447X11252.srv.icmp.0
   icmp-object 8
   icmp-object 3
 exit
@@ -127,12 +127,12 @@ icmp permit any 3  inside
 access-list inside_acl_in permit icmp any host 192.168.1.1 3 
 ! 
 ! Rule  4 (global)
-access-list outside_acl_in permit icmp any host 192.168.1.10 object-group outside.id19186X29796.srv.icmp.0 
-access-list inside_acl_in permit icmp any host 192.168.1.10 object-group outside.id19186X29796.srv.icmp.0 
-access-list outside_acl_in permit tcp any host 192.168.1.10 object-group outside.id19186X29796.srv.tcp.0 
-access-list inside_acl_in permit tcp any host 192.168.1.10 object-group outside.id19186X29796.srv.tcp.0 
-access-list outside_acl_in permit udp any host 192.168.1.10 object-group outside.id19186X29796.srv.udp.0 
-access-list inside_acl_in permit udp any host 192.168.1.10 object-group outside.id19186X29796.srv.udp.0 
+access-list outside_acl_in permit icmp any host 192.168.1.10 object-group id19186X29796.srv.icmp.0 
+access-list inside_acl_in permit icmp any host 192.168.1.10 object-group id19186X29796.srv.icmp.0 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group id19186X29796.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group id19186X29796.srv.tcp.0 
+access-list outside_acl_in permit udp any host 192.168.1.10 object-group id19186X29796.srv.udp.0 
+access-list inside_acl_in permit udp any host 192.168.1.10 object-group id19186X29796.srv.udp.0 
 access-list outside_acl_in permit 50 any host 192.168.1.10 
 access-list inside_acl_in permit 50 any host 192.168.1.10 
 access-list outside_acl_in permit 51 any host 192.168.1.10 
@@ -165,8 +165,8 @@ access-list inside_acl_in deny   tcp any host 192.168.1.10
 ! mixed services
 icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
-access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group inside.id21447X11252.srv.icmp.0 
-access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 any object-group inside.id21447X11252.srv.icmp.0 
+access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group id21447X11252.srv.icmp.0 
+access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 any object-group id21447X11252.srv.icmp.0 
 access-list inside_acl_in permit tcp 192.168.1.0 255.255.255.192 any eq 3128 
 access-list inside_acl_in permit udp 192.168.1.0 255.255.255.192 any eq 53 
 ! 

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:47 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:22 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -67,7 +67,7 @@ floodguard disable
 
 !################
 
-object-group network outside.id43867C2418346.src.net.0
+object-group network id43867C2418346.src.net.0
   network-object host 157.166.224.25 
   network-object host 157.166.224.26 
   network-object host 157.166.226.25 
@@ -76,7 +76,7 @@ object-group network outside.id43867C2418346.src.net.0
   network-object host 157.166.255.19 
 exit
 
-object-group network outside.id438728A918346.dst.net.0
+object-group network id438728A918346.dst.net.0
   network-object host 74.125.224.16 
   network-object host 74.125.224.17 
   network-object host 74.125.224.18 
@@ -94,15 +94,15 @@ exit
 access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 
 ! 
 ! Rule  1 (global)
-access-list outside_acl_in permit ip object-group outside.id43867C2418346.src.net.0 any 
+access-list outside_acl_in permit ip object-group id43867C2418346.src.net.0 any 
 ! 
 ! Rule  3 (global)
 ! firewall33:Policy:3: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 access-list outside_acl_in permit ip host 192.0.2.1 any 
 ! 
 ! Rule  5 (global)
-access-list outside_acl_in deny   ip any object-group outside.id43867C2418346.src.net.0 
-access-list inside_acl_in deny   ip any object-group outside.id43867C2418346.src.net.0 
+access-list outside_acl_in deny   ip any object-group id43867C2418346.src.net.0 
+access-list inside_acl_in deny   ip any object-group id43867C2418346.src.net.0 
 ! 
 ! Rule  7 (global)
 ! firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
@@ -111,8 +111,8 @@ access-list outside_acl_in permit ip any host 192.0.2.1
 access-list inside_acl_in permit ip any host 192.0.2.1 
 ! 
 ! Rule  9 (global)
-access-list outside_acl_in permit ip any object-group outside.id438728A918346.dst.net.0 
-access-list inside_acl_in permit ip any object-group outside.id438728A918346.dst.net.0 
+access-list outside_acl_in permit ip any object-group id438728A918346.dst.net.0 
+access-list inside_acl_in permit ip any object-group id438728A918346.dst.net.0 
 ! 
 ! Rule  11 (global)
 access-list outside_acl_in deny   ip any any log 6 interval 300

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:43 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:19 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -90,7 +90,7 @@ fixup protocol icmp error
 
 !################
 
-object-group network outside.id3F8F95CD.dst.net.0
+object-group network id3F8F95CD.dst.net.0
   network-object host 192.0.2.20 
   network-object host 192.0.2.21 
   network-object host 192.0.2.23 
@@ -123,17 +123,17 @@ access-list outside_acl_in  remark this comment
 access-list outside_acl_in  remark consists of
 access-list outside_acl_in  remark 3 lines of text
 access-list outside_acl_in permit tcp any interface outside eq 80 
-access-list outside_acl_in permit tcp any object-group outside.id3F8F95CD.dst.net.0 eq 80 
+access-list outside_acl_in permit tcp any object-group id3F8F95CD.dst.net.0 eq 80 
 access-list inside_acl_in  remark 3 (global)
 access-list inside_acl_in  remark this comment
 access-list inside_acl_in  remark consists of
 access-list inside_acl_in  remark 3 lines of text
-access-list inside_acl_in permit tcp any object-group outside.id3F8F95CD.dst.net.0 eq 80 
+access-list inside_acl_in permit tcp any object-group id3F8F95CD.dst.net.0 eq 80 
 access-list dmz50_acl_in  remark 3 (global)
 access-list dmz50_acl_in  remark this comment
 access-list dmz50_acl_in  remark consists of
 access-list dmz50_acl_in  remark 3 lines of text
-access-list dmz50_acl_in permit tcp any object-group outside.id3F8F95CD.dst.net.0 eq 80 
+access-list dmz50_acl_in permit tcp any object-group id3F8F95CD.dst.net.0 eq 80 
 ! 
 ! Rule  4 (global)
 access-list outside_acl_in  remark 4 (global)

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:52 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:28 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -140,7 +140,7 @@ clear config nat
 clear config object
 
 
-object-group network outside.id20655X6113.osrc.net.0
+object-group network id20655X6113.osrc.net.0
   network-object object internal_subnet_1.0
   network-object object internal_subnet_2.0
 exit
@@ -155,7 +155,7 @@ nat (inside,outside) source static hostA:eth0.0 hostA:eth0.0 service smtp.0 smtp
 nat (inside,outside) source static hostA:eth0.0 hostA:eth0.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "2 (NAT)"
 ! 
 ! Rule  3 (NAT)
-nat (inside,outside) source static outside.id20655X6113.osrc.net.0 outside.id20655X6113.osrc.net.0 service smtp.0 smtp.0 description "3 (NAT)"
+nat (inside,outside) source static id20655X6113.osrc.net.0 id20655X6113.osrc.net.0 service smtp.0 smtp.0 description "3 (NAT)"
 ! 
 ! Rule  4 (NAT)
 nat (inside,outside) source static test_range_1.0 test_range_1.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "4 (NAT)"

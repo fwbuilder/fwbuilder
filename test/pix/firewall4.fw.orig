@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3439
+!  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Wed Jan 19 20:15:48 2011 PST by vadim
+!  Generated Thu Jan 20 09:48:23 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -80,12 +80,12 @@ clear object-group
 clear icmp
 clear telnet
 
-object-group service inside.id3D79A1C2.srv.tcp.0 tcp
+object-group service id3D79A1C2.srv.tcp.0 tcp
   port-object eq 22
   port-object eq 80
 exit
 
-object-group network inside.id3D79A1E4.dst.net.0
+object-group network id3D79A1E4.dst.net.0
   network-object host 192.168.1.10 
   network-object host 192.168.1.20 
 exit
@@ -99,20 +99,20 @@ access-list outside_acl_in permit tcp any host 222.222.222.222 eq 22
 access-list outside_acl_in permit tcp any host 192.168.1.10 eq 22 
 ! 
 ! Rule  1 (global)
-access-list inside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D79A1C2.srv.tcp.0 
-access-list dmz1_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D79A1C2.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group id3D79A1C2.srv.tcp.0 
+access-list dmz1_acl_in permit tcp any host 192.168.1.10 object-group id3D79A1C2.srv.tcp.0 
 access-list dmz2_acl_in permit tcp any host 192.168.2.1 eq 22 
-access-list dmz2_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D79A1C2.srv.tcp.0 
+access-list dmz2_acl_in permit tcp any host 192.168.1.10 object-group id3D79A1C2.srv.tcp.0 
 access-list outside_acl_in permit tcp any host 222.222.222.222 eq 22 
-access-list outside_acl_in permit tcp any host 192.168.1.10 object-group inside.id3D79A1C2.srv.tcp.0 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group id3D79A1C2.srv.tcp.0 
 ! 
 ! Rule  2 (global)
-access-list inside_acl_in permit tcp any object-group inside.id3D79A1E4.dst.net.0 eq 22 
-access-list dmz1_acl_in permit tcp any object-group inside.id3D79A1E4.dst.net.0 eq 22 
+access-list inside_acl_in permit tcp any object-group id3D79A1E4.dst.net.0 eq 22 
+access-list dmz1_acl_in permit tcp any object-group id3D79A1E4.dst.net.0 eq 22 
 access-list dmz2_acl_in permit tcp any host 192.168.2.1 eq 22 
-access-list dmz2_acl_in permit tcp any object-group inside.id3D79A1E4.dst.net.0 eq 22 
+access-list dmz2_acl_in permit tcp any object-group id3D79A1E4.dst.net.0 eq 22 
 access-list outside_acl_in permit tcp any host 222.222.222.222 eq 22 
-access-list outside_acl_in permit tcp any object-group inside.id3D79A1E4.dst.net.0 eq 22 
+access-list outside_acl_in permit tcp any object-group id3D79A1E4.dst.net.0 eq 22 
 ! 
 ! Rule  3 (global)
 ! 'masquerading' rule
