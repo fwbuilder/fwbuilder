@@ -1,5 +1,11 @@
 2011-01-20  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): See #1965 "ASA Policy - PIX
+	6.1 configurations use object groups". Policy compiler for PIX is
+	now aware that object-group statement was introduced in PIX v6.2
+	and avoids using object-groups when firewall object version is set
+	to 6.1
+
 	* NamedObjectsAndGroupsSupport.cpp (processNext): made names
 	automatically assigned to object-groups in generated PIX
 	configuration shorter by removing interface label prefix.

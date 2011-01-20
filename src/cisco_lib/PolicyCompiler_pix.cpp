@@ -421,11 +421,15 @@ void PolicyCompiler_pix::compile()
 
     string vers = fw->getStr("version");
     string platform = fw->getStr("platform");
-    bool   outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
+    bool outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
         string("/FWBuilderResources/Target/options/")+
         "version_"+vers+
         "/pix_outbound_acl_supported");
     bool generate_out_acl = fw->getOptionsObject()->getBool("pix_generate_out_acl");
+    bool object_groups_supported = Resources::platform_res[platform]->getResourceBool(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+
+        "/pix_object_groups_supported");
 
     if (outbound_acl_supported && !generate_out_acl)
     {
@@ -629,13 +633,20 @@ void PolicyCompiler_pix::compile()
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
 
+    if (object_groups_supported)
+    {
 // add( new AvoidObjectGroup("avoid object groups for certain cases"));
-    add( new CreateObjectGroupsForSrc("create object groups for Src",
-                                      named_objects_manager));
-    add( new CreateObjectGroupsForDst("create object groups for Dst",
-                                      named_objects_manager));
-    add( new CreateObjectGroupsForSrv("create object groups for Srv",
-                                      named_objects_manager));
+        add( new CreateObjectGroupsForSrc("create object groups for Src",
+                                          named_objects_manager));
+        add( new CreateObjectGroupsForDst("create object groups for Dst",
+                                          named_objects_manager));
+        add( new CreateObjectGroupsForSrv("create object groups for Srv",
+                                          named_objects_manager));
+    } else
+    {
+        add( new ConvertToAtomic ("convert to atomic rules" ));
+    }
+
 
     add( new simplePrintProgress());
 
@@ -651,6 +662,7 @@ void PolicyCompiler_pix::compile()
 
     add( new printObjectGroups(
              "generate code for object groups", named_objects_manager));
+
     add( new PrintRule("generate code for ACLs"));
     add( new simplePrintProgress());
 
