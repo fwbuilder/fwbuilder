@@ -73,7 +73,7 @@ NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
     NATCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 { 
     // initialize object groups support
-    CreateObjectGroups::init(dbcopy);
+    named_objects_manager->init(dbcopy);
 }
 
 NATCompiler_pix::~NATCompiler_pix()

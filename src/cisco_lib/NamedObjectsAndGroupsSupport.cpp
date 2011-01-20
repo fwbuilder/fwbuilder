@@ -62,13 +62,15 @@ using namespace fwcompiler;
 using namespace std;
 
 
-Group* CreateObjectGroups::object_groups = NULL;
+Group* NamedObjectManager::object_groups = NULL;
 map<int, NamedObject*> NamedObjectManager::named_objects;
 
 
 NamedObjectManager::NamedObjectManager(const libfwbuilder::Firewall *_fw)
 {
     fw = _fw;
+    BaseObjectGroup::name_disambiguation.clear();
+    NamedObject::name_disambiguation.clear();
 }
 
 NamedObjectManager::~NamedObjectManager()
@@ -109,13 +111,12 @@ string NamedObjectManager::getNamedObjectsDefinitions()
 }
 
 
-void CreateObjectGroups::init(FWObjectDatabase *db)
+void NamedObjectManager::init(FWObjectDatabase *db)
 {
     object_groups = new Group();
     db->add( object_groups );
-    BaseObjectGroup::name_disambiguation.clear();
-    NamedObject::name_disambiguation.clear();
-    //if (named_objects.size() > 0) clearNamedObjectsRegistry();
+//    BaseObjectGroup::name_disambiguation.clear();
+//    NamedObject::name_disambiguation.clear();
 }
 
 CreateObjectGroups::~CreateObjectGroups()
@@ -129,7 +130,8 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         relement.push_back(FWReference::getObject(*i1));
 
-    for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
+    for (FWObject::iterator i=named_objects_manager->object_groups->begin();
+         i!=named_objects_manager->object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);
@@ -173,7 +175,7 @@ bool CreateObjectGroups::processNext()
     if (obj_group==NULL)
     {
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
-        object_groups->add(obj_group);
+        named_objects_manager->object_groups->add(obj_group);
 
         packObjects(re, obj_group);
 
@@ -252,8 +254,8 @@ bool printObjectGroups::processNext()
     slurp();
     if (tmp_queue.size()==0) return false;
 
-    for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
-         i!=CreateObjectGroups::object_groups->end(); ++i)
+    for (FWObject::iterator i=named_objects_manager->object_groups->begin();
+         i!=named_objects_manager->object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);

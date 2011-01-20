@@ -64,7 +64,7 @@ PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
     PolicyCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 {
     // initialize object groups support
-    CreateObjectGroups::init(dbcopy);
+    named_objects_manager->init(dbcopy);
 }
 
 int PolicyCompiler_cisco::prolog()

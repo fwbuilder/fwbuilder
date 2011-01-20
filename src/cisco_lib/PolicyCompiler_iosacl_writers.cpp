@@ -151,8 +151,8 @@ void PolicyCompiler_iosacl::_printClearCommands()
             }
             output << endl;
 
-            for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
-                 i!=CreateObjectGroups::object_groups->end(); ++i)
+            for (FWObject::iterator i=named_objects_manager->object_groups->begin();
+                 i!=named_objects_manager->object_groups->end(); ++i)
             {
                 BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
                 assert(og!=NULL);
