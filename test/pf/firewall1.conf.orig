@@ -22,10 +22,13 @@ scrub in all fragment reassemble
 table <tbl.r0.s> { 22.22.22.22 , 192.168.1.1 } 
 table <tbl.r11> { 192.168.1.10 , 192.168.1.20 } 
 table <tbl.r11.s> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.0/24 , 192.168.2.1 } 
-table <tbl.r14> { 33.33.33.0/24 , 33.33.44.0/24 } 
+table <tbl.r16> { 33.33.33.0/24 , 33.33.44.0/24 } 
 table <tbl.r7> { 192.168.1.0/24 , 192.168.2.0/24 } 
 table <tbl.r9> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.1 } 
 
+# NAT compiler errors and warnings:
+# firewall1:NAT:13: error: There should be no more than one object in original destination
+# firewall1:NAT:13: error: There should be no more than one object in original destination
 # 
 # Rule  0 (NAT)
 no nat proto {tcp udp icmp} from 192.168.1.0/24 to 192.168.2.0/24 
@@ -82,13 +85,17 @@ rdr proto tcp from 192.168.1.0/24 to ! 192.168.1.1 port 80 -> 127.0.0.1 port 312
 rdr proto tcp from <tbl.r11> to ! <tbl.r7> port 80 -> 127.0.0.1 port 3128 
 # 
 # Rule  12 (NAT)
-rdr proto tcp from ! <tbl.r11> to <tbl.r7> port 80 -> 127.0.0.1 port 3128 
-# 
-# Rule  13 (NAT)
-rdr proto tcp from ! 192.168.1.10 to any port 80 -> 127.0.0.1 port 3128 
+rdr proto tcp from 192.168.1.0/24 to ! <tbl.r7> port 80 -> 127.0.0.1 port 3128 
+rdr proto tcp from 192.168.1.0/24 to ! <tbl.r7> port 81 -> 127.0.0.1 port 3128 
 # 
 # Rule  14 (NAT)
-rdr on eth1 proto tcp from <tbl.r14> to 22.22.22.22 port 80 -> 192.168.1.10 port 80 
+rdr proto tcp from ! <tbl.r11> to <tbl.r7> port 80 -> 127.0.0.1 port 3128 
+# 
+# Rule  15 (NAT)
+rdr proto tcp from ! 192.168.1.10 to any port 80 -> 127.0.0.1 port 3128 
+# 
+# Rule  16 (NAT)
+rdr on eth1 proto tcp from <tbl.r16> to 22.22.22.22 port 80 -> 192.168.1.10 port 80 
 
 # Policy compiler errors and warnings:
 # firewall1:Policy:10: warning: Changing rule direction due to self reference

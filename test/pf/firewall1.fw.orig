@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3426
+#  Firewall Builder  fwb_pf v4.2.0.3439
 #
-#  Generated Mon Jan 10 16:36:04 2011 PST by vadim
+#  Generated Thu Jan 20 08:57:35 2011 PST by vadim
 #
 # files: * firewall1.fw
 # files:   firewall1.conf
@@ -14,6 +14,9 @@
 # this object is used to test all kinds of negation in policy rules
 # Also using interface policy on eth1 to test specific case with negation and
 # rule shading depection
+
+# firewall1:NAT:13: error: There should be no more than one object in original destination
+# firewall1:NAT:13: error: There should be no more than one object in original destination
 
 # firewall1:Policy:10: warning: Changing rule direction due to self reference
 # firewall1:Policy:18: warning: Changing rule direction due to self reference
@@ -76,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 10 16:36:04 2011 by vadim"
+log "Activating firewall script generated Thu Jan 20 08:57:35 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

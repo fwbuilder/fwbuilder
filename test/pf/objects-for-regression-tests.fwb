@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1271990800" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1295542343" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -143,6 +143,12 @@
           <ServiceRef ref="icmp-ping_reply"/>
           <ServiceRef ref="icmp-Unreachables"/>
         </ServiceGroup>
+        <ServiceGroup id="id1569X4889" name="Ipv6 unreachable messages" comment="" ro="False">
+          <ServiceRef ref="idE0D27650"/>
+          <ServiceRef ref="idCFE27650"/>
+          <ServiceRef ref="idE0B27650"/>
+          <ServiceRef ref="id1519Z388"/>
+        </ServiceGroup>
         <ServiceGroup id="id3B4FEDD9" name="kerberos" comment="" ro="False">
           <ServiceRef ref="id3B4FEDA5"/>
           <ServiceRef ref="id3B4FEDA9"/>
@@ -205,6 +211,7 @@
         <ICMP6Service id="ipv6-icmp-neighbrsol" code="0" type="135" name="ipv6 neighbrsol" comment="IPv6 neighbor solicitation" ro="False"/>
         <ICMP6Service id="ipv6-icmp-neighbradv" code="0" type="136" name="ipv6 neighbradv" comment="IPv6 neighbor advertisement" ro="False"/>
         <ICMP6Service id="ipv6-icmp-redir" code="0" type="137" name="ipv6 redir" comment="IPv6 redirect: shorter route exists" ro="False"/>
+        <ICMP6Service id="id1519Z388" code="-1" type="4" name="ipv6 parameter problem" comment="IPv6 Parameter Problem: RFC4443" ro="False"/>
         <ICMP6Service id="idCFE27650" code="0" type="3" name="ipv6 time exceeded" comment="Time exceeded in transit" ro="False"/>
         <ICMP6Service id="idCFF27650" code="1" type="3" name="ipv6 time exceeded in reassembly" comment="Time exceeded in reassembly" ro="False"/>
         <ICMP6Service id="idE0B27650" code="-1" type="2" name="ipv6 packet too big" comment="" ro="False"/>
@@ -1529,6 +1536,7 @@
         <IPv4 id="id79522X23273" name="h-10.3.14.201" comment="Imported from &quot;c3620&quot; 10.3.14.201/255.255.255.255" ro="False" address="10.3.14.201" netmask="255.255.255.255"/>
         <IPv4 id="id80198X23273" name="a-192.168.1.10" comment="" ro="False" address="192.168.1.10" netmask="0.0.0.0"/>
         <IPv4 id="id71290X60336" name="h-10.3.14.41" comment="" ro="False" address="10.3.14.41" netmask="0.0.0.0"/>
+        <IPv4 id="id272368X18008" name="dmz-host" comment="" ro="False" address="192.168.2.200" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -2053,6 +2061,7 @@
         <TCPService id="id80030X23273" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="False" name="New TCP Service 1" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1" dst_range_end="1"/>
         <TCPService id="id45517X93766" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp-proxy" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="8021" dst_range_end="8021"/>
         <TCPService id="id438265X27177" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="src-tcp" comment="port range" ro="False" src_range_start="1000" src_range_end="2000" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id172244X18008" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp-81" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="81" dst_range_end="81"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
         <UDPService id="id78911X23273" name="udp-src-6767" comment="" ro="False" src_range_start="6767" src_range_end="6767" dst_range_start="0" dst_range_end="0"/>
@@ -2905,7 +2914,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" host_OS="openbsd" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1224520201" platform="pf" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" ro="False">
+      <Firewall id="id3AF5AA0A" host_OS="openbsd" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1295542650" platform="pf" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3C98491C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3161,7 +3170,53 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BBC0F93" disabled="False" position="12" action="Translate" comment="">
+          <NATRule id="id122244X18008" disabled="False" group="" position="12" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id172244X18008"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3AF5AA0A"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B5009F7"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id272339X18008" disabled="False" group="" position="13" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id172244X18008"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id272368X18008"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B5009F7"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id3BBC0F93" disabled="False" position="14" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -3182,7 +3237,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BC6BCE5" disabled="False" position="13" action="Translate" comment="">
+          <NATRule id="id3BC6BCE5" disabled="False" position="15" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -3203,7 +3258,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3FDCD893" disabled="False" position="14" action="Translate" comment="">
+          <NATRule id="id3FDCD893" disabled="False" position="16" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3B665643"/>
               <ObjectRef ref="id3FDCD983"/>
