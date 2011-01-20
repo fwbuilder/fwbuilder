@@ -44,7 +44,7 @@ using namespace std;
 const char *PIXObjectGroup::TYPENAME={"PIXObjectGroup"};
 
 
-string PIXObjectGroup::groupMemberToString(FWObject *obj,
+QString PIXObjectGroup::groupMemberToString(FWObject *obj,
                                            NamedObjectManager*)
     throw(libfwbuilder::FWException)
 {
@@ -65,7 +65,7 @@ string PIXObjectGroup::groupMemberToString(FWObject *obj,
             ostr << "host ";
             ostr << addr->toString() << " ";
         }
-        return ostr.str();
+        return ostr.str().c_str();
 
     } else
     {
@@ -76,7 +76,7 @@ string PIXObjectGroup::groupMemberToString(FWObject *obj,
             Service *s=Service::cast(obj);
             assert(s!=NULL);
             ostr << s->getProtocolName();
-            return ostr.str();
+            return ostr.str().c_str();
         }
 
         if (ICMPService::isA(obj))
@@ -88,7 +88,7 @@ string PIXObjectGroup::groupMemberToString(FWObject *obj,
                 ostr << "any";
             else
                 ostr << s->getInt("type");
-            return ostr.str();
+            return ostr.str().c_str();
         }
 
         if (TCPService::isA(obj) || UDPService::isA(obj))
@@ -108,7 +108,7 @@ string PIXObjectGroup::groupMemberToString(FWObject *obj,
                 else         ostr << "range " << rs << " " << re;
             }
             else ostr << "range 0 65535";
-            return ostr.str();
+            return ostr.str().c_str();
         }
 
         QString err("PIXObjectGroup: Unsupported object '%1' found in "
@@ -116,7 +116,7 @@ string PIXObjectGroup::groupMemberToString(FWObject *obj,
         throw FWException(err.arg(obj->getName().c_str()).toStdString());
     }
 
-    return ostr.str();
+    return ostr.str().c_str();
 }
 
 string PIXObjectGroup::getObjectGroupClass()

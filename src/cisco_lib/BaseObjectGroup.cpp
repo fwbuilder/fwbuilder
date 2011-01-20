@@ -212,13 +212,13 @@ string BaseObjectGroup::getObjectGroupClass()
     return "";
 }
 
-string BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectManager*)
+QString BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectManager*)
     throw(libfwbuilder::FWException)
 {
     return "";
 }
 
-string BaseObjectGroup::toString(NamedObjectManager *nm)  throw(FWException)
+QString BaseObjectGroup::toString(NamedObjectManager *nm)  throw(FWException)
 {
     QStringList res;
     if (this->size()==0) return "";
@@ -226,11 +226,11 @@ string BaseObjectGroup::toString(NamedObjectManager *nm)  throw(FWException)
     for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
     {
         res << QString("  %1").arg(
-            groupMemberToString(FWReference::getObject(*i1), nm).c_str());
+            groupMemberToString(FWReference::getObject(*i1), nm));
     }
     res << getObjectGroupFooter().c_str();
     res << "";
-    return res.join("\n").toStdString();
+    return res.join("\n");
 }
 
 string BaseObjectGroup::getObjectGroupHeader()

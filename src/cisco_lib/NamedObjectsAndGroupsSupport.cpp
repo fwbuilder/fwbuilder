@@ -107,6 +107,19 @@ string NamedObjectManager::getNamedObjectsDefinitions()
         if (nobj==NULL) continue;
         output << nobj->getCommand(fw);
     }
+
+    output << "";
+
+    for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
+    {
+        BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
+        assert(og!=NULL);
+        if (og->size()==0) continue;
+
+        output << "";
+        output << og->toString(this);
+    }
+
     return output.join("\n").toUtf8().constData();
 }
 
@@ -247,30 +260,6 @@ void CreateObjectGroupsForTSrc::packObjects(RuleElement *re,
     {
         CreateObjectGroups::packObjects(re, obj_group);
     }
-}
-
-bool printObjectGroups::processNext()
-{
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    for (FWObject::iterator i=named_objects_manager->object_groups->begin();
-         i!=named_objects_manager->object_groups->end(); ++i)
-    {
-        BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-        assert(og!=NULL);
-        if (og->size()==0) continue;
-        compiler->output << endl;
-        try
-        {
-            compiler->output << og->toString(named_objects_manager);
-        } catch (FWException &ex)
-        {
-            compiler->abort(ex.toString());
-        }
-    }
-
-    return true;
 }
 
 void createNamedObjectsCommon::printObjectsForRE(FWObject *re)

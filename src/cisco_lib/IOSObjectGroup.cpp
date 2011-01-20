@@ -45,7 +45,7 @@ using namespace std;
 
 const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
-string IOSObjectGroup::groupMemberToString(FWObject *obj,
+QString IOSObjectGroup::groupMemberToString(FWObject *obj,
                                            NamedObjectManager*)
     throw(libfwbuilder::FWException)
 {
@@ -120,7 +120,7 @@ string IOSObjectGroup::groupMemberToString(FWObject *obj,
     default:
         throw FWException("Unknown object group type");
     }
-    return ostr.str();
+    return ostr.str().c_str();
 }
 
 string IOSObjectGroup::getObjectGroupClass()

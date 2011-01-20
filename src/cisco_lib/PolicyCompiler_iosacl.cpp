@@ -473,8 +473,8 @@ void PolicyCompiler_iosacl::compile()
     add( new createNewCompilerPass("Creating object groups and ACLs"));
 
     add( new printClearCommands("clear commands for object-groups and ACLs"));
-    add( new printObjectGroups(
-             "generate code for object groups", named_objects_manager));
+    //add( new printObjectGroups(
+    //         "generate code for object groups", named_objects_manager));
 
     // This processor prints each ACL separately in one block.
     // It adds comments inside to denote original rules.

@@ -660,8 +660,8 @@ void PolicyCompiler_pix::compile()
                  "create named objects", named_objects_manager));
     }
 
-    add( new printObjectGroups(
-             "generate code for object groups", named_objects_manager));
+    //add( new printObjectGroups(
+    //         "generate code for object groups", named_objects_manager));
 
     add( new PrintRule("generate code for ACLs"));
     add( new simplePrintProgress());

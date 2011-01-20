@@ -47,7 +47,7 @@ using namespace fwcompiler;
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
 
-string ASA8ObjectGroup::groupMemberToString(
+QString ASA8ObjectGroup::groupMemberToString(
     FWObject *obj, NamedObjectManager *named_object_manager)
     throw(libfwbuilder::FWException)
 {
@@ -57,7 +57,7 @@ string ASA8ObjectGroup::groupMemberToString(
     if (named_object)
     {
         return named_object->getCommandWhenObjectGroupMember(
-            named_object_manager->fw).toStdString();
+            named_object_manager->fw);
     }
         
     return PIXObjectGroup::groupMemberToString(obj, named_object_manager);

@@ -42,7 +42,7 @@ public:
         virtual std::string getObjectGroupHeader();
         virtual std::string getObjectGroupFooter();
 
-        virtual std::string groupMemberToString(
+        virtual QString groupMemberToString(
             libfwbuilder::FWObject *obj, NamedObjectManager *named_obj_manager)
             throw(libfwbuilder::FWException);
     

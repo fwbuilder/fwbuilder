@@ -151,24 +151,6 @@ public:
 
 
     
-    /**
-     * this processor accumulates all rules fed to it by previous
-     * processors, then prints all object groups and feeds all
-     * rules to the next processor. Usually this processor is in
-     * chain right before PrintRules.
-     *
-     */
-    class printObjectGroups : public BasicRuleProcessor
-    {
-        NamedObjectManager *named_objects_manager;
-public:
-        printObjectGroups(const std::string &n,
-            NamedObjectManager *_m) : BasicRuleProcessor(n)
-        {
-            named_objects_manager = _m;
-        }
-        virtual bool processNext();
-    };
 
     class createNamedObjectsCommon :  public BasicRuleProcessor
     {
