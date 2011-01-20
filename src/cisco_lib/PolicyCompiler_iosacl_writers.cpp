@@ -156,7 +156,7 @@ void PolicyCompiler_iosacl::_printClearCommands()
             {
                 BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
                 assert(og!=NULL);
-                output << "no "  << og->getObjectGroupHeader();
+                output << "no "  << og->getObjectGroupHeader() << endl;
             }
         }
     }

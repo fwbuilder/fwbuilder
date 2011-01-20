@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3435
+!  Firewall Builder  fwb_iosacl v4.2.0.3440
 !
-!  Generated Sun Jan 16 21:28:21 2011 PST by vadim
+!  Generated Thu Jan 20 14:41:24 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -42,12 +42,10 @@ object-group network id29216X37699.src.net.0
   host 192.168.1.0
 exit
 
-
 object-group service id29216X37699.srv.udp.0
   udp eq 161
   udp range 1024 65535
 exit
-
 
 object-group network id18740X37673.dst.net.0
   10.3.14.0 /24
@@ -56,13 +54,11 @@ object-group network id18740X37673.dst.net.0
   host 192.0.2.3
 exit
 
-
 object-group network id18964X37673.src.net.0
   host 192.0.2.1
   host 192.0.2.2
   host 192.0.2.3
 exit
-
 ip access-list extended fe0_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
