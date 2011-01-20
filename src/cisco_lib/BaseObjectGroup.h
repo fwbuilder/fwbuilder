@@ -59,8 +59,8 @@ public:
 
         static std::map<QString,int> name_disambiguation;
 
-        static std::string registerGroupName(const std::string &prefix,
-                                             object_group_type gt);
+        static QString registerGroupName(const QString &prefix,
+                                         object_group_type gt);
     
         BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group()
         {

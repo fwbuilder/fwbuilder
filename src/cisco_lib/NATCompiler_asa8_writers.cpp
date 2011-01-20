@@ -44,6 +44,7 @@
 #include <sstream>
 
 #include <QStringList>
+#include <QtDebug>
 
 
 using namespace libfwbuilder;
@@ -108,25 +109,18 @@ QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
     NamedObject* asa8_object = pix_comp->named_objects_manager->getNamedObject(obj);
     if (asa8_object) return asa8_object->getCommandWord();
 
-    for (FWObject::iterator i=CreateObjectGroups::object_groups->begin();
-         i!=CreateObjectGroups::object_groups->end(); ++i)
-    {
-        BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-        assert(og!=NULL);
-        if (og->getId() == obj->getId()) return obj->getName().c_str();
-    }
+    if (BaseObjectGroup::cast(obj)!=NULL) return obj->getName().c_str();
 
     if (Interface::isA(obj) && obj->isChildOf(compiler->fw)) return "interface";
 
     QString err("Found unknown object '%1' in the NAT rule: it is not "
                 "an ASA8 object, object group or an interface of the firewall");
-    throw FWException(err.arg(obj->getName().c_str()).toStdString());
+    compiler->abort(err.arg(obj->getName().c_str()).toStdString());
+    return "";
 }
 
 void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
 {
-    //NATCompiler_asa8 *pix_comp = dynamic_cast<NATCompiler_asa8*>(compiler);
-
     FWOptions *ropt = rule->getOptionsObject();
 
     QStringList cmd;

@@ -54,6 +54,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QtDebug>
 
 
 using namespace libfwbuilder;
@@ -80,29 +81,17 @@ NamedObjectManager::~NamedObjectManager()
     named_objects.clear();
 }
 
-string NamedObjectManager::addNamedObject(const FWObject *obj)
+void NamedObjectManager::addNamedObject(const FWObject *obj)
 {
-    string res;
-    if (BaseObjectGroup::constcast(obj)!=NULL)
-    {
-        for (FWObject::const_iterator i=obj->begin(); i!=obj->end(); ++i)
-        {
-            res += addNamedObject(FWReference::getObject(*i));
-        }
-        return res;
-    }
-    if (named_objects[obj->getId()] == NULL)
-    {
-        NamedObject *asa8obj = new NamedObject(obj);
-        res = asa8obj->getCommand(fw).toUtf8().constData();
-        named_objects[obj->getId()] = asa8obj;
-    }
-    return res;
+    if (getNamedObject(obj) == NULL)
+        named_objects[obj->getId()] = new NamedObject(obj);
 }
 
 NamedObject* NamedObjectManager::getNamedObject(const FWObject *obj)
 {
-    return named_objects[obj->getId()];
+    if (named_objects.count(obj->getId()) == 0) return NULL;
+    else   
+        return named_objects[obj->getId()];
 }
 
 string NamedObjectManager::getNamedObjectsDefinitions()
@@ -183,7 +172,6 @@ bool CreateObjectGroups::processNext()
     BaseObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
-        //obj_group= new BaseObjectGroup();
         obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
         object_groups->add(obj_group);
 
@@ -192,25 +180,19 @@ bool CreateObjectGroups::processNext()
         obj_group->setObjectGroupTypeFromMembers(named_objects_manager);
 
         QStringList group_name_prefix;
-        // if (!rule_iface->getLabel().empty())
-        //     group_name_prefix.push_back(rule_iface->getLabel().c_str());
-
         group_name_prefix.push_back(rule->getUniqueId().c_str());
         group_name_prefix.push_back(name_suffix.c_str());
 
-        string group_name = BaseObjectGroup::registerGroupName(
-            group_name_prefix.join(".").toStdString(),
+        QString reg_name = BaseObjectGroup::registerGroupName(
+            group_name_prefix.join("."),
             obj_group->getObjectGroupType());
-        obj_group->setName(group_name);
 
+        obj_group->setName(reg_name.toUtf8().constData());
     } else
     {
         re->clearChildren(false); //do not want to destroy children objects
         re->addRef(obj_group);
     }
-
-
-//    assert(re->size()==1);
 
     tmp_queue.push_back(rule);
     return true;
@@ -289,16 +271,34 @@ bool printObjectGroups::processNext()
     return true;
 }
 
-void printNamedObjectsCommon::printObjectsForRE(RuleElement *re)
+void printNamedObjectsCommon::printObjectsForRE(FWObject *re)
 {
-    if (re->isAny()) return;
+    if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
 
     for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
     {
         FWObject *obj = FWReference::getObject(*it);
         if (Interface::isA(obj)) continue;
-        //compiler->output << named_objects_manager->addNamedObject(obj);
-        named_objects_manager->addNamedObject(obj);
+        if (BaseObjectGroup::cast(obj)!=NULL) printObjectsForRE(obj);
+        else named_objects_manager->addNamedObject(obj);
+    }
+}
+
+/*
+ * We only need named objects for address ranges in policy. At least
+ * at this time, we have decided to not create named objects for
+ * everything and use them only in cases where it is inevitable.
+ */
+void printNamedObjectsForPolicy::printObjectsForRE(FWObject *re)
+{
+    if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
+
+    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+    {
+        FWObject *obj = FWReference::getObject(*it);
+        if (Interface::isA(obj)) continue;
+        if (BaseObjectGroup::cast(obj)!=NULL) printObjectsForRE(obj);
+        if (AddressRange::isA(obj)) named_objects_manager->addNamedObject(obj);
     }
 }
 
@@ -314,20 +314,16 @@ bool printNamedObjectsForPolicy::processNext()
     slurp();
     if (tmp_queue.size()==0) return false;
 
-    compiler->output << endl;
-
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
         PolicyRule *policy_rule = PolicyRule::cast( *k );
         if (policy_rule)
         {
             RuleElementSrc *src_re = policy_rule->getSrc();  assert(src_re);
-            FWObject *srcobj = FWReference::getObject(src_re->front());
-            if (AddressRange::isA(srcobj)) printObjectsForRE(src_re);
+            printObjectsForRE(src_re);
 
             RuleElementDst *dst_re = policy_rule->getDst();  assert(dst_re);
-            FWObject *dstobj = FWReference::getObject(dst_re->front());
-            if (AddressRange::isA(srcobj)) printObjectsForRE(dst_re);
+            printObjectsForRE(dst_re);
 
             //RuleElementSrv *srv_re = policy_rule->getSrv();  assert(srv_re);
             //printObjectsForRE(srv_re);
@@ -342,8 +338,6 @@ bool printNamedObjectsForNAT::processNext()
 {
     slurp();
     if (tmp_queue.size()==0) return false;
-
-    compiler->output << endl;
 
     for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {

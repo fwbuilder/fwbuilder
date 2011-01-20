@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 10:08:14 2011 PST by vadim
+!  Generated Thu Jan 20 14:33:11 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -103,7 +103,6 @@ clear config access-list
 clear config object-group
 clear config icmp
 clear config telnet
-
 ! 
 ! Rule  0 (global)
 ! matching "any" icmp and "all" tcp 
@@ -141,7 +140,6 @@ access-group outside_acl_in in interface outside
 clear xlate
 clear config nat
 clear config object
-
 ! 
 ! Rule  0 (NAT)
 nat (outside,inside) source static any any destination static interface hostA:eth0.0 service http.0 http.0 description "0 (NAT)"

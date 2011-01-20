@@ -1,5 +1,11 @@
 2011-01-20  vadim  <vadim@netcitadel.com>
 
+	* NamedObjectsAndGroupsSupport.cpp (printObjectsForRE): See #1959
+	"ASA Policy - ranges are broken into composite network instead of
+	using range command". I have to create named objects for address
+	ranges and put them into an object-group, which I can then use in
+	access-list commands.
+
 	* PolicyCompiler_pix.cpp (compile): See #1965 "ASA Policy - PIX
 	6.1 configurations use object groups". Policy compiler for PIX is
 	now aware that object-group statement was introduced in PIX v6.2

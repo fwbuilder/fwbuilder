@@ -39,6 +39,7 @@
 #include <sstream>
 
 #include <QStringList>
+#include <QtDebug>
 
 
 using namespace libfwbuilder;
@@ -50,29 +51,37 @@ map<QString,int>  BaseObjectGroup::name_disambiguation;
 
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
-string BaseObjectGroup::registerGroupName(const string &prefix,
-                                          object_group_type gt)
+QString BaseObjectGroup::registerGroupName(const QString &prefix,
+                                           object_group_type gt)
 {
-    QStringList  str;
-    str << QString::fromUtf8(prefix.c_str());
+    QString type_suffix;
 
     switch (gt)
     {
-    case UNKNOWN:         str << "unknown"; break;
-    case NETWORK:         str << "net";     break;
-    case PROTO:           str << "proto";   break;
-    case ICMP_TYPE:       str << "icmp";    break;
-    case TCP_SERVICE:     str << "tcp";     break;
-    case UDP_SERVICE:     str << "udp";     break;
-    case TCP_UDP_SERVICE: str << "tcpudp";  break;
-    case MIXED_SERVICE:   str << "mixed";   break;
+    case UNKNOWN:         type_suffix = "unknown"; break;
+    case NETWORK:         type_suffix = "net";     break;
+    case PROTO:           type_suffix = "proto";   break;
+    case ICMP_TYPE:       type_suffix = "icmp";    break;
+    case TCP_SERVICE:     type_suffix = "tcp";     break;
+    case UDP_SERVICE:     type_suffix = "udp";     break;
+    case TCP_UDP_SERVICE: type_suffix = "tcpudp";  break;
+    case MIXED_SERVICE:   type_suffix = "mixed";   break;
+    default:              type_suffix = "unknown"; break;
     }
 
-    QString name_prefix = str.join(".");
-    int n = name_disambiguation[name_prefix];
-    name_disambiguation[name_prefix] = n + 1;
-    str << QString().setNum(n);
-    return str.join(".").toUtf8().constData();
+    int n = 0;
+    while (true)
+    {
+        QString full_name =
+            QString("%1.%2.%3").arg(prefix).arg(type_suffix).arg(n);
+        if (name_disambiguation.count(full_name) == 0)
+        {
+            name_disambiguation[full_name] = 0;
+            return full_name;
+        }
+        n++;
+    }
+    return "";
 }
 
 BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(

@@ -49,7 +49,7 @@ public:
 
         NamedObjectManager(const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectManager();
-        std::string addNamedObject(const libfwbuilder::FWObject *obj);
+        void addNamedObject(const libfwbuilder::FWObject *obj);
         NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
 
         std::string getNamedObjectsDefinitions();
@@ -174,7 +174,7 @@ public:
     class printNamedObjectsCommon :  public BasicRuleProcessor
     {
 protected:
-        void printObjectsForRE(libfwbuilder::RuleElement *re);
+        virtual void printObjectsForRE(libfwbuilder::FWObject *re);
         NamedObjectManager *named_objects_manager;
 public:
         printNamedObjectsCommon(const std::string &n,
@@ -186,6 +186,8 @@ public:
 
     class printNamedObjectsForPolicy :  public printNamedObjectsCommon
     {
+protected:
+        virtual void printObjectsForRE(libfwbuilder::FWObject *re);
 public:
         printNamedObjectsForPolicy(const std::string &n,
             NamedObjectManager *m) : printNamedObjectsCommon(n, m) {}
