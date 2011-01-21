@@ -33,7 +33,9 @@ namespace fwcompiler {
     class PIXObjectGroup : public BaseObjectGroup {
     
 public:
-        PIXObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
+        PIXObjectGroup() : BaseObjectGroup() { }
+        PIXObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
+            BaseObjectGroup(root, prepopulate) {}
         virtual ~PIXObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
 

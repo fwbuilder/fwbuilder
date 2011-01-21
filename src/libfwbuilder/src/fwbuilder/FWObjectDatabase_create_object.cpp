@@ -94,153 +94,163 @@ static std::map<std::string, create_function_ptr> create_methods;
 
 
 #define CREATE_OBJ_METHOD(classname)     \
-classname * FWObjectDatabase::create##classname(int id, bool prepopulate) \
+FWObject* libfwbuilder::create_##classname(int id, bool prepopulate) \
 { \
-  classname *nobj = new classname(this, prepopulate); \
-  if (id > -1) nobj->setId(id); \
-  addToIndex(nobj); \
-  return nobj; \
+    classname *nobj = new classname(NULL, prepopulate); \
+    if (id > -1) nobj->setId(id);                       \
+    return nobj;                                        \
 } \
 \
-FWObject* FWObjectDatabase::createFWObject##classname(int id, bool prepopulate)\
-{ return create##classname(id, prepopulate); }
+classname * FWObjectDatabase::create##classname(int id, bool prepopulate) \
+{ \
+    classname * nobj = classname::cast(create_##classname(id, prepopulate)); \
+    addToIndex(nobj);                                                   \
+    return nobj;                                                        \
+}
 
 
 
+void FWObjectDatabase::registerObjectType(const std::string &type_name,
+                                          create_function_ptr create_function)
+{
+    create_methods[type_name] = create_function;
+}
+        
 
 void FWObjectDatabase::init_create_methods_table()
 {
     if (create_methods.size()==0)
     {
-        create_methods["AddressRange"] =
-            &FWObjectDatabase::createFWObjectAddressRange;
-        create_methods["AddressTable"] =
-            &FWObjectDatabase::createFWObjectAddressTable;
-        create_methods["Cluster"] =
-            &FWObjectDatabase::createFWObjectCluster;
-        create_methods["StateSyncClusterGroup"] =
-            &FWObjectDatabase::createFWObjectStateSyncClusterGroup;
-        create_methods["FailoverClusterGroup"] =
-            &FWObjectDatabase::createFWObjectFailoverClusterGroup;
-        create_methods["ClusterGroupOptions"] =
-            &FWObjectDatabase::createFWObjectClusterGroupOptions;
-        create_methods["CustomService"] =
-            &FWObjectDatabase::createFWObjectCustomService;
-        create_methods["DNSName"] =
-            &FWObjectDatabase::createFWObjectDNSName;
-        create_methods["FWBDManagement"] =
-            &FWObjectDatabase::createFWObjectFWBDManagement;
-        create_methods["IntervalRef"] =
-            &FWObjectDatabase::createFWObjectFWIntervalReference;
-        create_methods["ObjectRef"] =
-            &FWObjectDatabase::createFWObjectFWObjectReference;
-        create_methods["ServiceRef"] =
-            &FWObjectDatabase::createFWObjectFWServiceReference;
-        create_methods["Firewall"] =
-            &FWObjectDatabase::createFWObjectFirewall;
-        create_methods["FirewallOptions"] =
-            &FWObjectDatabase::createFWObjectFirewallOptions;
-        create_methods["Host"] =
-            &FWObjectDatabase::createFWObjectHost;
-        create_methods["HostOptions"] =
-            &FWObjectDatabase::createFWObjectHostOptions;
-        create_methods["ICMP6Service"] =
-            &FWObjectDatabase::createFWObjectICMP6Service;
-        create_methods["ICMPService"] =
-            &FWObjectDatabase::createFWObjectICMPService;
-        create_methods["InterfaceOptions"] =
-            &FWObjectDatabase::createFWObjectInterfaceOptions;
-        create_methods["IPService"] =
-            &FWObjectDatabase::createFWObjectIPService;
-        create_methods["IPv4"] =
-            &FWObjectDatabase::createFWObjectIPv4;
-        create_methods["IPv6"] =
-            &FWObjectDatabase::createFWObjectIPv6;
-        create_methods["Interface"] =
-            &FWObjectDatabase::createFWObjectInterface;
-        create_methods["Interval"] =
-            &FWObjectDatabase::createFWObjectInterval;
-        create_methods["IntervalGroup"] =
-            &FWObjectDatabase::createFWObjectIntervalGroup;
-        create_methods["Library"] =
-            &FWObjectDatabase::createFWObjectLibrary;
-        create_methods["Management"] =
-            &FWObjectDatabase::createFWObjectManagement;
-        create_methods["NAT"] =
-            &FWObjectDatabase::createFWObjectNAT;
-        create_methods["NATRule"] =
-            &FWObjectDatabase::createFWObjectNATRule;
-        create_methods["NATRuleOptions"] =
-            &FWObjectDatabase::createFWObjectNATRuleOptions;
-        create_methods["Network"] =
-            &FWObjectDatabase::createFWObjectNetwork;
-        create_methods["NetworkIPv6"] =
-            &FWObjectDatabase::createFWObjectNetworkIPv6;
-        create_methods["ObjectGroup"] =
-            &FWObjectDatabase::createFWObjectObjectGroup;
-        create_methods["Policy"] =
-            &FWObjectDatabase::createFWObjectPolicy;
-        create_methods["PolicyInstallScript"] =
-            &FWObjectDatabase::createFWObjectPolicyInstallScript;
-        create_methods["PolicyRule"] =
-            &FWObjectDatabase::createFWObjectPolicyRule;
-        create_methods["PolicyRuleOptions"] =
-            &FWObjectDatabase::createFWObjectPolicyRuleOptions;
-        create_methods["Routing"] =
-            &FWObjectDatabase::createFWObjectRouting;
-        create_methods["RoutingRule"] =
-            &FWObjectDatabase::createFWObjectRoutingRule;
-        create_methods["RoutingRuleOptions"] =
-            &FWObjectDatabase::createFWObjectRoutingRuleOptions;
-        create_methods["RuleSetOptions"] =
-            &FWObjectDatabase::createFWObjectRuleSetOptions;
+        registerObjectType("AddressRange",
+                           &create_AddressRange);
 
-        create_methods["Dst"] =
-            &FWObjectDatabase::createFWObjectRuleElementDst;
-        create_methods["When"] =
-            &FWObjectDatabase::createFWObjectRuleElementInterval;
-        create_methods["Itf"] =
-            &FWObjectDatabase::createFWObjectRuleElementItf;
-        create_methods["ODst"] =
-            &FWObjectDatabase::createFWObjectRuleElementODst;
-        create_methods["OSrc"] =
-            &FWObjectDatabase::createFWObjectRuleElementOSrc;
-        create_methods["OSrv"] =
-            &FWObjectDatabase::createFWObjectRuleElementOSrv;
-        create_methods["RDst"] =
-            &FWObjectDatabase::createFWObjectRuleElementRDst;
-        create_methods["RGtw"] =
-            &FWObjectDatabase::createFWObjectRuleElementRGtw;
-        create_methods["RItf"] =
-            &FWObjectDatabase::createFWObjectRuleElementRItf;
-        create_methods["Src"] =
-            &FWObjectDatabase::createFWObjectRuleElementSrc;
-        create_methods["Srv"] =
-            &FWObjectDatabase::createFWObjectRuleElementSrv;
-        create_methods["TDst"] =
-            &FWObjectDatabase::createFWObjectRuleElementTDst;
-        create_methods["TSrc"] =
-            &FWObjectDatabase::createFWObjectRuleElementTSrc;
-        create_methods["TSrv"] =
-            &FWObjectDatabase::createFWObjectRuleElementTSrv;
+        registerObjectType("AddressTable",
+                           &create_AddressTable);
+        registerObjectType("Cluster",
+                           &create_Cluster);
+        registerObjectType("StateSyncClusterGroup",
+                           &create_StateSyncClusterGroup);
+        registerObjectType("FailoverClusterGroup",
+                           &create_FailoverClusterGroup);
+        registerObjectType("ClusterGroupOptions",
+                           &create_ClusterGroupOptions);
+        registerObjectType("CustomService",
+                           &create_CustomService);
+        registerObjectType("DNSName",
+                           &create_DNSName);
+        registerObjectType("FWBDManagement",
+                           &create_FWBDManagement);
+        registerObjectType("IntervalRef",
+                           &create_FWIntervalReference);
+        registerObjectType("ObjectRef",
+                           &create_FWObjectReference);
+        registerObjectType("ServiceRef",
+                           &create_FWServiceReference);
+        registerObjectType("Firewall",
+                           &create_Firewall);
+        registerObjectType("FirewallOptions",
+                           &create_FirewallOptions);
+        registerObjectType("Host",
+                           &create_Host);
+        registerObjectType("HostOptions",
+                           &create_HostOptions);
+        registerObjectType("ICMP6Service",
+                           &create_ICMP6Service);
+        registerObjectType("ICMPService",
+                           &create_ICMPService);
+        registerObjectType("InterfaceOptions",
+                           &create_InterfaceOptions);
+        registerObjectType("IPService",
+                           &create_IPService);
+        registerObjectType("IPv4",
+                           &create_IPv4);
+        registerObjectType("IPv6",
+                           &create_IPv6);
+        registerObjectType("Interface",
+                           &create_Interface);
+        registerObjectType("Interval",
+                           &create_Interval);
+        registerObjectType("IntervalGroup",
+                           &create_IntervalGroup);
+        registerObjectType("Library",
+                           &create_Library);
+        registerObjectType("Management",
+                           &create_Management);
+        registerObjectType("NAT",
+                           &create_NAT);
+        registerObjectType("NATRule",
+                           &create_NATRule);
+        registerObjectType("NATRuleOptions",
+                           &create_NATRuleOptions);
+        registerObjectType("Network",
+                           &create_Network);
+        registerObjectType("NetworkIPv6",
+                           &create_NetworkIPv6);
+        registerObjectType("ObjectGroup",
+                           &create_ObjectGroup);
+        registerObjectType("Policy",
+                           &create_Policy);
+        registerObjectType("PolicyInstallScript",
+                           &create_PolicyInstallScript);
+        registerObjectType("PolicyRule",
+                           &create_PolicyRule);
+        registerObjectType("PolicyRuleOptions",
+                           &create_PolicyRuleOptions);
+        registerObjectType("Routing",
+                           &create_Routing);
+        registerObjectType("RoutingRule",
+                           &create_RoutingRule);
+        registerObjectType("RoutingRuleOptions",
+                           &create_RoutingRuleOptions);
+        registerObjectType("RuleSetOptions",
+                           &create_RuleSetOptions);
 
-        create_methods["SNMPManagement"] =
-            &FWObjectDatabase::createFWObjectSNMPManagement;
-        create_methods["ServiceGroup"] =
-            &FWObjectDatabase::createFWObjectServiceGroup;
-        create_methods["TCPService"] =
-            &FWObjectDatabase::createFWObjectTCPService;
-        create_methods["TagService"] =
-            &FWObjectDatabase::createFWObjectTagService;
-        create_methods["UDPService"] =
-            &FWObjectDatabase::createFWObjectUDPService;
-        create_methods["UserService"] =
-            &FWObjectDatabase::createFWObjectUserService;
-        create_methods["physAddress"] =
-            &FWObjectDatabase::createFWObjectphysAddress;
+        registerObjectType("Dst",
+                           &create_RuleElementDst);
+        registerObjectType("When",
+                           &create_RuleElementInterval);
+        registerObjectType("Itf",
+                           &create_RuleElementItf);
+        registerObjectType("ODst",
+                           &create_RuleElementODst);
+        registerObjectType("OSrc",
+                           &create_RuleElementOSrc);
+        registerObjectType("OSrv",
+                           &create_RuleElementOSrv);
+        registerObjectType("RDst",
+                           &create_RuleElementRDst);
+        registerObjectType("RGtw",
+                           &create_RuleElementRGtw);
+        registerObjectType("RItf",
+                           &create_RuleElementRItf);
+        registerObjectType("Src",
+                           &create_RuleElementSrc);
+        registerObjectType("Srv",
+                           &create_RuleElementSrv);
+        registerObjectType("TDst",
+                           &create_RuleElementTDst);
+        registerObjectType("TSrc",
+                           &create_RuleElementTSrc);
+        registerObjectType("TSrv",
+                           &create_RuleElementTSrv);
 
-        create_methods["Group"] =
-            &FWObjectDatabase::createFWObjectGroup;
+        registerObjectType("SNMPManagement",
+                           &create_SNMPManagement);
+        registerObjectType("ServiceGroup",
+                           &create_ServiceGroup);
+        registerObjectType("TCPService",
+                           &create_TCPService);
+        registerObjectType("TagService",
+                           &create_TagService);
+        registerObjectType("UDPService",
+                           &create_UDPService);
+        registerObjectType("UserService",
+                           &create_UserService);
+        registerObjectType("physAddress",
+                           &create_physAddress);
+
+        registerObjectType("Group",
+                           &create_Group);
     }
 }
 
@@ -288,7 +298,9 @@ FWObject *FWObjectDatabase::create(const string &type_name,
         return NULL;
     }
 
-    return (this->*fn)(id, prepopulate);
+    FWObject *nobj = (*fn)(id, prepopulate);
+    addToIndex(nobj);
+    return nobj;
 }
 
 FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)

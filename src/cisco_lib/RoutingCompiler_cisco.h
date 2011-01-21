@@ -124,10 +124,8 @@ namespace fwcompiler
 	virtual int  prolog();
 	virtual void compile();
 
-        void setNamedObjectManager(NamedObjectManager *mgr)
-        {
-            named_objects_manager = mgr;
-        }
+        void setNamedObjectManager(NamedObjectManager *mgr,
+                                   libfwbuilder::FWObjectDatabase *obj_groups_tree);
 };
 
 }

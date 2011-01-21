@@ -63,8 +63,6 @@ PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
                                            OSConfigurator *_oscnf) :
     PolicyCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 {
-    // initialize object groups support
-    named_objects_manager->init(dbcopy);
 }
 
 int PolicyCompiler_cisco::prolog()
@@ -817,5 +815,45 @@ void PolicyCompiler_cisco::epilog()
 string PolicyCompiler_cisco::printClearCommands()
 {
     return "";
+}
+
+void PolicyCompiler_cisco::setNamedObjectManager(NamedObjectManager *mgr,
+                                                 FWObjectDatabase *obj_groups_tree)
+{
+    named_objects_manager = mgr;
+    // initialize object groups support
+    if (obj_groups_tree != NULL)
+    {
+        int obj_group_id = obj_groups_tree->front()->getId();
+        importObjectGroups(obj_groups_tree);
+        Group *obj_groups = Group::cast(dbcopy->findInIndex(obj_group_id));
+        assert(obj_groups);
+        named_objects_manager->init2(obj_groups);
+    } else
+        named_objects_manager->init(dbcopy);
+}
+
+FWObjectDatabase* PolicyCompiler_cisco::exportObjectGroups()
+{
+    return dbcopy->exportSubtree(named_objects_manager->object_groups);
+}
+
+class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
+{
+    public:
+    MergeConflictRes() { }
+    virtual bool askUser(FWObject*, FWObject*) {return false;}
+};
+
+
+void PolicyCompiler_cisco::importObjectGroups(FWObjectDatabase *tree)
+{
+    cerr << "Merging tree " << tree << endl;
+    tree->dump(true, true);
+
+    MergeConflictRes merge_predicate;
+    dbcopy->merge(tree, &merge_predicate);
+
+    dbcopy->dump(true, true);
 }
 

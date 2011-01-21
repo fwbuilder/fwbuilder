@@ -45,7 +45,6 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PIXObjectGroup.cpp               \
 			ASA8ObjectGroup.cpp              \
 			IOSObjectGroup.cpp               \
-			ObjectGroupFactory.cpp           \
 			PolicyCompiler_pix.cpp           \
 			PolicyCompiler_pix_writers.cpp   \
 			PolicyCompiler_pix_v6_acls.cpp   \
@@ -80,7 +79,6 @@ HEADERS	 = ../../config.h                   \
 			PIXObjectGroup.h                \
 			ASA8ObjectGroup.h               \
 			IOSObjectGroup.h                \
-			ObjectGroupFactory.h            \
 			PolicyCompiler_pix.h            \
 			RoutingCompiler_pix.h           \
 

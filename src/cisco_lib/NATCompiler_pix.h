@@ -533,11 +533,19 @@ namespace fwcompiler {
             nat_acl_names[acl_name] = f;
         }
 
-        void setNamedObjectManager(NamedObjectManager *mgr)
-        {
-            named_objects_manager = mgr;
-        }
-};
+        void setNamedObjectManager(NamedObjectManager *mgr,
+                                   libfwbuilder::FWObjectDatabase *obj_groups_tree);
+
+        /*
+         * During compile I create bunch of object groups that later
+         * generate object-group statements. In order to be able to
+         * reuse the same groups for both nat and policy rules, I need
+         * to be able to export groups to import them later into
+         * object tree in the policy compiler.
+         */
+        libfwbuilder::FWObjectDatabase* exportObjectGroups();
+        void importObjectGroups(libfwbuilder::FWObjectDatabase *tree);
+    };
 
 
 }

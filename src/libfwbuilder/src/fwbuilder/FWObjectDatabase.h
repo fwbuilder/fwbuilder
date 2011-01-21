@@ -43,9 +43,11 @@
 #include <time.h>   // for time_t
 
 #define DECLARE_CREATE_OBJ_METHOD(classname) \
-    FWObject* createFWObject##classname(int id=-1, bool prepopulate=true); \
-    classname * create##classname(int id=-1, bool prepopulate=true);
+    FWObject* create_##classname(int id=-1, bool prepopulate=true);
 
+#define DECLARE_CREATE_OBJ_CLASS_METHOD(classname) \
+    classname * create##classname(int id=-1, bool prepopulate=true);
+        
 
 namespace libfwbuilder
 {
@@ -114,6 +116,73 @@ namespace libfwbuilder
     class UDPService;
     class UserService;
     class physAddress;
+
+
+    
+    DECLARE_CREATE_OBJ_METHOD(AddressRange);
+    DECLARE_CREATE_OBJ_METHOD(AddressTable);
+    DECLARE_CREATE_OBJ_METHOD(Cluster);
+    DECLARE_CREATE_OBJ_METHOD(StateSyncClusterGroup);
+    DECLARE_CREATE_OBJ_METHOD(FailoverClusterGroup);
+    DECLARE_CREATE_OBJ_METHOD(ClusterGroupOptions);
+    DECLARE_CREATE_OBJ_METHOD(CustomService);
+    DECLARE_CREATE_OBJ_METHOD(DNSName);
+    DECLARE_CREATE_OBJ_METHOD(FWBDManagement);
+    DECLARE_CREATE_OBJ_METHOD(FWIntervalReference);
+    DECLARE_CREATE_OBJ_METHOD(FWObjectReference);
+    DECLARE_CREATE_OBJ_METHOD(FWServiceReference);
+    DECLARE_CREATE_OBJ_METHOD(Firewall);
+    DECLARE_CREATE_OBJ_METHOD(FirewallOptions);
+    DECLARE_CREATE_OBJ_METHOD(Host);
+    DECLARE_CREATE_OBJ_METHOD(HostOptions);
+    DECLARE_CREATE_OBJ_METHOD(ICMP6Service);
+    DECLARE_CREATE_OBJ_METHOD(ICMPService);
+    DECLARE_CREATE_OBJ_METHOD(IPService);
+    DECLARE_CREATE_OBJ_METHOD(IPv4);
+    DECLARE_CREATE_OBJ_METHOD(IPv6);
+    DECLARE_CREATE_OBJ_METHOD(Interface);
+    DECLARE_CREATE_OBJ_METHOD(InterfaceOptions);
+    DECLARE_CREATE_OBJ_METHOD(Interval);
+    DECLARE_CREATE_OBJ_METHOD(IntervalGroup);
+    DECLARE_CREATE_OBJ_METHOD(Library);
+    DECLARE_CREATE_OBJ_METHOD(Management);
+    DECLARE_CREATE_OBJ_METHOD(NAT);
+    DECLARE_CREATE_OBJ_METHOD(NATRule);
+    DECLARE_CREATE_OBJ_METHOD(NATRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(Network);
+    DECLARE_CREATE_OBJ_METHOD(NetworkIPv6);
+    DECLARE_CREATE_OBJ_METHOD(ObjectGroup);
+    DECLARE_CREATE_OBJ_METHOD(Policy);
+    DECLARE_CREATE_OBJ_METHOD(PolicyInstallScript);
+    DECLARE_CREATE_OBJ_METHOD(PolicyRule);
+    DECLARE_CREATE_OBJ_METHOD(PolicyRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(Routing);
+    DECLARE_CREATE_OBJ_METHOD(RoutingRule);
+    DECLARE_CREATE_OBJ_METHOD(RoutingRuleOptions);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementInterval);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementItf);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementODst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementOSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementOSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRGtw);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementRItf);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTDst);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTSrc);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementTSrv);
+    DECLARE_CREATE_OBJ_METHOD(RuleSetOptions);
+    DECLARE_CREATE_OBJ_METHOD(SNMPManagement);
+    DECLARE_CREATE_OBJ_METHOD(ServiceGroup);
+    DECLARE_CREATE_OBJ_METHOD(TCPService);
+    DECLARE_CREATE_OBJ_METHOD(TagService);
+    DECLARE_CREATE_OBJ_METHOD(UDPService);
+    DECLARE_CREATE_OBJ_METHOD(UserService);
+    DECLARE_CREATE_OBJ_METHOD(physAddress);
+    DECLARE_CREATE_OBJ_METHOD(Group);
+
     
     class IDcounter {
 
@@ -126,7 +195,7 @@ public:
     };
 
     class FWObjectDatabase;
-    typedef FWObject*(FWObjectDatabase::*create_function_ptr)(int,bool);
+    typedef FWObject*(*create_function_ptr)(int,bool);
 
     /**
      * Database of objects.
@@ -194,7 +263,10 @@ public:
               TEMPLATE_LIB_ID = 6,
               DELETED_OBJECTS_ID = 7
         } standard_ids;
-    
+
+        static void registerObjectType(const std::string &type_name,
+                                       create_function_ptr create_function);
+        
         /**
          * this constructor initializes singleton db
          */
@@ -385,70 +457,71 @@ public:
          * Class* createClass(int,bool) and FWObject* createFWObjectClass(int,bool)
          */
 
-    
-        DECLARE_CREATE_OBJ_METHOD(AddressRange);
-        DECLARE_CREATE_OBJ_METHOD(AddressTable);
-        DECLARE_CREATE_OBJ_METHOD(Cluster);
-        DECLARE_CREATE_OBJ_METHOD(StateSyncClusterGroup);
-        DECLARE_CREATE_OBJ_METHOD(FailoverClusterGroup);
-        DECLARE_CREATE_OBJ_METHOD(ClusterGroupOptions);
-        DECLARE_CREATE_OBJ_METHOD(CustomService);
-        DECLARE_CREATE_OBJ_METHOD(DNSName);
-        DECLARE_CREATE_OBJ_METHOD(FWBDManagement);
-        DECLARE_CREATE_OBJ_METHOD(FWIntervalReference);
-        DECLARE_CREATE_OBJ_METHOD(FWObjectReference);
-        DECLARE_CREATE_OBJ_METHOD(FWServiceReference);
-        DECLARE_CREATE_OBJ_METHOD(Firewall);
-        DECLARE_CREATE_OBJ_METHOD(FirewallOptions);
-        DECLARE_CREATE_OBJ_METHOD(Host);
-        DECLARE_CREATE_OBJ_METHOD(HostOptions);
-        DECLARE_CREATE_OBJ_METHOD(ICMP6Service);
-        DECLARE_CREATE_OBJ_METHOD(ICMPService);
-        DECLARE_CREATE_OBJ_METHOD(IPService);
-        DECLARE_CREATE_OBJ_METHOD(IPv4);
-        DECLARE_CREATE_OBJ_METHOD(IPv6);
-        DECLARE_CREATE_OBJ_METHOD(Interface);
-        DECLARE_CREATE_OBJ_METHOD(InterfaceOptions);
-        DECLARE_CREATE_OBJ_METHOD(Interval);
-        DECLARE_CREATE_OBJ_METHOD(IntervalGroup);
-        DECLARE_CREATE_OBJ_METHOD(Library);
-        DECLARE_CREATE_OBJ_METHOD(Management);
-        DECLARE_CREATE_OBJ_METHOD(NAT);
-        DECLARE_CREATE_OBJ_METHOD(NATRule);
-        DECLARE_CREATE_OBJ_METHOD(NATRuleOptions);
-        DECLARE_CREATE_OBJ_METHOD(Network);
-        DECLARE_CREATE_OBJ_METHOD(NetworkIPv6);
-        DECLARE_CREATE_OBJ_METHOD(ObjectGroup);
-        DECLARE_CREATE_OBJ_METHOD(Policy);
-        DECLARE_CREATE_OBJ_METHOD(PolicyInstallScript);
-        DECLARE_CREATE_OBJ_METHOD(PolicyRule);
-        DECLARE_CREATE_OBJ_METHOD(PolicyRuleOptions);
-        DECLARE_CREATE_OBJ_METHOD(Routing);
-        DECLARE_CREATE_OBJ_METHOD(RoutingRule);
-        DECLARE_CREATE_OBJ_METHOD(RoutingRuleOptions);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementDst);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementInterval);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementItf);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementODst);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementOSrc);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementOSrv);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementRDst);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementRGtw);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementRItf);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementSrc);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementSrv);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementTDst);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementTSrc);
-        DECLARE_CREATE_OBJ_METHOD(RuleElementTSrv);
-        DECLARE_CREATE_OBJ_METHOD(RuleSetOptions);
-        DECLARE_CREATE_OBJ_METHOD(SNMPManagement);
-        DECLARE_CREATE_OBJ_METHOD(ServiceGroup);
-        DECLARE_CREATE_OBJ_METHOD(TCPService);
-        DECLARE_CREATE_OBJ_METHOD(TagService);
-        DECLARE_CREATE_OBJ_METHOD(UDPService);
-        DECLARE_CREATE_OBJ_METHOD(UserService);
-        DECLARE_CREATE_OBJ_METHOD(physAddress);
-        DECLARE_CREATE_OBJ_METHOD(Group);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(AddressRange);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(AddressTable);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Cluster);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(StateSyncClusterGroup);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FailoverClusterGroup);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(ClusterGroupOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(CustomService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(DNSName);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FWBDManagement);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FWIntervalReference);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FWObjectReference);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FWServiceReference);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Firewall);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(FirewallOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Host);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(HostOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(ICMP6Service);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(ICMPService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(IPService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(IPv4);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(IPv6);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Interface);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(InterfaceOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Interval);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(IntervalGroup);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Library);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Management);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(NAT);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(NATRule);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(NATRuleOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Network);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(NetworkIPv6);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(ObjectGroup);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Policy);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(PolicyInstallScript);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(PolicyRule);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(PolicyRuleOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Routing);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RoutingRule);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RoutingRuleOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementDst);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementInterval);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementItf);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementODst);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementOSrc);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementOSrv);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementRDst);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementRGtw);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementRItf);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementSrc);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementSrv);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementTDst);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementTSrc);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementTSrv);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleSetOptions);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(SNMPManagement);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(ServiceGroup);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(TCPService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(TagService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(UDPService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(UserService);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(physAddress);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(Group);
+
+        
     };
 
 }

@@ -42,13 +42,15 @@ namespace fwcompiler
 
     class NamedObjectManager
     {
+
 public:
         static std::map<int, NamedObject*> named_objects;
 // storage for object groups created to be used with PIX command object-group
         static libfwbuilder::Group *object_groups;
 
         const libfwbuilder::Firewall *fw;
-
+        libfwbuilder::FWObjectDatabase *db;
+        
         NamedObjectManager(const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectManager();
         void addNamedObject(const libfwbuilder::FWObject *obj);
@@ -56,10 +58,22 @@ public:
 
         std::string getNamedObjectsDefinitions();
 
+        /*
+         * init() creates object group that will hold all object groups and
+         * attaches it to the object tree @db
+         */
         void init(libfwbuilder::FWObjectDatabase *db);
+
+        /*
+         * init2() assumes object group to hold all object group objects
+         * has been created already and is represented by the pointer @obj_group
+         */
+        void init2(libfwbuilder::Group *obj_group);
 
         bool haveNamedObjects();
         bool haveObjectGroups();
+
+        BaseObjectGroup* createObjectGroup(libfwbuilder::Firewall *fw);
     };
     
     class CreateObjectGroups : public BasicRuleProcessor

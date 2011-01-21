@@ -27,7 +27,11 @@
 
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObject.h"
-#include "ObjectGroupFactory.h"
+//#include "ObjectGroupFactory.h"
+
+#include "PIXObjectGroup.h"
+#include "ASA8ObjectGroup.h"
+#include "IOSObjectGroup.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -66,11 +70,52 @@ Group* NamedObjectManager::object_groups = NULL;
 map<int, NamedObject*> NamedObjectManager::named_objects;
 
 
-NamedObjectManager::NamedObjectManager(const libfwbuilder::Firewall *_fw)
+FWObject* create_IOSObjectGroup(int id, bool prepopulate)
+{
+    FWObject *nobj = new IOSObjectGroup(NULL, prepopulate);
+    if (id > -1) nobj->setId(id);
+    return nobj;
+}
+
+FWObject* create_PIXObjectGroup(int id, bool prepopulate)
+{
+    FWObject *nobj = new PIXObjectGroup(NULL, prepopulate);
+    if (id > -1) nobj->setId(id);
+    return nobj;
+}
+
+FWObject* create_ASA8ObjectGroup(int id, bool prepopulate)
+{
+    FWObject *nobj = new ASA8ObjectGroup(NULL, prepopulate);
+    if (id > -1) nobj->setId(id);
+    return nobj;
+}
+
+void NamedObjectManager::init(FWObjectDatabase *db)
+{
+    object_groups = new Group();
+    db->add( object_groups );
+}
+
+void NamedObjectManager::init2(Group *obj_group)
+{
+    object_groups = obj_group;
+}
+
+NamedObjectManager::NamedObjectManager(const Firewall *_fw)
 {
     fw = _fw;
+    db = fw->getRoot();
+
     BaseObjectGroup::name_disambiguation.clear();
     NamedObject::name_disambiguation.clear();
+
+    FWObjectDatabase::registerObjectType(IOSObjectGroup::TYPENAME,
+                                         &create_IOSObjectGroup);
+    FWObjectDatabase::registerObjectType(PIXObjectGroup::TYPENAME,
+                                         &create_PIXObjectGroup);
+    FWObjectDatabase::registerObjectType(ASA8ObjectGroup::TYPENAME,
+                                         &create_ASA8ObjectGroup);
 }
 
 NamedObjectManager::~NamedObjectManager()
@@ -129,14 +174,23 @@ string NamedObjectManager::getNamedObjectsDefinitions()
     return output.join("\n").toUtf8().constData();
 }
 
-
-void NamedObjectManager::init(FWObjectDatabase *db)
+BaseObjectGroup* NamedObjectManager::createObjectGroup(Firewall *fw)
 {
-    object_groups = new Group();
-    db->add( object_groups );
-//    BaseObjectGroup::name_disambiguation.clear();
-//    NamedObject::name_disambiguation.clear();
+    string version = fw->getStr("version");
+    string platform = fw->getStr("platform");
+    if (platform == "pix" || platform == "fwsm")
+    {
+        if (XMLTools::version_compare(version, "8.0")<0)
+            return new PIXObjectGroup();
+        else
+            return new ASA8ObjectGroup();
+
+    }
+    if (platform == "iosacl") return new IOSObjectGroup();
+    return NULL;
 }
+
+
 
 CreateObjectGroups::~CreateObjectGroups()
 {
@@ -193,7 +247,7 @@ bool CreateObjectGroups::processNext()
     BaseObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
-        obj_group = ObjectGroupFactory::createObjectGroup(compiler->fw);
+        obj_group = named_objects_manager->createObjectGroup(compiler->fw);
         named_objects_manager->object_groups->add(obj_group);
 
         packObjects(re, obj_group);

@@ -173,6 +173,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
             system_configuration_script = safetyNetInstall(fw);
 
         NamedObjectManager named_object_manager(fw);
+        FWObjectDatabase *exported_object_groups = NULL;
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -227,7 +228,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
 
                 PolicyCompiler_procurve_acl c(objdb, fw, ipv6_policy, oscnf.get());
 
-                c.setNamedObjectManager(&named_object_manager);
+                c.setNamedObjectManager(&named_object_manager, NULL);
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
 
@@ -268,6 +269,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                     object_groups_definitions +=
                         named_object_manager.getNamedObjectsDefinitions();
 
+                    exported_object_groups = c.exportObjectGroups();
                 } else
                     info(" Nothing to compile in Policy");
             }
@@ -280,7 +282,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                 // currently routing is supported only for ipv4
                 RoutingCompiler_procurve_acl r(objdb, fw, false, oscnf.get());
 
-                r.setNamedObjectManager(&named_object_manager);
+                r.setNamedObjectManager(&named_object_manager, exported_object_groups);
                 r.setSourceRuleSet(routing);
                 r.setRuleSetName(routing->getName());
 

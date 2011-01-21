@@ -110,3 +110,10 @@ string RoutingCompiler_cisco::debugPrintRule(Rule *r)
     return s;
 }
 
+void RoutingCompiler_cisco::setNamedObjectManager(NamedObjectManager *mgr,
+                                                  FWObjectDatabase*)
+{
+    named_objects_manager = mgr;
+    // initialize object groups support
+    named_objects_manager->init(dbcopy);
+}

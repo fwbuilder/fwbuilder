@@ -62,11 +62,17 @@ public:
         static QString registerGroupName(const QString &prefix,
                                          object_group_type gt);
     
-        BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group()
+        BaseObjectGroup() : libfwbuilder::Group()
         {
-            gt=_gt;
+            gt = UNKNOWN;
         }
-    
+
+        BaseObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
+            libfwbuilder::Group(root, prepopulate)
+        {
+            gt = UNKNOWN;
+        }
+            
         virtual ~BaseObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
 
