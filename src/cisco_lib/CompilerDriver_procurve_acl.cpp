@@ -31,6 +31,8 @@
 #include "CompilerDriver_procurve_acl.h"
 #include "PolicyCompiler_procurve_acl.h"
 
+#include "fwbuilder/Resources.h"
+
 
 using namespace std;
 using namespace libfwbuilder;

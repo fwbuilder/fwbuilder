@@ -57,6 +57,9 @@ public:
         std::string getNamedObjectsDefinitions();
 
         void init(libfwbuilder::FWObjectDatabase *db);
+
+        bool haveNamedObjects();
+        bool haveObjectGroups();
     };
     
     class CreateObjectGroups : public BasicRuleProcessor

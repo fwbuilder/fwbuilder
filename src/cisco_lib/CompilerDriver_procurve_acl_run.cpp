@@ -192,6 +192,9 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
             if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
         }
 
+        string clear_commands;
+        string object_groups_definitions;
+
         for (vector<int>::iterator i=ipv4_6_runs.begin(); 
              i!=ipv4_6_runs.end(); ++i)
         {
@@ -261,6 +264,10 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                     }
                     policy_script +=  c.getCompiledScript();
 
+                    clear_commands += c.printClearCommands();
+                    object_groups_definitions +=
+                        named_object_manager.getNamedObjectsDefinitions();
+
                 } else
                     info(" Nothing to compile in Policy");
             }
@@ -305,16 +312,16 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
             all_errors.push_front(getErrors("").c_str());
         }
 
-        system_configuration_script +=
-            named_object_manager.getNamedObjectsDefinitions();
-
         if (single_rule_compile_on)
         {
             return formSingleRuleCompileOutput(
                 QString::fromUtf8(
-                    (named_object_manager.getNamedObjectsDefinitions() +
+                    (object_groups_definitions +
                      policy_script + routing_script).c_str()));
         }
+
+        system_configuration_script += clear_commands;
+        system_configuration_script += object_groups_definitions;
 
         QString script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());

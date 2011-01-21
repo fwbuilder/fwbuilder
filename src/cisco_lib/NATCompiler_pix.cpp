@@ -1739,7 +1739,7 @@ void NATCompiler_pix::compile()
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
 
-    add( new PrintClearCommands( "Clear ACLs" ));
+    //add( new PrintClearCommands( "Clear ACLs" ));
 
     add( new PrintRule ("generate PIX code" ));
     add( new storeProcessedRules ("store processed rules" ));
@@ -1842,3 +1842,33 @@ void NATCompiler_pix::epilog()
         regroup();
     }
 }
+
+string NATCompiler_pix::printClearCommands()
+{
+    ostringstream output;
+    string version = fw->getStr("version");
+    string platform = fw->getStr("platform");
+
+    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") &&
+         !inSingleRuleCompileMode())
+    {
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") + 
+            "version_" + version + "/pix_commands/clear_xlate") << endl;
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") + 
+            "version_" + version + "/pix_commands/clear_static") << endl;
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") + 
+            "version_" + version + "/pix_commands/clear_global") << endl;
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") + 
+            "version_" + version + "/pix_commands/clear_nat") << endl;
+    }
+
+    output << endl;
+    return output.str();
+}
+
+
+

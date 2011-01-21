@@ -60,61 +60,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-bool PolicyCompiler_pix::printClearCommands::processNext()
-{
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-    string vers = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
-    string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/pix_commands/clear_acl");
-    string clearOGcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/pix_commands/clear_og");
-    string clearICMPcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/pix_commands/clear_icmp");
-    string clearTelnetcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/pix_commands/clear_telnet");
-
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    if (!compiler->inSingleRuleCompileMode())
-    {
-        // No need to output "clear" commands in single rule compile mode
-
-        if ( compiler->fw->getOptionsObject()->getBool("pix_acl_basic") )
-        {
-            compiler->output << clearACLcmd << endl;
-            compiler->output << clearOGcmd  << endl;
-        }
-
-        if (compiler->fw->getOptionsObject()->getBool("pix_acl_substitution"))
-        {
-            for (map<string,ciscoACL*>::iterator i=pix_comp->acls.begin();
-                 i!=pix_comp->acls.end(); ++i) 
-            {
-                ciscoACL *acl=(*i).second;
-                compiler->output << clearACLcmd << " " << acl->workName() << endl;
-            }
-            compiler->output << clearOGcmd << endl;
-            compiler->output << endl;
-        }
-
-        if ( !compiler->fw->getOptionsObject()->getBool("pix_acl_no_clear") )
-        {
-            compiler->output << clearICMPcmd    << endl;
-            compiler->output << clearTelnetcmd  << endl;
-        }
-    }
-
-    return true;
-}
-
-
 string PolicyCompiler_pix::PrintRule::_printAction(PolicyRule *rule)
 {
     ostringstream  str;

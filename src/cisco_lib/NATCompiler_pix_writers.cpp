@@ -49,38 +49,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-bool NATCompiler_pix::PrintClearCommands::processNext()
-{
-    string version = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    compiler->output << endl;
-
-    if ( !compiler->fw->getOptionsObject()->getBool("pix_acl_no_clear") &&
-         !compiler->inSingleRuleCompileMode())
-    {
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/")+
-            "version_"+version+"/pix_commands/clear_xlate") << endl;
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/")+
-            "version_"+version+"/pix_commands/clear_static") << endl;
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/")+
-            "version_"+version+"/pix_commands/clear_global") << endl;
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/")+
-            "version_"+version+"/pix_commands/clear_nat") << endl;
-    }
-
-    return true;
-}
-
-
-
 string NATCompiler_pix::PrintRule::_printAddress(Address *a,bool print_netmask)
 {
     string addr = a->getAddressPtr()->toString();

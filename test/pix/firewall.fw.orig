@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:03 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:02 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -261,23 +261,20 @@ fixup protocol skinny 2000
 fixup protocol smtp 25
 fixup protocol sqlnet 1521
 
-
-!################
-
-clear access-list tmp_acl
-access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
-access-list tmp_acl deny ip any any 
-
-access-group tmp_acl in interface outside
-access-group tmp_acl in interface inside
+clear xlate
+clear static
+clear global
+clear nat
 
 clear access-list dmz_acl_in
 clear access-list inside_acl_in
 clear access-list outside_acl_in
-clear object-group
 
 clear icmp
 clear telnet
+
+clear conf object-group
+clear conf object
 
 object-group network id3C4E4C38.dst.net.0
   network-object host 211.11.11.11 
@@ -390,6 +387,17 @@ object-group service pol-firewall2-4.srv.tcp.0 tcp
   port-object eq 111
   port-object eq 7100
 exit
+
+
+!################
+
+clear access-list tmp_acl
+access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
+access-list tmp_acl deny ip any any 
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
+
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
 ssh    192.168.1.100 255.255.255.255 inside
@@ -527,10 +535,6 @@ access-group dmz_acl_in in interface dmz
 access-group inside_acl_in in interface inside
 access-group outside_acl_in in interface outside
 
-clear xlate
-clear static
-clear global
-clear nat
 ! 
 ! Rule  0 (NAT)
 global (outside) 1 interface

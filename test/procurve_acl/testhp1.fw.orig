@@ -1,9 +1,9 @@
 ;
 ;  This is automatically generated file. DO NOT MODIFY !
 ;
-;  Firewall Builder  fwb_procurve_acl v4.2.0.3435
+;  Firewall Builder  fwb_procurve_acl v4.2.0.3440
 ;
-;  Generated Sun Jan 16 23:00:19 2011 PST by vadim
+;  Generated Thu Jan 20 16:26:46 2011 PST by vadim
 ;
 ; Compiled for procurve_acl K.13
 ;
@@ -20,11 +20,6 @@
 ; End of prolog script:
 ;
 
-
-
-
-
-; ================ IPv4
 
 
 interface a1
@@ -97,6 +92,7 @@ no ip access-list extended vlan_40_in
 no vlan 40 ip access-group vlan_40_out out
 no ip access-list extended vlan_40_out
 
+; ================ IPv4
 
 
 ip access-list extended a1_in

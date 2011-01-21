@@ -112,58 +112,6 @@ bool PolicyCompiler_iosacl::ClearACLs::processNext()
     return true;
 }
 
-bool PolicyCompiler_iosacl::printClearCommands::processNext()
-{
-    PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    iosacl_comp->_printClearCommands();
-
-    return true;
-}
-
-void PolicyCompiler_iosacl::_printClearCommands()
-{
-    string vers = fw->getStr("version");
-    string platform = fw->getStr("platform");
-
-    string xml_element = "clear_ip_acl";
-    if (ipv6) xml_element = "clear_ipv6_acl";
-
-    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/iosacl_commands/" + xml_element);
-
-    assert( !clearACLCmd.empty());
-
-    if (!inSingleRuleCompileMode())
-    {
-        // No need to output "clear" commands in single rule compile mode
-        if ( fw->getOptionsObject()->getBool("iosacl_acl_basic") ||
-             fw->getOptionsObject()->getBool("iosacl_acl_substitution"))
-        {
-            for (map<string,ciscoACL*>::iterator i=acls.begin(); i!=acls.end(); ++i)
-            {
-                ciscoACL *acl = (*i).second;
-                output << clearACLCmd << " " << acl->workName() << endl;
-            }
-            output << endl;
-
-            for (FWObject::iterator i=named_objects_manager->object_groups->begin();
-                 i!=named_objects_manager->object_groups->end(); ++i)
-            {
-                BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-                assert(og!=NULL);
-                output << "no "  << og->getObjectGroupHeader() << endl;
-            }
-        }
-    }
-    output << endl;
-}
-        
-
 void PolicyCompiler_iosacl::PrintCompleteACLs::printRulesForACL::operator()(
     Rule* rule)
 {

@@ -27,7 +27,10 @@
 
 #include <sstream>
 
+
+using namespace fwcompiler;
 using namespace std;
+
 
 string ciscoACL::addLine(const std::string &s)
 {

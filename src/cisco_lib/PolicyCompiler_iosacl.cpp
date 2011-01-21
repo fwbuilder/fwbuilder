@@ -472,10 +472,6 @@ void PolicyCompiler_iosacl::compile()
     add( new simplePrintProgress());
     add( new createNewCompilerPass("Creating object groups and ACLs"));
 
-    add( new printClearCommands("clear commands for object-groups and ACLs"));
-    //add( new printObjectGroups(
-    //         "generate code for object groups", named_objects_manager));
-
     // This processor prints each ACL separately in one block.
     // It adds comments inside to denote original rules.
     //
@@ -532,3 +528,45 @@ string PolicyCompiler_iosacl::getAccessGroupCommandForAddressFamily(bool ipv6)
     if (ipv6) return "traffic-filter";
     return "access-group";
 }
+
+string PolicyCompiler_iosacl::printClearCommands()
+{
+    ostringstream output;
+
+    string vers = fw->getStr("version");
+    string platform = fw->getStr("platform");
+
+    string xml_element = "clear_ip_acl";
+    if (ipv6) xml_element = "clear_ipv6_acl";
+
+    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+"/iosacl_commands/" + xml_element);
+
+    assert( !clearACLCmd.empty());
+
+    // No need to output "clear" commands in single rule compile mode
+    if ( fw->getOptionsObject()->getBool("iosacl_acl_basic") ||
+         fw->getOptionsObject()->getBool("iosacl_acl_substitution"))
+    {
+        for (map<string,ciscoACL*>::iterator i=acls.begin(); i!=acls.end(); ++i)
+        {
+            ciscoACL *acl = (*i).second;
+            output << clearACLCmd << " " << acl->workName() << endl;
+        }
+        output << endl;
+
+        for (FWObject::iterator i=named_objects_manager->object_groups->begin();
+             i!=named_objects_manager->object_groups->end(); ++i)
+        {
+            BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
+            assert(og!=NULL);
+            output << "no "  << og->getObjectGroupHeader() << endl;
+        }
+    }
+
+    output << endl;
+
+    return output.str();
+}
+

@@ -416,7 +416,7 @@ void NATCompiler_asa8::compile()
    "check if we have objects with errors in rule elements"));
 */
 
-    add( new PrintClearCommands("Clear ACLs" ));
+    //add( new PrintClearCommands("Clear ACLs" ));
     add( new createNamedObjectsForNAT(
              "create named objects", named_objects_manager));
     //add( new printObjectGroups(
@@ -462,5 +462,26 @@ void NATCompiler_asa8::compile()
 */
     runRuleProcessors();
 
+}
+
+string NATCompiler_asa8::printClearCommands()
+{
+    ostringstream output;
+    string version = fw->getStr("version");
+    string platform = fw->getStr("platform");
+
+    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") &&
+         !inSingleRuleCompileMode())
+    {
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version + "/pix_commands/clear_xlate") << endl;
+        output << Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + version + "/pix_commands/clear_nat") << endl;
+    }
+
+    output << endl;
+    return output.str();
 }
 

@@ -52,34 +52,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-bool NATCompiler_asa8::PrintClearCommands::processNext()
-{
-    string version = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
-
-    slurp();
-    if (tmp_queue.size()==0) return false;
-
-    compiler->output << endl;
-
-    if ( !compiler->fw->getOptionsObject()->getBool("pix_acl_no_clear") &&
-         !compiler->inSingleRuleCompileMode())
-    {
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/") +
-            "version_" + version + "/pix_commands/clear_xlate") << endl;
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/") +
-            "version_" + version + "/pix_commands/clear_nat") << endl;
-        compiler->output << Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/") +
-            "version_" + version+"/pix_commands/clear_object") << endl;
-    }
-
-    return true;
-}
-
-
 NATCompiler_asa8::PrintRule::PrintRule(const std::string &name) :
     NATCompiler_pix::PrintRule(name) 
 { }

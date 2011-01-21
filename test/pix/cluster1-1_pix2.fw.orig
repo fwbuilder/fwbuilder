@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:17 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:17 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -114,11 +114,17 @@ policy-map global_policy
 service-policy global_policy global
 
 
-!################
+clear xlate
+clear config static
+clear config global
+clear config nat
+
 clear config access-list
-clear config object-group
 clear config icmp
 clear config telnet
+
+clear conf object-group
+clear conf object
 
 object-group network id56590X61097.src.net.0
   network-object host 10.3.14.206 
@@ -141,6 +147,9 @@ object-group network id56627X61097.src.net.0
   network-object host 172.17.1.253 
   network-object host 192.0.2.253 
 exit
+
+
+!################
 ! 
 ! Rule  0 (Ethernet0.101)
 ! anti spoofing rule
@@ -191,10 +200,6 @@ access-group inside_in in interface inside
 access-group inside_out out interface inside
 access-group outside_in in interface outside
 
-clear xlate
-clear config static
-clear config global
-clear config nat
 ! 
 ! Rule  0 (NAT)
 global (outside) 1 interface

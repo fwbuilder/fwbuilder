@@ -814,3 +814,8 @@ void PolicyCompiler_cisco::epilog()
 {
 }
 
+string PolicyCompiler_cisco::printClearCommands()
+{
+    return "";
+}
+

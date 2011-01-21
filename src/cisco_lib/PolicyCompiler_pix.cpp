@@ -652,7 +652,7 @@ void PolicyCompiler_pix::compile()
 
     add( new createNewCompilerPass("Creating object groups and ACLs ..."));
 
-    add( new printClearCommands("Clear ACLs and object groups"));
+    //add( new printClearCommands("Clear ACLs and object groups"));
 
     if (XMLTools::version_compare(vers, "8.3")>=0)
     {
@@ -718,4 +718,52 @@ void PolicyCompiler_pix::epilog()
         regroup();
     }
 }
+
+string PolicyCompiler_pix::printClearCommands()
+{
+    ostringstream output;
+
+    string vers = fw->getStr("version");
+    string platform = fw->getStr("platform");
+    string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + vers + "/pix_commands/clear_acl");
+    // string clearOGcmd = Resources::platform_res[platform]->getResourceStr(
+    //     string("/FWBuilderResources/Target/options/") +
+    //     "version_" + vers + "/pix_commands/clear_og");
+    string clearICMPcmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + vers + "/pix_commands/clear_icmp");
+    string clearTelnetcmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + vers + "/pix_commands/clear_telnet");
+
+    if ( fw->getOptionsObject()->getBool("pix_acl_basic") )
+    {
+        output << clearACLcmd << endl;
+        //output << clearOGcmd  << endl;
+    }
+
+    if (fw->getOptionsObject()->getBool("pix_acl_substitution"))
+    {
+        for (map<string,ciscoACL*>::iterator i=acls.begin();
+             i!=acls.end(); ++i) 
+        {
+            ciscoACL *acl = (*i).second;
+            output << clearACLcmd << " " << acl->workName() << endl;
+        }
+        //output << clearOGcmd << endl;
+        output << endl;
+    }
+
+    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") )
+    {
+        output << clearICMPcmd    << endl;
+        output << clearTelnetcmd  << endl;
+    }
+
+    output << endl;
+    return output.str();
+}
+
 

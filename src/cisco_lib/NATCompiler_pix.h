@@ -348,26 +348,6 @@ namespace fwcompiler {
                 processMultiAddressObjectsInRE(n,libfwbuilder::RuleElementODst::TYPENAME) {}
         };
 
-	/**
-	 * this processor accumulates all rules fed to it by previous
-	 * processors, then prints PIX commands to clear
-	 * access-lists, then feeds all rules to the next
-	 * processor. Usually this processor is in chain right
-	 * before PrintRules.
-         *
-         * We use this processor to print "clear" commands because
-         * they need to be generated when all access lists have been
-         * created but before they are printed.
-	 */
-        class PrintClearCommands : public NATRuleProcessor
-        {
-            public:
-            PrintClearCommands(const std::string &n) : NATRuleProcessor(n) {}
-            virtual bool processNext();
-        };
-        friend class NATCompiler_pix::PrintClearCommands;
-
-
         /**
          *  prints single policy rule, assuming all groups have been
          *  expanded, so source, destination and service hold exactly
@@ -519,6 +499,8 @@ namespace fwcompiler {
 	virtual void epilog();
 
         void regroup();
+
+        virtual std::string printClearCommands();
 
         /**
          * scans all rules in combined_ruleset and finds rules (if

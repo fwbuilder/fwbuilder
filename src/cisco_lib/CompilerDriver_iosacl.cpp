@@ -44,6 +44,9 @@
 #include "Configlet.h"
 #include "CompilerDriver_iosacl.h"
 #include "PolicyCompiler_iosacl.h"
+#include "ACL.h"
+#include "BaseObjectGroup.h"
+#include "NamedObjectsAndGroupsSupport.h"
 
 #include <QString>
 #include <QFileInfo>

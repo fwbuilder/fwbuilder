@@ -252,26 +252,6 @@ namespace fwcompiler {
          */
         DECLARE_POLICY_RULE_PROCESSOR( splitIfTelnetSSHICMPtoFw );
 
-	/**
-	 * this processor accumulates all rules fed to it by previous
-	 * * processors, then prints PIX commands to clear
-	 * access-lists, object groups, icmp, ssh, telnet and prints
-	 * all object groups, then feeds all rules to the next
-	 * processor. Usually this processor is in chain right
-	 * before PrintRules.
-         *
-         * We use this processor to print "clear" commands because
-         * they need to be generated when all access lists have been
-         * created but before they are printed.
-	 */
-        class printClearCommands : public PolicyRuleProcessor
-        {
-            public:
-            printClearCommands(const std::string &n) : PolicyRuleProcessor(n) {}
-            virtual bool processNext();
-        };
-        friend class PolicyCompiler_pix::printClearCommands;
-
         class AvoidObjectGroup :  public PolicyRuleProcessor
         {
             public:
@@ -339,6 +319,7 @@ namespace fwcompiler {
 	virtual void compile();
 	virtual void epilog();
 
+        virtual std::string printClearCommands();
     };
 
 

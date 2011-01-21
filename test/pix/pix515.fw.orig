@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:16 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:16 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -84,6 +84,18 @@ policy-map global_policy
 service-policy global_policy global
 
 
+clear xlate
+clear config static
+clear config global
+clear config nat
+
+clear config access-list inside_acl_in
+clear config access-list outside_acl_in
+
+clear config icmp
+clear config telnet
+
+
 !################
 
 clear config access-list tmp_acl
@@ -93,12 +105,6 @@ access-list tmp_acl deny ip any any
 access-group tmp_acl in interface outside
 access-group tmp_acl in interface inside
 
-clear config access-list inside_acl_in
-clear config access-list outside_acl_in
-clear config object-group
-
-clear config icmp
-clear config telnet
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
 ssh    10.3.14.42 255.255.255.255 inside
@@ -136,10 +142,6 @@ access-list inside_acl_in deny   ip any any log 6 interval 300
 access-group inside_acl_in in interface inside
 access-group outside_acl_in in interface outside
 
-clear xlate
-clear config static
-clear config global
-clear config nat
 ! 
 ! Rule  0 (NAT)
 global (outside) 1 interface

@@ -47,7 +47,6 @@ namespace fwcompiler {
 	protected:
 
 	virtual std::string myPlatformName();
-        virtual void _printClearCommands();
         virtual std::string printAccessGroupCmd(ciscoACL *acl, bool neg=false);
         virtual ciscoACL* createACLObject(const std::string &n,
                                           libfwbuilder::Interface *intf,
@@ -63,6 +62,8 @@ namespace fwcompiler {
         virtual ~PolicyCompiler_procurve_acl() {}
 
 	virtual int prolog();
+
+        virtual std::string printClearCommands();
     };
 
 }

@@ -42,39 +42,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-void PolicyCompiler_procurve_acl::_printClearCommands()
-{
-    string vers = fw->getStr("version");
-    string platform = fw->getStr("platform");
-
-    string xml_element = "clear_ip_acl";
-    if (ipv6) xml_element = "clear_ipv6_acl";
-
-    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/procurve_acl_commands/" + xml_element);
-
-    assert( !clearACLCmd.empty());
-
-    if (!inSingleRuleCompileMode())
-    {
-        // No need to output "clear" commands in single rule compile mode
-        if ( fw->getOptionsObject()->getBool("procurve_acl_acl_basic") ||
-             fw->getOptionsObject()->getBool("procurve_acl_acl_substitution"))
-        {
-            for (map<string,ciscoACL*>::iterator i=acls.begin(); i!=acls.end(); ++i)
-            {
-                ciscoACL *acl = (*i).second;
-                output << printAccessGroupCmd(acl, true);
-                output << clearACLCmd << " " << acl->workName() << endl;
-                output << endl;
-            }
-            output << endl;
-        }
-    }
-    output << endl;
-}
-        
 string PolicyCompiler_procurve_acl::printAccessGroupCmd(ciscoACL *acl, bool neg)
 {
     if (getSourceRuleSet()->isTop())

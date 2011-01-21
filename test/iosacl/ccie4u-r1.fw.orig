@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:41:23 2011 PST by vadim
+!  Generated Thu Jan 20 16:31:21 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -60,14 +60,18 @@ interface FastEthernet0/0
   no ip access-group out
   ip access-group tmp_acl in
 exit
-
-! ================ IPv4
-
-
 no ip access-list extended r1-ipv4_fe0_0_in
 no ip access-list extended r1-ipv4_fe0_0_out
 no ip access-list extended r1-ipv4_fe0_1_in
 no ip access-list extended r1-ipv4_fe0_1_out
+
+
+no ipv6 access-list ipv6_fe0_0_in
+no ipv6 access-list ipv6_fe0_0_out
+no ipv6 access-list ipv6_fe0_1_in
+no ipv6 access-list ipv6_fe0_1_out
+
+! ================ IPv4
 
 
 ip access-list extended r1-ipv4_fe0_0_in
@@ -143,12 +147,6 @@ exit
 
 
 ! ================ IPv6
-
-
-no ipv6 access-list ipv6_fe0_0_in
-no ipv6 access-list ipv6_fe0_0_out
-no ipv6 access-list ipv6_fe0_1_in
-no ipv6 access-list ipv6_fe0_1_out
 
 
 ipv6 access-list ipv6_fe0_0_in

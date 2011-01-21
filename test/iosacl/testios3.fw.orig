@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:41:27 2011 PST by vadim
+!  Generated Thu Jan 20 16:31:23 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -33,14 +33,12 @@ interface ethernet1
   no ip access-group out
   ip access-group tmp_acl in
 exit
-
-! ================ IPv4
-
-
 no ip access-list extended e0_in
 no ip access-list extended e0_out
 no ip access-list extended e1_in
 no ip access-list extended e1_out
+
+! ================ IPv4
 
 
 ip access-list extended e0_in

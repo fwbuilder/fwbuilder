@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:04 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:04 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -85,16 +85,21 @@ floodguard disable
 fixup protocol dns maximum-length 65535
 fixup protocol ftp 21
 fixup protocol http 80
-fixup protocol icmp error
+fixup protocol icmp error 
 
 
-!################
+
+clear conf object-group
+clear conf object
 
 object-group network id3F8F95CD.dst.net.0
   network-object host 192.0.2.20 
   network-object host 192.0.2.21 
   network-object host 192.0.2.23 
 exit
+
+
+!################
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in  remark 0 (global)

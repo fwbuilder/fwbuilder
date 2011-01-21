@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:14 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:14 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -89,6 +89,11 @@ service-policy global_policy global
 
 
 
+clear xlate
+clear config nat
+
+clear conf object
+
 object network dmz-range-1.0
   range 172.16.0.10 172.16.0.15
 quit
@@ -100,9 +105,6 @@ quit
 
 !################
 
-clear xlate
-clear config nat
-clear config object
 ! 
 ! Rule  0 (NAT)
 nat (inside,outside) source dynamic inside-range-1.0 interface description "0 (NAT)"

@@ -96,6 +96,16 @@ NamedObject* NamedObjectManager::getNamedObject(const FWObject *obj)
         return named_objects[obj->getId()];
 }
 
+bool NamedObjectManager::haveNamedObjects()
+{
+    return (named_objects.size() > 0);
+}
+
+bool NamedObjectManager::haveObjectGroups()
+{
+    return (object_groups->size() > 0);
+}
+
 string NamedObjectManager::getNamedObjectsDefinitions()
 {
     QStringList output;
@@ -108,16 +118,12 @@ string NamedObjectManager::getNamedObjectsDefinitions()
         output << nobj->getCommand(fw);
     }
 
-    output << "";
-
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
         assert(og!=NULL);
         if (og->size()==0) continue;
-
-        output << "";
-        output << og->toString(this);
+        output << og->toString(this); // ends with an empty line
     }
 
     return output.join("\n").toUtf8().constData();

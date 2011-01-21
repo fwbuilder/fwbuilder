@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:11 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:11 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -86,11 +86,17 @@ parameters
   router-alert action clear
 
 
-!################
+clear xlate
+clear config static
+clear config global
+clear config nat
+
 clear config access-list
-clear config object-group
 clear config icmp
 clear config telnet
+
+clear conf object-group
+clear conf object
 
 object-group icmp-type id19186X29796.srv.icmp.0
   icmp-object 8
@@ -111,6 +117,9 @@ object-group icmp-type id21447X11252.srv.icmp.0
   icmp-object 8
   icmp-object 3
 exit
+
+
+!################
 ! 
 ! Rule  0 (FastEthernet1)
 ssh    0.0.0.0 0.0.0.0 inside

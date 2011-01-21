@@ -31,74 +31,77 @@
 
 #include "fwbuilder/Interface.h"
 
-class ciscoACL {
-
-    bool                     _ip_acl;
-    std::string              _name;
-    std::string              _workName;
-    libfwbuilder::Interface *_interface;
-    std::string              _dir;
-    std::string              _last_rule_label;
-    int                      nlines;
-    std::list<std::string>   acl;
-    bool                     quote_remarks;
+namespace fwcompiler {
     
-    std::string printLine(const std::string &s);
-    std::string quoteLine(const std::string &s);
+    class ciscoACL {
+
+        bool                     _ip_acl;
+        std::string              _name;
+        std::string              _workName;
+        libfwbuilder::Interface *_interface;
+        std::string              _dir;
+        std::string              _last_rule_label;
+        int                      nlines;
+        std::list<std::string>   acl;
+        bool                     quote_remarks;
     
- public:
-    ciscoACL() {
-        _ip_acl = false;
-        _name = "";
-        _workName = "";
-        _interface = NULL;
-        _dir = "in";
-        nlines = 0;
-        _last_rule_label = "";
-        quote_remarks = false;
-    }
-
-    ciscoACL(const std::string &n,
-             libfwbuilder::Interface *intf,
-             const std::string &d="in",
-             bool _ip_list=false)
-    {
-        _ip_acl = _ip_list;
-        _name = n;
-        _workName = "";
-        _interface = intf;
-        _dir = d;
-        nlines = 0;
-        _last_rule_label = "";
-        quote_remarks = false;
-    }
-
-    std::string addLine(const std::string &s);
-
-    /*
-     * Adds remark to access list. Checks and adds each remark only
-     * once. We use rule labels and comments for remarks
-     */
-    std::string addRemark(const std::string &rl, const std::string &comment);
-
-    void setName(const std::string &s) { _name=s; }
-    std::string name() { return _name; }
-
-    void setWorkName(const std::string &s) { _workName=s; }
-    std::string workName() { return _workName; }
-
-    void setInterface(libfwbuilder::Interface *intf) { _interface=intf; }
-    libfwbuilder::Interface* getInterface() { return _interface; }
+        std::string printLine(const std::string &s);
+        std::string quoteLine(const std::string &s);
     
-    void setDirection(const std::string &d) { _dir=d; }
-    std::string direction() { return _dir; }
+public:
+        ciscoACL() {
+            _ip_acl = false;
+            _name = "";
+            _workName = "";
+            _interface = NULL;
+            _dir = "in";
+            nlines = 0;
+            _last_rule_label = "";
+            quote_remarks = false;
+        }
 
-    void setQuoteRemarks(bool f) { quote_remarks = f; }
+        ciscoACL(const std::string &n,
+                 libfwbuilder::Interface *intf,
+                 const std::string &d="in",
+                 bool _ip_list=false)
+        {
+            _ip_acl = _ip_list;
+            _name = n;
+            _workName = "";
+            _interface = intf;
+            _dir = d;
+            nlines = 0;
+            _last_rule_label = "";
+            quote_remarks = false;
+        }
+
+        std::string addLine(const std::string &s);
+
+        /*
+         * Adds remark to access list. Checks and adds each remark only
+         * once. We use rule labels and comments for remarks
+         */
+        std::string addRemark(const std::string &rl, const std::string &comment);
+
+        void setName(const std::string &s) { _name=s; }
+        std::string name() { return _name; }
+
+        void setWorkName(const std::string &s) { _workName=s; }
+        std::string workName() { return _workName; }
+
+        void setInterface(libfwbuilder::Interface *intf) { _interface=intf; }
+        libfwbuilder::Interface* getInterface() { return _interface; }
     
-    std::string print();
-    std::string printLastLine();
+        void setDirection(const std::string &d) { _dir=d; }
+        std::string direction() { return _dir; }
+
+        void setQuoteRemarks(bool f) { quote_remarks = f; }
     
-    int  size() { return nlines; }
-};
+        std::string print();
+        std::string printLastLine();
+    
+        int  size() { return nlines; }
+    };
+}
 
 #endif

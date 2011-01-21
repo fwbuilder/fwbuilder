@@ -495,13 +495,13 @@ protected:
 
         Helper helper;
         NamedObjectManager *named_objects_manager;
-	std::map<std::string,ciscoACL*> acls;
 
 	virtual std::string myPlatformName();
 
         std::string mangleInterfaceName(const std::string &interface_name);
 
 public:
+	std::map<std::string,ciscoACL*> acls;
 
 	PolicyCompiler_cisco(libfwbuilder::FWObjectDatabase *_db,
                              libfwbuilder::Firewall *fw,
@@ -517,6 +517,8 @@ public:
 	virtual void compile();
 	virtual void epilog();
 
+        virtual std::string printClearCommands();
+        
         /**
          * sort commands ('icmp', 'telnet', 'ssh') and access lists
          * in some kind of 'natural' order. Useful for both IOS and PIX

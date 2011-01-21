@@ -30,6 +30,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Resources.h"
 
 #include <assert.h>
 
@@ -89,3 +90,37 @@ ciscoACL* PolicyCompiler_procurve_acl::createACLObject(const string &acl_name,
 }
 
 
+string PolicyCompiler_procurve_acl::printClearCommands()
+{
+    ostringstream output;
+
+    string vers = fw->getStr("version");
+    string platform = fw->getStr("platform");
+
+    string xml_element = "clear_ip_acl";
+    if (ipv6) xml_element = "clear_ipv6_acl";
+
+    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+"/procurve_acl_commands/" + xml_element);
+
+    assert( !clearACLCmd.empty());
+
+    // No need to output "clear" commands in single rule compile mode
+    if ( fw->getOptionsObject()->getBool("procurve_acl_acl_basic") ||
+         fw->getOptionsObject()->getBool("procurve_acl_acl_substitution"))
+    {
+        for (map<string,ciscoACL*>::iterator i=acls.begin(); i!=acls.end(); ++i)
+        {
+            ciscoACL *acl = (*i).second;
+            output << printAccessGroupCmd(acl, true);
+            output << clearACLCmd << " " << acl->workName() << endl;
+            output << endl;
+        }
+        output << endl;
+    }
+
+    output << endl;
+    return output.str();
+}
+        

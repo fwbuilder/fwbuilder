@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:41:24 2011 PST by vadim
+!  Generated Thu Jan 20 16:31:21 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -23,11 +23,6 @@
 
 
 
-
-
-! ================ IPv4
-
-
 no ip access-list extended fe0_0_in
 no ip access-list extended fe0_0_out
 
@@ -35,6 +30,9 @@ no object-group network id29216X37699.src.net.0
 no object-group service id29216X37699.srv.udp.0
 no object-group network id18740X37673.dst.net.0
 no object-group network id18964X37673.src.net.0
+
+no ipv6 access-list ipv6_fe0_0_in
+no ipv6 access-list ipv6_fe0_0_out
 
 
 object-group network id29216X37699.src.net.0
@@ -59,6 +57,10 @@ object-group network id18964X37673.src.net.0
   host 192.0.2.2
   host 192.0.2.3
 exit
+
+! ================ IPv4
+
+
 ip access-list extended fe0_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
@@ -145,10 +147,6 @@ exit
 
 
 ! ================ IPv6
-
-
-no ipv6 access-list ipv6_fe0_0_in
-no ipv6 access-list ipv6_fe0_0_out
 
 
 ipv6 access-list ipv6_fe0_0_in

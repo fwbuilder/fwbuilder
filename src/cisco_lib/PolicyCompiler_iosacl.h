@@ -59,8 +59,6 @@ namespace fwcompiler {
         
 	virtual void addDefaultPolicyRule();
 
-        virtual void _printClearCommands();
-        
         /**
          * dynamic interfaces can not be used in policy rules in IOS ACLs
          */
@@ -195,13 +193,6 @@ namespace fwcompiler {
         friend class PolicyCompiler_iosacl::ClearACLs;
 
         /**
-         * printClearCommands prints "clear" commands for object-groups
-         * and ACLs
-         */
-        DECLARE_POLICY_RULE_PROCESSOR(printClearCommands);
-        friend class PolicyCompiler_iosacl::printClearCommands;
-
-        /**
          * "object-group service" does not seem to support matching of
          * tcp flags and "established". Need to separate objects using
          * these into separate rules to avoid object-group
@@ -295,6 +286,8 @@ namespace fwcompiler {
 	virtual void compile();
 	virtual void epilog();
 
+        virtual std::string printClearCommands();
+        
         static std::string getAccessGroupCommandForAddressFamily(bool ipv6);
 
     };

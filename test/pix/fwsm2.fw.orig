@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:15 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:15 2011 PST by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -106,23 +106,21 @@ policy-map global_policy
 service-policy global_policy global
 
 
-!################
-access-list mode auto
 
-clear config access-list tmp_acl
-access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
-access-list tmp_acl deny ip any any 
-
-access-group tmp_acl in interface outside
-access-group tmp_acl in interface inside
+clear xlate
+clear config static
+clear config global
+clear config nat
 
 clear config access-list dmz_acl_in
 clear config access-list inside_acl_in
 clear config access-list outside_acl_in
-clear config object-group
 
 clear config icmp
 clear config telnet
+
+clear conf object-group
+clear conf object
 
 object-group network id17298X54624.dst.net.0
   network-object host 211.11.11.11 
@@ -235,6 +233,18 @@ object-group service id17461X54624.srv.tcp.0 tcp
   port-object eq 111
   port-object eq 7100
 exit
+
+
+!################
+access-list mode auto
+
+clear config access-list tmp_acl
+access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
+access-list tmp_acl deny ip any any 
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
+
 ! 
 ! Rule  2 (ethernet1)
 icmp permit any 3  outside
@@ -360,10 +370,6 @@ access-group dmz_acl_in in interface dmz
 access-group inside_acl_in in interface inside
 access-group outside_acl_in in interface outside
 
-clear xlate
-clear config static
-clear config global
-clear config nat
 ! 
 ! Rule  0 (NAT)
 global (outside) 1 interface

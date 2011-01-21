@@ -361,6 +361,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         oscnf->prolog();
         oscnf->processFirewallOptions();
 
+        string clear_commands;
+        bool have_named_objects = false;
+        bool have_object_groups = false;
+        string object_groups_definitions;
 
 /* create compilers and run the whole thing */
         string version = fw->getStr("version");
@@ -390,6 +394,15 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             {
                 n->compile();
                 n->epilog();
+
+                clear_commands += n->printClearCommands();
+                have_named_objects = (have_named_objects ||
+                                      named_object_manager.haveNamedObjects());
+                have_object_groups = (have_object_groups ||
+                                      named_object_manager.haveObjectGroups());
+                object_groups_definitions +=
+                    named_object_manager.getNamedObjectsDefinitions();
+
             } else
                 info(" Nothing to compile in NAT");
         }
@@ -415,6 +428,15 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             {
                 c->compile();
                 c->epilog();
+
+                clear_commands += c->printClearCommands();
+                have_named_objects = (have_named_objects ||
+                                      named_object_manager.haveNamedObjects());
+                have_object_groups = (have_object_groups ||
+                                      named_object_manager.haveObjectGroups());
+                object_groups_definitions +=
+                    named_object_manager.getNamedObjectsDefinitions();
+
             } else
                 info(" Nothing to compile in Policy");
         }
@@ -449,9 +471,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             all_errors.push_front(getErrors("").c_str());
         }
 
-        system_configuration_script = oscnf->getCompiledScript();
-        system_configuration_script +=
-            named_object_manager.getNamedObjectsDefinitions();
         policy_script = c->getCompiledScript();
         nat_script = n->getCompiledScript();
         routing_script = r->getCompiledScript();
@@ -463,16 +482,23 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         if (r->haveErrorsAndWarnings())
             all_errors.push_back(r->getErrors("R ").c_str());
 
-        script_buffer = assembleFwScript(
-            cluster, fw, !cluster_id.empty(), oscnf.get());
-
         if (single_rule_compile_on)
         {
             return formSingleRuleCompileOutput(
                 QString::fromUtf8(
-                    (named_object_manager.getNamedObjectsDefinitions() +
+                    (object_groups_definitions +
                      policy_script + nat_script + routing_script).c_str()));
         }
+
+        system_configuration_script = oscnf->getCompiledScript();
+        if (have_object_groups) clear_commands += "clear conf object-group\n";
+        if (have_named_objects) clear_commands += "clear conf object\n";
+        system_configuration_script += clear_commands;
+        system_configuration_script += "\n";
+        system_configuration_script += object_groups_definitions;
+
+        script_buffer = assembleFwScript(
+            cluster, fw, !cluster_id.empty(), oscnf.get());
 
         ofname = getAbsOutputFileName(ofname);
 

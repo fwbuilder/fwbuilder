@@ -1,9 +1,9 @@
 ;
 ;  This is automatically generated file. DO NOT MODIFY !
 ;
-;  Firewall Builder  fwb_procurve_acl v4.2.0.3435
+;  Firewall Builder  fwb_procurve_acl v4.2.0.3440
 ;
-;  Generated Sun Jan 16 23:00:20 2011 PST by vadim
+;  Generated Thu Jan 20 16:26:47 2011 PST by vadim
 ;
 ; Compiled for procurve_acl K.13
 ;
@@ -31,10 +31,6 @@ ip access-list extended tmp_acl
   deny ip any any 
 exit
 vlan 40 ip access-group tmp_acl in
-
-; ================ IPv4
-
-
 no vlan 10 ip access-group vlan_10_in in
 no ip access-list extended vlan_10_in
 
@@ -65,6 +61,7 @@ no ip access-list extended vlan_40_in
 no vlan 40 ip access-group vlan_40_out out
 no ip access-list extended vlan_40_out
 
+; ================ IPv4
 
 
 ip access-list extended vlan_10_in

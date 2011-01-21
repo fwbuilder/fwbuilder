@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3440
 !
-!  Generated Thu Jan 20 14:33:09 2011 PST by vadim
+!  Generated Thu Jan 20 17:13:09 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -75,11 +75,18 @@ no sysopt route dnat
 floodguard disable
 
 
-!################
+
+clear xlate
+clear static
+clear global
+clear nat
+
 clear access-list
-clear object-group
 clear icmp
 clear telnet
+
+
+!################
 ! 
 ! Rule  0 (eth1)
 access-list outside_acl_in deny   ip any host 22.22.22.22 
@@ -94,10 +101,6 @@ access-group dmz_acl_in in interface dmz
 access-group inside_acl_in in interface inside
 access-group outside_acl_in in interface outside
 
-clear xlate
-clear static
-clear global
-clear nat
 ! 
 ! Rule  0 (NAT)
 static (inside,dmz) 192.168.10.0 192.168.10.0 netmask 255.255.255.0

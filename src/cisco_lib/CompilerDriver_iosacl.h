@@ -46,7 +46,11 @@ namespace libfwbuilder {
 
 namespace fwcompiler {
 
-    class CompilerDriver_iosacl : public CompilerDriver {
+    class ciscoACL;
+    class NamedObjectManager;
+    
+    class CompilerDriver_iosacl : public CompilerDriver
+    {
    
 protected:
         std::string system_configuration_script;

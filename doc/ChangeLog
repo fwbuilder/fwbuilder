@@ -1,5 +1,27 @@
 2011-01-20  vadim  <vadim@netcitadel.com>
 
+	* NamedObjectsAndGroupsSupport.cpp (getNamedObjectsDefinitions):
+	see #1963 "move printing of object-group definitions to
+	NamedObjectManager::getNamedObjectsDefinitions()". Consolidated
+	code that works with named objects and object groups in the class
+	NamedObjectManager. This class manages all the objects and in the
+	end generates commands.
+
+	* PolicyCompiler_cisco (printClearCommands): Refactored parts that
+	generate "clear" commands to make sure they are printed in the
+	right order at the top of the generated configuration. Previously
+	compiler placed "clear global", "clear static" and "clear nat"
+	commands above the NAT section but below policy section. Since
+	ASA8.3 nat commands can use named objects and object groups, and
+	since I have added support for object groups in ASA 8.3 policy
+	rules, I now need to clear objects and object groups at the very
+	beginning of the generated config. However in order to be able to
+	clear objects and object-groups, I need to clear access-lists and
+	nat commands that might be using them first. So, all clear
+	commands are now grouped at the beginning of the generated
+	configuration. This affects pix/asa, iosacl and procurve_acl
+	platforms.
+
 	* NamedObjectsAndGroupsSupport.cpp (printObjectsForRE): See #1959
 	"ASA Policy - ranges are broken into composite network instead of
 	using range command". I have to create named objects for address
