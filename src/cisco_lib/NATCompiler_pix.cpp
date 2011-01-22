@@ -1868,28 +1868,6 @@ string NATCompiler_pix::printClearCommands()
     return output.str();
 }
 
-void NATCompiler_pix::setNamedObjectManager(NamedObjectManager *mgr,
-                                            FWObjectDatabase *obj_groups_tree)
-{
-    named_objects_manager = mgr;
-
-    // initialize object groups support
-    if (obj_groups_tree != NULL)
-    {
-        int obj_group_id = obj_groups_tree->front()->getId();
-        importObjectGroups(obj_groups_tree);
-        Group *obj_groups = Group::cast(dbcopy->findInIndex(obj_group_id));
-        assert(obj_groups);
-        named_objects_manager->init2(obj_groups);
-    } else
-        named_objects_manager->init(dbcopy);
-}
-
-FWObjectDatabase* NATCompiler_pix::exportObjectGroups()
-{
-    return dbcopy->exportSubtree(named_objects_manager->object_groups);
-}
-
 class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
 {
     public:
@@ -1897,12 +1875,12 @@ class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
     virtual bool askUser(FWObject*, FWObject*) {return false;}
 };
 
-
-void NATCompiler_pix::importObjectGroups(FWObjectDatabase *tree)
+void NATCompiler_pix::setNamedObjectManager(NamedObjectManager *mgr)
 {
+    named_objects_manager = mgr;
+    // initialize object groups support
     MergeConflictRes merge_predicate;
-    dbcopy->merge(tree, &merge_predicate);
+    dbcopy->merge(mgr->object_groups_tree, &merge_predicate);
+    mgr->setWorkingObjectTree(dbcopy);
 }
-
-
 

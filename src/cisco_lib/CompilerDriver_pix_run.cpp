@@ -289,7 +289,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         }
 
         NamedObjectManager named_object_manager(fw);
-        FWObjectDatabase *exported_object_groups = NULL;
 
         all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
@@ -381,7 +380,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)
         {
-            n->setNamedObjectManager(&named_object_manager, NULL);
+            n->setNamedObjectManager(&named_object_manager);
             n->setSourceRuleSet(nat);
             n->setRuleSetName(nat->getName());
 
@@ -402,10 +401,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                       named_object_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
                                       named_object_manager.haveObjectGroups());
-                object_groups_definitions +=
-                    named_object_manager.getNamedObjectsDefinitions();
-
-                exported_object_groups = n->exportObjectGroups();
+                named_object_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in NAT");
         }
@@ -416,7 +412,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
         if (policy)
         {
-            c->setNamedObjectManager(&named_object_manager, exported_object_groups);
+            c->setNamedObjectManager(&named_object_manager);
             c->setSourceRuleSet(policy);
             c->setRuleSetName(policy->getName());
 
@@ -437,10 +433,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                       named_object_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
                                       named_object_manager.haveObjectGroups());
-                object_groups_definitions +=
-                    named_object_manager.getNamedObjectsDefinitions();
-
-                exported_object_groups = n->exportObjectGroups();
+                named_object_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in Policy");
         }
@@ -451,7 +444,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)
         {
-            r->setNamedObjectManager(&named_object_manager, exported_object_groups);
+            r->setNamedObjectManager(&named_object_manager);
             r->setSourceRuleSet(routing);
             r->setRuleSetName(routing->getName());
 
@@ -478,6 +471,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         policy_script = c->getCompiledScript();
         nat_script = n->getCompiledScript();
         routing_script = r->getCompiledScript();
+
+        object_groups_definitions =
+            named_object_manager.getNamedObjectsDefinitions();
 
         if (c->haveErrorsAndWarnings())
             all_errors.push_back(c->getErrors("C ").c_str());

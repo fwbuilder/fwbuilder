@@ -44,12 +44,15 @@ namespace fwcompiler
     {
 
 public:
-        static std::map<int, NamedObject*> named_objects;
+        std::map<int, NamedObject*> named_objects;
+        std::string platform;
+        std::string version;
 // storage for object groups created to be used with PIX command object-group
-        static libfwbuilder::Group *object_groups;
+        std::string object_groups_group_id;
+        libfwbuilder::FWObjectDatabase *object_groups_tree;
 
-        const libfwbuilder::Firewall *fw;
-        libfwbuilder::FWObjectDatabase *db;
+        //const libfwbuilder::Firewall *fw;
+        libfwbuilder::FWObjectDatabase *work_db;
         
         NamedObjectManager(const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectManager();
@@ -58,22 +61,31 @@ public:
 
         std::string getNamedObjectsDefinitions();
 
-        /*
-         * init() creates object group that will hold all object groups and
-         * attaches it to the object tree @db
-         */
-        void init(libfwbuilder::FWObjectDatabase *db);
-
-        /*
-         * init2() assumes object group to hold all object group objects
-         * has been created already and is represented by the pointer @obj_group
-         */
-        void init2(libfwbuilder::Group *obj_group);
-
         bool haveNamedObjects();
         bool haveObjectGroups();
 
-        BaseObjectGroup* createObjectGroup(libfwbuilder::Firewall *fw);
+        BaseObjectGroup* createObjectGroup();
+        libfwbuilder::Group* getObjectGroupsGroup();
+
+        void setWorkingObjectTree(libfwbuilder::FWObjectDatabase *dbcopy);
+
+        /*
+         * saveObjectGroups() moves group that holds all newly created
+         * object groups from the object database used by the compiler
+         * (referenced by work_db) to object_groups_tree. Note that we
+         * just simply re-parent group object which breaks all
+         * references to it from rules in work_db. Call this from the
+         * run() function only at the point where compiler's copy of
+         * the object tree is not needed anymore. Good moment is right
+         * after the call to epilog().
+         *
+         * Again, THIS METHOD BREAKS OBJECT TREE inside policy
+         * compiler this instance of NamedObjectManager works with
+         * (they get associated by the call to method setNamedObjectManager()
+         * of the compiler)
+         */
+        void saveObjectGroups();
+
     };
     
     class CreateObjectGroups : public BasicRuleProcessor

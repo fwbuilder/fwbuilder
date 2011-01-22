@@ -214,9 +214,10 @@ QSet<QString> NamedObject::reserved_words;
 map<QString,int> NamedObject::name_disambiguation;
 
 
-NamedObject::NamedObject(const FWObject *_obj)
+NamedObject::NamedObject(const FWObject *_obj, const QString &_platform)
 {
     obj = _obj;
+    platform = _platform;
     if (reserved_words.empty())
     {
         const char** cptr = rw;
@@ -260,8 +261,7 @@ QString NamedObject::sanitizeObjectName(const QString &name)
     return qs;
 }
 
-QString NamedObject::createNetworkObjectCommand(const Address *addr_obj,
-                                                const Firewall*)
+QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)
 {
     if (addr_obj == NULL) return "";
     if (addr_obj->isAny()) return "";
@@ -322,8 +322,7 @@ QString NamedObject::printPorts(int rs, int re)
     return res.join(" ");
 }
 
-QString NamedObject::createServiceObjectCommand(const Service *serv_obj,
-                                                const Firewall *fw)
+QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 {
     if (serv_obj == NULL) return "";
     if (serv_obj->isAny()) return "";
@@ -367,7 +366,7 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj,
     if (CustomService::isA(serv_obj))
     {
         service_line << CustomService::constcast(serv_obj)->getCodeForPlatform(
-            fw->getStr("platform")).c_str();
+            platform.toStdString()).c_str();
     }
 
     res << service_line.join(" ");
@@ -377,18 +376,18 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj,
 }
 
 
-QString NamedObject::getCommand(const Firewall *fw)
+QString NamedObject::getCommand()
 {
     if (Address::constcast(obj)!=NULL)
-        return createNetworkObjectCommand(Address::constcast(obj), fw);
+        return createNetworkObjectCommand(Address::constcast(obj));
 
     if (Service::constcast(obj)!=NULL)
-        return createServiceObjectCommand(Service::constcast(obj), fw);
+        return createServiceObjectCommand(Service::constcast(obj));
 
     return "";
 }
 
-QString NamedObject::getCommandWhenObjectGroupMember(const Firewall*)
+QString NamedObject::getCommandWhenObjectGroupMember()
 {
     if (Address::constcast(obj)!=NULL) return "network-object object " + name;
     if (Service::constcast(obj)!=NULL) return "service-object object " + name;

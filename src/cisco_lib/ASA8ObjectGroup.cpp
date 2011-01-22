@@ -56,8 +56,7 @@ QString ASA8ObjectGroup::groupMemberToString(
 
     if (named_object)
     {
-        return named_object->getCommandWhenObjectGroupMember(
-            named_object_manager->fw);
+        return named_object->getCommandWhenObjectGroupMember();
     }
         
     return PIXObjectGroup::groupMemberToString(obj, named_object_manager);
