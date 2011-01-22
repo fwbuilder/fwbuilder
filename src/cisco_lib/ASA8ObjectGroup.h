@@ -43,7 +43,7 @@ public:
         //virtual std::string getSrvTypeName();
 
         virtual QString groupMemberToString(
-            libfwbuilder::FWObject *obj, NamedObjectManager *named_obj_manager)
+            libfwbuilder::FWObject *obj, NamedObjectsManager *named_obj_manager)
             throw(libfwbuilder::FWException);
 
     };

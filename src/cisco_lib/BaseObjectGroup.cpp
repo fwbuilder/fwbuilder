@@ -27,6 +27,7 @@
 
 #include "BaseObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -110,7 +111,7 @@ void BaseObjectGroup::setObjectGroupTypeFromFWObject(const FWObject *obj)
 }
 
 void BaseObjectGroup::setObjectGroupTypeFromMembers(
-    NamedObjectManager *named_object_manager)
+    NamedObjectsManager *named_objects_manager)
 {
     object_group_type my_type = UNKNOWN;
     std::map<int, int> type_counters;
@@ -119,7 +120,7 @@ void BaseObjectGroup::setObjectGroupTypeFromMembers(
         const FWObject *obj = FWReference::getObject(*i1);
 
         NamedObject *named_object =
-            named_object_manager->named_objects[obj->getId()];
+            named_objects_manager->named_objects[obj->getId()];
 
         if (named_object)
             obj = named_object->getObject();
@@ -221,13 +222,13 @@ string BaseObjectGroup::getObjectGroupClass()
     return "";
 }
 
-QString BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectManager*)
+QString BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectsManager*)
     throw(libfwbuilder::FWException)
 {
     return "";
 }
 
-QString BaseObjectGroup::toString(NamedObjectManager *nm)  throw(FWException)
+QString BaseObjectGroup::toString(NamedObjectsManager *nm)  throw(FWException)
 {
     QStringList res;
     if (this->size()==0) return "";

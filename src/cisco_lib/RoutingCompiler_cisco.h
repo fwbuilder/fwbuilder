@@ -39,7 +39,7 @@ namespace fwcompiler
 
     protected:
      
-        NamedObjectManager *named_objects_manager;
+        NamedObjectsManager *named_objects_manager;
 
         /**
          * prints rule in some universal format (close to that visible
@@ -124,7 +124,7 @@ namespace fwcompiler
 	virtual int  prolog();
 	virtual void compile();
 
-        void setNamedObjectManager(NamedObjectManager *mgr);
+        void setNamedObjectsManager(NamedObjectsManager *mgr);
 
 };
 

@@ -27,6 +27,7 @@
 
 #include "NATCompiler_pix.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -1874,7 +1875,7 @@ class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
     virtual bool askUser(FWObject*, FWObject*) {return false;}
 };
 
-void NATCompiler_pix::setNamedObjectManager(NamedObjectManager *mgr)
+void NATCompiler_pix::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
     mgr->setWorkingObjectTree(dbcopy);

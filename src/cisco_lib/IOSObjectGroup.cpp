@@ -46,7 +46,7 @@ using namespace std;
 const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
 QString IOSObjectGroup::groupMemberToString(FWObject *obj,
-                                           NamedObjectManager*)
+                                           NamedObjectsManager*)
     throw(libfwbuilder::FWException)
 {
     ostringstream ostr;

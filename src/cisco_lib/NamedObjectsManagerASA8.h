@@ -32,13 +32,13 @@
 namespace fwcompiler
 {
 
-    class NamedObjectManagerASA8 : public NamedObjectManagerPIX
+    class NamedObjectsManagerASA8 : public NamedObjectsManagerPIX
     {
 
 public:
-        NamedObjectManagerASA8(const libfwbuilder::Firewall *fw) :
-            NamedObjectManagerPIX(fw) {}
-        virtual ~NamedObjectManagerASA8() {};
+        NamedObjectsManagerASA8(const libfwbuilder::Firewall *fw) :
+            NamedObjectsManagerPIX(fw) {}
+        virtual ~NamedObjectsManagerASA8() {};
     };
 }
 

@@ -494,7 +494,7 @@ protected:
 protected:
 
         Helper helper;
-        NamedObjectManager *named_objects_manager;
+        NamedObjectsManager *named_objects_manager;
 
 	virtual std::string myPlatformName();
 
@@ -525,7 +525,7 @@ public:
          */
         void regroup();
 
-        void setNamedObjectManager(NamedObjectManager *mgr);
+        void setNamedObjectsManager(NamedObjectsManager *mgr);
 
     };
 

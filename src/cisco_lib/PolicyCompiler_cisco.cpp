@@ -26,7 +26,9 @@
 #include "config.h"
 
 #include "PolicyCompiler_cisco.h"
+#include "NamedObjectsManager.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -817,7 +819,7 @@ string PolicyCompiler_cisco::printClearCommands()
     return "";
 }
 
-void PolicyCompiler_cisco::setNamedObjectManager(NamedObjectManager *mgr)
+void PolicyCompiler_cisco::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
     // initialize object groups support

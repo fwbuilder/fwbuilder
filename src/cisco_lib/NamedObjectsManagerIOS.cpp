@@ -36,16 +36,16 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectManagerIOS::NamedObjectManagerIOS(const Firewall *fw) :
-    NamedObjectManager(fw)
+NamedObjectsManagerIOS::NamedObjectsManagerIOS(const Firewall *fw) :
+    NamedObjectsManager(fw)
 {
 }
 
-NamedObjectManagerIOS::~NamedObjectManagerIOS()
+NamedObjectsManagerIOS::~NamedObjectsManagerIOS()
 {
 }
 
-string NamedObjectManagerIOS::getClearCommands()
+string NamedObjectsManagerIOS::getClearCommands()
 {
     ostringstream output;
 

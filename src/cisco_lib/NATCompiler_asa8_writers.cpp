@@ -27,6 +27,7 @@
 #include "NamedObject.h"
 #include "ASA8TwiceNatLogic.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"

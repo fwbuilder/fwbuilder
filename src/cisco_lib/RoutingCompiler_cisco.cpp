@@ -16,6 +16,7 @@
 
 #include "RoutingCompiler_cisco.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -110,7 +111,7 @@ string RoutingCompiler_cisco::debugPrintRule(Rule *r)
     return s;
 }
 
-void RoutingCompiler_cisco::setNamedObjectManager(NamedObjectManager *mgr)
+void RoutingCompiler_cisco::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
     mgr->setWorkingObjectTree(dbcopy);

@@ -173,7 +173,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         if (!single_rule_compile_on)
             system_configuration_script = safetyNetInstall(fw);
 
-        NamedObjectManagerIOS named_object_manager(fw);
+        NamedObjectsManagerIOS named_objects_manager(fw);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -228,7 +228,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
 
                 PolicyCompiler_procurve_acl c(objdb, fw, ipv6_policy, oscnf.get());
 
-                c.setNamedObjectManager(&named_object_manager);
+                c.setNamedObjectsManager(&named_objects_manager);
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
 
@@ -265,7 +265,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                     }
                     policy_script +=  c.getCompiledScript();
                     clear_commands += c.printClearCommands();
-                    named_object_manager.saveObjectGroups();
+                    named_objects_manager.saveObjectGroups();
 
                 } else
                     info(" Nothing to compile in Policy");
@@ -279,7 +279,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                 // currently routing is supported only for ipv4
                 RoutingCompiler_procurve_acl r(objdb, fw, false, oscnf.get());
 
-                r.setNamedObjectManager(&named_object_manager);
+                r.setNamedObjectsManager(&named_objects_manager);
                 r.setSourceRuleSet(routing);
                 r.setRuleSetName(routing->getName());
 
@@ -312,7 +312,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         }
 
         object_groups_definitions +=
-            named_object_manager.getNamedObjectsDefinitions();
+            named_objects_manager.getNamedObjectsDefinitions();
 
         if (single_rule_compile_on)
         {
@@ -325,7 +325,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         if ( fw->getOptionsObject()->getBool("procurve_acl_acl_basic") ||
              fw->getOptionsObject()->getBool("procurve_acl_acl_substitution"))
         {
-            clear_commands += named_object_manager.getClearCommands() + "\n";
+            clear_commands += named_objects_manager.getClearCommands() + "\n";
         }
 
         system_configuration_script += clear_commands;

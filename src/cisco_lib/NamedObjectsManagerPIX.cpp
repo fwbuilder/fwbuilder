@@ -35,16 +35,16 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectManagerPIX::NamedObjectManagerPIX(const Firewall *fw) :
-    NamedObjectManager(fw)
+NamedObjectsManagerPIX::NamedObjectsManagerPIX(const Firewall *fw) :
+    NamedObjectsManager(fw)
 {
 }
 
-NamedObjectManagerPIX::~NamedObjectManagerPIX()
+NamedObjectsManagerPIX::~NamedObjectsManagerPIX()
 {
 }
 
-string NamedObjectManagerPIX::getClearCommands()
+string NamedObjectsManagerPIX::getClearCommands()
 {
     ostringstream output;
 

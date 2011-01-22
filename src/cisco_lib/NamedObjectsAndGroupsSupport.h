@@ -40,81 +40,13 @@
 namespace fwcompiler
 {
 
-    class NamedObjectManager
-    {
-protected:
-        std::string platform;
-        std::string version;
-        // storage for object groups created to be used with PIX
-        // command object-group
-        std::string object_groups_group_id;
-
-        /*
-         * This is a storage object tree. Method saveObjectGroups()
-         * copies object groups objects created during compiler pass
-         * in the working tree work_db to this tree. There should be
-         * no access to the storage tree from outside, it should only
-         * be used by methods of this class that generate commands for
-         * object groups definitions or "clear" commands.
-         */
-        libfwbuilder::FWObjectDatabase *object_groups_tree;
-
-        /*
-         * This is a working object tree. When compilers need to
-         * interact with named object manager, they should use this
-         * object tree. Access to the group that holds created object
-         * groups is provided by method
-         * getObjectGroupsGroupInWorkTree() that finds it in the
-         * working tree
-         */
-        libfwbuilder::FWObjectDatabase *work_db;
-        
-public:
-        std::map<int, NamedObject*> named_objects;
-
-        
-        NamedObjectManager(const libfwbuilder::Firewall *_fw);
-        virtual ~NamedObjectManager();
-        void addNamedObject(const libfwbuilder::FWObject *obj);
-        NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
-
-        virtual std::string getNamedObjectsDefinitions();
-        virtual std::string getClearCommands();
-        
-        bool haveNamedObjects();
-        bool haveObjectGroups();
-
-        BaseObjectGroup* createObjectGroup();
-        libfwbuilder::Group* getObjectGroupsGroupInWorkTree();
-
-        void setWorkingObjectTree(libfwbuilder::FWObjectDatabase *dbcopy);
-
-        /*
-         * saveObjectGroups() moves group that holds all newly created
-         * object groups from the object database used by the compiler
-         * (referenced by work_db) to object_groups_tree. Note that we
-         * just simply re-parent group object which breaks all
-         * references to it from rules in work_db. Call this from the
-         * run() function only at the point where compiler's copy of
-         * the object tree is not needed anymore. Good moment is right
-         * after the call to epilog().
-         *
-         * Again, THIS METHOD BREAKS OBJECT TREE inside policy
-         * compiler this instance of NamedObjectManager works with
-         * (they get associated by the call to method setNamedObjectManager()
-         * of the compiler)
-         */
-        void saveObjectGroups();
-
-    };
-    
     class CreateObjectGroups : public BasicRuleProcessor
     {
 protected:
 
         std::string re_type;
         std::string name_suffix;
-        NamedObjectManager *named_objects_manager;
+        NamedObjectsManager *named_objects_manager;
 
         BaseObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
 
@@ -126,7 +58,7 @@ public:
         CreateObjectGroups(const std::string &name,
                            const std::string &_ns,
                            const std::string &_type,
-                           NamedObjectManager *m) :
+                           NamedObjectsManager *m) :
             BasicRuleProcessor(name)
             {
                 re_type=_type;
@@ -142,21 +74,21 @@ public:
     class CreateObjectGroupsForSrc : public CreateObjectGroups
     {
 public:
-CreateObjectGroupsForSrc(const std::string &n, NamedObjectManager *m) : 
+CreateObjectGroupsForSrc(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME, m) {}
     };
 
     class CreateObjectGroupsForDst : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForDst(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForDst(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME, m) {}
     };
 
     class CreateObjectGroupsForSrv : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForSrv(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForSrv(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME, m) {}
     };
     
@@ -167,21 +99,21 @@ public:
     class CreateObjectGroupsForOSrc : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForOSrc(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForOSrc(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"osrc",libfwbuilder::RuleElementOSrc::TYPENAME, m){}
     };
 
     class CreateObjectGroupsForODst : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForODst(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForODst(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"odst",libfwbuilder::RuleElementODst::TYPENAME, m){}
     };
 
     class CreateObjectGroupsForOSrv : public CreateObjectGroups
     {
 public:
-        CreateObjectGroupsForOSrv(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForOSrv(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"osrv",libfwbuilder::RuleElementOSrv::TYPENAME, m){}
     };
     
@@ -193,7 +125,7 @@ protected:
                                  BaseObjectGroup *obj_group);
 
 public:
-        CreateObjectGroupsForTSrc(const std::string &n, NamedObjectManager *m) : 
+        CreateObjectGroupsForTSrc(const std::string &n, NamedObjectsManager *m) : 
         CreateObjectGroups(n,"tsrc",libfwbuilder::RuleElementTSrc::TYPENAME, m){}
     };
 
@@ -205,10 +137,10 @@ public:
     {
 protected:
         virtual void printObjectsForRE(libfwbuilder::FWObject *re);
-        NamedObjectManager *named_objects_manager;
+        NamedObjectsManager *named_objects_manager;
 public:
         createNamedObjectsCommon(const std::string &n,
-            NamedObjectManager *_m) : BasicRuleProcessor(n)
+            NamedObjectsManager *_m) : BasicRuleProcessor(n)
         {
             named_objects_manager = _m;
         }
@@ -220,7 +152,7 @@ protected:
         virtual void printObjectsForRE(libfwbuilder::FWObject *re);
 public:
         createNamedObjectsForPolicy(const std::string &n,
-            NamedObjectManager *m) : createNamedObjectsCommon(n, m) {}
+            NamedObjectsManager *m) : createNamedObjectsCommon(n, m) {}
         virtual bool processNext();
     };
     
@@ -228,7 +160,7 @@ public:
     {
 public:
         createNamedObjectsForNAT(const std::string &n,
-            NamedObjectManager *m) : createNamedObjectsCommon(n, m) {}
+            NamedObjectsManager *m) : createNamedObjectsCommon(n, m) {}
         virtual bool processNext();
     };
     

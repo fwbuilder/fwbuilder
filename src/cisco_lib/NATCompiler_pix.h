@@ -86,7 +86,7 @@ namespace fwcompiler {
         public:
 
         Helper helper;
-        NamedObjectManager *named_objects_manager;
+        NamedObjectsManager *named_objects_manager;
 
 	int global_pool_no;
         std::map<int,NATCmd*> nat_commands;
@@ -533,7 +533,7 @@ namespace fwcompiler {
             nat_acl_names[acl_name] = f;
         }
 
-        void setNamedObjectManager(NamedObjectManager *mgr);
+        void setNamedObjectsManager(NamedObjectsManager *mgr);
     };
 
 

@@ -25,6 +25,7 @@
 
 #include "PolicyCompiler_pix.h"
 #include "PIXObjectGroup.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"

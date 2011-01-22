@@ -47,7 +47,7 @@ namespace libfwbuilder {
 namespace fwcompiler {
 
     class ciscoACL;
-    class NamedObjectManager;
+    class NamedObjectsManager;
     
     class CompilerDriver_iosacl : public CompilerDriver
     {

@@ -38,7 +38,7 @@
 
 namespace fwcompiler {
 
-    class NamedObjectManager;
+    class NamedObjectsManager;
     
     class BaseObjectGroup : public libfwbuilder::Group {
 public:
@@ -79,7 +79,7 @@ public:
         void setObjectGroupType(object_group_type _gt) { gt=_gt; }
         object_group_type getObjectGroupType() { return gt; }
 
-        void setObjectGroupTypeFromMembers(NamedObjectManager *named_obj_manager);
+        void setObjectGroupTypeFromMembers(NamedObjectsManager *named_obj_manager);
         object_group_type getObjectGroupTypeFromFWObject(
             const libfwbuilder::FWObject *o);
         void setObjectGroupTypeFromFWObject(const libfwbuilder::FWObject *obj);
@@ -93,10 +93,10 @@ public:
         virtual std::string getObjectGroupFooter();
 
         virtual QString groupMemberToString(
-            libfwbuilder::FWObject *obj, NamedObjectManager *named_obj_manager)
+            libfwbuilder::FWObject *obj, NamedObjectsManager *named_obj_manager)
             throw(libfwbuilder::FWException);
 
-        virtual QString toString(NamedObjectManager *named_obj_manager)
+        virtual QString toString(NamedObjectsManager *named_obj_manager)
             throw(libfwbuilder::FWException);
     };
 

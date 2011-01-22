@@ -27,6 +27,7 @@
 
 #include "ASA8ObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManager.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Network.h"
@@ -48,18 +49,18 @@ const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
 
 QString ASA8ObjectGroup::groupMemberToString(
-    FWObject *obj, NamedObjectManager *named_object_manager)
+    FWObject *obj, NamedObjectsManager *named_objects_manager)
     throw(libfwbuilder::FWException)
 {
     NamedObject *named_object =
-        named_object_manager->named_objects[obj->getId()];
+        named_objects_manager->named_objects[obj->getId()];
 
     if (named_object)
     {
         return named_object->getCommandWhenObjectGroupMember();
     }
         
-    return PIXObjectGroup::groupMemberToString(obj, named_object_manager);
+    return PIXObjectGroup::groupMemberToString(obj, named_objects_manager);
 }
 
 string ASA8ObjectGroup::getObjectGroupClass()

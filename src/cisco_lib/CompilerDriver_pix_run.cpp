@@ -290,7 +290,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             copies_of_cluster_interfaces.pop_front();
         }
 
-        NamedObjectManagerPIX named_object_manager(fw);
+        NamedObjectsManagerPIX named_objects_manager(fw);
 
         all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
@@ -382,7 +382,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)
         {
-            n->setNamedObjectManager(&named_object_manager);
+            n->setNamedObjectsManager(&named_objects_manager);
             n->setSourceRuleSet(nat);
             n->setRuleSetName(nat->getName());
 
@@ -400,10 +400,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
                 clear_commands += n->printClearCommands();
                 have_named_objects = (have_named_objects ||
-                                      named_object_manager.haveNamedObjects());
+                                      named_objects_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
-                                      named_object_manager.haveObjectGroups());
-                named_object_manager.saveObjectGroups();
+                                      named_objects_manager.haveObjectGroups());
+                named_objects_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in NAT");
         }
@@ -414,7 +414,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
         if (policy)
         {
-            c->setNamedObjectManager(&named_object_manager);
+            c->setNamedObjectsManager(&named_objects_manager);
             c->setSourceRuleSet(policy);
             c->setRuleSetName(policy->getName());
 
@@ -432,10 +432,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
                 clear_commands += c->printClearCommands();
                 have_named_objects = (have_named_objects ||
-                                      named_object_manager.haveNamedObjects());
+                                      named_objects_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
-                                      named_object_manager.haveObjectGroups());
-                named_object_manager.saveObjectGroups();
+                                      named_objects_manager.haveObjectGroups());
+                named_objects_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in Policy");
         }
@@ -446,7 +446,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)
         {
-            r->setNamedObjectManager(&named_object_manager);
+            r->setNamedObjectsManager(&named_objects_manager);
             r->setSourceRuleSet(routing);
             r->setRuleSetName(routing->getName());
 
@@ -475,7 +475,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         routing_script = r->getCompiledScript();
 
         object_groups_definitions =
-            named_object_manager.getNamedObjectsDefinitions();
+            named_objects_manager.getNamedObjectsDefinitions();
 
         if (c->haveErrorsAndWarnings())
             all_errors.push_back(c->getErrors("C ").c_str());
@@ -494,7 +494,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
         system_configuration_script = oscnf->getCompiledScript();
 
-        clear_commands += named_object_manager.getClearCommands() + "\n";
+        clear_commands += named_objects_manager.getClearCommands() + "\n";
 
         system_configuration_script += clear_commands;
         system_configuration_script += "\n";
