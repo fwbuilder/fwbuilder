@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2010 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -27,7 +25,6 @@
 
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObject.h"
-//#include "ObjectGroupFactory.h"
 
 #include "PIXObjectGroup.h"
 #include "ASA8ObjectGroup.h"
@@ -139,7 +136,9 @@ bool NamedObjectManager::haveNamedObjects()
 
 bool NamedObjectManager::haveObjectGroups()
 {
-    return (getObjectGroupsGroup()->size() > 0);
+    FWObject *object_groups = object_groups_tree->findInIndex(
+        FWObjectDatabase::getIntId(object_groups_group_id));
+    return (object_groups->size() > 0);
 }
 
 string NamedObjectManager::getNamedObjectsDefinitions()
@@ -169,6 +168,11 @@ string NamedObjectManager::getNamedObjectsDefinitions()
     return output.join("\n").toUtf8().constData();
 }
 
+string NamedObjectManager::getClearCommands()
+{
+    return "";
+}
+
 BaseObjectGroup* NamedObjectManager::createObjectGroup()
 {
     BaseObjectGroup *grp = NULL;
@@ -186,8 +190,17 @@ BaseObjectGroup* NamedObjectManager::createObjectGroup()
     return grp;
 }
 
+class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
+{
+    public:
+    MergeConflictRes() { }
+    virtual bool askUser(FWObject*, FWObject*) {return false;}
+};
+
 void NamedObjectManager::setWorkingObjectTree(FWObjectDatabase *dbcopy)
 {
+    MergeConflictRes merge_predicate;
+    dbcopy->merge(object_groups_tree, &merge_predicate);
     work_db = dbcopy;
 }
 
@@ -204,7 +217,7 @@ void NamedObjectManager::saveObjectGroups()
 {
     object_groups_tree->clearChildren();
 
-    FWObject *work_object_groups = getObjectGroupsGroup(); // finds it in work_db
+    FWObject *work_object_groups = getObjectGroupsGroupInWorkTree(); // finds it in work_db
 // move from work tree to object_groups_tree
     object_groups_tree->add(work_object_groups);  
 
@@ -228,7 +241,7 @@ void NamedObjectManager::saveObjectGroups()
     //object_groups_tree->dump(true, true);
 }
 
-Group* NamedObjectManager::getObjectGroupsGroup()
+Group* NamedObjectManager::getObjectGroupsGroupInWorkTree()
 {
     return Group::cast(work_db->findInIndex(
                            FWObjectDatabase::getIntId(object_groups_group_id)));
@@ -247,7 +260,7 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         relement.push_back(FWReference::getObject(*i1));
 
-    FWObject *object_groups = named_objects_manager->getObjectGroupsGroup();
+    FWObject *object_groups = named_objects_manager->getObjectGroupsGroupInWorkTree();
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
@@ -292,7 +305,7 @@ bool CreateObjectGroups::processNext()
     if (obj_group==NULL)
     {
         obj_group = named_objects_manager->createObjectGroup();
-        named_objects_manager->getObjectGroupsGroup()->add(obj_group);
+        named_objects_manager->getObjectGroupsGroupInWorkTree()->add(obj_group);
 
         packObjects(re, obj_group);
 

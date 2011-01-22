@@ -43,6 +43,8 @@
 #include "RoutingCompiler_pix.h"
 #include "OSConfigurator_pix_os.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManagerPIX.h"
+#include "NamedObjectsManagerASA8.h"
 
 #include "Helper.h"
 
@@ -288,7 +290,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             copies_of_cluster_interfaces.pop_front();
         }
 
-        NamedObjectManager named_object_manager(fw);
+        NamedObjectManagerPIX named_object_manager(fw);
 
         all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
@@ -491,8 +493,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         }
 
         system_configuration_script = oscnf->getCompiledScript();
-        if (have_object_groups) clear_commands += "clear conf object-group\n";
-        if (have_named_objects) clear_commands += "clear conf object\n";
+
+        clear_commands += named_object_manager.getClearCommands() + "\n";
+
         system_configuration_script += clear_commands;
         system_configuration_script += "\n";
         system_configuration_script += object_groups_definitions;

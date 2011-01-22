@@ -7,6 +7,8 @@ TEMPLATE = lib
 SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PolicyCompiler_cisco_acls.cpp      \
 			NamedObjectsAndGroupsSupport.cpp   \
+			NamedObjectsManagerIOS.cpp         \
+			NamedObjectsManagerPIX.cpp         \
 			RoutingCompiler_cisco.cpp          \
 			RoutingCompiler_cisco_writers.cpp  \
 			splitByNetworkZonesForRE.cpp       \
@@ -60,6 +62,9 @@ HEADERS	 = ../../config.h                   \
 			NamedObject.h                   \
 			ASA8TwiceNatLogic.h             \
 			NamedObjectsAndGroupsSupport.h  \
+			NamedObjectsManagerIOS.h        \
+			NamedObjectsManagerPIX.h        \
+			NamedObjectsManagerASA8.h       \
 			inspectionProtocol.h            \
 			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \

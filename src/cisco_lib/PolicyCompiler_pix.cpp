@@ -753,7 +753,6 @@ string PolicyCompiler_pix::printClearCommands()
             output << clearACLcmd << " " << acl->workName() << endl;
         }
         //output << clearOGcmd << endl;
-        output << endl;
     }
 
     if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") )
@@ -762,7 +761,6 @@ string PolicyCompiler_pix::printClearCommands()
         output << clearTelnetcmd  << endl;
     }
 
-    output << endl;
     return output.str();
 }
 

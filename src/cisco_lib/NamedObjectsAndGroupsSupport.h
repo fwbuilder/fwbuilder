@@ -42,30 +42,50 @@ namespace fwcompiler
 
     class NamedObjectManager
     {
-
-public:
-        std::map<int, NamedObject*> named_objects;
+protected:
         std::string platform;
         std::string version;
-// storage for object groups created to be used with PIX command object-group
+        // storage for object groups created to be used with PIX
+        // command object-group
         std::string object_groups_group_id;
+
+        /*
+         * This is a storage object tree. Method saveObjectGroups()
+         * copies object groups objects created during compiler pass
+         * in the working tree work_db to this tree. There should be
+         * no access to the storage tree from outside, it should only
+         * be used by methods of this class that generate commands for
+         * object groups definitions or "clear" commands.
+         */
         libfwbuilder::FWObjectDatabase *object_groups_tree;
 
-        //const libfwbuilder::Firewall *fw;
+        /*
+         * This is a working object tree. When compilers need to
+         * interact with named object manager, they should use this
+         * object tree. Access to the group that holds created object
+         * groups is provided by method
+         * getObjectGroupsGroupInWorkTree() that finds it in the
+         * working tree
+         */
         libfwbuilder::FWObjectDatabase *work_db;
+        
+public:
+        std::map<int, NamedObject*> named_objects;
+
         
         NamedObjectManager(const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectManager();
         void addNamedObject(const libfwbuilder::FWObject *obj);
         NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
 
-        std::string getNamedObjectsDefinitions();
-
+        virtual std::string getNamedObjectsDefinitions();
+        virtual std::string getClearCommands();
+        
         bool haveNamedObjects();
         bool haveObjectGroups();
 
         BaseObjectGroup* createObjectGroup();
-        libfwbuilder::Group* getObjectGroupsGroup();
+        libfwbuilder::Group* getObjectGroupsGroupInWorkTree();
 
         void setWorkingObjectTree(libfwbuilder::FWObjectDatabase *dbcopy);
 

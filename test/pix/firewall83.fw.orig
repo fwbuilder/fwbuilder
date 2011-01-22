@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3440
+!  Firewall Builder  fwb_pix v4.2.0.3441
 !
-!  Generated Thu Jan 20 17:13:12 2011 PST by vadim
+!  Generated Sat Jan 22 10:05:57 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -89,20 +89,12 @@ parameters
 
 clear xlate
 clear config nat
-
 clear config access-list
 clear config icmp
 clear config telnet
-
 clear conf object
 
-object service http.0
-  service tcp destination eq 80
-quit
 
-object network hostA:eth0.0
-  host 192.168.1.10
-quit
 object service http.0
   service tcp destination eq 80
 quit

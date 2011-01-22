@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3440
+!  Firewall Builder  fwb_pix v4.2.0.3441
 !
-!  Generated Thu Jan 20 17:13:14 2011 PST by vadim
+!  Generated Sat Jan 22 10:06:00 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -91,8 +91,8 @@ service-policy global_policy global
 
 clear xlate
 clear config nat
-
 clear conf object
+
 
 object network dmz-range-1.0
   range 172.16.0.10 172.16.0.15

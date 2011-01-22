@@ -481,7 +481,6 @@ string NATCompiler_asa8::printClearCommands()
             "version_" + version + "/pix_commands/clear_nat") << endl;
     }
 
-    output << endl;
     return output.str();
 }
 

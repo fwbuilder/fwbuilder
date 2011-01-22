@@ -533,15 +533,15 @@ string PolicyCompiler_iosacl::printClearCommands()
 {
     ostringstream output;
 
-    string vers = fw->getStr("version");
+    string version = fw->getStr("version");
     string platform = fw->getStr("platform");
 
     string xml_element = "clear_ip_acl";
     if (ipv6) xml_element = "clear_ipv6_acl";
 
     string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/iosacl_commands/" + xml_element);
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/iosacl_commands/" + xml_element);
 
     assert( !clearACLCmd.empty());
 
@@ -554,18 +554,7 @@ string PolicyCompiler_iosacl::printClearCommands()
             ciscoACL *acl = (*i).second;
             output << clearACLCmd << " " << acl->workName() << endl;
         }
-        output << endl;
-
-        FWObject *object_groups = named_objects_manager->getObjectGroupsGroup();
-        for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
-        {
-            BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-            assert(og!=NULL);
-            output << "no "  << og->getObjectGroupHeader() << endl;
-        }
     }
-
-    output << endl;
 
     return output.str();
 }

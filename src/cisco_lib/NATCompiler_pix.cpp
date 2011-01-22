@@ -1864,7 +1864,6 @@ string NATCompiler_pix::printClearCommands()
             "version_" + version + "/pix_commands/clear_nat") << endl;
     }
 
-    output << endl;
     return output.str();
 }
 
@@ -1878,9 +1877,6 @@ class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
 void NATCompiler_pix::setNamedObjectManager(NamedObjectManager *mgr)
 {
     named_objects_manager = mgr;
-    // initialize object groups support
-    MergeConflictRes merge_predicate;
-    dbcopy->merge(mgr->object_groups_tree, &merge_predicate);
     mgr->setWorkingObjectTree(dbcopy);
 }
 

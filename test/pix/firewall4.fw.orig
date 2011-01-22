@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3440
+!  Firewall Builder  fwb_pix v4.2.0.3441
 !
-!  Generated Thu Jan 20 17:13:08 2011 PST by vadim
+!  Generated Sat Jan 22 10:05:54 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -79,13 +79,12 @@ clear xlate
 clear static
 clear global
 clear nat
-
 clear access-list
 clear icmp
 clear telnet
-
 clear conf object-group
 clear conf object
+
 
 object-group service id3D79A1C2.srv.tcp.0 tcp
   port-object eq 22

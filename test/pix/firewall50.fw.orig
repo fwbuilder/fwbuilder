@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3440
+!  Firewall Builder  fwb_pix v4.2.0.3441
 !
-!  Generated Thu Jan 20 17:13:09 2011 PST by vadim
+!  Generated Sat Jan 22 10:05:54 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -116,16 +116,14 @@ clear xlate
 clear config static
 clear config global
 clear config nat
-
 clear config access-list dmz_acl_in
 clear config access-list inside_acl_in
 clear config access-list outside_acl_in
-
 clear config icmp
 clear config telnet
-
 clear conf object-group
 clear conf object
+
 
 object-group network id45142FA628543.dst.net.0
   network-object host 211.11.11.11 

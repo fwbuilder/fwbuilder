@@ -42,6 +42,7 @@
 #include "RoutingCompiler_iosacl.h"
 #include "OSConfigurator_ios.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "NamedObjectsManagerIOS.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -185,7 +186,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
         if (!single_rule_compile_on)
             system_configuration_script = safetyNetInstall(fw);
 
-        NamedObjectManager named_object_manager(fw);
+        NamedObjectManagerIOS named_object_manager(fw);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -332,6 +333,12 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                 QString::fromUtf8(
                     (object_groups_definitions +
                      policy_script + routing_script).c_str()));
+        }
+
+        if ( fw->getOptionsObject()->getBool("iosacl_acl_basic") ||
+             fw->getOptionsObject()->getBool("iosacl_acl_substitution"))
+        {
+            clear_commands += named_object_manager.getClearCommands() + "\n";
         }
 
         system_configuration_script += clear_commands;

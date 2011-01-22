@@ -1,3 +1,42 @@
+2011-01-22  vadim  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_create_object.cpp (registerObjectType): see
+	#1972 implemented mechanism that allows me to register new object
+	types created and used outside of libfwbuilder API. This means
+	FWObjectDatabase can then copy and manipulate object trees that
+	use these new object types.
+
+	* NamedObjectsAndGroupsSupport.cpp (saveObjectGroups): see #1968,
+	#1972 Class NamedObjectsManager maintains its own copy of object
+	tree that holds object group objects it creates during compiler
+	passes. This allows me to maitain one common set of object groups
+	for both policy and nat compilers and avoid creating duplicate and
+	redundant object-group statements.
+
+	* NamedObjectsManagerPIX.cpp (getClearCommands): see #1968, #1972
+	class NamedObjectsManager (and derived classes for IOS and PIX)
+	generate "clear" commands. This way, I can generate correct set
+	of "clear" commands that take into account any named objects and
+	object-groups that could be created during both policy and nat
+	compiler passes.
+
+2011-01-21  vadim  <vadim@netcitadel.com>
+
+	* FWObject.cpp (init): see #1972 Seaprated object creation and
+	initialization. Some complex objects need to create a set of
+	standard child objects. Previously this was done in a special type
+	of constructor which required pointer to the object tree root
+	(FWObjectDatabase*). This created problems with implementation
+	of the method to register functions that create objects of new
+	types outside of the API. Now all objects have just a basic set
+	of constructors, plus method init() that can initialize them.
+
+	* FWObjectDatabase_create_object.cpp (registerObjectType): see
+	#1972 implemented mechanism that allows me to register new object
+	types created and used outside of libfwbuilder API. This means
+	FWObjectDatabase can then copy and manipulate object trees that
+	use these new object types.
+
 2011-01-20  vadim  <vadim@netcitadel.com>
 
 	* NamedObjectsAndGroupsSupport.cpp (getNamedObjectsDefinitions):

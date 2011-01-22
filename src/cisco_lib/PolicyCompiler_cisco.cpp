@@ -817,19 +817,10 @@ string PolicyCompiler_cisco::printClearCommands()
     return "";
 }
 
-class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
-{
-    public:
-    MergeConflictRes() { }
-    virtual bool askUser(FWObject*, FWObject*) {return false;}
-};
-
 void PolicyCompiler_cisco::setNamedObjectManager(NamedObjectManager *mgr)
 {
     named_objects_manager = mgr;
     // initialize object groups support
-    MergeConflictRes merge_predicate;
-    dbcopy->merge(mgr->object_groups_tree, &merge_predicate);
     mgr->setWorkingObjectTree(dbcopy);
 }
 

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3440
+!  Firewall Builder  fwb_iosacl v4.2.0.3441
 !
-!  Generated Thu Jan 20 16:31:21 2011 PST by vadim
+!  Generated Sat Jan 22 09:53:50 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -60,8 +60,6 @@ interface Ethernet0/0
 exit
 no ip access-list extended fw-ipv6-2-ipv4_e0_0_in
 no ip access-list extended fw-ipv6-2-ipv4_e0_0_out
-
-
 no ipv6 access-list ipv6_e0_0_in
 no ipv6 access-list ipv6_e0_0_out
 

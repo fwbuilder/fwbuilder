@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3440
+!  Firewall Builder  fwb_iosacl v4.2.0.3441
 !
-!  Generated Thu Jan 20 16:31:21 2011 PST by vadim
+!  Generated Sat Jan 22 09:53:49 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -25,15 +25,12 @@
 
 no ip access-list extended fe0_0_in
 no ip access-list extended fe0_0_out
-
+no ipv6 access-list ipv6_fe0_0_in
+no ipv6 access-list ipv6_fe0_0_out
 no object-group network id29216X37699.src.net.0
 no object-group service id29216X37699.srv.udp.0
 no object-group network id18740X37673.dst.net.0
 no object-group network id18964X37673.src.net.0
-
-no ipv6 access-list ipv6_fe0_0_in
-no ipv6 access-list ipv6_fe0_0_out
-
 
 object-group network id29216X37699.src.net.0
   host 61.150.47.112
