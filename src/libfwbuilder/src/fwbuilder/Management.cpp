@@ -50,13 +50,6 @@ Management::Management()
     setId(-1);
 }
 
-Management::Management(const FWObjectDatabase *root, bool prepopulate) :
-    FWObject(root,prepopulate)
-{
-    // This object does not have standard attributes
-    setId(-1);
-}
-
 void Management::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
@@ -194,15 +187,6 @@ PolicyInstallScript::PolicyInstallScript()
     enabled = false ;
 }
 
-PolicyInstallScript::PolicyInstallScript(const FWObjectDatabase *root,
-                                         bool prepopulate) :
-    FWObject(root,prepopulate)
-{
-    // This object does not have standard attributes
-    setId(-1);
-    enabled = false ;
-}
-
 bool PolicyInstallScript::isEmpty() const
 {
     return command.empty();
@@ -303,14 +287,6 @@ void PolicyInstallScript::setArguments(const string& s)
 const char *SNMPManagement::TYPENAME={"SNMPManagement"};
 
 SNMPManagement::SNMPManagement()
-{
-    // This object does not have standard attributes
-    enabled = false ;
-    setId(-1);
-}
-
-SNMPManagement::SNMPManagement(const FWObjectDatabase *root,bool prepopulate) :
-    FWObject(root,prepopulate)
 {
     // This object does not have standard attributes
     enabled = false ;
@@ -425,17 +401,6 @@ FWBDManagement::FWBDManagement()
     // This object does not have standard attributes
     setId(-1);
 }
-
-FWBDManagement::FWBDManagement(const FWObjectDatabase *root,bool prepopulate) :
-    FWObject(root,prepopulate)
-{
-    port = -1 ;
-    enabled = false ;
-
-    // This object does not have standard attributes
-    setId(-1);
-}
-
 
 FWBDManagement::~FWBDManagement()
 {

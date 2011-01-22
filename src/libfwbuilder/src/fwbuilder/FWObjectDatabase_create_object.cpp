@@ -93,19 +93,20 @@ using namespace libfwbuilder;
 static std::map<std::string, create_function_ptr> create_methods;
 
 
-#define CREATE_OBJ_METHOD(classname)     \
-FWObject* libfwbuilder::create_##classname(int id, bool prepopulate) \
+#define CREATE_OBJ_METHOD(classname) \
+FWObject* libfwbuilder::create_##classname(int id) \
 { \
-    classname *nobj = new classname(NULL, prepopulate); \
-    if (id > -1) nobj->setId(id);                       \
-    return nobj;                                        \
+    classname *nobj = new classname(); \
+    if (id > -1) nobj->setId(id); \
+    return nobj; \
 } \
 \
-classname * FWObjectDatabase::create##classname(int id, bool prepopulate) \
+classname * FWObjectDatabase::create##classname(int id) \
 { \
-    classname * nobj = classname::cast(create_##classname(id, prepopulate)); \
-    addToIndex(nobj);                                                   \
-    return nobj;                                                        \
+    classname * nobj = classname::cast(create_##classname(id)); \
+    addToIndex(nobj); \
+    nobj->init(this); \
+    return nobj; \
 }
 
 
@@ -254,9 +255,7 @@ void FWObjectDatabase::init_create_methods_table()
     }
 }
 
-FWObject *FWObjectDatabase::create(const string &type_name,
-                                   int id,
-                                   bool prepopulate)
+FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
 {
     create_function_ptr fn = create_methods[type_name];
     if (fn == NULL)
@@ -268,7 +267,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
 
         if (strcmp("AnyNetwork", type_name_cptr)==SAME)
         {
-            nobj = new Network(this, prepopulate);
+            nobj = new Network();
             if (id > -1) nobj->setId(id);
             nobj->setXMLName("AnyNetwork");
             addToIndex(nobj);
@@ -277,7 +276,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
 
         if (strcmp("AnyIPService", type_name_cptr)==SAME)
         {
-            nobj = new IPService(this,prepopulate);
+            nobj = new IPService();
             if (id > -1) nobj->setId(id);
             nobj->setXMLName("AnyIPService");
             addToIndex(nobj);
@@ -286,7 +285,7 @@ FWObject *FWObjectDatabase::create(const string &type_name,
 
         if (strcmp("AnyInterval", type_name_cptr)==SAME)
         {
-            nobj = new Interval(this,prepopulate);
+            nobj = new Interval();
             if (id > -1) nobj->setId(id);
             nobj->setXMLName("AnyInterval");
             addToIndex(nobj);
@@ -298,8 +297,9 @@ FWObject *FWObjectDatabase::create(const string &type_name,
         return NULL;
     }
 
-    FWObject *nobj = (*fn)(id, prepopulate);
+    FWObject *nobj = (*fn)(id);
     addToIndex(nobj);
+    if (init) nobj->init(this);
     return nobj;
 }
 

@@ -53,8 +53,6 @@ using namespace libfwbuilder;
 const char *ObjectGroup::TYPENAME={"ObjectGroup"};
 
 ObjectGroup::ObjectGroup() : Group() {}
-ObjectGroup::ObjectGroup(const FWObjectDatabase *root,bool prepopulate) :
-    Group(root,prepopulate) {}
 
 ObjectGroup::~ObjectGroup() {}
 

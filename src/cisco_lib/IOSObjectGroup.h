@@ -35,8 +35,6 @@ namespace fwcompiler {
     
 public:
         IOSObjectGroup() : BaseObjectGroup() { }
-        IOSObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
-            BaseObjectGroup(root, prepopulate) {}
         virtual ~IOSObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(IOSObjectGroup);
 

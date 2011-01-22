@@ -45,13 +45,6 @@ Address::Address() : FWObject()
     setName("address");
 }
 
-Address::Address(const FWObjectDatabase *root, bool prepopulate) :
-    FWObject(root, prepopulate)
-{
-    inet_addr_mask = new InetAddrMask();
-    setName("address");
-}
-
 Address::Address(const Address& other) : FWObject(other)
 {
     inet_addr_mask = new InetAddrMask(*(other.inet_addr_mask));

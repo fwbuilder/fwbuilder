@@ -65,21 +65,6 @@ Interface::Interface():Address()
     snmp_type        = -1   ;     
 }
 
-Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
-    Address(root,prepopulate)
-{
-    setName("unknown");
-    setBool("dyn", false);
-    setBool("unnum", false);
-    setBool("unprotected", false);
-    setBool("dedicated_failover", false);
-    setInt("security_level",0);
-
-    bcast_bits       = 1    ;
-    ostatus          = true ;
-    snmp_type        = -1   ;
-}
-
 Interface::~Interface() {}
 
 FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)

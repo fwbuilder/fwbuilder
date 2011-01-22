@@ -45,14 +45,6 @@ FWOptions::FWOptions()
     remStr("id"     );
 }
 
-FWOptions::FWOptions(const FWObjectDatabase *root,bool prepopulate) :
-    FWObject(root,prepopulate)
-{
-    remStr("comment");
-    remStr("name"   );
-    remStr("id"     );
-}
-
 void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
 {
     const char *n;
@@ -106,47 +98,26 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root) throw(FWException)
 
 const char *HostOptions::TYPENAME  ={"HostOptions"};
 HostOptions::HostOptions() : FWOptions() {}
-HostOptions::HostOptions(const FWObjectDatabase *root, bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *FirewallOptions::TYPENAME  ={"FirewallOptions"};
 FirewallOptions::FirewallOptions() : FWOptions() {}
-FirewallOptions::FirewallOptions(const FWObjectDatabase *root,
-                                 bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *InterfaceOptions::TYPENAME  ={"InterfaceOptions"};
 InterfaceOptions::InterfaceOptions() : FWOptions() {}
-InterfaceOptions::InterfaceOptions(const FWObjectDatabase *root,bool prepopulate) :
-    FWOptions(root, prepopulate) {}
 
 const char *RuleSetOptions::TYPENAME={"RuleSetOptions"};
 RuleSetOptions::RuleSetOptions() : FWOptions() {}
-RuleSetOptions::RuleSetOptions(const FWObjectDatabase *root,
-                               bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *PolicyRuleOptions::TYPENAME={"PolicyRuleOptions"};
 PolicyRuleOptions::PolicyRuleOptions() : FWOptions() {}
-PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,
-                                     bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *NATRuleOptions::TYPENAME={"NATRuleOptions"};
 NATRuleOptions::NATRuleOptions() : FWOptions() {}
-NATRuleOptions::NATRuleOptions(const FWObjectDatabase *root, bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *RoutingRuleOptions::TYPENAME={"RoutingRuleOptions"};
 RoutingRuleOptions::RoutingRuleOptions() : FWOptions() {}
-RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,
-                                       bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 const char *ClusterGroupOptions::TYPENAME={"ClusterGroupOptions"};
 ClusterGroupOptions::ClusterGroupOptions() : FWOptions() {}
-ClusterGroupOptions::ClusterGroupOptions(const FWObjectDatabase *root,
-                                         bool prepopulate) :
-    FWOptions(root,prepopulate) {}
 
 

@@ -43,10 +43,10 @@
 #include <time.h>   // for time_t
 
 #define DECLARE_CREATE_OBJ_METHOD(classname) \
-    FWObject* create_##classname(int id=-1, bool prepopulate=true);
+    FWObject* create_##classname(int id=-1);
 
 #define DECLARE_CREATE_OBJ_CLASS_METHOD(classname) \
-    classname * create##classname(int id=-1, bool prepopulate=true);
+    classname * create##classname(int id=-1);
         
 
 namespace libfwbuilder
@@ -195,7 +195,7 @@ public:
     };
 
     class FWObjectDatabase;
-    typedef FWObject*(*create_function_ptr)(int,bool);
+    typedef FWObject*(*create_function_ptr)(int);
 
     /**
      * Database of objects.
@@ -443,7 +443,7 @@ public:
          * objects using constructor that uses pointer to this as a parameter,
          * otherwise empty constructor is used
          */
-        FWObject *create(const std::string &type, int id=-1, bool prepopulate=true);
+        FWObject *create(const std::string &type, int id=-1, bool init=true);
 
         /**
          * Creates instance of FWObject using its XML representation

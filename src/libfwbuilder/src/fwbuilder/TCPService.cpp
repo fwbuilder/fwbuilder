@@ -40,16 +40,7 @@ std::map<TCPService::TCPFlag,std::string> TCPService::flags_masks;
 
 TCPService::TCPService()  
 {
-    init();
-
-    clearAllTCPFlags();
-    clearAllTCPFlagMasks();
-}
-
-TCPService::TCPService(const FWObjectDatabase *root, bool prepopulate) :
-    TCPUDPService(root,prepopulate) 
-{
-    init();
+    _init_flags();
 
     clearAllTCPFlags();
     clearAllTCPFlagMasks();
@@ -60,7 +51,7 @@ TCPService::~TCPService() {}
 string TCPService::getProtocolName() const   {    return "tcp";}
 int    TCPService::getProtocolNumber() const {    return 6;    }
 
-void TCPService::init()
+void TCPService::_init_flags()
 {
     if (flags.empty())
     {

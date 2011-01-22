@@ -36,9 +36,14 @@ protected:
 
 public:
         ClusterGroup();
-        ClusterGroup(const FWObjectDatabase *root, bool prepopulate);
         virtual ~ClusterGroup() {};
 
+        /**
+         * This method should create any standard mandatory child objects
+         * the object might need.
+         */
+        virtual void init(FWObjectDatabase *root);
+    
         DECLARE_FWOBJECT_SUBTYPE(ClusterGroup);
 
         DECLARE_DISPATCH_METHODS(ClusterGroup);

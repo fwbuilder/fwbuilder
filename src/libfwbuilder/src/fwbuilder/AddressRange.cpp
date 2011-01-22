@@ -46,17 +46,6 @@ AddressRange::AddressRange() :
     Address::setNetmask(InetAddr::getAny());
 }
 
-/**
- * Empty constructor. Make sure start and end addresses are
- * initialized to 0.
- */
-AddressRange::AddressRange(const FWObjectDatabase *root, bool prepopulate) :
-    Address(root, prepopulate),
-    start_address(InetAddr::getAny()), end_address(InetAddr::getAny())
-{
-    Address::setNetmask(InetAddr::getAny());
-}
-
 AddressRange::AddressRange(AddressRange &o) : Address() , 
                                               start_address(o.getRangeStart()), 
                                               end_address(o.getRangeEnd()) 

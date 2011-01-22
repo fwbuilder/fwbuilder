@@ -45,10 +45,6 @@ const char *Group::TYPENAME={"Group"};
  *  Group should inherit a list of allowed types from its parent upon creation
  */
 Group::Group()  {}
-Group::Group(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate)
-{
-    setRoot(root);   // do not remove!
-}
 
 Group::~Group() 
 {

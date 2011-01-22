@@ -70,23 +70,23 @@ Group* NamedObjectManager::object_groups = NULL;
 map<int, NamedObject*> NamedObjectManager::named_objects;
 
 
-FWObject* create_IOSObjectGroup(int id, bool prepopulate)
+FWObject* create_IOSObjectGroup(int id)
 {
-    FWObject *nobj = new IOSObjectGroup(NULL, prepopulate);
+    FWObject *nobj = new IOSObjectGroup();
     if (id > -1) nobj->setId(id);
     return nobj;
 }
 
-FWObject* create_PIXObjectGroup(int id, bool prepopulate)
+FWObject* create_PIXObjectGroup(int id)
 {
-    FWObject *nobj = new PIXObjectGroup(NULL, prepopulate);
+    FWObject *nobj = new PIXObjectGroup();
     if (id > -1) nobj->setId(id);
     return nobj;
 }
 
-FWObject* create_ASA8ObjectGroup(int id, bool prepopulate)
+FWObject* create_ASA8ObjectGroup(int id)
 {
-    FWObject *nobj = new ASA8ObjectGroup(NULL, prepopulate);
+    FWObject *nobj = new ASA8ObjectGroup();
     if (id > -1) nobj->setId(id);
     return nobj;
 }
@@ -178,16 +178,19 @@ BaseObjectGroup* NamedObjectManager::createObjectGroup(Firewall *fw)
 {
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
+    BaseObjectGroup *grp = NULL;
     if (platform == "pix" || platform == "fwsm")
     {
         if (XMLTools::version_compare(version, "8.0")<0)
-            return new PIXObjectGroup();
+            grp = new PIXObjectGroup();
         else
-            return new ASA8ObjectGroup();
+            grp = new ASA8ObjectGroup();
 
     }
-    if (platform == "iosacl") return new IOSObjectGroup();
-    return NULL;
+    if (platform == "iosacl") grp = new IOSObjectGroup();
+    assert(grp!=NULL);
+    grp->init(fw->getRoot());
+    return grp;
 }
 
 

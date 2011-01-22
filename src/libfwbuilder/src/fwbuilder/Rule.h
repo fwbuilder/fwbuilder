@@ -63,8 +63,13 @@ class Rule : public Group
     public:
 
     Rule();
-    Rule(const FWObjectDatabase *root,bool prepopulate);
 
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
+    
     DECLARE_FWOBJECT_SUBTYPE(Rule);
 
     DECLARE_DISPATCH_METHODS(Rule);
@@ -193,7 +198,13 @@ private:
 public:    
 
     PolicyRule();
-    PolicyRule(const FWObjectDatabase *root,bool prepopulate);
+
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
+
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
     virtual FWObject& shallowDuplicate(const FWObject *obj,
@@ -325,7 +336,13 @@ private:
 public:
 
     NATRule();
-    NATRule(const FWObjectDatabase *root,bool prepopulate);
+
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 
@@ -357,9 +374,10 @@ public:
     
     NATRuleTypes getRuleType() const;
     std::string  getRuleTypeAsString() const;
-    void         setRuleType(NATRuleTypes rt);
+    void setRuleType(NATRuleTypes rt);
 
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true)
+        throw(FWException);
     virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 };
 
@@ -380,9 +398,15 @@ class RoutingRule : public Rule
     public:
                     
     RoutingRule();
-    RoutingRule(const FWObjectDatabase *root,bool prepopulate);
+
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(RoutingRule);
 
@@ -408,7 +432,8 @@ class RoutingRule : public Rule
     void        setSortedDstIds(const std::string& ids);
     std::string getSortedDstIds() const;
 
-    virtual FWObject& duplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& duplicate(const FWObject *obj, bool preserve_id = true)
+        throw(FWException);
 };
 
 }

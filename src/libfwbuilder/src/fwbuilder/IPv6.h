@@ -42,8 +42,6 @@ class IPv6 : public Address
 public:
     
     IPv6();
-    IPv6(const FWObjectDatabase *root, bool prepopulate);
-
     virtual ~IPv6();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

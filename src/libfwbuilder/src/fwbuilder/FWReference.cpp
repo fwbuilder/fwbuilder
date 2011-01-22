@@ -51,11 +51,6 @@ FWReference::FWReference()
     setPointer(NULL);
 }
 
-FWReference::FWReference(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate)
-{
-    setPointer(NULL);
-}
-
 FWReference::~FWReference()  {}
 
 

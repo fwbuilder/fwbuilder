@@ -147,7 +147,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
 
     searchId =0;
 
-    init = true;
+    busy = true;
     *this = d;  // copies entire tree
     setId( ROOT_ID );
 
@@ -159,12 +159,12 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
     addToIndexRecursive( this );  // reindex
 
     setDirty(false);
-    init = false;
+    busy = false;
 }
 
 FWObjectDatabase::~FWObjectDatabase()
 {
-    init = true;
+    busy = true;
     //findDuplicateLinksInTree(); // debugging
     destroyChildren();
 }
@@ -333,7 +333,7 @@ void FWObjectDatabase::load(const string &f,
     
     try
     {
-        init = true;
+        busy = true;
 
         destroyChildren();
         clearIndex();
@@ -344,23 +344,23 @@ void FWObjectDatabase::load(const string &f,
         setFileName(f);
     } catch (FWException &ex)
     {
-        init = false;
+        busy = false;
         throw(ex);
     }
 
     xmlFreeDoc(doc);
 
-    init = false;
+    busy = false;
 }
 
 void FWObjectDatabase::saveFile(const string &filename) throw(FWException)
 {
-/* need to set flag 'init' so we ignore read-only status. Some objects
+/* need to set flag 'busy' so we ignore read-only status. Some objects
  * modify themselves in toXML() (e.g. Management) so if they belong to
  * a read-only library, we can't save them to a file. It should be
  * safe to ignore read-only flag but save it though.
  */
-    init = true;
+    busy = true;
 
     xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
     xmlNodePtr node = xmlNewNode(NULL, STRTOXMLCAST(getName()));
@@ -377,18 +377,18 @@ void FWObjectDatabase::saveFile(const string &filename) throw(FWException)
     xmlFreeDoc(doc);
 
     setDirty(false);
-    init = false;
+    busy = false;
 }
 
 void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
     throw(FWException)
 {
-/* need to set flag 'init' so we ignore read-only status. Some objects
+/* need to set flag 'busy' so we ignore read-only status. Some objects
  * modify themselves in toXML() (e.g. Management) so if they belong to a
  * read-only library, we can't save them to a file. It should be safe
  * to ignore read-only flag but save it though.
  */
-    init = true;
+    busy = true;
 
     xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
     xmlNodePtr node = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
@@ -406,7 +406,7 @@ void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
     //xmlCleanupParser();
 //    setDirty(false);
 
-    init = false;
+    busy = false;
 }
 
 void FWObjectDatabase::fromXML(xmlNodePtr root) throw(FWException)
@@ -463,7 +463,7 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 void  FWObjectDatabase::setDirty(bool f)
 {
     dirty=f;
-    if(!init && f) lastModified=time(NULL);
+    if(!busy && f) lastModified=time(NULL);
 }
 
 void FWObjectDatabase::addToIndex(FWObject* o)

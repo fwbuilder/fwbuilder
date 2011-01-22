@@ -35,8 +35,6 @@ using namespace std;
 
 const char *Service::TYPENAME={"Service"};
 
-Service::Service(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate) {}
-
 string Service::getProtocolName() const
 {
     throw FWException("base class Service does not return protocol name");

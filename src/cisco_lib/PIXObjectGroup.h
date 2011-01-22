@@ -34,8 +34,6 @@ namespace fwcompiler {
     
 public:
         PIXObjectGroup() : BaseObjectGroup() { }
-        PIXObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
-            BaseObjectGroup(root, prepopulate) {}
         virtual ~PIXObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
 

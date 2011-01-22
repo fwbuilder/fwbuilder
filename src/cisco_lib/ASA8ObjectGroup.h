@@ -35,8 +35,6 @@ namespace fwcompiler {
     
 public:
         ASA8ObjectGroup() : PIXObjectGroup() { }
-        ASA8ObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
-            PIXObjectGroup(root, prepopulate) {}
         virtual ~ASA8ObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
 

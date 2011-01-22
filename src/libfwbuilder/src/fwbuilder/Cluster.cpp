@@ -55,14 +55,13 @@ Cluster::Cluster()
     setInt("lastCompiled", 0);
 }
 
-Cluster::Cluster(const FWObjectDatabase *root, bool prepopulate)
-    : Firewall(root, prepopulate)
+void Cluster::init(FWObjectDatabase *root)
 {
-    if (prepopulate)
+    // create one conntrack member group
+    FWObject *state_sync_members = getFirstByType(StateSyncClusterGroup::TYPENAME);
+    if (state_sync_members == NULL)
     {
-        // create one conntrack member group
-        FWObject *state_sync_members = getRoot()->create(
-            StateSyncClusterGroup::TYPENAME);
+        state_sync_members = root->create(StateSyncClusterGroup::TYPENAME);
         state_sync_members->setName("State Sync Group");
         state_sync_members->setStr("type", "conntrack");
         add(state_sync_members);

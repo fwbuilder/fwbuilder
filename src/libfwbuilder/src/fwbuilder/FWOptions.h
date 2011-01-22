@@ -37,7 +37,7 @@ class FWOptions : public FWObject
 {
     public:
     FWOptions();
-    FWOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(FWOptions);
     DECLARE_DISPATCH_METHODS(FWOptions);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -49,7 +49,7 @@ class HostOptions : public FWOptions
 {
     public:
     HostOptions();
-    HostOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(HostOptions);
     DECLARE_DISPATCH_METHODS(HostOptions);
 };
@@ -58,7 +58,7 @@ class FirewallOptions : public FWOptions
 {
     public:
     FirewallOptions();
-    FirewallOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(FirewallOptions);
     DECLARE_DISPATCH_METHODS(FirewallOptions);
 };
@@ -67,7 +67,7 @@ class InterfaceOptions : public FWOptions
 {
     public:
     InterfaceOptions();
-    InterfaceOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(InterfaceOptions);
     DECLARE_DISPATCH_METHODS(InterfaceOptions);
 };
@@ -77,7 +77,7 @@ class RuleSetOptions : public FWOptions
     public:
     
     RuleSetOptions();
-    RuleSetOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(RuleSetOptions);
     DECLARE_DISPATCH_METHODS(RuleSetOptions);
 };
@@ -87,7 +87,7 @@ class PolicyRuleOptions : public FWOptions
     public:
     
     PolicyRuleOptions();
-    PolicyRuleOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(PolicyRuleOptions);
     DECLARE_DISPATCH_METHODS(PolicyRuleOptions);
 };
@@ -97,7 +97,7 @@ class NATRuleOptions : public FWOptions
     public:
 
     NATRuleOptions();
-    NATRuleOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(NATRuleOptions);
     DECLARE_DISPATCH_METHODS(NATRuleOptions);
 };
@@ -107,7 +107,7 @@ class RoutingRuleOptions : public FWOptions
     public:
 
     RoutingRuleOptions();
-    RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(RoutingRuleOptions);
     DECLARE_DISPATCH_METHODS(RoutingRuleOptions);
 };
@@ -116,7 +116,7 @@ class ClusterGroupOptions : public FWOptions
 {
     public:
     ClusterGroupOptions();
-    ClusterGroupOptions(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(ClusterGroupOptions);
     DECLARE_DISPATCH_METHODS(ClusterGroupOptions);
 };

@@ -43,10 +43,6 @@ FWObjectReference::FWObjectReference():FWReference()
 {
 }
 
-FWObjectReference::FWObjectReference(const FWObjectDatabase *root,bool prepopulate) :
-    FWReference(root,prepopulate)
-{}
-
 void FWObjectReference::setPointer(FWObject *p)
 {
     //TODO: add check if it is right type.

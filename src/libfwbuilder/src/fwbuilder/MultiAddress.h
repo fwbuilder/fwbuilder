@@ -48,7 +48,6 @@ class MultiAddress : public ObjectGroup
     DECLARE_DISPATCH_METHODS(MultiAddress);
     
     MultiAddress();
-    MultiAddress(const FWObjectDatabase *root,bool prepopulate);
     virtual ~MultiAddress();
 
     virtual std::string getSourceName();

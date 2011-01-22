@@ -51,13 +51,6 @@ AddressTable::AddressTable() : MultiAddress()
     setStr("filename", "");
 }
 
-AddressTable::AddressTable(const FWObjectDatabase *root,bool prepopulate) :
-    MultiAddress(root,prepopulate) 
-{
-    setRunTime(false);
-    setStr("filename", "");
-}
-
 string AddressTable::getSourceName()
 {
     return getStr("filename");

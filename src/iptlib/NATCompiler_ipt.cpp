@@ -269,7 +269,7 @@ void NATCompiler_ipt::_expand_interface(Rule *rule,
 
         if (ip_addr!=NULL && use_mac && pa!=NULL)
         {
-            combinedAddress *ca = new combinedAddress(dbcopy,true);
+            combinedAddress *ca = new combinedAddress();
             dbcopy->add(ca);
             dbcopy->addToIndex(ca);
             ca->setName( "CA("+iface->getName()+")" );

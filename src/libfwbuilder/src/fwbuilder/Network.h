@@ -41,7 +41,6 @@ namespace libfwbuilder
 public:
     
     Network();
-    Network(const FWObjectDatabase *root,bool prepopulate);
     Network(Network &);
     Network(const std::string &);
     virtual ~Network();

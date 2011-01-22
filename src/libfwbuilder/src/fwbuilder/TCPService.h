@@ -44,12 +44,11 @@ private:
     static std::map<TCPFlag,std::string> flags;
     static std::map<TCPFlag,std::string> flags_masks;
     
-    void init();
+    void _init_flags();
 
 public:
 
     TCPService();
-    TCPService(const FWObjectDatabase *root,bool prepopulate);
     virtual ~TCPService();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

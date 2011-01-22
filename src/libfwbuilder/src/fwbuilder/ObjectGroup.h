@@ -38,7 +38,6 @@ class ObjectGroup : public Group
     public:
 
     ObjectGroup();
-    ObjectGroup(const FWObjectDatabase *root,bool prepopulate);
     virtual ~ObjectGroup();
 
     DECLARE_FWOBJECT_SUBTYPE(ObjectGroup);

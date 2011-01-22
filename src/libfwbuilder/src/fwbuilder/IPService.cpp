@@ -58,12 +58,6 @@ IPService::IPService()
     IPService::initNamedProtocols();
 }
 
-IPService::IPService(const FWObjectDatabase *root,bool prepopulate) : Service(root,prepopulate)
-{
-    setStr("protocol_num", "");
-    IPService::initNamedProtocols();
-}
-
 IPService::~IPService() {}
 
 void IPService::addNamedProtocol(int proto_num, const std::string &proto_name)

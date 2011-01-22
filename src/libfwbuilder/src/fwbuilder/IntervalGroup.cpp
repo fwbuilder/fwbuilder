@@ -37,8 +37,6 @@ using namespace libfwbuilder;
 const char *IntervalGroup::TYPENAME={"IntervalGroup"};
 
 IntervalGroup::IntervalGroup() : Group() {}
-IntervalGroup::IntervalGroup(const FWObjectDatabase *root,bool prepopulate) :
-    FWObject(root,prepopulate) {}
 
 IntervalGroup::~IntervalGroup() {}
 

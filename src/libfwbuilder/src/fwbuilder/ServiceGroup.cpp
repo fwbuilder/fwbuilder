@@ -55,8 +55,6 @@ using namespace libfwbuilder;
 const char *ServiceGroup::TYPENAME={"ServiceGroup"};
 
 ServiceGroup::ServiceGroup() : Group() {}
-ServiceGroup::ServiceGroup(const FWObjectDatabase *root,bool prepopulate) : Group(root,prepopulate) {}
-
 ServiceGroup::~ServiceGroup() {}
 
 bool  ServiceGroup::validateChild(FWObject *o)

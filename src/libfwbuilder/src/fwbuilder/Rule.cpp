@@ -56,12 +56,8 @@ Rule::Rule()
     setRuleGroupName("");
 }
 
-Rule::Rule(const FWObjectDatabase *root,bool prepopulate) : Group(root,prepopulate)
+void Rule::init(FWObjectDatabase*)
 {
-    setInt("position",0);
-    enable();
-    setFallback(false);
-    setHidden(false);
 }
 
 FWOptions* Rule::getOptionsObject()  {    return NULL;              }
@@ -124,40 +120,29 @@ PolicyRule::PolicyRule()
     when_re = NULL;
 }
 
-PolicyRule::PolicyRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
+void PolicyRule::init(FWObjectDatabase *root)
 {
-//    setStr("action","Deny");
-    setAction(PolicyRule::Deny);
+    FWObject *re = getFirstByType(RuleElementSrc::TYPENAME);
 
-    src_re = NULL;
-    dst_re = NULL;
-    srv_re = NULL;
-    itf_re = NULL;
-    when_re = NULL;
-
-    if (prepopulate)
+    if (re == NULL)
     {
-        FWObject         *re;
-        FWObjectDatabase *db=(FWObjectDatabase*)root;
-        assert(db);
-
 // <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
-        re = db->createRuleElementSrc();  assert(re!=NULL);
+        re = root->createRuleElementSrc();  assert(re!=NULL);
         add(re); src_re = RuleElementSrc::cast(re);
 
-        re = db->createRuleElementDst();  assert(re!=NULL);
+        re = root->createRuleElementDst();  assert(re!=NULL);
         add(re); dst_re = RuleElementDst::cast(re);
 
-        re = db->createRuleElementSrv();  assert(re!=NULL);
+        re = root->createRuleElementSrv();  assert(re!=NULL);
         add(re); srv_re = RuleElementSrv::cast(re);
 
-        re = db->createRuleElementItf();  assert(re!=NULL);
+        re = root->createRuleElementItf();  assert(re!=NULL);
         add(re); itf_re = RuleElementItf::cast(re);
 
-        re = db->createRuleElementInterval(); assert(re!=NULL);
+        re = root->createRuleElementInterval(); assert(re!=NULL);
         add(re); when_re = RuleElementInterval::cast(re);
 
-        add( db->createPolicyRuleOptions() );
+        add( root->createPolicyRuleOptions() );
     }
 }
 
@@ -550,34 +535,20 @@ NATRule::NATRule() : Rule()
     when_re = NULL;
 }
 
-NATRule::NATRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
+void NATRule::init(FWObjectDatabase *root)
 {
-    rule_type = Unknown;
-    setAction(NATRule::Translate);
-
-    osrc_re = NULL;
-    odst_re = NULL;
-    osrv_re = NULL;
-    tsrc_re = NULL;
-    tdst_re = NULL;
-    tsrv_re = NULL;
-    when_re = NULL;
-
-    if (prepopulate)
+    FWObject *re = getFirstByType(RuleElementOSrc::TYPENAME);
+    if (re == NULL)
     {
-        FWObject         *re;
-        FWObjectDatabase *db=(FWObjectDatabase*)(root);
-        assert(db);
+        re = root->createRuleElementOSrc();  assert(re!=NULL); add(re);
+        re = root->createRuleElementODst();  assert(re!=NULL); add(re);
+        re = root->createRuleElementOSrv();  assert(re!=NULL); add(re);
+    
+        re = root->createRuleElementTSrc();  assert(re!=NULL); add(re);
+        re = root->createRuleElementTDst();  assert(re!=NULL); add(re);
+        re = root->createRuleElementTSrv();  assert(re!=NULL); add(re);
 
-        re = db->createRuleElementOSrc();  assert(re!=NULL); add(re);
-        re = db->createRuleElementODst();  assert(re!=NULL); add(re);
-        re = db->createRuleElementOSrv();  assert(re!=NULL); add(re);
-
-        re = db->createRuleElementTSrc();  assert(re!=NULL); add(re);
-        re = db->createRuleElementTDst();  assert(re!=NULL); add(re);
-        re = db->createRuleElementTSrv();  assert(re!=NULL); add(re);
-
-        add( db->createNATRuleOptions() );
+        add( root->createNATRuleOptions() );
     }
 }
 
@@ -838,21 +809,15 @@ RoutingRule::RoutingRule() : Rule()
     setMetric(0);
 }
 
-RoutingRule::RoutingRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
+void RoutingRule::init(FWObjectDatabase *root)
 {
-    if (prepopulate)
+    FWObject *re = getFirstByType(RuleElementRDst::TYPENAME);
+    if (re == NULL)
     {
-        FWObject         *re;
-        FWObjectDatabase *db=(FWObjectDatabase*)(root);
-        assert(db);
-
-        re = db->createRuleElementRDst();  assert(re!=NULL); add(re);
-        re = db->createRuleElementRGtw();  assert(re!=NULL); add(re);
-        re = db->createRuleElementRItf();  assert(re!=NULL); add(re);
-    
-        setMetric(0);
-
-        add( db->createRoutingRuleOptions() );
+        re = root->createRuleElementRDst();  assert(re!=NULL); add(re);
+        re = root->createRuleElementRGtw();  assert(re!=NULL); add(re);
+        re = root->createRuleElementRItf();  assert(re!=NULL); add(re);
+        add( root->createRoutingRuleOptions() );
     }
 }
 

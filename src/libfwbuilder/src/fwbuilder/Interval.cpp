@@ -56,25 +56,6 @@ Interval::Interval()
     setStr("days_of_week", "");
 }
 
-Interval::Interval(const FWObjectDatabase *root,bool prepopulate) : FWObject(root,prepopulate)
-{
-    setInt("from_minute", -1);
-    setInt("from_hour", -1);
-    setInt("from_day", -1);
-    setInt("from_month", -1);
-    setInt("from_year", -1);
-    setInt("from_weekday", -1);
-
-    setInt("to_minute", -1);
-    setInt("to_hour", -1);
-    setInt("to_day", -1);
-    setInt("to_month", -1);
-    setInt("to_year", -1);
-    setInt("to_weekday", -1);
-
-    setStr("days_of_week", "");
-}
-
 std::string Interval::constructDaysOfWeek(int sdayofweek, int edayofweek)
 {
     std::ostringstream  ostr;

@@ -41,7 +41,6 @@ private:
 public:
 
     ICMP6Service();
-    ICMP6Service(const FWObjectDatabase *root,bool prepopulate);
     virtual ~ICMP6Service();
 
     DECLARE_FWOBJECT_SUBTYPE(ICMP6Service);

@@ -39,8 +39,6 @@ using namespace libfwbuilder;
 const char *CustomService::TYPENAME={"CustomService"};
 
 CustomService::CustomService() { address_family = AF_INET;}
-CustomService::CustomService(const FWObjectDatabase *root,bool prepopulate) :
-    Service(root, prepopulate) { address_family = AF_INET;}
 CustomService::~CustomService() {}
 
 string CustomService::getProtocolName() const

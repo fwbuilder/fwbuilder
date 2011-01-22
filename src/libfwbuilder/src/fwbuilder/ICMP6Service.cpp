@@ -40,11 +40,6 @@ ICMP6Service::ICMP6Service() : ICMPService()
 {
 }
 
-ICMP6Service::ICMP6Service(const FWObjectDatabase *root, bool prepopulate) :
-    ICMPService(root, prepopulate) 
-{
-}
-
 ICMP6Service::~ICMP6Service() {}
 
 string ICMP6Service::getProtocolName() const    {    return "icmp6";}

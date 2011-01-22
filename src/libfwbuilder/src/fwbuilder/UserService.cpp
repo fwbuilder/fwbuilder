@@ -38,8 +38,6 @@ using namespace libfwbuilder;
 const char *UserService::TYPENAME={"UserService"};
 
 UserService::UserService() {}
-UserService::UserService(const FWObjectDatabase *root, bool prepopulate) :
-    Service(root, prepopulate) {}
 UserService::~UserService() {}
 
 string UserService::getProtocolName() const     {    return "user_service";}

@@ -35,6 +35,7 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
+#include "fwbuilder/FWException.h"
 
 #include <sstream>
 
@@ -50,6 +51,14 @@ using namespace std;
 map<QString,int>  BaseObjectGroup::name_disambiguation;
 
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
+
+FWObject& BaseObjectGroup::shallowDuplicate(const FWObject *other,
+                                            bool preserve_id) throw(FWException)
+{
+    gt = BaseObjectGroup::constcast(other)->gt;
+    return FWObject::shallowDuplicate(other, preserve_id);
+}
+
 
 QString BaseObjectGroup::registerGroupName(const QString &prefix,
                                            object_group_type gt)

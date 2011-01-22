@@ -51,8 +51,13 @@ class Firewall : public Host
 public:
     
     Firewall();
-    Firewall(const FWObjectDatabase *root, bool prepopulate);
     virtual ~Firewall();
+    
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
     
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);

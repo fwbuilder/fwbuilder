@@ -39,13 +39,6 @@ StateSyncClusterGroup::StateSyncClusterGroup() : ClusterGroup()
     setStr("type", "");
 }
 
-StateSyncClusterGroup::StateSyncClusterGroup(const FWObjectDatabase *root,
-                                             bool prepopulate)
-    : ClusterGroup(root, prepopulate)
-{
-    setStr("type", "");
-}
-
 void StateSyncClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
 {
     ClusterGroup::fromXML(parent);

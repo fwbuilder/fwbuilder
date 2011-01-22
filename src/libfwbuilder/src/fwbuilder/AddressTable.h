@@ -44,7 +44,6 @@ class AddressTable : public MultiAddress
     DECLARE_DISPATCH_METHODS(AddressTable);
     
     AddressTable();
-    AddressTable(const FWObjectDatabase *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

@@ -39,7 +39,6 @@ namespace libfwbuilder
         public:
 
         PolicyInstallScript();
-	PolicyInstallScript(const FWObjectDatabase *root,bool prepopulate);
 
         DECLARE_FWOBJECT_SUBTYPE(PolicyInstallScript);
 
@@ -74,7 +73,6 @@ namespace libfwbuilder
         public:
 
         SNMPManagement();
-	SNMPManagement(const FWObjectDatabase *root,bool prepopulate);
 
         DECLARE_FWOBJECT_SUBTYPE(SNMPManagement);
 
@@ -109,7 +107,6 @@ namespace libfwbuilder
         public:
 
         FWBDManagement();
-	FWBDManagement(const FWObjectDatabase *root,bool prepopulate);
         virtual ~FWBDManagement();
 
         DECLARE_FWOBJECT_SUBTYPE(FWBDManagement);
@@ -146,7 +143,6 @@ namespace libfwbuilder
         public:
 
         Management();
-	Management(const FWObjectDatabase *root,bool prepopulate);
 
         DECLARE_FWOBJECT_SUBTYPE(Management);
 

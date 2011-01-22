@@ -45,11 +45,6 @@ Policy::Policy() : RuleSet()
     setName("Policy");
 }
 
-Policy::Policy(const FWObjectDatabase *root,bool prepopulate) : RuleSet(root,prepopulate)
-{
-    setName("Policy");
-}
-
 Policy::~Policy() {}
 
 Rule* Policy::createRule()

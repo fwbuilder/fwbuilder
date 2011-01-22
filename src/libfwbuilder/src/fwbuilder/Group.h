@@ -45,7 +45,6 @@ class Group : virtual public FWObject
     public:
 
     Group();
-    Group(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Group();
 
     DECLARE_FWOBJECT_SUBTYPE(Group);

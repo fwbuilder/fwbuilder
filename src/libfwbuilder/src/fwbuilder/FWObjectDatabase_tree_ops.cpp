@@ -120,6 +120,8 @@ void FWObjectTreeScanner::addRecursively(FWObject *src)
 
     if (dstMap[src->getId()]==NULL)
     {
+        // last arg.==false : do not call method init() of the new object to
+        // make sure it doesn't create its children
         FWObject *o1 = treeRoot->create(src->getTypeName(), -1, false);
         FWObject *pdst = dstMap[src->getParent()->getId()];
         assert(pdst!=NULL);
@@ -395,7 +397,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
 {
     FWObjectDatabase *ndb = new FWObjectDatabase();
 
-    ndb->init = true;
+    ndb->busy = true;
 
     for (list<FWObject*>::const_iterator i=libs.begin(); i!=libs.end(); i++)
     {
@@ -409,7 +411,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
     FWObjectTreeScanner scanner(ndb);
     scanner.scanAndAdd(NULL, this);
 
-    ndb->init = false;
+    ndb->busy = false;
 
     return ndb;
 }
@@ -418,7 +420,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
 {
     FWObjectDatabase *ndb = new FWObjectDatabase();
 
-    ndb->init = true;
+    ndb->busy = true;
 
     FWObject *nlib = ndb->create(lib->getTypeName());
     // no validation is necessary - this copies existing tree
@@ -428,7 +430,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
     FWObjectTreeScanner scanner(ndb);
     scanner.scanAndAdd(NULL, this);
 
-    ndb->init = false;
+    ndb->busy = false;
 
     return ndb;
 }
@@ -471,12 +473,12 @@ void FWObjectDatabase::findDuplicateIds(FWObjectDatabase *ndb, set<int> &dupids)
 void FWObjectDatabase::merge( FWObjectDatabase *ndb,
                               ConflictResolutionPredicate *crp)
 {
-    init = true;
+    busy = true;
 
     FWObjectTreeScanner scanner(this, crp);
     scanner.merge(NULL, ndb);
 
-    init = false;
+    busy = false;
 }
 
 /**

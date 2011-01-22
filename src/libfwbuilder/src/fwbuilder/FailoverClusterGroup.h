@@ -35,7 +35,6 @@ namespace libfwbuilder
     {
     public:
         FailoverClusterGroup();
-        FailoverClusterGroup(const FWObjectDatabase *root, bool prepopulate);
         virtual ~FailoverClusterGroup() {};
 
         DECLARE_FWOBJECT_SUBTYPE(FailoverClusterGroup);

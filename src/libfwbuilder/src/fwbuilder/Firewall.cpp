@@ -68,32 +68,24 @@ Firewall::Firewall()
    
 }
 
-// Do not call parent class (Host) constructor with prepopulate=true because
-// it creates HostOptions child object we do not need here
-Firewall::Firewall(const FWObjectDatabase *root,bool prepopulate) : Host(root, false)
+void Firewall::init(FWObjectDatabase *root)
 {
-    setStr("platform","unknown");
-    setStr("host_OS" ,"unknown");
-    setInt("lastModified" ,0);
-    setInt("lastInstalled" ,0);
-    setInt("lastCompiled" ,0);
-
-    if (prepopulate)
+    FWObject *opt = getFirstByType(FirewallOptions::TYPENAME);
+    if (opt == NULL)
     {
-        add( getRoot()->createFirewallOptions() );
+        add( root->createFirewallOptions() );
         RuleSet *p;
-        p = getRoot()->createPolicy();
+        p = root->createPolicy();
         p->setTop(true);
         add(p);
-        p = getRoot()->createNAT();
+        p = root->createNAT();
         p->setTop(true);
         add(p);
-        p = getRoot()->createRouting();
+        p = root->createRouting();
         p->setTop(true);
         add(p);
     }
 }
-
 
 Firewall::~Firewall()  {}
 

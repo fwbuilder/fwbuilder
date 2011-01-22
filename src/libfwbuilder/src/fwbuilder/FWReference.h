@@ -46,7 +46,6 @@ private:
 protected:
     
     FWReference();
-    FWReference(const FWObjectDatabase *root, bool prepopulate);
 
 public:
     

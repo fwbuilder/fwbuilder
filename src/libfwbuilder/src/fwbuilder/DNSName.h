@@ -44,7 +44,6 @@ class DNSName : public MultiAddress
     DECLARE_DISPATCH_METHODS(DNSName);
     
     DNSName();
-    DNSName(const FWObjectDatabase *root,bool prepopulate);
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

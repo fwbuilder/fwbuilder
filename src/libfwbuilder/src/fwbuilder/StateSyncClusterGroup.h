@@ -36,7 +36,6 @@ namespace libfwbuilder
     {
     public:
         StateSyncClusterGroup();
-        StateSyncClusterGroup(const FWObjectDatabase *root, bool prepopulate);
         virtual ~StateSyncClusterGroup() {};
 
         DECLARE_FWOBJECT_SUBTYPE(StateSyncClusterGroup);

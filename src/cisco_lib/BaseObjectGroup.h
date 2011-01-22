@@ -67,17 +67,15 @@ public:
             gt = UNKNOWN;
         }
 
-        BaseObjectGroup(const libfwbuilder::FWObjectDatabase *root, bool prepopulate) :
-            libfwbuilder::Group(root, prepopulate)
-        {
-            gt = UNKNOWN;
-        }
-            
         virtual ~BaseObjectGroup() {};
         DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
 
         virtual bool  validateChild(FWObject*) { return true; }
 
+        virtual FWObject& shallowDuplicate(const FWObject *obj,
+                                           bool preserve_id = true)
+            throw(libfwbuilder::FWException);
+        
         void setObjectGroupType(object_group_type _gt) { gt=_gt; }
         object_group_type getObjectGroupType() { return gt; }
 

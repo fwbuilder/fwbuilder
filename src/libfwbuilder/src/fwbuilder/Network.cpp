@@ -45,12 +45,6 @@ Network::Network() : Address()
     setNetmask(InetAddr(AF_INET, 32));
 }
 
-Network::Network(const FWObjectDatabase *root,bool prepopulate) :
-    Address(root, prepopulate)
-{
-    setNetmask(InetAddr(AF_INET, 32));
-}
-
 Network::Network(Network &o) : Address(o)
 {
     FWObject::operator=(o);

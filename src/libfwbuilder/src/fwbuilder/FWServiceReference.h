@@ -47,7 +47,6 @@ public:
         DECLARE_DISPATCH_METHODS(FWServiceReference);
         
         FWServiceReference();
-        FWServiceReference(const FWObjectDatabase *root, bool prepopulate);
 
         void setPointer(Service *o);
         void setPointer(ServiceGroup *o);

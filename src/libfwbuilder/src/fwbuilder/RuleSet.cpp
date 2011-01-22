@@ -47,19 +47,10 @@ RuleSet::RuleSet()
     top = false;
 }
 
-RuleSet::RuleSet(const FWObjectDatabase *root, bool prepopulate) :
-    FWObject(root, prepopulate)
+void RuleSet::init(FWObjectDatabase *root)
 {
-    setName("RuleSet");
-    ipv4 = false;
-    ipv6 = false;
-    top = false;
-    if (prepopulate)
-    {
-        FWObjectDatabase *db = (FWObjectDatabase*)root;
-        assert(db);
-        add(db->createRuleSetOptions());
-    }
+    FWObject *opt = getFirstByType(RuleSetOptions::TYPENAME);
+    if (opt == NULL) add(root->createRuleSetOptions());
 }
 
 RuleSet::~RuleSet() {}

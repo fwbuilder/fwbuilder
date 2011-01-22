@@ -45,11 +45,11 @@ Host::Host()
 {
 }
 
-Host::Host(const FWObjectDatabase *root,bool prepopulate) : Address(root,prepopulate)
+void Host::init(FWObjectDatabase *root)
 {
-    if (prepopulate)
-        add( getRoot()->createHostOptions() );
-        //add(new HostOptions() );
+    FWObject *opt = getFirstByType(HostOptions::TYPENAME);
+    if (opt == NULL)
+        add( root->createHostOptions() );
 }
 
 Host::~Host()  {}

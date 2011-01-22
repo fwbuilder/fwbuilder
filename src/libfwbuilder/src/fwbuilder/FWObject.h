@@ -122,9 +122,9 @@ private:
 
 protected:
 
-    std::string         xml_name;
-    bool                init;
-    bool                dirty;
+    std::string xml_name;
+    bool busy;
+    bool dirty;
     
     std::map<std::string, std::string> data;
     std::map<std::string, void*> private_data;
@@ -159,19 +159,14 @@ protected:
     // special constructor used to create FWObjectDatabase objects
     FWObject(bool new_id);
     
-    /**
-     *  Parameter 'root' is a pointer at the root object of the tree,
-     *  we are going to add this newly created object to.
-     */
-    FWObject(const FWObjectDatabase *root, bool prepopulate);
-
 public:
 
     DECLARE_FWOBJECT_SUBTYPE(FWObject);
 
     DECLARE_DISPATCH_METHODS(FWObject);
 
-    class tree_iterator {
+    class tree_iterator
+    {
         friend class libfwbuilder::FWObject;
 
         FWObject *node;
@@ -183,7 +178,8 @@ public:
         FWObject* operator*() { return node; }
         tree_iterator& operator++();
         tree_iterator  operator++(int);
-        tree_iterator& operator=(const tree_iterator &ti) { node=ti.node; return *this; }
+        tree_iterator& operator=(const tree_iterator &ti)
+            { node=ti.node; return *this; }
         bool operator==(const tree_iterator& i) const;
         bool operator!=(const tree_iterator& i) const;
     };
@@ -195,6 +191,15 @@ public:
 
     FWObject(const FWObject &copy);
 
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need. The function should not require that the
+     * object be already added to the object tree but can use provided
+     * pointer to FWObjectDatabase to create other objects it might
+     * need to add as children.
+     */
+    virtual void init(FWObjectDatabase *root);
+    
     int  getId() const;
     void setId(int i);
     bool haveId() { return (id != -1); }
@@ -209,7 +214,8 @@ public:
     
     virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-    xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children) throw(FWException);
+    xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children)
+        throw(FWException);
 
     /**
      *  Rarely used feature: we can change the name of XML element
@@ -220,7 +226,7 @@ public:
      */
     void setXMLName (const std::string &);
 
-    virtual  ~FWObject();
+    virtual ~FWObject();
 
     int ref()   { ++ref_counter; return(ref_counter); }
     int unref() { --ref_counter; return(ref_counter); }
@@ -244,7 +250,8 @@ public:
      * This method works just like  duplicate, except it does not destroy
      * or change children of 'this'.
      */
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true)
+        throw(FWException);
 
     /**
      * This method copies all attributes of obj into this, plus
@@ -262,7 +269,8 @@ public:
      * Depending on 'preserve_id' flag, Id are either copied or new
      * ones are issued.
      */
-    virtual FWObject* addCopyOf(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject* addCopyOf(const FWObject *obj, bool preserve_id = true)
+        throw(FWException);
     
     /**
      * compares objects. Ignores ID and always looks at

@@ -42,8 +42,6 @@ class IPv4 : public Address
 public:
     
     IPv4();
-    IPv4(const FWObjectDatabase *root, bool prepopulate);
-
     virtual ~IPv4();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);

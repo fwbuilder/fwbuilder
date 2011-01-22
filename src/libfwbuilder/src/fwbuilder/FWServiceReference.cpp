@@ -37,9 +37,6 @@ using namespace libfwbuilder;
 const char *FWServiceReference::TYPENAME={"ServiceRef"};
 
 FWServiceReference::FWServiceReference():FWReference(){}
-FWServiceReference::FWServiceReference(const FWObjectDatabase *root,bool prepopulate) :
-    FWReference(root,prepopulate) {}
-
 
 //FWServiceReference::FWServiceReference(Service *p):FWReference(p){}
 //FWServiceReference::FWServiceReference(ServiceGroup *p):FWReference(p){}

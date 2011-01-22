@@ -170,14 +170,14 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
 
 FWObject::FWObject()
 {
-    init        = false;
+    busy = false;
     ref_counter = 0;
-    parent      = NULL;
-    dbroot      = NULL;
-    name        = "";
-    comment     = "";
-    id          = -1;
-    ro          = false;
+    parent = NULL;
+    dbroot = NULL;
+    name = "";
+    comment = "";
+    id = -1;
+    ro = false;
 
     // When object is created we assign it unique Id
     setId(FWObjectDatabase::generateUniqueId());
@@ -188,14 +188,14 @@ FWObject::FWObject()
 
 FWObject::FWObject(bool new_id)
 {
-    init        = false;
+    busy = false;
     ref_counter = 0;
-    parent      = NULL;
-    dbroot      = NULL;
-    name        = "";
-    comment     = "";
-    id          = -1;
-    ro          = false;
+    parent = NULL;
+    dbroot = NULL;
+    name = "";
+    comment = "";
+    id = -1;
+    ro = false;
 
     // When object created we assign it unique Id
     if (new_id)
@@ -207,36 +207,22 @@ FWObject::FWObject(bool new_id)
 
 FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 {
-    init = false;
+    busy = false;
     *this = c;
-    storeCreationTime();
-}
-
-FWObject::FWObject(const FWObjectDatabase *root, bool )
-{
-    init        = false;
-    ref_counter = 0    ;
-    parent      = NULL ;
-    dbroot      = (FWObjectDatabase*)root;
-    name        = "";
-    comment     = "";
-    id          = -1;
-    ro          = false;
-    
-    // When object created we assign it unique Id
-    setId(FWObjectDatabase::generateUniqueId());
-
-    setDirty(false);
     storeCreationTime();
 }
 
 FWObject::~FWObject() 
 {
-    init = true;  // ignore read-only
+    busy = true;  // ignore read-only
     destroyChildren();
     data.clear();
     private_data.clear();
-    
+}
+
+void FWObject::init(FWObjectDatabase *root)
+{
+    dbroot = (FWObjectDatabase*)root;
 }
 
 void FWObject::setPrivateData(const string &key, void *data)
@@ -414,7 +400,7 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
     if (root==NULL) root = x->getRoot();
     // do not prepopulte children for objects that do that automatically
     // in their constructor
-    o1 = root->create(x->getTypeName(), -1, false);
+    o1 = root->create(x->getTypeName(), -1);
     if(!o1)
         throw FWException(string("Error creating object with type: ")+
                           x->getTypeName());
@@ -977,7 +963,7 @@ void FWObject::destroyChildren()
         if (o)
         {
             if (o->size()) o->destroyChildren();
-            if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
+            if (dbr && !dbr->busy) dbr->removeFromIndex( o->getId() );
             delete o;
         }
         pop_front();
@@ -1182,10 +1168,10 @@ void FWObject::setReadOnly(bool f)
     FWObjectDatabase *dbr = getRoot();
     if (dbr)
     {
-        bool ri = dbr->init;
-        dbr->init = true;
+        bool ri = dbr->busy;
+        dbr->busy = true;
         setDirty(true);
-        dbr->init = ri;
+        dbr->busy = ri;
     }
 }
 
@@ -1195,13 +1181,13 @@ void FWObject::setReadOnly(bool f)
  * makes the whole subtree under it read-only which blocks all
  * changes.
  *
- * If root of the tree has flag 'init' set to true, we do not check
+ * If root of the tree has flag 'busy' set to true, we do not check
  * for read-only. This is used to initialize the tree.
  */
 bool FWObject::isReadOnly()
 {
     FWObjectDatabase *dbr = getRoot();
-    if (dbr==NULL || dbr->init) return false;
+    if (dbr==NULL || dbr->busy) return false;
     FWObject *p=this;
     while (p)
     {

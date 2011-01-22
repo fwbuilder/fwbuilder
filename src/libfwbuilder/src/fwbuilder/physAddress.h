@@ -44,8 +44,7 @@ class physAddress : public Address
 
     DECLARE_DISPATCH_METHODS(physAddress);
     
-    physAddress() {}
-    physAddress(const FWObjectDatabase *root,bool prepopulate);
+    physAddress();
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

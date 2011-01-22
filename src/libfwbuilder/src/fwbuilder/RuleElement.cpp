@@ -58,11 +58,24 @@ RuleElement::RuleElement()
     setNeg(false);
 }
 
-RuleElement::RuleElement(const FWObjectDatabase *root, bool prepopulate) :
-    FWObject(root,prepopulate)
+void RuleElement::init(FWObjectDatabase *root)
 {
-    setNeg(false);
-//    setId(-1);
+    setRoot(root);
+
+/* we need to add a reference to 'any' to this new rule
+   element. However, when objects are being loaded from XML file, ANY
+   element may be located at its bottom so at the moment when this
+   rule element is created, we may have not read the ANY yet. In that
+   case we do not add the reference here because it will be added when
+   it is read from the file anyway
+*/
+    int any_id = getAnyElementId();
+    FWObject *any_obj = getById(any_id);
+    if (any_obj == NULL)
+    {
+        any_obj = root->checkIndex( any_id );
+        if (any_obj) FWObject::addRef( any_obj );
+    }
 }
 
 void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
@@ -145,31 +158,6 @@ void RuleElement::reset()
     setNeg(false);
 }
 
-/*
- * special method, it is being called from constructor with a
- * parameter 'root' to initialize rule element with appropriate
- * reference to any
- *
- * this method is intended for internal use only
- */
-void RuleElement::_initialize(const FWObjectDatabase *root)
-{
-    setRoot(root);
-
-/* we need to add a reference to 'any' to this new rule
-   element. However, when objects are being loaded from XML file, ANY
-   element may be located at its bottom so at the moment when this
-   rule element is created, we may have not read the ANY yet. In that
-   case we do not add the reference here because it will be added when
-   it is read from the file anyway
-*/
-
-    int any_id = getAnyElementId();
-    FWObject *any_obj=((FWObjectDatabase*)root)->checkIndex(any_id);
-    if (any_obj)
-        FWObject::addRef( any_obj );
-}
-
 int RuleElement::getAnyElementId() const
 {
     return -1;
@@ -177,12 +165,6 @@ int RuleElement::getAnyElementId() const
 
 const char *RuleElementSrc::TYPENAME={"Src"};
 RuleElementSrc::RuleElementSrc() {}
-RuleElementSrc::RuleElementSrc(const FWObjectDatabase *root,bool prepopulate) :
-    ObjectGroup(root,prepopulate),RuleElement(root,prepopulate) 
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementSrc::getAnyElementId() const
 {
@@ -210,12 +192,6 @@ bool RuleElementSrc::validateChild(FWObject *o)
 
 const char *RuleElementDst::TYPENAME={"Dst"};
 RuleElementDst::RuleElementDst() {}
-RuleElementDst::RuleElementDst(const FWObjectDatabase *root,bool prepopulate) :
-    ObjectGroup(root,prepopulate),RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementDst::getAnyElementId() const 
 {
@@ -243,13 +219,6 @@ bool RuleElementDst::validateChild(FWObject *o)
 
 const char *RuleElementSrv::TYPENAME={"Srv"};
 RuleElementSrv::RuleElementSrv() {}
-RuleElementSrv::RuleElementSrv(const FWObjectDatabase *root,bool prepopulate) :
-    ServiceGroup(root,prepopulate),RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
-
 
 int RuleElementSrv::getAnyElementId() const
 {
@@ -276,12 +245,6 @@ bool RuleElementSrv::validateChild(FWObject *o)
 
 const char *RuleElementItf::TYPENAME={"Itf"};
 RuleElementItf::RuleElementItf() {}
-RuleElementItf::RuleElementItf(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementItf::getAnyElementId() const
 {
@@ -370,12 +333,6 @@ bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 
 const char *RuleElementOSrc::TYPENAME={"OSrc"};
 RuleElementOSrc::RuleElementOSrc() {}
-RuleElementOSrc::RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementOSrc::getAnyElementId() const
 {
@@ -403,12 +360,6 @@ bool RuleElementOSrc::validateChild(FWObject *o)
 
 const char *RuleElementODst::TYPENAME={"ODst"};
 RuleElementODst::RuleElementODst() {}
-RuleElementODst::RuleElementODst(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementODst::getAnyElementId() const
 {
@@ -436,12 +387,6 @@ bool RuleElementODst::validateChild(FWObject *o)
 
 const char *RuleElementOSrv::TYPENAME={"OSrv"};
 RuleElementOSrv::RuleElementOSrv() {}
-RuleElementOSrv::RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementOSrv::getAnyElementId() const
 {
@@ -471,12 +416,6 @@ bool RuleElementOSrv::validateChild(FWObject *o)
 
 const char *RuleElementTSrc::TYPENAME={"TSrc"};
 RuleElementTSrc::RuleElementTSrc() {}
-RuleElementTSrc::RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementTSrc::getAnyElementId() const
 {
@@ -504,12 +443,6 @@ bool RuleElementTSrc::validateChild(FWObject *o)
 
 const char *RuleElementTDst::TYPENAME={"TDst"};
 RuleElementTDst::RuleElementTDst() {}
-RuleElementTDst::RuleElementTDst(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementTDst::getAnyElementId() const
 {
@@ -537,12 +470,6 @@ bool RuleElementTDst::validateChild(FWObject *o)
 
 const char *RuleElementTSrv::TYPENAME={"TSrv"};
 RuleElementTSrv::RuleElementTSrv()  {}
-RuleElementTSrv::RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementTSrv::getAnyElementId() const
 {
@@ -584,12 +511,6 @@ bool RuleElementTSrv::validateChild(FWObject *o)
 
 const char *RuleElementInterval::TYPENAME={"When"};
 RuleElementInterval::RuleElementInterval() {}
-RuleElementInterval::RuleElementInterval(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementInterval::getAnyElementId() const
 {
@@ -618,12 +539,6 @@ bool RuleElementInterval::validateChild(FWObject *o)
 
 const char *RuleElementRDst::TYPENAME={"RDst"};
 RuleElementRDst::RuleElementRDst() {}
-RuleElementRDst::RuleElementRDst(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementRDst::getAnyElementId() const
 {
@@ -650,12 +565,6 @@ bool RuleElementRDst::validateChild(FWObject *o)
 
 const char *RuleElementRGtw::TYPENAME={"RGtw"};
 RuleElementRGtw::RuleElementRGtw() {}
-RuleElementRGtw::RuleElementRGtw(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElement(root,prepopulate)
-{
-    if (prepopulate)
-        _initialize(root);
-}
 
 int RuleElementRGtw::getAnyElementId() const
 {
@@ -709,8 +618,6 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o)
 
 const char *RuleElementRItf::TYPENAME={"RItf"};
 RuleElementRItf::RuleElementRItf()  {}
-RuleElementRItf::RuleElementRItf(const FWObjectDatabase *root,bool prepopulate) :
-    RuleElementItf(root,prepopulate) {}
 
 bool RuleElementRItf::validateChild(FWObject *o)
 {

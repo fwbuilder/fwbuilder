@@ -40,8 +40,7 @@ using namespace std;
 
 const char *physAddress::TYPENAME={"physAddress"};
 
-physAddress::physAddress(const FWObjectDatabase *root,bool prepopulate) :
-    Address(root,prepopulate) 
+physAddress::physAddress() :  Address() 
 {
     setPhysAddress("00:00:00:00:00:00");
 }

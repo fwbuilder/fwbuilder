@@ -37,9 +37,6 @@ const char *UDPService::TYPENAME={"UDPService"};
 
 UDPService::UDPService()  {}
 
-UDPService::UDPService(const FWObjectDatabase *root, bool prepopulate) :
-    TCPUDPService(root, prepopulate) {}
-
 UDPService::~UDPService() {}
 
 string UDPService::getProtocolName() const   {    return "udp"; }

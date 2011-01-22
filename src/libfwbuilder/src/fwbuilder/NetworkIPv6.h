@@ -41,7 +41,6 @@ namespace libfwbuilder
 public:
     
     NetworkIPv6();
-    NetworkIPv6(const FWObjectDatabase *root,bool prepopulate);
     NetworkIPv6(NetworkIPv6 &);
     NetworkIPv6(const std::string &);
     virtual ~NetworkIPv6();

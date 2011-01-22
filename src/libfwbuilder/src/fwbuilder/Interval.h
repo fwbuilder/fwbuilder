@@ -41,7 +41,6 @@ class Interval : public FWObject
 public:
 
     Interval();
-    Interval(const FWObjectDatabase *root,bool prepopulate);
     
     void setStartTime(int min,int hour,int day,int month,int year,int dayofweek);
     void setEndTime(int min,int hour,int day,int month,int year,int dayofweek);

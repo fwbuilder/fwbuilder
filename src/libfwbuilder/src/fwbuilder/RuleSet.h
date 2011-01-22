@@ -49,8 +49,13 @@ class RuleSet : public FWObject
     public:
     
     RuleSet();
-    RuleSet(const FWObjectDatabase *root,bool prepopulate);
     virtual ~RuleSet();
+    
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
     
     DECLARE_FWOBJECT_SUBTYPE(RuleSet);
 

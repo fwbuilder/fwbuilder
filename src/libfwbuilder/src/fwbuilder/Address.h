@@ -55,7 +55,6 @@ public:
     DECLARE_DISPATCH_METHODS(Address);
     
     Address();
-    Address(const FWObjectDatabase *root,bool prepopulate);
     Address(const Address&);
     virtual ~Address();
 

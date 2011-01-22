@@ -848,12 +848,7 @@ class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
 
 void PolicyCompiler_cisco::importObjectGroups(FWObjectDatabase *tree)
 {
-    cerr << "Merging tree " << tree << endl;
-    tree->dump(true, true);
-
     MergeConflictRes merge_predicate;
     dbcopy->merge(tree, &merge_predicate);
-
-    dbcopy->dump(true, true);
 }
 

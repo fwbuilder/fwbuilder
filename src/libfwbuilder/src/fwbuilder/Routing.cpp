@@ -45,11 +45,6 @@ Routing::Routing() : RuleSet()
     setName("Routing");
 }
 
-Routing::Routing(const FWObjectDatabase *root,bool prepopulate) : RuleSet(root,prepopulate) 
-{
-    setName("Routing");
-}
-
 Routing::~Routing()  {}
 
 Rule* Routing::createRule()

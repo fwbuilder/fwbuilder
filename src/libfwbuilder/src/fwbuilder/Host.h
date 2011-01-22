@@ -48,9 +48,14 @@ class Host : public Address
     public:
 
     Host();
-    Host(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Host();
 
+    /**
+     * This method should create any standard mandatory child objects
+     * the object might need.
+     */
+    virtual void init(FWObjectDatabase *root);
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 

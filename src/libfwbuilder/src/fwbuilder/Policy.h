@@ -38,7 +38,6 @@ class Policy : public RuleSet
     public:
     
     Policy();
-    Policy(const FWObjectDatabase *root,bool prepopulate);
     virtual ~Policy();
     
     DECLARE_FWOBJECT_SUBTYPE(Policy);

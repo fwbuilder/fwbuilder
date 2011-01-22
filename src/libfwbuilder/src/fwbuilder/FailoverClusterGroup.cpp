@@ -39,13 +39,6 @@ FailoverClusterGroup::FailoverClusterGroup() : ClusterGroup()
     setStr("type", "");
 }
 
-FailoverClusterGroup::FailoverClusterGroup(const FWObjectDatabase *root,
-                                           bool prepopulate)
-    : ClusterGroup(root, prepopulate)
-{
-    setStr("type", "");
-}
-
 void FailoverClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
 {
     ClusterGroup::fromXML(parent);

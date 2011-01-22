@@ -43,15 +43,6 @@ TCPUDPService::TCPUDPService()
     dst_range_end = 0;
 }
 
-TCPUDPService::TCPUDPService(const FWObjectDatabase *root, bool prepopulate) :
-    Service(root,prepopulate) 
-{
-    src_range_start = 0;
-    src_range_end = 0;
-    dst_range_start = 0;
-    dst_range_end = 0;
-}
-
 TCPUDPService::~TCPUDPService() {}
 
 string TCPUDPService::getProtocolName() const   {    return ""; }

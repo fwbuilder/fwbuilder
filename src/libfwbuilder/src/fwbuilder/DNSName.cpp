@@ -50,14 +50,6 @@ DNSName::DNSName() : MultiAddress()
     setStr("dnsrectype", "A");
 }
 
-DNSName::DNSName(const FWObjectDatabase *root,bool prepopulate) :
-    MultiAddress(root,prepopulate) 
-{
-    setRunTime(false);
-    setStr("dnsrec", "");
-    setStr("dnsrectype", "A");
-}
-
 string DNSName::getSourceName()
 {
     return getStr("dnsrec");

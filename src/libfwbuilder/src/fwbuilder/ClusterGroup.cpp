@@ -32,13 +32,12 @@ ClusterGroup::ClusterGroup() : ObjectGroup()
     setStr("type", "");
 }
 
-ClusterGroup::ClusterGroup(const FWObjectDatabase *root, bool prepopulate)
-    : ObjectGroup(root, prepopulate)
+void ClusterGroup::init(FWObjectDatabase *root)
 {
-    setStr("type", "");
-    if (prepopulate)
+    FWObject *gopt = getFirstByType(ClusterGroupOptions::TYPENAME);
+    if (gopt == NULL)
     {
-        FWObject *gopt = getRoot()->create(ClusterGroupOptions::TYPENAME);
+        gopt = root->create(ClusterGroupOptions::TYPENAME);
         add(gopt);
     }
 }

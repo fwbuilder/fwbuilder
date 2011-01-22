@@ -39,7 +39,6 @@ class IntervalGroup : public Group
     public:
 
     IntervalGroup();
-    IntervalGroup(const FWObjectDatabase *root,bool prepopulate);
     virtual ~IntervalGroup();
 
     DECLARE_FWOBJECT_SUBTYPE(IntervalGroup);

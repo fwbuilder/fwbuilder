@@ -51,7 +51,6 @@ class Service : public FWObject
     DECLARE_DISPATCH_METHODS(Service);
     
     Service() {}
-    Service(const FWObjectDatabase *root,bool prepopulate);
 
     virtual FWReference* createRef();
     virtual std::string getProtocolName() const;

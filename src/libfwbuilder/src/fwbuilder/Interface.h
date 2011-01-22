@@ -72,7 +72,6 @@ protected:
 public:
     
         Interface();
-        Interface(const FWObjectDatabase *root,bool prepopulate);
         Interface(const Interface &i);
         virtual ~Interface();
 
