@@ -190,16 +190,9 @@ BaseObjectGroup* NamedObjectsManager::createObjectGroup()
     return grp;
 }
 
-class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
-{
-    public:
-    MergeConflictRes() { }
-    virtual bool askUser(FWObject*, FWObject*) {return false;}
-};
-
 void NamedObjectsManager::setWorkingObjectTree(FWObjectDatabase *dbcopy)
 {
-    MergeConflictRes merge_predicate;
+    FWObjectDatabase::ConflictResolutionPredicate merge_predicate;
     dbcopy->merge(object_groups_tree, &merge_predicate);
     work_db = dbcopy;
 }
