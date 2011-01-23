@@ -749,7 +749,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                   delMenuItem, newMenuItem, inDeletedObjects);
 
     if (dupID) dupID->setEnabled(dupMenuItem);
-//    movetargets->setEnabled(moveMenuItem);
+
     copyID->setEnabled(copyMenuItem);
     pasteID->setEnabled(pasteMenuItem);
     
@@ -757,7 +757,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     delID->setEnabled(delMenuItem);
 
     // can not move object if can not delete it
-    movetargets->setEnabled(delMenuItem);
+    if (movetargets)
+        movetargets->setEnabled(delMenuItem);
 
     QList<QAction*>::iterator iter;
     for (iter=AddObjectActions.begin(); iter!=AddObjectActions.end(); iter++)
