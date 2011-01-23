@@ -1,10 +1,21 @@
 2011-01-22  vadim  <vadim@netcitadel.com>
 
-	* FWObjectDatabase_create_object.cpp (registerObjectType): see
-	#1972 implemented mechanism that allows me to register new object
-	types created and used outside of libfwbuilder API. This means
-	FWObjectDatabase can then copy and manipulate object trees that
-	use these new object types.
+	* GroupObjectDialog.cpp (setupPopupMenu): see #1976 "Crash when
+	deleting firewall object from rule after export / import library"
+	Crash occurred as the result of the following sequence of actions
+	in the GUI: 1) use context menu item "Cut" to delete an object in
+	the tree, 2) open object group or rule and use context menu item
+	"Paste" to add it, 3) export library to an external file, 4)
+	import this library into different data file, 5) save the data
+	file. Saved data file is invalid XML since it has unsatisfied
+	reference and some operations on it cause crash. The problem is
+	that since it is a reference to the object that is being added in
+	case of both groups and rules, we end up with a group or rule with
+	a reference to an object that is located in Deleted Objects
+	library. Deleted Objects library is not included when a library
+	file is merged into data file and this leads to a dangling
+	reference. The fix is to not allow Paste if object in the
+	clipboard has been deleted.
 
 	* NamedObjectsAndGroupsSupport.cpp (saveObjectGroups): see #1968,
 	#1972 Class NamedObjectsManager maintains its own copy of object

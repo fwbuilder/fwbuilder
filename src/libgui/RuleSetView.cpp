@@ -704,30 +704,47 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 FWObject *object = getObject(pos, index);
 
                 QAction *editID = menu->addAction(
-                        tr("Edit")   , this , SLOT( editSelected() ) );
+                    tr("Edit")   , this , SLOT( editSelected() ) );
+
                 menu->addSeparator();
+
                 QAction *copyID = menu->addAction(
-                        tr("Copy")   , this , SLOT( copySelectedObject() ) );
+                    tr("Copy")   , this , SLOT( copySelectedObject() ) );
+
                 QAction *cutID  = menu->addAction(
-                        tr("Cut")    , this , SLOT( cutSelectedObject() ) );
-                menu->addAction( tr("Paste")  , this , SLOT( pasteObject() ) );
+                    tr("Cut")    , this , SLOT( cutSelectedObject() ) );
+
+                QAction *pasteID = menu->addAction(
+                    tr("Paste")  , this , SLOT( pasteObject() ) );
 
                 QAction *delID  =menu->addAction(
-                        tr("Delete") ,  this , SLOT( deleteSelectedObject() ) );
-                menu->addSeparator();
-                QAction *fndID = menu->addAction(
-                        tr("Where used") , this , SLOT( findWhereUsedSlot()));
-                QAction *revID = menu->addAction(
-                        tr("Reveal in tree") ,this , SLOT( revealObjectInTree() ) );
-                menu->addSeparator();
-                QAction *negID  = menu->addAction(
-                        tr("Negate") , this , SLOT( negateRE() ) );
+                    tr("Delete") ,  this , SLOT( deleteSelectedObject() ) );
 
-                if (object == NULL || re->isAny())
-                    editID->setEnabled(false);
+                menu->addSeparator();
+
+                QAction *fndID = menu->addAction(
+                    tr("Where used") , this , SLOT( findWhereUsedSlot()));
+
+                QAction *revID = menu->addAction(
+                    tr("Reveal in tree") ,this , SLOT( revealObjectInTree() ) );
+
+                menu->addSeparator();
+
+                QAction *negID  = menu->addAction(
+                    tr("Negate") , this , SLOT( negateRE() ) );
+
+                if (object == NULL || re->isAny()) editID->setEnabled(false);
                 copyID->setEnabled(!re->isAny());
                 cutID->setEnabled(!re->isAny());
                 delID->setEnabled(!re->isAny());
+
+                // see #1976 do not allow pasting object that has been deleted
+                FWObject *obj_in_clipboard =
+                    FWObjectClipboard::obj_clipboard->getObject();
+                bool obj_deleted = (obj_in_clipboard &&
+                                    obj_in_clipboard->getParent()->getId() ==
+                                    FWObjectDatabase::DELETED_OBJECTS_ID);
+                pasteID->setEnabled(obj_in_clipboard!=NULL && !obj_deleted);
 
                 string cap_name;
                 if (Policy::cast(md->getRuleSet())!=NULL) cap_name="negation_in_policy";

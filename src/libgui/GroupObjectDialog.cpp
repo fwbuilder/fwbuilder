@@ -691,7 +691,7 @@ void GroupObjectDialog::listContextMenu(const QPoint & pos)
 
 void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
 {
-    QMenu *popup=new QMenu(this);
+    QMenu *popup = new QMenu(this);
 
     if (selectedObject!=NULL)
     {
@@ -701,18 +701,26 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
             popup->addAction(tr("Edit"), this, SLOT(openObject()));
     }
 
-    QAction *copyID =popup->addAction(tr("Copy"), this, SLOT(copyObj()));
-    QAction *cutID =popup->addAction(tr("Cut"), this, SLOT(cutObj()));
-    QAction *pasteID=popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
-    QAction *delID =popup->addAction(tr("Delete"),this, SLOT(deleteObj()));
+    QAction *copyID = popup->addAction(tr("Copy"), this, SLOT(copyObj()));
+    QAction *cutID = popup->addAction(tr("Cut"), this, SLOT(cutObj()));
+    QAction *pasteID = popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
+    QAction *delID = popup->addAction(tr("Delete"),this, SLOT(deleteObj()));
 
     copyID->setEnabled(selectedObject!=NULL &&
                           ! FWBTree().isSystem(selectedObject) );
     cutID->setEnabled(selectedObject!=NULL &&
                           ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
+
+    // see #1976 do not allow pasting object that has been deleted
+    FWObject *obj_in_clipboard = FWObjectClipboard::obj_clipboard->getObject();
+    bool obj_deleted = (obj_in_clipboard &&
+                        obj_in_clipboard->getParent()->getId() ==
+                        FWObjectDatabase::DELETED_OBJECTS_ID);
+
     pasteID->setEnabled(! FWBTree().isSystem(obj) &&
-                          ! obj->isReadOnly() );
+                        ! obj->isReadOnly() && ! obj_deleted);
+
     delID->setEnabled(selectedObject!=NULL &&
                           ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
