@@ -1,5 +1,10 @@
 2011-01-22  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator.cpp (contextMenuRequested): fixed #1926
+	"Crash when moving object in Standard library". Context menu
+	item "Move" should be disabled when the object is located in
+	the read-only library.
+
 	* GroupObjectDialog.cpp (setupPopupMenu): see #1976 "Crash when
 	deleting firewall object from rule after export / import library"
 	Crash occurred as the result of the following sequence of actions
