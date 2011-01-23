@@ -372,8 +372,14 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     popup_menu->clear();
 
-    QAction *edtID =
-        popup_menu->addAction(tr("Edit"), this, SLOT( editSelectedObject()));
+    QAction *edtID;
+
+    if (currentObj->isReadOnly())
+        edtID = popup_menu->addAction(tr("Inspect"),
+                                      this, SLOT( editSelectedObject()));
+    else
+        edtID = popup_menu->addAction(tr("Edit"),
+                                      this, SLOT( editSelectedObject()));
 
     if (RuleSet::cast(currentObj))
         popup_menu->addAction(tr("Open"), this, SLOT( openSelectedRuleSet()));

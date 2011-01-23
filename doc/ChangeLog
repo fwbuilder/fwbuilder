@@ -1,5 +1,10 @@
 2011-01-22  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator.cpp (contextMenuRequested): context menu item
+	that opens object in the editor should be named "Inspect" when the
+	object is read-only because the editor would not allow the user to
+	change it.
+
 	* ObjectManipulator.cpp (contextMenuRequested): fixed #1926
 	"Crash when moving object in Standard library". Context menu
 	item "Move" should be disabled when the object is located in
