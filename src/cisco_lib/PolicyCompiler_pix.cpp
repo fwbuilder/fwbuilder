@@ -449,7 +449,8 @@ void PolicyCompiler_pix::compile()
         add( new printTotalNumberOfRules ( ));
 
         add( new ItfNegation( "process negation in Itf" ));
-        add( new InterfacePolicyRules("process interface policy rules and store interface ids"));
+        add( new InterfacePolicyRules("process interface policy rules and "
+                                      "store interface ids"));
 
         add( new recursiveGroupsInSrc( "check for recursive groups in SRC" ));
         add( new recursiveGroupsInDst( "check for recursive groups in DST" ));
@@ -510,13 +511,20 @@ void PolicyCompiler_pix::compile()
 
     add( new expandGroupsInItf("expand groups in Interface" ));
     add( new replaceClusterInterfaceInItf(
-             "replace cluster interfaces with member interfaces in the Interface rule element"));
+             "replace cluster interfaces with member interfaces in "
+             "the Interface rule element"));
     add( new ItfNegation( "process negation in Itf" ));
     add( new InterfacePolicyRules(
              "process interface policy rules and store interface ids"));
 
     if (XMLTools::version_compare(vers, "8.3")<0)
         add( new addressRanges("process address ranges" ));
+
+    /*
+     * We do not support ipv6 yet
+     */
+    add( new DropIPv6Rules("drop ipv6 rules"));
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
@@ -536,12 +544,7 @@ void PolicyCompiler_pix::compile()
     add( new separateSrcPort("split rules matching source ports"));
     add( new separateCustom("split rules matching custom services"));
 
-//    if (XMLTools::version_compare(vers, "8.0")<0)
-        add( new groupServicesByProtocol("split rules with different protocols"));
-//    else
-//        add( new groupTCPUDPServices(
-//                 "split rules to keep TCP and UDP services separate "
-//                 "from other protocols"));
+    add( new groupServicesByProtocol("split rules with different protocols"));
 
     add( new PrepareForICMPCmd("prepare for icmp command" ));
     
@@ -567,15 +570,15 @@ void PolicyCompiler_pix::compile()
 
     add( new checkForUnnumbered( "check for unnumbered interfaces" ));
 
-    //add( new addressRanges("process address ranges" ));
-
     if (outbound_acl_supported )
     {
         // Call these after splitIfSrcMatchesFw and splitIfDstMatchesFw
         add( new setInterfaceAndDirectionBySrc(
-                 "Set interface and direction for rules with interface 'all' using SRC; v7"));
+                 "Set interface and direction for rules with interface "
+                 "'all' using SRC; v7"));
         add( new setInterfaceAndDirectionByDst(
-                 "Set interface and direction for rules with interface 'all' using DST; v7"));
+                 "Set interface and direction for rules with interface "
+                 "'all' using DST; v7"));
         add(new setInterfaceAndDirectionIfInterfaceSet(
                 "Set direction for rules with interface not 'all'; v7"));
     } else
@@ -617,10 +620,12 @@ void PolicyCompiler_pix::compile()
     add( new CheckForUnsupportedUserService("check for user service") );
     add( new checkForZeroAddr( "check for zero addresses" ));
     add( new checkVersionAndDynamicInterface(
-             "check for dynamic interfaces in policy rule and verify version of PIX OS"));
+             "check for dynamic interfaces in policy rule and verify "
+             "version of PIX OS"));
 
     add( new splitIfTelnetSSHICMPtoFw(
-             "split rule if there are multiple objects in src and it controlls access to the firewall"));
+             "split rule if there are multiple objects in src and it "
+             "controlls access to the firewall"));
 
     /* remove redundant objects only after all splits has been
      * done, right before object groups are created
@@ -652,16 +657,11 @@ void PolicyCompiler_pix::compile()
 
     add( new createNewCompilerPass("Creating object groups and ACLs ..."));
 
-    //add( new printClearCommands("Clear ACLs and object groups"));
-
     if (XMLTools::version_compare(vers, "8.3")>=0)
     {
         add( new createNamedObjectsForPolicy(
                  "create named objects", named_objects_manager));
     }
-
-    //add( new printObjectGroups(
-    //         "generate code for object groups", named_objects_manager));
 
     add( new PrintRule("generate code for ACLs"));
     add( new simplePrintProgress());

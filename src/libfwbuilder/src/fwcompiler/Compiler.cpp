@@ -1240,6 +1240,35 @@ void Compiler::DropAddressFamilyInRE(RuleElement *rel, bool drop_ipv6)
         rel->removeRef(*i);
 }
 
+bool Compiler::dropRuleWithEmptyRE::isREEmpty(Rule *rule,
+                                              const std::string &re_type)
+{
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+    return re->size()==0;
+}
+
+bool Compiler::dropRuleWithEmptyRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
+    if (PolicyRule::cast(rule) &&
+        (isREEmpty(rule, RuleElementSrc::TYPENAME) ||
+         isREEmpty(rule, RuleElementDst::TYPENAME))) return true;
+
+    if (NATRule::cast(rule) && 
+        (isREEmpty(rule, RuleElementOSrc::TYPENAME) ||
+         isREEmpty(rule, RuleElementODst::TYPENAME) ||
+         isREEmpty(rule, RuleElementOSrv::TYPENAME) ||
+         isREEmpty(rule, RuleElementTSrc::TYPENAME) ||
+         isREEmpty(rule, RuleElementTDst::TYPENAME) ||
+         isREEmpty(rule, RuleElementTSrv::TYPENAME))) return true;
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+
+
 void Compiler::DropByServiceTypeInRE(RuleElement *rel, bool drop_ipv6)
 {
     list<FWObject*> objects_to_remove;

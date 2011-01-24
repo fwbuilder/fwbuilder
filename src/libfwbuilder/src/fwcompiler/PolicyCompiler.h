@@ -292,11 +292,6 @@ namespace fwcompiler {
               DropRulesByAddressFamilyAndServiceType(n, true) {};
         };
 
-	/**
-	 * drop rules that have empty rule elements
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(dropRuleWithEmptyRE);
-
         /**
          *  deals with recursive groups in Src. See description for
          *  Compiler::recursiveGroupsInRE

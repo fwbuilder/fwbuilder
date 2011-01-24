@@ -1174,20 +1174,6 @@ bool PolicyCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
     return true;
 }
 
-bool PolicyCompiler::dropRuleWithEmptyRE::processNext()
-{
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElementSrc *srcrel=rule->getSrc();
-    RuleElementDst *dstrel=rule->getDst();
-    if ((srcrel->size() == 0) || (dstrel->size() == 0)) return true;
-//    Address     *src = compiler->getFirstSrc(rule);
-//    Address     *dst = compiler->getFirstDst(rule);
-//    if (src!=NULL && dst!=NULL) tmp_queue.push_back(rule);
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-
 string PolicyCompiler::debugPrintRule(Rule *r)
 {
     PolicyRule *rule=PolicyRule::cast(r);

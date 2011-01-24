@@ -460,6 +460,18 @@ protected:
         };
 
         /**
+	 * drop rules that have empty rule elements
+	 */
+        class dropRuleWithEmptyRE : public BasicRuleProcessor
+        {
+            bool isREEmpty(libfwbuilder::Rule *rule, const std::string &re_type);
+            public:
+            dropRuleWithEmptyRE(const std::string &name) : BasicRuleProcessor(name)
+            { }
+            virtual bool processNext();
+        };
+
+        /**
          * if MultiAddress object failed to convert itself to a group
          * of addresses and compiler runs in a test mode, we use dummy
          * test addresses instead. The error is detected by

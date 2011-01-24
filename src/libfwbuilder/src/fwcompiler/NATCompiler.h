@@ -212,11 +212,6 @@ namespace fwcompiler {
               DropRulesByAddressFamilyAndServiceType(n, true) {};
         };
 
-	/**
-	 * drop rules that have empty rule elements
-	 */
-        DECLARE_NAT_RULE_PROCESSOR(dropRuleWithEmptyRE);
-
         /**
          *  deals with recursive groups in OSrc. See description for
          *  Compiler::recursiveGroupsInRE

@@ -1685,6 +1685,10 @@ void NATCompiler_pix::compile()
 
     add( new ExpandGroups("expand groups"));
 
+    /*
+     * We do not support ipv6 yet
+     */
+    add( new DropIPv6Rules("drop ipv6 rules"));
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
     add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
