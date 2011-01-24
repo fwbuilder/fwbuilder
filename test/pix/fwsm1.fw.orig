@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3441
+!  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Sat Jan 22 10:06:01 2011 PST by vadim
+!  Generated Mon Jan 24 11:52:32 2011 PST by vadim
 !
 ! Compiled for fwsm 2.3
 ! Outbound ACLs: supported
@@ -15,6 +15,7 @@
 !
 
 ! C fwsm1:Policy:18: error: Rule '18 (global)' shadows rule '20 (global)'  below it
+! C fwsm1:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 ! C fwsm1:Policy:13: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
 
 !

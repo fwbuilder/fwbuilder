@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3441
+!  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Sat Jan 22 10:05:51 2011 PST by vadim
+!  Generated Mon Jan 24 11:52:22 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -19,7 +19,12 @@
 
 ! v6.3, outbound ACLs are not supported
 
-
+! C firewall21-1:Policy:12: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall21-1:Policy:14: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall21-1:Policy:18: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall21-1:Policy:20: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall21-1:Policy:20: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall21-1:Policy:20: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 
 !
 ! Prolog script:

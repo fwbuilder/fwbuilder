@@ -60,6 +60,9 @@
 
 #include <assert.h>
 
+#include <QString>
+
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -172,15 +175,15 @@ bool PolicyCompiler_pix::SplitDirection_v6::processNext()
 bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
 {
     Helper helper(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
 
     if (rule->getDirection()==PolicyRule::Outbound && rule_iface!=NULL)
     {
         if ( compiler->fw->getOptionsObject()->getBool("pix_emulate_out_acl") )
         {
-            RuleElementSrc *src=rule->getSrc();    assert(src);
-            RuleElementDst *dst=rule->getDst();    assert(dst);
+            RuleElementSrc *src = rule->getSrc();    assert(src);
+            RuleElementDst *dst = rule->getDst();    assert(dst);
 
             try
             {
@@ -195,6 +198,11 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
  */
                     if (iface1_id==rule->getInterfaceId())
                     {
+                        compiler->warning(rule, 
+                            "Rule with direction 'Outbound' was suppressed "
+                            "because generation of outbound access lists "
+                            "is turned off in firewall object settings"
+                        );
                         return true;
                     }
 
@@ -235,10 +243,9 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
             }
         } else
             compiler->abort(
-                
-                    rule, 
-                    "Outbound ACLs are not supported and emulation is "
-                    "not activated");
+                rule, 
+                "Outbound ACLs are not supported and emulation is "
+                "not activated");
     } else 
         tmp_queue.push_back(rule);
 

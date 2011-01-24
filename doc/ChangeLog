@@ -1,3 +1,9 @@
+2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pix_v6_acls.cpp (processNext): see #1981 "ASA /
+	FWSM Policy - Generate warning message if rule will not generate
+	config data"
+
 2011-01-22  vadim  <vadim@netcitadel.com>
 
 	* ObjectManipulator.cpp (contextMenuRequested): context menu item

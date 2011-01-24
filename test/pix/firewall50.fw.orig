@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3441
+!  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Sat Jan 22 10:05:54 2011 PST by vadim
+!  Generated Mon Jan 24 11:52:25 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -15,6 +15,8 @@
 !
 ! this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule. PIX 7.0
 
+! C firewall50:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C firewall50:Policy:9: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 ! C firewall50:Policy:15: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
 ! C firewall50:Policy:29: error: PIX does not support checking for IP options in ACLs.
 

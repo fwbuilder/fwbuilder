@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3441
+!  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Sat Jan 22 10:05:50 2011 PST by vadim
+!  Generated Mon Jan 24 11:52:20 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -15,7 +15,7 @@
 !
 ! lots of different combinations of objects in the NAT rules
 
-
+! C firewall2:Policy:1: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 
 !
 ! Prolog script:

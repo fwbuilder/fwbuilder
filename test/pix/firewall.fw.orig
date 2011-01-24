@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3441
+!  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Sat Jan 22 10:05:46 2011 PST by vadim
+!  Generated Mon Jan 24 11:52:18 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -171,6 +171,7 @@
 ! C firewall:Policy:0: error: Rule '0 (global)' shadows rule '24 (global)'  below it
 ! C firewall:Policy:0: error: Rule '0 (global)' shadows rule '24 (global)'  below it
 ! C firewall:Policy:0: error: Rule '0 (global)' shadows rule '25 (global)'  below it
+! C firewall:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 ! C firewall:Policy:13: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
 
 ! N firewall:NAT:6: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
