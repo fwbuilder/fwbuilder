@@ -523,8 +523,10 @@ void PolicyCompiler_pix::compile()
     /*
      * We do not support ipv6 yet
      */
-    add( new DropIPv6Rules("drop ipv6 rules"));
-    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+    add( new DropIPv6RulesWithWarning(
+             "drop ipv6 rules",
+             "Rule has been suppressed because it contains IPv6 addresses"));
+    //add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {

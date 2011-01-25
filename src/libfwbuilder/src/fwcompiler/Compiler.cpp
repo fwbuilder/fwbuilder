@@ -1253,7 +1253,11 @@ bool Compiler::dropRuleWithEmptyRE::processNext()
 
     if (PolicyRule::cast(rule) &&
         (isREEmpty(rule, RuleElementSrc::TYPENAME) ||
-         isREEmpty(rule, RuleElementDst::TYPENAME))) return true;
+         isREEmpty(rule, RuleElementDst::TYPENAME)))
+    {
+        if (!warning_str.empty()) compiler->warning(rule, warning_str);
+        return true;
+    }
 
     if (NATRule::cast(rule) && 
         (isREEmpty(rule, RuleElementOSrc::TYPENAME) ||
@@ -1261,7 +1265,11 @@ bool Compiler::dropRuleWithEmptyRE::processNext()
          isREEmpty(rule, RuleElementOSrv::TYPENAME) ||
          isREEmpty(rule, RuleElementTSrc::TYPENAME) ||
          isREEmpty(rule, RuleElementTDst::TYPENAME) ||
-         isREEmpty(rule, RuleElementTSrv::TYPENAME))) return true;
+         isREEmpty(rule, RuleElementTSrv::TYPENAME)))
+    {
+        if (!warning_str.empty())compiler->warning(rule, warning_str);
+        return true;
+    }
 
     tmp_queue.push_back(rule);
     return true;

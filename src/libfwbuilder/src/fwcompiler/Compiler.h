@@ -455,7 +455,8 @@ protected:
             std::string re_type;
             public:
             expandMultipleAddressesInRE(const std::string &name,
-                                        const std::string &t) : BasicRuleProcessor(name) { re_type=t; }
+                                        const std::string &t) :
+                BasicRuleProcessor(name) { re_type=t; }
             virtual bool processNext();
         };
 
@@ -464,11 +465,24 @@ protected:
 	 */
         class dropRuleWithEmptyRE : public BasicRuleProcessor
         {
+            std::string warning_str;
             bool isREEmpty(libfwbuilder::Rule *rule, const std::string &re_type);
             public:
-            dropRuleWithEmptyRE(const std::string &name) : BasicRuleProcessor(name)
-            { }
+            dropRuleWithEmptyRE(const std::string &name) :
+                BasicRuleProcessor(name) { warning_str = ""; }
             virtual bool processNext();
+            protected:
+            dropRuleWithEmptyRE(const std::string &name,
+                                const std::string &_warning) :
+                BasicRuleProcessor(name) { warning_str = _warning; }
+        };
+
+        class dropRuleWithEmptyREWithWarning : public dropRuleWithEmptyRE
+        {
+            public:
+            dropRuleWithEmptyREWithWarning(const std::string &name,
+                                const std::string &_warning) :
+                dropRuleWithEmptyRE(name, _warning) { }
         };
 
         /**

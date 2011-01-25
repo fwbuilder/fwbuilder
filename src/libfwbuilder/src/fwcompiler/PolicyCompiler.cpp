@@ -1152,6 +1152,7 @@ bool PolicyCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
     {
         // removing all ipv6 addresses from source makes it 'any', drop
         // this rule
+        if (!warning_str.empty()) compiler->warning(rule, warning_str);
         return true;
     }
 
@@ -1159,6 +1160,7 @@ bool PolicyCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
     {
         // removing all ipv6 addresses from destination makes it 'any', drop
         // this rule
+        if (!warning_str.empty()) compiler->warning(rule, warning_str);
         return true;
     }
 
@@ -1166,6 +1168,7 @@ bool PolicyCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
     {
         // removing all ipv6 addresses from service makes it 'any', drop
         // this rule
+        if (!warning_str.empty()) compiler->warning(rule, warning_str);
         return true;
     }
 

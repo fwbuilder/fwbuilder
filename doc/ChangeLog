@@ -1,5 +1,10 @@
 2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (compile): see #1970 "ASA Policy - single
+	IPv6 icmp object allowed in rules". Since we do not support ipv6
+	for PIX/ASA at this time, policy compiler should drop the rule
+	if ipv6 address or icmpv6 service is used and issue a warning.
+
 	* PolicyCompiler_pix_v6_acls.cpp (processNext): see #1981 "ASA /
 	FWSM Policy - Generate warning message if rule will not generate
 	config data"
