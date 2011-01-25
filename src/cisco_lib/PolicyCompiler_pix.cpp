@@ -525,8 +525,8 @@ void PolicyCompiler_pix::compile()
      */
     add( new DropIPv6RulesWithWarning(
              "drop ipv6 rules",
-             "Rule has been suppressed because it contains IPv6 addresses"));
-    //add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+             "Rule has been suppressed because it contains IPv6 objects and "
+             "Firewall Builder does not support IPv6 for this platform"));
 
     if ( fwopt->getBool("pix_assume_fw_part_of_any"))
     {
