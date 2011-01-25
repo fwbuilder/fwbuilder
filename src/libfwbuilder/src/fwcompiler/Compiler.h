@@ -27,6 +27,7 @@
 #define __COMPILER_HH__
 
 #include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWException.h"
 
 #include "fwcompiler/BaseCompiler.h"
@@ -236,7 +237,6 @@ protected:
         libfwbuilder::Group *temp;
 
 	std::stringstream output;
-
 
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }

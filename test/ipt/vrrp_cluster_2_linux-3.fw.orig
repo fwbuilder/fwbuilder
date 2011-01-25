@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3438
+#  Firewall Builder  fwb_ipt v4.2.0.3445
 #
-#  Generated Tue Jan 18 14:15:44 2011 PST by vadim
+#  Generated Mon Jan 24 18:20:32 2011 PST by vadim
 #
 # files: * vrrp_cluster_2_linux-3.fw
 #
@@ -350,10 +350,10 @@ script_body() {
     # 
     echo "Rule -1 VRRP (automatic)"
     # 
-    $IPTABLES -N C.0
-    $IPTABLES -A INPUT  -i eth0  -p vrrp  -d 224.0.0.18   -j C.0
-    $IPTABLES -A C.0  -s 172.24.0.2   -j ACCEPT
-    $IPTABLES -A C.0  -s 192.168.100.1   -j ACCEPT
+    $IPTABLES -N Cid8278X18284.0.0
+    $IPTABLES -A INPUT  -i eth0  -p vrrp  -d 224.0.0.18   -j Cid8278X18284.0.0
+    $IPTABLES -A Cid8278X18284.0.0  -s 172.24.0.2   -j ACCEPT
+    $IPTABLES -A Cid8278X18284.0.0  -s 192.168.100.1   -j ACCEPT
     # 
     # Rule 0 (eth0)
     # 
@@ -523,7 +523,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Jan 18 14:15:44 2011 by vadim"
+        log "Activating firewall script generated Mon Jan 24 18:20:32 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

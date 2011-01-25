@@ -226,6 +226,15 @@ void FWObjectDatabase::change_string_id(int i_id, const string &s_id)
     id_dict_reverse[s_id] = i_id;
 }
 
+string FWObjectDatabase::getPredictableId(const string &prefix)
+{
+    ostringstream str;
+    str << prefix << predictable_id_tracker;
+    string new_id = str.str();
+    predictable_id_tracker++;
+    return new_id;
+}
+
 void FWObjectDatabase::setPredictableIds(FWObject *obj)
 {
     if (obj->getBool(".seen_this")) return;
@@ -235,11 +244,7 @@ void FWObjectDatabase::setPredictableIds(FWObject *obj)
         obj->getLibrary()->getId() != FWObjectDatabase::DELETED_OBJECTS_ID &&
         obj->getId() != -1)
     {
-        ostringstream str;
-        str << "id" << predictable_id_tracker;
-        string new_id = str.str();
-        predictable_id_tracker++;
-
+        string new_id = getPredictableId("id");
         string old_id = FWObjectDatabase::getStringId(obj->getId());
 
         FWObjectDatabase::change_string_id(obj->getId(), new_id);

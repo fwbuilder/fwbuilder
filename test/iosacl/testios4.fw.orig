@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3441
+!  Firewall Builder  fwb_iosacl v4.2.0.3445
 !
-!  Generated Sat Jan 22 09:53:52 2011 PST by vadim
+!  Generated Mon Jan 24 18:14:28 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -38,13 +38,13 @@ no ip access-list extended e0_in
 no ip access-list extended e0_out
 no ip access-list extended e1_in
 no ip access-list extended e1_out
-no object-group network .src.net.0
+no object-group network id47161X84238.1.src.net.0
 no object-group network id47180X84238.src.net.0
 no object-group network id47180X84238.dst.net.0
 no object-group network id47192X84238.dst.net.0
 no object-group network id47204X84238.dst.net.0
 
-object-group network .src.net.0
+object-group network id47161X84238.1.src.net.0
   host 1.1.1.1
   host 10.10.10.1
 exit
@@ -186,7 +186,7 @@ exit
 ip access-list extended e0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
-  permit tcp  10.10.10.0 0.0.0.255 object-group .src.net.0 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 object-group id47161X84238.1.src.net.0 eq 22 
 ! 
 ! Rule  4 (global)
   deny   ip  any  any  log 
@@ -195,7 +195,7 @@ exit
 ip access-list extended e0_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
-  permit tcp  object-group .src.net.0 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  object-group id47161X84238.1.src.net.0 eq 22 10.10.10.0 0.0.0.255 
 ! 
 ! Rule  0 (ethernet0)
   deny   ip  object-group id47180X84238.src.net.0 object-group id47180X84238.dst.net.0 log 
@@ -217,7 +217,7 @@ exit
 ip access-list extended e1_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
-  permit tcp  10.10.10.0 0.0.0.255 object-group .src.net.0 eq 22 
+  permit tcp  10.10.10.0 0.0.0.255 object-group id47161X84238.1.src.net.0 eq 22 
 ! 
 ! Rule  4 (global)
   deny   ip  any  any  log 
@@ -226,7 +226,7 @@ exit
 ip access-list extended e1_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
-  permit tcp  object-group .src.net.0 eq 22 10.10.10.0 0.0.0.255 
+  permit tcp  object-group id47161X84238.1.src.net.0 eq 22 10.10.10.0 0.0.0.255 
 ! 
 ! Rule  4 (global)
   deny   ip  any  any  log 

@@ -1335,6 +1335,12 @@ PolicyRule* PolicyCompiler::addMgmtRule(Address* src,
     rule->enable();
     rule->setAction(action);
     rule->setDirection(direction);
-    
+    // Use firewall object ID to generate uique ID for this management rule
+    // to make it stable across different runs of the compiler
+    rule->setUniqueId(
+        dbcopy->getPredictableId(
+            FWObjectDatabase::getStringId(fw->getId()) + "."
+        ));
+
     return rule;
 }

@@ -429,6 +429,12 @@ public:
         static std::string getStringId(int i_id);
 
         /**
+         * generate predictable ID based on given prefix by adding sequential
+         * suffix to it.
+         */
+        std::string getPredictableId(const std::string &prefix);
+        
+        /**
          * This method replaces random string object ids with
          * predictable ones.  Used in unit testing to create .fwb
          * files that can be compared.

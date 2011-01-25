@@ -1,5 +1,10 @@
 2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler.cpp (addMgmtRule): fixes #1966 "IOSACL:
+	object-group can get name that consists of only suffix".  Compiler
+	generated object-group statements with names such as ".src.net.0"
+	in some cases.
+
 	* ObjectIconView.cpp (dragEnterEvent): see #1980 "Objects from
 	Deleted Objects should not be allowed to be used in rules". Added
 	checks to not allow drag&drop of an object from Deleted Objects

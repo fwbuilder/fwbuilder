@@ -43,11 +43,15 @@ namespace fwcompiler {
 	libfwbuilder::Rule *getRule() const { return rule; }
     };
 
-    class BaseCompiler {
+    class BaseCompiler
+    {
 
         std::string level_macro;
 	std::stringstream errors_buffer;
+        // in test mode we trat fatal errors as errors and continue after
+        // printing error message
         bool test_mode;
+        // this is single-rule-compile mode; compiler is embedded in the GUI
         bool embedded_mode;
 
         /**
@@ -72,10 +76,10 @@ namespace fwcompiler {
 
 public:
 
-        void setTestMode() { test_mode = true; }
+        virtual void setTestMode() { test_mode = true; }
         bool inTestMode() { return test_mode; }
 
-        void setEmbeddedMode() { embedded_mode = true; }
+        virtual void setEmbeddedMode() { embedded_mode = true; }
         bool inEmbeddedMode() { return embedded_mode; }
 
         /**
