@@ -1,5 +1,10 @@
 2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
 
+	* ObjectIconView.cpp (dragEnterEvent): see #1980 "Objects from
+	Deleted Objects should not be allowed to be used in rules". Added
+	checks to not allow drag&drop of an object from Deleted Objects
+	library into rules and groups.
+
 	* NamedObject.cpp (createServiceObjectCommand): See #1958
 	"consistently use "exit" to get out of nested context in pix
 	config". Using "exit" to exit from nested context while adding

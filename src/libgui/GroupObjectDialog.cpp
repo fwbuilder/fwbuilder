@@ -343,6 +343,10 @@ void GroupObjectDialog::insertObject(FWObject *o)
     assert(g!=NULL);
 
     if ( ! g->validateChild(o) || g->isReadOnly() ) return;
+    // see #1976 do not allow pasting object that has been deleted
+    // note that we call insertObject() from dropEvent(), not only from paste()
+    if (o->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        return;
 
     if (fwbdebug)
         qDebug("Adding object %s to the group %s",

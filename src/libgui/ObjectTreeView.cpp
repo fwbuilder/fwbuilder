@@ -461,6 +461,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         ev->setAccepted(false);
         return;
     }
+
     list<FWObject*> dragol;
     if (!FWObjectDrag::decode(ev, dragol))
         ev->setAccepted(false);
@@ -472,6 +473,13 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         if (FWBTree().isSystem(dragobj))
         {
 // can not drop system folder anywhere 
+            ev->setAccepted(false);
+            return;
+        }
+
+        // see #1976 do not allow pasting object that has been deleted
+        if (dragobj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        {
             ev->setAccepted(false);
             return;
         }

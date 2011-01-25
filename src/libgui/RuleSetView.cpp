@@ -742,7 +742,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 FWObject *obj_in_clipboard =
                     FWObjectClipboard::obj_clipboard->getObject();
                 bool obj_deleted = (obj_in_clipboard &&
-                                    obj_in_clipboard->getParent()->getId() ==
+                                    obj_in_clipboard->getLibrary()->getId() ==
                                     FWObjectDatabase::DELETED_OBJECTS_ID);
                 pasteID->setEnabled(obj_in_clipboard!=NULL && !obj_deleted);
 
@@ -2213,7 +2213,8 @@ bool RuleSetView::validateForInsertionToInterfaceRE(RuleElementItf *re,
 bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 {
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
-    if (colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time) return false;
+    if (colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time)
+        return false;
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     assert (re!=NULL);
@@ -2223,6 +2224,10 @@ bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quiet)
 {
     if (RuleSet::cast(obj)!=NULL) return false;
+
+    // see #1976 do not allow pasting object that has been deleted
+    if (obj && obj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        return false;
 
     if (! re->validateChild(obj) )
     {

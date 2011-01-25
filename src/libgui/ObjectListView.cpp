@@ -31,6 +31,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 
+#include "FWBTree.h"
 #include "ProjectPanel.h"
 #include "ObjectListView.h"
 #include "ObjectListViewItem.h"
@@ -160,7 +161,47 @@ void ObjectListView::dragEnterEvent( QDragEnterEvent *ev)
 {
     if (fwbdebug)
         qDebug("ObjectListView::dragEnterEvent");
-    ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
+    //ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
+
+    QWidget *fromWidget = ev->source();
+
+    // The source of DnD object must be the same instance of fwbuilder
+    if (!fromWidget)
+    {
+        ev->setAccepted(false);
+        return;
+    }
+   
+    if (!ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
+    {
+        ev->setAccepted(false);
+        return;
+    }
+
+    list<FWObject*> dragol;
+    if (!FWObjectDrag::decode(ev, dragol))
+        ev->setAccepted(false);
+    for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
+    {
+        FWObject *dragobj = *i;
+        assert(dragobj!=NULL);
+
+        if (FWBTree().isSystem(dragobj))
+        {
+// can not drop system folder anywhere 
+            ev->setAccepted(false);
+            return;
+        }
+
+        // see #1976 do not allow pasting object that has been deleted
+        if (dragobj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        {
+            ev->setAccepted(false);
+            return;
+        }
+    }
+
+    ev->setAccepted(true);
 }
 
 void ObjectListView::dropEvent(QDropEvent *ev)
