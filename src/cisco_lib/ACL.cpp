@@ -39,6 +39,15 @@ string ciscoACL::addLine(const std::string &s)
     return printLastLine();
 }
 
+/*
+ * "remark" lines should be less than 101 on PIX/ASA and less than 100 on IOS
+ */
+string ciscoACL::trimLine(const string &s)
+{
+    if (s.length() < 100)  return s;
+    return s.substr(0, 100);
+}
+
 string ciscoACL::quoteLine(const string &s)
 {
     if (quote_remarks && s.find(' ') != string::npos)
@@ -56,7 +65,7 @@ string ciscoACL::addRemark(const std::string &rl, const std::string &comment)
     string output;
     if (_last_rule_label != rl)
     {
-        acl.push_back(" remark " + quoteLine(rl));
+        acl.push_back(" remark " + quoteLine(trimLine(rl)));
 
         output += printLastLine();
         nlines++;
@@ -67,12 +76,14 @@ string ciscoACL::addRemark(const std::string &rl, const std::string &comment)
             c1 = 0;
             while ( (n = comment.find("\n", c1)) != string::npos )
             {
-                acl.push_back(" remark " + quoteLine(comment.substr(c1, n-c1)));
+                acl.push_back(" remark " + quoteLine(
+                                  trimLine(comment.substr(c1, n-c1))));
                 output += printLastLine();
                 nlines++;
                 c1 = n + 1;
             }
-            acl.push_back(" remark " + quoteLine(comment.substr(c1)));
+            acl.push_back(" remark " + quoteLine(
+                              trimLine(comment.substr(c1))));
             output += printLastLine();
             nlines++;
         }

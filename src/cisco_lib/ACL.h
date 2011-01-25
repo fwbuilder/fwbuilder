@@ -47,7 +47,8 @@ namespace fwcompiler {
     
         std::string printLine(const std::string &s);
         std::string quoteLine(const std::string &s);
-    
+        std::string trimLine(const std::string &s);
+        
 public:
         ciscoACL() {
             _ip_acl = false;

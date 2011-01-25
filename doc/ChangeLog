@@ -1,3 +1,11 @@
+2011-01-25  vadim  <vadim@netcitadel.com>
+
+	* ACL.cpp (trimLine): fixes #1986 "Cisco ASA remarks should be
+	truncated to 100 characters or less". Trimming all lines used for
+	access list remarks to <100 characters. Remarks can only be less
+	than 101 characters on PIX/ASA and less than 100 characters on
+	IOS.
+
 2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PolicyCompiler.cpp (addMgmtRule): fixes #1966 "IOSACL:
