@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Mon Jan 24 11:52:30 2011 PST by vadim
+!  Generated Mon Jan 24 16:40:05 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -102,35 +102,35 @@ clear conf object
 
 object service http.0
   service tcp destination eq 80
-quit
+exit
 
 object service https.0
   service tcp destination eq 443
-quit
+exit
 
 object service squid.0
   service tcp destination eq 3128
-quit
+exit
 
 object network external_gw2.0
   host 22.22.22.100
-quit
+exit
 
 object network hostA:eth0.0
   host 192.168.1.10
-quit
+exit
 
 object network internal_subnet_1.0
   subnet 192.168.1.0 255.255.255.192
-quit
+exit
 
 object network test_range_1.0
   range 192.168.1.11 192.168.1.15
-quit
+exit
 
 object network outside_range.0
   range 22.22.22.21 22.22.22.25
-quit
+exit
 
 
 !################

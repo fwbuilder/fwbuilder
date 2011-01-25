@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Mon Jan 24 11:52:30 2011 PST by vadim
+!  Generated Mon Jan 24 16:40:06 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -96,11 +96,11 @@ clear conf object
 
 object network dmz-range-1.0
   range 172.16.0.10 172.16.0.15
-quit
+exit
 
 object network inside-range-1.0
   range 10.0.0.1 10.0.0.5
-quit
+exit
 
 
 !################

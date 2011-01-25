@@ -296,7 +296,7 @@ QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)
     }
 
 
-    res << "quit";
+    res << "exit";
     res << "";
     return res.join("\n");
 }
@@ -370,7 +370,7 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
     }
 
     res << service_line.join(" ");
-    res << "quit";
+    res << "exit";
     res << "";
     return res.join("\n");
 }

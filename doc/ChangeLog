@@ -1,5 +1,10 @@
 2011-01-24  Vadim Kurland  <vadim@netcitadel.com>
 
+	* NamedObject.cpp (createServiceObjectCommand): See #1958
+	"consistently use "exit" to get out of nested context in pix
+	config". Using "exit" to exit from nested context while adding
+	network or service object in generated PIX/ASA configuraton.
+
 	* PolicyCompiler_pix.cpp (compile): see #1970 "ASA Policy - single
 	IPv6 icmp object allowed in rules". Since we do not support ipv6
 	for PIX/ASA at this time, policy compiler should drop the rule

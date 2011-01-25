@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3445
 !
-!  Generated Mon Jan 24 11:52:31 2011 PST by vadim
+!  Generated Mon Jan 24 16:40:07 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -83,11 +83,11 @@ clear conf object
 
 object network inside-range-1.0
   range 10.0.0.5 10.0.0.10
-quit
+exit
 
 object network inside-range-2.0
   range 10.0.0.8 10.0.0.15
-quit
+exit
 
 object-group network id26782X14355.src.net.0
   network-object object inside-range-1.0
