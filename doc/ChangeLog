@@ -1,5 +1,9 @@
 2011-01-25  vadim  <vadim@netcitadel.com>
 
+	* src/fwbuilder/libfwbuilder-config.h.in: fixes #1937 "RES_DIR
+	macro is defined twice". Got rid of duplicate definition of this
+	macro.
+
 	* FWObject.cpp (updateNonStandardObjectReferences): see #1985
 	added virtual function updateNonStandardObjectReferences() that is
 	supposed to update any references to objects stored as attributes.

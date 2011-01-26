@@ -12,6 +12,7 @@
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Constants.h"
 #include "commoninit.h"
 
 
@@ -53,8 +54,8 @@ void init(char * const*)
 
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
-    if (respath=="") respath = RES_DIR;
-    librespath = RES_DIR;
+    if (respath=="") respath = Constants::getTemplateDirectory();
+    librespath = Constants::getTemplateDirectory();
 
     libfwbuilder::init();
 

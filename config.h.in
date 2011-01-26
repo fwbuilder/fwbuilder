@@ -47,9 +47,6 @@
 /* prefix dir    */
 #undef PREFIX
 
-/* init dir */
-#undef RES_DIR
-
 #define MANIFEST_MARKER "# files: "
 
 #undef HAVE_LOCALE_H

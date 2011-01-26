@@ -200,7 +200,6 @@ int main( int argc, char *argv[] )
         exit(1);
     }
 
-    //respath = RES_DIR;
     Resources res(full_res_path);
 
     if (fwbdebug) qDebug("done");

@@ -41,6 +41,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Constants.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -63,7 +64,7 @@ void ObjectMatcherTest::matchTest()
     FWObjectDatabase *db = new FWObjectDatabase();
 
     XMLTools::UpgradePredicate up;
-    db->load(string("test_data.fwb"), &up, string(RES_DIR));
+    db->load(string("test_data.fwb"), &up, Constants::getTemplateDirectory());
 
     ObjectMatcher om;
     om.setRecognizeBroadcasts(true);
