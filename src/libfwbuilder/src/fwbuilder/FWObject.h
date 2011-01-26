@@ -153,7 +153,19 @@ protected:
      * set.
      */
     virtual void findAllReferences(const FWObject *obj, std::set<FWReference*> &res);
-    
+
+    /**
+     * internal method: update references to other objects this object
+     * might keep in attributes. Example of this is reference to
+     * branch rule set that is stored as its string ID in RuleOptions
+     * object.  Eventually we must fix these and make these references
+     * either use FWReference child object or be normal C++
+     * pointers. Meanwhile, this virtual method is called from
+     * FWObjectDatabase::_set_predictable_str_ids_recursively() when string
+     * ids are replaced (and possibly from other places for similar reasons).
+     */
+    virtual void updateNonStandardObjectReferences();
+
     FWObject();
 
     // special constructor used to create FWObjectDatabase objects

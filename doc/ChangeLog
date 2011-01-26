@@ -1,5 +1,9 @@
 2011-01-25  vadim  <vadim@netcitadel.com>
 
+	* FWObject.cpp (updateNonStandardObjectReferences): see #1985
+	added virtual function updateNonStandardObjectReferences() that is
+	supposed to update any references to objects stored as attributes.
+
 	* ACL.cpp (trimLine): fixes #1986 "Cisco ASA remarks should be
 	truncated to 100 characters or less". Trimming all lines used for
 	access list remarks to <100 characters. Remarks can only be less

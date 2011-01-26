@@ -231,7 +231,8 @@ private:
                                    std::map<int,int> &id_map,
                                    const std::string &dedup_attribute);
 
-        static void change_string_id(int i_id, const std::string &s_id);
+        void _setPredictableStrIdsRecursively(FWObject *obj);
+        void _updateNonStandardObjectReferencesRecursively(FWObject *obj);
         
 protected:
 
@@ -436,10 +437,14 @@ public:
         
         /**
          * This method replaces random string object ids with
-         * predictable ones.  Used in unit testing to create .fwb
-         * files that can be compared.
+         * predictable ones. This does not change their int IDs, only
+         * string IDs that appear in the XML file when objects are
+         * saved change.
+         *
+         * Used in unit testing to create .fwb files that can be
+         * compared.
          */
-        void setPredictableIds(FWObject *obj);
+        virtual void setPredictableIds();
         
         /**
          * This is the main "Create" method:

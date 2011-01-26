@@ -217,15 +217,6 @@ string FWObjectDatabase::getStringId(int i_id)
     return id_dict[i_id];
 }
 
-/*
- * private method used in setPredictableIds()
- */
-void FWObjectDatabase::change_string_id(int i_id, const string &s_id)
-{
-    id_dict[i_id] = s_id;
-    id_dict_reverse[s_id] = i_id;
-}
-
 string FWObjectDatabase::getPredictableId(const string &prefix)
 {
     ostringstream str;
@@ -235,56 +226,44 @@ string FWObjectDatabase::getPredictableId(const string &prefix)
     return new_id;
 }
 
-void FWObjectDatabase::setPredictableIds(FWObject *obj)
+void FWObjectDatabase::_setPredictableStrIdsRecursively(FWObject *obj)
 {
-    if (obj->getBool(".seen_this")) return;
+   if (obj->getBool(".seen_this")) return;
 
-    if (!obj->isReadOnly() && !FWObjectDatabase::isA(obj) &&
-        obj->getLibrary()->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
-        obj->getLibrary()->getId() != FWObjectDatabase::DELETED_OBJECTS_ID &&
-        obj->getId() != -1)
-    {
-        string new_id = getPredictableId("id");
-        string old_id = FWObjectDatabase::getStringId(obj->getId());
+   if (!obj->isReadOnly() && !FWObjectDatabase::isA(obj) &&
+       obj->getLibrary()->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
+       obj->getLibrary()->getId() != FWObjectDatabase::DELETED_OBJECTS_ID &&
+       obj->getId() != -1)
+   {
+       string new_id = getPredictableId("id");
+       int int_id = obj->getId();
 
-        FWObjectDatabase::change_string_id(obj->getId(), new_id);
-        obj->setBool(".seen_this", true);
+       id_dict[int_id] = new_id;
+       id_dict_reverse[new_id] = int_id;
 
-        // TODO: This should really be implemented as a virtual method
-        // so that the knowledge of the specifics of the
-        // implementation of these actions stays inside the class
-        // PolicyRule
-        if (PolicyRule::isA(obj))
-        {
-            PolicyRule *rule = PolicyRule::cast(obj);
-            switch (rule->getAction())
-            {
-            case PolicyRule::Branch:
-            {
-                RuleSet *branch_ruleset = rule->getBranch();
-                setPredictableIds(branch_ruleset);
-                rule->setBranch(branch_ruleset);
-                rule->setTagObject(NULL);
-                break;
-            }
-            case PolicyRule::Tag:
-            {
-                FWObject *tag_object = rule->getTagObject();
-                setPredictableIds(tag_object);
-                rule->setTagObject(tag_object);
-                rule->setBranch(NULL);
-                break;
-            }
-            default:
-                break;
-            }            
-        }
-    }
+       obj->setBool(".seen_this", true);
+   }
 
-    for (list<FWObject*>::iterator it=obj->begin(); it!=obj->end(); ++it)
-    {
-        setPredictableIds(*it);
-    }
+   for (list<FWObject*>::iterator it=obj->begin(); it!=obj->end(); ++it)
+   {
+       _setPredictableStrIdsRecursively(*it);
+   }
+}
+
+void FWObjectDatabase::_updateNonStandardObjectReferencesRecursively(
+    FWObject *obj)
+{
+   for (list<FWObject*>::iterator it=obj->begin(); it!=obj->end(); ++it)
+   {
+       (*it)->updateNonStandardObjectReferences();
+       _updateNonStandardObjectReferencesRecursively(*it);
+   }
+}
+
+void FWObjectDatabase::setPredictableIds()
+{
+    _setPredictableStrIdsRecursively(this);
+    _updateNonStandardObjectReferencesRecursively(this);
 }
 
 

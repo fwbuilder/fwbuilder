@@ -244,6 +244,10 @@ map<string, void*> &FWObject::getAllPrivateData()
     return private_data;
 }
 
+void FWObject::updateNonStandardObjectReferences()
+{
+}
+
 FWObject* FWObject::getParent() const
 {
     return parent;

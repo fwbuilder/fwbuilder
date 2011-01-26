@@ -195,7 +195,7 @@ void ImporterTest::IOSImporterTest()
 
     imp->finalize();
 
-    db->setPredictableIds(db);
+    db->setPredictableIds();
 
     db->saveFile("ios_res.fwb");
 
@@ -223,7 +223,7 @@ void ImporterTest::IPTImporterTest()
 
     imp->finalize();
 
-    db->setPredictableIds(db);
+    db->setPredictableIds();
 
     db->saveFile("ipt_res.fwb");
 

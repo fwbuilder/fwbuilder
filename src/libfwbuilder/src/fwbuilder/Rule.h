@@ -194,6 +194,9 @@ private:
     libfwbuilder::RuleElementInterval* when_re;
     Action action;
     Direction direction;
+
+protected:
+    virtual void updateNonStandardObjectReferences();
     
 public:    
 

@@ -407,6 +407,33 @@ FWOptions* PolicyRule::getOptionsObject()
     return FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
 }
 
+/*
+ * FWObjectDatabase::setPredictableIds() calls this method after it
+ * has updated string ID of all objects, including rule sets.
+ */
+void PolicyRule::updateNonStandardObjectReferences()
+{
+    switch (getAction())
+    {
+    case PolicyRule::Branch:
+    {
+        RuleSet *branch_ruleset = getBranch();
+        setBranch(branch_ruleset);
+        setTagObject(NULL);
+        break;
+    }
+    case PolicyRule::Tag:
+    {
+        FWObject *tag_object = getTagObject();
+        setTagObject(tag_object);
+        setBranch(NULL);
+        break;
+    }
+    default:
+        break;
+    }            
+}
+
 RuleSet* PolicyRule::getBranch()
 {
     if (getAction() != PolicyRule::Branch) return NULL;

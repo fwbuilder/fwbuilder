@@ -145,7 +145,7 @@ void DiscoveryDruidTest::testHostsImport()
 
     // this is running after import dialog is closed
     mw->activeProject()->setFileName("result.fwb");
-    mw->activeProject()->db()->setPredictableIds(mw->activeProject()->db());
+    mw->activeProject()->db()->setPredictableIds();
     mw->activeProject()->save();
 
     compareFwbFiles("output.fwb", "result.fwb");
