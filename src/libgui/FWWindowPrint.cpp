@@ -40,6 +40,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Constants.h"
 
 #include <qglobal.h>
 
@@ -279,7 +280,8 @@ void FWWindow::printFirewallFromFile(QString fileName,
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     try
     {
-        objdb->load(fileName.toLatin1().constData(), &up, librespath);
+        objdb->load(fileName.toLatin1().constData(), &up,
+                    Constants::getDTDDirectory());
     }
     catch (...)
     {

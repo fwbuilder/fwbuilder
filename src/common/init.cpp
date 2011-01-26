@@ -13,17 +13,13 @@
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"
+
 #include "commoninit.h"
 
 
 // TODO: switch to QString 
 std::string appRootDir;
 std::string userDataDir;
-std::string respath; 
-std::string localepath;
-std::string librespath;
-std::string sysfname;
-std::string tempfname;
 std::string argv0;
 std::string ee;
 
@@ -54,19 +50,10 @@ void init(char * const*)
 
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
-    if (respath=="") respath = Constants::getTemplateDirectory();
-    librespath = Constants::getTemplateDirectory();
-
     libfwbuilder::init();
 
 /* need argv0 for built-in installer on unix and mac */
     argv0 = appRootDir + FS_SEPARATOR + "fwbuilder";
-
-    sysfname = respath + FS_SEPARATOR  + "objects_init.xml";
-    tempfname = respath+ FS_SEPARATOR + "templates.xml";
-
-/* define localepath the same way as we define PKGLOCALEDIR in qmake.inc */
-    localepath = respath + "/locale";
 
 /* default directory where the user may want to save files */
     userDataDir = string(getenv("HOME"));

@@ -1,3 +1,10 @@
+2011-01-26  Vadim Kurland  <vadim@netcitadel.com>
+
+	* init.cpp (init): fixed #1989 "variables respath and librespath
+	are redundant and copy Constants::getTemplateDirectory()". Got rid
+	of global variables sysfname, tempfname, librespath, respath and
+	localepath; will now use class Constants to keep this information.
+
 2011-01-25  vadim  <vadim@netcitadel.com>
 
 	* src/fwbuilder/libfwbuilder-config.h.in: fixes #1937 "RES_DIR

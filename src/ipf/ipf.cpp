@@ -60,6 +60,7 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Constants.h"
 
 #include <QApplication>
 #include <QStringList>
@@ -118,12 +119,6 @@ int main(int argc, char **argv)
     {
         QString arg = args.at(idx);
         last_arg = arg;
-        if (arg == "-r")
-        {
-            idx++;
-            respath = string(args.at(idx).toLatin1().constData());
-            continue;
-        }
         if (arg == "-V")
         {
             usage(argv[0]);
@@ -146,7 +141,7 @@ int main(int argc, char **argv)
     init(argv);
 
     try   {
-        new Resources(respath + FS_SEPARATOR + "resources.xml");
+        new Resources(Constants::getResourcesFilePath());
 
 	/* create database */
 	objdb = new FWObjectDatabase();
@@ -157,10 +152,11 @@ int main(int argc, char **argv)
 	cout << " *** Loading data ...";
 
         objdb->setReadOnly( false );
-        objdb->load( sysfname, &upgrade_predicate, librespath);
+        objdb->load( Constants::getStandardObjectsFilePath(),
+                     &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(filename, &upgrade_predicate,  librespath);
+        ndb->load(filename, &upgrade_predicate,  Constants::getDTDDirectory());
         objdb->merge(ndb, NULL);
         delete ndb;
         objdb->setFileName(filename);

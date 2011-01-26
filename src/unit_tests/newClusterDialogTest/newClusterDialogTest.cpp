@@ -29,16 +29,18 @@
 #include <QDialog>
 
 #include "ui_newclusterdialog_q.h"
+
 #include "FWWindow.h"
-#include "fwbuilder/Policy.h"
 #include "ObjectTreeView.h"
 #include "ProjectPanel.h"
 #include "StartTipDialog.h"
-
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "FWObjectClipboard.h"
 #include "FWBApplication.h"
+
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Constants.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -86,7 +88,7 @@ void newClusterDialogTest::test1()
     //init();
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
-    db->load("test_work.fwb", &p, librespath);
+    db->load("test_work.fwb", &p, Constants::getDTDDirectory());
     newClusterDialog_ext *dialog = new newClusterDialog_ext(NULL, db);
     vector<FWObject*> fws;
     QStringList fwnames;

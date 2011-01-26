@@ -29,6 +29,7 @@
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/IntervalGroup.h"
+#include "fwbuilder/Constants.h"
 
 #include "fwbedit.h"
 #include "upgradePredicate.h"
@@ -61,7 +62,7 @@ void mergeTree(FWObjectDatabase *objdb, const string &mergefile, int conflict_re
     try
     {
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(mergefile,  &upgrade_predicate,  librespath);
+        ndb->load(mergefile,  &upgrade_predicate,  Constants::getDTDDirectory());
 
         FWObject *dobj = ndb->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) ndb->remove(dobj, false);

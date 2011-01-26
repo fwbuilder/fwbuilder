@@ -44,11 +44,6 @@ extern UserWorkflow *wfl;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;
-extern std::string     respath;
-extern std::string     localepath;
-extern std::string     librespath;
-extern std::string     sysfname;
-extern std::string     tempfname;
 extern std::string     argv0;
 extern std::string     ee;
 extern int             fwbdebug;

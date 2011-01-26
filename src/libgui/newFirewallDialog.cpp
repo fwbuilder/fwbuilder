@@ -49,6 +49,7 @@
 #include "fwbuilder/BackgroundOp.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
+#include "fwbuilder/Constants.h"
 
 #include <qlineedit.h>
 #include <qtextedit.h>
@@ -126,7 +127,8 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
              this, SLOT(updateTemplatePanel()));
 
     m_dialog->useStandard->setChecked(true);
-    m_dialog->templateFilePath->setText(tempfname.c_str());
+    m_dialog->templateFilePath->setText(
+        Constants::getTemplatesObjectsFilePath().c_str());
     updateTemplatePanel();
 
     /* fill in platform. Since iptables is the most popular, start with
@@ -207,7 +209,8 @@ void newFirewallDialog::browseTemplate()
 
 void newFirewallDialog::useStandardTemplate()
 {
-    m_dialog->templateFilePath->setText(tempfname.c_str());
+    m_dialog->templateFilePath->setText(
+        Constants::getTemplatesObjectsFilePath().c_str());
     updateTemplatePanel();
 }
 
@@ -229,7 +232,8 @@ void newFirewallDialog::updateTemplatePanel()
 
         if (using_std)
         {
-            m_dialog->templateFilePath->setText(tempfname.c_str());
+            m_dialog->templateFilePath->setText(
+                Constants::getTemplatesObjectsFilePath().c_str());
         }
     }
     else
@@ -576,7 +580,7 @@ void newFirewallDialog::showPage(const int page)
             {
                 tmpldb->load(
                     m_dialog->templateFilePath->text().toAscii().data(),
-                    &upgrade_predicate, librespath);
+                    &upgrade_predicate, Constants::getDTDDirectory());
             }
             catch (FWException &ex)
             {

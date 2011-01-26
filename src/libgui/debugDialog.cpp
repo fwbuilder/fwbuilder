@@ -47,6 +47,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace libfwbuilder;
 
 
 debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
@@ -62,16 +63,18 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( QString("Path to executable: %1")
         .arg(argv0.c_str()) );
     m_dialog->debugText->append( QString("Path to resources: %1")
-        .arg(respath.c_str()) );
+        .arg(Constants::getResourcesDirectory().c_str()) );
     m_dialog->debugText->append( QString("Path to locale: %1")
-        .arg(localepath.c_str()) );
-    m_dialog->debugText->append( QString("Path to lib resources: %1")
-        .arg(librespath.c_str()) );
+        .arg(Constants::getLocaleDirectory().c_str()) );
+    m_dialog->debugText->append( QString("Path to libfwbuilder data directory: %1")
+        .arg(Constants::getDTDDirectory().c_str()) );
     m_dialog->debugText->append( QString("appRootDir: %1")
         .arg(appRootDir.c_str()) );
     m_dialog->debugText->append( "\n" );
-    m_dialog->debugText->append( QString("sysfname: %1").arg(sysfname.c_str()));
-    m_dialog->debugText->append( QString("tempfname: %1").arg(tempfname.c_str()));
+    m_dialog->debugText->append( QString("standard objects library: %1")
+                                 .arg(Constants::getStandardObjectsFilePath().c_str()));
+    m_dialog->debugText->append( QString("standard templates library: %1")
+                                 .arg(Constants::getTemplatesObjectsFilePath().c_str()));
     m_dialog->debugText->append( QString("user name: %1").arg(user_name) );
     m_dialog->debugText->append( "\n" );
     m_dialog->debugText->append( QString("Path to rcs: %1").arg(RCS_FILE_NAME));

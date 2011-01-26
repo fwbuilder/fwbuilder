@@ -27,6 +27,7 @@
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Constants.h"
 
 #include <QStringList>
 #include <QDebug>
@@ -36,8 +37,6 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace CppUnit;
 
-
-extern string librespath;
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -586,7 +585,7 @@ void interfacePropertiesTest::testManageIpAddresses()
 
     string file_name = "test.fwb";
     db->setReadOnly( false );
-    db->load(file_name, &upgrade_predicate, librespath);
+    db->load(file_name, &upgrade_predicate, Constants::getDTDDirectory());
     db->setFileName(file_name);
     db->reIndex();
 
@@ -656,7 +655,7 @@ void interfacePropertiesTest::testManageIpAddressesCluster()
 
     string file_name = "test.fwb";
     db->setReadOnly( false );
-    db->load(file_name, &upgrade_predicate, librespath);
+    db->load(file_name, &upgrade_predicate, Constants::getDTDDirectory());
     db->setFileName(file_name);
     db->reIndex();
 

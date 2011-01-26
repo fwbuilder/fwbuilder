@@ -30,7 +30,7 @@
 #include <string>
 
 using namespace libfwbuilder;
-//std::string respath;
+
 int fwbdebug = 0;
 //QString user_name;
 std::string platform;

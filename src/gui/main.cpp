@@ -70,6 +70,8 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/Constants.h"
+
 
 #if defined(Q_WS_MAC)
 extern void connectOdocHandler();
@@ -186,7 +188,7 @@ int main( int argc, char *argv[] )
 
     INIT2;
 
-    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
+    string full_res_path = Constants::getResourcesFilePath();
 
     if (fwbdebug)
     {
@@ -232,7 +234,7 @@ int main( int argc, char *argv[] )
     QString local = QLocale::system().name();//"en_US";//
     QTranslator translator(0);
     translator.load(QLatin1String("fwbuilder_") +
-                    QString(local), localepath.c_str());
+                    QString(local), Constants::getLocaleDirectory().c_str());
     app->installTranslator (&translator);
 
     QString qt_resource_dir =

@@ -22,6 +22,7 @@
 #include "Configlet.h"
 
 #include "fwbuilder/IPService.h"
+#include "fwbuilder/Constants.h"
 
 #include <QDir>
 #include <QDirIterator>
@@ -31,7 +32,6 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-extern string librespath;
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -63,7 +63,7 @@ void GeneratedScriptTest::loadDataFile(const string &file_name)
     UpgradePredicate upgrade_predicate;
 
     objdb->setReadOnly( false );
-    objdb->load(file_name, &upgrade_predicate, librespath);
+    objdb->load(file_name, &upgrade_predicate, Constants::getDTDDirectory());
     objdb->setFileName(file_name);
     objdb->reIndex();
 }

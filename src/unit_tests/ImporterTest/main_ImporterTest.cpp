@@ -34,7 +34,6 @@
 
 #include "../../../common/init.cpp"
 
-//std::string respath;
 int fwbdebug = 0;
 //QString user_name;
 std::string platform;
@@ -44,7 +43,7 @@ int main(int argc, char** argv)
     QApplication app(argc, argv, false);
 
     init(argv);
-    Resources res(respath + FS_SEPARATOR + "resources.xml");
+    Resources res(Constants::getResourcesFilePath());
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
