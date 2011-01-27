@@ -28,7 +28,6 @@
 #include "UsageResolverTest.h"
 #include <string>
 
-std::string respath;
 int fwbdebug = 0;
 QString user_name;
 

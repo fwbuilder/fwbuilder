@@ -38,6 +38,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/IPService.h"
+#include "fwbuilder/Constants.h"
 
 #include <QApplication>
 #include <QStringList>
@@ -94,12 +95,6 @@ int main(int argc, char **argv)
     {
         QString arg = args.at(idx);
         last_arg = arg;
-        if (arg == "-r")
-        {
-            idx++;
-            respath = string(args.at(idx).toLatin1().constData());
-            continue;
-        }
         if (arg == "-V")
         {
             usage(argv[0]);
@@ -127,7 +122,7 @@ int main(int argc, char **argv)
 
     try
     {
-        Resources res(respath + FS_SEPARATOR + "resources.xml");
+        Resources res(Constants::getResourcesFilePath());
 
 	/* create database */
 	objdb = new FWObjectDatabase();
@@ -139,7 +134,7 @@ int main(int argc, char **argv)
         cerr << flush;
 
         objdb->setReadOnly( false );
-        objdb->load( filename, &upgrade_predicate, librespath);
+        objdb->load( filename, &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName(filename);
         objdb->reIndex();
 

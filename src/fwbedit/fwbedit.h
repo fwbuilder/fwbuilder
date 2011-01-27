@@ -83,5 +83,4 @@ extern void findObjects(const std::string &obj_path,
 extern bool getBool(std::string s);
 extern void usage();
 
-extern std::string librespath;
 

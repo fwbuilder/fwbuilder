@@ -53,6 +53,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Tools.h"
+#include "fwbuilder/Constants.h"
 
 #include <QApplication>
 #include <QStringList>
@@ -118,12 +119,6 @@ int main(int argc, char **argv)
             only_print_inspection_code = true;
             continue;
         }
-        if (arg == "-r")
-        {
-            idx++;
-            respath = string(args.at(idx).toLatin1().constData());
-            continue;
-        }
         if (arg == "-V")
         {
             usage(argv[0]);
@@ -147,7 +142,7 @@ int main(int argc, char **argv)
 
     try
     {
-        new Resources(respath + FS_SEPARATOR + "resources.xml");
+        new Resources(Constants::getResourcesFilePath());
 
 /* create database */
         objdb = new FWObjectDatabase();
@@ -158,7 +153,7 @@ int main(int argc, char **argv)
         cout << " *** Loading data ...";
 
         objdb->setReadOnly( false );
-        objdb->load( filename, &upgrade_predicate, librespath);
+        objdb->load( filename, &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName(filename);
         objdb->reIndex();
 

@@ -96,6 +96,8 @@ extern int errno;
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UserService.h"
 
+#include "fwbuilder/Constants.h"
+
 #include "../common/init.cpp"
 
 #include "fwbedit.h"
@@ -562,9 +564,7 @@ int main(int argc, char * const *argv)
 
     try 
     {
-        new Resources(respath+FS_SEPARATOR+"resources.xml");
-
-        //new Resources(respath);   // creates singleton Resources::global_res
+        new Resources(Constants::getResourcesFilePath());
 
         /* create database */
         objdb = new FWObjectDatabase();
@@ -572,7 +572,7 @@ int main(int argc, char * const *argv)
         /* load the data file */
         UpgradePredicate upgrade_predicate(autoupgrade_flag); 
 
-        objdb->load(filename,  &upgrade_predicate, librespath);
+        objdb->load(filename,  &upgrade_predicate, Constants::getDTDDirectory());
     
         if (cmd == MERGE)
         {

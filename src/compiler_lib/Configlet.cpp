@@ -29,6 +29,7 @@
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Constants.h"
 
 #include <QRegExp>
 #include <QTextStream>
@@ -38,7 +39,6 @@
 
 #include <iostream>
 
-extern std::string     respath;
 
 using namespace libfwbuilder;
 using namespace std;
@@ -133,7 +133,8 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
 QString Configlet::getFullPath(const QString &path)
 {
     if (QDir::isRelativePath(path))
-        return QString(respath.c_str()) + "/configlets/" + path;
+        return QString(Constants::getResourcesDirectory().c_str()) +
+            "/configlets/" + path;
     else
         return path;
 }

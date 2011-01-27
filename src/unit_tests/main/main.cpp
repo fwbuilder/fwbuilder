@@ -29,6 +29,7 @@
 #include "common/commoninit.h"
 
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Constants.h"
 
 #include <QString>
 #include <QApplication>
@@ -65,7 +66,7 @@ void build_app(int argc, char** argv,
 
     *wfl = new UserWorkflow(); 
 
-    string full_res_path = respath + FS_SEPARATOR + "resources.xml"; 
+    string full_res_path = Constants::getResourcesFilePath(); 
 
     new Resources(full_res_path);
 

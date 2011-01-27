@@ -6,9 +6,6 @@
 
   Author:  Vadim Zaliva     lord@crocodile.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -31,6 +28,14 @@
 using namespace std;
 using namespace libfwbuilder;
 
+string Constants::res_dir;
+
+void Constants::init(const std::string &app_root_dir)
+{
+    if (app_root_dir.empty()) res_dir = string(RES_DIR);
+    else res_dir = app_root_dir + FS_SEPARATOR + string(RES_DIR);
+}
+
 const string Constants::getLibraryDescription()
 {
     return "Firewall Builder API ";
@@ -50,3 +55,36 @@ const string Constants::getTemplateDirectory()
 { 
     return string(RES_DIR); 
 }
+
+string Constants::getDTDDirectory()
+{
+    if (res_dir.empty()) init("");
+    return res_dir;
+}
+
+string Constants::getResourcesDirectory()
+{
+    if (res_dir.empty()) init("");
+    return res_dir;
+}
+
+string Constants::getResourcesFilePath()
+{
+    return getResourcesDirectory() + FS_SEPARATOR + "resources.xml";
+}
+
+string Constants::getStandardObjectsFilePath()
+{
+    return getResourcesDirectory() + FS_SEPARATOR  + "objects_init.xml";
+}
+
+string Constants::getTemplatesObjectsFilePath()
+{
+    return getResourcesDirectory() + FS_SEPARATOR  + "templates.xml";
+}
+
+string Constants::getLocaleDirectory()
+{
+    return getResourcesDirectory() + "/locale";
+}
+

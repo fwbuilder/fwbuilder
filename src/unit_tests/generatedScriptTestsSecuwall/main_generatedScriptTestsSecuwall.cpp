@@ -22,6 +22,7 @@
 #include <cppunit/CompilerOutputter.h>
 
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Constants.h"
 
 #include <QApplication>
 #include <QTextCodec>
@@ -41,7 +42,7 @@ int main(int argc, char **argv)
 
     init(argv);
 
-    Resources res(respath + FS_SEPARATOR + "resources.xml");
+    Resources res(Constants::getResourcesFilePath());
 
 
     CppUnit::TextUi::TestRunner runner;

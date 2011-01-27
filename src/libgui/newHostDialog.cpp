@@ -43,6 +43,7 @@
 #include "fwbuilder/BackgroundOp.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
+#include "fwbuilder/Constants.h"
 
 #include <qlineedit.h>
 #include <qtextedit.h>
@@ -104,7 +105,8 @@ newHostDialog::newHostDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
              this,SLOT(useStandardTemplate()));
     connect( m_dialog->useTemplate, SIGNAL(released()),
              this,SLOT(updateTemplatePanel()));
-    m_dialog->templateFilePath->setText(tempfname.c_str());
+    m_dialog->templateFilePath->setText(
+        Constants::getTemplatesObjectsFilePath().c_str());
     updateTemplatePanel();
 
     setNextEnabled( OBJECT_NAME_PAGE, false );
@@ -131,7 +133,8 @@ void newHostDialog::browseTemplate()
 
 void newHostDialog::useStandardTemplate()
 {
-    m_dialog->templateFilePath->setText(tempfname.c_str());
+    m_dialog->templateFilePath->setText(
+        Constants::getTemplatesObjectsFilePath().c_str());
     updateTemplatePanel();
 }
 
@@ -140,7 +143,7 @@ void newHostDialog::updateTemplatePanel()
     if (m_dialog->useTemplate->checkState()==Qt::Checked)
     {
         QString fileName = m_dialog->templateFilePath->text();
-        bool using_std = fileName == tempfname.c_str();
+        bool using_std = fileName == Constants::getTemplatesObjectsFilePath().c_str();
 
         m_dialog->templateFrame->setVisible(true);
         m_dialog->templateFilePathLabel->setVisible(!using_std);
@@ -391,7 +394,7 @@ void newHostDialog::showPage(const int page)
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
             tmpldb->load( m_dialog->templateFilePath->text().toAscii().data(),
-                          &upgrade_predicate, librespath);
+                          &upgrade_predicate, Constants::getDTDDirectory());
         }
         list<FWObject*> fl;
 

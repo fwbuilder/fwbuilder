@@ -37,6 +37,7 @@
 #include <fwbuilder/Rule.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/Library.h>
+#include "fwbuilder/Constants.h"
 
 #include "ProjectPanel.h"
 
@@ -476,7 +477,7 @@ void ProjectPanel::fileCompare()
     {
         db1 = new FWObjectDatabase();
         db1->load(fname1.toLocal8Bit().constData(),
-                  &upgrade_predicate,  librespath);
+                  &upgrade_predicate,  Constants::getDTDDirectory());
 
         dobj = db1->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) db1->remove(dobj, false);
@@ -495,7 +496,7 @@ void ProjectPanel::fileCompare()
     {
         db2 = new FWObjectDatabase();
         db2->load(fname2.toLocal8Bit().constData(),
-                  &upgrade_predicate,  librespath);
+                  &upgrade_predicate,  Constants::getDTDDirectory());
 
         dobj = db2->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) db2->remove(dobj, false);
@@ -847,7 +848,7 @@ FWObject* ProjectPanel::loadLibrary(const string &libfpath)
     try
     {
         FWObjectDatabase *ndb = new FWObjectDatabase();
-        ndb->load(libfpath,  &upgrade_predicate,  librespath);
+        ndb->load(libfpath,  &upgrade_predicate,  Constants::getDTDDirectory());
 
         FWObject *dobj = ndb->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) ndb->remove(dobj, false);
@@ -940,9 +941,11 @@ void ProjectPanel::loadStandardObjects()
 
 // always load system objects
         if (fwbdebug)
-            qDebug("ProjectPanel::load(): sysfname = %s", sysfname.c_str());
+            qDebug("ProjectPanel::load(): sysfname = %s",
+                   Constants::getStandardObjectsFilePath().c_str());
 
-        objdb->load( sysfname, &upgrade_predicate, librespath);
+        objdb->load( Constants::getStandardObjectsFilePath(),
+                     &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
 
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
@@ -1012,7 +1015,8 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 // always loading system objects
         mw->showStatusBarMessage(tr("Loading system objects...") );
 
-        objdb->load( sysfname, &upgrade_predicate, librespath);
+        objdb->load( Constants::getStandardObjectsFilePath(),
+                     &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
 
 // objects from a data file are in database ndb
@@ -1021,7 +1025,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(rcs->getFileName().toLocal8Bit().constData(),
-                  &upgrade_predicate,librespath);
+                  &upgrade_predicate,Constants::getDTDDirectory());
         time_t   oldtimestamp = ndb->getTimeLastModified();
 
 /* loadingLib is true if user wants to open a library or master library file */

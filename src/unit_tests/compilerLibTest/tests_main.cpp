@@ -28,11 +28,12 @@
 #include "common/init.cpp"
 #include "interfacePropertiesTest.h"
 
+#include "fwbuilder/Constants.h"
+
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
 #include <string>
 
-//std::string respath;
 //QString user_name;
 
 int main(int, char **argv)
@@ -41,9 +42,7 @@ int main(int, char **argv)
 
     init();
 
-    Resources res(respath + FS_SEPARATOR + "resources.xml");
-    // Resources("../../res/resources.xml");
-
+    Resources res(Constants::getResourcesFilePath());
 
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( interfacePropertiesTest::suite() );

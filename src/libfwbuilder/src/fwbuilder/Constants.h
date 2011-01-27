@@ -6,9 +6,6 @@
 
   Author:  Vadim Zaliva     lord@crocodile.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -40,7 +37,11 @@ namespace libfwbuilder
  */
 class Constants
 {
-    public:
+    static std::string res_dir;
+
+public:
+
+    static void init(const std::string &app_root_dir);
 
     /**
      * Returns library's description
@@ -61,6 +62,38 @@ class Constants
      * Returns directory in which library stores it's data files.
      */
     static const std::string getTemplateDirectory();
+
+    /**
+     * Returns directory where we install XML DTD file
+     */
+    static std::string getDTDDirectory();
+
+    /**
+     * Returns directory where we install resources
+     */
+    static std::string getResourcesDirectory();
+
+    /**
+     * Returns full path to the resources file
+     */
+    static std::string getResourcesFilePath();
+
+    /**
+     * Returns full path to the standard objects library file
+     */
+    static std::string getStandardObjectsFilePath();
+
+    /**
+     * Returns full path to the prepackaged firewall template objects file
+     */
+    static std::string getTemplatesObjectsFilePath();
+
+    /**
+     * Returns full path to the directory where we install locale files
+     */
+    static std::string getLocaleDirectory();
+
+    
 };
 
 }

@@ -27,6 +27,8 @@
 #include "global.h"
 #include "utils.h"
 
+#include "fwbuilder/Constants.h"
+
 #include "Help.h"
 #include "FWWindow.h"
 
@@ -36,6 +38,8 @@
 
 
 using namespace std;
+using namespace libfwbuilder;
+
 
 Help* Help::help_window = NULL;
 
@@ -56,8 +60,10 @@ Help::Help(QWidget *, const QString &title, bool _load_links_in_browser) :
     QString locale = QLocale::system().name(); //"en_US";
 
     // Set up path to help qtextBrowser find contents, such as files for <img>
-    paths.append(QString(respath.c_str()) + "/help/" + locale);
-    paths.append(QString(respath.c_str()) + "/help/" + "en_US");
+    paths.append(QString(Constants::getResourcesDirectory().c_str()) +
+                 "/help/" + locale);
+    paths.append(QString(Constants::getResourcesDirectory().c_str()) +
+                 "/help/" + "en_US");
     m_dialog->textview->setSearchPaths(paths);
     m_dialog->textview->setOpenLinks(true);
     m_dialog->textview->setOpenExternalLinks(true);

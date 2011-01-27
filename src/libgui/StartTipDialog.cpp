@@ -34,6 +34,8 @@
 #include "Help.h"
 #include "UserWorkflow.h"
 
+#include "fwbuilder/Constants.h"
+
 #include <QCheckBox>
 #include <QLocale>
 #include <QtDebug>
@@ -63,8 +65,10 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
 
     QString locale = QLocale::system().name(); //"en_US";
     QStringList paths;
-    paths.append(QString(respath.c_str()) + "/help/" + locale);
-    paths.append(QString(respath.c_str()) + "/help/" + "en_US");
+    paths.append(QString(Constants::getResourcesDirectory().c_str()) +
+                 "/help/" + locale);
+    paths.append(QString(Constants::getResourcesDirectory().c_str()) +
+                 "/help/" + "en_US");
 
     m_dialog->textview->setSearchPaths(paths);
     m_dialog->textview->setOpenLinks(true);

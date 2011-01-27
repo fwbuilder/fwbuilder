@@ -44,6 +44,7 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/Constants.h"
 
 #include <QDebug>
 #include <QFile>
@@ -82,15 +83,11 @@ void ImporterTest::setUp()
 
     db->setReadOnly( false );
 
-    //path.pop_back();
-    //path << "objects_init.xml";
-    //sysfname = path.join(FS_SEPARATOR).toStdString();
-    //librespath = string(PREFIX) + "/share/libfwbuilder-" + VERSION;
+    qDebug() << Constants::getStandardObjectsFilePath().c_str();
+    qDebug() << Constants::getDTDDirectory().c_str();
 
-    qDebug() << sysfname.c_str();
-    qDebug() << librespath.c_str();
-
-    db->load( sysfname, &upgrade_predicate, librespath);
+    db->load( Constants::getStandardObjectsFilePath(),
+              &upgrade_predicate, Constants::getDTDDirectory());
     qDebug() << "st";
 
     db->setFileName("");
