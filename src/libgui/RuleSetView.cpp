@@ -2887,17 +2887,14 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 void RuleSetView::compileCurrentRule()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
+
+    //if (!isTreeReadWrite(this, md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
 
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
     if (node == 0 || node->type != RuleNode::Rule || node->rule == 0) return;
-
-    // if (mw->isEditorVisible() &&
-    //     !mw->requestEditorOwnership(this, node->rule, ObjectEditor::optRuleCompile, true))
-    //     return;
 
     mw->singleRuleCompile(node->rule);
 }

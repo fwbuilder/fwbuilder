@@ -116,6 +116,8 @@ protected:
         static bool isReachable(const libfwbuilder::Address* const subnet,
                                 const libfwbuilder::InetAddr* const addr);
 
+        void clearReadOnly(libfwbuilder::Firewall *fw);
+            
         /* Virtual methods used to compose generated script */
         virtual QString printPathForAllTools(libfwbuilder::Firewall* fw,
                                              const std::string &os);

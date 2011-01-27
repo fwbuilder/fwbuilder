@@ -133,6 +133,8 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
 
     try
     {
+        clearReadOnly(fw);
+
         // Copy rules from the cluster object
         populateClusterElements(cluster, fw);
 

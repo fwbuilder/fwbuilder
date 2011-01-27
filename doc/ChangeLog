@@ -1,3 +1,10 @@
+2011-01-27  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_pix_run.cpp (run): fixes #1994 "Crash when
+	compiling a firewall in an imported Library". Compilers should
+	reset any read-only flags in the copy of object tree they work
+	with before they make any modifications.
+
 2011-01-26  vadim  <vadim@netcitadel.com>
 
 	* ProjectPanel_events.cpp (event): see #1994 "Crash when compiling

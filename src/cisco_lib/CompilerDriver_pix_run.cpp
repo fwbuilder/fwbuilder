@@ -245,6 +245,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
     try
     {
+        clearReadOnly(fw);
+
         commonChecks2(cluster, fw);
 
         pixClusterConfigurationChecks(cluster, fw);

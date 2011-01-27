@@ -253,6 +253,26 @@ void CompilerDriver::chDir()
     }
 }
 
+/*
+ * See #1994. We need to reset read-only flag on the firewall and up
+ * the tree all the way to the root in order to let compilers make any
+ * modifications they need. Note that this resets read-only flags in
+ * the copy of the database this class works with.
+ */
+void CompilerDriver::clearReadOnly(Firewall *fw)
+{
+    if (fw->isReadOnly())
+    {
+        FWObject *p = fw;
+        while (p)
+        {
+            p->setReadOnly(false);
+            p = p->getParent();
+        }
+    }
+}
+          
+
 QString CompilerDriver::getAbsOutputFileName(const QString &output_file_name)
 {
     QFileInfo finfo(output_file_name);
