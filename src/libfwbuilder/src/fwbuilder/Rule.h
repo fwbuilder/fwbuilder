@@ -366,6 +366,18 @@ public:
 
     virtual bool isEmpty();
 
+    /**
+     * Removes reference to given object among
+     * children of 'this'.
+     */
+    virtual void removeRef(FWObject *obj);
+    
+    /**
+     * Add reference to given object to 'this'. In case of a PolicyRule,
+     * change action and add parameter if @obj is TagService or RuleSet.
+     */
+    virtual void addRef(FWObject *obj);
+        
     libfwbuilder::RuleElementOSrc* getOSrc();
     libfwbuilder::RuleElementODst* getODst();
     libfwbuilder::RuleElementOSrv* getOSrv();

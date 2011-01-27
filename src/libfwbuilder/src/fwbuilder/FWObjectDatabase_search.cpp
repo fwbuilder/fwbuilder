@@ -222,6 +222,17 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
         }
     }
 
+    NATRule *nat_rule = NATRule::cast(p);
+    if (nat_rule && nat_rule->getAction() == NATRule::Branch)
+    {
+        FWObject *ruleset = nat_rule->getBranch();
+        if (o==ruleset)
+        {
+            resset.insert(p);
+            res = true;
+        }
+    }
+
     if (Firewall::isA(o) && Cluster::isA(p))
     {
         if (Cluster::cast(p)->hasMember(Firewall::cast(o)))

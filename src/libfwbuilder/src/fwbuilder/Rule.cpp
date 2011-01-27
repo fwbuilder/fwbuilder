@@ -597,6 +597,37 @@ void NATRule::init(FWObjectDatabase *root)
     }
 }
 
+/**
+ * Add reference to given object. In case of NATRule this only
+ * makes sense in terms of adding reference to this object as an
+ * argument for action Branch.
+ */
+void NATRule::addRef(FWObject *obj)
+{
+    if (RuleSet::cast(obj))
+    {
+        setBranch(RuleSet::cast(obj));
+    }
+}
+
+/**
+ * Removes reference to given object among children of 'this'. In case
+ * of NATRule we should also clear reference to it if action is
+ * Branch. Caveat: clear reference to it even if action is not branch
+ * right now but was in the past and reference got stuck in options.
+ */
+void NATRule::removeRef(FWObject *obj)
+{
+    if (RuleSet::cast(obj))
+    {
+        string branch_id = FWObjectDatabase::getStringId(obj->getId());
+        string rule_branch_id = getOptionsObject()->getStr("branch_id");
+        if (branch_id == rule_branch_id)
+            getOptionsObject()->setStr("branch_id", "");
+    }
+    FWObject::removeRef(obj);
+}
+
 RuleElementOSrc*  NATRule::getOSrc()
 {
     if (osrc_re) return osrc_re;

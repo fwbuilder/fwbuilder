@@ -1,5 +1,10 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* Rule.cpp (removeRef): fixes #1997 "add removeRef and addRef
+	methods to class NATRule". Now undo and redo correctly remove and
+	restore references to NAT rule sets in NAT rules with action
+	Branch.
+
 	* Rule.cpp (addRef): fixes #1991 "Undo does not restore object as
 	a parameter of policy rule action Branch or Tag after it was
 	deleted deleted". Now Undo restores references to rule sets and tag
