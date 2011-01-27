@@ -1,4 +1,16 @@
-2011-01-26  Vadim Kurland  <vadim@netcitadel.com>
+2011-01-26  vadim  <vadim@netcitadel.com>
+
+	* ProjectPanel_events.cpp (event): see #1994 "Crash when compiling
+	a firewall in an imported Library". To prevent crash, added check
+	to make sure firewall object is not read-only before an attempt to
+	update its "last compiled" or "last installed" timestamp.
+
+	* ProjectPanel_file_ops.cpp (fileExport): fixes #1993 "V4.2 on
+	Windows - export Library shows the file type as Firewall Builder
+	2"
+
+	* FWBSettings.h (SETTINGS_PATH_PREFIX): fixes #1992 " V4.2 on
+	Windows - installer error can't find Secure Shell utility"
 
 	* init.cpp (init): fixed #1989 "variables respath and librespath
 	are redundant and copy Constants::getTemplateDirectory()". Got rid

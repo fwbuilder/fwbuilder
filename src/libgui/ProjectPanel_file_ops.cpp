@@ -616,17 +616,18 @@ void ProjectPanel::fileExport()
     } while (!exportLibraryTest(selectedLibs));
 
     FWObject *selLib = ed.mapOfLibs[ lib_idx ];
-    path=st->getWDir()+QString::fromUtf8(selLib->getName().c_str())+".fwl";
+    path = st->getWDir() + QString::fromUtf8(selLib->getName().c_str()) + ".fwl";
 
     resetFD();
-    QString fname;
-        fname = QFileDialog::getSaveFileName(
-            this,
-            "Choose a filename to save under",
-            path,
-            "Firewall Builder 2 files (*.fwl)");
+
+    QString fname = QFileDialog::getSaveFileName(
+        this,
+        "Choose a filename to save under",
+        path,
+        "Firewall Builder library files (*.fwl)");
 
     if (fname.isEmpty()) return;
+
     if (QFile::exists(fname) &&
          QMessageBox::warning(
              this,"Firewall Builder",
@@ -634,6 +635,7 @@ void ProjectPanel::fileExport()
              .arg(fname),
              tr("&Yes"), tr("&No"), QString::null,
              0, 1 )==1 ) return;
+
     exportLibraryTo(fname,selectedLibs,ed.m_dialog->exportRO->isChecked());
 }
 

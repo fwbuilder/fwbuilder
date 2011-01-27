@@ -34,7 +34,7 @@
 
 #include <set>
 
-#define SETTINGS_PATH_PREFIX  "/4.1"
+#define SETTINGS_PATH_PREFIX  "/4.2"
 
 #include <fwbuilder/FWObject.h>
 
@@ -68,7 +68,7 @@ class FWBSettings : public QSettings {
     FWBSettings(bool testData = false);
     ~FWBSettings();
 
-    static QString getApplicationNameForSettings() { return "FirewallBuilder4.1"; }
+    static QString getApplicationNameForSettings() { return "FirewallBuilder4.2"; }
 
     void init(bool force_first_time_run=false);
     void save();
