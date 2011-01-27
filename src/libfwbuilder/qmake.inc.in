@@ -31,16 +31,13 @@ unix {
     QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
     QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
 
-    !macx {
-         exec_prefix = @EXEC_PREFIX@
-         DESTDIR =
+    exec_prefix = @EXEC_PREFIX@
+    DESTDIR =
 
-         target.path = @LIBDIR@
-         dtd.path = @RES_DIR@/
-         migration.path = @RES_DIR@/migration
-         doc.path = @DOCDIR@
-
-    }
+    target.path = @LIBDIR@
+    dtd.path = @RES_DIR@/
+    migration.path = @RES_DIR@/migration
+    doc.path = @DOCDIR@
 }
 
 exists(qmake2.inc) {
