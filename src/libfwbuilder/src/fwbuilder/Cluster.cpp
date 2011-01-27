@@ -57,6 +57,7 @@ Cluster::Cluster()
 
 void Cluster::init(FWObjectDatabase *root)
 {
+    Firewall::init(root);
     // create one conntrack member group
     FWObject *state_sync_members = getFirstByType(StateSyncClusterGroup::TYPENAME);
     if (state_sync_members == NULL)

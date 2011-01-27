@@ -1,5 +1,10 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* Cluster.cpp (init): fixes #1995 "Crash when compiling a cluster
+	with identical firewalls". Method Cluster::init() must call base
+	class method Firewall::init() to get child Policy, NAT and Routing
+	objects created.
+
 	* CompilerDriver_pix_run.cpp (run): fixes #1994 "Crash when
 	compiling a firewall in an imported Library". Compilers should
 	reset any read-only flags in the copy of object tree they work

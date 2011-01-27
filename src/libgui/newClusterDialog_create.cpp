@@ -216,7 +216,15 @@ void newClusterDialog::createNewCluster()
 
     if (source == NULL)
     {
+        if (fwbdebug)
+            qDebug() << "newClusterDialog::createNewCluster() checkpoint 5";
+
         FWObject *first_policy = ncl->getFirstByType(Policy::TYPENAME);
+
+        if (fwbdebug)
+            qDebug() << "newClusterDialog::createNewCluster() checkpoint 6"
+                     << "first_policy=" << first_policy;
+
         QCoreApplication::postEvent(
             mw, new openRulesetEvent(filename, first_policy->getId()));
         return;
