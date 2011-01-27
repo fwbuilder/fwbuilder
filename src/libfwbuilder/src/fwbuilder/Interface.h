@@ -75,6 +75,12 @@ public:
         Interface(const Interface &i);
         virtual ~Interface();
 
+        /**
+         * Removes reference to given object among
+         * children of 'this'. In case of an Interface, we should check for
+         * if the reference to @obj is used as a network zone.
+         */
+        virtual void removeRef(FWObject *obj);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);

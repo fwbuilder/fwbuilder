@@ -181,10 +181,23 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
     p->setInt(".search_id", search_id);
     p->setBool(".searchResult", false);
 
+    Interface *intf = Interface::cast(p);
+    if (intf)
+    {
+        string netzone_id = intf->getStr("network_zone");
+        FWObject *netzone = findInIndex(FWObjectDatabase::getIntId(netzone_id));
+        if (netzone == o)
+        {
+            resset.insert(p);
+            res = true;
+        }
+    }
+
     PolicyRule *rule = PolicyRule::cast(p);
     if (rule)
     {
-        switch (rule->getAction()) {
+        switch (rule->getAction())
+        {
         case PolicyRule::Tag:
         {
             FWObject *tagobj = rule->getTagObject();

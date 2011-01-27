@@ -33,6 +33,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Cluster.h"
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Management.h"
 
@@ -237,7 +238,7 @@ void UsageResolver::findAllReferenceHolders(
             FWObject *holder = o->getParent();
             reference_holders.insert(holder);
         }
-        if (Rule::cast(o))
+        if (Rule::cast(o) || Interface::cast(o))
             reference_holders.insert(o);
     }
 

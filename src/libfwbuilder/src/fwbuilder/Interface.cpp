@@ -67,6 +67,20 @@ Interface::Interface():Address()
 
 Interface::~Interface() {}
 
+/**
+ * Removes reference to given object among children of 'this'. In case
+ * of Interface we check if @obj is used as network zone.
+ */
+void Interface::removeRef(FWObject *obj)
+{
+    string netzone_id = getStr("network_zone");
+    FWObject *netzone = getRoot()->findInIndex(
+        FWObjectDatabase::getIntId(netzone_id));
+    if (obj == netzone) setStr("network_zone", "");
+
+    FWObject::removeRef(obj);
+}
+
 FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)
     throw(FWException)
 {

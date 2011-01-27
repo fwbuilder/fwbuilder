@@ -1,5 +1,11 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* Interface.cpp (removeRef): fixes #1987 "Deleting object that is
+	used as Network Zone for ASA/PIX interface results in inconsistent
+	behavior". When an object that is used as a network zone of an
+	interface is deleted, it should be removed from the interface
+	configuration as well.
+
 	* Cluster.cpp (init): fixes #1995 "Crash when compiling a cluster
 	with identical firewalls". Method Cluster::init() must call base
 	class method Firewall::init() to get child Policy, NAT and Routing

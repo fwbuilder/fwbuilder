@@ -561,7 +561,8 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
     catch (FWException &ex)
     {
         if (fwbdebug)
-            qDebug("ObjectManipulator::deleteObject: catch:  restoreOverrideCursor");
+            qDebug() << "ObjectManipulator::deleteObject:"
+                     << "catch:  restoreOverrideCursor";
         QApplication::restoreOverrideCursor();
         QMessageBox::warning(
             this,"Firewall Builder",
@@ -583,7 +584,8 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 void ObjectManipulator::actuallyDeleteObject(FWObject *obj, QUndoCommand* macro)
 {
     map<int, set<FWObject*> > reference_holders;
-    UsageResolver().findAllReferenceHolders(obj, m_project->db(), reference_holders);
+    UsageResolver().findAllReferenceHolders(obj, m_project->db(),
+                                            reference_holders);
 
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID);
