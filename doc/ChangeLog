@@ -1,5 +1,11 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* Rule.cpp (addRef): fixes #1991 "Undo does not restore object as
+	a parameter of policy rule action Branch or Tag after it was
+	deleted deleted". Now Undo restores references to rule sets and tag
+	services as arguments of corresponding policy rules, as well as
+	references to objects configured as interface network zones.
+
 	* Interface.cpp (removeRef): fixes #1987 "Deleting object that is
 	used as Network Zone for ASA/PIX interface results in inconsistent
 	behavior". When an object that is used as a network zone of an

@@ -233,6 +233,12 @@ public:
     virtual void removeRef(FWObject *obj);
     
     /**
+     * Add reference to given object to 'this'. In case of a PolicyRule,
+     * change action and add parameter if @obj is TagService or RuleSet.
+     */
+    virtual void addRef(FWObject *obj);
+    
+    /**
      * if this object has any references as its children, replace IDs
      * these references point to. This overloaded method also replaces
      * references to branch rulesets.

@@ -497,6 +497,24 @@ string PolicyRule::getTagValue()
 }
 
 /**
+ * Add reference to given object. In case of PolicyRule this only
+ * makes sense in terms of adding reference to this object as an
+ * argument for actions Branch and Tag.
+ */
+void PolicyRule::addRef(FWObject *obj)
+{
+    if (RuleSet::cast(obj))
+    {
+        setBranch(RuleSet::cast(obj));
+    }
+
+    if (TagService::cast(obj))
+    {
+        setTagObject(TagService::cast(obj));
+    }
+}
+
+/**
  * Removes reference to given object among children of 'this'. In case
  * of PolicyRule we should also clear reference to it if action is
  * Branch. Caveat: clear reference to it even if action is not branch

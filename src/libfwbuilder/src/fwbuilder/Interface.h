@@ -82,6 +82,12 @@ public:
          */
         virtual void removeRef(FWObject *obj);
 
+        /**
+         * Add reference to given object to 'this'. In case of an Interface,
+         * add @obj as a network zone.
+         */
+        virtual void addRef(FWObject *obj);
+    
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
