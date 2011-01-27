@@ -1277,6 +1277,9 @@ Firewall* IPTImporter::finalize()
     {
         Firewall *fw = Firewall::cast(getFirewallObject());
 
+        if (fwbdebug)
+            qDebug() << "fw=" << fw;
+
         fw->setStr("host_OS", "linux24");
         Resources::setDefaultTargetOptions("linux24" , fw);
         fw->setStr("version", "");  // default version "any"
@@ -1392,7 +1395,9 @@ Firewall* IPTImporter::finalize()
         return getFirewallObject();
     }
     else
+    {
         return NULL;
+    }
 }
 
 UnidirectionalRuleSet* IPTImporter::checkUnidirRuleSet(

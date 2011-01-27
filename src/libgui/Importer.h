@@ -27,17 +27,20 @@
 #ifndef _FWB_POLICY_IMPORTER_H_
 #define _FWB_POLICY_IMPORTER_H_
 
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Logger.h"
+
 #include <map>
 #include <list>
 #include <string>
 #include <functional>
 #include <sstream>
 
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/RuleSet.h"
-#include "fwbuilder/Logger.h"
+#include <QString>
+
 
 class Importer;
 
@@ -301,6 +304,14 @@ public:
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
+    int countRules();
+    int countInterfaces();
+    
+    QString noFirewallErrorMessage();
+    QString noRulesErrorMessage();
+    QString noInterfacesErrorMessage();
+    QString commonFailureErrorMessage();
+    
     // statistics
     int getNumberOfRuleSets();
     int getTotalNumberOfRules();

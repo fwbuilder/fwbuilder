@@ -28,7 +28,8 @@
 
 #include "IOSImporter.h"
 
-#include <qstring.h>
+#include <QString>
+#include <QStringList>
 
 #include <ios>
 #include <iostream>
@@ -55,7 +56,7 @@ void IOSImporter::run()
 // if ANTLR runtime is not available.
 //
 
-    std::string err;
+    QStringList err;
     std::ostringstream parser_debug;
 
     IOSCfgLexer lexer(input);
@@ -69,13 +70,25 @@ void IOSImporter::run()
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
-        err = e.toString().c_str();
+        err << QObject::tr("Parser error:");
+        err << e.toString().c_str();
     } catch(std::exception& e)
     {
-        err = e.what() ;
+        err << QObject::tr("Parser error:");
+        err << e.what();
     }
 
-    if (!err.empty())  throw ImporterException(err);
+    if (haveFirewallObject())
+    {
+        if (countInterfaces()==0) err << noInterfacesErrorMessage();
+        if (countRules()==0) err << noRulesErrorMessage();
+    } else
+    {
+        err << QObject::tr("Parser error:");
+        err << noFirewallErrorMessage();
+        err << commonFailureErrorMessage();
+    }
 
+    if (!err.isEmpty())  throw ImporterException(err.join("\n").toStdString());
 }
 

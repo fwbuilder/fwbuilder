@@ -1055,4 +1055,70 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     error_counter++;
 }
 
+int Importer::countRules()
+{
+    int n = 0;
+    std::map<const string, UnidirectionalRuleSet*>::iterator it;
+    for (it=all_rulesets.begin(); it!=all_rulesets.end(); ++it)
+    {
+        // rs_index is a string composed of the table name and chain name
+        // like "filter / FORWARD" or "mangle / PREROUTING"
+        // This string is created in IPTImporter::getUnidirRuleSet()
+        string rs_index = it->first;
+        UnidirectionalRuleSet* rs = it->second;
+        n += rs->ruleset->getRuleSetSize();
+    }
+    return n;
+}
+
+int Importer::countInterfaces()
+{
+    if (haveFirewallObject())
+    {
+        Firewall *fw = Firewall::cast(getFirewallObject());
+        list<FWObject*> all_interfaces =  fw->getByType(Interface::TYPENAME);
+        return all_interfaces.size();
+    } else
+        return 0;
+}
+
+QString Importer::noFirewallErrorMessage()
+{
+    return QObject::tr(
+        "Could not find enough information in the data file "
+        "to create firewall object.");
+}
+
+QString Importer::noRulesErrorMessage()
+{
+    return QObject::tr(
+        "Could not find enough information in the data file "
+        "to create any firewall rules.");
+}
+
+QString Importer::noInterfacesErrorMessage()
+{
+    return QObject::tr(
+        "Could not find enough information in the data file "
+        "to create firewall interface objects.");
+}
+
+/*
+ * This is a common error message shown by the importer when it fails
+ * to create firewall object. Keeping it in the base class since it is
+ * used in the finalize() function of all importer classes.
+ */
+QString Importer::commonFailureErrorMessage()
+{
+    return QObject::tr(
+        "Please check that the "
+        "file you are trying to import is in one of supported "
+        "formats. Currently fwbuilder can only import "
+        "iptables configuration saved with "
+        "'iptables-restore' command and Cisco routers (IOS) "
+        "configurations saved with 'show run' command. Import "
+        "of cisco ASA (PIX) configuration is not supported "
+        "at this time");
+}
+
 

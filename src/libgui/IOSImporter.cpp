@@ -537,5 +537,7 @@ Firewall* IOSImporter::finalize()
         return getFirewallObject();
     }
     else
+    {
         return NULL;
+    }
 }

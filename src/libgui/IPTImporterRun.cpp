@@ -58,7 +58,7 @@ void IPTImporter::run()
 // if ANTLR runtime is not available.
 //
 
-    string err;
+    QStringList err;
     ostringstream parser_debug;
 
 /* Do a bit of preprocessing of the input to simplify crazy grammar. String
@@ -115,13 +115,25 @@ void IPTImporter::run()
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
-        err = e.toString().c_str();
+        err << QObject::tr("Parser error:");
+        err << e.toString().c_str();
     } catch(std::exception& e)
     {
-        err = e.what() ;
+        err << QObject::tr("Parser error:");
+        err << e.what();
     }
 
-    if (!err.empty())  throw ImporterException(err);
+    if (haveFirewallObject())
+    {
+        if (countInterfaces()==0) err << noInterfacesErrorMessage();
+        if (countRules()==0) err << noRulesErrorMessage();
+    } else
+    {
+        err << QObject::tr("Parser error:");
+        err << noFirewallErrorMessage();
+        err << commonFailureErrorMessage();
+    }
 
+    if (!err.isEmpty())  throw ImporterException(err.join("\n").toStdString());
 }
 

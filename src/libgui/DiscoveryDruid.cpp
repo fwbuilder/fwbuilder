@@ -1313,6 +1313,8 @@ void DiscoveryDruid::loadDataFromImporter()
     if (imp!=NULL)
     {
         Firewall *fw = imp->finalize();
+        qApp->processEvents(); // to flush the log
+
         if (fw) // fw can be NULL if import was uncussessful
         {
 
@@ -2645,7 +2647,6 @@ void ConfigImport::run()
         } catch(ImporterException &e)
         {
             last_error = e.toString().c_str();
-            *Log << "Parser error:\n";
             *Log << e.toString() << "\n";
         }
 

@@ -1,5 +1,10 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* IOSImporterRun.cpp (run): see #1931 "Update failed import
+	behavior". Added meaningful error messages for when policy
+	importer fails to create firewall object or does not create
+	interface objects or any rules.
+
 	* Rule.cpp (removeRef): fixes #1997 "add removeRef and addRef
 	methods to class NATRule". Now undo and redo correctly remove and
 	restore references to NAT rule sets in NAT rules with action
