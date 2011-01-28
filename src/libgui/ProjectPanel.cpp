@@ -104,13 +104,10 @@ void ProjectPanel::initMain(FWWindow *main)
 
     main->undoGroup->addStack(undoStack);
 
-    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChangedForTreePanel(bool)));
-    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(visibilityChangedForTreePanel(bool)));
-
-//    connect(m_panel->bottomDockWidget, SIGNAL(topLevelChanged(bool)),
-//            this, SLOT(topLevelChangedForBottomPanel(bool)));
+    // connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+    //         this, SLOT(topLevelChangedForTreePanel(bool)));
+    // connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+    //         this, SLOT(visibilityChangedForTreePanel(bool)));
 
     fd  = new findDialog(this, this);
     fd->hide();
@@ -1038,17 +1035,29 @@ void ProjectPanel::showEvent(QShowEvent *ev)
     if (fwbdebug) qDebug() << "ProjectPanel::showEvent " << this
                            << "title " << mdiWindow->windowTitle();
 
+    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+            this, SLOT(topLevelChangedForTreePanel(bool)));
+    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(visibilityChangedForTreePanel(bool)));
+
     m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
 
-    // we get this event when subsindow is maximized or restored
+    // we get this event when MDI window is maximized or restored
     loadState();
+
+    visibilityChangedForTreePanel(true);
 }
 
 void ProjectPanel::hideEvent(QHideEvent *ev)
 {
     if (fwbdebug) qDebug() << "ProjectPanel::hideEvent " << this
                            << "title " << mdiWindow->windowTitle();
+
+    disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+               this, SLOT(topLevelChangedForTreePanel(bool)));
+    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+               this, SLOT(visibilityChangedForTreePanel(bool)));
 
     QWidget::hideEvent(ev);
 }
