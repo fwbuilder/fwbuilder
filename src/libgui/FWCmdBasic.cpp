@@ -49,7 +49,8 @@ bool FWCmdBasic::mergeWith(const QUndoCommand *other)
 {
     if (fwbdebug)
     {
-        qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other) other=" << other;
+        qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other) other="
+                 << other;
         qDebug() << "cmd:" << other->text();
     }
     const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*>(other);
@@ -60,7 +61,8 @@ bool FWCmdMacro::mergeWith(const QUndoCommand *other)
 {
     if (fwbdebug)
     {
-        qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other) other=" << other;
+        qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other) other="
+                 << other;
         qDebug() << "cmd:" << other->text();
     }
     const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*> (other);

@@ -73,7 +73,9 @@ bool ProjectPanel::event(QEvent *event)
                      << "event:"
                      << ev->getEventName()
                      << "object:"
-                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "");
+                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "")
+                     << "(" << ((obj!=NULL) ? obj->getTypeName().c_str() : "") << ")"
+                     << "id=" << ((obj!=NULL) ? obj->getId() : -1);
 
         if (event_code == UPDATE_GUI_STATE_EVENT && mdiWindow != NULL)
         {

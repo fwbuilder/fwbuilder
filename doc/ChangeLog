@@ -1,5 +1,17 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* ProjectPanel.cpp (registerModifiedObject): see #1996 "Crash when
+	finding and replacing a large number of objects". When "find and
+	replace" function was used to replace large number of objects in a
+	rule set, it generated stream of calls to
+	updateLastModifiedTimestampForAllFirewalls() which caused
+	corresponding stream of events to update various parts of the GUI,
+	both in the tree and rule set views. This caused weird corruption
+	and crash on Windows. Trying to resolve the issue by optimizing
+	the part that updated "last modified" timestamp on the firewall
+	since all parts of the rule set updated in one call to "find and
+	replace" function belong to the same firewall.
+
 	* IOSImporterRun.cpp (run): see #1931 "Update failed import
 	behavior". Added meaningful error messages for when policy
 	importer fails to create firewall object or does not create

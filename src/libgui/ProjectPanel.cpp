@@ -1107,7 +1107,9 @@ void ProjectPanel::registerObjectToUpdateInTree(FWObject *o, bool update_subtree
         qDebug() << "ProjectPanel::registerObjectToUpdateInTree()"
                  << "o=" << o->getName().c_str()
                  << "update_subtree=" << update_subtree
-                 << "updateObjectsInTreePool.size()=" << updateObjectsInTreePool.size();
+                 << "updateObjectsInTreePool.size()="
+                 << updateObjectsInTreePool.size();
+
     if (updateObjectsInTreePool.find(o->getId()) == updateObjectsInTreePool.end())
     {
         updateObjectsInTreePool[o->getId()] = update_subtree;
@@ -1119,7 +1121,8 @@ void ProjectPanel::updateObjectInTree()
 {
     if (fwbdebug)
         qDebug() << "ProjectPanel::updateObjectInTree()"
-                 << "updateObjectsInTreePool.size()=" << updateObjectsInTreePool.size();
+                 << "updateObjectsInTreePool.size()="
+                 << updateObjectsInTreePool.size();
 
     while (updateObjectsInTreePool.size() > 0)
     {
@@ -1135,12 +1138,42 @@ void ProjectPanel::registerModifiedObject(FWObject *o)
 {
     if (fwbdebug)
         qDebug() << "ProjectPanel::registerModifiedObject "
-                 << "lastModifiedTimestampChangePool.size()=" << lastModifiedTimestampChangePool.size()
-                 << "o=" << o->getName().c_str();
-    if (lastModifiedTimestampChangePool.find(o->getId()) == lastModifiedTimestampChangePool.end())
+                 << "lastModifiedTimestampChangePool.size()="
+                 << lastModifiedTimestampChangePool.size()
+                 << "o=" << o->getName().c_str()
+                 << "(" << o->getTypeName().c_str() << ")"
+                 << "id=" << o->getId();
+
+    FWObject *modified_object = o;
+
+    /*
+     *  a bit of optimization: the purpose of registering modified
+     *  object here is to update "last modified" timestamp in the
+     *  firewall object it belongs to. One of the frequent cases is
+     *  when @o is rule element because user made some change to
+     *  it. Massive find and replace operations can cause waves of
+     *  registrations of rule elements, all of which belong to the
+     *  same rule set. If I register rule set instead, there will be
+     *  just one object to register.
+     */
+
+    if (RuleElement::cast(o))
     {
-        lastModifiedTimestampChangePool.insert(o->getId());
-        QTimer::singleShot(0, this, SLOT(updateLastModifiedTimestampForAllFirewalls()));
+        while (RuleSet::cast(modified_object) == NULL)
+            modified_object = modified_object->getParent();
+    }
+
+    if (lastModifiedTimestampChangePool.find(modified_object->getId()) ==
+        lastModifiedTimestampChangePool.end())
+    {
+        if (fwbdebug)
+            qDebug() << "ProjectPanel::registerModifiedObject "
+                     << "Add object" << modified_object->getName().c_str()
+                     << "id=" << modified_object->getId();
+                     
+        lastModifiedTimestampChangePool.insert(modified_object->getId());
+        QTimer::singleShot(
+            0, this, SLOT(updateLastModifiedTimestampForAllFirewalls()));
     }
 }
 
@@ -1153,7 +1186,8 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
 
     if (lastModifiedTimestampChangePool.size() == 0) return;
 
-    mw->showStatusBarMessage(tr("Searching for firewalls affected by the change..."));
+    mw->showStatusBarMessage(
+        tr("Searching for firewalls affected by the change..."));
 
     //QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
