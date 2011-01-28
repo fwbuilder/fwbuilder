@@ -1,3 +1,10 @@
+2011-01-28  vadim  <vadim@netcitadel.com>
+
+	* newFirewallDialog.cpp (fillInterfaceSLList): fixes #1983 "ASA
+	multiple interfaces have the same security level". Using table
+	widget with spin-boxes to let the user edit security levels of
+	interfaces conveniently.
+
 2011-01-27  vadim  <vadim@netcitadel.com>
 
 	* ProjectPanel.cpp (closeEvent): fixes #1998 "Crash after running

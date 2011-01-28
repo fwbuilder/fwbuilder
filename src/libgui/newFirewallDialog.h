@@ -73,7 +73,6 @@ class newFirewallDialog : public QDialog, public FakeWizard
     std::list<std::string>              possible_outside_interface_labels;
     std::list<std::string>              possible_dmz_interface_labels;
     
-    void adjustSL(QTreeWidgetItem *itm1);
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
     void fillInterfaceSLList();
     void createFirewallFromTemplate();
@@ -109,8 +108,6 @@ public:
     void getIPAddressOfFirewallByName();
     
 public slots:
-    virtual void upInterface();
-    virtual void downInterface();
     virtual void changed();
     virtual void getInterfacesViaSNMP();    
     virtual void monitor();

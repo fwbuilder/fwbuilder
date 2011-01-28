@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
+    <width>555</width>
     <height>592</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <iconset resource="MainRes.qrc">
     <normaloff>:/Icons/Firewall/icon-tree</normaloff>:/Icons/Firewall/icon-tree</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_8">
    <item row="0" column="0">
     <widget class="QLabel" name="titleLabel">
      <property name="sizePolicy">
@@ -52,92 +52,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout">
-      <item>
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>161</width>
-          <height>37</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="backButton">
-        <property name="text">
-         <string>&lt; &amp;Back</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="nextButton">
-        <property name="text">
-         <string>&amp;Next &gt;</string>
-        </property>
-        <property name="autoDefault">
-         <bool>true</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="finishButton">
-        <property name="text">
-         <string>&amp;Finish</string>
-        </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cancelButton">
-        <property name="text">
-         <string>&amp;Cancel</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="minimumSize">
@@ -147,7 +61,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page1">
       <layout class="QGridLayout" name="gridLayout_4">
@@ -492,11 +406,21 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page4">
-      <layout class="QGridLayout">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <item row="1" column="0">
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label666">
+         <property name="text">
+          <string>In order to be able to build firewall policy properly, Firewall Builder needs information about 'security level' of the firewall's interfaces. Interface that connects it to the Internet is considered 'insecure' and has security level '0', while interface connected to the internal network is supposed to be 'secure' (security level '100'). </string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="sec_level_txt1">
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -506,7 +430,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="sec_level_txt2">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
         <widget class="QFrame" name="frame160">
          <property name="frameShape">
           <enum>QFrame::Box</enum>
@@ -514,42 +448,15 @@
          <property name="frameShadow">
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QGridLayout">
-          <property name="margin">
-           <number>11</number>
-          </property>
-          <item row="2" column="1">
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QTableWidget" name="iface_sl_list">
+            <property name="showGrid">
+             <bool>true</bool>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
+            <property name="sortingEnabled">
+             <bool>true</bool>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>190</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="upBtn">
-            <property name="text">
-             <string>up</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="downBtn">
-            <property name="text">
-             <string>down</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" rowspan="3">
-           <widget class="QTreeWidget" name="iface_sl_list">
             <column>
              <property name="text">
               <string>Name</string>
@@ -573,29 +480,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label666">
-         <property name="text">
-          <string>In order to be able to build firewall policy properly, Firewall Builder needs information about 'security level' of the firewall's interfaces. Interface that connects it to the Internet is considered 'insecure' and has security level '0', while interface connected to the internal network is supposed to be 'secure' (security level '100'). You can arrange interfaces in the order of their security level below.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="sec_level_txt2">
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
       </layout>
@@ -866,6 +750,92 @@ You can change  interface names and their IP addresses on the next page. Templat
      </widget>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout">
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>161</width>
+          <height>37</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="backButton">
+        <property name="text">
+         <string>&lt; &amp;Back</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="nextButton">
+        <property name="text">
+         <string>&amp;Next &gt;</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="finishButton">
+        <property name="text">
+         <string>&amp;Finish</string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cancelButton">
+        <property name="text">
+         <string>&amp;Cancel</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -886,9 +856,6 @@ You can change  interface names and their IP addresses on the next page. Templat
   <tabstop>snmp_community</tabstop>
   <tabstop>snmpQuery</tabstop>
   <tabstop>snmpProgress</tabstop>
-  <tabstop>iface_sl_list</tabstop>
-  <tabstop>upBtn</tabstop>
-  <tabstop>downBtn</tabstop>
   <tabstop>templateList</tabstop>
   <tabstop>intfOutsideText</tabstop>
   <tabstop>intfDMZText</tabstop>
@@ -899,38 +866,6 @@ You can change  interface names and their IP addresses on the next page. Templat
   <include location="MainRes.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>upBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>upInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>541</x>
-     <y>251</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>downBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>downInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>541</x>
-     <y>285</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>obj_name</sender>
    <signal>textChanged(QString)</signal>

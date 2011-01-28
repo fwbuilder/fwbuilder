@@ -51,23 +51,25 @@
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/Constants.h"
 
-#include <qlineedit.h>
-#include <qtextedit.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qradiobutton.h>
-#include <qcheckbox.h>
-#include <qtreewidget.h>
-#include <qtextbrowser.h>
-#include <qmessagebox.h>
-#include <qtimer.h>
-#include <qlistwidget.h>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qpixmapcache.h>
-#include <qfiledialog.h>
-#include <qdir.h>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QPushButton>
+#include <QToolButton>
+#include <QRadioButton>
+#include <QCheckBox>
+#include <QTreeWidget>
+#include <QTableWidget>
+#include <QTextBrowser>
+#include <QMessageBox>
+#include <QTimer>
+#include <QListWidget>
+#include <QApplication>
+#include <QCursor>
+#include <QPixmapCache>
+#include <QFileDialog>
+#include <QDir>
 #include <QtDebug>
 
 #include <algorithm>
@@ -148,17 +150,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
 
     setNextEnabled( 0, false );
 
-    /*for (int i=0; i<pageCount(); ++i)
-        setHelpEnabled( i, false );*/
-/*
-    //m_dialog->iface_list->setItemMargin( 1 );
-    m_dialog->iface_list->setAllColumnsShowFocus( true );
-
-    //m_dialog->iface_sl_list->setItemMargin( 1 );
-    m_dialog->iface_dyn->setToolTip(wordWrap(tr("Check option 'dynamic address' for the interface that gets its IP address dynamically via DHCP or PPP protocol.") ,80 ));
-    m_dialog->iface_unnum->setToolTip(wordWrap(tr("Check option 'Unnumbered interface' for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.") ,80 ));
-*/
-    m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
+    //m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     QTimer::singleShot(0, m_dialog->obj_name, SLOT(setFocus()));
 
     currentTemplate = NULL;
@@ -677,6 +669,13 @@ void newFirewallDialog::showPage(const int page)
 void newFirewallDialog::fillInterfaceSLList()
 {
     m_dialog->iface_sl_list->clear();
+
+    QStringList labels;
+    labels << QObject::tr("Name") << QObject::tr("Label")
+           << QObject::tr("Address") << QObject::tr("Security Level");
+    m_dialog->iface_sl_list->setHorizontalHeaderLabels(labels);
+
+    int row = 0;
     foreach(EditedInterfaceData iface,
             this->m_dialog->interfaceEditor1->getData().values() +
             this->m_dialog->interfaceEditor1->getNewData())
@@ -732,14 +731,30 @@ void newFirewallDialog::fillInterfaceSLList()
         }
         else idata.securityLevel = 0;
 
+        m_dialog->iface_sl_list->insertRow(row);
 
-        QStringList qsl;
-        qsl << iface.name//idata.name.c_str()
-            << iface.label//idata.label.c_str()
-            << address.address
-            << QString::number(idata.securityLevel);
+        QTableWidgetItem* itm;
 
-        new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
+        itm = new QTableWidgetItem(iface.name);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_sl_list->setItem(row, 0, itm);
+
+        itm = new QTableWidgetItem(iface.label);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_sl_list->setItem(row, 1, itm);
+
+        itm = new QTableWidgetItem(address.address);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_sl_list->setItem(row, 2, itm);
+
+        //itm = new QTableWidgetItem(QString::number(idata.securityLevel));
+        QSpinBox *widget = new QSpinBox();
+        widget->setMaximum(100);
+        widget->setMinimum(0);
+        widget->setValue(idata.securityLevel);
+        m_dialog->iface_sl_list->setCellWidget(row, 3, widget);
+
+        row++;
     }
 }
 
@@ -886,57 +901,6 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     return true;
 }
 
-void newFirewallDialog::adjustSL(QTreeWidgetItem *itm1)
-{
-// interface 1 is above 2. Adjust their security levels accordingly
-    int sl1 = itm1->text(3).toInt();
-
-    int index = itm1->treeWidget()->indexOfTopLevelItem(itm1);
-
-    QTreeWidgetItem *itm2 = itm1->treeWidget()->topLevelItem(index+1);
-    QTreeWidgetItem *itm3 = itm1->treeWidget()->topLevelItem(index-1);
-
-    if (itm2==NULL) sl1=100;
-    else
-    {
-        if (itm3==NULL) sl1=0;
-        else
-        {
-            int sl2 = itm2->text(3).toInt();
-            int sl3 = itm3->text(3).toInt();
-            sl1 = (sl2+sl3)/2;
-        }
-    }
-    itm1->setText( 3 , QString("%1").arg(sl1) );
-}
-
-void newFirewallDialog::upInterface()
-{
-    QTreeWidgetItem *itm1 = m_dialog->iface_sl_list->currentItem();
-    if (itm1==NULL) return;
-    int index = m_dialog->iface_sl_list->indexOfTopLevelItem(itm1);
-
-    QTreeWidgetItem *itm2 = m_dialog->iface_sl_list->topLevelItem(index-1);
-    if (itm2==NULL) return;
-    m_dialog->iface_sl_list->takeTopLevelItem(index);
-    m_dialog->iface_sl_list->insertTopLevelItem(index-1, itm1);
-    adjustSL(itm1);
-}
-
-void newFirewallDialog::downInterface()
-{
-
-    QTreeWidgetItem *itm1 = m_dialog->iface_sl_list->currentItem();
-    if (itm1==NULL) return;
-    int index = m_dialog->iface_sl_list->indexOfTopLevelItem(itm1);
-
-    QTreeWidgetItem *itm2 = m_dialog->iface_sl_list->topLevelItem(index+1);
-    if (itm2==NULL) return;
-    m_dialog->iface_sl_list->takeTopLevelItem(index);
-    m_dialog->iface_sl_list->insertTopLevelItem(index+1, itm1);
-    adjustSL(itm1);
-}
-
 void newFirewallDialog::cancelClicked()
 {
     if (nfw)
@@ -1021,7 +985,8 @@ void newFirewallDialog::finishClicked()
 
 /* create interfaces */
 
-        foreach(EditedInterfaceData iface, this->m_dialog->interfaceEditor1->getNewData())
+        foreach(EditedInterfaceData iface,
+                this->m_dialog->interfaceEditor1->getNewData())
         {
             QString name     =  iface.name;
             QString label    =  iface.label;
@@ -1029,12 +994,17 @@ void newFirewallDialog::finishClicked()
             bool    unnum    =  iface.type == 2;
             QString physaddr =  iface.mac;
 
-            QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
+            QList<QTableWidgetItem*> ltwi =
+                m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
             assert(!ltwi.empty());
-            QTreeWidgetItem *itm2 = ltwi[0];
+
+            QTableWidgetItem *itm2 = ltwi[0];
             assert(itm2!=NULL);
 
-            int sl = itm2->text(3).toInt();
+            int row = itm2->row();
+            QSpinBox *sb = dynamic_cast<QSpinBox*>(
+                m_dialog->iface_sl_list->cellWidget(row, 3));
+            int sl = sb->value();
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
             assert(oi!=NULL);
