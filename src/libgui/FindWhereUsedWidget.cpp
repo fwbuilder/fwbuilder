@@ -201,9 +201,14 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
 void FindWhereUsedWidget::init()
 {
-    object=NULL;
+    object = NULL;
     m_widget->resListView->clear();
     resset.clear();
+}
+
+void FindWhereUsedWidget::clear()
+{
+    m_widget->dropArea->deleteObject(); // this emits signal that calls init()
 }
 
 void FindWhereUsedWidget::findFromDrop()

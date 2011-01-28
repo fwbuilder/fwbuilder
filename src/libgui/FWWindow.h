@@ -343,6 +343,7 @@ public slots:
     void showEditor();
     void hideEditor();
     void closeEditor();
+    void clearEditorAndSearchPanels();
     
     void openEditor(libfwbuilder::FWObject *o);
     void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);

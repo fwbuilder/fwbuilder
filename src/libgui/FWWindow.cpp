@@ -1329,6 +1329,13 @@ bool FWWindow::event(QEvent *event)
             return true;
         }
 
+        case CLEAR_EDITOR_PANEL_EVENT:
+        {
+            clearEditorAndSearchPanels();
+            ev->accept();
+            return true;
+        }
+
         }
 
         // dispatch event to all projectpanel windows

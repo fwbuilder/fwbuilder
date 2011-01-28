@@ -75,6 +75,7 @@ public slots:
     virtual void find();
     virtual void find(libfwbuilder::FWObject *obj);
     void init();
+    void clear();
     void itemActivated(QTreeWidgetItem*, int);
     void itemClicked(QTreeWidgetItem*, int);
     void findFromDrop();

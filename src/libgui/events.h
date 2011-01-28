@@ -69,6 +69,7 @@ enum EVENT_CODES {
     UPDATE_GUI_STATE_EVENT,
     EXPAND_OBJECT_IN_TREE,
     CLOSE_EDITOR_PANEL_EVENT ,
+    CLEAR_EDITOR_PANEL_EVENT ,
 };
 
 
@@ -390,6 +391,15 @@ public:
     fwbUpdateEvent("", -1,
                    QEvent::Type(QEvent::User + CLOSE_EDITOR_PANEL_EVENT),
                    "closeEditorPanelEvent")
+    {}
+};
+
+class clearEditorPanelEvent : public fwbUpdateEvent {
+public:
+    clearEditorPanelEvent() :
+    fwbUpdateEvent("", -1,
+                   QEvent::Type(QEvent::User + CLEAR_EDITOR_PANEL_EVENT),
+                   "clearEditorPanelEvent")
     {}
 };
 

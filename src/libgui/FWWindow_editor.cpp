@@ -102,6 +102,12 @@ void FWWindow::closeEditorPanel()
     m_mainWindow->editorDockWidget->hide(); // editor
 }
 
+void FWWindow::clearEditorAndSearchPanels()
+{
+    findWhereUsedWidget->clear();
+    findObjectWidget->clear();
+}
+
 void FWWindow::openEditorPanel()
 {
 }

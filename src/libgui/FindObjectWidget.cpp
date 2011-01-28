@@ -158,6 +158,15 @@ void FindObjectWidget::reset()
     found_objects.clear();
 }
 
+void FindObjectWidget::clear()
+{
+    m_widget->findDropArea->deleteObject();
+    m_widget->replaceDropArea->deleteObject();
+    lastFound = NULL;
+    lastAttrSearch = "";
+    found_objects.clear();
+}
+
 /**
  * This slot is called when user deletes an object from the "find"
  * drop area. See #1785

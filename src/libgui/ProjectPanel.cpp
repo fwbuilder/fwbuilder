@@ -1082,7 +1082,8 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
     mw->updateWindowTitle();
 
-    QCoreApplication::postEvent(mw, new closeEditorPanelEvent());
+    //QCoreApplication::postEvent(mw, new closeEditorPanelEvent());
+    QCoreApplication::postEvent(mw, new clearEditorPanelEvent());
 
     QTimer::singleShot( 0, mw, SLOT(projectWindowClosed()) );
 }

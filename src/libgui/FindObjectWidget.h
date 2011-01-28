@@ -89,6 +89,7 @@ public slots:
     virtual void replaceDisable();
     void showObject(libfwbuilder::FWObject* o);
     void init();
+    void clear();
     void firewallOpened(libfwbuilder::Firewall *f);
     void scopeChanged();
     void objectDeleted();
