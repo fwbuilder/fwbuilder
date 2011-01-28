@@ -1321,15 +1321,19 @@ bool FWWindow::event(QEvent *event)
             ev->accept();
             return true;
         }
+
+        case CLOSE_EDITOR_PANEL_EVENT:
+        {
+            hideEditor();
+            ev->accept();
+            return true;
+        }
+
         }
 
         // dispatch event to all projectpanel windows
         foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
             QCoreApplication::sendEvent(sw->widget(), event);
-
-        // QList<QMdiSubWindow*> subWindowList = m_mainWindow->m_space->subWindowList();
-        // for (int i = 0 ; i < subWindowList.size(); i++)
-        //     QCoreApplication::sendEvent(subWindowList[i]->widget(), event);
 
         event->accept();
         return true;

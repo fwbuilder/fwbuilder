@@ -67,7 +67,8 @@ enum EVENT_CODES {
     OPEN_LIBRARY_FOR_OBJECT_EVENT,
     UPDATE_SUBWINDOW_TITLES_EVENT,
     UPDATE_GUI_STATE_EVENT,
-    EXPAND_OBJECT_IN_TREE
+    EXPAND_OBJECT_IN_TREE,
+    CLOSE_EDITOR_PANEL_EVENT ,
 };
 
 
@@ -373,7 +374,6 @@ public:
     {}
 };
 
-
 class expandObjectInTreeEvent : public fwbUpdateEvent {
 public:
     int parent_id;
@@ -381,6 +381,15 @@ public:
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + EXPAND_OBJECT_IN_TREE),
                    "expandObjectInTreeEvent")
+    {}
+};
+
+class closeEditorPanelEvent : public fwbUpdateEvent {
+public:
+    closeEditorPanelEvent() :
+    fwbUpdateEvent("", -1,
+                   QEvent::Type(QEvent::User + CLOSE_EDITOR_PANEL_EVENT),
+                   "closeEditorPanelEvent")
     {}
 };
 

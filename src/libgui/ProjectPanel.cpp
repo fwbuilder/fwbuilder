@@ -1058,11 +1058,6 @@ void ProjectPanel::hideEvent(QHideEvent *ev)
     if (fwbdebug) qDebug() << "ProjectPanel::hideEvent " << this
                            << "title " << mdiWindow->windowTitle();
 
-    disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-               this, SLOT(topLevelChangedForTreePanel(bool)));
-    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-               this, SLOT(visibilityChangedForTreePanel(bool)));
-
     QWidget::hideEvent(ev);
 }
 
@@ -1077,10 +1072,17 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
         return;
     }
 
+    disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+               this, SLOT(topLevelChangedForTreePanel(bool)));
+    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+               this, SLOT(visibilityChangedForTreePanel(bool)));
+
     saveState();
     fileClose();
 
     mw->updateWindowTitle();
+
+    QCoreApplication::postEvent(mw, new closeEditorPanelEvent());
 
     QTimer::singleShot( 0, mw, SLOT(projectWindowClosed()) );
 }

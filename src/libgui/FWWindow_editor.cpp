@@ -76,6 +76,10 @@ void FWWindow::editorPanelTabChanged(int idx)
     }
 }
 
+/*****************************************************************
+ * there are too many functions that open, close and hide editor panel.
+ * TODO: need to get rid of redundant ones
+ */
 void FWWindow::showEditor()
 {
     m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
@@ -91,6 +95,15 @@ void FWWindow::hideEditor()
 void FWWindow::closeEditor()
 {
     m_mainWindow->editorDockWidget->close(); // editor
+}
+
+void FWWindow::closeEditorPanel()
+{
+    m_mainWindow->editorDockWidget->hide(); // editor
+}
+
+void FWWindow::openEditorPanel()
+{
 }
 
 void FWWindow::openEditor(FWObject *obj)
@@ -254,15 +267,6 @@ FWObject* FWWindow::getOpenedEditor()
 ObjectEditor::OptType FWWindow::getOpenedOptEditor()
 {
     return oe->getOpenedOpt();
-}
-
-void FWWindow::closeEditorPanel()
-{
-    m_mainWindow->editorDockWidget->hide(); // editor
-}
-
-void FWWindow::openEditorPanel()
-{
 }
 
 void FWWindow::findObject(FWObject *o)
