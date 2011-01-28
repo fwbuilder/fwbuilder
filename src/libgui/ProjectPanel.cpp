@@ -167,10 +167,14 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
 ProjectPanel::~ProjectPanel()
 {
+    if (fwbdebug) qDebug() << "ProjectPanel::~ProjectPanel()";
+
     undoStack->clear();
     if (rcs) delete rcs;
     if (objdb) delete objdb;
     delete m_panel;
+
+    if (fwbdebug) qDebug() << "ProjectPanel::~ProjectPanel() done";
 }
 
 QString ProjectPanel::getPageTitle(bool file_path)
