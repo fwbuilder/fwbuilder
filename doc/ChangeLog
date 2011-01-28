@@ -1,5 +1,11 @@
 2011-01-27  vadim  <vadim@netcitadel.com>
 
+	* ProjectPanel.cpp (closeEvent): fixes #1998 "Crash after running
+	find-and-replace then closing file". Specific sequence of actions
+	and only on Mac OSX caused GUI to crash. To fix, I close editor
+	panel when user closes project window using MDI window title menu
+	item "Close" or "Close" button.
+
 	* ProjectPanel.cpp (registerModifiedObject): see #1996 "Crash when
 	finding and replacing a large number of objects". When "find and
 	replace" function was used to replace large number of objects in a
