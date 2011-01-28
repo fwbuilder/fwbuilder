@@ -158,22 +158,21 @@ void InterfaceData::guessSecurityLevel(const string&)
     for (string::size_type i=0; i<llbl.length(); i++)
         llbl[i] = tolower( llbl[i] );
 
-    if ( llbl=="outside" ||
-         llbl=="out" ||
-         llbl=="external" ||
-         llbl=="external net" ||
+    if ( llbl=="out" ||
          llbl=="ext" ||
          llbl=="internet" ||
          llbl=="wan" ||
          llbl=="dsl" ||
-         llbl=="cable") securityLevel = 0;
+         llbl=="cable" ||
+         llbl.find("outside")!=string::npos ||
+         llbl.find("external")!=string::npos) securityLevel = 0;
 
-    if ( llbl=="inside" ||
-         llbl=="lan" ||
+    if ( llbl=="lan" ||
          llbl=="in" ||
-         llbl=="internal" ||
-         llbl=="internal_net" ||
-         llbl=="internal net" ) securityLevel = 100;
+         llbl.find("inside")!=string::npos ||
+         llbl.find("internal")!=string::npos ) securityLevel = 100;
+
+    if ( llbl.find("dmz")!=string::npos ) securityLevel = 50;
 
     if ( (*(addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
         securityLevel = 100; 

@@ -702,10 +702,14 @@ void newFirewallDialog::fillInterfaceSLList()
         {
             if (!gotIPv4) address = iface.addresses.values().first();
             if ( address.ipv4 )
-                iam = new InetAddrMask(InetAddr(address.address.toStdString()), InetAddr(address.netmask.toStdString()));
+                iam = new InetAddrMask(
+                    InetAddr(address.address.toStdString()),
+                    InetAddr(address.netmask.toStdString()));
             else
             {
-                iam = new InetAddrMask(InetAddr(AF_INET6, address.address.toStdString()), InetAddr(AF_INET6, address.netmask.toStdString()));
+                iam = new InetAddrMask(
+                    InetAddr(AF_INET6, address.address.toStdString()),
+                    InetAddr(AF_INET6, address.netmask.toStdString()));
             }
             idata.addr_mask.push_back(iam);
         }
@@ -714,12 +718,14 @@ void newFirewallDialog::fillInterfaceSLList()
         {
             try
             {
-                idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
+                idata.guessSecurityLevel(
+                    readPlatform(m_dialog->platform).toStdString() );
             }
             catch (FWException &ex)
             {
-                QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
-                                      "&Continue", QString::null, QString::null, 0, 1 );
+                QMessageBox::warning(
+                    this,"Firewall Builder", ex.toString().c_str(),
+                    "&Continue", QString::null, QString::null, 0, 1 );
                 showPage( 2 );
                 return;
             }
