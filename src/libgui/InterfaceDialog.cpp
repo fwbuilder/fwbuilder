@@ -74,6 +74,8 @@ using namespace libfwbuilder;
 InterfaceDialog::InterfaceDialog(QWidget *parent) :
         BaseObjectDialog(parent)
 {
+    netzone_manager = new NetworkZoneManager();
+
     m_dialog = new Ui::InterfaceDialog_q;
     m_dialog->setupUi(this);
 /*
@@ -85,6 +87,7 @@ InterfaceDialog::InterfaceDialog(QWidget *parent) :
 
 InterfaceDialog::~InterfaceDialog()
 {
+    delete netzone_manager;
     delete m_dialog;
 }
 
@@ -290,81 +293,12 @@ void InterfaceDialog::loadFWObject(FWObject *o)
             m_dialog->netzone->setEnabled(true);
             m_dialog->netzoneLabel->setEnabled(true);
 
-            netzoneObjectIDs.clear();
-            netzoneObjectNos.clear();
-
-            QStringList netzoneObjectNames;
-
-            int n = 0;
-
-            netzoneObjectIDs[0] = n;
-            netzoneObjectNos[n] = 0;
-            netzoneObjectNames.push_back(" None ");
-
-            ++n;
-
-            netzoneObjectIDs[FWObjectDatabase::ANY_ADDRESS_ID] = n;
-            netzoneObjectNos[n] = FWObjectDatabase::ANY_ADDRESS_ID;
-            netzoneObjectNames.push_back(" Any ");
-
-            ++n;
-
-/* TODO: try to make this widget show object with appropriate icon */
-
-            list<FWObject*> libs = m_project->db()->getByType( Library::TYPENAME );
-            for (list<FWObject*>::iterator l=libs.begin(); l!=libs.end(); ++l)
-            {
-                FWObject *library= *l;
-                FWObject *o1,*o2;
-
-                if ( library->getId()==FWObjectDatabase::DELETED_OBJECTS_ID ) continue;
-
-                o1=library->findObjectByName(ObjectGroup::TYPENAME,"Objects");
-                assert(o1!=NULL);
-                o2=o1->findObjectByName(ObjectGroup::TYPENAME,"Groups");
-                if (o2==NULL)
-                {
-                    if (fwbdebug)
-                        qDebug("InterfaceDialog::loadFWObject  missing Groups group in %s", FWObjectDatabase::getStringId(o1->getId()).c_str());
-                    continue;
-                }
-//                assert(o2!=NULL);
-
-                for (FWObject::iterator i=o2->begin(); i!=o2->end(); ++i)
-                {
-                    netzoneObjectIDs[(*i)->getId()] = n;
-                    netzoneObjectNos[n] =(*i)->getId();
-                    netzoneObjectNames.push_back(
-                        tr("Group: ")+ (*i)->getName().c_str() );
-                    ++n;
-                }
-
-                o2=o1->findObjectByName(ObjectGroup::TYPENAME,"Networks");
-                if (o2==NULL)
-                {
-                    if (fwbdebug)
-                        qDebug("InterfaceDialog::loadFWObject  missing Networks group in %s",
-                               FWObjectDatabase::getStringId(o1->getId()).c_str());
-                    continue;
-                }
-//                assert(o2!=NULL);
-
-                for (FWObject::iterator i1=o2->begin(); i1!=o2->end(); ++i1)
-                {
-                    netzoneObjectIDs[(*i1)->getId()] = n;
-                    netzoneObjectNos[n] = (*i1)->getId();
-                    netzoneObjectNames.push_back(
-                        tr("Network: ")+ (*i1)->getName().c_str() );
-                    ++n;
-                }
-            }
-
-            m_dialog->netzone->clear();
-            m_dialog->netzone->addItems( netzoneObjectNames );
+            netzone_manager->load(m_project->db());
 
             int id = FWObjectDatabase::getIntId(obj->getStr("network_zone"));
             if (id==-1) id = 0;
-            m_dialog->netzone->setCurrentIndex( netzoneObjectIDs[id] );
+
+            netzone_manager->packComboBox(m_dialog->netzone, id);
         }
         else
         {
@@ -517,11 +451,14 @@ void InterfaceDialog::applyChanges()
     try 
     {
         supports_security_levels=
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "security_levels");
+            Resources::getTargetCapabilityBool(f->getStr("platform"),
+                                               "security_levels");
         supports_network_zones=
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "network_zones");
+            Resources::getTargetCapabilityBool(f->getStr("platform"),
+                                               "network_zones");
         supports_unprotected =
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "unprotected_interfaces");
+            Resources::getTargetCapabilityBool(f->getStr("platform"),
+                                               "unprotected_interfaces");
     } catch (FWException &ex)  { }
 
 
@@ -534,10 +471,20 @@ void InterfaceDialog::applyChanges()
             new_state->setBool("unprotected",  m_dialog->unprotected->isChecked() );
 
         if (supports_network_zones)
+        {
             new_state->setStr("network_zone",
                         FWObjectDatabase::getStringId(
-                            netzoneObjectNos[
-                                m_dialog->netzone->currentIndex() ]));
+                            m_dialog->netzone->itemData(
+                                m_dialog->netzone->currentIndex(),
+                                Qt::UserRole).toInt()));
+
+            // new_state->setStr("network_zone",
+            //             FWObjectDatabase::getStringId(
+            //                 netzone_manager->getNetzoneIdByListIndex(
+            //                     m_dialog->netzone->currentIndex() )
+            //             )
+            // );
+        }
 
         intf->setManagement( m_dialog->management->isChecked() );
     }

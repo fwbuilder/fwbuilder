@@ -29,7 +29,10 @@
 
 #include "../../config.h"
 #include <ui_interfacedialog_q.h>
+
 #include "BaseObjectDialog.h"
+#include "networkZoneManager.h"
+
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
@@ -42,19 +45,13 @@ class InterfaceDialog : public BaseObjectDialog
 {
     Q_OBJECT;
 
-
-    // netzoneObjectIDs : key - object id, value - number in the list
-    QMap<int,int> netzoneObjectIDs;
-
-    // netzoneObjectNos : key - number in the list, value - obj id
-    QMap<int,int> netzoneObjectNos;
+    NetworkZoneManager *netzone_manager;
 
     Ui::InterfaceDialog_q *m_dialog;
 
  public:
     InterfaceDialog(QWidget *parent);
     ~InterfaceDialog();
-    
     
 public slots:
     virtual void applyChanges();

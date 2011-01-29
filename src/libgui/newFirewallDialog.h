@@ -32,6 +32,7 @@
 
 #include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/InterfaceData.h"
 
 #include "fakeWizard.h"
 
@@ -74,19 +75,26 @@ class newFirewallDialog : public QDialog, public FakeWizard
     std::list<std::string>              possible_dmz_interface_labels;
     
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
+
     void fillInterfaceSLList();
+    void fillInterfaceNZList();
+
+    void getInterfaceDataFromInterfaceEditor(EditedInterfaceData &edata,
+                                             libfwbuilder::InterfaceData &idata);
+    
     void createFirewallFromTemplate();
     void changedAddressesInNewFirewall();
 
     void replaceInterfaceAttributes(libfwbuilder::Firewall *fw,
                                     libfwbuilder::Interface *intf,
                                     EditedInterfaceData *new_data);
-    libfwbuilder::Address* replaceInterfaceAddressData(libfwbuilder::Firewall *fw,
-                                                       libfwbuilder::Interface *intf,
-                                                       libfwbuilder::Address *addr_obj,
-                                                       const QString &address,
-                                                       const QString &netmask,
-                                                       bool ipv4);
+    libfwbuilder::Address* replaceInterfaceAddressData(
+        libfwbuilder::Firewall *fw,
+        libfwbuilder::Interface *intf,
+        libfwbuilder::Address *addr_obj,
+        const QString &address,
+        const QString &netmask,
+        bool ipv4);
     void replaceReferencesToNetworks(libfwbuilder::Firewall *fw,
                                      libfwbuilder::Interface *intf,
                                      libfwbuilder::InetAddrMask old_net,

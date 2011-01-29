@@ -1,5 +1,11 @@
 2011-01-28  vadim  <vadim@netcitadel.com>
 
+	* newFirewallDialog.cpp (fillInterfaceNZList): fixes #2000 "New
+	dialog window in New Firewall wizard for ASA / PIX - Network Zone
+	explanation". Added page to the new firewall wizard to let the
+	user configure network zones of interfaces when chosen firewall
+	platform supports network zones (only PIX/ASA right now).
+
 	* newFirewallDialog.cpp (fillInterfaceSLList): fixes #1983 "ASA
 	multiple interfaces have the same security level". Using table
 	widget with spin-boxes to let the user edit security levels of

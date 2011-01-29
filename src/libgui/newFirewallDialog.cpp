@@ -38,6 +38,7 @@
 #include "UserWorkflow.h"
 #include "FWBApplication.h"
 #include "QDesktopWidget"
+#include "networkZoneManager.h"
 
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
@@ -81,6 +82,14 @@
 using namespace libfwbuilder;
 using namespace std;
 
+
+#define NAME_AND_PLATFORM_PAGE 0
+#define INTERFACES_MANUAL_OR_SNMP 1
+#define CONFIGURE_INTERFACES_MANUALLY 2
+#define CONFIGURE_SECURITY_LEVELS 3
+#define CONFIGURE_NETWORK_ZONES 4
+#define CHOOSE_FW_TEMPLATE 5
+#define CONFIGURE_TEMPLATE_INTERFACES_MANUALLY 6
 
 
 newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
@@ -148,7 +157,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     /* fill in host OS  */
     setHostOS(m_dialog->hostOS, readPlatform(m_dialog->platform), "");
 
-    setNextEnabled( 0, false );
+    setNextEnabled( NAME_AND_PLATFORM_PAGE, false );
 
     //m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     QTimer::singleShot(0, m_dialog->obj_name, SLOT(setFocus()));
@@ -180,7 +189,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     if (this->height() > maxheight)
         this->resize(this->width(), maxheight);
 
-    showPage(0);
+    showPage(NAME_AND_PLATFORM_PAGE);
 }
 
 void newFirewallDialog::browseTemplate()
@@ -252,7 +261,7 @@ void newFirewallDialog::changed()
                  << "use_manual=" << m_dialog->use_manual->isChecked()
                  << "use_snmp=" << m_dialog->use_snmp->isChecked();
 
-    if (p==0)
+    if (p==NAME_AND_PLATFORM_PAGE)
     {
         setNextEnabled(p,
                        !m_dialog->obj_name->text().isEmpty() &&
@@ -264,7 +273,7 @@ void newFirewallDialog::changed()
         m_dialog->interfaceEditor2->setHostOS(host_os);
     }
 
-    if (p==1)
+    if (p==INTERFACES_MANUAL_OR_SNMP)
     {
 
         bool use_snmp = false;
@@ -289,6 +298,7 @@ void newFirewallDialog::changed()
         use_snmp = m_dialog->use_manual->isChecked() || snmpPollCompleted;
         setNextEnabled( 1, use_snmp );
     }
+
     if (fwbdebug)
         qDebug() << "newFirewallDialog::changed() done";
 }
@@ -359,7 +369,7 @@ void newFirewallDialog::monitor()
 #endif
 
     snmpPollCompleted=true;
-    setNextEnabled( 1, true );
+    setNextEnabled( INTERFACES_MANUAL_OR_SNMP, true );
 }
 
 void newFirewallDialog::getInterfacesViaSNMP()
@@ -444,17 +454,16 @@ bool interfaceCompare(libfwbuilder::Interface *first,
 
 bool newFirewallDialog::appropriate(const int page) const
 {
-    int p  = page;
-
-    switch (p)
+    switch (page)
     {
-    case 0:
-    case 4:
+    case NAME_AND_PLATFORM_PAGE:
+    case CHOOSE_FW_TEMPLATE:
         return true;
 
-    case 1:
-    case 2:
-    case 3:
+    case INTERFACES_MANUAL_OR_SNMP:
+    case CONFIGURE_INTERFACES_MANUALLY:
+    case CONFIGURE_SECURITY_LEVELS:
+    case CONFIGURE_NETWORK_ZONES:
         return (!m_dialog->useTemplate->isChecked());
     }
     return true;
@@ -462,7 +471,7 @@ bool newFirewallDialog::appropriate(const int page) const
 
 void newFirewallDialog::nextClicked()
 {
-    if ( currentPage() == 4 )
+    if ( currentPage() == CHOOSE_FW_TEMPLATE )
     {
         if (m_dialog->templateList->currentItem() == NULL)
         {
@@ -471,13 +480,18 @@ void newFirewallDialog::nextClicked()
                     tr("Please select template"),
                     tr("&Continue"), QString::null,QString::null,
                     0, 1 );
-            showPage(4);
+            showPage(CHOOSE_FW_TEMPLATE);
             return;
         }
     }
-    if ( currentPage() == 2 )
+
+    if ( currentPage() == CONFIGURE_INTERFACES_MANUALLY )
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;
+
+    // FakeWizard::nextRelevant() finds next (in the numerical order)
+    // page that is permitted by function appropriate() and returns
+    // its number
     if (nextRelevant( currentPage() ) > -1)
         showPage(nextRelevant( currentPage() ));
 }
@@ -500,7 +514,7 @@ void newFirewallDialog::showPage(const int page)
 // p is a page number _after_ it changed
     switch (p)
     {
-    case 0:
+    case NAME_AND_PLATFORM_PAGE:
         // we get here if user hits "Back" on page 4 (where they
         // choose template object)
         if (tmpldb!=NULL)
@@ -513,7 +527,7 @@ void newFirewallDialog::showPage(const int page)
         m_dialog->obj_name->setFocus();
         break;
 
-    case 1:
+    case INTERFACES_MANUAL_OR_SNMP:
     {
 // page 1 is where we choose to configure interfaces manually or via snmp
         m_dialog->snmpIP->setText("");
@@ -522,7 +536,7 @@ void newFirewallDialog::showPage(const int page)
         break;
     }
 
-    case 2:
+    case CONFIGURE_INTERFACES_MANUALLY:
     {
         if (!Resources::getTargetCapabilityBool(
                 readPlatform(m_dialog->platform).toLatin1().constData(),
@@ -532,35 +546,52 @@ void newFirewallDialog::showPage(const int page)
 /* if chosen fw platform does not support security levels,
  * this is the last page
  */
-            setNextEnabled( 2, false );
-            setFinishEnabled( 2, true );
+            setNextEnabled( CONFIGURE_INTERFACES_MANUALLY, false );
+            setFinishEnabled( CONFIGURE_INTERFACES_MANUALLY, true );
             m_dialog->finishButton->setDefault(true);
         }
         break;
     }
 
-    case 3:
+    case CONFIGURE_SECURITY_LEVELS:
     {
         if (m_dialog->useTemplate->isChecked())
         {
-            showPage( 0 );
+            showPage( NAME_AND_PLATFORM_PAGE );
             return;
         }
 
         // Edit security levels
         fillInterfaceSLList();
 
-        setNextEnabled( 3, false );
-        setFinishEnabled( 3, true );
+        setNextEnabled( CONFIGURE_SECURITY_LEVELS, true );
+        setFinishEnabled( CONFIGURE_SECURITY_LEVELS, false );
+        m_dialog->nextButton->setDefault(true);
+        break;
+    }
+
+    case CONFIGURE_NETWORK_ZONES:
+    {
+        if (m_dialog->useTemplate->isChecked())
+        {
+            showPage( NAME_AND_PLATFORM_PAGE );
+            return;
+        }
+
+        // Edit network zones
+        fillInterfaceNZList();
+
+        setNextEnabled(CONFIGURE_NETWORK_ZONES, false );
+        setFinishEnabled(CONFIGURE_NETWORK_ZONES, true );
         m_dialog->finishButton->setDefault(true);
         break;
     }
 
-    case 4:
+    case CHOOSE_FW_TEMPLATE:
     {
         // Show firewall templates
-        setFinishEnabled( 4, false );
-        setNextEnabled( 4, true );
+        setFinishEnabled( CHOOSE_FW_TEMPLATE, false );
+        setNextEnabled( CHOOSE_FW_TEMPLATE, true );
 /* load templates if not loaded */
         if (tmpldb==NULL)
         {
@@ -587,8 +618,7 @@ void newFirewallDialog::showPage(const int page)
 
         list<FWObject*> fl;
 
-        FWObjectTypedChildIterator libiter =
-            tmpldb->findByType(Library::TYPENAME);
+        FWObjectTypedChildIterator libiter = tmpldb->findByType(Library::TYPENAME);
         for ( ; libiter!=libiter.end(); ++libiter)
             findFirewalls(*libiter, fl, false);
 
@@ -599,7 +629,7 @@ void newFirewallDialog::showPage(const int page)
         int n=0;
         for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++,n++)
         {
-            FWObject *o=*m;
+            FWObject *o = *m;
 
 /*
   Ticket #1492 requested the change to only show the user templates
@@ -629,8 +659,10 @@ void newFirewallDialog::showPage(const int page)
             twi->setText( QString(o->getName().c_str()) );
 
             m_dialog->templateList->addItem( twi );
-            templates[ m_dialog->templateList->item( m_dialog->templateList->count()-1 ) ]=o;
+            templates[ m_dialog->templateList->item(
+                    m_dialog->templateList->count()-1 ) ] = o;
         }
+
         m_dialog->templateList->setFocus();
         m_dialog->templateList->setCurrentItem(0);
         m_dialog->finishButton->setDefault(false);
@@ -638,11 +670,11 @@ void newFirewallDialog::showPage(const int page)
         break;
     }
 
-    case 5:
+    case CONFIGURE_TEMPLATE_INTERFACES_MANUALLY:
     {
         // Edit interfaces of the template object
         createFirewallFromTemplate();
-        setFinishEnabled( 5, true );
+        setFinishEnabled( CONFIGURE_TEMPLATE_INTERFACES_MANUALLY, true );
 /*
         this->m_dialog->interfaceEditor2->setExplanation(
             tr("Here you can change IP address of the template interface "
@@ -666,6 +698,59 @@ void newFirewallDialog::showPage(const int page)
     }
 }
 
+void newFirewallDialog::getInterfaceDataFromInterfaceEditor(
+    EditedInterfaceData &edata, InterfaceData &idata)
+{
+    idata.name  = edata.name.toStdString();
+    idata.label = edata.label.toStdString();
+    AddressInfo address;
+    bool gotIPv4 = false;
+    foreach(AddressInfo addr, edata.addresses.values())
+    {
+        if (addr.ipv4)
+        {
+            address = addr;
+            gotIPv4 = true;
+            break;
+        }
+    }
+
+    InetAddrMask *iam;// = new InetAddrMask();
+    if (edata.type == 0 && edata.addresses.size() != 0)
+    {
+        if (!gotIPv4) address = edata.addresses.values().first();
+        if ( address.ipv4 )
+            iam = new InetAddrMask(
+                InetAddr(address.address.toStdString()),
+                InetAddr(address.netmask.toStdString()));
+        else
+        {
+            iam = new InetAddrMask(
+                InetAddr(AF_INET6, address.address.toStdString()),
+                InetAddr(AF_INET6, address.netmask.toStdString()));
+        }
+        idata.addr_mask.push_back(iam);
+    }
+
+    if (gotIPv4)
+    {
+        try
+        {
+            idata.guessSecurityLevel(
+                readPlatform(m_dialog->platform).toStdString() );
+        }
+        catch (FWException &ex)
+        {
+            QMessageBox::warning(
+                this,"Firewall Builder", ex.toString().c_str(),
+                "&Continue", QString::null, QString::null, 0, 1 );
+            showPage( CONFIGURE_INTERFACES_MANUALLY );
+            return;
+        }
+    }
+    else idata.securityLevel = 0;
+}
+
 void newFirewallDialog::fillInterfaceSLList()
 {
     m_dialog->iface_sl_list->clear();
@@ -682,54 +767,7 @@ void newFirewallDialog::fillInterfaceSLList()
     {
         InterfaceData idata;
 
-        idata.name  = iface.name.toStdString();
-        idata.label = iface.label.toStdString();
-        AddressInfo address;
-        bool gotIPv4 = false;
-        foreach(AddressInfo addr, iface.addresses.values())
-        {
-            if (addr.ipv4)
-            {
-                address = addr;
-                gotIPv4 = true;
-                break;
-            }
-        }
-
-        InetAddrMask *iam;// = new InetAddrMask();
-        if (iface.type == 0 && iface.addresses.size() != 0)
-        {
-            if (!gotIPv4) address = iface.addresses.values().first();
-            if ( address.ipv4 )
-                iam = new InetAddrMask(
-                    InetAddr(address.address.toStdString()),
-                    InetAddr(address.netmask.toStdString()));
-            else
-            {
-                iam = new InetAddrMask(
-                    InetAddr(AF_INET6, address.address.toStdString()),
-                    InetAddr(AF_INET6, address.netmask.toStdString()));
-            }
-            idata.addr_mask.push_back(iam);
-        }
-
-        if (gotIPv4)
-        {
-            try
-            {
-                idata.guessSecurityLevel(
-                    readPlatform(m_dialog->platform).toStdString() );
-            }
-            catch (FWException &ex)
-            {
-                QMessageBox::warning(
-                    this,"Firewall Builder", ex.toString().c_str(),
-                    "&Continue", QString::null, QString::null, 0, 1 );
-                showPage( 2 );
-                return;
-            }
-        }
-        else idata.securityLevel = 0;
+        getInterfaceDataFromInterfaceEditor(iface, idata);
 
         m_dialog->iface_sl_list->insertRow(row);
 
@@ -743,7 +781,13 @@ void newFirewallDialog::fillInterfaceSLList()
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_sl_list->setItem(row, 1, itm);
 
-        itm = new QTableWidgetItem(address.address);
+        string addr;
+        if (idata.addr_mask.size() > 0)
+        {
+            const InetAddr *iaddr = idata.addr_mask.front()->getAddressPtr();
+            if (iaddr) addr = iaddr->toString();
+        }
+        itm = new QTableWidgetItem(addr.c_str());
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_sl_list->setItem(row, 2, itm);
 
@@ -756,6 +800,59 @@ void newFirewallDialog::fillInterfaceSLList()
 
         row++;
     }
+}
+
+void newFirewallDialog::fillInterfaceNZList()
+{
+    m_dialog->iface_nz_list->clear();
+
+    QStringList labels;
+    labels << QObject::tr("Name") << QObject::tr("Label")
+           << QObject::tr("Address") << QObject::tr("Network Zone");
+    m_dialog->iface_nz_list->setHorizontalHeaderLabels(labels);
+
+    NetworkZoneManager netzone_manager;
+    netzone_manager.load(db);
+
+    int row = 0;
+    foreach(EditedInterfaceData iface,
+            this->m_dialog->interfaceEditor1->getData().values() +
+            this->m_dialog->interfaceEditor1->getNewData())
+    {
+        InterfaceData idata;
+
+        getInterfaceDataFromInterfaceEditor(iface, idata);
+
+        m_dialog->iface_nz_list->insertRow(row);
+
+        QTableWidgetItem* itm;
+
+        itm = new QTableWidgetItem(iface.name);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 0, itm);
+
+        itm = new QTableWidgetItem(iface.label);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 1, itm);
+
+        string addr;
+        if (idata.addr_mask.size() > 0)
+        {
+            const InetAddr *iaddr = idata.addr_mask.front()->getAddressPtr();
+            if (iaddr) addr = iaddr->toString();
+        }
+        itm = new QTableWidgetItem(addr.c_str());
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 2, itm);
+
+        QComboBox *widget = new QComboBox();
+        netzone_manager.packComboBox(widget, -1);
+        m_dialog->iface_nz_list->setCellWidget(row, 3, widget);
+
+        row++;
+    }
+
+    m_dialog->iface_nz_list->resizeColumnToContents(3);
 }
 
 /*
@@ -925,19 +1022,18 @@ void newFirewallDialog::finishClicked()
     // see #1594
     m_dialog->finishButton->setFocus(Qt::OtherFocusReason);
 
-    int p = currentPage();
-
     if (fwbdebug)
         qDebug() << "newFirewallDialog::finishClicked()"
-                 << "p=" << p;
+                 << "currentPage()=" << currentPage();
 
-    if ((!this->m_dialog->useTemplate->isChecked()) && p == 2)
+    if ((!this->m_dialog->useTemplate->isChecked()) &&
+        currentPage() == CONFIGURE_INTERFACES_MANUALLY)
     {
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;
     }
 
-    if ( p == 5 )
+    if ( currentPage() == CONFIGURE_TEMPLATE_INTERFACES_MANUALLY )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;
 
@@ -946,9 +1042,10 @@ void newFirewallDialog::finishClicked()
 
     st->setNewFirewallPlatform(platform.c_str());
 
-    if (p==2)  fillInterfaceSLList();
+    if (currentPage()==CONFIGURE_INTERFACES_MANUALLY)  fillInterfaceSLList();
 
-    if (p==4 || p==5)
+    if (currentPage()==CHOOSE_FW_TEMPLATE ||
+        currentPage()==CONFIGURE_TEMPLATE_INTERFACES_MANUALLY)
     {
         // Creating from a template
         if (nfw==NULL) createFirewallFromTemplate();
@@ -993,18 +1090,35 @@ void newFirewallDialog::finishClicked()
             bool    dyn      =  iface.type == 1;
             bool    unnum    =  iface.type == 2;
             QString physaddr =  iface.mac;
+            int     sec_level = 0;
+            string  network_zone_str_id = "";
 
             QList<QTableWidgetItem*> ltwi =
                 m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
-            assert(!ltwi.empty());
 
-            QTableWidgetItem *itm2 = ltwi[0];
-            assert(itm2!=NULL);
+            if ( ! ltwi.empty())
+            {
+                QTableWidgetItem *itm2 = ltwi[0];
+                assert(itm2!=NULL);
+                int row = itm2->row();
+                QSpinBox *sb = dynamic_cast<QSpinBox*>(
+                    m_dialog->iface_sl_list->cellWidget(row, 3));
+                assert(sb!=NULL);
+                sec_level = sb->value();
+            }
 
-            int row = itm2->row();
-            QSpinBox *sb = dynamic_cast<QSpinBox*>(
-                m_dialog->iface_sl_list->cellWidget(row, 3));
-            int sl = sb->value();
+            ltwi = m_dialog->iface_nz_list->findItems( name , Qt::MatchExactly );
+            if ( ! ltwi.empty())
+            {
+                QTableWidgetItem *itm2 = ltwi[0];
+                assert(itm2!=NULL);
+                int row = itm2->row();
+                QComboBox *cb = dynamic_cast<QComboBox*>(
+                    m_dialog->iface_nz_list->cellWidget(row, 3));
+                assert(cb!=NULL);
+                network_zone_str_id = FWObjectDatabase::getStringId(
+                    cb->itemData(cb->currentIndex(), Qt::UserRole).toInt());
+            }
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
             assert(oi!=NULL);
@@ -1017,12 +1131,8 @@ void newFirewallDialog::finishClicked()
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
-            oi->setSecurityLevel(sl);
-
-            //mw->insertObjectInTree(nfw, oi);
-            if (fwbdebug)
-                qDebug("Adding interface %s: security_level=%d",
-                       oi->getName().c_str(), sl);
+            oi->setSecurityLevel(sec_level);
+            oi->setStr("network_zone", network_zone_str_id);
 
             std::auto_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(nfw));

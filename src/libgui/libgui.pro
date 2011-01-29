@@ -190,7 +190,9 @@ HEADERS += ../../config.h \
     UserWorkflow.h \
     FWBApplication.h \
     WorkflowIcons.h \
-    FirewallCodeViewer.h
+    FirewallCodeViewer.h \
+	networkZoneManager.h
+
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -373,7 +375,9 @@ SOURCES += ProjectPanel.cpp \
     UserWorkflow.cpp \
     FWBApplication.cpp \
     WorkflowIcons.cpp \
-    FirewallCodeViewer.cpp
+    FirewallCodeViewer.cpp \
+	networkZoneManager.cpp
+
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
