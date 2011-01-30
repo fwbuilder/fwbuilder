@@ -75,6 +75,13 @@ using namespace libfwbuilder;
 
 #define MAX_SEARCH_ITEMS_COUNT 10
 
+class FindAndReplaceError : public FWException
+{
+    public:
+    FindAndReplaceError(const string &err) : FWException(err) {}
+};
+
+
 FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
                                    const char * n, Qt::WindowFlags f) : QWidget(p,f)
 {
@@ -434,7 +441,8 @@ loop:
             if ( QMessageBox::warning(
                      this,"Firewall Builder",
                      tr("Search hit the end of the policy rules."),
-                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 ) goto loop;
+                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 )
+                goto loop;
         }
         else
         {
@@ -442,7 +450,7 @@ loop:
             bool r= ( QMessageBox::warning(
                      this,"Firewall Builder",
                      tr("Search hit the end of the object tree."),
-                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 );
+                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0);
             if (fwbdebug) qDebug("widget that has focus: %p",mw->focusWidget());
             if (r)  goto loop;
         }
@@ -502,8 +510,10 @@ bool FindObjectWidget::validateReplaceObject()
         MultiAddress::cast(replObj)!=NULL ||
         ObjectGroup::cast(replObj)!=NULL;
 
-    bool obj_1_service = Service::cast(findObj)!=NULL || ServiceGroup::cast(findObj);
-    bool obj_2_service = Service::cast(replObj)!=NULL || ServiceGroup::cast(replObj);
+    bool obj_1_service =
+        Service::cast(findObj)!=NULL || ServiceGroup::cast(findObj);
+    bool obj_2_service =
+        Service::cast(replObj)!=NULL || ServiceGroup::cast(replObj);
 
     if ((obj_1_address && obj_2_address) || (obj_1_service && obj_2_service))
         return true;
@@ -525,23 +535,67 @@ void FindObjectWidget::replace()
         return;
     }
 
+    if (lastFound->isReadOnly())
+    {
+        QMessageBox::critical(this,
+                              "Firewall Builder",
+                              tr("Can not modify read-only object %1")
+                              .arg(lastFound->getPath().c_str()));
+        return;
+    }
+
     _replaceCurrent();
 }
 
 void FindObjectWidget::replaceAll()
 {
-    if(!validateReplaceObject()) return;
+    if (!validateReplaceObject()) return;
     reset();
+
+    /*
+     * replaceAll() may potentially make many replacements. Check read-only
+     * condition early if possible to avoid popping many error dialogs.
+     */
+    if (m_widget->srScope->currentIndex()==3) // scope == selected firewalls
+    {
+        RuleSet* current_rule_set = project_panel->getCurrentRuleSet();
+        if (current_rule_set)
+            selectedFirewall = Firewall::cast(current_rule_set->getParent());
+        else
+            selectedFirewall = NULL;
+
+        if (selectedFirewall == NULL)
+        {
+            QMessageBox::critical(this,
+                                  "Firewall Builder",
+                                  tr("Please select a firewall object"));
+            return;
+        }
+
+        if (selectedFirewall->isReadOnly())
+        {
+            QMessageBox::critical(this,
+                                  "Firewall Builder",
+                                  tr("Can not modify read-only object %1")
+                                  .arg(selectedFirewall->getPath().c_str()));
+            return;
+        }
+    }
 
     findNext();  // fill found_objects and position to the first found one
 
-    int count=0;
-    for (found_objects_iter=found_objects.begin(); found_objects_iter!=found_objects.end();
-         ++found_objects_iter)
+    int count = 0;
+    try
     {
-        lastFound = *found_objects_iter;
-        _replaceCurrent();
-        count++;
+        for (found_objects_iter=found_objects.begin();
+             found_objects_iter!=found_objects.end(); ++found_objects_iter)
+        {
+            lastFound = *found_objects_iter;
+            _replaceCurrent();
+            count++;
+        }
+    } catch (FindAndReplaceError &ex)
+    {
     }
 
     QMessageBox::information(
@@ -556,6 +610,38 @@ void FindObjectWidget::_replaceCurrent()
 
     if (p==NULL || o==NULL) return;
     if (FWReference::cast(o)==NULL) return;
+
+    if (p->isReadOnly())
+    {
+        QMessageBox msg_box;
+
+        msg_box.setWindowModality(Qt::ApplicationModal);
+
+        msg_box.setWindowTitle("Find and Replace Error");
+        msg_box.setText(tr("Can not modify read-only object %1")
+                        .arg(p->getPath().c_str()));
+        QPushButton *btn_continue = 
+            msg_box.addButton(
+                QObject::tr("Continue"), QMessageBox::AcceptRole);
+        QPushButton *btn_stop = 
+            msg_box.addButton(
+                QObject::tr("Stop"), QMessageBox::RejectRole);
+
+        msg_box.setDefaultButton(btn_stop);
+
+        msg_box.show();
+        msg_box.raise();
+
+        msg_box.exec();
+
+        if (msg_box.clickedButton() == btn_stop)
+        {
+            // interrupt "replace all" operation
+            throw FindAndReplaceError("Attempt to modify read-only object");
+        }
+
+        return;
+    }
 
     FWObject *replace_object = m_widget->replaceDropArea->getObject();
 

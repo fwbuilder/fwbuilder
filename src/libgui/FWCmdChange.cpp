@@ -39,6 +39,7 @@
 #include <QObject>
 #include <QDebug>
 
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -94,14 +95,28 @@ FWCmdChange::~FWCmdChange()
 void FWCmdChange::undo()
 {
     FWObject* obj = getObject();
-    obj->duplicateForUndo(oldState);
+    try
+    {
+        obj->duplicateForUndo(oldState);
+    } catch (FWException &ex)
+    {
+        qDebug() << "FWCmdChange::undo() caught FWException: "
+                 << ex.toString().c_str();
+    }
     notify();
 }
 
 void FWCmdChange::redo()
 {
     FWObject* obj = getObject();
-    obj->duplicateForUndo(newState);
+    try
+    {
+        obj->duplicateForUndo(newState);
+    } catch (FWException &ex)
+    {
+        qDebug() << "FWCmdChange::redo() caught FWException: "
+                 << ex.toString().c_str();
+    }
     notify();
 }
 
