@@ -1,3 +1,11 @@
+2011-01-30  vadim  <vadim@netcitadel.com>
+
+	* FWWindow_editor.cpp (clearEditorAndSearchPanels): see #2006
+	"Crash when closing editor panel with find-and-replace". The GUI
+	crashed if user tried to close editor panel at the bottom after
+	closing objects+rules panel and while some object was still
+	displayed in the editor.
+
 2011-01-28  vadim  <vadim@netcitadel.com>
 
 	* newFirewallDialog.cpp (fillInterfaceNZList): fixes #2000 "New

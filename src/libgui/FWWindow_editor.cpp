@@ -106,6 +106,7 @@ void FWWindow::clearEditorAndSearchPanels()
 {
     findWhereUsedWidget->clear();
     findObjectWidget->clear();
+    if (oe != NULL) oe->blank();
 }
 
 void FWWindow::openEditorPanel()
