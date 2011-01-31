@@ -1118,8 +1118,13 @@ void newFirewallDialog::finishClicked()
                 QComboBox *cb = dynamic_cast<QComboBox*>(
                     m_dialog->iface_nz_list->cellWidget(row, 3));
                 assert(cb!=NULL);
-                network_zone_str_id = FWObjectDatabase::getStringId(
-                    cb->itemData(cb->currentIndex(), Qt::UserRole).toInt());
+                int network_zone_int_id =
+                    cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
+                if (network_zone_int_id != 0)
+                    network_zone_str_id = FWObjectDatabase::getStringId(
+                        network_zone_int_id);
+                else
+                    network_zone_str_id = "";
             }
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
