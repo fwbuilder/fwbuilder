@@ -781,13 +781,14 @@ void newFirewallDialog::fillInterfaceSLList()
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_sl_list->setItem(row, 1, itm);
 
-        string addr;
-        if (idata.addr_mask.size() > 0)
+        QString addr_str;
+        if (iface.addresses.size() > 0)
         {
-            const InetAddr *iaddr = idata.addr_mask.front()->getAddressPtr();
-            if (iaddr) addr = iaddr->toString();
+            AddressInfo addr = *(iface.addresses.begin());
+            addr_str = addr.address;
         }
-        itm = new QTableWidgetItem(addr.c_str());
+
+        itm = new QTableWidgetItem(addr_str);
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_sl_list->setItem(row, 2, itm);
 
@@ -835,13 +836,14 @@ void newFirewallDialog::fillInterfaceNZList()
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_nz_list->setItem(row, 1, itm);
 
-        string addr;
-        if (idata.addr_mask.size() > 0)
+        QString addr_str;
+        if (iface.addresses.size() > 0)
         {
-            const InetAddr *iaddr = idata.addr_mask.front()->getAddressPtr();
-            if (iaddr) addr = iaddr->toString();
+            AddressInfo addr = *(iface.addresses.begin());
+            addr_str = addr.address;
         }
-        itm = new QTableWidgetItem(addr.c_str());
+
+        itm = new QTableWidgetItem(addr_str);
         itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
         m_dialog->iface_nz_list->setItem(row, 2, itm);
 
