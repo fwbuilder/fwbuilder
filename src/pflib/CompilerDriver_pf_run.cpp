@@ -114,8 +114,8 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     string pfctl_dbg = (debug)?"-v ":"";
 
     QStringList activation_commands;
-    QString remote_file = remote_conf_files["__main__"].c_str();
-    if (remote_file.isEmpty()) remote_file = conf_files["__main__"].c_str();
+    QString remote_file = remote_conf_files["__main__"];
+    if (remote_file.isEmpty()) remote_file = conf_files["__main__"];
     if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
     remote_file = this->escapeFileName(remote_file);
 
@@ -123,18 +123,19 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
         composeActivationCommand(
             fw, pfctl_dbg, "", fw->getStr("version"), remote_file.toStdString()));
 
-    for (map<string,string>::iterator i=conf_files.begin();
+    for (map<QString,QString>::iterator i=conf_files.begin();
          i!=conf_files.end(); ++i)
     {
-        QString remote_file = remote_conf_files[i->first].c_str();
-        if (remote_file.isEmpty()) remote_file = i->second.c_str();
+        QString remote_file = remote_conf_files[i->first];
+        if (remote_file.isEmpty()) remote_file = i->second;
         if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
         remote_file = this->escapeFileName(remote_file);
 
         if (i->first != "__main__")
             activation_commands.push_back(
                 composeActivationCommand(
-                    fw, pfctl_dbg, i->first, fw->getStr("version"), remote_file.toStdString()));
+                    fw, pfctl_dbg, i->first.toStdString(),
+                    fw->getStr("version"), remote_file.toStdString()));
     }
 
     return activation_commands.join("\n");
@@ -148,15 +149,16 @@ QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
 
     script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
+    if (!remote_name.empty())
+        script << " " << this->escapeFileName(remote_name.c_str());
     script << "\n";
 
-    for (map<string,string>::iterator i=conf_files.begin();
+    for (map<QString,QString>::iterator i=conf_files.begin();
          i!=conf_files.end(); ++i)
     {
-        string ruleset_name = i->first;
-        QString file_name = QFileInfo(i->second.c_str()).fileName();
-        QString remote_file_name = remote_conf_files[ruleset_name].c_str();
+        QString ruleset_name = i->first;
+        QString file_name = QFileInfo(i->second).fileName();
+        QString remote_file_name = remote_conf_files[ruleset_name];
         script << MANIFEST_MARKER << "  " << this->escapeFileName(file_name);
         if (!remote_file_name.isEmpty() && remote_file_name != file_name)
             script << " " << this->escapeFileName(remote_file_name);
@@ -223,9 +225,25 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         // Note that fwobjectname may be different from the name of the
         // firewall fw This happens when we compile a member of a cluster
-        current_firewall_name = fw->getName().c_str();
+        current_firewall_name = QString::fromUtf8(fw->getName().c_str());
 
-        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
+        fw_file_name = determineOutputFileName(
+            cluster, fw, !cluster_id.empty(), ".fw");
+
+        conf_file_name = QString::fromUtf8(options->getStr("conf_file").c_str());
+
+        if (!fw_file_name.isEmpty() && conf_file_name.isEmpty())
+        {
+            QFileInfo fi(fw_file_name);
+            if (fi.isRelative())
+            {
+                conf_file_name = QString(fi.completeBaseName() + ".conf");
+            } else
+            {
+                conf_file_name = QString(fi.path() + "/" +
+                                         fi.completeBaseName() + ".conf");
+            }
+        }
 
         string firewall_dir = options->getStr("firewall_dir");
         if (firewall_dir=="") firewall_dir="/etc/fw";
@@ -269,8 +287,10 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         oscnf->prolog();
 
-        string remote_fw_name = options->getStr("script_name_on_firewall");
-        string remote_conf_name = options->getStr("conf_file_name_on_firewall");
+        QString remote_fw_name = QString::fromUtf8(
+            options->getStr("script_name_on_firewall").c_str());
+        QString remote_conf_name = QString::fromUtf8(
+            options->getStr("conf_file_name_on_firewall").c_str());
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
@@ -345,15 +365,15 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (!nat->matchingAddressFamily(policy_af)) continue;
 
-                string ruleset_name = nat->getName();
+                QString ruleset_name = QString::fromUtf8(nat->getName().c_str());
 
-                if (ruleset_name.find("/*")!=string::npos)
+                if (ruleset_name.endsWith("/*"))
                 {
                     QString err("The name of the policy ruleset %1"
                                 " ends with '/*', assuming it is externally"
                                 " controlled and skipping it.");
                     warning(fw, nat, NULL,
-                            err.arg(ruleset_name.c_str()).toStdString());
+                            err.arg(ruleset_name).toStdString());
                     continue;
                 }
 
@@ -415,9 +435,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 all_errors.push_back(n.getErrors("").c_str());
 
                 conf_files[ruleset_name] = getConfFileName(
-                    ruleset_name,
-                    current_firewall_name.toUtf8().constData(),
-                    fw_file_name.toUtf8().constData());
+                    ruleset_name, current_firewall_name, conf_file_name);
 
 
                 remote_conf_files[ruleset_name] = getRemoteConfFileName(
@@ -436,15 +454,15 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                  p!=all_policies.end(); ++p )
             {
                 Policy *policy = Policy::cast(*p);
-                string ruleset_name = policy->getName();
+                QString ruleset_name = QString::fromUtf8(policy->getName().c_str());
 
-                if (ruleset_name.find("/*")!=string::npos)
+                if (ruleset_name.endsWith("/*"))
                 {
                     QString err("The name of the policy ruleset %1"
                                 " ends with '/*', assuming it is externally"
                                 " controlled and skipping it.");
                     warning(fw, policy, NULL,
-                            err.arg(ruleset_name.c_str()).toStdString());
+                            err.arg(ruleset_name).toStdString());
                     continue;
                 }
 
@@ -507,9 +525,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 all_errors.push_back(c.getErrors("").c_str());
 
                 conf_files[ruleset_name] = getConfFileName(
-                    ruleset_name,
-                    current_firewall_name.toUtf8().constData(),
-                    fw_file_name.toUtf8().constData());
+                    ruleset_name, current_firewall_name, conf_file_name);
 
                 remote_conf_files[ruleset_name] = getRemoteConfFileName(
                     ruleset_name,
@@ -560,10 +576,10 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             QString buffer;
             QTextStream pf_str(&buffer);
 
-            for (map<string, ostringstream*>::iterator fi=generated_scripts.begin();
+            for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
                  fi!=generated_scripts.end(); fi++)
             {
-                string ruleset_name = fi->first;
+                QString ruleset_name = fi->first;
                 ostringstream *strm = fi->second;
                 pf_str << table_factories[ruleset_name]->PrintTables();
                 pf_str << QString::fromUtf8(strm->str().c_str());
@@ -580,14 +596,14 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * now write generated scripts to files
  */
-        for (map<string, ostringstream*>::iterator fi=generated_scripts.begin();
+        for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
              fi!=generated_scripts.end(); fi++)
         {
-            string ruleset_name = fi->first;
-            QString file_name = conf_files[ruleset_name].c_str();
+            QString ruleset_name = fi->first;
+            QString file_name = conf_files[ruleset_name];
             ostringstream *strm = fi->second;
 
-            if (ruleset_name.find("/*")!=string::npos) continue;
+            if (ruleset_name.contains("/*")) continue;
 
             file_name = getAbsOutputFileName(file_name);
 
@@ -669,10 +685,10 @@ MapOstringStream::~MapOstringStream()
 
 void MapOstringStream::clear()
 {
-    std::map<std::string, std::ostringstream*>::iterator it;
+    std::map<QString, std::ostringstream*>::iterator it;
     for (it=begin(); it!=end(); ++it)
         delete it->second;
-    std::map<std::string, std::ostringstream*>::clear();
+    std::map<QString, std::ostringstream*>::clear();
 }
 
 MapTableFactory::~MapTableFactory()
@@ -682,9 +698,9 @@ MapTableFactory::~MapTableFactory()
 
 void MapTableFactory::clear()
 {
-    std::map<std::string, fwcompiler::TableFactory*>::iterator it;
+    std::map<QString, fwcompiler::TableFactory*>::iterator it;
     for (it=begin(); it!=end(); ++it)
         delete it->second;
-    std::map<std::string, fwcompiler::TableFactory*>::clear();
+    std::map<QString, fwcompiler::TableFactory*>::clear();
 }
 

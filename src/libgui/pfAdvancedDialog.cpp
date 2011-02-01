@@ -49,6 +49,7 @@
 #include <qregexp.h>
 #include <qtextedit.h>
 #include <QUndoStack>
+#include <QFileInfo>
 
 
 using namespace std;
@@ -80,12 +81,46 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
         m_dialog->pf_fw_dir->setEnabled(false);
         fwopt->setStr("firewall_dir","");
     }
-    data.registerOption(m_dialog->ipv4before, fwopt, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first");
+
+    // see #1888: we now support rc.conf format for the output
+    // Set variables for backwards compatibility for users who configured
+    // custom name for the output .fw script before.
+
+    if (!fwopt->getBool("generate_shell_script") &&
+        !fwopt->getBool("generate_rc_conf_file"))
+    {
+        fwopt->setBool("generate_shell_script", true);
+    }
+
+    QString init_script_name = fwopt->getStr("output_file").c_str();
+    QString conf_file_name = fwopt->getStr("conf_file").c_str();
+    if (!init_script_name.isEmpty() && conf_file_name.isEmpty())
+    {
+        QFileInfo fi(init_script_name);
+        if (fi.isRelative())
+        {
+            conf_file_name = QString(fi.completeBaseName() + ".conf");
+        } else
+        {
+            conf_file_name = QString(fi.path() + "/" +
+                                     fi.completeBaseName() + ".conf");
+        }
+        fwopt->setStr("conf_file", conf_file_name.toStdString());
+    }
+
+    data.registerOption(m_dialog->ipv4before, fwopt,
+                        "ipv4_6_order",
+                        QStringList() <<  "IPv4 before IPv6"
+                        <<"ipv4_first"
+                        << "IPv6 before IPv4"
+                        << "ipv6_first");
 
     data.registerOption( m_dialog->pf_log_prefix,fwopt, "log_prefix");
     data.registerOption( m_dialog->pf_fallback_log,fwopt, "fallback_log");
-    data.registerOption( m_dialog->pf_do_timeout_interval,fwopt,"pf_do_timeout_interval");
-    data.registerOption( m_dialog->pf_timeout_interval,fwopt, "pf_timeout_interval");
+    data.registerOption( m_dialog->pf_do_timeout_interval, fwopt,
+                         "pf_do_timeout_interval");
+    data.registerOption( m_dialog->pf_timeout_interval, fwopt,
+                         "pf_timeout_interval");
     data.registerOption( m_dialog->pf_do_timeout_frag,fwopt, "pf_do_timeout_frag");
     data.registerOption( m_dialog->pf_timeout_frag,fwopt, "pf_timeout_frag");
     data.registerOption( m_dialog->pf_do_limit_frags,fwopt, "pf_do_limit_frags");
@@ -184,45 +219,76 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.registerOption( m_dialog->compiler,fwopt, "compiler");
     data.registerOption( m_dialog->compilerArgs,fwopt, "cmdline");
+
+    data.registerOption( m_dialog->generateShellScript, fwopt,
+                         "generate_shell_script");
+    data.registerOption( m_dialog->generateRcConfFile, fwopt,
+                         "generate_rc_conf_file");
+
     data.registerOption( m_dialog->outputFileName, fwopt, "output_file");
-    data.registerOption( m_dialog->fileNameOnFw, fwopt, "script_name_on_firewall");
-    data.registerOption( m_dialog->confFileNameOnFw, fwopt, "conf_file_name_on_firewall");
+    data.registerOption( m_dialog->confFileName, fwopt, "conf_file");
+
+    data.registerOption( m_dialog->fileNameOnFw, fwopt,
+                         "script_name_on_firewall");
+    data.registerOption( m_dialog->confFileNameOnFw, fwopt,
+                         "conf_file_name_on_firewall");
 
     data.registerOption( m_dialog->mgmt_ssh,fwopt, "mgmt_ssh");
     data.registerOption( m_dialog->mgmt_addr,fwopt, "mgmt_addr");
 
     data.registerOption( m_dialog->pf_set_tcp_first, fwopt, "pf_set_tcp_first");
     data.registerOption( m_dialog->pf_tcp_first, fwopt, "pf_tcp_first");
-    data.registerOption( m_dialog->pf_set_tcp_opening, fwopt, "pf_set_tcp_opening");
+    data.registerOption( m_dialog->pf_set_tcp_opening, fwopt,
+                         "pf_set_tcp_opening");
     data.registerOption( m_dialog->pf_tcp_opening, fwopt, "pf_tcp_opening");
-    data.registerOption( m_dialog->pf_set_tcp_established, fwopt, "pf_set_tcp_established");
-    data.registerOption( m_dialog->pf_tcp_established, fwopt, "pf_tcp_established");
-    data.registerOption( m_dialog->pf_set_tcp_closing, fwopt, "pf_set_tcp_closing");
+    data.registerOption( m_dialog->pf_set_tcp_established, fwopt,
+                         "pf_set_tcp_established");
+    data.registerOption( m_dialog->pf_tcp_established, fwopt,
+                         "pf_tcp_established");
+    data.registerOption( m_dialog->pf_set_tcp_closing, fwopt,
+                         "pf_set_tcp_closing");
     data.registerOption( m_dialog->pf_tcp_closing, fwopt, "pf_tcp_closing");
-    data.registerOption( m_dialog->pf_set_tcp_finwait, fwopt, "pf_set_tcp_finwait");
-    data.registerOption( m_dialog->pf_tcp_finwait, fwopt, "pf_tcp_finwait");
-    data.registerOption( m_dialog->pf_set_tcp_closed, fwopt, "pf_set_tcp_closed");
-    data.registerOption( m_dialog->pf_tcp_closed, fwopt, "pf_tcp_closed");
-    data.registerOption( m_dialog->pf_set_udp_first, fwopt, "pf_set_udp_first");
-    data.registerOption( m_dialog->pf_udp_first, fwopt, "pf_udp_first");
-    data.registerOption( m_dialog->pf_set_udp_single, fwopt, "pf_set_udp_single");
+    data.registerOption( m_dialog->pf_set_tcp_finwait, fwopt,
+                         "pf_set_tcp_finwait");
+    data.registerOption( m_dialog->pf_tcp_finwait, fwopt,
+                         "pf_tcp_finwait");
+    data.registerOption( m_dialog->pf_set_tcp_closed, fwopt,
+                         "pf_set_tcp_closed");
+    data.registerOption( m_dialog->pf_tcp_closed, fwopt,
+                         "pf_tcp_closed");
+    data.registerOption( m_dialog->pf_set_udp_first, fwopt,
+                         "pf_set_udp_first");
+    data.registerOption( m_dialog->pf_udp_first, fwopt,
+                         "pf_udp_first");
+    data.registerOption( m_dialog->pf_set_udp_single, fwopt,
+                         "pf_set_udp_single");
     data.registerOption( m_dialog->pf_udp_single, fwopt, "pf_udp_single");
-    data.registerOption( m_dialog->pf_set_udp_multiple, fwopt, "pf_set_udp_multiple");
+    data.registerOption( m_dialog->pf_set_udp_multiple, fwopt,
+                         "pf_set_udp_multiple");
     data.registerOption( m_dialog->pf_udp_multiple, fwopt, "pf_udp_multiple");
-    data.registerOption( m_dialog->pf_set_icmp_first, fwopt, "pf_set_icmp_first");
+    data.registerOption( m_dialog->pf_set_icmp_first, fwopt,
+                         "pf_set_icmp_first");
     data.registerOption( m_dialog->pf_icmp_first, fwopt, "pf_icmp_first");
-    data.registerOption( m_dialog->pf_set_icmp_error, fwopt, "pf_set_icmp_error");
+    data.registerOption( m_dialog->pf_set_icmp_error, fwopt,
+                         "pf_set_icmp_error");
     data.registerOption( m_dialog->pf_icmp_error, fwopt, "pf_icmp_error");
-    data.registerOption( m_dialog->pf_set_other_first, fwopt, "pf_set_other_first");
+    data.registerOption( m_dialog->pf_set_other_first, fwopt,
+                         "pf_set_other_first");
     data.registerOption( m_dialog->pf_other_first, fwopt, "pf_other_first");
-    data.registerOption( m_dialog->pf_set_other_single, fwopt, "pf_set_other_single");
+    data.registerOption( m_dialog->pf_set_other_single, fwopt,
+                         "pf_set_other_single");
     data.registerOption( m_dialog->pf_other_single, fwopt, "pf_other_single");
-    data.registerOption( m_dialog->pf_set_other_multiple, fwopt, "pf_set_other_multiple");
-    data.registerOption( m_dialog->pf_other_multiple, fwopt, "pf_other_multiple");
+    data.registerOption( m_dialog->pf_set_other_multiple, fwopt,
+                         "pf_set_other_multiple");
+    data.registerOption( m_dialog->pf_other_multiple, fwopt,
+                         "pf_other_multiple");
 
-    data.registerOption( m_dialog->pf_set_adaptive, fwopt, "pf_set_adaptive");
-    data.registerOption( m_dialog->pf_adaptive_start, fwopt, "pf_adaptive_start");
-    data.registerOption( m_dialog->pf_adaptive_end, fwopt, "pf_adaptive_end");
+    data.registerOption( m_dialog->pf_set_adaptive, fwopt,
+                         "pf_set_adaptive");
+    data.registerOption( m_dialog->pf_adaptive_start, fwopt,
+                         "pf_adaptive_start");
+    data.registerOption( m_dialog->pf_adaptive_end, fwopt,
+                         "pf_adaptive_end");
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 

@@ -50,14 +50,16 @@ namespace libfwbuilder {
 };
 
 
-class MapOstringStream : public std::map<std::string, std::ostringstream*> {
+class MapOstringStream : public std::map<QString, std::ostringstream*>
+{
   public:
     MapOstringStream() {}
     ~MapOstringStream();
     void clear();
 };
 
-class MapTableFactory : public std::map<std::string, fwcompiler::TableFactory*> {
+class MapTableFactory : public std::map<QString, fwcompiler::TableFactory*>
+{
   public:
     MapTableFactory() {}
     ~MapTableFactory();
@@ -71,14 +73,16 @@ namespace fwcompiler {
     class CompilerDriver_pf : public CompilerDriver
     {
 
+        QString conf_file_name;
+
 // Note that in the following maps ruleset name will be 
 // "__main__" for both main Policy and NAT rulesets.
 
 // map ruleset_name -> conf file name
-        std::map<std::string, std::string> conf_files;
+        std::map<QString, QString> conf_files;
 
 // map ruleset_name -> remote conf file name
-        std::map<std::string, std::string> remote_conf_files;
+        std::map<QString, QString> remote_conf_files;
 
 // map ruleset_name -> generated script
 //    std::map<std::string, std::ostringstream*> generated_scripts;
@@ -104,13 +108,15 @@ protected:
 
         std::string routing_script;
         
-        std::string getConfFileName(const std::string &ruleset_name,
-                                    const std::string &fwobjectname,
-                                    const std::string &fw_file_name);
-        std::string getRemoteConfFileName(const std::string &ruleset_name,
-                                          const std::string &local_file_name,
-                                          const std::string &remote_fw_file_name,
-                                          const std::string &remote_conf_file_name);
+        QString getConfFileName(const QString &ruleset_name,
+                                const QString &fwobjectname,
+                                const QString &conf_file_name);
+        
+        QString getRemoteConfFileName(const QString &ruleset_name,
+                                      const QString &local_file_name,
+                                      const QString &remote_fw_file_name,
+                                      const QString &remote_conf_file_name);
+        
         std::string printTimeout(libfwbuilder::FWOptions* options,
                                  const std::string &OnOffOption,
                                  const std::string &ValOption,

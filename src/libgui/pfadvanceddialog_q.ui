@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>550</height>
+    <height>743</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -100,7 +100,7 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_8">
+      <layout class="QGridLayout" name="gridLayout_10">
        <item row="0" column="0">
         <widget class="QLabel" name="compilerLabel">
          <property name="text">
@@ -114,7 +114,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="0" column="2">
         <widget class="QLineEdit" name="compiler">
          <property name="maximumSize">
           <size>
@@ -124,230 +124,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Generated script (.fw file) and configuration (.conf) file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Script (.fw) file name on the firewall</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="fileNameOnFw">
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>.conf file name on the firewall</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="confFileNameOnFw">
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string/>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0" colspan="5">
-           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn">
-            <property name="text">
-             <string>Accept TCP sessions opened prior to firewall restart</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="5">
-           <widget class="QCheckBox" name="pf_modulate_state">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="textLabel3">
-            <property name="text">
-             <string>Optimization:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="pf_optimization"/>
-          </item>
-          <item row="4" column="2">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>State policy:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="3">
-           <widget class="QComboBox" name="pf_state_policy">
-            <property name="toolTip">
-             <string>States can be bound to interfaces or match packets on any interface. The latter can be useful in case of an assymmetric routing.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="5">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="5">
-           <widget class="QCheckBox" name="pf_check_shadowing">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-            </property>
-            <property name="text">
-             <string>Detect rule shadowing in policy</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QCheckBox" name="pf_ignore_empty_groups">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-            </property>
-            <property name="text">
-             <string>Ignore empty groups in rules</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="9" column="0" colspan="2">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string/>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="mgmt_ssh">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Always permit ssh access from
-the management workstation
-with this address:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="mgmt_addr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>22</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>11</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="compilerArgs">
-         <property name="maximumSize">
-          <size>
-           <width>32767</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="compilerArgsLabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -366,8 +143,8 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="outputFileName">
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="compilerArgs">
          <property name="maximumSize">
           <size>
            <width>32767</width>
@@ -376,34 +153,344 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLabel" name="textLabel1_5">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="2" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>System configuration and firewall initialization script format</string>
          </property>
-         <property name="text">
-          <string>(if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</string>
+         <property name="flat">
+          <bool>false</bool>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QRadioButton" name="generateShellScript">
+              <property name="text">
+               <string>shell script with extension .fw</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="generateRcConfFile">
+              <property name="text">
+               <string>file in rc.conf format</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>208</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Output file name:</string>
+       <item row="3" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Names of generated files</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Initialization script name (can be full path):</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="outputFileName">
+            <property name="maximumSize">
+             <size>
+              <width>32767</width>
+              <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>PF configuration file name (can be full path):</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="confFileName">
+            <property name="maximumSize">
+             <size>
+              <width>32767</width>
+              <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="textLabel1_5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>(if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot; or &quot;.conf&quot; depending on the format)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
+       </item>
+       <item row="4" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Names of the files on the firewall</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Initialization script (.fw file) and PF configuration file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Initialization script name on the firewall</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="fileNameOnFw">
+            <property name="maximumSize">
+             <size>
+              <width>32767</width>
+              <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>PF configuration file name on the firewall</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="confFileNameOnFw">
+            <property name="maximumSize">
+             <size>
+              <width>32767</width>
+              <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string/>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <property name="margin">
+           <number>9</number>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn">
+            <property name="text">
+             <string>Accept TCP sessions opened prior to firewall restart</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QCheckBox" name="pf_modulate_state">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="pf_check_shadowing">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Shadowing happens because a rule is a superset of 
+a subsequent rule and any packets potentially matched 
+by the subsequent rule have already been matched by 
+the prior rule.</string>
+            </property>
+            <property name="text">
+             <string>Detect rule shadowing</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="pf_ignore_empty_groups">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>If the option is deactivated, compiler treats empty groups as
+an error and aborts processing the policy. If this option is 
+activated, compiler removes all empty groups from all rule 
+elements. If rule element becomes 'any' after the last empty 
+group has been removed, the whole rule will be ignored. Use 
+this option only if you fully understand how it works!</string>
+            </property>
+            <property name="text">
+             <string>Ignore empty groups</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="3">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="textLabel3">
+           <property name="text">
+            <string>Optimization:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="pf_optimization"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>State policy:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="pf_state_policy">
+           <property name="toolTip">
+            <string>States can be bound to interfaces or match packets 
+on any interface. The latter can be useful in case of 
+an assymmetric routing.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="0" colspan="3">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QCheckBox" name="mgmt_ssh">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Always permit ssh access from
+the management workstation
+with this address:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="mgmt_addr">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32767</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>11</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -583,7 +670,7 @@ with this address:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <property name="verticalSpacing">
-           <number>-1</number>
+           <number>6</number>
           </property>
           <item row="0" column="0">
            <widget class="QRadioButton" name="pf_scrub_reassemble">
@@ -2380,29 +2467,24 @@ with this address:</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
+  <tabstop>pf_do_scrub</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
+  <tabstop>generateShellScript</tabstop>
+  <tabstop>generateRcConfFile</tabstop>
+  <tabstop>outputFileName</tabstop>
+  <tabstop>confFileName</tabstop>
   <tabstop>fileNameOnFw</tabstop>
   <tabstop>confFileNameOnFw</tabstop>
   <tabstop>pf_accept_new_tcp_with_no_syn</tabstop>
   <tabstop>pf_modulate_state</tabstop>
+  <tabstop>pf_check_shadowing</tabstop>
+  <tabstop>pf_ignore_empty_groups</tabstop>
   <tabstop>pf_optimization</tabstop>
+  <tabstop>pf_state_policy</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
-  <tabstop>pf_scrub_no_df</tabstop>
-  <tabstop>pf_scrub_random_id</tabstop>
-  <tabstop>pf_scrub_use_minttl</tabstop>
-  <tabstop>pf_scrub_minttl</tabstop>
-  <tabstop>pf_scrub_use_maxmss</tabstop>
-  <tabstop>pf_scrub_maxmss</tabstop>
-  <tabstop>pf_do_scrub</tabstop>
-  <tabstop>pf_scrub_reassemble</tabstop>
-  <tabstop>pf_scrub_fragm_crop</tabstop>
-  <tabstop>pf_scrub_fragm_drop_ovl</tabstop>
-  <tabstop>pf_do_limit_frags</tabstop>
-  <tabstop>pf_limit_frags</tabstop>
-  <tabstop>pf_do_limit_states</tabstop>
   <tabstop>pf_limit_states</tabstop>
   <tabstop>pf_do_limit_src_nodes</tabstop>
   <tabstop>pf_limit_src_nodes</tabstop>
@@ -2471,6 +2553,19 @@ with this address:</string>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonHelp</tabstop>
+  <tabstop>pf_scrub_fragm_drop_ovl</tabstop>
+  <tabstop>pf_do_limit_frags</tabstop>
+  <tabstop>pf_scrub_reassemble</tabstop>
+  <tabstop>pf_scrub_fragm_crop</tabstop>
+  <tabstop>pf_limit_frags</tabstop>
+  <tabstop>pf_do_limit_states</tabstop>
+  <tabstop>pf_scrub_reassemble_tcp</tabstop>
+  <tabstop>pf_scrub_use_maxmss</tabstop>
+  <tabstop>pf_scrub_minttl</tabstop>
+  <tabstop>pf_scrub_maxmss</tabstop>
+  <tabstop>pf_scrub_no_df</tabstop>
+  <tabstop>pf_scrub_random_id</tabstop>
+  <tabstop>pf_scrub_use_minttl</tabstop>
  </tabstops>
  <resources/>
  <connections>

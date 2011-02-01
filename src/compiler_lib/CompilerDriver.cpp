@@ -634,7 +634,8 @@ QString CompilerDriver::determineOutputFileName(Cluster *cluster,
                                                 bool cluster_member,
                                                 const QString &ext)
 {
-    QString current_firewall_name = current_fw->getName().c_str();
+    QString current_firewall_name = QString::fromUtf8(
+        current_fw->getName().c_str());
     if (!cluster_member)
     {
         // standalone firewall

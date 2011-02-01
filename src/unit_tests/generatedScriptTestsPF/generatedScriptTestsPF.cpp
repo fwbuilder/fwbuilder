@@ -134,7 +134,7 @@ void GeneratedScriptTest::ManifestTest_2()
     QString res = Configlet::findConfigletInFile("top_comment", "pf2.fw");
     // find manifest and compare
     CPPUNIT_ASSERT(res.indexOf("# files: * pf2.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf2.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -210,6 +210,34 @@ void GeneratedScriptTest::ManifestTest_7()
     delete objdb;
 }
 
+void GeneratedScriptTest::ManifestTest_8()
+{
+    /*
+     * generated .fw and .conf files have different base names
+     */
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "pf5", "pf5.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "pf5.fw");
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * pf5.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   pf.conf") != -1);
+    delete objdb;
+}
+
+void GeneratedScriptTest::ManifestTest_9()
+{
+    /*
+     * generated .fw and .conf files have different base names
+     */
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "pf6", "/tmp/pf6.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "/tmp/pf6.fw");
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * /tmp/pf6.fw /etc/fw/pf6.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   /tmp/pf.conf /etc/pf.conf") != -1);
+    delete objdb;
+}
+
 // ************************************************************************
 
 void GeneratedScriptTest::FwCommentTest()
@@ -242,7 +270,7 @@ void GeneratedScriptTest::ActivationCommandsTest_2()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf2.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/pf2.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -280,6 +308,24 @@ void GeneratedScriptTest::ActivationCommandsTest_7()
         .split(QRegExp("\\s+")).join(" ");
     qDebug() << res;
     CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/path\\ with\\ space/pf4.conf") != -1);
+    delete objdb;
+}
+
+void GeneratedScriptTest::ActivationCommandsTest_8()
+{
+    objdb = new FWObjectDatabase();
+    QString res = Configlet::findConfigletInFile("activation", "pf5.fw")
+        .split(QRegExp("\\s+")).join(" ");
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/fw/pf5.conf") != -1);
+    delete objdb;
+}
+
+void GeneratedScriptTest::ActivationCommandsTest_9()
+{
+    objdb = new FWObjectDatabase();
+    QString res = Configlet::findConfigletInFile("activation", "/tmp/pf6.fw")
+        .split(QRegExp("\\s+")).join(" ");
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/fw/pf6.conf") != -1);
     delete objdb;
 }
 

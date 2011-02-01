@@ -68,60 +68,59 @@ CompilerDriver* CompilerDriver_pf::clone()
     return new_cd;
 }
 
-string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
-                                          const string &fwobjectname,
-                                          const string &fw_file_name)
+QString CompilerDriver_pf::getConfFileName(const QString &ruleset_name,
+                                           const QString &fwobjectname,
+                                           const QString &conf_file_name)
 {
-    QString conf_file_name;
-    string suffix = string("-") + ruleset_name;
+    QString suffix = QString("-") + ruleset_name;
     if (ruleset_name == "__main__") suffix = "";
 
-    if (fw_file_name.empty())
+    if (conf_file_name.isEmpty())
     {
         return fwobjectname + suffix + ".conf";
     }
 
     QString new_name;
-    QFileInfo fi(fw_file_name.c_str());
+    QFileInfo fi(conf_file_name);
     if (fi.isRelative())
     {
-        new_name = QString(fi.completeBaseName() + suffix.c_str() + ".conf");
+        new_name = QString(fi.completeBaseName() + suffix + ".conf");
     } else
     {
-        new_name = QString(fi.path() + "/" + fi.completeBaseName() + suffix.c_str() + ".conf");
+        new_name = QString(fi.path() + "/" + fi.completeBaseName() + suffix + ".conf");
     }
 
-    return new_name.toUtf8().constData();
+    return new_name;
 }
 
-string CompilerDriver_pf::getRemoteConfFileName(const string &ruleset_name,
-                                                const string &local_conf_name,
-                                                const string &remote_fw_name,
-                                                const string &remote_conf_name)
+QString CompilerDriver_pf::getRemoteConfFileName(const QString &ruleset_name,
+                                                 const QString &local_conf_name,
+                                                 const QString &remote_fw_name,
+                                                 const QString &remote_conf_name)
 {
     QString conf_file_name;
-    string suffix = string("-") + ruleset_name;
+    QString suffix = QString("-") + ruleset_name;
     if (ruleset_name == "__main__") suffix = "";
 
-    if (remote_conf_name.empty() && remote_fw_name.empty())
+    if (remote_conf_name.isEmpty() && remote_fw_name.isEmpty())
     {
         // local_conf_name may be a relative or absolute path. Return
         // just the file name
-        QFileInfo fi(local_conf_name.c_str());
-        return fi.fileName().toStdString();
+        QFileInfo fi(local_conf_name);
+        return fi.fileName();
     }
 
     QFileInfo fi;
 
-    if (!remote_conf_name.empty()) fi = QFileInfo(remote_conf_name.c_str());
+    if (!remote_conf_name.isEmpty()) fi = QFileInfo(remote_conf_name);
     else
-        if (!remote_fw_name.empty()) fi = QFileInfo(remote_fw_name.c_str());
+        if (!remote_fw_name.isEmpty()) fi = QFileInfo(remote_fw_name);
 
-    string new_name = fi.completeBaseName().toStdString() + suffix + ".conf";
+    QString new_name = fi.completeBaseName() + suffix + ".conf";
     QString path = fi.path();
 
     if (path == ".") return new_name;
-    else return path.toStdString() + "/" + new_name;
+    else return path + "/" + new_name;
 }
 
 string CompilerDriver_pf::printTimeout(FWOptions* options,
