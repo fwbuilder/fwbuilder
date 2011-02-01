@@ -1,3 +1,13 @@
+2011-01-31  Vadim Kurland  <vadim@netcitadel.com>
+
+	* RoutingCompiler_bsd_writers.cpp (_printAddr): see #1890 "Add
+	support for configuring static routes on BSD". Implemented support
+	for simple static routing rules. ECMP and routing via interface
+	(routing to directly reachable subnets) are not
+	supported. Generated script preserves static routing entries that
+	existed before and attempts to recover in case of error. Needs
+	testing.
+
 2011-01-30  vadim  <vadim@netcitadel.com>
 
 	* FWWindow_editor.cpp (clearEditorAndSearchPanels): see #2006

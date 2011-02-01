@@ -1554,13 +1554,16 @@ void RoutingModel::configure()
 {
     //if (fwbdebug) qDebug() << "RoutingModel::configure";
     supports_routing_itf  = false;
+    supports_metric  = false;
 
     if (getFirewall())
     {
         try {
             supports_routing_itf =
                 Resources::getTargetCapabilityBool(
-                        getFirewall()->getStr("platform"), "supports_routing_itf");
+                        getFirewall()->getStr("host_OS"), "supports_routing_itf");
+            supports_metric = Resources::getTargetCapabilityBool(
+                    getFirewall()->getStr("host_OS"), "supports_metric");
         } catch(FWException &ex)    {    }
     }
 
@@ -1570,9 +1573,11 @@ void RoutingModel::configure()
     if (supports_routing_itf)
         header << ColDesc(RuleElementRItf::TYPENAME, ColDesc::Object);
 
-    header  << ColDesc("Metric", ColDesc::Metric)
-            << ColDesc("Options", ColDesc::Options)
-            << ColDesc("Comment", ColDesc::Comment);
+    if (supports_metric)
+        header  << ColDesc("Metric", ColDesc::Metric);
+
+    header << ColDesc("Options", ColDesc::Options)
+           << ColDesc("Comment", ColDesc::Comment);
 }
 
 QVariant RoutingModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const

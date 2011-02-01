@@ -68,7 +68,8 @@ class MapTableFactory : public std::map<std::string, fwcompiler::TableFactory*> 
 
 namespace fwcompiler {
 
-    class CompilerDriver_pf : public CompilerDriver {
+    class CompilerDriver_pf : public CompilerDriver
+    {
 
 // Note that in the following maps ruleset name will be 
 // "__main__" for both main Policy and NAT rulesets.
@@ -100,6 +101,8 @@ namespace fwcompiler {
                                          const std::string &remote_file_name);
 
 protected:
+
+        std::string routing_script;
         
         std::string getConfFileName(const std::string &ruleset_name,
                                     const std::string &fwobjectname,

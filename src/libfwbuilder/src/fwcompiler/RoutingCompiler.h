@@ -141,6 +141,19 @@ namespace fwcompiler {
         DECLARE_ROUTING_RULE_PROCESSOR(rItfChildOfFw);
 
         /**
+         * some OS (e.g. BSD) allow me to set up static route via
+         * gateway or via interface, but not both in one rule.
+         */
+        DECLARE_ROUTING_RULE_PROCESSOR(interfaceOrGateway);
+        
+        /**
+         * for OS where we do not support ECMP, detect rules that
+         * define routes for the same destination via different
+         * gateways and abort.
+         */
+        DECLARE_ROUTING_RULE_PROCESSOR(sameDestinationDifferentGateways);
+        
+        /**
          * checks for competing rules
          */
 	class PrintRule;

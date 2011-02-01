@@ -22,6 +22,8 @@
 
       <capabilities>
         <supports_routing>False</supports_routing>
+        <supports_metric>False</supports_metric>
+        <supports_routing_itf>False</supports_routing_itf>
         <supports_advanced_interface_options>False</supports_advanced_interface_options>
       </capabilities>
 

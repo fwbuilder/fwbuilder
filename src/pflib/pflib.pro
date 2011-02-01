@@ -32,6 +32,8 @@ SOURCES	 =  TableFactory.cpp \
 			CompilerDriver_ipf_run.cpp \
 			CompilerDriver_ipfw.cpp \
 			CompilerDriver_ipfw_run.cpp \
+			RoutingCompiler_bsd.cpp \
+			RoutingCompiler_bsd_writers.cpp
 
 HEADERS	 = ../../config.h \
 			OSData.h \
@@ -51,6 +53,7 @@ HEADERS	 = ../../config.h \
 			CompilerDriver_pf.h \
 			CompilerDriver_ipf.h \
 			CompilerDriver_ipfw.h \
+			RoutingCompiler_bsd.h
 
 macx:LIBS  += $$LIBS_FWCOMPILER
 

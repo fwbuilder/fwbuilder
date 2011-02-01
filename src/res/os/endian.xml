@@ -34,6 +34,8 @@
 
       <capabilities>
         <supports_routing>True</supports_routing>
+        <supports_metric>True</supports_metric>
+        <supports_routing_itf>True</supports_routing_itf>
         <supports_advanced_interface_options>False</supports_advanced_interface_options>
       </capabilities>
 

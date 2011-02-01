@@ -501,7 +501,24 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     }
 
     return true;
+}
 
+bool RoutingCompiler::interfaceOrGateway::processNext()
+{
+    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+    tmp_queue.push_back(rule);
+    
+    RuleElementRItf *itfrel = rule->getRItf();
+    RuleElementRGtw *gtwrel = rule->getRGtw();
+
+    if (!itfrel->isAny() && !gtwrel->isAny())
+    {
+        compiler->abort(rule,
+                        "Use either gateway or interface in a routing rule "
+                        "but not both at the same time");
+    }
+
+    return true;
 }
 
 bool RoutingCompiler::rItfChildOfFw::processNext()
@@ -527,7 +544,8 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
         {            
             list<Firewall*> members;
             cluster->getMembersList(members);
-            if (std::find(members.begin(), members.end(), compiler->fw) != members.end())
+            if (std::find(members.begin(), members.end(),
+                          compiler->fw) != members.end())
                 return true;
         }
     }
@@ -542,6 +560,55 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     return true;
 }
 
+/*
+ * Call this after converting to atomic rules by DST to be sure there
+ * is just one object in DST.
+ */
+bool RoutingCompiler::sameDestinationDifferentGateways::processNext()
+{
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    // map destination to gateway.
+    std::map<string, string> dst_to_gw;
+    std::map<string, string> dst_to_rule;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k)
+    {
+        RoutingRule *rule = RoutingRule::cast( *k );
+        
+        RuleElementRDst *dstrel = rule->getRDst();
+        Address *dst = Address::cast(FWReference::getObject(dstrel->front()));
+        const InetAddr* dst_addr = dst->getAddressPtr();
+        const InetAddr* dst_netm = dst->getNetmaskPtr();
+        string key = dst_addr->toString() + "/" + dst_netm->toString();
+
+        RuleElementRItf *itfrel = rule->getRItf();
+        FWObject *itf = FWReference::cast(itfrel->front())->getPointer();
+    
+        RuleElementRGtw *gtwrel = rule->getRGtw();
+        Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
+        const InetAddr* gtw_addr = gtw->getAddressPtr();
+        const InetAddr* gtw_netm = gtw->getNetmaskPtr();
+        string val = gtw_addr->toString() + "/" + gtw_netm->toString();
+
+        if (!dst_to_gw[key].empty() && dst_to_gw[key] != val)
+        {
+            compiler->abort(
+                rule,
+                "Rules " + dst_to_rule[key] + " and " + rule->getLabel() +
+                " define routes to the same destination " + key +
+                " via different gateways. This configuration is not supported"
+                " for " + compiler->fw->getStr("host_OS"));
+        } else
+        {
+            dst_to_gw[key] = val;
+            dst_to_rule[key] = rule->getLabel();
+        }
+    }
+
+    return true;
+}
 
 bool RoutingCompiler::competingRules::processNext()
 {
@@ -611,10 +678,16 @@ bool RoutingCompiler::competingRules::processNext()
             
             if(false)
             {
-                // TODO_lowPrio: if ( !compiler->fw->getOptionsObject()->getBool ("equal_cost_multi_path") ) ...If multipath is turned off, perform this check.
-                //               iterate all gtwitf combis in the map dest_it->second and search for the current metric
+                // TODO_lowPrio: if (
+                // !compiler->fw->getOptionsObject()->getBool
+                // ("equal_cost_multi_path") ) ...If multipath is
+                // turned off, perform this check.
+
+                // iterate all gtwitf combis in the map
+                // dest_it->second and search for the current metric
                 
-                // ... but has the same metric => what route should I use for this destination? => abort
+                // ... but has the same metric => what route should I
+                // use for this destination? => abort
                     
                 string msg;
                 msg = "Routing rules " + gtwitf_it->second.second + " and " +
@@ -625,14 +698,14 @@ bool RoutingCompiler::competingRules::processNext()
                     "enable ECMP (Equal Cost MultiPath) routing";
                 compiler->abort( msg.c_str() );
             
-            } else {
-                
+            } else
+            {
                 // ... and different metric OR equal_cost_multi_path enabled => OK
-                
                 tmp_queue.push_back(rule);
             }
             
-            dest_it->second[combiId] = pair< string, string>( metric, rule->getLabel());
+            dest_it->second[combiId] =
+                pair< string, string>( metric, rule->getLabel());
         }
         
     } else {

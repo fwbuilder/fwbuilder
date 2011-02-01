@@ -67,4 +67,6 @@ $PFCTL -F states
 {{endif}}
 {{endif}}
 
+{{$routing_script}}
+
 epilog_commands

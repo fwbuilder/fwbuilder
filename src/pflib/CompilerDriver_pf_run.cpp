@@ -43,6 +43,7 @@
 #include "NATCompiler_pf.h"
 #include "TableFactory.h"
 #include "Preprocessor_pf.h"
+#include "RoutingCompiler_bsd.h"
 
 #include "OSConfigurator_openbsd.h"
 #include "OSConfigurator_freebsd.h"
@@ -56,6 +57,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 
 #include "fwcompiler/Preprocessor.h"
 #include "fwcompiler/exceptions.h"
@@ -172,14 +174,19 @@ QString CompilerDriver_pf::assembleFwScript(Cluster *cluster,
     Configlet script_skeleton(fw, "pf", "script_skeleton");
     Configlet top_comment(fw, "pf", "top_comment");
 
+    script_skeleton.setVariable("routing_script", 
+                                QString::fromUtf8(routing_script.c_str()));
+
     assembleFwScriptInternal(
         cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
 
     if (fw->getStr("platform") == "pf")
     {
-        script_skeleton.setVariable("pf_flush_states", options->getBool("pf_flush_states"));
-        script_skeleton.setVariable("pf_version_ge_4_x", // fw->getStr("version")=="4.x");
-                                    XMLTools::version_compare(fw->getStr("version"), "4.0")>=0);
+        script_skeleton.setVariable(
+            "pf_flush_states", options->getBool("pf_flush_states"));
+        script_skeleton.setVariable(
+            "pf_version_ge_4_x", // fw->getStr("version")=="4.x");
+            XMLTools::version_compare(fw->getStr("version"), "4.0")>=0);
 
     } else
     {
@@ -267,6 +274,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
+        int routing_rules_count = 0;
 
         findImportedRuleSets(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
@@ -511,6 +520,35 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             }
         }
 
+        std::auto_ptr<RoutingCompiler_bsd> routing_compiler(
+            new RoutingCompiler_bsd(objdb, fw, false, oscnf.get()));
+
+        RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
+        if (routing)
+        {
+            routing_compiler->setSourceRuleSet(routing);
+            routing_compiler->setRuleSetName(routing->getName());
+
+            routing_compiler->setSingleRuleCompileMode(single_rule_id);
+            routing_compiler->setDebugLevel( dl );
+            if (rule_debug_on) routing_compiler->setDebugRule(drp);
+            routing_compiler->setVerbose( verbose );
+            if (inTestMode()) routing_compiler->setTestMode();
+            if (inEmbeddedMode()) routing_compiler->setEmbeddedMode();
+
+            if ( (routing_rules_count=routing_compiler->prolog()) > 0 )
+            {
+                routing_compiler->compile();
+                routing_compiler->epilog();
+            }
+
+            if (routing_compiler->haveErrorsAndWarnings())
+                all_errors.push_back(routing_compiler->getErrors("").c_str());
+
+            routing_script += routing_compiler->getCompiledScript();
+        }
+
+
         if (haveErrorsAndWarnings())
         {
             all_errors.push_front(getErrors("").c_str());
@@ -529,6 +567,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 ostringstream *strm = fi->second;
                 pf_str << table_factories[ruleset_name]->PrintTables();
                 pf_str << QString::fromUtf8(strm->str().c_str());
+                pf_str << QString::fromUtf8(routing_script.c_str());
             }
 
             // clear() calls destructors of all elements in the container
