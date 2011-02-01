@@ -4,16 +4,17 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3455
 #
-#  Generated Mon Jan 31 18:35:16 2011 PST by vadim
+#  Generated Mon Jan 31 18:35:07 2011 PST by vadim
 #
-# files: * firewall3.fw
-# files:   firewall3.conf
+# files: * firewall100.fw /etc/fw/pf.fw
+# files:   firewall100.conf /etc/fw/path\ with\ space/pf.conf
 #
-# Compiled for pf 
+# Compiled for pf 4.7
 #
-# testing NAT rules with multiple objects in TSrc and TDst and NAT rule options
+# routing rules
 
-# firewall3:Policy:0: warning: Changing rule direction due to self reference
+# firewall100:Routing:1: error: Gateway and interface are both empty in the rule
+# firewall100:Routing:1: error: Rules 0 (main) and 1 (main) define routes to the same destination 0.0.0.0/0.0.0.0 via different gateways. This configuration is not supported for openbsd
 
 
 
@@ -154,12 +155,11 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    update_addresses_of_interface "le0 22.22.22.21/0xffffff00 22.22.22.22/0xffffff00 22.22.22.0/0xffffff00 22.22.22.1/0xffffff00" ""
-    update_addresses_of_interface "le1 192.168.1.1/0xffffff00" ""
-    update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
+    update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
+    update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Jan 31 18:35:16 2011 by vadim"
+log "Activating firewall script generated Mon Jan 31 18:35:07 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -167,10 +167,102 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    ${FWDIR}/firewall3.conf || exit 1
+    /etc/fw/path\ with\ space/pf.conf || exit 1
 
 
 
 
+
+# ============== ROUTING RULES ============== 
+
+TMPDIRNAME="/tmp/.fwbuilder.tempdir.$$"
+TMPFILENAME="$TMPDIRNAME/.fwbuilder.out"
+(umask 077 && mkdir $TMPDIRNAME) || exit 1
+
+#
+# This function stops stdout redirection
+# and sends previously saved output to terminal
+restore_script_output()
+{
+  exec 1>&3 2>&1
+  cat $TMPFILENAME
+  rm -rf $TMPDIRNAME
+}
+
+# if any routing rule fails we do our best to prevent freezing the firewall
+route_command_error()
+{
+  echo "Error: Routing rule $1 couldn't be activated"
+  echo "Recovering previous routing configuration..."
+  # delete current routing rules
+  route -n show -inet | grep S | grep -Ev 'lo0' | \
+      while read route gw rest; do route delete $route $gw; done
+  # restore old routing rules
+  (IFS="
+"; for route_cmd in $oldRoutes; do (IFS=' '; $route_cmd); done)
+  echo "...done"
+  restore_script_output
+  epilog_commands
+  exit 1
+}
+
+# redirect output to prevent ssh session from stalling
+exec 3>&1
+exec 1> $TMPFILENAME
+exec 2>&1
+
+oldRoutes=$(route -n show -inet |  awk '{printf "route add %s %s\n",$1,$2;}')
+
+echo "Deleting routing rules previously set by user space processes..."
+route -n show -inet | grep S | grep -Ev {{route_filter}} | \
+    while read route gw rest; do route delete $route $gw; done
+    
+echo "Activating routing rules..."
+# 
+# Rule 0 (main)
+# 
+echo "Routing rule 0 (main)"
+# 
+# setting default via gateway
+# line 2 comment
+#
+route add default 10.1.1.1 || route_command_error "0 (main)"
+
+# 
+# Rule 1 (main)
+# 
+echo "Routing rule 1 (main)"
+# 
+# empty rule
+#
+# firewall100:Routing:1: error: Rules 0 (main) and 1 (main) define routes to the same destination 0.0.0.0/0.0.0.0 via different gateways. This configuration is not supported for openbsd
+route add default || route_command_error "1 (main)"
+
+# 
+# Rule 2 (main)
+# 
+echo "Routing rule 2 (main)"
+# 
+route add 192.168.171.2 10.1.1.1 || route_command_error "2 (main)"
+
+# 
+# Rule 3 (main)
+# 
+echo "Routing rule 3 (main)"
+# 
+route add 22.22.22.0/24 10.1.1.1 || route_command_error "3 (main)"
+
+# 
+# Rule 4 (main)
+# 
+echo "Routing rule 4 (main)"
+# 
+route add 22.22.22.0/24 10.1.1.1 || route_command_error "4 (main)"
+
+route add 33.33.33.0/24 10.1.1.1 || route_command_error "4 (main)"
+
+
+restore_script_output
+echo "...done."
 
 epilog_commands

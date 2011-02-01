@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3445
+#  Firewall Builder  fwb_pf v4.2.0.3455
 #
-#  Generated Mon Jan 24 18:26:19 2011 PST by vadim
+#  Generated Mon Jan 31 18:35:20 2011 PST by vadim
 #
 # files: * firewall39.fw pf.fw
 # files:   firewall39.conf pf.conf
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 24 18:26:19 2011 by vadim"
+log "Activating firewall script generated Mon Jan 31 18:35:20 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -97,6 +97,8 @@ $PFCTL  -a rule3_branch \
 $PFCTL  -a rule5_branch \
      -f \
     ${FWDIR}/pf-rule5_branch.conf || exit 1
+
+
 
 
 
