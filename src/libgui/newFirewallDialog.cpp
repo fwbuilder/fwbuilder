@@ -1139,7 +1139,10 @@ void newFirewallDialog::finishClicked()
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
             oi->setSecurityLevel(sec_level);
-            oi->setStr("network_zone", network_zone_str_id);
+
+            // only set network zone if it is supported and is not empty. See #2014
+            if (!network_zone_str_id.empty())
+                oi->setStr("network_zone", network_zone_str_id);
 
             std::auto_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(nfw));
