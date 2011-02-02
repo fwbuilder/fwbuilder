@@ -143,25 +143,31 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
 
 QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
-    QFileInfo fw_file_info(fw_file_name);
+    //QFileInfo fw_file_info(fw_file_name);
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
+    script << MANIFEST_MARKER
+           << "* "
+           << escapeFileName(fw_file_name);
+//           << escapeFileName(fw_file_info.fileName());
+
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
+
     if (!remote_name.empty())
-        script << " " << this->escapeFileName(remote_name.c_str());
+        script << " " << escapeFileName(remote_name.c_str());
     script << "\n";
 
     for (map<QString,QString>::iterator i=conf_files.begin();
          i!=conf_files.end(); ++i)
     {
         QString ruleset_name = i->first;
-        QString file_name = QFileInfo(i->second).fileName();
+//        QString file_name = QFileInfo(i->second).fileName();
+        QString file_name = i->second;
         QString remote_file_name = remote_conf_files[ruleset_name];
-        script << MANIFEST_MARKER << "  " << this->escapeFileName(file_name);
+        script << MANIFEST_MARKER << "  " << escapeFileName(file_name);
         if (!remote_file_name.isEmpty() && remote_file_name != file_name)
-            script << " " << this->escapeFileName(remote_file_name);
+            script << " " << escapeFileName(remote_file_name);
         script << "\n";
     }
     return script_buffer;
@@ -227,23 +233,21 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = QString::fromUtf8(fw->getName().c_str());
 
-        fw_file_name = determineOutputFileName(
-            cluster, fw, !cluster_id.empty(), ".fw");
+        determineOutputFileNames(cluster, fw, !cluster_id.empty());
 
-        conf_file_name = QString::fromUtf8(options->getStr("conf_file").c_str());
-
-        if (!fw_file_name.isEmpty() && conf_file_name.isEmpty())
-        {
-            QFileInfo fi(fw_file_name);
-            if (fi.isRelative())
-            {
-                conf_file_name = QString(fi.completeBaseName() + ".conf");
-            } else
-            {
-                conf_file_name = QString(fi.path() + "/" +
-                                         fi.completeBaseName() + ".conf");
-            }
-        }
+        // conf_file_name = QString::fromUtf8(options->getStr("conf1_file").c_str());
+        // if (!fw_file_name.isEmpty() && conf_file_name.isEmpty())
+        // {
+        //     QFileInfo fi(fw_file_name);
+        //     if (fi.isRelative())
+        //     {
+        //         conf_file_name = QString(fi.completeBaseName() + ".conf");
+        //     } else
+        //     {
+        //         conf_file_name = QString(fi.path() + "/" +
+        //                                  fi.completeBaseName() + ".conf");
+        //     }
+        // }
 
         string firewall_dir = options->getStr("firewall_dir");
         if (firewall_dir=="") firewall_dir="/etc/fw";
@@ -434,8 +438,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 all_errors.push_back(n.getErrors("").c_str());
 
-                conf_files[ruleset_name] = getConfFileName(
-                    ruleset_name, current_firewall_name, conf_file_name);
+                conf_files[ruleset_name] = getConfFileNameForRuleset(
+                    ruleset_name, conf1_file_name);
 
 
                 remote_conf_files[ruleset_name] = getRemoteConfFileName(
@@ -524,8 +528,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 all_errors.push_back(c.getErrors("").c_str());
 
-                conf_files[ruleset_name] = getConfFileName(
-                    ruleset_name, current_firewall_name, conf_file_name);
+                conf_files[ruleset_name] = getConfFileNameForRuleset(
+                    ruleset_name, conf1_file_name);
 
                 remote_conf_files[ruleset_name] = getRemoteConfFileName(
                     ruleset_name,

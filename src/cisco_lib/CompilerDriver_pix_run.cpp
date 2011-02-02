@@ -106,8 +106,12 @@ QString CompilerDriver_pix::assembleManifest(Cluster *cluster, Firewall* fw, boo
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    QString ofname = determineOutputFileName(cluster, fw, cluster_member, ".fw");
-    script << "!" << MANIFEST_MARKER << "* " << this->escapeFileName(ofname) << endl;
+
+    determineOutputFileNames(cluster, fw, cluster_member);
+
+    script << "!" << MANIFEST_MARKER
+           << "* " << this->escapeFileName(fw_file_name) << endl;
+
     return script_buffer;
 }
 
@@ -232,8 +236,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 #endif
 
 
-    QString ofname = determineOutputFileName(
-        cluster, fw, !cluster_id.empty(), ".fw");
+    determineOutputFileNames(cluster, fw, !cluster_id.empty());
+
     FWOptions* options = fw->getOptionsObject();
 
     QString script_buffer;
@@ -505,7 +509,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
-        ofname = getAbsOutputFileName(ofname);
+        QString ofname = getAbsOutputFileName(fw_file_name);
 
         info("Output file name: " + ofname.toStdString());
         QFile fw_file(ofname);

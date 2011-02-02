@@ -8,6 +8,7 @@ include(../../qmake.inc)
 TEMPLATE = lib
 
 SOURCES	 =  CompilerDriver.cpp \
+			CompilerDriver_files.cpp \
 			CompilerDriver_compile.cpp \
 			CompilerDriver_generators.cpp \
 			Configlet.cpp \

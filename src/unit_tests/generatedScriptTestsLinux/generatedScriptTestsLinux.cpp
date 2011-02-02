@@ -499,6 +499,8 @@ void GeneratedScriptTest::minusOTest1()
     QStringList args;
     args << "-o" <<  full_output_file_name << "test1";
 
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
     CompilerDriver_ipt driver(objdb);
     driver.setEmbeddedMode();
     CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
@@ -513,7 +515,7 @@ void GeneratedScriptTest::minusOTest1()
     QString res = Configlet::findConfigletInFile(
         "top_comment", full_output_file_name);
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
     CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
     delete objdb;
 }
@@ -532,6 +534,8 @@ void GeneratedScriptTest::minusOTest2()
     QStringList args;
     args << "-o" <<  full_output_file_name << "test1";
 
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
     CompilerDriver_ipt driver(objdb);
     driver.setEmbeddedMode();
     CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
@@ -546,7 +550,7 @@ void GeneratedScriptTest::minusOTest2()
     QString res = Configlet::findConfigletInFile(
         "top_comment", full_output_file_name);
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * foo1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
     CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") == -1);
     CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
     delete objdb;
@@ -562,6 +566,8 @@ void GeneratedScriptTest::minusDminusOTest()
     loadDataFile("test1.fwb");
 
     QString full_output_file_name = QString("%1/test1.fw").arg(current.path());
+
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
 
     QStringList args;
     args << "-d" <<  "/tmp" << "-o" << full_output_file_name << "test1";
@@ -580,9 +586,119 @@ void GeneratedScriptTest::minusDminusOTest()
     QString res = Configlet::findConfigletInFile(
         "top_comment", full_output_file_name);
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
     CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
     delete objdb;
 
     QDir::setCurrent(current.path());
 }
+
+// output file name is set in firewall settins to foo.fw
+void GeneratedScriptTest::outputFileNameOptionTest1()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QString full_output_file_name = "foo.fw";
+    QStringList args;
+    args << "test1-1";
+
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") == -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+}
+
+// output file name is set in firewall settins to /tmp/foo.fw
+void GeneratedScriptTest::outputFileNameOptionTest2()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QString full_output_file_name = "/tmp/foo.fw";
+    QStringList args;
+    args << "test1-2";
+
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") == -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+}
+
+// output file name is set in firewall settins to foo.fw but is overridden
+// by -o option to a file name with absolute path
+void GeneratedScriptTest::outputFileNameOptionTest3()
+{
+    QDir current = QDir::current();
+
+    objdb = new FWObjectDatabase();
+
+    loadDataFile("test1.fwb");
+
+    QString full_output_file_name = QString("%1/bar.fw").arg(current.path());
+
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
+    QStringList args;
+    args << "-o" << full_output_file_name << "test1-1";
+
+    if (QFile::exists(full_output_file_name)) QFile::remove(full_output_file_name);
+
+    CompilerDriver_ipt driver(objdb);
+    driver.setEmbeddedMode();
+    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
+                           driver.prepare(args) == true);
+    driver.compile();
+    // compiler should have created file full_output_file_name
+    QFileInfo fi(full_output_file_name);
+    CPPUNIT_ASSERT_MESSAGE("Generated file " +
+                           full_output_file_name.toStdString() + " not found",
+                           fi.exists() == true);
+
+    QString res = Configlet::findConfigletInFile(
+        "top_comment", full_output_file_name);
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + full_output_file_name) != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test1.fw") == -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * test2.fw") == -1);
+    delete objdb;
+}
+

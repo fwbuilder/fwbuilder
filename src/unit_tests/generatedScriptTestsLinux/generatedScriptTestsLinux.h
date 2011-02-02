@@ -63,6 +63,9 @@ public:
     void minusOTest1();
     void minusOTest2();
     void minusDminusOTest();
+    void outputFileNameOptionTest1();
+    void outputFileNameOptionTest2();
+    void outputFileNameOptionTest3();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
     CPPUNIT_TEST(ManifestTest);
@@ -79,6 +82,10 @@ public:
     CPPUNIT_TEST(minusOTest1);
     CPPUNIT_TEST(minusOTest2);
     CPPUNIT_TEST(minusDminusOTest);
+    CPPUNIT_TEST(outputFileNameOptionTest1);
+    CPPUNIT_TEST(outputFileNameOptionTest2);
+    CPPUNIT_TEST(outputFileNameOptionTest3);
+    
     CPPUNIT_TEST_SUITE_END();
 
 };

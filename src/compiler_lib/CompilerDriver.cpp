@@ -160,7 +160,7 @@ bool CompilerDriver::configure(const QStringList &args)
         if (arg == "-o")
         {
             idx++;
-            fw_file_name = args.at(idx);
+            file_name_setting_from_command_line = args.at(idx);
             continue;
         }
         if (arg == "-O")
@@ -614,49 +614,6 @@ Firewall* CompilerDriver::locateObject()
         obj = objdb->findFirewallByName(fwobjectname.toUtf8().constData());
 
     return obj;
-}
- 
-/**
- *  Determine output file name. If compiling standalone firewall, the
- *  name can be enforced via -o command line switch in which case it
- *  is in fw_file_name already. If not, determine automatically using
- *  firewall name.
- * 
- *  If compiling a cluster, the name could have been enforced via -O
- *  command line switch, in which case it will be found in
- *  member_file_names. If not, determine automatically using member
- *  firewall name.
- * 
- *  Returns determined output file name
- */
-QString CompilerDriver::determineOutputFileName(Cluster *cluster,
-                                                Firewall *current_fw,
-                                                bool cluster_member,
-                                                const QString &ext)
-{
-    QString current_firewall_name = QString::fromUtf8(
-        current_fw->getName().c_str());
-    if (!cluster_member)
-    {
-        // standalone firewall
-        if (fw_file_name.isEmpty())
-        {
-            return current_firewall_name + ext;
-        } else
-            return fw_file_name;
-    }
-    
-    // member of a cluster
-    QString fw_id = objdb->getStringId(current_fw->getId()).c_str();
-    if (member_file_names.contains(fw_id))
-        return member_file_names[fw_id];
-    else
-    {
-        if (prepend_cluster_name_to_output_file && cluster!=NULL)
-            return QString("%1_%2%3").arg(cluster->getName().c_str())
-                .arg(current_firewall_name).arg(ext);
-    }
-    return current_firewall_name + ext;
 }
 
 /* Find rulesets that belong to other firewall objects but are
@@ -1207,32 +1164,5 @@ QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_cod
     QString res2 = res.split("\n", QString::SkipEmptyParts).join("").replace(" ", "");
     if (res2.isEmpty()) res = all_errors.join("\n");
     return res;
-}
-
-/*
- * Replace ' ' with '\ ' in the string. 
- *
- * DO NOT CHANGE WITHOUT EXTENSIVE TESTING OF THE POLICY INSTALLER !
- *
- * This is used in different places to deal with generated files with
- * spaces in the name. This can happen if firewall object name has
- * spaces. This method of escaping the space is used when we generate
- * manifest line in the .fw file to find other generated files. The
- * same method is also used to generate command line arguments for scp
- * where spaces cause all sorts of problems, for example scp can't
- * find the file to copy or issues "ambiguous target" error when
- * remote file name has a space. Finally, the same method is used to
- * escape space in the file name before using it for the configlet
- * variable because this name is used in the shell script that we run
- * on the firewall.
- */
-QString CompilerDriver::escapeFileName(QString fileName)
-{
-    return fileName.replace(' ', "\\ ");
-}
-
-QString CompilerDriver::unescapeFileName(QString fileName)
-{
-    return fileName.replace("\\ ", " ");
 }
 

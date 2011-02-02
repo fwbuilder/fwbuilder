@@ -121,7 +121,7 @@ void GeneratedScriptTest::ManifestTest_1()
     CPPUNIT_ASSERT(res.indexOf("# files:   ipf1-nat.conf") != -1);
     delete objdb;
 }
-
+ 
 void GeneratedScriptTest::ManifestTest_2()
 {
     /*
@@ -131,12 +131,12 @@ void GeneratedScriptTest::ManifestTest_2()
      * produces file with standard name.
      */
     objdb = new FWObjectDatabase();
-    runCompiler("test1.fwb", "ipf2", "ipf2.fw");
-    QString res = Configlet::findConfigletInFile("top_comment", "ipf2.fw");
+    runCompiler("test1.fwb", "ipf2", "ipf2-1.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "ipf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-ipf.conf") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-nat.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-nat.conf") != -1);
     delete objdb;
 }
 
@@ -149,12 +149,12 @@ void GeneratedScriptTest::ManifestTest_3()
      * produces file with standard name.
      */
     objdb = new FWObjectDatabase();
-    runCompiler("test1.fwb", "ipf2a", "ipf2.fw");
-    QString res = Configlet::findConfigletInFile("top_comment", "ipf2.fw");
+    runCompiler("test1.fwb", "ipf2a", "ipf2-1");
+    QString res = Configlet::findConfigletInFile("top_comment", "ipf2-1");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-ipf.conf") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-nat.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-nat.conf") != -1);
     delete objdb;
 }
 
@@ -168,9 +168,11 @@ void GeneratedScriptTest::ManifestTest_4()
     runCompiler("test1.fwb", "ipf2", "ipf2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "ipf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-ipf.conf") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1-nat.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + option_o) != -1);
+    QString ipf_file = QDir::currentPath() + "/ipf2-1-ipf.conf";
+    QString nat_file = QDir::currentPath() + "/ipf2-1-nat.conf";
+    CPPUNIT_ASSERT(res.indexOf("# files:   " + ipf_file) != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   " + nat_file) != -1);
     delete objdb;
 }
 
@@ -243,16 +245,16 @@ void GeneratedScriptTest::ActivationCommandsTest_1()
 void GeneratedScriptTest::ActivationCommandsTest_2()
 {
     objdb = new FWObjectDatabase();
-    QString res = Configlet::findConfigletInFile("activation", "ipf2.fw");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-ipf.conf") != -1);
+    QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw");
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-1-ipf.conf") != -1);
     delete objdb;
 }
 
 void GeneratedScriptTest::ActivationCommandsTest_3()
 {
     objdb = new FWObjectDatabase();
-    QString res = Configlet::findConfigletInFile("activation", "ipf2.fw");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-ipf.conf") != -1);
+    QString res = Configlet::findConfigletInFile("activation", "ipf2-1");
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-1-ipf.conf") != -1);
     delete objdb;
 }
 

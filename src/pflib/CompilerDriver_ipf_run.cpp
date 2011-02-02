@@ -103,41 +103,48 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     FWOptions* options = fw->getOptionsObject();
 
-    //qDebug() << "CompilerDriver_ipf::assembleManifest fw_file_name=" << fw_file_name;
+    QString ipf_file_name = getConfFileNameForRuleset("ipf", fw_file_name, "conf");
+    QString nat_file_name = getConfFileNameForRuleset("nat", fw_file_name, "conf");
 
-    QFileInfo fw_file_info(fw_file_name);
-    QString ipf_file_name = fw_file_info.completeBaseName() + "-ipf.conf";
-    QString nat_file_name = fw_file_info.completeBaseName() + "-nat.conf";
-    if (fw_file_info.path() != ".")
-    {
-        ipf_file_name = fw_file_info.path() + "/" + ipf_file_name;
-        nat_file_name = fw_file_info.path() + "/" + nat_file_name;
-    }
-    QString remote_ipf_name = options->getStr("ipf_conf_file_name_on_firewall").c_str();
+    QString remote_ipf_name = QString::fromUtf8(
+        options->getStr("ipf_conf_file_name_on_firewall").c_str());
     if (remote_ipf_name.isEmpty()) remote_ipf_name = ipf_file_name;
 
-    QString remote_nat_name = options->getStr("nat_conf_file_name_on_firewall").c_str();
+    QString remote_nat_name = QString::fromUtf8(
+        options->getStr("nat_conf_file_name_on_firewall").c_str());
     if (remote_nat_name.isEmpty()) remote_nat_name = nat_file_name;
 
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER << "* " << this->escapeFileName(fw_file_info.fileName());
+    script << MANIFEST_MARKER
+           << "* "
+           << this->escapeFileName(fw_file_name);
+
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
+    if (!remote_name.empty())
+        script << " " << this->escapeFileName(remote_name.c_str());
     script << endl;
 
     if (have_filter) 
     {
-        script << MANIFEST_MARKER << "  " << this->escapeFileName(QFileInfo(ipf_file_name).fileName());
-        if (remote_ipf_name != ipf_file_name) script << " " << this->escapeFileName(remote_ipf_name);
+        script << MANIFEST_MARKER
+               << "  "
+               << this->escapeFileName(ipf_file_name);
+
+        if (remote_ipf_name != ipf_file_name)
+            script << " " << this->escapeFileName(remote_ipf_name);
         script << endl;
     }
 
     if (have_nat) 
     {
-        script << MANIFEST_MARKER << "  " << this->escapeFileName(QFileInfo(nat_file_name).fileName());
-        if (remote_nat_name != nat_file_name) script << " " << this->escapeFileName(remote_nat_name);
+        script << MANIFEST_MARKER
+               << "  "
+               << this->escapeFileName(nat_file_name);
+
+        if (remote_nat_name != nat_file_name)
+            script << " " << this->escapeFileName(remote_nat_name);
         script << endl;
     }
 
@@ -191,7 +198,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = fw->getName().c_str();
 
-        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
+        determineOutputFileNames(cluster, fw, !cluster_id.empty());
 
         QFileInfo finfo(fw_file_name);
         QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";

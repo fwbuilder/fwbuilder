@@ -33,6 +33,8 @@
 #include "Help.h"
 #include "FWCmdChange.h"
 
+#include "CompilerDriver.h"
+
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
@@ -92,20 +94,17 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
         fwopt->setBool("generate_shell_script", true);
     }
 
-    QString init_script_name = fwopt->getStr("output_file").c_str();
-    QString conf_file_name = fwopt->getStr("conf_file").c_str();
+    QString init_script_name = QString::fromUtf8(
+        fwopt->getStr("output_file").c_str());
+    QString conf_file_name = QString::fromUtf8(
+        fwopt->getStr("conf1_file").c_str());
+
     if (!init_script_name.isEmpty() && conf_file_name.isEmpty())
     {
-        QFileInfo fi(init_script_name);
-        if (fi.isRelative())
-        {
-            conf_file_name = QString(fi.completeBaseName() + ".conf");
-        } else
-        {
-            conf_file_name = QString(fi.path() + "/" +
-                                     fi.completeBaseName() + ".conf");
-        }
-        fwopt->setStr("conf_file", conf_file_name.toStdString());
+        conf_file_name =
+            fwcompiler::CompilerDriver::getConfFileNameFromFwFileName(
+                init_script_name, ".conf");
+        fwopt->setStr("conf1_file", conf_file_name.toUtf8().constData());
     }
 
     data.registerOption(m_dialog->ipv4before, fwopt,
@@ -226,7 +225,7 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
                          "generate_rc_conf_file");
 
     data.registerOption( m_dialog->outputFileName, fwopt, "output_file");
-    data.registerOption( m_dialog->confFileName, fwopt, "conf_file");
+    data.registerOption( m_dialog->confFileName, fwopt, "conf1_file");
 
     data.registerOption( m_dialog->fileNameOnFw, fwopt,
                          "script_name_on_firewall");

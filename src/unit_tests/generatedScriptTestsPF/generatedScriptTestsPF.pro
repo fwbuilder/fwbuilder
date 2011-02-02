@@ -7,7 +7,8 @@ SOURCES = main_generatedScriptTestsPF.cpp \
 TARGET = generatedScriptTestsPF
 
 run_tests.commands = echo "Running tests..." && \
-    rm -f *.fw *.conf && \
+    rm -f *.fw *.conf tmp/*.fw tmp/*.conf && \
+    mkdir -p tmp && \
     ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
 

@@ -79,9 +79,14 @@ QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    script << MANIFEST_MARKER << "* " << this->escapeFileName(QFileInfo(fw_file_name).fileName());
+    script << MANIFEST_MARKER
+           << "* "
+           << this->escapeFileName(fw_file_name);
+//           << this->escapeFileName(QFileInfo(fw_file_name).fileName());
+
     string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << this->escapeFileName(remote_name.c_str());
+    if (!remote_name.empty())
+        script << " " << this->escapeFileName(remote_name.c_str());
     script << "\n";
     script << "#" << endl;
     script << "#" << endl;
@@ -134,7 +139,7 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = fw->getName().c_str();
 
-        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
+        determineOutputFileNames(cluster, fw, !cluster_id.empty());
 
         string s;
 

@@ -68,28 +68,32 @@ CompilerDriver* CompilerDriver_pf::clone()
     return new_cd;
 }
 
-QString CompilerDriver_pf::getConfFileName(const QString &ruleset_name,
-                                           const QString &fwobjectname,
-                                           const QString &conf_file_name)
+/*
+ * Generate file name for the ruleset .conf file using general conf
+ * file name as a prototype.
+ */
+QString CompilerDriver_pf::getConfFileNameForRuleset(const QString &ruleset_name,
+                                                     const QString &conf_file_name,
+                                                     const QString &ext)
 {
+    assert(!conf_file_name.isEmpty());
+
+    if (ruleset_name == "__main__") return conf_file_name;
+
     QString suffix = QString("-") + ruleset_name;
-    if (ruleset_name == "__main__") suffix = "";
 
-    if (conf_file_name.isEmpty())
-    {
-        return fwobjectname + suffix + ".conf";
-    }
-
-    QString new_name;
     QFileInfo fi(conf_file_name);
-    if (fi.isRelative())
-    {
-        new_name = QString(fi.completeBaseName() + suffix + ".conf");
-    } else
-    {
-        new_name = QString(fi.path() + "/" + fi.completeBaseName() + suffix + ".conf");
-    }
+    QString path = fi.path();
 
+    // qDebug() << "getConfFileNameForRuleset:"
+    //          << "conf_file_name=" << conf_file_name
+    //          << "path=" << path;
+
+    QString using_suffix = fi.completeSuffix();
+    if (!ext.isEmpty()) using_suffix = ext;
+
+    QString new_name = fi.completeBaseName() + suffix + "." + using_suffix;
+    if (!path.isEmpty() && path != ".") new_name = path + "/" + new_name;
     return new_name;
 }
 

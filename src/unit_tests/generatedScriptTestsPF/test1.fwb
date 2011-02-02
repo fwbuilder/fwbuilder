@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1296596678" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1296610449" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -598,7 +598,7 @@
           <Option name="check_shading">true</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file">ipf2-1.conf</Option>
+          <Option name="conf1_file">ipf2-1.conf</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">False</Option>
@@ -646,7 +646,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2540X25033" host_OS="openbsd" inactive="False" lastCompiled="1284659421" lastInstalled="0" lastModified="1286412811" platform="pf" version="" name="pf3" comment="" ro="False">
+      <Firewall id="id2540X25033" host_OS="openbsd" inactive="False" lastCompiled="1284659421" lastInstalled="0" lastModified="1296614372" platform="pf" version="" name="pf3" comment="" ro="False">
         <NAT id="id2567X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2768X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -715,6 +715,7 @@
           <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
           <Option name="conf_file_name_on_firewall">/etc/fw/pf3.conf</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -726,6 +727,7 @@
           <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
+          <Option name="generate_rc_conf_file">False</Option>
           <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
@@ -823,7 +825,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2685X25033" host_OS="openbsd" inactive="False" lastCompiled="1284659501" lastInstalled="0" lastModified="1286412025" platform="pf" version="" name="pf4" comment="" ro="False">
+      <Firewall id="id2685X25033" host_OS="openbsd" inactive="False" lastCompiled="1284659501" lastInstalled="0" lastModified="1296614369" platform="pf" version="" name="pf4" comment="" ro="False">
         <NAT id="id2712X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2782X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -892,6 +894,7 @@
           <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
           <Option name="conf_file_name_on_firewall"></Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -903,6 +906,7 @@
           <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
+          <Option name="generate_rc_conf_file">False</Option>
           <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
@@ -1000,7 +1004,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2541X28067" host_OS="openbsd" inactive="False" lastCompiled="1284659208" lastInstalled="0" lastModified="1286406071" platform="pf" version="" name="pf2a" comment="output file name is set to ipf2a-1" ro="False">
+      <Firewall id="id2541X28067" host_OS="openbsd" inactive="False" lastCompiled="1284659208" lastInstalled="0" lastModified="1296614377" platform="pf" version="" name="pf2a" comment="output file name is set to ipf2a-1" ro="False">
         <NAT id="id2568X28067" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2740X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1066,16 +1070,22 @@
           <Option name="activationCmd"></Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
-          <Option name="check_shading">true</Option>
+          <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file">ipf2-1.conf</Option>
-          <Option name="configure_interfaces">true</Option>
+          <Option name="conf1_file">ipf2-1.conf</Option>
+          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="configure_carp_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">False</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
+          <Option name="generate_rc_conf_file">False</Option>
           <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
@@ -1097,7 +1107,7 @@
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
           <Option name="loopback_interface">lo0</Option>
-          <Option name="manage_virtual_addr">true</Option>
+          <Option name="manage_virtual_addr">True</Option>
           <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="nat_conf_file_name_on_firewall"></Option>
@@ -1105,11 +1115,67 @@
           <Option name="optimize">False</Option>
           <Option name="output_file">ipf2-1</Option>
           <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
           <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
           <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">False</Option>
+          <Option name="pf_scrub_reassemble_tcp">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
           <Option name="script_name_on_firewall"></Option>
@@ -1186,7 +1252,7 @@
           <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file">pf.conf</Option>
+          <Option name="conf1_file">pf5.conf</Option>
           <Option name="conf_file_name_on_firewall"></Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -1365,7 +1431,7 @@
           <Option name="check_shading">True</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
-          <Option name="conf_file">/tmp/pf.conf</Option>
+          <Option name="conf1_file">/tmp/pf6.conf</Option>
           <Option name="conf_file_name_on_firewall">/etc/pf.conf</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -1471,6 +1537,185 @@
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
           <Option name="script_name_on_firewall">/etc/fw/pf6.fw</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id3230X6759" host_OS="openbsd" inactive="False" lastCompiled="1284659501" lastInstalled="0" lastModified="1296614357" platform="pf" version="" name="pf7" comment="" ro="False">
+        <NAT id="id3274X6759" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id3276X6759" disabled="False" group="" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id3243X6759" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id3245X6759" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3310X6759" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3238X6759" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="le0" comment="" ro="False">
+          <IPv4 id="id3241X6759" name="pf7:le0:ip" comment="" ro="False" address="10.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="conf1_file">tmp/pf.conf</Option>
+          <Option name="conf_file_name_on_firewall">/etc/pf.conf</Option>
+          <Option name="configure_carp_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">False</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="dynAddr">False</Option>
+          <Option name="eliminate_duplicates">True</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="generate_rc_conf_file">False</Option>
+          <Option name="generate_shell_script">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipf_conf_file_name_on_firewall">/etc/path with space/ipf4-ipf.conf</Option>
+          <Option name="ipf_log_body">False</Option>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_or_block">False</Option>
+          <Option name="ipf_nat_ekshell_proxy">False</Option>
+          <Option name="ipf_nat_ftp_proxy">False</Option>
+          <Option name="ipf_nat_h323_proxy">False</Option>
+          <Option name="ipf_nat_ipsec_proxy">False</Option>
+          <Option name="ipf_nat_irc_proxy">False</Option>
+          <Option name="ipf_nat_krcmd_proxy">False</Option>
+          <Option name="ipf_nat_pptp_proxy">False</Option>
+          <Option name="ipf_nat_raudio_proxy">False</Option>
+          <Option name="ipf_nat_rcmd_proxy">False</Option>
+          <Option name="ipf_return_icmp_as_dest">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="nat_conf_file_name_on_firewall">/etc/path with space/ipf4-nat.conf</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="optimize">False</Option>
+          <Option name="output_file">tmp/pf7.fw</Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">False</Option>
+          <Option name="pf_scrub_reassemble_tcp">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall">/etc/fw/pf7.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
         </FirewallOptions>

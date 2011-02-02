@@ -61,6 +61,12 @@ namespace fwcompiler {
     class CompilerDriver : public BaseCompiler
     {
 
+        QString getOutputFileNameInternal(libfwbuilder::Firewall *current_fw,
+                                          const QString &from_cli,
+                                          const QString &option_name,
+                                          const QString &fw_name,
+                                          const QString &ext);
+        
 protected:
 
         QStringList all_errors;
@@ -72,14 +78,30 @@ protected:
         QDir start_current_dir;
         QString fwobjectname;
         QString current_firewall_name;
-        // fw_file_name is the name of the output file. Can be enforced via -o command
-        // line option or automatically determined using firewall object name
+
+        // fw_file_name is the name of the output file. Can be
+        // enforced via -o command line option, set in firewall object options
+        // by the user or automatically determined using firewall
+        // object name
         QString fw_file_name;
-        // member_file_names is the mapping between member firewall object ID and
-        // corresponding output file name. Can be enfirced via -O command line option
-        // or determined automatically using member firewall name. Used only when
+
+        // I store file name provided via -o command line option here
+        QString file_name_setting_from_command_line;
+        
+        // Additional file names. These can be used for .conf file name
+        // for PF config or filter.conf and nat.conf file names for ipfilter.
+        // These can be set in firewall object options or automatically
+        // derived from fw_file_name
+        QString conf1_file_name;
+        QString conf2_file_name;
+
+        // member_file_names is the mapping between member firewall
+        // object ID and corresponding output file name. Can be
+        // enfirced via -O command line option or determined
+        // automatically using member firewall name. Used only when
         // compiling Cluster
         QMap<QString,QString> member_file_names;
+
         int dl;
         int drp;
         bool rule_debug_on;
@@ -101,10 +123,10 @@ protected:
 
         libfwbuilder::FWObjectDatabase *objdb;
 
-        QString determineOutputFileName(libfwbuilder::Cluster *cluster,
-                                        libfwbuilder::Firewall *current_fw,
-                                        bool cluster_member,
-                                        const QString &ext);
+        void determineOutputFileNames(libfwbuilder::Cluster *cluster,
+                                      libfwbuilder::Firewall *current_fw,
+                                      bool cluster_member);
+
         bool isSupported(std::list<std::string> *protocols,
                          const std::string &cluster_group_type);
 
@@ -233,6 +255,10 @@ public:
         
         static QString escapeFileName(QString fileName);
         static QString unescapeFileName(QString fileName);
+
+        static QString getConfFileNameFromFwFileName(const QString &file_name,
+                                                     const QString &ext);
+        
     };
 
 };

@@ -1,3 +1,23 @@
+2011-02-01  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_files.cpp (determineOutputFileNames): See #2015
+	"Add support for setting names of generated .fw and .conf files
+	separately for PF". Added second input field in the "advanced
+	settings" dialog, tab "Compiler" for the firewall platform "PF".
+	Now user can set the name for both the generated .fw
+	initialization script and .conf PF configuration file, as well as
+	names for both files on the firewall. Support for this is generic
+	and the same functions work for other platforms if corresponding
+	input field in the dialog exists. The name of the initialization
+	script is set as follows: 1) if user provided -o command line
+	switch to the compiler, its argument is used. 2) if -o switch was
+	not present but the name was configured in the firewall settings
+	dialog, it is used. 3) if none of them were present, the name is
+	constructed from the name of the firewall object with suffix .fw.
+	The name of the .conf PF configuration file is taken from the
+	settings dialog, but if it is blank, then it is constructed from
+	the name of the initialization script but with suffix .conf.
+
 2011-01-31  Vadim Kurland  <vadim@netcitadel.com>
 
 	* RoutingCompiler_bsd_writers.cpp (_printAddr): see #1890 "Add

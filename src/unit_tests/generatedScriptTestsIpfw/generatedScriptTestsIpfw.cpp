@@ -40,6 +40,7 @@
 #include <QFileInfo>
 #include <QtDebug>
 #include <QDir>
+#include <QFile>
 
 
 using namespace std;
@@ -112,6 +113,7 @@ void GeneratedScriptTest::runCompiler(const std::string &test_file,
 
 void GeneratedScriptTest::ManifestTest_1()
 {
+    QFile::remove("ipfw1.fw");
     objdb = new FWObjectDatabase();
     runCompiler("test1.fwb", "ipfw1", "ipfw1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw1.fw");
@@ -123,32 +125,28 @@ void GeneratedScriptTest::ManifestTest_1()
 void GeneratedScriptTest::ManifestTest_2()
 {
     /*
-     * output script name is set to ipfw2-1.fw in the fw object. This
-     * parameter is used by instDialog and passed to the compiler via
-     * "-o" command line option. Calling compiler without this option
-     * produces file with standard name.
+     * output script name is set to ipfw2-1.fw in the fw object.
      */
+    QFile::remove("ipfw2-1.fw");
     objdb = new FWObjectDatabase();
-    runCompiler("test1.fwb", "ipfw2", "ipfw2.fw");
-    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2.fw");
+    runCompiler("test1.fwb", "ipfw2", "ipfw2-1.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1.fw") != -1);
     delete objdb;
 }
 
 void GeneratedScriptTest::ManifestTest_3()
 {
     /*
-     * output script name is set to ipfw2a in the fw object. This
-     * parameter is used by instDialog and passed to the compiler via
-     * "-o" command line option. Calling compiler without this option
-     * produces file with standard name.
+     * output script name is set to ipfw2-1 in the fw object (no extension)
      */
+    QFile::remove("ipfw2-1");
     objdb = new FWObjectDatabase();
-    runCompiler("test1.fwb", "ipfw2a", "ipfw2.fw");
-    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2.fw");
+    runCompiler("test1.fwb", "ipfw2a", "ipfw2-1");
+    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1") != -1);
     delete objdb;
 }
 
@@ -159,10 +157,11 @@ void GeneratedScriptTest::ManifestTest_4()
      */
     objdb = new FWObjectDatabase();
     QString option_o = QDir::currentPath() + "/ipfw2-1.fw";
+    QFile::remove(option_o);
     runCompiler("test1.fwb", "ipfw2", "ipfw2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * " + option_o) != -1);
     delete objdb;
 }
 
@@ -170,10 +169,11 @@ void GeneratedScriptTest::ManifestTest_5()
 {
     objdb = new FWObjectDatabase();
     QString option_o = QDir::currentPath() + "/ipfw2-1";
+    QFile::remove(option_o);
     runCompiler("test1.fwb", "ipfw2a", "ipfw2-1.fw", option_o.toStdString());
-    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1") != -1);
     delete objdb;
 }
 

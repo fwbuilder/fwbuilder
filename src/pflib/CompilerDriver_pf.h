@@ -108,9 +108,9 @@ protected:
 
         std::string routing_script;
         
-        QString getConfFileName(const QString &ruleset_name,
-                                const QString &fwobjectname,
-                                const QString &conf_file_name);
+        QString getConfFileNameForRuleset(const QString &ruleset_name,
+                                          const QString &conf_file_name,
+                                          const QString &ext="");
         
         QString getRemoteConfFileName(const QString &ruleset_name,
                                       const QString &local_file_name,
