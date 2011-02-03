@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3426
+#  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Mon Jan 10 16:30:52 2011 PST by vadim
+#  Generated Thu Feb  3 09:54:20 2011 PST by vadim
 #
 # files: * firewall11.fw
 # files:   firewall11-ipf.conf
@@ -161,7 +161,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Mon Jan 10 16:30:52 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:54:20 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -170,8 +170,8 @@ prolog_commands
 $IPF -Fa
 $IPNAT -C
 
-$IPF  -I -f ${FWDIR}/firewall11-ipf.conf
-$IPNAT  -f ${FWDIR}/firewall11-nat.conf
+$IPF  -I -f /etc/firewall11-ipf.conf
+$IPNAT  -f /etc/firewall11-nat.conf
 
 
 $IPF -s

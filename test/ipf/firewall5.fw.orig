@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3426
+#  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Mon Jan 10 16:30:55 2011 PST by vadim
+#  Generated Thu Feb  3 09:54:21 2011 PST by vadim
 #
 # files: * firewall5.fw
 # files:   firewall5-ipf.conf
@@ -92,7 +92,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 10 16:30:55 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:54:21 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -101,8 +101,8 @@ prolog_commands
 $IPF -Fa
 $IPNAT -C
 
-cat ${FWDIR}/firewall5-ipf.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPF  -I -f -
-cat ${FWDIR}/firewall5-nat.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPNAT  -f -
+cat /etc/firewall5-ipf.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPF  -I -f -
+cat /etc/firewall5-nat.conf | grep -v '#' | sed "s/ (ppp0) / $i_ppp0 /" | $IPNAT  -f -
 
 
 $IPF -s

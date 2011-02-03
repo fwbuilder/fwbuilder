@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3426
+#  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Mon Jan 10 16:30:52 2011 PST by vadim
+#  Generated Thu Feb  3 09:54:19 2011 PST by vadim
 #
 # files: * firewall1.fw /etc/ipf.fw
 # files:   firewall1-ipf.conf /etc/fw/ipf.conf
@@ -83,7 +83,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 10 16:30:52 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:54:19 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3426
+#  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Mon Jan 10 16:30:54 2011 PST by vadim
+#  Generated Thu Feb  3 09:54:21 2011 PST by vadim
 #
 # files: * firewall4.fw
 # files:   firewall4-ipf.conf
@@ -80,7 +80,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 10 16:30:54 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:54:21 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -89,8 +89,8 @@ prolog_commands
 $IPF -Fa
 $IPNAT -C
 
-$IPF  -I -f ${FWDIR}/firewall4-ipf.conf
-$IPNAT  -f ${FWDIR}/firewall4-nat.conf
+$IPF  -I -f /etc/fw/firewall4-ipf.conf
+$IPNAT  -f /etc/fw/firewall4-nat.conf
 
 
 $IPF -s
