@@ -80,7 +80,6 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     filename = "";
     wdir = "";
     fwobjectname = "";
-    fw_file_name = "";
     dl = 0;
     drp = -1;
     rule_debug_on = false;

@@ -4,11 +4,11 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:30 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:01 2011 PST by vadim
 #
-# files: * firewall40-1.fw
-# files:   firewall40-1.conf
-# files:   firewall40-1-routes.conf
+# files: * firewall40-1.fw /etc/firewall40-1.fw
+# files:   firewall40-1.conf /etc/firewall40-1.conf
+# files:   firewall40-1-routes.conf /etc/firewall40-1-routes.conf
 #
 # Compiled for pf 
 #
@@ -176,7 +176,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:30 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:01 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

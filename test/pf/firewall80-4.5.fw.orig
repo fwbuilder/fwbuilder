@@ -4,10 +4,10 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:36 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:07 2011 PST by vadim
 #
-# files: * firewall80-4.5.fw
-# files:   firewall80-4.5.conf
+# files: * firewall80-4.5.fw /etc/firewall80-4.5.fw
+# files:   firewall80-4.5.conf /etc/firewall80-4.5.conf
 #
 # Compiled for pf 4.5
 #
@@ -73,7 +73,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:36 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:07 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

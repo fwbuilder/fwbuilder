@@ -3,11 +3,11 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:39 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:11 2011 PST by vadim
 #
-# files: * firewall-ipv6-3.fw
-# files:   firewall-ipv6-3-Policy_ipv4.conf
-# files:   firewall-ipv6-3.conf
+# files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
+# files:   firewall-ipv6-3-Policy_ipv4.conf /etc/firewall-ipv6-3-Policy_ipv4.conf
+# files:   firewall-ipv6-3.conf /etc/firewall-ipv6-3.conf
 #
 # Compiled for pf 
 #
@@ -39,8 +39,8 @@ ifconfig_vlan101="inet 172.16.2.1 netmask 0xfffffff0"
 pfsync_enable="YES"
 
 pf_enable="YES"
-pf_rules="/etc/firewall-ipv6-3.conf"
 pf_rules="/etc/firewall-ipv6-3-Policy_ipv4.conf"
+pf_rules="/etc/firewall-ipv6-3.conf"
 
 
 

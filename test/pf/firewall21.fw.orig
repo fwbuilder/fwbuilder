@@ -4,11 +4,11 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:24 2011 PST by vadim
+#  Generated Thu Feb  3 14:58:56 2011 PST by vadim
 #
-# files: * firewall21.fw
-# files:   firewall21-NAT_1.conf
-# files:   firewall21.conf
+# files: * firewall21.fw /etc/fw/firewall21.fw
+# files:   firewall21-NAT_1.conf /etc/fw/firewall21-NAT_1.conf
+# files:   firewall21.conf /etc/fw/firewall21.conf
 #
 # Compiled for pf 4.0
 #
@@ -82,18 +82,18 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:24 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:58:56 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/firewall21.conf || exit 1
 $PFCTL  -a NAT_1 \
      -f \
     /etc/fw/firewall21-NAT_1.conf || exit 1
+$PFCTL   \
+     -f \
+    /etc/fw/firewall21.conf || exit 1
 
 
 

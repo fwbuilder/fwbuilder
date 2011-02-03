@@ -4,15 +4,15 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:32 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:03 2011 PST by vadim
 #
-# files: * firewall51.fw
-# files:   firewall51.conf
-# files:   firewall51-mail_server_inbound.conf
-# files:   firewall51-mail_server_outbound.conf
-# files:   firewall51-rule2_branch.conf
-# files:   firewall51-web_server_inbound.conf
-# files:   firewall51-web_server_outbound.conf
+# files: * firewall51.fw /etc/fw/firewall51.fw
+# files:   firewall51.conf /etc/fw/firewall51.conf
+# files:   firewall51-mail_server_inbound.conf /etc/fw/firewall51-mail_server_inbound.conf
+# files:   firewall51-mail_server_outbound.conf /etc/fw/firewall51-mail_server_outbound.conf
+# files:   firewall51-rule2_branch.conf /etc/fw/firewall51-rule2_branch.conf
+# files:   firewall51-web_server_inbound.conf /etc/fw/firewall51-web_server_inbound.conf
+# files:   firewall51-web_server_outbound.conf /etc/fw/firewall51-web_server_outbound.conf
 #
 # Compiled for pf 
 #
@@ -80,7 +80,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:32 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:03 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

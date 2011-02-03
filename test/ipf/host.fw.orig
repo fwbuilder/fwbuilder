@@ -4,10 +4,10 @@
 #
 #  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:54:22 2011 PST by vadim
+#  Generated Thu Feb  3 14:54:46 2011 PST by vadim
 #
-# files: * host.fw
-# files:   host-ipf.conf
+# files: * host.fw /etc/fw/host.fw
+# files:   host-ipf.conf /etc/fw/host-ipf.conf
 #
 # Compiled for ipf 
 #
@@ -78,7 +78,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:54:22 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:54:46 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -4,13 +4,13 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:28 2011 PST by vadim
+#  Generated Thu Feb  3 15:06:56 2011 PST by vadim
 #
 # files: * firewall39.fw pf.fw
 # files:   firewall39.conf pf.conf
-# files:   firewall39-rule2_branch.conf pf-rule2_branch.conf
-# files:   firewall39-rule3_branch.conf pf-rule3_branch.conf
-# files:   firewall39-rule5_branch.conf pf-rule5_branch.conf
+# files:   firewall39-rule2_branch.conf /etc/fw/firewall39-rule2_branch.conf
+# files:   firewall39-rule3_branch.conf /etc/fw/firewall39-rule3_branch.conf
+# files:   firewall39-rule5_branch.conf /etc/fw/firewall39-rule5_branch.conf
 #
 # Compiled for pf 
 #
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:28 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 15:06:56 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -87,16 +87,16 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    /etc/fw/pf.conf || exit 1
+    pf.conf || exit 1
 $PFCTL  -a rule2_branch \
      -f \
-    /etc/fw/pf-rule2_branch.conf || exit 1
+    /etc/fw/firewall39-rule2_branch.conf || exit 1
 $PFCTL  -a rule3_branch \
      -f \
-    /etc/fw/pf-rule3_branch.conf || exit 1
+    /etc/fw/firewall39-rule3_branch.conf || exit 1
 $PFCTL  -a rule5_branch \
      -f \
-    /etc/fw/pf-rule5_branch.conf || exit 1
+    /etc/fw/firewall39-rule5_branch.conf || exit 1
 
 
 

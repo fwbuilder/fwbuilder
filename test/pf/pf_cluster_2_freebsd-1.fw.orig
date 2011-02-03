@@ -4,10 +4,10 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:40 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:11 2011 PST by vadim
 #
-# files: * pf_cluster_2_freebsd-1.fw
-# files:   pf_cluster_2_freebsd-1.conf
+# files: * pf_cluster_2_freebsd-1.fw /etc/pf_cluster_2_freebsd-1.fw
+# files:   pf_cluster_2_freebsd-1.conf /etc/pf_cluster_2_freebsd-1.conf
 #
 # Compiled for pf 4.x
 #
@@ -292,7 +292,7 @@ configure_interfaces() {
     $IFCONFIG pfsync0 up
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:40 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:11 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

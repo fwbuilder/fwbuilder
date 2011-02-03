@@ -4,10 +4,10 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:40 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:11 2011 PST by vadim
 #
-# files: * pf_cluster_3_openbsd-3.fw
-# files:   pf_cluster_3_openbsd-3.conf
+# files: * pf_cluster_3_openbsd-3.fw /etc/pf_cluster_3_openbsd-3.fw
+# files:   pf_cluster_3_openbsd-3.conf /etc/pf_cluster_3_openbsd-3.conf
 #
 # Compiled for pf 4.6
 #
@@ -293,7 +293,7 @@ configure_interfaces() {
     sync_pfsync_interfaces
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:40 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:11 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -4,10 +4,10 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:22 2011 PST by vadim
+#  Generated Thu Feb  3 14:58:54 2011 PST by vadim
 #
-# files: * firewall13.fw
-# files:   firewall13.conf
+# files: * firewall13.fw /etc/fw/firewall13.fw
+# files:   firewall13.conf /etc/fw/firewall13.conf
 #
 # Compiled for pf 
 #
@@ -88,7 +88,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:22 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:58:54 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -4,14 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:38 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:10 2011 PST by vadim
 #
-# files: * firewall-base-rulesets.fw
-# files:   firewall-base-rulesets.conf
-# files:   firewall-base-rulesets-mail_server_inbound.conf
-# files:   firewall-base-rulesets-mail_server_outbound.conf
-# files:   firewall-base-rulesets-web_server_inbound.conf
-# files:   firewall-base-rulesets-web_server_outbound.conf
+# files: * firewall-base-rulesets.fw /etc/fw/firewall-base-rulesets.fw
+# files:   firewall-base-rulesets.conf /etc/fw/firewall-base-rulesets.conf
+# files:   firewall-base-rulesets-mail_server_inbound.conf /etc/fw/firewall-base-rulesets-mail_server_inbound.conf
+# files:   firewall-base-rulesets-mail_server_outbound.conf /etc/fw/firewall-base-rulesets-mail_server_outbound.conf
+# files:   firewall-base-rulesets-web_server_inbound.conf /etc/fw/firewall-base-rulesets-web_server_inbound.conf
+# files:   firewall-base-rulesets-web_server_outbound.conf /etc/fw/firewall-base-rulesets-web_server_outbound.conf
 #
 # Compiled for pf 
 #
@@ -163,7 +163,7 @@ configure_interfaces() {
     update_addresses_of_interface "en2 192.168.100.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:38 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

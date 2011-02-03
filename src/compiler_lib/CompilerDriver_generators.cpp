@@ -111,7 +111,7 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
     top_comment->setVariable("tz", tzname[stm->tm_isdst]);
     top_comment->setVariable("user", user_name);
 
-    QFileInfo fw_file_info(fw_file_name);
+    //QFileInfo fw_file_info(fw_file_name);
 
     top_comment->setVariable("manifest", assembleManifest(cluster, fw,
                                                           cluster_member));

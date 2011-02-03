@@ -4,9 +4,9 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:55:47 2011 PST by vadim
+#  Generated Thu Feb  3 14:55:19 2011 PST by vadim
 #
-# files: * firewall34.fw
+# files: * firewall34.fw /etc/firewall34.fw
 #
 #
 #
@@ -77,7 +77,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:55:47 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:55:19 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

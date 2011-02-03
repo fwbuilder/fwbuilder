@@ -4,9 +4,9 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3457
 #
-#  Generated Thu Feb  3 10:00:31 2011 PST by vadim
+#  Generated Thu Feb  3 14:45:04 2011 PST by vadim
 #
-# files: * rc.firewall.local
+# files: * rc.firewall.local /etc/rc.d//rc.firewall.local
 #
 # Compiled for iptables (any version)
 #

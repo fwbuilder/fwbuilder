@@ -125,8 +125,6 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = fw->getName().c_str();
 
-        determineOutputFileNames(cluster, fw, !cluster_id.empty());
-
         if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
             fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
@@ -680,17 +678,17 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         top_comment.setVariable("user", user_name);
         top_comment.setVariable("database", objdb->getFileName().c_str());
 
-        //QFileInfo fw_file_info(fw_file_name);
+        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
+                                 QStringList(""), QStringList("fw"),
+                                 QStringList("script_name_on_firewall"));
+
         script_buffer = "";
         script << MANIFEST_MARKER
                << "* "
-               << this->escapeFileName(fw_file_name);
-//               << this->escapeFileName(fw_file_info.fileName());
+               << this->escapeFileName(file_names[FW_FILE]);
 
-        string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-
-        if (!remote_name.empty())
-            script << " " << this->escapeFileName(remote_name.c_str());
+        if (!remote_file_names[FW_FILE].isEmpty())
+            script << " " << this->escapeFileName(remote_file_names[FW_FILE]);
         script << "\n";
 
         /* Add additional files to manifest if specified.  Currently there
@@ -722,11 +720,9 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         script_skeleton.setVariable("errors_and_warnings",
                                     prepend("# ", all_errors.join("\n")));
 
-        //fw_file_name = getAbsOutputFileName(fw_file_name);
+        info("Output file name: " + file_names[FW_FILE].toStdString());
 
-        info("Output file name: " + fw_file_name.toStdString());
-
-        QFile fw_file(fw_file_name);
+        QFile fw_file(file_names[FW_FILE]);
         if (fw_file.open(QIODevice::WriteOnly))
         {
             QTextStream fw_str(&fw_file);

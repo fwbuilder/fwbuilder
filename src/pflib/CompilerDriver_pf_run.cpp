@@ -117,85 +117,39 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     bool debug = options->getBool("debug");
     string pfctl_dbg = (debug)?"-v ":"";
 
-    // if remote file spec does not include path, the file is
-    // assumed to be in directory set in the "Installer" tab
-    // of the firewall settings dialog
-    QString fw_dir = options->getStr("firewall_dir").c_str();
-
-    if (fw_dir.isEmpty()) fw_dir = Resources::getTargetOptionStr(
-        fw->getStr("host_OS"), "activation/fwdir").c_str();
-
     QStringList activation_commands;
-    QString remote_file = remote_conf_files["__main__"];
-    if (remote_file.isEmpty()) remote_file = conf_files["__main__"];
-    if (remote_file[0] != '/')
+
+    // skip first item in the list since it is .fw script
+    for(int idx=1; idx<file_names.size(); idx++)
     {
-        QFileInfo remote_file_info(remote_file);
-        if (remote_file_info.path() != ".")
-            remote_file = remote_file;
-        else
-            remote_file = fw_dir + "/" + remote_file;
-    }
-    remote_file = this->escapeFileName(remote_file);
+        QString remote_file_name = escapeFileName(remote_file_names[idx]);
 
-    activation_commands.push_back(
-        composeActivationCommand(
-            fw, pfctl_dbg, "", fw->getStr("version"), remote_file.toStdString()));
-
-    for (map<QString,QString>::iterator i=conf_files.begin();
-         i!=conf_files.end(); ++i)
-    {
-        QString remote_file = remote_conf_files[i->first];
-        if (remote_file.isEmpty()) remote_file = i->second;
-        if (remote_file[0] != '/')
-        {
-            QFileInfo remote_file_info(remote_file);
-            if (remote_file_info.path() != ".")
-                remote_file = remote_file;
-            else
-                remote_file = fw_dir + "/" + remote_file;
-        }
-        remote_file = this->escapeFileName(remote_file);
-
-        if (i->first != "__main__")
-            activation_commands.push_back(
-                composeActivationCommand(
-                    fw, pfctl_dbg, i->first.toStdString(),
-                    fw->getStr("version"), remote_file.toStdString()));
+        activation_commands.push_back(
+            composeActivationCommand(
+                fw, pfctl_dbg, anchor_names[idx].toUtf8().constData(),
+                fw->getStr("version"), remote_file_name.toUtf8().constData()));
     }
 
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
+QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* , bool )
 {
-    //QFileInfo fw_file_info(fw_file_name);
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER
-           << "* "
-           << escapeFileName(fw_file_name);
-//           << escapeFileName(fw_file_info.fileName());
-
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-
-    if (!remote_name.empty())
-        script << " " << escapeFileName(remote_name.c_str());
-    script << "\n";
-
-    for (map<QString,QString>::iterator i=conf_files.begin();
-         i!=conf_files.end(); ++i)
+    for(int idx=0; idx<file_names.size(); idx++)
     {
-        QString ruleset_name = i->first;
-//        QString file_name = QFileInfo(i->second).fileName();
-        QString file_name = i->second;
-        QString remote_file_name = remote_conf_files[ruleset_name];
-        script << MANIFEST_MARKER << "  " << escapeFileName(file_name);
-        if (!remote_file_name.isEmpty() && remote_file_name != file_name)
+        QString master_file_marker = (idx==0) ? "* " : "  ";
+        QString local_file_name = file_names[idx];
+        QString remote_file_name = remote_file_names[idx];
+        script << MANIFEST_MARKER << master_file_marker
+               << escapeFileName(local_file_name);
+        if (!remote_file_name.isEmpty() && remote_file_name != local_file_name)
             script << " " << escapeFileName(remote_file_name);
         script << "\n";
     }
+
     return script_buffer;
 }
 
@@ -267,22 +221,6 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         // Note that fwobjectname may be different from the name of the
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = QString::fromUtf8(fw->getName().c_str());
-
-        determineOutputFileNames(cluster, fw, !cluster_id.empty());
-
-        // conf_file_name = QString::fromUtf8(options->getStr("conf1_file").c_str());
-        // if (!fw_file_name.isEmpty() && conf_file_name.isEmpty())
-        // {
-        //     QFileInfo fi(fw_file_name);
-        //     if (fi.isRelative())
-        //     {
-        //         conf_file_name = QString(fi.completeBaseName() + ".conf");
-        //     } else
-        //     {
-        //         conf_file_name = QString(fi.path() + "/" +
-        //                                  fi.completeBaseName() + ".conf");
-        //     }
-        // }
 
         string firewall_dir = options->getStr("firewall_dir");
         if (firewall_dir=="") firewall_dir="/etc/fw";
@@ -473,16 +411,6 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 all_errors.push_back(n.getErrors("").c_str());
 
-                conf_files[ruleset_name] = getConfFileNameForRuleset(
-                    ruleset_name, conf1_file_name);
-
-
-                remote_conf_files[ruleset_name] = getRemoteConfFileName(
-                    ruleset_name,
-                    conf_files[ruleset_name],
-                    remote_fw_name,
-                    remote_conf_name);
-
                 const list<NATCompiler_pf::redirectRuleInfo> lst = 
                     n.getRedirRulesInfo();
                 redirect_rules_info.insert(redirect_rules_info.begin(),
@@ -563,15 +491,6 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 all_errors.push_back(c.getErrors("").c_str());
 
-                conf_files[ruleset_name] = getConfFileNameForRuleset(
-                    ruleset_name, conf1_file_name);
-
-                remote_conf_files[ruleset_name] = getRemoteConfFileName(
-                    ruleset_name,
-                    conf_files[ruleset_name],
-                    remote_fw_name,
-                    remote_conf_name);
-
             }
         }
 
@@ -635,11 +554,47 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * now write generated scripts to files
  */
+        QStringList file_extensions;
+        QStringList remote_file_options;
+
+        anchor_names.clear();
+
+        anchor_names << "";      // for fw_file
+        // Can not make extension .conf when generating rc.conf file
+        // because the second file also has extension .conf and this
+        // causes conflict if both names are generated using default
+        // algorithm from the fw name
+        file_extensions << "fw";
+        remote_file_options << "script_name_on_firewall";
+
         for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
              fi!=generated_scripts.end(); fi++)
         {
             QString ruleset_name = fi->first;
-            QString file_name = conf_files[ruleset_name];
+
+            if (ruleset_name == "__main__")
+                anchor_names << "";
+            else
+                anchor_names << ruleset_name;
+            file_extensions << "conf";
+            remote_file_options << ""; // to make sure it has right number of items
+        }
+
+        remote_file_options[CONF1_FILE] = "conf_file_name_on_firewall";
+
+        // The order of file names in file_names and remote_file_names
+        // is the same as the order of rule sets in generated_scripts
+        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
+                                 anchor_names, file_extensions,
+                                 remote_file_options);
+
+
+        int idx = 1;
+        for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
+             fi!=generated_scripts.end(); fi++)
+        {
+            QString ruleset_name = fi->first;
+            QString file_name = file_names[idx];
             ostringstream *strm = fi->second;
 
             if (ruleset_name.contains("/*")) continue;
@@ -671,10 +626,14 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 table_factories.clear();
                 generated_scripts.clear();
 
-                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
-                abort(err.arg(pf_file.fileName()).arg(pf_file.error()).arg(QDir::current().path()).toStdString());
+                QString err("Failed to open file %1 for writing: %2; "
+                            "Current dir: %3");
+                abort(err.arg(pf_file.fileName())
+                      .arg(pf_file.error())
+                      .arg(QDir::current().path()).toStdString());
             }
 
+            idx++;
         }
 /*
  * assemble the script and then perhaps post-process it if needed
@@ -686,10 +645,11 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         table_factories.clear();
         generated_scripts.clear();
 
-        fw_file_name = getAbsOutputFileName(fw_file_name);
 
-        info("Output file name: " + fw_file_name.toStdString());
-        QFile fw_file(fw_file_name);
+        file_names[FW_FILE] = getAbsOutputFileName(file_names[FW_FILE]);
+
+        info("Output file name: " + file_names[FW_FILE].toStdString());
+        QFile fw_file(file_names[FW_FILE]);
         if (fw_file.open(QIODevice::WriteOnly))
         {
             QTextStream fw_str(&fw_file);

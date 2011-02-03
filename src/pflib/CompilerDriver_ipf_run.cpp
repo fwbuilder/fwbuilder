@@ -101,38 +101,28 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
 
 QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
-    FWOptions* options = fw->getOptionsObject();
-
-    QString ipf_file_name = getConfFileNameForRuleset("ipf", fw_file_name, "conf");
-    QString nat_file_name = getConfFileNameForRuleset("nat", fw_file_name, "conf");
-
-    QString remote_ipf_name = QString::fromUtf8(
-        options->getStr("ipf_conf_file_name_on_firewall").c_str());
-    if (remote_ipf_name.isEmpty()) remote_ipf_name = ipf_file_name;
-
-    QString remote_nat_name = QString::fromUtf8(
-        options->getStr("nat_conf_file_name_on_firewall").c_str());
-    if (remote_nat_name.isEmpty()) remote_nat_name = nat_file_name;
+    QString remote_name = remote_file_names[FW_FILE];
+    QString remote_ipf_name = remote_file_names[CONF1_FILE];
+    QString remote_nat_name = remote_file_names[CONF2_FILE];
 
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
     script << MANIFEST_MARKER
            << "* "
-           << this->escapeFileName(fw_file_name);
+           << this->escapeFileName(file_names[FW_FILE]);
 
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty())
-        script << " " << this->escapeFileName(remote_name.c_str());
+    if (remote_name != file_names[FW_FILE])
+        script << " " << this->escapeFileName(remote_name);
     script << endl;
 
     if (have_filter) 
     {
         script << MANIFEST_MARKER
                << "  "
-               << this->escapeFileName(ipf_file_name);
+               << this->escapeFileName(file_names[CONF1_FILE]);
 
-        if (remote_ipf_name != ipf_file_name)
+        if (remote_ipf_name != file_names[CONF1_FILE])
             script << " " << this->escapeFileName(remote_ipf_name);
         script << endl;
     }
@@ -141,9 +131,9 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
     {
         script << MANIFEST_MARKER
                << "  "
-               << this->escapeFileName(nat_file_name);
+               << this->escapeFileName(file_names[CONF2_FILE]);
 
-        if (remote_nat_name != nat_file_name)
+        if (remote_nat_name != file_names[CONF2_FILE])
             script << " " << this->escapeFileName(remote_nat_name);
         script << endl;
     }
@@ -199,42 +189,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = fw->getName().c_str();
 
-        determineOutputFileNames(cluster, fw, !cluster_id.empty());
-
-        // if remote file spec does not include path, the file is
-        // assumed to be in directory set in the "Installer" tab
-        // of the firewall settings dialog
-        //
-        // fw_dir is used below to generate activation commands
-        
-        QString fw_dir = options->getStr("firewall_dir").c_str();
-
-        if (fw_dir.isEmpty()) fw_dir = Resources::getTargetOptionStr(
-            fw->getStr("host_OS"), "activation/fwdir").c_str();
-
-        QFileInfo finfo(fw_file_name);
-        QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";
-        QString nat_file_name = finfo.completeBaseName() + "-nat.conf";
-        if (finfo.path() != ".")
-        {
-            ipf_file_name = finfo.path() + "/" + ipf_file_name;
-            nat_file_name = finfo.path() + "/" + nat_file_name;
-        }
-
-        QString remote_ipf_name = options->getStr("ipf_conf_file_name_on_firewall").c_str();
-        if (remote_ipf_name.isEmpty())
-            remote_ipf_name = QFileInfo(ipf_file_name).fileName();
-        remote_ipf_name = this->escapeFileName(remote_ipf_name);
-
-        QString remote_nat_name = options->getStr("nat_conf_file_name_on_firewall").c_str();
-        if (remote_nat_name.isEmpty())
-            remote_nat_name = QFileInfo(nat_file_name).fileName();
-        remote_nat_name = this->escapeFileName(remote_nat_name);
-
         string s;
-
-        string firewall_dir = options->getStr("firewall_dir");
-        if (firewall_dir=="") firewall_dir = "/etc/fw";
 
         bool debug = options->getBool("debug");
         string ipf_dbg = (debug)?"-v":"";
@@ -342,13 +297,22 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 QString::fromUtf8(ostr.str().c_str()));
         }
 
+        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
+                                 QStringList() << "" << "ipf" << "nat",
+                                 QStringList() << "fw" << "conf" << "conf",
+                                 QStringList() << "script_name_on_firewall"
+                                 << "ipf_conf_file_name_on_firewall"
+                                 << "nat_conf_file_name_on_firewall");
+
+        QString remote_ipf_name = remote_file_names[CONF1_FILE];
+        QString remote_nat_name = remote_file_names[CONF2_FILE];
 
         if (have_filter) 
         {
-            ipf_file_name = getAbsOutputFileName(ipf_file_name);
+            QString output_file = getAbsOutputFileName(file_names[CONF1_FILE]);
 
-            info("Output file name: " + ipf_file_name.toStdString());
-            QFile ipf_file(ipf_file_name);
+            info("Output file name: " + output_file.toStdString());
+            QFile ipf_file(output_file);
             if (ipf_file.open(QIODevice::WriteOnly))
             {
                 QTextStream ipf_str(&ipf_file);
@@ -368,34 +332,26 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                                         QFile::ExeOther );
             } else
             {
-                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
-                abort(err.arg(ipf_file.fileName()).arg(ipf_file.error()).arg(QDir::current().path()).toStdString());
+                QString err(" Failed to open file %1 for writing: %2; "
+                            "Current dir: %3");
+                abort(err.arg(ipf_file.fileName())
+                      .arg(ipf_file.error())
+                      .arg(QDir::current().path()).toStdString());
             }
 
-            QString filePath;
-            if (remote_ipf_name[0] == '/') filePath = remote_ipf_name;
-            else
-            {
-                QFileInfo remote_file_info(remote_ipf_name);
-                if (remote_file_info.path() != ".")
-                    filePath = remote_ipf_name;
-                else
-                    filePath = fw_dir + "/" + remote_ipf_name;
-
-                //filePath = QString("${FWDIR}/") + remote_ipf_name;
-            }
-
+            QString remote_file_name = escapeFileName(remote_ipf_name);
             activation_commands.push_back(
                 composeActivationCommand(
-                    fw, true, ipf_dbg, fw_version, filePath.toStdString()));
+                    fw, true, ipf_dbg, fw_version,
+                    remote_file_name.toUtf8().constData()));
         }
 
         if (have_nat) 
         {
-            nat_file_name = getAbsOutputFileName(nat_file_name);
+            QString output_file = getAbsOutputFileName(file_names[CONF2_FILE]);
 
-            info("Output file name: " + nat_file_name.toStdString());
-            QFile nat_file(nat_file_name);
+            info("Output file name: " + output_file.toStdString());
+            QFile nat_file(output_file);
             if (nat_file.open(QIODevice::WriteOnly))
             {
                 QTextStream nat_str(&nat_file);
@@ -415,26 +371,18 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                                         QFile::ExeOther );
             } else
             {
-                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
-                abort(err.arg(nat_file.fileName()).arg(nat_file.error()).arg(QDir::current().path()).toStdString());
+                QString err(" Failed to open file %1 for writing: %2; "
+                            "Current dir: %3");
+                abort(err.arg(nat_file.fileName())
+                      .arg(nat_file.error())
+                      .arg(QDir::current().path()).toStdString());
             }
 
-            QString filePath;
-            if (remote_nat_name[0] == '/') filePath = remote_nat_name;
-            else 
-            {
-                QFileInfo remote_file_info(remote_nat_name);
-                if (remote_file_info.path() != ".")
-                    filePath = remote_nat_name;
-                else
-                    filePath = fw_dir + "/" + remote_nat_name;
-
-                //filePath = QString("${FWDIR}/") + remote_nat_name;
-            }
-
+            QString remote_file_name = escapeFileName(remote_nat_name);
             activation_commands.push_back(
                 composeActivationCommand(
-                    fw, false, ipf_dbg, fw_version, filePath.toStdString()));
+                    fw, false, ipf_dbg, fw_version,
+                    remote_file_name.toUtf8().constData()));
         }
 /*
  * assemble the script and then perhaps post-process it if needed
@@ -443,10 +391,10 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
 
-        fw_file_name = getAbsOutputFileName(fw_file_name);
+        file_names[FW_FILE] = getAbsOutputFileName(file_names[FW_FILE]);
 
-        info("Output file name: " + fw_file_name.toStdString());
-        QFile fw_file(fw_file_name);
+        info("Output file name: " + file_names[FW_FILE].toStdString());
+        QFile fw_file(file_names[FW_FILE]);
         if (fw_file.open(QIODevice::WriteOnly))
         {
             QTextStream fw_str(&fw_file);

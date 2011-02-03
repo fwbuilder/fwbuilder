@@ -53,7 +53,6 @@
 
 #include "fwcompiler/Preprocessor.h"
 
-#include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
@@ -75,18 +74,16 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* fw, bool )
+QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* , bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
     script << MANIFEST_MARKER
            << "* "
-           << this->escapeFileName(fw_file_name);
-//           << this->escapeFileName(QFileInfo(fw_file_name).fileName());
+           << this->escapeFileName(file_names[FW_FILE]);
 
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty())
-        script << " " << this->escapeFileName(remote_name.c_str());
+    if (!remote_file_names[FW_FILE].isEmpty())
+        script << " " << this->escapeFileName(remote_file_names[FW_FILE]);
     script << "\n";
     script << "#" << endl;
     script << "#" << endl;
@@ -139,8 +136,6 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
         // Note that fwobjectname may be different from the name of the
         // firewall fw This happens when we compile a member of a cluster
         current_firewall_name = fw->getName().c_str();
-
-        determineOutputFileNames(cluster, fw, !cluster_id.empty());
 
         string s;
 
@@ -310,13 +305,18 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
+        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
+                                 QStringList(""), QStringList("fw"),
+                                 QStringList("script_name_on_firewall"));
+
         QString script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
-        fw_file_name = getAbsOutputFileName(fw_file_name);
 
-        info("Output file name: " + fw_file_name.toStdString());
-        QFile fw_file(fw_file_name);
+        QString output_file = getAbsOutputFileName(file_names[FW_FILE]);
+
+        info("Output file name: " + output_file.toStdString());
+        QFile fw_file(output_file);
         if (fw_file.open(QIODevice::WriteOnly))
         {
             QTextStream fw_str(&fw_file);

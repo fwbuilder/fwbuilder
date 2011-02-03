@@ -28,9 +28,12 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Resources.h"
 
 #include <QFileInfo>
 #include <QString>
+#include <QtDebug>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -65,58 +68,159 @@ using namespace fwcompiler;
  * conf file name in conf1_file_name
  */
 void CompilerDriver::determineOutputFileNames(Cluster *cluster,
-                                              Firewall *current_fw,
-                                              bool cluster_member)
+                                              Firewall *fw,
+                                              bool cluster_member,
+                                              const QStringList &suffixes,
+                                              const QStringList &extensions,
+                                              const QStringList &remote_name_fw_options)
 {
-    QString current_firewall_name = 
-        QString::fromUtf8(current_fw->getName().c_str());
+    file_names.clear();
+    remote_file_names.clear();
+
+    assert(suffixes.size()==extensions.size());
+    assert(suffixes.size()==remote_name_fw_options.size());
+
+    foreach(QString ext, extensions)
+    {
+        file_names << "";
+        remote_file_names << "";
+    }
+
+    QString firewall_name =
+        QString::fromUtf8(fw->getName().c_str());
 
     if (cluster_member)
     {
         // member of a cluster
-        QString fw_id = objdb->getStringId(current_fw->getId()).c_str();
+        QString fw_id = objdb->getStringId(fw->getId()).c_str();
         if (member_file_names.contains(fw_id))
         {
-            fw_file_name = getOutputFileNameInternal(
-                current_fw,
-                member_file_names[fw_id],
-                "output_file", current_firewall_name, ".fw");
+            file_names[FW_FILE] = getOutputFileNameInternal(
+                fw,
+                member_file_names[fw_id], "output_file", firewall_name,
+                extensions[FW_FILE]);
 
         } else
         {
-            fw_file_name = getOutputFileNameInternal(
-                current_fw,
-                "", "output_file", current_firewall_name, ".fw");
+            file_names[FW_FILE] = getOutputFileNameInternal(
+                fw,
+                "", "output_file", firewall_name,
+                extensions[FW_FILE]);
         }
 
     } else
     {
         // standalone firewall
-        fw_file_name = getOutputFileNameInternal(
-            current_fw,
-            file_name_setting_from_command_line,
-            "output_file", current_firewall_name, ".fw");
+        file_names[FW_FILE] = getOutputFileNameInternal(
+            fw,
+            file_name_setting_from_command_line, "output_file", firewall_name,
+            extensions[FW_FILE]);
     }
 
-    FWOptions* options = current_fw->getOptionsObject();
-    QString name_from_option =
-        QString::fromUtf8(options->getStr("conf1_file").c_str());
-    if (!name_from_option.isEmpty()) conf1_file_name = name_from_option;
-    else
+    FWOptions* options = fw->getOptionsObject();
+
+    if (suffixes.size() > 1)
     {
-        conf1_file_name = getConfFileNameFromFwFileName(fw_file_name, ".conf");
+        // if we need to deal with conf files at all ...
+        // skip item 0 since it is the .fw file
+        for (int i=1; i<file_names.size(); ++i)
+        {
+            QString opt_name("conf%1_file");
+            QString name_from_option =
+                QString::fromUtf8(options->getStr(
+                                      opt_name.arg(i).toStdString()).c_str());
+
+            if (!name_from_option.isEmpty()) file_names[i] = name_from_option;
+            else
+            {
+                // special-case file names for the 2-d and subsequent conf
+                // files: if we have the name for the first conf file from
+                // fw option, use it as a prototype, otherwise use fw file
+                // name as a prototype. This is useful when user specifies
+                // the name for pf.conf file, this name will be used as a
+                // prototype for anchor .conf file names instead of the fw
+                // file name
+                if (i >= CONF2_FILE)
+                    file_names[i] = getConfFileNameFromFwFileName(
+                        file_names[CONF1_FILE], extensions[i]);
+                else
+                    file_names[i] = getConfFileNameFromFwFileName(
+                        file_names[FW_FILE], extensions[i]);
+            }
+
+        }
+
+        // file_names at this point is like this:
+        // file_names= ("ipf4.fw", "ipf4.conf", "ipf4.conf") 
+        //
+        // qDebug() << "file_names=" << file_names;
+
+        // suffixes are inserted right before the file extension, such as in
+        // firewall-suffix.conf
+        for (int i=1; i<suffixes.size(); ++i)
+        {
+            QString sfx = suffixes[i];
+            if (!sfx.isEmpty())
+            {
+                QFileInfo fi(file_names[i]);
+                QString path = fi.path();
+                if (path == ".")
+                {
+                    file_names[i] = fi.completeBaseName() +
+                        "-" + sfx + "." + fi.suffix();
+                } else
+                {
+                    file_names[i] = path + "/" + fi.completeBaseName() +
+                        "-" + sfx + "." + fi.suffix();
+                }
+            }
+        }
+
+        // file_names at this point is like this:
+        // file_names= ("ipf4.fw", "ipf4-ipf.conf", "ipf4-nat.conf") 
+        //
+        //qDebug() << "file_names=" << file_names;
+
     }
 
     if (prepend_cluster_name_to_output_file && cluster_member && cluster!=NULL)
     {
-        fw_file_name = QString("%1_%2")
-            .arg(QString::fromUtf8(cluster->getName().c_str()))
-            .arg(fw_file_name);
-        conf1_file_name = QString("%1_%2")
-            .arg(QString::fromUtf8(cluster->getName().c_str()))
-            .arg(conf1_file_name);
+        for (int i=0; i<file_names.size(); ++i)
+        {
+            file_names[i] = QString("%1_%2")
+                .arg(QString::fromUtf8(cluster->getName().c_str()))
+                .arg(file_names[i]);
+        }
     }
 
+    // Determine remote file names using fw options, if any. If option
+    // has not been specificed in the list remote_name_fw_options
+    // (list item is empty string), or the option value is empty, then
+    // guess using firewall_dir option and local file name
+
+    QString fw_dir = options->getStr("firewall_dir").c_str();
+
+    if (fw_dir.isEmpty()) fw_dir = Resources::getTargetOptionStr(
+        fw->getStr("host_OS"), "activation/fwdir").c_str();
+
+    for (int i=0; i<file_names.size(); ++i)
+    {
+        QString fn = file_names[i];
+        if (remote_name_fw_options[i].isEmpty())
+            remote_file_names[i] = fw_dir + "/" + QFileInfo(fn).fileName();
+        else
+        {
+            QString remote_file_name_from_fw_option =
+                options->getStr(remote_name_fw_options[i].toStdString()).c_str();
+            if (remote_file_name_from_fw_option.isEmpty())
+            {
+                remote_file_names[i] = fw_dir + "/" + QFileInfo(fn).fileName();
+            } else
+                remote_file_names[i] = remote_file_name_from_fw_option;
+        }
+    }
+
+    //qDebug() << remote_file_names;
 }
 
 
@@ -133,7 +237,7 @@ QString CompilerDriver::getOutputFileNameInternal(Firewall *current_fw,
         QString::fromUtf8(options->getStr(option_name.toStdString()).c_str());
 
     if (!name_from_option.isEmpty()) return name_from_option;
-    else return fw_name + ext;
+    else return fw_name + "." + ext;
 }
 
 QString CompilerDriver::getConfFileNameFromFwFileName(const QString &file_name,
@@ -141,13 +245,13 @@ QString CompilerDriver::getConfFileNameFromFwFileName(const QString &file_name,
 {
     QString res;
     QFileInfo fi(file_name);
-    if (fi.isRelative())
-    {
-        res = QString(fi.completeBaseName() + ext);
-    } else
-    {
-        res = QString(fi.path() + "/" + fi.completeBaseName() + ext);
-    }
+    QString path = fi.path();
+
+    if (path == ".")
+        res = fi.completeBaseName() + "." + ext;
+    else
+        res = path + "/" + fi.completeBaseName() + "." + ext;
+
     return res;
 }
 

@@ -277,8 +277,12 @@ void GeneratedScriptTest::ActivationCommandsTest_6()
 void GeneratedScriptTest::ActivationCommandsTest_7()
 {
     objdb = new FWObjectDatabase();
-    QString res = Configlet::findConfigletInFile("activation", "ipf4.fw");
+    QString res = Configlet::findConfigletInFile("activation", "ipf4.fw", 1);
     CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f /etc/path\\ with\\ space/ipf4-ipf.conf") != -1);
+
+    res = Configlet::findConfigletInFile("activation", "ipf4.fw", 2);
+    CPPUNIT_ASSERT(res.indexOf("$IPNAT  -f /etc/path\\ with\\ space/ipf4-nat.conf") != -1);
+
     delete objdb;
 }
 

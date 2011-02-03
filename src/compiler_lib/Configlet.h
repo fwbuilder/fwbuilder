@@ -82,9 +82,11 @@ public:
      */
     static void setDebugging(bool f) { configlet_debugging = f; }
     static QString findGeneratedText(const QString &configlet_name,
-                                     const QString &text);
+                                     const QString &text,
+                                     int nth=1);
     static QString findConfigletInFile(const QString &configlet_name,
-                                       const QString &file_path);
+                                       const QString &file_path,
+                                       int nth=1);
 };
 
 #endif

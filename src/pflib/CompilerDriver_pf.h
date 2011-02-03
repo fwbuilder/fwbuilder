@@ -68,21 +68,24 @@ class MapTableFactory : public std::map<QString, fwcompiler::TableFactory*>
 
 
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
     class CompilerDriver_pf : public CompilerDriver
     {
 
-        QString conf_file_name;
+        QStringList anchor_names;
+        
+//        QString conf_file_name;
 
 // Note that in the following maps ruleset name will be 
 // "__main__" for both main Policy and NAT rulesets.
 
 // map ruleset_name -> conf file name
-        std::map<QString, QString> conf_files;
+//        std::map<QString, QString> conf_files;
 
 // map ruleset_name -> remote conf file name
-        std::map<QString, QString> remote_conf_files;
+//        std::map<QString, QString> remote_conf_files;
 
 // map ruleset_name -> generated script
 //    std::map<std::string, std::ostringstream*> generated_scripts;

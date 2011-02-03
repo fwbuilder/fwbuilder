@@ -4,11 +4,11 @@
 #
 #  Firewall Builder  fwb_ipf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:54:22 2011 PST by vadim
+#  Generated Thu Feb  3 14:54:46 2011 PST by vadim
 #
-# files: * firewall9.fw
-# files:   firewall9-ipf.conf
-# files:   firewall9-nat.conf
+# files: * firewall9.fw /etc/firewall9.fw
+# files:   firewall9-ipf.conf /etc/firewall9-ipf.conf
+# files:   firewall9-nat.conf /etc/firewall9-nat.conf
 #
 # Compiled for ipf 
 #
@@ -76,7 +76,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 09:54:22 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:54:46 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

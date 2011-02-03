@@ -255,6 +255,54 @@ void GeneratedScriptTest::ManifestTest_10()
     delete objdb;
 }
 
+/*
+ * pf8 has an achor and compiler generates two .conf files. The name
+ * of the second file is derived from the name of the main .conf file
+ * that is is set in fw options
+ */
+void GeneratedScriptTest::ManifestTest_11()
+{
+    /*
+     * generated .fw and .conf files have different base names
+     */
+    if (QFile::exists("tmp/pf8.fw")) QFile::remove("tmp/pf8.fw");
+    if (QFile::exists("tmp/pf.conf")) QFile::remove("tmp/pf.conf");
+    if (QFile::exists("tmp/pf-anchor_1.conf")) QFile::remove("tmp/pf-anchor_1.conf");
+
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "pf8", "tmp/pf8.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "tmp/pf8.fw");
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * tmp/pf8.fw /etc/fw/pf8.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   tmp/pf.conf /etc/pf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   tmp/pf-anchor_1.conf /etc/pf-anchor_1.conf") != -1);
+    delete objdb;
+}
+
+/*
+ * pf9 has an achor and compiler generates two .conf files. Names for
+ * all generated files are constructed using firewall name and default
+ * algorithm
+ */
+void GeneratedScriptTest::ManifestTest_12()
+{
+    /*
+     * generated .fw and .conf files have different base names
+     */
+    if (QFile::exists("pf9.fw")) QFile::remove("pf9.fw");
+    if (QFile::exists("pf9.conf")) QFile::remove("pf9.conf");
+    if (QFile::exists("pf9-anchor_1.conf")) QFile::remove("pf9-anchor_1.conf");
+
+    objdb = new FWObjectDatabase();
+    runCompiler("test1.fwb", "pf9", "pf9.fw");
+    QString res = Configlet::findConfigletInFile("top_comment", "pf9.fw");
+    // find manifest and compare
+    CPPUNIT_ASSERT(res.indexOf("# files: * pf9.fw /etc/pf9.fw") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   pf9.conf /etc/pf9.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("# files:   pf9-anchor_1.conf /etc/pf9-anchor_1.conf") != -1);
+    delete objdb;
+}
+
 // ************************************************************************
 
 void GeneratedScriptTest::FwCommentTest()
@@ -318,13 +366,18 @@ void GeneratedScriptTest::ActivationCommandsTest_6()
     delete objdb;
 }
 
+/*
+ * object pf4 defines remote name for the .fw file but does not define
+ * remote name for the .conf file. The latter is determined by
+ * default, by combining local file name with directory defined in
+ * firewall_dir option (in the tab "Installer")
+ */
 void GeneratedScriptTest::ActivationCommandsTest_7()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf4.fw")
         .split(QRegExp("\\s+")).join(" ");
-    qDebug() << res;
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/path\\ with\\ space/pf4.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf4.conf") != -1);
     delete objdb;
 }
 
@@ -354,5 +407,36 @@ void GeneratedScriptTest::ActivationCommandsTest_10()
     CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf.conf") != -1);
     delete objdb;
 }
+
+void GeneratedScriptTest::ActivationCommandsTest_11()
+{
+    objdb = new FWObjectDatabase();
+    QString res = Configlet::findConfigletInFile("activation", "tmp/pf8.fw", 1)
+        .split(QRegExp("\\s+")).join(" ");
+
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf.conf") != -1);
+
+    // find occurence #2
+    res = Configlet::findConfigletInFile("activation", "tmp/pf8.fw", 2)
+        .split(QRegExp("\\s+")).join(" ");
+
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL -a anchor_1 \\ -f \\ /etc/pf-anchor_1.conf") != -1);
+    delete objdb;
+}
+
+void GeneratedScriptTest::ActivationCommandsTest_12()
+{
+    objdb = new FWObjectDatabase();
+    QString res = Configlet::findConfigletInFile("activation", "pf9.fw", 1)
+        .split(QRegExp("\\s+")).join(" ");
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf9.conf") != -1);
+
+    res = Configlet::findConfigletInFile("activation", "pf9.fw", 2)
+        .split(QRegExp("\\s+")).join(" ");
+
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL -a anchor_1 \\ -f \\ /etc/pf9-anchor_1.conf") != -1);
+    delete objdb;
+}
+
 
 

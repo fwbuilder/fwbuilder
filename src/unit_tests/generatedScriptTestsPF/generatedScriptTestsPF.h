@@ -60,6 +60,8 @@ public:
     void ManifestTest_8();
     void ManifestTest_9();
     void ManifestTest_10();
+    void ManifestTest_11();
+    void ManifestTest_12();
 
     void FwCommentTest();
     void ActivationCommandsTest_1();
@@ -72,6 +74,8 @@ public:
     void ActivationCommandsTest_8();
     void ActivationCommandsTest_9();
     void ActivationCommandsTest_10();
+    void ActivationCommandsTest_11();
+    void ActivationCommandsTest_12();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
 
@@ -106,6 +110,12 @@ public:
 
     CPPUNIT_TEST(ManifestTest_10);
     CPPUNIT_TEST(ActivationCommandsTest_10);
+
+    CPPUNIT_TEST(ManifestTest_11);
+    CPPUNIT_TEST(ActivationCommandsTest_11);
+
+    CPPUNIT_TEST(ManifestTest_12);
+    CPPUNIT_TEST(ActivationCommandsTest_12);
 
     CPPUNIT_TEST(FwCommentTest);
 

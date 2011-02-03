@@ -4,9 +4,9 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:58:29 2011 PST by vadim
+#  Generated Thu Feb  3 14:43:03 2011 PST by vadim
 #
-# files: * firewall63.fw
+# files: * firewall63.fw /etc/firewall63.fw
 #
 # Compiled for iptables 1.4.0
 #
@@ -389,7 +389,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb  3 09:58:29 2011 by vadim"
+        log "Activating firewall script generated Thu Feb  3 14:43:03 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

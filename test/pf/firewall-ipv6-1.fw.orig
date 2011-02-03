@@ -4,11 +4,11 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Thu Feb  3 09:46:38 2011 PST by vadim
+#  Generated Thu Feb  3 14:59:10 2011 PST by vadim
 #
 # files: * firewall-ipv6-1.fw pf-ipv6.fw
-# files:   firewall-ipv6-1-Policy_ipv4.conf /etc/fw/pf-ipv6-Policy_ipv4.conf
-# files:   firewall-ipv6-1.conf /etc/fw/pf-ipv6.conf
+# files:   firewall-ipv6-1-Policy_ipv4.conf /etc/fw/pf-ipv6.conf
+# files:   firewall-ipv6-1.conf /etc/firewall-ipv6-1.conf
 #
 # Compiled for pf 
 #
@@ -175,18 +175,18 @@ configure_interfaces() {
     update_addresses_of_interface "lo ::1/128 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb  3 09:46:38 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 14:59:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/pf-ipv6.conf || exit 1
 $PFCTL  -a Policy_ipv4 \
      -f \
-    /etc/fw/pf-ipv6-Policy_ipv4.conf || exit 1
+    /etc/fw/pf-ipv6.conf || exit 1
+$PFCTL   \
+     -f \
+    /etc/firewall-ipv6-1.conf || exit 1
 
 
 

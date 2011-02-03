@@ -311,23 +311,37 @@ void Configlet::collapseEmptyStrings(bool f)
     collapse_empty_strings = f;
 }
 
-
+/*
+ * find n-th occurrence of the configlet with given name in @text. Count
+ * from 1
+ */
 QString Configlet::findGeneratedText(const QString &configlet_name,
-                                     const QString &text)
+                                     const QString &text,
+                                     int nth)
 {
     QString begin_m = begin_marker.arg(configlet_name) + "\n";
     QString end_m = end_marker.arg(configlet_name) + "\n";
-    int n1, n2;
-    n1 = text.indexOf(begin_m);
-    if (n1 == -1) return "";
+    int n1 = -1, n2 = 0;
+    // find n-th occurrence
+    int count = 0;
+    while (count < nth)
+    {
+        n1++;
+        n1 = text.indexOf(begin_m, n1);
+        if (n1 == -1) return "";
+        count++;
+    }
+
     n1 += begin_m.length();
-    n2 = text.indexOf(end_m);
+    n2 = text.indexOf(end_m, n1);
+
     if (n2 != -1) return text.mid(n1, n2 - n1);
     return text.mid(n1);
 }
 
 QString Configlet::findConfigletInFile(const QString &configlet_name,
-                                       const QString &file_path)
+                                       const QString &file_path,
+                                       int nth)
 {
     QStringList res;
     if (!QFile(file_path).exists())  return "";
@@ -344,6 +358,6 @@ QString Configlet::findConfigletInFile(const QString &configlet_name,
             } while (!ts.atEnd());
         }
     }
-    return findGeneratedText(configlet_name, res.join("\n"));
+    return findGeneratedText(configlet_name, res.join("\n"), nth);
 }
 

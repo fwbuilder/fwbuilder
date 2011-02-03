@@ -54,7 +54,13 @@ namespace libfwbuilder {
     class InetAddr;
 };
 
-namespace fwcompiler {
+#define FW_FILE 0
+#define CONF1_FILE 1
+#define CONF2_FILE 2
+
+
+namespace fwcompiler
+{
 
     class OSConfigurator;
     
@@ -79,22 +85,26 @@ protected:
         QString fwobjectname;
         QString current_firewall_name;
 
-        // fw_file_name is the name of the output file. Can be
-        // enforced via -o command line option, set in firewall object options
-        // by the user or automatically determined using firewall
-        // object name
-        QString fw_file_name;
+        // list of file names we should generate. Items in the list are
+        // as follows: [0] - the name of the initialization script (normally
+        // the .fw file); [1] - the name of the confguration file (for
+        // pf, ipfilter this is the main .conf file); [2] - the name of the
+        // next conf file, if any; and so on.
+        //
+        // function determineOutputFileNames() fills this list
+        
+        QStringList file_names;
+
+        // file names on the firewall with full path. Items should correspond
+        // to items in the list file_name
+        //
+        // function determineOutputFileNames() fills this list
+        
+        QStringList remote_file_names;
 
         // I store file name provided via -o command line option here
         QString file_name_setting_from_command_line;
         
-        // Additional file names. These can be used for .conf file name
-        // for PF config or filter.conf and nat.conf file names for ipfilter.
-        // These can be set in firewall object options or automatically
-        // derived from fw_file_name
-        QString conf1_file_name;
-        QString conf2_file_name;
-
         // member_file_names is the mapping between member firewall
         // object ID and corresponding output file name. Can be
         // enfirced via -O command line option or determined
@@ -125,7 +135,10 @@ protected:
 
         void determineOutputFileNames(libfwbuilder::Cluster *cluster,
                                       libfwbuilder::Firewall *current_fw,
-                                      bool cluster_member);
+                                      bool cluster_member,
+                                      const QStringList &suffixes,
+                                      const QStringList &extensions,
+                                      const QStringList &remote_file_name_fw_options);
 
         bool isSupported(std::list<std::string> *protocols,
                          const std::string &cluster_group_type);
