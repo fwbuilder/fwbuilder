@@ -84,17 +84,9 @@ void CompilerDriver::determineOutputFileNames(Cluster *cluster,
 
         } else
         {
-            QString new_name = getOutputFileNameInternal(
+            fw_file_name = getOutputFileNameInternal(
                 current_fw,
                 "", "output_file", current_firewall_name, ".fw");
-
-            if (prepend_cluster_name_to_output_file && cluster!=NULL)
-            {
-                fw_file_name = QString("%1_%2")
-                    .arg(QString::fromUtf8(cluster->getName().c_str()))
-                    .arg(new_name);
-            } else
-                fw_file_name = new_name;
         }
 
     } else
@@ -104,7 +96,6 @@ void CompilerDriver::determineOutputFileNames(Cluster *cluster,
             current_fw,
             file_name_setting_from_command_line,
             "output_file", current_firewall_name, ".fw");
-
     }
 
     FWOptions* options = current_fw->getOptionsObject();
@@ -115,6 +106,17 @@ void CompilerDriver::determineOutputFileNames(Cluster *cluster,
     {
         conf1_file_name = getConfFileNameFromFwFileName(fw_file_name, ".conf");
     }
+
+    if (prepend_cluster_name_to_output_file && cluster_member && cluster!=NULL)
+    {
+        fw_file_name = QString("%1_%2")
+            .arg(QString::fromUtf8(cluster->getName().c_str()))
+            .arg(fw_file_name);
+        conf1_file_name = QString("%1_%2")
+            .arg(QString::fromUtf8(cluster->getName().c_str()))
+            .arg(conf1_file_name);
+    }
+
 }
 
 

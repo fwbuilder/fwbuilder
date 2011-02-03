@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3455
+#  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Mon Jan 31 18:35:16 2011 PST by vadim
+#  Generated Thu Feb  3 09:46:25 2011 PST by vadim
 #
 # files: * firewall2-1.fw
 # files:   firewall2-1.conf
@@ -89,7 +89,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 31 18:35:16 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:46:25 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -97,7 +97,7 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    ${FWDIR}/firewall2-1.conf || exit 1
+    /etc/fw/firewall2-1.conf || exit 1
 
 
 

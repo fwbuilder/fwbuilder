@@ -1,0 +1,46 @@
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3457
+#
+#  Generated Thu Feb  3 09:46:39 2011 PST by vadim
+#
+# files: * firewall-ipv6-3.fw
+# files:   firewall-ipv6-3-Policy_ipv4.conf
+# files:   firewall-ipv6-3.conf
+#
+# Compiled for pf 
+#
+
+
+
+gateway_enable="YES"
+ipv6_gateway_enable="YES"
+
+
+
+vlans_ed1="vlan100 vlan101"
+create_args_vlan100="vlan 100"
+create_args_vlan101="vlan 101"
+cloned_interfaces=""
+
+network_interfaces="ed0 lo0 vlan100 vlan101"
+ipv6_network_interfaces="ed0 lo0"
+ipv6_ifconfig_ed0="fe80::21d:9ff:fe8b:8e94/64"
+ipv6_ifconfig_ed0_alias0="2001:db8::1/64"
+ipv6_ifconfig_ed0_alias1="2001:db8::2/64"
+ifconfig_ed0="inet 1.1.1.1 netmask 0xffffff00"
+ifconfig_ed0_alias0="inet 10.10.10.1 netmask 0xffffff00"
+ifconfig_ed0_alias1="inet 10.10.10.2 netmask 0xffffff00"
+ipv6_ifconfig_lo0="::1/128"
+ifconfig_lo0="inet 127.0.0.1 netmask 0xff000000"
+ifconfig_vlan100="inet 172.16.1.1 netmask 0xfffffff0"
+ifconfig_vlan101="inet 172.16.2.1 netmask 0xfffffff0"
+pfsync_enable="YES"
+
+pf_enable="YES"
+pf_rules="/etc/firewall-ipv6-3.conf"
+pf_rules="/etc/firewall-ipv6-3-Policy_ipv4.conf"
+
+
+

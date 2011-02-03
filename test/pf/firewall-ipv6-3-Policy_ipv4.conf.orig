@@ -1,0 +1,4 @@
+# 
+# Rule  Policy_ipv4 0 (lo0)
+pass  quick on lo0 inet  from any  to any keep state  label "RULE 0 -- ACCEPT "  
+

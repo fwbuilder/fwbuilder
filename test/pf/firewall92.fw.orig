@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3455
+#  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Mon Jan 31 18:35:30 2011 PST by vadim
+#  Generated Thu Feb  3 09:46:37 2011 PST by vadim
 #
 # files: * firewall92.fw /etc/fw/pf.fw
 # files:   firewall92.conf /etc/fw/path\ with\ space/pf.conf
@@ -160,7 +160,7 @@ configure_interfaces() {
     update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Jan 31 18:35:30 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:46:37 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

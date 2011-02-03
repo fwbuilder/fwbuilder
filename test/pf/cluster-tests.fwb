@@ -1632,6 +1632,12 @@
       </InterfaceOptions>
     </Interface>
     <IPv4 id="id200734X1082" name="pf_cluster_4:carp0:ip-1" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
+    <Interface id="id7303X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
+      <InterfaceOptions>
+        <Option name="type">8021q</Option>
+        <Option name="vlan_id">100</Option>
+      </InterfaceOptions>
+    </Interface>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
@@ -2023,7 +2029,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id5462X42213" host_OS="freebsd" inactive="False" lastCompiled="1247150757" lastInstalled="0" lastModified="1245802420" platform="pf" name="pf_cluster_2" comment="using multicast address for pfsync and FreeBSD" ro="False">
+      <Cluster id="id5462X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1296755154" platform="pf" name="pf_cluster_2" comment="using multicast address for pfsync and FreeBSD" ro="False">
         <NAT id="id5559X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2771,7 +2777,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7290X42213" host_OS="freebsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1245802413" platform="pf" version="4.x" name="freebsd-1" comment="" ro="False">
+      <Firewall id="id7290X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1296755154" platform="pf" version="4.x" name="freebsd-1" comment="" ro="False">
         <NAT id="id7310X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2784,12 +2790,6 @@
         <Interface id="id7296X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id7301X42213" name="freebsd-1:en0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
-          <Interface id="id7303X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
-            <InterfaceOptions>
-              <Option name="type">8021q</Option>
-              <Option name="vlan_id">100</Option>
-            </InterfaceOptions>
-          </Interface>
         </Interface>
         <Interface id="id7306X42213" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id7308X42213" name="freebsd-1:en1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
@@ -2892,7 +2892,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7317X42213" host_OS="freebsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1245802420" platform="pf" version="4.x" name="freebsd-2" comment="" ro="False">
+      <Firewall id="id7317X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1245802420" platform="pf" version="4.x" name="freebsd-2" comment="" ro="False">
         <NAT id="id7330X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

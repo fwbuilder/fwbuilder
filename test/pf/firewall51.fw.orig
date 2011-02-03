@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3455
+#  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Mon Jan 31 18:35:24 2011 PST by vadim
+#  Generated Thu Feb  3 09:46:32 2011 PST by vadim
 #
 # files: * firewall51.fw
 # files:   firewall51.conf
@@ -80,7 +80,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Jan 31 18:35:24 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:46:32 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -88,22 +88,22 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    ${FWDIR}/firewall51.conf || exit 1
+    /etc/fw/firewall51.conf || exit 1
 $PFCTL  -a mail_server_inbound \
      -f \
-    ${FWDIR}/firewall51-mail_server_inbound.conf || exit 1
+    /etc/fw/firewall51-mail_server_inbound.conf || exit 1
 $PFCTL  -a mail_server_outbound \
      -f \
-    ${FWDIR}/firewall51-mail_server_outbound.conf || exit 1
+    /etc/fw/firewall51-mail_server_outbound.conf || exit 1
 $PFCTL  -a rule2_branch \
      -f \
-    ${FWDIR}/firewall51-rule2_branch.conf || exit 1
+    /etc/fw/firewall51-rule2_branch.conf || exit 1
 $PFCTL  -a web_server_inbound \
      -f \
-    ${FWDIR}/firewall51-web_server_inbound.conf || exit 1
+    /etc/fw/firewall51-web_server_inbound.conf || exit 1
 $PFCTL  -a web_server_outbound \
      -f \
-    ${FWDIR}/firewall51-web_server_outbound.conf || exit 1
+    /etc/fw/firewall51-web_server_outbound.conf || exit 1
 
 
 

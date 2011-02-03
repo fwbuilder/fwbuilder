@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3455
+#  Firewall Builder  fwb_pf v4.2.0.3457
 #
-#  Generated Mon Jan 31 18:35:14 2011 PST by vadim
+#  Generated Thu Feb  3 09:46:22 2011 PST by vadim
 #
 # files: * firewall14.fw
 # files:   firewall14.conf
@@ -234,9 +234,7 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     sync_vlan_interfaces vlan101 vlan103
-    update_vlans_of_interface "pcn0 "
-    update_vlans_of_interface "em0 vlan101 vlan103 "
-
+    update_vlans_of_interface "em0 vlan101 vlan103"
 
     update_addresses_of_interface "em0 10.1.1.50/0xffffff00" ""
     update_addresses_of_interface "pcn0 10.3.14.50/0xffffff00" ""
@@ -244,7 +242,7 @@ configure_interfaces() {
     update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Jan 31 18:35:14 2011 by vadim"
+log "Activating firewall script generated Thu Feb  3 09:46:22 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -252,7 +250,7 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    ${FWDIR}/firewall14.conf || exit 1
+    /etc/firewall14.conf || exit 1
 
 
 

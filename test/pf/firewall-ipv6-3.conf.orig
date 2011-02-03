@@ -1,0 +1,11 @@
+
+
+
+# 
+# Rule  0 (lo0)
+pass  quick on lo0 inet6  from any  to any keep state  label "RULE 0 -- ACCEPT "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet6  from any  to any  label "RULE 10000 -- DROP "  
+
