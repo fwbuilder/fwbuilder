@@ -238,7 +238,7 @@ void GeneratedScriptTest::ActivationCommandsTest_1()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf1.fw");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f /etc/ipf1-ipf.conf") != -1);
     delete objdb;
 }
 
@@ -246,7 +246,7 @@ void GeneratedScriptTest::ActivationCommandsTest_2()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f /etc/ipf2-1-ipf.conf") != -1);
     delete objdb;
 }
 
@@ -254,7 +254,7 @@ void GeneratedScriptTest::ActivationCommandsTest_3()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f /etc/ipf2-1-ipf.conf") != -1);
     delete objdb;
 }
 
@@ -262,7 +262,7 @@ void GeneratedScriptTest::ActivationCommandsTest_4()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw");
-    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f ${FWDIR}/ipf2-1-ipf.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$IPF  -I -f /etc/ipf2-1-ipf.conf") != -1);
     delete objdb;
 }
 

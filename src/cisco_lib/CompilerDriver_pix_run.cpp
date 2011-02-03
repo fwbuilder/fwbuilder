@@ -160,7 +160,8 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
     script_skeleton.setVariable("routing_script",
                                 QString::fromUtf8(routing_script.c_str()));
 
-    assembleFwScriptInternal(cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    assembleFwScriptInternal(cluster, fw, cluster_member, oscnf,
+                             &script_skeleton, &top_comment, "!", true);
     return script_skeleton.expand();
 }
 

@@ -278,7 +278,7 @@ void GeneratedScriptTest::ActivationCommandsTest_1()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/pf1.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf1.conf") != -1);
     delete objdb;
 }
 
@@ -287,7 +287,7 @@ void GeneratedScriptTest::ActivationCommandsTest_2()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/ipf2-1.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -296,7 +296,7 @@ void GeneratedScriptTest::ActivationCommandsTest_3()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/ipf2-1.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -305,7 +305,7 @@ void GeneratedScriptTest::ActivationCommandsTest_4()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/ipf2-1.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -333,7 +333,7 @@ void GeneratedScriptTest::ActivationCommandsTest_8()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf5.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ ${FWDIR}/pf5.conf") != -1);
+    CPPUNIT_ASSERT(res.indexOf("$PFCTL \\ -f \\ /etc/pf5.conf") != -1);
     delete objdb;
 }
 

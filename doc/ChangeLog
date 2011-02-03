@@ -1,3 +1,13 @@
+2011-02-02  vadim  <vadim@netcitadel.com>
+
+	* OSConfigurator_freebsd.cpp: see #1888 "Add option to generate
+	rc.conf.local file for BSD systems". Added ability to generate
+	initialization script in rc.conf fromat for FreeBSD. Only FreeBSD
+	is currently supported (not OpenBSD). Generated script includes
+	variables to configure interfaces and their ipv4 and ipv6
+	addresses, vlans, CARP and pfsync interfaces, as well as variables
+	that initialize PF.
+
 2011-02-01  vadim  <vadim@netcitadel.com>
 
 	* CompilerDriver_files.cpp (determineOutputFileNames): See #2015

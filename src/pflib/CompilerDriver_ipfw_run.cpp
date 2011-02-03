@@ -107,7 +107,8 @@ QString CompilerDriver_ipfw::assembleFwScript(Cluster *cluster,
     Configlet top_comment(fw, "ipfw", "top_comment");
 
     assembleFwScriptInternal(
-        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf,
+        &script_skeleton, &top_comment, "#", true);
     return script_skeleton.expand();
 }
 

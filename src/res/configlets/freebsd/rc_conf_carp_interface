@@ -1,0 +1,22 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## CARP
+##     ifconfig carp-interface [advbase n] [advskew n] [carpdev iface]
+##     [pass passphrase] [state state] [vhid host-id]
+##
+## for pfsync and CARP see http://www.kernel-panic.it/openbsd/carp/
+## "Redundant firewalls with OpenBSD, CARP and pfsync"
+##
+## here is how to configure CARP interfaces in rc.conf
+##
+## http://blas.phemo.us/articles/2007/04/04/setting-up-and-configuring-carp-interfaces-on-freebsd
+
+ifconfig_{{$carp_interface}}="vhid {{$vhid}} pass {{$carp_password}} {{if have_advbase}} advbase {{$advbase}}{{endif}} {{if have_advskew}} advskew {{$advskew}}{{endif}} {{if have_base_inetrface}} carpdev {{$base_inetrface}}{{endif}}"
+
+    
+

@@ -156,7 +156,8 @@ protected:
                                               OSConfigurator *ocsnf,
                                               Configlet *script_skeleton,
                                               Configlet *top_comment,
-                                              const QString &comment_char);
+                                              const QString &comment_char,
+                                              bool indent);
 
         void _findImportedRuleSetsRecursively(libfwbuilder::Firewall *fw,
                                               libfwbuilder::RuleSet *ruleset,

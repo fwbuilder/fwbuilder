@@ -1,0 +1,19 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/freebsd/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+{{if have_freebsd_ip_forward}}gateway_enable="{{$freebsd_ip_forward}}"{{endif}}
+{{if have_freebsd_ipv6_forward}}ipv6_gateway_enable="{{$freebsd_ipv6_forward}}"{{endif}}
+
+{{if have_freebsd_ip_sourceroute}}forward_sourceroute="{{$freebsd_ip_sourceroute}}"{{endif}}
+{{if have_freebsd_ip_sourceroute}}accept_sourceroute="{{$freebsd_ip_sourceroute}}"{{endif}}
+

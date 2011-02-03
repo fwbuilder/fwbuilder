@@ -31,9 +31,11 @@
 #include "OSConfigurator_bsd.h"
 #include "OSData.h"
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class OSConfigurator_openbsd : public OSConfigurator_bsd {
+    class OSConfigurator_openbsd : public OSConfigurator_bsd
+    {
 
 	public:
 

@@ -43,11 +43,13 @@
  * generic name, something like OSConfigurator_generic_pf_ipf_family
  */
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class OSConfigurator_solaris : public OSConfigurator_bsd {
+    class OSConfigurator_solaris : public OSConfigurator_bsd
+    {
 
-        OSData   os_data;
+        OSData os_data;
 
 	std::vector<libfwbuilder::InetAddr> virtual_addresses;
 

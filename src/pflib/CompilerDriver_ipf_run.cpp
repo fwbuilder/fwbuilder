@@ -160,7 +160,8 @@ QString CompilerDriver_ipf::assembleFwScript(Cluster *cluster,
     Configlet top_comment(fw, "ipf", "top_comment");
 
     assembleFwScriptInternal(
-        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf,
+        &script_skeleton, &top_comment, "#", true);
     return script_skeleton.expand();
 }
 
@@ -199,6 +200,17 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         current_firewall_name = fw->getName().c_str();
 
         determineOutputFileNames(cluster, fw, !cluster_id.empty());
+
+        // if remote file spec does not include path, the file is
+        // assumed to be in directory set in the "Installer" tab
+        // of the firewall settings dialog
+        //
+        // fw_dir is used below to generate activation commands
+        
+        QString fw_dir = options->getStr("firewall_dir").c_str();
+
+        if (fw_dir.isEmpty()) fw_dir = Resources::getTargetOptionStr(
+            fw->getStr("host_OS"), "activation/fwdir").c_str();
 
         QFileInfo finfo(fw_file_name);
         QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";
@@ -362,7 +374,16 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
             QString filePath;
             if (remote_ipf_name[0] == '/') filePath = remote_ipf_name;
-            else filePath = QString("${FWDIR}/") + remote_ipf_name;
+            else
+            {
+                QFileInfo remote_file_info(remote_ipf_name);
+                if (remote_file_info.path() != ".")
+                    filePath = remote_ipf_name;
+                else
+                    filePath = fw_dir + "/" + remote_ipf_name;
+
+                //filePath = QString("${FWDIR}/") + remote_ipf_name;
+            }
 
             activation_commands.push_back(
                 composeActivationCommand(
@@ -400,7 +421,17 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
             QString filePath;
             if (remote_nat_name[0] == '/') filePath = remote_nat_name;
-            else filePath = QString("${FWDIR}/") + remote_nat_name;
+            else 
+            {
+                QFileInfo remote_file_info(remote_nat_name);
+                if (remote_file_info.path() != ".")
+                    filePath = remote_nat_name;
+                else
+                    filePath = fw_dir + "/" + remote_nat_name;
+
+                //filePath = QString("${FWDIR}/") + remote_nat_name;
+            }
+
             activation_commands.push_back(
                 composeActivationCommand(
                     fw, false, ipf_dbg, fw_version, filePath.toStdString()));

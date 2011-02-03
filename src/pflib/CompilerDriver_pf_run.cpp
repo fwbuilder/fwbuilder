@@ -89,7 +89,11 @@ QString CompilerDriver_pf::composeActivationCommand(Firewall *fw,
                                                     const string &pf_version,
                                                     const string &remote_file_name)
 {
-    Configlet act(fw, "pf", "activation");
+    FWOptions* options = fw->getOptionsObject();
+    Configlet act(fw, "pf",
+                  options->getBool("generate_rc_conf_file") ?
+                  "rc_conf_activation" : "activation");
+    
     act.removeComments();
     act.setVariable("pfctl_debug", pfctl_debug.c_str());
     act.setVariable("anchor", !anchor_name.empty());
@@ -113,10 +117,25 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     bool debug = options->getBool("debug");
     string pfctl_dbg = (debug)?"-v ":"";
 
+    // if remote file spec does not include path, the file is
+    // assumed to be in directory set in the "Installer" tab
+    // of the firewall settings dialog
+    QString fw_dir = options->getStr("firewall_dir").c_str();
+
+    if (fw_dir.isEmpty()) fw_dir = Resources::getTargetOptionStr(
+        fw->getStr("host_OS"), "activation/fwdir").c_str();
+
     QStringList activation_commands;
     QString remote_file = remote_conf_files["__main__"];
     if (remote_file.isEmpty()) remote_file = conf_files["__main__"];
-    if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+    if (remote_file[0] != '/')
+    {
+        QFileInfo remote_file_info(remote_file);
+        if (remote_file_info.path() != ".")
+            remote_file = remote_file;
+        else
+            remote_file = fw_dir + "/" + remote_file;
+    }
     remote_file = this->escapeFileName(remote_file);
 
     activation_commands.push_back(
@@ -128,7 +147,14 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     {
         QString remote_file = remote_conf_files[i->first];
         if (remote_file.isEmpty()) remote_file = i->second;
-        if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+        if (remote_file[0] != '/')
+        {
+            QFileInfo remote_file_info(remote_file);
+            if (remote_file_info.path() != ".")
+                remote_file = remote_file;
+            else
+                remote_file = fw_dir + "/" + remote_file;
+        }
         remote_file = this->escapeFileName(remote_file);
 
         if (i->first != "__main__")
@@ -179,14 +205,23 @@ QString CompilerDriver_pf::assembleFwScript(Cluster *cluster,
                                             OSConfigurator *oscnf)
 {
     FWOptions* options = fw->getOptionsObject();
-    Configlet script_skeleton(fw, "pf", "script_skeleton");
-    Configlet top_comment(fw, "pf", "top_comment");
+
+    Configlet script_skeleton(
+        fw, "pf",
+        options->getBool("generate_rc_conf_file") ?
+            "rc_conf_skeleton" : "script_skeleton");
+
+    Configlet top_comment(fw, "pf",
+                          options->getBool("generate_rc_conf_file") ?
+                          "rc_conf_top_comment" : "top_comment");
 
     script_skeleton.setVariable("routing_script", 
                                 QString::fromUtf8(routing_script.c_str()));
 
     assembleFwScriptInternal(
-        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf,
+        &script_skeleton, &top_comment, "#",
+        !options->getBool("generate_rc_conf_file"));
 
     if (fw->getStr("platform") == "pf")
     {

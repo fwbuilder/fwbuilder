@@ -1,0 +1,10 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+
+pfsync_syncdev="{{$syncdev}}"
+{{if have_syncpeer}}pfsync_syncpeer="{{$syncpeer}}"{{endif}}

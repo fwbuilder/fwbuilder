@@ -117,7 +117,8 @@ QString CompilerDriver_iosacl::assembleFwScript(Cluster *cluster,
     options->setStr("prolog_script", options->getStr("iosacl_prolog_script"));
     options->setStr("epilog_script", options->getStr("iosacl_epilog_script"));
 
-    assembleFwScriptInternal(cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    assembleFwScriptInternal(cluster, fw, cluster_member,
+                             oscnf, &script_skeleton, &top_comment, "!", true);
     return script_skeleton.expand();
 }
 

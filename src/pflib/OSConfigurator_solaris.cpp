@@ -129,7 +129,3 @@ string  OSConfigurator_solaris::configureInterfaces()
     return ostr.str();
 }
 
-
-
-
-

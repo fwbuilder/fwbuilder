@@ -14,6 +14,7 @@ SOURCES	 =  TableFactory.cpp \
 			NATCompiler_pf_negation.cpp \
 			NATCompiler_pf_writers.cpp \
 			OSConfigurator_bsd.cpp \
+			OSConfigurator_bsd_interfaces.cpp \
 			OSConfigurator_freebsd.cpp \
 			OSConfigurator_macosx.cpp \
 			OSConfigurator_openbsd.cpp \

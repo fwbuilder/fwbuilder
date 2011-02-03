@@ -71,7 +71,8 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
                                               OSConfigurator *oscnf,
                                               Configlet *script_skeleton,
                                               Configlet *top_comment,
-                                              const QString &comment_char)
+                                              const QString &comment_char,
+                                              bool indent)
 {
     FWOptions* options = fw->getOptionsObject();
     string platform = fw->getStr("platform");
@@ -112,17 +113,21 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
 
     QFileInfo fw_file_info(fw_file_name);
 
-    top_comment->setVariable("manifest", assembleManifest(cluster, fw, cluster_member));
+    top_comment->setVariable("manifest", assembleManifest(cluster, fw,
+                                                          cluster_member));
     top_comment->setVariable("platform", platform.c_str());
     top_comment->setVariable("fw_version", fw_version.c_str());
-    top_comment->setVariable("comment", prepend(comment_char + " ", fw->getComment().c_str()));
+    top_comment->setVariable("comment",
+                             prepend((indent) ? comment_char + " " : "",
+                                     fw->getComment().c_str()));
 
     script_skeleton->setVariable("have_nat", have_nat);
     script_skeleton->setVariable("have_filter", have_filter);
 
     script_skeleton->setVariable("top_comment", top_comment->expand());
     script_skeleton->setVariable("errors_and_warnings",
-                                prepend(comment_char + " ", all_errors.join("\n")));
+                                prepend((indent) ? comment_char + " " : "",
+                                    all_errors.join("\n")));
     script_skeleton->setVariable("tools", printPathForAllTools(fw, family));
 
     script_skeleton->setVariable("timestamp", timestr);
@@ -134,16 +139,21 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
 
     script_buffer = "";
 
-    script_skeleton->setVariable("shell_functions", oscnf->printFunctions().c_str());
+    script_skeleton->setVariable("shell_functions",
+                                 oscnf->printFunctions().c_str());
     script_skeleton->setVariable("kernel_vars_commands",
-                                prepend("    ", oscnf->printKernelVarsCommands().c_str()));
+                                 prepend((indent) ? "    " : "",
+                                        oscnf->printKernelVarsCommands().c_str()));
     script_skeleton->setVariable("configure_interfaces",
-                                prepend("    ", oscnf->configureInterfaces().c_str()));
+                                 prepend((indent) ? "    " : "",
+                                        oscnf->configureInterfaces().c_str()));
 
     // this really adds nothing for the most of the systems
-    script_skeleton->setVariable("other_os_configuration_commands", oscnf->getCompiledScript().c_str());
+    script_skeleton->setVariable("other_os_configuration_commands",
+                                 oscnf->getCompiledScript().c_str());
 
-    script_skeleton->setVariable("activation_commands", printActivationCommands(fw));
+    script_skeleton->setVariable("activation_commands",
+                                 printActivationCommands(fw));
 
     script_skeleton->setVariable("verify_interfaces", "");
 

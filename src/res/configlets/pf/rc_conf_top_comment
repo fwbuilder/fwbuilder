@@ -1,0 +1,12 @@
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v{{$version}}
+#
+#  Generated {{$timestamp}} {{$tz}} by {{$user}}
+#
+{{$manifest}}
+#
+# Compiled for {{$platform}} {{$fw_version}}
+#
+{{$comment}}
