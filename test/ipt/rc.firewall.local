@@ -2,11 +2,11 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3437
+#  Firewall Builder  fwb_ipt v4.2.0.3457
 #
-#  Generated Mon Jan 17 19:25:17 2011 PST by vadim
+#  Generated Thu Feb  3 10:00:31 2011 PST by vadim
 #
-# files: * ipcop1.fw
+# files: * rc.firewall.local
 #
 # Compiled for iptables (any version)
 #

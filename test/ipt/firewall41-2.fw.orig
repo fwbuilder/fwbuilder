@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3455
+#  Firewall Builder  fwb_ipt v4.2.0.3437
 #
-#  Generated Mon Jan 31 18:31:23 2011 PST by vadim
+#  Generated Mon Jan 17 19:23:11 2011 PST by vadim
 #
 # files: * firewall41-2.fw
 #
@@ -483,7 +483,7 @@ status_action() {
 }
 
 start() {
-    log "Activating firewall script generated Mon Jan 31 18:31:23 2011 by vadim"
+    log "Activating firewall script generated Mon Jan 17 19:23:11 2011 by vadim"
     check_tools
      prolog_commands 
     check_run_time_address_table_files
