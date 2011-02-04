@@ -43,7 +43,8 @@
 #include "NATCompiler_pf.h"
 #include "TableFactory.h"
 #include "Preprocessor_pf.h"
-#include "RoutingCompiler_bsd.h"
+#include "RoutingCompiler_openbsd.h"
+#include "RoutingCompiler_freebsd.h"
 
 #include "OSConfigurator_openbsd.h"
 #include "OSConfigurator_freebsd.h"
@@ -241,8 +242,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         string platform = fw->getStr("platform");
         string fw_version = fw->getStr("version");
         string host_os = fw->getStr("host_OS");
-        string family = Resources::os_res[host_os
-        ]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+        string family = Resources::os_res[host_os]->
+            Resources::getResourceStr("/FWBuilderResources/Target/family");
 
         if (host_os == "solaris")
             oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
@@ -494,8 +495,21 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             }
         }
 
-        std::auto_ptr<RoutingCompiler_bsd> routing_compiler(
-            new RoutingCompiler_bsd(objdb, fw, false, oscnf.get()));
+        std::auto_ptr<RoutingCompiler> routing_compiler;
+
+        if (host_os == "openbsd")
+            routing_compiler = std::auto_ptr<RoutingCompiler>(
+                new RoutingCompiler_openbsd(objdb, fw, false, oscnf.get()));
+
+        if (host_os == "freebsd")
+            routing_compiler = std::auto_ptr<RoutingCompiler>(
+                new RoutingCompiler_freebsd(objdb, fw, false, oscnf.get()));
+
+        if (routing_compiler.get() == NULL)
+        {
+            abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
+            return "";
+        }
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)

@@ -21,8 +21,8 @@
 
 */
 
-#ifndef __ROUTINGCOMPILER_BSD_HH__
-#define __ROUTINGCOMPILER_BSD_HH__
+#ifndef __ROUTINGCOMPILER_OPENBSD_HH__
+#define __ROUTINGCOMPILER_OPENBSD_HH__
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -41,7 +41,7 @@ namespace libfwbuilder {
 namespace fwcompiler
 {
 
-    class RoutingCompiler_bsd : public RoutingCompiler
+    class RoutingCompiler_openbsd : public RoutingCompiler
     {
 
     protected:
@@ -76,23 +76,24 @@ namespace fwcompiler
 	 */
         class PrintRule : public RoutingRuleProcessor
         {
+    protected:
             bool        print_once_on_top;
             std::string current_rule_label;
 
             virtual std::string _printAddr(libfwbuilder::Address  *o);
             
-        public:
+    public:
 
             PrintRule(const std::string &name);
             virtual bool processNext();
 
-            std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
-            std::string _printRGtw(libfwbuilder::RoutingRule *r);
-            std::string _printRItf(libfwbuilder::RoutingRule *r);
-            std::string _printRDst(libfwbuilder::RoutingRule *r);
+            virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRGtw(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRItf(libfwbuilder::RoutingRule *r);
+            virtual std::string _printRDst(libfwbuilder::RoutingRule *r);
 
         };
-        friend class RoutingCompiler_bsd::PrintRule;
+        friend class RoutingCompiler_openbsd::PrintRule;
 
 	virtual std::string myPlatformName();
 
@@ -111,7 +112,7 @@ namespace fwcompiler
         
     public:
 
-	RoutingCompiler_bsd(libfwbuilder::FWObjectDatabase *_db,
+	RoutingCompiler_openbsd(libfwbuilder::FWObjectDatabase *_db,
                             libfwbuilder::Firewall *fw, bool ipv6_policy,
                             fwcompiler::OSConfigurator *_oscnf) :
         RoutingCompiler(_db, fw, ipv6_policy, _oscnf)

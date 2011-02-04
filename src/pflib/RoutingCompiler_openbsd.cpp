@@ -22,7 +22,7 @@
 */
 
 
-#include "RoutingCompiler_bsd.h"
+#include "RoutingCompiler_openbsd.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -52,10 +52,10 @@ using namespace std;
 
 static std::map<std::string,int> tmp_chain_no;
 
-string RoutingCompiler_bsd::myPlatformName() { return "pf"; }
+string RoutingCompiler_openbsd::myPlatformName() { return "pf"; }
 
 
-void RoutingCompiler_bsd::verifyOS()
+void RoutingCompiler_openbsd::verifyOS()
 {
     QStringList supported_os = QString(
         Resources::platform_res[fw->getStr("platform")]->
@@ -68,7 +68,7 @@ void RoutingCompiler_bsd::verifyOS()
 
 }
 
-int RoutingCompiler_bsd::prolog()
+int RoutingCompiler_openbsd::prolog()
 {
     int n = RoutingCompiler::prolog();    
 
@@ -77,7 +77,7 @@ int RoutingCompiler_bsd::prolog()
     return n;
 }
 
-bool RoutingCompiler_bsd::addressRangesInDst::processNext()
+bool RoutingCompiler_openbsd::addressRangesInDst::processNext()
 {
     RoutingRule *rule;
     rule=getNext(); if (rule==NULL) return false;
@@ -90,9 +90,9 @@ bool RoutingCompiler_bsd::addressRangesInDst::processNext()
 }
 
 
-bool RoutingCompiler_bsd::FindDefaultRoute::processNext()
+bool RoutingCompiler_openbsd::FindDefaultRoute::processNext()
 {
-    RoutingCompiler_bsd *bsd_comp = dynamic_cast<RoutingCompiler_bsd*>(compiler);
+    RoutingCompiler_openbsd *bsd_comp = dynamic_cast<RoutingCompiler_openbsd*>(compiler);
     RoutingRule *rule;
     rule=getNext(); if (rule==NULL) return false;
 
@@ -109,7 +109,7 @@ bool RoutingCompiler_bsd::FindDefaultRoute::processNext()
 /**
  *-----------------------------------------------------------------------
  */
-void RoutingCompiler_bsd::compile()
+void RoutingCompiler_openbsd::compile()
 {
     string banner = " Compiling routing rules for " + fw->getName();
     info(banner);
@@ -181,7 +181,7 @@ void RoutingCompiler_bsd::compile()
 
 }
 
-string RoutingCompiler_bsd::debugPrintRule(Rule *r)
+string RoutingCompiler_openbsd::debugPrintRule(Rule *r)
 {
     RoutingRule *rule=RoutingRule::cast(r);
 
@@ -190,7 +190,7 @@ string RoutingCompiler_bsd::debugPrintRule(Rule *r)
     return s;
 }
 
-void RoutingCompiler_bsd::epilog()
+void RoutingCompiler_openbsd::epilog()
 {
     ///int total = ecmp_comments_buffer.size();
     int nb = 0;

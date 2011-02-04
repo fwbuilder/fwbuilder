@@ -1,5 +1,9 @@
 2011-02-03  vadim  <vadim@netcitadel.com>
 
+	* RoutingCompiler_freebsd_writers.cpp (RoutingRuleToString): fixes
+	#2026 Compiler can now generate static routing configuration
+	in rc.conf format for FreeBSD.
+
 	* pfAdvancedDialog.cpp (pfAdvancedDialog): fixes #2021 "since
 	rc.conf format is only supported for FreeBSD, the option in the
 	dialog should not be available for other OS"

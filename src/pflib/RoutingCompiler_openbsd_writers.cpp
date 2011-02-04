@@ -22,7 +22,7 @@
 */
 
 
-#include "RoutingCompiler_bsd.h"
+#include "RoutingCompiler_openbsd.h"
 #include "Configlet.h"
 
 #include "fwbuilder/RuleElement.h"
@@ -56,7 +56,7 @@ using namespace std;
  *-----------------------------------------------------------------------
  *                    Methods for printing
  */
-string RoutingCompiler_bsd::PrintRule::_printAddr(Address  *o)
+string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
 {
     ostringstream  ostr;
 
@@ -113,17 +113,17 @@ string RoutingCompiler_bsd::PrintRule::_printAddr(Address  *o)
 
 
 
-RoutingCompiler_bsd::PrintRule::PrintRule(const std::string &name) :
+RoutingCompiler_openbsd::PrintRule::PrintRule(const std::string &name) :
     RoutingRuleProcessor(name) 
 { 
     print_once_on_top = true;
 }
 
 
-bool RoutingCompiler_bsd::PrintRule::processNext()
+bool RoutingCompiler_openbsd::PrintRule::processNext()
 {
-    RoutingCompiler_bsd *bsd_comp = 
-        dynamic_cast<RoutingCompiler_bsd*>(compiler);
+    RoutingCompiler_openbsd *bsd_comp = 
+        dynamic_cast<RoutingCompiler_openbsd*>(compiler);
     RoutingRule *rule = getNext(); 
     if (rule==NULL) return false;
 
@@ -201,7 +201,7 @@ bool RoutingCompiler_bsd::PrintRule::processNext()
 }
 
 
-string RoutingCompiler_bsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
+string RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
 {
     RuleElementRDst *dstrel = rule->getRDst();
     Address *dst = Address::cast(FWReference::getObject(dstrel->front()));
@@ -248,7 +248,7 @@ string RoutingCompiler_bsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
     return command_line.str();
 }
 
-string RoutingCompiler_bsd::PrintRule::_printRGtw(RoutingRule *rule)
+string RoutingCompiler_openbsd::PrintRule::_printRGtw(RoutingRule *rule)
 {
     RuleElementRGtw *gtwrel = rule->getRGtw();
     Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
@@ -261,7 +261,7 @@ string RoutingCompiler_bsd::PrintRule::_printRGtw(RoutingRule *rule)
     else return "";
 }
     
-string RoutingCompiler_bsd::PrintRule::_printRItf(RoutingRule *rule)
+string RoutingCompiler_openbsd::PrintRule::_printRItf(RoutingRule *rule)
 {
     RuleElementRItf *itfrel = rule->getRItf();
     Interface *itf = Interface::cast(FWReference::getObject(itfrel->front()));
@@ -280,7 +280,7 @@ string RoutingCompiler_bsd::PrintRule::_printRItf(RoutingRule *rule)
     else return "";
 }
 
-string RoutingCompiler_bsd::PrintRule::_printRDst(RoutingRule *rule)
+string RoutingCompiler_openbsd::PrintRule::_printRDst(RoutingRule *rule)
 {
     RuleElementRDst *dstrel = rule->getRDst();
     Address *dst = Address::cast(FWReference::getObject(dstrel->front()));
