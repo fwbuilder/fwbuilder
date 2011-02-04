@@ -3759,6 +3759,8 @@
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="generate_rc_conf_file">False</Option>
+          <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="inst_cmdline"></Option>
@@ -15482,6 +15484,7 @@
           <Option name="freebsd_path_ipfw"></Option>
           <Option name="freebsd_path_ipnat"></Option>
           <Option name="freebsd_path_sysctl"></Option>
+          <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
@@ -19939,7 +19942,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id32878X1082" host_OS="freebsd" inactive="False" lastCompiled="1296677661" lastInstalled="0" lastModified="1296687915" platform="pf" version="" name="firewall-ipv6-3" comment="" ro="False">
+      <Firewall id="id32878X1082" host_OS="freebsd" inactive="False" lastCompiled="1296777918" lastInstalled="0" lastModified="1296687915" platform="pf" version="" name="firewall-ipv6-3" comment="" ro="False">
         <NAT id="id33298X1082" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

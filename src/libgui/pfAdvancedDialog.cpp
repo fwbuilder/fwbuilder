@@ -74,7 +74,7 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     assert(mgmt!=NULL);
 
     if (fwbdebug)
-        qDebug("%s",Resources::getTargetOptionStr(
+        qDebug("%s", Resources::getTargetOptionStr(
                    obj->getStr("host_OS"),"user_can_change_install_dir").c_str());
 
     if (!Resources::getTargetOptionBool(
@@ -93,6 +93,21 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     {
         fwopt->setBool("generate_shell_script", true);
     }
+
+    if (!Resources::getTargetOptionBool(obj->getStr("host_OS"),
+                                        "rc_conf_format_supported"))
+    {
+        fwopt->setBool("generate_shell_script", true);
+        fwopt->setBool("generate_rc_conf_file", false);
+    }
+
+    m_dialog->generateShellScript->setEnabled(
+        Resources::getTargetOptionBool(obj->getStr("host_OS"),
+                                       "rc_conf_format_supported"));
+    m_dialog->generateRcConfFile->setEnabled(
+        Resources::getTargetOptionBool(obj->getStr("host_OS"),
+                                       "rc_conf_format_supported"));
+
 
     QString init_script_name = QString::fromUtf8(
         fwopt->getStr("output_file").c_str());

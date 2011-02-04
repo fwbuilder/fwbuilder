@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>743</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -154,49 +154,6 @@
         </widget>
        </item>
        <item row="2" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>System configuration and firewall initialization script format</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_8">
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
-             <widget class="QRadioButton" name="generateShellScript">
-              <property name="text">
-               <string>shell script with extension .fw</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="generateRcConfFile">
-              <property name="text">
-               <string>file in rc.conf format</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>208</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
           <string>Names of generated files</string>
@@ -264,7 +221,7 @@
          </layout>
         </widget>
        </item>
-       <item row="4" column="0" colspan="3">
+       <item row="3" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Names of the files on the firewall</string>
@@ -276,7 +233,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Initialization script (.fw file) and PF configuration file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
+             <string>Initialization script and PF configuration file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -320,7 +277,7 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
+       <item row="4" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string/>
@@ -395,7 +352,7 @@ this option only if you fully understand how it works!</string>
          </layout>
         </widget>
        </item>
-       <item row="6" column="0" colspan="3">
+       <item row="5" column="0" colspan="3">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="textLabel3">
@@ -444,8 +401,14 @@ an assymmetric routing.</string>
          </item>
         </layout>
        </item>
-       <item row="7" column="0" colspan="3">
+       <item row="6" column="0" colspan="3">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
          <item>
           <widget class="QCheckBox" name="mgmt_ssh">
            <property name="sizePolicy">
@@ -479,7 +442,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="8" column="1">
+       <item row="7" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -2288,11 +2251,8 @@ with this address:</string>
       <attribute name="title">
        <string>Script</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <property name="verticalSpacing">
-        <number>20</number>
-       </property>
-       <item row="0" column="2">
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="1">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -2308,85 +2268,101 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="3">
-        <widget class="QLabel" name="textLabel8">
-         <property name="text">
-          <string>These options enable auxiliary sections in the generated shell script.</string>
+       <item row="1" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>System configuration and firewall initialization script format</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignVCenter</set>
+         <property name="flat">
+          <bool>false</bool>
          </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Firewall Builder can generate system configuration and initialization script for PF in two formats: this can either be a shell script or a file in rc.conf format. Rc.conf format is only supported for FreeBSD.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="generateShellScript">
+            <property name="text">
+             <string>shell script with extension .fw</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="generateRcConfFile">
+            <property name="text">
+             <string>file in rc.conf format</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="2" column="0" rowspan="3">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Enable auxiliary sections in the generated script</string>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>70</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_debug">
-         <property name="text">
-          <string>Turn debugging on in generated script</string>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_debug">
+            <property name="text">
+             <string>Turn debugging on in generated script</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_configure_interfaces">
+            <property name="text">
+             <string>Configure Interfaces of the firewall machine</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pf_configure_carp_interfaces">
+            <property name="text">
+             <string>Configure CARP Interfaces</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="pf_configure_pfsync_interfaces">
+            <property name="text">
+             <string>Configure pfsync Interfaces</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="pf_configure_vlan_interfaces">
+            <property name="text">
+             <string>Configure VLAN Interfaces</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="pf_manage_virtual_addr">
+            <property name="text">
+             <string>Add virtual addresses for NAT</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="pf_flush_states">
+            <property name="text">
+             <string>Flush pf states after reloading rules</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_configure_interfaces">
-         <property name="text">
-          <string>Configure Interfaces of the firewall machine</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_configure_carp_interfaces">
-         <property name="text">
-          <string>Configure CARP Interfaces</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_configure_pfsync_interfaces">
-         <property name="text">
-          <string>Configure pfsync Interfaces</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_configure_vlan_interfaces">
-         <property name="text">
-          <string>Configure VLAN Interfaces</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_manage_virtual_addr">
-         <property name="text">
-          <string>Add virtual addresses for NAT</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="2">
-        <widget class="QCheckBox" name="pf_flush_states">
-         <property name="text">
-          <string>Flush pf states after reloading rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
+       <item row="3" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -2467,12 +2443,18 @@ with this address:</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>pf_do_scrub</tabstop>
+  <tabstop>pf_configure_carp_interfaces</tabstop>
+  <tabstop>pf_configure_pfsync_interfaces</tabstop>
+  <tabstop>pf_configure_vlan_interfaces</tabstop>
+  <tabstop>pf_manage_virtual_addr</tabstop>
+  <tabstop>pf_flush_states</tabstop>
+  <tabstop>ipv4before</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonHelp</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
-  <tabstop>generateShellScript</tabstop>
-  <tabstop>generateRcConfFile</tabstop>
   <tabstop>outputFileName</tabstop>
   <tabstop>confFileName</tabstop>
   <tabstop>fileNameOnFw</tabstop>
@@ -2485,6 +2467,20 @@ with this address:</string>
   <tabstop>pf_state_policy</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
+  <tabstop>pf_scrub_no_df</tabstop>
+  <tabstop>pf_scrub_random_id</tabstop>
+  <tabstop>pf_scrub_use_minttl</tabstop>
+  <tabstop>pf_scrub_minttl</tabstop>
+  <tabstop>pf_scrub_use_maxmss</tabstop>
+  <tabstop>pf_scrub_maxmss</tabstop>
+  <tabstop>pf_do_scrub</tabstop>
+  <tabstop>pf_scrub_reassemble</tabstop>
+  <tabstop>pf_scrub_fragm_crop</tabstop>
+  <tabstop>pf_scrub_fragm_drop_ovl</tabstop>
+  <tabstop>pf_scrub_reassemble_tcp</tabstop>
+  <tabstop>pf_do_limit_frags</tabstop>
+  <tabstop>pf_limit_frags</tabstop>
+  <tabstop>pf_do_limit_states</tabstop>
   <tabstop>pf_limit_states</tabstop>
   <tabstop>pf_do_limit_src_nodes</tabstop>
   <tabstop>pf_limit_src_nodes</tabstop>
@@ -2504,6 +2500,15 @@ with this address:</string>
   <tabstop>pf_tcp_finwait</tabstop>
   <tabstop>pf_set_tcp_closed</tabstop>
   <tabstop>pf_tcp_closed</tabstop>
+  <tabstop>pf_set_udp_first</tabstop>
+  <tabstop>pf_udp_first</tabstop>
+  <tabstop>pf_set_udp_single</tabstop>
+  <tabstop>pf_udp_single</tabstop>
+  <tabstop>pf_set_udp_multiple</tabstop>
+  <tabstop>pf_udp_multiple</tabstop>
+  <tabstop>pf_set_adaptive</tabstop>
+  <tabstop>pf_adaptive_start</tabstop>
+  <tabstop>pf_adaptive_end</tabstop>
   <tabstop>pf_set_icmp_first</tabstop>
   <tabstop>pf_icmp_first</tabstop>
   <tabstop>pf_set_icmp_error</tabstop>
@@ -2514,19 +2519,10 @@ with this address:</string>
   <tabstop>pf_other_single</tabstop>
   <tabstop>pf_set_other_multiple</tabstop>
   <tabstop>pf_other_multiple</tabstop>
-  <tabstop>pf_set_udp_first</tabstop>
-  <tabstop>pf_udp_first</tabstop>
-  <tabstop>pf_set_udp_single</tabstop>
-  <tabstop>pf_udp_single</tabstop>
-  <tabstop>pf_set_udp_multiple</tabstop>
-  <tabstop>pf_udp_multiple</tabstop>
   <tabstop>pf_do_timeout_interval</tabstop>
   <tabstop>pf_timeout_interval</tabstop>
   <tabstop>pf_do_timeout_frag</tabstop>
   <tabstop>pf_timeout_frag</tabstop>
-  <tabstop>pf_set_adaptive</tabstop>
-  <tabstop>pf_adaptive_start</tabstop>
-  <tabstop>pf_adaptive_end</tabstop>
   <tabstop>pf_fw_dir</tabstop>
   <tabstop>pf_user</tabstop>
   <tabstop>altAddress</tabstop>
@@ -2542,30 +2538,10 @@ with this address:</string>
   <tabstop>edit_epilog_button</tabstop>
   <tabstop>pf_log_prefix</tabstop>
   <tabstop>pf_fallback_log</tabstop>
+  <tabstop>generateShellScript</tabstop>
+  <tabstop>generateRcConfFile</tabstop>
   <tabstop>pf_debug</tabstop>
   <tabstop>pf_configure_interfaces</tabstop>
-  <tabstop>pf_configure_carp_interfaces</tabstop>
-  <tabstop>pf_configure_pfsync_interfaces</tabstop>
-  <tabstop>pf_configure_vlan_interfaces</tabstop>
-  <tabstop>pf_manage_virtual_addr</tabstop>
-  <tabstop>pf_flush_states</tabstop>
-  <tabstop>ipv4before</tabstop>
-  <tabstop>buttonOk</tabstop>
-  <tabstop>buttonCancel</tabstop>
-  <tabstop>buttonHelp</tabstop>
-  <tabstop>pf_scrub_fragm_drop_ovl</tabstop>
-  <tabstop>pf_do_limit_frags</tabstop>
-  <tabstop>pf_scrub_reassemble</tabstop>
-  <tabstop>pf_scrub_fragm_crop</tabstop>
-  <tabstop>pf_limit_frags</tabstop>
-  <tabstop>pf_do_limit_states</tabstop>
-  <tabstop>pf_scrub_reassemble_tcp</tabstop>
-  <tabstop>pf_scrub_use_maxmss</tabstop>
-  <tabstop>pf_scrub_minttl</tabstop>
-  <tabstop>pf_scrub_maxmss</tabstop>
-  <tabstop>pf_scrub_no_df</tabstop>
-  <tabstop>pf_scrub_random_id</tabstop>
-  <tabstop>pf_scrub_use_minttl</tabstop>
  </tabstops>
  <resources/>
  <connections>
