@@ -78,8 +78,7 @@ bool RoutingCompiler_freebsd::PrintRule::processNext()
         for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
         {
             RoutingRule *rule = RoutingRule::cast( *k );
-            rule_ids << QString("route_%1")
-                .arg(FWObjectDatabase::getStringId(rule->getId()).c_str());
+            rule_ids << FWObjectDatabase::getStringId(rule->getId()).c_str();
         }
 
         if (rule_ids.size() > 0)

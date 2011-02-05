@@ -117,17 +117,16 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
                                                           cluster_member));
     top_comment->setVariable("platform", platform.c_str());
     top_comment->setVariable("fw_version", fw_version.c_str());
-    top_comment->setVariable("comment",
-                             prepend((indent) ? comment_char + " " : "",
-                                     fw->getComment().c_str()));
+    top_comment->setVariable(
+        "comment", prepend(comment_char +  " ", fw->getComment().c_str()));
 
     script_skeleton->setVariable("have_nat", have_nat);
     script_skeleton->setVariable("have_filter", have_filter);
 
     script_skeleton->setVariable("top_comment", top_comment->expand());
-    script_skeleton->setVariable("errors_and_warnings",
-                                prepend((indent) ? comment_char + " " : "",
-                                    all_errors.join("\n")));
+    script_skeleton->setVariable(
+        "errors_and_warnings", prepend(comment_char + " ", all_errors.join("\n")));
+
     script_skeleton->setVariable("tools", printPathForAllTools(fw, family));
 
     script_skeleton->setVariable("timestamp", timestr);

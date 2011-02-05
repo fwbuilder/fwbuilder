@@ -133,6 +133,12 @@ QString OSConfigurator_freebsd::updateAddressesOfInterface(
          */
 
         QString interface_name = iface->getName().c_str();
+
+        if (iface->isDyn())
+        {
+            return QString("ifconfig_%1=\"DHCP\"") .arg(iface->getName().c_str());
+        }
+
         QStringList addr_conf;
     
         int ipv4_alias_counter = -2;

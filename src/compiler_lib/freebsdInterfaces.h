@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -23,18 +21,20 @@
 
 */
 
-#ifndef BSD_INTERFACE_PROPERTIES_HH
-#define BSD_INTERFACE_PROPERTIES_HH
+#ifndef FREEBSD_INTERFACE_PROPERTIES_HH
+#define FREEBSD_INTERFACE_PROPERTIES_HH
 
-#include "interfaceProperties.h"
+#include "openbsdInterfaces.h"
 
 
-class bsdInterfaces : public interfaceProperties
+class freebsdInterfaces : public openbsdInterfaces
 {
 
 public:
-    bsdInterfaces() : interfaceProperties() {}
-    virtual bool parseVlan(const QString&, QString*, int*);
+    freebsdInterfaces() : openbsdInterfaces() {}
+    virtual bool manageIpAddresses(libfwbuilder::Interface *intf,
+                                   QStringList &update_addresses,
+                                   QStringList &ignore_addresses);
 };
 
 #endif

@@ -1,3 +1,11 @@
+2011-02-04  vadim  <vadim@netcitadel.com>
+
+	* freebsdInterfaces.cpp (manageIpAddresses): fixes #2032 "support
+	for DHCP interfaces in rc.conf mode". Include dynamic interfaces
+	inin the list of interfaces generated script manages when the
+	script is in rc.conf format. This addds lines similar to
+	'ifconfig_em0="DHCP"'. 
+
 2011-02-03  vadim  <vadim@netcitadel.com>
 
 	* RoutingCompiler_freebsd_writers.cpp (RoutingRuleToString): fixes

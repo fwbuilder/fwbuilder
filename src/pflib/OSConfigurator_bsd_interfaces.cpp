@@ -179,8 +179,7 @@ string OSConfigurator_bsd::configureInterfaces()
             Interface *iface = Interface::cast(*i);
             assert(iface);
 
-            if (!iface->isRegular()) continue;
-            //if (iface->isFailoverInterface()) continue;
+            //if (!iface->isRegular()) continue;
 
             QStringList update_addresses;
             QStringList ignore_addresses;
@@ -195,12 +194,20 @@ string OSConfigurator_bsd::configureInterfaces()
                 list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
                 list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
                 all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
-                
-                if (all_addr.size() > 0)
-                    intf_names << iface->getName().c_str();
 
-                if (all_ipv6.size() > 0)
-                    ipv6_names << iface->getName().c_str();
+                // see #2032.  About interfaces with no addresses:
+                //
+                // - when we generate rc.conf file, we should add line 
+                //   "ifconfig_em0="DHCP"" for dynamic interfaces, so we should 
+                //   include them in the management list as well.
+                //
+                // Note that int_prop returns false for dynamic interfaces on
+                // OpenBSD because we do not support rc.conf format for it atm
+                // and should not try to manage dynamic interfaces in the shell
+                // script format.
+                //
+                intf_names << iface->getName().c_str();
+                ipv6_names << iface->getName().c_str();
 
                 const InetAddr *netmask = iface->getNetmaskPtr();
 

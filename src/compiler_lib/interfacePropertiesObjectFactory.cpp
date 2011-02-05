@@ -28,7 +28,8 @@
 #include "linux24Interfaces.h"
 #include "iosInterfaces.h"
 #include "procurveInterfaces.h"
-#include "bsdInterfaces.h"
+#include "openbsdInterfaces.h"
+#include "freebsdInterfaces.h"
 #include "pixInterfaces.h"
 #include "procurveInterfaces.h"
 
@@ -62,7 +63,8 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
 
     if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
 
-    if (os_family == "openbsd" || os_family == "freebsd") return new bsdInterfaces();
+    if (os_family == "openbsd") return new openbsdInterfaces();
+    if (os_family == "freebsd") return new freebsdInterfaces();
 
     if (os_family == "procurve") return new procurveInterfaces();
 

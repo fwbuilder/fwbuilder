@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3457
+#  Firewall Builder  fwb_pf v4.2.0.3458
 #
-#  Generated Thu Feb  3 14:58:50 2011 PST by vadim
+#  Generated Fri Feb  4 17:52:23 2011 PST by vadim
 #
 # files: * firewall10-1.fw /etc/fw/firewall10-1.fw
 # files:   firewall10-1.conf /etc/fw/firewall10-1.conf
@@ -74,7 +74,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 14:58:50 2011 by vadim"
+log "Activating firewall script generated Fri Feb  4 17:52:23 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

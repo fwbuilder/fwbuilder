@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3457
+#  Firewall Builder  fwb_pf v4.2.0.3458
 #
-#  Generated Thu Feb  3 14:59:12 2011 PST by vadim
+#  Generated Fri Feb  4 17:52:47 2011 PST by vadim
 #
 # files: * pf_cluster_4_rc.conf.local /etc/pf_cluster_4_rc.conf.local
 # files:   pf_cluster_4_pf.conf /etc/pf_cluster_4_pf.conf
@@ -22,7 +22,7 @@ ifconfig_carp0="vhid 101 pass secret   advskew 10  carpdev en0"
 ifconfig_carp1="vhid 100 pass secret   advskew 10  carpdev en1"
 
 network_interfaces="en0 en1 carp0 carp1"
-ipv6_network_interfaces=""
+ipv6_network_interfaces="en0 en1 carp0 carp1"
 ifconfig_en0="inet 172.24.0.3 netmask 0xffffff00"
 ifconfig_en1="inet 192.168.1.3 netmask 0xffffff00"
 ifconfig_carp0="inet 172.24.0.1 netmask 0xffffff00"

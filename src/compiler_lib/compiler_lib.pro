@@ -14,7 +14,8 @@ SOURCES	 =  CompilerDriver.cpp \
 			Configlet.cpp \
 			interfaceProperties.cpp \
 			linux24Interfaces.cpp \
-			bsdInterfaces.cpp \
+			openbsdInterfaces.cpp \
+			freebsdInterfaces.cpp \
 			iosInterfaces.cpp \
 			procurveInterfaces.cpp \
 			pixInterfaces.cpp \
@@ -25,7 +26,8 @@ HEADERS	 = ../../config.h \
 			Configlet.h \
 			interfaceProperties.h \
 			linux24Interfaces.h \
-			bsdInterfaces.h \
+			openbsdInterfaces.h \
+			freebsdInterfaces.h \
 			iosInterfaces.h \
 			procurveInterfaces.h \
 			pixInterfaces.h \

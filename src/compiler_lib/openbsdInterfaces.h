@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -23,19 +21,21 @@
 
 */
 
-#include "bsdInterfaces.h"
+#ifndef OPENBSD_INTERFACE_PROPERTIES_HH
+#define OPENBSD_INTERFACE_PROPERTIES_HH
 
-#include <QRegExp>
+#include "interfaceProperties.h"
 
-bool bsdInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
+
+class openbsdInterfaces : public interfaceProperties
 {
-    QRegExp vlan_name_pattern(QRegExp("(vlan)(\\d{1,})"));
-    if (vlan_name_pattern.indexIn(name) != -1)
-    {
-        if (base_name!=NULL) *base_name = vlan_name_pattern.cap(1);
-        if (vlan_id!=NULL) *vlan_id = vlan_name_pattern.cap(2).toInt();
-        return true;
-    }
-    return false;
-}
 
+public:
+    openbsdInterfaces() : interfaceProperties() {}
+    virtual bool parseVlan(const QString&, QString*, int*);
+    virtual bool manageIpAddresses(libfwbuilder::Interface *intf,
+                                   QStringList &update_addresses,
+                                   QStringList &ignore_addresses);
+};
+
+#endif
