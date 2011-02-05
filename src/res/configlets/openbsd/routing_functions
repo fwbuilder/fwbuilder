@@ -14,9 +14,8 @@
 
 # ============== ROUTING RULES ============== 
 
-TMPDIRNAME="/tmp/.fwbuilder.tempdir.$$"
+TMPDIRNAME=`mktemp -d /tmp/.fwbuilder.XXXXXXXXXX` || exit 1
 TMPFILENAME="$TMPDIRNAME/.fwbuilder.out"
-(umask 077 && mkdir $TMPDIRNAME) || exit 1
 
 #
 # This function stops stdout redirection
@@ -34,7 +33,7 @@ route_command_error()
   echo "Error: Routing rule $1 couldn't be activated"
   echo "Recovering previous routing configuration..."
   # delete current routing rules
-  route -n show -inet | grep S | grep -Ev 'lo0' | \
+  route -n show -inet | awk '$3 ~ /S/ && $NF !~ /lo0/ { print $0;}' | \
       while read route gw rest; do route delete $route $gw; done
   # restore old routing rules
   (IFS="
@@ -53,7 +52,7 @@ exec 2>&1
 oldRoutes=$(route -n show -inet |  awk '{printf "route add %s %s\n",$1,$2;}')
 
 echo "Deleting routing rules previously set by user space processes..."
-route -n show -inet | grep S | grep -Ev {{route_filter}} | \
+route -n show -inet | grep S | grep -Ev {{$route_filter}} | \
     while read route gw rest; do route delete $route $gw; done
     
 echo "Activating routing rules..."

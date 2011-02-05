@@ -69,6 +69,7 @@ bool RoutingCompiler_freebsd::PrintRule::processNext()
     FWOptions* options = compiler->fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
+
         slurp();
         if (tmp_queue.size()==0) return false;
 

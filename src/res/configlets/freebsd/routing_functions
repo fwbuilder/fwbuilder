@@ -1,0 +1,59 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/bsd/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+# ============== ROUTING RULES ============== 
+
+TMPDIRNAME=`mktemp -d /tmp/.fwbuilder.XXXXXXXXXX` || exit 1
+TMPFILENAME="$TMPDIRNAME/.fwbuilder.out"
+
+#
+# This function stops stdout redirection
+# and sends previously saved output to terminal
+restore_script_output()
+{
+  exec 1>&3 2>&1
+  cat $TMPFILENAME
+  rm -rf $TMPDIRNAME
+}
+
+# if any routing rule fails we do our best to prevent freezing the firewall
+route_command_error()
+{
+  echo "Error: Routing rule $1 couldn't be activated"
+  echo "Recovering previous routing configuration..."
+  # delete current routing rules
+  netstat -rn -f inet | awk '$3 ~ /S/ && $NF !~ /lo0/ { print $0;}' | \
+      while read route gw rest; do route delete $route $gw; done
+  # restore old routing rules
+  (IFS="
+"; for route_cmd in $oldRoutes; do (IFS=' '; $route_cmd); done)
+  echo "...done"
+  restore_script_output
+  epilog_commands
+  exit 1
+}
+
+# redirect output to prevent ssh session from stalling
+exec 3>&1
+exec 1> $TMPFILENAME
+exec 2>&1
+
+oldRoutes=$(netstat -rn -f inet |  awk '/^$|Destination|Routing tables|Internet:/ {next;} {printf "route add %s %s\n",$1,$2;}')
+
+echo "Deleting routing rules previously set by user space processes..."
+netstat -rn -f inet | awk '$3 ~ /S/ { print $0;}' | grep -Ev {{$route_filter}} | \
+    while read route gw rest; do route delete $route $gw; done
+    
+echo "Activating routing rules..."
+

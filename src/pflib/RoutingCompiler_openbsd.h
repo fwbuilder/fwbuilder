@@ -77,9 +77,8 @@ namespace fwcompiler
         class PrintRule : public RoutingRuleProcessor
         {
     protected:
-            bool        print_once_on_top;
             std::string current_rule_label;
-
+            
             virtual std::string _printAddr(libfwbuilder::Address  *o);
             
     public:

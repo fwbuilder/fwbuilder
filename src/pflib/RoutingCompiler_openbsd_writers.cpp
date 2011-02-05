@@ -116,7 +116,6 @@ string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
 RoutingCompiler_openbsd::PrintRule::PrintRule(const std::string &name) :
     RoutingRuleProcessor(name) 
 { 
-    print_once_on_top = true;
 }
 
 
@@ -124,15 +123,16 @@ bool RoutingCompiler_openbsd::PrintRule::processNext()
 {
     RoutingCompiler_openbsd *bsd_comp = 
         dynamic_cast<RoutingCompiler_openbsd*>(compiler);
-    RoutingRule *rule = getNext(); 
-    if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-    
-    if (print_once_on_top && !compiler->inSingleRuleCompileMode())
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+
+    if (!compiler->inSingleRuleCompileMode())
     {
         Configlet routing_functions(compiler->fw,
-                                    "bsd", "routing_functions");
+                                    compiler->fw->getStr("host_OS"),
+                                    "routing_functions");
 
         // we should delete default route if we have a new one to
         // install. IF user did not define any routes that look like
@@ -154,48 +154,51 @@ bool RoutingCompiler_openbsd::PrintRule::processNext()
         compiler->output << routing_functions.expand().toStdString();
 
         bsd_comp->defined_restore_script_output = true;
-        print_once_on_top = false;
     }
     
-    // TODO: convert this into virtual function RoutingCompiler::printComment()
 
-    string rl = rule->getLabel();
-    
-    if (!compiler->inSingleRuleCompileMode() && rl!=current_rule_label)
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
     {
-        compiler->output << "# " << endl;
-        compiler->output << "# Rule " << rl << endl;
-        //compiler->output << "# " << rule->getRuleTypeAsString() << endl;
-        compiler->output << "# " << endl;
-        compiler->output << "echo \"Routing rule " << rl << "\"" << endl;
-        compiler->output << "# " << endl;
-    }
+        RoutingRule *rule = RoutingRule::cast( *k );
+
+        string rl = rule->getLabel();
     
-    if (rule->getRuleType() != RoutingRule::MultiPath )
-    {
         if (!compiler->inSingleRuleCompileMode() && rl!=current_rule_label)
         {
-            QStringList comment = QString::fromUtf8(
-                rule->getComment().c_str()).split("\n");
-            int comment_lines = 0;
-            foreach (QString str, comment)
-            {
-                if (!str.isEmpty())
-                {
-                    compiler->output << "# " << str.toUtf8().data() << endl;
-                    ++comment_lines;
-                }
-            }
-            if (comment_lines) compiler->output << "#" << endl;
-            current_rule_label = rl;
+            compiler->output << "# " << endl;
+            compiler->output << "# Rule " << rl << endl;
+            //compiler->output << "# " << rule->getRuleTypeAsString() << endl;
+            compiler->output << "# " << endl;
+            compiler->output << "echo \"Routing rule " << rl << "\"" << endl;
+            compiler->output << "# " << endl;
         }
-        
-        string err = rule->getStr(".error_msg");
-        if (!err.empty()) compiler->output << "# " << err << endl;
-
-        string  command_line = RoutingRuleToString(rule);
-        compiler->output << command_line;
     
+        if (rule->getRuleType() != RoutingRule::MultiPath )
+        {
+            if (!compiler->inSingleRuleCompileMode() && rl!=current_rule_label)
+            {
+                QStringList comment = QString::fromUtf8(
+                    rule->getComment().c_str()).split("\n");
+                int comment_lines = 0;
+                foreach (QString str, comment)
+                {
+                    if (!str.isEmpty())
+                    {
+                        compiler->output << "# " << str.toUtf8().data() << endl;
+                        ++comment_lines;
+                    }
+                }
+                if (comment_lines) compiler->output << "#" << endl;
+                current_rule_label = rl;
+            }
+        
+            string err = rule->getStr(".error_msg");
+            if (!err.empty()) compiler->output << "# " << err << endl;
+
+            string  command_line = RoutingRuleToString(rule);
+            compiler->output << command_line;
+    
+        }
     }
     return true;
 }
