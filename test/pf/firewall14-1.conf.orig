@@ -3,7 +3,7 @@
 #
 # Scrub rules
 #
-match in all scrub (reassemble tcp no-df )
+match all scrub (reassemble tcp no-df )
 match out all scrub (random-id min-ttl  64 max-mss  1460)
 
 

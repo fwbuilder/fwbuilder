@@ -1,3 +1,8 @@
+2011-02-06  vadim  <vadim@netcitadel.com>
+
+	* OSConfigurator_freebsd.cpp (updateBridgeOfInterface): see #1889, #2043
+	Added support for bridge interface configuration in BSD.
+
 2011-02-05  vadim  <vadim@netcitadel.com>
 
 	* SSHUnx.cpp (SSHUnx): see #2039 "Installer reports success even

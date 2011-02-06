@@ -4,7 +4,7 @@ set timeout udp.single 5
 #
 # Scrub rules
 #
-match in all scrub (reassemble tcp no-df )
+match all scrub (reassemble tcp no-df )
 match out all scrub (random-id min-ttl  1 max-mss  1460)
 
 

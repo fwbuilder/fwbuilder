@@ -100,7 +100,7 @@ int OSConfigurator_freebsd::prolog()
     return 0;
 }
 
-QString OSConfigurator_freebsd::listAllInterfacesConfigLine(QStringList names,
+void OSConfigurator_freebsd::listAllInterfacesConfigLine(QStringList names,
                                                             bool ipv6)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -108,16 +108,17 @@ QString OSConfigurator_freebsd::listAllInterfacesConfigLine(QStringList names,
     {
         if (ipv6)
         {
-            return "ipv6_network_interfaces=\"" + names.join(" ") + "\"";
+            interface_configuration_lines <<
+                QString("ipv6_network_interfaces=\"%1\"").arg(names.join(" "));
         } else
         {
-            return "network_interfaces=\"" + names.join(" ") + "\"";
+            interface_configuration_lines <<
+                QString("network_interfaces=\"%1\"").arg(names.join(" "));
         }
-    } else
-        return "";
+    }
 }
         
-QString OSConfigurator_freebsd::updateAddressesOfInterface(
+void OSConfigurator_freebsd::updateAddressesOfInterface(
     Interface *iface, list<pair<InetAddr,InetAddr> > all_addresses)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -136,7 +137,8 @@ QString OSConfigurator_freebsd::updateAddressesOfInterface(
 
         if (iface->isDyn())
         {
-            return QString("ifconfig_%1=\"DHCP\"") .arg(iface->getName().c_str());
+            interface_configuration_lines <<
+                QString("ifconfig_%1=\"DHCP\"") .arg(iface->getName().c_str());
         }
 
         QStringList addr_conf;
@@ -202,20 +204,21 @@ QString OSConfigurator_freebsd::updateAddressesOfInterface(
             }
         }
 
-        return addr_conf.join("\n");
+        interface_configuration_lines <<  addr_conf.join("\n");
 
     } else
-        return OSConfigurator_bsd::updateAddressesOfInterface(iface, all_addresses);
+        OSConfigurator_bsd::updateAddressesOfInterface(iface, all_addresses);
 }
 
-QString OSConfigurator_freebsd::listAllVlansConfgLine(QStringList vlan_names)
+void OSConfigurator_freebsd::listAllVlansConfgLine(QStringList vlan_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        return "";
+        ;
     } else
-        return QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
+        interface_configuration_lines <<
+            QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
 }
 
 /*
@@ -242,8 +245,8 @@ QString OSConfigurator_freebsd::listAllVlansConfgLine(QStringList vlan_names)
  create_args_myvlan="vlan 102"
 
  */
-QString OSConfigurator_freebsd::updateVlansOfInterface(Interface *iface,
-                                                       QStringList vlan_names)
+void OSConfigurator_freebsd::updateVlansOfInterface(Interface *iface,
+                                                    QStringList vlan_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
@@ -265,44 +268,119 @@ QString OSConfigurator_freebsd::updateVlansOfInterface(Interface *iface,
                     .arg(vlan_intf_name).arg(vlan_id);
             }
         }
-        return outp.join("\n");
+        interface_configuration_lines <<  outp.join("\n");
     } else
-        return QString("update_vlans_of_interface \"%1 %2\"")
+        interface_configuration_lines <<
+            QString("update_vlans_of_interface \"%1 %2\"")
             .arg(iface->getName().c_str())
             .arg(vlan_names.join(" "));
 }
 
-
-QString OSConfigurator_freebsd::listAllCARPConfgLine(QStringList carp_names)
+void OSConfigurator_freebsd::listAllBridgeConfgLine(QStringList bridge_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        return QString("cloned_interfaces=\"%1\"").arg(carp_names.join(" "));;
+        cloned_interfaces += bridge_names;
     } else
-        return OSConfigurator_bsd::listAllCARPConfgLine(carp_names);
+        OSConfigurator_bsd::listAllBridgeConfgLine(bridge_names);
 }
 
-QString OSConfigurator_freebsd::updateCARPInterface(Interface *iface,
-                                                    FWObject *failover_group)
+/*
+
+ For rc.conf format:
+
+     Consider a system with two 4-port Ethernet boards.  The following will
+     cause a bridge consisting of all 8 ports with Rapid Spanning Tree enabled
+     to be created:
+
+           ifconfig bridge0 create
+           ifconfig bridge0 \
+               addm fxp0 stp fxp0 \
+               addm fxp1 stp fxp1 \
+               addm fxp2 stp fxp2 \
+               addm fxp3 stp fxp3 \
+               addm fxp4 stp fxp4 \
+               addm fxp5 stp fxp5 \
+               addm fxp6 stp fxp6 \
+               addm fxp7 stp fxp7 \
+               up
+
+     The bridge can be used as a regular host interface at the same time as
+     bridging between its member ports.  In this example, the bridge connects
+     em0 and em1, and will receive its IP address through DHCP:
+
+           cloned_interfaces="bridge0"
+           ifconfig_bridge0="addm em0 addm em1 DHCP"
+           ifconfig_em0="up"
+           ifconfig_em1="up"
+
+
+Refernce:
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html
+
+TODO:  STP support should be optional
+
+ */
+void OSConfigurator_freebsd::updateBridgeOfInterface(Interface *iface,
+                                                     QStringList bridge_port_names)
+{
+    FWOptions* options = fw->getOptionsObject();
+    if (options->getBool("generate_rc_conf_file"))
+    {
+        QStringList outp;
+        QStringList bp;
+        foreach(QString bridge_port, bridge_port_names)
+        {
+            bp << QString("addm %1 stp %2").arg(bridge_port).arg(bridge_port);
+        }
+
+        bp << "up";
+
+        outp << QString("ifconfig_%1=\"%2\"").arg(iface->getName().c_str())
+            .arg(bp.join(" "));
+
+        foreach(QString bridge_port, bridge_port_names)
+        {
+            outp << QString("ifconfig_%1=\"up\"").arg(bridge_port);
+        }
+
+        interface_configuration_lines <<  outp.join("\n");
+    } else
+        OSConfigurator_bsd::updateBridgeOfInterface(iface, bridge_port_names);
+}
+
+
+void OSConfigurator_freebsd::listAllCARPConfgLine(QStringList carp_names)
+{
+    FWOptions* options = fw->getOptionsObject();
+    if (options->getBool("generate_rc_conf_file"))
+    {
+        cloned_interfaces += carp_names;
+    } else
+        OSConfigurator_bsd::listAllCARPConfgLine(carp_names);
+}
+
+void OSConfigurator_freebsd::updateCARPInterface(Interface *iface,
+                                                 FWObject *failover_group)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
         Configlet configlet(fw, "freebsd", "rc_conf_carp_interface");
-        return updateCARPInterfaceInternal(iface, failover_group, &configlet);
+        updateCARPInterfaceInternal(iface, failover_group, &configlet);
     } else
-        return OSConfigurator_bsd::updateCARPInterface(iface, failover_group);
+        OSConfigurator_bsd::updateCARPInterface(iface, failover_group);
 }
 
-QString OSConfigurator_freebsd::listAllPfsyncConfgLine(bool have_pfsync)
+void OSConfigurator_freebsd::listAllPfsyncConfgLine(bool have_pfsync)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        return "pfsync_enable=\"YES\"";
+        interface_configuration_lines <<  "pfsync_enable=\"YES\"";
     } else
-        return OSConfigurator_bsd::listAllPfsyncConfgLine(have_pfsync);
+        OSConfigurator_bsd::listAllPfsyncConfgLine(have_pfsync);
 }
 
 /*
@@ -336,7 +414,7 @@ QString OSConfigurator_freebsd::listAllPfsyncConfgLine(bool have_pfsync)
 		 up pfsync(4).
  */
 
-QString OSConfigurator_freebsd::updatePfsyncInterface(
+void OSConfigurator_freebsd::updatePfsyncInterface(
     Interface *iface, StateSyncClusterGroup *state_sync_group)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -366,12 +444,19 @@ QString OSConfigurator_freebsd::updatePfsyncInterface(
                 configlet.setVariable("syncpeer", addr->toString().c_str());
             }
         }
-        return configlet.expand();
+        interface_configuration_lines <<  configlet.expand();
 
     } else
-        return OSConfigurator_bsd::updatePfsyncInterface(iface, state_sync_group);
-
+        OSConfigurator_bsd::updatePfsyncInterface(iface, state_sync_group);
 }
 
+QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
+{
+    
+    if (!cloned_interfaces.isEmpty())
+        interface_configuration_lines.push_front(
+            QString("cloned_interfaces=\"%1\"").arg(cloned_interfaces.join(" ")));
 
+    return interface_configuration_lines.join("\n");
+}
 

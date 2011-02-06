@@ -64,6 +64,7 @@
         </cluster>
         <firewall>
           <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
         </firewall>
       </interfaces>
 
@@ -72,6 +73,10 @@
           <string>8021q,VLAN</string>
           <string>unknown,Unknown</string>
         </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>unknown,Unknown</string>
+        </bridge>
       </subinterfaces>
 
       <tools>

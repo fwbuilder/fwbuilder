@@ -227,6 +227,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
                          "configure_pfsync_interfaces");
     data.registerOption( m_dialog->pf_configure_vlan_interfaces, fwopt,
                          "configure_vlan_interfaces");
+    data.registerOption( m_dialog->pf_configure_bridge_interfaces, fwopt,
+                         "configure_bridge_interfaces");
 
     data.registerOption( m_dialog->pf_debug,fwopt, "debug");
     data.registerOption( m_dialog->pf_flush_states, fwopt, "pf_flush_states");

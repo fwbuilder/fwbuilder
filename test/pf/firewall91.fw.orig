@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3458
+#  Firewall Builder  fwb_pf v4.2.0.3460
 #
-#  Generated Fri Feb  4 17:52:43 2011 PST by vadim
+#  Generated Sun Feb  6 12:35:47 2011 PST by vadim
 #
 # files: * firewall91.fw /etc/fw/pf.fw
 # files:   firewall91.conf /etc/fw/pf.conf
@@ -234,14 +234,13 @@ configure_interfaces() {
     :
     sync_vlan_interfaces vlan101 vlan103
     update_vlans_of_interface "em0 vlan101 vlan103"
-
-    update_addresses_of_interface "em0 10.1.1.50/0xffffff00" ""
     update_addresses_of_interface "pcn0 10.3.14.50/0xffffff00" ""
+    update_addresses_of_interface "em0 10.1.1.50/0xffffff00" ""
     update_addresses_of_interface "vlan101 10.100.101.1/0xffffff00" ""
     update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Fri Feb  4 17:52:43 2011 by vadim"
+log "Activating firewall script generated Sun Feb  6 12:35:47 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

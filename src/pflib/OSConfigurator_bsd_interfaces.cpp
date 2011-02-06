@@ -67,25 +67,22 @@ bool compare_names(FWObject *a, FWObject *b)
 
 string OSConfigurator_bsd::configureInterfaces()
 {
-    ostringstream ostr;
     FWOptions* options = fw->getOptionsObject();
 
     // Update vlans first because we may need to update ip addresses
     // on vlan interfaces later
     if ( options->getBool("configure_vlan_interfaces") ) 
     {
-        QStringList vlan_interfaces; // all vlan interfaces
-        QStringList vlan_output;
-
         // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
         // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
+        QMap<Interface*, QStringList> vlan_subinterfaces;
+        QStringList vlan_interfaces; // all vlan interfaces
+
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
-
-            QStringList vlan_subinterfaces;
 
             FWObjectTypedChildIterator si=iface->findByType(Interface::TYPENAME);
             for ( ; si!=si.end(); ++si ) 
@@ -95,26 +92,70 @@ string OSConfigurator_bsd::configureInterfaces()
 
                 if (subinterface->getOptionsObject()->getStr("type") == "8021q")
                 {
-                    vlan_subinterfaces << subinterface->getName().c_str();
+                    vlan_subinterfaces[iface] << subinterface->getName().c_str();
                     vlan_interfaces << subinterface->getName().c_str();
                 }
             }
-
-            if (vlan_subinterfaces.size() > 0)
-                vlan_output << updateVlansOfInterface(iface, vlan_subinterfaces);
         }
+
+        QMap<Interface*,QStringList>::iterator it;
 
         // issue sync_vlan_interfaces command even if there are no vlans
         // since it deletes them on the firewall if they exist
-        ostr << listAllVlansConfgLine(vlan_interfaces).toStdString()
-             << endl;
+        listAllVlansConfgLine(vlan_interfaces);
 
-        if (vlan_output.size() > 0)
+        for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
         {
-            ostr << vlan_output.join("\n").toStdString()
-                 << endl;
+            Interface *iface = it.key();
+            QStringList vlan_subinterfaces = it.value();
+            if (vlan_subinterfaces.size() > 0)
+                updateVlansOfInterface(iface, vlan_subinterfaces);
         }
     }
+
+    if (options->getBool("configure_bridge_interfaces"))
+    {
+        list<Interface*> all_bridges = fw->getInterfacesByType("bridge");
+
+        QMap<Interface*, QStringList> bridge_subinterfaces;
+        QStringList bridge_interfaces;
+
+        for (list<Interface*>::iterator it=all_bridges.begin();
+             it!=all_bridges.end(); ++it)
+        {
+            Interface *iface = Interface::cast(*it);
+            assert(iface);
+
+            bridge_interfaces << iface->getName().c_str();
+
+            // this if() is superfluous
+            if (iface->getOptionsObject()->getStr("type") == "bridge")
+            {
+                FWObjectTypedChildIterator si =
+                    iface->findByType(Interface::TYPENAME);
+                for ( ; si!=si.end(); ++si ) 
+                {
+                    Interface *subinterface = Interface::cast(*si);
+                    assert(subinterface);
+                    bridge_subinterfaces[iface] << subinterface->getName().c_str();
+                }
+            }
+        }
+
+        QMap<Interface*,QStringList>::iterator it;
+        
+        listAllBridgeConfgLine(bridge_interfaces);
+
+        for (it=bridge_subinterfaces.begin(); it!=bridge_subinterfaces.end(); ++it)
+        {
+            Interface *iface = it.key();
+            QStringList bridge_ports = it.value();
+
+            if (bridge_ports.size() > 0)
+                updateBridgeOfInterface(iface, bridge_ports);
+        }
+    }
+
 
 
     if ( options->getBool("configure_carp_interfaces") ) 
@@ -126,8 +167,8 @@ string OSConfigurator_bsd::configureInterfaces()
  * cluster interfaces. 
  *
  */
-        QStringList carp_output;
         QStringList carp_interfaces;
+        QMap<Interface*, FWObject*> failover_groups;
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
@@ -142,26 +183,26 @@ string OSConfigurator_bsd::configureInterfaces()
             if (failover_group && failover_group->getStr("type") == "carp")
             {
                 carp_interfaces << iface->getName().c_str();
-                carp_output << updateCARPInterface(iface, failover_group);
+                failover_groups[iface] = failover_group;
             }
         }
 
         // issue "sync_carp_interfaces" call even when we have none, it will
         // delete those that might exist on the firewall
-        ostr << listAllCARPConfgLine(carp_interfaces).toStdString()
-             << endl;
+        listAllCARPConfgLine(carp_interfaces);
 
-        if (carp_interfaces.size() > 0)
+        QMap<Interface*, FWObject*>::iterator it;
+        for (it=failover_groups.begin(); it!=failover_groups.end(); ++it)
         {
-            ostr << carp_output.join("\n").toStdString() << endl;
+            Interface *iface = it.key();
+            FWObject* failover_group = it.value();
+            updateCARPInterface(iface, failover_group);
         }
     }
 
 
     if ( options->getBool("configure_interfaces") ) 
     {
-        ostr << endl;
-
         std::auto_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                 fw->getStr("host_OS")));
@@ -172,6 +213,7 @@ string OSConfigurator_bsd::configureInterfaces()
         QStringList configure_intf_commands;
         QStringList intf_names;
         QStringList ipv6_names;
+        QMap<Interface*, list<pair<InetAddr,InetAddr> > > all_addresses;
 
         for (list<FWObject*>::iterator i=all_interfaces.begin();
              i != all_interfaces.end(); ++i )
@@ -211,7 +253,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
                 const InetAddr *netmask = iface->getNetmaskPtr();
 
-                list<pair<InetAddr,InetAddr> > all_addresses;
+                list<pair<InetAddr,InetAddr> > iface_all_addresses;
 
                 for (list<FWObject*>::iterator j = all_addr.begin();
                      j != all_addr.end(); ++j)
@@ -219,7 +261,7 @@ string OSConfigurator_bsd::configureInterfaces()
                     Address *iaddr = Address::cast(*j);
                     const InetAddr *ipaddr = iaddr->getAddressPtr();
                     const InetAddr *ipnetm = iaddr->getNetmaskPtr();
-                    all_addresses.push_back(
+                    iface_all_addresses.push_back(
                         pair<InetAddr,InetAddr>(*ipaddr, *ipnetm));
                 }
 
@@ -233,30 +275,28 @@ string OSConfigurator_bsd::configureInterfaces()
                         Interface *iface_2 = Interface::cast(iaddr->getParent());
                         if (iface_2 == iface)
                         {
-                            all_addresses.push_back(
+                            iface_all_addresses.push_back(
                                 pair<InetAddr,InetAddr>(
                                     *(addr->getAddressPtr()), *netmask));
                         }
                     }
                 }
 
-                configure_intf_commands << updateAddressesOfInterface(
-                    iface, all_addresses);
-
+                all_addresses[iface] = iface_all_addresses;
             }
         }
 
-        QString list_command;
-        list_command = listAllInterfacesConfigLine(ipv6_names, true);
-        if (!list_command.isEmpty())
-            configure_intf_commands.push_front(list_command);
+        listAllInterfacesConfigLine(ipv6_names, true);
 
-        list_command = listAllInterfacesConfigLine(intf_names, false);
-        if (!list_command.isEmpty())
-            configure_intf_commands.push_front(list_command);
+        listAllInterfacesConfigLine(intf_names, false);
 
-        ostr << configure_intf_commands.join("\n").toStdString();
-        ostr << endl;
+        QMap<Interface*, list<pair<InetAddr,InetAddr> > >::iterator it;
+        for (it=all_addresses.begin(); it!=all_addresses.end(); ++it)
+        {
+            Interface *iface = it.key();
+            list<pair<InetAddr,InetAddr> > all_addresses = it.value();
+            updateAddressesOfInterface(iface, all_addresses);
+        }
     }
 
 
@@ -285,30 +325,29 @@ string OSConfigurator_bsd::configureInterfaces()
 
             have_pfsync_interfaces = true;
 
-            pfsync_output << updatePfsyncInterface(iface, state_sync_group);
+            listAllPfsyncConfgLine(have_pfsync_interfaces);
+            updatePfsyncInterface(iface, state_sync_group);
 
             break;
         }
 
-        ostr << listAllPfsyncConfgLine(have_pfsync_interfaces).toStdString()
-             << endl;
-
-        if (have_pfsync_interfaces)
-        {
-            ostr << pfsync_output.join("\n").toStdString()
-                 << endl;
-        }
+        if (!have_pfsync_interfaces) listAllPfsyncConfgLine(false);
     }
 
-    return ostr.str();
+    
+    return printAllInterfaceConfigurationLines().toStdString();
 }
 
-QString OSConfigurator_bsd::listAllInterfacesConfigLine(QStringList , bool )
+QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
-    return "";
+    return interface_configuration_lines.join("\n");
 }
 
-QString OSConfigurator_bsd::updateAddressesOfInterface(
+void OSConfigurator_bsd::listAllInterfacesConfigLine(QStringList , bool )
+{
+}
+
+void OSConfigurator_bsd::updateAddressesOfInterface(
     Interface *iface, list<pair<InetAddr,InetAddr> > all_addresses)
 {
     QStringList arg1;
@@ -351,39 +390,58 @@ QString OSConfigurator_bsd::updateAddressesOfInterface(
         }
     }
 
-    return QString("update_addresses_of_interface ") +
-        "\"" + arg1.join(" ") + "\"" + " \"\"";
+    interface_configuration_lines
+        << QString("update_addresses_of_interface \"%1\" \"\"").arg(arg1.join(" "));
 }
 
 
 
-QString OSConfigurator_bsd::listAllVlansConfgLine(QStringList vlan_names)
+void OSConfigurator_bsd::listAllVlansConfgLine(QStringList vlan_names)
 {
-    return QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
+    interface_configuration_lines <<
+        QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
 }
 
 
-QString OSConfigurator_bsd::updateVlansOfInterface(Interface *iface,
-                                                   QStringList vlan_names)
+void OSConfigurator_bsd::updateVlansOfInterface(Interface *iface,
+                                                QStringList vlan_names)
 {
-    return QString("update_vlans_of_interface \"%1 %2\"")
+    interface_configuration_lines << 
+        QString("update_vlans_of_interface \"%1 %2\"")
         .arg(iface->getName().c_str())
         .arg(vlan_names.join(" "));
 }
 
-QString OSConfigurator_bsd::listAllCARPConfgLine(QStringList carp_names)
+void OSConfigurator_bsd::listAllBridgeConfgLine(QStringList bridge_names)
 {
-    return  QString("sync_carp_interfaces %1").arg(carp_names.join(" "));
+    interface_configuration_lines <<
+        QString("sync_bridge_interfaces %1").arg(bridge_names.join(" "));
 }
 
-QString OSConfigurator_bsd::updateCARPInterface(Interface *iface,
-                                                FWObject *failover_group)
+
+void OSConfigurator_bsd::updateBridgeOfInterface(Interface *iface,
+                                                    QStringList bridge_port_names)
+{
+    interface_configuration_lines <<
+        QString("update_bridge_interface \"%1 %2\"")
+        .arg(iface->getName().c_str())
+        .arg(bridge_port_names.join(" "));
+}
+
+void OSConfigurator_bsd::listAllCARPConfgLine(QStringList carp_names)
+{
+    interface_configuration_lines <<
+        QString("sync_carp_interfaces %1").arg(carp_names.join(" "));
+}
+
+void OSConfigurator_bsd::updateCARPInterface(Interface *iface,
+                                             FWObject *failover_group)
 {
     Configlet configlet(fw, "bsd", "carp_interface");
-    return updateCARPInterfaceInternal(iface, failover_group, &configlet);
+    updateCARPInterfaceInternal(iface, failover_group, &configlet);
 }
 
-QString OSConfigurator_bsd::updateCARPInterfaceInternal(
+void OSConfigurator_bsd::updateCARPInterfaceInternal(
     Interface *iface, FWObject *failover_group, Configlet *configlet)
 {
     // failover_master and base_device are set in Compiler::processFailoverGroup
@@ -427,12 +485,13 @@ QString OSConfigurator_bsd::updateCARPInterfaceInternal(
     configlet->setVariable("carp_password", carp_password.c_str());
     configlet->setVariable("vhid", vhid.c_str());
 
-    return configlet->expand();
+    interface_configuration_lines <<  configlet->expand();
 }
 
-QString OSConfigurator_bsd::listAllPfsyncConfgLine(bool have_pfsync)
+void OSConfigurator_bsd::listAllPfsyncConfgLine(bool have_pfsync)
 {
-    return QString("sync_pfsync_interfaces %1").arg(have_pfsync?"pfsync0":"");
+    interface_configuration_lines <<
+        QString("sync_pfsync_interfaces %1").arg(have_pfsync?"pfsync0":"");
 }
 
 /*
@@ -443,7 +502,7 @@ QString OSConfigurator_bsd::listAllPfsyncConfgLine(bool have_pfsync)
  * ifconfig pfsyncN syncdev syncdev [syncpeer syncpeer]
  */
 
-QString OSConfigurator_bsd::updatePfsyncInterface(
+void OSConfigurator_bsd::updatePfsyncInterface(
     Interface *iface, StateSyncClusterGroup *state_sync_group)
 {
     Configlet configlet(fw, "bsd", "pfsync_interface");
@@ -470,7 +529,7 @@ QString OSConfigurator_bsd::updatePfsyncInterface(
             configlet.setVariable("syncpeer", addr->toString().c_str());
         }
     }
-    return configlet.expand();
+    interface_configuration_lines <<  configlet.expand();
 }
 
 

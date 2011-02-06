@@ -94,7 +94,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -2304,7 +2304,7 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
           <string>Enable auxiliary sections in the generated script</string>
@@ -2346,13 +2346,26 @@ with this address:</string>
            </widget>
           </item>
           <item row="5" column="0">
+           <widget class="QCheckBox" name="pf_configure_bridge_interfaces">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Configure bridge Interfaces</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
            <widget class="QCheckBox" name="pf_manage_virtual_addr">
             <property name="text">
              <string>Add virtual addresses for NAT</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="pf_flush_states">
             <property name="text">
              <string>Flush pf states after reloading rules</string>

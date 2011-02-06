@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3458
+#  Firewall Builder  fwb_pf v4.2.0.3460
 #
-#  Generated Fri Feb  4 17:52:34 2011 PST by vadim
+#  Generated Sun Feb  6 12:35:38 2011 PST by vadim
 #
 # files: * firewall39.fw pf.fw
 # files:   firewall39.conf pf.conf
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Fri Feb  4 17:52:34 2011 by vadim"
+log "Activating firewall script generated Sun Feb  6 12:35:38 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
