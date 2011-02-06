@@ -86,30 +86,46 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
         *main_script = true;
         workline = workline.remove(0, 1).trimmed();
     }
+
     QString local, remote;
     int i = 0;
+
     for(i=0; i<workline.size(); i++)
     {
+        // qDebug() << "1: " << workline.at(i);
+
         if (workline.at(i) == ' ' && workline.at(i-1) != '\\')
+        {
+            i++;
             break;
-        else
+        } else
             local.append(workline.at(i));
     }
+
+    //qDebug() << "local=" << local;
+
     for(; i<workline.size(); i++)
     {
+        // qDebug() << "2: " << workline.at(i);
+
         if (workline.at(i) == ' ' && workline.at(i-1) != '\\')
             break;
         else
             remote.append(workline.at(i));
     }
+
+    // qDebug() << "remote=" << remote;
+
     *local_file_name = fwcompiler::CompilerDriver::unescapeFileName(local);
     *remote_file_name = fwcompiler::CompilerDriver::unescapeFileName(remote);
 
     if (fwbdebug)
-        qDebug("local_name: '%s'  remote_name: '%s'  main_script: %d",
-               local_file_name->toAscii().constData(),
-               remote_file_name->toAscii().constData(),
-               *main_script);
+        qDebug() << "local_name:"
+                 << local_file_name->toAscii().constData()
+                 << "remote_name:"
+                 << remote_file_name->toAscii().constData()
+                 << "main_script:" 
+                 << *main_script;
 
     return true;
 }
