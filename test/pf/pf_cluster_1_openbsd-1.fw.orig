@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3460
 #
-#  Generated Sun Feb  6 12:35:50 2011 PST by vadim
+#  Generated Sun Feb  6 14:52:14 2011 PST by vadim
 #
 # files: * pf_cluster_1_openbsd-1.fw /etc/pf_cluster_1_openbsd-1.fw
 # files:   pf_cluster_1_openbsd-1.conf /etc/pf_cluster_1_openbsd-1.conf
@@ -279,16 +279,16 @@ configure_interfaces() {
     sync_carp_interfaces carp0 carp1
     $IFCONFIG carp0 vhid 101 pass secret    carpdev en0
     $IFCONFIG carp1 vhid 100 pass secret    carpdev en1
-    update_addresses_of_interface "en0 172.24.0.2/0xffffff00 172.24.0.3/0xffffff00" ""
-    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
-    update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
-    update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
     sync_pfsync_interfaces pfsync0
     $IFCONFIG pfsync0 syncdev en0  syncpeer 172.24.0.3
     $IFCONFIG pfsync0 up
+    update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
+    update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
+    update_addresses_of_interface "en0 172.24.0.2/0xffffff00 172.24.0.3/0xffffff00" ""
+    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
 }
 
-log "Activating firewall script generated Sun Feb  6 12:35:50 2011 by vadim"
+log "Activating firewall script generated Sun Feb  6 14:52:14 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

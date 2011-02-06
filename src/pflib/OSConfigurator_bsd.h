@@ -32,6 +32,7 @@
 
 #include <set>
 
+#include <QMap>
 #include <QStringList>
 
 
@@ -51,6 +52,7 @@ namespace fwcompiler
     {
         
 protected:
+        QMap<QString, QString> update_address_lines;
         QStringList cloned_interfaces;
         QStringList interface_configuration_lines;
 

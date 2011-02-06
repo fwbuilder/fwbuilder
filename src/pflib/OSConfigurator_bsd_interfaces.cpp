@@ -39,6 +39,7 @@
 
 #include <QTextStream>
 #include <QString>
+#include <QtDebug>
 
 #include <algorithm>
 #include <memory>
@@ -293,9 +294,10 @@ string OSConfigurator_bsd::configureInterfaces()
         QMap<Interface*, list<pair<InetAddr,InetAddr> > >::iterator it;
         for (it=all_addresses.begin(); it!=all_addresses.end(); ++it)
         {
-            Interface *iface = it.key();
-            list<pair<InetAddr,InetAddr> > all_addresses = it.value();
-            updateAddressesOfInterface(iface, all_addresses);
+            // qDebug() << "updateAddressesOfInterface:"
+            //          << it.key()
+            //          << it.value().size();
+            updateAddressesOfInterface(it.key(), it.value());
         }
     }
 
@@ -336,11 +338,6 @@ string OSConfigurator_bsd::configureInterfaces()
 
     
     return printAllInterfaceConfigurationLines().toStdString();
-}
-
-QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
-{
-    return interface_configuration_lines.join("\n");
 }
 
 void OSConfigurator_bsd::listAllInterfacesConfigLine(QStringList , bool )
@@ -390,8 +387,12 @@ void OSConfigurator_bsd::updateAddressesOfInterface(
         }
     }
 
-    interface_configuration_lines
-        << QString("update_addresses_of_interface \"%1\" \"\"").arg(arg1.join(" "));
+    QString cmd = QString("update_addresses_of_interface \"%1\" \"\"")
+        .arg(arg1.join(" "));
+
+    //qDebug() << cmd;
+
+    update_address_lines[iface->getName().c_str()] = cmd;
 }
 
 
@@ -532,5 +533,17 @@ void OSConfigurator_bsd::updatePfsyncInterface(
     interface_configuration_lines <<  configlet.expand();
 }
 
+
+QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
+{
+    QStringList keys = update_address_lines.keys();
+    keys.sort();
+    foreach (QString iface_name, keys)
+    {
+        interface_configuration_lines << update_address_lines[iface_name];
+    }
+
+    return interface_configuration_lines.join("\n");
+}
 
 

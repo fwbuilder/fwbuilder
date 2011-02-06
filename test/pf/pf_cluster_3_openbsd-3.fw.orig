@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3460
 #
-#  Generated Sun Feb  6 12:35:51 2011 PST by vadim
+#  Generated Sun Feb  6 14:52:15 2011 PST by vadim
 #
 # files: * pf_cluster_3_openbsd-3.fw /etc/pf_cluster_3_openbsd-3.fw
 # files:   pf_cluster_3_openbsd-3.conf /etc/pf_cluster_3_openbsd-3.conf
@@ -282,17 +282,17 @@ configure_interfaces() {
     $IFCONFIG carp2 vhid  pass ""    carpdev vlan100
     $IFCONFIG carp0 vhid  pass ""    carpdev en0
     $IFCONFIG carp1 vhid  pass ""    carpdev en1
-    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
-    update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
-    update_addresses_of_interface "en0 172.24.0.2/0xffffff00" ""
-    update_addresses_of_interface "vlan100 172.20.0.2/0xffffff00" ""
-    update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
+    sync_pfsync_interfaces 
     update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
     update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
-    sync_pfsync_interfaces
+    update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
+    update_addresses_of_interface "en0 172.24.0.2/0xffffff00" ""
+    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
+    update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
+    update_addresses_of_interface "vlan100 172.20.0.2/0xffffff00" ""
 }
 
-log "Activating firewall script generated Sun Feb  6 12:35:51 2011 by vadim"
+log "Activating firewall script generated Sun Feb  6 14:52:15 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

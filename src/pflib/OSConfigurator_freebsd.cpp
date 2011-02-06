@@ -439,28 +439,34 @@ void OSConfigurator_freebsd::updatePfsyncInterface(
 
 QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
 {
-    printIfconfigLines(ifconfig_lines);
-    printIfconfigLines(ipv6_ifconfig_lines);
+    FWOptions* options = fw->getOptionsObject();
+    if (options->getBool("generate_rc_conf_file"))
+    {
+        printIfconfigLines(ifconfig_lines);
+        printIfconfigLines(ipv6_ifconfig_lines);
 
-    if (!cloned_interfaces.isEmpty())
-        interface_configuration_lines.push_front(
-            QString("cloned_interfaces=\"%1\"").arg(cloned_interfaces.join(" ")));
-
-    return interface_configuration_lines.join("\n");
+        if (!cloned_interfaces.isEmpty())
+            interface_configuration_lines.push_front(
+                QString("cloned_interfaces=\"%1\"")
+                .arg(cloned_interfaces.join(" ")));
+        
+        return interface_configuration_lines.join("\n");
+    } else
+        return OSConfigurator_bsd::printAllInterfaceConfigurationLines();
 }
 
 void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList> &lines)
 {
     if (!lines.isEmpty())
     {
-        QMap<QString, QStringList>::const_iterator it;
-        for (it=lines.begin(); it!=lines.end(); ++it)
+        QStringList keys = lines.keys();
+        keys.sort();
+        foreach (QString iface_name, keys)
         {
-            const QString iface_name = it.key();
-            const QStringList commands = it.value();
-            interface_configuration_lines.push_front(
+            const QStringList commands = lines[iface_name];
+            interface_configuration_lines << 
                 QString("ifconfig_%1=\"%2\"").arg(iface_name)
-                .arg(commands.join(" ")));
+                .arg(commands.join(" "));
         }
     }
 }

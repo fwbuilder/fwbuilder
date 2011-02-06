@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3460
 #
-#  Generated Sun Feb  6 12:35:34 2011 PST by vadim
+#  Generated Sun Feb  6 14:51:57 2011 PST by vadim
 #
 # files: * firewall21.fw /etc/fw/firewall21.fw
 # files:   firewall21-NAT_1.conf /etc/fw/firewall21-NAT_1.conf
@@ -82,7 +82,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb  6 12:35:34 2011 by vadim"
+log "Activating firewall script generated Sun Feb  6 14:51:57 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
