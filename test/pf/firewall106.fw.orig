@@ -1,0 +1,43 @@
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_pf v4.2.0.3460
+#
+#  Generated Sun Feb  6 14:51:52 2011 PST by vadim
+#
+# files: * firewall106.fw /etc/fw/pf.fw
+# files:   firewall106.conf /etc/fw/path\ with\ space/pf.conf
+#
+# Compiled for pf 4.7
+#
+# bridge interface, dynamic  address, rc.conf format
+
+# firewall106:Routing:1: error: Gateway and interface are both empty in the rule
+# firewall106:Routing:1: error: Rules 0 (main) and 1 (main) define routes to the same destination 0.0.0.0/0.0.0.0 via different gateways. This configuration is not supported for freebsd
+
+gateway_enable="YES"
+
+
+
+cloned_interfaces="bridge0"
+
+ipv6_network_interfaces="bridge0 em0 em1"
+network_interfaces="bridge0 em0 em1"
+pfsync_enable="YES"
+ifconfig_bridge0="addm em2 stp em2 addm em3 stp em3 up DHCP"
+ifconfig_em0="10.3.14.81 netmask 0xffffff00"
+ifconfig_em1="10.1.1.81 netmask 0xffffff00"
+ifconfig_em2="up"
+ifconfig_em3="up"
+
+pf_enable="YES"
+pf_rules="/etc/fw/path\ with\ space/pf.conf"
+
+static_routes="id160577X13467 id160599X13467 id160621X13467 id160643X13467 id160668X13467 id160687X13467"
+route_id160577X13467="default  10.1.1.1 "
+route_id160599X13467="default  "
+route_id160621X13467="192.168.171.2  10.1.1.1 "
+route_id160643X13467="22.22.22.0/24  10.1.1.1 "
+route_id160668X13467="22.22.22.0/24  10.1.1.1 "
+route_id160687X13467="33.33.33.0/24  10.1.1.1 "
+

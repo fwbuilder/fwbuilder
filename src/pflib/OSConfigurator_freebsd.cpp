@@ -100,7 +100,7 @@ int OSConfigurator_freebsd::prolog()
     return 0;
 }
 
-void OSConfigurator_freebsd::listAllInterfacesConfigLine(QStringList names,
+void OSConfigurator_freebsd::summaryConfigLineIP(QStringList names,
                                                             bool ipv6)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -118,7 +118,7 @@ void OSConfigurator_freebsd::listAllInterfacesConfigLine(QStringList names,
     }
 }
         
-void OSConfigurator_freebsd::updateAddressesOfInterface(
+void OSConfigurator_freebsd::interfaceConfigLineIP(
     Interface *iface, list<pair<InetAddr,InetAddr> > all_addresses)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -195,10 +195,10 @@ void OSConfigurator_freebsd::updateAddressesOfInterface(
             }
         }
     } else
-        OSConfigurator_bsd::updateAddressesOfInterface(iface, all_addresses);
+        OSConfigurator_bsd::interfaceConfigLineIP(iface, all_addresses);
 }
 
-void OSConfigurator_freebsd::listAllVlansConfgLine(QStringList vlan_names)
+void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
@@ -233,7 +233,7 @@ void OSConfigurator_freebsd::listAllVlansConfgLine(QStringList vlan_names)
  create_args_myvlan="vlan 102"
 
  */
-void OSConfigurator_freebsd::updateVlansOfInterface(Interface *iface,
+void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
                                                     QStringList vlan_names)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -264,14 +264,14 @@ void OSConfigurator_freebsd::updateVlansOfInterface(Interface *iface,
             .arg(vlan_names.join(" "));
 }
 
-void OSConfigurator_freebsd::listAllBridgeConfgLine(QStringList bridge_names)
+void OSConfigurator_freebsd::summaryConfigLineBridge(QStringList bridge_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
         cloned_interfaces += bridge_names;
     } else
-        OSConfigurator_bsd::listAllBridgeConfgLine(bridge_names);
+        OSConfigurator_bsd::summaryConfigLineBridge(bridge_names);
 }
 
 /*
@@ -310,7 +310,7 @@ http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html
 TODO:  STP support should be optional
 
  */
-void OSConfigurator_freebsd::updateBridgeOfInterface(Interface *iface,
+void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
                                                      QStringList bridge_port_names)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -334,40 +334,40 @@ void OSConfigurator_freebsd::updateBridgeOfInterface(Interface *iface,
 
         interface_configuration_lines <<  outp.join("\n");
     } else
-        OSConfigurator_bsd::updateBridgeOfInterface(iface, bridge_port_names);
+        OSConfigurator_bsd::interfaceConfigLineBridge(iface, bridge_port_names);
 }
 
 
-void OSConfigurator_freebsd::listAllCARPConfgLine(QStringList carp_names)
+void OSConfigurator_freebsd::summaryConfigLineCARP(QStringList carp_names)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
         cloned_interfaces += carp_names;
     } else
-        OSConfigurator_bsd::listAllCARPConfgLine(carp_names);
+        OSConfigurator_bsd::summaryConfigLineCARP(carp_names);
 }
 
-void OSConfigurator_freebsd::updateCARPInterface(Interface *iface,
+void OSConfigurator_freebsd::interfaceConfigLineCARP(Interface *iface,
                                                  FWObject *failover_group)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
         Configlet configlet(fw, "freebsd", "rc_conf_carp_interface");
-        updateCARPInterfaceInternal(iface, failover_group, &configlet);
+        interfaceConfigLineCARPInternal(iface, failover_group, &configlet);
     } else
-        OSConfigurator_bsd::updateCARPInterface(iface, failover_group);
+        OSConfigurator_bsd::interfaceConfigLineCARP(iface, failover_group);
 }
 
-void OSConfigurator_freebsd::listAllPfsyncConfgLine(bool have_pfsync)
+void OSConfigurator_freebsd::summaryConfigLinePfsync(bool have_pfsync)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
         interface_configuration_lines <<  "pfsync_enable=\"YES\"";
     } else
-        OSConfigurator_bsd::listAllPfsyncConfgLine(have_pfsync);
+        OSConfigurator_bsd::summaryConfigLinePfsync(have_pfsync);
 }
 
 /*
@@ -401,7 +401,7 @@ void OSConfigurator_freebsd::listAllPfsyncConfgLine(bool have_pfsync)
 		 up pfsync(4).
  */
 
-void OSConfigurator_freebsd::updatePfsyncInterface(
+void OSConfigurator_freebsd::interfaceConfigLinePfsync(
     Interface *iface, StateSyncClusterGroup *state_sync_group)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -434,7 +434,7 @@ void OSConfigurator_freebsd::updatePfsyncInterface(
         interface_configuration_lines <<  configlet.expand();
 
     } else
-        OSConfigurator_bsd::updatePfsyncInterface(iface, state_sync_group);
+        OSConfigurator_bsd::interfaceConfigLinePfsync(iface, state_sync_group);
 }
 
 QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
