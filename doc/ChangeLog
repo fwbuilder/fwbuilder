@@ -1,10 +1,17 @@
+2011-02-05  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_pf.cpp (printStaticOptions): fixes #2038 "pfctl
+	error when firewall settings include scrub option for reassembly".
+	Command "scrub all reassemble tcp" does not allow direction.
+	Tested and verified on OpenBSD 4.2 and FreeBSD 8.1
+
 2011-02-04  vadim  <vadim@netcitadel.com>
 
 	* freebsdInterfaces.cpp (manageIpAddresses): fixes #2032 "support
 	for DHCP interfaces in rc.conf mode". Include dynamic interfaces
 	inin the list of interfaces generated script manages when the
 	script is in rc.conf format. This addds lines similar to
-	'ifconfig_em0="DHCP"'. 
+	'ifconfig_em0="DHCP"'.
 
 2011-02-03  vadim  <vadim@netcitadel.com>
 

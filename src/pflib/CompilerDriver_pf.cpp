@@ -293,6 +293,8 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 
     QStringList scrub_options;
 
+    string scrub_rule_direction = "in ";
+
     if (options->getBool("pf_do_scrub"))
     {
         if (XMLTools::version_compare(fw->getStr("version"), "4.6")<0)
@@ -305,7 +307,11 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
                 scrub_options << "fragment drop-ovl";
         }
         if (options->getBool("pf_scrub_reassemble_tcp"))
+        {
+            // "scrub all reassemble tcp" - does not allow direction
             scrub_options << "reassemble tcp";
+            scrub_rule_direction = "";
+        }
     }
 
     if (options->getBool("pf_scrub_no_df"))  scrub_options << "no-df ";
@@ -318,10 +324,18 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 
         if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
         {
-            file << "match in all scrub (" << scrub_options.join(" ").toStdString() << ")" << endl;
+            file << "match "
+                 << scrub_rule_direction
+                 << "all scrub ("
+                 << scrub_options.join(" ").toStdString() << ")"
+                 << endl;
         } else
         {
-            file << "scrub in all " << scrub_options.join(" ").toStdString() << endl;
+            file << "scrub "
+                 << scrub_rule_direction
+                 << "all "
+                 << scrub_options.join(" ").toStdString()
+                 << endl;
         }
     }
 
@@ -340,10 +354,12 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
     {
         if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
         {
-            file << "match out all scrub (" << scrub_options.join(" ").toStdString() << ")" << endl;
+            file << "match out all scrub ("
+                 << scrub_options.join(" ").toStdString() << ")" << endl;
         } else
         {
-            file << "scrub out all " << scrub_options.join(" ").toStdString() << endl;
+            file << "scrub out all "
+                 << scrub_options.join(" ").toStdString() << endl;
         }
     }
 
