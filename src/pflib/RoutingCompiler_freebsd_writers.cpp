@@ -59,7 +59,7 @@ using namespace std;
 
 
 RoutingCompiler_freebsd::PrintRule::PrintRule(const std::string &name) :
-    RoutingCompiler_openbsd::PrintRule::PrintRule(name) 
+    RoutingCompiler_openbsd::PrintRule(name) 
 { 
 }
 
