@@ -57,12 +57,14 @@
 using namespace libfwbuilder;
 using namespace std;
 
+
 RoutingRuleOptionsDialog::~RoutingRuleOptionsDialog()
 {
     delete m_dialog;
 }
 
-RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(QWidget *parent) : BaseObjectDialog(parent)
+RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RoutingRuleOptionsDialog_q;
     m_dialog->setupUi(this);
@@ -76,26 +78,22 @@ void RoutingRuleOptionsDialog::getHelpName(QString *str)
 void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
 {
     obj=o;
-//    rsv=rv;
 
-    FWObject *p=obj;
-    while ( !Firewall::cast(p) ) p=p->getParent();
-    platform=p->getStr("platform").c_str();
+    FWObject *p = obj;
+    while ( !Firewall::cast(p) ) p = p->getParent();
+    platform = p->getStr("platform").c_str();
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
-    // m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
-    //         .arg(QString::fromUtf8(p->getName().c_str()))
-    //         .arg(rule->getTypeName().c_str())
-    //         .arg(rule->getPosition()));
 
-    int wid=0;
-    if (platform=="iptables") wid=0;
-    if (platform=="pix")      wid=1;
+    int wid = 0;
+    if (platform=="iptables") wid = 0;
+    else      wid = 1;
+
 /*
-    if (platform=="ipf")      wid=1;
-    if (platform=="pf")       wid=2;
-    if (platform=="ipfw")     wid=3;
+    if (platform=="ipf")      wid = 1;
+    if (platform=="pf")       wid = 2;
+    if (platform=="ipfw")     wid = 3;
 */
 
     m_dialog->wStack->setCurrentIndex( wid );
@@ -105,15 +103,13 @@ void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="iptables")
     {
-        data.registerOption( m_dialog->routing_non_critical_rule, ropt,  "no_fail" );
-        //data.registerOption( ipt_stateless            , ropt,  "stateless" );
+        data.registerOption(m_dialog->routing_non_critical_rule, ropt,  "no_fail");
     }
 
-    init=true;
+    init = true;
     data.loadAll();
 
-    //apply->setEnabled( false );
-    init=false;
+    init = false;
 }
 
 void RoutingRuleOptionsDialog::validate(bool *res)
