@@ -50,32 +50,39 @@ SSHUnx::SSHUnx(QWidget *_par,
                const QString &_ep,
                const list<string> &_in) : SSHSession(_par,_h,args,_p,_ep,_in)
 {
-    normal_prompt="> ";
-    enable_prompt="# ";
-    pwd_prompt_1="'s password: ";
-    pwd_prompt_2="'s password: ";
-    thinkfinger_pwd_prompt="Password or swipe finger:";
-    epwd_prompt="Password: ";
-    ssh_pwd_prompt="'s password: ";
-    ssoft_config_prompt="> ";
-    sudo_pwd_prompt_1="Password:";
-    sudo_pwd_prompt_2="[sudo] password for ";
-    putty_pwd_prompt="Password: ";
-    passphrase_prompt="Enter passphrase for key ";
+    normal_prompt = "> ";
+    enable_prompt = "# ";
+    pwd_prompt_1 = "'s password: ";
+    pwd_prompt_2 = "'s password: ";
+    thinkfinger_pwd_prompt = "Password or swipe finger:";
+    epwd_prompt = "Password: ";
+    ssh_pwd_prompt = "'s password: ";
+    ssoft_config_prompt = "> ";
+    sudo_pwd_prompt_1 = "Password:";
+    sudo_pwd_prompt_2 = "[sudo] password for ";
+    putty_pwd_prompt = "Password: ";
+    passphrase_prompt = "Enter passphrase for key ";
 
-    errorsInit.push_back("Permission denied");
-    errorsInit.push_back("Invalid password");
-    errorsInit.push_back("Unable to authenticate");
-    errorsInit.push_back("Sorry, try again");
-    errorsInit.push_back("Too many authentication failures");
+    errorsInit << "Permission denied";
+    errorsInit << "Invalid password";
+    errorsInit << "Unable to authenticate";
+    errorsInit << "Sorry, try again";
+    errorsInit << "Too many authentication failures";
 
-    errorsLoggedin.push_back("No such file or directory");
-    errorsLoggedin.push_back("Cannot allocate memory");
-    errorsLoggedin.push_back("pfctl: Syntax error in config file:");
+    errorsLoggedin << "No such file or directory";
+    errorsLoggedin << "Cannot allocate memory";
 
-    iptables_errors.push_back("'iptables --help' for more information.");
-    iptables_errors.push_back("'iptables-restore --help' for more information.");
-    iptables_errors.push_back("iptables-restore: line .* failed");
+    iptables_errors << "'iptables --help' for more information.";
+    iptables_errors << "'iptables-restore --help' for more information.";
+    iptables_errors << "iptables-restore: line .* failed";
+
+    pfctl_errors << "pfctl: Syntax error in config file:";
+    pfctl_errors << "Syntax error in config file:";
+    pfctl_errors << "skipping rule due to errors";
+    pfctl_errors << "errors in queue definition";
+    pfctl_errors << "error setting skip interface(s)";
+    pfctl_errors << "errors in altq config";
+
 }
 
 SSHUnx::~SSHUnx()
@@ -91,21 +98,16 @@ bool SSHUnx::checkForErrors(QStringList *errptr)
             arg(stdoutBuffer).toAscii().constData());
 #endif
 
-    for (QStringList::const_iterator i=errptr->begin(); i!=errptr->end(); ++i)
+    foreach (QString err, *errptr)
     {
-        // if (fwbdebug)
-        //     qDebug(
-        //         QString("SSHUnx::stateMachine:  error='%1'").
-        //         arg(*i).toAscii().constData());
-
-        if ( stdoutBuffer.lastIndexOf(QRegExp(*i),-1)!=-1 )
+        if (stdoutBuffer.lastIndexOf(QRegExp(err), -1) != -1)
         {
             if (fwbdebug)
                 qDebug("SSHUnx::stateMachine: MATCH. Error detected.");
 
             emit printStdout_sign( tr("\n*** Fatal error :") );
-            emit printStdout_sign( stdoutBuffer+"\n" );
-            stdoutBuffer="";
+            emit printStdout_sign( stdoutBuffer + "\n" );
+            stdoutBuffer = "";
             sessionComplete(true);   // finish with error status
             return true;
         }
@@ -127,6 +129,7 @@ bool SSHUnx::checkForErrors()
     }
 
     if (checkForErrors(&iptables_errors)) return true;
+    if (checkForErrors(&pfctl_errors)) return true;
 
     return false;
 }

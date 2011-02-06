@@ -1,5 +1,9 @@
 2011-02-05  vadim  <vadim@netcitadel.com>
 
+	* SSHUnx.cpp (SSHUnx): see #2039 "Installer reports success even
+	if pfctl can't load config file". Added more pfctl error messages
+	to the list to make code more robust.
+
 	* CompilerDriver_pf.cpp (printStaticOptions): fixes #2038 "pfctl
 	error when firewall settings include scrub option for reassembly".
 	Command "scrub all reassemble tcp" does not allow direction.

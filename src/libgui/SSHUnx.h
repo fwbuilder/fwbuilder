@@ -41,6 +41,7 @@ class SSHUnx : public SSHSession {
     Q_OBJECT
 
     QStringList iptables_errors;
+    QStringList pfctl_errors;
 
         
 public:
