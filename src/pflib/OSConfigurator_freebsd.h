@@ -31,12 +31,27 @@
 #include "OSConfigurator_bsd.h"
 #include "OSData.h"
 
+#include <QMap>
+#include <QStringList>
+
+
+namespace libfwbuilder
+{
+    class Interface;
+};
+
+
 namespace fwcompiler
 {
 
     class OSConfigurator_freebsd : public OSConfigurator_bsd
     {
+        QMap<QString, QStringList> ifconfig_lines;
+        QMap<QString, QStringList> ipv6_ifconfig_lines;
+        
 
+        virtual void printIfconfigLines(const QMap<QString, QStringList> &lines);
+        
         virtual void setKernelVariable(libfwbuilder::Firewall *fw,
                                        const std::string &var_name,
                                        Configlet *configlet);

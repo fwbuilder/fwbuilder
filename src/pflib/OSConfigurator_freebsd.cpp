@@ -137,12 +137,9 @@ void OSConfigurator_freebsd::updateAddressesOfInterface(
 
         if (iface->isDyn())
         {
-            interface_configuration_lines <<
-                QString("ifconfig_%1=\"DHCP\"") .arg(iface->getName().c_str());
+            ifconfig_lines[interface_name] << "DHCP";
         }
 
-        QStringList addr_conf;
-    
         int ipv4_alias_counter = -2;
         int ipv6_alias_counter = -2;
 
@@ -174,7 +171,7 @@ void OSConfigurator_freebsd::updateAddressesOfInterface(
                 }
 
                 ipv4_conf_line += 
-                    QString("inet %1 netmask 0x%2")
+                    QString("%1 netmask 0x%2")
                     .arg(ipaddr.toString().c_str())
                     .arg(netm, -8, 16);
 
@@ -186,10 +183,7 @@ void OSConfigurator_freebsd::updateAddressesOfInterface(
                 QString suffix;
                 if (ipv4_alias_counter>=0)
                     suffix = QString("_alias%1").arg(ipv4_alias_counter);
-                addr_conf << QString("ifconfig_%1%2=\"%3\"")
-                    .arg(interface_name)
-                    .arg(suffix)
-                    .arg(ipv4_conf_line);
+                ifconfig_lines[interface_name + suffix] << ipv4_conf_line;
             }
 
             if (!ipv6_conf_line.isEmpty())
@@ -197,15 +191,9 @@ void OSConfigurator_freebsd::updateAddressesOfInterface(
                 QString suffix;
                 if (ipv6_alias_counter>=0)
                     suffix = QString("_alias%1").arg(ipv6_alias_counter);
-                addr_conf << QString("ipv6_ifconfig_%1%2=\"%3\"")
-                    .arg(interface_name)
-                    .arg(suffix)
-                    .arg(ipv6_conf_line);
+                ipv6_ifconfig_lines[interface_name + suffix] << ipv6_conf_line;
             }
         }
-
-        interface_configuration_lines <<  addr_conf.join("\n");
-
     } else
         OSConfigurator_bsd::updateAddressesOfInterface(iface, all_addresses);
 }
@@ -337,12 +325,11 @@ void OSConfigurator_freebsd::updateBridgeOfInterface(Interface *iface,
 
         bp << "up";
 
-        outp << QString("ifconfig_%1=\"%2\"").arg(iface->getName().c_str())
-            .arg(bp.join(" "));
+        ifconfig_lines[iface->getName().c_str()] << bp.join(" ");
 
         foreach(QString bridge_port, bridge_port_names)
         {
-            outp << QString("ifconfig_%1=\"up\"").arg(bridge_port);
+            ifconfig_lines[bridge_port] << "up";
         }
 
         interface_configuration_lines <<  outp.join("\n");
@@ -452,11 +439,29 @@ void OSConfigurator_freebsd::updatePfsyncInterface(
 
 QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
 {
-    
+    printIfconfigLines(ifconfig_lines);
+    printIfconfigLines(ipv6_ifconfig_lines);
+
     if (!cloned_interfaces.isEmpty())
         interface_configuration_lines.push_front(
             QString("cloned_interfaces=\"%1\"").arg(cloned_interfaces.join(" ")));
 
     return interface_configuration_lines.join("\n");
+}
+
+void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList> &lines)
+{
+    if (!lines.isEmpty())
+    {
+        QMap<QString, QStringList>::const_iterator it;
+        for (it=lines.begin(); it!=lines.end(); ++it)
+        {
+            const QString iface_name = it.key();
+            const QStringList commands = it.value();
+            interface_configuration_lines.push_front(
+                QString("ifconfig_%1=\"%2\"").arg(iface_name)
+                .arg(commands.join(" ")));
+        }
+    }
 }
 
