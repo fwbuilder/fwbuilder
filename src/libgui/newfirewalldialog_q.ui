@@ -514,7 +514,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>In the diagram below, the Ethernet0/1 &quot;inside&quot; interface would need to have its Network Zone set to a group object that containd the network objects for Network &quot;A&quot;, Network &quot;B&quot; and Network &quot;C&quot;. This means that rules with source addresses in any of these networks will be properly associated with Ethernet0/1. For the &quot;outside&quot; interface you will typically set its Network Zone to &quot;Any&quot; which is all IP networks that aren't defined as Network Zones for any other interfaces.</string>
+          <string>If you do not set the Network Zone now you can update the Network Zone configuration after the firewall has been created by double-clicking on the network interface of the firewall object and then selecting the desired object from the Network Zone dropdown list.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
