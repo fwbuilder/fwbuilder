@@ -44,8 +44,8 @@ pass  quick on en1 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "
 # Rule  -1 CARP (automatic)
 pass  quick on en0 inet proto carp  from any  to any  label "RULE -1 -- ACCEPT "  
 # 
-# Rule  0 (lo)
-pass  quick on lo inet  from any  to any  label "RULE 0 -- ACCEPT "  
+# Rule  0 (lo0)
+pass  quick on lo0 inet  from any  to any  label "RULE 0 -- ACCEPT "  
 # 
 # Rule  1 (global)
 pass  quick inet  from any  to <tbl.r1.d>  label "RULE 1 -- ACCEPT "  

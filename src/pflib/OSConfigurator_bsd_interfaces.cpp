@@ -76,39 +76,46 @@ string OSConfigurator_bsd::configureInterfaces()
     {
         // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
         // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
-        QMap<Interface*, QStringList> vlan_subinterfaces;
-        QStringList vlan_interfaces; // all vlan interfaces
+
+        QStringList all_physical_interfaces;
+        QMap<QString, Interface*> parent_interfaces;
+        QMap<QString, QStringList> vlans;
+        QStringList all_vlan_interfaces; // all vlan interfaces
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
+            QString iface_name = iface->getName().c_str();
+            parent_interfaces[iface_name] = iface;
+            all_physical_interfaces << iface_name;
 
             FWObjectTypedChildIterator si=iface->findByType(Interface::TYPENAME);
             for ( ; si!=si.end(); ++si ) 
             {
                 Interface *subinterface = Interface::cast(*si);
                 assert(subinterface);
-
                 if (subinterface->getOptionsObject()->getStr("type") == "8021q")
                 {
-                    vlan_subinterfaces[iface] << subinterface->getName().c_str();
-                    vlan_interfaces << subinterface->getName().c_str();
+                    vlans[iface_name] << subinterface->getName().c_str();
+                    all_vlan_interfaces << subinterface->getName().c_str();
                 }
             }
         }
 
-        QMap<Interface*,QStringList>::iterator it;
+        // sort interfaces by name
+        all_vlan_interfaces.sort();
+        all_physical_interfaces.sort();
 
         // issue sync_vlan_interfaces command even if there are no vlans
         // since it deletes them on the firewall if they exist
-        summaryConfigLineVlan(vlan_interfaces);
+        summaryConfigLineVlan(all_vlan_interfaces);
 
-        for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
+        foreach (QString iface_name, all_physical_interfaces)
         {
-            Interface *iface = it.key();
-            QStringList vlan_subinterfaces = it.value();
+            Interface *iface = parent_interfaces[iface_name];
+            QStringList vlan_subinterfaces = vlans[iface_name];
             if (vlan_subinterfaces.size() > 0)
                 interfaceConfigLineVlan(iface, vlan_subinterfaces);
         }
@@ -118,42 +125,38 @@ string OSConfigurator_bsd::configureInterfaces()
     {
         list<Interface*> all_bridges = fw->getInterfacesByType("bridge");
 
-        QMap<Interface*, QStringList> bridge_subinterfaces;
-        QStringList bridge_interfaces;
+        QStringList all_bridge_interfaces;
+        QMap<QString, Interface*> bridge_interfaces_by_name;
+        QMap<QString, QStringList> bridge_ports;
 
         for (list<Interface*>::iterator it=all_bridges.begin();
              it!=all_bridges.end(); ++it)
         {
             Interface *iface = Interface::cast(*it);
             assert(iface);
+            QString iface_name = iface->getName().c_str();
+            all_bridge_interfaces << iface_name;
+            bridge_interfaces_by_name[iface_name] = iface;
 
-            bridge_interfaces << iface->getName().c_str();
-
-            // this if() is superfluous
-            if (iface->getOptionsObject()->getStr("type") == "bridge")
+            FWObjectTypedChildIterator si = iface->findByType(Interface::TYPENAME);
+            for ( ; si!=si.end(); ++si ) 
             {
-                FWObjectTypedChildIterator si =
-                    iface->findByType(Interface::TYPENAME);
-                for ( ; si!=si.end(); ++si ) 
-                {
-                    Interface *subinterface = Interface::cast(*si);
-                    assert(subinterface);
-                    bridge_subinterfaces[iface] << subinterface->getName().c_str();
-                }
+                Interface *subinterface = Interface::cast(*si);
+                assert(subinterface);
+                bridge_ports[iface_name] << subinterface->getName().c_str();
             }
         }
 
-        QMap<Interface*,QStringList>::iterator it;
+        // sort interfaces by name
+        all_bridge_interfaces.sort();
         
-        summaryConfigLineBridge(bridge_interfaces);
+        summaryConfigLineBridge(all_bridge_interfaces);
 
-        for (it=bridge_subinterfaces.begin(); it!=bridge_subinterfaces.end(); ++it)
+        foreach (QString iface_name, all_bridge_interfaces)
         {
-            Interface *iface = it.key();
-            QStringList bridge_ports = it.value();
-
+            Interface *iface = bridge_interfaces_by_name[iface_name];
             if (bridge_ports.size() > 0)
-                interfaceConfigLineBridge(iface, bridge_ports);
+                interfaceConfigLineBridge(iface, bridge_ports[iface_name]);
         }
     }
 
@@ -169,34 +172,37 @@ string OSConfigurator_bsd::configureInterfaces()
  *
  */
         QStringList carp_interfaces;
-        QMap<Interface*, FWObject*> failover_groups;
+        QMap<QString, Interface*> carp_interfaces_by_name;
+        QMap<QString, FWObject*> failover_groups;
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
-
+            QString iface_name = iface->getName().c_str();
             if ( ! iface->isFailoverInterface()) continue;
-
             FWObject *failover_group =
                 iface->getFirstByType(FailoverClusterGroup::TYPENAME);
             if (failover_group && failover_group->getStr("type") == "carp")
             {
-                carp_interfaces << iface->getName().c_str();
-                failover_groups[iface] = failover_group;
+                carp_interfaces << iface_name;
+                carp_interfaces_by_name[iface_name] = iface;
+                failover_groups[iface_name] = failover_group;
             }
         }
 
+        // sort interfaces by name
+        carp_interfaces.sort();
+        
         // issue "sync_carp_interfaces" call even when we have none, it will
         // delete those that might exist on the firewall
         summaryConfigLineCARP(carp_interfaces);
 
-        QMap<Interface*, FWObject*>::iterator it;
-        for (it=failover_groups.begin(); it!=failover_groups.end(); ++it)
+        foreach (QString iface_name, carp_interfaces)
         {
-            Interface *iface = it.key();
-            FWObject* failover_group = it.value();
+            Interface *iface = carp_interfaces_by_name[iface_name];
+            FWObject* failover_group = failover_groups[iface_name];
             interfaceConfigLineCARP(iface, failover_group);
         }
     }
@@ -214,15 +220,18 @@ string OSConfigurator_bsd::configureInterfaces()
         QStringList configure_intf_commands;
         QStringList intf_names;
         QStringList ipv6_names;
-        QMap<Interface*, list<pair<InetAddr,InetAddr> > > all_addresses;
+        QStringList all_names;
+        QMap<QString, list<pair<InetAddr,InetAddr> > > all_addresses;
+        QMap<QString, Interface*> interfaces_by_name;
 
         for (list<FWObject*>::iterator i=all_interfaces.begin();
              i != all_interfaces.end(); ++i )
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
-
-            //if (!iface->isRegular()) continue;
+            QString iface_name = iface->getName().c_str();
+            interfaces_by_name[iface_name] = iface;
+            all_names << iface_name;
 
             QStringList update_addresses;
             QStringList ignore_addresses;
@@ -238,19 +247,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
                 all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
 
-                // see #2032.  About interfaces with no addresses:
-                //
-                // - when we generate rc.conf file, we should add line 
-                //   "ifconfig_em0="DHCP"" for dynamic interfaces, so we should 
-                //   include them in the management list as well.
-                //
-                // Note that int_prop returns false for dynamic interfaces on
-                // OpenBSD because we do not support rc.conf format for it atm
-                // and should not try to manage dynamic interfaces in the shell
-                // script format.
-                //
-                intf_names << iface->getName().c_str();
-                ipv6_names << iface->getName().c_str();
+                bool have_ipv6 = false;
 
                 const InetAddr *netmask = iface->getNetmaskPtr();
 
@@ -264,12 +261,14 @@ string OSConfigurator_bsd::configureInterfaces()
                     const InetAddr *ipnetm = iaddr->getNetmaskPtr();
                     iface_all_addresses.push_back(
                         pair<InetAddr,InetAddr>(*ipaddr, *ipnetm));
+                    if (ipaddr->isV6()) have_ipv6 = true;
                 }
 
                 set<const Address*>::iterator it;
                 for (it=virtual_addresses.begin(); it!=virtual_addresses.end(); ++it)
                 {
                     const Address *addr = *it;
+                    const InetAddr *ipaddr = addr->getAddressPtr();
                     FWObject *iaddr = findAddressFor(addr, fw );
                     if (iaddr!=NULL)
                     {
@@ -277,27 +276,42 @@ string OSConfigurator_bsd::configureInterfaces()
                         if (iface_2 == iface)
                         {
                             iface_all_addresses.push_back(
-                                pair<InetAddr,InetAddr>(
-                                    *(addr->getAddressPtr()), *netmask));
+                                pair<InetAddr,InetAddr>(*ipaddr, *netmask));
+                            if (ipaddr->isV6()) have_ipv6 = true;
                         }
                     }
                 }
 
-                all_addresses[iface] = iface_all_addresses;
+                // see #2032.  About interfaces with no addresses:
+                //
+                // - when we generate rc.conf file, we should add line 
+                //   "ifconfig_em0="DHCP"" for dynamic interfaces, so we should 
+                //   include them in the management list as well.
+                //
+                // Note that int_prop returns false for dynamic interfaces on
+                // OpenBSD because we do not support rc.conf format for it atm
+                // and should not try to manage dynamic interfaces in the shell
+                // script format.
+                //
+                intf_names << iface_name;
+                if (have_ipv6) ipv6_names << iface_name;
+
+                all_addresses[iface_name] = iface_all_addresses;
             }
         }
 
-        summaryConfigLineIP(ipv6_names, true);
+        // sort interfaces by name
+        all_names.sort();
+        ipv6_names.sort();
+        intf_names.sort();
 
+        summaryConfigLineIP(ipv6_names, true);
         summaryConfigLineIP(intf_names, false);
 
-        QMap<Interface*, list<pair<InetAddr,InetAddr> > >::iterator it;
-        for (it=all_addresses.begin(); it!=all_addresses.end(); ++it)
+        foreach (QString iface_name, all_names)
         {
-            // qDebug() << "interfaceConfigLineIP:"
-            //          << it.key()
-            //          << it.value().size();
-            interfaceConfigLineIP(it.key(), it.value());
+            interfaceConfigLineIP(interfaces_by_name[iface_name],
+                                  all_addresses[iface_name]);
         }
     }
 

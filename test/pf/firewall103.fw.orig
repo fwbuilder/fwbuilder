@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3460
+#  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Sun Feb  6 14:51:48 2011 PST by vadim
+#  Generated Mon Feb  7 14:52:39 2011 PST by vadim
 #
 # files: * firewall103.fw /etc/fw/pf.fw
 # files:   firewall103.conf /etc/fw/path\ with\ space/pf.conf
@@ -287,9 +287,11 @@ configure_interfaces() {
     update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
     update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
     update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
+    update_addresses_of_interface "em2" ""
+    update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Sun Feb  6 14:51:48 2011 by vadim"
+log "Activating firewall script generated Mon Feb  7 14:52:39 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

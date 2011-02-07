@@ -6,11 +6,8 @@
 table <tbl.r0.s> { 172.20.0.1 , 172.20.0.2 , 172.24.0.1 , 172.24.0.2 , 192.168.1.1 , 192.168.1.2 } 
 
 # 
-# Rule  -4 CARP (automatic)
-pass  quick on vlan100 inet proto carp  from any  to any  label "RULE -4 -- ACCEPT "  
-# 
 # Rule  -3 CARP (automatic)
-pass  quick on lo inet proto carp  from any  to any  label "RULE -3 -- ACCEPT "  
+pass  quick on vlan100 inet proto carp  from any  to any  label "RULE -3 -- ACCEPT "  
 # 
 # Rule  -2 CARP (automatic)
 pass  quick on en1 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "  

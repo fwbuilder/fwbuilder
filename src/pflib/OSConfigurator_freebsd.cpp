@@ -100,11 +100,10 @@ int OSConfigurator_freebsd::prolog()
     return 0;
 }
 
-void OSConfigurator_freebsd::summaryConfigLineIP(QStringList names,
-                                                            bool ipv6)
+void OSConfigurator_freebsd::summaryConfigLineIP(QStringList names, bool ipv6)
 {
     FWOptions* options = fw->getOptionsObject();
-    if (options->getBool("generate_rc_conf_file"))
+    if (options->getBool("generate_rc_conf_file") && !names.isEmpty())
     {
         if (ipv6)
         {
@@ -203,7 +202,7 @@ void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        ;
+        cloned_interfaces += vlan_names;
     } else
         interface_configuration_lines <<
             QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
@@ -455,7 +454,8 @@ QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
         return OSConfigurator_bsd::printAllInterfaceConfigurationLines();
 }
 
-void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList> &lines)
+void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList>
+                                                &lines)
 {
     if (!lines.isEmpty())
     {

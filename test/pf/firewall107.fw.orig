@@ -4,14 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Mon Feb  7 14:52:47 2011 PST by vadim
+#  Generated Mon Feb  7 14:52:43 2011 PST by vadim
 #
-# files: * firewall14.fw /etc/firewall14.fw
-# files:   firewall14.conf /etc/firewall14.conf
+# files: * firewall107.fw /etc/fw/pf.fw
+# files:   firewall107.conf /etc/fw/path\ with\ space/pf.conf
 #
-# Compiled for pf 4.0
+# Compiled for pf 4.7
 #
-# Testing scrub rules format  PF < 4.6
+# vlan interface, static address, shell script format
 
 
 
@@ -21,6 +21,9 @@ FWDIR=`dirname $0`
 
 IFCONFIG="/sbin/ifconfig"
 PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
 SYSCTL="/sbin/sysctl"
 LOGGER="/usr/bin/logger"
 
@@ -206,6 +209,49 @@ sync_vlan_interfaces() {
     done
 }
 
+
+sync_carp_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^carp[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting carp interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating carp interface $intf"
+            $SYSCTL -w net.inet.carp.allow=1
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
+
+
+sync_pfsync_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^pfsync[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting pfsync interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating pfsync interface $intf"
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
+
 verify_interfaces() {
     :
     
@@ -233,15 +279,19 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    sync_vlan_interfaces vlan101 vlan103
-    update_vlans_of_interface "em0 vlan101 vlan103"
-    update_addresses_of_interface "em0 10.1.1.50/0xffffff00" ""
-    update_addresses_of_interface "pcn0 10.3.14.50/0xffffff00" ""
-    update_addresses_of_interface "vlan101 10.100.101.1/0xffffff00" ""
-    update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
+    sync_vlan_interfaces vlan101 vlan102
+    update_vlans_of_interface "em2 vlan101 vlan102"
+    sync_bridge_interfaces 
+    sync_carp_interfaces 
+    sync_pfsync_interfaces 
+    update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
+    update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
+    update_addresses_of_interface "em2" ""
+    update_addresses_of_interface "vlan101 192.168.101.1/0xffffff00" ""
+    update_addresses_of_interface "vlan102 192.168.102.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 14:52:47 2011 by vadim"
+log "Activating firewall script generated Mon Feb  7 14:52:43 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -249,7 +299,7 @@ prolog_commands
 
 $PFCTL   \
      -f \
-    /etc/firewall14.conf || exit 1
+    /etc/fw/path\ with\ space/pf.conf || exit 1
 
 
 

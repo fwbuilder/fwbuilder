@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3460
+#  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Sun Feb  6 14:52:14 2011 PST by vadim
+#  Generated Mon Feb  7 14:57:30 2011 PST by vadim
 #
 # files: * pf_cluster_1_openbsd-2.fw /etc/pf_cluster_1_openbsd-2.fw
 # files:   pf_cluster_1_openbsd-2.conf /etc/pf_cluster_1_openbsd-2.conf
@@ -183,9 +183,10 @@ configure_interfaces() {
     update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
     update_addresses_of_interface "en0 172.24.0.3/0xffffff00 172.24.0.2/0xffffff00" ""
     update_addresses_of_interface "en1 192.168.1.3/0xffffff00" ""
+    update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Sun Feb  6 14:52:14 2011 by vadim"
+log "Activating firewall script generated Mon Feb  7 14:57:30 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

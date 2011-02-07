@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3460
+#  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Sun Feb  6 14:52:14 2011 PST by vadim
+#  Generated Mon Feb  7 14:53:03 2011 PST by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
 # files:   firewall-ipv6-3-Policy_ipv4.conf /etc/firewall-ipv6-3-Policy_ipv4.conf
@@ -19,10 +19,11 @@ ipv6_gateway_enable="YES"
 
 
 
+cloned_interfaces="vlan100 vlan101"
 vlans_ed1="vlan100 vlan101"
 create_args_vlan100="vlan 100"
 create_args_vlan101="vlan 101"
-ipv6_network_interfaces="ed0 lo0 vlan100 vlan101"
+ipv6_network_interfaces="ed0 lo0"
 network_interfaces="ed0 lo0 vlan100 vlan101"
 pfsync_enable="YES"
 ifconfig_ed0="1.1.1.1 netmask 0xffffff00"

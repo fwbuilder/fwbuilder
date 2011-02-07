@@ -1638,10 +1638,16 @@
         <Option name="vlan_id">100</Option>
       </InterfaceOptions>
     </Interface>
+    <FailoverClusterGroup id="id3663X20162" type="none" name="pf_cluster_3:lo0:members" comment="">
+      <ClusterGroupOptions>
+        <Option name="vrrp_secret">vrrp_secret</Option>
+        <Option name="vrrp_vrid">1</Option>
+      </ClusterGroupOptions>
+    </FailoverClusterGroup>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1269718315" platform="pf" name="pf_cluster_1" comment=" " ro="False">
+      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1297119444" platform="pf" name="pf_cluster_1" comment=" " ro="False">
         <NAT id="id3640X95766" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3162X39764" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2013,8 +2019,8 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id3695X33400" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
-          <IPv4 id="id3697X33400" name="pf_cluster_1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id3695X33400" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id3697X33400" name="pf_cluster_1:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions>
             <Option name="carp_password">my_secret</Option>
             <Option name="type">carp</Option>
@@ -2105,7 +2111,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3642X20162" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269892711" platform="pf" name="pf_cluster_3" comment="" ro="False">
+      <Cluster id="id3642X20162" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1297119370" platform="pf" name="pf_cluster_3" comment="" ro="False">
         <NAT id="id3646X20162" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2417,14 +2423,6 @@
           <InterfaceOptions>
             <Option name="type">cluster_interface</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id3663X20162" type="carp" name="pf_cluster_3:lo0:members" comment="">
-            <ObjectRef ref="id39583X50958"/>
-            <ObjectRef ref="id39632X50958"/>
-            <ClusterGroupOptions>
-              <Option name="vrrp_secret">vrrp_secret</Option>
-              <Option name="vrrp_vrid">1</Option>
-            </ClusterGroupOptions>
-          </FailoverClusterGroup>
         </Interface>
         <Interface id="id39675X50958" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp2" comment="" ro="False">
           <IPv4 id="id39723X50958" name="pf_cluster_3:carp2:ip" comment="" ro="False" address="172.20.0.1" netmask="255.255.255.0"/>
@@ -2549,7 +2547,7 @@
       <ServiceGroup id="id1513X69605" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1514X69605" name="Firewalls" comment="" ro="False">
-      <Firewall id="id2827X26920" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1264267318" platform="pf" version="4.x" name="openbsd-1" comment="" ro="False">
+      <Firewall id="id2827X26920" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1297119438" platform="pf" version="4.x" name="openbsd-1" comment="" ro="False">
         <NAT id="id2831X26920" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2566,6 +2564,12 @@
         <Interface id="id2835X26920" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id2836X26920" name="openbsd-1:en1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
+        </Interface>
+        <Interface id="id6137X30671" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id6138X30671" name="openbsd-3:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -2663,7 +2667,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3337X26920" host_OS="openbsd" inactive="False" lastCompiled="1264267285" lastInstalled="0" lastModified="1244757413" platform="pf" version="4.x" name="openbsd-2" comment="" ro="False">
+      <Firewall id="id3337X26920" host_OS="openbsd" inactive="False" lastCompiled="1264267285" lastInstalled="0" lastModified="1297119444" platform="pf" version="4.x" name="openbsd-2" comment="" ro="False">
         <NAT id="id3344X26920" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2680,6 +2684,12 @@
         <Interface id="id3349X26920" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id3351X26920" name="openbsd-2:en1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
           <InterfaceOptions/>
+        </Interface>
+        <Interface id="id6164X30671" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id6165X30671" name="openbsd-3:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -3007,7 +3017,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id39233X50958" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269724579" platform="pf" version="4.6" name="openbsd-3" comment="" ro="False">
+      <Firewall id="id39233X50958" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1297119363" platform="pf" version="4.6" name="openbsd-3" comment="" ro="False">
         <NAT id="id39253X50958" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3037,8 +3047,8 @@
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id39583X50958" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
-          <IPv4 id="id39623X50958" name="openbsd-3:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id39583X50958" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id39623X50958" name="openbsd-3:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
@@ -3139,7 +3149,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id39405X50958" host_OS="openbsd" inactive="False" lastCompiled="1264267285" lastInstalled="0" lastModified="1269724587" platform="pf" version="4.6" name="openbsd-4" comment="" ro="False">
+      <Firewall id="id39405X50958" host_OS="openbsd" inactive="False" lastCompiled="1264267285" lastInstalled="0" lastModified="1297119370" platform="pf" version="4.6" name="openbsd-4" comment="" ro="False">
         <NAT id="id39425X50958" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3169,8 +3179,8 @@
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id39632X50958" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
-          <IPv4 id="id39634X50958" name="openbsd-3:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <Interface id="id39632X50958" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id39634X50958" name="openbsd-4:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>

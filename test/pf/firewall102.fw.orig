@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3460
+#  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Sun Feb  6 14:51:47 2011 PST by vadim
+#  Generated Mon Feb  7 14:52:38 2011 PST by vadim
 #
 # files: * firewall102.fw /etc/fw/pf.fw
 # files:   firewall102.conf /etc/fw/path\ with\ space/pf.conf
@@ -19,7 +19,6 @@ gateway_enable="YES"
 
 
 
-ipv6_network_interfaces="em0 em1"
 network_interfaces="em0 em1"
 ifconfig_em0="10.3.14.81 netmask 0xffffff00"
 ifconfig_em1="10.1.1.81 netmask 0xffffff00"
@@ -27,11 +26,11 @@ ifconfig_em1="10.1.1.81 netmask 0xffffff00"
 pf_enable="YES"
 pf_rules="/etc/fw/path\ with\ space/pf.conf"
 
-static_routes="id160538X13459 id160560X13459 id160582X13459 id160604X13459 id160629X13459 id160648X13459"
-route_id160538X13459="default  10.1.1.1 "
-route_id160560X13459="default  "
-route_id160582X13459="192.168.171.2  10.1.1.1 "
-route_id160604X13459="22.22.22.0/24  10.1.1.1 "
-route_id160629X13459="22.22.22.0/24  10.1.1.1 "
-route_id160648X13459="33.33.33.0/24  10.1.1.1 "
+static_routes="id161808X29798 id161830X29798 id161852X29798 id161874X29798 id161899X29798 id161918X29798"
+route_id161808X29798="default  10.1.1.1 "
+route_id161830X29798="default  "
+route_id161852X29798="192.168.171.2  10.1.1.1 "
+route_id161874X29798="22.22.22.0/24  10.1.1.1 "
+route_id161899X29798="22.22.22.0/24  10.1.1.1 "
+route_id161918X29798="33.33.33.0/24  10.1.1.1 "
 
