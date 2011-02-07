@@ -42,6 +42,7 @@ class SSHUnx : public SSHSession {
 
     QStringList iptables_errors;
     QStringList pfctl_errors;
+    QStringList route_add_errors;
 
         
 public:

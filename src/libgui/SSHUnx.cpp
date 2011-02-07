@@ -83,6 +83,7 @@ SSHUnx::SSHUnx(QWidget *_par,
     pfctl_errors << "error setting skip interface(s)";
     pfctl_errors << "errors in altq config";
 
+    route_add_errors << "Error: Routing rule .* couldn't be activated";
 }
 
 SSHUnx::~SSHUnx()
@@ -130,6 +131,7 @@ bool SSHUnx::checkForErrors()
 
     if (checkForErrors(&iptables_errors)) return true;
     if (checkForErrors(&pfctl_errors)) return true;
+    if (checkForErrors(&route_add_errors)) return true;
 
     return false;
 }

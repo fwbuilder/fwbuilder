@@ -1,5 +1,10 @@
 2011-02-06  vadim  <vadim@netcitadel.com>
 
+	* SSHUnx.cpp (SSHUnx): fixes #2049 "Installer reports success even
+	if there was an error while creating static routes". Added our own
+	error message generated when command used to add static route
+	fails to the list of error messages recognized by the installer.
+
 	* OSConfigurator_freebsd.cpp (updateBridgeOfInterface): see #1889, #2043
 	Added support for bridge interface configuration in BSD.
 
