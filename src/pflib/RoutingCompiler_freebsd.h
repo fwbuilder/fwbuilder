@@ -31,6 +31,9 @@
 #include "fwbuilder/RuleElement.h"
 #include "config.h"
 
+#include <QMap>
+#include <QString>
+
 
 namespace libfwbuilder {
     class RuleElementRDst;
@@ -44,7 +47,11 @@ namespace fwcompiler
 
     class RoutingCompiler_freebsd : public RoutingCompiler_openbsd
     {
-
+        int routing_rule_counter;
+        QMap<int, QString> routing_rules_ids;
+        
+        QString getNextStaticRouteID();
+        
     protected:
      
 	/**
@@ -72,11 +79,12 @@ namespace fwcompiler
 
     public:
 
-	RoutingCompiler_freebsd(libfwbuilder::FWObjectDatabase *_db,
+        RoutingCompiler_freebsd(libfwbuilder::FWObjectDatabase *_db,
                             libfwbuilder::Firewall *fw, bool ipv6_policy,
                             fwcompiler::OSConfigurator *_oscnf) :
         RoutingCompiler_openbsd(_db, fw, ipv6_policy, _oscnf)
         {
+            routing_rule_counter = 0;
         }
 
 	virtual void compile();

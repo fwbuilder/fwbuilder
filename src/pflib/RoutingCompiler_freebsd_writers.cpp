@@ -57,6 +57,11 @@ using namespace std;
  *                    Methods for printing
  */
 
+QString RoutingCompiler_freebsd::getNextStaticRouteID()
+{
+    return QString("route_%1").arg(routing_rule_counter++);
+}
+
 
 RoutingCompiler_freebsd::PrintRule::PrintRule(const std::string &name) :
     RoutingCompiler_openbsd::PrintRule(name) 
@@ -66,10 +71,12 @@ RoutingCompiler_freebsd::PrintRule::PrintRule(const std::string &name) :
 
 bool RoutingCompiler_freebsd::PrintRule::processNext()
 {
+    RoutingCompiler_freebsd* routing_comp =
+        dynamic_cast<RoutingCompiler_freebsd*>(compiler);
+
     FWOptions* options = compiler->fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-
         slurp();
         if (tmp_queue.size()==0) return false;
 
@@ -78,7 +85,10 @@ bool RoutingCompiler_freebsd::PrintRule::processNext()
         for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
         {
             RoutingRule *rule = RoutingRule::cast( *k );
-            rule_ids << FWObjectDatabase::getStringId(rule->getId()).c_str();
+            QString routing_id = routing_comp->getNextStaticRouteID();
+            rule_ids << routing_id;
+            routing_comp->routing_rules_ids[rule->getId()] = routing_id;
+            //rule_ids << FWObjectDatabase::getStringId(rule->getId()).c_str();
         }
 
         if (rule_ids.size() > 0)
@@ -103,6 +113,9 @@ bool RoutingCompiler_freebsd::PrintRule::processNext()
 
 string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
 {
+    RoutingCompiler_freebsd* routing_comp =
+        dynamic_cast<RoutingCompiler_freebsd*>(compiler);
+
     FWOptions* options = compiler->fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
@@ -126,7 +139,7 @@ string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule
         if (itf != NULL) command_line << _printRItf(rule).c_str();
 
         return QString("route_%1=\"%2\"").arg(
-            FWObjectDatabase::getStringId(rule->getId()).c_str())
+            routing_comp->routing_rules_ids[rule->getId()])
             .arg(command_line.join(" ")).toStdString();
 
     } else

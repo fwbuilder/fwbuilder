@@ -3,7 +3,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Mon Feb  7 14:52:42 2011 PST by vadim
+#  Generated Mon Feb  7 15:16:17 2011 PST by vadim
 #
 # files: * firewall106.fw /etc/fw/pf.fw
 # files:   firewall106.conf /etc/fw/path\ with\ space/pf.conf
@@ -32,11 +32,11 @@ ifconfig_em3="up"
 pf_enable="YES"
 pf_rules="/etc/fw/path\ with\ space/pf.conf"
 
-static_routes="id161847X29806 id161869X29806 id161891X29806 id161913X29806 id161938X29806 id161957X29806"
-route_id161847X29806="default  10.1.1.1 "
-route_id161869X29806="default  "
-route_id161891X29806="192.168.171.2  10.1.1.1 "
-route_id161913X29806="22.22.22.0/24  10.1.1.1 "
-route_id161938X29806="22.22.22.0/24  10.1.1.1 "
-route_id161957X29806="33.33.33.0/24  10.1.1.1 "
+static_routes="route_0 route_1 route_2 route_3 route_4 route_5"
+route_route_0="default  10.1.1.1 "
+route_route_1="default  "
+route_route_2="192.168.171.2  10.1.1.1 "
+route_route_3="22.22.22.0/24  10.1.1.1 "
+route_route_4="22.22.22.0/24  10.1.1.1 "
+route_route_5="33.33.33.0/24  10.1.1.1 "
 
