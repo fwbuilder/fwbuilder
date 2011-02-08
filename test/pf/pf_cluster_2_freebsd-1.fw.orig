@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3464
+#  Firewall Builder  fwb_pf v4.2.0.3465
 #
-#  Generated Tue Feb  8 11:18:10 2011 PST by vadim
+#  Generated Tue Feb  8 14:11:25 2011 PST by vadim
 #
 # files: * pf_cluster_2_freebsd-1.fw /etc/pf_cluster_2_freebsd-1.fw
 # files:   pf_cluster_2_freebsd-1.conf /etc/pf_cluster_2_freebsd-1.conf
@@ -168,7 +168,7 @@ parse_fwb_vlans() {
 
 parse_current_vlans() {
     vlan_parent_interface=$1
-    $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    $IFCONFIG  | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
     while read x vlan_id parent
     do
        test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
@@ -189,7 +189,7 @@ update_vlans_of_interface() {
 }
 
 sync_vlan_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -210,7 +210,7 @@ sync_vlan_interfaces() {
 
 
 sync_carp_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -232,7 +232,7 @@ sync_carp_interfaces() {
 
 
 sync_pfsync_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -291,7 +291,7 @@ configure_interfaces() {
     update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 11:18:10 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 14:11:25 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

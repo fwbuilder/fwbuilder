@@ -4,13 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3465
 #
-#  Generated Tue Feb  8 14:11:25 2011 PST by vadim
+#  Generated Tue Feb  8 14:10:57 2011 PST by vadim
 #
-# files: * pf_cluster_3_openbsd-3.fw /etc/pf_cluster_3_openbsd-3.fw
-# files:   pf_cluster_3_openbsd-3.conf /etc/pf_cluster_3_openbsd-3.conf
+# files: * firewall103-1.fw /etc/fw/pf.fw
+# files:   firewall103-1.conf /etc/fw/path\ with\ space/pf.conf
 #
-# Compiled for pf 4.6
+# Compiled for pf 4.7
 #
+# bridge interface, static address, shell script format, OpenBSD 4.7
 
 
 
@@ -206,6 +207,100 @@ sync_vlan_interfaces() {
 }
 
 
+
+BRCONFIG="$IFCONFIG"
+
+
+
+
+missing_port() {
+    intf=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $intf
+    port=$1
+    bridge_interface=$2
+    IFS=$oldIFS
+
+    echo "# Updating bridge configuration: $bridge_interface $cmd $port"
+    $FWBDEBUG $BRCONFIG $bridge_interface $cmd $port
+    test "$cmd" = "addm" && $FWBDEBUG $IFCONFIG $port up
+}
+
+update_bridge_interface() {
+    bridge_interface=$1
+    shift
+
+    FWB_PORTS=""
+    CURRENT_PORTS=""
+
+    FWB_PORTS=$(
+        for subint in $*; do
+          echo "${subint}@$bridge_interface"
+        done | sort
+    )
+
+    # this is really redundant because we create missing bridge
+    # interfaces in sync_bridge_interfaces. However will leave this
+    # here so that function update_bridge can be used without prior
+    # call to sync_bridge_interfaces The difference is that
+    # sync_bridge_interfaces also deletes bridge interfaces that exist
+    # on the machine but are missing in fwbuilder confgiuration. The
+    # update_bridge function can only add bridge interfaces.
+    $BRCONFIG $bridge_interface >/dev/null 2>&1 || {
+        echo "# Creating bridge interface $bridge_interface"
+        $FWBDEBUG $IFCONFIG $bridge_interface create
+        $FWBDEBUG $IFCONFIG $bridge_interface up
+    }
+
+    PORTS=$(
+        $BRCONFIG $bridge_interface | awk '($1~/member:/) { print $2; }'
+    )
+
+    test -n "$PORTS" && {
+        CURRENT_PORTS=$(
+            for subint in $PORTS; do
+                echo "${subint}@$bridge_interface"
+            done | sort
+        )
+    }
+
+    # first delete bridge ports, then add. This way, if an interface
+    # moves from one bridge to another, we remove it first and then
+    # add. It would not work if we tried to add it first, brctl issues
+    # an error:
+    # device eth2 is already a member of a bridge; can't enslave it to bridge br1.
+    #
+    diff_intf missing_port "$CURRENT_PORTS" "$FWB_PORTS" deletem
+    diff_intf missing_port "$FWB_PORTS" "$CURRENT_PORTS" addm
+}
+
+
+sync_bridge_interfaces() {
+    $BRCONFIG -a | awk -F: -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         ($1 ~ /^bridge[0-9]/ && !($1 in ignored_dict)) {print $1;}' | \
+         while read brintf; do
+            echo "# Deleting bridge interface $brintf"
+             $FWBDEBUG $IFCONFIG $brintf down
+             $FWBDEBUG $IFCONFIG $brintf destroy
+         done
+
+    for brint in $*; do
+        $BRCONFIG $brint >/dev/null 2>&1 || {
+            echo "# Creating bridge interface $brintf"
+            $FWBDEBUG $IFCONFIG $brint create 
+            $FWBDEBUG $IFCONFIG $brint up
+        }
+    done
+}
+
+
 sync_carp_interfaces() {
     $IFCONFIG -A | awk -v IGNORED="$*" \
         'BEGIN {
@@ -275,30 +370,25 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    sync_vlan_interfaces vlan100
-    update_vlans_of_interface "en2 vlan100"
-    sync_carp_interfaces carp0 carp1 carp2
-    $IFCONFIG carp0 vhid  pass ""    carpdev en0
-    $IFCONFIG carp1 vhid  pass ""    carpdev en1
-    $IFCONFIG carp2 vhid  pass ""    carpdev vlan100
+    sync_vlan_interfaces 
+    sync_bridge_interfaces bridge0
+    update_bridge_interface bridge0 "em2 em3"
+    sync_carp_interfaces 
     sync_pfsync_interfaces 
-    update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
-    update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
-    update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
-    update_addresses_of_interface "en0 172.24.0.2/0xffffff00" ""
-    update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
-    update_addresses_of_interface "en2" ""
-    update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
-    update_addresses_of_interface "vlan100 172.20.0.2/0xffffff00" ""
+    update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
+    update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
+    update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
+    update_addresses_of_interface "em2" ""
+    update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 14:11:25 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 14:10:57 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL    -f /etc/pf_cluster_3_openbsd-3.conf || exit 1
+$PFCTL    -f /etc/fw/path\ with\ space/pf.conf || exit 1
 
 
 

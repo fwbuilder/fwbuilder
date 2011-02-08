@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3464
+#  Firewall Builder  fwb_pf v4.2.0.3465
 #
-#  Generated Tue Feb  8 11:17:56 2011 PST by vadim
+#  Generated Tue Feb  8 14:11:10 2011 PST by vadim
 #
 # files: * firewall34.fw /etc/fw/firewall34.fw
 # files:   firewall34.conf /etc/fw/firewall34.conf
@@ -154,12 +154,11 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    update_addresses_of_interface "eth0.100" ""
     update_addresses_of_interface "eth1 192.168.1.100/0xffffff00" ""
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 11:17:56 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 14:11:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

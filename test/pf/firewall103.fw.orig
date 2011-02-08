@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3464
+#  Firewall Builder  fwb_pf v4.2.0.3465
 #
-#  Generated Tue Feb  8 11:17:43 2011 PST by vadim
+#  Generated Tue Feb  8 14:10:56 2011 PST by vadim
 #
 # files: * firewall103.fw /etc/fw/pf.fw
 # files:   firewall103.conf /etc/fw/path\ with\ space/pf.conf
@@ -169,7 +169,7 @@ parse_fwb_vlans() {
 
 parse_current_vlans() {
     vlan_parent_interface=$1
-    $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    $IFCONFIG  | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
     while read x vlan_id parent
     do
        test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
@@ -190,7 +190,7 @@ update_vlans_of_interface() {
 }
 
 sync_vlan_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -210,8 +210,102 @@ sync_vlan_interfaces() {
 }
 
 
+
+
+
+BRCONFIG="$IFCONFIG"
+
+
+missing_port() {
+    intf=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $intf
+    port=$1
+    bridge_interface=$2
+    IFS=$oldIFS
+
+    echo "# Updating bridge configuration: $bridge_interface $cmd $port"
+    $FWBDEBUG $BRCONFIG $bridge_interface $cmd $port
+    test "$cmd" = "addm" && $FWBDEBUG $IFCONFIG $port up
+}
+
+update_bridge_interface() {
+    bridge_interface=$1
+    shift
+
+    FWB_PORTS=""
+    CURRENT_PORTS=""
+
+    FWB_PORTS=$(
+        for subint in $*; do
+          echo "${subint}@$bridge_interface"
+        done | sort
+    )
+
+    # this is really redundant because we create missing bridge
+    # interfaces in sync_bridge_interfaces. However will leave this
+    # here so that function update_bridge can be used without prior
+    # call to sync_bridge_interfaces The difference is that
+    # sync_bridge_interfaces also deletes bridge interfaces that exist
+    # on the machine but are missing in fwbuilder confgiuration. The
+    # update_bridge function can only add bridge interfaces.
+    $BRCONFIG $bridge_interface >/dev/null 2>&1 || {
+        echo "# Creating bridge interface $bridge_interface"
+        $FWBDEBUG $IFCONFIG $bridge_interface create
+        $FWBDEBUG $IFCONFIG $bridge_interface up
+    }
+
+    PORTS=$(
+        $BRCONFIG $bridge_interface | awk '($1~/member:/) { print $2; }'
+    )
+
+    test -n "$PORTS" && {
+        CURRENT_PORTS=$(
+            for subint in $PORTS; do
+                echo "${subint}@$bridge_interface"
+            done | sort
+        )
+    }
+
+    # first delete bridge ports, then add. This way, if an interface
+    # moves from one bridge to another, we remove it first and then
+    # add. It would not work if we tried to add it first, brctl issues
+    # an error:
+    # device eth2 is already a member of a bridge; can't enslave it to bridge br1.
+    #
+    diff_intf missing_port "$CURRENT_PORTS" "$FWB_PORTS" deletem
+    diff_intf missing_port "$FWB_PORTS" "$CURRENT_PORTS" addm
+}
+
+
+sync_bridge_interfaces() {
+    $BRCONFIG -a | awk -F: -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         ($1 ~ /^bridge[0-9]/ && !($1 in ignored_dict)) {print $1;}' | \
+         while read brintf; do
+            echo "# Deleting bridge interface $brintf"
+             $FWBDEBUG $IFCONFIG $brintf down
+             $FWBDEBUG $IFCONFIG $brintf destroy
+         done
+
+    for brint in $*; do
+        $BRCONFIG $brint >/dev/null 2>&1 || {
+            echo "# Creating bridge interface $brintf"
+            $FWBDEBUG $IFCONFIG $brint create 
+            $FWBDEBUG $IFCONFIG $brint up
+        }
+    done
+}
+
+
 sync_carp_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -233,7 +327,7 @@ sync_carp_interfaces() {
 
 
 sync_pfsync_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -281,7 +375,7 @@ configure_interfaces() {
     :
     sync_vlan_interfaces 
     sync_bridge_interfaces bridge0
-    update_bridge_interface "bridge0 em2 em3"
+    update_bridge_interface bridge0 "em2 em3"
     sync_carp_interfaces 
     sync_pfsync_interfaces 
     update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
@@ -291,7 +385,7 @@ configure_interfaces() {
     update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 11:17:43 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 14:10:56 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
