@@ -162,7 +162,8 @@ int main(int argc, char **argv)
 
         driver.compile();
         delete objdb;
-        return (driver.getStatus() == BaseCompiler::SUCCESS) ? 0 : 1;
+
+        return (driver.getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
         
     } catch(libfwbuilder::FWException &ex)
     {

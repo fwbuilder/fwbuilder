@@ -75,7 +75,7 @@ namespace fwcompiler {
                      const std::string &errstr);
         
 public:
-        typedef enum {SUCCESS, ERROR} termination_status;
+        typedef enum {FWCOMPILER_SUCCESS, FWCOMPILER_ERROR} termination_status;
 
 protected:
         termination_status status;
@@ -132,7 +132,7 @@ public:
             test_mode = false;
             embedded_mode = false;
             level_macro = "%LEVEL%";
-            status = SUCCESS;
+            status = FWCOMPILER_SUCCESS;
         };
 
 	std::string getErrors(const std::string &comment_sep);

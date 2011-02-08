@@ -366,7 +366,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
     }
     catch (FWException &ex)
     {
-        status = BaseCompiler::ERROR;
+        status = BaseCompiler::FWCOMPILER_ERROR;
         return QString::fromUtf8(ex.toString().c_str());
     }
 
