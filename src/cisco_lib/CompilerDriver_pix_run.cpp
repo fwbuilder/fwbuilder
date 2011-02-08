@@ -535,7 +535,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
     }
     catch (FWException &ex)
     {
-        status = ERROR;
+        status = BaseCompiler::ERROR;
         return QString::fromUtf8(ex.toString().c_str());
     }
 
