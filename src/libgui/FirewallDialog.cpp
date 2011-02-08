@@ -237,9 +237,25 @@ void FirewallDialog::hostOSChanged()
 void FirewallDialog::validate(bool *res)
 {
     *res = true;
-    if (!validateName(this,obj,m_dialog->obj_name->text()))
+    if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
         *res = false;
+        return;
+    }
+    // see #2011 - do not allow "/" in firewall object name
+    if (m_dialog->obj_name->text().contains("/"))
+    {
+        *res = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("Character \"/\" is not allowed in firewall object name"),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+            blockSignals(false);
+        }
         return;
     }
 }
