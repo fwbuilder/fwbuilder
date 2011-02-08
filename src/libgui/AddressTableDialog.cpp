@@ -162,6 +162,11 @@ void AddressTableDialog::browse()
     if (!s.isEmpty())
     {
         m_dialog->filename->setText(s);
+        // assign focus to the "file name" input field so that it
+        // generates signal editFinished when user clicks
+        // elsewhere. We use this signal to call changed() which in
+        // turn calls applyChanges() to save data
+        m_dialog->filename->setFocus(Qt::OtherFocusReason);
     }
 }
 void AddressTableDialog::preview( void )
