@@ -106,6 +106,14 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case MAKE_CURRENT_RULE_VISIBLE_IN_RULESET_EVENT:
+            {
+                RuleSetView* rsv = getCurrentRuleSetView();
+                if (rsv) rsv->makeCurrentRuleVisible();
+                ev->accept();
+                return true;
+            }
+   
             case RELOAD_RULESET_IMMEDIATELY_EVENT:
                 redrawRuleSets();
                 //reopenFirewall();

@@ -309,6 +309,11 @@ RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,
     return NULL;
 }
 
+void RuleSetView::makeCurrentRuleVisible()
+{
+    scrollTo( currentIndex(), QAbstractItemView::PositionAtCenter);
+}
+
 void RuleSetView::selectRE(QModelIndex index)
 {
     if (fwbdebug)

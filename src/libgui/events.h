@@ -60,6 +60,7 @@ enum EVENT_CODES {
     OPEN_RULESET_IMMEDIATELY_EVENT ,
     RELOAD_RULESET_EVENT ,
     RELOAD_RULESET_IMMEDIATELY_EVENT ,
+    MAKE_CURRENT_RULE_VISIBLE_IN_RULESET_EVENT,
     OPEN_OBJECT_IN_EDITOR_EVENT ,
     OPEN_OPT_OBJECT_IN_EDITOR_EVENT ,
     CLOSE_OBJECT_EVENT ,
@@ -270,6 +271,16 @@ public:
                    "reloadRulesetImmediatelyEvent")
     {}
 };
+
+class makeCurrentRuleVisibleInRulesetEvent : public fwbUpdateEvent {
+public:
+    makeCurrentRuleVisibleInRulesetEvent(const QString &file_name) :
+    fwbUpdateEvent(file_name, -1,
+                   QEvent::Type(QEvent::User + MAKE_CURRENT_RULE_VISIBLE_IN_RULESET_EVENT),
+                   "makeCurrentRuleVisibleInRulesetEvent")
+    {}
+};
+
 
 
 class openRulesetEvent : public fwbUpdateEvent {

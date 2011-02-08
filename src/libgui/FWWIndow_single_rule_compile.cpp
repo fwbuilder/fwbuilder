@@ -26,8 +26,10 @@
 
 #include "../../config.h"
 #include "global.h"
+#include "events.h"
 
 #include <ui_FWBMainWindow_q.h>
+
 #include "FWWindow.h"
 
 #include "fwbuilder/Rule.h"
@@ -57,6 +59,11 @@ void FWWindow::singleRuleCompile(Rule *rule)
             EDITOR_PANEL_OUTPUT_TAB);
         m_mainWindow->editorDockWidget->show();
         m_mainWindow->output_box->loadFWObject(rule);
+
+        QCoreApplication::postEvent(
+            activeProject(),
+            new makeCurrentRuleVisibleInRulesetEvent(activeProject()->getFileName()));
+
     }
 }
 

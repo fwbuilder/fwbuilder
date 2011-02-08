@@ -95,6 +95,8 @@ public:
      */
     void selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj);
 
+    void makeCurrentRuleVisible();
+    
     void selectObject(int position, int column, int number);
 
     void repaintSelection();
