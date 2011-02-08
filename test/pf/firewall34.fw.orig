@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Mon Feb  7 15:16:28 2011 PST by vadim
+#  Generated Mon Feb  7 17:02:50 2011 PST by vadim
 #
 # files: * firewall34.fw /etc/fw/firewall34.fw
 # files:   firewall34.conf /etc/fw/firewall34.conf
@@ -159,7 +159,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 15:16:28 2011 by vadim"
+log "Activating firewall script generated Mon Feb  7 17:02:50 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

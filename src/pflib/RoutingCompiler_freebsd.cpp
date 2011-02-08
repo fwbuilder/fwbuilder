@@ -91,17 +91,15 @@ void RoutingCompiler_freebsd::compile()
     // add(new classifyRoutingRules(
     //         "Classify into single path or part of a multi path rule"));
         
-#ifdef ECMP_SUPPORT_OLD_STYLE
     add(new optimize3(
             "Eliminate duplicate rules generated from a single gui-rule"));
     add(new eliminateDuplicateRules(
             "Eliminate duplicate rules over the whole table"));
-#endif
         
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
 
-    add(new PrintRule("generate ip code"));
+    add(printRule=new PrintRule("generate ip code"));
     add(new simplePrintProgress());
 
     runRuleProcessors();

@@ -204,7 +204,8 @@ bool RoutingCompiler_openbsd::PrintRule::processNext()
 }
 
 
-string RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
+string RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(RoutingRule *rule,
+                                                               bool add_decorations)
 {
     RuleElementRDst *dstrel = rule->getRDst();
     Address *dst = Address::cast(FWReference::getObject(dstrel->front()));
@@ -228,23 +229,10 @@ string RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(RoutingRule *rule
 
     // to make generated script more readable in single rule compile mode,
     // skip the part that rolls back in case of an error
-    if (!compiler->inSingleRuleCompileMode())
+    if (!compiler->inSingleRuleCompileMode() && add_decorations)
     {
-        command_line << "|| ";
-
-        FWObject *opt_dummy =
-            rule->getFirstByType(RoutingRuleOptions::TYPENAME);
-        RoutingRuleOptions *opt =
-            opt_dummy ? RoutingRuleOptions::cast(opt_dummy) : 0;
-        if ( opt && opt->getBool("no_fail") )
-        {
-            command_line << "echo \"*** Warning: routing rule "
-                         << rule->getLabel() << " failed. ignored. ***\"\n";
-        } else
-        {
-            command_line << "route_command_error "
-                         << "\"" << rule->getLabel() << "\"" << endl;;
-        }
+        command_line << "|| route_command_error "
+                     << "\"" << rule->getLabel() << "\"" << endl;;
     }
     command_line << endl;
 

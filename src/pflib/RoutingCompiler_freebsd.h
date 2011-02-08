@@ -72,7 +72,8 @@ namespace fwcompiler
             PrintRule(const std::string &name);
             virtual bool processNext();
 
-            virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
+            virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r,
+                                                    bool add_decorations=true);
 
         };
         friend class RoutingCompiler_freebsd::PrintRule;

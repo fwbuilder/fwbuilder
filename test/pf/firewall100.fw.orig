@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3462
 #
-#  Generated Mon Feb  7 15:16:09 2011 PST by vadim
+#  Generated Mon Feb  7 17:02:32 2011 PST by vadim
 #
 # files: * firewall100.fw /etc/fw/pf.fw
 # files:   firewall100.conf /etc/fw/path\ with\ space/pf.conf
@@ -15,6 +15,7 @@
 
 # firewall100:Routing:1: error: Gateway and interface are both empty in the rule
 # firewall100:Routing:1: error: Rules 0 (main) and 1 (main) define routes to the same destination 0.0.0.0/0.0.0.0 via different gateways. This configuration is not supported for openbsd
+# firewall100:Routing:4: warning: Two of the routing rules created from the gui routing rules 3 (main) and 4 (main) are identical, skipping the second. Revise them to avoid this warning
 
 
 
@@ -159,7 +160,7 @@ configure_interfaces() {
     update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 15:16:09 2011 by vadim"
+log "Activating firewall script generated Mon Feb  7 17:02:32 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -256,8 +257,6 @@ route add 22.22.22.0/24 10.1.1.1 || route_command_error "3 (main)"
 # 
 echo "Routing rule 4 (main)"
 # 
-route add 22.22.22.0/24 10.1.1.1 || route_command_error "4 (main)"
-
 route add 33.33.33.0/24 10.1.1.1 || route_command_error "4 (main)"
 
 

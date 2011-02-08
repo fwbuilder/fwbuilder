@@ -63,6 +63,34 @@ namespace fwcompiler
 	 */
         DECLARE_ROUTING_RULE_PROCESSOR(FindDefaultRoute);
 
+        /**
+         * remove duplicate rules
+         */
+	class PrintRule;
+        class optimize3 : public RoutingRuleProcessor
+        {
+            std::map<std::string, bool> rules_seen_so_far;
+            
+        public:
+                
+            optimize3(const std::string &name) : RoutingRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
+        /**
+         *  eliminates duplicate rules
+         */
+        class eliminateDuplicateRules : public RoutingRuleProcessor
+        {
+            std::map<std::string, std::string> rules_seen_so_far;
+            
+        public:
+                
+            eliminateDuplicateRules(const std::string &name) :
+                RoutingRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
 	/**
 	 *  prints single policy rule, assuming all groups have been
 	 *  expanded, destination holds exactly one object, and this
@@ -86,7 +114,8 @@ namespace fwcompiler
             PrintRule(const std::string &name);
             virtual bool processNext();
 
-            virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r);
+            virtual std::string RoutingRuleToString(libfwbuilder::RoutingRule *r,
+                                                    bool add_decorations=true);
             virtual std::string _printRGtw(libfwbuilder::RoutingRule *r);
             virtual std::string _printRItf(libfwbuilder::RoutingRule *r);
             virtual std::string _printRDst(libfwbuilder::RoutingRule *r);
@@ -96,18 +125,10 @@ namespace fwcompiler
 
 	virtual std::string myPlatformName();
 
-        // These buffers are needed to collect output generated from
-        // the single ECMP rules belonging to one destination,
-        // because all these routes have to be activated with a single
-        // ip command. So ECMP ip commands are built up gradually
-        // during compilation and inserted in the shell script after
-        // all rules are processed.
-        
-       
-        std::map< std::string, std::string> ecmp_rules_buffer; // sortedDstId+metric-->nexthops
-        std::map< std::string, std::string> ecmp_comments_buffer; // sortedDstId+metric-->rule's info for the fw script
         bool have_default_route;
         bool defined_restore_script_output;
+
+        PrintRule *printRule;
         
     public:
 
@@ -118,6 +139,7 @@ namespace fwcompiler
         {
             have_default_route = false;
             defined_restore_script_output = false;
+            printRule = NULL;
         }
 
         virtual void verifyOS();

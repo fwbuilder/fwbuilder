@@ -105,6 +105,71 @@ bool RoutingCompiler_openbsd::FindDefaultRoute::processNext()
     return true;
 }
 
+/*
+ *  this processor eliminates duplicate routing rules, generated from the same
+ *  rule in the GUI
+ */
+bool RoutingCompiler_openbsd::optimize3::processNext()
+{
+    RoutingCompiler_openbsd *bsd_comp = dynamic_cast<RoutingCompiler_openbsd*>(compiler);
+    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (rule->isFallback() || rule->isHidden())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    assert (bsd_comp->printRule!=NULL);
+    
+    string thisRule = rule->getLabel() + " " +
+        bsd_comp->printRule->RoutingRuleToString(rule, false);
+    
+    if (rules_seen_so_far.count(thisRule)!=0) return true;
+
+    tmp_queue.push_back(rule);
+    rules_seen_so_far[thisRule] = true;
+
+    return true;
+}
+
+/*
+ *  this processor eliminates duplicate atomic routing rules in one routing table
+ */
+bool RoutingCompiler_openbsd::eliminateDuplicateRules::processNext()
+{
+    RoutingCompiler_openbsd *bsd_comp = dynamic_cast<RoutingCompiler_openbsd*>(compiler);
+    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (rule->isFallback() || rule->isHidden())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    assert (bsd_comp->printRule!=NULL);
+    
+    string thisRule = bsd_comp->printRule->RoutingRuleToString(rule, false);
+    
+    map<string, string>::iterator rules_it = rules_seen_so_far.find(thisRule);
+            
+    if (rules_it != rules_seen_so_far.end())
+    {
+        QString msg = QObject::tr("Two of the routing commands created from the gui "
+                                  "routing rules %1 and %2 "
+                                  "are identical, skipping the second. "
+                                  "Revise them to avoid this warning");
+        compiler->warning(
+            rule,
+            msg.arg(rules_it->second.c_str()).arg(rule->getLabel().c_str()).toStdString());
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+    rules_seen_so_far[thisRule] = rule->getLabel();
+    return true;
+}
+
 
 /**
  *-----------------------------------------------------------------------
@@ -164,17 +229,15 @@ void RoutingCompiler_openbsd::compile()
     // add(new classifyRoutingRules(
     //         "Classify into single path or part of a multi path rule"));
         
-#ifdef ECMP_SUPPORT_OLD_STYLE
     add(new optimize3(
             "Eliminate duplicate rules generated from a single gui-rule"));
     add(new eliminateDuplicateRules(
             "Eliminate duplicate rules over the whole table"));
-#endif
         
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
 
-    add(new PrintRule("generate ip code"));
+    add(printRule=new PrintRule("generate ip code"));
     add(new simplePrintProgress());
 
     runRuleProcessors();
@@ -183,44 +246,12 @@ void RoutingCompiler_openbsd::compile()
 
 string RoutingCompiler_openbsd::debugPrintRule(Rule *r)
 {
-    RoutingRule *rule=RoutingRule::cast(r);
-
-    string s= RoutingCompiler::debugPrintRule(rule);
-
-    return s;
+    RoutingRule *rule = RoutingRule::cast(r);
+    return RoutingCompiler::debugPrintRule(rule);
 }
 
 void RoutingCompiler_openbsd::epilog()
 {
-    ///int total = ecmp_comments_buffer.size();
-    int nb = 0;
-    
-    // ecmp roules can only be generated after all the rules have been
-    // parsed, that is the reason for putting this code in the epilog
-    // function
-    if (ecmp_rules_buffer.size() > 0)
-    {
-        output << "\n#\n# ============== EQUAL COST MULTI PATH ============\n#"
-               << endl;
-        
-        output << "echo \"Activating ecmp routing rules...\"" << endl;
-                
-        for (map<string,string>::iterator
-                 ecmp_comments_buffer_it = ecmp_comments_buffer.begin();
-             ecmp_comments_buffer_it != ecmp_comments_buffer.end();
-             ++ecmp_comments_buffer_it)
-        {
-            output << ecmp_comments_buffer_it->second << "#\n" << flush;
-    
-            output << ecmp_rules_buffer[ecmp_comments_buffer_it->first] << flush;
-           
-            output << " \\\n|| route_command_error " << "\"" << ++nb << "\"" << endl;
-
-            //echo \"Error: The ECMP routing rule #" << ++nb <<" couldn't be activated! Please make sure your kernel is compiled with the CONFIG_IP_ROUTE_MULTIPATH option.\"" << endl;
-            
-        }
-    }
-    
     if (!inSingleRuleCompileMode() && defined_restore_script_output)
     {
         // function restore_script_output may not be defined if we

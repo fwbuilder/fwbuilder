@@ -111,7 +111,8 @@ bool RoutingCompiler_freebsd::PrintRule::processNext()
 }
 
 
-string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule)
+string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule,
+                                                               bool add_decorations)
 {
     RoutingCompiler_freebsd* routing_comp =
         dynamic_cast<RoutingCompiler_freebsd*>(compiler);
@@ -138,11 +139,19 @@ string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule
         if (gtw != NULL) command_line << _printRGtw(rule).c_str();
         if (itf != NULL) command_line << _printRItf(rule).c_str();
 
-        return QString("route_%1=\"%2\"").arg(
-            routing_comp->routing_rules_ids[rule->getId()])
-            .arg(command_line.join(" ")).toStdString();
+        QString rule_code = command_line.join(" ");
+
+        if (add_decorations)
+        {
+            rule_code = QString("route_%1=\"%2\"")
+                .arg(routing_comp->routing_rules_ids[rule->getId()])
+                .arg(rule_code);
+        }
+
+        return rule_code.toUtf8().constData();
 
     } else
-        return RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(rule);
+        return RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(
+            rule, add_decorations);
 }
 
