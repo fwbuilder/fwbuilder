@@ -342,6 +342,8 @@ void NATCompiler_pf::PrintRule::_printAnchorRule(const string &anchor_command,
                                                  const std::string &interface_name,
                                                  NATRule *rule)
 {
+    NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
+
     RuleElementOSrc *osrcrel = rule->getOSrc();
     RuleElementODst *odstrel = rule->getODst();
     RuleElementOSrv *osrvrel = rule->getOSrv();

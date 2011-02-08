@@ -32,7 +32,13 @@
 #include "NATCompiler_pf.h"
 #include "TableFactory.h"
 
-namespace libfwbuilder {
+#include <QMap>
+#include <QSet>
+#include <QString>
+
+
+namespace libfwbuilder
+{
     class IPService;
     class ICMPService;
     class TCPService;
@@ -44,10 +50,11 @@ namespace libfwbuilder {
 };
 
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class PolicyCompiler_pf : public PolicyCompiler {
-
+    class PolicyCompiler_pf : public PolicyCompiler
+    {
 	public:
 
 	/**
@@ -412,7 +419,6 @@ namespace fwcompiler {
  
 
 	virtual std::string myPlatformName();
-
 
 	public:
 

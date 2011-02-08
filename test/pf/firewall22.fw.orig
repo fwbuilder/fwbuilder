@@ -2,20 +2,20 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:49 2011 PST by vadim
+#  Generated Tue Feb  8 11:17:54 2011 PST by vadim
 #
 # files: * firewall22.fw /etc/fw/firewall22.fw
-# files:   firewall22-NAT_1.conf /etc/fw/firewall22-NAT_1.conf
 # files:   firewall22.conf /etc/fw/firewall22.conf
+# files:   firewall22-NAT_1.conf /etc/fw/firewall22-NAT_1.conf
 #
 # Compiled for pf 4.3
 #
 # branching in NAT rules
 # PF v4.3 and later
 
-# firewall22:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+# firewall22:ftp-proxy/*:: warning: The name of the NAT ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
 
 # firewall22:NAT:2: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
 
@@ -80,18 +80,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:49 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:17:54 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL  -a NAT_1 \
-     -f \
-    /etc/fw/firewall22-NAT_1.conf || exit 1
-$PFCTL   \
-     -f \
-    /etc/fw/firewall22.conf || exit 1
+$PFCTL    -f /etc/fw/firewall22.conf || exit 1
 
 
 

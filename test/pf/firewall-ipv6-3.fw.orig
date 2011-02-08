@@ -1,13 +1,13 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:03:04 2011 PST by vadim
+#  Generated Tue Feb  8 11:18:10 2011 PST by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
-# files:   firewall-ipv6-3-Policy_ipv4.conf /etc/firewall-ipv6-3-Policy_ipv4.conf
 # files:   firewall-ipv6-3.conf /etc/firewall-ipv6-3.conf
+# files:   firewall-ipv6-3-Policy_ipv4.conf /etc/firewall-ipv6-3-Policy_ipv4.conf
 #
 # Compiled for pf 
 #
@@ -38,7 +38,6 @@ ifconfig_ed0_alias1="2001:db8::2/64"
 ifconfig_lo0="::1/128"
 
 pf_enable="YES"
-pf_rules="/etc/firewall-ipv6-3-Policy_ipv4.conf"
 pf_rules="/etc/firewall-ipv6-3.conf"
 
 

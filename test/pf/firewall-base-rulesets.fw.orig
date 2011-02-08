@@ -2,15 +2,15 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:03:03 2011 PST by vadim
+#  Generated Tue Feb  8 11:18:08 2011 PST by vadim
 #
 # files: * firewall-base-rulesets.fw /etc/fw/firewall-base-rulesets.fw
 # files:   firewall-base-rulesets.conf /etc/fw/firewall-base-rulesets.conf
+# files:   firewall-base-rulesets-web_server_inbound.conf /etc/fw/firewall-base-rulesets-web_server_inbound.conf
 # files:   firewall-base-rulesets-mail_server_inbound.conf /etc/fw/firewall-base-rulesets-mail_server_inbound.conf
 # files:   firewall-base-rulesets-mail_server_outbound.conf /etc/fw/firewall-base-rulesets-mail_server_outbound.conf
-# files:   firewall-base-rulesets-web_server_inbound.conf /etc/fw/firewall-base-rulesets-web_server_inbound.conf
 # files:   firewall-base-rulesets-web_server_outbound.conf /etc/fw/firewall-base-rulesets-web_server_outbound.conf
 #
 # Compiled for pf 
@@ -163,27 +163,13 @@ configure_interfaces() {
     update_addresses_of_interface "en2 192.168.100.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 17:03:03 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:18:08 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/firewall-base-rulesets.conf || exit 1
-$PFCTL  -a mail_server_inbound \
-     -f \
-    /etc/fw/firewall-base-rulesets-mail_server_inbound.conf || exit 1
-$PFCTL  -a mail_server_outbound \
-     -f \
-    /etc/fw/firewall-base-rulesets-mail_server_outbound.conf || exit 1
-$PFCTL  -a web_server_inbound \
-     -f \
-    /etc/fw/firewall-base-rulesets-web_server_inbound.conf || exit 1
-$PFCTL  -a web_server_outbound \
-     -f \
-    /etc/fw/firewall-base-rulesets-web_server_outbound.conf || exit 1
+$PFCTL    -f /etc/fw/firewall-base-rulesets.conf || exit 1
 
 
 

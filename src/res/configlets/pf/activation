@@ -11,6 +11,4 @@
 ## {{$var}} is variable expansion
 ## {{if var}} is conditional operator.
 ##
-$PFCTL {{$pfctl_debug}} {{if anchor}}-a {{$anchor_name}}{{endif}} \
-    {{if pf_version_lt_3_2}}-R{{endif}} {{if pf_version_ge_3_2}}-f{{endif}} \
-    {{$remote_file}} || exit 1
+$PFCTL {{$pfctl_debug}} {{if anchor}}-a {{$anchor_name}}{{endif}} {{if pf_version_lt_3_2}}-R{{endif}} {{if pf_version_ge_3_2}}-f{{endif}} {{$remote_file}} || exit 1

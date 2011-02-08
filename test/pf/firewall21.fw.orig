@@ -2,22 +2,21 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:47 2011 PST by vadim
+#  Generated Tue Feb  8 11:17:53 2011 PST by vadim
 #
 # files: * firewall21.fw /etc/fw/firewall21.fw
-# files:   firewall21-NAT_1.conf /etc/fw/firewall21-NAT_1.conf
 # files:   firewall21.conf /etc/fw/firewall21.conf
+# files:   firewall21-NAT_1.conf /etc/fw/firewall21-NAT_1.conf
 #
 # Compiled for pf 4.0
 #
 # branching in NAT rules
 # PF v4.0-4.2
 
-# firewall21:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
-# firewall21:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
-# firewall21:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+# firewall21:ftp-proxy/*:: warning: The name of the NAT ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+# firewall21:ftp-proxy/*:: warning: The name of the Policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
 
 # firewall21:NAT:3: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
 
@@ -82,18 +81,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:47 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:17:53 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL  -a NAT_1 \
-     -f \
-    /etc/fw/firewall21-NAT_1.conf || exit 1
-$PFCTL   \
-     -f \
-    /etc/fw/firewall21.conf || exit 1
+$PFCTL    -f /etc/fw/firewall21.conf || exit 1
 
 
 

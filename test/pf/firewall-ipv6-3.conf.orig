@@ -9,3 +9,4 @@ pass  quick on lo0 inet6  from any  to any keep state  label "RULE 0 -- ACCEPT "
 #    fallback rule 
 block  quick inet6  from any  to any  label "RULE 10000 -- DROP "  
 
+load anchor Policy_ipv4 from "/etc/firewall-ipv6-3-Policy_ipv4.conf"

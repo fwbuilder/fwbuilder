@@ -21,3 +21,8 @@ anchor "rule2_branch" inet  from 192.168.1.0/24  to any
 #    fallback rule 
 block  quick inet  from any  to any 
 
+load anchor mail_server_inbound from "/etc/fw/firewall51-mail_server_inbound.conf"
+load anchor mail_server_outbound from "/etc/fw/firewall51-mail_server_outbound.conf"
+load anchor rule2_branch from "/etc/fw/firewall51-rule2_branch.conf"
+load anchor web_server_inbound from "/etc/fw/firewall51-web_server_inbound.conf"
+load anchor web_server_outbound from "/etc/fw/firewall51-web_server_outbound.conf"

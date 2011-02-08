@@ -31,3 +31,4 @@ pass  quick inet proto tcp  from any  to 127.0.0.1 port 8021 flags any
 #    fallback rule 
 block  quick inet  from any  to any no state 
 
+load anchor NAT_1 from "/etc/fw/firewall21-NAT_1.conf"

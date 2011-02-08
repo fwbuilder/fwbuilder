@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:59 2011 PST by vadim
+#  Generated Tue Feb  8 11:18:04 2011 PST by vadim
 #
 # files: * firewall8.fw /etc/firewall8.fw
 # files:   firewall8.conf /etc/firewall8.conf
@@ -72,15 +72,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:59 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:18:04 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/firewall8.conf || exit 1
+$PFCTL    -f /etc/firewall8.conf || exit 1
 
 
 

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:03:03 2011 PST by vadim
+#  Generated Tue Feb  8 11:18:10 2011 PST by vadim
 #
 # files: * pf_cluster_1_openbsd-1.fw /etc/pf_cluster_1_openbsd-1.fw
 # files:   pf_cluster_1_openbsd-1.conf /etc/pf_cluster_1_openbsd-1.conf
@@ -289,15 +289,13 @@ configure_interfaces() {
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 17:03:03 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:18:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/pf_cluster_1_openbsd-1.conf || exit 1
+$PFCTL    -f /etc/pf_cluster_1_openbsd-1.conf || exit 1
 
 
 

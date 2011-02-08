@@ -78,10 +78,14 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
+#include <QtDebug>
+
 
 using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
+
+// #define DEBUG_FILE_NAMES 1
 
 
 QString CompilerDriver_pf::composeActivationCommand(Firewall *fw,
@@ -118,6 +122,13 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     bool debug = options->getBool("debug");
     string pfctl_dbg = (debug)?"-v ":"";
 
+    QString remote_file_name = escapeFileName(remote_file_names[CONF1_FILE]);
+
+    return composeActivationCommand(
+        fw, pfctl_dbg, "",
+        fw->getStr("version"), remote_file_name.toUtf8().constData());
+
+#if 0
     QStringList activation_commands;
 
     // skip first item in the list since it is .fw script
@@ -132,6 +143,7 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     }
 
     return activation_commands.join("\n");
+#endif
 }
 
 QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* , bool )
@@ -273,10 +285,108 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
-        int routing_rules_count = 0;
-
         findImportedRuleSets(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
+
+        list<FWObject*> all_rulesets;
+        all_rulesets.insert(
+            all_rulesets.begin(), all_policies.begin(), all_policies.end());
+        all_rulesets.insert(
+            all_rulesets.begin(), all_nat.begin(), all_nat.end());
+
+        // establish mapping of rule sets to file names so it can be used
+        // for "load anchor" commands
+        
+        QMap<QString, QString> rulesets_to_file_names;
+        QMap<QString, QString> rulesets_to_remote_file_names;
+        QMap<QString, int> rulesets_to_indexes;
+        QStringList file_extensions;
+        QStringList remote_file_options;
+
+        anchor_names.clear();
+
+        anchor_names << ""; // for fw_file
+        anchor_names << ""; // for main .conf file (both policy and nat top rule sets)
+
+        // Can not make extension .conf when generating rc.conf file
+        // because the second file also has extension .conf and this
+        // causes conflict if both names are generated using default
+        // algorithm from the fw name
+        //
+
+        file_extensions << "fw";
+        file_extensions << "conf";
+
+        remote_file_options << "script_name_on_firewall";
+        remote_file_options << "conf_file_name_on_firewall";
+
+        rulesets_to_indexes["__main__"] = CONF1_FILE;
+
+        int idx = CONF2_FILE;
+        for (list<FWObject*>::iterator p=all_rulesets.begin();
+             p!=all_rulesets.end(); ++p)
+        {
+            RuleSet *rs = RuleSet::cast(*p);
+            QString ruleset_name = QString::fromUtf8(rs->getName().c_str());
+
+            if (ruleset_name.endsWith("/*"))
+            {
+                QString err("The name of the %1 ruleset %2"
+                            " ends with '/*', assuming it is externally"
+                            " controlled and skipping it.");
+                warning(fw, rs, NULL,
+                        err.arg(rs->getTypeName().c_str())
+                        .arg(ruleset_name).toStdString());
+                rs->setBool(".skip_ruleset", true);
+                continue;
+            }
+
+            if (rs->isTop()) continue;
+
+            // record index of this ruleset in file_names and remote_file_names
+            if (rulesets_to_indexes.count(ruleset_name) == 0)
+            {
+                anchor_names << ruleset_name;
+                file_extensions << "conf";
+                remote_file_options << ""; // to make sure it has right number of items
+                rulesets_to_indexes[ruleset_name] = idx;
+                idx++;
+            }
+        }
+
+#ifdef DEBUG_FILE_NAMES
+        qDebug() << "anchor_names=" << anchor_names;
+        qDebug() << "file_extensions=" << file_extensions;
+        qDebug() << "remote_file_options=" << remote_file_options;
+#endif
+
+        // The order of file names in file_names and remote_file_names
+        // is the same as the order of rule sets in all_rulesets
+        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
+                                 anchor_names, file_extensions,
+                                 remote_file_options);
+
+
+        for (list<FWObject*>::iterator p=all_rulesets.begin();
+             p!=all_rulesets.end(); ++p)
+        {
+            RuleSet *rs = RuleSet::cast(*p);
+            if (rs->getBool(".skip_ruleset")) continue;
+            QString ruleset_name = QString::fromUtf8(rs->getName().c_str());
+            if (rs->isTop()) ruleset_name = "__main__";
+            int idx = rulesets_to_indexes[ruleset_name];
+            rulesets_to_file_names[ruleset_name] = file_names[idx];
+            rulesets_to_remote_file_names[ruleset_name] = remote_file_names[idx];
+        }
+
+#ifdef DEBUG_FILE_NAMES
+        qDebug() << "file_names=" << file_names;
+        qDebug() << "remote_file_names=" << remote_file_names;
+        qDebug() << "rulesets_to_file_names=" << rulesets_to_file_names;
+        qDebug() << "rulesets_to_remote_file_names=" << rulesets_to_remote_file_names;
+#endif
+
+        int routing_rules_count = 0;
 
         vector<int> ipv4_6_runs;
 
@@ -342,21 +452,10 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 NAT *nat = NAT::cast(*p);
 
                 if (!nat->matchingAddressFamily(policy_af)) continue;
+                if (nat->getBool(".skip_ruleset")) continue;
 
                 QString ruleset_name = QString::fromUtf8(nat->getName().c_str());
-
-                if (ruleset_name.endsWith("/*"))
-                {
-                    QString err("The name of the policy ruleset %1"
-                                " ends with '/*', assuming it is externally"
-                                " controlled and skipping it.");
-                    warning(fw, nat, NULL,
-                            err.arg(ruleset_name).toStdString());
-                    continue;
-                }
-
-                if (nat->isTop())
-                    ruleset_name = "__main__";
+                if (nat->isTop()) ruleset_name = "__main__";
 
                 if (table_factories.count(ruleset_name) == 0)
                 {
@@ -364,7 +463,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 }
 
                 NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
-                                  table_factories[ruleset_name] );
+                                  table_factories[ruleset_name]
+                );
 
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(nat->getName());
@@ -418,26 +518,17 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                                            lst.begin(), lst.end());
             }
 
+
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p )
             {
                 Policy *policy = Policy::cast(*p);
-                QString ruleset_name = QString::fromUtf8(policy->getName().c_str());
-
-                if (ruleset_name.endsWith("/*"))
-                {
-                    QString err("The name of the policy ruleset %1"
-                                " ends with '/*', assuming it is externally"
-                                " controlled and skipping it.");
-                    warning(fw, policy, NULL,
-                            err.arg(ruleset_name).toStdString());
-                    continue;
-                }
 
                 if (!policy->matchingAddressFamily(policy_af)) continue;
+                if (policy->getBool(".skip_ruleset")) continue;
 
-                if (policy->isTop())
-                    ruleset_name = "__main__";
+                QString ruleset_name = QString::fromUtf8(policy->getName().c_str());
+                if (policy->isTop()) ruleset_name = "__main__";
 
                 if (table_factories.count(ruleset_name) == 0)
                 {
@@ -446,7 +537,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),
                                      &redirect_rules_info,
-                                     table_factories[ruleset_name] );
+                                     table_factories[ruleset_name]
+                );
 
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
@@ -468,7 +560,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (policy->isTop())
                 {
-                    generated_scripts[ruleset_name] = main_str;
+                    generated_scripts["__main__"] = main_str;
                 } else
                 {
                     generated_scripts[ruleset_name] = new ostringstream();
@@ -493,6 +585,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 all_errors.push_back(c.getErrors("").c_str());
 
             }
+
         }
 
         std::auto_ptr<RoutingCompiler> routing_compiler;
@@ -565,50 +658,30 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             return formSingleRuleCompileOutput(buffer);
         }
 
-/*
- * now write generated scripts to files
- */
-        QStringList file_extensions;
-        QStringList remote_file_options;
-
-        anchor_names.clear();
-
-        anchor_names << "";      // for fw_file
-        // Can not make extension .conf when generating rc.conf file
-        // because the second file also has extension .conf and this
-        // causes conflict if both names are generated using default
-        // algorithm from the fw name
-        file_extensions << "fw";
-        remote_file_options << "script_name_on_firewall";
-
-        for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
-             fi!=generated_scripts.end(); fi++)
+        /* add commands to load anchors to the bottom of the main .conf file */
+        QMap<QString, QString>::iterator it;
+        for (it=rulesets_to_remote_file_names.begin();
+             it!=rulesets_to_remote_file_names.end(); ++it)
         {
-            QString ruleset_name = fi->first;
-
-            if (ruleset_name == "__main__")
-                anchor_names << "";
-            else
-                anchor_names << ruleset_name;
-            file_extensions << "conf";
-            remote_file_options << ""; // to make sure it has right number of items
+            QString ruleset_name = it.key();
+            if (ruleset_name == "__main__") continue;
+            QString remote_file_name = it.value();
+            *(generated_scripts["__main__"]) << QString("load anchor %1 from \"%2\"")
+                .arg(ruleset_name).arg(remote_file_name).toUtf8().constData()
+                                             << endl;
         }
 
-        remote_file_options[CONF1_FILE] = "conf_file_name_on_firewall";
 
-        // The order of file names in file_names and remote_file_names
-        // is the same as the order of rule sets in generated_scripts
-        determineOutputFileNames(cluster, fw, !cluster_id.empty(),
-                                 anchor_names, file_extensions,
-                                 remote_file_options);
+        /*
+         * now write generated scripts to files
+         */
 
-
-        int idx = 1;
+        idx = CONF1_FILE;
         for (map<QString, ostringstream*>::iterator fi=generated_scripts.begin();
              fi!=generated_scripts.end(); fi++)
         {
             QString ruleset_name = fi->first;
-            QString file_name = file_names[idx];
+            QString file_name = rulesets_to_file_names[ruleset_name]; // file_names[idx];
             ostringstream *strm = fi->second;
 
             if (ruleset_name.contains("/*")) continue;

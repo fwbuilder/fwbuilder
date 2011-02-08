@@ -33,8 +33,13 @@
 
 
 #include <map>
+#include <QMap>
+#include <QSet>
+#include <QString>
 
-namespace libfwbuilder {
+
+namespace libfwbuilder
+{
     class Host;
     class IPv4;
     class IPService;
@@ -49,15 +54,15 @@ namespace libfwbuilder {
     class RuleElementTSrv;
 };
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-
-    class NATCompiler_pf : public NATCompiler {
-
+    class NATCompiler_pf : public NATCompiler
+    {
         public:
 
-
-        struct redirectRuleInfo {
+        struct redirectRuleInfo
+        {
             std::string            natrule_label;
             libfwbuilder::FWObject *old_tdst;
             libfwbuilder::FWObject *new_tdst;
@@ -74,7 +79,6 @@ namespace fwcompiler {
 
 	libfwbuilder::FWObject *loopback_address;
         TableFactory   *tables;
-
 
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
@@ -383,7 +387,8 @@ namespace fwcompiler {
 		       libfwbuilder::Firewall *fw,
                        bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf,
-                       TableFactory *tbf = NULL) :
+                       TableFactory *tbf = NULL
+        ) :
         NATCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             tables = tbf;

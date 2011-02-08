@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:37 2011 PST by vadim
+#  Generated Tue Feb  8 11:17:44 2011 PST by vadim
 #
 # files: * firewall104.fw /etc/fw/pf.fw
 # files:   firewall104.conf /etc/fw/path\ with\ space/pf.conf
@@ -291,15 +291,13 @@ configure_interfaces() {
     update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:37 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:17:44 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/path\ with\ space/pf.conf || exit 1
+$PFCTL    -f /etc/fw/path\ with\ space/pf.conf || exit 1
 
 
 

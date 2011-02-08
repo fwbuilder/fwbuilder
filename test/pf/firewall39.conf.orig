@@ -55,3 +55,6 @@ block  log  quick inet  from any  to any
 #    fallback rule 
 block  quick inet  from any  to any 
 
+load anchor rule2_branch from "/etc/fw/firewall39-rule2_branch.conf"
+load anchor rule3_branch from "/etc/fw/firewall39-rule3_branch.conf"
+load anchor rule5_branch from "/etc/fw/firewall39-rule5_branch.conf"

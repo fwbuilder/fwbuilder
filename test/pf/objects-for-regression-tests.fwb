@@ -13481,6 +13481,7 @@
           <Option name="freebsd_path_ipfw"></Option>
           <Option name="freebsd_path_ipnat"></Option>
           <Option name="freebsd_path_sysctl"></Option>
+          <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_add_clear_statements">true</Option>

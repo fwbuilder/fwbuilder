@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:51 2011 PST by vadim
+#  Generated Tue Feb  8 11:17:58 2011 PST by vadim
 #
 # files: * firewall4.fw pf.fw
 # files:   firewall4.conf /etc/fw/pf.conf
@@ -14,8 +14,7 @@
 # this object is used to test a configuration where firewall has dynamic address
 
 # firewall4::: error: Dynamic interface eth1 should not have an IP address object attached to it. This IP address object will be ignored.
-# firewall4:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
-# firewall4:ftp-proxy/*:: warning: The name of the policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
+# firewall4:ftp-proxy/*:: warning: The name of the Policy ruleset ftp-proxy/* ends with '/*', assuming it is externally controlled and skipping it.
 
 
 # firewall4:Policy:6: warning: Changing rule direction due to self reference
@@ -78,15 +77,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:51 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:17:58 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/pf.conf || exit 1
+$PFCTL    -f /etc/fw/pf.conf || exit 1
 
 
 

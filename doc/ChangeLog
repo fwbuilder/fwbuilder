@@ -1,3 +1,13 @@
+2011-02-08  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_pf_run.cpp (run): fixes #2054 "Add support for
+	load anchor PF command". Instead of loading anchors using "pfctl
+	-a anchor -f file" command in the .fw initialization script, now
+	generated PF configuration uses "load anchor" commands in the
+	pf.conf file. This way, we can load anchors correctly when PF
+	configuration is activated from the generated rc.conf.local file
+	where only one pf.conf file can be referenced.
+
 2011-02-07  Vadim Kurland  <vadim@netcitadel.com>
 
 	* CompilerDriver_pix_run.cpp (run): fixes #2055 "Compiler shows

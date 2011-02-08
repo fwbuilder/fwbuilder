@@ -30,3 +30,4 @@ block  log  quick inet  from any  to any no state
 #    fallback rule 
 block  quick inet  from any  to any no state 
 
+load anchor NAT_1 from "/etc/fw/firewall22-NAT_1.conf"

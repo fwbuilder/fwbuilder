@@ -70,8 +70,8 @@ using namespace std;
  */
 void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 {
-    FWOptions *ruleopt =rule->getOptionsObject();
-    Service *srv=compiler->getFirstSrv(rule);    assert(srv);
+    FWOptions *ruleopt = rule->getOptionsObject();
+    Service *srv = compiler->getFirstSrv(rule);    assert(srv);
     string version = compiler->fw->getStr("version");
 
     switch (rule->getAction())
@@ -152,8 +152,7 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
             compiler->output << "anchor \"UNDEFINED\" ";
         }else
         {
-            string ruleset_name = ruleset->getName();
-            compiler->output << "anchor \"" << ruleset_name << "\" ";
+            compiler->output << "anchor \"" << ruleset->getName() << "\" ";
         }
         break;
     }
@@ -931,9 +930,9 @@ PolicyCompiler_pf::PrintRule::PrintRule(const std::string &name) : PolicyRulePro
 
 bool PolicyCompiler_pf::PrintRule::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWOptions  *ruleopt =rule->getOptionsObject();
-    string version=compiler->fw->getStr("version");
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    FWOptions  *ruleopt = rule->getOptionsObject();
+    string version = compiler->fw->getStr("version");
 
     tmp_queue.push_back(rule);
 

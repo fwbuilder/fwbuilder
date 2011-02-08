@@ -72,3 +72,4 @@ pass in   quick on fxp0 route-to { ( le2 192.0.300.1/32 ) } round-robin inet pro
 #    fallback rule 
 block  quick inet  from any  to any  label "RULE 10000 -- DROP "  
 
+load anchor routes from "/etc/firewall40-1-routes.conf"

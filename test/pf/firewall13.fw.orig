@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3462
+#  Firewall Builder  fwb_pf v4.2.0.3464
 #
-#  Generated Mon Feb  7 17:02:43 2011 PST by vadim
+#  Generated Tue Feb  8 11:17:50 2011 PST by vadim
 #
 # files: * firewall13.fw /etc/fw/firewall13.fw
 # files:   firewall13.conf /etc/fw/firewall13.conf
@@ -88,15 +88,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb  7 17:02:43 2011 by vadim"
+log "Activating firewall script generated Tue Feb  8 11:17:50 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL   \
-     -f \
-    /etc/fw/firewall13.conf || exit 1
+$PFCTL    -f /etc/fw/firewall13.conf || exit 1
 
 
 
