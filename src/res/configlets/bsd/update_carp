@@ -27,7 +27,7 @@
 ## sync_carp_interfaces carp0 carp1
 
 sync_carp_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG {{if openbsd}}-A{{endif}} | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}

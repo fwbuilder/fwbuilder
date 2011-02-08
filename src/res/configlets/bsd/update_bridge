@@ -1,0 +1,125 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux24/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+{{if openbsd_lt_47}}
+BRCONFIG="brconfig"
+{{endif}}
+
+{{if openbsd_ge_47}}
+BRCONFIG="$IFCONFIG"
+{{endif}}
+
+{{if freebsd}}
+BRCONFIG="$IFCONFIG"
+{{endif}}
+
+missing_port() {
+    intf=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $intf
+    port=$1
+    bridge_interface=$2
+    IFS=$oldIFS
+
+    echo "# Updating bridge configuration: $bridge_interface $cmd $port"
+    $FWBDEBUG $BRCONFIG $bridge_interface $cmd $port
+    test "$cmd" = "addm" && $FWBDEBUG $IFCONFIG $port up
+}
+
+## update_bridge br0 "eth2 eth3"
+update_bridge_interface() {
+    bridge_interface=$1
+    shift
+
+    FWB_PORTS=""
+    CURRENT_PORTS=""
+
+    FWB_PORTS=$(
+        for subint in $*; do
+          echo "${subint}@$bridge_interface"
+        done | sort
+    )
+
+    # this is really redundant because we create missing bridge
+    # interfaces in sync_bridge_interfaces. However will leave this
+    # here so that function update_bridge can be used without prior
+    # call to sync_bridge_interfaces The difference is that
+    # sync_bridge_interfaces also deletes bridge interfaces that exist
+    # on the machine but are missing in fwbuilder confgiuration. The
+    # update_bridge function can only add bridge interfaces.
+    $BRCONFIG $bridge_interface >/dev/null 2>&1 || {
+        echo "# Creating bridge interface $bridge_interface"
+        $FWBDEBUG $IFCONFIG $bridge_interface create
+        $FWBDEBUG $IFCONFIG $bridge_interface up
+    }
+
+    PORTS=$(
+        $BRCONFIG $bridge_interface | awk '($1~/member:/) { print $2; }'
+    )
+
+    test -n "$PORTS" && {
+        CURRENT_PORTS=$(
+            for subint in $PORTS; do
+                echo "${subint}@$bridge_interface"
+            done | sort
+        )
+    }
+
+    # first delete bridge ports, then add. This way, if an interface
+    # moves from one bridge to another, we remove it first and then
+    # add. It would not work if we tried to add it first, brctl issues
+    # an error:
+    # device eth2 is already a member of a bridge; can't enslave it to bridge br1.
+    #
+    diff_intf missing_port "$CURRENT_PORTS" "$FWB_PORTS" deletem
+    diff_intf missing_port "$FWB_PORTS" "$CURRENT_PORTS" addm
+}
+
+## This function synchronizes bridge interfaces between fwbuilder objects
+## and actual configuration of the firewall machine. Birgde interfaces not
+## listed as arguments will be deleted and those in the arguments will be
+## created if missing.
+##
+## NOTE: we have to delete and create bridge interfaces before we add
+## bridge ports to them because if a bridge interface that was not
+## configured in fwbuilder existed before this script ran, its bridge
+## ports could not be added to other bridges. This bridge interface
+## should be deleted first.
+##
+## sync_bridge_interfaces bridge0 bridge1
+
+sync_bridge_interfaces() {
+    $BRCONFIG -a | awk -F: -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         ($1 ~ /^bridge[0-9]/ && !($1 in ignored_dict)) {print $1;}' | \
+         while read brintf; do
+            echo "# Deleting bridge interface $brintf"
+             $FWBDEBUG $IFCONFIG $brintf down
+             $FWBDEBUG $IFCONFIG $brintf destroy
+         done
+
+    for brint in $*; do
+        $BRCONFIG $brint >/dev/null 2>&1 || {
+            echo "# Creating bridge interface $brintf"
+            $FWBDEBUG $IFCONFIG $brint create 
+            $FWBDEBUG $IFCONFIG $brint up
+        }
+    done
+}

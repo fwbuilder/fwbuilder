@@ -33,6 +33,7 @@
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
 
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
@@ -89,7 +90,9 @@ string OSConfigurator_bsd::printFunctions()
 {
     ostringstream ostr;
 
-    FWOptions* options=fw->getOptionsObject();
+    FWOptions* options = fw->getOptionsObject();
+    string host_os = fw->getStr("host_OS");
+    string version = fw->getStr("version");
 
     Configlet functions(fw, "bsd", "shell_functions");
     functions.removeComments();
@@ -132,6 +135,8 @@ string OSConfigurator_bsd::printFunctions()
     {
         Configlet update_addresses(fw, "bsd", "update_addresses");
         update_addresses.removeComments();
+        update_addresses.setVariable("freebsd", host_os == "freebsd");
+        update_addresses.setVariable("openbsd", host_os == "openbsd");
         ostr << update_addresses.expand().toStdString();
     }
 
@@ -139,13 +144,34 @@ string OSConfigurator_bsd::printFunctions()
     {
         Configlet update_vlans(fw, "bsd", "update_vlans");
         update_vlans.removeComments();
+        update_vlans.setVariable("freebsd", host_os == "freebsd");
+        update_vlans.setVariable("openbsd", host_os == "openbsd");
         ostr << update_vlans.expand().toStdString();
+    }
+
+    if (options->getBool("configure_bridge_interfaces"))
+    {
+        Configlet update_bridge(fw, "bsd", "update_bridge");
+        update_bridge.removeComments();
+        update_bridge.setVariable("freebsd", host_os == "freebsd");
+        if (host_os == "openbsd")
+        {
+            update_bridge.setVariable("openbsd", true);
+            update_bridge.setVariable("openbsd_lt_47",
+                                      XMLTools::version_compare(version, "4.7")<0);
+            update_bridge.setVariable("openbsd_ge_47",
+                                      XMLTools::version_compare(version, "4.7")>=0);
+        }
+
+        ostr << update_bridge.expand().toStdString();
     }
 
     if ( options->getBool("configure_carp_interfaces") ) 
     {
         Configlet update_carp(fw, "bsd", "update_carp");
         update_carp.removeComments();
+        update_carp.setVariable("freebsd", host_os == "freebsd");
+        update_carp.setVariable("openbsd", host_os == "openbsd");
         ostr << update_carp.expand().toStdString();
     }
 
@@ -153,6 +179,8 @@ string OSConfigurator_bsd::printFunctions()
     {
         Configlet update_pfsync(fw, "bsd", "update_pfsync");
         update_pfsync.removeComments();
+        update_pfsync.setVariable("freebsd", host_os == "freebsd");
+        update_pfsync.setVariable("openbsd", host_os == "openbsd");
         ostr << update_pfsync.expand().toStdString();
     }
 

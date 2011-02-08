@@ -1,5 +1,12 @@
 2011-02-08  vadim  <vadim@netcitadel.com>
 
+	* configlets/bsd/update_bridge: fixes #2042 "add configlet and
+	shell functions to manage bridge interfaces via shell script on
+	OpenBSD and FreeBSD". Bridge interfaces are managed incrementally,
+	that is, the script creates and destroys them as needed, then adds
+	or removes bridge ports, to bring bridge configuration in sync
+	with what is defined in fwbuilder GUI.
+
 	* CompilerDriver_pf_run.cpp (run): fixes #2054 "Add support for
 	load anchor PF command". Instead of loading anchors using "pfctl
 	-a anchor -f file" command in the .fw initialization script, now

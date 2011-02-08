@@ -137,6 +137,7 @@ void OSConfigurator_freebsd::interfaceConfigLineIP(
         if (iface->isDyn())
         {
             ifconfig_lines[interface_name] << "DHCP";
+            return;
         }
 
         int ipv4_alias_counter = -2;

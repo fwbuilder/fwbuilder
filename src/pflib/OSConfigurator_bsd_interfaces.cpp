@@ -361,6 +361,8 @@ void OSConfigurator_bsd::summaryConfigLineIP(QStringList , bool )
 void OSConfigurator_bsd::interfaceConfigLineIP(
     Interface *iface, list<pair<InetAddr,InetAddr> > all_addresses)
 {
+    if (iface->isDyn()) return;
+
     QStringList arg1;
     arg1.push_back(iface->getName().c_str());
 
@@ -438,7 +440,7 @@ void OSConfigurator_bsd::interfaceConfigLineBridge(Interface *iface,
                                                     QStringList bridge_port_names)
 {
     interface_configuration_lines <<
-        QString("update_bridge_interface \"%1 %2\"")
+        QString("update_bridge_interface %1 \"%2\"")
         .arg(iface->getName().c_str())
         .arg(bridge_port_names.join(" "));
 }
