@@ -1,5 +1,10 @@
 2011-02-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* CompilerDriver_pix_run.cpp (run): fixes #2055 "Compiler shows
+	success, but there was a fatal error in the config". The bug has
+	been introduced recently (in 4.2.0) and really affected all
+	compilers.
+
 	* AddressTableDialog.cpp (browse): fixes #1914 "Address table
 	object file name is not created properly if user clicks outside
 	Editor panel"

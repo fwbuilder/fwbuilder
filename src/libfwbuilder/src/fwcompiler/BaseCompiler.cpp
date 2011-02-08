@@ -152,7 +152,7 @@ void BaseCompiler::abort(const string &errstr) throw(FWException)
     printError(errstr);
     if (inEmbeddedMode())
         throw FatalErrorInSingleRuleCompileMode(errors_buffer.str());
-
+    status = ERROR;
     if (test_mode) return;
     throw FWException("Fatal error");
 }
@@ -165,13 +165,14 @@ void BaseCompiler::abort(FWObject *fw,
     message("error", fw, ruleset, rule, errstr);
     if (inEmbeddedMode())
         throw FatalErrorInSingleRuleCompileMode(errors_buffer.str());
-
+    status = ERROR;
     if (test_mode) return;
     throw FWException("Fatal error");
 }
 
 void BaseCompiler::error(const string &str)
 {
+    status = ERROR;
     printError(str);
 }
 
@@ -180,6 +181,7 @@ void BaseCompiler::error(FWObject *fw,
                          FWObject *rule,
                          const string &errstr)
 {
+    status = ERROR;
     message("error", fw, ruleset, rule, errstr);
 }
 

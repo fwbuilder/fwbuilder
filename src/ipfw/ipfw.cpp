@@ -171,9 +171,10 @@ int main(int argc, char **argv)
         }
         driver.compile();
         delete objdb;
-        return 0;
+        return (driver.getStatus() == BaseCompiler::SUCCESS) ? 0 : 1;
 
-    } catch(const FWException &ex)  {
+    } catch(const FWException &ex)
+    {
 	cerr << ex.toString() << endl;
         return 1;
 #if __GNUC__ >= 3

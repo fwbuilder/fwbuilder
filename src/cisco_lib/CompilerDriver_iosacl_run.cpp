@@ -378,6 +378,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
     }
     catch (FWException &ex)
     {
+        status = ERROR;
         return QString::fromUtf8(ex.toString().c_str());
     }
 

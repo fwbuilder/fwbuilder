@@ -73,15 +73,23 @@ namespace fwcompiler {
                      libfwbuilder::FWObject *ruleset,
                      libfwbuilder::FWObject *rule,
                      const std::string &errstr);
+        
+public:
+        typedef enum {SUCCESS, ERROR} termination_status;
+
+protected:
+        termination_status status;
 
 public:
-
+        
         virtual void setTestMode() { test_mode = true; }
         bool inTestMode() { return test_mode; }
 
         virtual void setEmbeddedMode() { embedded_mode = true; }
         bool inEmbeddedMode() { return embedded_mode; }
 
+        termination_status getStatus() { return status; }
+        
         /**
          * prints error message and aborts the program. If compiler is
          * in testing mode (flag test_mode==true), then just prints
@@ -119,7 +127,13 @@ public:
         
 	virtual ~BaseCompiler() {};
 
-	BaseCompiler() {test_mode = false; embedded_mode = false; level_macro = "%LEVEL%";};
+	BaseCompiler()
+        {
+            test_mode = false;
+            embedded_mode = false;
+            level_macro = "%LEVEL%";
+            status = SUCCESS;
+        };
 
 	std::string getErrors(const std::string &comment_sep);
 	bool haveErrorsAndWarnings();

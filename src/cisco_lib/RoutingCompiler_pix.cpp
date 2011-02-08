@@ -71,9 +71,10 @@ bool RoutingCompiler_pix::emptyRDstOrRItf::processNext()
 
     if (itfrel->isAny() || gtwrel->isAny())
     {
-        string msg;
-        msg = "Interface and gateway rule elements can not be empty in the PIX routing rule";
-        compiler->abort(rule, msg.c_str());
+        compiler->abort(
+            rule,
+            "Interface and gateway rule elements can not be empty in "
+            "the PIX routing rule");
     }
 
     return true;
