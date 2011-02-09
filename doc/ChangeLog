@@ -1,5 +1,17 @@
 2011-02-08  vadim  <vadim@netcitadel.com>
 
+	* SSHUnx.cpp (SSHUnx): fixes #2061 "Installer shows success for
+	failed installed on FreeBSD due to corrupt script file". Added
+	bunch of common shell error messages to make sure installer
+	recognizes them and mark install as a failure even if ssh fails
+	to pass termination code.
+
+	* instDialog.cpp (showPage): fixes #2037 "If there is an error
+	when compiling firewall then installer should be
+	aborted". Compile/install wizard should disable "Next" button
+	after compile phase is done if all firewalls failed to compile
+	with no errors.
+
 	* configlets/bsd/update_bridge: fixes #2042 "add configlet and
 	shell functions to manage bridge interfaces via shell script on
 	OpenBSD and FreeBSD". Bridge interfaces are managed incrementally,

@@ -49,6 +49,7 @@
 #include <list>
 
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwcompiler/BaseCompiler.h"
 
 class FirewallInstaller;
 class instBatchOptionsDialog;
@@ -113,7 +114,9 @@ class instDialog : public QDialog, public FakeWizard
     std::map<int,QTreeWidgetItem*> opListMapping;
     std::list<QRegExp> error_re;
     std::list<QRegExp> warning_re;
-
+    std::map<libfwbuilder::Firewall*, fwcompiler::BaseCompiler::termination_status>
+        compile_status;
+    
     QString path; //path of the program to execute
 //    QStringList args; //arguments for that program
         

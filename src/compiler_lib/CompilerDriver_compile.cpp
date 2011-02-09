@@ -92,7 +92,8 @@ void CompilerDriver::compile()
         for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
         {
             info("\n");
-            info(" Firewall " + (*it)->getName() + " member of cluster " + fw->getName());
+            info(" Firewall " + (*it)->getName() +
+                 " member of cluster " + fw->getName());
 
             CompilerDriver *cl_driver = clone();
             cl_driver->configure(args);
@@ -100,6 +101,8 @@ void CompilerDriver::compile()
             cl_driver->run(objdb->getStringId(fw->getId()),
                            objdb->getStringId((*it)->getId()),
                            "");
+            if (cl_driver->status == BaseCompiler::FWCOMPILER_ERROR)
+                status = cl_driver->status;
             delete cl_driver;
         }
     }

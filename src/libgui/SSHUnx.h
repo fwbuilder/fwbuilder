@@ -38,8 +38,9 @@
 
 class SSHUnx : public SSHSession {
 
-    Q_OBJECT
+    Q_OBJECT;
 
+    QStringList shell_errors;
     QStringList iptables_errors;
     QStringList pfctl_errors;
     QStringList route_add_errors;

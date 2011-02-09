@@ -461,9 +461,24 @@ void instDialog::showPage(const int page)
             // Flag compile_complete is set in instDialog::mainLoopCompile()
             if (compile_complete)
             {
-                setNextEnabled(page, true);
+                // See #2037: enable "Next" button only if there is at
+                // least one firewall that was successfully compiled.
+                bool can_install = false;
+                list<Firewall*>::iterator i;
+                for(i=install_fw_list.begin(); i!=install_fw_list.end(); ++i)
+                {
+                    Firewall *fw = *i;
+                    if (compile_status[fw] ==
+                        fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS)
+                    {
+                        setNextEnabled(page, true);
+                        m_dialog->nextButton->setDefault(true);
+                        can_install = true;
+                        break;
+                    }
+                }
+                if (!can_install) setFinishEnabled(page, true);
                 setBackEnabled(page, true);
-                m_dialog->nextButton->setDefault(true);
             } else
             {
                 mw->fileSave();

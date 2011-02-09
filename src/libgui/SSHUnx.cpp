@@ -72,6 +72,12 @@ SSHUnx::SSHUnx(QWidget *_par,
     errorsLoggedin << "No such file or directory";
     errorsLoggedin << "Cannot allocate memory";
 
+    shell_errors << "Syntax error:";
+    shell_errors << "No command .* found";
+    shell_errors << "Command not found";
+    shell_errors << "[fF]ile .* does not exist";
+    shell_errors << "[iI]nterface .* does not exist";
+
     iptables_errors << "'iptables --help' for more information.";
     iptables_errors << "'iptables-restore --help' for more information.";
     iptables_errors << "iptables-restore: line .* failed";

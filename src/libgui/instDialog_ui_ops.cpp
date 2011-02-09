@@ -359,6 +359,7 @@ void instDialog::setInProcessState(QTreeWidgetItem *item)
 
 void instDialog::opSuccess(Firewall *fw)
 {
+    compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
     if (itm)
     {
@@ -373,6 +374,7 @@ void instDialog::opSuccess(Firewall *fw)
 
 void instDialog::opError(Firewall *fw)
 {
+    compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_ERROR;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
     if (itm)
     {
@@ -384,6 +386,7 @@ void instDialog::opError(Firewall *fw)
 
 void instDialog::opCancelled(Firewall *fw)
 {
+    compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_ERROR;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
     // itm can be NULL, for example when we install to PIX cluster
     // where we skip one of the members
@@ -988,7 +991,7 @@ void instDialog::fillInstallUIList()
     list<Firewall*>::iterator i;
     for(i=install_fw_list.begin(); i!=install_fw_list.end(); ++i)
     {
-        f=(*i);
+        f = (*i);
         item = new InstallFirewallViewItem(
             NULL,
             QString::fromUtf8(f->getName().c_str()),
