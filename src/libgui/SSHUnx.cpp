@@ -76,7 +76,24 @@ SSHUnx::SSHUnx(QWidget *_par,
     shell_errors << "No command .* found";
     shell_errors << "Command not found";
     shell_errors << "[fF]ile .* does not exist";
-    shell_errors << "[iI]nterface .* does not exist";
+
+    // some ifconfig errors
+    shell_errors << "interface .* does not exist";
+    shell_errors << "Interface .* does not exist";
+    shell_errors << "ifconfig: .*: Device busy";
+    shell_errors << "permission denied";
+    shell_errors << "interface name too long";
+    shell_errors << "cloning name too long";
+    shell_errors << "error in parsing address";
+    shell_errors << "can't set";
+    shell_errors << ".* malformed";
+    shell_errors << ".* failed";
+    shell_errors << ".* not allowed for the AF";
+    shell_errors << "internal error";
+    shell_errors << "unable to allocate .*";
+    shell_errors << "unable to get .*";
+    shell_errors << "unknown .* protocol";
+    shell_errors << "[iI]nvalid .* protocol";
 
     iptables_errors << "'iptables --help' for more information.";
     iptables_errors << "'iptables-restore --help' for more information.";
@@ -138,6 +155,7 @@ bool SSHUnx::checkForErrors()
     if (checkForErrors(&iptables_errors)) return true;
     if (checkForErrors(&pfctl_errors)) return true;
     if (checkForErrors(&route_add_errors)) return true;
+    if (checkForErrors(&shell_errors)) return true;
 
     return false;
 }

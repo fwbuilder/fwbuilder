@@ -28,9 +28,7 @@
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/{{$fwscript}} && ( pkill shutdown; echo 'Policy activated' )
-sleep 2
-echo 
+sh {{$fwdir}}/{{$fwscript}} && ( pkill shutdown; echo 'Policy activated'; sleep 2; echo)
 {{endif}}
 
 {{if test}}
@@ -39,17 +37,13 @@ echo
 echo '{{$fwbprompt}}';
 /sbin/shutdown -r +{{$rbtimeout}}
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-sleep 2
-echo 
+sh {{$fwdir}}/tmp/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo )
 {{endif}}
 
 {{if no_rollback}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-sleep 2
-echo 
+sh {{$fwdir}}/tmp/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo )
 {{endif}}
 
 
