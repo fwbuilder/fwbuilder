@@ -2528,18 +2528,22 @@ bool RuleSetView::showToolTip(QEvent *event)
     QModelIndex index = indexAt(pos);
     if (!index.isValid())
     {
-        if (st->getBool("UI/AdvancedTooltips"))
-            return false;
-        toolTip = "<html>\
-Policy, NAT and routing rules are shown here.\
-<ul>\
-<li><b>Rules use objects</b>, if you want to use an object like IP address in a rule,\
- you need to first create it in the object tree</li>\
-<li><b>Drag and drop</b> objects from the tree to the desired field (source, destination, etc.) in the rule.</li>\
-<li><b>To add a rule</b>, click the '+' button at the top of the window</li>\
-<li><b>To open menu of operations</b> such as 'add rule', 'remove rule' etc, click right mouse button</li>\
-</ul>\
-</html>";
+        if (st->getBool("UI/AdvancedTooltips")) return false;
+
+        toolTip = QObject::tr(
+            "<html>"
+            "Policy, NAT and routing rules are shown here. "
+            "<ul><li><b>Rules use objects</b>, if you want "
+            "to use an object like IP address in a rule, "
+            "you need to first create it in the object tree</li>"
+            "<li><b>Drag and drop</b> objects from the tree to "
+            "the desired field (source, destination, etc.) in "
+            "the rule.</li>"
+            "<li><b>To add a rule</b>, click the '+' button at "
+            "the top of the window</li>"
+            "<li><b>To open menu of operations</b> such as "
+            "'add rule', 'remove rule' etc, click right mouse button</li>"
+            "</ul></html>");
 
         QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this);
         return true;
@@ -2556,11 +2560,16 @@ Policy, NAT and routing rules are shown here.\
 
         if (column == 0)
         {
+            if (st->getBool("UI/AdvancedTooltips")) return false;
+
             // rule number column
-            toolTip = "<html>\
-<b>To open menu of operations</b> such as 'add rule', 'remove rule' etc, click right mouse button<br>\
-<b>To compile the rule</b> and see generated firewall configuration, first select it by clicking inside of it and then hit 'X' on keyboard\
-</html>";
+            toolTip = QObject::tr(
+                "<html>"
+                "<b>To open menu of operations</b> such as 'add rule', "
+                "'remove rule' etc, click right mouse button.<br> "
+                "<b>To compile the rule</b> and see generated firewall "
+                "configuration, first select it by clicking inside of it "
+                "and then hit 'X' on keyboard html>");
             QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this);
             return true;
         } else
@@ -2591,23 +2600,39 @@ Policy, NAT and routing rules are shown here.\
             break;
 
             case ColDesc::Direction:
-                if (st->getBool("UI/AdvancedTooltips"))
-                    return false;
-                toolTip = "<b>Direction:</b> " + v.value<QString>() +
-                    "<br><b>To change the direction</b>, click right mouse button to open the list of possible settings";
+                if (st->getBool("UI/AdvancedTooltips")) 
+                {
+                    toolTip = QObject::tr("<b>Direction:</b> %1 <br>")
+                        .arg(v.value<QString>());
+                } else
+                {
+                    toolTip = QObject::tr("<b>Direction:</b> %1 <br>"
+                                          "<b>To change the direction</b>, "
+                                          "click right mouse button to open "
+                                          "the list of possible settings")
+                        .arg(v.value<QString>());
+                }
                 break;
 
             case ColDesc::Action:
-                if (st->getBool("UI/AdvancedTooltips"))
-                    return false;
-                toolTip = v.value<ActionDesc>().tooltip +
-                    "<b>To change the action</b>, click right mouse button to open the list of possible settings";
+                if (st->getBool("UI/AdvancedTooltips")) 
+                {
+                    toolTip = v.value<ActionDesc>().tooltip;
+                } else
+                {
+                    toolTip = QObject::tr("%1 <b>To change the action</b>, "
+                                          "click right mouse button to open "
+                                          "the list of possible settings")
+                        .arg(v.value<ActionDesc>().tooltip);
+                }
                 break;
 
             default:
                 FWObject *object = getObject(pos, index);
                 if (object == 0) return true;
-                toolTip = FWObjectPropertiesFactory::getObjectPropertiesDetailed(object, true, true);
+                toolTip = FWObjectPropertiesFactory::getObjectPropertiesDetailed(
+                    object, true, true);
+
                 if (st->getBool("UI/AdvancedTooltips"))
                 {
                     if (object->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||

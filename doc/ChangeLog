@@ -1,5 +1,9 @@
 2011-02-09  Vadim Kurland  <vadim@netcitadel.com>
 
+	* RuleSetView.cpp (showToolTip): fixes #1915 "tooltip shown when
+	mouse is over rule number should be added to the list of
+	suppressed tooltips when 'Advanced user mode' is in effect"
+
 	* platforms.cpp (setDefaultFailoverGroupAttributes): fixes #2064
 	"CARP interfaces are not properly installed on FreeBSD cluster".
 	I need to populate failover group objects with some reasonable
