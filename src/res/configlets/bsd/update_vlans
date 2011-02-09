@@ -27,13 +27,13 @@ missing_vlan() {
     vlan_id=$(echo $subint | sed 's/vlan//')
     test "$cmd" = "add" && {
         echo "# Adding VLAN interface $subint (parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent
-        $FWBDEBUG $IFCONFIG $subint up
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent || exit 1
+        $FWBDEBUG $IFCONFIG $subint up || exit 1
     }
     test "$cmd" = "rem" && {
         echo "# Removing VLAN interface $subint (parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev
-        $FWBDEBUG $IFCONFIG $subint destroy
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev || exit 1
+        $FWBDEBUG $IFCONFIG $subint destroy || exit 1
     }
 }
 
@@ -73,7 +73,7 @@ update_vlans_of_interface() {
     FWB_VLANS=$(parse_fwb_vlans "$args")
     CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
 
-    $IFCONFIG $vlan_parent_interface up
+    $IFCONFIG $vlan_parent_interface up || exit 1
     diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
     diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
 }
@@ -87,13 +87,13 @@ sync_vlan_interfaces() {
          ($1 ~ /^vlan[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
          while read intf; do
             echo "# Deleting vlan interface $intf"
-             $FWBDEBUG $IFCONFIG $intf destroy
+             $FWBDEBUG $IFCONFIG $intf destroy || exit 1
          done
 
     for intf in $*; do
         $IFCONFIG $intf >/dev/null 2>&1 || {
             echo "# Creating vlan interface $intf"
-            $FWBDEBUG $IFCONFIG $intf create
+            $FWBDEBUG $IFCONFIG $intf create || exit 1
         }
     done
 }

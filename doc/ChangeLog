@@ -1,5 +1,10 @@
 2011-02-09  Vadim Kurland  <vadim@netcitadel.com>
 
+	* platforms.cpp (setDefaultFailoverGroupAttributes): fixes #2064
+	"CARP interfaces are not properly installed on FreeBSD cluster".
+	I need to populate failover group objects with some reasonable
+	defaults when they are created.
+
 	* configlets/freebsd/installer_commands_root: fixes #2065
 	"activation commands on FreeBSD and OpenBSD lose script exit
 	status". Sequence of commands ran by the built-in installer on

@@ -1003,3 +1003,66 @@ void _repackStringList(list<string> &list1, list<QStringPair> &list2)
     }
 }
 
+void setDefaultFailoverGroupAttributes(FailoverClusterGroup *grp)
+{
+    FWObject *p = grp;
+    while (p && Cluster::cast(p)==NULL) p = p->getParent();
+    assert(p != NULL);
+    Cluster *cluster = Cluster::cast(p);
+    Resources *os_res = Resources::os_res[cluster->getStr("host_OS")];
+    assert(os_res != NULL);
+
+    FWOptions *gropt = grp-> getOptionsObject();
+    assert(gropt != NULL);
+    
+    string failover_protocol = grp->getStr("type");
+
+    if (failover_protocol == "carp")
+    {
+        gropt->setStr("carp_password", "");
+        gropt->setInt("carp_vhid", 1);
+        gropt->setInt("carp_advbase", 1);
+        gropt->setInt("carp_master_advskew", 0);
+        gropt->setInt("carp_default_advskew", 0);
+    }
+
+    if (failover_protocol == "vrrp")
+    {
+        gropt->setStr("vrrp_secret", "");
+        gropt->setInt("vrrp_vrid", 1);
+        gropt->setBool("vrrp_over_ipsec_ah", false);
+    }
+
+    if (failover_protocol == "heartbeat")
+    {
+        string default_address =
+            os_res->getResourceStr(
+                "/FWBuilderResources/Target/protocols/heartbeat/default_address");
+        string default_port =
+            os_res->getResourceStr(
+                "/FWBuilderResources/Target/protocols/heartbeat/default_port");
+
+        gropt->setStr("heartbeat_address", default_address);
+        gropt->setStr("heartbeat_port", default_port);
+        gropt->setBool("heartbeat_unicast", false);
+    }
+
+    if (failover_protocol == "openais")
+    {
+        string default_address =
+            os_res->getResourceStr(
+                "/FWBuilderResources/Target/protocols/openais/default_address");
+        string default_port =
+            os_res->getResourceStr(
+                "/FWBuilderResources/Target/protocols/openais/default_port");
+        gropt->setStr("openais_address", default_address);
+        gropt->setStr("openais_port", default_port);
+    }
+
+    if (failover_protocol == "pix_failover")
+    {
+        gropt->setStr("pix_failover_key", "");
+    }
+}
+
+

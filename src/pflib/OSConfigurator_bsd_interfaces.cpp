@@ -475,7 +475,12 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
         FailoverClusterGroup::cast(failover_group)->getOptionsObject();
     string carp_password = failover_opts->getStr("carp_password");
     if (carp_password.empty()) carp_password = "\"\"";
-    string vhid = failover_opts->getStr("carp_vhid");
+    int vhid = failover_opts->getInt("carp_vhid");
+
+    // use the same default as the one we use in
+    // setDefaultFailoverGroupAttributes()  in platforms.cpp
+    if (vhid < 0) vhid = 1;
+
     int advbase = failover_opts->getInt("carp_advbase");
     int master_advskew = failover_opts->getInt("carp_master_advskew");
     int default_advskew = failover_opts->getInt("carp_default_advskew");
@@ -500,7 +505,7 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
     configlet->setVariable("have_base_inetrface", !base_interface.empty());
     configlet->setVariable("base_inetrface", base_interface.c_str());
     configlet->setVariable("carp_password", carp_password.c_str());
-    configlet->setVariable("vhid", vhid.c_str());
+    configlet->setVariable("vhid", vhid);
 
     interface_configuration_lines <<  configlet->expand();
 }

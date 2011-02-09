@@ -166,13 +166,12 @@ void newClusterDialog::createNewCluster()
                           .arg(m_dialog->obj_name->text())
                           .arg(data.name);
 
-        ClusterGroup *failover_grp = ClusterGroup::cast(
+        FailoverClusterGroup *failover_grp = FailoverClusterGroup::cast(
             db->create(FailoverClusterGroup::TYPENAME));
         failover_grp->setName(string(grpname.toUtf8().constData()));
         oi->add(failover_grp);
 
         QString failover_protocol_name = data.protocol.toLower();
-
         failover_grp->setStr("type",
                              failover_protocol_name.toAscii().constData());
 
@@ -193,6 +192,12 @@ void newClusterDialog::createNewCluster()
                 failover_grp->setStr("master_iface", masteriface_id);
             }
         }
+
+        // need to populate failover group with some reasonable
+        // default values.  If this is not done, parameters such as
+        // CARP vhid remain blank and that leads to incomplete
+        // generated configurations
+        setDefaultFailoverGroupAttributes(failover_grp);
     }
 
     if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 3";
