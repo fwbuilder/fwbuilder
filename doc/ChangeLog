@@ -1,5 +1,9 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator_tree_ops.cpp (getTreeLabel): fixes #2067 "Add
+	way to show interface label in object tree". The tree now shows
+	interface name and label if the label is not empty.
+
 	* configlets/bsd/update_vlans: fixes #2066 "Existing VLAN
 	interfaces are not properly removed from FreeBSD and install
 	script fails"

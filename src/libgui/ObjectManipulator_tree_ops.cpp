@@ -142,6 +142,34 @@ using namespace libfwbuilder;
 #define OBJTREEVIEW_WIDGET_NAME  "ObjTreeView"
 
 
+/*
+ * This method decides what should be shown in the columns 0 and 1 of
+ * the tree for the given object
+ */
+QString ObjectManipulator::getTreeLabel(FWObject *obj, int col)
+{
+    switch (col)
+    {
+    case 0:
+    {
+        QString name = QString::fromUtf8(obj->getName().c_str());
+        if (Interface::isA(obj))
+        {
+            Interface *intf = Interface::cast(obj);
+            QString label = QString::fromUtf8(intf->getLabel().c_str());
+            if (label.isEmpty())
+                return name;
+            else
+                return QString("%1 (%2)").arg(name).arg(label);
+        } else
+            return name;
+        break;
+    }
+    case 1:
+        return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
+    }
+}
+
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
@@ -157,8 +185,8 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm = new ObjectTreeViewItem( itm );
 
     nitm->setLib("");
-    nitm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
-    nitm->setText( 1, getTreeLabel(obj) );
+    nitm->setText( 0, getTreeLabel(obj, 0) );
+    nitm->setText( 1, getTreeLabel(obj, 1) );
 
     QPixmap pm;
     doSetObjectIcon(obj, &pm, 0);
@@ -334,8 +362,8 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     // first, update tree item that represents @obj. Its name or label
     // (second column) might have changed
     QString old_itm_text = itm->text(0);
-    itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
-    itm->setText( 1, getTreeLabel(obj) );
+    itm->setText( 0, getTreeLabel(obj, 0) );
+    itm->setText( 1, getTreeLabel(obj, 1) );
 
     QPixmap pm_obj;
     IconSetter::setObjectIcon(obj, &pm_obj, 0);
@@ -506,8 +534,8 @@ void ObjectManipulator::addLib(FWObject *lib)
 
     itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
 
-    itm1->setText( 0, QString::fromUtf8(lib->getName().c_str()) );
-    itm1->setText( 1, getTreeLabel(lib) );
+    itm1->setText( 0, getTreeLabel(lib, 0) );
+    itm1->setText( 1, getTreeLabel(lib, 1) );
     itm1->setIcon( 0, pm);
 
     itm1->setProperty("type", lib->getTypeName().c_str() );

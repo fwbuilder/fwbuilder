@@ -122,7 +122,7 @@ class ObjectManipulator : public QWidget
                                      libfwbuilder::FWObject *obj);
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
 
-    QString getTreeLabel( libfwbuilder::FWObject *obj );
+    QString getTreeLabel(libfwbuilder::FWObject *obj, int col);
 
     void showObjectInTree(ObjectTreeViewItem *otvi);
 

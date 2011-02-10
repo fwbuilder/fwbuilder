@@ -151,15 +151,6 @@ vector<QTreeWidget*> ObjectManipulator::getTreeWidgets()
     return res;
 }
 
-/*
- * This method decides what should be shown in the column #1 of the
- * tree for the given object
- */
-QString ObjectManipulator::getTreeLabel( FWObject *obj )
-{
-    return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
-}
-
 void ObjectManipulator::showDeletedObjects(bool f)
 {
     try
