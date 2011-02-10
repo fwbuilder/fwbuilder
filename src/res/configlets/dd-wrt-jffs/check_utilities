@@ -26,12 +26,18 @@
 ## load_modules      : set to true if "load modules" option is on
 ##
 ## These variables are set in OSConfigurator_linux24::printShellFunctions()
+## About using "command" to find programs:
+##
+## apparently "command" is POSIX compliant and should be widely
+## available. Another tool that could be used is "type -P" but that is
+## bash built-in
+##
+## Verified DD-WRT v24 and OpenWRT kamikaze 8.09.2 both have command
+## and type (both use busybox)
 
 find_program() {
   PGM=$1
-## if shell can not find the program in any of the directories listed
-## in PATH it returns exit code 127
-  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+  command -v $PGM &>/dev/null || {
     echo "$PGM not found"
     exit 1
   }

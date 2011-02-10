@@ -1,5 +1,12 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* linux24/check_utilities: fixes #1999 "log() does not work" Using
+	built-in utitlity "command" to verify that all the tools generated
+	script needs to function properly are available and can be
+	accessed either via direct full path or are in the PATH
+	variable. This includes the check for the logger tool that is used
+	to make log record when firewall is activated.
+
 	* OSConfigurator_freebsd.cpp (interfaceConfigLineVlan): fixes #2071
 	"vlandev missing in the vlan definition (when using rc.conf.local )"
 

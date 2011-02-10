@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3469
+#  Firewall Builder  fwb_ipt v4.2.0.3470
 #
-#  Generated Thu Feb 10 12:08:03 2011 PST by vadim
+#  Generated Thu Feb 10 14:45:09 2011 PST by vadim
 #
 # files: * cluster1_secuwall-1.fw /etc/cluster1_secuwall-1.fw
 #
@@ -39,7 +39,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 getInterfaceVarName() {
@@ -94,7 +94,7 @@ diff_intf() {
 
 find_program() {
   PGM=$1
-  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
+  command -v $PGM &>/dev/null || {
     echo "$PGM not found"
     exit 1
   }
@@ -588,7 +588,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 10 12:08:03 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 10 14:45:09 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files
