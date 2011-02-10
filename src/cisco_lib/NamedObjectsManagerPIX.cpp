@@ -26,6 +26,8 @@
 #include "NamedObjectsManagerPIX.h"
 #include "PIXObjectGroup.h"
 
+#include "fwbuilder/Resources.h"
+
 #include <sstream>
 #include <assert.h>
 
@@ -48,8 +50,15 @@ string NamedObjectsManagerPIX::getClearCommands()
 {
     ostringstream output;
 
-    if (haveObjectGroups()) output << "clear conf object-group" << endl;
-    if (haveNamedObjects()) output << "clear conf object" << endl;
+    string clear_obj_group = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/pix_commands/clear_og");
+    string clear_object = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/pix_commands/clear_obj");
+
+    if (haveObjectGroups()) output << clear_obj_group << endl;
+    if (haveNamedObjects()) output << clear_object << endl;
 
     return output.str();
 }

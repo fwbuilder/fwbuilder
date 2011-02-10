@@ -1,5 +1,10 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* NamedObjectsManagerPIX.cpp (getClearCommands): fixes #2060
+	"Existing configuration objects are not cleared in PIX 6.3".
+	Commands used to clear object groups and objects have different
+	syntax in PIX 6.3 and PIX 7 and later.
+
 	* linux24/check_utilities: fixes #1999 "log() does not work" Using
 	built-in utitlity "command" to verify that all the tools generated
 	script needs to function properly are available and can be

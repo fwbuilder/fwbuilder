@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3457
+!  Firewall Builder  fwb_pix v4.2.0.3470
 !
-!  Generated Thu Feb  3 10:06:56 2011 PST by vadim
+!  Generated Thu Feb 10 15:07:05 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -91,8 +91,8 @@ fixup protocol skinny 2000
 fixup protocol smtp 25
 fixup protocol sqlnet 1521
 
-clear conf object-group
-clear conf object
+clear object-group
+
 
 
 object-group network id3DB0FA90.dst.net.0

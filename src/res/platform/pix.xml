@@ -53,6 +53,7 @@
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
+            <clear_obj></clear_obj>
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
@@ -138,6 +139,7 @@
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
+            <clear_obj></clear_obj>
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
@@ -223,6 +225,7 @@
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
+            <clear_obj></clear_obj>
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
@@ -308,6 +311,7 @@
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
+            <clear_obj>clear config object</clear_obj>
             <clear_icmp>clear config icmp</clear_icmp>
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
@@ -394,6 +398,7 @@
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
+            <clear_obj>clear config object</clear_obj>
             <clear_icmp>clear config icmp</clear_icmp>
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
@@ -480,6 +485,7 @@
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
+            <clear_obj>clear config object</clear_obj>
             <clear_icmp>clear config icmp</clear_icmp>
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
@@ -567,6 +573,7 @@
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
+            <clear_obj>clear config object</clear_obj>
             <clear_icmp>clear config icmp</clear_icmp>
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
