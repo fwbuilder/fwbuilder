@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <FWBuilderResources>
     <Target name="pix">
-      <description>Cisco ASA (PIX)</description>
+      <description>Cisco ASA / Cisco PIX</description>
       <status>active</status>
       <group>Cisco</group>
       <compiler>fwb_pix</compiler>

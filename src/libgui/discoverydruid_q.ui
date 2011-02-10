@@ -407,7 +407,7 @@
           <widget class="QComboBox" name="import_platform">
            <item>
             <property name="text">
-             <string>Cisco IOS</string>
+             <string>Cisco Router IOS</string>
             </property>
            </item>
            <item>
