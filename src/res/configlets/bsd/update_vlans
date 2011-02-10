@@ -52,7 +52,7 @@ parse_fwb_vlans() {
 
 parse_current_vlans() {
     vlan_parent_interface=$1
-    $IFCONFIG {{if openbsd}}-A{{endif}} | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    $IFCONFIG {{if openbsd}}-A{{endif}} | grep 'vlan: ' | sed 's/parent interface://' | \
     while read x vlan_id parent
     do
        test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"

@@ -1,3 +1,9 @@
+2011-02-10  vadim  <vadim@netcitadel.com>
+
+	* configlets/bsd/update_vlans: fixes #2066 "Existing VLAN
+	interfaces are not properly removed from FreeBSD and install
+	script fails"
+
 2011-02-09  Vadim Kurland  <vadim@netcitadel.com>
 
 	* RuleSetView.cpp (showToolTip): fixes #1915 "tooltip shown when
