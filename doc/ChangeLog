@@ -1,5 +1,10 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_ipt.cpp (getAddressTableVarName): fixed SF bug
+	#3102044 "Colon in (runtime) Address Table name". Variable used to
+	process addresses in the run-time address table should not use
+	character ":" even if it appears in the Address Table object name.
+
 	* instDialog_ui_ops.cpp (summary): fixed SF bug 3169045: "Batch
 	installer lists IPv4 address as management address". The "summary"
 	display in the installer progress log output will now show putty

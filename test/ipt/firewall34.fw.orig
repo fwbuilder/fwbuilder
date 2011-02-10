@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3457
+#  Firewall Builder  fwb_ipt v4.2.0.3469
 #
-#  Generated Thu Feb  3 14:42:06 2011 PST by vadim
+#  Generated Thu Feb 10 12:04:57 2011 PST by vadim
 #
 # files: * firewall34.fw /etc/fw/firewall34.fw
 #
@@ -241,7 +241,8 @@ check_file() {
 
 check_run_time_address_table_files() {
     :
-    check_file "block_these" "block-hosts.tbl"
+    check_file "addr-table-1:a" "addr-table-1.tbl"
+check_file "block_these" "block-hosts.tbl"
 }
 
 load_modules() {
@@ -540,6 +541,17 @@ script_body() {
     $IPTABLES -A Cid45948F957794.2  -d 192.168.1.200   -j ACCEPT
     $IPTABLES -A Cid45948F957794.2  -d 192.168.1.201   -j ACCEPT
     $IPTABLES -A Cid45948F957794.2  -d 192.168.2.128/25   -j ACCEPT
+    # 
+    # Rule 15 (global)
+    # 
+    echo "Rule 15 (global)"
+    # 
+    grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
+      set $L; at_addr_table_1_a=$1; $IPTABLES -A OUTPUT  -d $at_addr_table_1_a   -m state --state NEW  -j ACCEPT 
+    done
+    grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
+      set $L; at_addr_table_1_a=$1; $IPTABLES -A FORWARD  -d $at_addr_table_1_a   -m state --state NEW  -j ACCEPT 
+    done
 
 
     # ================ IPv6
@@ -636,7 +648,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb  3 14:42:06 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 10 12:04:57 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
