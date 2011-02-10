@@ -313,6 +313,8 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
                                                     InetAddrMask old_net,
                                                     InetAddrMask new_net)
 {
+    if(old_net.isAny()) return;  // do not replace references to 0/0
+
     QString filename = mw->activeProject()->getFileName();
 
     // Find all matching Network and NetworkIPv6

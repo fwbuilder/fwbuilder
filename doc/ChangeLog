@@ -1,5 +1,9 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* newFirewallDialog_from_template.cpp (replaceReferencesToNetworks):
+	fixes #1979 "New firewall created with Cisco c36xx template
+	results in network object in interface column in Policy"
+
 	* ObjectManipulator_tree_ops.cpp (getTreeLabel): fixes #2067 "Add
 	way to show interface label in object tree". The tree now shows
 	interface name and label if the label is not empty.

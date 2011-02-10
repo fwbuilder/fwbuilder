@@ -99,6 +99,7 @@ public:
 
     virtual unsigned int dimension()  const;
 
+    bool isAny();
     
     InetAddrMask& operator=(const InetAddrMask &o);
     bool operator<(const InetAddrMask &b);

@@ -135,6 +135,11 @@ InetAddrMask::~InetAddrMask()
     if (broadcast_address!=NULL) delete broadcast_address;
 }
 
+bool InetAddrMask::isAny()
+{
+    return (address->isAny() && netmask->isAny());
+}
+
 void InetAddrMask::setAddress(const InetAddr &a)
 {
     *address = a;
