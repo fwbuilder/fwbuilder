@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3465
+#  Firewall Builder  fwb_pf v4.2.0.3469
 #
-#  Generated Tue Feb  8 14:11:25 2011 PST by vadim
+#  Generated Thu Feb 10 11:23:10 2011 PST by vadim
 #
 # files: * pf_cluster_3_openbsd-4.fw /etc/pf_cluster_3_openbsd-4.fw
 # files:   pf_cluster_3_openbsd-4.conf /etc/pf_cluster_3_openbsd-4.conf
@@ -177,9 +177,9 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     sync_carp_interfaces carp0 carp1 carp2
-    $IFCONFIG carp0 vhid  pass ""   advskew 1  carpdev en0
-    $IFCONFIG carp1 vhid  pass ""   advskew 1  carpdev en1
-    $IFCONFIG carp2 vhid  pass ""   advskew 1  carpdev vlan100
+    $IFCONFIG carp0 vhid 1 pass ""   advskew 1  carpdev en0
+    $IFCONFIG carp1 vhid 1 pass ""   advskew 1  carpdev en1
+    $IFCONFIG carp2 vhid 1 pass ""   advskew 1  carpdev vlan100
     update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
     update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
     update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
@@ -190,7 +190,7 @@ configure_interfaces() {
     update_addresses_of_interface "vlan100 172.20.0.3/0xffffff00" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 14:11:25 2011 by vadim"
+log "Activating firewall script generated Thu Feb 10 11:23:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

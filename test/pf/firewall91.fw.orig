@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3465
+#  Firewall Builder  fwb_pf v4.2.0.3469
 #
-#  Generated Tue Feb  8 14:11:21 2011 PST by vadim
+#  Generated Thu Feb 10 11:23:07 2011 PST by vadim
 #
 # files: * firewall91.fw /etc/fw/pf.fw
 # files:   firewall91.conf /etc/fw/pf.conf
@@ -140,13 +140,13 @@ missing_vlan() {
     vlan_id=$(echo $subint | sed 's/vlan//')
     test "$cmd" = "add" && {
         echo "# Adding VLAN interface $subint (parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent
-        $FWBDEBUG $IFCONFIG $subint up
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent || exit 1
+        $FWBDEBUG $IFCONFIG $subint up || exit 1
     }
     test "$cmd" = "rem" && {
         echo "# Removing VLAN interface $subint (parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev
-        $FWBDEBUG $IFCONFIG $subint destroy
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev || exit 1
+        $FWBDEBUG $IFCONFIG $subint destroy || exit 1
     }
 }
 
@@ -165,7 +165,7 @@ parse_fwb_vlans() {
 
 parse_current_vlans() {
     vlan_parent_interface=$1
-    $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    $IFCONFIG -A | grep 'vlan: ' | sed 's/parent interface://' | \
     while read x vlan_id parent
     do
        test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
@@ -180,7 +180,7 @@ update_vlans_of_interface() {
     FWB_VLANS=$(parse_fwb_vlans "$args")
     CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
 
-    $IFCONFIG $vlan_parent_interface up
+    $IFCONFIG $vlan_parent_interface up || exit 1
     diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
     diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
 }
@@ -194,13 +194,13 @@ sync_vlan_interfaces() {
          ($1 ~ /^vlan[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
          while read intf; do
             echo "# Deleting vlan interface $intf"
-             $FWBDEBUG $IFCONFIG $intf destroy
+             $FWBDEBUG $IFCONFIG $intf destroy || exit 1
          done
 
     for intf in $*; do
         $IFCONFIG $intf >/dev/null 2>&1 || {
             echo "# Creating vlan interface $intf"
-            $FWBDEBUG $IFCONFIG $intf create
+            $FWBDEBUG $IFCONFIG $intf create || exit 1
         }
     done
 }
@@ -240,7 +240,7 @@ configure_interfaces() {
     update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Tue Feb  8 14:11:21 2011 by vadim"
+log "Activating firewall script generated Thu Feb 10 11:23:07 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

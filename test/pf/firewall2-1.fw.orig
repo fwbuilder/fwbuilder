@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3465
+#  Firewall Builder  fwb_pf v4.2.0.3469
 #
-#  Generated Tue Feb  8 14:11:08 2011 PST by vadim
+#  Generated Thu Feb 10 11:22:53 2011 PST by vadim
 #
 # files: * firewall2-1.fw /etc/fw/firewall2-1.fw
 # files:   firewall2-1.conf /etc/fw/firewall2-1.conf
@@ -15,7 +15,6 @@
 
 # firewall2-1:NAT:17: warning: Rule set NAT of firewall firewall2-1 has branching rule that loops back to it
 
-# firewall2-1:NAT:0: error: There should be no more than one object in original destination
 # firewall2-1:NAT:1: error: Negation in original service is not supported.
 # firewall2-1:NAT:2: error: Can not translate 'any' into a specific service.
 # firewall2-1:NAT:3: error: Can not use negation in translated source.
@@ -89,7 +88,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Tue Feb  8 14:11:08 2011 by vadim"
+log "Activating firewall script generated Thu Feb 10 11:22:53 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

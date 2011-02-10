@@ -373,15 +373,6 @@ bool NATCompiler_pf::VerifyRules::processNext()
         return true;
     }
 
-
-    if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
-    {
-	compiler->abort(
-            rule, 
-            "There should be no more than one object in original destination");
-        return true;
-    }
-
     if (osrv->getNeg())
     {
         compiler->abort(

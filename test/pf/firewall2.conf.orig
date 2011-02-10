@@ -22,9 +22,10 @@ scrub in all fragment reassemble no-df
 scrub out all random-id min-ttl  32 max-mss  1460
 
 
-# Tables: (3)
+# Tables: (4)
 table <tbl.r1> { 192.168.1.10 , 192.168.1.20 } 
 table <tbl.r16> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.1 } 
+table <tbl.r29> { 192.168.1.0/24 , 192.168.2.0/24 } 
 table <tbl.r5.s> { 22.22.22.22 , 22.22.23.23 , 192.168.1.0/24 , 192.168.1.1 , 192.168.2.1 } 
 
 # 
@@ -115,19 +116,31 @@ rdr proto tcp from 192.168.1.0/24 to any port 80 -> 192.168.1.1 port 80
 rdr proto tcp from any to <tbl.r16> port 1080 -> 127.0.0.1 port 80 
 # 
 # Rule  28 (NAT)
+# SF bug 3162862
+rdr proto tcp from 192.168.1.0/24 to ! 192.168.1.0/24 port 80 -> 192.168.1.10 port 10000:* 
+# 
+# Rule  29 (NAT)
+# SF bug 3162862
+rdr proto tcp from 192.168.1.0/24 to ! <tbl.r29> port 80 -> 192.168.1.10 port 10000:* 
+# 
+# Rule  30 (NAT)
+# SF bug 3162862
+rdr proto tcp from 192.168.1.0/24 to ! <tbl.r29> port 80 -> 127.0.0.1 port 10000:* 
+# 
+# Rule  31 (NAT)
 # for bug 1111267: this custom service object has
 # "proto ..." in the protocol string, compiler can put
 # it in generated nat command in the right place.
 nat on eth1 proto  {tcp udp icmp gre} from 192.168.1.0/24 to any -> 22.22.22.22 
 # 
-# Rule  29 (NAT)
+# Rule  32 (NAT)
 # for bug 1111267: this custom service object
 # has "proto .." in the code string but we can't insert
 # it in the generated nat command b/c it would appear 
 # in the wrong place, after "from".
 nat on eth1 from 192.168.1.0/24 to any -> 22.22.22.22 
 # 
-# Rule  30 (NAT)
+# Rule  33 (NAT)
 nat on eth1 proto 47 from 192.168.1.0/24 to any -> 22.22.22.22 
 nat on eth1 proto icmp from 192.168.1.0/24 to any -> 22.22.22.22 
 nat on eth1 proto tcp from 192.168.1.0/24 to any  -> 22.22.22.22 

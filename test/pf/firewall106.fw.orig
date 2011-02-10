@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3465
+#  Firewall Builder  fwb_pf v4.2.0.3469
 #
-#  Generated Tue Feb  8 14:11:01 2011 PST by vadim
+#  Generated Thu Feb 10 11:22:46 2011 PST by vadim
 #
 # files: * firewall106.fw /etc/fw/pf.fw
 # files:   firewall106.conf /etc/fw/path\ with\ space/pf.conf

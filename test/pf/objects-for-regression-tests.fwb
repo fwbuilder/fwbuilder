@@ -4089,7 +4089,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1261961536" lastInstalled="0" lastModified="1261961503" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1261961536" lastInstalled="0" lastModified="1297365393" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -4712,7 +4712,72 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41F9FFBB" disabled="False" group="" position="28" action="Translate" comment="for bug 1111267: this custom service object has&#10;&quot;proto ...&quot; in the protocol string, compiler can put&#10;it in generated nat command in the right place.">
+          <NATRule id="id294558X26175" disabled="False" group="" position="28" action="Translate" comment="SF bug 3162862">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="net-Internal_net"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id424735X26175" disabled="False" group="" position="29" action="Translate" comment="SF bug 3162862">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3CEBFDFC"/>
+              <ObjectRef ref="id4733FFE419714"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id511857X26175" disabled="False" group="" position="30" action="Translate" comment="SF bug 3162862">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="True">
+              <ObjectRef ref="id3CEBFDFC"/>
+              <ObjectRef ref="id4733FFE419714"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id3AFB66C6"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B20468D"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id41F9FFBB" disabled="False" group="" position="31" action="Translate" comment="for bug 1111267: this custom service object has&#10;&quot;proto ...&quot; in the protocol string, compiler can put&#10;it in generated nat command in the right place.">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4733,7 +4798,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id15833X50242" disabled="False" group="" position="29" action="Translate" comment="for bug 1111267: this custom service object&#10;has &quot;proto ..&quot; in the code string but we can't insert&#10;it in the generated nat command b/c it would appear &#10;in the wrong place, after &quot;from&quot;.&#10;">
+          <NATRule id="id15833X50242" disabled="False" group="" position="32" action="Translate" comment="for bug 1111267: this custom service object&#10;has &quot;proto ..&quot; in the code string but we can't insert&#10;it in the generated nat command b/c it would appear &#10;in the wrong place, after &quot;from&quot;.&#10;">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4754,7 +4819,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41FA0A82" disabled="False" group="" position="30" action="Translate" comment="">
+          <NATRule id="id41FA0A82" disabled="False" group="" position="33" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>

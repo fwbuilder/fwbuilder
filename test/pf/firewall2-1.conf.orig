@@ -22,11 +22,11 @@ scrub in all fragment reassemble no-df
 scrub out all random-id min-ttl  32 max-mss  1460
 
 
-# Tables: (1)
+# Tables: (2)
+table <tbl.r0> { 22.22.22.22 , 192.168.1.1 } 
 table <tbl.r9998.d> { 22.22.22.22 , 192.168.1.1 , 192.168.2.1 } 
 
 # NAT compiler errors and warnings:
-# firewall2-1:NAT:0: error: There should be no more than one object in original destination
 # firewall2-1:NAT:1: error: Negation in original service is not supported.
 # firewall2-1:NAT:2: error: Can not translate 'any' into a specific service.
 # firewall2-1:NAT:3: error: Can not use negation in translated source.
@@ -41,6 +41,9 @@ table <tbl.r9998.d> { 22.22.22.22 , 192.168.1.1 , 192.168.2.1 }
 # firewall2-1:NAT:16: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
 # firewall2-1:NAT:16: error: Action 'Branch' needs NAT rule set to point to
 # firewall2-1:NAT:17: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+# 
+# Rule  0 (NAT)
+rdr on eth1 proto {tcp udp icmp} from any to <tbl.r0> -> 192.168.1.10 
 # 
 # Rule  8 (NAT)
 no nat proto tcp from 192.168.1.0/24 to any 
