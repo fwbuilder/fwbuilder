@@ -110,16 +110,18 @@ void IPTImporter::run()
     if (fwbdebug)   parser.dbg = &std::cerr;
     else            parser.dbg = &parser_debug;
 
+    QString parser_err = QObject::tr("Parser error:\n");
+
     try
     {
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << e.toString().c_str();
     } catch(std::exception& e)
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << e.what();
     }
 
@@ -129,11 +131,12 @@ void IPTImporter::run()
         if (countRules()==0) err << noRulesErrorMessage();
     } else
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << noFirewallErrorMessage();
         err << commonFailureErrorMessage();
     }
 
-    if (!err.isEmpty())  throw ImporterException(err.join("\n").toStdString());
+    if (!err.isEmpty())
+        throw ImporterException(err.join("\n").toUtf8().constData());
 }
 

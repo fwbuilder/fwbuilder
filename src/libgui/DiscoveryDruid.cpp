@@ -1709,8 +1709,9 @@ void DiscoveryDruid::updateLog()
             FWException * ex=bop->get_latest_error();
             if (ex!=NULL)
             {
-                QMessageBox::critical(this,tr("Discovery error"), ex->toString().c_str());
-                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");
+                QMessageBox::critical(this,
+                                      tr("Discovery error"),
+                                      ex->toString().c_str());
             }
             if (Objects.size()>0 || Networks.size()>0)
             {
@@ -1755,8 +1756,8 @@ void DiscoveryDruid::updateLog()
             FWException * ex=bop->get_latest_error();
             if (ex!=NULL)
             {
-                QMessageBox::critical(this,tr("Discovery error"), ex->toString().c_str());
-                //m_dialog->discoverylog->append(QString("\nLast exception: ")+ex->toString().c_str()+"\n");
+                QMessageBox::critical(this, tr("Discovery error"),
+                                      ex->toString().c_str());
             }
             if (Objects.size()>0)
             {
@@ -1933,7 +1934,7 @@ int DiscoveryDruid::monitorOperation()
         if (buf.endsWith('\n'))
             buf = buf.left(buf.length() - 1);
 
-        m_dialog->discoverylog->append(buf);
+        m_dialog->discoverylog->insertPlainText(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (1)");
         if (fwbdebug) qDebug(buf.toAscii().constData());
@@ -1965,7 +1966,7 @@ int DiscoveryDruid::monitorOperation()
         if (buf.endsWith('\n'))
             buf = buf.left(buf.length() - 1);
 
-        m_dialog->discoverylog->append(buf);
+        m_dialog->discoverylog->insertPlainText(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (2)");
         if (fwbdebug) qDebug(buf.toAscii().constData());
@@ -2550,7 +2551,7 @@ HostsFileImport::HostsFileImport(const QString &f) :
 
 void HostsFileImport::run()
 {
-    *Log << "Discovery method:"
+    *Log << "Discovery method: "
          << "Read file in hosts format. \n";
 
     map<InetAddr, vector<string> > reverse_hosts;
@@ -2625,8 +2626,7 @@ ConfigImport::~ConfigImport()
 
 void ConfigImport::run()
 {
-    *Log << "Discovery method:"
-         << "Import firewall configuration. \n";
+    *Log << "Discovery method: Import firewall configuration.\n";
 
     std::istringstream instream(*buffer);
     imp = NULL;

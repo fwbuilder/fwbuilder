@@ -57,6 +57,7 @@ void IOSImporter::run()
 //
 
     QStringList err;
+    QString parser_err = QObject::tr("Parser error:\n");
     std::ostringstream parser_debug;
 
     IOSCfgLexer lexer(input);
@@ -70,11 +71,11 @@ void IOSImporter::run()
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << e.toString().c_str();
     } catch(std::exception& e)
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << e.what();
     }
 
@@ -84,11 +85,12 @@ void IOSImporter::run()
         if (countRules()==0) err << noRulesErrorMessage();
     } else
     {
-        err << QObject::tr("Parser error:");
+        err << parser_err;
         err << noFirewallErrorMessage();
         err << commonFailureErrorMessage();
     }
 
-    if (!err.isEmpty())  throw ImporterException(err.join("\n").toStdString());
+    if (!err.isEmpty())
+        throw ImporterException(err.join("\n").toUtf8().constData());
 }
 

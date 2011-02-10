@@ -1050,7 +1050,8 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     rule_comment += comment;
     //current_rule->setComment(comment);
 
-    *logger << "Parser error: " << comment << "\n";
+    *logger << QObject::tr("Parser error:\n").toUtf8().constData()
+        << comment << "\n";
 
     error_counter++;
 }
@@ -1086,21 +1087,27 @@ QString Importer::noFirewallErrorMessage()
 {
     return QObject::tr(
         "Could not find enough information in the data file "
-        "to create firewall object.");
+        "to create firewall object."
+        "\n\n"
+    );
 }
 
 QString Importer::noRulesErrorMessage()
 {
     return QObject::tr(
         "Could not find enough information in the data file "
-        "to create any firewall rules.");
+        "to create any firewall rules."
+        "\n\n"
+    );
 }
 
 QString Importer::noInterfacesErrorMessage()
 {
     return QObject::tr(
         "Could not find enough information in the data file "
-        "to create firewall interface objects.");
+        "to create firewall interface objects."
+        "\n\n"
+    );
 }
 
 /*
