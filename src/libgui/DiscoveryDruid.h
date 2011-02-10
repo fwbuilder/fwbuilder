@@ -187,6 +187,7 @@ private:
     QButtonGroup * dm_method;
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
+    QTextCharFormat warning_format;
 
     bool isSeedHostOK;
     bool isSNMPInclNetOK;

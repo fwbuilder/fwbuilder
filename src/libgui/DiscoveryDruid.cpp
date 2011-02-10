@@ -107,6 +107,7 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
 
     QTextCursor cursor(m_dialog->discoverylog->textCursor());
     normal_format = cursor.charFormat();
+
     error_format = normal_format;
     error_format.setForeground(QBrush(Qt::red));
     error_format.setAnchorHref("http://somewhere.com");
@@ -114,6 +115,12 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     // weight must be between 0 and 99. Qt 4.4.1 does not seem to mind if
     // it is >99 (just caps it) but older versions assert
     error_format.setProperty(QTextFormat::FontWeight, 99);
+
+    warning_format = normal_format;
+    warning_format.setForeground(QBrush(Qt::blue));
+    warning_format.setProperty(QTextFormat::FontWeight, 99);
+    warning_format.setAnchor(true);
+    warning_format.setAnchorHref("http://somewhere.com");
 
     dm_method = new QButtonGroup;
     dm_method->addButton(m_dialog->dm_fromfile,0);
@@ -1799,21 +1806,20 @@ void DiscoveryDruid::addToLog(const QString &buf)
         QTextCharFormat format = normal_format;
 
         if (line.contains("Parser error"))
-        {
             format = error_format;
-        }
+
+        if (line.contains("SNMP error, status 2 Timeout"))
+            format = warning_format;
 
         QString txt = line;
         while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
             txt.chop(1);
 
-        if (format == error_format)
+        if (format == error_format || format == warning_format)
             format.setAnchorHref(txt);
 
         QTextCursor cursor = m_dialog->discoverylog->textCursor();
-
         cursor.insertBlock();
-
         cursor.insertText(txt, format);
     }
 
