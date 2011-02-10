@@ -118,8 +118,13 @@ void ImporterTest::compareResults(QueueLogger* logger,
     QString result_file = rr.readAll();
     QStringList expected_result = result_file.split("\n");
 
-    CPPUNIT_ASSERT_MESSAGE("Sizes of the generated importer output and test files are different",
-                           expected_result.size() == obtained_result.size());
+    CPPUNIT_ASSERT_MESSAGE(
+        QString(
+            "Sizes of the generated importer output and test files are different. "
+            "Expected: %1 (%2)   Obtained: %3 (%4)")
+        .arg(expected_result_file_name).arg(expected_result.size())
+        .arg(obtained_result_file_name).arg(obtained_result.size()).toStdString(),
+        expected_result.size() == obtained_result.size());
 
     int max_idx = max(expected_result.size(), obtained_result.size());
     for (int i=0; i < max_idx; ++i)
