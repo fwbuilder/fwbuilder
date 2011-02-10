@@ -492,28 +492,14 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
     if (!cnf->putty_session.isEmpty())
         target = QString("%1%2:%3").arg(user_spec)
-            .arg(cnf->putty_session).arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
+            .arg(cnf->putty_session)
+            .arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
     else
         target = QString("%1%2:%3").arg(user_spec)
-            .arg(mgmt_addr).arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
+            .arg(mgmt_addr)
+            .arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
 
     args.push_back(target);
-
-/*
-    if (!cnf->putty_session.isEmpty())
-    {
-        args.push_back(cnf->putty_session + ":" +
-                       fwcompiler::CompilerDriver::escapeFileName(remote_name));
-    } else
-    {
-        if (!cnf->user.isEmpty())
-            args.push_back(cnf->user + "@" + mgmt_addr + ":" +
-                           fwcompiler::CompilerDriver::escapeFileName(remote_name));
-        else
-            args.push_back(mgmt_addr + ":" +
-                           fwcompiler::CompilerDriver::escapeFileName(remote_name));
-    }
-*/
 }
 
 /*

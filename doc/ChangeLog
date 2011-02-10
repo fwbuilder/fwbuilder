@@ -1,5 +1,10 @@
 2011-02-10  vadim  <vadim@netcitadel.com>
 
+	* instDialog_ui_ops.cpp (summary): fixed SF bug 3169045: "Batch
+	installer lists IPv4 address as management address". The "summary"
+	display in the installer progress log output will now show putty
+	session name if it is used instead of the management address.
+
 	* NATCompiler_pf.cpp (processNext): fixes #2069 "PF: allow
 	multiple objects in ODst of redirecting nat rule". This fixes SF
 	bug 3162862 "NAT - more than one object in original destination"
