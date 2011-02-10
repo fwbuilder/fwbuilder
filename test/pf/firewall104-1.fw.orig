@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3469
 #
-#  Generated Thu Feb 10 11:22:45 2011 PST by vadim
+#  Generated Thu Feb 10 12:17:40 2011 PST by vadim
 #
 # files: * firewall104-1.fw /etc/fw/pf.fw
 # files:   firewall104-1.conf /etc/fw/path\ with\ space/pf.conf
@@ -381,7 +381,7 @@ configure_interfaces() {
     update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Thu Feb 10 11:22:45 2011 by vadim"
+log "Activating firewall script generated Thu Feb 10 12:17:40 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

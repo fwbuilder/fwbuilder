@@ -252,8 +252,8 @@ void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
             if (int_prop->parseVlan(vlan_intf_name,
                                     &parent_name_from_regex, &vlan_id))
             {
-                outp << QString("create_args_%1=\"vlan %2\"")
-                    .arg(vlan_intf_name).arg(vlan_id);
+                outp << QString("create_args_%1=\"vlan %2 vlandev %3\"")
+                    .arg(vlan_intf_name).arg(vlan_id).arg(iface->getName().c_str());
             }
         }
         interface_configuration_lines <<  outp.join("\n");
