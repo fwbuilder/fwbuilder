@@ -29,7 +29,6 @@
 
 #include "../../config.h"
 #include <ui_discoverydruid_q.h>
-#include <QDialog>
 
 #include <qobject.h>
 #include <qthread.h>
@@ -47,6 +46,9 @@
 
 #include <vector>
 #include <string>
+
+#include <QDialog>
+#include <QTextCharFormat>
 
 
 using namespace std;
@@ -183,6 +185,8 @@ private:
     FilterDialog * flt_net_d;
     Ui::DiscoveryDruid_q * m_dialog;
     QButtonGroup * dm_method;
+    QTextCharFormat normal_format;
+    QTextCharFormat error_format;
 
     bool isSeedHostOK;
     bool isSNMPInclNetOK;
@@ -226,6 +230,7 @@ private:
     FWObject* addInterface(libfwbuilder::FWObject *parent,
                            libfwbuilder::InterfaceData *in,
                            bool skip_ip_address_check);
+    void addToLog(const QString &buf);
     
 public:
 

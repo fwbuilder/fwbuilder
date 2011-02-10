@@ -105,6 +105,16 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
 
+    QTextCursor cursor(m_dialog->discoverylog->textCursor());
+    normal_format = cursor.charFormat();
+    error_format = normal_format;
+    error_format.setForeground(QBrush(Qt::red));
+    error_format.setAnchorHref("http://somewhere.com");
+    error_format.setAnchor(true);
+    // weight must be between 0 and 99. Qt 4.4.1 does not seem to mind if
+    // it is >99 (just caps it) but older versions assert
+    error_format.setProperty(QTextFormat::FontWeight, 99);
+
     dm_method = new QButtonGroup;
     dm_method->addButton(m_dialog->dm_fromfile,0);
     dm_method->addButton(m_dialog->dm_importdns,1);
@@ -1001,7 +1011,7 @@ void DiscoveryDruid::stopBackgroundProcess()
 
     if (bop!=NULL && bop->isRunning())
     {
-        m_dialog->discoverylog->append("Terminating task. Please wait...");
+        addToLog("Terminating task. Please wait...");
 
         bop->stop_operation();
         m_dialog->discoveryStopButton->setEnabled(false);
@@ -1422,7 +1432,7 @@ void DiscoveryDruid::startSNMPScan()
     {
         logger = bop->start_operation();
         if (fwbdebug) logger->copyToStderr();
-        m_dialog->discoverylog->append("Collecting data ...");
+        addToLog("Collecting data ...");
 
         disconnect(timer, SIGNAL(timeout()), 0, 0);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateLog()));
@@ -1510,10 +1520,8 @@ void DiscoveryDruid::loadDataFromCrawler()
                     od.sysname = hostName.toLatin1().constData();
             }
 
-            QString buf;
-
-            buf = QString(od.addr.toString().c_str()) + " : " + od.sysname.c_str();
-            m_dialog->discoverylog->append(buf);
+            addToLog(
+                QString(od.addr.toString().c_str()) + " : " + od.sysname.c_str());
 
         }
 
@@ -1684,7 +1692,7 @@ void DiscoveryDruid::updateLog()
             while(thread->Log->ready())
             {
                 buf = thread->Log->getLine().c_str();
-                m_dialog->discoverylog->insertPlainText(buf);
+                addToLog(buf);
             }
         }
     }
@@ -1780,6 +1788,36 @@ void DiscoveryDruid::updateLog()
             m_dialog->discoveryStopButton->setEnabled(false);
        }
     }
+}
+
+void DiscoveryDruid::addToLog(const QString &buf)
+{
+    if (buf.isEmpty()) return;
+
+    foreach(QString line, buf.trimmed().split("\n"))
+    {
+        QTextCharFormat format = normal_format;
+
+        if (line.contains("Parser error"))
+        {
+            format = error_format;
+        }
+
+        QString txt = line;
+        while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
+            txt.chop(1);
+
+        if (format == error_format)
+            format.setAnchorHref(txt);
+
+        QTextCursor cursor = m_dialog->discoverylog->textCursor();
+
+        cursor.insertBlock();
+
+        cursor.insertText(txt, format);
+    }
+
+    m_dialog->discoverylog->ensureCursorVisible();
 }
 
 void DiscoveryDruid::changedSeedHost()
@@ -1934,7 +1972,7 @@ int DiscoveryDruid::monitorOperation()
         if (buf.endsWith('\n'))
             buf = buf.left(buf.length() - 1);
 
-        m_dialog->discoverylog->insertPlainText(buf);
+        addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (1)");
         if (fwbdebug) qDebug(buf.toAscii().constData());
@@ -1966,7 +2004,7 @@ int DiscoveryDruid::monitorOperation()
         if (buf.endsWith('\n'))
             buf = buf.left(buf.length() - 1);
 
-        m_dialog->discoverylog->insertPlainText(buf);
+        addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (2)");
         if (fwbdebug) qDebug(buf.toAscii().constData());
