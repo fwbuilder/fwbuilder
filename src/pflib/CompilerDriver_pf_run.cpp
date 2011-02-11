@@ -666,7 +666,11 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             QString ruleset_name = it.key();
             if (ruleset_name == "__main__") continue;
             QString remote_file_name = it.value();
-            *(generated_scripts["__main__"]) << QString("load anchor %1 from \"%2\"")
+            ostringstream *ostr = generated_scripts["__main__"];
+            // note that ostr can be NULL if the firewall we are
+            // trying to compile has no top-level rule sets
+            if (ostr == NULL) continue;
+            *ostr << QString("load anchor %1 from \"%2\"")
                 .arg(ruleset_name).arg(remote_file_name).toUtf8().constData()
                                              << endl;
         }
@@ -683,6 +687,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             QString ruleset_name = fi->first;
             QString file_name = rulesets_to_file_names[ruleset_name]; // file_names[idx];
             ostringstream *strm = fi->second;
+
+            if (strm==NULL) continue;
 
             if (ruleset_name.contains("/*")) continue;
 
