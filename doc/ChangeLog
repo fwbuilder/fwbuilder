@@ -1,5 +1,9 @@
 2011-02-11  vadim  <vadim@netcitadel.com>
 
+	* configlets/bsd/update_carp: see #2078 added verbose error
+	message in a situation when "ifconfig carp0 create" command fails
+	to create CARP interface.
+
 	* OSConfigurator_bsd_interfaces.cpp (interfaceIfconfigLine): fixes
 	#2058 "Ability to configure mtu and metric of regular inetrfaces".
 	"Advanced settings" dialog of the interface object provides

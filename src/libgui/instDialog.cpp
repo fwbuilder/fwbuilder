@@ -116,7 +116,7 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     err_re.push_back("(fwb_[^:]*: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)");
     foreach(string re, err_re)
     {
-        error_re.push_back(QRegExp(re.c_str()));
+        error_re.push_back(QRegExp(re.c_str(), Qt::CaseInsensitive));
     }
 
     list<string> warn_re;

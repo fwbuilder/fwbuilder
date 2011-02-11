@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3471
 #
-#  Generated Fri Feb 11 12:26:54 2011 PST by vadim
+#  Generated Fri Feb 11 13:48:16 2011 PST by vadim
 #
 # files: * firewall62.fw /etc/firewall62.fw
 # files:   firewall62.conf /etc/firewall62.conf
@@ -185,7 +185,7 @@ configure_interfaces() {
     update_addresses_of_interface "en1 222.222.222.222/0xffffff00" ""
 }
 
-log "Activating firewall script generated Fri Feb 11 12:26:54 2011 by vadim"
+log "Activating firewall script generated Fri Feb 11 13:48:16 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

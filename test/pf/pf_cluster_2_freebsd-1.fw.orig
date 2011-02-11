@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3471
 #
-#  Generated Fri Feb 11 12:56:32 2011 PST by vadim
+#  Generated Fri Feb 11 13:48:24 2011 PST by vadim
 #
 # files: * pf_cluster_2_freebsd-1.fw /etc/pf_cluster_2_freebsd-1.fw
 # files:   pf_cluster_2_freebsd-1.conf /etc/pf_cluster_2_freebsd-1.conf
@@ -225,7 +225,10 @@ sync_carp_interfaces() {
         $IFCONFIG $intf >/dev/null 2>&1 || {
             echo "# Creating carp interface $intf"
             $SYSCTL -w net.inet.carp.allow=1
-            $FWBDEBUG $IFCONFIG $intf create
+            $FWBDEBUG $IFCONFIG $intf create || {
+                echo "Error: CARP interface $intf could not be created. Does the kernel have CARP enabled?"
+                exit 1
+            }
         }
     done
 }
@@ -291,7 +294,7 @@ configure_interfaces() {
     update_addresses_of_interface "en1 192.168.1.2/0xffffff00" ""
 }
 
-log "Activating firewall script generated Fri Feb 11 12:56:32 2011 by vadim"
+log "Activating firewall script generated Fri Feb 11 13:48:24 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
