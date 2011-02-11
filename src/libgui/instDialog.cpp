@@ -465,7 +465,7 @@ void instDialog::showPage(const int page)
                 // least one firewall that was successfully compiled.
                 bool can_install = false;
                 list<Firewall*>::iterator i;
-                for(i=install_fw_list.begin(); i!=install_fw_list.end(); ++i)
+                for(i=compile_fw_list.begin(); i!=compile_fw_list.end(); ++i)
                 {
                     Firewall *fw = *i;
                     if (compile_status[fw] ==

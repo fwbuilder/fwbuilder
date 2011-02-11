@@ -359,6 +359,9 @@ void instDialog::setInProcessState(QTreeWidgetItem *item)
 
 void instDialog::opSuccess(Firewall *fw)
 {
+    if (fwbdebug)
+        qDebug() << "instDialog::opSuccess fw=" << fw->getName().c_str();
+
     compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
     if (itm)
@@ -374,6 +377,9 @@ void instDialog::opSuccess(Firewall *fw)
 
 void instDialog::opError(Firewall *fw)
 {
+    if (fwbdebug)
+        qDebug() << "instDialog::opError fw=" << fw->getName().c_str();
+
     compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_ERROR;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
     if (itm)
