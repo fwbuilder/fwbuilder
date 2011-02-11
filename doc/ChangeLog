@@ -1,5 +1,14 @@
 2011-02-11  vadim  <vadim@netcitadel.com>
 
+	* instDialog_ui_ops.cpp (verifyManagementAddress): see #2073 "Add
+	additional information or workflow when no management inferface
+	configured". The error message shown to the user when no
+	interfaces has been marked as "management" is now more verbose and
+	provides instructions how to do this. Also, if user provided
+	alternative address to be used to communicate with the firewall,
+	the check for the management interface is not performed since it
+	is not needed.
+
 	* configlets/bsd/update_carp: see #2078 added verbose error
 	message in a situation when "ifconfig carp0 create" command fails
 	to create CARP interface.

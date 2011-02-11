@@ -1335,7 +1335,7 @@ bool instDialog::verifyManagementAddress()
 /* check for a common error when none or multiple interfaces are marked as
  * 'management'
  */
-    if (cnf.fwobj)
+    if (cnf.maddr.isEmpty() && cnf.fwobj)
     {
         int nmi = 0;
         list<FWObject*> ll = cnf.fwobj->getByTypeDeep(Interface::TYPENAME);
@@ -1344,6 +1344,7 @@ bool instDialog::verifyManagementAddress()
             Interface *intf = Interface::cast( *i );
             if (intf->isManagement()) nmi++;
         }
+
         if (nmi>1)
         {
             QString err = QObject::tr("Only one interface of the firewall '%1' "
@@ -1355,10 +1356,16 @@ bool instDialog::verifyManagementAddress()
             addToLog(err);
             return false;
         }
+
         if (nmi==0)
         {
-            QString err = QObject::tr("One of the interfaces of the firewall '%1' "
-                                      "must be marked as management interface.\n")
+            QString err = QObject::tr(
+                "One of the interfaces of the firewall '%1' "
+                "must be marked as management interface. "
+                "To set the management interface, double click "
+                "on the interface of the firewall that you will "
+                "connect to and check the box called Management "
+                "interface in the Editor panel")
                 .arg(QString::fromUtf8(cnf.fwobj->getName().c_str()));
 
             QMessageBox::critical(this, "Firewall Builder", err,
@@ -1366,12 +1373,14 @@ bool instDialog::verifyManagementAddress()
             addToLog(err);
             return false;
         }
+
         if (cnf.maddr == "" ||
             cnf.maddr == QString(InetAddr::getAny().toString().c_str()))
         {
-            QString err = QObject::tr("Management interface does not have IP address, "
-                                      "can not communicate with the firewall.\n");
-
+            QString err = QObject::tr(
+                "Management interface does not have IP address, "
+                "can not communicate with the firewall.\n");
+            
             QMessageBox::critical(this, "Firewall Builder", err,
                                   tr("&Continue") );
             addToLog(err);
