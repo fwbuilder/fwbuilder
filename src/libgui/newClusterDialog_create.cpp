@@ -200,7 +200,13 @@ void newClusterDialog::createNewCluster()
         setDefaultFailoverGroupAttributes(failover_grp);
     }
 
-    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 3";
+    // Set correct type of the state sync group (the StateSyncGroup object is
+    // created in Cluster::init()
+
+    FWObject *state_sync_members =
+        ncl->getFirstByType(StateSyncClusterGroup::TYPENAME);
+    setDefaultStateSyncGroupAttributes(
+        StateSyncClusterGroup::cast(state_sync_members));
 
     // Copy rule sets if requested
     Firewall *source = NULL;

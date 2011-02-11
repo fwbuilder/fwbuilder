@@ -38,7 +38,6 @@
 #include <utility>
 
 #include <fwbuilder/Rule.h>
-#include <fwbuilder/FailoverClusterGroup.h>
 
 
 namespace libfwbuilder
@@ -46,6 +45,8 @@ namespace libfwbuilder
     class FWOptions;
     class Firewall;
     class PolicyRule;
+    class FailoverClusterGroup;
+    class StateSyncClusterGroup;
 };
 
 void init_platforms();
@@ -57,6 +58,7 @@ bool isDefaultNATRuleOptions(libfwbuilder::FWOptions *opt);
 bool isDefaultRoutingRuleOptions(libfwbuilder::FWOptions *opt);
 
 void setDefaultFailoverGroupAttributes(libfwbuilder::FailoverClusterGroup *grp);
+void setDefaultStateSyncGroupAttributes(libfwbuilder::StateSyncClusterGroup *grp);
 
 // using list of pairs instead of a map or QMap because maps are dictionaries
 // and do not preserve order of elements

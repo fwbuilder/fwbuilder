@@ -44,6 +44,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Policy.h"
+#include <fwbuilder/FailoverClusterGroup.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
 
 #include <algorithm>
 #include <iostream>
@@ -1001,6 +1003,25 @@ void _repackStringList(list<string> &list1, list<QStringPair> &list2)
         else
             list2.push_back(QStringPair(pl[0], pl[1]));
     }
+}
+
+void setDefaultStateSyncGroupAttributes(StateSyncClusterGroup *grp)
+{
+    FWObject *p = grp;
+    while (p && Cluster::cast(p)==NULL) p = p->getParent();
+    assert(p != NULL);
+    Cluster *cluster = Cluster::cast(p);
+    Resources *os_res = Resources::os_res[cluster->getStr("host_OS")];
+    assert(os_res != NULL);
+
+    list<string> protocols;
+    os_res->getResourceStrList("/FWBuilderResources/Target/protocols/state_sync",
+                               protocols);
+
+    QStringList protocol_names = QString(protocols.front().c_str()).split(",");
+
+    grp->setName(protocol_names[1].toStdString());
+    grp->setStr("type", protocol_names[0].toStdString());
 }
 
 void setDefaultFailoverGroupAttributes(FailoverClusterGroup *grp)

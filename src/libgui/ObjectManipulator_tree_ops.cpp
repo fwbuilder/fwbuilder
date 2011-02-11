@@ -168,6 +168,7 @@ QString ObjectManipulator::getTreeLabel(FWObject *obj, int col)
     case 1:
         return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
     }
+    return "";
 }
 
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
