@@ -312,6 +312,7 @@ string OSConfigurator_bsd::configureInterfaces()
         {
             interfaceConfigLineIP(interfaces_by_name[iface_name],
                                   all_addresses[iface_name]);
+            interfaceIfconfigLine(interfaces_by_name[iface_name]);
         }
     }
 
@@ -350,8 +351,47 @@ string OSConfigurator_bsd::configureInterfaces()
         if (!have_pfsync_interfaces) summaryConfigLinePfsync(false);
     }
 
+
+
     
     return printAllInterfaceConfigurationLines().toStdString();
+}
+
+void OSConfigurator_bsd::interfaceIfconfigLine(Interface *iface)
+{
+    QString iface_name = iface->getName().c_str();
+
+    Configlet configlet(fw, "bsd", "ifconfig_interface");
+    configlet.removeComments();
+    configlet.collapseEmptyStrings(true);
+
+    configlet.setVariable("interface_name", iface_name);
+
+    FWOptions *ifopt = iface->getOptionsObject();
+    assert(ifopt != NULL);
+
+    bool need_additional_ifconfig = false;
+    QStringList ifconfig_options;
+    if (ifopt->getBool("iface_configure_mtu") && ifopt->getInt("iface_mtu") > 0)
+    {
+        configlet.setVariable("have_mtu", true);
+        configlet.setVariable("mtu", ifopt->getInt("iface_mtu"));
+        need_additional_ifconfig = true;
+    } else
+    {
+        configlet.setVariable("have_mtu", false);
+        configlet.setVariable("mtu", "");
+    }
+
+    if (!ifopt->getStr("iface_options").empty())
+    {
+        configlet.setVariable("options", ifopt->getStr("iface_options").c_str());
+        need_additional_ifconfig =true;
+    } else
+        configlet.setVariable("options", "");
+
+    if (need_additional_ifconfig)
+        interface_configuration_lines[iface_name] << configlet.expand();
 }
 
 void OSConfigurator_bsd::summaryConfigLineIP(QStringList , bool )
@@ -364,7 +404,7 @@ void OSConfigurator_bsd::interfaceConfigLineIP(
     if (iface->isDyn()) return;
 
     QStringList arg1;
-    arg1.push_back(iface->getName().c_str());
+    arg1 << iface->getName().c_str();
 
     for (list<pair<InetAddr,InetAddr> >::iterator j = all_addresses.begin();
          j != all_addresses.end(); ++j)
@@ -397,25 +437,22 @@ void OSConfigurator_bsd::interfaceConfigLineIP(
                 nbits--;
             }
 
-            arg1.push_back(QString("%1/0x%2")
-                           .arg(ipaddr.toString().c_str())
-                           .arg(netm, -8, 16));
+            arg1 << QString("%1/0x%2")
+                .arg(ipaddr.toString().c_str()).arg(netm, -8, 16);
         }
     }
 
     QString cmd = QString("update_addresses_of_interface \"%1\" \"\"")
-        .arg(arg1.join(" "));
+         .arg(arg1.join(" "));
 
-    //qDebug() << cmd;
-
-    update_address_lines[iface->getName().c_str()] = cmd;
+    interface_configuration_lines[iface->getName().c_str()] << cmd;
 }
 
 
 
 void OSConfigurator_bsd::summaryConfigLineVlan(QStringList vlan_names)
 {
-    interface_configuration_lines <<
+    interface_configuration_lines["1_should_sort_before_interfaces_"] <<
         QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
 }
 
@@ -423,7 +460,7 @@ void OSConfigurator_bsd::summaryConfigLineVlan(QStringList vlan_names)
 void OSConfigurator_bsd::interfaceConfigLineVlan(Interface *iface,
                                                 QStringList vlan_names)
 {
-    interface_configuration_lines << 
+    interface_configuration_lines[iface->getName().c_str()] << 
         QString("update_vlans_of_interface \"%1 %2\"")
         .arg(iface->getName().c_str())
         .arg(vlan_names.join(" "));
@@ -431,7 +468,7 @@ void OSConfigurator_bsd::interfaceConfigLineVlan(Interface *iface,
 
 void OSConfigurator_bsd::summaryConfigLineBridge(QStringList bridge_names)
 {
-    interface_configuration_lines <<
+    interface_configuration_lines["1_should_sort_before_interfaces_"] <<
         QString("sync_bridge_interfaces %1").arg(bridge_names.join(" "));
 }
 
@@ -439,7 +476,7 @@ void OSConfigurator_bsd::summaryConfigLineBridge(QStringList bridge_names)
 void OSConfigurator_bsd::interfaceConfigLineBridge(Interface *iface,
                                                     QStringList bridge_port_names)
 {
-    interface_configuration_lines <<
+    interface_configuration_lines[iface->getName().c_str()] <<
         QString("update_bridge_interface %1 \"%2\"")
         .arg(iface->getName().c_str())
         .arg(bridge_port_names.join(" "));
@@ -447,7 +484,7 @@ void OSConfigurator_bsd::interfaceConfigLineBridge(Interface *iface,
 
 void OSConfigurator_bsd::summaryConfigLineCARP(QStringList carp_names)
 {
-    interface_configuration_lines <<
+    interface_configuration_lines["1_should_sort_before_interfaces_"] <<
         QString("sync_carp_interfaces %1").arg(carp_names.join(" "));
 }
 
@@ -507,12 +544,12 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
     configlet->setVariable("carp_password", carp_password.c_str());
     configlet->setVariable("vhid", vhid);
 
-    interface_configuration_lines <<  configlet->expand();
+    interface_configuration_lines[iface->getName().c_str()] <<  configlet->expand();
 }
 
 void OSConfigurator_bsd::summaryConfigLinePfsync(bool have_pfsync)
 {
-    interface_configuration_lines <<
+    interface_configuration_lines["1_should_sort_before_interfaces_"] <<
         QString("sync_pfsync_interfaces %1").arg(have_pfsync?"pfsync0":"");
 }
 
@@ -551,20 +588,18 @@ void OSConfigurator_bsd::interfaceConfigLinePfsync(
             configlet.setVariable("syncpeer", addr->toString().c_str());
         }
     }
-    interface_configuration_lines <<  configlet.expand();
+    interface_configuration_lines[iface->getName().c_str()] <<  configlet.expand();
 }
 
 
 QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
-    QStringList keys = update_address_lines.keys();
+    QStringList keys = interface_configuration_lines.keys();
     keys.sort();
-    foreach (QString iface_name, keys)
-    {
-        interface_configuration_lines << update_address_lines[iface_name];
-    }
-
-    return interface_configuration_lines.join("\n");
+    QStringList res;
+    foreach (QString iface, keys)
+        res << interface_configuration_lines[iface].join("\n");
+    return res.join("\n");
 }
 
 

@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3469
+#  Firewall Builder  fwb_pf v4.2.0.3471
 #
-#  Generated Thu Feb 10 12:18:05 2011 PST by vadim
+#  Generated Fri Feb 11 12:27:02 2011 PST by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
 # files:   firewall-ipv6-3.conf /etc/firewall-ipv6-3.conf
@@ -20,22 +20,22 @@ ipv6_gateway_enable="YES"
 
 
 cloned_interfaces="vlan100 vlan101"
+ipv6_network_interfaces="ed0 lo0"
+network_interfaces="ed0 lo0 vlan100 vlan101"
+ifconfig_ed0="1.1.1.1 netmask 0xffffff00"
+ifconfig_ed0="fe80::21d:9ff:fe8b:8e94/64"
+ifconfig_ed0_alias0="10.10.10.1 netmask 0xffffff00"
+ifconfig_ed0_alias0="2001:db8::1/64"
+ifconfig_ed0_alias1="10.10.10.2 netmask 0xffffff00"
+ifconfig_ed0_alias1="2001:db8::2/64"
 vlans_ed1="vlan100 vlan101"
 create_args_vlan100="vlan 100 vlandev ed1"
 create_args_vlan101="vlan 101 vlandev ed1"
-ipv6_network_interfaces="ed0 lo0"
-network_interfaces="ed0 lo0 vlan100 vlan101"
-pfsync_enable="YES"
-ifconfig_ed0="1.1.1.1 netmask 0xffffff00"
-ifconfig_ed0_alias0="10.10.10.1 netmask 0xffffff00"
-ifconfig_ed0_alias1="10.10.10.2 netmask 0xffffff00"
 ifconfig_lo0="127.0.0.1 netmask 0xff000000"
+ifconfig_lo0="::1/128"
+pfsync_enable="YES"
 ifconfig_vlan100="172.16.1.1 netmask 0xfffffff0"
 ifconfig_vlan101="172.16.2.1 netmask 0xfffffff0"
-ifconfig_ed0="fe80::21d:9ff:fe8b:8e94/64"
-ifconfig_ed0_alias0="2001:db8::1/64"
-ifconfig_ed0_alias1="2001:db8::2/64"
-ifconfig_lo0="::1/128"
 
 pf_enable="YES"
 pf_rules="/etc/firewall-ipv6-3.conf"

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3469
+#  Firewall Builder  fwb_pf v4.2.0.3471
 #
-#  Generated Thu Feb 10 12:17:35 2011 PST by vadim
+#  Generated Fri Feb 11 12:26:33 2011 PST by vadim
 #
 # files: * firewall10-1.fw /etc/fw/firewall10-1.fw
 # files:   firewall10-1.conf /etc/fw/firewall10-1.conf
@@ -27,7 +27,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -74,7 +74,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb 10 12:17:35 2011 by vadim"
+log "Activating firewall script generated Fri Feb 11 12:26:33 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

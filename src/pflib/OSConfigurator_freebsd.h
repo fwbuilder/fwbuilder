@@ -86,6 +86,9 @@ namespace fwcompiler
             libfwbuilder::Interface *iface,
             libfwbuilder::StateSyncClusterGroup *sync_group);
 
+        // this function generates additional ifconfig parameters
+        virtual void interfaceIfconfigLine(libfwbuilder::Interface *iface);
+        
         virtual QString printAllInterfaceConfigurationLines();
 
         

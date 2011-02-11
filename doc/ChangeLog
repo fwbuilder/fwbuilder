@@ -1,3 +1,11 @@
+2011-02-11  vadim  <vadim@netcitadel.com>
+
+	* OSConfigurator_bsd_interfaces.cpp (interfaceIfconfigLine): fixes
+	#2058 "Ability to configure mtu and metric of regular inetrfaces".
+	"Advanced settings" dialog of the interface object provides
+	controls to configure MTU and possibly add any additional ifconfig
+	parameters. This is available for OpenBSD and FreeBSD.
+
 2011-02-10  vadim  <vadim@netcitadel.com>
 
 	* NamedObjectsManagerPIX.cpp (getClearCommands): fixes #2060

@@ -23,10 +23,10 @@
 
 */
 
-#ifndef __OPENBSDIFACEOPTSDIALOG_H_
-#define __OPENBSDIFACEOPTSDIALOG_H_
+#ifndef __BSDIFACEOPTSDIALOG_H_
+#define __BSDIFACEOPTSDIALOG_H_
 
-#include <ui_openbsdifaceoptsdialog_q.h>
+#include <ui_bsdifaceoptsdialog_q.h>
 #include "DialogData.h"
 
 #include <QDialog>
@@ -36,18 +36,18 @@ namespace libfwbuilder
     class FWObject;
 };
 
-class openbsdIfaceOptsDialog : public QDialog
+class bsdIfaceOptsDialog : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
-    openbsdIfaceOptsDialog(QWidget *parent, libfwbuilder::FWObject *o);
-    ~openbsdIfaceOptsDialog();
+    bsdIfaceOptsDialog(QWidget *parent, libfwbuilder::FWObject *o);
+    ~bsdIfaceOptsDialog();
 
 private:
     libfwbuilder::FWObject *obj;
     DialogData data;
-    Ui::openbsdIfaceOptsDialog_q *m_dialog;
+    Ui::bsdIfaceOptsDialog_q *m_dialog;
     bool cluster_interface;
 
     /** validate user input for different interface types */
@@ -60,5 +60,5 @@ protected slots:
     void typeChanged(const QString &new_type);
 };
 
-#endif // __OPENBSDIFACEOPTSDIALOG_H_
+#endif // __BSDIFACEOPTSDIALOG_H_
 

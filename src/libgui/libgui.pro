@@ -121,7 +121,7 @@ HEADERS += ../../config.h \
     vlanOnlyIfaceOptsDialog.h \
     linux24IfaceOptsDialog.h \
     pixosIfaceOptsDialog.h \
-    openbsdIfaceOptsDialog.h \
+    bsdIfaceOptsDialog.h \
     clusterMembersDialog.h \
     CompilerOutputPanel.h \
     CompilerDriverFactory.h \
@@ -300,7 +300,7 @@ SOURCES += ProjectPanel.cpp \
     vlanOnlyIfaceOptsDialog.cpp \
     linux24IfaceOptsDialog.cpp \
     pixosIfaceOptsDialog.cpp \
-    openbsdIfaceOptsDialog.cpp \
+    bsdIfaceOptsDialog.cpp \
     clusterMembersDialog.cpp \
     CompilerOutputPanel.cpp \
     CompilerDriverFactory.cpp \
@@ -437,7 +437,7 @@ FORMS = FWBMainWindow_q.ui \
     secuwallosadvanceddialog_q.ui \
     secuwallifaceoptsdialog_q.ui \
     clustermembersdialog_q.ui \
-    openbsdifaceoptsdialog_q.ui \
+    bsdifaceoptsdialog_q.ui \
     colorlabelmenuitem_q.ui \
     debugdialog_q.ui \
     filepropdialog_q.ui \

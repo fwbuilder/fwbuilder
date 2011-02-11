@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3469
+#  Firewall Builder  fwb_pf v4.2.0.3471
 #
-#  Generated Thu Feb 10 12:17:51 2011 PST by vadim
+#  Generated Fri Feb 11 12:26:48 2011 PST by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 # files:   firewall33.conf /etc/fw/firewall33.conf
@@ -30,7 +30,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -162,7 +162,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb 10 12:17:51 2011 by vadim"
+log "Activating firewall script generated Fri Feb 11 12:26:48 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -24,7 +24,7 @@
 */
 
 
-#include "openbsdIfaceOptsDialog.h"
+#include "bsdIfaceOptsDialog.h"
 #include "platforms.h"
 #include "FWCmdChange.h"
 
@@ -43,10 +43,10 @@
 using namespace std;
 using namespace libfwbuilder;
 
-openbsdIfaceOptsDialog::openbsdIfaceOptsDialog(QWidget *parent, FWObject *o)
+bsdIfaceOptsDialog::bsdIfaceOptsDialog(QWidget *parent, FWObject *o)
     : QDialog(parent)
 {
-    m_dialog = new Ui::openbsdIfaceOptsDialog_q;
+    m_dialog = new Ui::bsdIfaceOptsDialog_q;
     m_dialog->setupUi(this);
     setWindowModality(Qt::WindowModal);
     obj = o;
@@ -69,7 +69,18 @@ openbsdIfaceOptsDialog::openbsdIfaceOptsDialog(QWidget *parent, FWObject *o)
         m_dialog->iface_type_label->show();
     }
 
+    int mtu = ifopt->getInt("iface_mtu");
+    if (mtu <=0 )
+    {
+        mtu = 1500;
+        ifopt->setInt("iface_mtu", mtu);
+    }
+
     data.registerOption(m_dialog->vlan_id, ifopt, "vlan_id");
+    data.registerOption(m_dialog->iface_configure_mtu, ifopt, "iface_configure_mtu");
+    data.registerOption(m_dialog->iface_mtu, ifopt, "iface_mtu");
+    data.registerOption(m_dialog->iface_options, ifopt, "iface_options");
+    data.registerOption(m_dialog->enable_stp, ifopt, "enable_stp");
 
     data.loadAll();
 
@@ -78,7 +89,7 @@ openbsdIfaceOptsDialog::openbsdIfaceOptsDialog(QWidget *parent, FWObject *o)
     typeChanged("");
 }
 
-openbsdIfaceOptsDialog::~openbsdIfaceOptsDialog()
+bsdIfaceOptsDialog::~bsdIfaceOptsDialog()
 {
     delete m_dialog;
 }
@@ -86,7 +97,7 @@ openbsdIfaceOptsDialog::~openbsdIfaceOptsDialog()
 /*
  * store all data in the object
  */
-void openbsdIfaceOptsDialog::accept()
+void bsdIfaceOptsDialog::accept()
 {
     // validate user input before saving
     if (!validate())  return;
@@ -117,40 +128,48 @@ void openbsdIfaceOptsDialog::accept()
     QDialog::accept();
 }
 
-void openbsdIfaceOptsDialog::reject()
+void bsdIfaceOptsDialog::reject()
 {
     QDialog::reject();
 }
 
-void openbsdIfaceOptsDialog::help()
+void bsdIfaceOptsDialog::help()
 {
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
     Help *h = Help::getHelpWindow(this);
     h->setName("Interface OpenBSD");
-    h->setSource(QUrl("openbsdIfaceOptsDialog.html#" + anchor));
+    h->setSource(QUrl("bsdIfaceOptsDialog.html#" + anchor));
     h->raise();
     h->show();
 }
 
-void openbsdIfaceOptsDialog::typeChanged(const QString&)
+void bsdIfaceOptsDialog::typeChanged(const QString&)
 {
     QString new_type = m_dialog->iface_type->itemData(
         m_dialog->iface_type->currentIndex()).toString();
 
     // enable VLAN ID line edit for type VLAN
-    if (new_type == "8021q")
+    if (new_type.isEmpty() || new_type == "ethernet")
     {
         m_dialog->options_stack->setCurrentIndex(1);
         return;
     }
 
+    if (new_type == "8021q")
+    {
+        m_dialog->options_stack->setCurrentIndex(2);
+        return;
+    }
+    // there is also page 3 for bridge (with just "enable stp"
+    // checkbox) but we dont use it yet
+
     // page 0 is empty
     m_dialog->options_stack->setCurrentIndex(0);
 }
 
-bool openbsdIfaceOptsDialog::validate()
+bool bsdIfaceOptsDialog::validate()
 {
     return true;
 }

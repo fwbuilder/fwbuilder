@@ -107,11 +107,11 @@ void OSConfigurator_freebsd::summaryConfigLineIP(QStringList names, bool ipv6)
     {
         if (ipv6)
         {
-            interface_configuration_lines <<
+            interface_configuration_lines["1_should_sort_before_interfaces_"] <<
                 QString("ipv6_network_interfaces=\"%1\"").arg(names.join(" "));
         } else
         {
-            interface_configuration_lines <<
+            interface_configuration_lines["1_should_sort_before_interfaces_"] <<
                 QString("network_interfaces=\"%1\"").arg(names.join(" "));
         }
     }
@@ -198,6 +198,49 @@ void OSConfigurator_freebsd::interfaceConfigLineIP(
         OSConfigurator_bsd::interfaceConfigLineIP(iface, all_addresses);
 }
 
+void OSConfigurator_freebsd::interfaceIfconfigLine(Interface *iface)
+{
+    QString iface_name = iface->getName().c_str();
+
+    Configlet configlet(fw, "freebsd", "ifconfig_interface");
+    configlet.removeComments();
+    configlet.collapseEmptyStrings(true);
+
+    configlet.setVariable("interface_name", iface_name);
+
+    FWOptions *ifopt = iface->getOptionsObject();
+    assert(ifopt != NULL);
+
+    bool need_additional_ifconfig = false;
+    QStringList ifconfig_options;
+    if (ifopt->getBool("iface_configure_mtu") && ifopt->getInt("iface_mtu") > 0)
+    {
+        configlet.setVariable("have_mtu", true);
+        configlet.setVariable("mtu", ifopt->getInt("iface_mtu"));
+        need_additional_ifconfig = true;
+    } else
+    {
+        configlet.setVariable("have_mtu", false);
+        configlet.setVariable("mtu", "");
+    }
+
+    if (!ifopt->getStr("iface_options").empty())
+    {
+        configlet.setVariable("options", ifopt->getStr("iface_options").c_str());
+        need_additional_ifconfig =true;
+    } else
+        configlet.setVariable("options", "");
+    
+    // unlike in virtual function in the parent class
+    // OSConfigurator_bsd, here we add generated strings to
+    // ifconfig_lines that will be used to compose
+    // "ifconfig_<interface>" variable later in
+    // printAllInterfaceConfigurationLines()
+
+    if (need_additional_ifconfig)
+        ifconfig_lines[iface_name] << configlet.expand();
+}
+
 void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)
 {
     FWOptions* options = fw->getOptionsObject();
@@ -205,7 +248,7 @@ void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)
     {
         cloned_interfaces += vlan_names;
     } else
-        interface_configuration_lines <<
+        interface_configuration_lines["1_should_sort_before_interfaces_"] <<
             QString("sync_vlan_interfaces %1").arg(vlan_names.join(" "));
 }
 
@@ -239,9 +282,13 @@ void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        QStringList outp;
-        outp << QString("vlans_%1=\"%2\"").arg(iface->getName().c_str())
+        QString iface_name = iface->getName().c_str();
+        // the "vlans_em2="vlan101 vlan102" will appear next to other lines
+        // intended for interface em2
+        interface_configuration_lines[iface_name] <<
+            QString("vlans_%1=\"%2\"").arg(iface->getName().c_str())
             .arg(vlan_names.join(" "));
+
         foreach(QString vlan_intf_name, vlan_names)
         {
             std::auto_ptr<interfaceProperties> int_prop(
@@ -252,16 +299,14 @@ void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
             if (int_prop->parseVlan(vlan_intf_name,
                                     &parent_name_from_regex, &vlan_id))
             {
-                outp << QString("create_args_%1=\"vlan %2 vlandev %3\"")
+                interface_configuration_lines[iface_name] <<
+                    QString("create_args_%1=\"vlan %2 vlandev %3\"")
                     .arg(vlan_intf_name).arg(vlan_id).arg(iface->getName().c_str());
             }
         }
-        interface_configuration_lines <<  outp.join("\n");
+        
     } else
-        interface_configuration_lines <<
-            QString("update_vlans_of_interface \"%1 %2\"")
-            .arg(iface->getName().c_str())
-            .arg(vlan_names.join(" "));
+        OSConfigurator_bsd::interfaceConfigLineVlan(iface, vlan_names);
 }
 
 void OSConfigurator_freebsd::summaryConfigLineBridge(QStringList bridge_names)
@@ -332,7 +377,7 @@ void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
             ifconfig_lines[bridge_port] << "up";
         }
 
-        interface_configuration_lines <<  outp.join("\n");
+        interface_configuration_lines[iface->getName().c_str()] <<  outp.join("\n");
     } else
         OSConfigurator_bsd::interfaceConfigLineBridge(iface, bridge_port_names);
 }
@@ -365,7 +410,7 @@ void OSConfigurator_freebsd::summaryConfigLinePfsync(bool have_pfsync)
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        interface_configuration_lines <<  "pfsync_enable=\"YES\"";
+        interface_configuration_lines["pfsync0"] <<  "pfsync_enable=\"YES\"";
     } else
         OSConfigurator_bsd::summaryConfigLinePfsync(have_pfsync);
 }
@@ -431,7 +476,7 @@ void OSConfigurator_freebsd::interfaceConfigLinePfsync(
                 configlet.setVariable("syncpeer", addr->toString().c_str());
             }
         }
-        interface_configuration_lines <<  configlet.expand();
+        interface_configuration_lines[iface->getName().c_str()] <<  configlet.expand();
 
     } else
         OSConfigurator_bsd::interfaceConfigLinePfsync(iface, state_sync_group);
@@ -446,13 +491,11 @@ QString OSConfigurator_freebsd::printAllInterfaceConfigurationLines()
         printIfconfigLines(ipv6_ifconfig_lines);
 
         if (!cloned_interfaces.isEmpty())
-            interface_configuration_lines.push_front(
+            interface_configuration_lines["0_should_be_on_top_"] <<
                 QString("cloned_interfaces=\"%1\"")
-                .arg(cloned_interfaces.join(" ")));
-        
-        return interface_configuration_lines.join("\n");
-    } else
-        return OSConfigurator_bsd::printAllInterfaceConfigurationLines();
+                .arg(cloned_interfaces.join(" "));
+    }
+    return OSConfigurator_bsd::printAllInterfaceConfigurationLines();
 }
 
 void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList>
@@ -465,7 +508,7 @@ void OSConfigurator_freebsd::printIfconfigLines(const QMap<QString, QStringList>
         foreach (QString iface_name, keys)
         {
             const QStringList commands = lines[iface_name];
-            interface_configuration_lines << 
+            interface_configuration_lines[iface_name] << 
                 QString("ifconfig_%1=\"%2\"").arg(iface_name)
                 .arg(commands.join(" "));
         }

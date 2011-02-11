@@ -5,7 +5,7 @@
       <status>active</status>
       <family>openbsd</family>
       <dialog>openbsd</dialog>
-      <interface_dialog>openbsd</interface_dialog>
+      <interface_dialog>bsd</interface_dialog>
       <cluster_dialog>basic</cluster_dialog>
 
       <options>

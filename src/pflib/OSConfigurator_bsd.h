@@ -52,9 +52,8 @@ namespace fwcompiler
     {
         
 protected:
-        QMap<QString, QString> update_address_lines;
+        QMap<QString, QStringList> interface_configuration_lines;
         QStringList cloned_interfaces;
-        QStringList interface_configuration_lines;
 
 	std::set<const libfwbuilder::Address*> virtual_addresses;
 
@@ -98,8 +97,12 @@ protected:
             libfwbuilder::Interface *iface,
             libfwbuilder::StateSyncClusterGroup *sync_group);
 
+        // this function generates additional ifconfig parameters
+        virtual void interfaceIfconfigLine(libfwbuilder::Interface *iface);
+        
         virtual QString printAllInterfaceConfigurationLines();
 
+        
 public:
 
 	virtual ~OSConfigurator_bsd() {};
