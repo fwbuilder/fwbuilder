@@ -1,3 +1,8 @@
+2011-02-12  vadim  <vadim@netcitadel.com>
+
+	* fixes #2083 Added new services to the Standard Objects Library:
+	rtmp, xmpp-client, xmpp-server, nrpe
+
 2011-02-11  vadim  <vadim@netcitadel.com>
 
 	* instDialog_ui_ops.cpp (verifyManagementAddress): see #2073 "Add
