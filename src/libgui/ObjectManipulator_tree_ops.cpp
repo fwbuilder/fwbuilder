@@ -171,6 +171,29 @@ QString ObjectManipulator::getTreeLabel(FWObject *obj, int col)
     return "";
 }
 
+void ObjectManipulator::expandOrCollapseCurrentTreeNode(QTreeWidgetItem *item,
+                                                        bool expand)
+{
+    item->setExpanded(expand);
+    for (int i=0; i<item->childCount(); ++i)
+        expandOrCollapseCurrentTreeNode(item->child(i), expand);
+}
+
+void ObjectManipulator::expandCurrentTreeNode()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+    QTreeWidgetItem *item = getCurrentObjectTree()->currentItem();
+    expandOrCollapseCurrentTreeNode(item, true);
+}
+
+void ObjectManipulator::collapseCurrentTreeNode()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+    QTreeWidgetItem *item = getCurrentObjectTree()->currentItem();
+    expandOrCollapseCurrentTreeNode(item, false);
+}
+
+
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {

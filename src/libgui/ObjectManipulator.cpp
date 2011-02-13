@@ -363,6 +363,17 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     popup_menu->clear();
 
+    if (item->childCount() > 0)
+    {
+        if (item->isExpanded())
+            popup_menu->addAction(tr("Collapse"), this,
+                                  SLOT(collapseCurrentTreeNode()));
+        else
+            popup_menu->addAction(tr("Expand"), this,
+                                  SLOT(expandCurrentTreeNode()));
+        popup_menu->addSeparator();
+    }
+
     QAction *edtID;
 
     if (currentObj->isReadOnly())
@@ -1245,10 +1256,9 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
     m_objectManipulator->widgetStack->setCurrentWidget(otv);
 
     otvi->getTree()->clearSelection();
-    otvi->getTree()->scrollToItem(otvi,
-                                  QAbstractItemView::PositionAtTop); // QAbstractItemView::EnsureVisible );
-    otvi->getTree()->setCurrentItem( otvi );
-    otvi->setSelected( true );
+    otvi->getTree()->scrollToItem(otvi, QAbstractItemView::PositionAtTop);
+    otvi->getTree()->setCurrentItem(otvi);
+    otvi->setSelected(true);
     otvi->getTree()->setFocus(Qt::OtherFocusReason);
 }
 
@@ -1259,13 +1269,8 @@ void ObjectManipulator::expandObjectInTree(FWObject *obj)
 
     QTreeWidgetItem *it = allItems[o];
     if (it==NULL) return;
-    it->setExpanded(true);
 
-    for (list<FWObject*>::iterator i=o->begin();  i!=o->end(); ++i)
-    {
-        FWObject *o1 = *i;
-        if (o1 && o1->size() > 0) expandObjectInTree(o1);
-    }
+    expandOrCollapseCurrentTreeNode(it, true);
 }
 
 void ObjectManipulator::libChangedById(int obj_id)

@@ -1,5 +1,16 @@
 2011-02-12  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator_tree_ops.cpp (expandOrCollapseCurrentTreeNode):
+	fixes #1895 "Add context menu option to expand all child nodes in
+	object tree". Added menu item "Expand" to the context menu
+	associated with all objects in the object tree. This item recursively
+	expands all tree nodes under the given object and automatically
+	changes to "Collapse" if the item is expanded. Also changed behavior
+	of the double click on the object in tree: before, double click
+	opened object in the editor and expanded or collapsed subtree. Now
+	it only opens object in the editor but does not expand/collapse
+	subtree.
+
 	* fixes #2083 Added new services to the Standard Objects Library:
 	rtmp, xmpp-client, xmpp-server, nrpe
 

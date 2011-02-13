@@ -132,6 +132,8 @@ class ObjectManipulator : public QWidget
 
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
 
+    void expandOrCollapseCurrentTreeNode(QTreeWidgetItem*, bool);
+         
     /* find the name of the interface that was created last */
     QString findNewestInterfaceName(libfwbuilder::FWObject *parent);
 
@@ -177,6 +179,9 @@ public slots:
      virtual void switchingTrees(QWidget* w);
      virtual void currentTreePageChanged(int i);
 
+     void expandCurrentTreeNode();
+     void collapseCurrentTreeNode();
+     
      void newClusterFromSelected();
      
      void selectionChanged(QTreeWidgetItem *cur);

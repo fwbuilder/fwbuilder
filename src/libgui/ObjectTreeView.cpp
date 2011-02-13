@@ -83,6 +83,9 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     setObjectName(name);
     this->setParent(parent, f);
     setFont(st->getTreeFont());
+
+    setExpandsOnDoubleClick(false);
+
 //    setAcceptDrops( TRUE );
     item_before_drag_started=NULL;
     lastSelected = NULL;
