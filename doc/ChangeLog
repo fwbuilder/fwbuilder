@@ -1,3 +1,15 @@
+2011-02-13  vadim  <vadim@netcitadel.com>
+
+	* snmp.cpp (run_impl): See #2084 "snmp discovery takes forever on
+	devices with large routing tables". This takes very long time on
+	decides with large routing tables. This code was implemented long
+	time ago and apparently routing data was intended to be used to
+	discover "external" interfaces, but it is unclear if this is still
+	done. The concept of external/internal currently exists only for
+	platforms that support security levels (PIX) and there we guess
+	levels by matching addresses against RFC1918 and let the user user
+	adjust levels manually anyway.
+
 2011-02-12  vadim  <vadim@netcitadel.com>
 
 	* ObjectManipulator_tree_ops.cpp (expandOrCollapseCurrentTreeNode):
