@@ -1846,6 +1846,15 @@ void SNMP_interface_query::run_impl(Logger *logger,SyncFlag *stop_program) throw
 {
     fetchInterfaces(logger,stop_program);
     
+#if 0
+    // See #2084 this takes forever on decides with large routing
+    // tables.  Also it is unclear if routing table data is really
+    // used to determine external interface. Besides, we only have
+    // concept of external/internale on platforms that support
+    // security levels (PIX) and there we guess levels by matching
+    // addresses against RFC1918 and let the user user set levels
+    // manually anyway.
+
     // We try to fetch routing table, to find
     // which interface is "external".
     // We do not fail if this query does not succeed.
@@ -1856,6 +1865,7 @@ void SNMP_interface_query::run_impl(Logger *logger,SyncFlag *stop_program) throw
     {
         *logger << "Error fetching routing table, external interface will not be detected.\n";
     }
+#endif
 }
 
 void SNMP_sysdesc_query::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException)

@@ -422,12 +422,12 @@ void newFirewallDialog::getInterfacesViaSNMP()
         }
     }
 
-    logger=NULL;
+    logger = NULL;
     m_dialog->snmpProgress->clear();
 
     if (q!=NULL) delete q;
-    q=new SNMP_interface_query();
-    q->init(addr.toString(),rcomm,SNMP_DEFAULT_RETRIES,SNMP_DEFAULT_TIMEOUT);
+    q = new SNMP_interface_query();
+    q->init(addr.toString(), rcomm, SNMP_DEFAULT_RETRIES, SNMP_DEFAULT_TIMEOUT);
 
     timer->setSingleShot(false);
     timer->start(0);
