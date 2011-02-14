@@ -53,7 +53,7 @@ class instOptionsDialog : public QDialog
 
 public slots:
     void cancelAll();
-   
+    void testModeToggled();
 };
 
 #endif 

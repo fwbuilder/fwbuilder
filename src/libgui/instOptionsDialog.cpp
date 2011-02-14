@@ -207,6 +207,8 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
             .arg(bfr.top()).arg(bfr.bottom());
     }
 
+    testModeToggled();
+
     //resize( minimumSizeHint() );
 
     //adjustSize();
@@ -247,3 +249,10 @@ void instOptionsDialog::cancelAll()
 {
     this->done(-1);
 }
+
+void instOptionsDialog::testModeToggled()
+{
+    m_dialog->rollback->setEnabled(m_dialog->testRun->isChecked());
+    m_dialog->rollbackTime->setEnabled(m_dialog->testRun->isChecked());
+}
+

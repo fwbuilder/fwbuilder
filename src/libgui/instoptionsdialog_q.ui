@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>616</width>
-    <height>842</height>
+    <height>754</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -588,8 +588,25 @@ the firewall in the &quot;advanced&quot; settings dialog of the firewall object.
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>testRun</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>instOptionsDialog_q</receiver>
+   <slot>testModeToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>255</x>
+     <y>567</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>cancelAll()</slot>
+  <slot>testModeToggled()</slot>
  </slots>
 </ui>
