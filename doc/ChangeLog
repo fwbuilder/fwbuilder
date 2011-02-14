@@ -1,5 +1,8 @@
 2011-02-13  vadim  <vadim@netcitadel.com>
 
+	* configlets/freebsd/carp_interface: see #2074 On FreeBSD ifconfig
+	does not understand parameter carpdev
+
 	* PolicyCompiler_pf.cpp (checkForShadowingPlatformSpecific): see
 	#1867 "PF: rule with non-terminating action Tag shadows other
 	rules below it". Since action Tag is non-terminating, rules with

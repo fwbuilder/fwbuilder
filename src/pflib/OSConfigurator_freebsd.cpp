@@ -397,12 +397,14 @@ void OSConfigurator_freebsd::interfaceConfigLineCARP(Interface *iface,
                                                  FWObject *failover_group)
 {
     FWOptions* options = fw->getOptionsObject();
+    QString configlet_name = "carp_interface";
     if (options->getBool("generate_rc_conf_file"))
     {
-        Configlet configlet(fw, "freebsd", "rc_conf_carp_interface");
-        interfaceConfigLineCARPInternal(iface, failover_group, &configlet);
-    } else
-        OSConfigurator_bsd::interfaceConfigLineCARP(iface, failover_group);
+        configlet_name = "rc_conf_carp_interface";
+    }
+
+    Configlet configlet(fw, "freebsd", configlet_name);
+    interfaceConfigLineCARPInternal(iface, failover_group, &configlet);
 }
 
 void OSConfigurator_freebsd::summaryConfigLinePfsync(bool have_pfsync)
