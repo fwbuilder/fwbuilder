@@ -178,7 +178,50 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->pf_state_policy->addItems(getScreenNames(slm));
     data.registerOption( m_dialog->pf_state_policy, fwopt, "pf_state_policy", slm);
     m_dialog->pf_state_policy->setEnabled(
-        XMLTools::version_compare(version, "4.3") >= 0);
+        XMLTools::version_compare(version, "3.5") >= 0);
+
+// Prepare block_policy combo box
+    slm.clear();
+    slm.push_back("");
+    slm.push_back("");
+    slm.push_back(QObject::tr("Drop"));
+    slm.push_back("drop");
+    slm.push_back(QObject::tr("Return"));
+    slm.push_back("return");
+    m_dialog->pf_block_policy->clear();
+    m_dialog->pf_block_policy->addItems(getScreenNames(slm));
+    data.registerOption( m_dialog->pf_block_policy, fwopt, "pf_block_policy", slm);
+    m_dialog->pf_block_policy->setEnabled(
+        XMLTools::version_compare(version, "3.5") >= 0);
+
+// set debug combo box
+    slm.clear();
+    slm.push_back("");
+    slm.push_back("");
+    slm.push_back("emerg");
+    slm.push_back("emerg");
+    slm.push_back("alert");
+    slm.push_back("alert");
+    slm.push_back("crit");
+    slm.push_back("crit");
+    slm.push_back("err");
+    slm.push_back("err");
+    slm.push_back("warning");
+    slm.push_back("warning");
+    slm.push_back("notice");
+    slm.push_back("notice");
+    slm.push_back("info");
+    slm.push_back("info");
+    slm.push_back("debug");
+    slm.push_back("debug");
+
+    m_dialog->pf_set_debug->clear();
+    m_dialog->pf_set_debug->addItems(getScreenNames(slm));
+    data.registerOption( m_dialog->pf_set_debug, fwopt, "pf_set_debug", slm);
+    m_dialog->pf_set_debug->setEnabled(
+        XMLTools::version_compare(version, "3.5") >= 0);
+
+
 
     data.registerOption( m_dialog->pf_check_shadowing,fwopt, "check_shading");
     data.registerOption( m_dialog->pf_ignore_empty_groups,fwopt,

@@ -94,7 +94,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -353,55 +353,6 @@ this option only if you fully understand how it works!</string>
         </widget>
        </item>
        <item row="5" column="0" colspan="3">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLabel" name="textLabel3">
-           <property name="text">
-            <string>Optimization:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="wordWrap">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="pf_optimization"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>State policy:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="pf_state_policy">
-           <property name="toolTip">
-            <string>States can be bound to interfaces or match packets 
-on any interface. The latter can be useful in case of 
-an assymmetric routing.</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item row="6" column="0" colspan="3">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <property name="leftMargin">
           <number>9</number>
@@ -442,7 +393,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="7" column="1">
+       <item row="6" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -462,10 +413,7 @@ with this address:</string>
        <string>Scrub</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_9">
-       <property name="spacing">
-        <number>20</number>
-       </property>
-       <item row="0" column="1">
+       <item row="0" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -481,7 +429,7 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="1">
+       <item row="1" column="0">
         <widget class="QCheckBox" name="pf_scrub_no_df">
          <property name="toolTip">
           <string>Clears the don't fragment bit from the IP packet header.</string>
@@ -491,7 +439,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="2" column="0">
         <widget class="QCheckBox" name="pf_scrub_random_id">
          <property name="toolTip">
           <string>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</string>
@@ -501,23 +449,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" rowspan="2">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>100</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="1" colspan="2">
+       <item row="3" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QCheckBox" name="pf_scrub_use_minttl">
@@ -557,7 +489,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="4" column="1" colspan="2">
+       <item row="4" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QCheckBox" name="pf_scrub_use_maxmss">
@@ -600,7 +532,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="5" column="1" colspan="2">
+       <item row="5" column="0" colspan="2">
         <widget class="Line" name="hseparator39">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -613,14 +545,14 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="6" column="0" colspan="2">
         <widget class="QCheckBox" name="pf_do_scrub">
          <property name="text">
           <string>Reassemble fragments</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2">
+       <item row="7" column="0" colspan="2">
         <widget class="QGroupBox" name="buttonGroup20">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -696,7 +628,7 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="8" column="2">
+       <item row="8" column="1">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -716,244 +648,294 @@ with this address:</string>
      </widget>
      <widget class="QWidget" name="tab3">
       <attribute name="title">
-       <string>Limits</string>
+       <string>Options</string>
       </attribute>
-      <layout class="QGridLayout">
-       <property name="leftMargin">
-        <number>20</number>
-       </property>
-       <property name="topMargin">
-        <number>12</number>
-       </property>
-       <property name="rightMargin">
-        <number>20</number>
-       </property>
-       <property name="bottomMargin">
-        <number>20</number>
-       </property>
-       <property name="spacing">
-        <number>20</number>
-       </property>
-       <item row="1" column="2">
-        <widget class="QSpinBox" name="pf_limit_frags">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+      <layout class="QGridLayout" name="gridLayout_17">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Limits</string>
          </property>
-         <property name="toolTip">
-          <string>maximum number of entries in the memory pool used for packet reassembly</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100000000</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>5000</number>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_15">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_do_limit_frags">
+            <property name="text">
+             <string>reassembly pool: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="pf_limit_frags">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>maximum number of entries in the memory pool used for packet reassembly</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>5000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_do_limit_states">
+            <property name="text">
+             <string>state table size: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="pf_limit_states">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>maximum number of entries in the memory pool used for state table entries</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>20000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pf_do_limit_src_nodes">
+            <property name="text">
+             <string>src-nodes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="pf_limit_src_nodes">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>maximum number of entries in the memory pool used for tracking source IP addresses</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>2000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="pf_do_limit_tables">
+            <property name="text">
+             <string>tables</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="pf_limit_tables">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>maximum number of tables that can exist in the memory simultaneously</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>1000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="pf_do_limit_table_entries">
+            <property name="text">
+             <string>table-entries</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="pf_limit_table_entries">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>maximum number of addresses that canbe stored in tables</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>100000</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QCheckBox" name="pf_do_limit_table_entries">
-         <property name="text">
-          <string>table-entries</string>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Options</string>
          </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <item row="0" column="0">
+           <widget class="QLabel" name="textLabel3">
+            <property name="text">
+             <string>Optimization:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="pf_optimization">
+            <property name="toolTip">
+             <string>Optimize state timeouts. See man pf.conf for more details.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Debug:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="pf_set_debug">
+            <property name="toolTip">
+             <string>Set the debug level, which limits the severity of log messages
+printed by pf(4).  This should be a keyword from the following
+ordered list (highest to lowest): emerg, alert, crit, err,
+warning, notice, info, and debug.  The last keyword, debug, must
+be quoted.  These keywords correspond to the similar (LOG_)
+values specified to the syslog(3) library routine.
+</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>State policy:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="pf_state_policy">
+            <property name="toolTip">
+             <string>States can be bound to interfaces or match packets 
+on any interface. The latter can be useful in case of 
+an assymmetric routing.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Block policy:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="pf_block_policy">
+            <property name="toolTip">
+             <string>The block-policy option sets the default behaviour for the packet block action:
+
+drop      Packet is silently dropped.
+return    A TCP RST is returned for blocked TCP packets, an ICMP
+             UNREACHABLE is returned for blocked UDP packets, and
+             all other packets are silently dropped.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>drop</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>return</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QSpinBox" name="pf_limit_table_entries">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>maximum number of addresses that canbe stored in tables</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100000000</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>100000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QSpinBox" name="pf_limit_states">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>maximum number of entries in the memory pool used for state table entries</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100000000</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>20000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="pf_do_limit_states">
-         <property name="text">
-          <string>state table size: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QCheckBox" name="pf_do_limit_frags">
-         <property name="text">
-          <string>reassembly pool: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>310</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="2">
-        <widget class="QSpinBox" name="pf_limit_src_nodes">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>maximum number of entries in the memory pool used for tracking source IP addresses</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100000000</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>2000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QSpinBox" name="pf_limit_tables">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>maximum number of tables that can exist in the memory simultaneously</string>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100000000</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>1000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="pf_do_limit_tables">
-         <property name="text">
-          <string>tables</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="pf_do_limit_src_nodes">
-         <property name="text">
-          <string>src-nodes</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" rowspan="3">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>99</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="0" column="2">
-        <spacer>
+        <spacer name="horizontalSpacer_4">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+          <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
+           <width>194</width>
            <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="6" column="2">
-        <spacer>
+       <item row="1" column="1">
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>308</height>
           </size>
          </property>
         </spacer>
@@ -2478,8 +2460,6 @@ with this address:</string>
   <tabstop>pf_modulate_state</tabstop>
   <tabstop>pf_check_shadowing</tabstop>
   <tabstop>pf_ignore_empty_groups</tabstop>
-  <tabstop>pf_optimization</tabstop>
-  <tabstop>pf_state_policy</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
   <tabstop>pf_scrub_no_df</tabstop>
@@ -2493,16 +2473,6 @@ with this address:</string>
   <tabstop>pf_scrub_fragm_crop</tabstop>
   <tabstop>pf_scrub_fragm_drop_ovl</tabstop>
   <tabstop>pf_scrub_reassemble_tcp</tabstop>
-  <tabstop>pf_do_limit_frags</tabstop>
-  <tabstop>pf_limit_frags</tabstop>
-  <tabstop>pf_do_limit_states</tabstop>
-  <tabstop>pf_limit_states</tabstop>
-  <tabstop>pf_do_limit_src_nodes</tabstop>
-  <tabstop>pf_limit_src_nodes</tabstop>
-  <tabstop>pf_do_limit_tables</tabstop>
-  <tabstop>pf_limit_tables</tabstop>
-  <tabstop>pf_do_limit_table_entries</tabstop>
-  <tabstop>pf_limit_table_entries</tabstop>
   <tabstop>pf_set_tcp_first</tabstop>
   <tabstop>pf_tcp_first</tabstop>
   <tabstop>pf_set_tcp_opening</tabstop>
@@ -2581,22 +2551,6 @@ with this address:</string>
    <signal>clicked()</signal>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pf_do_scrub</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>doScrubToggled()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -2881,86 +2835,6 @@ with this address:</string>
    </hints>
   </connection>
   <connection>
-   <sender>pf_do_limit_frags</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>ltToggled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pf_do_limit_states</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>ltToggled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pf_do_limit_src_nodes</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>ltToggled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pf_do_limit_tables</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>ltToggled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pf_do_limit_table_entries</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pfAdvancedDialog_q</receiver>
-   <slot>ltToggled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonHelp</sender>
    <signal>clicked()</signal>
    <receiver>pfAdvancedDialog_q</receiver>
@@ -2976,5 +2850,104 @@ with this address:</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pf_do_limit_frags</sender>
+   <signal>clicked()</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>ltToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>100</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pf_do_limit_src_nodes</sender>
+   <signal>clicked()</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>ltToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pf_do_limit_states</sender>
+   <signal>clicked()</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>ltToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pf_do_limit_table_entries</sender>
+   <signal>clicked()</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>ltToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>208</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pf_do_limit_tables</sender>
+   <signal>clicked()</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>ltToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pf_do_scrub</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pfAdvancedDialog_q</receiver>
+   <slot>doScrubToggled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>ltToggled()</slot>
+ </slots>
 </ui>

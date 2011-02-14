@@ -1,3 +1,9 @@
+2011-02-14  vadim  <vadim@netcitadel.com>
+
+	* pfAdvancedDialog.cpp (pfAdvancedDialog): fixes #1866 "support
+	for pf option set state-policy", #1868 "support for pf
+	option set block-policy", #1869 "support for pf option set debug".
+
 2011-02-13  vadim  <vadim@netcitadel.com>
 
 	* configlets/freebsd/carp_interface: see #2074 On FreeBSD ifconfig
