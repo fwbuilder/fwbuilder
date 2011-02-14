@@ -93,5 +93,6 @@ void instConf::clear()
     batchInstall = false;
     sshArgs = "";
     scpArgs = "";
+    putty_session = "";
 }
 
