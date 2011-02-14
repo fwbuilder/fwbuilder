@@ -162,8 +162,12 @@ void bsdIfaceOptsDialog::typeChanged(const QString&)
         m_dialog->options_stack->setCurrentIndex(2);
         return;
     }
-    // there is also page 3 for bridge (with just "enable stp"
-    // checkbox) but we dont use it yet
+
+    if (new_type == "bridge")
+    {
+        m_dialog->options_stack->setCurrentIndex(3);
+        return;
+    }
 
     // page 0 is empty
     m_dialog->options_stack->setCurrentIndex(0);

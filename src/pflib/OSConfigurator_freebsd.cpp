@@ -336,11 +336,17 @@ void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
+        FWOptions *ifopt = iface->getOptionsObject();
+        assert(ifopt != NULL);
+
+        bool enable_stp = ifopt->getBool("enable_stp");
+
         QStringList outp;
         QStringList bp;
         foreach(QString bridge_port, bridge_port_names)
         {
-            bp << QString("addm %1 stp %2").arg(bridge_port).arg(bridge_port);
+            bp << QString("addm %1 %2 %3")
+                .arg(bridge_port).arg((enable_stp)?"stp":"").arg(bridge_port);
         }
 
         bp << "up";
