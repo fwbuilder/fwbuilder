@@ -327,12 +327,11 @@ void OSConfigurator_freebsd::summaryConfigLineBridge(QStringList bridge_names)
 Refernce:
 http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html
 
-TODO:  STP support should be optional
-
  */
 void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
                                                      QStringList bridge_port_names)
 {
+    QString iface_name = iface->getName().c_str();
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
@@ -345,20 +344,25 @@ void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
         QStringList bp;
         foreach(QString bridge_port, bridge_port_names)
         {
-            bp << QString("addm %1 %2 %3")
-                .arg(bridge_port).arg((enable_stp)?"stp":"").arg(bridge_port);
+            Configlet port_configlet(fw, "freebsd", "rc_conf_bridge_port");
+            port_configlet.removeComments();
+            port_configlet.collapseEmptyStrings(true);
+            port_configlet.setVariable("bridge_interface", iface_name);
+            port_configlet.setVariable("bridge_port", bridge_port);
+            port_configlet.setVariable("stp_off", !enable_stp);
+            bp << port_configlet.expand();
         }
 
         bp << "up";
 
-        ifconfig_lines[iface->getName().c_str()] << bp.join(" ");
+        ifconfig_lines[iface_name] << bp.join(" ");
 
         foreach(QString bridge_port, bridge_port_names)
         {
             ifconfig_lines[bridge_port] << "up";
         }
 
-        interface_configuration_lines[iface->getName().c_str()] <<  outp.join("\n");
+        interface_configuration_lines[iface_name] <<  outp.join("\n");
     } else
         OSConfigurator_bsd::interfaceConfigLineBridge(iface, bridge_port_names);
 }

@@ -20894,7 +20894,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id33908X2131" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297029288" platform="pf" version="4.7" name="firewall104" comment="bridge interface, dynamic  address, shell script format" ro="False">
+      <Firewall id="id33908X2131" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297725454" platform="pf" version="4.7" name="firewall104" comment="bridge interface, dynamic  address, shell script format, with STP" ro="False">
         <NAT id="id33972X2131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -20934,6 +20934,10 @@
         </Interface>
         <Interface id="id33926X2131" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
           <InterfaceOptions>
+            <Option name="enable_stp">True</Option>
+            <Option name="iface_configure_mtu">False</Option>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options"></Option>
             <Option name="type">bridge</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
@@ -21213,7 +21217,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id34447X2131" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297029251" platform="pf" version="4.7" name="firewall106" comment="bridge interface, dynamic  address, rc.conf format" ro="False">
+      <Firewall id="id34447X2131" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297725471" platform="pf" version="4.7" name="firewall106" comment="bridge interface, dynamic  address, rc.conf format, with STP" ro="False">
         <NAT id="id34509X2131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -21314,6 +21318,10 @@
         </Interface>
         <Interface id="id34465X2131" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
           <InterfaceOptions>
+            <Option name="enable_stp">True</Option>
+            <Option name="iface_configure_mtu">False</Option>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options"></Option>
             <Option name="type">bridge</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
@@ -21798,6 +21806,7 @@
         <Interface id="id34482X3677" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
           <IPv4 id="id34489X3677" name="firewall103:bridge0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
+            <Option name="iface_mtu">1500</Option>
             <Option name="type">bridge</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>

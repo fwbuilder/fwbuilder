@@ -484,12 +484,31 @@ void OSConfigurator_bsd::summaryConfigLineBridge(QStringList bridge_names)
 
 
 void OSConfigurator_bsd::interfaceConfigLineBridge(Interface *iface,
-                                                    QStringList bridge_port_names)
+                                                   QStringList bridge_port_names)
 {
-    interface_configuration_lines[iface->getName().c_str()] <<
-        QString("update_bridge_interface %1 \"%2\"")
-        .arg(iface->getName().c_str())
-        .arg(bridge_port_names.join(" "));
+    QString iface_name = iface->getName().c_str();
+    FWOptions *ifopt = iface->getOptionsObject();
+    assert(ifopt != NULL);
+    bool enable_stp = ifopt->getBool("enable_stp");
+
+    Configlet bridge_configlet(fw, "bsd", "bridge_interface");
+
+    bridge_configlet.removeComments();
+    bridge_configlet.collapseEmptyStrings(true);
+    bridge_configlet.setVariable("bridge_interface", iface_name);
+    bridge_configlet.setVariable("bridge_ports", bridge_port_names.join(" "));
+    interface_configuration_lines[iface_name] << bridge_configlet.expand();
+
+    foreach (QString bridge_port, bridge_port_names)
+    {
+        Configlet port_configlet(fw, "bsd", "bridge_port");
+        port_configlet.removeComments();
+        port_configlet.collapseEmptyStrings(true);
+        port_configlet.setVariable("bridge_interface", iface_name);
+        port_configlet.setVariable("bridge_port", bridge_port);
+        port_configlet.setVariable("stp_off", !enable_stp);
+        interface_configuration_lines[iface_name] << port_configlet.expand();
+    }
 }
 
 void OSConfigurator_bsd::summaryConfigLineCARP(QStringList carp_names)

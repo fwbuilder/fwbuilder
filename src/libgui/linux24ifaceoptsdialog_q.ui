@@ -138,7 +138,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="page_ethernet"/>
          <widget class="QWidget" name="page_lan">
