@@ -4,17 +4,16 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3474
 #
-#  Generated Sun Feb 13 18:00:59 2011 PST by vadim
+#  Generated Sun Feb 13 18:01:08 2011 PST by vadim
 #
-# files: * firewall10-1.fw /etc/fw/firewall10-1.fw
-# files:   firewall10-1.conf /etc/fw/firewall10-1.conf
+# files: * firewall110.fw /etc/fw/firewall110.fw
+# files:   firewall110.conf /etc/fw/firewall110.conf
 #
-# Compiled for pf 3.x
+# Compiled for pf 
 #
-# PF 3.x, testing 
-# "flags S/SA keep state"
+# testing shadowing of rules with tag action
 
-
+# firewall110:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
 
 
 
@@ -22,6 +21,9 @@ FWDIR=`dirname $0`
 
 IFCONFIG="/sbin/ifconfig"
 PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
 SYSCTL="/sbin/sysctl"
 LOGGER="/usr/bin/logger"
 
@@ -74,13 +76,13 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 13 18:00:59 2011 by vadim"
+log "Activating firewall script generated Sun Feb 13 18:01:08 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL    -f /etc/fw/firewall10-1.conf || exit 1
+$PFCTL    -f /etc/fw/firewall110.conf || exit 1
 
 
 

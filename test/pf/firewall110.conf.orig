@@ -1,0 +1,24 @@
+
+
+#
+# Scrub rules
+#
+scrub in all fragment reassemble
+
+# Policy compiler errors and warnings:
+# firewall110:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
+# 
+# Rule  0 (global)
+# see #1867  this rule is non-terminating and should not shadow next
+pass inet  from any  to any tag tag2 
+# 
+# Rule  1 (global)
+pass  quick inet  from any  to any keep state queue ssh_q 
+# 
+# Rule  2 (global)
+pass inet  from any  to any tag INTNET keep state 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any 
+

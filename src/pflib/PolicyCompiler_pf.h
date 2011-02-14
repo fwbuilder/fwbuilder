@@ -70,6 +70,15 @@ namespace fwcompiler
         
 	protected:
 
+        /**
+         * virtual method to let policy compiler check rules using
+         * options specific for the given fw platform. Base class
+         * PolicyCompiler has no visibility into platform-specific
+         * options and can not do this.
+         */
+        virtual bool checkForShadowingPlatformSpecific(libfwbuilder::PolicyRule *r1,
+                                                       libfwbuilder::PolicyRule *r2);
+
 	/**
 	 *   splits rule if one of the objects in Src * is firewall
 	 *   itself. This is needed to properly choose direction *

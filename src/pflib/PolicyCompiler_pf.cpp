@@ -49,6 +49,8 @@
 #include <iomanip>
 
 #include <assert.h>
+#include <QtDebug>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -1160,4 +1162,22 @@ void PolicyCompiler_pf::insertPfsyncRule()
         }
     }
 }
+
+/**
+ * virtual method to let policy compiler check rules using
+ * options specific for the given fw platform. Base class
+ * PolicyCompiler has no visibility into platform-specific
+ * options and can not do this.
+ */
+bool PolicyCompiler_pf::checkForShadowingPlatformSpecific(PolicyRule *r1,
+                                                          PolicyRule *r2)
+{
+    PolicyRule::Action r2_action = r2->getAction();
+
+    // Tag action is non-terminating and does not shadow anything
+    if (r2_action == PolicyRule::Tag) return false;
+
+    return true;
+}
+
 
