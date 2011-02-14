@@ -509,6 +509,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
     bool is_library = Library::isA(obj);
     bool is_firewall = Firewall::cast(obj) != NULL; // includes Cluster too
     bool is_deleted_object = (deleted_objects_lib!=NULL && obj->isChildOf(deleted_objects_lib));
+
     // ruleset_visible == true if 1) we delete firewall object and one of its
     // rulesets is visible in the project panel, or 2) we delete ruleset object
     // which is visible in the project panel

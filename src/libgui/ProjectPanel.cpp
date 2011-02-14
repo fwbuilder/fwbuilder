@@ -742,7 +742,7 @@ RCS * ProjectPanel::getRCS()
  */
 void ProjectPanel::addRule()
 {
-    if (visibleRuleSet==NULL) return ;
+    if (visibleRuleSet==NULL || getCurrentRuleSetView()==NULL) return ;
     getCurrentRuleSetView()->insertRule();
 }
 

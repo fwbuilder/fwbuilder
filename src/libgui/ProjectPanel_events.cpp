@@ -418,8 +418,11 @@ bool ProjectPanel::event(QEvent *event)
             case CLOSE_OBJECT_EVENT:
                 if (RuleSet::cast(obj))
                 {
-                    clearFirewallTabs();
-                    closeRuleSet(obj);
+                    if (visibleRuleSet == obj)
+                    {
+                        clearFirewallTabs();
+                        closeRuleSet(obj);
+                    }
                 } else
                 {
                     m_panel->om->closeObject();
