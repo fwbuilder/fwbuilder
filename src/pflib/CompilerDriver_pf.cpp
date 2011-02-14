@@ -166,10 +166,22 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 
     file << endl;
 
+    string set_debug = options->getStr("pf_set_debug");
+    if (!set_debug.empty())
+    {
+        file << "set debug " << set_debug << endl;
+    }
+
     string state_policy = options->getStr("pf_state_policy");
     if (!state_policy.empty())
     {
         file << "set state-policy " << state_policy << endl;
+    }
+
+    string block_policy = options->getStr("pf_block_policy");
+    if (!block_policy.empty())
+    {
+        file << "set block-policy " << block_policy << endl;
     }
 
     QStringList limits;
