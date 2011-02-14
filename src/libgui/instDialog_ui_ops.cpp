@@ -1179,6 +1179,7 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         if (!aaddr.isEmpty()) cnf.maddr = aaddr;
         else cnf.maddr = standard_management_addr;
 
+        cnf.putty_session = "";
 
 #ifdef _WIN32
 
