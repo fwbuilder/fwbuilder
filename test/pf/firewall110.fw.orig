@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3474
 #
-#  Generated Sun Feb 13 18:01:08 2011 PST by vadim
+#  Generated Sun Feb 13 22:27:55 2011 PST by vadim
 #
 # files: * firewall110.fw /etc/fw/firewall110.fw
 # files:   firewall110.conf /etc/fw/firewall110.conf
@@ -76,7 +76,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 13 18:01:08 2011 by vadim"
+log "Activating firewall script generated Sun Feb 13 22:27:55 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

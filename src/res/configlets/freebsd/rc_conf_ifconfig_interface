@@ -5,5 +5,5 @@
 ## using single "#", these will appear in the script.
 ##
 
-$IFCONFIG {{$interface_name}} {{if have_mtu}}mtu {{$mtu}}{{endif}} {{$options}}
+{{if have_mtu}}mtu {{$mtu}}{{endif}} {{$options}}
 

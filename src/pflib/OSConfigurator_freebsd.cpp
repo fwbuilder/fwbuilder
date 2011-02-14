@@ -201,44 +201,19 @@ void OSConfigurator_freebsd::interfaceConfigLineIP(
 void OSConfigurator_freebsd::interfaceIfconfigLine(Interface *iface)
 {
     QString iface_name = iface->getName().c_str();
-
-    Configlet configlet(fw, "freebsd", "ifconfig_interface");
-    configlet.removeComments();
-    configlet.collapseEmptyStrings(true);
-
-    configlet.setVariable("interface_name", iface_name);
-
-    FWOptions *ifopt = iface->getOptionsObject();
-    assert(ifopt != NULL);
-
-    bool need_additional_ifconfig = false;
-    QStringList ifconfig_options;
-    if (ifopt->getBool("iface_configure_mtu") && ifopt->getInt("iface_mtu") > 0)
+    FWOptions* options = fw->getOptionsObject();
+    if (options->getBool("generate_rc_conf_file"))
     {
-        configlet.setVariable("have_mtu", true);
-        configlet.setVariable("mtu", ifopt->getInt("iface_mtu"));
-        need_additional_ifconfig = true;
+        Configlet configlet(fw, "freebsd", "rc_conf_ifconfig_interface");
+        QString config_lines = interfaceIfconfigLineInternal(iface, &configlet);
+        if (!config_lines.isEmpty()) ifconfig_lines[iface_name] << config_lines;
     } else
     {
-        configlet.setVariable("have_mtu", false);
-        configlet.setVariable("mtu", "");
+        Configlet configlet(fw, "freebsd", "ifconfig_interface");
+        QString config_lines = interfaceIfconfigLineInternal(iface, &configlet);
+        if (!config_lines.isEmpty())
+            interface_configuration_lines[iface_name] << config_lines;
     }
-
-    if (!ifopt->getStr("iface_options").empty())
-    {
-        configlet.setVariable("options", ifopt->getStr("iface_options").c_str());
-        need_additional_ifconfig =true;
-    } else
-        configlet.setVariable("options", "");
-    
-    // unlike in virtual function in the parent class
-    // OSConfigurator_bsd, here we add generated strings to
-    // ifconfig_lines that will be used to compose
-    // "ifconfig_<interface>" variable later in
-    // printAllInterfaceConfigurationLines()
-
-    if (need_additional_ifconfig)
-        ifconfig_lines[iface_name] << configlet.expand();
 }
 
 void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)

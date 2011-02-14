@@ -360,12 +360,21 @@ string OSConfigurator_bsd::configureInterfaces()
 void OSConfigurator_bsd::interfaceIfconfigLine(Interface *iface)
 {
     QString iface_name = iface->getName().c_str();
-
     Configlet configlet(fw, "bsd", "ifconfig_interface");
-    configlet.removeComments();
-    configlet.collapseEmptyStrings(true);
+    QString config_lines = interfaceIfconfigLineInternal(iface, &configlet);
+    if (!config_lines.isEmpty())
+        interface_configuration_lines[iface_name] << config_lines;
+}
 
-    configlet.setVariable("interface_name", iface_name);
+QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
+                                                          Configlet *configlet)
+{
+    QString iface_name = iface->getName().c_str();
+
+    configlet->removeComments();
+    configlet->collapseEmptyStrings(true);
+
+    configlet->setVariable("interface_name", iface_name);
 
     FWOptions *ifopt = iface->getOptionsObject();
     assert(ifopt != NULL);
@@ -374,24 +383,25 @@ void OSConfigurator_bsd::interfaceIfconfigLine(Interface *iface)
     QStringList ifconfig_options;
     if (ifopt->getBool("iface_configure_mtu") && ifopt->getInt("iface_mtu") > 0)
     {
-        configlet.setVariable("have_mtu", true);
-        configlet.setVariable("mtu", ifopt->getInt("iface_mtu"));
+        configlet->setVariable("have_mtu", true);
+        configlet->setVariable("mtu", ifopt->getInt("iface_mtu"));
         need_additional_ifconfig = true;
     } else
     {
-        configlet.setVariable("have_mtu", false);
-        configlet.setVariable("mtu", "");
+        configlet->setVariable("have_mtu", false);
+        configlet->setVariable("mtu", "");
     }
 
     if (!ifopt->getStr("iface_options").empty())
     {
-        configlet.setVariable("options", ifopt->getStr("iface_options").c_str());
+        configlet->setVariable("options", ifopt->getStr("iface_options").c_str());
         need_additional_ifconfig =true;
     } else
-        configlet.setVariable("options", "");
+        configlet->setVariable("options", "");
 
-    if (need_additional_ifconfig)
-        interface_configuration_lines[iface_name] << configlet.expand();
+    if (need_additional_ifconfig) return configlet->expand();
+
+    return "";
 }
 
 void OSConfigurator_bsd::summaryConfigLineIP(QStringList , bool )

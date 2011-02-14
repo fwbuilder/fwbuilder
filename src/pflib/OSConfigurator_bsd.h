@@ -99,6 +99,8 @@ protected:
 
         // this function generates additional ifconfig parameters
         virtual void interfaceIfconfigLine(libfwbuilder::Interface *iface);
+        virtual QString interfaceIfconfigLineInternal(libfwbuilder::Interface *iface,
+                                                      Configlet *configlet);
         
         virtual QString printAllInterfaceConfigurationLines();
 

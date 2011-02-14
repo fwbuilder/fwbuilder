@@ -19855,7 +19855,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id32636X21143" host_OS="openbsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1296525645" platform="pf" version="4.7" name="firewall100" comment="routing rules" ro="False">
+      <Firewall id="id32636X21143" host_OS="openbsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297661451" platform="pf" version="4.7" name="firewall100" comment="routing rules" ro="False">
         <NAT id="id32797X21143" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -19948,7 +19948,14 @@
         </Routing>
         <Interface id="id32644X21143" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
           <IPv4 id="id32647X21143" name="firewall100:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
-          <InterfaceOptions/>
+          <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">True</Option>
+            <Option name="iface_mtu">1490</Option>
+            <Option name="iface_options"></Option>
+            <Option name="type">ethernet</Option>
+            <Option name="vlan_id">0</Option>
+          </InterfaceOptions>
         </Interface>
         <Interface id="id32649X21143" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em1" comment="" ro="False">
           <IPv4 id="id32652X21143" name="firewall100:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
@@ -20306,7 +20313,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id33080X19696" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1296863983" platform="pf" version="4.7" name="firewall101" comment="routing rules, shell script format" ro="False">
+      <Firewall id="id33080X19696" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297661513" platform="pf" version="4.7" name="firewall101" comment="routing rules, shell script format" ro="False">
         <NAT id="id33129X19696" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -20399,7 +20406,14 @@
         </Routing>
         <Interface id="id33088X19696" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
           <IPv4 id="id33091X19696" name="firewall101:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
-          <InterfaceOptions/>
+          <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">True</Option>
+            <Option name="iface_mtu">1490</Option>
+            <Option name="iface_options"></Option>
+            <Option name="type">ethernet</Option>
+            <Option name="vlan_id">0</Option>
+          </InterfaceOptions>
         </Interface>
         <Interface id="id33093X19696" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em1" comment="" ro="False">
           <IPv4 id="id33096X19696" name="firewall101:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
@@ -20420,6 +20434,7 @@
           <Option name="compiler"></Option>
           <Option name="conf1_file"></Option>
           <Option name="conf_file_name_on_firewall">/etc/fw/path with space/pf.conf</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_pfsync_interfaces">False</Option>
@@ -20509,7 +20524,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id33316X5965" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297029360" platform="pf" version="4.7" name="firewall102" comment="routing rules, rc.conf format" ro="False">
+      <Firewall id="id33316X5965" host_OS="freebsd" inactive="False" lastCompiled="1296525125" lastInstalled="1271995582" lastModified="1297661443" platform="pf" version="4.7" name="firewall102" comment="routing rules, rc.conf format" ro="False">
         <NAT id="id33365X5965" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -20602,7 +20617,14 @@
         </Routing>
         <Interface id="id33324X5965" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
           <IPv4 id="id33327X5965" name="firewall102:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
-          <InterfaceOptions/>
+          <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">True</Option>
+            <Option name="iface_mtu">1490</Option>
+            <Option name="iface_options"></Option>
+            <Option name="type">ethernet</Option>
+            <Option name="vlan_id">0</Option>
+          </InterfaceOptions>
         </Interface>
         <Interface id="id33329X5965" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em1" comment="" ro="False">
           <IPv4 id="id33332X5965" name="firewall102:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
