@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3470
+#  Firewall Builder  fwb_ipt v4.2.0.3477
 #
-#  Generated Thu Feb 10 14:45:09 2011 PST by vadim
+#  Generated Tue Feb 15 14:28:57 2011 PST by vadim
 #
 # files: * cluster1_secuwall-1.fw /etc/cluster1_secuwall-1.fw
 #
@@ -588,7 +588,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 10 14:45:09 2011 by vadim"
+        log "Activating firewall script generated Tue Feb 15 14:28:57 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

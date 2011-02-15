@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3470
+#  Firewall Builder  fwb_ipt v4.2.0.3477
 #
-#  Generated Thu Feb 10 14:45:01 2011 PST by vadim
+#  Generated Tue Feb 15 14:28:49 2011 PST by vadim
 #
 # files: * rc.firewall.local /etc/rc.d//rc.firewall.local
 #
@@ -39,7 +39,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 check_file() {
