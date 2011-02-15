@@ -1,3 +1,14 @@
+2011-02-15  vadim  <vadim@netcitadel.com>
+
+	* ActionsDialog.cpp (setRule): see #1871 "PF Actions Tag and
+	Classify can be terminating or non-terminating". Added checkbox to
+	the action properties dialog for actions Tag and Classify for PF
+	that lets the user choose if these actions should be terminating
+	or not. Old behavior (Tag was non-terminating and Classify was
+	terminating) is reflected in default settings of the checkboxes.
+	Terminating rules generate "pass quick" commands, while
+	non-terminating rules generate "pass" commands (no "quick" option).
+
 2011-02-14  vadim  <vadim@netcitadel.com>
 
 	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): fixes

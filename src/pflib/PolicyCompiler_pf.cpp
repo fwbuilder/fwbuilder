@@ -614,11 +614,43 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     tmp_queue.push_back(rule);
 
-    if ( rule->getAction()!=PolicyRule::Scrub &&
-         rule->getAction()!=PolicyRule::Accounting &&
-         rule->getAction()!=PolicyRule::Tag &&
-         rule->getAction()!=PolicyRule::Branch
-    ) rule->setBool("quick",true);
+    FWOptions *ropt = rule->getOptionsObject();
+
+    // as of 4.2.0 build 3477 we provide checkboxes to make Tag and
+    // Classify actions (PF) terminating or non-terminating on
+    // per-rule basis. Old behavior: Tag was non-terminating and
+    // Classify was terminating. Set options accordingly if they are
+    // not set.
+
+    switch (rule->getAction())
+    {
+    case PolicyRule::Scrub:
+    case PolicyRule::Accounting:
+    case PolicyRule::Branch:
+        break;
+
+    case PolicyRule::Tag:
+    {
+        string pf_tag_terminating = ropt->getStr("pf_tag_terminating");
+        if (pf_tag_terminating.empty())
+            ropt->setBool("pf_tag_terminating", false);
+        if (ropt->getBool("pf_tag_terminating")) rule->setBool("quick", true);
+        break;
+    }
+
+    case PolicyRule::Classify:
+    {
+        string pf_classify_terminating = ropt->getStr("pf_classify_terminating");
+        if (pf_classify_terminating.empty())
+            ropt->setBool("pf_classify_terminating", true);
+        if (ropt->getBool("pf_classify_terminating")) rule->setBool("quick", true);
+        break;
+    }
+
+    default:
+        rule->setBool("quick", true);
+        break;
+    }
 
     return true;
 }
@@ -966,6 +998,8 @@ void PolicyCompiler_pf::compile()
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
 
+        add(new setQuickFlag("set 'quick' flag"));
+
         add(new DetectShadowing("Detect shadowing"));
         add(new simplePrintProgress());
 
@@ -1172,10 +1206,9 @@ void PolicyCompiler_pf::insertPfsyncRule()
 bool PolicyCompiler_pf::checkForShadowingPlatformSpecific(PolicyRule *r1,
                                                           PolicyRule *r2)
 {
-    PolicyRule::Action r2_action = r2->getAction();
-
-    // Tag action is non-terminating and does not shadow anything
-    if (r2_action == PolicyRule::Tag) return false;
+    bool quick = r2->getBool("quick");
+    // if quick == false, the rule is non-terminating
+    if (!quick) return false;
 
     return true;
 }

@@ -185,14 +185,14 @@ void ActionsDialog::applyChanges()
     Rule *rule = Rule::cast(new_state);
     PolicyRule *policy_rule = PolicyRule::cast(new_state);
 
-    if (editor=="TagInt")
+    if (editor=="TagIptables")
     {
         FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
         policy_rule->setTagObject(tag_object);
     }
 
-    if (editor=="TagStr")
+    if (editor=="TagPF")
     {
         FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
@@ -294,6 +294,21 @@ void ActionsDialog::setRule(Rule *r)
         m_dialog->useDummyNetQueue->setChecked(1);
     }
 
+    // as of 4.2.0 build 3477 we provide checkboxes to make Tag and
+    // Classify actions (PF) terminating or non-terminating on
+    // per-rule basis. Old behavior: Tag was non-terminating and
+    // Classify was terminating. Set options accordingly if they are
+    // not set.
+    if (platform=="pf")
+    {
+        string pf_tag_terminating = ropt->getStr("pf_tag_terminating");
+        if (pf_tag_terminating.empty())
+            ropt->setBool("pf_tag_terminating", false);
+        string pf_classify_terminating = ropt->getStr("pf_classify_terminating");
+        if (pf_classify_terminating.empty())
+            ropt->setBool("pf_classify_terminating", true);
+    }
+
     if (platform=="iptables")
     {
         m_dialog->classify_terminating->show();
@@ -325,6 +340,9 @@ void ActionsDialog::setRule(Rule *r)
 
     data.registerOption(m_dialog->ipt_mark_connections, ropt,
                         "ipt_mark_connections");
+
+    data.registerOption(m_dialog->pf_tag_terminating, ropt, "pf_tag_terminating");
+
 //    data.registerOption(ipt_mark_prerouting, ropt, "ipt_mark_prerouting");
     data.registerOption(m_dialog->accountingvalue_str, ropt,
                         "rule_name_accounting");
@@ -332,6 +350,10 @@ void ActionsDialog::setRule(Rule *r)
     data.registerOption(m_dialog->divertPortNum, ropt, "ipfw_pipe_port_num");
     data.registerOption(m_dialog->classify_str, ropt, "classify_str");
     data.registerOption(m_dialog->custom_str, ropt, "custom_str");
+
+    data.registerOption(m_dialog->pf_classify_str, ropt, "pf_classify_str");
+    data.registerOption(m_dialog->pf_classify_terminating, ropt,
+                        "pf_classify_terminating");
 
     // ROUTE action:
 
@@ -370,39 +392,43 @@ void ActionsDialog::setRule(Rule *r)
     {
         w=m_dialog->RejectPage;
     }
-    else if (editor=="TagInt")
+    else if (editor=="TagIptables")
     {
-        w=m_dialog->TagIntPage;
+        w = m_dialog->TagIptables;
         FWObject *o = policy_rule->getTagObject();
         m_dialog->iptTagDropArea->setObject(o);
         m_dialog->iptTagDropArea->update();
     }
-    else if (editor=="TagStr")
+    else if (editor=="TagPF")
     {
-        w=m_dialog->TagStrPage;
+        w = m_dialog->TagPF;
         FWObject *o = policy_rule->getTagObject();
         m_dialog->pfTagDropArea->setObject(o);
         m_dialog->pfTagDropArea->update();
     }
     else if (editor=="AccountingStr")
     {
-        w=m_dialog->AccountingStrPage;
+        w = m_dialog->AccountingStrPage;
     }
     else if (editor=="ClassifyArgsIPFW")
     {
-        w=m_dialog->ClassifyArgsIPFW;
+        w = m_dialog->ClassifyArgsIPFW;
     }
     else if (editor=="PipeArgsIPFW")
     {
-        w=m_dialog->PipeArgsIPFW;
+        w = m_dialog->PipeArgsIPFW;
     }
-    else if (editor=="ClassifyStr")
+    else if (editor=="ClassifyIptables")
     {
-        w=m_dialog->ClassifyStrPage;
+        w = m_dialog->ClassifyIptables;
+    }
+    else if (editor=="ClassifyPF")
+    {
+        w = m_dialog->ClassifyPF;
     }
     else if (editor=="CustomStr")
     {
-        w=m_dialog->CustomStrPage;
+        w = m_dialog->CustomStrPage;
     }
     else if (editor=="BranchChain")
     {

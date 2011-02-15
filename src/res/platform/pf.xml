@@ -65,7 +65,7 @@
             <Tag>
                 <supported>True</supported>
                 <description>Tag</description>
-                <dialog_page>TagStr</dialog_page>
+                <dialog_page>TagPF</dialog_page>
             </Tag>
             <Pipe>
                 <supported>False</supported>
@@ -75,7 +75,7 @@
             <Classify>
                 <supported>True</supported>
                 <description>Classify</description>
-                <dialog_page>ClassifyStr</dialog_page>
+                <dialog_page>ClassifyPF</dialog_page>
             </Classify>
             <Custom>
                 <supported>False</supported>

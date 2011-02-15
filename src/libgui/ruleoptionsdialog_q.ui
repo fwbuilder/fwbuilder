@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1186</width>
-    <height>325</height>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="ipt">
       <layout class="QGridLayout">
@@ -642,9 +642,6 @@
            <string>hashlimit</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_8">
-           <property name="verticalSpacing">
-            <number>8</number>
-           </property>
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -653,6 +650,9 @@
            </property>
            <property name="bottomMargin">
             <number>12</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>8</number>
            </property>
            <item row="0" column="0">
             <widget class="QLabel" name="textLabel2_5">

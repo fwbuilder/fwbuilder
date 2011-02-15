@@ -71,7 +71,7 @@
             <Tag>
                 <supported>True</supported>
                 <description>Tag</description>
-                <dialog_page>TagInt</dialog_page>
+                <dialog_page>TagIptables</dialog_page>
             </Tag>
             <Pipe>
                 <supported>True</supported>
@@ -81,7 +81,7 @@
             <Classify>
                 <supported>True</supported>
                 <description>Classify</description>
-                <dialog_page>ClassifyStr</dialog_page>
+                <dialog_page>ClassifyIptables</dialog_page>
             </Classify>
             <Custom>
                 <supported>True</supported>

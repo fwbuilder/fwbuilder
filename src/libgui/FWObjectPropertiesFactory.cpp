@@ -980,7 +980,10 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                     par = par + " " + ropt->getStr("ipfw_pipe_queue_num").c_str();
                 } else
                 {
-                    par = ropt->getStr("classify_str").c_str();
+                    if (platform=="pf")
+                        par = ropt->getStr("pf_classify_str").c_str();
+                    else
+                        par = ropt->getStr("classify_str").c_str();
                 }
                 break;
             case PolicyRule::Pipe :
@@ -1063,7 +1066,7 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
     QString res = QObject::tr("<b>Action   :</b> %1<br>").arg(act);
     if (!par.isEmpty())
     {
-        res += QObject::tr("<b>Parameter:</b> ")+par;
+        res += QObject::tr("<b>Parameter:</b> %1").arg(par);
     }
     return res;
 }
