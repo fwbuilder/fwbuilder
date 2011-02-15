@@ -302,6 +302,10 @@ string OSConfigurator_bsd::configureInterfaces()
 
         // sort interfaces by name
         all_names.sort();
+        // remove duplicates. We get duplicates in all_names when an
+        // interface appears twice, once as a bridge port and another time as
+        // vlan parent interface
+        all_names.removeDuplicates();
         ipv6_names.sort();
         intf_names.sort();
 

@@ -4,14 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3476
 #
-#  Generated Mon Feb 14 16:07:30 2011 PST by vadim
+#  Generated Mon Feb 14 16:07:34 2011 PST by vadim
 #
-# files: * firewall104-1.fw /etc/fw/pf.fw
-# files:   firewall104-1.conf /etc/fw/path\ with\ space/pf.conf
+# files: * firewall109.fw /etc/fw/pf.fw
+# files:   firewall109.conf /etc/fw/path\ with\ space/pf.conf
 #
 # Compiled for pf 4.7
 #
-# bridge interface, dynamic  address, shell script format, OpenBSD 4.7
+# complex configuration with bridge and vlan
 
 
 
@@ -21,6 +21,9 @@ FWDIR=`dirname $0`
 
 IFCONFIG="/sbin/ifconfig"
 PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
 SYSCTL="/sbin/sysctl"
 LOGGER="/usr/bin/logger"
 
@@ -166,7 +169,7 @@ parse_fwb_vlans() {
 
 parse_current_vlans() {
     vlan_parent_interface=$1
-    $IFCONFIG -A | grep 'vlan: ' | sed 's/parent interface://' | \
+    $IFCONFIG  | grep 'vlan: ' | sed 's/parent interface://' | \
     while read x vlan_id parent
     do
        test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
@@ -187,7 +190,7 @@ update_vlans_of_interface() {
 }
 
 sync_vlan_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -208,9 +211,9 @@ sync_vlan_interfaces() {
 
 
 
+
+
 BRCONFIG="$IFCONFIG"
-
-
 
 
 missing_port() {
@@ -302,7 +305,7 @@ sync_bridge_interfaces() {
 
 
 sync_carp_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -327,7 +330,7 @@ sync_carp_interfaces() {
 
 
 sync_pfsync_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
+    $IFCONFIG  | awk -v IGNORED="$*" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
@@ -373,20 +376,25 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    sync_vlan_interfaces 
+    sync_vlan_interfaces vlan101 vlan102
     sync_bridge_interfaces bridge0
     sync_carp_interfaces 
     sync_pfsync_interfaces 
-    update_bridge_interface bridge0 "em2 em3"
+    update_bridge_interface bridge0 "em1 em2"
+    $IFCONFIG bridge0 -stp em1
     $IFCONFIG bridge0 -stp em2
-    $IFCONFIG bridge0 -stp em3
+    update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
     update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
-    update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
+    update_addresses_of_interface "em1" ""
+    $IFCONFIG em1  media 100baseTX mediaopt full-duplex up
+    update_vlans_of_interface "em2 vlan101 vlan102"
     update_addresses_of_interface "em2" ""
-    update_addresses_of_interface "em3" ""
+    $IFCONFIG em2  media 100baseTX mediaopt full-duplex up
+    update_addresses_of_interface "vlan101 192.168.101.1/0xffffff00" ""
+    update_addresses_of_interface "vlan102 192.168.102.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Mon Feb 14 16:07:30 2011 by vadim"
+log "Activating firewall script generated Mon Feb 14 16:07:34 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

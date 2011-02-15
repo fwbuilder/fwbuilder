@@ -1,5 +1,12 @@
 2011-02-14  vadim  <vadim@netcitadel.com>
 
+	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): fixes
+	#2091 "ethernet intrface options a used twice if the interface is
+	a bridge port". When an interface appeared twice in the firewall
+	configuration, such as when it is used as a  bridge port and
+	vlan parent interface, options configured for it in its settings
+	dialog were added twice to the generated configuration.
+
 	* OSConfigurator_freebsd.cpp (interfaceConfigLineBridge): fixes
 	#2092 "option "stp" should be optional in the ifconfig command
 	that builds bridge interface for FreeBSD". The dialog provides

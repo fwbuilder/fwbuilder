@@ -3,7 +3,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3476
 #
-#  Generated Mon Feb 14 15:52:20 2011 PST by vadim
+#  Generated Mon Feb 14 16:07:25 2011 PST by vadim
 #
 # files: * firewall102.fw /etc/fw/pf.fw
 # files:   firewall102.conf /etc/fw/path\ with\ space/pf.conf
