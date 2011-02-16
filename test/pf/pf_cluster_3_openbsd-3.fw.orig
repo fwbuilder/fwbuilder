@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 14:33:39 2011 PST by vadim
+#  Generated Wed Feb 16 14:46:14 2011 PST by vadim
 #
 # files: * pf_cluster_3_openbsd-3.fw /etc/pf_cluster_3_openbsd-3.fw
 # files:   pf_cluster_3_openbsd-3.conf /etc/pf_cluster_3_openbsd-3.conf
@@ -295,7 +295,7 @@ configure_interfaces() {
     update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 14:33:39 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 14:46:14 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

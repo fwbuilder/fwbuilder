@@ -397,7 +397,8 @@ void OSConfigurator_freebsd::summaryConfigLinePfsync(bool have_pfsync)
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
     {
-        interface_configuration_lines["pfsync0"] <<  "pfsync_enable=\"YES\"";
+        if (have_pfsync)
+            interface_configuration_lines["pfsync0"] <<  "pfsync_enable=\"YES\"";
     } else
         OSConfigurator_bsd::summaryConfigLinePfsync(have_pfsync);
 }

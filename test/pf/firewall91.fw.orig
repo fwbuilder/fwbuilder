@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 14:33:36 2011 PST by vadim
+#  Generated Wed Feb 16 14:46:10 2011 PST by vadim
 #
 # files: * firewall91.fw /etc/fw/pf.fw
 # files:   firewall91.conf /etc/fw/pf.conf
@@ -240,7 +240,7 @@ configure_interfaces() {
     update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 14:33:36 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 14:46:10 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
