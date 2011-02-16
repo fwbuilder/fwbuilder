@@ -1,2 +1,2 @@
-#define VERSION      "4.2.0.3477"
+#define VERSION      "4.2.0.3478"
 #define GENERATION   "4.2"
