@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3477
+#  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 13:24:46 2011 PST by vadim
+#  Generated Wed Feb 16 14:33:17 2011 PST by vadim
 #
 # files: * firewall109-3.fw /etc/fw/pf.fw
 # files:   firewall109-3.conf /etc/fw/path\ with\ space/pf.conf
@@ -20,16 +20,16 @@ gateway_enable="YES"
 
 cloned_interfaces="vlan8210 vlan9210 bridge0"
 network_interfaces="bridge0 em0"
-
-ifconfig_bridge0="addm vlan8210 -stp vlan8210 addm vlan9210 -stp vlan9210 up 192.168.1.1 netmask 0xffffff00"
 ifconfig_em0="10.3.14.81 netmask 0xffffff00"
 vlans_em1="vlan9210"
 create_args_vlan9210="vlan 210 vlandev em1"
 vlans_em2="vlan8210"
 create_args_vlan8210="vlan 210 vlandev em2"
-pfsync_enable="YES"
 ifconfig_vlan8210="up"
 ifconfig_vlan9210="up"
+
+ifconfig_bridge0="addm vlan8210 -stp vlan8210 addm vlan9210 -stp vlan9210 up 192.168.1.1 netmask 0xffffff00"
+pfsync_enable="YES"
 
 pf_enable="YES"
 pf_rules="/etc/fw/path\ with\ space/pf.conf"

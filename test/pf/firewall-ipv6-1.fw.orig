@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3477
+#  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 13:25:07 2011 PST by vadim
+#  Generated Wed Feb 16 14:33:38 2011 PST by vadim
 #
 # files: * firewall-ipv6-1.fw pf-ipv6.fw
 # files:   firewall-ipv6-1.conf /etc/fw/pf-ipv6.conf
@@ -175,7 +175,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo ::1/128 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 13:25:07 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 14:33:38 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

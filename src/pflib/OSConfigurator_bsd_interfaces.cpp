@@ -50,22 +50,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-/*
- * I need to sort interfaces by name but make sure carp interfaces are
- * always last. See #1807
- */
-bool compare_names(FWObject *a, FWObject *b)
-{
-    QString a_name = QString(a->getName().c_str());
-    QString b_name = QString(b->getName().c_str());
-    if (a_name.startsWith("carp") && b_name.startsWith("carp"))
-        return a_name < b_name;
-    if (a_name.startsWith("carp")) return false;
-    if (b_name.startsWith("carp")) return true;
-    return a_name < b_name;
-}
-
-
 string OSConfigurator_bsd::configureInterfaces()
 {
     FWOptions* options = fw->getOptionsObject();
@@ -215,7 +199,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 fw->getStr("host_OS")));
 
         list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
-        all_interfaces.sort(compare_names);
+        all_interfaces.sort();
 
         QStringList configure_intf_commands;
         QStringList intf_names;
@@ -630,11 +614,28 @@ void OSConfigurator_bsd::interfaceConfigLinePfsync(
     interface_configuration_lines[iface->getName().c_str()] <<  configlet.expand();
 }
 
+/*
+ * I need to sort interfaces by name but make sure carp and bridge
+ * interfaces are always last. See #1807 and #2104
+ */
+bool sort_interface_names(QString a, QString b)
+{
+    QString an = a;
+    QString bn = b;
+    if (a.startsWith("bridge")) an = "x_" + a;
+    if (b.startsWith("bridge")) bn = "x_" + b;
+    if (a.startsWith("carp")) an = "y_" + a;
+    if (b.startsWith("carp")) bn = "y_" + b;
+    if (a.startsWith("pfsync")) an = "z_" + a;
+    if (b.startsWith("pfsync")) bn = "z_" + b;
+    return an < bn;
+}
 
 QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
     QStringList keys = interface_configuration_lines.keys();
-    keys.sort();
+    //keys.sort();
+    qSort(keys.begin(), keys.end(), sort_interface_names);
     QStringList res;
     foreach (QString iface, keys)
         res << interface_configuration_lines[iface].join("\n");

@@ -1,5 +1,10 @@
 2011-02-16  vadim  <vadim@netcitadel.com>
 
+	* OSConfigurator_bsd_interfaces.cpp (sort_interface_names): see
+	#1807, #2104: arrange interface configuration commands in the
+	generated scritpt in such order that bridge and carp interfaces
+	are configured after all other interfaces are done.
+
 	* compiler_lib/CompilerDriver.cpp (commonChecks2): see #2103
 	removed interface name validation check in compilers, this
 	check will only be done in the GUI. Comiler still verifies

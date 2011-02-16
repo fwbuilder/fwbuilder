@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3477
+#  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 13:24:45 2011 PST by vadim
+#  Generated Wed Feb 16 14:40:53 2011 PST by vadim
 #
 # files: * firewall109-1.fw /etc/fw/pf.fw
 # files:   firewall109-1.conf /etc/fw/path\ with\ space/pf.conf
@@ -20,17 +20,17 @@ gateway_enable="YES"
 
 cloned_interfaces="vlan101 vlan102 bridge0"
 network_interfaces="bridge0 em0 vlan101 vlan102"
-
-ifconfig_bridge0="addm em1 -stp em1 addm em2 -stp em2 up 192.168.1.1 netmask 0xffffff00"
 ifconfig_em0="10.3.14.81 netmask 0xffffff00"
-ifconfig_em1="up  media 100baseTX mediaopt full-duplex up"
+ifconfig_em1="up  media 100baseTX mediaopt full-duplex"
 vlans_em2="vlan101 vlan102"
 create_args_vlan101="vlan 101 vlandev em2"
 create_args_vlan102="vlan 102 vlandev em2"
-ifconfig_em2="up  media 100baseTX mediaopt full-duplex up"
-pfsync_enable="YES"
+ifconfig_em2="up  media 100baseTX mediaopt full-duplex"
 ifconfig_vlan101="192.168.101.1 netmask 0xffffff00"
 ifconfig_vlan102="192.168.102.1 netmask 0xffffff00"
+
+ifconfig_bridge0="addm em1 -stp em1 addm em2 -stp em2 up 192.168.1.1 netmask 0xffffff00"
+pfsync_enable="YES"
 
 pf_enable="YES"
 pf_rules="/etc/fw/path\ with\ space/pf.conf"
