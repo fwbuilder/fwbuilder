@@ -79,7 +79,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
         QStringList all_physical_interfaces;
         QMap<QString, Interface*> parent_interfaces;
-        QMap<QString, QStringList> vlans;
+        QMap<QString, list<Interface*> > vlans;
         QStringList all_vlan_interfaces; // all vlan interfaces
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -98,7 +98,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 assert(subinterface);
                 if (subinterface->getOptionsObject()->getStr("type") == "8021q")
                 {
-                    vlans[iface_name] << subinterface->getName().c_str();
+                    vlans[iface_name].push_back(subinterface);
                     all_vlan_interfaces << subinterface->getName().c_str();
                 }
             }
@@ -115,7 +115,7 @@ string OSConfigurator_bsd::configureInterfaces()
         foreach (QString iface_name, all_physical_interfaces)
         {
             Interface *iface = parent_interfaces[iface_name];
-            QStringList vlan_subinterfaces = vlans[iface_name];
+            list<Interface*> vlan_subinterfaces = vlans[iface_name];
             if (vlan_subinterfaces.size() > 0)
                 interfaceConfigLineVlan(iface, vlan_subinterfaces);
         }
@@ -471,9 +471,15 @@ void OSConfigurator_bsd::summaryConfigLineVlan(QStringList vlan_names)
 }
 
 
-void OSConfigurator_bsd::interfaceConfigLineVlan(Interface *iface,
-                                                QStringList vlan_names)
+void OSConfigurator_bsd::interfaceConfigLineVlan(
+    Interface *iface,
+    const list<Interface*> &vlan_subinterfaces)
 {
+    QStringList vlan_names;
+    list<Interface*>::const_iterator it;
+    for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
+        vlan_names << (*it)->getName().c_str();
+
     interface_configuration_lines[iface->getName().c_str()] << 
         QString("update_vlans_of_interface \"%1 %2\"")
         .arg(iface->getName().c_str())

@@ -104,27 +104,30 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     init = true;
 
-    /*
-     * guessSubInterfaceTypeAndAttributes() changes some attributes of
-     * the object (mostly compensating for missing functions in
-     * auto-upgrade scripts but also makes some guesses based on the
-     * interface name, such as sets its vlan ID if its name looks like
-     * it might be a vlan interface). Since we make changes in the
-     * object here, do it before loading it into the dialog so that it
-     * does not look like it has changed in applyChanges() even if the
-     * user hasn't touched it, which causes new undo command to be
-     * created out of nowhere.
-     *
-     * TODO: better way of course is to call
-     * guessSubInterfaceTypeAndAttributes in places where user changes
-     * something relevant in the interface to complement their changes
-     * and right after the interface has been created.
-     */
-    interfaceProperties *int_prop =
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            s->getParentHost());
-    int_prop->guessSubInterfaceTypeAndAttributes(s);
-    delete int_prop;
+    if (st->getBool("Objects/Interface/autoconfigureInterfaces"))
+    {
+        /*
+         * guessSubInterfaceTypeAndAttributes() changes some attributes of
+         * the object (mostly compensating for missing functions in
+         * auto-upgrade scripts but also makes some guesses based on the
+         * interface name, such as sets its vlan ID if its name looks like
+         * it might be a vlan interface). Since we make changes in the
+         * object here, do it before loading it into the dialog so that it
+         * does not look like it has changed in applyChanges() even if the
+         * user hasn't touched it, which causes new undo command to be
+         * created out of nowhere.
+         *
+         * TODO: better way of course is to call
+         * guessSubInterfaceTypeAndAttributes in places where user changes
+         * something relevant in the interface to complement their changes
+         * and right after the interface has been created.
+         */
+        interfaceProperties *int_prop =
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                s->getParentHost());
+        int_prop->guessSubInterfaceTypeAndAttributes(s);
+        delete int_prop;
+    }
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
@@ -353,7 +356,9 @@ void InterfaceDialog::validate(bool *res)
         return;
     }
 
-    if ( ! int_prop->validateInterface(obj->getParent(), obj_name, err))
+    // validateInterface() checks validity of vlan inetrface name
+    if (st->getBool("Objects/Interface/autoconfigureInterfaces") &&
+        ! int_prop->validateInterface(obj->getParent(), obj_name, err))
     {
         /*
          * Here is the annoying part: if user entered interface name
@@ -494,13 +499,17 @@ void InterfaceDialog::applyChanges()
         // Complement changes made by the user with our guesses, but
         // do this only if user changed something.
 
-        // ticket #328: automatically assign vlan id to interface based on
-        // interface name
-        interfaceProperties *int_prop =
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                Interface::cast(obj)->getParentHost());
-        int_prop->guessSubInterfaceTypeAndAttributes(intf);
-        delete int_prop;
+        if (st->getBool("Objects/Interface/autoconfigureInterfaces"))
+        {
+            // ticket #328: automatically assign vlan id to interface based on
+            // interface name
+            interfaceProperties *int_prop =
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    Interface::cast(obj)->getParentHost());
+            int_prop->setPerformVlanChecks(true);
+            int_prop->guessSubInterfaceTypeAndAttributes(intf);
+            delete int_prop;
+        }
 
         if (obj->isReadOnly()) return;
         m_project->undoStack->push(cmd.release());

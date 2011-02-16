@@ -1,0 +1,25 @@
+
+set timeout udp.single 5
+
+#
+# Scrub rules
+#
+match all scrub (reassemble tcp no-df )
+match out all scrub (random-id min-ttl  1 max-mss  1460)
+
+
+# Tables: (1)
+table <tbl.r9998.d> { 10.3.14.81 , 192.168.1.1 } 
+
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r9998.d> port 22  label "RULE 9998 -- ACCEPT "  
+# 
+# Rule  0 (global)
+block  log  quick inet  from any  to any no state  label "RULE 0 -- DROP "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE 10000 -- DROP "  
+

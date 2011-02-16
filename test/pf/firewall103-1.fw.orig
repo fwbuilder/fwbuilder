@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3476
+#  Firewall Builder  fwb_pf v4.2.0.3477
 #
-#  Generated Mon Feb 14 16:07:28 2011 PST by vadim
+#  Generated Wed Feb 16 13:24:38 2011 PST by vadim
 #
 # files: * firewall103-1.fw /etc/fw/pf.fw
 # files:   firewall103-1.conf /etc/fw/path\ with\ space/pf.conf
@@ -387,7 +387,7 @@ configure_interfaces() {
     update_addresses_of_interface "em3" ""
 }
 
-log "Activating firewall script generated Mon Feb 14 16:07:28 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 13:24:38 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

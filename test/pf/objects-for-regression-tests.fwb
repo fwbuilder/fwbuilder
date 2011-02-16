@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1297727981" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1297891427" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1537,6 +1537,38 @@
       </Interface>
     </Interface>
     <IPv4 id="id35220X5121" name="firewall109:em1:ip" comment="" ro="False" address="10.1.1.81" netmask="255.255.255.0"/>
+    <Interface id="id35557X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="em1" comment="" ro="False">
+      <InterfaceOptions>
+        <Option name="enable_stp">False</Option>
+        <Option name="iface_configure_mtu">False</Option>
+        <Option name="iface_mtu">1500</Option>
+        <Option name="iface_options">media 100baseTX mediaopt full-duplex up</Option>
+        <Option name="type">ethernet</Option>
+        <Option name="vlan_id">0</Option>
+      </InterfaceOptions>
+    </Interface>
+    <Interface id="id35560X5911" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="em2" comment="" ro="False">
+      <InterfaceOptions>
+        <Option name="enable_stp">False</Option>
+        <Option name="iface_configure_mtu">False</Option>
+        <Option name="iface_mtu">1500</Option>
+        <Option name="iface_options">media 100baseTX mediaopt full-duplex up</Option>
+        <Option name="type">ethernet</Option>
+        <Option name="vlan_id">0</Option>
+      </InterfaceOptions>
+    </Interface>
+    <Interface id="id35543X5911" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vlan102" comment="" ro="False">
+      <IPv4 id="id35546X5911" name="firewall109:em2:vlan102:ip" comment="" ro="False" address="192.168.102.1" netmask="255.255.255.0"/>
+      <InterfaceOptions>
+        <Option name="enable_stp">False</Option>
+        <Option name="iface_configure_mtu">False</Option>
+        <Option name="iface_mtu">1500</Option>
+        <Option name="iface_options"></Option>
+        <Option name="type">8021q</Option>
+        <Option name="vlan_id">102</Option>
+      </InterfaceOptions>
+    </Interface>
+    <IPv4 id="id35541X5911" name="firewall109-2:em2:vlan8210:ip" comment="" ro="False" address="192.168.101.1" netmask="255.255.255.0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -22926,6 +22958,396 @@
           <Option name="pf_scrub_use_maxmss">True</Option>
           <Option name="pf_scrub_use_minttl">True</Option>
           <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">True</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">5</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall">/etc/fw/pf.fw</Option>
+          <Option name="sshArgs"></Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id35513X5911" host_OS="freebsd" inactive="False" lastCompiled="1297728239" lastInstalled="1271995582" lastModified="1297891411" platform="pf" version="4.7" name="firewall109-2" comment="complex configuration with bridge and vlan, uses vlan interfaces with names not matching vlan IDs&#10;" ro="False">
+        <NAT id="id35594X5911" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id35563X5911" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id35565X5911" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id35597X5911" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id35521X5911" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
+          <IPv4 id="id35524X5911" name="firewall109:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id35526X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="False" name="em1" comment="" ro="False">
+          <InterfaceOptions/>
+          <Interface id="id35658X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan9210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">210</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id35529X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="em2" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+          <Interface id="id35538X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan8210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">210</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id35548X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
+          <IPv4 id="id35555X5911" name="firewall109:bridge0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">False</Option>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options"></Option>
+            <Option name="type">bridge</Option>
+            <Option name="vlan_id">0</Option>
+          </InterfaceOptions>
+          <Interface id="id35644X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan8210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id35672X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan9210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">ethernet</Option>
+              <Option name="vlan_id">0</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser">root</Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline">-xt</Option>
+          <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
+          <Option name="conf_file_name_on_firewall">/etc/fw/path with space/pf.conf</Option>
+          <Option name="configure_bridge_interfaces">True</Option>
+          <Option name="configure_carp_interfaces">True</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="generate_rc_conf_file">False</Option>
+          <Option name="generate_shell_script">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr">10.3.14.30</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_block_policy"></Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">True</Option>
+          <Option name="pf_scrub_random_id">True</Option>
+          <Option name="pf_scrub_reassemble">False</Option>
+          <Option name="pf_scrub_reassemble_tcp">True</Option>
+          <Option name="pf_scrub_use_maxmss">True</Option>
+          <Option name="pf_scrub_use_minttl">True</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_debug"></Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">True</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">5</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall">/etc/fw/pf.fw</Option>
+          <Option name="sshArgs"></Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id35714X5911" host_OS="freebsd" inactive="False" lastCompiled="1297891451" lastInstalled="1271995582" lastModified="1297891442" platform="pf" version="4.7" name="firewall109-3" comment="complex configuration with bridge and vlan, uses vlan interfaces with names not matching vlan IDs. rc.conf format&#10;&#10;" ro="False">
+        <NAT id="id35789X5911" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id35758X5911" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id35760X5911" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id35792X5911" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id35722X5911" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
+          <IPv4 id="id35725X5911" name="firewall109-3:em0:ip" comment="" ro="False" address="10.3.14.81" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id35727X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="False" name="em1" comment="" ro="False">
+          <InterfaceOptions/>
+          <Interface id="id35732X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan9210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">210</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id35735X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="em2" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+          <Interface id="id35740X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan8210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">210</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id35743X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
+          <IPv4 id="id35750X5911" name="firewall109-3:bridge0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">False</Option>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options"></Option>
+            <Option name="type">bridge</Option>
+            <Option name="vlan_id">0</Option>
+          </InterfaceOptions>
+          <Interface id="id35752X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan8210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id35755X5911" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan9210" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="enable_stp">False</Option>
+              <Option name="iface_configure_mtu">False</Option>
+              <Option name="iface_mtu">1500</Option>
+              <Option name="iface_options"></Option>
+              <Option name="type">ethernet</Option>
+              <Option name="vlan_id">0</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser">root</Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline">-xt</Option>
+          <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
+          <Option name="conf_file_name_on_firewall">/etc/fw/path with space/pf.conf</Option>
+          <Option name="configure_bridge_interfaces">True</Option>
+          <Option name="configure_carp_interfaces">True</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="generate_rc_conf_file">True</Option>
+          <Option name="generate_shell_script">False</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr">10.3.14.30</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_block_policy"></Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">True</Option>
+          <Option name="pf_scrub_random_id">True</Option>
+          <Option name="pf_scrub_reassemble">False</Option>
+          <Option name="pf_scrub_reassemble_tcp">True</Option>
+          <Option name="pf_scrub_use_maxmss">True</Option>
+          <Option name="pf_scrub_use_minttl">True</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_debug"></Option>
           <Option name="pf_set_icmp_error">False</Option>
           <Option name="pf_set_icmp_first">False</Option>
           <Option name="pf_set_other_first">False</Option>

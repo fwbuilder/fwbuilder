@@ -385,6 +385,10 @@ void FWBSettings::init(bool force_first_time_run)
 
     if (!hasKey("Objects/PolicyRule/defaultLoggingState"))
         setBool("Objects/PolicyRule/defaultLoggingState", true);
+
+    if (!hasKey("Objects/Interface/autoconfigureInterfaces"))
+        setBool("Objects/Interface/autoconfigureInterfaces", true);
+
 }
 
 bool FWBSettings::isReminderAboutStandardLibSuppressed()

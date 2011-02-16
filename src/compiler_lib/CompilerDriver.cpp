@@ -543,12 +543,17 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                     os_family));
 
+#if 0
+            // See #2103. All interface name validation checks should
+            // be done in the GUI.
             QString err;
             if (!int_prop->validateInterface(parent, iface, true, err))
             {
                 abort(fw, NULL, NULL, err.toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
+#endif
+
 
             string interface_type = iface->getOptionsObject()->getStr("type");
             if (interface_type.empty()) interface_type = "ethernet";

@@ -251,8 +251,9 @@ void OSConfigurator_freebsd::summaryConfigLineVlan(QStringList vlan_names)
  create_args_myvlan="vlan 102"
 
  */
-void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
-                                                    QStringList vlan_names)
+void OSConfigurator_freebsd::interfaceConfigLineVlan(
+    Interface *iface,
+    const list<Interface*> &vlan_subinterfaces)
 {
     FWOptions* options = fw->getOptionsObject();
     if (options->getBool("generate_rc_conf_file"))
@@ -260,28 +261,27 @@ void OSConfigurator_freebsd::interfaceConfigLineVlan(Interface *iface,
         QString iface_name = iface->getName().c_str();
         // the "vlans_em2="vlan101 vlan102" will appear next to other lines
         // intended for interface em2
+        QStringList vlan_names;
+        list<Interface*>::const_iterator it;
+        for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
+            vlan_names << (*it)->getName().c_str();
+
         interface_configuration_lines[iface_name] <<
             QString("vlans_%1=\"%2\"").arg(iface->getName().c_str())
             .arg(vlan_names.join(" "));
 
-        foreach(QString vlan_intf_name, vlan_names)
+        for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
         {
-            std::auto_ptr<interfaceProperties> int_prop(
-                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    fw->getStr("host_OS")));
-            QString parent_name_from_regex;
-            int vlan_id;
-            if (int_prop->parseVlan(vlan_intf_name,
-                                    &parent_name_from_regex, &vlan_id))
-            {
-                interface_configuration_lines[iface_name] <<
-                    QString("create_args_%1=\"vlan %2 vlandev %3\"")
-                    .arg(vlan_intf_name).arg(vlan_id).arg(iface->getName().c_str());
-            }
+            QString vlan_intf_name = (*it)->getName().c_str();
+            int vlan_id = (*it)->getOptionsObject()->getInt("vlan_id");
+
+            interface_configuration_lines[iface_name] <<
+                QString("create_args_%1=\"vlan %2 vlandev %3\"")
+                .arg(vlan_intf_name).arg(vlan_id).arg(iface->getName().c_str());
         }
         
     } else
-        OSConfigurator_bsd::interfaceConfigLineVlan(iface, vlan_names);
+        OSConfigurator_bsd::interfaceConfigLineVlan(iface, vlan_subinterfaces);
 }
 
 void OSConfigurator_freebsd::summaryConfigLineBridge(QStringList bridge_names)
