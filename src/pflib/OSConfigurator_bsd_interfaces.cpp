@@ -462,7 +462,11 @@ void OSConfigurator_bsd::interfaceConfigLineVlan(
     QStringList vlan_names;
     list<Interface*>::const_iterator it;
     for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
-        vlan_names << (*it)->getName().c_str();
+    {
+        QString vlan_intf_name = (*it)->getName().c_str();
+        int vlan_id = (*it)->getOptionsObject()->getInt("vlan_id");
+        vlan_names << QString("%1:%2").arg(vlan_intf_name).arg(vlan_id);
+    }
 
     interface_configuration_lines[iface->getName().c_str()] << 
         QString("update_vlans_of_interface \"%1 %2\"")

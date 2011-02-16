@@ -1,5 +1,9 @@
 2011-02-16  vadim  <vadim@netcitadel.com>
 
+	* configlets/bsd/update_vlans: see #2105: generated script now
+	supports vlan interfaces with names that do not match vlan IDs
+	(OpenBSD, FreeBSD, shell script format).
+
 	* OSConfigurator_bsd_interfaces.cpp (sort_interface_names): see
 	#1807, #2104: arrange interface configuration commands in the
 	generated scritpt in such order that bridge and carp interfaces
