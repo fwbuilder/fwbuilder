@@ -286,10 +286,23 @@ string OSConfigurator_bsd::configureInterfaces()
 
         // sort interfaces by name
         all_names.sort();
+
         // remove duplicates. We get duplicates in all_names when an
         // interface appears twice, once as a bridge port and another time as
         // vlan parent interface
-        all_names.removeDuplicates();
+        //
+        // Note that QStringList::removeDuplicates() is only available in Qt 4.5
+        // all_names.removeDuplicates();
+
+        QStringList deduplicated_names;
+        QString prev;
+        foreach(QString name, all_names)
+        {
+            if (name != prev) deduplicated_names << name;
+            prev = name;
+        }
+        all_names = deduplicated_names;
+
         ipv6_names.sort();
         intf_names.sort();
 

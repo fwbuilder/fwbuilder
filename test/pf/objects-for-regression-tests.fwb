@@ -22589,7 +22589,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id35204X5121" host_OS="freebsd" inactive="False" lastCompiled="1297728239" lastInstalled="1271995582" lastModified="1297727993" platform="pf" version="4.7" name="firewall109" comment="complex configuration with bridge and vlan" ro="False">
+      <Firewall id="id35204X5121" host_OS="freebsd" inactive="False" lastCompiled="1297728239" lastInstalled="1271995582" lastModified="1297899814" platform="pf" version="4.7" name="firewall109" comment="complex configuration with bridge and vlan" ro="False">
         <NAT id="id35272X5121" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -22627,13 +22627,22 @@
         </Interface>
         <Interface id="id35217X5121" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="False" name="em1" comment="" ro="False">
           <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">False</Option>
             <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options">media 100baseTX mediaopt full-duplex</Option>
+            <Option name="type">ethernet</Option>
+            <Option name="vlan_id">0</Option>
           </InterfaceOptions>
         </Interface>
         <Interface id="id35222X5121" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="em2" comment="" ro="False">
           <InterfaceOptions>
+            <Option name="enable_stp">False</Option>
+            <Option name="iface_configure_mtu">False</Option>
             <Option name="iface_mtu">1500</Option>
+            <Option name="iface_options">media 100baseTX mediaopt full-duplex</Option>
             <Option name="type">ethernet</Option>
+            <Option name="vlan_id">0</Option>
           </InterfaceOptions>
           <Interface id="id35231X5121" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
             <IPv4 id="id35234X5121" name="firewall109:em2:vlan101:ip" comment="" ro="False" address="192.168.101.1" netmask="255.255.255.0"/>
@@ -22673,7 +22682,7 @@
               <Option name="enable_stp">False</Option>
               <Option name="iface_configure_mtu">False</Option>
               <Option name="iface_mtu">1500</Option>
-              <Option name="iface_options">media 100baseTX mediaopt full-duplex up</Option>
+              <Option name="iface_options"></Option>
               <Option name="type">ethernet</Option>
               <Option name="vlan_id">0</Option>
             </InterfaceOptions>
@@ -22683,7 +22692,7 @@
               <Option name="enable_stp">False</Option>
               <Option name="iface_configure_mtu">False</Option>
               <Option name="iface_mtu">1500</Option>
-              <Option name="iface_options">media 100baseTX mediaopt full-duplex up</Option>
+              <Option name="iface_options"></Option>
               <Option name="type">ethernet</Option>
               <Option name="vlan_id">0</Option>
             </InterfaceOptions>
