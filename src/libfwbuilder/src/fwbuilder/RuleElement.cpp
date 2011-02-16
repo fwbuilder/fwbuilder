@@ -2,12 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2000 NetCitadel, LLC
+                 Copyright (C) 2000-2011 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
-
-  $Id$
-
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -329,6 +326,12 @@ bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 
     return (fw1 != NULL && fw1 == fw2);
 }
+
+const char *RuleElementItfInb::TYPENAME={"ItfInb"};
+RuleElementItfInb::RuleElementItfInb() {}
+
+const char *RuleElementItfOutb::TYPENAME={"ItfOutb"};
+RuleElementItfOutb::RuleElementItfOutb() {}
 
 
 const char *RuleElementOSrc::TYPENAME={"OSrc"};

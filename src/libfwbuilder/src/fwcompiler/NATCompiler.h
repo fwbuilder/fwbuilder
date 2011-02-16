@@ -171,6 +171,16 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomicForTSrv);
 
 	/**
+	 * this processor converts to atomic rules only for ItfInb
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomicForItfInb);
+
+	/**
+	 * this processor converts to atomic rules only for ItfOutb
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomicForItfOutb);
+
+	/**
 	 * this processor converts to atomic rules using all combinations
 	 * of OSrc,ODst,OSrv,TSrc,TDst,TSrv
 	 */

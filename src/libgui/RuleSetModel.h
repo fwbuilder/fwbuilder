@@ -246,7 +246,9 @@ public:
 
 private:
     bool supports_actions;
-
+    bool supports_inbound_interface;
+    bool supports_outbound_interface;
+    
     QVariant getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const;
     QStringList getRuleOptions(libfwbuilder::Rule* r) const;
     void configure();

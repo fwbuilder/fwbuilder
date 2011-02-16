@@ -577,6 +577,8 @@ NATRule::NATRule() : Rule()
     tsrc_re = NULL;
     tdst_re = NULL;
     tsrv_re = NULL;
+    itf_inb_re = NULL;
+    itf_outb_re = NULL;
     when_re = NULL;
 }
 
@@ -585,13 +587,29 @@ void NATRule::init(FWObjectDatabase *root)
     FWObject *re = getFirstByType(RuleElementOSrc::TYPENAME);
     if (re == NULL)
     {
-        re = root->createRuleElementOSrc();  assert(re!=NULL); add(re);
-        re = root->createRuleElementODst();  assert(re!=NULL); add(re);
-        re = root->createRuleElementOSrv();  assert(re!=NULL); add(re);
+        re = root->createRuleElementOSrc();  assert(re!=NULL);
+        add(re); osrc_re = RuleElementOSrc::cast(re);
+
+        re = root->createRuleElementODst();  assert(re!=NULL);
+        add(re); odst_re = RuleElementODst::cast(re);
+
+        re = root->createRuleElementOSrv();  assert(re!=NULL);
+        add(re); osrv_re = RuleElementOSrv::cast(re);
     
-        re = root->createRuleElementTSrc();  assert(re!=NULL); add(re);
-        re = root->createRuleElementTDst();  assert(re!=NULL); add(re);
-        re = root->createRuleElementTSrv();  assert(re!=NULL); add(re);
+        re = root->createRuleElementTSrc();  assert(re!=NULL);
+        add(re); tsrc_re = RuleElementTSrc::cast(re);
+
+        re = root->createRuleElementTDst();  assert(re!=NULL);
+        add(re); tdst_re = RuleElementTDst::cast(re);
+
+        re = root->createRuleElementTSrv();  assert(re!=NULL);
+        add(re); tsrv_re = RuleElementTSrv::cast(re);
+
+        re = root->createRuleElementItfInb();  assert(re!=NULL);
+        add(re); itf_inb_re = RuleElementItfInb::cast(re);
+
+        re = root->createRuleElementItfOutb();  assert(re!=NULL);
+        add(re); itf_outb_re = RuleElementItfOutb::cast(re);
 
         add( root->createNATRuleOptions() );
     }
@@ -677,6 +695,21 @@ RuleElementInterval* NATRule::getWhen()
     return when_re;
 }
 
+RuleElementItfInb* NATRule::getItfInb()
+{
+    if (itf_inb_re) return itf_inb_re;
+    itf_inb_re = RuleElementItfInb::cast(getFirstByType(RuleElementItfInb::TYPENAME));
+    return itf_inb_re;
+}
+
+RuleElementItfOutb* NATRule::getItfOutb()
+{
+    if (itf_outb_re) return itf_outb_re;
+    itf_outb_re = RuleElementItfOutb::cast(getFirstByType(RuleElementItfOutb::TYPENAME));
+    return itf_outb_re;
+}
+
+
 string NATRule::getActionAsString() const
 {
     return getActionAsString(action);
@@ -699,15 +732,20 @@ void NATRule::setAction(const string& act)
 
 bool NATRule::isEmpty()
 {
-    RuleElement *osrc=getOSrc();
-    RuleElement *odst=getODst();
-    RuleElement *osrv=getOSrv();
+    RuleElement *osrc = getOSrc();
+    RuleElement *odst = getODst();
+    RuleElement *osrv = getOSrv();
 
-    RuleElement *tsrc=getTSrc();
-    RuleElement *tdst=getTDst();
-    RuleElement *tsrv=getTSrv();
+    RuleElement *tsrc = getTSrc();
+    RuleElement *tdst = getTDst();
+    RuleElement *tsrv = getTSrv();
 
-    return (osrc->isAny() && odst->isAny() && osrv->isAny() && tsrc->isAny() && tdst->isAny() && tsrv->isAny());
+    RuleElement *itf_inb = getItfInb();
+    RuleElement *itf_outb = getItfOutb();
+
+    return (osrc->isAny() && odst->isAny() && osrv->isAny() &&
+            tsrc->isAny() && tdst->isAny() && tsrv->isAny() &&
+            itf_inb->isAny() && itf_outb->isAny());
 }
 
 void NATRule::fromXML(xmlNodePtr root) throw(FWException)
@@ -771,6 +809,12 @@ xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
 	o->toXML(me);
 
     if ( (o=getFirstByType( RuleElementTSrv::TYPENAME ))!=NULL )
+	o->toXML(me);
+
+    if ( (o=getFirstByType( RuleElementItfInb::TYPENAME ))!=NULL )
+	o->toXML(me);
+
+    if ( (o=getFirstByType( RuleElementItfOutb::TYPENAME ))!=NULL )
 	o->toXML(me);
 
     if ( (o=getFirstByType( RuleElementInterval::TYPENAME ))!=NULL )
@@ -861,6 +905,8 @@ FWObject& NATRule::shallowDuplicate(const FWObject *x,
     tsrc_re = NULL;
     tdst_re = NULL;
     tsrv_re = NULL;
+    itf_inb_re = NULL;
+    itf_outb_re = NULL;
     when_re = NULL;
 
     return  Rule::shallowDuplicate(x, preserve_id);

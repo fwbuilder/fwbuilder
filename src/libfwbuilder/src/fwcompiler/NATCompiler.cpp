@@ -644,6 +644,55 @@ bool NATCompiler::ConvertToAtomicForTSrv::processNext()
     return true;
 }
 
+bool NATCompiler::ConvertToAtomicForItfInb::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementItfInb *itf_inb_re=rule->getItfInb();    assert(itf_inb_re);
+
+    for (FWObject::iterator i1=itf_inb_re->begin(); i1!=itf_inb_re->end(); ++i1) 
+    {
+        NATRule *r = compiler->dbcopy->createNATRule();
+        r->duplicate(rule);
+        compiler->temp_ruleset->add(r);
+
+        FWObject *s;
+
+        s = r->getItfInb();	assert(s);
+        s->clearChildren();
+        s->addCopyOf( *i1 );
+
+        tmp_queue.push_back(r);
+    }
+
+    return true;
+}
+
+bool NATCompiler::ConvertToAtomicForItfOutb::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementItfOutb *itf_outb_re=rule->getItfOutb();    assert(itf_outb_re);
+
+    for (FWObject::iterator i1=itf_outb_re->begin(); i1!=itf_outb_re->end(); ++i1) 
+    {
+        NATRule *r = compiler->dbcopy->createNATRule();
+        r->duplicate(rule);
+        compiler->temp_ruleset->add(r);
+
+        FWObject *s;
+
+        s = r->getItfOutb();	assert(s);
+        s->clearChildren();
+        s->addCopyOf( *i1 );
+
+        tmp_queue.push_back(r);
+    }
+
+    return true;
+}
+
+
 
 
 

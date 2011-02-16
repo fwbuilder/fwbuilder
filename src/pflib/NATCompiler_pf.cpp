@@ -707,13 +707,38 @@ bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
 
 bool NATCompiler_pf::AssignInterface::processNext()
 {
-    NATCompiler_pf *pf_comp=dynamic_cast<NATCompiler_pf*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
+    NATRule *rule = getNext(); if (rule==NULL) return false;
 
     if (rule->getInterfaceStr() != "")
     {
         tmp_queue.push_back(rule);
         return true;
+    }
+
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
+    assert(itf_re!=NULL);
+    if (!itf_re->isAny())
+    {
+        Interface *intf = Interface::cast(
+            FWObjectReference::getObject(itf_re->front()));
+        assert(intf!=NULL);
+
+        if (intf->isFailoverInterface())
+        {
+            FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                intf->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (fg)
+                intf = fg->getInterfaceForMemberFirewall(compiler->fw);
+        }
+
+        if (intf->isChildOf(compiler->fw))
+        {
+            rule->setInterfaceId(intf->getId());
+            rule->setInterfaceStr(intf->getName());
+            tmp_queue.push_back(rule);
+            return true;
+        }
     }
 
     switch ( rule->getRuleType() )
@@ -1251,6 +1276,8 @@ void NATCompiler_pf::compile()
     //add( new ConvertToAtomicForTSrc( "convert to atomic rules" ) );
     add( new splitForTSrc(
              "split if addresses in TSrc belong to different networks" ));
+    add( new ConvertToAtomicForItfOutb(
+             "convert to atomic for Interface rule element"));
     add( new AssignInterface( "assign rules to interfaces" ) );
     add( new convertInterfaceIdToStr("prepare interface assignments") );
 

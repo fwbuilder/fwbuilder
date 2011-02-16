@@ -212,6 +212,10 @@ void FWObjectDatabase::init_create_methods_table()
                            &create_RuleElementInterval);
         registerObjectType("Itf",
                            &create_RuleElementItf);
+        registerObjectType("ItfInb",
+                           &create_RuleElementItfInb);
+        registerObjectType("ItfOutb",
+                           &create_RuleElementItfOutb);
         registerObjectType("ODst",
                            &create_RuleElementODst);
         registerObjectType("OSrc",
@@ -368,6 +372,8 @@ CREATE_OBJ_METHOD(RoutingRuleOptions);
 CREATE_OBJ_METHOD(RuleElementDst);
 CREATE_OBJ_METHOD(RuleElementInterval);
 CREATE_OBJ_METHOD(RuleElementItf);
+CREATE_OBJ_METHOD(RuleElementItfInb);
+CREATE_OBJ_METHOD(RuleElementItfOutb);
 CREATE_OBJ_METHOD(RuleElementODst);
 CREATE_OBJ_METHOD(RuleElementOSrc);
 CREATE_OBJ_METHOD(RuleElementOSrv);

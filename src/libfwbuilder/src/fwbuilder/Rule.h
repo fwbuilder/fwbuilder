@@ -45,6 +45,8 @@ namespace libfwbuilder
     class RuleElementTSrc;
     class RuleElementTDst;
     class RuleElementTSrv;
+    class RuleElementItfInb;
+    class RuleElementItfOutb;
     class RuleElementInterval;
     class RuleElementRDst;
     class RuleElementRGtw;
@@ -338,6 +340,8 @@ private:
     libfwbuilder::RuleElementTSrc*      tsrc_re;
     libfwbuilder::RuleElementTDst*      tdst_re;
     libfwbuilder::RuleElementTSrv*      tsrv_re;
+    libfwbuilder::RuleElementItfInb*    itf_inb_re;
+    libfwbuilder::RuleElementItfOutb*   itf_outb_re;
     libfwbuilder::RuleElementInterval* when_re;
     NATAction action;
     NATRuleTypes  rule_type;
@@ -384,6 +388,8 @@ public:
     libfwbuilder::RuleElementTSrc* getTSrc();
     libfwbuilder::RuleElementTDst* getTDst();
     libfwbuilder::RuleElementTSrv* getTSrv();
+    libfwbuilder::RuleElementItfInb* getItfInb();
+    libfwbuilder::RuleElementItfOutb* getItfOutb();
     libfwbuilder::RuleElementInterval* getWhen();
 
     NATAction getAction() const { return action; }

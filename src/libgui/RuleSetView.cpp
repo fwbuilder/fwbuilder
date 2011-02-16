@@ -2279,6 +2279,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
         }
     }
 
+    // This includes RuleElementItfInb and RuleElementItfOutb of nat rules
     if (RuleElementItf::cast(re) || RuleElementRItf::cast(re))
         return validateForInsertionToInterfaceRE(RuleElementItf::cast(re), obj);
 

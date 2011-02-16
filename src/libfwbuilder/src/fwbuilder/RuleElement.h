@@ -147,6 +147,23 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
     virtual bool isPrimaryObject() const { return false; }
 };
 
+class RuleElementItfInb : public RuleElementItf
+{
+    public:
+    DECLARE_FWOBJECT_SUBTYPE(RuleElementItfInb);
+    DECLARE_DISPATCH_METHODS(RuleElementItfInb);
+    RuleElementItfInb();
+};
+
+class RuleElementItfOutb : public RuleElementItf
+{
+    public:
+    DECLARE_FWOBJECT_SUBTYPE(RuleElementItfOutb);
+    DECLARE_DISPATCH_METHODS(RuleElementItfOutb);
+    RuleElementItfOutb();
+   
+};
+
 class RuleElementInterval : public IntervalGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementInterval);

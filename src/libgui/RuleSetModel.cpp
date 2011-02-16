@@ -1350,32 +1350,36 @@ void PolicyModel::configure()
     supports_logging      = false;
     supports_rule_options = false;
     supports_time         = false;
+    
+    string platform;
 
     if (getFirewall())
     {
+        platform = getFirewall()->getStr("platform");
+
         try {
             supports_logging = Resources::getTargetCapabilityBool(
-                    getFirewall()->getStr("platform"), "logging_in_policy");
+                    platform, "logging_in_policy");
             supports_rule_options = Resources::getTargetCapabilityBool(
-                    getFirewall()->getStr("platform"), "options_in_policy");
+                    platform, "options_in_policy");
             supports_time = Resources::getTargetCapabilityBool(
-                    getFirewall()->getStr("platform"), "supports_time");
+                    platform, "supports_time");
         } catch(FWException &ex)    {    }
     }
 
-    header  << ColDesc(RuleElementSrc::TYPENAME, ColDesc::Object)   // 1
-            << ColDesc(RuleElementDst::TYPENAME, ColDesc::Object)   // 2
-            << ColDesc(RuleElementSrv::TYPENAME, ColDesc::Object)   // 3
-            << ColDesc(RuleElementItf::TYPENAME, ColDesc::Object)   // 4
-            << ColDesc("Direction", ColDesc::Direction)             // 5
-            << ColDesc("Action", ColDesc::Action);                  // 6
+    header  << ColDesc(platform, RuleElementSrc::TYPENAME, ColDesc::Object)   // 1
+            << ColDesc(platform, RuleElementDst::TYPENAME, ColDesc::Object)   // 2
+            << ColDesc(platform, RuleElementSrv::TYPENAME, ColDesc::Object)   // 3
+            << ColDesc(platform, RuleElementItf::TYPENAME, ColDesc::Object)   // 4
+            << ColDesc(platform, "Direction", ColDesc::Direction)             // 5
+            << ColDesc(platform, "Action", ColDesc::Action);                  // 6
     if (supports_time)
-        header << ColDesc(RuleElementInterval::TYPENAME, ColDesc::Time);  // 7
+        header << ColDesc(platform, RuleElementInterval::TYPENAME, ColDesc::Time);  // 7
 
     if (supports_logging && supports_rule_options)
-        header << ColDesc("Options", ColDesc::Options);
+        header << ColDesc(platform, "Options", ColDesc::Options);
 
-    header << ColDesc("Comment", ColDesc::Comment);
+    header << ColDesc(platform, "Comment", ColDesc::Comment);
 }
 
 QVariant PolicyModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const
@@ -1463,27 +1467,42 @@ bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
 void NatModel::configure()
 {
     supports_actions = false;
+    supports_inbound_interface = false;
+    supports_outbound_interface = false;
 
+    string platform;
+    
     if (getFirewall())
     {
+        platform = getFirewall()->getStr("platform");
+
         try {
             supports_actions = Resources::getTargetCapabilityBool(
-                getFirewall()->getStr("platform"), "actions_in_nat");
+                platform, "actions_in_nat");
+            supports_inbound_interface = Resources::getTargetCapabilityBool(
+                platform, "inbound_interface_in_nat");
+            supports_outbound_interface = Resources::getTargetCapabilityBool(
+                platform, "outbound_interface_in_nat");
         } catch(FWException &ex)    {    }
     }
 
-    header  << ColDesc(RuleElementOSrc::TYPENAME, ColDesc::Object)   // 1
-            << ColDesc(RuleElementODst::TYPENAME, ColDesc::Object)   // 2
-            << ColDesc(RuleElementOSrv::TYPENAME, ColDesc::Object)   // 3
-            << ColDesc(RuleElementTSrc::TYPENAME, ColDesc::Object)   // 4
-            << ColDesc(RuleElementTDst::TYPENAME, ColDesc::Object)   // 5
-            << ColDesc(RuleElementTSrv::TYPENAME, ColDesc::Object);   // 6
+    header  << ColDesc(platform, RuleElementOSrc::TYPENAME, ColDesc::Object)   // 1
+            << ColDesc(platform, RuleElementODst::TYPENAME, ColDesc::Object)   // 2
+            << ColDesc(platform, RuleElementOSrv::TYPENAME, ColDesc::Object)   // 3
+            << ColDesc(platform, RuleElementTSrc::TYPENAME, ColDesc::Object)   // 4
+            << ColDesc(platform, RuleElementTDst::TYPENAME, ColDesc::Object)   // 5
+            << ColDesc(platform, RuleElementTSrv::TYPENAME, ColDesc::Object);   // 6
+
+    if (supports_inbound_interface)
+        header << ColDesc(platform, RuleElementItfInb::TYPENAME, ColDesc::Object);
+    if (supports_outbound_interface)
+        header << ColDesc(platform, RuleElementItfOutb::TYPENAME, ColDesc::Object);
 
     if (supports_actions)
-        header << ColDesc("Action", ColDesc::Action);
+        header << ColDesc(platform, "Action", ColDesc::Action);
 
-    header << ColDesc("Options", ColDesc::Options)                  // 7
-           << ColDesc("Comment", ColDesc::Comment);                 // 8
+    header << ColDesc(platform, "Options", ColDesc::Options)                  // 7
+           << ColDesc(platform, "Comment", ColDesc::Comment);                 // 8
 }
 
 QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const
@@ -1556,28 +1575,33 @@ void RoutingModel::configure()
     supports_routing_itf  = false;
     supports_metric  = false;
 
+    string platform;
+    string host_os;
+
     if (getFirewall())
     {
+        platform = getFirewall()->getStr("platform");
+        host_os = getFirewall()->getStr("host_OS");
+
         try {
-            supports_routing_itf =
-                Resources::getTargetCapabilityBool(
-                        getFirewall()->getStr("host_OS"), "supports_routing_itf");
+            supports_routing_itf = Resources::getTargetCapabilityBool(
+                host_os, "supports_routing_itf");
             supports_metric = Resources::getTargetCapabilityBool(
-                    getFirewall()->getStr("host_OS"), "supports_metric");
+                host_os, "supports_metric");
         } catch(FWException &ex)    {    }
     }
 
-    header  << ColDesc(RuleElementRDst::TYPENAME, ColDesc::Object)   // 1
-            << ColDesc(RuleElementRGtw::TYPENAME, ColDesc::Object);  // 2
+    header  << ColDesc(platform, RuleElementRDst::TYPENAME, ColDesc::Object)   // 1
+            << ColDesc(platform, RuleElementRGtw::TYPENAME, ColDesc::Object);  // 2
 
     if (supports_routing_itf)
-        header << ColDesc(RuleElementRItf::TYPENAME, ColDesc::Object);
+        header << ColDesc(platform, RuleElementRItf::TYPENAME, ColDesc::Object);
 
     if (supports_metric)
-        header  << ColDesc("Metric", ColDesc::Metric);
+        header  << ColDesc(platform, "Metric", ColDesc::Metric);
 
-    header << ColDesc("Options", ColDesc::Options)
-           << ColDesc("Comment", ColDesc::Comment);
+    header << ColDesc(platform, "Options", ColDesc::Options)
+           << ColDesc(platform, "Comment", ColDesc::Comment);
 }
 
 QVariant RoutingModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const

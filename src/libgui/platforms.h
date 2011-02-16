@@ -149,7 +149,8 @@ QString getActionNameForPlatform(libfwbuilder::Firewall *fw,
 
 bool getStatelessFlagForAction(libfwbuilder::PolicyRule *rule);
 
-QString getReadableRuleElementName(const std::string &rule_element_type_name);
+QString getReadableRuleElementName(const std::string &platform,
+                                   const std::string &rule_element_type_name);
 
 /*
  * convenience method that calls Resourcess::getPlatforms() and

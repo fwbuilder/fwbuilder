@@ -26,25 +26,28 @@
 #ifndef COLDESC_H
 #define COLDESC_H
 
- #include <QMetaType>
+#include <QMetaType>
+
+#include <string>
+
 
 class ColDesc
 {
 public:
-     enum ColumnType
-     {
-         GroupHandle,
-          RuleOp,
-          Object,
-          Action,
-          Direction,
-          Options,
-          Time,
-          Comment,
-          Metric,
-          Unknown
-      };
-    ColDesc(QString origin, ColumnType type);
+    enum ColumnType
+    {
+        GroupHandle,
+        RuleOp,
+        Object,
+        Action,
+        Direction,
+        Options,
+        Time,
+        Comment,
+        Metric,
+        Unknown
+    };
+    ColDesc(const std::string &platform, const std::string &origin, ColumnType type);
     ColDesc();
     QString name;
     QString origin;

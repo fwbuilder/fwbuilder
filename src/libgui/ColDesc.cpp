@@ -26,14 +26,17 @@
 #include "ColDesc.h"
 #include "platforms.h"
 
+using namespace std;
+
+
 ColDesc::ColDesc()
 {
     this->type = Unknown;
 }
 
-ColDesc::ColDesc(QString origin, ColumnType type)
+ColDesc::ColDesc(const string &platform, const string &origin, ColumnType type)
 {
-    this->origin = origin;
-    this->name = getReadableRuleElementName(origin.toStdString());
+    this->origin = origin.c_str();
+    this->name = getReadableRuleElementName(platform, origin);
     this->type = type;
 }

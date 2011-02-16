@@ -569,6 +569,9 @@ QString RuleSetViewDelegate::objectText(RuleElement *re,FWObject *obj) const
         if (RuleElementRGtw::isA(re) ||
             RuleElementRItf::isA(re))  return QString("");
         if (RuleElementItf::isA(re))   return QString(tr("All"));
+        if (RuleElementItfInb::isA(re))   return QString(tr("Auto"));
+        if (RuleElementItfOutb::isA(re))   return QString(tr("Auto"));
+
         return any_object_name;
     }
 

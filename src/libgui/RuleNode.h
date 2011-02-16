@@ -29,7 +29,7 @@
 #include <QObject>
 #include <QSize>
 
-#define MAX_COLUMNS 10
+#define MAX_COLUMNS 20
 
 namespace libfwbuilder {
     class Rule;

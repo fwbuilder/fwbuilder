@@ -763,7 +763,8 @@ bool getStatelessFlagForAction(PolicyRule *rule)
 /**
  * Returns translatable string - name of the corresponding rule element.
  */
-QString getReadableRuleElementName(const string &rule_element_type_name)
+QString getReadableRuleElementName(const string &platform,
+                                   const string &rule_element_type_name)
 {
     // The following map TYPENAME of RuleElement classes to readable
     // translatable names.
@@ -780,6 +781,18 @@ QString getReadableRuleElementName(const string &rule_element_type_name)
     if (rule_element_type_name == "TSrc") return QObject::tr("Translated Src");
     if (rule_element_type_name == "TDst") return QObject::tr("Translated Dst");
     if (rule_element_type_name == "TSrv") return QObject::tr("Translated Srv");
+
+    if (platform == "pf")
+    {
+        // For PF I hide inbound interface and show outbound interface
+        // column with header "Interface"
+        if (rule_element_type_name == "ItfInb") return QObject::tr("Interface");
+        if (rule_element_type_name == "ItfOutb") return QObject::tr("Interface");
+    } else
+    {
+        if (rule_element_type_name == "ItfInb") return QObject::tr("Inbound Interface");
+        if (rule_element_type_name == "ItfOutb") return QObject::tr("Outbound Interface");
+    }
 
     if (rule_element_type_name == "RDst") return QObject::tr("Destination");
     if (rule_element_type_name == "RGtw") return QObject::tr("Gateway");

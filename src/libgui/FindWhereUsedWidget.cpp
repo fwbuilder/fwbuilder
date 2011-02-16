@@ -312,7 +312,8 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
 
         if (RuleElement::cast(container)!=NULL)
             rule_element_name =
-                getReadableRuleElementName(container->getParent()->getTypeName());
+                getReadableRuleElementName(
+                    fw->getStr("platform"), container->getParent()->getTypeName());
 
         if (Rule::cast(container)!=NULL)
             rule_element_name = "Action";

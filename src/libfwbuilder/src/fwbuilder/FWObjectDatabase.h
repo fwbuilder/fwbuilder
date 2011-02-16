@@ -97,6 +97,8 @@ namespace libfwbuilder
     class RuleElementDst;
     class RuleElementInterval;
     class RuleElementItf;
+    class RuleElementItfInb;
+    class RuleElementItfOutb;
     class RuleElementODst;
     class RuleElementOSrc;
     class RuleElementOSrv;
@@ -162,6 +164,8 @@ namespace libfwbuilder
     DECLARE_CREATE_OBJ_METHOD(RuleElementDst);
     DECLARE_CREATE_OBJ_METHOD(RuleElementInterval);
     DECLARE_CREATE_OBJ_METHOD(RuleElementItf);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementItfInb);
+    DECLARE_CREATE_OBJ_METHOD(RuleElementItfOutb);
     DECLARE_CREATE_OBJ_METHOD(RuleElementODst);
     DECLARE_CREATE_OBJ_METHOD(RuleElementOSrc);
     DECLARE_CREATE_OBJ_METHOD(RuleElementOSrv);
@@ -511,6 +515,8 @@ public:
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementDst);
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementInterval);
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementItf);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementItfInb);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementItfOutb);
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementODst);
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementOSrc);
     DECLARE_CREATE_OBJ_CLASS_METHOD(RuleElementOSrv);

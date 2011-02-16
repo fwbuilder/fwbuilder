@@ -9,6 +9,12 @@
 	Terminating rules generate "pass quick" commands, while
 	non-terminating rules generate "pass" commands (no "quick" option).
 
+	* libfwbuilder/migration/FWObjectDatabase_17.xslt: see #133
+	Working on adding interfaces to the NAT rule model. There will be
+	two inetrfaces per NAT rule: "inbound interface" and "outbound
+	interface". DTD version changes to "18", old data files need to
+	be upgraded.
+
 2011-02-14  vadim  <vadim@netcitadel.com>
 
 	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): fixes
