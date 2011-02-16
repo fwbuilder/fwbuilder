@@ -1,5 +1,10 @@
 2011-02-16  vadim  <vadim@netcitadel.com>
 
+	* ObjectTreeView.cpp (startDrag): fixes #2099 "Object list scrolls
+	up to the last edited object". Object tree used to scroll
+	spontaneously when user started dragging an object from it to a
+	rule.
+
 	* configlets/bsd/update_vlans: see #2105: generated script now
 	supports vlan interfaces with names that do not match vlan IDs
 	(OpenBSD, FreeBSD, shell script format).
