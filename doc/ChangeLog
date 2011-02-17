@@ -1,5 +1,8 @@
 2011-02-16  vadim  <vadim@netcitadel.com>
 
+	* carpOptionsDialog.cpp (validate): fixes #2100 carp password
+	should be optional parameter
+
 	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): make
 	sure we print "ifconfig" commands for mtu and other parameters for
 	all interfaces, including those with no ip addresses and bridge
