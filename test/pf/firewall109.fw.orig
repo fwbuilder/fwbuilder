@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 15:16:27 2011 PST by vadim
+#  Generated Wed Feb 16 16:18:11 2011 PST by vadim
 #
 # files: * firewall109.fw /etc/fw/pf.fw
 # files:   firewall109.conf /etc/fw/path\ with\ space/pf.conf
@@ -383,10 +383,10 @@ configure_interfaces() {
     sync_pfsync_interfaces 
     update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
     update_addresses_of_interface "em1" ""
-    $IFCONFIG em1  media 100baseTX mediaopt full-duplex up
+    $IFCONFIG em1  media 100baseTX mediaopt full-duplex
     update_vlans_of_interface "em2 vlan101:101 vlan102:102"
     update_addresses_of_interface "em2" ""
-    $IFCONFIG em2  media 100baseTX mediaopt full-duplex up
+    $IFCONFIG em2  media 100baseTX mediaopt full-duplex
     update_addresses_of_interface "vlan101 192.168.101.1/0xffffff00" ""
     update_addresses_of_interface "vlan102 192.168.102.1/0xffffff00" ""
     update_bridge_interface bridge0 "em1 em2"
@@ -395,7 +395,7 @@ configure_interfaces() {
     update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 15:16:27 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 16:18:11 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

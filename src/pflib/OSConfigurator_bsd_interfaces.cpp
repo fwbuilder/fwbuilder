@@ -313,7 +313,14 @@ string OSConfigurator_bsd::configureInterfaces()
         {
             interfaceConfigLineIP(interfaces_by_name[iface_name],
                                   all_addresses[iface_name]);
-            interfaceIfconfigLine(interfaces_by_name[iface_name]);
+        }
+
+        for (list<FWObject*>::iterator i=all_interfaces.begin();
+             i != all_interfaces.end(); ++i )
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+            interfaceIfconfigLine(iface);
         }
     }
 
@@ -367,6 +374,13 @@ void OSConfigurator_bsd::interfaceIfconfigLine(Interface *iface)
         interface_configuration_lines[iface_name] << config_lines;
 }
 
+/*
+ * If user configured mtu and free-form ifconfig options in the GUI,
+ * add ifconfig command to execute them. 
+ * 
+ * TODO: Add a checkbox "up" in interface dialog, it should be on by
+ * default.
+ */
 QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
                                                           Configlet *configlet)
 {
@@ -393,12 +407,15 @@ QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
         configlet->setVariable("mtu", "");
     }
 
+    QString options;
+
     if (!ifopt->getStr("iface_options").empty())
     {
-        configlet->setVariable("options", ifopt->getStr("iface_options").c_str());
-        need_additional_ifconfig =true;
-    } else
-        configlet->setVariable("options", "");
+        options = ifopt->getStr("iface_options").c_str();
+        need_additional_ifconfig = true;
+    }
+
+    configlet->setVariable("options", options.simplified());
 
     if (need_additional_ifconfig) return configlet->expand();
 

@@ -1,5 +1,10 @@
 2011-02-16  vadim  <vadim@netcitadel.com>
 
+	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): make
+	sure we print "ifconfig" commands for mtu and other parameters for
+	all interfaces, including those with no ip addresses and bridge
+	ports (unnumbered interfaces used to be skipped before)
+
 	* ObjectTreeView.cpp (startDrag): fixes #2099 "Object list scrolls
 	up to the last edited object". Object tree used to scroll
 	spontaneously when user started dragging an object from it to a
@@ -33,7 +38,11 @@
 	vlan interface name and turns off automatic configuration of
 	interface type and vlan ID. These checks sometimes were in the way
 	of building complex configurations that involved multiple vlan
-	interfaces with names not matching their IDs.
+	interfaces with names not matching their IDs. This also fixes SF
+	bug #3066714 "please dont stop me from creating a new interface"
+	where user wanted to create interface "veth201.0" on Linux but the
+	GUI blocked this operation because the name seemed to match vlan
+	interface pattern.
 
 2011-02-15  vadim  <vadim@netcitadel.com>
 

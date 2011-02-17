@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 15:16:36 2011 PST by vadim
+#  Generated Wed Feb 16 16:18:27 2011 PST by vadim
 #
 # files: * firewall3.fw /etc/firewall3.fw
 # files:   firewall3.conf /etc/firewall3.conf
@@ -154,12 +154,12 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    update_addresses_of_interface "le0 22.22.22.21/0xffffff00 22.22.22.22/0xffffff00 22.22.22.0/0xffffff00 22.22.22.1/0xffffff00" ""
+    update_addresses_of_interface "le0 22.22.22.21/0xffffff00 22.22.22.22/0xffffff00 22.22.22.1/0xffffff00 22.22.22.0/0xffffff00" ""
     update_addresses_of_interface "le1 192.168.1.1/0xffffff00" ""
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 15:16:36 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 16:18:27 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
