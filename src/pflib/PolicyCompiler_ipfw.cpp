@@ -688,13 +688,6 @@ string PolicyCompiler_ipfw::debugPrintRule(Rule *r)
     else
         s << " intf: ?";
 
-    // int  iface = rule->getInterfaceId();
-    // if (iface > -1)
-    // {
-    //     FWObject *rule_iface = dbcopy->findInIndex( iface );
-    //     s += " intf: "+rule_iface->getName();
-    // }
-
     return s.str();
 }
 

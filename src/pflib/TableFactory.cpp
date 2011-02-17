@@ -105,8 +105,6 @@ void TableFactory::registerTable(const string& tblname, const string& tblid,
 
 void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
 {
-    //Interface *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
-    
     // sanity checks
     assert(rule->getRoot()==re->getRoot());
     assert(dbroot==rule->getRoot());

@@ -108,12 +108,14 @@ int NATCompiler_pf::prolog()
 
 string NATCompiler_pf::debugPrintRule(libfwbuilder::Rule *r)
 {
-    NATRule   *rule=NATRule::cast(r);
-    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
+    NATRule *rule = NATRule::cast(r);
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
+    FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
+    // FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
 
-    return NATCompiler::debugPrintRule(rule)+
-        " "+string( (rule_iface!=NULL)?rule_iface->getName():"") +
-        " (type="+rule->getRuleTypeAsString()+")";
+    return NATCompiler::debugPrintRule(rule) +
+        " " + string( (rule_iface!=NULL)?rule_iface->getName():"") +
+        " (type=" + rule->getRuleTypeAsString() + ")";
 }
 
 bool NATCompiler_pf::NATRuleType::processNext()

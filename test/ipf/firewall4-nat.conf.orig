@@ -22,10 +22,10 @@ map eth1 from 192.168.1.10/32 to any -> 0/32   portmap tcp/udp auto
 map eth1 from 192.168.1.10/32 to any -> 0/32  
 # 
 # Rule  5 (NAT)
-rdr  from any to any port = 22 -> 192.168.1.10 port 22 tcp 
-rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
-rdr  from any to 192.168.2.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
-rdr  from any to 222.222.222.222/32 port = 22 -> 192.168.1.10 port 22 tcp 
+rdr eth1 from any to any port = 22 -> 192.168.1.10 port 22 tcp 
+rdr eth0 from any to 192.168.1.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
+rdr eth2 from any to 192.168.2.1/32 port = 22 -> 192.168.1.10 port 22 tcp 
+rdr eth3 from any to 222.222.222.222/32 port = 22 -> 192.168.1.10 port 22 tcp 
 # 
 # Rule  6 (NAT)
 rdr eth0 from 192.168.1.0/24 to any port = 80 -> 192.168.2.1 port 3128 tcp 

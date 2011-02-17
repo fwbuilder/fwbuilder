@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3457
+#  Firewall Builder  fwb_ipf v4.2.0.3480
 #
-#  Generated Thu Feb  3 14:54:44 2011 PST by vadim
+#  Generated Thu Feb 17 12:00:11 2011 PST by vadim
 #
 # files: * firewall.fw ipf.fw
 # files:   firewall-ipf.conf ipf.conf
@@ -36,7 +36,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -169,7 +169,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb  3 14:54:44 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 12:00:11 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

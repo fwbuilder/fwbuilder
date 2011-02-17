@@ -182,11 +182,13 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
 
 bool NATCompiler_ipf::AssignInterface::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
 
-    Address *a=NULL;
+    Address *a = NULL;
 
-    switch (rule->getRuleType() ) {
+    switch (rule->getRuleType() )
+    {
 
     case NATRule::Continue:
     case NATRule::NONAT:
@@ -199,7 +201,8 @@ bool NATCompiler_ipf::AssignInterface::processNext()
                                           compiler->fw);
         if (iface!=NULL && !iface->isLoopback()) 
         { 
-            rule->setInterfaceId( iface->getId() );
+            if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+            // rule->setInterfaceId( iface->getId() );
             tmp_queue.push_back( rule );
             return true;
         }
@@ -217,18 +220,20 @@ bool NATCompiler_ipf::AssignInterface::processNext()
  * is connected to the subnet OSrc belongs to. If that does not work,
  * we assign rule to all interfaces, except loopback 
  */
-        a=NULL;
-        if ( ! rule->getOSrc()->isAny() )  a=compiler->getFirstOSrc(rule);
-        if ( a==NULL && ! rule->getODst()->isAny() )  a=compiler->getFirstODst(rule);
+        a = NULL;
+        if ( ! rule->getOSrc()->isAny() )  a = compiler->getFirstOSrc(rule);
+        if ( a==NULL && ! rule->getODst()->isAny() )
+            a = compiler->getFirstODst(rule);
 
-        if(a!=NULL)
+        if (a!=NULL)
         {
             Interface *iface;
-            iface=compiler->findInterfaceFor(a,compiler->fw);
+            iface = compiler->findInterfaceFor(a,compiler->fw);
 
             if (iface!=NULL && !iface->isLoopback()) 
             { 
-                rule->setInterfaceId( iface->getId() );
+                if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+                // rule->setInterfaceId( iface->getId() );
                 tmp_queue.push_back(rule);
                 return true;
             }
@@ -237,16 +242,18 @@ bool NATCompiler_ipf::AssignInterface::processNext()
         FWObjectTypedChildIterator j=compiler->fw->findByType(Interface::TYPENAME);
         for ( ; j!=j.end(); ++j ) 
         {
-            Interface *iface=Interface::cast(*j);
+            Interface *iface = Interface::cast(*j);
             assert(iface);
             if ( iface->isUnnumbered() || 
                  iface->isBridgePort() || 
                  iface->isLoopback()) continue;
 
-            NATRule *r= compiler->dbcopy->createNATRule();
+            NATRule *r = compiler->dbcopy->createNATRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setInterfaceId( iface->getId() );
+            RuleElementItfOutb *itf_re = r->getItfOutb();
+            if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+            //r->setInterfaceId( iface->getId() );
             tmp_queue.push_back( r );
         }
         return true;
@@ -259,9 +266,10 @@ bool NATCompiler_ipf::AssignInterface::processNext()
 
         if ( (Interface::isA(a) || IPv4::isA(a)) && a->isChildOf(compiler->fw))
         {
-            FWObject *p=a;
-            while ( ! Interface::isA(p) ) p=p->getParent();
-            rule->setInterfaceId( p->getId() );
+            FWObject *p = a;
+            while ( ! Interface::isA(p) ) p = p->getParent();
+            if ( ! itf_re->hasRef(p)) itf_re->addRef(p);
+            // rule->setInterfaceId( p->getId() );
             tmp_queue.push_back(rule);
             return true;
         }
@@ -284,7 +292,9 @@ bool NATCompiler_ipf::AssignInterface::processNext()
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
 
-            r->setInterfaceId( iface->getId() );
+            RuleElementItfOutb *itf_re = r->getItfOutb();
+            if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+            // r->setInterfaceId( iface->getId() );
             
             tmp_queue.push_back(r);
             n++;
@@ -362,9 +372,11 @@ bool NATCompiler_ipf::prepareForLB::processNext()
  */
 bool NATCompiler_ipf::RedirectRules::processNext()
 {
-    NATRule   *rule=getNext(); if (rule==NULL) return false;
-    Interface *rule_iface=
-	Interface::cast( rule->getRoot()->getById(rule->getInterfaceId() ,true) );
+    NATRule   *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
+    Interface *rule_iface =
+        Interface::cast(FWObjectReference::getObject(itf_re->front()));
+    //  Interface::cast( rule->getRoot()->getById(rule->getInterfaceId() ,true) );
 
     tmp_queue.push_back(rule);
 

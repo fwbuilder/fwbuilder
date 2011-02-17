@@ -593,14 +593,6 @@ string PolicyCompiler_ipf::debugPrintRule(Rule *r)
     else
         s << " intf: ?";
 
-    // int iface_id = rule->getInterfaceId();
-    // if (iface_id > -1)
-    // {
-    //     FWObject *rule_iface = dbcopy->findInIndex( iface_id );
-    //     s << " intf: "+rule_iface->getName();
-    // } else
-    //     s << iface_id;
-
     s << " ";
 
     if (r->getBool("skip_check_for_duplicates")) s << "skip_check_for_duplicates ";

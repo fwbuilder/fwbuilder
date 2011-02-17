@@ -356,21 +356,6 @@ void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
         }
 	compiler->output << intf->getName() << " ";
     }
-
-    // int iface_id = r->getInterfaceId();
-    // if (iface_id > -1) 
-    // {
-    //     switch (r->getDirection())
-    //     {
-    //     case PolicyRule::Outbound: compiler->output << "xmit "; break;
-    //     case PolicyRule::Inbound:  compiler->output << "recv "; break;
-    //     case PolicyRule::Both:     compiler->output << "via  "; break;
-    //     default: break;
-    //     }
-
-    //     FWObject *rule_iface = compiler->dbcopy->findInIndex( iface_id );
-    //     compiler->output << rule_iface->getName() << " ";
-    // }
 }
 
 void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElement  *rel)

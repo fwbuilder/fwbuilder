@@ -20,28 +20,28 @@ map eth1 from 192.168.1.0/24 to any -> 33.33.33.33/32   portmap tcp/udp auto
 map eth1 from 192.168.1.0/24 to any -> 33.33.33.33/32  
 # 
 # Rule  3 (NAT)
-rdr  from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr ppp0 from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth0 from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
 # 
 # Rule  4 (NAT)
-rdr  from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr ppp0 from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth0 from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
 # 
 # Rule  5 (NAT)
-rdr  from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr ppp0 from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth0 from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
 # 
 # Rule  6 (NAT)
-rdr  from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
-rdr  from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr ppp0 from any to (ppp0) port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth1 from any to 33.33.33.34/32 port = 22 -> 192.168.1.100 port 22 tcp 
+rdr eth0 from any to 192.168.1.1/32 port = 22 -> 192.168.1.100 port 22 tcp 
 # 
 # Rule  7 (NAT)
 rdr eth1 from any to 33.33.33.33/32 port = 22 -> 192.168.1.100 port 22 tcp 

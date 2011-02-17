@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3457
+#  Firewall Builder  fwb_ipf v4.2.0.3480
 #
-#  Generated Thu Feb  3 14:54:45 2011 PST by vadim
+#  Generated Thu Feb 17 12:00:12 2011 PST by vadim
 #
 # files: * firewall2.fw /etc/fw/firewall2.fw
 # files:   firewall2-ipf.conf /etc/fw/firewall2-ipf.conf
@@ -32,7 +32,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb  3 14:54:45 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 12:00:12 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
