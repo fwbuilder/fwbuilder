@@ -17,7 +17,7 @@ nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1
 nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
 # 
 # Rule  3 (NAT)
-nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 172.24.0.2 , 172.24.0.3 } 
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 172.24.0.2 , 172.24.0.3 } 
 # 
 # Rule  4 (NAT)
 nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.2 

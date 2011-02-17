@@ -877,10 +877,10 @@ void FWObject::removeAllInstances(FWObject *rm)
 
 void FWObject::removeRef(FWObject *obj)
 {
-    int  obj_id=obj->getId();
+    int  obj_id = obj->getId();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
-        FWObject *o=*m;
+        FWObject *o = *m;
         FWReference *oref = FWReference::cast(o);
         if (oref && oref->getPointerId()==obj_id)
         {
@@ -892,6 +892,18 @@ void FWObject::removeRef(FWObject *obj)
             return;
         }
     }
+}
+
+bool FWObject::hasRef(FWObject *obj)
+{
+    int  obj_id = obj->getId();
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    {
+        FWObject *o = *m;
+        FWReference *oref = FWReference::cast(o);
+        if (oref && oref->getPointerId()==obj_id) return true;
+    }
+    return false;
 }
 
 void FWObject::_removeAllRef(FWObject *rm)

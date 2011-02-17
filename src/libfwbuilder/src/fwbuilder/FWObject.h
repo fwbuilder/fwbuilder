@@ -392,6 +392,11 @@ public:
     virtual void removeRef(FWObject *obj);
 
     /**
+     * check if 'this' already has reference to obj
+     */
+    virtual bool hasRef(FWObject *obj);
+
+    /**
      * Removes all references to 'obj' recursively in the whole tree
      * under 'this'
      */

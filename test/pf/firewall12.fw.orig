@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3479
+#  Firewall Builder  fwb_pf v4.2.0.3480
 #
-#  Generated Wed Feb 16 16:18:18 2011 PST by vadim
+#  Generated Thu Feb 17 11:46:43 2011 PST by vadim
 #
 # files: * firewall12.fw /etc/fw/firewall12.fw
 # files:   firewall12.conf /etc/fw/firewall12.conf
@@ -159,7 +159,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 16:18:18 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 11:46:43 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

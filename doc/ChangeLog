@@ -1,3 +1,10 @@
+2011-02-17  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_pf.cpp (processNext): see #133. MErged code from the
+	branch, running tests. Making sure rules that have firewall
+	object in ODst and interface columnblank end up with rdr command
+	without "on interface" clause as before.
+
 2011-02-16  vadim  <vadim@netcitadel.com>
 
 	* NATCompiler_pf.cpp (compile): fixes #2095 added support for

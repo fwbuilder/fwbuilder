@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3479
+#  Firewall Builder  fwb_pf v4.2.0.3480
 #
-#  Generated Wed Feb 16 16:18:11 2011 PST by vadim
+#  Generated Thu Feb 17 11:46:40 2011 PST by vadim
 #
 # files: * firewall109.fw /etc/fw/pf.fw
 # files:   firewall109.conf /etc/fw/path\ with\ space/pf.conf
@@ -395,7 +395,7 @@ configure_interfaces() {
     update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 16:18:11 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 11:46:40 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

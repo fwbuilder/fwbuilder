@@ -683,7 +683,6 @@ bool NATCompiler_pf::assignInterfaceToNATRule(NATRule *rule, Address *addr)
 {
     RuleElementItfOutb *itf_re = rule->getItfOutb();
     assert(itf_re!=NULL);
-    assert(itf_re->isAny());
 
     if (Interface::isA(addr) || IPv4::isA(addr))
     {
@@ -701,11 +700,7 @@ bool NATCompiler_pf::assignInterfaceToNATRule(NATRule *rule, Address *addr)
 
         if (intf && intf->isChildOf(fw))
         {
-            itf_re->addRef(intf);
-
-//            rule->setInterfaceId(intf->getId());
-//            rule->setInterfaceStr(intf->getName());
-
+            if ( ! itf_re->hasRef(intf)) itf_re->addRef(intf);
             return true;
         }
     }
@@ -716,6 +711,12 @@ bool NATCompiler_pf::AssignInterface::processNext()
 {
     NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (rule->getInterfaceStr() == "nil")
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
 
     RuleElementItfOutb *itf_re = rule->getItfOutb();
     assert(itf_re!=NULL);
@@ -761,7 +762,15 @@ bool NATCompiler_pf::AssignInterface::processNext()
     {
     case NATRule::SNAT:
     {
-        if (pf_comp->assignInterfaceToNATRule(rule, compiler->getFirstTSrc(rule)))
+        RuleElementTSrc *tsrc_re = rule->getTSrc();
+        bool have_interface = false;
+        for (FWObject::iterator i1=tsrc_re->begin(); i1!=tsrc_re->end(); ++i1)
+        {
+            Address *addr = Address::cast(FWObjectReference::getObject(*i1));
+            have_interface |= pf_comp->assignInterfaceToNATRule(rule, addr);
+        }
+
+        if (have_interface)
         {
             tmp_queue.push_back(rule);
             return true;
@@ -778,7 +787,15 @@ bool NATCompiler_pf::AssignInterface::processNext()
 
     case NATRule::DNAT:
     {
-        if (pf_comp->assignInterfaceToNATRule(rule, compiler->getFirstODst(rule)))
+        RuleElementODst *odst_re = rule->getODst();
+        bool have_interface = false;
+        for (FWObject::iterator i1=odst_re->begin(); i1!=odst_re->end(); ++i1)
+        {
+            Address *addr = Address::cast(FWObjectReference::getObject(*i1));
+            have_interface |= pf_comp->assignInterfaceToNATRule(rule, addr);
+        }
+
+        if (have_interface)
         {
             tmp_queue.push_back(rule);
             return true;
@@ -788,7 +805,6 @@ bool NATCompiler_pf::AssignInterface::processNext()
  * interface. If this is so, just do not specify interface for rdr
  * rule.
  */
-//        rule->setInterfaceStr("");
         itf_re->clearChildren();
         itf_re->setAnyElement();
     }
@@ -820,9 +836,10 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
  
     if (obj->getId()==compiler->getFwId() )
     {
-	list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
-	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) {
-	    Interface *interface_=Interface::cast(*i);
+	list<FWObject*> l2 = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+	    Interface *interface_ = Interface::cast(*i);
 /*
  * update 03/20/03:
  *
@@ -843,14 +860,11 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
 	    }
 	}
 /*
- * update for ticket 1397
- * If firewall object is in ODst, do not assign the rule to any interface
+ * update for ticket 1397 If firewall object is in ODst, do not assign
+ * the rule to any interface.  I use attribute set by
+ * setInterfaceStr() to signal AssignInterface that it should not do anything.
  */
-//        rule->setInterfaceStr("nil");
-        RuleElementItfOutb *itf_re = rule->getItfOutb();
-        assert(itf_re!=NULL);
-        itf_re->clearChildren();
-        itf_re->setAnyElement();
+        rule->setInterfaceStr("nil");
     }
 
     return true;
@@ -1279,12 +1293,12 @@ void NATCompiler_pf::compile()
     add( new splitSDNATRule("split SDNAT rules"      ) );
     add( new NATRuleType( "determine NAT rule types" ) );
     add( new VerifyRules( "verify NAT rules" ) );
-    //add( new splitODstForSNAT(
-    //       "split rule if objects in ODst belong to different subnets"));
+
     add( new ReplaceFirewallObjectsODst(
              "replace references to the firewall in ODst" ) );
     add( new ReplaceFirewallObjectsTSrc(
              "replace references to the firewall in TSrc" ) );
+
     add( new ReplaceObjectsTDst( "replace objects in TDst" ) );
 
     add( new ExpandMultipleAddresses( "expand multiple addresses" ) );
@@ -1303,13 +1317,13 @@ void NATCompiler_pf::compile()
     add( new checkForDynamicInterfacesOfOtherObjects(
              "check for dynamic interfaces of other hosts and firewalls"));
     add( new ExpandAddressRanges( "expand address range objects" ) );
-    //add( new ConvertToAtomicForTSrc( "convert to atomic rules" ) );
+
     add( new splitForTSrc(
              "split if addresses in TSrc belong to different networks" ));
-    //add( new ConvertToAtomicForItfOutb(
-    //         "convert to atomic for Interface rule element"));
+
     add( new AssignInterface( "assign rules to interfaces" ) );
     add( new convertInterfaceIdToStr("prepare interface assignments") );
+
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
