@@ -197,22 +197,6 @@ QString ProjectPanel::getPageTitle(bool file_path)
     else return default_caption;
 }
 
-RuleElement* ProjectPanel::getRE(Rule* r, int col)
-{
-    string ret;
-    switch (col)
-    {
-        case 0: ret=RuleElementSrc::TYPENAME; break;//Object
-        case 1: ret=RuleElementDst::TYPENAME; break;//Object
-        case 2: ret=RuleElementSrv::TYPENAME; break;//Object
-        case 3: ret=RuleElementItf::TYPENAME; break;//Object
-        case 4: ret=RuleElementInterval::TYPENAME; break;//Time
-        default: return NULL;
-    }
-
-    return RuleElement::cast( r->getFirstByType(ret) );
-}
-
 void ProjectPanel::restoreRuleSetTab()
 {
     if (fwbdebug) qDebug("ProjectPanel::()");
