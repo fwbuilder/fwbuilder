@@ -90,7 +90,7 @@ namespace fwcompiler
          * function checks if @obj is cluster interface and then
          * uses corresponding real interface instead of it.
          */
-        bool assignInterfaceToNATRule(libfwbuilder::Rule *rule,
+        bool assignInterfaceToNATRule(libfwbuilder::NATRule *rule,
                                       libfwbuilder::Address *obj);
         
 	/**
@@ -353,7 +353,6 @@ namespace fwcompiler
         {
             void _printAnchorRule(const std::string &anchor_command,
                                   const std::string &ruleset_name,
-                                  const std::string &interface_name,
                                   libfwbuilder::NATRule *rule);
                 
     protected:
@@ -368,6 +367,7 @@ namespace fwcompiler
             virtual void _printREAddr(libfwbuilder::RuleElement *o);
             virtual void _printAddr(libfwbuilder::FWObject *o);
             virtual void _printNATRuleOptions(libfwbuilder::Rule *rule);
+            virtual void _printInterface(libfwbuilder::NATRule *r);
 
             virtual void _printNegation(libfwbuilder::RuleElement *o);
 

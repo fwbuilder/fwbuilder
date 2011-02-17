@@ -122,7 +122,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->enableCustomTemplates->setChecked( st->customTemplatesEnabled() );
 
     m_dialog->deletedObj->setChecked( st->getBool("UI/ShowDeletedObjects") );
-    m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
+    m_dialog->attributesInTree->setChecked(
+        st->getBool("UI/ShowObjectsAttributesInTree") );
 
     m_dialog->new_dns_name_compile_tm->setChecked(
         st->getBool("Objects/DNSName/useCompileTimeForNewObjects"));
@@ -141,7 +142,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
 
     m_dialog->autosaveFile->setChecked(st->getBool("Environment/autoSaveFile"));
-    m_dialog->autosaveInterval->setValue(st->getInt("Environment/autoSaveFilePeriod"));
+    m_dialog->autosaveInterval->setValue(
+        st->getInt("Environment/autoSaveFilePeriod"));
 
     m_dialog->dataFileCompression->setChecked( st->getCompression() );
 
@@ -151,11 +153,16 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->scpPath->setText( st->getSCPPath() );
     m_dialog->sshTimeout->setValue( st->getSSHTimeout() );
 
-    m_dialog->rememberSshPass->setChecked( st->getBool("Environment/RememberSshPassEnabled") );
+    m_dialog->rememberSshPass->setChecked(
+        st->getBool("Environment/RememberSshPassEnabled") );
 
     m_dialog->showTips->setChecked( st->getBool("UI/NoStartTip") );
 
-    m_dialog->rulesLoggingOn->setChecked( st->getBool("Objects/PolicyRule/defaultLoggingState") );
+    m_dialog->rulesLoggingOn->setChecked(
+        st->getBool("Objects/PolicyRule/defaultLoggingState") );
+
+    m_dialog->autoconfigure_interfaces->setChecked(
+        st->getBool("Objects/Interface/autoconfigureInterfaces") );
 
 // set label icons colors and text strings using user's settings
 
@@ -446,6 +453,10 @@ void PrefsDialog::accept()
 
     st->setBool("Objects/PolicyRule/defaultLoggingState",
                 m_dialog->rulesLoggingOn->isChecked());
+
+    st->setBool("Objects/Interface/autoconfigureInterfaces",
+                m_dialog->autoconfigure_interfaces->isChecked());
+
 
     st->setRCSLogState( m_dialog->emptyRCSLog->isChecked() );
 

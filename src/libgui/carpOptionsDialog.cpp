@@ -110,28 +110,6 @@ void carpOptionsDialog::reject()
 
 bool carpOptionsDialog::validate()
 {
-    bool valid = true;
-    QWidget *focus = NULL;
-    QString message;
-
-    // carp secret must be set
-    if (m_dialog->carp_password->text().isEmpty())
-    {
-        message = "CARP Password field can not be empty!";
-        focus = m_dialog->carp_password;
-        valid = false;
-    }
-
-    // if vrid is set, it must be an integer 1 <= vrid <= 255
-    // Now QSpinBox widget enforses boundaries
-
-    if (!valid)
-    {
-        QMessageBox::warning(this, "Firewall Builder",
-                             tr("Input not valid: %1").arg(message), "&Continue",
-                             QString::null, QString::null, 0, 1);
-        focus->setFocus();
-    }
-    return valid;
+    return true;
 }
 

@@ -157,17 +157,6 @@ namespace fwcompiler {
 
 
 	/**
-	 * replace cluster interface objects with inetrfaces of the member
-         * firewall in the Interface rule element
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(replaceClusterInterfaceInItf);
-
-	/**
-	 * processes rules with negation in Itf
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(ItfNegation);
-
-	/**
 	 * this processor checks if the rule is associated with an
 	 * interface and uses setInterfaceId to record its id. If the
 	 * rule is associated with multiple interfaces, this processor
@@ -211,6 +200,30 @@ namespace fwcompiler {
                 expandMultipleAddressesInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
+	/**
+	 * processes rules with negation in Itf
+	 */
+        class ItfNegation : public Compiler::interfaceNegationInRE
+        {
+            public:
+            ItfNegation(const std::string &name) :
+            interfaceNegationInRE(
+                name, libfwbuilder::RuleElementItf::TYPENAME) {}
+        };
+           
+	/**
+	 * replace cluster interface objects with inetrfaces of the member
+         * firewall in the Interface rule element
+	 */
+        class replaceClusterInterfaceInItf : public Compiler::replaceClusterInterfaceInItfRE
+        {
+            public:
+            replaceClusterInterfaceInItf(const std::string &name) :
+            replaceClusterInterfaceInItfRE(
+                name, libfwbuilder::RuleElementItf::TYPENAME) {}
+        };
+
+        
 	/**
 	 *  this inspector replaces references to hosts and firewalls
 	 *  in src or dst with references to their interfaces

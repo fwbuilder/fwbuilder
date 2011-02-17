@@ -67,7 +67,8 @@ namespace fwcompiler
         virtual void summaryConfigLineVlan(QStringList vlan_names);
 
         virtual void interfaceConfigLineVlan(
-            libfwbuilder::Interface *iface, QStringList vlan_names);
+            libfwbuilder::Interface *iface,
+            const std::list<libfwbuilder::Interface*> &vlan_subinterfaces);
 
         // functions that generate bridge configuration
         virtual void summaryConfigLineBridge(QStringList vlan_names);

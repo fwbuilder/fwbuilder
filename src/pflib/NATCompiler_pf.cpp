@@ -679,8 +679,12 @@ bool NATCompiler_pf::splitForTSrc::processNext()
 }
 
 
-bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
+bool NATCompiler_pf::assignInterfaceToNATRule(NATRule *rule, Address *addr)
 {
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
+    assert(itf_re!=NULL);
+    assert(itf_re->isAny());
+
     if (Interface::isA(addr) || IPv4::isA(addr))
     {
         FWObject *p = addr;
@@ -697,8 +701,11 @@ bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
 
         if (intf && intf->isChildOf(fw))
         {
-            rule->setInterfaceId(intf->getId());
-            rule->setInterfaceStr(intf->getName());
+            itf_re->addRef(intf);
+
+//            rule->setInterfaceId(intf->getId());
+//            rule->setInterfaceStr(intf->getName());
+
             return true;
         }
     }
@@ -710,35 +717,44 @@ bool NATCompiler_pf::AssignInterface::processNext()
     NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule = getNext(); if (rule==NULL) return false;
 
-    if (rule->getInterfaceStr() != "")
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
     RuleElementItfOutb *itf_re = rule->getItfOutb();
     assert(itf_re!=NULL);
-    if (!itf_re->isAny())
+
+    if ( ! itf_re->isAny())
     {
-        Interface *intf = Interface::cast(
-            FWObjectReference::getObject(itf_re->front()));
-        assert(intf!=NULL);
+        list<FWObject*> intf_list;
+        intf_list.insert(intf_list.begin(), itf_re->begin(), itf_re->end());
+        list<FWObject*>::iterator it;
 
-        if (intf->isFailoverInterface())
+        for (it=intf_list.begin(); it!=intf_list.end(); ++it)
         {
-            FailoverClusterGroup *fg = FailoverClusterGroup::cast(
-                intf->getFirstByType(FailoverClusterGroup::TYPENAME));
-            if (fg)
-                intf = fg->getInterfaceForMemberFirewall(compiler->fw);
+            Interface *intf = Interface::cast(FWObjectReference::getObject(*it));
+            assert(intf!=NULL);
+
+            if (intf->isFailoverInterface())
+            {
+                FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                    intf->getFirstByType(FailoverClusterGroup::TYPENAME));
+                if (fg)
+                {
+                    Interface *fw_intf =
+                        fg->getInterfaceForMemberFirewall(compiler->fw);
+                    itf_re->removeRef(intf);
+                    itf_re->addRef(fw_intf);
+                    intf = fw_intf;
+                }
+            }
+
+            if ( ! intf->isChildOf(compiler->fw))
+            {
+                QString err("Interface object %1 used in 'Interface' column "
+                            "of the rule must belong to the same firewall");
+                compiler->abort(rule, err.arg(intf->getName().c_str()).toStdString());
+            }
         }
 
-        if (intf->isChildOf(compiler->fw))
-        {
-            rule->setInterfaceId(intf->getId());
-            rule->setInterfaceStr(intf->getName());
-            tmp_queue.push_back(rule);
-            return true;
-        }
+        tmp_queue.push_back(rule);
+        return true;
     }
 
     switch ( rule->getRuleType() )
@@ -754,7 +770,9 @@ bool NATCompiler_pf::AssignInterface::processNext()
 /* if we appear here, then TSrc is not an interface or address of
  * an interface. Generate NAT rule without "on iface" clause
  */
-        rule->setInterfaceStr("");
+//        rule->setInterfaceStr("");
+        itf_re->clearChildren();
+        itf_re->setAnyElement();
     }
     break;
 
@@ -770,7 +788,9 @@ bool NATCompiler_pf::AssignInterface::processNext()
  * interface. If this is so, just do not specify interface for rdr
  * rule.
  */
-        rule->setInterfaceStr("");
+//        rule->setInterfaceStr("");
+        itf_re->clearChildren();
+        itf_re->setAnyElement();
     }
     break;
 
@@ -826,7 +846,11 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
  * update for ticket 1397
  * If firewall object is in ODst, do not assign the rule to any interface
  */
-        rule->setInterfaceStr("nil");
+//        rule->setInterfaceStr("nil");
+        RuleElementItfOutb *itf_re = rule->getItfOutb();
+        assert(itf_re!=NULL);
+        itf_re->clearChildren();
+        itf_re->setAnyElement();
     }
 
     return true;
@@ -1198,6 +1222,12 @@ void NATCompiler_pf::compile()
 
     add( new singleRuleFilter());
     
+    add(new expandGroupsInItfOutb("expand groups in Interface"));
+    add(new replaceClusterInterfaceInItfOutb(
+            "replace cluster interfaces with member interfaces in "
+            "the Interface rule element"));
+    add(new ItfOutbNegation("process negation in Itf"));
+
     add( new recursiveGroupsInOSrc("check for recursive groups in OSRC") );
     add( new recursiveGroupsInODst("check for recursive groups in ODST") );
     add( new recursiveGroupsInOSrv("check for recursive groups in OSRV") );
@@ -1276,8 +1306,8 @@ void NATCompiler_pf::compile()
     //add( new ConvertToAtomicForTSrc( "convert to atomic rules" ) );
     add( new splitForTSrc(
              "split if addresses in TSrc belong to different networks" ));
-    add( new ConvertToAtomicForItfOutb(
-             "convert to atomic for Interface rule element"));
+    //add( new ConvertToAtomicForItfOutb(
+    //         "convert to atomic for Interface rule element"));
     add( new AssignInterface( "assign rules to interfaces" ) );
     add( new convertInterfaceIdToStr("prepare interface assignments") );
 

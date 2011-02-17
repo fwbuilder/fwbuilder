@@ -413,16 +413,6 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     FWObject *edit_obj = mw->getOpenedEditor();
 
-    if (mw->isEditorVisible() &&
-        dragobj.size()==1 &&
-        edit_obj!=NULL &&
-        current_obj->getLibrary()==edit_obj->getLibrary() )
-    {
-        if (fwbdebug) qDebug("ObjectTreeView::dragObject() reset selection");
-        otvi->setSelected(false);
-        resetSelection();
-    }
-
     if (fwbdebug) qDebug("ObjectTreeView::dragObject()  returns !NULL");
 
     drag->start(supportedActions);

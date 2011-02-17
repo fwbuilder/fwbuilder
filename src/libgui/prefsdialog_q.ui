@@ -338,7 +338,7 @@ own library of templates and use it in addition to the one we provide</string>
        <item row="7" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="DNSName">
           <attribute name="title">
@@ -550,6 +550,65 @@ own library of templates and use it in addition to the one we provide</string>
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>Interface</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_17">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_17">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="MainRes.qrc">:/Icons/Interface/icon-big</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>When an interface object is created as a child object of another interface, fwbuilder can verify that the name and type of the child and the parent objects match and form valid configuration. FWbuilder can also automatically guess some inetrface types and their parameters using their names. For example, it can automatically set interface type to &quot;vlan&quot; and assign vlan ID if object name looks like a valid vlan interface for the given OS. However in some situations desired configuration might be more complex than our checks allow so this may need to be turned off.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="autoconfigure_interfaces">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Verify interface names and autoconfigure their parmeters using known name patterns</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>134</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -559,10 +618,10 @@ own library of templates and use it in addition to the one we provide</string>
        <string>Data File</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
        <item row="0" column="0">
@@ -820,8 +879,8 @@ own library of templates and use it in addition to the one we provide</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="acceptRichText">
              <bool>true</bool>
@@ -907,10 +966,10 @@ are never stored permanently)</string>
        <string>Labels</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
-       <property name="verticalSpacing">
+       <property name="topMargin">
         <number>20</number>
        </property>
-       <property name="topMargin">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
        <item row="0" column="0" colspan="3">

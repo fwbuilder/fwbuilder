@@ -349,37 +349,52 @@ bool NATCompiler::ExpandMultipleAddresses::processNext()
     case NATRule::NONAT:
     case NATRule::Return:
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
-	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getOSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
         break;
     }
 
     case NATRule::SNAT:
     case NATRule::SDNAT:
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
-	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
-	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
-	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getOSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
+	rel=rule->getTSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTDst();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
         break;
     }
 
     case NATRule::DNAT:
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
-	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
-	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
-	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getOSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTDst();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
         break;
     }
 
     case NATRule::Redirect:
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
-	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
-	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getOSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTSrc();    assert(rel);
+        compiler->_expand_addr(rule, rel, false);
         break;
     }
+
+    default: break;
     }
     return true;
 }
@@ -429,6 +444,25 @@ bool NATCompiler::ExpandGroups::processNext()
 
     return true;
 }
+
+bool NATCompiler::expandGroupsInItfInb::processNext()
+{
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItfInb *itf = rule->getItfInb();
+    compiler->expandGroupsInRuleElement(itf);
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+bool NATCompiler::expandGroupsInItfOutb::processNext()
+{
+    NATRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItfOutb *itf = rule->getItfOutb();
+    compiler->expandGroupsInRuleElement(itf);
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 
 bool NATCompiler::checkForUnnumbered::processNext()
 {
@@ -907,6 +941,8 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
     RuleElementTDst *tdstrel = rule->getTDst();
     RuleElementTSrv *tsrvrel = rule->getTSrv();
 
+    RuleElementItfInb *itf_inb_rel = rule->getItfInb();
+    RuleElementItfOutb *itf_outb_rel = rule->getItfOutb();
 
     ostringstream str;
 
@@ -921,8 +957,12 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
     FWObject::iterator i5 = tdstrel->begin(); 
     FWObject::iterator i6 = tsrvrel->begin();
 
+    FWObject::iterator i7 = itf_inb_rel->begin();
+    FWObject::iterator i8 = itf_outb_rel->begin();
+
     while ( i1!=osrcrel->end() || i2!=odstrel->end() || i3!=osrvrel->end() ||
-            i4!=tsrcrel->end() || i5!=tdstrel->end() || i6!=tsrvrel->end() )
+            i4!=tsrcrel->end() || i5!=tdstrel->end() || i6!=tsrvrel->end() ||
+            i7!=itf_inb_rel->end() || i8!=itf_outb_rel->end())
     {
         str  << endl;
 
@@ -934,6 +974,9 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         string tdst = " ";
         string tsrv = " ";
 
+        string itf_inb = " ";
+        string itf_outb = " ";
+
         int osrc_id = -1;
         int odst_id = -1;
         int osrv_id = -1;
@@ -941,6 +984,9 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         int tsrc_id = -1;
         int tdst_id = -1;
         int tsrv_id = -1;
+
+        int itf_inb_id = -1;
+        int itf_outb_id = -1;
 
         if (i1!=osrcrel->end())
         {
@@ -984,6 +1030,20 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
             tsrv_id=o->getId();
         }
 
+        if (i7!=itf_inb_rel->end())
+        {
+            FWObject *o = FWReference::getObject(*i7);
+            itf_inb = o->getName();
+            itf_inb_id = o->getId();
+        }
+
+        if (i8!=itf_outb_rel->end())
+        {
+            FWObject *o = FWReference::getObject(*i8);
+            itf_outb = o->getName();
+            itf_outb_id = o->getId();
+        }
+
         int w=0;
         if (no==0)
         {
@@ -1003,6 +1063,8 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         str << setw(16) << setfill(' ') << tdst.c_str() << "(" << tdst_id << ")";
         str << setw(10) << setfill(' ') << tsrv.c_str() << "(" << tsrv_id << ")";
 
+        str << setw(10) << setfill(' ') << itf_inb.c_str() << "(" << itf_inb_id << ")";
+        str << setw(10) << setfill(' ') << itf_outb.c_str() << "(" << itf_outb_id << ")";
 
         ++no;
 
@@ -1012,6 +1074,8 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         if ( i4!=tsrcrel->end() ) ++i4;
         if ( i5!=tdstrel->end() ) ++i5;
         if ( i6!=tsrvrel->end() ) ++i6;
+        if ( i7!=itf_inb_rel->end() ) ++i7;
+        if ( i8!=itf_outb_rel->end() ) ++i8;
     }
     return str.str();
 

@@ -1,3 +1,52 @@
+2011-02-16  vadim  <vadim@netcitadel.com>
+
+	* carpOptionsDialog.cpp (validate): fixes #2100 carp password
+	should be optional parameter
+
+	* OSConfigurator_bsd_interfaces.cpp (configureInterfaces): make
+	sure we print "ifconfig" commands for mtu and other parameters for
+	all interfaces, including those with no ip addresses and bridge
+	ports (unnumbered interfaces used to be skipped before)
+
+	* ObjectTreeView.cpp (startDrag): fixes #2099 "Object list scrolls
+	up to the last edited object". Object tree used to scroll
+	spontaneously when user started dragging an object from it to a
+	rule.
+
+	* configlets/bsd/update_vlans: see #2105: generated script now
+	supports vlan interfaces with names that do not match vlan IDs
+	(OpenBSD, FreeBSD, shell script format).
+
+	* OSConfigurator_bsd_interfaces.cpp (sort_interface_names): see
+	#1807, #2104: arrange interface configuration commands in the
+	generated scritpt in such order that bridge and carp interfaces
+	are configured after all other interfaces are done.
+
+	* compiler_lib/CompilerDriver.cpp (commonChecks2): see #2103
+	removed interface name validation check in compilers, this
+	check will only be done in the GUI. Comiler still verifies
+	bridge inetrface configuration and makes sure vlan interfaces
+	that should also be bridge ports are created as copies.
+
+	* InterfaceDialog.cpp (applyChanges): see #2103 "complex
+	vlan/bridge configurations are not supported by the interface
+	validation code". Added checkbox to let the user turn off
+	interface name validation functions in the GUI. Checkbox is
+	located in the global Preferences dialog, tab Objects, subtab
+	Interface. For backwards compatibility, the checkbox is turned on
+	by default. When it is off, the GUI does not validate the name of
+	inetrfaces and subinterfaces and turns off checks that enforced
+	interface name patterns for VLAN, bridge and bodning interfaces.
+	It also turns off check for the validity of vlan ID derived from
+	vlan interface name and turns off automatic configuration of
+	interface type and vlan ID. These checks sometimes were in the way
+	of building complex configurations that involved multiple vlan
+	interfaces with names not matching their IDs. This also fixes SF
+	bug #3066714 "please dont stop me from creating a new interface"
+	where user wanted to create interface "veth201.0" on Linux but the
+	GUI blocked this operation because the name seemed to match vlan
+	interface pattern.
+
 2011-02-15  vadim  <vadim@netcitadel.com>
 
 	* ActionsDialog.cpp (setRule): see #1871 "PF Actions Tag and

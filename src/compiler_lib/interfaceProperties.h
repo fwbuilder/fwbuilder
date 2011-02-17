@@ -42,7 +42,8 @@ protected:
                   VLAN_INTERFACE,
                   BRIDGE_INTERFACE,
                   UNKNOWN} interface_type;
-
+    bool vlan_checks;
+    
     /*
      * collects all ip addresses of the interface (only direct
      * addresses, not addresses of subinterfaces) and fills the list
@@ -52,9 +53,11 @@ protected:
                             QStringList &addr_list);
     
 public:
-    interfaceProperties() {}
+    interfaceProperties() { vlan_checks = true; }
     virtual ~interfaceProperties() {}
 
+    void setPerformVlanChecks(bool f) { vlan_checks = f; }
+    
     // simple name validation: does not allow space and "-"
     // However some platform permit space (procurve).
     virtual bool basicValidateInterfaceName(libfwbuilder::Interface *intf,

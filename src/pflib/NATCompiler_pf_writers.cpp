@@ -78,6 +78,30 @@ NATCompiler_pf::PrintRule::PrintRule(const std::string &name) : NATRuleProcessor
     init=true; 
 }
 
+void NATCompiler_pf::PrintRule::_printInterface(NATRule *rule)
+{
+    RuleElementItf *intf_re = rule->getItfOutb();
+    QStringList rule_interfaces;
+
+    if (!intf_re->isAny())
+    {
+        for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
+        {
+            FWObject *o = FWObjectReference::getObject(*it);
+            rule_interfaces << o->getName().c_str();
+        }
+        if (rule_interfaces.size() > 1)
+        {
+            rule_interfaces.push_front("{");
+            rule_interfaces.push_back("}");
+        }
+        compiler->output << "on "
+                         << rule_interfaces.join(" ").toStdString()
+                         << " ";
+    }
+}
+
+
 bool NATCompiler_pf::PrintRule::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -136,10 +160,8 @@ bool NATCompiler_pf::PrintRule::processNext()
         compiler->abort(rule, errstr);
     }
 
-    string  iface_name = rule->getInterfaceStr();
-//    Interface *iface = compiler->getCachedFwInterface(iface_id);
-//    string iface_name= (iface!=NULL) ? iface->getName() : "";
-    if (iface_name=="nil") iface_name="";
+//    string  iface_name = rule->getInterfaceStr();
+//    if (iface_name=="nil") iface_name="";
 
     switch ( rule->getRuleType() ) {
     case NATRule::Continue:
@@ -154,7 +176,9 @@ bool NATCompiler_pf::PrintRule::processNext()
              * show in examples and there is no "no" keyword anymore.
              */
             compiler->output  << "pass in quick ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr(osrcrel);
@@ -166,7 +190,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         } else
         {
             compiler->output  << "no nat ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr(osrcrel);
@@ -175,7 +201,9 @@ bool NATCompiler_pf::PrintRule::processNext()
             compiler->output  << endl;
 
             compiler->output  << "no rdr ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -190,7 +218,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         if (XMLTools::version_compare(version, "4.7")>=0)
         {
             compiler->output  << "match out ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -209,7 +239,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         } else
         {
             compiler->output  << "nat ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -234,7 +266,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         if (XMLTools::version_compare(version, "4.7")>=0)
         {
             compiler->output  << "match in ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -250,7 +284,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         } else
         {
             compiler->output  << "rdr ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -272,7 +308,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         if (XMLTools::version_compare(version, "4.7")>=0)
         {
             compiler->output  << "match in ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -287,7 +325,9 @@ bool NATCompiler_pf::PrintRule::processNext()
         } else
         {
             compiler->output  << "rdr ";
-            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+
+            _printInterface(rule);
+
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
@@ -321,11 +361,11 @@ bool NATCompiler_pf::PrintRule::processNext()
 
         if (XMLTools::version_compare(version, "4.6")>=0)
         {
-            _printAnchorRule("anchor", ruleset_name, iface_name, rule);
+            _printAnchorRule("anchor", ruleset_name, rule);
         } else
         {
-            _printAnchorRule("nat-anchor", ruleset_name, iface_name, rule);
-            _printAnchorRule("rdr-anchor", ruleset_name, iface_name, rule);
+            _printAnchorRule("nat-anchor", ruleset_name, rule);
+            _printAnchorRule("rdr-anchor", ruleset_name, rule);
         }
 
     }
@@ -339,18 +379,17 @@ bool NATCompiler_pf::PrintRule::processNext()
 
 void NATCompiler_pf::PrintRule::_printAnchorRule(const string &anchor_command,
                                                  const std::string &ruleset_name,
-                                                 const std::string &interface_name,
                                                  NATRule *rule)
 {
-    NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
-
     RuleElementOSrc *osrcrel = rule->getOSrc();
     RuleElementODst *odstrel = rule->getODst();
     RuleElementOSrv *osrvrel = rule->getOSrv();
     Service *osrv = compiler->getFirstOSrv(rule);
 
     compiler->output << anchor_command << " \"" << ruleset_name << "\" ";
-    if (interface_name!="") compiler->output << "on " << interface_name << " ";
+
+    _printInterface(rule);
+
     if (!osrvrel->isAny() || !osrcrel->isAny() || !odstrel->isAny())
     {
         _printProtocol(osrv);

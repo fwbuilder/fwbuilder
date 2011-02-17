@@ -4,14 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Wed Feb 16 16:18:11 2011 PST by vadim
+#  Generated Wed Feb 16 16:18:13 2011 PST by vadim
 #
-# files: * firewall109.fw /etc/fw/pf.fw
-# files:   firewall109.conf /etc/fw/path\ with\ space/pf.conf
+# files: * firewall109-2.fw /etc/fw/pf.fw
+# files:   firewall109-2.conf /etc/fw/path\ with\ space/pf.conf
 #
 # Compiled for pf 4.7
 #
-# complex configuration with bridge and vlan
+# complex configuration with bridge and vlan, uses vlan interfaces with names not matching vlan IDs
 
 
 
@@ -377,25 +377,24 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    sync_vlan_interfaces vlan101 vlan102
+    sync_vlan_interfaces vlan8210 vlan9210
     sync_bridge_interfaces bridge0
     sync_carp_interfaces 
     sync_pfsync_interfaces 
     update_addresses_of_interface "em0 10.3.14.81/0xffffff00" ""
+    update_vlans_of_interface "em1 vlan9210:210"
     update_addresses_of_interface "em1" ""
-    $IFCONFIG em1  media 100baseTX mediaopt full-duplex
-    update_vlans_of_interface "em2 vlan101:101 vlan102:102"
+    update_vlans_of_interface "em2 vlan8210:210"
     update_addresses_of_interface "em2" ""
-    $IFCONFIG em2  media 100baseTX mediaopt full-duplex
-    update_addresses_of_interface "vlan101 192.168.101.1/0xffffff00" ""
-    update_addresses_of_interface "vlan102 192.168.102.1/0xffffff00" ""
-    update_bridge_interface bridge0 "em1 em2"
-    $IFCONFIG bridge0 -stp em1
-    $IFCONFIG bridge0 -stp em2
+    update_addresses_of_interface "vlan8210" ""
+    update_addresses_of_interface "vlan9210" ""
+    update_bridge_interface bridge0 "vlan8210 vlan9210"
+    $IFCONFIG bridge0 -stp vlan8210
+    $IFCONFIG bridge0 -stp vlan9210
     update_addresses_of_interface "bridge0 192.168.1.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Feb 16 16:18:11 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 16:18:13 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

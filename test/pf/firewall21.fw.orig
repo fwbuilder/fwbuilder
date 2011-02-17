@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3476
+#  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Mon Feb 14 16:07:39 2011 PST by vadim
+#  Generated Wed Feb 16 16:18:24 2011 PST by vadim
 #
 # files: * firewall21.fw /etc/fw/firewall21.fw
 # files:   firewall21.conf /etc/fw/firewall21.conf
@@ -81,7 +81,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Mon Feb 14 16:07:39 2011 by vadim"
+log "Activating firewall script generated Wed Feb 16 16:18:24 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

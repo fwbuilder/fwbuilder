@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3476
+#  Firewall Builder  fwb_pf v4.2.0.3479
 #
-#  Generated Mon Feb 14 16:07:30 2011 PST by vadim
+#  Generated Wed Feb 16 16:18:05 2011 PST by vadim
 #
 # files: * firewall105.fw /etc/fw/pf.fw
 # files:   firewall105.conf /etc/fw/path\ with\ space/pf.conf
@@ -20,13 +20,12 @@ gateway_enable="YES"
 
 cloned_interfaces="bridge0"
 network_interfaces="bridge0 em0 em1"
-
-ifconfig_bridge0="addm em2 -stp em2 addm em3 -stp em3 up 192.168.1.1 netmask 0xffffff00"
 ifconfig_em0="10.3.14.81 netmask 0xffffff00"
 ifconfig_em1="10.1.1.81 netmask 0xffffff00"
 ifconfig_em2="up"
 ifconfig_em3="up"
-pfsync_enable="YES"
+
+ifconfig_bridge0="addm em2 -stp em2 addm em3 -stp em3 up 192.168.1.1 netmask 0xffffff00"
 
 pf_enable="YES"
 pf_rules="/etc/fw/path\ with\ space/pf.conf"

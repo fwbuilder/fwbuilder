@@ -13,25 +13,30 @@
 ##
 ############ VLAN ##############################################
 
+## arguments:
+##
+## $1:  vlan_name:vlan_id@<parent_name>    e.g.  vlan8101:101@em1
+## $2:  command, can be "add" or "rem"
+##
 missing_vlan() {
     vlan=$1
     cmd=$2
 
     oldIFS=$IFS
-    IFS="@"
+    IFS="@:"
     set $vlan
     subint=$1
-    parent=$2
+    vlan_id=$2
+    parent=$3
     IFS=$oldIFS
 
-    vlan_id=$(echo $subint | sed 's/vlan//')
     test "$cmd" = "add" && {
-        echo "# Adding VLAN interface $subint (parent: $parent)"
+        echo "# Adding VLAN interface $subint (vlan id: $vlan_id parent: $parent)"
         $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent || exit 1
         $FWBDEBUG $IFCONFIG $subint up || exit 1
     }
     test "$cmd" = "rem" && {
-        echo "# Removing VLAN interface $subint (parent: $parent)"
+        echo "# Removing VLAN interface $subint (vlan id: $vlan_id parent: $parent)"
         $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev || exit 1
         $FWBDEBUG $IFCONFIG $subint destroy || exit 1
     }
@@ -39,23 +44,24 @@ missing_vlan() {
 
 parse_fwb_vlans() {
     set $1 
-    vlan_parent_interface=$1 
+    vlan_parent=$1 
     shift
 
     FWB_VLANS=$(
       for subint in $*; do
-        echo "${subint}@$vlan_parent_interface"
+        echo "${subint}@$vlan_parent"
       done | sort
     )
     echo $FWB_VLANS
 }
 
 parse_current_vlans() {
-    vlan_parent_interface=$1
-    $IFCONFIG {{if openbsd}}-A{{endif}} | grep 'vlan: ' | sed 's/parent interface://' | \
-    while read x vlan_id parent
+    vlan_parent=$1
+    $IFCONFIG {{if openbsd}}-A{{endif}} | grep -E 'vlan[^ ]*:' | paste - - | \
+        sed 's/flags=.*vlan://;s/://g;s/parent interface//' | \
+    while read vlan_subint vlan_id parent
     do
-       test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
+       test "$parent" = "$vlan_parent" && echo "$vlan_subint:$vlan_id@$parent"
     done | sort
 }
 
@@ -68,12 +74,12 @@ parse_current_vlans() {
 update_vlans_of_interface() {
     args="$1"
     set $1 
-    vlan_parent_interface=$1 
+    vlan_parent=$1 
 
     FWB_VLANS=$(parse_fwb_vlans "$args")
-    CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
+    CURRENT_VLANS=$(parse_current_vlans $vlan_parent)
 
-    $IFCONFIG $vlan_parent_interface up || exit 1
+    $IFCONFIG $vlan_parent up || exit 1
     diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
     diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
 }

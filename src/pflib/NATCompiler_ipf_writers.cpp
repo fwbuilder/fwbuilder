@@ -231,9 +231,6 @@ bool NATCompiler_ipf::PrintRule::processNext()
 
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
-    // string err = rule->getStr(".error_msg");
-    // if (!err.empty()) compiler->output << "# " << err << endl;
-
     Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
     Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
@@ -242,13 +239,19 @@ bool NATCompiler_ipf::PrintRule::processNext()
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 
-//    Interface *iface=
-//	Interface::cast( rule->getRoot()->getById(rule->getInterfaceId() ,true) );
+    string iface_name;
+
+    RuleElementItfOutb *itf_re = rule->getItfOutb();
+    assert(itf_re!=NULL);
+    if ( ! itf_re->isAny())
+        iface_name = FWObjectReference::getObject(itf_re->front())->getName();
+
+//    string iface_name = rule->getInterfaceStr();
 
     if (rule->getRuleType()==NATRule::NONAT) 
     {
 	compiler->output  << "map "
-                          << rule->getInterfaceStr()
+                          << iface_name
                           << " ";
 	compiler->output  << "from ";
 	_printAddr_L( osrc );
@@ -269,7 +272,7 @@ bool NATCompiler_ipf::PrintRule::processNext()
     if (rule->getRuleType()==NATRule::SNAT) 
     {
 	compiler->output  << "map "
-                          << rule->getInterfaceStr()
+                          << iface_name
                           << " ";
 	compiler->output  << "from ";
 	_printAddr_L( osrc );
@@ -296,7 +299,7 @@ bool NATCompiler_ipf::PrintRule::processNext()
 
     if (rule->getRuleType()==NATRule::DNAT) 
     {
-	compiler->output  << "rdr " << rule->getInterfaceStr() << " ";
+	compiler->output  << "rdr " << iface_name << " ";
 
         compiler->output  << "from ";    _printAddr_L( osrc , true );
         compiler->output  << "to ";      _printAddr_L( odst , true );
@@ -311,7 +314,7 @@ bool NATCompiler_ipf::PrintRule::processNext()
 
     if (rule->getRuleType()==NATRule::LB) 
     {
-	compiler->output  << "rdr " << rule->getInterfaceStr() << " ";
+	compiler->output  << "rdr " << iface_name << " ";
 
         compiler->output  << "from ";   _printAddr_L( osrc , true );
         compiler->output  << "to ";     _printAddr_L( odst , true );
@@ -327,7 +330,7 @@ bool NATCompiler_ipf::PrintRule::processNext()
 
     if (rule->getRuleType()==NATRule::Redirect) 
     {
-	compiler->output  << "rdr " << rule->getInterfaceStr() << " ";
+	compiler->output  << "rdr " << iface_name << " ";
 
         compiler->output  << "from ";    _printAddr_L( osrc , true );
         compiler->output  << "to ";      _printAddr_L( odst , true );

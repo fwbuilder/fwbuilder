@@ -363,6 +363,30 @@ protected:
             virtual bool processNext();
         };
 
+        class interfaceNegationInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+                interfaceNegationInRE(const std::string &n,
+                                      std::string _type) :
+                BasicRuleProcessor(n) { re_type=_type; }
+            virtual bool processNext();
+        };
+
+	/**
+	 * replace cluster interface objects with inetrfaces of the member
+         * firewall in the Interface rule element
+	 */
+        class replaceClusterInterfaceInItfRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+                replaceClusterInterfaceInItfRE(const std::string &n,
+                                               std::string _type) :
+                BasicRuleProcessor(n) { re_type=_type; }
+            virtual bool processNext();
+        };
+            
         /**
          *  eliminates duplicates in RuleElement 're_type'. Inherit
          *  your own class using this one and supply actual rule

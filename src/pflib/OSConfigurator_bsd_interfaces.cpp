@@ -50,22 +50,6 @@ using namespace fwcompiler;
 using namespace std;
 
 
-/*
- * I need to sort interfaces by name but make sure carp interfaces are
- * always last. See #1807
- */
-bool compare_names(FWObject *a, FWObject *b)
-{
-    QString a_name = QString(a->getName().c_str());
-    QString b_name = QString(b->getName().c_str());
-    if (a_name.startsWith("carp") && b_name.startsWith("carp"))
-        return a_name < b_name;
-    if (a_name.startsWith("carp")) return false;
-    if (b_name.startsWith("carp")) return true;
-    return a_name < b_name;
-}
-
-
 string OSConfigurator_bsd::configureInterfaces()
 {
     FWOptions* options = fw->getOptionsObject();
@@ -79,7 +63,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
         QStringList all_physical_interfaces;
         QMap<QString, Interface*> parent_interfaces;
-        QMap<QString, QStringList> vlans;
+        QMap<QString, list<Interface*> > vlans;
         QStringList all_vlan_interfaces; // all vlan interfaces
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -98,7 +82,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 assert(subinterface);
                 if (subinterface->getOptionsObject()->getStr("type") == "8021q")
                 {
-                    vlans[iface_name] << subinterface->getName().c_str();
+                    vlans[iface_name].push_back(subinterface);
                     all_vlan_interfaces << subinterface->getName().c_str();
                 }
             }
@@ -115,7 +99,7 @@ string OSConfigurator_bsd::configureInterfaces()
         foreach (QString iface_name, all_physical_interfaces)
         {
             Interface *iface = parent_interfaces[iface_name];
-            QStringList vlan_subinterfaces = vlans[iface_name];
+            list<Interface*> vlan_subinterfaces = vlans[iface_name];
             if (vlan_subinterfaces.size() > 0)
                 interfaceConfigLineVlan(iface, vlan_subinterfaces);
         }
@@ -215,7 +199,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 fw->getStr("host_OS")));
 
         list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
-        all_interfaces.sort(compare_names);
+        all_interfaces.sort();
 
         QStringList configure_intf_commands;
         QStringList intf_names;
@@ -302,10 +286,23 @@ string OSConfigurator_bsd::configureInterfaces()
 
         // sort interfaces by name
         all_names.sort();
+
         // remove duplicates. We get duplicates in all_names when an
         // interface appears twice, once as a bridge port and another time as
         // vlan parent interface
-        all_names.removeDuplicates();
+        //
+        // Note that QStringList::removeDuplicates() is only available in Qt 4.5
+        // all_names.removeDuplicates();
+
+        QStringList deduplicated_names;
+        QString prev;
+        foreach(QString name, all_names)
+        {
+            if (name != prev) deduplicated_names << name;
+            prev = name;
+        }
+        all_names = deduplicated_names;
+
         ipv6_names.sort();
         intf_names.sort();
 
@@ -316,7 +313,14 @@ string OSConfigurator_bsd::configureInterfaces()
         {
             interfaceConfigLineIP(interfaces_by_name[iface_name],
                                   all_addresses[iface_name]);
-            interfaceIfconfigLine(interfaces_by_name[iface_name]);
+        }
+
+        for (list<FWObject*>::iterator i=all_interfaces.begin();
+             i != all_interfaces.end(); ++i )
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+            interfaceIfconfigLine(iface);
         }
     }
 
@@ -370,6 +374,13 @@ void OSConfigurator_bsd::interfaceIfconfigLine(Interface *iface)
         interface_configuration_lines[iface_name] << config_lines;
 }
 
+/*
+ * If user configured mtu and free-form ifconfig options in the GUI,
+ * add ifconfig command to execute them. 
+ * 
+ * TODO: Add a checkbox "up" in interface dialog, it should be on by
+ * default.
+ */
 QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
                                                           Configlet *configlet)
 {
@@ -396,12 +407,15 @@ QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
         configlet->setVariable("mtu", "");
     }
 
+    QString options;
+
     if (!ifopt->getStr("iface_options").empty())
     {
-        configlet->setVariable("options", ifopt->getStr("iface_options").c_str());
-        need_additional_ifconfig =true;
-    } else
-        configlet->setVariable("options", "");
+        options = ifopt->getStr("iface_options").c_str();
+        need_additional_ifconfig = true;
+    }
+
+    configlet->setVariable("options", options.simplified());
 
     if (need_additional_ifconfig) return configlet->expand();
 
@@ -471,9 +485,19 @@ void OSConfigurator_bsd::summaryConfigLineVlan(QStringList vlan_names)
 }
 
 
-void OSConfigurator_bsd::interfaceConfigLineVlan(Interface *iface,
-                                                QStringList vlan_names)
+void OSConfigurator_bsd::interfaceConfigLineVlan(
+    Interface *iface,
+    const list<Interface*> &vlan_subinterfaces)
 {
+    QStringList vlan_names;
+    list<Interface*>::const_iterator it;
+    for (it=vlan_subinterfaces.begin(); it!=vlan_subinterfaces.end(); ++it)
+    {
+        QString vlan_intf_name = (*it)->getName().c_str();
+        int vlan_id = (*it)->getOptionsObject()->getInt("vlan_id");
+        vlan_names << QString("%1:%2").arg(vlan_intf_name).arg(vlan_id);
+    }
+
     interface_configuration_lines[iface->getName().c_str()] << 
         QString("update_vlans_of_interface \"%1 %2\"")
         .arg(iface->getName().c_str())
@@ -624,11 +648,28 @@ void OSConfigurator_bsd::interfaceConfigLinePfsync(
     interface_configuration_lines[iface->getName().c_str()] <<  configlet.expand();
 }
 
+/*
+ * I need to sort interfaces by name but make sure carp and bridge
+ * interfaces are always last. See #1807 and #2104
+ */
+bool sort_interface_names(QString a, QString b)
+{
+    QString an = a;
+    QString bn = b;
+    if (a.startsWith("bridge")) an = "x_" + a;
+    if (b.startsWith("bridge")) bn = "x_" + b;
+    if (a.startsWith("carp")) an = "y_" + a;
+    if (b.startsWith("carp")) bn = "y_" + b;
+    if (a.startsWith("pfsync")) an = "z_" + a;
+    if (b.startsWith("pfsync")) bn = "z_" + b;
+    return an < bn;
+}
 
 QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
     QStringList keys = interface_configuration_lines.keys();
-    keys.sort();
+    //keys.sort();
+    qSort(keys.begin(), keys.end(), sort_interface_names);
     QStringList res;
     foreach (QString iface, keys)
         res << interface_configuration_lines[iface].join("\n");

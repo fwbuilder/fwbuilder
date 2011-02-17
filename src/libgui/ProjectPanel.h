@@ -135,7 +135,7 @@ public:
     bool hasObject(libfwbuilder::FWObject* obj)
     { return objdb->findInIndex(obj->getId()); };
 
-    libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
+    // libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
 
     //wrapers for some ObjectManipulator functions
     

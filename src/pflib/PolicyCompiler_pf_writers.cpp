@@ -446,8 +446,7 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
         {
             for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
             {
-                FWObject *o   = *it;
-                if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+                FWObject *o = FWObjectReference::getObject(*it);
                 rule_interfaces += " " + o->getName();
             }
         }
@@ -455,14 +454,6 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
             s.replace(n, 2, rule_interfaces);
         else
             s.replace(n, 2, "global");
-
-        // string rule_iface =  rule->getInterfaceStr();
-        // if (rule_iface!="") 
-        // {
-        //     s1 << rule_iface;
-        //     s.replace(n,2,s1.str());
-        // } else
-        //     s.replace(n,2,"global");
     }
     if (rule && (n=s.find("%C"))!=string::npos )
     {
@@ -475,28 +466,24 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
 void PolicyCompiler_pf::PrintRule::_printInterface(PolicyRule *rule)
 {
     RuleElementItf *intf_re = rule->getItf();
-    string rule_interfaces;
-    int intf_count = 0;
+    QStringList rule_interfaces;
 
     if (!intf_re->isAny())
     {
         for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
         {
-            FWObject *o   = *it;
-            if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
-            rule_interfaces += " " + o->getName();
-            intf_count++;
+            FWObject *o = FWObjectReference::getObject(*it);
+            rule_interfaces << o->getName().c_str();
         }
-        compiler->output << "on";
-        if (intf_count > 1) compiler->output << " {";
-        compiler->output << rule_interfaces;
-        if (intf_count > 1) compiler->output << " }";
-        compiler->output << " ";
+        if (rule_interfaces.size() > 1)
+        {
+            rule_interfaces.push_front("{");
+            rule_interfaces.push_back("}");
+        }
+        compiler->output << "on "
+                         << rule_interfaces.join(" ").toStdString()
+                         << " ";
     }
-
-    // string iface_name = rule->getInterfaceStr();
-    // if (iface_name!="") 
-    //     compiler->output << "on " << iface_name << " ";
 }
 
 // print address family

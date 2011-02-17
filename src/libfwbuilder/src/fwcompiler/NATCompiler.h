@@ -236,6 +236,62 @@ namespace fwcompiler {
                 DropRulesByAddressFamilyAndServiceType(n, w, true) {};
         };
 
+	/**
+	 * processes rules with negation in ItfOutb
+	 */
+        class ItfOutbNegation : public Compiler::interfaceNegationInRE
+        {
+            public:
+            ItfOutbNegation(const std::string &name) :
+            interfaceNegationInRE(
+                name, libfwbuilder::RuleElementItfOutb::TYPENAME) {}
+        };
+           
+	/**
+	 * processes rules with negation in ItfInb
+	 */
+        class ItfInbNegation : public Compiler::interfaceNegationInRE
+        {
+            public:
+            ItfInbNegation(const std::string &name) :
+            interfaceNegationInRE(
+                name, libfwbuilder::RuleElementItfInb::TYPENAME) {}
+        };
+           
+	/**
+	 * replace cluster interface objects with inetrfaces of the member
+         * firewall in the Interface rule element
+	 */
+        class replaceClusterInterfaceInItfInb : public Compiler::replaceClusterInterfaceInItfRE
+        {
+            public:
+            replaceClusterInterfaceInItfInb(const std::string &name) :
+            replaceClusterInterfaceInItfRE(
+                name, libfwbuilder::RuleElementItfInb::TYPENAME) {}
+        };
+
+	/**
+	 * replace cluster interface objects with inetrfaces of the member
+         * firewall in the Interface rule element
+	 */
+        class replaceClusterInterfaceInItfOutb : public Compiler::replaceClusterInterfaceInItfRE
+        {
+            public:
+            replaceClusterInterfaceInItfOutb(const std::string &name) :
+            replaceClusterInterfaceInItfRE(
+                name,libfwbuilder::RuleElementItfOutb::TYPENAME) {}
+        };
+
+	/**
+	 * expand groups in Interface rule element
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(expandGroupsInItfInb);
+
+	/**
+	 * expand groups in Interface rule element
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(expandGroupsInItfOutb);
+
         /**
          *  deals with recursive groups in OSrc. See description for
          *  Compiler::recursiveGroupsInRE

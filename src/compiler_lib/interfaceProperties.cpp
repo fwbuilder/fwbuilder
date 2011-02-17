@@ -91,7 +91,8 @@ bool interfaceProperties::isValidVlanInterfaceName(const QString &subint_name,
 {
     if (!looksLikeVlanInterface(subint_name))
     {
-        err = QObject::tr("'%1' is not a valid vlan interface name").arg(subint_name);
+        err = QObject::tr("'%1' is not a valid vlan interface name")
+            .arg(subint_name);
         return false;
     }
 
@@ -112,8 +113,8 @@ bool interfaceProperties::isValidVlanInterfaceName(const QString &subint_name,
         if (vlan_id > 4095)
         {
             err = QObject::tr("'%1' looks like a name of a vlan interface "
-                              "but vlan ID it defines is outside of the valid range."
-                              "").arg(subint_name);
+                              "but vlan ID it defines is outside of the valid "
+                              "range.").arg(subint_name);
             return false;
         }
     }
@@ -334,7 +335,7 @@ bool interfaceProperties::validateInterface(FWObject *target,
 {
     if (Firewall::cast(target) || Host::cast(target))
     {
-        if (looksLikeVlanInterface(interface_name))
+        if (vlan_checks && looksLikeVlanInterface(interface_name))
         {
             QString target_name = target->getName().c_str();
             if (Cluster::isA(target))
@@ -346,8 +347,10 @@ bool interfaceProperties::validateInterface(FWObject *target,
                 // empty string as target_interface
                 target_name = "";
             }
+
             return isValidVlanInterfaceName(interface_name, target_name, err);
         }
+
         return true;
     }
 
@@ -356,7 +359,7 @@ bool interfaceProperties::validateInterface(FWObject *target,
         string target_interface_type =
             Interface::cast(target)->getOptionsObject()->getStr("type");
         // check vlan conditions as well
-        if (looksLikeVlanInterface(interface_name))
+        if (vlan_checks && looksLikeVlanInterface(interface_name))
         {
             // vlan interface can be a child of a bridge, in which
             // case its base name does not match the
@@ -451,7 +454,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
     Interface *parent_intf = Interface::cast(intf->getParent());
 
     if (parent_intf == NULL)
-     return;
+        return;
 
     FWObject *f = intf->getParentHost();
 
