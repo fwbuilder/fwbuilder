@@ -1,5 +1,10 @@
 2011-02-17  vadim  <vadim@netcitadel.com>
 
+	* platforms.cpp (setDefaultFailoverGroupAttributes): fixes #2101
+	"CARP interfaces are set with same advskew". When new PF cluster
+	is created, master advskew paramerer will be set to 10 and backup
+	to 20 to make it deterministic.
+
 	* NATCompiler_ipf.cpp (processNext): see #133, fixes #2108 making
 	nat compiler for ipfilter work with interface column, however the
 	column is not exposed to the user. Compiler behavior should be

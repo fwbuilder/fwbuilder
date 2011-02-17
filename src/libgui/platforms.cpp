@@ -1056,8 +1056,8 @@ void setDefaultFailoverGroupAttributes(FailoverClusterGroup *grp)
         gropt->setStr("carp_password", "");
         gropt->setInt("carp_vhid", 1);
         gropt->setInt("carp_advbase", 1);
-        gropt->setInt("carp_master_advskew", 0);
-        gropt->setInt("carp_default_advskew", 0);
+        gropt->setInt("carp_master_advskew", 10);
+        gropt->setInt("carp_default_advskew", 20);
     }
 
     if (failover_protocol == "vrrp")
