@@ -39,6 +39,8 @@
         <options_in_policy>True</options_in_policy>
         <supports_nat>True</supports_nat>
         <actions_in_nat>True</actions_in_nat>
+        <inbound_interface_in_nat>True</inbound_interface_in_nat>
+        <outbound_interface_in_nat>True</outbound_interface_in_nat>
         <supports_time>True</supports_time>
         <supports_accounting>True</supports_accounting>
         <security_levels>False</security_levels>

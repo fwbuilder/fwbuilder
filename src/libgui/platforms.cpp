@@ -764,47 +764,55 @@ bool getStatelessFlagForAction(PolicyRule *rule)
  * Returns translatable string - name of the corresponding rule element.
  */
 QString getReadableRuleElementName(const string &platform,
-                                   const string &rule_element_type_name)
+                                   const string &re_type_name)
 {
+    bool nat_intf_in = Resources::getTargetCapabilityBool(
+            platform, "inbound_interface_in_nat");
+    bool nat_intf_out = Resources::getTargetCapabilityBool(
+            platform, "outbound_interface_in_nat");
+
     // The following map TYPENAME of RuleElement classes to readable
     // translatable names.
-    if (rule_element_type_name == "Src") return QObject::tr("Source");
-    if (rule_element_type_name == "Dst") return QObject::tr("Destination");
-    if (rule_element_type_name == "Srv") return QObject::tr("Service");
-    if (rule_element_type_name == "Itf") return QObject::tr("Interface");
-    if (rule_element_type_name == "When") return QObject::tr("Time");
+    if (re_type_name == "Src") return QObject::tr("Source");
+    if (re_type_name == "Dst") return QObject::tr("Destination");
+    if (re_type_name == "Srv") return QObject::tr("Service");
+    if (re_type_name == "Itf") return QObject::tr("Interface");
+    if (re_type_name == "When") return QObject::tr("Time");
 
-    if (rule_element_type_name == "OSrc") return QObject::tr("Original Src");
-    if (rule_element_type_name == "ODst") return QObject::tr("Original Dst");
-    if (rule_element_type_name == "OSrv") return QObject::tr("Original Srv");
+    if (re_type_name == "OSrc") return QObject::tr("Original Src");
+    if (re_type_name == "ODst") return QObject::tr("Original Dst");
+    if (re_type_name == "OSrv") return QObject::tr("Original Srv");
 
-    if (rule_element_type_name == "TSrc") return QObject::tr("Translated Src");
-    if (rule_element_type_name == "TDst") return QObject::tr("Translated Dst");
-    if (rule_element_type_name == "TSrv") return QObject::tr("Translated Srv");
+    if (re_type_name == "TSrc") return QObject::tr("Translated Src");
+    if (re_type_name == "TDst") return QObject::tr("Translated Dst");
+    if (re_type_name == "TSrv") return QObject::tr("Translated Srv");
 
-    if (platform == "pf")
+    if (nat_intf_in != nat_intf_out)
     {
-        // For PF I hide inbound interface and show outbound interface
-        // column with header "Interface"
-        if (rule_element_type_name == "ItfInb") return QObject::tr("Interface");
-        if (rule_element_type_name == "ItfOutb") return QObject::tr("Interface");
+        // For some platforms I only show one interface column in nat
+        // rules, in this case nat_intf_in and nat_intf_out have
+        // different values.  For example, for PF I hide inbound
+        // interface and show outbound interface column. Columns title
+        // should then be just "Interface"
+        if (re_type_name == "ItfInb") return QObject::tr("Interface");
+        if (re_type_name == "ItfOutb") return QObject::tr("Interface");
     } else
     {
-        if (rule_element_type_name == "ItfInb") return QObject::tr("Inbound Interface");
-        if (rule_element_type_name == "ItfOutb") return QObject::tr("Outbound Interface");
+        if (re_type_name == "ItfInb") return QObject::tr("Interface In");
+        if (re_type_name == "ItfOutb") return QObject::tr("Interface Out");
     }
 
-    if (rule_element_type_name == "RDst") return QObject::tr("Destination");
-    if (rule_element_type_name == "RGtw") return QObject::tr("Gateway");
-    if (rule_element_type_name == "RItf") return QObject::tr("Interface");
+    if (re_type_name == "RDst") return QObject::tr("Destination");
+    if (re_type_name == "RGtw") return QObject::tr("Gateway");
+    if (re_type_name == "RItf") return QObject::tr("Interface");
 
     // as of v3.0.x the following are not real rule elements (not separate
     // classes with names) but just attributes of corresponding Rule class.
-    if (rule_element_type_name == "Direction") return QObject::tr("Direction");
-    if (rule_element_type_name == "Action") return QObject::tr("Action");
-    if (rule_element_type_name == "Options") return QObject::tr("Options");
-    if (rule_element_type_name == "Metric") return QObject::tr("Metric");
-    if (rule_element_type_name == "Comment") return QObject::tr("Comment");
+    if (re_type_name == "Direction") return QObject::tr("Direction");
+    if (re_type_name == "Action") return QObject::tr("Action");
+    if (re_type_name == "Options") return QObject::tr("Options");
+    if (re_type_name == "Metric") return QObject::tr("Metric");
+    if (re_type_name == "Comment") return QObject::tr("Comment");
 
     return QString();
 }
