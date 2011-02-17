@@ -725,37 +725,6 @@ bool NATCompiler_pf::AssignInterface::processNext()
 
     if ( ! itf_re->isAny())
     {
-        list<FWObject*> intf_list;
-        intf_list.insert(intf_list.begin(), itf_re->begin(), itf_re->end());
-        list<FWObject*>::iterator it;
-
-        for (it=intf_list.begin(); it!=intf_list.end(); ++it)
-        {
-            Interface *intf = Interface::cast(FWObjectReference::getObject(*it));
-            assert(intf!=NULL);
-
-            if (intf->isFailoverInterface())
-            {
-                FailoverClusterGroup *fg = FailoverClusterGroup::cast(
-                    intf->getFirstByType(FailoverClusterGroup::TYPENAME));
-                if (fg)
-                {
-                    Interface *fw_intf =
-                        fg->getInterfaceForMemberFirewall(compiler->fw);
-                    itf_re->removeRef(intf);
-                    itf_re->addRef(fw_intf);
-                    intf = fw_intf;
-                }
-            }
-
-            if ( ! intf->isChildOf(compiler->fw))
-            {
-                QString err("Interface object %1 used in 'Interface' column "
-                            "of the rule must belong to the same firewall");
-                compiler->abort(rule, err.arg(intf->getName().c_str()).toStdString());
-            }
-        }
-
         tmp_queue.push_back(rule);
         return true;
     }

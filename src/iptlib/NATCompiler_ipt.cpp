@@ -2042,6 +2042,12 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
 }
 
 /*
+ * This rule processor chooses interfaces for the rule automatically
+ * if user did not set them manually in "Inbound Interface" and
+ * "Outbound Interface" columns.
+ *
+ * Automatic algorithm:
+ *
  * this processor works together with ReplaceFirewallObjectsTSrc and
  * ConvertToAtomicRules. If the first two left interface object in
  * TSrc, AssignInterfaces assigns this rule to the corresponding
@@ -2075,7 +2081,7 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
 bool NATCompiler_ipt::AssignInterface::processNext()
 {
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==NULL) return false;
 
 //    Address  *a=NULL;
 //    FWObject *ref;
