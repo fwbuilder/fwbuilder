@@ -24,9 +24,12 @@
 */
 
 #include "ClusterInterfaceWidget.h"
+#include "FWBSettings.h"
 #include "ui_ClusterInterfaceWidget.h"
+
 #include <QSpacerItem>
 #include <QDebug>
+
 
 using namespace libfwbuilder;
 using namespace std;
@@ -183,7 +186,7 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
     return res;
 }
 
-bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
+bool ClusterInterfaceWidget::interfaceSelectable(Interface* iface)
 {
     libfwbuilder::Cluster cluster;
 //    cluster.add(iface, false);
@@ -198,11 +201,16 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             os_family));
     QString err;
-    bool res = int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
-                                           dynamic_cast<FWObject*>(iface), false, err)
-                   && int_prop->isEligibleForCluster(iface);
+    bool res = true;
+    if (st->getBool("Objects/Interface/autoconfigureInterfaces"))
+        res = int_prop->validateInterface(&cluster, iface, false, err);
+    if (res)
+        res = int_prop->isEligibleForCluster(iface);
+
     if (fwbdebug)
-        qDebug() << "interface" << iface->getName().c_str() << "can be used in cluster:" << res;
+        qDebug() << "interface"
+                 << iface->getName().c_str()
+                 << "can be used in cluster:" << res;
     return res;
 }
 
