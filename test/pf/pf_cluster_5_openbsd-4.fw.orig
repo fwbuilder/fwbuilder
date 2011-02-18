@@ -4,18 +4,15 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3480
 #
-#  Generated Thu Feb 17 17:53:11 2011 PST by vadim
+#  Generated Thu Feb 17 17:53:23 2011 PST by vadim
 #
-# files: * firewall41.fw /etc/firewall41.fw
-# files:   firewall41.conf /etc/firewall41.conf
+# files: * pf_cluster_5_openbsd-4.fw /etc/pf_cluster_5_openbsd-4.fw
+# files:   pf_cluster_5_openbsd-4.conf /etc/pf_cluster_5_openbsd-4.conf
 #
-# Compiled for pf 
+# Compiled for pf 4.6
 #
-# testing rule shadowing with run-time objects, rules with such objects should be ignored
 
-# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
-# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
-# firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+
 
 
 
@@ -23,9 +20,6 @@ FWDIR=`dirname $0`
 
 IFCONFIG="/sbin/ifconfig"
 PFCTL="/sbin/pfctl"
-IPFW="/sbin/ipfw"
-IPF="/sbin/ipf"
-IPNAT="/sbin/ipnat"
 SYSCTL="/sbin/sysctl"
 LOGGER="/usr/bin/logger"
 
@@ -132,6 +126,32 @@ update_addresses_of_interface() {
     diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
 }
 
+
+
+sync_carp_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^carp[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting carp interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating carp interface $intf"
+            $SYSCTL -w net.inet.carp.allow=1
+            $FWBDEBUG $IFCONFIG $intf create || {
+                echo "Error: CARP interface $intf could not be created. Does the kernel have CARP enabled?"
+                exit 1
+            }
+        }
+    done
+}
+
 verify_interfaces() {
     :
     
@@ -159,17 +179,29 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    update_addresses_of_interface "eth0 1.1.1.1/0xffffff00" ""
-    update_addresses_of_interface "eth1 2.2.2.2/0xffffff00" ""
+    sync_carp_interfaces carp0 carp1 carp2
+    update_addresses_of_interface "en0 172.24.0.3/0xffffff00" ""
+    update_addresses_of_interface "en1 192.168.1.3/0xffffff00" ""
+    update_addresses_of_interface "en2" ""
+    update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
+    update_addresses_of_interface "vlan100 172.20.0.3/0xffffff00" ""
+    $IFCONFIG carp0 vhid 1 pass ""   advskew 1  carpdev en0
+    update_addresses_of_interface "carp0 172.24.0.1/0xffffff00" ""
+    $IFCONFIG carp1 vhid 1 pass ""   advskew 1  carpdev en1
+    update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
+    $IFCONFIG carp2 vhid 1 pass ""   advskew 1  carpdev vlan100
+    update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Feb 17 17:53:11 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 17:53:23 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL    -f /etc/firewall41.conf || exit 1
+$PFCTL    -f /etc/pf_cluster_5_openbsd-4.conf || exit 1
+
+
 
 
 

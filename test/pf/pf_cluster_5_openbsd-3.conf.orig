@@ -1,0 +1,9 @@
+
+
+
+# 
+# Rule  0 (NAT)
+# rule is attached to physical interface en0 
+# but uses address of carp0 for translation
+nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
+

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Thu Feb 17 17:34:30 2011 PST by vadim
+#  Generated Thu Feb 17 17:56:41 2011 PST by vadim
 #
 # files: * firewall2-6.fw /etc/fw/firewall2-6.fw
 #
@@ -443,6 +443,13 @@ script_body() {
     $IPTABLES -t nat -A PREROUTING -i eth1 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -i eth3 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -i eth3 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 18 (NAT)
+    # 
+    echo "Rule 18 (NAT)"
+    # 
+    # REDIRECT
+    $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
 
 
 
@@ -514,7 +521,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 17:34:30 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:56:41 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

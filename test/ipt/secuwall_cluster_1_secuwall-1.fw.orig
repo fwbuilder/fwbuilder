@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Thu Feb 17 17:38:20 2011 PST by vadim
+#  Generated Thu Feb 17 18:00:31 2011 PST by vadim
 #
 # files: * secuwall_cluster_1_secuwall-1.fw /etc/secuwall_cluster_1_secuwall-1.fw
 #
@@ -405,7 +405,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 17:38:20 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 18:00:31 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

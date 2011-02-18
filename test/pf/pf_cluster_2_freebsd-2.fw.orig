@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3480
 #
-#  Generated Thu Feb 17 11:47:05 2011 PST by vadim
+#  Generated Thu Feb 17 17:53:22 2011 PST by vadim
 #
 # files: * pf_cluster_2_freebsd-2.fw /etc/pf_cluster_2_freebsd-2.fw
 # files:   pf_cluster_2_freebsd-2.conf /etc/pf_cluster_2_freebsd-2.conf
@@ -191,7 +191,7 @@ configure_interfaces() {
     update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Feb 17 11:47:05 2011 by vadim"
+log "Activating firewall script generated Thu Feb 17 17:53:22 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
