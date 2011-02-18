@@ -4,15 +4,15 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Thu Feb 17 18:36:50 2011 PST by vadim
+#  Generated Thu Feb 17 18:33:42 2011 PST by vadim
 #
-# files: * firewall-ipv6-7.fw /etc/firewall-ipv6-7.fw
+# files: * firewall2-7.fw /etc/fw/firewall2-7.fw
 #
-# Compiled for iptables 1.4.0
+# Compiled for iptables (any version)
 #
-# one interface has dynamic address, testing functions that get the address at run time
+# tests for nat rules with inbound and outbound interfaces with complex interface configuration
 
-
+# firewall2-7::: warning: Can not add virtual address 22.22.22.0 (object external_net)
 
 
 FWBDEBUG=""
@@ -100,9 +100,6 @@ find_program() {
 }
 check_tools() {
   find_program $IPTABLES 
-  find_program $IPTABLES_RESTORE
-  find_program $IP6TABLES_RESTORE
- find_program $MODPROBE 
   find_program $IP 
 }
 reset_iptables_v4() {
@@ -247,30 +244,12 @@ check_run_time_address_table_files() {
 
 load_modules() {
     :
-    OPTS=$1
-    MODULES_DIR="/lib/modules/`uname -r`/kernel/net/"
-    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
-    echo $OPTS | grep -q nat && {
-        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
-    }
-    echo $OPTS | grep -q ipv6 && {
-        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
-    }
-    for module in $MODULES; do 
-        if $LSMOD | grep ${module} >/dev/null; then continue; fi
-        $MODPROBE ${module} ||  exit 1 
-    done
+    
 }
 
 verify_interfaces() {
     :
-    echo "Verifying interfaces: eth0 eth1"
-    for i in eth0 eth1 ; do
-        $IP link show "$i" > /dev/null 2>&1 || {
-            log "Interface $i does not exist"
-            exit 1
-        }
-    done
+    
 }
 
 prolog_commands() {
@@ -291,110 +270,115 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     # Configure interfaces
-    update_addresses_of_interface "eth0 fe80::21d:9ff:fe8b:8e94/64 1.1.1.1/24" ""
-    getaddr eth1  i_eth1
-    getaddr6 eth1  i_eth1_v6
+    update_addresses_of_interface "eth0 192.168.1.1/24" ""
+    update_addresses_of_interface "eth3 33.33.33.25/29" ""
+    update_addresses_of_interface "eth2 33.33.33.3/29 33.33.33.4/29" ""
+    update_addresses_of_interface "lo 127.0.0.1/8" ""
+    update_addresses_of_interface "bridge0 10.1.1.1/24" ""
+    update_addresses_of_interface "vlan101 222.222.222.222/24 222.222.222.40/24" ""
 }
 
 script_body() {
+    echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter 
+     echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route 
+     echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects 
+     echo 1 > /proc/sys/net/ipv4/conf/all/log_martians 
+     echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all 
+     echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses 
+     echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout 
+     echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_intvl 
+
+
     # ================ IPv4
 
 
-
-    (
-
-    echo '*filter'
     # ================ Table 'filter', automatic rules
-    echo :INPUT DROP [0:0]
-    echo :FORWARD DROP [0:0]
-    echo :OUTPUT DROP [0:0]
+    $IPTABLES -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
     # accept established sessions
-    echo "-A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT "
+    $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    # drop TCP sessions opened prior firewall restart
+    $IPTABLES -A INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
+    $IPTABLES -A FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP 
     # drop packets that do not match any valid state and log them
-    echo ":drop_invalid - [0:0]"
-    echo "-A OUTPUT   -m state --state INVALID  -j drop_invalid "
-    echo "-A INPUT    -m state --state INVALID  -j drop_invalid "
-    echo "-A FORWARD  -m state --state INVALID  -j drop_invalid "
-    echo "-A drop_invalid -j ULOG --ulog-nlgroup 1  --ulog-qthreshold 1 --ulog-prefix \"INVALID state -- DENY \""
-    echo "-A drop_invalid -j DROP "
-
-    echo COMMIT
+    $IPTABLES -N drop_invalid
+    $IPTABLES -A OUTPUT   -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A INPUT    -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A FORWARD  -m state --state INVALID  -j drop_invalid 
+    $IPTABLES -A drop_invalid -j ULOG --ulog-nlgroup 1  --ulog-qthreshold 1 --ulog-prefix "INVALID state -- DENY "
+    $IPTABLES -A drop_invalid -j DROP
 
 
-    echo '*mangle'
-    # ================ Table 'mangle', automatic rules
-    echo "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-
-    echo COMMIT
-
-
-
-    ) | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?
-    test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
-
-
-
-
-    # ================ IPv6
-
-
-
-    (
-
-    echo '*filter'
-    # ================ Table 'filter', automatic rules
-    echo :INPUT DROP [0:0]
-    echo :FORWARD DROP [0:0]
-    echo :OUTPUT DROP [0:0]
-    # accept established sessions
-    echo "-A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    # rules to permit IPv6 Neighbor discovery
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    # drop packets that do not match any valid state and log them
-    echo ":drop_invalid - [0:0]"
-    echo "-A OUTPUT   -m state --state INVALID  -j drop_invalid "
-    echo "-A INPUT    -m state --state INVALID  -j drop_invalid "
-    echo "-A FORWARD  -m state --state INVALID  -j drop_invalid "
-    echo "-A drop_invalid -j LOG --log-level debug --log-prefix \"INVALID state -- DENY \""
-    echo "-A drop_invalid -j DROP "
-
-    echo COMMIT
-
-
-    echo '*mangle'
-    # ================ Table 'mangle', automatic rules
-    echo "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-
-    echo COMMIT
+    # ================ Table 'nat',  rule set NAT
+    # 
+    # Rule 0 (NAT)
+    # 
+    echo "Rule 0 (NAT)"
+    # 
+    # NETMAP and no -o itf
+    $IPTABLES -t nat -A POSTROUTING  -s 192.168.1.0/24  -j NETMAP --to 22.22.22.0/24
+    # 
+    # Rule 1 (NAT)
+    # 
+    echo "Rule 1 (NAT)"
+    # 
+    $IPTABLES -t nat -A POSTROUTING -o bridge+  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o vlan+  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    # 
+    # Rule 2 (NAT)
+    # 
+    echo "Rule 2 (NAT)"
+    # 
+    # 	
+    $IPTABLES -t nat -A POSTROUTING -o vlan101  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    # 
+    # Rule 3 (NAT)
+    # 
+    echo "Rule 3 (NAT)"
+    # 
+    # 	
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o eth4  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o bridge0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    $IPTABLES -t nat -A POSTROUTING -o vlan101  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
+    # 
+    # Rule 4 (NAT)
+    # 
+    echo "Rule 4 (NAT)"
+    # 
+    # REDIRECT
+    $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
 
 
 
-
-    ) | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?
-    test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (global)
+    # 
+    echo "Rule 0 (global)"
+    # 
+    # 'catch all' rule
+    $IPTABLES -N RULE_0
+    $IPTABLES -A OUTPUT  -j RULE_0
+    $IPTABLES -A INPUT  -j RULE_0
+    $IPTABLES -A FORWARD  -j RULE_0
+    $IPTABLES -A RULE_0  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 0 - DENY **" --ulog-qthreshold 1
+    $IPTABLES -A RULE_0  -j DROP
 }
 
 ip_forward() {
     :
     echo 1 > /proc/sys/net/ipv4/ip_forward
-echo 1 > /proc/sys/net/ipv6/conf/all/forwarding
 }
 
 reset_all() {
     :
     reset_iptables_v4
-  reset_iptables_v6
 }
 
 block_action() {
@@ -406,9 +390,6 @@ stop_action() {
     $IPTABLES -P OUTPUT  ACCEPT
     $IPTABLES -P INPUT   ACCEPT
     $IPTABLES -P FORWARD ACCEPT
-    $IP6TABLES -P OUTPUT  ACCEPT
-    $IP6TABLES -P INPUT   ACCEPT
-    $IP6TABLES -P FORWARD ACCEPT
 }
 
 check_iptables() {
@@ -443,17 +424,17 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:36:50 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 18:33:42 2011 by vadim"
         check_tools
-         prolog_commands 
+        
         check_run_time_address_table_files
         
-        load_modules " ipv6"
+        load_modules "nat "
         configure_interfaces
         verify_interfaces
         
-        
-        
+         reset_all 
+         prolog_commands 
         script_body
         ip_forward
         epilog_commands

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1297992704" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1297995668" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -3883,6 +3883,10 @@
       <RuleSetOptions/>
     </Policy>
     <IPv4 id="id58766X17179" name="firewall93:eth0:ip-1" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+    <IPv4 id="id1908543X19416" name="firewall2-7:eth1:ip" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
+    <Interface id="id1908540X19416" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <InterfaceOptions/>
+    </Interface>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -58796,7 +58800,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id1430997X8221" host_OS="linux24" inactive="False" lastCompiled="1272404353" lastInstalled="1142003872" lastModified="1297994140" platform="iptables" version="" name="firewall2-6" comment="tests for nat rules with inbound and outbound interfaces" ro="False">
+      <Firewall id="id1430997X8221" host_OS="linux24" inactive="False" lastCompiled="1272404353" lastInstalled="1142003872" lastModified="1297995741" platform="iptables" version="" name="firewall2-6" comment="tests for nat rules with inbound and outbound interfaces" ro="False">
         <NAT id="id1431063X8221" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id1431065X8221" disabled="False" group="" position="0" action="Translate" comment="NETMAP and no -o itf">
             <OSrc neg="False">
@@ -58919,7 +58923,68 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id2795147X14495" disabled="False" group="" position="4" action="Translate" comment="should be -i eth2 -o eth1">
+          <NATRule id="id98406X19416" disabled="False" group="" position="4" action="Translate" comment="&#9;">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="True">
+              <ObjectRef ref="id1431015X8221"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id98319X19416" disabled="False" group="" position="5" action="Translate" comment="&#9;">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="True">
+              <ObjectRef ref="id1431010X8221"/>
+              <ObjectRef ref="id1431015X8221"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id2795147X14495" disabled="False" group="" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -58949,7 +59014,37 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431237X8221" disabled="False" group="" position="5" action="Translate" comment="should be -i eth2 -o eth1">
+          <NATRule id="id98506X19416" disabled="False" group="" position="7" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="True">
+              <ObjectRef ref="id1431020X8221"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1431237X8221" disabled="False" group="" position="8" action="Translate" comment="should be -i eth2 -o eth1">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -58979,7 +59074,37 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431280X8221" disabled="False" group="" position="6" action="Translate" comment="">
+          <NATRule id="id98598X19416" disabled="False" group="" position="9" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="True">
+              <ObjectRef ref="id1431020X8221"/>
+            </ItfInb>
+            <ItfOutb neg="True">
+              <ObjectRef ref="id1431010X8221"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1431280X8221" disabled="False" group="" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -59010,7 +59135,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431323X8221" disabled="False" group="" position="7" action="Translate" comment="">
+          <NATRule id="id1431323X8221" disabled="False" group="" position="11" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -59041,7 +59166,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id6396926X14495" disabled="False" group="" position="8" action="Translate" comment="">
+          <NATRule id="id6396926X14495" disabled="False" group="" position="12" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -59070,7 +59195,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="color">#8BC065</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431366X8221" disabled="False" group="" position="9" action="Translate" comment="">
+          <NATRule id="id1431366X8221" disabled="False" group="" position="13" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59100,7 +59225,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431409X8221" disabled="False" group="" position="10" action="Translate" comment="">
+          <NATRule id="id1431409X8221" disabled="False" group="" position="14" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59130,7 +59255,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id1431452X8221" disabled="False" group="" position="11" action="Translate" comment="">
+          <NATRule id="id1431452X8221" disabled="False" group="" position="15" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59160,7 +59285,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3232244X13709" disabled="False" group="" position="12" action="Translate" comment="">
+          <NATRule id="id3232244X13709" disabled="False" group="" position="16" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59191,7 +59316,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id2795053X14495" disabled="False" group="" position="13" action="Translate" comment="">
+          <NATRule id="id2795053X14495" disabled="False" group="" position="17" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59221,7 +59346,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3232330X13709" disabled="False" group="" position="14" action="Translate" comment="">
+          <NATRule id="id3232330X13709" disabled="False" group="" position="18" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59251,7 +59376,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3232416X13709" disabled="False" group="" position="15" action="Translate" comment="">
+          <NATRule id="id3232416X13709" disabled="False" group="" position="19" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59272,38 +59397,6 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </TSrv>
             <ItfInb neg="False">
               <ObjectRef ref="id1431015X8221"/>
-            </ItfInb>
-            <ItfOutb neg="False">
-              <ObjectRef ref="id1431005X8221"/>
-              <ObjectRef ref="id1431020X8221"/>
-            </ItfOutb>
-            <NATRuleOptions>
-              <Option name="color">#C0BA44</Option>
-              <Option name="id"></Option>
-            </NATRuleOptions>
-          </NATRule>
-          <NATRule id="id3232621X13709" disabled="False" group="" position="16" action="Translate" comment="">
-            <OSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </OSrc>
-            <ODst neg="False">
-              <ObjectRef ref="id1880621X8221"/>
-            </ODst>
-            <OSrv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </OSrv>
-            <TSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </TSrc>
-            <TDst neg="False">
-              <ObjectRef ref="id46523X95438"/>
-            </TDst>
-            <TSrv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </TSrv>
-            <ItfInb neg="False">
-              <ObjectRef ref="id1431015X8221"/>
-              <ObjectRef ref="id1431010X8221"/>
             </ItfInb>
             <ItfOutb neg="False">
               <ObjectRef ref="id1431005X8221"/>
@@ -59314,7 +59407,39 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3232535X13709" disabled="False" group="" position="17" action="Translate" comment="">
+          <NATRule id="id3232621X13709" disabled="False" group="" position="20" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id46523X95438"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="id1431015X8221"/>
+              <ObjectRef ref="id1431010X8221"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="id1431005X8221"/>
+              <ObjectRef ref="id1431020X8221"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id3232535X13709" disabled="False" group="" position="21" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59344,7 +59469,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id98177X18075" disabled="False" group="" position="18" action="Translate" comment="REDIRECT&#10;">
+          <NATRule id="id98177X18075" disabled="False" group="" position="22" action="Translate" comment="REDIRECT&#10;">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -59422,6 +59547,336 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Interface id="id1431027X8221" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id1431030X8221" name="firewall2-6:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">True</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline">-xt</Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="id"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix">/second</Option>
+          <Option name="limit_value">5</Option>
+          <Option name="linux24_accept_redirects">0</Option>
+          <Option name="linux24_accept_source_route">0</Option>
+          <Option name="linux24_icmp_echo_ignore_all">1</Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses">1</Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_log_martians">1</Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter">1</Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">False</Option>
+          <Option name="local_nat">True</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">True</Option>
+          <Option name="log_invalid">True</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix">/second</Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix">RULE %N - %A **</Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">after_flush</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="proxy_arp">True</Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="useULOG">False</Option>
+          <Option name="use_ULOG">True</Option>
+          <Option name="use_ip_tool">True</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">False</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id1908527X19416" host_OS="linux24" inactive="False" lastCompiled="1272404353" lastInstalled="1142003872" lastModified="1297995836" platform="iptables" version="" name="firewall2-7" comment="tests for nat rules with inbound and outbound interfaces with complex interface configuration" ro="False">
+        <NAT id="id1908593X19416" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id1908595X19416" disabled="False" group="" position="0" action="Translate" comment="NETMAP and no -o itf">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B665641"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1908638X19416" disabled="False" group="" position="1" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1908681X19416" disabled="False" group="" position="2" action="Translate" comment="&#9;">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="id1909731X19416"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1908768X19416" disabled="False" group="" position="3" action="Translate" comment="&#9;">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id1880621X8221"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="True">
+              <ObjectRef ref="id1908545X19416"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="id"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id1909550X19416" disabled="False" group="" position="4" action="Translate" comment="REDIRECT&#10;">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id1908527X19416"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B4FF09A"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="id1908535X19416"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id1908562X19416" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id1908564X19416" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="'catch all' rule">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="id"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id1909594X19416" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id1908535X19416" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id1908538X19416" name="firewall2-7:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id1908545X19416" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+          <IPv4 id="id1908548X19416" name="firewall2-7:eth3:ip" comment="subnet 33.33.33.24-31" ro="False" address="33.33.33.25" netmask="255.255.255.248"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id1908550X19416" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id1908554X19416" name="firewall2-7:eth2:ip" comment="" ro="False" address="33.33.33.3" netmask="255.255.255.248"/>
+          <IPv4 id="id1908555X19416" name="firewall2-7:eth2:ip-1" comment="" ro="False" address="33.33.33.4" netmask="255.255.255.248"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id1908557X19416" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id1908560X19416" name="firewall2-7:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id1909694X19416" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth4" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+          <Interface id="id1909731X19416" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
+            <IPv4 id="id1909749X19416" name="firewall2-7:eth1:ip" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">101</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id1909758X19416" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bridge0" comment="" ro="False">
+          <IPv4 id="id1909816X19416" name="firewall2-7:bridge0:ip" comment="" ro="False" address="10.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="bonding_policy"></Option>
+            <Option name="bondng_driver_options"></Option>
+            <Option name="enable_stp">False</Option>
+            <Option name="type">bridge</Option>
+            <Option name="vlan_id">0</Option>
+            <Option name="xmit_hash_policy"></Option>
+          </InterfaceOptions>
+          <Interface id="id1909796X19416" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth5" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id1909810X19416" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth6" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
