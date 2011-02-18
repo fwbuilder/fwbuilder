@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:27:05 2011 PST by vadim
+#  Generated Thu Feb 17 17:36:18 2011 PST by vadim
 #
 # files: * firewall81.fw /etc/fw/firewall81.fw
 #
@@ -303,9 +303,9 @@ script_body() {
     # Translation is ignored and warning should be issued
     # firewall81:NAT_2:0: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
     $IPTABLES -t nat -N NAT_1
-    $IPTABLES -t nat -A POSTROUTING   -d 192.0.2.1  -j NAT_1
+    $IPTABLES -t nat -A POSTROUTING  -d 192.0.2.1  -j NAT_1
     # firewall81:NAT_2:0: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
-    $IPTABLES -t nat -A PREROUTING   -d 192.0.2.1  -j NAT_1
+    $IPTABLES -t nat -A PREROUTING  -d 192.0.2.1  -j NAT_1
     # 
     # Rule NAT_2 1 (NAT)
     # 
@@ -313,9 +313,9 @@ script_body() {
     # 
     # DNAT Rule
     # firewall81:NAT_2:1: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
-    $IPTABLES -t nat -A POSTROUTING   -j NAT_1
+    $IPTABLES -t nat -A POSTROUTING  -j NAT_1
     # firewall81:NAT_2:1: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
-    $IPTABLES -t nat -A PREROUTING   -j NAT_1
+    $IPTABLES -t nat -A PREROUTING  -j NAT_1
 
     # ================ Table 'nat',  rule set NAT_1
     # 
@@ -325,7 +325,7 @@ script_body() {
     # 
     # DNAT Rule
     $IPTABLES -t nat -N NAT_1_PREROUTING
-    $IPTABLES -t nat -A NAT_1_PREROUTING   -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A NAT_1_PREROUTING  -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
     # 
     # Rule NAT_1 1 (NAT)
     # 
@@ -342,7 +342,7 @@ script_body() {
     echo "Rule NAT_1 0 (NAT)"
     # 
     # DNAT Rule
-    $IPTABLES -t nat -A NAT_1_PREROUTING   -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A NAT_1_PREROUTING  -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
     # 
     # Rule NAT_1 1 (NAT)
     # 
@@ -419,7 +419,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:27:05 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:36:18 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

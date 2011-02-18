@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:24:44 2011 PST by vadim
+#  Generated Thu Feb 17 17:33:45 2011 PST by vadim
 #
 # files: * firewall1.fw /etc/fw/firewall1.fw
 #
@@ -306,8 +306,8 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING   -s 192.168.1.0/24  -d 192.168.2.0/24  -j ACCEPT
-    $IPTABLES -t nat -A PREROUTING   -s 192.168.1.0/24  -d 192.168.2.0/24  -j ACCEPT
+    $IPTABLES -t nat -A POSTROUTING  -s 192.168.1.0/24  -d 192.168.2.0/24  -j ACCEPT
+    $IPTABLES -t nat -A PREROUTING  -s 192.168.1.0/24  -d 192.168.2.0/24  -j ACCEPT
     # 
     # Rule 1 (NAT)
     # 
@@ -364,11 +364,11 @@ script_body() {
     $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j Cid3CCA1B57.0
     $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j Cid3CCA1B57.0
     $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j Cid3CCA1B57.0
-    $IPTABLES -t nat -A Cid3CCA1B57.0   -d 192.168.1.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3CCA1B57.0   -d 192.168.2.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3CCA1B57.0   -j SNAT --to-source 22.22.22.22
-    $IPTABLES -t nat -A Cid3CCA1B57.0   -j SNAT --to-source 22.22.23.23
-    $IPTABLES -t nat -A Cid3CCA1B57.0   -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A Cid3CCA1B57.0  -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3CCA1B57.0  -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3CCA1B57.0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A Cid3CCA1B57.0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A Cid3CCA1B57.0  -j SNAT --to-source 192.168.2.1
     # 
     # Rule 9 (NAT)
     # 
@@ -378,11 +378,11 @@ script_body() {
     $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j Cid3EB38983.0
     $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j Cid3EB38983.0
     $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j Cid3EB38983.0
-    $IPTABLES -t nat -A Cid3EB38983.0   -d 192.168.1.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3EB38983.0   -d 192.168.2.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3EB38983.0   -j SNAT --to-source 22.22.22.22
-    $IPTABLES -t nat -A Cid3EB38983.0   -j SNAT --to-source 22.22.23.23
-    $IPTABLES -t nat -A Cid3EB38983.0   -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A Cid3EB38983.0  -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3EB38983.0  -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3EB38983.0  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A Cid3EB38983.0  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A Cid3EB38983.0  -j SNAT --to-source 192.168.2.1
     # 
     # Rule 10 (NAT)
     # 
@@ -397,75 +397,75 @@ script_body() {
     echo "Rule 11 (NAT)"
     # 
     $IPTABLES -t nat -N Cid3BD8D94B.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j Cid3BD8D94B.0
-    $IPTABLES -t nat -A Cid3BD8D94B.0   -d 22.22.22.22  -j RETURN
-    $IPTABLES -t nat -A Cid3BD8D94B.0   -d 22.22.23.23  -j RETURN
-    $IPTABLES -t nat -A Cid3BD8D94B.0   -d 192.168.1.1  -j RETURN
-    $IPTABLES -t nat -A Cid3BD8D94B.0   -d 192.168.2.1  -j RETURN
-    $IPTABLES -t nat -A Cid3BD8D94B.0  -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j Cid3BD8D94B.0
+    $IPTABLES -t nat -A Cid3BD8D94B.0  -d 22.22.22.22  -j RETURN
+    $IPTABLES -t nat -A Cid3BD8D94B.0  -d 22.22.23.23  -j RETURN
+    $IPTABLES -t nat -A Cid3BD8D94B.0  -d 192.168.1.1  -j RETURN
+    $IPTABLES -t nat -A Cid3BD8D94B.0  -d 192.168.2.1  -j RETURN
+    $IPTABLES -t nat -A Cid3BD8D94B.0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
     # 
     # Rule 12 (NAT)
     # 
     echo "Rule 12 (NAT)"
     # 
     $IPTABLES -t nat -N Cid3BD8D9DD.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j Cid3BD8D9DD.0
-    $IPTABLES -t nat -A Cid3BD8D9DD.0   -d 192.168.1.1  -j RETURN
-    $IPTABLES -t nat -A Cid3BD8D9DD.0  -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j Cid3BD8D9DD.0
+    $IPTABLES -t nat -A Cid3BD8D9DD.0  -d 192.168.1.1  -j RETURN
+    $IPTABLES -t nat -A Cid3BD8D9DD.0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
     # 
     # Rule 13 (NAT)
     # 
     echo "Rule 13 (NAT)"
     # 
     $IPTABLES -t nat -N Cid3BBC0EA4.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid3BBC0EA4.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.20   --dport 80 -j Cid3BBC0EA4.0
-    $IPTABLES -t nat -A Cid3BBC0EA4.0   -d 192.168.1.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3BBC0EA4.0   -d 192.168.2.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3BBC0EA4.0  -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid3BBC0EA4.0
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.20   --dport 80 -j Cid3BBC0EA4.0
+    $IPTABLES -t nat -A Cid3BBC0EA4.0  -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3BBC0EA4.0  -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3BBC0EA4.0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
     # 
     # Rule 14 (NAT)
     # 
     echo "Rule 14 (NAT)"
     # 
     $IPTABLES -t nat -N Cid3BBC0F93.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.0/24  --dport 80 -j Cid3BBC0F93.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.0/24  --dport 80 -j Cid3BBC0F93.0
-    $IPTABLES -t nat -A Cid3BBC0F93.0   -s 192.168.1.10  -j RETURN
-    $IPTABLES -t nat -A Cid3BBC0F93.0   -s 192.168.1.20  -j RETURN
-    $IPTABLES -t nat -A Cid3BBC0F93.0  -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.0/24  --dport 80 -j Cid3BBC0F93.0
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.2.0/24  --dport 80 -j Cid3BBC0F93.0
+    $IPTABLES -t nat -A Cid3BBC0F93.0  -s 192.168.1.10  -j RETURN
+    $IPTABLES -t nat -A Cid3BBC0F93.0  -s 192.168.1.20  -j RETURN
+    $IPTABLES -t nat -A Cid3BBC0F93.0 -p tcp -m tcp   --dport 80 -j REDIRECT --to-ports 3128
     # 
     # Rule 15 (NAT)
     # 
     echo "Rule 15 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s ! 192.168.1.10   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s ! 192.168.1.10   --dport 80 -j REDIRECT --to-ports 3128
     # 
     # Rule 16 (NAT)
     # 
     echo "Rule 16 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 5000  -d 22.22.22.23  --dport 5000:5010 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.23  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  --sport 9000  -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp -m multiport   -d 22.22.22.23  --dports 6667,3128 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 5000  -d 22.22.22.23  --dport 5000:5010 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.22.23  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 9000  -d 22.22.22.23  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 22.22.22.23  --dports 6667,3128 -j DNAT --to-destination 192.168.1.10
     # 
     # Rule 17 (NAT)
     # 
     echo "Rule 17 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.0/24  --dport 80 -j DNAT --to-destination :3128
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.0/24  --dport 80 -j DNAT --to-destination :3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.0/24  --dport 80 -j DNAT --to-destination :3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.2.0/24  --dport 80 -j DNAT --to-destination :3128
     # 
     # Rule 18 (NAT)
     # 
     echo "Rule 18 (NAT)"
     # 
     $IPTABLES -t nat -N Cid3EB38A91.0
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   --dport 80 -j Cid3EB38A91.0
-    $IPTABLES -t nat -A Cid3EB38A91.0   -d 192.168.1.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3EB38A91.0   -d 192.168.2.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid3EB38A91.0  -p tcp -m tcp   --dport 80 -j DNAT --to-destination :3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   --dport 80 -j Cid3EB38A91.0
+    $IPTABLES -t nat -A Cid3EB38A91.0  -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3EB38A91.0  -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid3EB38A91.0 -p tcp -m tcp   --dport 80 -j DNAT --to-destination :3128
 
 
 
@@ -1252,7 +1252,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:24:44 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:33:45 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

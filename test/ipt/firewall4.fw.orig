@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:26:13 2011 PST by vadim
+#  Generated Thu Feb 17 17:35:22 2011 PST by vadim
 #
 # files: * firewall4.fw /etc/fw/firewall4.fw
 #
@@ -338,11 +338,11 @@ script_body() {
     # 
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d $i_eth1   --dport 22 -j DNAT --to-destination 192.168.1.10:22 
+    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d $i_eth1   --dport 22 -j DNAT --to-destination 192.168.1.10:22 
     done
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 192.168.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 222.222.222.222  --dport 22 -j DNAT --to-destination 192.168.1.10:22
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 222.222.222.222  --dport 22 -j DNAT --to-destination 192.168.1.10:22
     # 
     # Rule 6 (NAT)
     # 
@@ -350,7 +350,7 @@ script_body() {
     # 
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d $i_eth1   --dport 22 -j DNAT --to-destination 192.168.1.10:22 
+    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d $i_eth1   --dport 22 -j DNAT --to-destination 192.168.1.10:22 
     done
 
 
@@ -710,7 +710,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:26:13 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:35:22 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

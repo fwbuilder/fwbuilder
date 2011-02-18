@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:25:25 2011 PST by vadim
+#  Generated Thu Feb 17 17:34:32 2011 PST by vadim
 #
 # files: * firewall27.fw /etc/fw/firewall27.fw
 #
@@ -478,12 +478,12 @@ script_body() {
     echo "-A POSTROUTING -o ppp  -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.23 "
     # 
     # Rule  2 (NAT)
-    echo "-A PREROUTING  -p tcp -m tcp   -d 192.0.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
-    echo "-A PREROUTING  -p tcp -m tcp   -d 192.168.1.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
-    echo "-A PREROUTING  -p tcp -m tcp   -d 192.168.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
+    echo "-A PREROUTING -p tcp -m tcp   -d 192.0.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
+    echo "-A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
+    echo "-A PREROUTING -p tcp -m tcp   -d 192.168.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10:22 "
     # 
     # Rule  3 (NAT)
-    echo "-A PREROUTING   -s 192.168.1.0/24  -d ! 200.200.200.200  -j DNAT --to-destination 192.168.2.10 "
+    echo "-A PREROUTING  -s 192.168.1.0/24  -d ! 200.200.200.200  -j DNAT --to-destination 192.168.2.10 "
     echo "-A POSTROUTING -o eth2  -s 192.168.1.0/24  -d 192.168.2.10  -j SNAT --to-source 192.168.2.1 "
     #
     echo COMMIT
@@ -546,7 +546,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:25:25 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:34:32 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:26:25 2011 PST by vadim
+#  Generated Thu Feb 17 17:35:35 2011 PST by vadim
 #
 # files: * fwbuilder.fw /etc/init.d/fwbuilder.fw
 #
@@ -325,16 +325,16 @@ script_body() {
     $IPTABLES -t nat -N Cid2101361X9995.0
     $IPTABLES -t nat -A POSTROUTING -o eth+  -j Cid2101361X9995.0
     grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
-      set $L; at_atbl_1=$1; $IPTABLES -t nat -A Cid2101361X9995.0   -s $at_atbl_1   -j RETURN 
+      set $L; at_atbl_1=$1; $IPTABLES -t nat -A Cid2101361X9995.0  -s $at_atbl_1   -j RETURN 
     done
-    $IPTABLES -t nat -A Cid2101361X9995.0 -o eth+  -j SNAT --to-source 1.1.1.1
+    $IPTABLES -t nat -A Cid2101361X9995.0  -j SNAT --to-source 1.1.1.1
     # 
     # Rule 2 (NAT)
     # 
     echo "Rule 2 (NAT)"
     # 
     grep -Ev '^#|^;|^\s*$' addr-table-1.tbl | while read L ; do
-      set $L; at_atbl_1=$1; $IPTABLES -t nat -A PREROUTING   -d $at_atbl_1   -j DNAT --to-destination 192.168.1.10 
+      set $L; at_atbl_1=$1; $IPTABLES -t nat -A PREROUTING  -d $at_atbl_1   -j DNAT --to-destination 192.168.1.10 
     done
 
 
@@ -483,7 +483,7 @@ status_action() {
 }
 
 start() {
-    log "Activating firewall script generated Tue Feb 15 14:26:25 2011 by vadim"
+    log "Activating firewall script generated Thu Feb 17 17:35:35 2011 by vadim"
     check_tools
      prolog_commands 
     check_run_time_address_table_files

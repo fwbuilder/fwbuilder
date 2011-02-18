@@ -34,10 +34,13 @@
 #include <map>
 #include <string>
 
+#include <QMap>
 #include <QSet>
 #include <QString>
 
-namespace libfwbuilder {
+
+namespace libfwbuilder
+{
     class Host;
     class IPService;
     class ICMPService;
@@ -51,10 +54,11 @@ namespace libfwbuilder {
     class RuleElementTSrv;
 };
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class NATCompiler_ipt : public NATCompiler {
-
+    class NATCompiler_ipt : public NATCompiler
+    {
 	protected:
 
         class PrintRule;
@@ -73,6 +77,9 @@ namespace fwcompiler {
         // This map is located in CompilerDriver_ipt
         const std::map<std::string, std::list<std::string> > *branch_ruleset_to_chain_mapping;
 
+        QMap<QString, libfwbuilder::FWObject*> regular_interfaces;
+
+        
         static const std::list<std::string>& getStandardChains();
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
@@ -241,7 +248,6 @@ namespace fwcompiler {
         friend class AssignInterface;
         class AssignInterface : public NATRuleProcessor
         {
-            QSet<QString> regular_interfaces;
             public:
             AssignInterface(const std::string &name) : NATRuleProcessor(name) {}
             virtual bool processNext();
@@ -495,6 +501,8 @@ namespace fwcompiler {
             std::string current_rule_label;
             std::string version;
             void initializeMinusNTracker();
+
+            QString getInterfaceName(libfwbuilder::RuleElement *itf_re);
 
             /*
              * Prints single --option with argument and negation "!"

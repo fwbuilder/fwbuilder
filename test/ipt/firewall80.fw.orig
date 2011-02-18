@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:27:02 2011 PST by vadim
+#  Generated Thu Feb 17 17:36:15 2011 PST by vadim
 #
 # files: * firewall80.fw /etc/fw/firewall80.fw
 #
@@ -298,8 +298,8 @@ script_body() {
     # 
     # DNAT Rule
     $IPTABLES -t nat -N NAT_1_PREROUTING
-    $IPTABLES -t nat -A NAT_1_PREROUTING   -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A OUTPUT   -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A NAT_1_PREROUTING  -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A OUTPUT  -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
     # 
     # Rule NAT_1 1 (NAT)
     # 
@@ -317,33 +317,33 @@ script_body() {
     # 
     # Branch rule with actual translation. Translation is ignored and warning should be issued
     # firewall80:NAT:0: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
-    $IPTABLES -t nat -A POSTROUTING   -d 192.0.2.1  -j NAT_1_POSTROUTING
+    $IPTABLES -t nat -A POSTROUTING  -d 192.0.2.1  -j NAT_1_POSTROUTING
     # firewall80:NAT:0: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
-    $IPTABLES -t nat -A PREROUTING   -d 192.0.2.1  -j NAT_1_PREROUTING
+    $IPTABLES -t nat -A PREROUTING  -d 192.0.2.1  -j NAT_1_PREROUTING
     # 
     # Rule 1 (NAT)
     # 
     echo "Rule 1 (NAT)"
     # 
     # DNAT Rule
-    $IPTABLES -t nat -A POSTROUTING   -j NAT_1_POSTROUTING
-    $IPTABLES -t nat -A PREROUTING   -j NAT_1_PREROUTING
+    $IPTABLES -t nat -A POSTROUTING  -j NAT_1_POSTROUTING
+    $IPTABLES -t nat -A PREROUTING  -j NAT_1_PREROUTING
     # 
     # Rule 2 (NAT)
     # 
     echo "Rule 2 (NAT)"
     # 
     # for #1686
-    $IPTABLES -t nat -A POSTROUTING  -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_POSTROUTING
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_PREROUTING
+    $IPTABLES -t nat -A POSTROUTING -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_POSTROUTING
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_PREROUTING
     # 
     # Rule 3 (NAT)
     # 
     echo "Rule 3 (NAT)"
     # 
     # for #1686
-    $IPTABLES -t nat -A POSTROUTING  -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_POSTROUTING
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_PREROUTING
+    $IPTABLES -t nat -A POSTROUTING -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_POSTROUTING
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.0.2.1   --dport 10000:11000 -j NAT_1_PREROUTING
 }
 
 ip_forward() {
@@ -399,7 +399,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:27:02 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:36:15 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

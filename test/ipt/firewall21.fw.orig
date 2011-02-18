@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:25:04 2011 PST by vadim
+#  Generated Thu Feb 17 17:34:07 2011 PST by vadim
 #
 # files: * firewall21.fw /etc/fw/firewall21.fw
 #
@@ -302,11 +302,11 @@ script_body() {
     # 
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -t nat -A PREROUTING   -d $i_eth0   -j DNAT --to-destination 192.168.1.10 
+    test -n "$i_eth0" && $IPTABLES -t nat -A PREROUTING  -d $i_eth0   -j DNAT --to-destination 192.168.1.10 
     done
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING   -d $i_eth1   -j DNAT --to-destination 192.168.1.10 
+    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING  -d $i_eth1   -j DNAT --to-destination 192.168.1.10 
     done
     # 
     # Rule 1 (NAT)
@@ -315,11 +315,11 @@ script_body() {
     # 
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -t nat -A PREROUTING   -d $i_eth0   -j DNAT --to-destination 192.168.1.10 --random 
+    test -n "$i_eth0" && $IPTABLES -t nat -A PREROUTING  -d $i_eth0   -j DNAT --to-destination 192.168.1.10 --random 
     done
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING   -d $i_eth1   -j DNAT --to-destination 192.168.1.10 --random 
+    test -n "$i_eth1" && $IPTABLES -t nat -A PREROUTING  -d $i_eth1   -j DNAT --to-destination 192.168.1.10 --random 
     done
     # 
     # Rule 2 (NAT)
@@ -469,7 +469,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:25:04 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:34:07 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

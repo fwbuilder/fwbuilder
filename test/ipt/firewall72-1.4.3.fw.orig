@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:26:55 2011 PST by vadim
+#  Generated Thu Feb 17 17:36:07 2011 PST by vadim
 #
 # files: * firewall72-1.4.3.fw /etc/fw/firewall72-1.4.3.fw
 #
@@ -343,15 +343,15 @@ script_body() {
     $IPTABLES -t nat -N Cid213031X8629.0
     $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j Cid213031X8629.0
     $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j Cid213031X8629.0
-    $IPTABLES -t nat -A Cid213031X8629.0   -d 192.168.1.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid213031X8629.0   -d 192.168.2.0/24  -j RETURN
-    $IPTABLES -t nat -A Cid213031X8629.0   -j SNAT --to-source 172.16.1.1
+    $IPTABLES -t nat -A Cid213031X8629.0  -d 192.168.1.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid213031X8629.0  -d 192.168.2.0/24  -j RETURN
+    $IPTABLES -t nat -A Cid213031X8629.0  -j SNAT --to-source 172.16.1.1
     # 
     # Rule 5 (NAT)
     # 
     echo "Rule 5 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24  !  -d 192.168.1.1  --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24  !  -d 192.168.1.1  --dport 80 -j REDIRECT --to-ports 3128
 
 
 
@@ -555,7 +555,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:26:55 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:36:07 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

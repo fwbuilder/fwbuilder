@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:25:28 2011 PST by vadim
+#  Generated Thu Feb 17 17:34:36 2011 PST by vadim
 #
 # files: * firewall29.fw /etc/fw/firewall29.fw
 #
@@ -302,11 +302,11 @@ script_body() {
     # 
     for i_eth0_200 in $i_eth0_200_list
     do
-    test -n "$i_eth0_200" && $IPTABLES -t nat -A PREROUTING   -d $i_eth0_200   -j DNAT --to-destination 192.168.1.10 
+    test -n "$i_eth0_200" && $IPTABLES -t nat -A PREROUTING  -d $i_eth0_200   -j DNAT --to-destination 192.168.1.10 
     done
     for i_eth0_100 in $i_eth0_100_list
     do
-    test -n "$i_eth0_100" && $IPTABLES -t nat -A PREROUTING   -d $i_eth0_100   -j DNAT --to-destination 192.168.1.10 
+    test -n "$i_eth0_100" && $IPTABLES -t nat -A PREROUTING  -d $i_eth0_100   -j DNAT --to-destination 192.168.1.10 
     done
 
 
@@ -440,7 +440,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:25:28 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:34:36 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

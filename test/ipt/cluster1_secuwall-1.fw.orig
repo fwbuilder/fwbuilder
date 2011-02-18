@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:28:57 2011 PST by vadim
+#  Generated Thu Feb 17 17:38:17 2011 PST by vadim
 #
 # files: * cluster1_secuwall-1.fw /etc/cluster1_secuwall-1.fw
 #
@@ -321,7 +321,7 @@ script_body() {
     # 
     echo "Rule 1 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j REDIRECT --to-ports 3128
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j REDIRECT --to-ports 3128
 
 
 
@@ -588,7 +588,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:28:57 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:38:17 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

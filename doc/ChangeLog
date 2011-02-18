@@ -1,5 +1,11 @@
 2011-02-17  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_ipt.cpp (processNext): see #2097 #133 "support for
+	inbound and outbound interface columns in iptables NAT
+	rules". This also addresses SF feature requests 1954286 "DNAT with
+	interface as condition not possible" and 621023 "manipulating
+	interface in NAT rule".
+
 	* platforms.cpp (setDefaultFailoverGroupAttributes): fixes #2101
 	"CARP interfaces are set with same advskew". When new PF cluster
 	is created, master advskew paramerer will be set to 10 and backup

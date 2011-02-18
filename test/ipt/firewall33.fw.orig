@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:25:48 2011 PST by vadim
+#  Generated Thu Feb 17 17:34:54 2011 PST by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -303,7 +303,7 @@ script_body() {
     # 
     for i_eth0_100 in $i_eth0_100_list
     do
-    test -n "$i_eth0_100" && $IPTABLES -t nat -A PREROUTING   -d $i_eth0_100   -j DNAT --to-destination 192.168.1.10 
+    test -n "$i_eth0_100" && $IPTABLES -t nat -A PREROUTING  -d $i_eth0_100   -j DNAT --to-destination 192.168.1.10 
     done
     # 
     # Rule 1 (NAT)
@@ -336,9 +336,9 @@ script_body() {
     # 
     $IPTABLES -t nat -N Cid43876E7B18346.0
     $IPTABLES -t nat -A POSTROUTING -o eth0.100  -j Cid43876E7B18346.0
-    $IPTABLES -t nat -A Cid43876E7B18346.0   -d www.google.com  -j RETURN
-    $IPTABLES -t nat -A Cid43876E7B18346.0   -d www.cnn.com  -j RETURN
-    $IPTABLES -t nat -A Cid43876E7B18346.0   -j MASQUERADE
+    $IPTABLES -t nat -A Cid43876E7B18346.0  -d www.google.com  -j RETURN
+    $IPTABLES -t nat -A Cid43876E7B18346.0  -d www.cnn.com  -j RETURN
+    $IPTABLES -t nat -A Cid43876E7B18346.0  -j MASQUERADE
 
 
 
@@ -442,11 +442,11 @@ script_body() {
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.16   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.17   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.18   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.19   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.20   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
@@ -571,7 +571,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:25:48 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:34:54 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

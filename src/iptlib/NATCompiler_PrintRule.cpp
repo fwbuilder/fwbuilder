@@ -195,14 +195,47 @@ string NATCompiler_ipt::PrintRule::_printRuleLabel(NATRule *rule)
  *  check and create new chain if needed
  */
 
+QString NATCompiler_ipt::PrintRule::getInterfaceName(RuleElement *itf_re)
+{
+    if (itf_re->isAny()) return "";
+    FWObject *iface = FWObjectReference::getObject(itf_re->front());
+    QString iface_name = iface->getName().c_str();
+    if (iface_name.endsWith("*")) iface_name.replace("*", "+");
+    return iface_name;
+}
+
 /**
  *-----------------------------------------------------------------------
  */
 string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rule)
 {
+    QStringList res;
+
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+
+    QString iface_in_name = getInterfaceName(itf_in_re);
+    QString iface_out_name = getInterfaceName(itf_out_re);
+
+    if (rule->getStr(".iface_in") == "nil") iface_in_name = "";
+    if (rule->getStr(".iface_out") == "nil") iface_out_name = "";
+
+    res << rule->getStr("ipt_chain").c_str();
+
+    if ( ! iface_in_name.isEmpty()) res << "-i" << iface_in_name;
+    if ( ! iface_out_name.isEmpty()) res << "-o" << iface_out_name;
+
+    res << "";
+
+    return res.join(" ").toStdString();
+
+
+
+#if 0
+    // OLD SCHOOL
     std::ostringstream  ostr;
 
-    string       iface_name = rule->getInterfaceStr();
+    string iface_name = rule->getInterfaceStr();
     if (iface_name=="nil") iface_name="";
 
 /* if interface name ends with '*', this is a wildcard
@@ -230,8 +263,10 @@ string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rul
 	break;
     default: break;
     }
+
     ostr << " ";
     return ostr.str();
+#endif
 }
 
 string NATCompiler_ipt::PrintRule::_printProtocol(Service *srv)

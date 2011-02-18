@@ -173,20 +173,12 @@ string NATCompiler_ipt::getNewTmpChainName(NATRule *rule)
 string NATCompiler_ipt::debugPrintRule(Rule *r)
 {
     NATRule *rule = NATRule::cast(r);
-    string iface_name = rule->getInterfaceStr();
-    if (iface_name.empty())
-    {
-        int iface_id = rule->getInterfaceId();
-        FWObject *iface = dbcopy->findInIndex(iface_id);
-        if (iface) iface_name = iface->getName();
-    }
 
     return NATCompiler::debugPrintRule(rule)+
-        " " + FWObjectDatabase::getStringId(rule->getInterfaceId()) +
         " c=" + rule->getStr("ipt_chain") +
         " t=" + rule->getStr("ipt_target") +
-        " (type="+rule->getRuleTypeAsString()+")" +
-        " intf=" + iface_name;
+        " (type="+rule->getRuleTypeAsString()+")";
+
 }
 
 void NATCompiler_ipt::verifyPlatform()
@@ -222,6 +214,57 @@ int NATCompiler_ipt::prolog()
 	    assert(iface);
 
             if ( iface->isDyn())  iface->setBool("use_var_address",true);
+
+            if (iface->isLoopback() ||
+                iface->isUnnumbered() ||
+                iface->isBridgePort()
+            ) continue;
+
+            /* Bug #1064: "Dedicated IPv6 interfaces show up in
+             * IPv4-NAT rules". Use interface only if it has addresses
+             * that match address family we compile for
+             *
+             * Include interfaces that have no addresses in the list
+             * for backwards compatibility.
+             */
+            FWObjectTypedChildIterator ipv4_addresses =
+                iface->findByType(IPv4::TYPENAME);
+            FWObjectTypedChildIterator ipv6_addresses =
+                iface->findByType(IPv6::TYPENAME);
+
+            if ((ipv6 && ipv6_addresses != ipv6_addresses.end()) ||
+                (!ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
+                (ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end()))
+            {
+                /* 
+                 * regular_interfaces is a set of groups of
+                 * interfaces, where each group holds references to
+                 * all interfaces with "similar names". The group name
+                 * is then the base name of these interfaces with
+                 * numeric index replaced with "*". For example:
+                 * group "eth*" { eth0, eth1, eth2, ... }
+                 *
+                 * if interface name ends with '*', this is wildcard
+                 * interface. Just replace '*' with '+'. If interace
+                 * name does not end with '*', replace numeric
+                 * interface index with '+'.
+                 */
+
+                QString iname = QString(iface->getName().c_str());
+                iname.replace(QRegExp("[0-9]{1,}$"), "+");
+                iname.replace("*", "+");
+                
+                if (regular_interfaces.count(iname) == 0)
+                {
+                    FWObject *itf_group = dbcopy->create(ObjectGroup::TYPENAME);
+                    dbcopy->add(itf_group);
+                    itf_group->setName(iname.toStdString());
+                    regular_interfaces[iname] = itf_group;
+                }
+
+                regular_interfaces[iname]->addRef(iface);
+            }
+
 	}
     }
 
@@ -1201,32 +1244,41 @@ bool NATCompiler_ipt::splitMultiSrcAndDst::processNext()
         return true;
     }
       
-    switch (rule->getRuleType()) {
+    switch (rule->getRuleType())
+    {
     case NATRule::NONAT:     
     case NATRule::SNAT:     
     case NATRule::DNAT:
     { 
 // get old chain name create new chain name
-        string new_chain=NATCompiler_ipt::getNewTmpChainName(rule);
+        string new_chain = NATCompiler_ipt::getNewTmpChainName(rule);
 // create new rule
-        NATRule *r= compiler->dbcopy->createNATRule();
+        NATRule *r = compiler->dbcopy->createNATRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule); 
 // move existing rule onto new chain
-        rule->setStr("ipt_chain",new_chain);
+        rule->setStr("ipt_chain", new_chain);
 // we've already tested for interface ....
-        rule->setInterfaceStr("nil");
+        rule->setStr(".iface_in", "nil");
+        rule->setStr(".iface_out", "nil");
 // new rule points to new chain, continues if no match
-        r->setStr("ipt_target",new_chain);
+        r->setStr("ipt_target", new_chain);
 
 // Now decide which way round would be best ...
         if (nosrc < nodst) 
         {
-            rodst=r->getODst(); rodst->clearChildren(); rodst->setAnyElement();
-            osrc->clearChildren();   osrc->setAnyElement();
-        } else {
-            rosrc=r->getOSrc(); rosrc->clearChildren(); rosrc->setAnyElement();
-            odst->clearChildren();   odst->setAnyElement();
+            rodst= r->getODst();
+            rodst->clearChildren();
+            rodst->setAnyElement();
+            osrc->clearChildren();
+            osrc->setAnyElement();
+        } else
+        {
+            rosrc = r->getOSrc();
+            rosrc->clearChildren();
+            rosrc->setAnyElement();
+            odst->clearChildren();
+            odst->setAnyElement();
         }
                
         tmp_queue.push_back(r); 
@@ -1550,7 +1602,9 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
 	r->setRuleType(NATRule::Return);
 	r->setStr("ipt_target","RETURN");
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 	r->setBool("rule_added_for_osrc_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1564,7 +1618,9 @@ bool NATCompiler_ipt::doOSrcNegation::processNext()
 	ndst->setNeg(false);
 	nsrv->setNeg(false);
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 	r->setBool("rule_added_for_osrc_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1628,7 +1684,9 @@ bool NATCompiler_ipt::doODstNegation::processNext()
 	r->setRuleType(NATRule::Return);
 	r->setStr("ipt_target","RETURN");
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 //	r->setBool("rule_added_for_odst_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1642,7 +1700,9 @@ bool NATCompiler_ipt::doODstNegation::processNext()
 	nsrc->setNeg(false);
 	nsrv->setNeg(false);
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 	r->setBool("rule_added_for_odst_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1704,7 +1764,9 @@ bool NATCompiler_ipt::doOSrvNegation::processNext()
 	r->setRuleType(NATRule::Return);
 	r->setStr("ipt_target","RETURN");
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 	r->setBool("rule_added_for_osrv_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1718,7 +1780,9 @@ bool NATCompiler_ipt::doOSrvNegation::processNext()
 	nsrc->setNeg(false);
 	ndst->setNeg(false);
 	r->setStr("ipt_chain",new_chain);
-	r->setInterfaceStr("nil");
+        r->setStr(".iface_in", "nil");
+        r->setStr(".iface_out", "nil");
+	//r->setInterfaceStr("nil");
 //	r->setBool("rule_added_for_osrv_neg",true);
 	tmp_queue.push_back(r);
 
@@ -1914,6 +1978,11 @@ bool NATCompiler_ipt::splitIfOSrcAny::processNext()
 
     tmp_queue.push_back(rule);
 
+/* do not split if user nailed inbound interface */
+    RuleElement *itf_re = rule->getItfInb();
+    assert(itf_re!=NULL);
+    if (! itf_re->isAny()) return true;
+
 /* do not split rules added to handle negation, these rules have "any"
  * in OSrc but get control only after OSrc is tested by another
  * rule */
@@ -2077,58 +2146,37 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
  * because it is unnumbered, so the firewall won't translate packets
  * going through this interface.
  * 
+ *
+ * NOTE: this rule processor may place groups of interfaces in inbound
+ * and outbound interface rule elements. Names of these groups were
+ * specifically constructed to match "wildcard" interface
+ * specifications supported by iptables, such as "eth+". Do not call
+ * rule processors that expand groups after AssignInterface.
+ *
  */
 bool NATCompiler_ipt::AssignInterface::processNext()
 {
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     NATRule *rule = getNext(); if (rule==NULL) return false;
 
-//    Address  *a=NULL;
-//    FWObject *ref;
+    RuleElement *itf_re;
 
-    list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+    itf_re = rule->getItfInb();
+    assert(itf_re!=NULL);
 
-    if (regular_interfaces.size()==0)
+    if ( ! itf_re->isAny())
     {
-        for (list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i) 
-        {
-            Interface *iface=Interface::cast(*i);
-            assert(iface);
+        tmp_queue.push_back(rule);
+        return true;
+    }
 
-            if (iface->isLoopback() ||
-                iface->isUnnumbered() ||
-                iface->isBridgePort()
-            ) continue;
+    itf_re = rule->getItfOutb();
+    assert(itf_re!=NULL);
 
-            /* Bug #1064: "Dedicated IPv6 interfaces show up in
-             * IPv4-NAT rules". Use interface only if it has addresses
-             * that match address family we compile for
-             *
-             * Include interfaces that have no addresses in the list
-             * for backwards compatibility.
-             */
-            FWObjectTypedChildIterator ipv4_addresses =
-                iface->findByType(IPv4::TYPENAME);
-            FWObjectTypedChildIterator ipv6_addresses =
-                iface->findByType(IPv6::TYPENAME);
-
-            if ((ipt_comp->ipv6 && ipv6_addresses != ipv6_addresses.end()) ||
-                (!ipt_comp->ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
-                (ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end()))
-            {
-                /* 
-                 * if interface name ends with '*', this is wildcard
-                 * interface. Just replace '*' with '+'. If interace
-                 * name does not end with '*', replace numeric
-                 * interface index with '+'. 
-                 */
-
-                QString iname = QString(iface->getName().c_str());
-                iname.replace(QRegExp("[0-9]{1,}$"), "+");
-                iname.replace("*", "+");
-                regular_interfaces.insert(iname);
-            }
-        }
+    if ( ! itf_re->isAny())
+    {
+        tmp_queue.push_back(rule);
+        return true;
     }
 
     switch (rule->getRuleType())
@@ -2164,7 +2212,10 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                         // member firewall's inteface but TSrc remains
                         // cluster interface or its address.
                         iface = fw_iface;
-                        rule->setInterfaceId(iface->getId());
+                        RuleElementItfOutb *itf_re = rule->getItfOutb();
+                        assert(itf_re!=NULL);
+                        if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+                        //rule->setInterfaceId(iface->getId());
                         tmp_queue.push_back(rule);
                         return true;
                     }
@@ -2172,7 +2223,10 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                 {
                     // parent is the cluster but there is no failover
                     // group.  This must be a copy of the member interface.
-                    rule->setInterfaceId(iface->getId());
+                    RuleElementItfOutb *itf_re = rule->getItfOutb();
+                    assert(itf_re!=NULL);
+                    if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+                    //rule->setInterfaceId(iface->getId());
                     tmp_queue.push_back(rule);
                     return true;
                 }
@@ -2181,7 +2235,10 @@ bool NATCompiler_ipt::AssignInterface::processNext()
             {
                 if (iface->isChildOf(compiler->fw))
                 {
-                    rule->setInterfaceId(iface->getId());
+                    RuleElementItfOutb *itf_re = rule->getItfOutb();
+                    assert(itf_re!=NULL);
+                    if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
+                    //rule->setInterfaceId(iface->getId());
                     tmp_queue.push_back(rule);
                     return true;
                 }
@@ -2202,12 +2259,18 @@ bool NATCompiler_ipt::AssignInterface::processNext()
  * but I do it anyway.
  */
         int n = 0;
-        foreach(QString intf_name, regular_interfaces)
+        QMap<QString, libfwbuilder::FWObject*>::iterator it;
+        for (it=ipt_comp->regular_interfaces.begin();
+             it!=ipt_comp->regular_interfaces.end(); ++it)
         {
+            FWObject *itf_group = it.value();
             NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
-            r->setInterfaceStr(intf_name.toStdString());
+            RuleElementItfOutb *itf_re = r->getItfOutb();
+            assert(itf_re!=NULL);
+            if ( ! itf_re->hasRef(itf_group)) itf_re->addRef(itf_group);
+            //r->setInterfaceStr(intf_name.toStdString());
             tmp_queue.push_back(r);
             n++;
         }
@@ -2403,6 +2466,18 @@ void NATCompiler_ipt::compile()
 
     add( new singleRuleFilter());
     
+    add(new expandGroupsInItfInb("expand groups in inbound Interface"));
+    add(new replaceClusterInterfaceInItfInb(
+            "replace cluster interfaces with member interfaces in "
+            "the inbound Interface rule element"));
+    add(new ItfInbNegation("process negation in inbound Itf"));
+
+    add(new expandGroupsInItfOutb("expand groups in outbound Interface"));
+    add(new replaceClusterInterfaceInItfOutb(
+            "replace cluster interfaces with member interfaces in "
+            "the outbound Interface rule element"));
+    add(new ItfOutbNegation("process negation in outbound Itf"));
+
     add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));
     add( new recursiveGroupsInODst("check for recursive groups in ODST"));
     add( new recursiveGroupsInOSrv("check for recursive groups in OSRV"));
@@ -2547,7 +2622,10 @@ void NATCompiler_ipt::compile()
     add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
     add( new dynamicInterfaceInTSrc(
              "set target if dynamic interface in TSrc" ) );
-    add( new convertInterfaceIdToStr("prepare interface assignments") );
+    //add( new convertInterfaceIdToStr("prepare interface assignments") );
+
+    add( new ConvertToAtomicForItfInb("convert to atomic for inbound interface") );
+    add( new ConvertToAtomicForItfOutb("convert to atomic for outbound interface"));
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));

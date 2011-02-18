@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:28:53 2011 PST by vadim
+#  Generated Thu Feb 17 17:38:14 2011 PST by vadim
 #
 # files: * test_fw.fw /etc/test_fw.fw
 #
@@ -316,8 +316,8 @@ script_body() {
     # no need to translate
     # between DMZ and 
     # internal net
-    $IPTABLES -t nat -A POSTROUTING   -s 192.168.2.0/24  -d 192.168.1.0/24  -j ACCEPT
-    $IPTABLES -t nat -A PREROUTING   -s 192.168.2.0/24  -d 192.168.1.0/24  -j ACCEPT
+    $IPTABLES -t nat -A POSTROUTING  -s 192.168.2.0/24  -d 192.168.1.0/24  -j ACCEPT
+    $IPTABLES -t nat -A PREROUTING  -s 192.168.2.0/24  -d 192.168.1.0/24  -j ACCEPT
     # 
     # Rule 1 (NAT)
     # 
@@ -332,7 +332,7 @@ script_body() {
     # 
     echo "Rule 2 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING   -d 192.0.2.1  -j DNAT --to-destination 192.168.2.10
+    $IPTABLES -t nat -A PREROUTING  -d 192.0.2.1  -j DNAT --to-destination 192.168.2.10
 
 
 
@@ -570,7 +570,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:28:53 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:38:14 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

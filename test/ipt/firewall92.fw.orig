@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:27:16 2011 PST by vadim
+#  Generated Thu Feb 17 17:36:30 2011 PST by vadim
 #
 # files: * firewall92.fw /etc/fw/firewall92.fw
 #
@@ -313,13 +313,13 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A OUTPUT  -p udp -m udp   -m owner --uid-owner anonymous -j REDIRECT --to-ports 53
+    $IPTABLES -t nat -A OUTPUT -p udp -m udp   -m owner --uid-owner anonymous -j REDIRECT --to-ports 53
     # 
     # Rule 1 (NAT)
     # 
     echo "Rule 1 (NAT)"
     # 
-    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -m owner --uid-owner anonymous -j REDIRECT --to-ports 9040
+    $IPTABLES -t nat -A OUTPUT -p tcp -m tcp   -m owner --uid-owner anonymous -j REDIRECT --to-ports 9040
 
 
 
@@ -419,7 +419,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:27:16 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:36:30 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

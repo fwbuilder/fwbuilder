@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3477
+#  Firewall Builder  fwb_ipt v4.2.0.3480
 #
-#  Generated Tue Feb 15 14:25:18 2011 PST by vadim
+#  Generated Thu Feb 17 17:34:23 2011 PST by vadim
 #
 # files: * firewall2-4.fw /etc/fw/firewall2-4.fw
 #
@@ -331,9 +331,9 @@ script_body() {
     echo "Rule 5 (NAT)"
     # 
     # firewall2-4:NAT:5: error: Non-contiguous address range in Translated Destination in load balancing NAT rule
-    $IPTABLES -t nat -A PREROUTING  -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
     # firewall2-4:NAT:5: error: Non-contiguous address range in Translated Destination in load balancing NAT rule
-    $IPTABLES -t nat -A OUTPUT  -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
+    $IPTABLES -t nat -A OUTPUT -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
     # 
     # Rule 6 (NAT)
     # 
@@ -346,7 +346,7 @@ script_body() {
     # 
     echo "Rule 8 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING  -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j NETMAP --to 22.22.22.0/24
+    $IPTABLES -t nat -A POSTROUTING -p tcp -m tcp  -s 192.168.1.0/24   --dport 80 -j NETMAP --to 22.22.22.0/24
     # 
     # Rule 11 (NAT)
     # 
@@ -424,7 +424,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Feb 15 14:25:18 2011 by vadim"
+        log "Activating firewall script generated Thu Feb 17 17:34:23 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files
