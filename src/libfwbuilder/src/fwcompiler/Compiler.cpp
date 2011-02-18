@@ -859,6 +859,8 @@ bool Compiler::interfaceNegationInRE::processNext()
     if (itfre==NULL)
         compiler->abort(rule, "Missing interface rule element");
 
+    FWOptions *fwopt = compiler->getCachedFwOpt();
+
     if (itfre->getNeg())
     {
         // Use getByTypeDeep() to pick subinterfaces (vlans and such)
@@ -874,6 +876,10 @@ bool Compiler::interfaceNegationInRE::processNext()
             if (intf == NULL) continue;
             if (intf->isUnprotected()) continue;
             if (intf->isLoopback()) continue;
+
+            // skip bridge ports, but use them if this is bridging firewall
+            if ( ! fwopt->getBool("bridging_fw") && intf->isBridgePort()) continue;
+
             if (intf->getOptionsObject()->getBool("cluster_interface")) continue;
             work_interfaces.push_back(intf);
         }
