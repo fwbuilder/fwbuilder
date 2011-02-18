@@ -196,7 +196,12 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
  */
 xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
 {
+    // DTD prohibits empty network_zone attribute
+    if (exists("network_zone") && getStr("network_zone").empty())
+        remStr("network_zone");
+
     xmlNodePtr me = FWObject::toXML(parent, false);
+
     FWObject *o;
 
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
