@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Fri Feb 18 18:32:55 2011 PST by vadim
+#  Generated Sat Feb 19 15:27:36 2011 PST by vadim
 #
 # files: * cluster1_secuwall-1.fw /etc/cluster1_secuwall-1.fw
 #
@@ -167,7 +167,7 @@ missing_address() {
 
     test "$cmd" = "del" && {
       echo "# Removing ip address: $interface $addr"
-      $FWBDEBUG $IP addr $cmd $addr dev $interface
+      $FWBDEBUG $IP addr $cmd $addr dev $interface || exit 1
     }
 
     $FWBDEBUG $IP link set $interface up
@@ -588,7 +588,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri Feb 18 18:32:55 2011 by vadim"
+        log "Activating firewall script generated Sat Feb 19 15:27:36 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

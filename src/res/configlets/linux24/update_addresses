@@ -61,7 +61,7 @@ missing_address() {
 
     test "$cmd" = "del" && {
       echo "# Removing ip address: $interface $addr"
-      $FWBDEBUG $IP addr $cmd $addr dev $interface
+      $FWBDEBUG $IP addr $cmd $addr dev $interface || exit 1
     }
 
     $FWBDEBUG $IP link set $interface up

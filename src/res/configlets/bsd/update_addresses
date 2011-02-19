@@ -40,7 +40,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 

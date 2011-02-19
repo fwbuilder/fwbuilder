@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3480
+#  Firewall Builder  fwb_pf v4.2.0.3482
 #
-#  Generated Thu Feb 17 17:52:48 2011 PST by vadim
+#  Generated Sat Feb 19 15:31:27 2011 PST by vadim
 #
 # files: * firewall101.fw /etc/fw/pf.fw
 # files:   firewall101.conf /etc/fw/path\ with\ space/pf.conf
@@ -79,7 +79,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 
@@ -164,7 +164,7 @@ configure_interfaces() {
     update_addresses_of_interface "em1 10.1.1.81/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Feb 17 17:52:48 2011 by vadim"
+log "Activating firewall script generated Sat Feb 19 15:31:27 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

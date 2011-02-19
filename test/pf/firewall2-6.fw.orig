@@ -4,13 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3482
 #
-#  Generated Sat Feb 19 15:32:00 2011 PST by vadim
+#  Generated Sat Feb 19 15:31:46 2011 PST by vadim
 #
-# files: * firewall91.fw /etc/fw/pf.fw
-# files:   firewall91.conf /etc/fw/pf.conf
+# files: * firewall2-6.fw /etc/firewall2-6.fw
+# files:   firewall2-6.conf /etc/firewall2-6.conf
 #
 # Compiled for pf 
 #
+# tests for nat rules with inbound and outbound interfaces
 
 
 
@@ -20,6 +21,9 @@ FWDIR=`dirname $0`
 
 IFCONFIG="/sbin/ifconfig"
 PFCTL="/sbin/pfctl"
+IPFW="/sbin/ipfw"
+IPF="/sbin/ipf"
+IPNAT="/sbin/ipnat"
 SYSCTL="/sbin/sysctl"
 LOGGER="/usr/bin/logger"
 
@@ -126,86 +130,6 @@ update_addresses_of_interface() {
     diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
 }
 
-missing_vlan() {
-    vlan=$1
-    cmd=$2
-
-    oldIFS=$IFS
-    IFS="@:"
-    set $vlan
-    subint=$1
-    vlan_id=$2
-    parent=$3
-    IFS=$oldIFS
-
-    test "$cmd" = "add" && {
-        echo "# Adding VLAN interface $subint (vlan id: $vlan_id parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent || exit 1
-        $FWBDEBUG $IFCONFIG $subint up || exit 1
-    }
-    test "$cmd" = "rem" && {
-        echo "# Removing VLAN interface $subint (vlan id: $vlan_id parent: $parent)"
-        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev || exit 1
-        $FWBDEBUG $IFCONFIG $subint destroy || exit 1
-    }
-}
-
-parse_fwb_vlans() {
-    set $1 
-    vlan_parent=$1 
-    shift
-
-    FWB_VLANS=$(
-      for subint in $*; do
-        echo "${subint}@$vlan_parent"
-      done | sort
-    )
-    echo $FWB_VLANS
-}
-
-parse_current_vlans() {
-    vlan_parent=$1
-    $IFCONFIG -A | grep -E 'vlan[^ ]*:' | paste - - | \
-        sed 's/flags=.*vlan://;s/://g;s/parent interface//' | \
-    while read vlan_subint vlan_id parent
-    do
-       test "$parent" = "$vlan_parent" && echo "$vlan_subint:$vlan_id@$parent"
-    done | sort
-}
-
-update_vlans_of_interface() {
-    args="$1"
-    set $1 
-    vlan_parent=$1 
-
-    FWB_VLANS=$(parse_fwb_vlans "$args")
-    CURRENT_VLANS=$(parse_current_vlans $vlan_parent)
-
-    $IFCONFIG $vlan_parent up || exit 1
-    diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
-    diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
-}
-
-sync_vlan_interfaces() {
-    $IFCONFIG -A | awk -v IGNORED="$*" \
-        'BEGIN {
-           split(IGNORED,ignored_arr);
-           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
-         }
-         ($1 ~ /^vlan[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
-         while read intf; do
-            echo "# Deleting vlan interface $intf"
-             $FWBDEBUG $IFCONFIG $intf destroy || exit 1
-         done
-
-    for intf in $*; do
-        $IFCONFIG $intf >/dev/null 2>&1 || {
-            echo "# Creating vlan interface $intf"
-            $FWBDEBUG $IFCONFIG $intf create || exit 1
-        }
-    done
-}
-
 verify_interfaces() {
     :
     
@@ -233,21 +157,20 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    sync_vlan_interfaces vlan101 vlan103
-    update_vlans_of_interface "em0 vlan101:101 vlan103:103"
-    update_addresses_of_interface "em0 10.1.1.50/0xffffff00" ""
-    update_addresses_of_interface "pcn0 10.3.14.50/0xffffff00" ""
-    update_addresses_of_interface "vlan101 10.100.101.1/0xffffff00" ""
-    update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
+    update_addresses_of_interface "em0 192.168.1.1/0xffffff00" ""
+    update_addresses_of_interface "em1 222.222.222.222/0xffffff00 222.222.222.40/0xffffff00" ""
+    update_addresses_of_interface "em2 33.33.33.3/0xfffffff8 33.33.33.4/0xfffffff8" ""
+    update_addresses_of_interface "em3 33.33.33.25/0xfffffff8" ""
+    update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Sat Feb 19 15:32:00 2011 by vadim"
+log "Activating firewall script generated Sat Feb 19 15:31:46 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL    -f /etc/fw/pf.conf || exit 1
+$PFCTL    -f /etc/firewall2-6.conf || exit 1
 
 
 

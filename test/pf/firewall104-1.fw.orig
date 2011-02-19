@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3480
+#  Firewall Builder  fwb_pf v4.2.0.3482
 #
-#  Generated Thu Feb 17 17:52:53 2011 PST by vadim
+#  Generated Sat Feb 19 15:31:33 2011 PST by vadim
 #
 # files: * firewall104-1.fw /etc/fw/pf.fw
 # files:   firewall104-1.conf /etc/fw/path\ with\ space/pf.conf
@@ -74,7 +74,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 
@@ -387,7 +387,7 @@ configure_interfaces() {
     $IFCONFIG bridge0 -stp em3
 }
 
-log "Activating firewall script generated Thu Feb 17 17:52:53 2011 by vadim"
+log "Activating firewall script generated Sat Feb 19 15:31:33 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

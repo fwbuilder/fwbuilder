@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3480
+#  Firewall Builder  fwb_pf v4.2.0.3482
 #
-#  Generated Thu Feb 17 17:53:17 2011 PST by vadim
+#  Generated Sat Feb 19 15:31:58 2011 PST by vadim
 #
 # files: * firewall80.fw /etc/firewall80.fw
 # files:   firewall80.conf /etc/firewall80.conf
@@ -73,7 +73,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu Feb 17 17:53:17 2011 by vadim"
+log "Activating firewall script generated Sat Feb 19 15:31:58 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

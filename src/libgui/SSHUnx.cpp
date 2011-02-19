@@ -78,8 +78,7 @@ SSHUnx::SSHUnx(QWidget *_par,
     shell_errors << "[fF]ile .* does not exist";
 
     // some ifconfig errors
-    shell_errors << "interface .* does not exist";
-    shell_errors << "Interface .* does not exist";
+    shell_errors << "[iI]nterface .* does not exist";
     shell_errors << "ifconfig: .*: Device busy";
     shell_errors << "permission denied";
     shell_errors << "interface name too long";
@@ -94,6 +93,12 @@ SSHUnx::SSHUnx(QWidget *_par,
     shell_errors << "unable to get .*";
     shell_errors << "unknown .* protocol";
     shell_errors << "[iI]nvalid .* protocol";
+    shell_errors << "Can't assign requested address";
+
+    // some /sbin/ip errors
+    shell_errors << "Object .* is unknown, try \"ip help\"";
+    shell_errors << "Cannot find device";
+    shell_errors << "Error: an inet prefix is expected rather than";
 
     iptables_errors << "'iptables --help' for more information.";
     iptables_errors << "'iptables-restore --help' for more information.";

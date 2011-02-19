@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3480
+#  Firewall Builder  fwb_pf v4.2.0.3482
 #
-#  Generated Thu Feb 17 17:53:23 2011 PST by vadim
+#  Generated Sat Feb 19 15:32:04 2011 PST by vadim
 #
 # files: * pf_cluster_3_openbsd-3.fw /etc/pf_cluster_3_openbsd-3.fw
 # files:   pf_cluster_3_openbsd-3.conf /etc/pf_cluster_3_openbsd-3.conf
@@ -73,7 +73,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 
@@ -296,7 +296,7 @@ configure_interfaces() {
     update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Feb 17 17:53:23 2011 by vadim"
+log "Activating firewall script generated Sat Feb 19 15:32:04 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
