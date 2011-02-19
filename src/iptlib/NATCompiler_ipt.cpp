@@ -1152,12 +1152,10 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
  * happened if all external interfaces are unnumbered */
                 if (rel->size()==0)
                 {
-                    char errmsg[1024];
-                    sprintf(errmsg,
-                            "Could not find suitable interface for the NAT rule %s. "
-                            "Perhaps all interfaces are unnumbered?", 
-                            rule->getLabel().c_str() );
-                    compiler->abort(rule, errmsg);
+                    compiler->abort(
+                        rule, 
+                        "Could not find suitable interface for the NAT rule. "
+                        "Perhaps all interfaces are unnumbered?");
                 }
             }
 	}
@@ -1347,25 +1345,14 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
             ! ifs->isChildOf(compiler->fw) &&
             ! ifs->isChildOf(cluster))
         {
-#if 0
-            cerr << endl;
-            cerr << "NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects" << endl;
-            cerr << " ifs=" << ifs << " " << ifs->getName().c_str()
-                 << " parent=" << ifs->getParent()
-                 << " " << ifs->getParent()->getName().c_str()
-                 << " dyn=" << ifs->isDyn()
-                 << endl;
-            cerr << "compiler->fw=" << compiler->fw
-                 << " " << compiler->fw->getName().c_str() << endl;
-#endif
-
-            char errstr[2048];
-            sprintf(errstr, "Can not build rule using dynamic interface '%s' "
-                    "of the object '%s' because its address in unknown.",
-                    ifs->getName().c_str(), 
-                    ifs->getParent()->getName().c_str());
-
-            compiler->abort(rule, errstr);
+            QString err(
+                "Can not build rule using dynamic interface '%1' "
+                "of the object '%2' because its address in unknown.");
+            compiler->abort(
+                rule,
+                err
+                .arg(ifs->getName().c_str())
+                .arg(ifs->getParent()->getName().c_str()).toStdString());
         }
     }
 }
@@ -2289,21 +2276,22 @@ bool NATCompiler_ipt::verifyRuleWithMAC::processNext()
 
         if (pa!=NULL)
         {
-            char errmsg[2048];
             if (rel->isAny())
             {
-                sprintf(errmsg,
-                        "SNAT rule can not match MAC address, however after removing object %s from OSrc it becomes 'Any'",
-                        pa->getName().c_str());
-                compiler->abort(rule,  errmsg );
+                QString err(
+                    "SNAT rule can not match MAC address, however "
+                    "after removing object %1 from OSrc it becomes 'Any'");
+                compiler->abort(rule,
+                                err.arg(pa->getName().c_str()).toStdString());
                 return true;
             }
             else
             {
-                sprintf(errmsg,
-                        "SNAT rule can not match MAC address. Object %s removed from the rule",
-                        pa->getName().c_str());
-                compiler->warning(rule,  errmsg );
+                QString err(
+                    "SNAT rule can not match MAC address. Object %1 "
+                    "removed from the rule");
+                compiler->warning(rule,
+                                  err.arg(pa->getName().c_str()).toStdString());
             }
         }
     }

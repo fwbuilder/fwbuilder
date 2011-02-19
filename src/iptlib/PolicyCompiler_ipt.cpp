@@ -2821,15 +2821,14 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
                         fg->getInterfaceForMemberFirewall(compiler->fw)!=NULL)
                         continue;
                 }
-
-                char errstr[2048];
-                sprintf(errstr,
-                        "Can not build rule using dynamic interface '%s' "
-                        "of the object '%s' because its address in unknown.",
-                        ifs->getName().c_str(), 
-                        ifs->getParent()->getName().c_str());
-
-                compiler->abort(rule, errstr);
+                QString err(
+                    "Can not build rule using dynamic interface '%1' "
+                    "of the object '%2' because its address in unknown.");
+                compiler->abort(
+                    rule,
+                    err
+                    .arg(ifs->getName().c_str())
+                    .arg(ifs->getParent()->getName().c_str()).toStdString());
                 return false;
             }
         }
