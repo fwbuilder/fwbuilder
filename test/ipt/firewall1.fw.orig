@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:32:54 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:20 2011 PST by vadim
 #
 # files: * firewall1.fw /etc/fw/firewall1.fw
 #
@@ -491,20 +491,20 @@ script_body() {
     echo "Rule 0 (eth0)"
     # 
     $IPTABLES -N Cid3C5987DC.1
-    $IPTABLES -A INPUT  -i eth0   -s 22.22.22.22   -j Cid3C5987DC.1
+    $IPTABLES -A INPUT -i eth0   -s 22.22.22.22   -j Cid3C5987DC.1
     $IPTABLES -N Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.1 -p icmp  -j Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.1 -p 50  -j Cid3C5987DC.0
     $IPTABLES -N Cid3C5987DC.2
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.1   -j Cid3C5987DC.2
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.1   -j Cid3C5987DC.2
     $IPTABLES -A Cid3C5987DC.2 -p icmp  -j Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.2 -p 50  -j Cid3C5987DC.0
     $IPTABLES -N Cid3C5987DC.3
-    $IPTABLES -A FORWARD  -i eth0   -s 22.22.22.22   -j Cid3C5987DC.3
+    $IPTABLES -A FORWARD -i eth0   -s 22.22.22.22   -j Cid3C5987DC.3
     $IPTABLES -A Cid3C5987DC.3 -p icmp  -j Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.3 -p 50  -j Cid3C5987DC.0
     $IPTABLES -N Cid3C5987DC.4
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.1   -j Cid3C5987DC.4
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.1   -j Cid3C5987DC.4
     $IPTABLES -A Cid3C5987DC.4 -p icmp  -j Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.4 -p 50  -j Cid3C5987DC.0
     $IPTABLES -A Cid3C5987DC.0  -d 22.22.22.22   -j RETURN
@@ -514,12 +514,12 @@ script_body() {
     $IPTABLES -A In_RULE_0_3  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_0_3  -j DROP
     $IPTABLES -N Cid3C5987DC.6
-    $IPTABLES -A OUTPUT  -o eth0   -s 22.22.22.22   -j Cid3C5987DC.6
+    $IPTABLES -A OUTPUT -o eth0   -s 22.22.22.22   -j Cid3C5987DC.6
     $IPTABLES -N Cid3C5987DC.5
     $IPTABLES -A Cid3C5987DC.6 -p icmp  -j Cid3C5987DC.5
     $IPTABLES -A Cid3C5987DC.6 -p 50  -j Cid3C5987DC.5
     $IPTABLES -N Cid3C5987DC.7
-    $IPTABLES -A OUTPUT  -o eth0   -s 192.168.1.1   -j Cid3C5987DC.7
+    $IPTABLES -A OUTPUT -o eth0   -s 192.168.1.1   -j Cid3C5987DC.7
     $IPTABLES -A Cid3C5987DC.7 -p icmp  -j Cid3C5987DC.5
     $IPTABLES -A Cid3C5987DC.7 -p 50  -j Cid3C5987DC.5
     $IPTABLES -A Cid3C5987DC.5  -d 22.22.22.22   -j RETURN
@@ -534,22 +534,22 @@ script_body() {
     echo "Rule 1 (eth0)"
     # 
     $IPTABLES -N Cid3CD34BEF.1
-    $IPTABLES -A INPUT  -i eth0  -p icmp  -j Cid3CD34BEF.1
-    $IPTABLES -A INPUT  -i eth0  -p 50  -j Cid3CD34BEF.1
+    $IPTABLES -A INPUT -i eth0  -p icmp  -j Cid3CD34BEF.1
+    $IPTABLES -A INPUT -i eth0  -p 50  -j Cid3CD34BEF.1
     $IPTABLES -N Cid3CD34BEF.0
     $IPTABLES -A Cid3CD34BEF.1  -s 192.168.1.10   -j Cid3CD34BEF.0
     $IPTABLES -A Cid3CD34BEF.1  -s 192.168.1.20   -j Cid3CD34BEF.0
     $IPTABLES -N Cid3CD34BEF.2
-    $IPTABLES -A FORWARD  -i eth0  -p icmp  -j Cid3CD34BEF.2
-    $IPTABLES -A FORWARD  -i eth0  -p 50  -j Cid3CD34BEF.2
+    $IPTABLES -A FORWARD -i eth0  -p icmp  -j Cid3CD34BEF.2
+    $IPTABLES -A FORWARD -i eth0  -p 50  -j Cid3CD34BEF.2
     $IPTABLES -A Cid3CD34BEF.2  -s 192.168.1.10   -j Cid3CD34BEF.0
     $IPTABLES -A Cid3CD34BEF.2  -s 192.168.1.20   -j Cid3CD34BEF.0
     $IPTABLES -A Cid3CD34BEF.0  -d 192.168.1.10   -j RETURN
     $IPTABLES -A Cid3CD34BEF.0  -d 192.168.1.20   -j RETURN
     $IPTABLES -A Cid3CD34BEF.0  -m hashlimit --hashlimit 1/hour --hashlimit-burst 2 --hashlimit-mode dstip,dstport --hashlimit-name htable_rule_1 -j DROP
     $IPTABLES -N Cid3CD34BEF.4
-    $IPTABLES -A FORWARD  -o eth0  -p icmp  -j Cid3CD34BEF.4
-    $IPTABLES -A FORWARD  -o eth0  -p 50  -j Cid3CD34BEF.4
+    $IPTABLES -A FORWARD -o eth0  -p icmp  -j Cid3CD34BEF.4
+    $IPTABLES -A FORWARD -o eth0  -p 50  -j Cid3CD34BEF.4
     $IPTABLES -N Cid3CD34BEF.3
     $IPTABLES -A Cid3CD34BEF.4  -s 192.168.1.10   -j Cid3CD34BEF.3
     $IPTABLES -A Cid3CD34BEF.4  -s 192.168.1.20   -j Cid3CD34BEF.3
@@ -563,16 +563,16 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 22.22.22.22   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 22.22.23.23   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.1   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 22.22.22.22   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 22.22.23.23   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.1   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 22.22.22.22   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 22.22.23.23   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 192.168.2.1   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 22.22.22.22   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 22.22.23.23   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.2.1   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.0/24   -j In_RULE_2
     $IPTABLES -A In_RULE_2  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_2  -j DROP
     # 
@@ -582,8 +582,8 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N Out_RULE_3
-    $IPTABLES -A OUTPUT  -o eth1   -s ! 192.168.1.0/24   -j Out_RULE_3
-    $IPTABLES -A FORWARD  -o eth1   -s ! 192.168.1.0/24   -j Out_RULE_3
+    $IPTABLES -A OUTPUT -o eth1   -s ! 192.168.1.0/24   -j Out_RULE_3
+    $IPTABLES -A FORWARD -o eth1   -s ! 192.168.1.0/24   -j Out_RULE_3
     $IPTABLES -A Out_RULE_3  -j LOG  --log-level debug
     $IPTABLES -A Out_RULE_3  -j DROP
     # 
@@ -593,7 +593,7 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N Cid40DBCD36.0
-    $IPTABLES -A OUTPUT  -o eth1   -j Cid40DBCD36.0
+    $IPTABLES -A OUTPUT -o eth1   -j Cid40DBCD36.0
     $IPTABLES -A Cid40DBCD36.0  -s 22.22.22.22   -j RETURN
     $IPTABLES -A Cid40DBCD36.0  -s 22.22.23.23   -j RETURN
     $IPTABLES -A Cid40DBCD36.0  -s 192.168.1.1   -j RETURN
@@ -603,7 +603,7 @@ script_body() {
     $IPTABLES -A Out_RULE_4_3  -j LOG  --log-level debug
     $IPTABLES -A Out_RULE_4_3  -j DROP
     $IPTABLES -N Cid40DBCD36.1
-    $IPTABLES -A FORWARD  -o eth1   -j Cid40DBCD36.1
+    $IPTABLES -A FORWARD -o eth1   -j Cid40DBCD36.1
     $IPTABLES -A Cid40DBCD36.1  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -A Cid40DBCD36.1  -j Out_RULE_4_3
     # 
@@ -611,18 +611,18 @@ script_body() {
     # 
     echo "Rule 5 (eth2)"
     # 
-    $IPTABLES -A INPUT  -i eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2   -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth2)
     # 
     echo "Rule 6 (eth2)"
     # 
     $IPTABLES -N In_RULE_6
-    $IPTABLES -A INPUT  -i ! eth2   -s 192.168.2.0/24   -j In_RULE_6
-    $IPTABLES -A FORWARD  -i ! eth2   -s 192.168.2.0/24   -j In_RULE_6
+    $IPTABLES -A INPUT -i ! eth2   -s 192.168.2.0/24   -j In_RULE_6
+    $IPTABLES -A FORWARD -i ! eth2   -s 192.168.2.0/24   -j In_RULE_6
     $IPTABLES -A In_RULE_6  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_6  -j DROP
     # 
@@ -631,14 +631,14 @@ script_body() {
     echo "Rule 7 (eth1,eth3)"
     # 
     $IPTABLES -N In_RULE_7
-    $IPTABLES -A INPUT  -i eth0   -s 22.22.23.128/25   -j In_RULE_7
-    $IPTABLES -A INPUT  -i eth0   -s 33.33.33.0/24   -j In_RULE_7
-    $IPTABLES -A INPUT  -i eth2   -s 22.22.23.128/25   -j In_RULE_7
-    $IPTABLES -A INPUT  -i eth2   -s 33.33.33.0/24   -j In_RULE_7
-    $IPTABLES -A FORWARD  -i eth0   -s 22.22.23.128/25   -j In_RULE_7
-    $IPTABLES -A FORWARD  -i eth0   -s 33.33.33.0/24   -j In_RULE_7
-    $IPTABLES -A FORWARD  -i eth2   -s 22.22.23.128/25   -j In_RULE_7
-    $IPTABLES -A FORWARD  -i eth2   -s 33.33.33.0/24   -j In_RULE_7
+    $IPTABLES -A INPUT -i eth0   -s 22.22.23.128/25   -j In_RULE_7
+    $IPTABLES -A INPUT -i eth0   -s 33.33.33.0/24   -j In_RULE_7
+    $IPTABLES -A INPUT -i eth2   -s 22.22.23.128/25   -j In_RULE_7
+    $IPTABLES -A INPUT -i eth2   -s 33.33.33.0/24   -j In_RULE_7
+    $IPTABLES -A FORWARD -i eth0   -s 22.22.23.128/25   -j In_RULE_7
+    $IPTABLES -A FORWARD -i eth0   -s 33.33.33.0/24   -j In_RULE_7
+    $IPTABLES -A FORWARD -i eth2   -s 22.22.23.128/25   -j In_RULE_7
+    $IPTABLES -A FORWARD -i eth2   -s 33.33.33.0/24   -j In_RULE_7
     $IPTABLES -A In_RULE_7  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_7  -j DROP
     # 
@@ -646,18 +646,18 @@ script_body() {
     # 
     echo "Rule 8 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo   -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (eth0,eth2)
     # 
     echo "Rule 9 (eth0,eth2)"
     # 
     $IPTABLES -N Cid433D045026912.0
-    $IPTABLES -A INPUT  -i eth0   -j Cid433D045026912.0
-    $IPTABLES -A INPUT  -i eth2   -j Cid433D045026912.0
-    $IPTABLES -A FORWARD  -i eth0   -j Cid433D045026912.0
-    $IPTABLES -A FORWARD  -i eth2   -j Cid433D045026912.0
+    $IPTABLES -A INPUT -i eth0   -j Cid433D045026912.0
+    $IPTABLES -A INPUT -i eth2   -j Cid433D045026912.0
+    $IPTABLES -A FORWARD -i eth0   -j Cid433D045026912.0
+    $IPTABLES -A FORWARD -i eth2   -j Cid433D045026912.0
     $IPTABLES -A Cid433D045026912.0  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -A Cid433D045026912.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -N In_RULE_9_3
@@ -670,10 +670,10 @@ script_body() {
     echo "Rule 10 (eth1,eth3)"
     # 
     $IPTABLES -N Cid434D389E26912.0
-    $IPTABLES -A INPUT  -i eth1   -m state --state NEW  -j Cid434D389E26912.0
-    $IPTABLES -A INPUT  -i eth3   -m state --state NEW  -j Cid434D389E26912.0
-    $IPTABLES -A FORWARD  -i eth1   -m state --state NEW  -j Cid434D389E26912.0
-    $IPTABLES -A FORWARD  -i eth3   -m state --state NEW  -j Cid434D389E26912.0
+    $IPTABLES -A INPUT -i eth1   -m state --state NEW  -j Cid434D389E26912.0
+    $IPTABLES -A INPUT -i eth3   -m state --state NEW  -j Cid434D389E26912.0
+    $IPTABLES -A FORWARD -i eth1   -m state --state NEW  -j Cid434D389E26912.0
+    $IPTABLES -A FORWARD -i eth3   -m state --state NEW  -j Cid434D389E26912.0
     $IPTABLES -A Cid434D389E26912.0  -s 22.22.23.128/25   -j RETURN
     $IPTABLES -A Cid434D389E26912.0  -s 33.33.33.0/24   -j RETURN
     $IPTABLES -A Cid434D389E26912.0  -j ACCEPT
@@ -1252,7 +1252,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:32:54 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:20 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

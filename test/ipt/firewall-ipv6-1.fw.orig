@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:36:11 2011 PST by vadim
+#  Generated Fri Feb 18 18:31:37 2011 PST by vadim
 #
 # files: * firewall-ipv6-1.fw /etc/firewall-ipv6-1.fw
 #
@@ -381,7 +381,7 @@ script_body() {
     # 
     $IPTABLES -N In_RULE_7
     $IPTABLES -A INPUT  -m state --state NEW  -j In_RULE_7
-    $IPTABLES -A In_RULE_7   -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 7 -- ACCEPT " --ulog-qthreshold 1
+    $IPTABLES -A In_RULE_7  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 7 -- ACCEPT " --ulog-qthreshold 1
     $IPTABLES -A In_RULE_7  -j ACCEPT
     # 
     # Rule 10 (global)
@@ -687,7 +687,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:36:11 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:31:37 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

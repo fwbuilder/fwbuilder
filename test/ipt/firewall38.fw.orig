@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:34:23 2011 PST by vadim
+#  Generated Fri Feb 18 18:29:49 2011 PST by vadim
 #
 # files: * firewall38.fw /etc/fw/firewall38.fw
 #
@@ -394,8 +394,8 @@ script_body() {
     echo "-A RULE_2  -j MARK  --set-mark 16"
     # 
     # Rule  3 (eth1)
-    echo "-A PREROUTING  -i eth1  -p 50  -m state --state NEW  -j MARK  --set-mark 16"
-    echo "-A PREROUTING  -i eth1  -p ah  -m state --state NEW  -j MARK  --set-mark 16"
+    echo "-A PREROUTING -i eth1  -p 50  -m state --state NEW  -j MARK  --set-mark 16"
+    echo "-A PREROUTING -i eth1  -p ah  -m state --state NEW  -j MARK  --set-mark 16"
     # 
     # Rule  4 (global)
     # rule comment: rule 4
@@ -408,17 +408,17 @@ script_body() {
     echo "-A RULE_5  -j MARK  --set-mark 2"
     # 
     # Rule  6 (eth1)
-    echo "-A OUTPUT  -o eth1  -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
+    echo "-A OUTPUT -o eth1  -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
     # 
     # Rule  7 (eth1)
-    echo "-A PREROUTING  -i eth1  -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
+    echo "-A PREROUTING -i eth1  -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
     # 
     # Rule  8 (eth1)
     echo ":Cid462EA8B230547.0 - [0:0]"
-    echo "-A OUTPUT  -o eth1  -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid462EA8B230547.0 "
+    echo "-A OUTPUT -o eth1  -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid462EA8B230547.0 "
     echo "-A Cid462EA8B230547.0  -s 22.22.23.22   -j RETURN "
     echo "-A Cid462EA8B230547.0  -j MARK  --set-mark 2"
-    echo "-A POSTROUTING  -o eth1  -p tcp -m tcp  --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
+    echo "-A POSTROUTING -o eth1  -p tcp -m tcp  --dport 80  -m state --state NEW  -j MARK  --set-mark 2"
     #
     echo COMMIT
 
@@ -498,7 +498,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:34:23 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:29:49 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

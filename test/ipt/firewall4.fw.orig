@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:34:33 2011 PST by vadim
+#  Generated Fri Feb 18 18:29:58 2011 PST by vadim
 #
 # files: * firewall4.fw /etc/fw/firewall4.fw
 #
@@ -365,20 +365,20 @@ script_body() {
     $IPTABLES -N In_RULE_0
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -A INPUT  -i eth1   -s $i_eth1   -j In_RULE_0 
+    test -n "$i_eth1" && $IPTABLES -A INPUT -i eth1   -s $i_eth1   -j In_RULE_0 
     done
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.1   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 222.222.222.222   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 222.222.222.222   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.0/24   -j In_RULE_0
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -A FORWARD  -i eth1   -s $i_eth1   -j In_RULE_0 
+    test -n "$i_eth1" && $IPTABLES -A FORWARD -i eth1   -s $i_eth1   -j In_RULE_0 
     done
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.1   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 222.222.222.222   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 222.222.222.222   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.0/24   -j In_RULE_0
     $IPTABLES -A In_RULE_0  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -388,7 +388,7 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N Cid3B0C63EB.0
-    $IPTABLES -A OUTPUT  -o eth1   -j Cid3B0C63EB.0
+    $IPTABLES -A OUTPUT -o eth1   -j Cid3B0C63EB.0
     for i_eth1 in $i_eth1_list
     do
     test -n "$i_eth1" && $IPTABLES -A Cid3B0C63EB.0  -s $i_eth1   -j RETURN 
@@ -401,7 +401,7 @@ script_body() {
     $IPTABLES -A Out_RULE_1_3  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A Out_RULE_1_3  -j DROP
     $IPTABLES -N Cid3B0C63EB.1
-    $IPTABLES -A FORWARD  -o eth1   -j Cid3B0C63EB.1
+    $IPTABLES -A FORWARD -o eth1   -j Cid3B0C63EB.1
     $IPTABLES -A Cid3B0C63EB.1  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -A Cid3B0C63EB.1  -j Out_RULE_1_3
     # 
@@ -410,13 +410,13 @@ script_body() {
     echo "Rule 2 (eth1)"
     # 
     $IPTABLES -N In_RULE_2
-    $IPTABLES -A INPUT  -i eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j In_RULE_2
     $IPTABLES -A In_RULE_2  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A In_RULE_2  -j DROP
     $IPTABLES -N Out_RULE_2
-    $IPTABLES -A OUTPUT  -o eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j Out_RULE_2
-    $IPTABLES -A FORWARD  -o eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j Out_RULE_2
+    $IPTABLES -A OUTPUT -o eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j Out_RULE_2
+    $IPTABLES -A FORWARD -o eth1  -p icmp  -m icmp  -s ! 192.168.2.0/24   --icmp-type 8/0   -j Out_RULE_2
     $IPTABLES -A Out_RULE_2  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A Out_RULE_2  -j DROP
     # 
@@ -425,7 +425,7 @@ script_body() {
     echo "Rule 3 (eth1)"
     # 
     $IPTABLES -N Cid3E49FEF2.0
-    $IPTABLES -A INPUT  -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid3E49FEF2.0
+    $IPTABLES -A INPUT -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid3E49FEF2.0
     for i_eth1 in $i_eth1_list
     do
     test -n "$i_eth1" && $IPTABLES -A Cid3E49FEF2.0  -d $i_eth1   -j ACCEPT 
@@ -439,13 +439,13 @@ script_body() {
     echo "Rule 4 (eth1)"
     # 
     $IPTABLES -N In_RULE_4
-    $IPTABLES -A INPUT  -i eth1  -p icmp  -m icmp  --icmp-type 8/0   -j In_RULE_4
-    $IPTABLES -A FORWARD  -i eth1  -p icmp  -m icmp  --icmp-type 8/0   -j In_RULE_4
+    $IPTABLES -A INPUT -i eth1  -p icmp  -m icmp  --icmp-type 8/0   -j In_RULE_4
+    $IPTABLES -A FORWARD -i eth1  -p icmp  -m icmp  --icmp-type 8/0   -j In_RULE_4
     $IPTABLES -A In_RULE_4  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A In_RULE_4  -j DROP
     $IPTABLES -N Out_RULE_4
-    $IPTABLES -A OUTPUT  -o eth1  -p icmp  -m icmp  --icmp-type 8/0   -j Out_RULE_4
-    $IPTABLES -A FORWARD  -o eth1  -p icmp  -m icmp  --icmp-type 8/0   -j Out_RULE_4
+    $IPTABLES -A OUTPUT -o eth1  -p icmp  -m icmp  --icmp-type 8/0   -j Out_RULE_4
+    $IPTABLES -A FORWARD -o eth1  -p icmp  -m icmp  --icmp-type 8/0   -j Out_RULE_4
     $IPTABLES -A Out_RULE_4  -j ULOG  --ulog-nlgroup 7 --ulog-cprange 64  --ulog-qthreshold 1
     $IPTABLES -A Out_RULE_4  -j DROP
     # 
@@ -458,11 +458,11 @@ script_body() {
     $IPTABLES -A OUTPUT  -d 1.1.1.1   -j Cid469EDB0514508.0
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -A Cid469EDB0514508.0   -s $i_eth1   -j ACCEPT 
+    test -n "$i_eth1" && $IPTABLES -A Cid469EDB0514508.0  -s $i_eth1   -j ACCEPT 
     done
-    $IPTABLES -A Cid469EDB0514508.0   -s 192.168.1.1   -j ACCEPT
-    $IPTABLES -A Cid469EDB0514508.0   -s 192.168.2.1   -j ACCEPT
-    $IPTABLES -A Cid469EDB0514508.0   -s 222.222.222.222   -j ACCEPT
+    $IPTABLES -A Cid469EDB0514508.0  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469EDB0514508.0  -s 192.168.2.1   -j ACCEPT
+    $IPTABLES -A Cid469EDB0514508.0  -s 222.222.222.222   -j ACCEPT
     # 
     # Rule 6 (global)
     # 
@@ -475,11 +475,11 @@ script_body() {
     $IPTABLES -A INPUT  -s 1.1.1.1   -j Cid469F02B014773.0
     for i_eth1 in $i_eth1_list
     do
-    test -n "$i_eth1" && $IPTABLES -A Cid469F02B014773.0   -d $i_eth1   -j ACCEPT 
+    test -n "$i_eth1" && $IPTABLES -A Cid469F02B014773.0  -d $i_eth1   -j ACCEPT 
     done
-    $IPTABLES -A Cid469F02B014773.0   -d 192.168.1.1   -j ACCEPT
-    $IPTABLES -A Cid469F02B014773.0   -d 192.168.2.1   -j ACCEPT
-    $IPTABLES -A Cid469F02B014773.0   -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -A Cid469F02B014773.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469F02B014773.0  -d 192.168.2.1   -j ACCEPT
+    $IPTABLES -A Cid469F02B014773.0  -d 222.222.222.222   -j ACCEPT
     # 
     # Rule 7 (global)
     # 
@@ -487,7 +487,7 @@ script_body() {
     # 
     # OUTPUT + FORWARD
     $IPTABLES -A OUTPUT  -d 1.1.1.1   -j ACCEPT
-    $IPTABLES -A FORWARD  -o +   -d 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD -o +   -d 1.1.1.1   -j ACCEPT
     # 
     # Rule 8 (global)
     # 
@@ -495,7 +495,7 @@ script_body() {
     # 
     # INPUT + FORWARD
     $IPTABLES -A INPUT  -s 1.1.1.1   -j ACCEPT
-    $IPTABLES -A FORWARD  -i +   -s 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD -i +   -s 1.1.1.1   -j ACCEPT
     # 
     # Rule 9 (global)
     # 
@@ -710,7 +710,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:34:33 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:29:58 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

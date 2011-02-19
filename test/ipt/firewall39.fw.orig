@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:34:34 2011 PST by vadim
+#  Generated Fri Feb 18 18:30:00 2011 PST by vadim
 #
 # files: * firewall39.fw /etc/fw/firewall39.fw
 #
@@ -379,9 +379,9 @@ script_body() {
     echo "Rule rule3_branch 0 (eth1)"
     # 
     $IPTABLES -N rule3_branch -t mangle
-    $IPTABLES -t mangle -A rule3_branch  -i eth1   -d 22.22.23.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -t mangle -A rule3_branch  -i eth1   -d 192.168.1.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -t mangle -A rule3_branch  -i eth1   -d 192.168.2.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 22.22.23.22   -m state --state NEW  -j ACCEPT
+    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 192.168.1.22   -m state --state NEW  -j ACCEPT
+    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 192.168.2.1   -m state --state NEW  -j ACCEPT
     # 
     # Rule rule3_branch 1 (global)
     # 
@@ -399,7 +399,7 @@ script_body() {
     # 
     $IPTABLES -N rule4_branch -t mangle
     $IPTABLES -N In_rule4_branch_0 -t mangle
-    $IPTABLES -t mangle -A rule4_branch  -i eth1   -j In_rule4_branch_0
+    $IPTABLES -t mangle -A rule4_branch -i eth1   -j In_rule4_branch_0
     $IPTABLES -t mangle -A In_rule4_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- BRANCH "
     $IPTABLES -N rule_4_0_branch -t mangle
     $IPTABLES -t mangle -A In_rule4_branch_0  -j rule_4_0_branch
@@ -409,7 +409,7 @@ script_body() {
     echo "Rule rule4_branch 1 (eth0)"
     # 
     $IPTABLES -N In_rule4_branch_1 -t mangle
-    $IPTABLES -t mangle -A rule4_branch  -i eth0   -j In_rule4_branch_1
+    $IPTABLES -t mangle -A rule4_branch -i eth0   -j In_rule4_branch_1
     $IPTABLES -t mangle -A In_rule4_branch_1  -j LOG  --log-level info --log-prefix "RULE 1 -- BRANCH "
     $IPTABLES -N rule_4_1_branch -t mangle
     $IPTABLES -t mangle -A In_rule4_branch_1  -j rule_4_1_branch
@@ -466,19 +466,19 @@ script_body() {
     # 
     echo "Rule 10 (eth1)"
     # 
-    $IPTABLES -t mangle -A PREROUTING  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -t mangle -A PREROUTING  -i eth1  -p ah  -j rule3_branch
-    $IPTABLES -t mangle -A FORWARD  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -t mangle -A FORWARD  -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -t mangle -A FORWARD -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -t mangle -A FORWARD -i eth1  -p ah  -j rule3_branch
     # 
     # Rule 11 (eth1)
     # 
     echo "Rule 11 (eth1)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -t mangle -A POSTROUTING  -o eth1  -p ah  -j rule3_branch
-    $IPTABLES -t mangle -A FORWARD  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -t mangle -A FORWARD  -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -t mangle -A FORWARD -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -t mangle -A FORWARD -o eth1  -p ah  -j rule3_branch
     # 
     # Rule 12 (global)
     # 
@@ -504,7 +504,7 @@ script_body() {
     echo "Rule rule_4_0_branch 0 (eth2)"
     # 
     $IPTABLES -N rule_4_0_branch
-    $IPTABLES -A rule_4_0_branch  -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A rule_4_0_branch -o eth2   -m state --state NEW  -j ACCEPT
     # 
     # Rule rule_4_0_branch 1 (global)
     # 
@@ -521,7 +521,7 @@ script_body() {
     echo "Rule rule_4_1_branch 0 (eth2)"
     # 
     $IPTABLES -N rule_4_1_branch
-    $IPTABLES -A rule_4_1_branch  -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A rule_4_1_branch -o eth2   -m state --state NEW  -j ACCEPT
     # 
     # Rule rule_4_1_branch 1 (global)
     # 
@@ -592,9 +592,9 @@ script_body() {
     echo "Rule rule3_branch 0 (eth1)"
     # 
     $IPTABLES -N rule3_branch
-    $IPTABLES -A rule3_branch  -i eth1   -d 22.22.23.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A rule3_branch  -i eth1   -d 192.168.1.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A rule3_branch  -i eth1   -d 192.168.2.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A rule3_branch -i eth1   -d 22.22.23.22   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A rule3_branch -i eth1   -d 192.168.1.22   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A rule3_branch -i eth1   -d 192.168.2.1   -m state --state NEW  -j ACCEPT
     # 
     # Rule rule3_branch 1 (global)
     # 
@@ -612,7 +612,7 @@ script_body() {
     # 
     $IPTABLES -N rule4_branch
     $IPTABLES -N In_rule4_branch_0
-    $IPTABLES -A rule4_branch  -i eth1   -j In_rule4_branch_0
+    $IPTABLES -A rule4_branch -i eth1   -j In_rule4_branch_0
     $IPTABLES -A In_rule4_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- BRANCH "
     $IPTABLES -A In_rule4_branch_0  -j rule_4_0_branch
     # 
@@ -621,7 +621,7 @@ script_body() {
     echo "Rule rule4_branch 1 (eth0)"
     # 
     $IPTABLES -N In_rule4_branch_1
-    $IPTABLES -A rule4_branch  -i eth0   -j In_rule4_branch_1
+    $IPTABLES -A rule4_branch -i eth0   -j In_rule4_branch_1
     $IPTABLES -A In_rule4_branch_1  -j LOG  --log-level info --log-prefix "RULE 1 -- BRANCH "
     $IPTABLES -A In_rule4_branch_1  -j rule_4_1_branch
     # ================ Table 'filter', rule set Policy
@@ -679,19 +679,19 @@ script_body() {
     # 
     echo "Rule 3 (eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -A INPUT  -i eth1  -p ah  -j rule3_branch
-    $IPTABLES -A FORWARD  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -A FORWARD  -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -A INPUT -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -A INPUT -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -A FORWARD -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -A FORWARD -i eth1  -p ah  -j rule3_branch
     # 
     # Rule 4 (eth1)
     # 
     echo "Rule 4 (eth1)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -A OUTPUT  -o eth1  -p ah  -j rule3_branch
-    $IPTABLES -A FORWARD  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -A FORWARD  -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -A OUTPUT -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -A OUTPUT -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -A FORWARD -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -A FORWARD -o eth1  -p ah  -j rule3_branch
     # 
     # Rule 5 (global)
     # 
@@ -764,19 +764,19 @@ script_body() {
     # 
     echo "Rule 10 (eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -A INPUT  -i eth1  -p ah  -j rule3_branch
-    $IPTABLES -A FORWARD  -i eth1  -p 50  -j rule3_branch
-    $IPTABLES -A FORWARD  -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -A INPUT -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -A INPUT -i eth1  -p ah  -j rule3_branch
+    $IPTABLES -A FORWARD -i eth1  -p 50  -j rule3_branch
+    $IPTABLES -A FORWARD -i eth1  -p ah  -j rule3_branch
     # 
     # Rule 11 (eth1)
     # 
     echo "Rule 11 (eth1)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -A OUTPUT  -o eth1  -p ah  -j rule3_branch
-    $IPTABLES -A FORWARD  -o eth1  -p 50  -j rule3_branch
-    $IPTABLES -A FORWARD  -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -A OUTPUT -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -A OUTPUT -o eth1  -p ah  -j rule3_branch
+    $IPTABLES -A FORWARD -o eth1  -p 50  -j rule3_branch
+    $IPTABLES -A FORWARD -o eth1  -p ah  -j rule3_branch
     # 
     # Rule 12 (global)
     # 
@@ -876,7 +876,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:34:34 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:30:00 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

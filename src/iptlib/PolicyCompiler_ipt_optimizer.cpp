@@ -135,8 +135,10 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
     rule->setStr("upstream_rule_chain", this_chain);
     ipt_comp->registerChain(new_chain);
     ipt_comp->insertUpstreamChain(this_chain, new_chain);
-    if (rule->getInterfaceStr()=="")
-        rule->setInterfaceStr("nil");
+
+//    if (rule->getInterfaceStr()=="")
+//        rule->setInterfaceStr("nil");
+
     rule->setDirection( PolicyRule::Both ); 
    
     tmp_queue.push_back(rule);
@@ -311,7 +313,10 @@ bool PolicyCompiler_ipt::optimizeForMinusIOPlus::processNext()
     PolicyRule *rule;
     rule=getNext(); if (rule==NULL) return false;
 
-    string iface_name = rule->getInterfaceStr();
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
+    string iface_name = rule_iface->getName();  // rule->getInterfaceStr();
+
     if (iface_name.empty() || iface_name=="nil" )
     {
         tmp_queue.push_back(rule);
@@ -321,7 +326,8 @@ bool PolicyCompiler_ipt::optimizeForMinusIOPlus::processNext()
     string chain = rule->getStr("ipt_chain");
 
     if (iface_name == "*" && (chain == "INPUT" || chain == "OUTPUT"))
-        rule->setInterfaceStr("");
+        itf_re->reset();
+//        rule->setInterfaceStr("");
 
     tmp_queue.push_back(rule);
     return true;

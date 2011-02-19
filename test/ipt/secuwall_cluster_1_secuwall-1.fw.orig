@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:32 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:59 2011 PST by vadim
 #
 # files: * secuwall_cluster_1_secuwall-1.fw /etc/secuwall_cluster_1_secuwall-1.fw
 #
@@ -319,37 +319,37 @@ script_body() {
     # 
     echo "Rule -6 VRRP (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p vrrp  -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p vrrp  -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -5 VRRP (automatic)
     # 
     echo "Rule -5 VRRP (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p vrrp  -s 192.168.1.3   -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p vrrp  -s 192.168.1.3   -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -4 VRRP (automatic)
     # 
     echo "Rule -4 VRRP (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p vrrp  -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p vrrp  -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -3 VRRP (automatic)
     # 
     echo "Rule -3 VRRP (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p vrrp  -s 172.24.0.3   -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p vrrp  -s 172.24.0.3   -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -2 CONNTRACK (automatic)
     # 
     echo "Rule -2 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
     # 
     # Rule -1 CONNTRACK (automatic)
     # 
     echo "Rule -1 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
 }
 
 ip_forward() {
@@ -405,7 +405,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:32 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:59 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

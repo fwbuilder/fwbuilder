@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:35:42 2011 PST by vadim
+#  Generated Fri Feb 18 18:31:08 2011 PST by vadim
 #
 # files: * firewall92.fw /etc/fw/firewall92.fw
 #
@@ -331,12 +331,12 @@ script_body() {
     # 
     $IPTABLES -N Policy_1
     $IPTABLES -N Cid1009688X9517.0
-    $IPTABLES -A Policy_1  -o +  -p tcp -m tcp  --dport 9040  -j Cid1009688X9517.0
-    $IPTABLES -A Policy_1  -o +  -p udp -m udp  --dport 53  -j Cid1009688X9517.0
+    $IPTABLES -A Policy_1 -o +  -p tcp -m tcp  --dport 9040  -j Cid1009688X9517.0
+    $IPTABLES -A Policy_1 -o +  -p udp -m udp  --dport 53  -j Cid1009688X9517.0
     $IPTABLES -N Out_Policy_1_0
-    $IPTABLES -A Cid1009688X9517.0   -s 192.0.2.1   -j Out_Policy_1_0
-    $IPTABLES -A Cid1009688X9517.0   -s 192.168.1.1   -j Out_Policy_1_0
-    $IPTABLES -A Out_Policy_1_0   -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
+    $IPTABLES -A Cid1009688X9517.0  -s 192.0.2.1   -j Out_Policy_1_0
+    $IPTABLES -A Cid1009688X9517.0  -s 192.168.1.1   -j Out_Policy_1_0
+    $IPTABLES -A Out_Policy_1_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
     $IPTABLES -A Out_Policy_1_0  -j DROP
     # ================ Table 'filter', rule set Policy
     # 
@@ -362,7 +362,7 @@ script_body() {
     # this only matches module owner
     $IPTABLES -N Out_RULE_2
     $IPTABLES -A OUTPUT  -m owner --uid-owner anonymous  -j Out_RULE_2
-    $IPTABLES -A Out_RULE_2   -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
+    $IPTABLES -A Out_RULE_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
     $IPTABLES -A Out_RULE_2  -j DROP
 }
 
@@ -419,7 +419,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:35:42 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:31:08 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

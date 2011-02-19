@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:36 2011 PST by vadim
+#  Generated Fri Feb 18 18:29:02 2011 PST by vadim
 #
 # files: * firewall25.fw /etc/fw/firewall25.fw
 #
@@ -324,7 +324,7 @@ script_body() {
     # 
     # Rule  policy_2 0 (eth2)
     echo ":policy_2 - [0:0]"
-    echo "-A policy_2  -o eth2   -m state --state NEW  -j ACCEPT "
+    echo "-A policy_2 -o eth2   -m state --state NEW  -j ACCEPT "
     # 
     # Rule  policy_2 1 (global)
     echo ":policy_2_1 - [0:0]"
@@ -346,8 +346,8 @@ script_body() {
     # Rule  0 (ppp*)
     # ppp clients get addresses on 10.1.1.0
     echo ":In_RULE_0 - [0:0]"
-    echo "-A INPUT  -i ppp+   -s ! 10.1.1.0/24   -j In_RULE_0 "
-    echo "-A FORWARD  -i ppp+   -s ! 10.1.1.0/24   -j In_RULE_0 "
+    echo "-A INPUT -i ppp+   -s ! 10.1.1.0/24   -j In_RULE_0 "
+    echo "-A FORWARD -i ppp+   -s ! 10.1.1.0/24   -j In_RULE_0 "
     echo "-A In_RULE_0  -j LOG "
     echo "-A In_RULE_0  -j DROP "
     # 
@@ -361,7 +361,7 @@ script_body() {
         eval "addr_list=$cmd"
         for addr in $addr_list
         do
-            test -n "$addr" && echo "-A INPUT  -i ppp+   -d $addr   -j In_RULE_1 "
+            test -n "$addr" && echo "-A INPUT -i ppp+   -d $addr   -j In_RULE_1 "
         done
     done
     echo "-A In_RULE_1  -j LOG "
@@ -369,31 +369,31 @@ script_body() {
     # 
     # Rule  2 (ppp*)
     echo ":In_RULE_2 - [0:0]"
-    echo "-A INPUT  -i ppp+   -j In_RULE_2 "
+    echo "-A INPUT -i ppp+   -j In_RULE_2 "
     echo "-A In_RULE_2  -j LOG "
     echo "-A In_RULE_2  -j DROP "
     # 
     # Rule  3 (ppp*)
     # ppp clients can only connect to the mail
     # server and web proxy on DMZ
-    echo "-A FORWARD  -i ppp+  -p tcp -m tcp  -m multiport  -d 192.168.2.10   --dports 25,3128  -m state --state NEW  -j ACCEPT "
+    echo "-A FORWARD -i ppp+  -p tcp -m tcp  -m multiport  -d 192.168.2.10   --dports 25,3128  -m state --state NEW  -j ACCEPT "
     # 
     # Rule  4 (ppp*)
     # ppp clients can not connect to
     # anything else on DMZ and
     # internal net
     echo ":In_RULE_4 - [0:0]"
-    echo "-A INPUT  -i ppp+   -d 192.168.1.0/24   -j In_RULE_4 "
-    echo "-A INPUT  -i ppp+   -d 192.168.2.0/24   -j In_RULE_4 "
-    echo "-A FORWARD  -i ppp+   -d 192.168.1.0/24   -j In_RULE_4 "
-    echo "-A FORWARD  -i ppp+   -d 192.168.2.0/24   -j In_RULE_4 "
+    echo "-A INPUT -i ppp+   -d 192.168.1.0/24   -j In_RULE_4 "
+    echo "-A INPUT -i ppp+   -d 192.168.2.0/24   -j In_RULE_4 "
+    echo "-A FORWARD -i ppp+   -d 192.168.1.0/24   -j In_RULE_4 "
+    echo "-A FORWARD -i ppp+   -d 192.168.2.0/24   -j In_RULE_4 "
     echo "-A In_RULE_4  -j LOG "
     echo "-A In_RULE_4  -j DROP "
     # 
     # Rule  5 (eth2)
     echo ":In_RULE_5 - [0:0]"
-    echo "-A INPUT  -i eth2   -s ! 192.168.2.0/24   -j In_RULE_5 "
-    echo "-A FORWARD  -i eth2   -s ! 192.168.2.0/24   -j In_RULE_5 "
+    echo "-A INPUT -i eth2   -s ! 192.168.2.0/24   -j In_RULE_5 "
+    echo "-A FORWARD -i eth2   -s ! 192.168.2.0/24   -j In_RULE_5 "
     echo "-A In_RULE_5  -j LOG "
     echo "-A In_RULE_5  -j DROP "
     # 
@@ -512,8 +512,8 @@ script_body() {
     echo "-A FORWARD  -j policy_2 "
     # 
     # Rule  20 (eth0)
-    echo "-A INPUT  -i eth0   -j policy_2 "
-    echo "-A FORWARD  -i eth0   -j policy_2 "
+    echo "-A INPUT -i eth0   -j policy_2 "
+    echo "-A FORWARD -i eth0   -j policy_2 "
     # 
     # Rule  22 (global)
     # Automatically generated 'catch all' rule
@@ -534,7 +534,7 @@ script_body() {
     # 
     # Rule  policy_2 0 (eth2)
     echo ":policy_2 - [0:0]"
-    echo "-A policy_2  -o eth2   -m state --state NEW  -j ACCEPT "
+    echo "-A policy_2 -o eth2   -m state --state NEW  -j ACCEPT "
     # 
     # Rule  policy_2 1 (global)
     echo ":policy_2_1 - [0:0]"
@@ -546,7 +546,7 @@ script_body() {
     # 
     # Rule  policy_2_mangle 0 (eth2)
     echo ":policy_2_mangle - [0:0]"
-    echo "-A policy_2_mangle  -o eth2   -m state --state NEW  -j ACCEPT "
+    echo "-A policy_2_mangle -o eth2   -m state --state NEW  -j ACCEPT "
     # 
     # Rule  policy_2_mangle 1 (global)
     # SF bug report 3034628
@@ -585,12 +585,12 @@ script_body() {
     echo "-A FORWARD  -j policy_2_mangle "
     # 
     # Rule  20 (eth0)
-    echo "-A PREROUTING  -i eth0   -j policy_2 "
-    echo "-A FORWARD  -i eth0   -j policy_2 "
+    echo "-A PREROUTING -i eth0   -j policy_2 "
+    echo "-A FORWARD -i eth0   -j policy_2 "
     # 
     # Rule  21 (eth0)
-    echo "-A PREROUTING  -i eth0   -j policy_2_mangle "
-    echo "-A FORWARD  -i eth0   -j policy_2_mangle "
+    echo "-A PREROUTING -i eth0   -j policy_2_mangle "
+    echo "-A FORWARD -i eth0   -j policy_2_mangle "
     #
     echo COMMIT
 
@@ -687,7 +687,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:36 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:29:02 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:36:55 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:21 2011 PST by vadim
 #
 # files: * firewall-ipv6-8.fw /etc/firewall-ipv6-8.fw
 #
@@ -332,10 +332,10 @@ script_body() {
     # 
     # Rule  Policy_OSPF 0 (eth0)
     echo ":Policy_OSPF - [0:0]"
-    echo "-A Policy_OSPF  -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A Policy_OSPF  -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
-    echo "-A Policy_OSPF  -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A Policy_OSPF  -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A Policy_OSPF -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A Policy_OSPF -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A Policy_OSPF -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A Policy_OSPF -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
     # 
     # Rule  Policy_OSPF 1 (global)
     echo "-A Policy_OSPF  -s fe80::/10   -d ff00::/8   -j ACCEPT "
@@ -345,63 +345,63 @@ script_body() {
     # 
     # Rule  Policy_v6 0 (eth0)
     # see #1523
-    echo "-A INPUT  -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A FORWARD  -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
-    echo "-A FORWARD  -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A FORWARD  -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A INPUT -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A FORWARD -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A FORWARD -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A FORWARD -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
     # 
     # Rule  Policy_v6 1 (eth0)
     # see #1523
-    echo "-A INPUT  -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A INPUT -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 2 (eth0)
     # see #1523
-    echo "-A FORWARD  -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A FORWARD -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 3 (eth0)
     # see #1523
-    echo "-A FORWARD  -o eth0   -s fe80::21d:9ff:fe8b:aaaa   -d ff00::/8   -j ACCEPT "
+    echo "-A FORWARD -o eth0   -s fe80::21d:9ff:fe8b:aaaa   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 4 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 5 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 6 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 7 (eth0)
     # see #1523
-    echo "-A INPUT  -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A INPUT  -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
-    echo "-A FORWARD  -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
-    echo "-A OUTPUT  -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
-    echo "-A OUTPUT  -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
-    echo "-A FORWARD  -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A INPUT -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A INPUT -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A FORWARD -i eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    echo "-A FORWARD -o eth0   -s fe80::/10   -d fe80::/10   -j ACCEPT "
     # 
     # Rule  Policy_v6 8 (eth0)
     # see #1523
-    echo "-A INPUT  -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A INPUT -i eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 9 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::/10   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 11 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 12 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 13 (eth0)
     # see #1523
-    echo "-A OUTPUT  -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
+    echo "-A OUTPUT -o eth0   -s fe80::21d:9ff:fe8b:8e94   -d ff00::/8   -j ACCEPT "
     # 
     # Rule  Policy_v6 14 (global)
     echo "-A OUTPUT -p 89  -j Policy_OSPF "
@@ -409,10 +409,10 @@ script_body() {
     echo "-A FORWARD -p 89  -j Policy_OSPF "
     # 
     # Rule  Policy_v6 15 (eth0)
-    echo "-A INPUT  -i eth0  -p 89  -j Policy_OSPF "
-    echo "-A FORWARD  -i eth0  -p 89  -j Policy_OSPF "
-    echo "-A OUTPUT  -o eth0  -p 89  -j Policy_OSPF "
-    echo "-A FORWARD  -o eth0  -p 89  -j Policy_OSPF "
+    echo "-A INPUT -i eth0  -p 89  -j Policy_OSPF "
+    echo "-A FORWARD -i eth0  -p 89  -j Policy_OSPF "
+    echo "-A OUTPUT -o eth0  -p 89  -j Policy_OSPF "
+    echo "-A FORWARD -o eth0  -p 89  -j Policy_OSPF "
     #
     echo COMMIT
 
@@ -484,7 +484,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:36:55 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:21 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:14 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:41 2011 PST by vadim
 #
 # files: * firewall-server-1-s.fw /etc/fw/firewall-server-1-s.fw
 #
@@ -319,7 +319,7 @@ script_body() {
     # 
     # ticket #1338: local override of "Assume fw is part of any"
     # only INPUT chain because ip forwarding is off
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.1   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.1   -j DROP
     # 
     # Rule 2 (eth0)
     # 
@@ -327,8 +327,8 @@ script_body() {
     # 
     # ticket #1338: "assume fw is part of any" is off, ip forwarding is off
     $IPTABLES -N Cid2293081X29313.0
-    $IPTABLES -A INPUT  -i eth0   -s 127.0.0.1   -j Cid2293081X29313.0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.1   -j Cid2293081X29313.0
+    $IPTABLES -A INPUT -i eth0   -s 127.0.0.1   -j Cid2293081X29313.0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.1   -j Cid2293081X29313.0
     $IPTABLES -A Cid2293081X29313.0  -d 127.0.0.1   -j DROP
     $IPTABLES -A Cid2293081X29313.0  -d 192.168.1.1   -j DROP
     # 
@@ -337,7 +337,7 @@ script_body() {
     echo "Rule 3 (eth0)"
     # 
     # ticket #1338: "assume fw is part of any" is off, ip forwarding is off
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.1   -d 192.168.1.1   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.1   -d 192.168.1.1   -j DROP
 }
 
 ip_forward() {
@@ -393,7 +393,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:14 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:41 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

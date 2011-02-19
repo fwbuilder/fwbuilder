@@ -33,6 +33,10 @@
 #include "config.h"
 #include "Configlet.h"
 
+#include <QMap>
+#include <QString>
+
+
 namespace libfwbuilder
 {
     class Interface;
@@ -82,6 +86,8 @@ protected:
         // new chains across different compiler runs (used to process
         // rules in different policy or nat objects)
         std::map<const std::string, bool> *minus_n_commands;
+
+        QMap<QString, libfwbuilder::FWObject*> regular_interfaces;
 
         static const std::list<std::string>& getStandardChains();
 

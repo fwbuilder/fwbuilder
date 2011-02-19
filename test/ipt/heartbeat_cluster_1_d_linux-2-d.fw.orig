@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:30 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:57 2011 PST by vadim
 #
 # files: * heartbeat_cluster_1_d_linux-2-d.fw firewall.sh
 #
@@ -366,49 +366,49 @@ script_body() {
     # 
     echo "Rule -8 heartbeat (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth2.100  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2.100  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -7 heartbeat (automatic)
     # 
     echo "Rule -7 heartbeat (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth2.100  -p udp -m udp  -s 172.20.0.1   -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2.100  -p udp -m udp  -s 172.20.0.1   -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -6 heartbeat (automatic)
     # 
     echo "Rule -6 heartbeat (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -5 heartbeat (automatic)
     # 
     echo "Rule -5 heartbeat (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 192.168.1.1   -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -s 192.168.1.1   -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -4 heartbeat (automatic)
     # 
     echo "Rule -4 heartbeat (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -3 heartbeat (automatic)
     # 
     echo "Rule -3 heartbeat (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -d 224.0.10.100   --dport 694  -j ACCEPT
     # 
     # Rule -2 CONNTRACK (automatic)
     # 
     echo "Rule -2 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
     # 
     # Rule -1 CONNTRACK (automatic)
     # 
     echo "Rule -1 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
     # 
     # Rule 0 (eth0)
     # 
@@ -418,20 +418,20 @@ script_body() {
     $IPTABLES -N In_RULE_0
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A INPUT  -i eth0   -s $i_eth0   -m state --state NEW  -j In_RULE_0 
+    test -n "$i_eth0" && $IPTABLES -A INPUT -i eth0   -s $i_eth0   -m state --state NEW  -j In_RULE_0 
     done
-    $IPTABLES -A INPUT  -i eth0   -s 172.20.0.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.254   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 172.20.0.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.254   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A FORWARD  -i eth0   -s $i_eth0   -m state --state NEW  -j In_RULE_0 
+    test -n "$i_eth0" && $IPTABLES -A FORWARD -i eth0   -s $i_eth0   -m state --state NEW  -j In_RULE_0 
     done
-    $IPTABLES -A FORWARD  -i eth0   -s 172.20.0.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.254   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 172.20.0.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.254   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
     $IPTABLES -A In_RULE_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -439,8 +439,8 @@ script_body() {
     # 
     echo "Rule 1 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo   -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (global)
     # 
@@ -554,120 +554,120 @@ script_body() {
     # 
     echo "Rule 13 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 14 (eth0,eth1)
     # 
     echo "Rule 14 (eth0,eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth2.100   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth2.100   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2.100   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2.100   -m state --state NEW  -j ACCEPT
     # 
     # Rule 15 (eth0)
     # 
     echo "Rule 15 (eth0)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 16 (eth0,eth1)
     # 
     echo "Rule 16 (eth0,eth1)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth2.100   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2.100   -m state --state NEW  -j ACCEPT
     # 
     # Rule 17 (eth0)
     # 
     echo "Rule 17 (eth0)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 18 (eth0,eth1)
     # 
     echo "Rule 18 (eth0,eth1)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth2.100   -m state --state NEW  -j ACCEPT
     # 
     # Rule 19 (eth0)
     # 
     echo "Rule 19 (eth0)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 20 (eth0,eth1)
     # 
     echo "Rule 20 (eth0,eth1)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A FORWARD  -o eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth2.100   -m state --state NEW  -j ACCEPT
     # 
     # Rule 21 (eth0)
     # 
     echo "Rule 21 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i ! eth0   -m state --state NEW  -j ACCEPT
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A OUTPUT  -o ! eth0   -d $i_eth0   -m state --state NEW  -j ACCEPT 
+    test -n "$i_eth0" && $IPTABLES -A OUTPUT -o ! eth0   -d $i_eth0   -m state --state NEW  -j ACCEPT 
     done
-    $IPTABLES -A OUTPUT  -o ! eth0   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o ! eth0   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o ! eth0   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o ! eth0   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o ! eth0   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o ! eth0   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
     # 
     # Rule 22 (eth0,eth1)
     # 
     echo "Rule 22 (eth0,eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2.100   -m state --state NEW  -j ACCEPT
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A OUTPUT  -o eth2   -d $i_eth0   -m state --state NEW  -j ACCEPT 
+    test -n "$i_eth0" && $IPTABLES -A OUTPUT -o eth2   -d $i_eth0   -m state --state NEW  -j ACCEPT 
     done
-    $IPTABLES -A OUTPUT  -o eth2   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A OUTPUT  -o eth2.100   -d $i_eth0   -m state --state NEW  -j ACCEPT 
+    test -n "$i_eth0" && $IPTABLES -A OUTPUT -o eth2.100   -d $i_eth0   -m state --state NEW  -j ACCEPT 
     done
-    $IPTABLES -A OUTPUT  -o eth2.100   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2.100   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth2.100   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2.100   -d 172.20.0.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2.100   -d 192.168.1.2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth2.100   -d 192.168.1.254   -m state --state NEW  -j ACCEPT
     # 
     # Rule 23 (eth0)
     # 
     echo "Rule 23 (eth0)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A INPUT  -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 24 (eth0,eth1)
     # 
     echo "Rule 24 (eth0,eth1)"
     # 
     # fw is part of any is OFF
-    $IPTABLES -A INPUT  -i eth2   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth2.100   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth2.100   -m state --state NEW  -j ACCEPT
 }
 
 ip_forward() {
@@ -723,7 +723,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:30 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:57 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

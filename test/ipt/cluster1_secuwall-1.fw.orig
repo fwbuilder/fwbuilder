@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:28 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:55 2011 PST by vadim
 #
 # files: * cluster1_secuwall-1.fw /etc/cluster1_secuwall-1.fw
 #
@@ -331,49 +331,49 @@ script_body() {
     # 
     echo "Rule -8 VRRP (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o lo  -p vrrp  -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo  -p vrrp  -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -7 VRRP (automatic)
     # 
     echo "Rule -7 VRRP (automatic)"
     # 
-    $IPTABLES -A INPUT  -i lo  -p vrrp  -s 127.0.0.1   -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A INPUT -i lo  -p vrrp  -s 127.0.0.1   -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -6 VRRP (automatic)
     # 
     echo "Rule -6 VRRP (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p vrrp  -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p vrrp  -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -5 VRRP (automatic)
     # 
     echo "Rule -5 VRRP (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p vrrp  -s 192.168.1.3   -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p vrrp  -s 192.168.1.3   -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -4 VRRP (automatic)
     # 
     echo "Rule -4 VRRP (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p vrrp  -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p vrrp  -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -3 VRRP (automatic)
     # 
     echo "Rule -3 VRRP (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p vrrp  -s 172.24.0.3   -d 224.0.0.18   -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p vrrp  -s 172.24.0.3   -d 224.0.0.18   -j ACCEPT
     # 
     # Rule -2 CONNTRACK (automatic)
     # 
     echo "Rule -2 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
     # 
     # Rule -1 CONNTRACK (automatic)
     # 
     echo "Rule -1 CONNTRACK (automatic)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -d 225.0.0.50   --dport 3780  -j ACCEPT
     # 
     # Rule 0 (eth0)
     # 
@@ -381,16 +381,16 @@ script_body() {
     # 
     # anti spoofing rule
     $IPTABLES -N In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 172.24.0.1   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 172.24.0.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.1   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 172.24.0.1   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 172.24.0.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.1   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 172.24.0.1   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 172.24.0.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.1   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 172.24.0.1   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 172.24.0.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.1   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.2   -m state --state NEW  -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth0   -s 192.168.1.0/24   -m state --state NEW  -j In_RULE_0
     $IPTABLES -A In_RULE_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -398,48 +398,48 @@ script_body() {
     # 
     echo "Rule 1 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo   -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (eth0)
     # 
     echo "Rule 2 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 3 (eth0)
     # 
     echo "Rule 3 (eth0)"
     # 
     # "firewall is part of any" OFF
-    $IPTABLES -A FORWARD  -i ! eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i ! eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o ! eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 4 (eth0)
     # 
     echo "Rule 4 (eth0)"
     # 
     # "firewall is part of any" OFF
-    $IPTABLES -A FORWARD  -i eth0   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth0,eth1)
     # 
     echo "Rule 5 (eth0,eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     $IPTABLES -N Cid8117X67022.0
-    $IPTABLES -A OUTPUT  -o eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid8117X67022.0
+    $IPTABLES -A OUTPUT -o eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid8117X67022.0
     $IPTABLES -A Cid8117X67022.0  -d 172.24.0.1   -j ACCEPT
     $IPTABLES -A Cid8117X67022.0  -d 172.24.0.2   -j ACCEPT
     $IPTABLES -A Cid8117X67022.0  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid8117X67022.0  -d 192.168.1.2   -j ACCEPT
     $IPTABLES -N Cid8117X67022.1
-    $IPTABLES -A OUTPUT  -o eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid8117X67022.1
+    $IPTABLES -A OUTPUT -o eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid8117X67022.1
     $IPTABLES -A Cid8117X67022.1  -d 172.24.0.1   -j ACCEPT
     $IPTABLES -A Cid8117X67022.1  -d 172.24.0.2   -j ACCEPT
     $IPTABLES -A Cid8117X67022.1  -d 192.168.1.1   -j ACCEPT
@@ -449,16 +449,16 @@ script_body() {
     # 
     echo "Rule 6 (cl1 intf 0,1)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     $IPTABLES -N Cid39519X67022.0
-    $IPTABLES -A OUTPUT  -o eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid39519X67022.0
+    $IPTABLES -A OUTPUT -o eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid39519X67022.0
     $IPTABLES -A Cid39519X67022.0  -d 172.24.0.1   -j ACCEPT
     $IPTABLES -A Cid39519X67022.0  -d 172.24.0.2   -j ACCEPT
     $IPTABLES -A Cid39519X67022.0  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid39519X67022.0  -d 192.168.1.2   -j ACCEPT
     $IPTABLES -N Cid39519X67022.1
-    $IPTABLES -A OUTPUT  -o eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid39519X67022.1
+    $IPTABLES -A OUTPUT -o eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j Cid39519X67022.1
     $IPTABLES -A Cid39519X67022.1  -d 172.24.0.1   -j ACCEPT
     $IPTABLES -A Cid39519X67022.1  -d 172.24.0.2   -j ACCEPT
     $IPTABLES -A Cid39519X67022.1  -d 192.168.1.1   -j ACCEPT
@@ -469,16 +469,16 @@ script_body() {
     echo "Rule 7 (eth0,eth1)"
     # 
     # "firewall is part of any" OFF
-    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     # 
     # Rule 8 (cl1 intf 0,1)
     # 
     echo "Rule 8 (cl1 intf 0,1)"
     # 
     # "firewall is part of any" OFF
-    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (global)
     # 
@@ -588,7 +588,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:28 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:55 2011 by vadim"
         log "Database was cluster-tests.fwb"
         check_tools
         check_run_time_address_table_files

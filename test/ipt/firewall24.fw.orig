@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:31 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:57 2011 PST by vadim
 #
 # files: * firewall24.fw /etc/fw/firewall24.fw
 #
@@ -299,69 +299,69 @@ script_body() {
     # 
     echo "Rule 0 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -m state --state NEW  -j ACCEPT
     # 
     # Rule 1 (tun*)
     # 
     echo "Rule 1 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i tun+   -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (tun*)
     # 
     echo "Rule 2 (tun*)"
     # 
-    $IPTABLES -A OUTPUT  -o tun+   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o tun+   -m state --state NEW  -j ACCEPT
     # 
     # Rule 3 (tun*)
     # 
     echo "Rule 3 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i tun+   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o tun+   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o tun+   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o tun+   -m state --state NEW  -j ACCEPT
     # 
     # Rule 4 (tun*)
     # 
     echo "Rule 4 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+  -p udp -m udp  -m multiport  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i tun+  -p udp -m udp  -m multiport  --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+  -p udp -m udp  -m multiport  --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i tun+  -p udp -m udp  -m multiport  --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (tun*)
     # 
     echo "Rule 5 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -d 192.168.1.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -d 192.168.1.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (tun*)
     # 
     echo "Rule 6 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (tun*)
     # 
     echo "Rule 7 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -d 224.0.1.141   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -d 224.0.1.141   -m state --state NEW  -j ACCEPT
     # 
     # Rule 8 (tun*)
     # 
     echo "Rule 8 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i tun+   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i tun+   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (tun*)
     # 
     echo "Rule 9 (tun*)"
     # 
-    $IPTABLES -A INPUT  -i tun+   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i tun+   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i tun+   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i tun+   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 10 (global)
     # 
@@ -493,7 +493,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:31 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:57 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

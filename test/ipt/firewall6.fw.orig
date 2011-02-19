@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:34:55 2011 PST by vadim
+#  Generated Fri Feb 18 18:30:22 2011 PST by vadim
 #
 # files: * firewall6.fw /etc/fw/firewall6.fw
 #
@@ -386,7 +386,7 @@ script_body() {
     echo "Rule 0 (eth1)"
     # 
     $IPTABLES -N Cid3C699028.0
-    $IPTABLES -A INPUT  -i eth1   -j Cid3C699028.0
+    $IPTABLES -A INPUT -i eth1   -j Cid3C699028.0
     $IPTABLES -A Cid3C699028.0  -d 22.22.22.22   -j RETURN
     $IPTABLES -A Cid3C699028.0  -d 22.22.23.23   -j RETURN
     $IPTABLES -A Cid3C699028.0  -d 192.168.1.1   -j RETURN
@@ -396,7 +396,7 @@ script_body() {
     $IPTABLES -A In_RULE_0_3  -j LOG  --log-level debug --log-prefix "RULE 0 -- DENY global"
     $IPTABLES -A In_RULE_0_3  -j DROP
     $IPTABLES -N In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -j In_RULE_0
     $IPTABLES -A In_RULE_0  -j LOG  --log-level debug --log-prefix "RULE 0 -- DENY global"
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -513,7 +513,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:34:55 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:30:22 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

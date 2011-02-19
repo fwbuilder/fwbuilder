@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:29 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:55 2011 PST by vadim
 #
 # files: * firewall23-1.fw /etc/fw/firewall23-1.fw
 #
@@ -299,20 +299,20 @@ script_body() {
     # 
     echo "Rule 13 (eth2)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING  -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 1:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 1:12
     # 
     # Rule 14 (eth3)
     # 
     echo "Rule 14 (eth3)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING  -m physdev --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 2:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 2:12
     # 
     # Rule 15 (eth2)
     # 
     echo "Rule 15 (eth2)"
     # 
     $IPTABLES -N Out_RULE_15 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING  -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j Out_RULE_15
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j Out_RULE_15
     $IPTABLES -t mangle -A Out_RULE_15  -j LOG  --log-level debug
     $IPTABLES -t mangle -A Out_RULE_15  -j CLASSIFY  --set-class 1:12
 
@@ -322,29 +322,29 @@ script_body() {
     # 
     echo "Rule 0 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
     # 
     # Rule 1 (eth2,eth3)
     # 
     echo "Rule 1 (eth2,eth3)"
     # 
-    $IPTABLES -A INPUT  -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (eth2,eth3)
     # 
     echo "Rule 2 (eth2,eth3)"
     # 
     $IPTABLES -N In_RULE_2
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 192.168.1.10   -m state --state NEW  -j In_RULE_2
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 192.168.1.20   -m state --state NEW  -j In_RULE_2
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 192.168.1.10   -m state --state NEW  -j In_RULE_2
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 192.168.1.20   -m state --state NEW  -j In_RULE_2
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 192.168.1.10   -m state --state NEW  -j In_RULE_2
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 192.168.1.20   -m state --state NEW  -j In_RULE_2
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 192.168.1.10   -m state --state NEW  -j In_RULE_2
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 192.168.1.20   -m state --state NEW  -j In_RULE_2
     $IPTABLES -A In_RULE_2  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_2  -j ACCEPT
     # 
@@ -354,12 +354,12 @@ script_body() {
     # 
     # testing for bug 1593221
     $IPTABLES -N Cid45546AAE30629.0
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -s 192.168.1.0/24   -m state --state NEW  -j Cid45546AAE30629.0
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -s 192.168.1.0/24   -m state --state NEW  -j Cid45546AAE30629.0
     $IPTABLES -N In_RULE_3
     $IPTABLES -A Cid45546AAE30629.0  -d 192.168.1.10   -j In_RULE_3
     $IPTABLES -A Cid45546AAE30629.0  -d 192.168.1.20   -j In_RULE_3
     $IPTABLES -N Cid45546AAE30629.1
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -s 192.168.1.0/24   -m state --state NEW  -j Cid45546AAE30629.1
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -s 192.168.1.0/24   -m state --state NEW  -j Cid45546AAE30629.1
     $IPTABLES -A Cid45546AAE30629.1  -d 192.168.1.10   -j In_RULE_3
     $IPTABLES -A Cid45546AAE30629.1  -d 192.168.1.20   -j In_RULE_3
     $IPTABLES -A In_RULE_3  -j LOG  --log-level debug
@@ -369,64 +369,64 @@ script_body() {
     # 
     echo "Rule 4 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 192.168.1.255   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 192.168.1.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 192.168.1.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 192.168.1.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth2,eth3)
     # 
     echo "Rule 5 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth2,eth3)
     # 
     echo "Rule 6 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 224.0.1.141   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 224.0.1.141   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 224.0.1.141   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 224.0.1.141   -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (eth2,eth3)
     # 
     echo "Rule 7 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 8 (eth2,eth3)
     # 
     echo "Rule 8 (eth2,eth3)"
     # 
-    $IPTABLES -A OUTPUT  -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (eth2,eth3)
     # 
     echo "Rule 9 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -d ! 192.168.1.0/24   -j DROP
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth3  -d ! 192.168.1.0/24   -j DROP
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -d ! 192.168.1.0/24   -j DROP
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth3  -d ! 192.168.1.0/24   -j DROP
     # 
     # Rule 10 (eth2)
     # 
     echo "Rule 10 (eth2)"
     # 
-    $IPTABLES -A OUTPUT  -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 11 (eth2)
     # 
     echo "Rule 11 (eth2)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-in eth2  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-in eth2  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 12 (eth3)
     # 
     echo "Rule 12 (eth3)"
     # 
-    $IPTABLES -A FORWARD  -m physdev --physdev-out eth3  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 16 (global)
     # 
@@ -564,7 +564,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:29 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:55 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

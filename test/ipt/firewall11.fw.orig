@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:32:57 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:23 2011 PST by vadim
 #
 # files: * firewall11.fw /etc/fw/firewall11.fw
 #
@@ -338,56 +338,56 @@ script_body() {
     # 
     echo "Rule 0 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d 192.168.1.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d 192.168.1.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 1 (eth0)
     # 
     echo "Rule 1 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (eth0)
     # 
     echo "Rule 2 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -o eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 3 (eth0)
     # 
     echo "Rule 3 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth0   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
     # 
     # Rule 4 (eth0)
     # 
     echo "Rule 4 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d 224.0.1.141   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d 224.0.1.141   -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth0)
     # 
     echo "Rule 5 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth0)
     # 
     echo "Rule 6 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -i eth0   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0   -d ! 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (br0)
     # 
     echo "Rule 7 (br0)"
     # 
-    $IPTABLES -A INPUT  -i br0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i br0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     # 
     # Rule 8 (br0)
     # 
     echo "Rule 8 (br0)"
     # 
-    $IPTABLES -A INPUT  -i br0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i br0  -p tcp -m tcp  --dport 22  -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (br0)
     # 
@@ -395,7 +395,7 @@ script_body() {
     # 
     for i_br0 in $i_br0_list
     do
-    test -n "$i_br0" && $IPTABLES -A INPUT  -i br0  -p tcp -m tcp  -d $i_br0   --dport 22  -m state --state NEW  -j ACCEPT 
+    test -n "$i_br0" && $IPTABLES -A INPUT -i br0  -p tcp -m tcp  -d $i_br0   --dport 22  -m state --state NEW  -j ACCEPT 
     done
     # 
     # Rule 10 (br0)
@@ -403,13 +403,13 @@ script_body() {
     echo "Rule 10 (br0)"
     # 
     $IPTABLES -N In_RULE_10
-    $IPTABLES -A INPUT  -i br0   -j In_RULE_10
-    $IPTABLES -A FORWARD  -i br0   -j In_RULE_10
+    $IPTABLES -A INPUT -i br0   -j In_RULE_10
+    $IPTABLES -A FORWARD -i br0   -j In_RULE_10
     $IPTABLES -A In_RULE_10  -j LOG  --log-level debug
     $IPTABLES -A In_RULE_10  -j DROP
     $IPTABLES -N Out_RULE_10
-    $IPTABLES -A OUTPUT  -o br0   -j Out_RULE_10
-    $IPTABLES -A FORWARD  -o br0   -j Out_RULE_10
+    $IPTABLES -A OUTPUT -o br0   -j Out_RULE_10
+    $IPTABLES -A FORWARD -o br0   -j Out_RULE_10
     $IPTABLES -A Out_RULE_10  -j LOG  --log-level debug
     $IPTABLES -A Out_RULE_10  -j DROP
     # 
@@ -589,7 +589,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:32:57 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:23 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

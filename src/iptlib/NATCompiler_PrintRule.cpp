@@ -228,45 +228,6 @@ string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rul
     res << "";
 
     return res.join(" ").toStdString();
-
-
-
-#if 0
-    // OLD SCHOOL
-    std::ostringstream  ostr;
-
-    string iface_name = rule->getInterfaceStr();
-    if (iface_name=="nil") iface_name="";
-
-/* if interface name ends with '*', this is a wildcard
- * interface. Iptables supports wildcard interfaces but uses '+' as a
- * wildcard symbol */
-
-    string::size_type n;
-    if ( (n=iface_name.find("*"))!=string::npos)    iface_name[n]='+';
-
-    ostr << rule->getStr("ipt_chain") << " ";
-
-    switch (rule->getRuleType())
-    {
-    case NATRule::SNAT:  
-	if (!iface_name.empty()) ostr << "-o " << iface_name;
-	break;
-    case NATRule::Masq:  
-	if (!iface_name.empty()) ostr << "-o " << iface_name;
-	break;
-    case NATRule::DNAT:  
-	if (!iface_name.empty()) ostr << "-i " << iface_name;
-	break;
-    case NATRule::Redirect: 
-	if (!iface_name.empty()) ostr << "-i " << iface_name;
-	break;
-    default: break;
-    }
-
-    ostr << " ";
-    return ostr.str();
-#endif
 }
 
 string NATCompiler_ipt::PrintRule::_printProtocol(Service *srv)
@@ -676,10 +637,6 @@ bool NATCompiler_ipt::PrintRule::processNext()
     Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
-
-//    Interface *iface=
-//	Interface::cast( rule->getRoot()->getById(rule->getInterfaceId() ,true) );
-
 
     cmdout << _startRuleLine();
 

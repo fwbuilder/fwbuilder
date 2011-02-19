@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:19 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:45 2011 PST by vadim
 #
 # files: * firewall21-1.fw /etc/fw/firewall21-1.fw
 #
@@ -363,7 +363,7 @@ script_body() {
     # 
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -A OUTPUT  -o eth0   -s $i_eth0   -m state --state NEW  -j ACCEPT 
+    test -n "$i_eth0" && $IPTABLES -A OUTPUT -o eth0   -s $i_eth0   -m state --state NEW  -j ACCEPT 
     done
     # 
     # Rule 1 (global)
@@ -470,7 +470,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:19 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:45 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

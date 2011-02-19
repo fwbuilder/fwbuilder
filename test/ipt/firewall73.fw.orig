@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:35:22 2011 PST by vadim
+#  Generated Fri Feb 18 18:30:49 2011 PST by vadim
 #
 # files: * firewall73.fw /etc/fw/firewall73.fw
 #
@@ -317,43 +317,43 @@ script_body() {
     # 
     echo "Rule 0 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -j DROP
-    $IPTABLES -A OUTPUT  -o eth0   -j DROP
-    $IPTABLES -A FORWARD  -o eth0   -j DROP
+    $IPTABLES -A INPUT -i eth0   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -j DROP
+    $IPTABLES -A FORWARD -o eth0   -j DROP
     # 
     # Rule 1 (eth0)
     # 
     echo "Rule 1 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -j DROP
+    $IPTABLES -A INPUT -i eth0   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -j DROP
     # 
     # Rule 2 (eth0)
     # 
     echo "Rule 2 (eth0)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0   -j DROP
-    $IPTABLES -A FORWARD  -o eth0   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -j DROP
+    $IPTABLES -A FORWARD -o eth0   -j DROP
     # 
     # Rule 3 (lo)
     # 
     echo "Rule 3 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -j DROP
-    $IPTABLES -A OUTPUT  -o lo   -j DROP
+    $IPTABLES -A INPUT -i lo   -j DROP
+    $IPTABLES -A OUTPUT -o lo   -j DROP
     # 
     # Rule 4 (lo)
     # 
     echo "Rule 4 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -j DROP
+    $IPTABLES -A INPUT -i lo   -j DROP
     # 
     # Rule 5 (lo)
     # 
     echo "Rule 5 (lo)"
     # 
-    $IPTABLES -A OUTPUT  -o lo   -j DROP
+    $IPTABLES -A OUTPUT -o lo   -j DROP
     # 
     # Rule 6 (global)
     # 
@@ -368,35 +368,35 @@ script_body() {
     echo "Rule 7 (global)"
     # 
     $IPTABLES -A INPUT  -j DROP
-    $IPTABLES -A FORWARD  -i +   -j DROP
+    $IPTABLES -A FORWARD -i +   -j DROP
     # 
     # Rule 8 (global)
     # 
     echo "Rule 8 (global)"
     # 
     $IPTABLES -A OUTPUT  -j DROP
-    $IPTABLES -A FORWARD  -o +   -j DROP
+    $IPTABLES -A FORWARD -o +   -j DROP
     # 
     # Rule 9 (eth0)
     # 
     echo "Rule 9 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -j DROP
-    $IPTABLES -A OUTPUT  -o eth0   -d 33.33.33.33   -j DROP
-    $IPTABLES -A OUTPUT  -o eth0   -d 172.16.1.1   -j DROP
+    $IPTABLES -A INPUT -i eth0   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -d 33.33.33.33   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -d 172.16.1.1   -j DROP
     # 
     # Rule 10 (eth0)
     # 
     echo "Rule 10 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -j DROP
+    $IPTABLES -A INPUT -i eth0   -j DROP
     # 
     # Rule 11 (eth0)
     # 
     echo "Rule 11 (eth0)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0   -d 33.33.33.33   -j DROP
-    $IPTABLES -A OUTPUT  -o eth0   -d 172.16.1.1   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -d 33.33.33.33   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -d 172.16.1.1   -j DROP
     # 
     # Rule 12 (global)
     # 
@@ -418,33 +418,33 @@ script_body() {
     # 
     $IPTABLES -A OUTPUT  -d 33.33.33.33   -j DROP
     $IPTABLES -A OUTPUT  -d 172.16.1.1   -j DROP
-    $IPTABLES -A FORWARD  -o +   -d 33.33.33.33   -j DROP
-    $IPTABLES -A FORWARD  -o +   -d 172.16.1.1   -j DROP
+    $IPTABLES -A FORWARD -o +   -d 33.33.33.33   -j DROP
+    $IPTABLES -A FORWARD -o +   -d 172.16.1.1   -j DROP
     # 
     # Rule 15 (eth0)
     # 
     echo "Rule 15 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -s 33.33.33.33   -j DROP
-    $IPTABLES -A INPUT  -i eth0   -s 172.16.1.1   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -s 33.33.33.33   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -s 172.16.1.1   -j DROP
-    $IPTABLES -A OUTPUT  -o eth0   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 33.33.33.33   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 172.16.1.1   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -s 33.33.33.33   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -s 172.16.1.1   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -j DROP
     # 
     # Rule 16 (eth0)
     # 
     echo "Rule 16 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -s 33.33.33.33   -j DROP
-    $IPTABLES -A INPUT  -i eth0   -s 172.16.1.1   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -s 33.33.33.33   -j DROP
-    $IPTABLES -A FORWARD  -i eth0   -s 172.16.1.1   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 33.33.33.33   -j DROP
+    $IPTABLES -A INPUT -i eth0   -s 172.16.1.1   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -s 33.33.33.33   -j DROP
+    $IPTABLES -A FORWARD -i eth0   -s 172.16.1.1   -j DROP
     # 
     # Rule 17 (eth0)
     # 
     echo "Rule 17 (eth0)"
     # 
-    $IPTABLES -A OUTPUT  -o eth0   -j DROP
+    $IPTABLES -A OUTPUT -o eth0   -j DROP
     # 
     # Rule 18 (global)
     # 
@@ -460,8 +460,8 @@ script_body() {
     # 
     $IPTABLES -A INPUT  -s 33.33.33.33   -j DROP
     $IPTABLES -A INPUT  -s 172.16.1.1   -j DROP
-    $IPTABLES -A FORWARD  -i +   -s 33.33.33.33   -j DROP
-    $IPTABLES -A FORWARD  -i +   -s 172.16.1.1   -j DROP
+    $IPTABLES -A FORWARD -i +   -s 33.33.33.33   -j DROP
+    $IPTABLES -A FORWARD -i +   -s 172.16.1.1   -j DROP
     # 
     # Rule 20 (global)
     # 
@@ -523,7 +523,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:35:22 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:30:49 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

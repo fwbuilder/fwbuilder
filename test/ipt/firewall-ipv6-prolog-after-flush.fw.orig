@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:07 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:33 2011 PST by vadim
 #
 # files: * firewall-ipv6-prolog-after-flush.fw /etc/firewall-ipv6-prolog-after-flush.fw
 #
@@ -328,7 +328,7 @@ script_body() {
     echo "Rule 0 (global)"
     # 
     $IPTABLES -A INPUT  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i +   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i +   -m state --state NEW  -j ACCEPT
 
 
     # ================ IPv6
@@ -359,7 +359,7 @@ script_body() {
     echo "Rule 0 (global)"
     # 
     $IP6TABLES -A INPUT  -m state --state NEW  -j ACCEPT
-    $IP6TABLES -A FORWARD  -i +   -m state --state NEW  -j ACCEPT
+    $IP6TABLES -A FORWARD -i +   -m state --state NEW  -j ACCEPT
 }
 
 ip_forward() {
@@ -420,7 +420,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:07 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:33 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

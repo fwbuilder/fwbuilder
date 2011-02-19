@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:37:31 2011 PST by vadim
+#  Generated Fri Feb 18 18:32:58 2011 PST by vadim
 #
 # files: * test-shadowing-3.fw /etc/test-shadowing-3.fw
 #
@@ -321,13 +321,13 @@ script_body() {
     # 
     # connlimit
     $IPTABLES -N Policy_1
-    $IPTABLES -A Policy_1  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m connlimit --connlimit-above 10 -j ACCEPT
+    $IPTABLES -A Policy_1 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m connlimit --connlimit-above 10 -j ACCEPT
     # 
     # Rule Policy_1 1 (eth0)
     # 
     echo "Rule Policy_1 1 (eth0)"
     # 
-    $IPTABLES -A Policy_1  -o eth0   -s 192.168.1.0/24   -j DROP
+    $IPTABLES -A Policy_1 -o eth0   -s 192.168.1.0/24   -j DROP
     # ================ Table 'filter', rule set Policy_2
     # 
     # Rule Policy_2 0 (eth0)
@@ -336,13 +336,13 @@ script_body() {
     # 
     # hashlimit
     $IPTABLES -N Policy_2
-    $IPTABLES -A Policy_2  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_2 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-name test -j ACCEPT
     # 
     # Rule Policy_2 1 (eth0)
     # 
     echo "Rule Policy_2 1 (eth0)"
     # 
-    $IPTABLES -A Policy_2  -o eth0   -s 192.168.1.0/24   -j DROP
+    $IPTABLES -A Policy_2 -o eth0   -s 192.168.1.0/24   -j DROP
     # ================ Table 'filter', rule set Policy_3
     # 
     # Rule Policy_3 0 (eth0)
@@ -351,14 +351,14 @@ script_body() {
     # 
     # 50/sec
     $IPTABLES -N Policy_3
-    $IPTABLES -A Policy_3  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_3 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # 
     # Rule Policy_3 1 (eth0)
     # 
     echo "Rule Policy_3 1 (eth0)"
     # 
     # 50/sec
-    $IPTABLES -A Policy_3  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_3 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # ================ Table 'filter', rule set Policy_4
     # 
     # Rule Policy_4 0 (eth0)
@@ -367,28 +367,28 @@ script_body() {
     # 
     # 30/sec
     $IPTABLES -N Policy_4
-    $IPTABLES -A Policy_4  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 30/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_4 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 30/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # 
     # Rule Policy_4 1 (eth0)
     # 
     echo "Rule Policy_4 1 (eth0)"
     # 
     # 50/sec
-    $IPTABLES -A Policy_4  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_4 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # 
     # Rule Policy_4 2 (eth0)
     # 
     echo "Rule Policy_4 2 (eth0)"
     # 
     # htable_rule_4
-    $IPTABLES -A Policy_4  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-mode srcip --hashlimit-name htable_rule_4 -j ACCEPT
+    $IPTABLES -A Policy_4 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-mode srcip --hashlimit-name htable_rule_4 -j ACCEPT
     # 
     # Rule Policy_4 3 (eth0)
     # 
     echo "Rule Policy_4 3 (eth0)"
     # 
     # htable_rule_5
-    $IPTABLES -A Policy_4  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-mode srcip --hashlimit-name htable_rule_5 -j ACCEPT
+    $IPTABLES -A Policy_4 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 10/second --hashlimit-mode srcip --hashlimit-name htable_rule_5 -j ACCEPT
     # ================ Table 'filter', rule set Policy_5
     # 
     # Rule Policy_5 0 (eth0)
@@ -397,14 +397,14 @@ script_body() {
     # 
     # 50/sec
     $IPTABLES -N Policy_5
-    $IPTABLES -A Policy_5  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_5 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 50/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # 
     # Rule Policy_5 1 (eth0)
     # 
     echo "Rule Policy_5 1 (eth0)"
     # 
     # 30/sec
-    $IPTABLES -A Policy_5  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 30/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    $IPTABLES -A Policy_5 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 30/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
     # ================ Table 'filter', rule set Policy
     # 
     # Rule 0 (eth0)
@@ -412,13 +412,13 @@ script_body() {
     echo "Rule 0 (eth0)"
     # 
     # limit 
-    $IPTABLES -A FORWARD  -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m limit --limit 10/second -j ACCEPT
+    $IPTABLES -A FORWARD -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m limit --limit 10/second -j ACCEPT
     # 
     # Rule 1 (eth0)
     # 
     echo "Rule 1 (eth0)"
     # 
-    $IPTABLES -A FORWARD  -o eth0   -s 192.168.1.0/24   -j DROP
+    $IPTABLES -A FORWARD -o eth0   -s 192.168.1.0/24   -j DROP
 }
 
 ip_forward() {
@@ -474,7 +474,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:37:31 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:32:58 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

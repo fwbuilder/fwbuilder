@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:08 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:34 2011 PST by vadim
 #
 # files: * firewall18.fw /etc/fw/firewall18.fw
 #
@@ -394,11 +394,11 @@ script_body() {
     # using address range object
     # 255.255.255.255-255.255.255.255
     $IPTABLES -N In_RULE_0
-    $IPTABLES -A INPUT  -i eth0   -d 255.255.255.255   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth0   -d 255.255.255.255   -j In_RULE_0
     $IPTABLES -A In_RULE_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
     $IPTABLES -A In_RULE_0  -j DROP
     $IPTABLES -N Out_RULE_0
-    $IPTABLES -A OUTPUT  -o eth0   -d 255.255.255.255   -j Out_RULE_0
+    $IPTABLES -A OUTPUT -o eth0   -d 255.255.255.255   -j Out_RULE_0
     $IPTABLES -A Out_RULE_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
     $IPTABLES -A Out_RULE_0  -j DROP
     # 
@@ -406,8 +406,8 @@ script_body() {
     # 
     echo "Rule 1 (lo)"
     # 
-    $IPTABLES -A INPUT  -i lo   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i lo   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo   -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (ppp0)
     # 
@@ -417,18 +417,18 @@ script_body() {
     $IPTABLES -N In_RULE_2
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -A INPUT  -i ppp0   -s $i_ppp0   -j In_RULE_2 
+    test -n "$i_ppp0" && $IPTABLES -A INPUT -i ppp0   -s $i_ppp0   -j In_RULE_2 
     done
-    $IPTABLES -A INPUT  -i ppp0   -s 66.66.66.1   -j In_RULE_2
-    $IPTABLES -A INPUT  -i ppp0   -s 66.66.66.130   -j In_RULE_2
-    $IPTABLES -A INPUT  -i ppp0   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A INPUT -i ppp0   -s 66.66.66.1   -j In_RULE_2
+    $IPTABLES -A INPUT -i ppp0   -s 66.66.66.130   -j In_RULE_2
+    $IPTABLES -A INPUT -i ppp0   -s 192.168.1.1   -j In_RULE_2
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -A FORWARD  -i ppp0   -s $i_ppp0   -j In_RULE_2 
+    test -n "$i_ppp0" && $IPTABLES -A FORWARD -i ppp0   -s $i_ppp0   -j In_RULE_2 
     done
-    $IPTABLES -A FORWARD  -i ppp0   -s 66.66.66.1   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i ppp0   -s 66.66.66.130   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i ppp0   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A FORWARD -i ppp0   -s 66.66.66.1   -j In_RULE_2
+    $IPTABLES -A FORWARD -i ppp0   -s 66.66.66.130   -j In_RULE_2
+    $IPTABLES -A FORWARD -i ppp0   -s 192.168.1.1   -j In_RULE_2
     $IPTABLES -A In_RULE_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
     $IPTABLES -A In_RULE_2  -j DROP
     # 
@@ -437,7 +437,7 @@ script_body() {
     echo "Rule 3 (ppp0)"
     # 
     # but old broadcast is permitted
-    $IPTABLES -A INPUT  -i ppp0   -s 0.0.0.0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i ppp0   -s 0.0.0.0   -m state --state NEW  -j ACCEPT
     # 
     # Rule 4 (global)
     # 
@@ -504,7 +504,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:08 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:34 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:32:52 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:18 2011 PST by vadim
 #
 # files: * firewall.fw /etc/fw/firewall.fw
 #
@@ -535,8 +535,8 @@ script_body() {
     # 
     # Automatically generated rule blocking short fragments
     $IPTABLES -N In_RULE_0
-    $IPTABLES -A INPUT  -i eth1  -p all  -f   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1  -p all  -f   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1  -p all  -f   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1  -p all  -f   -j In_RULE_0
     $IPTABLES -A In_RULE_0  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -546,7 +546,7 @@ script_body() {
     # 
     # тестовый комментарий по-русски. Проверяем конвертацию из/в Utf8
     $IPTABLES -N Cid3B09D29D.0
-    $IPTABLES -A INPUT  -i eth1  -p all  -f   -j Cid3B09D29D.0
+    $IPTABLES -A INPUT -i eth1  -p all  -f   -j Cid3B09D29D.0
     $IPTABLES -N In_RULE_1
     $IPTABLES -A Cid3B09D29D.0  -d 192.168.1.1   -j In_RULE_1
     $IPTABLES -A Cid3B09D29D.0  -d 222.222.222.222   -j In_RULE_1
@@ -559,12 +559,12 @@ script_body() {
     # 
     # Automatically generated anti-spoofing rule
     $IPTABLES -N In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 222.222.222.222   -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 222.222.222.222   -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 222.222.222.222   -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.0/24   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.1   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 222.222.222.222   -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.0/24   -j In_RULE_2
     $IPTABLES -A In_RULE_2  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
     $IPTABLES -A In_RULE_2  -j DROP
     # 
@@ -573,11 +573,11 @@ script_body() {
     echo "Rule 3 (eth1)"
     # 
     $IPTABLES -N Cid47421X33852.0
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.0
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.0
     $IPTABLES -A Cid47421X33852.0  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid47421X33852.0  -d 222.222.222.222   -j ACCEPT
     $IPTABLES -N Cid47421X33852.1
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.1
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid47421X33852.1
     $IPTABLES -A Cid47421X33852.1  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid47421X33852.1  -d 222.222.222.222   -j ACCEPT
     # 
@@ -588,43 +588,43 @@ script_body() {
     # rule in FORWARD chain with
     # -o eth1 and dest address of the firewall
     # is pretty much impossible
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth1)
     # 
     echo "Rule 5 (eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth1)
     # 
     echo "Rule 6 (eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth1  -p udp -m udp  -d 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (eth1)
     # 
     echo "Rule 7 (eth1)"
     # 
     $IPTABLES -N Cid112281X33852.0
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.0
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.0
     $IPTABLES -A Cid112281X33852.0  -s 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid112281X33852.0  -s 222.222.222.222   -j ACCEPT
     $IPTABLES -N Cid112281X33852.1
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.1
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.1
     $IPTABLES -A Cid112281X33852.1  -s 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid112281X33852.1  -s 222.222.222.222   -j ACCEPT
     $IPTABLES -N Cid112281X33852.2
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.2
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  --dport 53  -m state --state NEW  -j Cid112281X33852.2
     $IPTABLES -A Cid112281X33852.2  -s 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid112281X33852.2  -s 222.222.222.222   -j ACCEPT
     # 
@@ -634,31 +634,31 @@ script_body() {
     # 
     # keep FORWARD chain
     # because it is needed for anti-spoofing rules
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (eth1)
     # 
     echo "Rule 9 (eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -o eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -s 222.222.222.222   --dport 53  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -o eth1  -p udp -m udp  -s 192.168.1.10   --dport 53  -m state --state NEW  -j ACCEPT
     # 
     # Rule 10 (eth0)
     # 
     echo "Rule 10 (eth0)"
     # 
     $IPTABLES -N Cid3B92DFC5.0
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.0
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.0
     $IPTABLES -A Cid3B92DFC5.0  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid3B92DFC5.0  -d 222.222.222.222   -j ACCEPT
     $IPTABLES -N Cid3B92DFC5.1
-    $IPTABLES -A OUTPUT  -o eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.1
+    $IPTABLES -A OUTPUT -o eth0  -p udp -m udp  -s 192.168.1.0/24   --dport 53  -m state --state NEW  -j Cid3B92DFC5.1
     $IPTABLES -A Cid3B92DFC5.1  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid3B92DFC5.1  -d 222.222.222.222   -j ACCEPT
     # 
@@ -669,7 +669,7 @@ script_body() {
     # code should go into INPUT chain with 
     # address in destination for comparison
     $IPTABLES -N In_RULE_11
-    $IPTABLES -A INPUT  -i eth0  -p udp -m udp  -d 192.168.1.255   --dport 53  -j In_RULE_11
+    $IPTABLES -A INPUT -i eth0  -p udp -m udp  -d 192.168.1.255   --dport 53  -j In_RULE_11
     $IPTABLES -A In_RULE_11  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
     $IPTABLES -A In_RULE_11  -j DROP
     # 
@@ -677,37 +677,37 @@ script_body() {
     # 
     echo "Rule 12 (eth0)"
     # 
-    $IPTABLES -A INPUT  -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -i eth0  -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
     # 
     # Rule 13 (eth0,eth1)
     # 
     echo "Rule 13 (eth0,eth1)"
     # 
     # reject using connlimit
-    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
-    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
-    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
-    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT -i eth0   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT -i eth0   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT -i eth1   -d 192.168.1.1   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
+    $IPTABLES -A INPUT -i eth1   -d 222.222.222.222   -m connlimit --connlimit-above 2 --connlimit-mask 24 -j DROP
     # 
     # Rule 14 (eth0,eth1)
     # 
     echo "Rule 14 (eth0,eth1)"
     # 
     # reject using connlimit
-    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
-    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
-    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
-    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT -i eth0   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT -i eth0   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT -i eth1   -d 192.168.1.1   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
+    $IPTABLES -A INPUT -i eth1   -d 222.222.222.222   -m dstlimit --dstlimit 2/second --dstlimit-burst 5 --dstlimit-mode destip --dstlimit-name htable_rule_14 -j DROP
     # 
     # Rule 15 (eth0,eth1)
     # 
     echo "Rule 15 (eth0,eth1)"
     # 
-    $IPTABLES -A INPUT  -i eth0   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth0   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth1   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth0   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1   -d 222.222.222.222   -m state --state NEW  -j ACCEPT
     # 
     # Rule 16 (global)
     # 
@@ -716,8 +716,8 @@ script_body() {
     # OUTPUT
     $IPTABLES -N Cid469F1D0830391.0
     $IPTABLES -A OUTPUT  -d 1.1.1.1   -j Cid469F1D0830391.0
-    $IPTABLES -A Cid469F1D0830391.0   -s 192.168.1.1   -j ACCEPT
-    $IPTABLES -A Cid469F1D0830391.0   -s 222.222.222.222   -j ACCEPT
+    $IPTABLES -A Cid469F1D0830391.0  -s 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469F1D0830391.0  -s 222.222.222.222   -j ACCEPT
     # 
     # Rule 17 (global)
     # 
@@ -728,8 +728,8 @@ script_body() {
     # optimization removes it
     $IPTABLES -N Cid469F1CF730391.0
     $IPTABLES -A INPUT  -s 1.1.1.1   -j Cid469F1CF730391.0
-    $IPTABLES -A Cid469F1CF730391.0   -d 192.168.1.1   -j ACCEPT
-    $IPTABLES -A Cid469F1CF730391.0   -d 222.222.222.222   -j ACCEPT
+    $IPTABLES -A Cid469F1CF730391.0  -d 192.168.1.1   -j ACCEPT
+    $IPTABLES -A Cid469F1CF730391.0  -d 222.222.222.222   -j ACCEPT
     # 
     # Rule 18 (global)
     # 
@@ -737,7 +737,7 @@ script_body() {
     # 
     # OUTPUT + FORWARD
     $IPTABLES -A OUTPUT  -d 1.1.1.1   -j ACCEPT
-    $IPTABLES -A FORWARD  -o +   -d 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD -o +   -d 1.1.1.1   -j ACCEPT
     # 
     # Rule 19 (global)
     # 
@@ -745,7 +745,7 @@ script_body() {
     # 
     # INPUT + FORWARD
     $IPTABLES -A INPUT  -s 1.1.1.1   -j ACCEPT
-    $IPTABLES -A FORWARD  -i +   -s 1.1.1.1   -j ACCEPT
+    $IPTABLES -A FORWARD -i +   -s 1.1.1.1   -j ACCEPT
     # 
     # Rule 20 (global)
     # 
@@ -1341,7 +1341,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:32:52 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:18 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

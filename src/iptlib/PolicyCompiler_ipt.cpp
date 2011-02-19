@@ -27,6 +27,7 @@
 
 #include "PolicyCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
+#include "utils.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -260,7 +261,7 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
 
     if (rule_iface)
     {
-        string iface_name=rule_iface->getName();
+        string iface_name = rule_iface->getName();
         string::size_type n=iface_name.find("*");
         str << iface_name.substr(0,n) << "_";
     }
@@ -531,6 +532,7 @@ int PolicyCompiler_ipt::prolog()
                           fwopt->getBool("use_m_set"));
     actually_used_module_set = false;
 
+    build_interface_groups(dbcopy, fw, ipv6, regular_interfaces);
     return n;
 }
 
@@ -579,9 +581,9 @@ bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
 bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     string tgt = rule->getStr("ipt_target");
-    FWOptions      *ruleopt = rule->getOptionsObject();
+    FWOptions *ruleopt = rule->getOptionsObject();
     
     if (compiler->fw->getOptionsObject()->getBool("classify_mark_terminating") &&
         !ruleopt->getBool("already_terminating_target") &&
@@ -622,7 +624,7 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
         ndst = r->getDst();   ndst->reset();
         nsrv = r->getSrv();   nsrv->reset();
         nitfre = r->getItf(); nitfre->reset();
-        r->setInterfaceId(-1);
+        //r->setInterfaceId(-1);
         ruleopt = r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -657,63 +659,30 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
 
 bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    RuleElementItf *itfre=rule->getItf();   assert(itfre);
+    RuleElementItf *itfre = rule->getItf(); assert(itfre);
+
     // sometimes for whatever reason itf rule element appears to be broken
     // (it is just empty, not even "any")
     if (itfre->isAny() || itfre->size()==0)
     {
-        rule->setInterfaceId(-1);
+        //rule->setInterfaceId(-1);
         tmp_queue.push_back(rule);
         return true;
     }
 
-    RuleElementItf *nitfre;
-    PolicyRule *r;
-
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
-        FWObject *o = *i;
-        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
-
-        if (ObjectGroup::isA(o))
-        {
-            // a group in "interface" rule element. GUI checks that only
-            // interfaces are allowed in such group, but we should check anyway.
-            for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
-            {
-                FWObject *o1 = *i;
-                if (FWReference::cast(o1)!=NULL)
-                    o1=FWReference::cast(o1)->getPointer();
-                if (!Interface::isA(o1))
-                {
-                    compiler->warning(
-                            rule, 
-                            "Object '" + o1->getName() +
-                            "', which is not an interface, is a member "
-                            "of the group '" + o->getName() +
-                            "' used in 'Interface' element of this rule.");
-                    continue;
-                }
-                r = compiler->dbcopy->createPolicyRule();
-                compiler->temp_ruleset->add(r);
-                r->duplicate(rule);
-                r->setStr("subrule_suffix","i1");
-                r->setInterfaceId(o1->getId());
-                nitfre = r->getItf(); nitfre->reset(); nitfre->addRef(o1);
-                tmp_queue.push_back(r);
-            }
-        } else
-        {
-            r = compiler->dbcopy->createPolicyRule();
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("subrule_suffix", "i1");
-            r->setInterfaceId(o->getId());
-            nitfre = r->getItf(); nitfre->reset(); nitfre->addRef(o);
-            tmp_queue.push_back(r);
-        }
+        FWObject *o = FWObjectReference::getObject(*i);
+        PolicyRule *r = compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+        r->setStr("subrule_suffix", "i1");
+        //r->setInterfaceId(o->getId());
+        RuleElementItf *nitfre = r->getItf();
+        nitfre->reset(); nitfre->addRef(o);
+        tmp_queue.push_back(r);
     }
     return true;
 }
@@ -856,10 +825,10 @@ bool PolicyCompiler_ipt::storeAction::processNext()
  */
 bool PolicyCompiler_ipt::Logging2::processNext()
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface *rule_iface = Interface::cast(
-        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
@@ -871,7 +840,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
     {
 /*chain could have been assigned if we split this rule before */
         string this_chain = rule->getStr("ipt_chain");
-	string new_chain  = ipt_comp->getNewChainName(rule,rule_iface);
+	string new_chain  = ipt_comp->getNewChainName(rule, NULL); //rule_iface);
 
 	PolicyRule *r;
         FWOptions  *ruleopt;
@@ -974,7 +943,8 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         ipt_comp->registerChain(new_chain);
         ipt_comp->insertUpstreamChain(this_chain, new_chain);
 
-	r->setInterfaceStr("nil");
+        r->setStr(".iface", "nil");
+	//r->setInterfaceStr("nil");
 	r->setDirection( PolicyRule::Both );
 	r->setLogging(false);
         ruleopt->setBool("stateless",true);
@@ -1212,8 +1182,8 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 
         if (!shadowing_mode)
         {
-            ndst=r->getDst();   ndst->reset();
-            nitf=r->getItf();   nitf->reset();
+            ndst = r->getDst();   ndst->reset();
+            nitf = r->getItf();   nitf->reset();
             if ( (nint=r->getWhen())!=NULL )  nint->reset();
 /*
  * special case: need to preserve information about service protocol in case
@@ -1239,6 +1209,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
+
 //	r->setInterfaceStr("nil");
         r->setBool("final",true);
         ruleopt =r->getOptionsObject();
@@ -1323,6 +1294,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
         ruleopt->setBool("stateless",true);  // ###
+
 //	r->setInterfaceStr("nil");
 	tmp_queue.push_back(r);
 
@@ -1364,6 +1336,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
+
 //	r->setInterfaceStr("nil");
         r->setBool("final",true);
         ruleopt =r->getOptionsObject();
@@ -1447,6 +1420,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
         ruleopt->setBool("stateless",true);  // ###
+
 //	r->setInterfaceStr("nil");
 	tmp_queue.push_back(r);
 
@@ -1474,6 +1448,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
         r->setBool("upstream_rule_neg",true);
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
+        
 //	r->setInterfaceStr("nil");
         r->setBool("final",true);
         ruleopt =r->getOptionsObject();
@@ -1559,6 +1534,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
         ruleopt->setBool("stateless",true);  // ###
+        
 //	r->setInterfaceStr("nil");
 	tmp_queue.push_back(r);
 
@@ -1600,6 +1576,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 
 	if ( ! rule->getStr("ipt_target").empty() )
 	    r->setStr("ipt_target",rule->getStr("ipt_target"));
+
 //	r->setInterfaceStr("nil");
         r->setBool("final",true);
         ruleopt =r->getOptionsObject();
@@ -1621,18 +1598,20 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 
 bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
 
-    RuleElementItf *itfre=rule->getItf();   assert(itfre);
+    RuleElementItf *itfre = rule->getItf();   assert(itfre);
     
     if (rule->getDirection()==PolicyRule::Undefined) 
 	rule->setDirection( PolicyRule::Both );
 
     if (itfre->isAny() && rule->getDirection()==PolicyRule::Both) 
     {
-	rule->setInterfaceStr("nil");
+        rule->setStr(".iface", "nil");
+	//rule->setInterfaceStr("nil");
 	return true;
     }
 
@@ -1640,10 +1619,10 @@ bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 	    rule->getDirection()==PolicyRule::Inbound ||
 	    rule->getDirection()==PolicyRule::Outbound ))
     {
-	rule->setInterfaceStr("*");
+        itfre->addRef(ipt_comp->regular_interfaces["*"]);
+	//rule->setInterfaceStr("*");
 	return true;
     }
-
 
     return true;
 }
@@ -1651,7 +1630,7 @@ bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     /*
      * About setting chain for rules with action Tag
@@ -1684,12 +1663,15 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
      * not been assigned yet, direction is Both and there is no
      * interface.
      */
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+
     if ( (rule->getAction() == PolicyRule::Tag ||
           rule->getStr("stored_action")=="Tag") && 
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Inbound) &&
-         rule->getInterfaceId()==-1 )
+         itf_re->isAny())
+//         rule->getInterfaceId()==-1 )
         ipt_comp->setChain(rule, "PREROUTING");
 
     tmp_queue.push_back(rule);
@@ -1701,14 +1683,16 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
     if ( (rule->getAction() == PolicyRule::Tag ||
           rule->getStr("stored_action")=="Tag") && 
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Outbound) &&
-         rule->getInterfaceId()==-1 )
+         itf_re->isAny())
+//         rule->getInterfaceId()==-1 )
         ipt_comp->setChain(rule, "POSTROUTING");
 
     tmp_queue.push_back(rule);
@@ -1782,8 +1766,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     FWOptions *ruleopt = rule->getOptionsObject();
-    Interface *rule_iface = Interface::cast(
-        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
     RuleElementSrc *nsrc;
     RuleElementDst *ndst;
@@ -1801,7 +1784,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
             ruleopt->setBool("already_terminating_target", true);
 
         string this_chain = rule->getStr("ipt_chain");
-	string new_chain = ipt_comp->getNewChainName(rule,rule_iface);
+	string new_chain = ipt_comp->getNewChainName(rule, NULL); // rule_iface);
 
 	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
@@ -1999,14 +1982,18 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
             RuleElementItf *itfre = rule->getItf();
             assert(itfre);
 
-            Interface *rule_iface = Interface::cast(
-                compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+            RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+            Interface *rule_iface = 
+                Interface::cast(FWObjectReference::getObject(itf_re->front()));
+
+//            Interface *rule_iface = Interface::cast(
+//                compiler->dbcopy->findInIndex(rule->getInterfaceId()));
 
             if (rule_iface!=NULL && 
-                (rule_iface->isUnnumbered() ||
-                 rule_iface->isBridgePort() )
-            ) ipt_comp->setChain(rule, "FORWARD");
-            else
+                (rule_iface->isUnnumbered() || rule_iface->isBridgePort() ))
+            {
+                ipt_comp->setChain(rule, "FORWARD");
+            } else
             {
                 PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
@@ -3538,7 +3525,6 @@ bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
  */
 bool PolicyCompiler_ipt::checkForStatefulICMP6Rules::processNext()
 {
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     FWOptions *ruleopt = rule->getOptionsObject();
 
@@ -3922,16 +3908,20 @@ bool PolicyCompiler_ipt::accounting::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface  *rule_iface = Interface::cast(
-        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    Interface *rule_iface = 
+        Interface::cast(FWObjectReference::getObject(itf_re->front()));
 
-    FWOptions  *ruleopt =rule->getOptionsObject();
+//    Interface  *rule_iface = Interface::cast(
+//        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+
+    FWOptions  *ruleopt = rule->getOptionsObject();
 
     if (rule->getAction()==PolicyRule::Accounting &&
         rule->getStr("ipt_target").empty())
     {
         string this_chain = rule->getStr("ipt_chain");
-	string new_chain  = ipt_comp->getNewChainName(rule,rule_iface);
+	string new_chain  = ipt_comp->getNewChainName(rule, rule_iface);
         string rule_name_accounting = ruleopt->getStr("rule_name_accounting");
         if (!rule_name_accounting.empty())
             new_chain = rule_name_accounting;
@@ -4448,7 +4438,9 @@ void PolicyCompiler_ipt::compile()
              "drop rules with action Continue") );
     add( new convertInterfaceIdToStr("prepare interface assignments") );
     add( new optimize3("optimization 3") );
+
     add( new optimizeForMinusIOPlus("optimize for '-i +' / '-o +'") );
+
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
     add( new countChainUsage("Count chain usage"));
@@ -4467,15 +4459,11 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     PolicyRule *rule=PolicyRule::cast(r);
     FWOptions  *ruleopt =rule->getOptionsObject();
 
-
     RuleElementSrc      *srcrel=rule->getSrc();
     RuleElementDst      *dstrel=rule->getDst();
     RuleElementSrv      *srvrel=rule->getSrv();
     RuleElementInterval *intrel=rule->getWhen();
     RuleElementItf      *itfrel=rule->getItf();
-
-//    int iface_id = rule->getInterfaceId();
-//    Interface *rule_iface = fw_interfaces[iface_id];
 
     ostringstream str;
 
@@ -4576,9 +4564,9 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
 
     str << " c=" << printChains(rule);
 
-    str << " t=" << rule->getStr("ipt_target")
-        << " intfId=" << rule->getInterfaceId()
-        << " intfstr=" << rule->getInterfaceStr();
+    str << " t=" << rule->getStr("ipt_target");
+
+    str << " .iface=" << rule->getStr(".iface");
 
     if (rule->getAction()==PolicyRule::Reject)
         str << " " + ruleopt->getStr("action_on_reject");

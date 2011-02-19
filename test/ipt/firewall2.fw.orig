@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:33:12 2011 PST by vadim
+#  Generated Fri Feb 18 18:28:38 2011 PST by vadim
 #
 # files: * firewall2.fw /etc/fw/firewall2.fw
 #
@@ -864,20 +864,20 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 22.22.22.22   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 22.22.23.23   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 22.22.25.50   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.1   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.1   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.2.40   -j In_RULE_0
-    $IPTABLES -A INPUT  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 22.22.22.22   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 22.22.23.23   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 22.22.25.50   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.1   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.1   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.2.40   -j In_RULE_0
-    $IPTABLES -A FORWARD  -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 22.22.22.22   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 22.22.23.23   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 22.22.25.50   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.2.40   -j In_RULE_0
+    $IPTABLES -A INPUT -i eth1   -s 192.168.1.0/24   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 22.22.22.22   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 22.22.23.23   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 22.22.25.50   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.1   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.2.1   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.2.40   -j In_RULE_0
+    $IPTABLES -A FORWARD -i eth1   -s 192.168.1.0/24   -j In_RULE_0
     $IPTABLES -A In_RULE_0  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "Iface: global RULE 0 -- DENY " --ulog-qthreshold 1
     $IPTABLES -A In_RULE_0  -j DROP
     # 
@@ -887,7 +887,7 @@ script_body() {
     # 
     # Anti-spoofing rule
     $IPTABLES -N Cid3AFB6710.0
-    $IPTABLES -A OUTPUT  -o eth1   -j Cid3AFB6710.0
+    $IPTABLES -A OUTPUT -o eth1   -j Cid3AFB6710.0
     $IPTABLES -A Cid3AFB6710.0  -s 22.22.22.22   -j RETURN
     $IPTABLES -A Cid3AFB6710.0  -s 22.22.23.23   -j RETURN
     $IPTABLES -A Cid3AFB6710.0  -s 22.22.25.50   -j RETURN
@@ -899,7 +899,7 @@ script_body() {
     $IPTABLES -A Out_RULE_1_3  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "Iface: global RULE 1 -- DENY " --ulog-qthreshold 1
     $IPTABLES -A Out_RULE_1_3  -j DROP
     $IPTABLES -N Cid3AFB6710.1
-    $IPTABLES -A FORWARD  -o eth1   -j Cid3AFB6710.1
+    $IPTABLES -A FORWARD -o eth1   -j Cid3AFB6710.1
     $IPTABLES -A Cid3AFB6710.1  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -A Cid3AFB6710.1  -j Out_RULE_1_3
     # 
@@ -910,10 +910,10 @@ script_body() {
     # testing group in "interface"
     # this rule should be identical to rule 3
     $IPTABLES -N In_RULE_2
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
-    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
-    $IPTABLES -A FORWARD  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
+    $IPTABLES -A FORWARD -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
     $IPTABLES -A In_RULE_2  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 2 - DENY **" --ulog-qthreshold 1
     $IPTABLES -A In_RULE_2  -j DROP
     # 
@@ -922,10 +922,10 @@ script_body() {
     echo "Rule 3 (eth1,eth3)"
     # 
     $IPTABLES -N In_RULE_3
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
-    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
-    $IPTABLES -A FORWARD  -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
-    $IPTABLES -A FORWARD  -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
+    $IPTABLES -A FORWARD -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
+    $IPTABLES -A FORWARD -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_3
     $IPTABLES -A In_RULE_3  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 3 - DENY **" --ulog-qthreshold 1
     $IPTABLES -A In_RULE_3  -j DROP
     # 
@@ -936,24 +936,24 @@ script_body() {
     # testing choice of chains in case when several
     # interfaces are used and rule matches 'any' or
     # broadcast 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth1,eth3)
     # 
     echo "Rule 5 (eth1,eth3)"
     # 
-    $IPTABLES -A INPUT  -i eth1  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -i eth3  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth1,eth3)
     # 
     echo "Rule 6 (eth1,eth3)"
     # 
-    $IPTABLES -A OUTPUT  -o eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -o eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (global)
     # 
@@ -1470,7 +1470,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:33:12 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:28:38 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

@@ -27,7 +27,8 @@ SOURCES	 =  CompilerDriver_ipt.cpp \
 			PolicyCompiler_secuwall.cpp \
 			RoutingCompiler_ipt.cpp \
 			RoutingCompiler_ipt_writers.cpp \
-			combinedAddress.cpp
+			combinedAddress.cpp \
+			utils.cpp
 
 HEADERS	 = ../../config.h \
 			CompilerDriver_ipt.h \
@@ -40,7 +41,8 @@ HEADERS	 = ../../config.h \
 			PolicyCompiler_ipt.h \
 			PolicyCompiler_secuwall.h \
 			RoutingCompiler_ipt.h \
-			combinedAddress.h
+			combinedAddress.h \
+			utils.h
 
 CONFIG += staticlib
 

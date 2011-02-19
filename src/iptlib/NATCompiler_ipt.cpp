@@ -25,6 +25,7 @@
 
 #include "NATCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
+#include "utils.h"
 
 #include "combinedAddress.h"
 
@@ -214,58 +215,9 @@ int NATCompiler_ipt::prolog()
 	    assert(iface);
 
             if ( iface->isDyn())  iface->setBool("use_var_address",true);
-
-            if (iface->isLoopback() ||
-                iface->isUnnumbered() ||
-                iface->isBridgePort()
-            ) continue;
-
-            /* Bug #1064: "Dedicated IPv6 interfaces show up in
-             * IPv4-NAT rules". Use interface only if it has addresses
-             * that match address family we compile for
-             *
-             * Include interfaces that have no addresses in the list
-             * for backwards compatibility.
-             */
-            FWObjectTypedChildIterator ipv4_addresses =
-                iface->findByType(IPv4::TYPENAME);
-            FWObjectTypedChildIterator ipv6_addresses =
-                iface->findByType(IPv6::TYPENAME);
-
-            if ((ipv6 && ipv6_addresses != ipv6_addresses.end()) ||
-                (!ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
-                (ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end()))
-            {
-                /* 
-                 * regular_interfaces is a set of groups of
-                 * interfaces, where each group holds references to
-                 * all interfaces with "similar names". The group name
-                 * is then the base name of these interfaces with
-                 * numeric index replaced with "*". For example:
-                 * group "eth*" { eth0, eth1, eth2, ... }
-                 *
-                 * if interface name ends with '*', this is wildcard
-                 * interface. Just replace '*' with '+'. If interace
-                 * name does not end with '*', replace numeric
-                 * interface index with '+'.
-                 */
-
-                QString iname = QString(iface->getName().c_str());
-                iname.replace(QRegExp("[0-9]{1,}$"), "+");
-                iname.replace("*", "+");
-                
-                if (regular_interfaces.count(iname) == 0)
-                {
-                    FWObject *itf_group = dbcopy->create(ObjectGroup::TYPENAME);
-                    dbcopy->add(itf_group);
-                    itf_group->setName(iname.toStdString());
-                    regular_interfaces[iname] = itf_group;
-                }
-
-                regular_interfaces[iname]->addRef(iface);
-            }
-
 	}
+
+        build_interface_groups(dbcopy, fw, ipv6, regular_interfaces);
     }
 
     string version = fw->getStr("version");
@@ -2215,7 +2167,6 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                         RuleElementItfOutb *itf_re = rule->getItfOutb();
                         assert(itf_re!=NULL);
                         if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
-                        //rule->setInterfaceId(iface->getId());
                         tmp_queue.push_back(rule);
                         return true;
                     }
@@ -2226,7 +2177,6 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                     RuleElementItfOutb *itf_re = rule->getItfOutb();
                     assert(itf_re!=NULL);
                     if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
-                    //rule->setInterfaceId(iface->getId());
                     tmp_queue.push_back(rule);
                     return true;
                 }
@@ -2238,7 +2188,6 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                     RuleElementItfOutb *itf_re = rule->getItfOutb();
                     assert(itf_re!=NULL);
                     if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
-                    //rule->setInterfaceId(iface->getId());
                     tmp_queue.push_back(rule);
                     return true;
                 }
@@ -2264,6 +2213,8 @@ bool NATCompiler_ipt::AssignInterface::processNext()
              it!=ipt_comp->regular_interfaces.end(); ++it)
         {
             FWObject *itf_group = it.value();
+            // group "*" holds all interfaces
+            if (itf_group->getName() == "*") continue;
             NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);

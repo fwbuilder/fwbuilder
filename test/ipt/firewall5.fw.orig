@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3480
+#  Firewall Builder  fwb_ipt v4.2.0.3482
 #
-#  Generated Thu Feb 17 18:34:49 2011 PST by vadim
+#  Generated Fri Feb 18 18:30:16 2011 PST by vadim
 #
 # files: * firewall5.fw /etc/fw/firewall5.fw
 #
@@ -342,8 +342,8 @@ script_body() {
     echo "Rule 0 (ppp0)"
     # 
     $IPTABLES -N Cid3E4A05B9.0
-    $IPTABLES -A INPUT  -i ppp0   -j Cid3E4A05B9.0
-    $IPTABLES -A FORWARD  -i ppp0   -j Cid3E4A05B9.0
+    $IPTABLES -A INPUT -i ppp0   -j Cid3E4A05B9.0
+    $IPTABLES -A FORWARD -i ppp0   -j Cid3E4A05B9.0
     for i_ppp0 in $i_ppp0_list
     do
     test -n "$i_ppp0" && $IPTABLES -A Cid3E4A05B9.0  -s $i_ppp0   -j RETURN 
@@ -359,8 +359,8 @@ script_body() {
     echo "Rule 1 (ppp1)"
     # 
     $IPTABLES -N Cid3E8F5B72.0
-    $IPTABLES -A INPUT  -i ppp1   -j Cid3E8F5B72.0
-    $IPTABLES -A FORWARD  -i ppp1   -j Cid3E8F5B72.0
+    $IPTABLES -A INPUT -i ppp1   -j Cid3E8F5B72.0
+    $IPTABLES -A FORWARD -i ppp1   -j Cid3E8F5B72.0
     for i_ppp0 in $i_ppp0_list
     do
     test -n "$i_ppp0" && $IPTABLES -A Cid3E8F5B72.0  -s $i_ppp0   -j RETURN 
@@ -376,10 +376,10 @@ script_body() {
     echo "Rule 2 (ppp1,ppp0)"
     # 
     $IPTABLES -N Cid212010X42308.0
-    $IPTABLES -A INPUT  -i ppp1   -j Cid212010X42308.0
-    $IPTABLES -A INPUT  -i ppp0   -j Cid212010X42308.0
-    $IPTABLES -A FORWARD  -i ppp1   -j Cid212010X42308.0
-    $IPTABLES -A FORWARD  -i ppp0   -j Cid212010X42308.0
+    $IPTABLES -A INPUT -i ppp1   -j Cid212010X42308.0
+    $IPTABLES -A INPUT -i ppp0   -j Cid212010X42308.0
+    $IPTABLES -A FORWARD -i ppp1   -j Cid212010X42308.0
+    $IPTABLES -A FORWARD -i ppp0   -j Cid212010X42308.0
     for i_ppp0 in $i_ppp0_list
     do
     test -n "$i_ppp0" && $IPTABLES -A Cid212010X42308.0  -s $i_ppp0   -j RETURN 
@@ -622,7 +622,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Feb 17 18:34:49 2011 by vadim"
+        log "Activating firewall script generated Fri Feb 18 18:30:16 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

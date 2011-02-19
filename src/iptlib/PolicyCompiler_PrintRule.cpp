@@ -85,6 +85,13 @@ using namespace std;
  *                    Methods for printing
  */
 
+string PolicyCompiler_ipt::PrintRule::_printSingleObjectNegation(
+    RuleElement *rel)
+{
+    if (rel->getBool("single_object_negation"))   return "! ";
+    else return "";
+}
+
 /*
  * Prints single --option with argument and negation "!"
  * taking into account the change that happened in iptables 1.4.3.1
@@ -436,47 +443,48 @@ string PolicyCompiler_ipt::PrintRule::_printMultiport(PolicyRule *rule)
 
 string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *rule)
 {
-    std::ostringstream ostr;
+    QStringList res;
 
-    string iface_name = rule->getInterfaceStr();
-    if (iface_name.empty() || iface_name=="nil" )   return "";
+    if (rule->getStr(".iface") == "nil") return "";
 
     RuleElementItf *itfrel = rule->getItf();
 
-/* if interface name ends with '*', this is a wildcard
- * interface. Iptables supports wildcard interfaces but uses '+' as a
- * wildcard symbol */
+    QString iface_name;
+    FWObject *rule_iface_obj = NULL;
+    Interface *rule_iface = NULL;
 
-    string::size_type n;
-    if ( (n=iface_name.find("*"))!=string::npos)    iface_name[n]='+';
-
-    Interface *rule_iface =
-        Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-
-    if (rule_iface && rule_iface->isBridgePort() &&
-        (version.empty() ||
-         XMLTools::version_compare(version, "1.3.0")>=0))
+    if ( ! itfrel->isAny())
     {
-        if (rule->getDirection()==PolicyRule::Inbound)   
-            ostr << " -m physdev --physdev-in "  << iface_name; 
+        rule_iface_obj = FWObjectReference::getObject(itfrel->front());
+        rule_iface = Interface::cast(rule_iface_obj);
+        iface_name = rule_iface_obj->getName().c_str();
 
-        if (rule->getDirection()==PolicyRule::Outbound)  
-            ostr << " -m physdev --physdev-out "  << iface_name; 
-    } else
-    {
-        if (rule->getDirection()==PolicyRule::Inbound)   
-            ostr << _printSingleOptionWithNegation(" -i", itfrel, iface_name);
+        if (iface_name.endsWith("*")) iface_name.replace("*", "+");
+ 
+        if (rule_iface && rule_iface->isBridgePort() &&
+            (version.empty() ||
+             XMLTools::version_compare(version, "1.3.0")>=0))
+        {
+            if (rule->getDirection()==PolicyRule::Inbound)   
+                res << "-m physdev --physdev-in"  << iface_name; 
 
-        if (rule->getDirection()==PolicyRule::Outbound)  
-            ostr << _printSingleOptionWithNegation(" -o", itfrel, iface_name);
+            if (rule->getDirection()==PolicyRule::Outbound)  
+                res << "-m physdev --physdev-out"  << iface_name; 
+        } else
+        {
+            if (rule->getDirection()==PolicyRule::Inbound)   
+                res << _printSingleOptionWithNegation(
+                    "-i", itfrel, iface_name.toStdString()).c_str();
+
+            if (rule->getDirection()==PolicyRule::Outbound)  
+                res << _printSingleOptionWithNegation(
+                    "-o", itfrel, iface_name.toStdString()).c_str();
+        }
+
+        res << "";
     }
 
-//    if (rule->getDirection()==PolicyRule::Both)      
-//        compiler->output << "-i "  << rule_iface->getName() 
-//                         << " -o " << rule_iface->getName(); 
-    ostr << " ";
-
-    return ostr.str();
+    return res.join(" ").toStdString();
 }
 
 string PolicyCompiler_ipt::PrintRule::_printActionOnReject(PolicyRule *rule)
@@ -605,11 +613,15 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
     strncpy(action,rule->getStr("stored_action").c_str(),sizeof(action));
     for (char *cptr=action; *cptr; cptr++)  *cptr=toupper(*cptr);
 
-    string rule_iface =  rule->getInterfaceStr();
-    if (rule_iface=="")  rule_iface = "global";
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
+    string rule_iface_name =  rule_iface->getName();
+
+    if (rule_iface_name=="")     rule_iface_name = "global";
+    if (rule_iface_name=="Any")  rule_iface_name = "global";
 
     std::ostringstream s1;
-    int pos=rule->getPosition();
+    int pos = rule->getPosition();
     // parent_rule_num is set by processor "Branching" for branch rules
     string ppos = rule->getStr("parent_rule_num");
 
@@ -619,7 +631,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
 
     return _printLogPrefix(s1.str(),
                            action,
-                           rule_iface,
+                           rule_iface_name,
                            rule->getStr("ipt_chain"),
                            ruleset->getName(),
                            rule->getLabel(),
@@ -1277,13 +1289,6 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
     return ostr.str();
 }
 
-
-string PolicyCompiler_ipt::PrintRule::_printSingleObjectNegation(
-    RuleElement *rel)
-{
-    if (rel->getBool("single_object_negation"))   return "! ";
-    else return "";
-}
 
 string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
 {
