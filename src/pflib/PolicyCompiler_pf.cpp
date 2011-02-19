@@ -74,11 +74,11 @@ int PolicyCompiler_pf::prolog()
             list<FWObject*> l3=iface->getByType(IPv4::TYPENAME);
             if (l3.size()>0)
             {
-                char errstr[256];
-                sprintf(errstr,
-                        "Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.",
-                        iface->getName().c_str() );
-                warning(errstr );
+                QString err(
+                    "Dynamic interface %1 should not have an IP "
+                    "address object attached to it. This IP address "
+                    "object will be ignored.");
+                warning(err.arg(iface->getName().c_str()).toStdString());
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
                     iface->remove(*j);
             }
@@ -444,11 +444,8 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
                 }
             } catch(FWException &ex)
             {
-                char errstr[256];
-                sprintf(errstr,
-                        "Invalid address for the backup ssh access: '%s'",
-                        mgmt_addr.c_str());
-                abort(errstr);
+                QString err("Invalid address for the backup ssh access: '%1'");
+                abort(err.arg(mgmt_addr.c_str()).toStdString());
             }
 
             Network *mgmt_workstation = dbcopy->createNetwork();
@@ -829,13 +826,14 @@ void PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInte
             ifs->getParent()->getId()!=compiler->fw->getId() &&
             ! ifs->getParent()->getBool("pf_table") )
         {
-            char errstr[2048];
-            sprintf(errstr,"Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown. Rule %s",
-                    ifs->getName().c_str(), 
-                    ifs->getParent()->getName().c_str(),
-                    rule->getLabel().c_str() );
-
-            compiler->abort(rule, errstr);
+            QString err(
+                "Can not build rule using dynamic interface '%1' "
+                "of the object '%2' because its address in unknown.");
+            compiler->abort(
+                rule, 
+                err
+                .arg(ifs->getName().c_str())
+                .arg(ifs->getParent()->getName().c_str()).toStdString());
         }
     }
 }
@@ -1204,7 +1202,7 @@ void PolicyCompiler_pf::insertPfsyncRule()
  * PolicyCompiler has no visibility into platform-specific
  * options and can not do this.
  */
-bool PolicyCompiler_pf::checkForShadowingPlatformSpecific(PolicyRule *r1,
+bool PolicyCompiler_pf::checkForShadowingPlatformSpecific(PolicyRule *,
                                                           PolicyRule *r2)
 {
     bool quick = r2->getBool("quick");

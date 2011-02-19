@@ -41,6 +41,8 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressTable.h"
 
+#include <QString>
+
 #include <iostream>
 
 #include <assert.h>
@@ -408,75 +410,58 @@ bool NATCompiler_ipf::appProxy::processNext()
     bool pptp_proxy  = compiler->getCachedFwOpt()->getBool("ipf_nat_pptp_proxy");
     bool irc_proxy  = compiler->getCachedFwOpt()->getBool("ipf_nat_irc_proxy");
 
-    char ipsec_proxy_str[64];
-    char ftp_proxy_str[64];
-    char rcmd_proxy_str[64];
-    char krcmd_proxy_str[64];
-    char ekshell_proxy_str[64];
-    char raudio_proxy_str[64];
-    char h323_proxy_str[64];
-    char pptp_proxy_str[64];
-    char irc_proxy_str[64];
-
-    sprintf(ipsec_proxy_str,  "proxy port %d ipsec/udp ",  ISAKMP_PORT);
-    sprintf(ftp_proxy_str,    "proxy port %d ftp/tcp ",    FTP_PORT);
-    sprintf(rcmd_proxy_str,   "proxy port %d rcmd/tcp ",   RCMD_PORT);
-    sprintf(krcmd_proxy_str,  "proxy port %d rcmd/tcp ",   KRCMD_PORT);
-    sprintf(ekshell_proxy_str,"proxy port %d rcmd/tcp ",   EKSHELL_PORT);
-    sprintf(raudio_proxy_str, "proxy port %d raudio/tcp ", RAUDIO_PORT);
-    sprintf(h323_proxy_str,   "proxy port %d h323/tcp ",   H323_PORT);
-    sprintf(pptp_proxy_str,   "proxy port %d pptp/tcp ",   PPTP_PORT);
-    sprintf(irc_proxy_str,    "proxy port %d irc/tcp ",    IRC_PORT);
+    QString ipsec_proxy_str = QString("proxy port %1 ipsec/udp ").arg(ISAKMP_PORT);
+    QString ftp_proxy_str = QString("proxy port %1 ftp/tcp ").arg(FTP_PORT);
+    QString rcmd_proxy_str = QString("proxy port %1 rcmd/tcp ").arg(RCMD_PORT);
+    QString krcmd_proxy_str = QString("proxy port %1 rcmd/tcp ").arg(KRCMD_PORT);
+    QString ekshell_proxy_str = QString("proxy port %1 rcmd/tcp ").arg(EKSHELL_PORT);
+    QString raudio_proxy_str = QString("proxy port %1 raudio/tcp ").arg(RAUDIO_PORT);
+    QString h323_proxy_str = QString("proxy port %1 h323/tcp ").arg(H323_PORT);
+    QString pptp_proxy_str = QString("proxy port %1 pptp/tcp ").arg(PPTP_PORT);
+    QString irc_proxy_str = QString("proxy port %1 irc/tcp ").arg(IRC_PORT);
 
 
     if (rule->getRuleType()==NATRule::SNAT || 
         rule->getRuleType()==NATRule::NONAT) 
     {
-        Service          *osrv=compiler->getFirstOSrv(rule);
+        Service *osrv = compiler->getFirstOSrv(rule);
 
         if (UDPService::isA(osrv))
         {
             UDPService *s=UDPService::cast(osrv);
             if (ipsec_proxy && 
-
                 s->getDstRangeStart()==ISAKMP_PORT && s->getDstRangeEnd()==ISAKMP_PORT)  
-                rule->setStr("nat_rule_proxy",ipsec_proxy_str);
+                rule->setStr("nat_rule_proxy", ipsec_proxy_str.toStdString());
         }
 
         if (TCPService::isA(osrv))
         {
-            TCPService *s=TCPService::cast(osrv);
-            if (ftp_proxy && 
-                s->getDstRangeStart()==FTP_PORT && s->getDstRangeEnd()==FTP_PORT )  
-                rule->setStr("nat_rule_proxy",ftp_proxy_str);
+            TCPService *s = TCPService::cast(osrv);
+            int range_start = s->getDstRangeStart();
+            int range_end = s->getDstRangeEnd();
+            if (ftp_proxy && range_start==FTP_PORT && range_end==FTP_PORT)
+                rule->setStr("nat_rule_proxy", ftp_proxy_str.toStdString());
             
-            if (rcmd_proxy &&
-                s->getDstRangeStart()==RCMD_PORT && s->getDstRangeEnd()==RCMD_PORT )   
-                rule->setStr("nat_rule_proxy",rcmd_proxy_str);
+            if (rcmd_proxy && range_start==RCMD_PORT && range_end==RCMD_PORT)
+                rule->setStr("nat_rule_proxy", rcmd_proxy_str.toStdString());
 
-            if (krcmd_proxy &&
-                s->getDstRangeStart()==KRCMD_PORT && s->getDstRangeEnd()==KRCMD_PORT )   
-                rule->setStr("nat_rule_proxy",krcmd_proxy_str);
+            if (krcmd_proxy && range_start==KRCMD_PORT && range_end==KRCMD_PORT )   
+                rule->setStr("nat_rule_proxy", krcmd_proxy_str.toStdString());
 
-            if (ekshell_proxy &&
-                s->getDstRangeStart()==EKSHELL_PORT && s->getDstRangeEnd()==EKSHELL_PORT )   
-                rule->setStr("nat_rule_proxy",ekshell_proxy_str);
+            if (ekshell_proxy && range_start==EKSHELL_PORT && range_end==EKSHELL_PORT )   
+                rule->setStr("nat_rule_proxy", ekshell_proxy_str.toStdString());
 
-            if (raudio_proxy &&
-                s->getDstRangeStart()==RAUDIO_PORT && s->getDstRangeEnd()==RAUDIO_PORT ) 
-                rule->setStr("nat_rule_proxy",raudio_proxy_str);
+            if (raudio_proxy && range_start==RAUDIO_PORT && range_end==RAUDIO_PORT ) 
+                rule->setStr("nat_rule_proxy", raudio_proxy_str.toStdString());
 
-            if (h323_proxy &&
-                s->getDstRangeStart()==H323_PORT && s->getDstRangeEnd()==H323_PORT )   
-                rule->setStr("nat_rule_proxy",h323_proxy_str);
+            if (h323_proxy && range_start==H323_PORT && range_end==H323_PORT )   
+                rule->setStr("nat_rule_proxy", h323_proxy_str.toStdString());
 
-            if (pptp_proxy &&
-                s->getDstRangeStart()==PPTP_PORT && s->getDstRangeEnd()==PPTP_PORT )   
-                rule->setStr("nat_rule_proxy",pptp_proxy_str);
+            if (pptp_proxy && range_start==PPTP_PORT && range_end==PPTP_PORT )   
+                rule->setStr("nat_rule_proxy", pptp_proxy_str.toStdString());
 
-            if (irc_proxy &&
-                s->getDstRangeStart()==IRC_PORT && s->getDstRangeEnd()==IRC_PORT )   
-                rule->setStr("nat_rule_proxy",irc_proxy_str);
+            if (irc_proxy && range_start==IRC_PORT && range_end==IRC_PORT )   
+                rule->setStr("nat_rule_proxy", irc_proxy_str.toStdString());
         }
     }
     tmp_queue.push_back(rule);

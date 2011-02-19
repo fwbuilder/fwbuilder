@@ -138,26 +138,17 @@ bool NATCompiler_pf::PrintRule::processNext()
     Address  *tdst = compiler->getFirstTDst(rule);  //assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  //assert(tsrv);
 
-    char errstr[1024];
-
     if (osrc==NULL || odst==NULL || osrv==NULL ||
         tsrc==NULL || tdst==NULL || tsrv==NULL) 
     {
-        if (osrc==NULL)
-            sprintf(errstr,"NAT rule %s: osrc==NULL", rule->getLabel().c_str());
-        if (odst==NULL)
-            sprintf(errstr,"NAT rule %s: odst==NULL", rule->getLabel().c_str());
-        if (osrv==NULL)
-            sprintf(errstr,"NAT rule %s: osrv==NULL", rule->getLabel().c_str());
-
-        if (tsrc==NULL)
-            sprintf(errstr,"NAT rule %s: tsrc==NULL", rule->getLabel().c_str());
-        if (tdst==NULL)
-            sprintf(errstr,"NAT rule %s: tdst==NULL", rule->getLabel().c_str());
-        if (tsrv==NULL)
-            sprintf(errstr,"NAT rule %s: tsrv==NULL", rule->getLabel().c_str());
-
-        compiler->abort(rule, errstr);
+        QString err;
+        if (osrc==NULL) err = QString("NAT rule %1: osrc==NULL");
+        if (odst==NULL) err = QString("NAT rule %1: odst==NULL");
+        if (osrv==NULL) err = QString("NAT rule %1: osrv==NULL");
+        if (tsrc==NULL) err = QString("NAT rule %1: tsrc==NULL");
+        if (tdst==NULL) err = QString("NAT rule %1: tdst==NULL");
+        if (tsrv==NULL) err = QString("NAT rule %1: tsrv==NULL");
+        compiler->abort(rule, err.arg(rule->getLabel().c_str()).toStdString());
     }
 
     switch ( rule->getRuleType() )

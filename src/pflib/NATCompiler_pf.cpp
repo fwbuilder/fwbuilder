@@ -889,11 +889,12 @@ bool NATCompiler_pf::ReplaceFirewallObjectsTSrc::processNext()
  * happened if all external interfaces are unnumbered */
                 if (rel->size()==0)
                 {
-                    char errmsg[1024];
-                    sprintf(errmsg,
-"Could not find suitable interface for the NAT rule %s. Perhaps all interfaces are unnumbered?", 
-                            rule->getLabel().c_str() );
-                    compiler->abort(rule, errmsg);
+                    QString err(
+                        "Could not find suitable interface for the NAT rule %1. "
+                        "Perhaps all interfaces are unnumbered?");
+                    compiler->abort(
+                        rule,
+                        err.arg(rule->getLabel().c_str()).toStdString());
                 }
             }
 	}
@@ -940,10 +941,9 @@ bool NATCompiler_pf::ReplaceObjectsTDst::processNext()
 
             if (loopback_address==NULL)
             {
-                char errstr[1024];
-                sprintf(errstr, "Can not configure redirection NAT rule %s because loopback interface is missing." ,
-                        rule->getLabel().c_str() );
-                compiler->abort(rule, errstr);
+                compiler->abort(rule, 
+                                "Can not configure redirection for the NAT rule "
+                                "because loopback interface is missing.");
             }
 
             rel->clearChildren();
@@ -1142,13 +1142,13 @@ void NATCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfa
 
         if (ifs && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
         {
-            char errstr[2048];
-            sprintf(errstr,
-                    "Can not build rule using dynamic interface '%s' of the object '%s' because its address is unknown.",
-                    ifs->getName().c_str(), 
-                    ifs->getParent()->getName().c_str());
-
-            compiler->abort(rule, errstr);
+            QString err(
+                "Can not build rule using dynamic interface '%1' "
+                "of the object '%2' because its address is unknown.");
+            compiler->abort(
+                rule, err
+                .arg(ifs->getName().c_str())
+                .arg(ifs->getParent()->getName().c_str()).toStdString());
         }
     }
 }
