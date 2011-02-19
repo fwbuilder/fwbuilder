@@ -714,7 +714,7 @@ bool NATCompiler_pf::AssignInterface::processNext()
     NATCompiler_pf *pf_comp = dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule = getNext(); if (rule==NULL) return false;
 
-    if (rule->getInterfaceStr() == "nil")
+    if (rule->getStr(".iface") == "nil")
     {
         tmp_queue.push_back(rule);
         return true;
@@ -832,10 +832,10 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
 	}
 /*
  * update for ticket 1397 If firewall object is in ODst, do not assign
- * the rule to any interface.  I use attribute set by
- * setInterfaceStr() to signal AssignInterface that it should not do anything.
+ * the rule to any interface.  I use attribute ".iface" to signal
+ * AssignInterface that it should not do anything.
  */
-        rule->setInterfaceStr("nil");
+        rule->setStr(".iface", "nil");
     }
 
     return true;

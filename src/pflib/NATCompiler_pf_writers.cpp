@@ -160,10 +160,8 @@ bool NATCompiler_pf::PrintRule::processNext()
         compiler->abort(rule, errstr);
     }
 
-//    string  iface_name = rule->getInterfaceStr();
-//    if (iface_name=="nil") iface_name="";
-
-    switch ( rule->getRuleType() ) {
+    switch ( rule->getRuleType() )
+    {
     case NATRule::Continue:
     case NATRule::NONAT:
     {
