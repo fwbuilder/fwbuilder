@@ -254,5 +254,7 @@ void instOptionsDialog::testModeToggled()
 {
     m_dialog->rollback->setEnabled(m_dialog->testRun->isChecked());
     m_dialog->rollbackTime->setEnabled(m_dialog->testRun->isChecked());
+
+    if ( ! m_dialog->testRun->isChecked()) m_dialog->rollback->setChecked(false);
 }
 
