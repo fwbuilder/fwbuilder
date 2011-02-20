@@ -186,19 +186,24 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+
+    Interface *i_iface = Interface::cast(
+        FWObjectReference::getObject(itf_in_re->front()));
+    Interface *o_iface = Interface::cast(
+        FWObjectReference::getObject(itf_out_re->front()));
 
     switch (rule->getInt("nonat_type"))
     {
     case NONAT_NAT0:
     {
         nonat n0 = pix_comp->nonat_rules[rule->getId()];
-        Interface *iface1 = n0.i_iface;
-//        Interface *iface2=n0.o_iface;
 
         if (rule->getBool("use_nat_0_0"))
         {
 /* old, < 6.3 */
-            compiler->output << "nat (" << iface1->getLabel() << ") 0 0 0";
+            compiler->output << "nat (" << i_iface->getLabel() << ") 0 0 0";
             compiler->output << endl;
         } else
         {
@@ -222,7 +227,7 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
                              << _printAddress(n0.dst,true)
                              << endl;
 
-            if (pix_comp->first_nonat_rule_id[iface1->getId()]==rule->getId())
+            if (pix_comp->first_nonat_rule_id[i_iface->getId()]==rule->getId())
             {
                 if (compiler->fw->getStr("platform")=="fwsm" && 
                     compiler->fw->getOptionsObject()->getBool(
@@ -232,7 +237,7 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
                     compiler->output << endl;
                 }
                 compiler->output << "nat (" 
-                                 << iface1->getLabel() 
+                                 << i_iface->getLabel() 
                                  << ") 0 access-list " 
                                  << n0.acl_name 
                                  << endl;
@@ -242,22 +247,14 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
     }
     case NONAT_STATIC:
     {
-	Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
-	Address  *odst=compiler->getFirstODst(rule);  assert(odst);
-
-        Interface *osrc_iface = Interface::cast(
-            compiler->dbcopy->findInIndex(helper.findInterfaceByNetzone(osrc)));
-        Interface *odst_iface = Interface::cast(
-            compiler->dbcopy->findInIndex(helper.findInterfaceByNetzone(odst)));
-
-        string addr=odst->getAddressPtr()->toString();
+        string addr = odst->getAddressPtr()->toString();
 	string mask;
 	if (Network::isA(odst)) mask=odst->getNetmaskPtr()->toString();
 	else mask="255.255.255.255";
 
         compiler->output << "static (" 
-                         << odst_iface->getLabel() << ","
-                         << osrc_iface->getLabel() << ") "
+                         << o_iface->getLabel() << ","
+                         << i_iface->getLabel() << ") "
                          << addr << " " << addr 
                          << " netmask " << mask
                          << endl;
@@ -273,22 +270,29 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
     string platform = compiler->fw->getStr("platform");
     string version = compiler->fw->getStr("version");
     string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+version+"/pix_commands/clear_acl");
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/pix_commands/clear_acl");
 
-    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
-    Address  *odst=compiler->getFirstODst(rule);  assert(odst);
-    Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
+    Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+    Address  *odst = compiler->getFirstODst(rule);  assert(odst);
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
                                       
-    Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
-    Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
-    Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
+    Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+    Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
+    Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+
+    Interface *i_iface = Interface::cast(
+        FWObjectReference::getObject(itf_in_re->front()));
+    Interface *o_iface = Interface::cast(
+        FWObjectReference::getObject(itf_out_re->front()));
 
     if ( ! natcmd->ignore_global)
     {
         compiler->output << 
-            "global (" << natcmd->t_iface->getLabel() << ") " 
-                         << natcmd->nat_id;
+            "global (" << o_iface->getLabel() << ") " << natcmd->nat_id;
             
         switch (natcmd->type) 
         {
@@ -315,7 +319,7 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
                              << "-"
                              << ar->getRangeEnd().toString()
                              << " netmask "
-                             << natcmd->t_iface->getNetmaskPtr()->toString()
+                             << o_iface->getNetmaskPtr()->toString()
                              << endl;
         }
         break;
@@ -333,7 +337,7 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
         {
 /* old, < 6.3 */
             compiler->output
-                << "nat (" << natcmd->o_iface->getLabel() << ") "
+                << "nat (" << i_iface->getLabel() << ") "
                 << natcmd->nat_id
                 << " "
                 << natcmd->o_src->getAddressPtr()->toString()  << " "
@@ -377,7 +381,7 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
                     compiler->output << "access-list commit" << endl;
                     compiler->output << endl;
                 }
-                compiler->output << "nat (" << natcmd->o_iface->getLabel() << ") "
+                compiler->output << "nat (" << i_iface->getLabel() << ") "
                                  << natcmd->nat_id
                                  << " access-list "
                                  << natcmd->nat_acl_name;
@@ -400,21 +404,24 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
     string platform = compiler->fw->getStr("platform");
     string version = compiler->fw->getStr("version");
     string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+version+"/pix_commands/clear_acl");
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version+"/pix_commands/clear_acl");
 
-    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
-    Address  *odst=compiler->getFirstODst(rule);  assert(odst);
-    Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
+    Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
+    Address  *odst = compiler->getFirstODst(rule);  assert(odst);
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
                                       
-    Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
-    Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
-    Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
+    Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
+    Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
+    Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    Interface *iface_orig = Interface::cast(
-        compiler->dbcopy->findInIndex(rule->getInt("nat_iface_orig")));
-    Interface *iface_trn  = Interface::cast(
-        compiler->dbcopy->findInIndex(rule->getInt("nat_iface_trn")));
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+
+    Interface *i_iface = Interface::cast(
+        FWObjectReference::getObject(itf_in_re->front()));
+    Interface *o_iface = Interface::cast(
+        FWObjectReference::getObject(itf_out_re->front()));
 
     StaticCmd *scmd = pix_comp->static_commands[ rule->getInt("sc_cmd") ];
 
@@ -431,9 +438,9 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
 /* old, < 6.3 */
 
         compiler->output << "static ("
-                         << iface_trn->getLabel()
+                         << o_iface->getLabel()
                          << ","
-                         << iface_orig->getLabel()
+                         << i_iface->getLabel()
                          << ") " ;
 
         bool use_ports=false;
@@ -459,6 +466,7 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
             compiler->output << " netmask " << outm->toString();
         }
         compiler->output << " " << _printConnOptions(rule) << endl;
+
     } else
     {
 /* new, >=6.3 */
@@ -494,20 +502,28 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
         if (!scmd->ignore_scmd_and_print_acl)
         {
             if (compiler->fw->getStr("platform")=="fwsm" && 
-                compiler->fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+                compiler->fw->getOptionsObject()->getBool("pix_use_manual_commit"))
             {
                 compiler->output << "access-list commit" << endl;
                 compiler->output << endl;
             }
             compiler->output << "static ("
-                             << iface_trn->getLabel()
+                             << o_iface->getLabel()
                              << ","
-                             << iface_orig->getLabel()
+                             << i_iface->getLabel()
                              << ") " ;
 
             bool use_ports=false;
-            if (TCPService::cast(scmd->osrv)) { use_ports=true; compiler->output << "tcp "; }
-            if (UDPService::cast(scmd->osrv)) { use_ports=true; compiler->output << "udp "; }
+            if (TCPService::cast(scmd->osrv))
+            {
+                use_ports=true;
+                compiler->output << "tcp ";
+            }
+            if (UDPService::cast(scmd->osrv))
+            {
+                use_ports=true;
+                compiler->output << "udp ";
+            }
 
             if (Interface::cast(scmd->oaddr)!=NULL)
                 compiler->output << "interface ";
@@ -530,8 +546,8 @@ bool NATCompiler_pix::PrintRule::processNext()
     string platform = compiler->fw->getStr("platform");
     string version = compiler->fw->getStr("version");
     string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+version+"/pix_commands/clear_acl");
+        string("/FWBuilderResources/Target/options/") +
+        "version_" + version + "/pix_commands/clear_acl");
 
     NATRule *rule = getNext(); if (rule==NULL) return false;
     tmp_queue.push_back(rule);

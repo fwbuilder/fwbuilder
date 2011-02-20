@@ -34,6 +34,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			NATCompiler_pix_writers.cpp        \
 			NATCompiler_asa8.cpp               \
 			NATCompiler_asa8_writers.cpp       \
+			NATCompiler_pix_optimizers.cpp     \
 			OSConfigurator_pix_os.cpp          \
 			OSConfigurator_pix_os_fixups.cpp   \
 			OSConfigurator_pix_os_inspectors.cpp       \

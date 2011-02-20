@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3470
+!  Firewall Builder  fwb_pix v4.2.0.3482
 !
-!  Generated Thu Feb 10 15:07:12 2011 PST by vadim
+!  Generated Sat Feb 19 18:59:34 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -74,61 +74,6 @@ object-group network id16988X10208.dst.net.0
 exit
 
 object-group network id4390C25825682.dst.net.0
-  network-object 58.33.181.83 255.255.255.255 
-  network-object 58.53.82.190 255.255.255.255 
-  network-object 58.231.13.78 255.255.255.255 
-  network-object host 61.150.47.112 
-  network-object 61.184.14.102 255.255.255.255 
-  network-object 64.106.85.186 255.255.255.255 
-  network-object 70.228.60.100 255.255.255.255 
-  network-object 80.51.236.6 255.255.255.255 
-  network-object 80.243.72.149 255.255.255.255 
-  network-object 80.249.77.34 255.255.255.255 
-  network-object 81.2.36.254 255.255.255.255 
-  network-object 81.196.74.125 255.255.255.255 
-  network-object 82.77.37.174 255.255.255.255 
-  network-object 82.117.221.205 255.255.255.255 
-  network-object 82.143.196.17 255.255.255.255 
-  network-object 84.90.8.198 255.255.255.255 
-  network-object 151.8.224.178 255.255.255.255 
-  network-object 168.156.76.20 255.255.255.255 
-  network-object 193.207.126.36 255.255.255.255 
-  network-object 195.136.186.35 255.255.255.255 
-  network-object 196.15.136.15 255.255.255.255 
-  network-object 201.10.180.138 255.255.255.255 
-  network-object 201.17.93.16 255.255.255.255 
-  network-object 201.36.156.121 255.255.255.255 
-  network-object 202.96.112.93 255.255.255.255 
-  network-object 202.103.25.253 255.255.255.255 
-  network-object 203.162.3.209 255.255.255.255 
-  network-object 203.209.124.144 255.255.255.255 
-  network-object 210.106.193.237 255.255.255.255 
-  network-object 210.222.114.102 255.255.255.255 
-  network-object 211.144.143.143 255.255.255.255 
-  network-object 211.172.218.237 255.255.255.255 
-  network-object 211.250.16.132 255.255.255.255 
-  network-object 212.21.241.31 255.255.255.255 
-  network-object 212.100.212.100 255.255.255.255 
-  network-object 218.18.72.252 255.255.255.255 
-  network-object 218.39.114.122 255.255.255.255 
-  network-object 218.55.115.43 255.255.255.255 
-  network-object 218.104.138.146 255.255.255.255 
-  network-object 219.132.104.160 255.255.255.255 
-  network-object 220.71.17.86 255.255.255.255 
-  network-object 220.81.50.105 255.255.255.255 
-  network-object 220.91.99.46 255.255.255.255 
-  network-object 221.14.249.242 255.255.255.255 
-  network-object 221.166.177.135 255.255.255.255 
-  network-object 221.198.33.38 255.255.255.255 
-  network-object 221.202.160.233 255.255.255.255 
-  network-object 221.205.54.125 255.255.255.255 
-  network-object 221.217.44.248 255.255.255.255 
-  network-object 222.100.212.223 255.255.255.255 
-  network-object 222.121.118.144 255.255.255.255 
-  network-object 222.174.113.2 255.255.255.255 
-exit
-
-object-group network id4388CFF8674.src.net.0
   network-object 58.33.181.83 255.255.255.255 
   network-object 58.53.82.190 255.255.255.255 
   network-object 58.231.13.78 255.255.255.255 
@@ -214,7 +159,7 @@ access-list outside_acl_in deny   tcp any object-group id4390C25825682.dst.net.0
 access-list inside_acl_in deny   tcp any object-group id4390C25825682.dst.net.0 eq 25 
 ! 
 ! Rule  5 (global)
-access-list outside_acl_in deny   ip object-group id4388CFF8674.src.net.0 any log 6 interval 300
+access-list outside_acl_in deny   ip object-group id4390C25825682.dst.net.0 any log 6 interval 300
 ! 
 ! Rule  6 (global)
 access-list outside_acl_in deny   ip object-group id4390C25825682.dst.net.0 any log 6 interval 300

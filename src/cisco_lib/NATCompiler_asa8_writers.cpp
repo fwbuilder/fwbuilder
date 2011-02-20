@@ -116,14 +116,17 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    Interface *o_iface = Interface::cast(compiler->dbcopy->findInIndex(
-                                             rule->getInt("nat_iface_orig")));
-    Interface *t_iface = Interface::cast(compiler->dbcopy->findInIndex(
-                                             rule->getInt("nat_iface_trn")));
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+
+    Interface *i_iface = Interface::cast(
+        FWObjectReference::getObject(itf_in_re->front()));
+    Interface *o_iface = Interface::cast(
+        FWObjectReference::getObject(itf_out_re->front()));
 
     cmd << QString("nat (%1,%2)")
-        .arg(o_iface->getLabel().c_str())
-        .arg(t_iface->getLabel().c_str());
+        .arg(i_iface->getLabel().c_str())
+        .arg(o_iface->getLabel().c_str());
 
     cmd << "source";
 

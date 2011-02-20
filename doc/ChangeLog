@@ -1,5 +1,15 @@
 2011-02-19  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_pix.cpp (processNext): see #2098 Added support for
+	user-configurable inbound and outbound interfaces in Cisco PIX/ASA
+	NAT rules. Two new columns appear in the rule set view: "Inbound
+	Interface" and "Outbound Interface". If user leaves one or both
+	columns blank, the GUI shows "Auto" in there and policy compiler
+	picks corresponding interface automatically. Leaving both columns
+	blank ("Auto") triggers backwards-compatible automatic behavior
+	where both interfaces are picked automatically. Multiple interface
+	objects and groups of interfaces are allowed in these columns.
+
 	* ClusterInterfaceWidget.cpp (getInterfaceData): fixes #2117 "CARP
 	interfaces in cluster that use VLAN interaces have no interface
 	set to MASTER". When PF cluster configuration was built using vlan

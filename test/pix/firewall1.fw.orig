@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3470
+!  Firewall Builder  fwb_pix v4.2.0.3482
 !
-!  Generated Thu Feb 10 15:07:04 2011 PST by vadim
+!  Generated Sat Feb 19 18:59:23 2011 PST by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -19,6 +19,9 @@
 
 ! C firewall1:Policy:9: error: Dynamic interface can be used in the policy rule only in v6.3 or later.
 ! C firewall1:Policy:9: error: Dynamic interface can be used in the policy rule only in v6.3 or later.
+
+! N firewall1:NAT:4: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
+! N firewall1:NAT:5: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
 
 !
 ! Prolog script:
@@ -137,12 +140,14 @@ nat (inside) 2 192.168.1.0 255.255.255.0 0 0
 global (dmz) 2 interface
 ! 
 nat (dmz) 2 192.168.2.0 255.255.255.0 0 0
+! firewall1:NAT:4: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
 ! 
 ! 
 ! Rule  5 (NAT)
 ! 
 ! 
 ! 
+! firewall1:NAT:5: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
 !
 
 

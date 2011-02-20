@@ -269,21 +269,6 @@ bool NATCompiler_asa8::VerifyRules::processNext()
 bool NATCompiler_asa8::verifyInterfacesInNatRule::processNext()
 {
     NATRule *rule = getNext(); if (rule==NULL) return false;
-
-    Interface *o_iface = Interface::cast(compiler->dbcopy->findInIndex(
-                                             rule->getInt("nat_iface_orig")));
-    Interface *t_iface = Interface::cast(compiler->dbcopy->findInIndex(
-                                             rule->getInt("nat_iface_trn")));
-
-    if (o_iface->getId() == t_iface->getId())
-    {
-        QString err("Objects used in Original Source and Translated Source "
-                    "of the rule dictate that the same interface '%1' is going "
-                    "to be used as real and mapped interface in the generated "
-                    "nat command.");
-        compiler->warning(rule, err.arg(o_iface->getLabel().c_str()).toStdString());
-    }
-
     tmp_queue.push_back(rule);
     return true;
 }

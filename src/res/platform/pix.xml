@@ -646,8 +646,8 @@
         <options_in_policy>True</options_in_policy>
         <supports_nat>True</supports_nat>
         <actions_in_nat>False</actions_in_nat>
-        <inbound_interface_in_nat>False</inbound_interface_in_nat>
-        <outbound_interface_in_nat>False</outbound_interface_in_nat>
+        <inbound_interface_in_nat>True</inbound_interface_in_nat>
+        <outbound_interface_in_nat>True</outbound_interface_in_nat>
         <supports_time>False</supports_time>
         <supports_accounting>False</supports_accounting>
         <security_levels>True</security_levels>

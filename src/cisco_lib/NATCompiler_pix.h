@@ -36,7 +36,8 @@
 #include <map>
 #include <deque>
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
 
     typedef enum { UNKNOWN,
@@ -60,9 +61,9 @@ namespace fwcompiler {
         libfwbuilder::Address    *o_src;   // for "nat" command
         libfwbuilder::Address    *o_dst;   // for "nat" command
         libfwbuilder::Service    *o_srv;   // for acl in "nat" command for 6.3
-        libfwbuilder::Interface  *o_iface; // for "nat" command
         libfwbuilder::Address    *t_addr;  // for "global" command
-        libfwbuilder::Interface  *t_iface; // for "global" command
+        libfwbuilder::Interface  *i_iface; // inbound
+        libfwbuilder::Interface  *o_iface; // ountbound
         int                       nat_id;
         std::string               nat_acl_name;
         global_pool_type          type;
@@ -70,15 +71,18 @@ namespace fwcompiler {
 
     struct StaticCmd
     {
-        bool        ignore_scmd_and_print_acl;
-        std::string             acl_name;
-        std::string             rule;
+        bool ignore_scmd_and_print_acl;
+        std::string acl_name;
+        std::string rule;
         libfwbuilder::Address  *iaddr;
         libfwbuilder::Address  *oaddr;
         libfwbuilder::Address  *osrc;
         libfwbuilder::Service  *osrv;
         libfwbuilder::Service  *tsrv;
+        libfwbuilder::Interface *i_iface; // inbound
+        libfwbuilder::Interface *o_iface; // outbound
         StaticCmd() { };
+        bool operator==(const StaticCmd &other);
     };
 
     class NATCompiler_pix : public NATCompiler
@@ -95,8 +99,8 @@ namespace fwcompiler {
         struct nonat
         {
             std::string              acl_name;
-            libfwbuilder::Interface *i_iface;
-            libfwbuilder::Interface *o_iface;
+            //libfwbuilder::Interface *i_iface;
+            //libfwbuilder::Interface *o_iface;
             libfwbuilder::Address   *src;
             libfwbuilder::Address   *dst;
             bool                     last;
