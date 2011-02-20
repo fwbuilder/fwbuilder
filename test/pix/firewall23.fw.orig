@@ -1,0 +1,126 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3482
+!
+!  Generated Sat Feb 19 18:59:32 2011 PST by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * firewall23.fw
+!
+! lots of different combinations of objects in the NAT rules
+! User sets inbound and outbound interfaces in NAT rules
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+nameif ethernet0 inside security100
+
+nameif ethernet1 outside security0
+
+nameif ethernet2 dmz security50
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+
+telnet timeout 5
+
+clear ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+clear snmp-server
+no snmp-server enable traps
+
+clear ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+floodguard disable
+
+
+
+clear xlate
+clear static
+clear global
+clear nat
+
+
+!################
+
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+access-list id1641246X21763.0 permit ip 192.168.1.0 255.255.255.0  any 
+global (dmz) 1 interface
+! 
+! 
+! Rule  1 (NAT)
+! 
+global (outside) 1 interface
+! 
+! 
+! Rule  2 (NAT)
+! 
+! 
+! 
+! Rule  3 (NAT)
+! 
+! 
+global (dmz) 1 interface
+! 
+! 
+! 
+! Rule  4 (NAT)
+access-list id626114X21763.0 permit ip 192.168.1.0 255.255.255.0  any 
+nat (outside) 1 access-list id626114X21763.0 0 0
+! 
+! 
+! Rule  5 (NAT)
+access-list id36895X21071.0 permit tcp host 192.168.1.1  eq 6667 any 
+static (inside,outside) tcp interface 6667  access-list id36895X21071.0 0 0
+! 
+! Rule  6 (NAT)
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+! 
+! Rule  7 (NAT)
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+! 
+! Rule  8 (NAT)
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+static (inside,outside) tcp interface 6667  access-list id36809X21071.0 0 0
+access-list id1641340X21763.1 permit tcp host 192.168.1.10  eq 6667 any 
+static (inside,dmz) tcp interface 6667  access-list id1641340X21763.1 0 0
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!
