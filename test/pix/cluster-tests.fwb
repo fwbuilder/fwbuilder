@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1269894581" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1269894581" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -51,9 +51,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -69,9 +69,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -100,16 +100,16 @@
     </ObjectGroup>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>
@@ -350,54 +350,54 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13" name="Custom" comment="" ro="False">
         <CustomService id="id3B64EEA8" name="rpc" comment="works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m record_rpc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF4E" name="irc-conn" comment="IRC connection tracker, supports DCC.&#10;Works on iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/&#10;" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m irc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF50" name="psd" comment="Port scan detector, works only on iptables and  requires patch-o-matic &#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m psd --psd-weight-threshold 5 --psd-delay-threshold 10000</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF52" name="string" comment="Matches a string in a whole packet, works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF54" name="talk" comment="Talk protocol support. Works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices" comment="" ro="False"/>
@@ -451,15 +451,15 @@
           <Option name="hashlimit_mode_dstport">False</Option>
           <Option name="hashlimit_mode_srcip">False</Option>
           <Option name="hashlimit_mode_srcport">False</Option>
-          <Option name="hashlimit_name"></Option>
+          <Option name="hashlimit_name"/>
           <Option name="hashlimit_size">0</Option>
           <Option name="hashlimit_suffix">/second</Option>
           <Option name="hashlimit_value">10</Option>
           <Option name="limit_burst">0</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="log_level"></Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_level"/>
+          <Option name="log_prefix"/>
           <Option name="stateless">True</Option>
           <Option name="ulog_nlgroup">1</Option>
         </PolicyRuleOptions>
@@ -496,15 +496,15 @@
           <Option name="hashlimit_mode_dstport">False</Option>
           <Option name="hashlimit_mode_srcip">False</Option>
           <Option name="hashlimit_mode_srcport">False</Option>
-          <Option name="hashlimit_name"></Option>
+          <Option name="hashlimit_name"/>
           <Option name="hashlimit_size">0</Option>
           <Option name="hashlimit_suffix">/second</Option>
           <Option name="hashlimit_value">10</Option>
           <Option name="limit_burst">0</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="log_level"></Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_level"/>
+          <Option name="log_prefix"/>
           <Option name="stateless">True</Option>
           <Option name="ulog_nlgroup">1</Option>
         </PolicyRuleOptions>
@@ -575,16 +575,16 @@
       <FirewallOptions>
         <Option name="accept_established">True</Option>
         <Option name="accept_new_tcp_with_no_syn">True</Option>
-        <Option name="action_on_reject"></Option>
-        <Option name="activationCmd"></Option>
-        <Option name="admUser"></Option>
-        <Option name="altAddress"></Option>
+        <Option name="action_on_reject"/>
+        <Option name="activationCmd"/>
+        <Option name="admUser"/>
+        <Option name="altAddress"/>
         <Option name="bridging_fw">False</Option>
         <Option name="check_shading">False</Option>
         <Option name="clamp_mss_to_mtu">False</Option>
         <Option name="classify_mark_terminating">False</Option>
-        <Option name="cmdline"></Option>
-        <Option name="compiler"></Option>
+        <Option name="cmdline"/>
+        <Option name="compiler"/>
         <Option name="configure_interfaces">True</Option>
         <Option name="configure_vlan_interfaces">True</Option>
         <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
@@ -592,7 +592,7 @@
         <Option name="dns_fixup">2 65535 0 nil 0</Option>
         <Option name="drop_invalid">False</Option>
         <Option name="eliminate_duplicates">true</Option>
-        <Option name="epilog_script"></Option>
+        <Option name="epilog_script"/>
         <Option name="espike_fixup">2 0 0 nil 0</Option>
         <Option name="firewall_dir">/etc</Option>
         <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -605,9 +605,9 @@
         <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
         <Option name="ignore_empty_groups">False</Option>
         <Option name="ils_fixup">2 389 389 nil 0</Option>
-        <Option name="ipt_mangle_only_rulesets"></Option>
+        <Option name="ipt_mangle_only_rulesets"/>
         <Option name="ipv4_6_order">ipv4_first</Option>
-        <Option name="limit_suffix"></Option>
+        <Option name="limit_suffix"/>
         <Option name="limit_value">0</Option>
         <Option name="linux24_ip_forward">1</Option>
         <Option name="load_modules">True</Option>
@@ -623,11 +623,11 @@
         <Option name="macosx_ip_forward">1</Option>
         <Option name="manage_virtual_addr">True</Option>
         <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-        <Option name="mgmt_addr"></Option>
+        <Option name="mgmt_addr"/>
         <Option name="mgmt_ssh">False</Option>
         <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
         <Option name="openbsd_ip_forward">1</Option>
-        <Option name="output_file"></Option>
+        <Option name="output_file"/>
         <Option name="pf_limit_frags">5000</Option>
         <Option name="pf_limit_states">10000</Option>
         <Option name="pf_timeout_frag">30</Option>
@@ -643,31 +643,31 @@
         <Option name="pix_floodguard">true</Option>
         <Option name="pix_include_comments">true</Option>
         <Option name="pix_ip_address">True</Option>
-        <Option name="pix_ntp1"></Option>
+        <Option name="pix_ntp1"/>
         <Option name="pix_ntp1_pref">False</Option>
-        <Option name="pix_ntp2"></Option>
+        <Option name="pix_ntp2"/>
         <Option name="pix_ntp2_pref">False</Option>
-        <Option name="pix_ntp3"></Option>
+        <Option name="pix_ntp3"/>
         <Option name="pix_ntp3_pref">False</Option>
         <Option name="pix_route_dnat_supported">true</Option>
         <Option name="pix_rule_syslog_settings">false</Option>
         <Option name="pix_security_fragguard_supported">true</Option>
         <Option name="pix_set_communities_from_object_data">False</Option>
         <Option name="pix_set_host_name">True</Option>
-        <Option name="pix_snmp_poll_traps_1"></Option>
-        <Option name="pix_snmp_poll_traps_2"></Option>
-        <Option name="pix_snmp_server1"></Option>
-        <Option name="pix_snmp_server2"></Option>
+        <Option name="pix_snmp_poll_traps_1"/>
+        <Option name="pix_snmp_poll_traps_2"/>
+        <Option name="pix_snmp_server1"/>
+        <Option name="pix_snmp_server2"/>
         <Option name="pix_syslog_device_id_supported">false</Option>
         <Option name="pix_tcpmss">False</Option>
         <Option name="pix_tcpmss_value">0</Option>
         <Option name="pix_use_acl_remarks">true</Option>
         <Option name="pptp_fixup">2 1723 0 nil 0</Option>
         <Option name="prolog_place">top</Option>
-        <Option name="prolog_script"></Option>
+        <Option name="prolog_script"/>
         <Option name="rsh_fixup">2 514 0 nil 0</Option>
         <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-        <Option name="scpArgs"></Option>
+        <Option name="scpArgs"/>
         <Option name="secuwall_add_files">False</Option>
         <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
         <Option name="secuwall_dns_reso1">files</Option>
@@ -677,7 +677,7 @@
         <Option name="smtp_fixup">2 25 25 nil 0</Option>
         <Option name="solaris_ip_forward">1</Option>
         <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-        <Option name="sshArgs"></Option>
+        <Option name="sshArgs"/>
         <Option name="tftp_fixup">2 69 0 nil 0</Option>
         <Option name="ulog_cprange">0</Option>
         <Option name="ulog_nlgroup">1</Option>
@@ -715,6 +715,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -1029,6 +1032,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -1217,6 +1223,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -1492,12 +1501,12 @@
           <Interface id="id3814X97641" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
             <IPv4 id="id3816X97641" name="pix1:Ethernet0:Ethernet0.101:ip" comment="" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
             <InterfaceOptions>
-              <Option name="bonding_policy"></Option>
-              <Option name="bondng_driver_options"></Option>
+              <Option name="bonding_policy"/>
+              <Option name="bondng_driver_options"/>
               <Option name="enable_stp">False</Option>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">101</Option>
-              <Option name="xmit_hash_policy"></Option>
+              <Option name="xmit_hash_policy"/>
             </InterfaceOptions>
           </Interface>
           <Interface id="id3817X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="id11817X97641" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
@@ -1522,16 +1531,16 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
           <Option name="conn_hh">0</Option>
@@ -1542,7 +1551,7 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -1561,9 +1570,9 @@
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1579,11 +1588,11 @@
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -1591,7 +1600,7 @@
           <Option name="pix_acl_basic">True</Option>
           <Option name="pix_acl_no_clear">False</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">True</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -1605,7 +1614,7 @@
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_generate_out_acl">True</Option>
@@ -1620,14 +1629,14 @@
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">False</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -1638,16 +1647,16 @@
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_set_communities_from_object_data">False</Option>
           <Option name="pix_set_host_name">True</Option>
-          <Option name="pix_snmp_poll_traps_1"></Option>
-          <Option name="pix_snmp_poll_traps_2"></Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_poll_traps_1"/>
+          <Option name="pix_snmp_poll_traps_2"/>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">0</Option>
-          <Option name="pix_syslog_device_id_opt"></Option>
+          <Option name="pix_syslog_device_id_opt"/>
           <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_syslog_device_id_val"></Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_device_id_val"/>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
@@ -1656,13 +1665,13 @@
           <Option name="pix_use_manual_commit">False</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">0</Option>
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="secuwall_add_files">False</Option>
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
@@ -1678,7 +1687,7 @@
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">False</Option>
           <Option name="uauth_hh">0</Option>
@@ -1725,12 +1734,12 @@
           <Interface id="id2818X95537" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
             <IPv4 id="id2826X97641" name="pix2:Ethernet0:Ethernet0.101:ip" comment="" ro="False" address="192.0.2.254" netmask="255.255.255.0"/>
             <InterfaceOptions>
-              <Option name="bonding_policy"></Option>
-              <Option name="bondng_driver_options"></Option>
+              <Option name="bonding_policy"/>
+              <Option name="bondng_driver_options"/>
               <Option name="enable_stp">False</Option>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">101</Option>
-              <Option name="xmit_hash_policy"></Option>
+              <Option name="xmit_hash_policy"/>
             </InterfaceOptions>
           </Interface>
           <Interface id="id3315X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="id11817X97641" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
@@ -1755,16 +1764,16 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
           <Option name="conn_hh">0</Option>
@@ -1775,7 +1784,7 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -1794,9 +1803,9 @@
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1812,11 +1821,11 @@
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -1824,7 +1833,7 @@
           <Option name="pix_acl_basic">True</Option>
           <Option name="pix_acl_no_clear">False</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">True</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -1838,7 +1847,7 @@
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_generate_out_acl">True</Option>
@@ -1853,14 +1862,14 @@
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">False</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -1871,16 +1880,16 @@
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_set_communities_from_object_data">False</Option>
           <Option name="pix_set_host_name">True</Option>
-          <Option name="pix_snmp_poll_traps_1"></Option>
-          <Option name="pix_snmp_poll_traps_2"></Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_poll_traps_1"/>
+          <Option name="pix_snmp_poll_traps_2"/>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">0</Option>
-          <Option name="pix_syslog_device_id_opt"></Option>
+          <Option name="pix_syslog_device_id_opt"/>
           <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_syslog_device_id_val"></Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_device_id_val"/>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
@@ -1889,13 +1898,13 @@
           <Option name="pix_use_manual_commit">False</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">0</Option>
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="secuwall_add_files">False</Option>
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
@@ -1911,7 +1920,7 @@
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">False</Option>
           <Option name="uauth_hh">0</Option>
@@ -1971,16 +1980,16 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
           <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
@@ -1988,7 +1997,7 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -2001,9 +2010,9 @@
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -2019,11 +2028,11 @@
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -2039,31 +2048,31 @@
           <Option name="pix_floodguard">true</Option>
           <Option name="pix_include_comments">true</Option>
           <Option name="pix_ip_address">True</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">False</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_set_communities_from_object_data">False</Option>
           <Option name="pix_set_host_name">True</Option>
-          <Option name="pix_snmp_poll_traps_1"></Option>
-          <Option name="pix_snmp_poll_traps_2"></Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_poll_traps_1"/>
+          <Option name="pix_snmp_poll_traps_2"/>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="secuwall_add_files">False</Option>
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
@@ -2073,7 +2082,7 @@
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
@@ -2122,16 +2131,16 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
           <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
@@ -2139,7 +2148,7 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -2152,9 +2161,9 @@
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -2170,11 +2179,11 @@
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -2190,31 +2199,31 @@
           <Option name="pix_floodguard">true</Option>
           <Option name="pix_include_comments">true</Option>
           <Option name="pix_ip_address">True</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">False</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_set_communities_from_object_data">False</Option>
           <Option name="pix_set_host_name">True</Option>
-          <Option name="pix_snmp_poll_traps_1"></Option>
-          <Option name="pix_snmp_poll_traps_2"></Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_poll_traps_1"/>
+          <Option name="pix_snmp_poll_traps_2"/>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="secuwall_add_files">False</Option>
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
@@ -2224,7 +2233,7 @@
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
