@@ -181,7 +181,8 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
     {
         QTreeWidgetItem *item = ifacelist.list->selectedItems().first();
         Interface* iface = item->data(0, Qt::UserRole).value<Interface*>();
-        res.interfaces.append(qMakePair(Firewall::cast(iface->getParent()), iface));
+        res.interfaces.append(
+            qMakePair(Firewall::cast(iface->getParentHost()), iface));
     }
     return res;
 }

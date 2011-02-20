@@ -1,5 +1,12 @@
 2011-02-19  vadim  <vadim@netcitadel.com>
 
+	* ClusterInterfaceWidget.cpp (getInterfaceData): fixes #2117 "CARP
+	interfaces in cluster that use VLAN interaces have no interface
+	set to MASTER". When PF cluster configuration was built using vlan
+	interfaces of member firewalls, CARP interfaces were not properly
+	configured with master/slave choice user makes on the first page
+	of the new cluster wizard.
+
 	* configlets/bsd/update_addresses: fixes #2116 "When CARP
 	interface IP address can't be assigned error or warning should
 	appear". The problem actually affects any type of interface.

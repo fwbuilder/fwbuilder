@@ -89,12 +89,17 @@ void newClusterDialog::createNewCluster()
     o->setStr("host_OS",
               this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("host_OS"));
 
-    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 1";
+    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster()"
+                           << "Creating interfaces";
 
     foreach(EditedInterfaceData data, this->m_dialog->interfaceEditor->getNewData())
     {
         Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
         oi->setName(string(data.name.toUtf8().constData()));
+
+        if (fwbdebug)
+            qDebug() << "newClusterDialog::createNewCluster()"
+                     << "Interface" << data.name;
 
         ncl->add(oi);
         oi->setLabel(string(data.label.toUtf8().constData()));
@@ -155,7 +160,9 @@ void newClusterDialog::createNewCluster()
         }
 
         if (fwbdebug)
-            qDebug() << "newClusterDialog::createNewCluster() checkpoint 2";
+            qDebug() << "newClusterDialog::createNewCluster()"
+                     << "Setting up failover group"
+                     << "master=" << master;
 
         FWOptions *ifopt;
         ifopt = oi->getOptionsObject();
@@ -181,11 +188,16 @@ void newClusterDialog::createNewCluster()
             Firewall *member_fw = intf.first;
             Interface *member_intf = intf.second;
 
+            if (fwbdebug)
+                qDebug() << "Adding"
+                         << "member_fw=" << member_fw
+                         << "member_intf=" << member_intf->getName().c_str();
+
             id_mapping[member_intf->getId()] = oi->getId();
 
             failover_grp->addRef(member_intf);
 
-            if (member_fw == master)
+            if (master!=NULL && member_fw == master)
             {
                 std::string masteriface_id =
                     FWObjectDatabase::getStringId(member_intf->getId());

@@ -84,30 +84,30 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
         throw FWException("ClusterGroupDialog: parent is NULL!");
     }
     cluster = Cluster::cast(parent);
-    QString host_os = cluster->getStr("host_OS").c_str();
+    string host_os = cluster->getStr("host_OS");
 
     // Sanity check
     // Failover type could be wrong if user changed host OS of the cluster
-    QString type = obj->getStr("type").c_str();
+    string type = obj->getStr("type");
 
     list<QStringPair> possible_cluster_group_types;
     if (StateSyncClusterGroup::isA(o))
-        getStateSyncTypesForOS(host_os, possible_cluster_group_types);
+        getStateSyncTypesForOS(host_os.c_str(), possible_cluster_group_types);
     if (FailoverClusterGroup::isA(o))
-        getFailoverTypesForOS(host_os, possible_cluster_group_types);
+        getFailoverTypesForOS(host_os.c_str(), possible_cluster_group_types);
 
-    enable_master_column = Resources::os_res[host_os.toStdString()]->getResourceBool(
-        "/FWBuilderResources/Target/protocols/" + type.toStdString() + "/needs_master");
+    enable_master_column = Resources::os_res[host_os]->getResourceBool(
+        "/FWBuilderResources/Target/protocols/" + type + "/needs_master");
 
-    if (!enable_master_column)
-        m_dialog->fwMemberTree->hideColumn(2);
+    if (enable_master_column) m_dialog->fwMemberTree->showColumn(2);
+    else m_dialog->fwMemberTree->hideColumn(2);
     
     bool acceptable_failover_type = false;
     for (list<QStringPair>::iterator it=possible_cluster_group_types.begin();
          it!=possible_cluster_group_types.end(); ++it)
     {
         QString t = it->first;
-        if (t == type)
+        if (t == QString(type.c_str()))
         {
             acceptable_failover_type = true;
             break;
@@ -137,13 +137,12 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     // init link icons, master firewall is colored
     m_dialog->fwMemberTree->clear();
 
-    std::string master_iface = g->getStr("master_iface");
+    string master_iface = g->getStr("master_iface");
     for (FWObject::iterator it = g->begin(); it != g->end(); it++)
     {
-        FWObject *co = *it;
-        if (FWReference::cast(co)!=NULL)
+        FWObject *o = FWObjectReference::getObject(*it);
+        if (Interface::isA(o))
         {
-            FWObject *o = FWReference::cast(*it)->getPointer();
             if (master_iface == FWObjectDatabase::getStringId(o->getId()))
             {
                 addIcon(o, true);
@@ -155,18 +154,17 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
         }
     }
 
-    if (!Resources::getTargetCapabilityBool(host_os.toStdString(),
-                                            "supports_cluster"))
+    if (!Resources::getTargetCapabilityBool(host_os, "supports_cluster"))
     {
         m_dialog->manageMembers->setEnabled(false);
-        m_dialog->manageMembers->setToolTip("Feature not supported "
-                                            "by host OS '" + host_os + "'");
+        m_dialog->manageMembers->setToolTip(
+            QObject::tr("Feature not supported by host OS '%1'").arg(host_os.c_str()));
     }
     else
     {
         m_dialog->manageMembers->setEnabled(true);
-        m_dialog->manageMembers->setToolTip("Click here to manage member "
-                                            "firewalls of this cluster group.");
+        m_dialog->manageMembers->setToolTip(
+            QObject::tr("Click here to manage member firewalls of this cluster group."));
     }
 
     m_dialog->fwMemberTree->resizeColumnToContents(0);
@@ -189,12 +187,16 @@ void ClusterGroupDialog::saveGroupType(FWObject *group)
 {
     QString host_os = cluster->getStr("host_OS").c_str();
     list<QStringPair> possible_cluster_group_types;
-    if (StateSyncClusterGroup::isA(obj)) getStateSyncTypesForOS(host_os, possible_cluster_group_types);
-    if (FailoverClusterGroup::isA(obj)) getFailoverTypesForOS(host_os, possible_cluster_group_types);
+    if (StateSyncClusterGroup::isA(obj))
+        getStateSyncTypesForOS(host_os, possible_cluster_group_types);
+    if (FailoverClusterGroup::isA(obj))
+        getFailoverTypesForOS(host_os, possible_cluster_group_types);
 
     QString  grp_type = m_dialog->type->currentText();
     list<QStringPair>::iterator li =
-        std::find_if(possible_cluster_group_types.begin(), possible_cluster_group_types.end(), findSecondInQStringPair(grp_type));
+        std::find_if(possible_cluster_group_types.begin(),
+                     possible_cluster_group_types.end(),
+                     findSecondInQStringPair(grp_type));
     if (li != possible_cluster_group_types.end())
         group->setStr("type", li->first.toLatin1().constData() );
 }
