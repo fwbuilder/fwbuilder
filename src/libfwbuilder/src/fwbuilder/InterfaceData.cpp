@@ -131,18 +131,23 @@ void InterfaceData::guessLabel(const string&)
  *  in PIX interfaces have names like "PIX Firewall 'inside' interface"
  *
  */
-    string pat1="PIX Firewall '";
-    string pat2="' interface";
+    string pat1 = "PIX Firewall '";
+    string pat2 = "Adaptive Security Appliance '";
+    string pat3 = "' interface";
     string::size_type p2;
-    if ( name.find(pat1)==0 && (p2=name.find(pat2))!=string::npos )
-        label=name.substr( pat1.size() , p2-pat1.size() );
+
+    if ( name.find(pat1)==0 && (p2=name.find(pat3))!=string::npos )
+        label = name.substr( pat1.size() , p2-pat1.size() );
+
+    if ( name.find(pat2)==0 && (p2=name.find(pat3))!=string::npos )
+        label = name.substr( pat2.size() , p2-pat2.size() );
 
     if (!isDyn &&
         !isUnnumbered &&
         !isBridgePort &&
         addr_mask.size()!=0 &&
         addr_mask.front()->getAddressPtr()->toString() == InetAddr::getLoopbackAddr().toString())
-        label="loopback";
+        label = "loopback";
 }
 
 void InterfaceData::guessSecurityLevel(const string&)

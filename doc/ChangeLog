@@ -1,3 +1,11 @@
+2011-02-21  vadim  <vadim@netcitadel.com>
+
+	* InterfaceData.cpp (guessLabel): fixes #2113 "ASA/PIX SNMP
+	discovery - assign default labels based on interface description".
+	Added pattern to match Cisco ASA interface description which is
+	different from Cisco PIX interface descriptions as returned via
+	snmp.
+
 2011-02-20  vadim  <vadim@netcitadel.com>
 
 	* BaseCompiler.cpp (getErrorsForRule): fixes #2124 "some error

@@ -346,6 +346,8 @@ void newFirewallDialog::monitor()
 
     timer->stop();
 
+    QString platform = readPlatform(m_dialog->platform);
+
     map<int, InterfaceData>* intf = q->getInterfaces();
     map<int, InterfaceData>::iterator i;
     this->m_dialog->interfaceEditor1->clear();
@@ -354,9 +356,50 @@ void newFirewallDialog::monitor()
     {
         InterfaceData* idata = &(i->second);
 
-        if ( idata->ostatus )
+        if (fwbdebug)
         {
-            idata->guessLabel(readPlatform(m_dialog->platform).toStdString());
+            qDebug() << "------------------------------------------------";
+            qDebug() << "id=" << idata->id.c_str();
+            qDebug() << "name=" << idata->name.c_str();
+            qDebug() << "snmp_type=" << idata->snmp_type;
+            qDebug() << "ostatus=" << idata->ostatus;
+            qDebug() << "mac_addr=" << idata->mac_addr.c_str();
+            qDebug() << "interface_type=" << idata->interface_type.c_str();
+            qDebug() << "";
+        }
+
+        /*
+         * some special treatment of discovered interfaces for Cisco ASA devices:
+         * if mac address is reported as 00:00:00:00:00:00 or
+         * 00:00:00:anything, this is usually some kind of internal special
+         * interface and we can skip it. Examples: "_internal_loopback",
+         * "Internal-Data0/1"
+         *
+         * This is different from how Linux reports mac address of a
+         * loopback because Linux snmpd returns empty string for the
+         * loopback mac address.
+         *
+         * The name of the interface reported by ASA is like this:
+         * "Adaptive Security Appliance 'Ethernet0/0' interface"
+         *
+         * Need to strip all thie verbose description
+         */ 
+
+        if (idata->ostatus)
+        {
+            idata->guessLabel(platform.toStdString());
+
+            if (platform == "pix" || platform == "fwsm")
+            {
+                if ( ! idata->mac_addr.empty() && idata->snmp_type == 1 &&
+                     idata->mac_addr.find("00:00:00")==0) continue;
+
+                QString name = idata->name.c_str();
+                name.replace("Adaptive Security Appliance '", "");
+                name.replace("' interface", "");
+                idata->name = name.toStdString();
+            }
+
             this->m_dialog->interfaceEditor1->addInterfaceFromData(idata);
         }
     }
