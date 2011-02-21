@@ -1107,4 +1107,168 @@ void setDefaultFailoverGroupAttributes(FailoverClusterGroup *grp)
     }
 }
 
+void guessInterfaceLabel(InterfaceData *idata)
+{
+/*
+ *  some firewalls report fairly regular names for interfaces through
+ *  their built-in SNMP agent. We can use this to assign labels
+ *  automatically.
+ *
+ *  in PIX interfaces have names like "PIX Firewall 'inside' interface"
+ *
+ */
+    QString qs_name = idata->name.c_str();
+    QString qs_label;
+
+    QRegExp pat1("Adaptive Security Appliance '(.*)' interface");
+    QRegExp pat2("Cisco PIX Security Appliance '(.*)' interface");
+    QRegExp pat3("PIX Firewall '(.*)' interface");
+
+    if (pat1.indexIn(qs_name) > -1) qs_label = pat1.cap(1);
+    if (pat2.indexIn(qs_name) > -1) qs_label = pat2.cap(1);
+    if (pat3.indexIn(qs_name) > -1) qs_label = pat3.cap(1);
+
+    idata->label = qs_label.toStdString();
+
+    if ( ! idata->isDyn &&
+         ! idata->isUnnumbered &&
+         ! idata->isBridgePort &&
+         idata->addr_mask.size()!=0 &&
+         idata->addr_mask.front()->getAddressPtr()->toString() == InetAddr::getLoopbackAddr().toString())
+        idata->label = "loopback";
+}
+
+void guessSecurityLevel(const string&, InterfaceData *idata)
+{
+    InetAddrMask n10(InetAddr("10.0.0.0"), InetAddr("255.0.0.0"));
+    InetAddrMask n172(InetAddr("172.16.0.0"), InetAddr("255.240.0.0"));
+    InetAddrMask n192(InetAddr("192.168.0.0"), InetAddr("255.255.0.0"));
+
+    idata->securityLevel = -1;
+
+    string llbl = idata->label;
+
+    for (string::size_type i=0; i<llbl.length(); i++)
+        llbl[i] = tolower( llbl[i] );
+
+    if ( llbl=="out" ||
+         llbl=="ext" ||
+         llbl=="internet" ||
+         llbl=="wan" ||
+         llbl=="dsl" ||
+         llbl=="cable" ||
+         llbl.find("outside")!=string::npos ||
+         llbl.find("external")!=string::npos) idata->securityLevel = 0;
+
+    if ( llbl=="lan" ||
+         llbl=="in" ||
+         llbl.find("inside")!=string::npos ||
+         llbl.find("internal")!=string::npos ) idata->securityLevel = 100;
+
+    if ( llbl.find("dmz")!=string::npos ) idata->securityLevel = 50;
+
+    if ( (*(idata->addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
+        idata->securityLevel = 100; 
+
+    if (idata->name=="Null0") idata->securityLevel = 100; 
+
+    if (idata->securityLevel==-1 &&
+        ! idata->isDyn && ! idata->isUnnumbered && ! idata->isBridgePort)
+    {
+        if (n10.belongs(  InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
+            idata->securityLevel = 100;
+
+        if (n172.belongs( InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
+            idata->securityLevel = 100;
+
+        if (n192.belongs( InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
+            idata->securityLevel = 100;
+    }
+
+    if (idata->isDyn || idata->isUnnumbered || idata->isBridgePort)
+        idata->securityLevel = 0;
+
+    if (idata->securityLevel==-1) idata->securityLevel = 0;
+}
+
+
+class sort_order_func_adaptor
+{
+    public:
+
+    explicit sort_order_func_adaptor() {}
+
+    bool operator()(const InterfaceData &a, const InterfaceData &b)
+    {
+        if (a.label=="outside") return true;
+        if (b.label=="inside")  return true;
+        return (a.securityLevel<b.securityLevel || a.label<b.label || a.name<b.name);
+    }
+};
+
+
+
+
+void guessSecurityLevel(const string &platform, list<InterfaceData> &ifaces)
+{
+// first pass - try to find internal and external interfaces and
+// assign sec. levels and labels
+
+//    bool supports_security_levels=Resources::getTargetCapabilityBool(platform,
+//                                                                     "security_levels");
+
+    list<InterfaceData> res;
+
+    if (ifaces.size()==1)
+    {
+        guessSecurityLevel(platform, &(ifaces.front()));
+        return;
+    }
+
+    if (ifaces.size()==2)
+    {
+        const InetAddr *address = ifaces.front().addr_mask.front()->getAddressPtr();
+        if (*address==InetAddr::getLoopbackAddr())
+        {
+            ifaces.front().securityLevel=100;
+            ifaces.back().securityLevel=0;
+        } else
+        {
+            const InetAddr *address = ifaces.back().addr_mask.front()->getAddressPtr();
+            if (*address==InetAddr::getLoopbackAddr()) 
+            {
+                ifaces.front().securityLevel=0;
+                ifaces.back().securityLevel=100;
+            } else
+            {
+                guessSecurityLevel(platform, &(ifaces.front()));
+                guessSecurityLevel(platform, &(ifaces.back()));
+            }
+        }
+        ifaces.sort(sort_order_func_adaptor());
+        return;
+    }
+    else
+    {
+        for (list<InterfaceData>::iterator i=ifaces.begin(); i!=ifaces.end(); i++)
+        {
+            guessSecurityLevel(platform, &(*i));
+        }
+    }
+
+    ifaces.sort(sort_order_func_adaptor());
+
+// second pass - Assign sec. levels evenly if it is pix, or all zeros in all other cases.
+
+    int sec_level_step= 100 / ( ifaces.size() - 1 );
+    int sec_level = 0;
+
+    for (list<InterfaceData>::iterator i=ifaces.begin(); i!=ifaces.end(); i++)
+    {
+        i->securityLevel=sec_level;
+        sec_level += sec_level_step;
+    }
+}
+
+
 

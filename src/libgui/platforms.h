@@ -37,7 +37,8 @@
 #include <list>
 #include <utility>
 
-#include <fwbuilder/Rule.h>
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/InterfaceData.h"
 
 
 namespace libfwbuilder
@@ -95,6 +96,32 @@ void getSubInterfaceTypes(libfwbuilder::Interface *iface, std::list<QStringPair>
 void setInterfaceTypes(QComboBox *iface_type,
                        libfwbuilder::Interface *iface,
                        const QString &current_type);
+
+/**
+ *  this method is a collection of heuristics that allow us to assign
+ *  a reasonable label to the interface based on firewall platform,
+ *  name of the interface, its label and other parameters.
+ */
+void guessInterfaceLabel(libfwbuilder::InterfaceData *idata);
+
+/**
+ *  this method is a collection of heuristics that allow us to make an
+ *  educated guess about interface's security level based on the
+ *  firewall platform, name of the interface, its label and other
+ *  parameters.
+ */
+void guessSecurityLevel(const std::string &platform,
+                        libfwbuilder::InterfaceData *idata);
+
+/**
+ *  This method is a collection of heuristics that allow us to assign
+ *  a reasonable security level to many interfaces based on firewall
+ *  platform, their names and labels and other parameters. This method
+ *  compares parameters of many interfaces and in certain cases can
+ *  guess their relative security levels.
+ */
+void  guessSecurityLevel(const std::string &platform, 
+                         std::list<libfwbuilder::InterfaceData> &interfaces);
 
 /**
  * !!! returns a list of log levels that can be used to populate qcombobox

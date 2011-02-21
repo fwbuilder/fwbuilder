@@ -251,7 +251,7 @@ void  newHostDialog::monitor()
         InterfaceData* idata = &(i->second);
         if ( idata->ostatus )
         {
-            idata->guessLabel("");
+            guessInterfaceLabel(idata);
             this->m_dialog->interfaceEditor->addInterfaceFromData(idata);
         }
     }

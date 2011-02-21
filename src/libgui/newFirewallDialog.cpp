@@ -387,7 +387,7 @@ void newFirewallDialog::monitor()
 
         if (idata->ostatus)
         {
-            idata->guessLabel(platform.toStdString());
+            guessInterfaceLabel(idata);
 
             if (platform == "pix" || platform == "fwsm")
             {
@@ -396,6 +396,7 @@ void newFirewallDialog::monitor()
 
                 QString name = idata->name.c_str();
                 name.replace("Adaptive Security Appliance '", "");
+                name.replace("Cisco PIX Security Appliance '", "");
                 name.replace("PIX Firewall '", "");
                 name.replace("' interface", "");
                 idata->name = name.toStdString();
@@ -780,8 +781,8 @@ void newFirewallDialog::getInterfaceDataFromInterfaceEditor(
     {
         try
         {
-            idata.guessSecurityLevel(
-                readPlatform(m_dialog->platform).toStdString() );
+            guessSecurityLevel(
+                readPlatform(m_dialog->platform).toStdString(), &idata);
         }
         catch (FWException &ex)
         {
