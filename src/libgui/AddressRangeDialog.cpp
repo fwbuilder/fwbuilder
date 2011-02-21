@@ -111,6 +111,7 @@ void AddressRangeDialog::validate(bool *res)
     try
     {
         InetAddr(m_dialog->rangeStart->text().toLatin1().constData());
+        InetAddr(m_dialog->rangeEnd->text().toLatin1().constData());
     } catch (FWException &ex)
     {
         *res = false;
@@ -118,32 +119,15 @@ void AddressRangeDialog::validate(bool *res)
         if (QApplication::focusWidget() != NULL)
         {
             blockSignals(true);
-            QMessageBox::critical(this, "Firewall Builder",
-                                  tr("Illegal IP address '%1'").arg(m_dialog->rangeStart->text()),
-                                  tr("&Continue"), 0, 0,
-                                  0 );
-            blockSignals(false);
-        }
-    }
-    try
-    {
-        InetAddr(m_dialog->rangeEnd->text().toLatin1().constData());
-    } catch (FWException &ex)
-    {
-        *res = false;
-        if (QApplication::focusWidget() != NULL)
-        {
-            blockSignals(true);
-            QMessageBox::critical(this, "Firewall Builder",
-                                  tr("Illegal IP address '%1'").arg(m_dialog->rangeEnd->text()),
-                                  tr("&Continue"), 0, 0,
-                                  0 );
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                QString::fromUtf8(ex.toString().c_str()),
+                tr("&Continue"), 0, 0,
+                0 );
             blockSignals(false);
         }
     }
 }
-
-
 
 
 void AddressRangeDialog::applyChanges()
@@ -159,8 +143,16 @@ void AddressRangeDialog::applyChanges()
     new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
-        s->setRangeStart( InetAddr(m_dialog->rangeStart->text().toLatin1().constData()) );
-        s->setRangeEnd( InetAddr(m_dialog->rangeEnd->text().toLatin1().constData()) );
+        InetAddr addr_start(m_dialog->rangeStart->text().toStdString());
+        InetAddr addr_end(m_dialog->rangeEnd->text().toStdString());
+        if (addr_end < addr_start)
+        {
+            addr_end = addr_start;
+            m_dialog->rangeEnd->setText(addr_end.toString().c_str());
+        }
+
+        s->setRangeStart(addr_start);
+        s->setRangeEnd(addr_end);
     } catch (FWException &ex)
     {
 

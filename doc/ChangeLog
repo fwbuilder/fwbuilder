@@ -1,5 +1,13 @@
 2011-02-21  vadim  <vadim@netcitadel.com>
 
+	* AddressRangeDialog.cpp (applyChanges): fixes #1971 "Address
+	range can be created with end address lower than start address".
+	Address Range object dialog should not let the user enter range
+	end address which is lower than range start address. Dialog
+	behavior is now similar to the behavior of the tcp and udp service
+	dialog where user can not enter port range end number lower than
+	port range start number.
+
 	* InterfaceData.cpp (guessLabel): fixes #2113 "ASA/PIX SNMP
 	discovery - assign default labels based on interface description".
 	Added pattern to match Cisco ASA interface description which is
