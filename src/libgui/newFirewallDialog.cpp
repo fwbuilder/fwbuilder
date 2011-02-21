@@ -671,7 +671,8 @@ void newFirewallDialog::showPage(const int page)
 
         m_dialog->templateList->clear();
 
-        int n=0;
+        int n = 0;
+        QListWidgetItem *first_template = NULL;
         for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++,n++)
         {
             FWObject *o = *m;
@@ -706,10 +707,13 @@ void newFirewallDialog::showPage(const int page)
             m_dialog->templateList->addItem( twi );
             templates[ m_dialog->templateList->item(
                     m_dialog->templateList->count()-1 ) ] = o;
+
+            if (first_template == NULL) first_template = twi;
         }
 
         m_dialog->templateList->setFocus();
-        m_dialog->templateList->setCurrentItem(0);
+        m_dialog->templateList->setCurrentItem(first_template,
+                                               QItemSelectionModel::SelectCurrent);
         m_dialog->finishButton->setDefault(false);
         m_dialog->nextButton->setDefault(true);
         break;

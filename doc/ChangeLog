@@ -1,5 +1,11 @@
 2011-02-21  vadim  <vadim@netcitadel.com>
 
+	* newFirewallDialog.cpp (showPage): fixes #1678 "When creating a
+	firewall from template it appears that a default template is
+	selected". When user arrives at the page where they choose
+	template to create new firewall object from, the first template
+	should be automatically selected.
+
 	* AddressRangeDialog.cpp (applyChanges): fixes #1971 "Address
 	range can be created with end address lower than start address".
 	Address Range object dialog should not let the user enter range
