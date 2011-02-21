@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <FWBuilderResources>
     <Target name="iosacl">
-      <description>Cisco IOS ACL</description>
+      <description>Cisco Router IOS ACL</description>
       <status>active</status>
       <group>Cisco</group>
       <compiler>fwb_iosacl</compiler>
