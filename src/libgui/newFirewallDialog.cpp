@@ -396,6 +396,7 @@ void newFirewallDialog::monitor()
 
                 QString name = idata->name.c_str();
                 name.replace("Adaptive Security Appliance '", "");
+                name.replace("PIX Firewall '", "");
                 name.replace("' interface", "");
                 idata->name = name.toStdString();
             }
