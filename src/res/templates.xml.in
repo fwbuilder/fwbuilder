@@ -51,9 +51,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -69,9 +69,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -100,17 +100,17 @@
     </ObjectGroup>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
@@ -352,54 +352,54 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13" name="Custom" comment="" ro="False">
         <CustomService id="id3B64EEA8" name="rpc" comment="works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m record_rpc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF4E" name="irc-conn" comment="IRC connection tracker, supports DCC.&#10;Works on iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/&#10;" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m irc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF50" name="psd" comment="Port scan detector, works only on iptables and  requires patch-o-matic &#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m psd --psd-weight-threshold 5 --psd-delay-threshold 10000</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF52" name="string" comment="Matches a string in a whole packet, works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF54" name="talk" comment="Talk protocol support. Works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices" comment="" ro="False"/>
@@ -507,7 +507,7 @@
           <FailoverClusterGroup id="id4639X4597" type="vrrp" name="vrrp0:members" comment="">
             <ClusterGroupOptions>
               <Option name="vrrp_secret">secret</Option>
-              <Option name="vrrp_vrid"></Option>
+              <Option name="vrrp_vrid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -520,7 +520,7 @@
           <FailoverClusterGroup id="id4643X4597" type="vrrp" name="vrrp1:members" comment="">
             <ClusterGroupOptions>
               <Option name="vrrp_secret">secret</Option>
-              <Option name="vrrp_vrid"></Option>
+              <Option name="vrrp_vrid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -546,7 +546,7 @@
           <FailoverClusterGroup id="id4639X4598" type="vrrp" name="vrrp0:members" comment="">
             <ClusterGroupOptions>
               <Option name="vrrp_secret">secret</Option>
-              <Option name="vrrp_vrid"></Option>
+              <Option name="vrrp_vrid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -559,7 +559,7 @@
           <FailoverClusterGroup id="id4643X4598" type="vrrp" name="vrrp1:members" comment="">
             <ClusterGroupOptions>
               <Option name="vrrp_secret">secret</Option>
-              <Option name="vrrp_vrid"></Option>
+              <Option name="vrrp_vrid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -609,7 +609,7 @@
           <FailoverClusterGroup id="id4639X4600" type="carp" name="carp0:members" comment="">
             <ClusterGroupOptions>
               <Option name="carp_password">secret</Option>
-              <Option name="carp_vhid"></Option>
+              <Option name="carp_vhid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -619,7 +619,7 @@
           <FailoverClusterGroup id="id4643X4600" type="carp" name="carp1:members" comment="">
             <ClusterGroupOptions>
               <Option name="carp_password">secret</Option>
-              <Option name="carp_vhid"></Option>
+              <Option name="carp_vhid"/>
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
@@ -649,6 +649,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -675,7 +678,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -685,16 +688,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -773,7 +776,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -783,16 +786,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -835,7 +838,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -845,16 +848,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -884,7 +887,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -944,6 +947,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -970,7 +976,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -980,16 +986,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1107,7 +1113,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1117,16 +1123,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1169,7 +1175,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1179,16 +1185,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1218,7 +1224,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1278,6 +1284,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <NATRule id="id40986B04" disabled="False" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
@@ -1300,6 +1309,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <NATRule id="id40986E4B" disabled="False" position="2" action="Translate" comment="">
@@ -1321,6 +1333,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -1438,7 +1453,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1448,16 +1463,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1537,7 +1552,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1547,16 +1562,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1599,7 +1614,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1609,16 +1624,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1653,7 +1668,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1863,6 +1878,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -1963,13 +1981,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="firewall_is_part_of_any_and_networks">False</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2088,52 +2106,52 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="admUser">root</Option>
-          <Option name="altAddress"></Option>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">True</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="linksys_path_ip"></Option>
-          <Option name="linksys_path_iptables"></Option>
-          <Option name="linksys_path_logger"></Option>
-          <Option name="linksys_path_lsmod"></Option>
-          <Option name="linksys_path_modprobe"></Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linksys_path_ip"/>
+          <Option name="linksys_path_iptables"/>
+          <Option name="linksys_path_logger"/>
+          <Option name="linksys_path_lsmod"/>
+          <Option name="linksys_path_modprobe"/>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_log_martians"/>
           <Option name="linux24_path_ip">/usr/sbin/ip</Option>
           <Option name="linux24_path_iptables">/usr/sbin/iptables</Option>
           <Option name="linux24_path_logger">/usr/bin/logger</Option>
           <Option name="linux24_path_lsmod">/sbin/lsmod</Option>
           <Option name="linux24_path_modprobe">/sbin/modprobe</Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -2145,7 +2163,7 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="pass_all_out">false</Option>
@@ -2202,7 +2220,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2212,16 +2230,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2246,7 +2264,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2256,16 +2274,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2346,7 +2364,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2356,16 +2374,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2390,7 +2408,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2400,16 +2418,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2435,19 +2453,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -2455,46 +2473,46 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc/fw</Option>
           <Option name="firewall_is_part_of_any_and_networks">False</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
           <Option name="linux24_conntrack_hashsize">0</Option>
           <Option name="linux24_conntrack_max">0</Option>
-          <Option name="linux24_conntrack_tcp_be_liberal"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_conntrack_tcp_be_liberal"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">0</Option>
-          <Option name="linux24_ipv6_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_brctl"></Option>
-          <Option name="linux24_path_ifenslave"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_ip6tables"></Option>
-          <Option name="linux24_path_ip6tables_restore"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_iptables_restore"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_path_vconfig"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_ipv6_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_brctl"/>
+          <Option name="linux24_path_ifenslave"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_ip6tables"/>
+          <Option name="linux24_path_ip6tables_restore"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_iptables_restore"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_path_vconfig"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -2508,10 +2526,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">true</Option>
           <Option name="pix_default_logint">300</Option>
@@ -2525,11 +2543,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
+          <Option name="script_name_on_firewall"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -2655,8 +2673,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">True</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -2671,18 +2689,18 @@
           <Option name="iosacl_acl_temp_addr">192.168.1.1</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"></Option>
+          <Option name="iosacl_logging_buffered_level"/>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"></Option>
+          <Option name="iosacl_logging_console_level"/>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"></Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_logging_trap_level"/>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -2692,10 +2710,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -2717,7 +2735,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -2757,32 +2775,32 @@
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_ipv6_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_ip6tables"></Option>
-          <Option name="linux24_path_ip6tables_restore"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_iptables_restore"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_ipv6_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_ip6tables"/>
+          <Option name="linux24_path_ip6tables_restore"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_iptables_restore"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">true</Option>
           <Option name="local_nat">false</Option>
           <Option name="log_level">info</Option>
@@ -2834,32 +2852,32 @@
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_ipv6_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_ip6tables"></Option>
-          <Option name="linux24_path_ip6tables_restore"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_iptables_restore"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_ipv6_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_ip6tables"/>
+          <Option name="linux24_path_ip6tables_restore"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_iptables_restore"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">true</Option>
           <Option name="local_nat">false</Option>
           <Option name="log_level">info</Option>
@@ -2893,6 +2911,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -2919,7 +2940,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2929,16 +2950,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2981,7 +3002,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -2991,16 +3012,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3045,13 +3066,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3094,7 +3115,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -3104,16 +3125,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3174,7 +3195,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -3184,16 +3205,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3222,19 +3243,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
           <Option name="admUser">root</Option>
-          <Option name="altAddress"></Option>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -3242,7 +3263,7 @@
           <Option name="debug">True</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc/init.d</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
@@ -3250,35 +3271,35 @@
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="linksys_path_ip"></Option>
-          <Option name="linksys_path_iptables"></Option>
-          <Option name="linksys_path_logger"></Option>
-          <Option name="linksys_path_lsmod"></Option>
-          <Option name="linksys_path_modprobe"></Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linksys_path_ip"/>
+          <Option name="linksys_path_iptables"/>
+          <Option name="linksys_path_logger"/>
+          <Option name="linksys_path_lsmod"/>
+          <Option name="linksys_path_modprobe"/>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_log_martians"/>
           <Option name="linux24_path_ip">/usr/sbin/ip</Option>
           <Option name="linux24_path_iptables">/usr/sbin/iptables</Option>
           <Option name="linux24_path_logger">/usr/bin/logger</Option>
           <Option name="linux24_path_lsmod">/sbin/lsmod</Option>
           <Option name="linux24_path_modprobe">/sbin/modprobe</Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -3291,7 +3312,7 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/</Option>
           <Option name="openbsd_ip_forward">1</Option>
@@ -3315,13 +3336,13 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="scpArgs"/>
+          <Option name="script_name_on_firewall"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3352,6 +3373,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -3452,13 +3476,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="firewall_is_part_of_any_and_networks">False</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3577,15 +3601,15 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="admUser">root</Option>
-          <Option name="altAddress"></Option>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">True</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -3595,35 +3619,35 @@
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="linksys_path_ip"></Option>
-          <Option name="linksys_path_iptables"></Option>
-          <Option name="linksys_path_logger"></Option>
-          <Option name="linksys_path_lsmod"></Option>
-          <Option name="linksys_path_modprobe"></Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linksys_path_ip"/>
+          <Option name="linksys_path_iptables"/>
+          <Option name="linksys_path_logger"/>
+          <Option name="linksys_path_lsmod"/>
+          <Option name="linksys_path_modprobe"/>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_log_martians"/>
           <Option name="linux24_path_ip">/usr/sbin/ip</Option>
           <Option name="linux24_path_iptables">/usr/sbin/iptables</Option>
           <Option name="linux24_path_logger">/usr/bin/logger</Option>
           <Option name="linux24_path_lsmod">/sbin/lsmod</Option>
           <Option name="linux24_path_modprobe">/sbin/modprobe</Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -3635,7 +3659,7 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="pass_all_out">false</Option>
@@ -3688,6 +3712,9 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False"><ObjectRef ref="sysid0"/></ItfInb>
+            <ItfOutb neg="False"><ObjectRef ref="sysid0"/></ItfOutb>
+            
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -3714,7 +3741,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -3724,16 +3751,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3840,7 +3867,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -3850,16 +3877,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3902,7 +3929,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -3912,16 +3939,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -3947,9 +3974,9 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="admUser">pix</Option>
-          <Option name="altAddress"></Option>
+          <Option name="altAddress"/>
           <Option name="check_shading">True</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
@@ -3958,8 +3985,8 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
-          <Option name="filesystem"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="filesystem"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
@@ -3991,7 +4018,7 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -4013,7 +4040,7 @@
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -4028,14 +4055,14 @@
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">False</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -4046,16 +4073,16 @@
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_set_communities_from_object_data">False</Option>
           <Option name="pix_set_host_name">True</Option>
-          <Option name="pix_snmp_poll_traps_1"></Option>
-          <Option name="pix_snmp_poll_traps_2"></Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_poll_traps_1"/>
+          <Option name="pix_snmp_poll_traps_2"/>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">0</Option>
-          <Option name="pix_syslog_device_id_opt"></Option>
+          <Option name="pix_syslog_device_id_opt"/>
           <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_syslog_device_id_val"></Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_device_id_val"/>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
@@ -4068,7 +4095,7 @@
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="short_script">False</Option>
           <Option name="sip_fixup">2 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
@@ -4082,7 +4109,7 @@
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">True</Option>
           <Option name="uauth_hh">2</Option>
