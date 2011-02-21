@@ -332,9 +332,6 @@ bool PolicyCompiler_ipf::PrintRule::processNext()
 
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
-    // string err = rule->getStr(".error_msg");
-    // if (!err.empty()) compiler->output << "# " << err << endl;
-
     RuleElementSrc *srcrel=rule->getSrc();
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);
     RuleElementDst *dstrel=rule->getDst();

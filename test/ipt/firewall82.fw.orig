@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 17:22:18 2011 PST by vadim
+#  Generated Sun Feb 20 20:06:52 2011 PST by vadim
 #
 # files: * firewall82.fw /etc/firewall82.fw
 #
@@ -13,7 +13,7 @@
 # This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.
 # Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0
 
-# firewall82:Policy:0: warning: Rule set Policy of firewall firewall82 has branching rule that loops back to it
+# firewall82:Policy:0: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
 
 
 FWBDEBUG=""
@@ -353,11 +353,11 @@ script_body() {
     # 
     echo "Rule 0 (global)"
     # 
-    # firewall82:Policy:0: warning: Rule set Policy of firewall firewall82 has branching rule that loops back to it
+    # firewall82:Policy:0: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A OUTPUT  -j Policy_A
-    # firewall82:Policy:0: warning: Rule set Policy of firewall firewall82 has branching rule that loops back to it
+    # firewall82:Policy:0: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A INPUT  -j Policy_A
-    # firewall82:Policy:0: warning: Rule set Policy of firewall firewall82 has branching rule that loops back to it
+    # firewall82:Policy:0: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A FORWARD  -j Policy_A
 }
 
@@ -414,7 +414,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 17:22:18 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 20:06:52 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1298251959" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1298254540" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -3887,6 +3887,30 @@
     <Interface id="id1908540X19416" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
       <InterfaceOptions/>
     </Interface>
+    <Policy id="id464C29A83999" name="rule0_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C29BA3999" name="rule1_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C29CC3999" name="rule2_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C58AC3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C29DE3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C58BE3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C29F03999" name="rule4_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id464C2A023999" name="rule5_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
+    </Policy>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -29623,7 +29647,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id445DA2F330753" host_OS="linux24" inactive="False" lastCompiled="1272404497" lastInstalled="1146967632" lastModified="1208753886" platform="iptables" version="" name="firewall39" comment="testing branching rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
+      <Firewall id="id445DA2F330753" host_OS="linux24" inactive="False" lastCompiled="1272404497" lastInstalled="1146967632" lastModified="1298254709" platform="iptables" version="" name="firewall39" comment="testing branching rules&#10;&#10;normal script mode (not using  iptables-restore)" ro="False">
         <NAT id="id445DA35A30753" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id445DA35B30753" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -30181,7 +30205,65 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id445DA34230753" disabled="False" group="" log="False" position="14" action="Custom" direction="Both" comment="">
+          <PolicyRule id="id99075X19289" disabled="False" group="" log="False" position="14" action="Branch" direction="Both" comment="testing loop in branching rules">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id99127X19289</Option>
+              <Option name="branch_name">rule5_branch</Option>
+              <Option name="classify_str">1:2</Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="custom_str">-j TCPMSS --set-mss 1400</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_copy_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_method">0</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_branch_in_mangle">False</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_mark_prerouting">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_terminating">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="pf_tag_terminating">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="tagvalue"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id445DA34230753" disabled="False" group="" log="False" position="15" action="Custom" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -30208,7 +30290,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451DA7EF4163" disabled="False" group="" log="True" position="15" action="Custom" direction="Both" comment="">
+          <PolicyRule id="id451DA7EF4163" disabled="False" group="" log="True" position="16" action="Custom" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3CEBFCAE"/>
             </Src>
@@ -30249,7 +30331,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id445DA34E30753" disabled="False" group="" log="True" position="16" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id445DA34E30753" disabled="False" group="" log="True" position="17" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -30517,9 +30599,6 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Policy id="id464C58AC3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
         <Policy id="id445DCB2E30753" name="rule4_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id45514D0211228" disabled="False" group="" log="True" position="0" action="Branch" direction="Inbound" comment="">
             <Src neg="False">
@@ -30632,26 +30711,56 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Policy id="id464C29A83999" name="rule0_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C29BA3999" name="rule1_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C29CC3999" name="rule2_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C29DE3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C58BE3999" name="rule3_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C29F03999" name="rule4_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id464C2A023999" name="rule5_branch" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <RuleSetOptions/>
+        <Policy id="id99127X19289" name="rule6_branch" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id99185X19289" disabled="False" group="" log="False" position="0" action="Branch" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id445DA2F930753</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_branch_in_mangle">False</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_terminating">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="pf_tag_terminating">False</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions>
+            <Option name="mangle_only_rule_set">False</Option>
+          </RuleSetOptions>
         </Policy>
         <Routing id="id445DA36A30753" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>

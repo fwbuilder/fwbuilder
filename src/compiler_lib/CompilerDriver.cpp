@@ -654,6 +654,9 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
             RuleSet *branch_ruleset = rule->getBranch();
             if (branch_ruleset!=NULL)
             {
+                // qDebug() << "ruleset=" << ruleset->getName().c_str()
+                //          << "branch=" << branch_ruleset->getName().c_str();
+
                 map<FWObject*, int> referenced_branch_rulesets;
 
                 _findImportedRuleSetsRecursively(
@@ -666,12 +669,18 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
                     RuleSet *branch_ruleset = RuleSet::cast(it->first);
                     int counter = it->second;
 
+                    // qDebug() << "    " 
+                    //          << "branch=" << branch_ruleset->getName().c_str()
+                    //          << "counter=" << counter;
+
                     if (counter > 1)
                     {
-                        QString err("Rule set %1 of firewall %2 has branching rule that loops back to it");
+                        QString err(
+                            "Rule branches to rule set %1 which branches "
+                            "back to it, creating a loop");
                         warning(ruleset->getParent(), ruleset, rule,
-                                err.arg(ruleset->getName().c_str())
-                                .arg(fw->getName().c_str()).toStdString());
+                                err.arg(branch_ruleset->getName().c_str())
+                                .toStdString());
                     }
 
                     if (branch_ruleset->isChildOf(fw)) continue;
@@ -702,6 +711,9 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
 void CompilerDriver::_findImportedRuleSetsRecursively(
     Firewall *fw, RuleSet *branch_ruleset, map<FWObject*, int> &branch_rulesets)
 {
+    // multiple rules in the rule set may branch to the same branch rule set
+    map<FWObject*, int> local_branch_ruleset_counters;
+
     int c = branch_rulesets[branch_ruleset];
     branch_rulesets[branch_ruleset] = ++c;
     if (c > 1) return;  // we have seen this one already
@@ -712,9 +724,12 @@ void CompilerDriver::_findImportedRuleSetsRecursively(
         if (rule == NULL) continue; // skip RuleSetOptions object
 
         RuleSet *next_branch_ruleset = rule->getBranch();
-        if (next_branch_ruleset!=NULL)
+        if (next_branch_ruleset!=NULL &&
+            local_branch_ruleset_counters.count(next_branch_ruleset)==0)
         {
-            _findImportedRuleSetsRecursively(fw, next_branch_ruleset, branch_rulesets);
+            local_branch_ruleset_counters[next_branch_ruleset] = 1;
+            _findImportedRuleSetsRecursively(
+                fw, next_branch_ruleset, branch_rulesets);
         }
     }
 }

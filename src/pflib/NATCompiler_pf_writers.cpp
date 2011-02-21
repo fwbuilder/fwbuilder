@@ -112,9 +112,6 @@ bool NATCompiler_pf::PrintRule::processNext()
 
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
-    // string err = rule->getStr(".error_msg");
-    // if (!err.empty()) compiler->output << "# " << err << endl;
-
     RuleElementOSrc *osrcrel = rule->getOSrc();
     RuleElementODst *odstrel = rule->getODst();
     RuleElementTSrc *tsrcrel = rule->getTSrc();

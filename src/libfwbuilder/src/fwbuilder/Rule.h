@@ -62,6 +62,10 @@ class Rule : public Group
     std::string unique_id;
     int         abs_rule_number;
 
+    /* compilers store warnings and errors associated with this rule here.
+     */
+    std::string compiler_message;
+    
     public:
 
     Rule();
@@ -79,6 +83,9 @@ class Rule : public Group
     void setPosition(int n);
     int  getPosition() const;
 
+    void setCompilerMessage(const std::string &msg) { compiler_message = msg; }
+    std::string getCompilerMessage() { return compiler_message; }
+    
     void disable();
     void enable();
     bool isDisabled() const;

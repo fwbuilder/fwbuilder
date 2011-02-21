@@ -204,7 +204,7 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
 
     current_rule_label = rl;
 
-    string err = rule->getStr(".error_msg");
+    string err = rule->getCompilerMessage();
     if (!err.empty()) res << "# " << err << endl;
 
     return res.str();

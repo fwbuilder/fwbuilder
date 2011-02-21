@@ -192,7 +192,7 @@ bool RoutingCompiler_openbsd::PrintRule::processNext()
                 current_rule_label = rl;
             }
         
-            string err = rule->getStr(".error_msg");
+            string err = rule->getCompilerMessage();
             if (!err.empty()) compiler->output << "# " << err << endl;
 
             string  command_line = RoutingRuleToString(rule);

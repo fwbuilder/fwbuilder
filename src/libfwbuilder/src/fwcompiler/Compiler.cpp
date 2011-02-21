@@ -1571,7 +1571,7 @@ string Compiler::printComment(Rule *rule, string &prev_rule_label,
         }
         prev_rule_label = rl;
     }
-    string err = rule->getStr(".error_msg");
+    string err = rule->getCompilerMessage();
     if (!err.empty()) res << prefix << " " << err << endl;
     return res.str();
 }

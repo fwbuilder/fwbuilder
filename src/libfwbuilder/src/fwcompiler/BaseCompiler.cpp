@@ -125,7 +125,8 @@ void BaseCompiler::message(const std::string &level,
 {
     string str = setLevel(level, stdErrorMessage(fw, ruleset, rule, errstr));
     printError(str);
-    if (rule && Rule::cast(rule)) rule->setStr(".error_msg", str);
+    Rule *cast_rule = Rule::cast(rule);
+    if (cast_rule) cast_rule->setCompilerMessage(str);
 }
 
 void BaseCompiler::printError(const string &errstr)
