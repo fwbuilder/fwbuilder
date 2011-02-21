@@ -89,13 +89,6 @@ class Rule : public Group
     bool isHidden() const { return hidden; }
     void setHidden(bool f) { hidden=f; }
 
-    int getInterfaceId() const { return getInt("interface_id"); }
-    void setInterfaceId(int iface_id) { setInt("interface_id", iface_id); }
-
-    std::string getInterfaceStr() const { return getStr("interface_str"); }
-    void setInterfaceStr(const std::string &iface_str)
-    { setStr("interface_str", iface_str); }
-
     std::string getUniqueId() const { return unique_id; }
     void setUniqueId(const std::string &str) { unique_id=str; }
 

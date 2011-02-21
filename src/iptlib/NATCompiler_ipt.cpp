@@ -2561,7 +2561,6 @@ void NATCompiler_ipt::compile()
     add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
     add( new dynamicInterfaceInTSrc(
              "set target if dynamic interface in TSrc" ) );
-    //add( new convertInterfaceIdToStr("prepare interface assignments") );
 
     add( new ConvertToAtomicForItfInb("convert to atomic for inbound interface") );
     add( new ConvertToAtomicForItfOutb("convert to atomic for outbound interface"));

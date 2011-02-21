@@ -324,8 +324,16 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                                       list<FWObject*> &ol,
                                       bool expand_cluster_interfaces_fully)
 {
-    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
-    bool on_loopback= ( rule_iface && rule_iface->isLoopback() );
+//    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
+    bool on_loopback = false;
+
+    if (PolicyRule::isA(rule))
+    {
+        RuleElement *intf_re = PolicyRule::cast(rule)->getItf();
+        Interface *rule_iface = 
+            Interface::cast(FWObjectReference::getObject(intf_re->front()));
+        on_loopback = ( rule_iface && rule_iface->isLoopback() );
+    }
 
     list<FWObject*> addrlist;
 
@@ -389,10 +397,12 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                 if (i2itf->isLoopback())
                 {
                     if (RuleElement::cast(s) || on_loopback)
-                        _expand_interface(rule, i2itf, ol, expand_cluster_interfaces_fully);
+                        _expand_interface(
+                            rule, i2itf, ol, expand_cluster_interfaces_fully);
                 } else
 // this is not a loopback interface                
-                    _expand_interface(rule, i2itf, ol, expand_cluster_interfaces_fully);
+                    _expand_interface(
+                        rule, i2itf, ol, expand_cluster_interfaces_fully);
 
                 continue;
             }
@@ -761,24 +771,6 @@ bool Compiler::simplePrintProgress::processNext()
         }
 
         current_rule_label=rl;
-    }
-
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-bool Compiler::convertInterfaceIdToStr::processNext()
-{
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
-
-    if (rule->getInterfaceStr().empty())
-    {
-        FWObject *iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
-        string iface_name= (iface!=NULL) ? iface->getName() : "";
-        rule->setInterfaceStr( iface_name );
-    } else
-    {
-        if (rule->getInterfaceStr()=="nil") rule->setInterfaceStr("");
     }
 
     tmp_queue.push_back(rule);

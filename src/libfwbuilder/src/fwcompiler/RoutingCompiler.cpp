@@ -98,9 +98,10 @@ int RoutingCompiler::prolog()
          * done because labels are configured in prolog() method of
          * the base class. See fwbuilder ticket 1173)
          */
-	//if (r->isDisabled()) continue;
+	// if (r->isDisabled()) continue;
 
-	r->setInterfaceId(-1);
+	// r->setInterfaceId(-1);
+
 	r->setLabel( createRuleLabel("", "main", r->getPosition()) );
 	combined_ruleset->add( r );
     }
@@ -583,8 +584,8 @@ bool RoutingCompiler::sameDestinationDifferentGateways::processNext()
         const InetAddr* dst_netm = dst->getNetmaskPtr();
         string key = dst_addr->toString() + "/" + dst_netm->toString();
 
-        RuleElementRItf *itfrel = rule->getRItf();
-        FWObject *itf = FWReference::cast(itfrel->front())->getPointer();
+        // RuleElementRItf *itfrel = rule->getRItf();
+        // FWObject *itf = FWReference::cast(itfrel->front())->getPointer();
     
         RuleElementRGtw *gtwrel = rule->getRGtw();
         Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
@@ -612,13 +613,12 @@ bool RoutingCompiler::sameDestinationDifferentGateways::processNext()
 
 bool RoutingCompiler::competingRules::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
-
+    RoutingRule *rule = getNext(); if (rule==NULL) return false;
         
-    RuleElementRItf *itfrel=rule->getRItf();
+    RuleElementRItf *itfrel = rule->getRItf();
     FWObject *itf = FWReference::cast(itfrel->front())->getPointer();
     
-    RuleElementRGtw *gtwrel=rule->getRGtw();
+    RuleElementRGtw *gtwrel = rule->getRGtw();
     FWObject *gtw = FWReference::cast(gtwrel->front())->getPointer();
      
     string metric = rule->getMetricAsString();

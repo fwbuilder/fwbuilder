@@ -782,16 +782,6 @@ protected:
 
 
         
-	/**
-	 * prepare interface string
-	 */
-        class convertInterfaceIdToStr : public BasicRuleProcessor
-        {
-            public:
-            convertInterfaceIdToStr(const std::string &n) : BasicRuleProcessor(n) {}
-            virtual bool processNext();
-        };
-        
         /**
          * prints rule in some universal format (close to that visible
          * to user in the GUI). Used for debugging purposes

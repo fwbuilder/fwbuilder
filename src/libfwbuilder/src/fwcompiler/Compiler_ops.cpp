@@ -575,27 +575,42 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
 
 bool Compiler::intersect(PolicyRule &r1, PolicyRule &r2)
 {
-    string act1=r1.getActionAsString();
-    string act2=r2.getActionAsString();
+    string act1 = r1.getActionAsString();
+    string act2 = r2.getActionAsString();
 
     bool res_act;
-    res_act=(act1=="Continue" || act2=="Continue" || act1==act2);
+    res_act = (act1=="Continue" || act2=="Continue" || act1==act2);
     if (res_act==false) return false;
 
-    int iface1 = r1.getInterfaceId();
-    int iface2 = r2.getInterfaceId();
+    RuleElementItf *intf1_re = r1.getItf();
+    FWObject *rule1_iface = FWObjectReference::getObject(intf1_re->front());
+    int iface1 = rule1_iface->getId();
 
-    bool res_iface;
-    res_iface=(iface1==-1 || iface2==-1 || iface1==iface2);
-    if (res_iface==false) return false;
+    RuleElementItf *intf2_re = r2.getItf();
+    FWObject *rule2_iface = FWObjectReference::getObject(intf2_re->front());
+    int iface2 = rule2_iface->getId();
 
-    vector<FWObject*> v1=_find_obj_intersection( getFirstSrc(&r1) , getFirstSrc(&r2) );
+//    int iface1 = r1.getInterfaceId();
+//    int iface2 = r2.getInterfaceId();
+
+//    bool res_iface;
+//    res_iface = (intf1_re->isAny() || intf2_re->isAny() || iface1==iface2);
+//    if (res_iface==false) return false;
+
+    // if both rules have interfaces and these interfaces are different, they
+    // cant intersect
+    if ( ! intf1_re->isAny() && ! intf2_re->isAny() && iface1!=iface2) return false;
+    
+    vector<FWObject*> v1 =
+        _find_obj_intersection( getFirstSrc(&r1) , getFirstSrc(&r2) );
     if (v1.empty()) return false;
 
-    vector<FWObject*> v2=_find_obj_intersection( getFirstDst(&r1) , getFirstDst(&r2) );
+    vector<FWObject*> v2 =
+        _find_obj_intersection( getFirstDst(&r1) , getFirstDst(&r2) );
     if (v2.empty()) return false;
 
-    vector<FWObject*> v3=_find_srv_intersection( getFirstSrv(&r1) , getFirstSrv(&r2) );
+    vector<FWObject*> v3 =
+        _find_srv_intersection( getFirstSrv(&r1) , getFirstSrv(&r2) );
     if (v3.empty()) return false;
 
     return true;
@@ -604,8 +619,8 @@ bool Compiler::intersect(PolicyRule &r1, PolicyRule &r2)
 
 void Compiler::getIntersection(PolicyRule &r1, PolicyRule &r2, PolicyRule &res)
 {
-    string act1=r1.getActionAsString();
-    string act2=r2.getActionAsString();
+    string act1 = r1.getActionAsString();
+    string act2 = r2.getActionAsString();
 
 /*
  * "CONTINUE" is "broad" action, so chose another one, whatever it is
@@ -616,23 +631,34 @@ void Compiler::getIntersection(PolicyRule &r1, PolicyRule &r2, PolicyRule &res)
     string any_id;
 //    FWObject *any;
 
-    RuleElementSrc *nsrc=res.getSrc();
+    RuleElementSrc *nsrc = res.getSrc();
     nsrc->clearChildren();
 
-    RuleElementDst *ndst=res.getDst();
+    RuleElementDst *ndst = res.getDst();
     ndst->clearChildren();
 
-    RuleElementSrv *nsrv=res.getSrv();
+    RuleElementSrv *nsrv = res.getSrv();
     nsrv->clearChildren();
 
-    if (r1.getInterfaceId()!=r2.getInterfaceId()) return ;
+    RuleElementItf *intf_re = r1.getItf();
+    FWObject *rule1_iface = FWObjectReference::getObject(intf_re->front());
+    int iface1 = rule1_iface->getId();
 
-    string lbl="'"+r1.getLabel()+"' & '"+r2.getLabel()+"'";
+    intf_re = r2.getItf();
+    FWObject *rule2_iface = FWObjectReference::getObject(intf_re->front());
+    int iface2 = rule2_iface->getId();
+
+    if (iface1 != iface2) return ;
+
+    string lbl = "'" + r1.getLabel() + "' & '" + r2.getLabel() + "'";
     res.setLabel(lbl);
 
-    vector<FWObject*> v1=_find_obj_intersection( getFirstSrc(&r1) , getFirstSrc(&r2) );
-    vector<FWObject*> v2=_find_obj_intersection( getFirstDst(&r1) , getFirstDst(&r2) );
-    vector<FWObject*> v3=_find_srv_intersection( getFirstSrv(&r1) , getFirstSrv(&r2) );
+    vector<FWObject*> v1 =
+        _find_obj_intersection( getFirstSrc(&r1) , getFirstSrc(&r2) );
+    vector<FWObject*> v2 =
+        _find_obj_intersection( getFirstDst(&r1) , getFirstDst(&r2) );
+    vector<FWObject*> v3 =
+        _find_srv_intersection( getFirstSrv(&r1) , getFirstSrv(&r2) );
 
     for (vector<FWObject*>::iterator i1=v1.begin(); i1!=v1.end(); ++i1)
 	nsrc->addRef(*i1);

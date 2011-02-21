@@ -1293,8 +1293,6 @@ void NATCompiler_pf::compile()
              "split if addresses in TSrc belong to different networks" ));
 
     add( new AssignInterface( "assign rules to interfaces" ) );
-    add( new convertInterfaceIdToStr("prepare interface assignments") );
-
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));

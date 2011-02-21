@@ -4435,7 +4435,7 @@ void PolicyCompiler_ipt::compile()
 
     add( new SkipActionContinueWithNoLogging(
              "drop rules with action Continue") );
-    add( new convertInterfaceIdToStr("prepare interface assignments") );
+
     add( new optimize3("optimization 3") );
 
     add( new optimizeForMinusIOPlus("optimize for '-i +' / '-o +'") );

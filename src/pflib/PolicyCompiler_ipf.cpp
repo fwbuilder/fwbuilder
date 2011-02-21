@@ -553,7 +553,6 @@ void PolicyCompiler_ipf::compile()
 
     add( new calculateSkip("calculate argument for skip") );
     add( new checkForKeepState("check for 'keep state'") );
-    add( new convertInterfaceIdToStr("prepare interface assignments") );
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));

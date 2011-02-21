@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipfw v4.2.0.3457
+#  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Thu Feb  3 14:55:19 2011 PST by vadim
+#  Generated Sun Feb 20 16:55:55 2011 PST by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -31,7 +31,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    test -x "$LOGGER" && $LOGGER -p info "$1"
+    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -79,7 +79,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 
@@ -163,7 +163,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb  3 14:55:19 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 16:55:55 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -221,11 +221,11 @@ prolog_commands
 "$IPFW" add 220 set 1 permit all  from any  to any      keep-state  || exit 1
 # 
 # Rule  8 (global)
-"$IPFW" add 230 set 1 skipto 350 all  from any  to 74.125.224.16       || exit 1
-"$IPFW" add 240 set 1 skipto 350 all  from any  to 74.125.224.17       || exit 1
-"$IPFW" add 250 set 1 skipto 350 all  from any  to 74.125.224.18       || exit 1
-"$IPFW" add 260 set 1 skipto 350 all  from any  to 74.125.224.19       || exit 1
-"$IPFW" add 270 set 1 skipto 350 all  from any  to 74.125.224.20       || exit 1
+"$IPFW" add 230 set 1 skipto 350 all  from any  to 74.125.224.80       || exit 1
+"$IPFW" add 240 set 1 skipto 350 all  from any  to 74.125.224.81       || exit 1
+"$IPFW" add 250 set 1 skipto 350 all  from any  to 74.125.224.82       || exit 1
+"$IPFW" add 260 set 1 skipto 350 all  from any  to 74.125.224.83       || exit 1
+"$IPFW" add 270 set 1 skipto 350 all  from any  to 74.125.224.84       || exit 1
 "$IPFW" add 280 set 1 skipto 350 all  from any  to 157.166.224.25       || exit 1
 "$IPFW" add 290 set 1 skipto 350 all  from any  to 157.166.224.26       || exit 1
 "$IPFW" add 300 set 1 skipto 350 all  from any  to 157.166.226.25       || exit 1

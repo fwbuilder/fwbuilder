@@ -93,7 +93,6 @@ int NATCompiler::prolog()
 
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
-
 	Rule *r= Rule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
 
@@ -108,7 +107,8 @@ int NATCompiler::prolog()
          */
 	//if (r->isDisabled()) continue;
 
-	r->setInterfaceId(-1);
+	//r->setInterfaceId(-1);
+
 	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 	r->setAbsRuleNumber(global_num); global_num++;
         r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );

@@ -572,7 +572,6 @@ void NATCompiler_ipf::compile()
     add( new expandAnyService("split NAT rules with ANY service"           ) );
     add( new AssignInterface( "assign rules to interfaces" ) );
     add( new RedirectRules( "replace objects in TDst for 'Redirect' rules" ) );
-    add( new convertInterfaceIdToStr(    "prepare interface assignments"         ) );
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));

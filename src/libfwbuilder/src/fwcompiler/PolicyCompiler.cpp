@@ -300,10 +300,16 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
  */
 bool PolicyCompiler::checkInterfacesForShadowing(PolicyRule &r1, PolicyRule &r2)
 {
-    int intf1_id = r1.getInterfaceId();
-    int intf2_id = r2.getInterfaceId();
+    RuleElementItf *intf1_re = r1.getItf();
+    FWObject *rule1_iface = FWObjectReference::getObject(intf1_re->front());
 
-    if (intf2_id == -1) return true;  // "eth0" -- "all" or "all" -- "all"
+    RuleElementItf *intf2_re = r2.getItf();
+    FWObject *rule2_iface = FWObjectReference::getObject(intf2_re->front());
+
+    int intf1_id = rule1_iface->getId();
+    int intf2_id = rule2_iface->getId();
+
+    if (intf2_re->isAny()) return true;  // "eth0" -- "all" or "all" -- "all"
     return (intf1_id == intf2_id);
 }
 
@@ -346,14 +352,14 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
     return ( (*src1 == *src2) && (*dst1 == *dst2) && (*srv1 == *srv2) );
 }
 
-bool  PolicyCompiler::InterfacePolicyRules::processNext()
+bool PolicyCompiler::InterfacePolicyRules::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    RuleElementItf *itfre=rule->getItf();   assert(itfre);
+    RuleElementItf *itfre = rule->getItf(); assert(itfre);
     if (itfre->isAny())
     {
-        rule->setInterfaceId(-1);
+//        rule->setInterfaceId(-1);
         tmp_queue.push_back(rule);
         return true;
     }
@@ -384,13 +390,6 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
                 nitf->clearChildren();
                 nitf->setAnyElement();
                 nitf->addRef(o1);
-                // Set interface ID using setInterfaceId() for
-                // backwards compatibility with older code. This
-                // should go away eventually since we have "Interface"
-                // rule element in policy rules. Rule element like
-                // this does not exist in the NAT rules, so there we
-                // need to keep using setInterfaceId()
-                r->setInterfaceId(o1->getId());
                 tmp_queue.push_back(r);
             }
         } else
@@ -402,8 +401,6 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
 	    nitf->clearChildren();
 	    nitf->setAnyElement();
             nitf->addRef(o);
-            // trying to get rid of Rule::getInterfaceId Rule::getInterfaceStr
-            r->setInterfaceId(o->getId());
             tmp_queue.push_back(r);
         }
     }
@@ -475,16 +472,24 @@ Rule* PolicyCompiler::getDifference(PolicyRule &r1, PolicyRule &r2)
     PolicyRule *r = new PolicyRule();
     *r = r1;
 
-    FWObject *nsrc=getFirstSrc(r);
+    FWObject *nsrc = getFirstSrc(r);
     nsrc->clearChildren();
 
-    FWObject *ndst=getFirstDst(r);
+    FWObject *ndst = getFirstDst(r);
     ndst->clearChildren();
 
-    Service  *nsrv=getFirstSrv(r);
+    Service  *nsrv = getFirstSrv(r);
     nsrv->clearChildren();
 
-    if (r1.getInterfaceId()!=r2.getInterfaceId()) return r;
+    RuleElementItf *intf_re = r1.getItf();
+    FWObject *rule1_iface = FWObjectReference::getObject(intf_re->front());
+    int iface1 = rule1_iface->getId();
+
+    intf_re = r2.getItf();
+    FWObject *rule2_iface = FWObjectReference::getObject(intf_re->front());
+    int iface2 = rule2_iface->getId();
+
+    if (iface1 != iface2) return r;
 
 /*
     vector<FWObject*> v1=_substract_obj( r1.getSrc() , r2.getSrc() );
@@ -1068,13 +1073,13 @@ string PolicyCompiler::debugPrintRule(Rule *r)
 
 //    FWOptions *ruleopt =rule->getOptionsObject();
 
-    RuleElementSrc *srcrel=rule->getSrc();
-    RuleElementDst *dstrel=rule->getDst();
-    RuleElementSrv *srvrel=rule->getSrv();
-    RuleElementItf *itfrel=rule->getItf();
+    RuleElementSrc *srcrel = rule->getSrc();
+    RuleElementDst *dstrel = rule->getDst();
+    RuleElementSrv *srvrel = rule->getSrv();
+    RuleElementItf *itfrel = rule->getItf();
 
-    int iface_id = rule->getInterfaceId();
-    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(iface_id));
+//    int iface_id = rule->getInterfaceId();
+//    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(iface_id));
 
     ostringstream str;
 
@@ -1149,7 +1154,6 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         {
             str <<  setw(9)  << setfill(' ') << rule->getActionAsString().c_str();
             str <<  setw(12)  << setfill(' ') << rule->getDirectionAsString().c_str();
-            if (rule_iface!=NULL) str << " " << rule_iface->getName();
             if (rule->getLogging()) str << " LOG";
         } else
             str <<  setw(18)  << setfill(' ') << " ";
@@ -1212,7 +1216,7 @@ PolicyRule* PolicyCompiler::addMgmtRule(Address* src,
     if(iface != NULL)
     {
         re->addRef(iface);
-        rule->setInterfaceId(iface->getId());
+//        rule->setInterfaceId(iface->getId());
     }
 
     rule->add(dbcopy->create(PolicyRuleOptions::TYPENAME));

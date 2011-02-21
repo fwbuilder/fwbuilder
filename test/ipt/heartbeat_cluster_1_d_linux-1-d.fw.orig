@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3482
+#  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sat Feb 19 15:27:38 2011 PST by vadim
+#  Generated Sun Feb 20 16:51:04 2011 PST by vadim
 #
 # files: * heartbeat_cluster_1_d_linux-1-d.fw firewall.sh
 #
@@ -720,7 +720,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sat Feb 19 15:27:38 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 16:51:04 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

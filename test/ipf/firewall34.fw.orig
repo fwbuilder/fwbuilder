@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipf v4.2.0.3480
+#  Firewall Builder  fwb_ipf v4.2.0.3483
 #
-#  Generated Thu Feb 17 12:00:12 2011 PST by vadim
+#  Generated Sun Feb 20 16:55:12 2011 PST by vadim
 #
 # files: * firewall34.fw /etc/fw/firewall34.fw
 # files:   firewall34-ipf.conf /etc/fw/firewall34-ipf.conf
@@ -78,7 +78,7 @@ missing_address() {
       parameter="delete"
     }
 
-    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter || exit 1
     $FWBDEBUG $IFCONFIG $interface up
 }
 
@@ -162,7 +162,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Feb 17 12:00:12 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 16:55:12 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

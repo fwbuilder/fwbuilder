@@ -1099,7 +1099,6 @@ void PolicyCompiler_pf::compile()
     add(new SpecialServices("check for special services"));
     add(new setQuickFlag("set 'quick' flag"));
     add(new checkForZeroAddr("check for zero addresses"));
-    add(new convertInterfaceIdToStr("prepare interface assignments"));
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));

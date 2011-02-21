@@ -649,7 +649,6 @@ void PolicyCompiler_ipfw::compile()
     add( new checkForZeroAddr("check for zero addresses"));
 
     add( new calculateNum("calculate rule numbers "));
-    add( new convertInterfaceIdToStr("prepare interface assignments"));
 
     add( new checkForObjectsWithErrors(
              "check if we have objects with errors in rule elements"));
