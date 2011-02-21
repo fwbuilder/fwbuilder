@@ -67,6 +67,7 @@ block in   log  quick on eth1 inet  from 192.168.1.0/24  to any  label "RULE 2 -
 # Rule  3 (eth0)
 # комментарий по-русски, Проверяем конвертацию в Utf-8
 # firewall:Policy:3: warning: Changing rule direction due to self reference
+
 pass in   quick on eth0 inet proto udp  from 192.168.1.0/24  to <tbl.r2> port 53 keep state  label "RULE 3 - ACCEPT"  
 # 
 # Rule  4 (eth0)
@@ -105,7 +106,9 @@ pass  quick inet  from any  to 192.168.1.10 keep state  label "RULE 16 - ACCEPT"
 # 
 # Rule  18 (global)
 # Automatically generated 'masquerading' rule
+# firewall:Policy:18: error: Rule '18 (global)' shadows rule '21 (global)'  below it
 # firewall:Policy:18: warning: Changing rule direction due to self reference
+
 pass out  quick inet  from <tbl.r2>  to any keep state  label "RULE 18 - ACCEPT"  
 pass  quick inet  from 192.168.1.0/24  to any keep state  label "RULE 18 - ACCEPT"  
 # 
@@ -117,6 +120,9 @@ pass  quick inet proto {tcp udp icmp gre}  from any  to any    keep state  label
 # Rule  20 (global)
 # bug #2791950  "no way to generate "pass out" rule with no interface"
 # Interface field should be "any", direction "outbound"
+# firewall:Policy:20: error: Rule '20 (global)' shadows rule '22 (global)'  below it
+# firewall:Policy:20: error: Rule '20 (global)' shadows rule '23 (global)'  below it
+
 pass out  quick inet  from any  to any keep state  label "RULE 20 - ACCEPT"  
 # 
 # Rule  21 (global)

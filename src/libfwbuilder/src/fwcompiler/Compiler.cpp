@@ -1569,10 +1569,14 @@ string Compiler::printComment(Rule *rule, string &prev_rule_label,
             if (!remainder.empty())
                 res << prefix << " " << remainder << endl;
         }
+
+        string err = getErrorsForRule(rule, prefix + " ");
+        if (!err.empty()) res << err << endl;
+
         prev_rule_label = rl;
     }
-    string err = rule->getCompilerMessage();
-    if (!err.empty()) res << prefix << " " << err << endl;
+//    string err = rule->getCompilerMessage();
+//    if (!err.empty()) res << prefix << " " << err << endl;
     return res.str();
 }
 

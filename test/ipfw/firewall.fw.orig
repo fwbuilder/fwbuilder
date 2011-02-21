@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Sun Feb 20 16:55:54 2011 PST by vadim
+#  Generated Sun Feb 20 21:29:36 2011 PST by vadim
 #
 # files: * firewall.fw ipfw.fw
 #
@@ -81,7 +81,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 16:55:54 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:29:36 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -118,6 +118,7 @@ prolog_commands
 # Rule  3 (eth0)
 # комментарий по-русски
 # firewall:Policy:3: warning: Changing rule direction due to self reference
+
 "$IPFW" add 60 set 1 permit udp  from 192.168.1.0/24  to me 53 in  recv eth0 keep-state  || exit 1
 # 
 # Rule  4 (eth0)
@@ -141,6 +142,7 @@ prolog_commands
 # 
 # Rule  9 (global)
 # firewall:Policy:9: warning: Changing rule direction due to self reference
+
 "$IPFW" add 160 set 1 unreach port 50  from any  to me  in   || exit 1
 # 
 # Rule  12 (global)
@@ -180,6 +182,7 @@ prolog_commands
 # Rule  20 (global)
 # Automatically generated 'masquerading' rule
 # firewall:Policy:20: warning: Changing rule direction due to self reference
+
 "$IPFW" add 350 set 1 permit all  from me  to any  out keep-state  || exit 1
 "$IPFW" add 360 set 1 permit all  from 192.168.1.0/24  to any      keep-state  || exit 1
 # 

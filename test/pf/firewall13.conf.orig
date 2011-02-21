@@ -12,6 +12,7 @@
 # 
 # Rule  1 (NAT)
 # firewall13:NAT:1: warning: Empty group or address table object 'egroup'
+
 rdr proto tcp from 200.200.200.200 to 22.22.22.23 port 6667 -> 192.168.1.10 port 6667 
 
 # Policy compiler errors and warnings:
@@ -22,6 +23,7 @@ rdr proto tcp from 200.200.200.200 to 22.22.22.23 port 6667 -> 192.168.1.10 port
 # 
 # Rule  0 (global)
 # firewall13:Policy:0: warning: Empty group or address table object 'egroup2'
+
 pass  quick inet  from 200.200.200.200  to 192.168.1.10 keep state 
 # 
 # Rule  2 (global)

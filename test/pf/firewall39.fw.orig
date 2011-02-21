@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:10:06 2011 PST by vadim
+#  Generated Sun Feb 20 21:16:28 2011 PST by vadim
 #
 # files: * firewall39.fw pf.fw
 # files:   firewall39.conf pf.conf
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 20:10:06 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:16:28 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

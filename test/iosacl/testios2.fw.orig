@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3457
+!  Firewall Builder  fwb_iosacl v4.2.0.3483
 !
-!  Generated Thu Feb  3 10:04:21 2011 PST by vadim
+!  Generated Sun Feb 20 21:26:40 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -369,15 +369,12 @@ exit
 ! 
 ! Rule 0 (main)
 ! 
-! "Routing rule 0 (main)"
-! 
-# testios2:Routing:0: error: Object "test-addr-1" used as gateway in the routing rule 0 (main) is not reachable because it is not in any local network of the firewall
+! testios2:Routing:0: error: Object "test-addr-1" used as gateway in the routing rule 0 (main) is not reachable because it is not in any local network of the firewall
+
 ! 
 ! Rule 1 (main)
 ! 
-! "Routing rule 1 (main)"
-! 
-# testios2:Routing:1: error: Can not use both gateway address and interface in IOS routing rule
+! testios2:Routing:1: error: Can not use both gateway address and interface in IOS routing rule
 
 !
 ! Epilog script:

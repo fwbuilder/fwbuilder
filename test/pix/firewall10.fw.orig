@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:00 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:17 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -228,6 +228,8 @@ exit
 ! 
 ! Rule  3 (ethernet1)
 ! anti-spoofing rule
+! firewall10:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 6 interval 300
 ! 
 ! Rule  5 (ethernet0)

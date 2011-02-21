@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:08:00 2011 PST by vadim
+#  Generated Sun Feb 20 21:01:57 2011 PST by vadim
 #
 # files: * firewall-ipv6-4.fw /etc/firewall-ipv6-4.fw
 #
@@ -341,8 +341,14 @@ script_body() {
     echo "-A OUTPUT -p icmp  -m icmp  -s 1.1.1.1   --icmp-type 8/0   -m state --state NEW  -j ACCEPT "
     # 
     # Rule  2 (global)
+    # firewall-ipv6-4:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+
     echo "-A OUTPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT "
+    # firewall-ipv6-4:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+
     echo "-A INPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT "
+    # firewall-ipv6-4:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+
     echo "-A FORWARD -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT "
     # 
     # Rule  3 (global)
@@ -352,8 +358,14 @@ script_body() {
     # 
     # Rule  4 (global)
     # INPUT, OUTPUT, FORWARD
+    # firewall-ipv6-4:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
     echo "-A INPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT "
+    # firewall-ipv6-4:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
     echo "-A OUTPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT "
+    # firewall-ipv6-4:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
     echo "-A FORWARD  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT "
     # 
     # Rule  5 (global)
@@ -375,13 +387,23 @@ script_body() {
     # 
     # Rule  8 (global)
     # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo ":RULE_8 - [0:0]"
     echo "-A OUTPUT  -d 192.0.2.1   -j RULE_8 "
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A OUTPUT  -d 207.251.84.150   -j RULE_8 "
     # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A FORWARD  -d 192.0.2.1   -j RULE_8 "
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A FORWARD  -d 207.251.84.150   -j RULE_8 "
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A RULE_8  -j ULOG  --ulog-nlgroup 1 --ulog-prefix \"RULE 8 -- DENY \" --ulog-qthreshold 1 "
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A RULE_8  -j DROP "
     # 
     # Rule  9 (global)
@@ -483,11 +505,17 @@ script_body() {
     # 
     # Rule  8 (global)
     # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo ":RULE_8 - [0:0]"
     echo "-A OUTPUT  -d 2001:db8::1   -j RULE_8 "
     # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A FORWARD  -d 2001:db8::1   -j RULE_8 "
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A RULE_8  -j LOG  --log-level info --log-prefix \"RULE 8 -- DENY \""
+    # firewall-ipv6-4:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     echo "-A RULE_8  -j DROP "
     # 
     # Rule  11 (global)
@@ -577,7 +605,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:08:00 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:01:57 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

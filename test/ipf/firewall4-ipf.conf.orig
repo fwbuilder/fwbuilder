@@ -43,22 +43,15 @@ block out  log  quick proto icmp  from any  to any icmp-type 3
 # 
 # Rule  6 (global)
 # firewall4:Policy:6: warning: Changing rule direction due to self reference
+
 skip 8 in  proto icmp  from 192.168.1.10  to 192.168.1.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 skip 7 in  proto icmp  from 192.168.1.10  to 192.168.2.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 skip 6 in  proto icmp  from 192.168.1.10  to 222.222.222.222 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 skip 5 in  proto icmp  from 192.168.1.20  to 192.168.1.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 skip 4 in  proto icmp  from 192.168.1.20  to 192.168.2.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 skip 3 in  proto icmp  from 192.168.1.20  to 222.222.222.222 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 192.168.1.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 192.168.2.1 icmp-type 3  
-# firewall4:Policy:6: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 222.222.222.222 icmp-type 3  
 # 
 # Rule  8 (global)

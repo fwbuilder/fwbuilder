@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:07 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:24 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -201,8 +201,8 @@ access-list inside_acl_in permit ip any object-group id16988X10208.dst.net.0
 ! 
 ! Rule  1 (global)
 ! firewall34:Policy:1: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+
 access-list outside_acl_in permit ip any 192.0.2.0 255.255.255.0 
-! firewall34:Policy:1: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
 access-list inside_acl_in permit ip any 192.0.2.0 255.255.255.0 
 ! 
 ! Rule  2 (global)

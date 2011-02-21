@@ -57,30 +57,19 @@ pass  out quick proto tcp  from any  to any port = 119 flags S keep state
 # 
 # Rule  2 (global)
 # firewall10:Policy:2: warning: Changing rule direction due to self reference
+
 skip 1 in   from 192.168.1.0/24  to any 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 skip 11 in   from any  to any 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 skip 3 in   from any  to 22.22.22.22 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 skip 2 in   from any  to 192.168.1.1 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 skip 1 in   from any  to 192.168.2.0 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 skip 7 in   from any  to any 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from any  to any icmp-type 11 code 0  keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from any  to any icmp-type 11 code 1  keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from any  to any icmp-type 0 code 0  keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from any  to any icmp-type 3  keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 192.168.1.0/24  to 22.22.22.22 port = 22 flags S keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 192.168.1.0/24  to 192.168.1.1 port = 22 flags S keep state 
-# firewall10:Policy:2: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 192.168.1.0/24  to 192.168.2.0 port = 22 flags S keep state 
 # 
 # Rule  3 (global)

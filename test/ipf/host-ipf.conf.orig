@@ -72,31 +72,26 @@ pass  out  log  quick on lo  from 127.0.0.1  to 127.0.0.1
 # Rule  4 (global)
 # block fragments
 # host:Policy:4: warning: Changing rule direction due to self reference
+
 block in   log  quick  from any  to 22.22.22.22  with short
 # 
 # Rule  5 (global)
 # host:Policy:5: warning: Changing rule direction due to self reference
+
 pass  in  quick proto icmp  from any  to 22.22.22.22 icmp-type 3  keep state 
-# host:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 25 keep state 
-# host:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 80 keep state 
-# host:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 keep state 
-# host:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 21 keep state 
-# host:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 23 keep state 
 # 
 # Rule  6 (global)
 # allow all outgoing connections
 # host:Policy:6: warning: Changing rule direction due to self reference
+
 pass  out quick proto icmp  from 22.22.22.22  to any keep state 
-# host:Policy:6: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 22.22.22.22  to any keep state 
-# host:Policy:6: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 22.22.22.22  to any keep state 
-# host:Policy:6: warning: Changing rule direction due to self reference
 pass  out quick  from 22.22.22.22  to any 
 # 
 # Rule  7 (global)

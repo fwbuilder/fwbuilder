@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3457
+!  Firewall Builder  fwb_iosacl v4.2.0.3483
 !
-!  Generated Thu Feb  3 10:04:20 2011 PST by vadim
+!  Generated Sun Feb 20 21:26:39 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -92,12 +92,25 @@ ipv6 access-list ipv6_e0_0_in
   permit tcp  fe80::/64 any  eq 22 
 ! 
 ! Rule  fw-ipv6-1-ipv6 1 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 3 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 4 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 5 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 6 (global)'  below it
+
   permit tcp  host 2001:5c0:0:2::24 any  eq 22 
 ! 
 ! Rule  fw-ipv6-1-ipv6 2 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:2: error: Rule 'fw-ipv6-1-ipv6 2 (global)' shadows rule 'fw-ipv6-1-ipv6 5 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:2: error: Rule 'fw-ipv6-1-ipv6 2 (global)' shadows rule 'fw-ipv6-1-ipv6 6 (global)'  below it
+
   permit tcp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 22 log 
 ! 
 ! Rule  fw-ipv6-1-ipv6 3 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 4 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 5 (global)'  below it
+
   permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
   permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
   permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
@@ -122,6 +135,11 @@ ipv6 access-list ipv6_e0_0_in
   permit ipv6  fe80::/64 any  log 
 ! 
 ! Rule  fw-ipv6-1-ipv6 9 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 10 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 11 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 12 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+
   permit ipv6  host 2001:5c0:0:2::24 any  log 
   permit ipv6  3ffe:1200:2000::/36 any  log 
   permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 
@@ -155,9 +173,19 @@ ipv6 access-list ipv6_e0_0_out
   permit tcp  fe80::/64 any  eq 22 
 ! 
 ! Rule  fw-ipv6-1-ipv6 1 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 3 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 4 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 5 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 6 (global)'  below it
+
   permit tcp  host 2001:5c0:0:2::24 any  eq 22 
 ! 
 ! Rule  fw-ipv6-1-ipv6 3 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 4 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 5 (global)'  below it
+
   permit tcp  host 2001:5c0:0:2::24 any  eq 22 log 
   permit tcp  3ffe:1200:2000::/36 any  eq 22 log 
   permit tcp  host 3ffe:1200:2001:1:8000::1 any  eq 22 log 
@@ -170,6 +198,11 @@ ipv6 access-list ipv6_e0_0_out
   permit ipv6  fe80::/64 any  log 
 ! 
 ! Rule  fw-ipv6-1-ipv6 9 (global)
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 10 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 11 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 12 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+
   permit ipv6  host 2001:5c0:0:2::24 any  log 
   permit ipv6  3ffe:1200:2000::/36 any  log 
   permit ipv6  host 3ffe:1200:2001:1:8000::1 any  log 

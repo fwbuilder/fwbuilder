@@ -13,6 +13,7 @@ block in   log  quick on eth1 inet  from any  to ! <tbl.r0.d>
 # 
 # Rule  1 (global)
 # firewall6:Policy:1: warning: Changing rule direction due to self reference
+
 block in   quick inet  from any  to ! <tbl.r0.d> 
 # 
 # Rule  fallback rule

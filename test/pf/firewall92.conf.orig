@@ -32,6 +32,7 @@ pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r9998.d> port 22  label
 # 
 # Rule  0 (global)
 # firewall92:Policy:0: warning: Changing rule direction due to self reference
+
 pass in   quick inet proto tcp  from 10.3.14.0/24  to <tbl.r9998.d> port 22  label "RULE 0 -- ACCEPT "  
 # 
 # Rule  1 (global)

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:06:55 2011 PST by vadim
+#  Generated Sun Feb 20 21:00:52 2011 PST by vadim
 #
 # files: * firewall82_A.fw /etc/fw/firewall82_A.fw
 #
@@ -334,22 +334,16 @@ script_body() {
     echo "Rule Policy_A 1 (global)"
     # 
     # recursive branching
-    # firewall82_A:Policy_A:1: warning: Rule branches to rule set Policy which branches back to it, creating a loop
     $IPTABLES -A OUTPUT  -j Policy
-    # firewall82_A:Policy_A:1: warning: Rule branches to rule set Policy which branches back to it, creating a loop
     $IPTABLES -A INPUT  -j Policy
-    # firewall82_A:Policy_A:1: warning: Rule branches to rule set Policy which branches back to it, creating a loop
     $IPTABLES -A FORWARD  -j Policy
     # 
     # Rule Policy_A 2 (global)
     # 
     echo "Rule Policy_A 2 (global)"
     # 
-    # firewall82_A:Policy_A:2: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A OUTPUT  -j Policy_A
-    # firewall82_A:Policy_A:2: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A INPUT  -j Policy_A
-    # firewall82_A:Policy_A:2: warning: Rule branches to rule set Policy_A which branches back to it, creating a loop
     $IPTABLES -A FORWARD  -j Policy_A
 }
 
@@ -406,7 +400,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:06:55 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:00:52 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

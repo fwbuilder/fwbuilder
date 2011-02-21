@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:00:58 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:16 2011 PST by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -99,6 +99,8 @@ icmp permit any 11  dmz
 access-list dmz_acl_in permit icmp any host 192.168.2.1 11 
 ! 
 ! Rule  9 (global)
+! firewall1:Policy:9: error: Dynamic interface can be used in the policy rule only in v6.3 or later.
+
 telnet 0.0.0.0 0.0.0.0 inside
 telnet 0.0.0.0 0.0.0.0 dmz
 ssh    0.0.0.0 0.0.0.0 inside
@@ -135,19 +137,21 @@ global (outside) 1 interface
 nat (inside) 1 192.168.1.10 255.255.255.255 0 0
 ! 
 ! Rule  4 (NAT)
+! firewall1:NAT:4: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
+
 global (outside) 2 interface
 nat (inside) 2 192.168.1.0 255.255.255.0 0 0
 global (dmz) 2 interface
 ! 
 nat (dmz) 2 192.168.2.0 255.255.255.0 0 0
-! firewall1:NAT:4: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
 ! 
 ! 
 ! Rule  5 (NAT)
-! 
-! 
-! 
 ! firewall1:NAT:5: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'dmz' is going to be used as real and mapped interface in the generated nat command.
+
+! 
+! 
+! 
 !
 
 

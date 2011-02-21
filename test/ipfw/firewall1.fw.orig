@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Sun Feb 20 16:55:54 2011 PST by vadim
+#  Generated Sun Feb 20 21:29:36 2011 PST by vadim
 #
 # files: * firewall1.fw /etc/firewall1.fw
 #
@@ -83,7 +83,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 16:55:54 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:29:36 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -156,14 +156,14 @@ prolog_commands
 # 
 # Rule  9 (global)
 # firewall1:Policy:9: warning: Changing rule direction due to self reference
+
 "$IPFW" add 350 set 1 skipto 380 icmp  from 192.168.1.10  to me icmptypes 3 in   || exit 1
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 "$IPFW" add 360 set 1 skipto 380 icmp  from 192.168.1.20  to me icmptypes 3 in   || exit 1
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 "$IPFW" add 370 set 1 drop    log icmp  from any  to me icmptypes 3 in   || exit 1
 # 
 # Rule  10 (global)
 # firewall1:Policy:10: warning: Changing rule direction due to self reference
+
 "$IPFW" add 380 set 1 skipto 410 all  from me  to 192.168.1.0/24  out  || exit 1
 "$IPFW" add 390 set 1 skipto 410 all  from 192.168.2.0/24  to 192.168.1.0/24       || exit 1
 "$IPFW" add 400 set 1 drop    log all  from any  to 192.168.1.0/24       || exit 1
@@ -183,6 +183,7 @@ prolog_commands
 # 
 # Rule  13 (global)
 # firewall1:Policy:13: warning: Changing rule direction due to self reference
+
 "$IPFW" add 500 set 1 skipto 520 all  from any  to me  in   || exit 1
 "$IPFW" add 510 set 1 drop   all  from any  to any       || exit 1
 # 

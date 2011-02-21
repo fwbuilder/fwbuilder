@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:06:51 2011 PST by vadim
+#  Generated Sun Feb 20 21:00:48 2011 PST by vadim
 #
 # files: * firewall81.fw /etc/fw/firewall81.fw
 #
@@ -302,9 +302,10 @@ script_body() {
     # Branch rule with actual translation. 
     # Translation is ignored and warning should be issued
     # firewall81:NAT_2:0: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
+    # firewall81:NAT_2:0: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+
     $IPTABLES -t nat -N NAT_1
     $IPTABLES -t nat -A POSTROUTING  -d 192.0.2.1  -j NAT_1
-    # firewall81:NAT_2:0: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
     $IPTABLES -t nat -A PREROUTING  -d 192.0.2.1  -j NAT_1
     # 
     # Rule NAT_2 1 (NAT)
@@ -313,8 +314,8 @@ script_body() {
     # 
     # DNAT Rule
     # firewall81:NAT_2:1: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
+
     $IPTABLES -t nat -A POSTROUTING  -j NAT_1
-    # firewall81:NAT_2:1: warning: NAT branching rule does not have information about targets used in the branch ruleset to choose proper chain in the nat table. Will split the rule and place it in both PREROUTNING and POSTROUTING
     $IPTABLES -t nat -A PREROUTING  -j NAT_1
 
     # ================ Table 'nat',  rule set NAT_1
@@ -419,7 +420,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:06:51 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:00:48 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

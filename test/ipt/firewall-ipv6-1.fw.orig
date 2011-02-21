@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:07:32 2011 PST by vadim
+#  Generated Sun Feb 20 21:01:29 2011 PST by vadim
 #
 # files: * firewall-ipv6-1.fw /etc/firewall-ipv6-1.fw
 #
@@ -355,6 +355,8 @@ script_body() {
     # 
     echo "Rule 4 (global)"
     # 
+    # firewall-ipv6-1:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
     $IPTABLES -N Cid4834D3108571.0
     $IPTABLES -A INPUT -p tcp -m tcp  -d 1.1.1.1   --dport 22  -m state --state NEW  -j Cid4834D3108571.0
     $IPTABLES -N RULE_4
@@ -407,6 +409,9 @@ script_body() {
     # 
     echo "Rule 13 (global)"
     # 
+    # firewall-ipv6-1:Policy:13: error: Rule '13 (global)' shadows rule '15 (global)'  below it
+    # firewall-ipv6-1:Policy:13: error: Rule '13 (global)' shadows rule '17 (global)'  below it
+
     $IPTABLES -A OUTPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
@@ -459,10 +464,10 @@ script_body() {
     echo "Rule 21 (global)"
     # 
     # firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IPTABLES -N RULE_21
     $IPTABLES -A OUTPUT  -d 192.0.2.1   -j RULE_21
     $IPTABLES -A OUTPUT  -d 207.251.84.150   -j RULE_21
-    # firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IPTABLES -A FORWARD  -d 192.0.2.1   -j RULE_21
     $IPTABLES -A FORWARD  -d 207.251.84.150   -j RULE_21
     $IPTABLES -A RULE_21  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 21 -- DENY " --ulog-qthreshold 1
@@ -506,6 +511,8 @@ script_body() {
     echo "Rule Policy_ipv6 0 (global)"
     # 
     # for bug 2047082
+    # firewall-ipv6-1:Policy_ipv6:0: error: Rule 'Policy_ipv6 0 (global)' shadows rule 'Policy_ipv6 14 (global)'  below it
+
     $IP6TABLES -A OUTPUT  -m state --state NEW  -j ACCEPT
     # 
     # Rule Policy_ipv6 1 (global)
@@ -522,9 +529,9 @@ script_body() {
     echo "Rule Policy_ipv6 2 (global)"
     # 
     # firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IP6TABLES -N Policy_ipv6_2
     $IP6TABLES -A OUTPUT  -d 2001:db8::1   -j Policy_ipv6_2
-    # firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IP6TABLES -A FORWARD  -d 2001:db8::1   -j Policy_ipv6_2
     $IP6TABLES -A Policy_ipv6_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
     $IP6TABLES -A Policy_ipv6_2  -j DROP
@@ -561,9 +568,14 @@ script_body() {
     # 
     echo "Rule Policy_ipv6 6 (global)"
     # 
+    # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 10 (global)'  below it
+    # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 11 (global)'  below it
+    # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 12 (global)'  below it
+    # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 7 (global)'  below it
+    # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 9 (global)'  below it
     # firewall-ipv6-1:Policy_ipv6:6: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -d fe80::21d:9ff:fe8b:8e94   -j ACCEPT
-    # firewall-ipv6-1:Policy_ipv6:6: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule Policy_ipv6 7 (global)
@@ -571,34 +583,37 @@ script_body() {
     echo "Rule Policy_ipv6 7 (global)"
     # 
     # firewall-ipv6-1:Policy_ipv6:7: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule Policy_ipv6 8 (global)
     # 
     echo "Rule Policy_ipv6 8 (global)"
     # 
+    # firewall-ipv6-1:Policy_ipv6:8: error: Rule 'Policy_ipv6 8 (global)' shadows rule 'Policy_ipv6 13 (global)'  below it
     # firewall-ipv6-1:Policy_ipv6:8: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-1:Policy_ipv6:8: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-1:Policy_ipv6:8: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A FORWARD -p ipv6-icmp  -j ACCEPT
     # 
     # Rule Policy_ipv6 9 (global)
     # 
     echo "Rule Policy_ipv6 9 (global)"
     # 
-    $IP6TABLES -A INPUT -p tcp -m tcp  --dport 993  -m state --state NEW  -j ACCEPT
     # firewall-ipv6-1:Policy_ipv6:9: warning: Making rule stateless because it matches ICMPv6
+
+    $IP6TABLES -A INPUT -p tcp -m tcp  --dport 993  -m state --state NEW  -j ACCEPT
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule Policy_ipv6 10 (global)
     # 
     echo "Rule Policy_ipv6 10 (global)"
     # 
+    # firewall-ipv6-1:Policy_ipv6:10: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 139,135,42,445,88,389,636,3268,3269,53  -m state --state NEW  -j ACCEPT
     $IP6TABLES -A INPUT -p udp -m udp  -m multiport  --dports 138,137,53,88  -m state --state NEW  -j ACCEPT
-    # firewall-ipv6-1:Policy_ipv6:10: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule Policy_ipv6 11 (global)
@@ -687,7 +702,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:07:32 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:01:29 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

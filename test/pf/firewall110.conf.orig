@@ -13,6 +13,8 @@ scrub in all fragment reassemble
 pass inet  from any  to any tag tag2 
 # 
 # Rule  1 (global)
+# firewall110:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
+
 pass  quick inet  from any  to any keep state queue ssh_q 
 # 
 # Rule  2 (global)

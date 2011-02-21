@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:06:58 2011 PST by vadim
+#  Generated Sun Feb 20 21:00:56 2011 PST by vadim
 #
 # files: * firewall9.fw /etc/fw/firewall9.fw
 #
@@ -317,18 +317,14 @@ script_body() {
     echo "Rule 1 (global)"
     # 
     # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -N Cid3D4DF36C.0
     $IPTABLES -A OUTPUT -p udp -m udp  --dport 53  -j Cid3D4DF36C.0
-    # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -N RULE_1
     $IPTABLES -A Cid3D4DF36C.0  -d 22.22.22.22   -j RULE_1
-    # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A Cid3D4DF36C.0  -d 192.168.1.1   -j RULE_1
-    # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT -p udp -m udp  --dport 53  -j RULE_1
-    # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_1  -j LOG  --log-level debug --log-prefix "RULE 1 -- REJECT global"
-    # firewall9:Policy:1: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_1  -j REJECT  --reject-with icmp-net-unreachable
     # 
     # Rule 2 (global)
@@ -336,22 +332,16 @@ script_body() {
     echo "Rule 2 (global)"
     # 
     # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -N Cid3D4DF376.0
     $IPTABLES -A OUTPUT -p icmp  -j Cid3D4DF376.0
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A OUTPUT -p 50  -j Cid3D4DF376.0
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -N RULE_2
     $IPTABLES -A Cid3D4DF376.0  -d 22.22.22.22   -j RULE_2
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A Cid3D4DF376.0  -d 192.168.1.1   -j RULE_2
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT -p icmp  -j RULE_2
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT -p 50  -j RULE_2
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_2  -j LOG  --log-level debug --log-prefix "RULE 2 -- REJECT global"
-    # firewall9:Policy:2: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_2  -j REJECT  --reject-with icmp-net-unreachable
     # 
     # Rule 3 (global)
@@ -421,11 +411,10 @@ script_body() {
     echo "Rule 6 (global)"
     # 
     # firewall9:Policy:6: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -N Cid3D4DF39E.0
     $IPTABLES -A OUTPUT  -d 22.22.22.22   -j Cid3D4DF39E.0
-    # firewall9:Policy:6: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A OUTPUT  -d 192.168.1.1   -j Cid3D4DF39E.0
-    # firewall9:Policy:6: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT  -j Cid3D4DF39E.0
     $IPTABLES -A Cid3D4DF39E.0 -p tcp -m tcp  --dport 10000:11000  -j RETURN
     $IPTABLES -A Cid3D4DF39E.0 -p tcp -m tcp  --dport 113  -j RETURN
@@ -437,11 +426,10 @@ script_body() {
     echo "Rule 7 (global)"
     # 
     # firewall9:Policy:7: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -N Cid3D4DF3A8.0
     $IPTABLES -A OUTPUT  -d 22.22.22.22   -j Cid3D4DF3A8.0
-    # firewall9:Policy:7: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A OUTPUT  -d 192.168.1.1   -j Cid3D4DF3A8.0
-    # firewall9:Policy:7: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT  -j Cid3D4DF3A8.0
     $IPTABLES -A Cid3D4DF3A8.0 -p tcp -m tcp  --dport 10000:11000  -j RETURN
     $IPTABLES -A Cid3D4DF3A8.0 -p tcp -m tcp  --dport 113  -j RETURN
@@ -633,7 +621,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:06:58 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:00:56 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

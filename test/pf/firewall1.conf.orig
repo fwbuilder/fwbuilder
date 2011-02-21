@@ -142,6 +142,7 @@ block  log  quick inet proto icmp  from ! <tbl.r11>  to any icmp-type 3
 # Rule  10 (global)
 # this rule is shaded by rule above.
 # firewall1:Policy:10: warning: Changing rule direction due to self reference
+
 block in   log  quick inet proto icmp  from ! <tbl.r11>  to <tbl.r9> icmp-type 3  
 # 
 # Rule  11 (global)
@@ -165,6 +166,7 @@ pass  quick inet  from 192.168.1.0/24  to any keep state
 # 
 # Rule  18 (global)
 # firewall1:Policy:18: warning: Changing rule direction due to self reference
+
 pass in   quick inet proto tcp  from any  to <tbl.r9> port 3128 keep state 
 # 
 # Rule  19 (eth0)

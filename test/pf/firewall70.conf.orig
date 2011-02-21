@@ -15,26 +15,32 @@ table <tbl.r0.d> { 22.22.22.22 , 192.0.2.1 , 192.168.1.1 }
 # 
 # Rule  0 (global)
 # firewall70:Policy:0: warning: Changing rule direction due to self reference
+
 pass in   quick inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  1 (en0)
 # firewall70:Policy:1: warning: Changing rule direction due to self reference
+
 pass in   quick on en0 inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  2 (en0,en1)
 # firewall70:Policy:2: warning: Changing rule direction due to self reference
+
 pass in   quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  3 (en2,en0,en1,en3)
 # firewall70:Policy:3: warning: Changing rule direction due to self reference
+
 pass in   quick on { en2 en0 en1 en3 } inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  4 (en0)
 # firewall70:Policy:4: warning: Changing rule direction due to self reference
+
 pass in   quick on { en1 en2 } inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  5 (en0,en1)
 # firewall70:Policy:5: warning: Changing rule direction due to self reference
+
 pass in   quick on en2 inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  fallback rule

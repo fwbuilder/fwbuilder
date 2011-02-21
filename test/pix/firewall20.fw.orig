@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:03 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:20 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -103,6 +103,8 @@ access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10
 ! 
 ! Rule  5 (eth1,eth2)
 ! dmz -> intnet
+! firewall20:Policy:5: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
 access-list inside_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
 access-list dmz_acl_in permit ip host 192.168.2.23 host 192.168.1.10 
@@ -118,6 +120,8 @@ access-list dmz_acl_in deny   ip host 192.168.1.20 any log 0 interval 300
 access-list dmz_acl_in deny   ip 192.168.1.0 255.255.255.0 any log 0 interval 300
 ! 
 ! Rule  7 (eth0,eth1)
+! firewall20:Policy:7: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list dmz_acl_in permit ip 192.168.2.0 255.255.255.0 any 
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 

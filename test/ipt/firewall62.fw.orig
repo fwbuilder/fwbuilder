@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:06:29 2011 PST by vadim
+#  Generated Sun Feb 20 21:00:25 2011 PST by vadim
 #
 # files: * firewall62.fw /etc/firewall62.fw
 #
@@ -340,6 +340,8 @@ script_body() {
     # 
     echo "Rule 0 (global)"
     # 
+    # firewall62:Policy:0: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 1 (global)
@@ -353,6 +355,8 @@ script_body() {
     # 
     echo "Rule 2 (global)"
     # 
+    # firewall62:Policy:2: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -N Cid484A599620246.0
     $IPTABLES -A INPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid484A599620246.0
     $IPTABLES -A Cid484A599620246.0  -s 192.168.1.1   -j ACCEPT
@@ -371,18 +375,24 @@ script_body() {
     # 
     echo "Rule 4 (global)"
     # 
+    # firewall62:Policy:4: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT  -s 192.168.1.1  -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (global)
     # 
     echo "Rule 5 (global)"
     # 
+    # firewall62:Policy:5: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT  -s 192.168.1.0/24  -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (global)
     # 
     echo "Rule 6 (global)"
     # 
+    # firewall62:Policy:6: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -N Cid4848F1BB20246.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j Cid4848F1BB20246.0
     $IPTABLES -A Cid4848F1BB20246.0  -d 192.168.1.1   -j ACCEPT
@@ -392,12 +402,16 @@ script_body() {
     # 
     echo "Rule 8 (global)"
     # 
+    # firewall62:Policy:8: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT  -s ! 192.168.1.0/24  -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (global)
     # 
     echo "Rule 9 (global)"
     # 
+    # firewall62:Policy:9: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 10 (global)
@@ -405,6 +419,8 @@ script_body() {
     echo "Rule 10 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:10: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
@@ -413,6 +429,8 @@ script_body() {
     echo "Rule 11 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:11: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -N Cid55369X1137.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j Cid55369X1137.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j Cid55369X1137.0
@@ -424,6 +442,8 @@ script_body() {
     echo "Rule 12 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:12: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT -m owner ! --uid-owner 2000  -m state --state NEW  -j ACCEPT
     # 
     # Rule 13 (global)
@@ -431,6 +451,8 @@ script_body() {
     echo "Rule 13 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:13: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -N Cid72626X1137.0
     $IPTABLES -A OUTPUT -m owner ! --uid-owner 2000  -m state --state NEW  -j Cid72626X1137.0
     $IPTABLES -A Cid72626X1137.0  -d 192.168.1.1   -j ACCEPT
@@ -467,6 +489,8 @@ script_body() {
     echo "Rule 16 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:16: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j ACCEPT
     # 
@@ -475,6 +499,8 @@ script_body() {
     echo "Rule 17 (global)"
     # 
     # bug 2186568
+    # firewall62:Policy:17: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
+
     $IPTABLES -N Cid89930X1137.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j Cid89930X1137.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j Cid89930X1137.0
@@ -543,7 +569,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:06:29 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:00:25 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:08:49 2011 PST by vadim
+#  Generated Sun Feb 20 21:02:47 2011 PST by vadim
 #
 # files: * test-shadowing-2.fw /etc/test-shadowing-2.fw
 #
@@ -322,6 +322,8 @@ script_body() {
     echo "Rule 0 (eth0)"
     # 
     # shades rule below
+    # test-shadowing-2:Policy:0: error: Rule '0 (eth0)' shadows rule '1 (eth0)'  below it
+
     $IPTABLES -A FORWARD -o eth0   -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 1 (eth0)
@@ -336,6 +338,8 @@ script_body() {
     # 
     # firewall is part
     # of any for this rule
+    # test-shadowing-2:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+
     $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
@@ -352,6 +356,8 @@ script_body() {
     # 
     # this rule should shadow rule below it because
     # it uses IPService object with protocol 0
+    # test-shadowing-2:Policy:4: error: Rule '4 (global)' shadows rule '5 (global)'  below it
+
     $IPTABLES -A FORWARD -p all  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (global)
@@ -423,7 +429,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:08:49 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:02:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

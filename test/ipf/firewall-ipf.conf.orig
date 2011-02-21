@@ -39,8 +39,8 @@ pass  in  quick on eth1  from 33.33.33.0/24  to any
 # 
 # Rule  4 (eth0)
 # firewall:Policy:4: warning: Changing rule direction due to self reference
+
 pass  in  quick on eth0 proto udp  from 192.168.1.0/24  to 192.168.1.1 port = 53 keep state 
-# firewall:Policy:4: warning: Changing rule direction due to self reference
 pass  in  quick on eth0 proto udp  from 192.168.1.0/24  to 222.222.222.222 port = 53 keep state 
 # 
 # Rule  5 (eth0)
@@ -66,8 +66,8 @@ block out  log  level local0.warning quick  from any  to any
 # 
 # Rule  8 (global)
 # firewall:Policy:8: warning: Changing rule direction due to self reference
+
 block return-icmp-as-dest (3) in  quick proto 50  from any  to 192.168.1.1 
-# firewall:Policy:8: warning: Changing rule direction due to self reference
 block return-icmp-as-dest (3) in  quick proto 50  from any  to 222.222.222.222 
 # 
 # Rule  11 (global)
@@ -269,6 +269,8 @@ pass  out  log  level local0.warning quick  from 222.222.222.222  to 192.168.1.1
 pass  out  log  level local0.warning quick  from 222.222.222.222  to 222.222.222.222 
 # 
 # Rule  19 (global)
+# firewall:Policy:19: warning: Changing rule direction due to self reference
+
 pass  in  quick proto icmp  from 192.168.1.1  to 192.168.1.1 keep state 
 pass  in  quick proto icmp  from 192.168.1.1  to 222.222.222.222 keep state 
 pass  in  quick proto icmp  from 222.222.222.222  to 192.168.1.1 keep state 
@@ -301,69 +303,37 @@ pass  out quick  from 192.168.1.1  to 192.168.1.1
 pass  out quick  from 192.168.1.1  to 222.222.222.222 
 pass  out quick  from 222.222.222.222  to 192.168.1.1 
 pass  out quick  from 222.222.222.222  to 222.222.222.222 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto icmp  from 192.168.1.1  to 33.33.33.33 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto icmp  from 192.168.1.1  to 33.33.33.34 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto icmp  from 222.222.222.222  to 33.33.33.33 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto icmp  from 222.222.222.222  to 33.33.33.34 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 192.168.1.1  to 33.33.33.33 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 192.168.1.1  to 33.33.33.34 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 222.222.222.222  to 33.33.33.33 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 222.222.222.222  to 33.33.33.34 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 192.168.1.1  to 33.33.33.33 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 192.168.1.1  to 33.33.33.34 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 222.222.222.222  to 33.33.33.33 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 222.222.222.222  to 33.33.33.34 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick  from 192.168.1.1  to 33.33.33.33 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick  from 192.168.1.1  to 33.33.33.34 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick  from 222.222.222.222  to 33.33.33.33 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  out quick  from 222.222.222.222  to 33.33.33.34 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from 33.33.33.33  to 192.168.1.1 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from 33.33.33.33  to 222.222.222.222 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from 33.33.33.34  to 192.168.1.1 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto icmp  from 33.33.33.34  to 222.222.222.222 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 33.33.33.33  to 192.168.1.1 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 33.33.33.33  to 222.222.222.222 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 33.33.33.34  to 192.168.1.1 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from 33.33.33.34  to 222.222.222.222 flags S keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto udp  from 33.33.33.33  to 192.168.1.1 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto udp  from 33.33.33.33  to 222.222.222.222 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto udp  from 33.33.33.34  to 192.168.1.1 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick proto udp  from 33.33.33.34  to 222.222.222.222 keep state 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick  from 33.33.33.33  to 192.168.1.1 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick  from 33.33.33.33  to 222.222.222.222 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick  from 33.33.33.34  to 192.168.1.1 
-# firewall:Policy:19: warning: Changing rule direction due to self reference
 pass  in  quick  from 33.33.33.34  to 222.222.222.222 
 skip 3 in   from 33.33.33.33  to any 
 skip 2 in   from 33.33.33.34  to any 
@@ -425,20 +395,14 @@ pass  out quick  from any  to 192.168.1.1
 # Rule  20 (global)
 # Automatically generated 'masquerading' rule
 # firewall:Policy:20: warning: Changing rule direction due to self reference
+
 pass  out quick proto icmp  from 192.168.1.1  to any keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick proto icmp  from 222.222.222.222  to any keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 192.168.1.1  to any flags S keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick proto tcp  from 222.222.222.222  to any flags S keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 192.168.1.1  to any keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick proto udp  from 222.222.222.222  to any keep state 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick  from 192.168.1.1  to any 
-# firewall:Policy:20: warning: Changing rule direction due to self reference
 pass  out quick  from 222.222.222.222  to any 
 pass  in  quick proto icmp  from 192.168.1.0/24  to any keep state 
 pass  in  quick proto tcp  from 192.168.1.0/24  to any flags S keep state 

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:05:00 2011 PST by vadim
+#  Generated Sun Feb 20 20:58:55 2011 PST by vadim
 #
 # files: * firewall2-5.fw /etc/fw/firewall2-5.fw
 #
@@ -351,6 +351,7 @@ script_body() {
     # 
     # should be -o eth1
     # firewall2-5:NAT:4: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
+
     $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.10-222.222.222.100
     # 
     # Rule 5 (NAT)
@@ -366,6 +367,7 @@ script_body() {
     # 
     # partially matches eth3
     # firewall2-5:NAT:7: warning: Adding of virtual address for address range is not implemented (object range 33 30-33)
+
     $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 33.33.33.30-33.33.33.33
     # 
     # Rule 8 (NAT)
@@ -453,7 +455,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:05:00 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 20:58:55 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

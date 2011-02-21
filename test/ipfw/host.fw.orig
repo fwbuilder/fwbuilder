@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Sun Feb 20 16:55:56 2011 PST by vadim
+#  Generated Sun Feb 20 21:29:38 2011 PST by vadim
 #
 # files: * host.fw /etc/host.fw
 #
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 16:55:56 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:29:38 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -113,17 +113,19 @@ prolog_commands
 # Rule  4 (global)
 # block fragments
 # host:Policy:4: warning: Changing rule direction due to self reference
+
 "$IPFW" add 50 set 1 drop    log all  from any  to me   frag in   || exit 1
 # 
 # Rule  5 (global)
 # host:Policy:5: warning: Changing rule direction due to self reference
+
 "$IPFW" add 60 set 1 permit icmp  from any  to me icmptypes 3 in  keep-state  || exit 1
-# host:Policy:5: warning: Changing rule direction due to self reference
 "$IPFW" add 70 set 1 permit tcp  from any  to me 25,80,22,21,23 in  setup keep-state  || exit 1
 # 
 # Rule  6 (global)
 # allow all outgoing connections
 # host:Policy:6: warning: Changing rule direction due to self reference
+
 "$IPFW" add 80 set 1 permit all  from me  to any  out keep-state  || exit 1
 # 
 # Rule  7 (global)

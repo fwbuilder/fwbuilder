@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:07:34 2011 PST by vadim
+#  Generated Sun Feb 20 21:01:31 2011 PST by vadim
 #
 # files: * firewall-ipv6-2.fw /etc/firewall-ipv6-2.fw
 #
@@ -383,6 +383,8 @@ script_body() {
     # 
     echo "Rule 4 (global)"
     # 
+    # firewall-ipv6-2:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
     $IPTABLES -N Cid56136X87590.0
     $IPTABLES -A INPUT -p tcp -m tcp  -d 1.1.1.1   --dport 22  -m state --state NEW  -j Cid56136X87590.0
     $IPTABLES -N RULE_4
@@ -407,6 +409,9 @@ script_body() {
     # 
     echo "Rule 7 (global)"
     # 
+    # firewall-ipv6-2:Policy:7: error: Rule '7 (global)' shadows rule '27 (global)'  below it
+    # firewall-ipv6-2:Policy:7: error: Rule '7 (global)' shadows rule '28 (global)'  below it
+
     $IPTABLES -N In_RULE_7
     $IPTABLES -A INPUT  -m state --state NEW  -j In_RULE_7
     $IPTABLES -A In_RULE_7  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 7 -- ACCEPT " --ulog-qthreshold 1
@@ -416,6 +421,8 @@ script_body() {
     # 
     echo "Rule 8 (global)"
     # 
+    # firewall-ipv6-2:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
+
     $IPTABLES -A OUTPUT  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -d 192.168.1.1   -m state --state NEW  -j ACCEPT
     # 
@@ -449,6 +456,9 @@ script_body() {
     # 
     echo "Rule 15 (global)"
     # 
+    # firewall-ipv6-2:Policy:15: error: Rule '15 (global)' shadows rule '17 (global)'  below it
+    # firewall-ipv6-2:Policy:15: error: Rule '15 (global)' shadows rule '19 (global)'  below it
+
     $IPTABLES -A OUTPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
@@ -474,6 +484,9 @@ script_body() {
     echo "Rule 20 (global)"
     # 
     # INPUT, OUTPUT, FORWARD
+    # firewall-ipv6-2:Policy:20: error: Rule '20 (global)' shadows rule '22 (global)'  below it
+    # firewall-ipv6-2:Policy:20: error: Rule '20 (global)' shadows rule '30 (global)'  below it
+
     $IPTABLES -A INPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
@@ -508,10 +521,10 @@ script_body() {
     echo "Rule 24 (global)"
     # 
     # firewall-ipv6-2:Policy:24: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IPTABLES -N RULE_24
     $IPTABLES -A OUTPUT  -d 192.0.2.1   -j RULE_24
     $IPTABLES -A OUTPUT  -d 207.251.84.150   -j RULE_24
-    # firewall-ipv6-2:Policy:24: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IPTABLES -A FORWARD  -d 192.0.2.1   -j RULE_24
     $IPTABLES -A FORWARD  -d 207.251.84.150   -j RULE_24
     $IPTABLES -A RULE_24  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 24 -- DENY " --ulog-qthreshold 1
@@ -609,12 +622,22 @@ script_body() {
     # 
     echo "Rule 1 (global)"
     # 
+    # firewall-ipv6-2:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
+    # firewall-ipv6-2:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
+    # firewall-ipv6-2:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
+    # firewall-ipv6-2:Policy:1: error: Rule '1 (global)' shadows rule '6 (global)'  below it
+
     $IP6TABLES -A INPUT -p tcp -m tcp  -s 2001:5c0:0:2::24   -d fe80::21d:9ff:fe8b:8e94   --dport 22  -m state --state NEW  -j ACCEPT
     # 
     # Rule 2 (global)
     # 
     echo "Rule 2 (global)"
     # 
+    # firewall-ipv6-2:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+    # firewall-ipv6-2:Policy:2: error: Rule '2 (global)' shadows rule '4 (global)'  below it
+    # firewall-ipv6-2:Policy:2: error: Rule '2 (global)' shadows rule '5 (global)'  below it
+    # firewall-ipv6-2:Policy:2: error: Rule '2 (global)' shadows rule '6 (global)'  below it
+
     $IP6TABLES -N RULE_2
     $IP6TABLES -A INPUT -p tcp -m tcp  -s 3ffe:1200:2001:1:8000::1   --dport 22  -m state --state NEW  -j RULE_2
     $IP6TABLES -A RULE_2  -j LOG  --log-level info --log-prefix "RULE 2 -- ACCEPT "
@@ -624,6 +647,8 @@ script_body() {
     # 
     echo "Rule 3 (global)"
     # 
+    # firewall-ipv6-2:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
+
     $IP6TABLES -N Cid56124X87590.0
     $IP6TABLES -A INPUT -p tcp -m tcp  -d fe80::21d:9ff:fe8b:8e94   --dport 22  -m state --state NEW  -j Cid56124X87590.0
     $IP6TABLES -N RULE_3
@@ -674,6 +699,9 @@ script_body() {
     # 
     echo "Rule 7 (global)"
     # 
+    # firewall-ipv6-2:Policy:7: error: Rule '7 (global)' shadows rule '27 (global)'  below it
+    # firewall-ipv6-2:Policy:7: error: Rule '7 (global)' shadows rule '28 (global)'  below it
+
     $IP6TABLES -N In_RULE_7
     $IP6TABLES -A INPUT  -m state --state NEW  -j In_RULE_7
     $IP6TABLES -A In_RULE_7  -j LOG  --log-level info --log-prefix "RULE 7 -- ACCEPT "
@@ -683,6 +711,8 @@ script_body() {
     # 
     echo "Rule 8 (global)"
     # 
+    # firewall-ipv6-2:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
+
     $IP6TABLES -A OUTPUT  -d e80::21d:9ff:fe8b:8e94   -m state --state NEW  -j ACCEPT
     $IP6TABLES -A FORWARD  -d e80::21d:9ff:fe8b:8e94   -m state --state NEW  -j ACCEPT
     # 
@@ -697,6 +727,8 @@ script_body() {
     # 
     echo "Rule 10 (global)"
     # 
+    # firewall-ipv6-2:Policy:10: error: Rule '10 (global)' shadows rule '25 (global)'  below it
+
     $IP6TABLES -N RULE_10
     $IP6TABLES -A INPUT  -s fe80::/64   -m state --state NEW  -j RULE_10
     $IP6TABLES -A OUTPUT  -s fe80::/64   -m state --state NEW  -j RULE_10
@@ -708,6 +740,8 @@ script_body() {
     # 
     echo "Rule 11 (global)"
     # 
+    # firewall-ipv6-2:Policy:11: error: Rule '11 (global)' shadows rule '12 (global)'  below it
+
     $IP6TABLES -N RULE_11
     $IP6TABLES -A INPUT  -s 2001:5c0:0:2::24   -m state --state NEW  -j RULE_11
     $IP6TABLES -A INPUT  -s 3ffe:1200:2000::/36   -m state --state NEW  -j RULE_11
@@ -734,11 +768,13 @@ script_body() {
     # 
     echo "Rule 16 (global)"
     # 
+    # firewall-ipv6-2:Policy:16: error: Rule '16 (global)' shadows rule '18 (global)'  below it
+    # firewall-ipv6-2:Policy:16: error: Rule '16 (global)' shadows rule '19 (global)'  below it
+    # firewall-ipv6-2:Policy:16: error: Rule '16 (global)' shadows rule '29 (global)'  below it
     # firewall-ipv6-2:Policy:16: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-2:Policy:16: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-2:Policy:16: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A FORWARD -p ipv6-icmp  -j ACCEPT
     # 
     # Rule 18 (global)
@@ -746,10 +782,9 @@ script_body() {
     echo "Rule 18 (global)"
     # 
     # firewall-ipv6-2:Policy:18: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
-    # firewall-ipv6-2:Policy:18: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
-    # firewall-ipv6-2:Policy:18: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A FORWARD -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
     # 
     # Rule 19 (global)
@@ -757,10 +792,9 @@ script_body() {
     echo "Rule 19 (global)"
     # 
     # firewall-ipv6-2:Policy:19: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
-    # firewall-ipv6-2:Policy:19: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
-    # firewall-ipv6-2:Policy:19: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A FORWARD -p ipv6-icmp  -m icmp6 --icmpv6-type 128/0   -j ACCEPT
     # 
     # Rule 22 (global)
@@ -768,6 +802,8 @@ script_body() {
     echo "Rule 22 (global)"
     # 
     # for bug 2047082
+    # firewall-ipv6-2:Policy:22: error: Rule '22 (global)' shadows rule '30 (global)'  below it
+
     $IP6TABLES -A OUTPUT  -m state --state NEW  -j ACCEPT
     # 
     # Rule 23 (global)
@@ -784,9 +820,9 @@ script_body() {
     echo "Rule 24 (global)"
     # 
     # firewall-ipv6-2:Policy:24: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IP6TABLES -N RULE_24
     $IP6TABLES -A OUTPUT  -d 2001:db8::1   -j RULE_24
-    # firewall-ipv6-2:Policy:24: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IP6TABLES -A FORWARD  -d 2001:db8::1   -j RULE_24
     $IP6TABLES -A RULE_24  -j LOG  --log-level info --log-prefix "RULE 24 -- DENY "
     $IP6TABLES -A RULE_24  -j DROP
@@ -814,8 +850,8 @@ script_body() {
     echo "Rule 27 (global)"
     # 
     # firewall-ipv6-2:Policy:27: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -d fe80::21d:9ff:fe8b:8e94   -j ACCEPT
-    # firewall-ipv6-2:Policy:27: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule 28 (global)
@@ -823,6 +859,7 @@ script_body() {
     echo "Rule 28 (global)"
     # 
     # firewall-ipv6-2:Policy:28: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
     # 
     # Rule 29 (global)
@@ -830,10 +867,9 @@ script_body() {
     echo "Rule 29 (global)"
     # 
     # firewall-ipv6-2:Policy:29: warning: Making rule stateless because it matches ICMPv6
+
     $IP6TABLES -A OUTPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-2:Policy:29: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A INPUT -p ipv6-icmp  -j ACCEPT
-    # firewall-ipv6-2:Policy:29: warning: Making rule stateless because it matches ICMPv6
     $IP6TABLES -A FORWARD -p ipv6-icmp  -j ACCEPT
     # 
     # Rule 30 (global)
@@ -930,7 +966,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:07:34 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:01:31 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -33,6 +33,7 @@ pass  quick inet  from www.cnn.com  to any keep state  label "RULE 1 -- ACCEPT o
 # 
 # Rule  2 (global)
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 pass  quick inet  from 192.0.2.1  to any keep state  label "RULE 2 -- ACCEPT on global "  
 # 
 # Rule  3 (global)
@@ -46,6 +47,7 @@ block  quick inet  from any  to ! www.cnn.com  label "RULE 5 -- DROP on global "
 # 
 # Rule  6 (global)
 # firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 pass  quick inet  from any  to ! 192.0.2.1 keep state  label "RULE 6 -- ACCEPT on global "  
 # 
 # Rule  7 (global)

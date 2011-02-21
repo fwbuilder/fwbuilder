@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:07:57 2011 PST by vadim
+#  Generated Sun Feb 20 21:01:54 2011 PST by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
 #
@@ -352,6 +352,8 @@ script_body() {
     # 
     echo "Rule fw-ipv6-3 2 (global)"
     # 
+    # firewall-ipv6-3:fw-ipv6-3:2: error: Rule 'fw-ipv6-3 2 (global)' shadows rule 'fw-ipv6-3 3 (global)'  below it
+
     $IPTABLES -A OUTPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type any  -m state --state NEW  -j ACCEPT
@@ -369,6 +371,8 @@ script_body() {
     echo "Rule fw-ipv6-3 4 (global)"
     # 
     # INPUT, OUTPUT, FORWARD
+    # firewall-ipv6-3:fw-ipv6-3:4: error: Rule 'fw-ipv6-3 4 (global)' shadows rule 'fw-ipv6-3 6 (global)'  below it
+
     $IPTABLES -A INPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -s 1.1.1.0/24   -m state --state NEW  -j ACCEPT
@@ -403,10 +407,10 @@ script_body() {
     echo "Rule fw-ipv6-3 8 (global)"
     # 
     # firewall-ipv6-3:fw-ipv6-3:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IPTABLES -N fw-ipv6-3_8
     $IPTABLES -A OUTPUT  -d 192.0.2.1   -j fw-ipv6-3_8
     $IPTABLES -A OUTPUT  -d 207.251.84.150   -j fw-ipv6-3_8
-    # firewall-ipv6-3:fw-ipv6-3:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IPTABLES -A FORWARD  -d 192.0.2.1   -j fw-ipv6-3_8
     $IPTABLES -A FORWARD  -d 207.251.84.150   -j fw-ipv6-3_8
     $IPTABLES -A fw-ipv6-3_8  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 8 -- DENY " --ulog-qthreshold 1
@@ -515,9 +519,9 @@ script_body() {
     echo "Rule fw-ipv6-3 8 (global)"
     # 
     # firewall-ipv6-3:fw-ipv6-3:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+
     $IP6TABLES -N fw-ipv6-3_8
     $IP6TABLES -A OUTPUT  -d 2001:db8::1   -j fw-ipv6-3_8
-    # firewall-ipv6-3:fw-ipv6-3:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
     $IP6TABLES -A FORWARD  -d 2001:db8::1   -j fw-ipv6-3_8
     $IP6TABLES -A fw-ipv6-3_8  -j LOG  --log-level info --log-prefix "RULE 8 -- DENY "
     $IP6TABLES -A fw-ipv6-3_8  -j DROP
@@ -592,7 +596,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:07:57 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:01:54 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -189,11 +189,15 @@ bool RoutingCompiler_openbsd::PrintRule::processNext()
                     }
                 }
                 if (comment_lines) compiler->output << "#" << endl;
+
+                string err = compiler->getErrorsForRule(rule, "# ");
+                if (!err.empty()) compiler->output << err << endl;
+
                 current_rule_label = rl;
             }
         
-            string err = rule->getCompilerMessage();
-            if (!err.empty()) compiler->output << "# " << err << endl;
+//            string err = rule->getCompilerMessage();
+//            if (!err.empty()) compiler->output << "# " << err << endl;
 
             string  command_line = RoutingRuleToString(rule);
             compiler->output << command_line;

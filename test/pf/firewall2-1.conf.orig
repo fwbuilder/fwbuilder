@@ -61,6 +61,7 @@ nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/28
 # 
 # Rule  17 (NAT)
 # firewall2-1:NAT:17: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+
 nat-anchor "NAT" proto tcp from 192.168.1.0/24 to any port 1080 
 rdr-anchor "NAT" proto tcp from 192.168.1.0/24 to any port 1080 
 

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:04:57 2011 PST by vadim
+#  Generated Sun Feb 20 20:58:52 2011 PST by vadim
 #
 # files: * firewall2-4.fw /etc/fw/firewall2-4.fw
 #
@@ -331,8 +331,8 @@ script_body() {
     echo "Rule 5 (NAT)"
     # 
     # firewall2-4:NAT:5: error: Non-contiguous address range in Translated Destination in load balancing NAT rule
+
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
-    # firewall2-4:NAT:5: error: Non-contiguous address range in Translated Destination in load balancing NAT rule
     $IPTABLES -t nat -A OUTPUT -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.10-192.168.1.20
     # 
     # Rule 6 (NAT)
@@ -424,7 +424,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:04:57 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 20:58:52 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

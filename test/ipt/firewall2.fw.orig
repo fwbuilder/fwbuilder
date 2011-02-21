@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:04:37 2011 PST by vadim
+#  Generated Sun Feb 20 20:58:32 2011 PST by vadim
 #
 # files: * firewall2.fw /etc/fw/firewall2.fw
 #
@@ -595,6 +595,7 @@ script_body() {
     echo "Rule 22 (NAT)"
     # 
     # firewall2:NAT:22: warning: Adding of virtual address for address range is not implemented (object ext_range)
+
     $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.100-22.22.22.110
     # 
     # Rule 23 (NAT)
@@ -863,6 +864,9 @@ script_body() {
     echo "Rule 0 (eth1)"
     # 
     # Anti-spoofing rule
+    # firewall2:Policy:0: error: Rule '0 (eth1)' shadows rule '2 (fw2i1,3)'  below it
+    # firewall2:Policy:0: error: Rule '0 (eth1)' shadows rule '3 (eth1,eth3)'  below it
+
     $IPTABLES -N In_RULE_0
     $IPTABLES -A INPUT -i eth1   -s 22.22.22.22   -j In_RULE_0
     $IPTABLES -A INPUT -i eth1   -s 22.22.23.23   -j In_RULE_0
@@ -909,6 +913,8 @@ script_body() {
     # 
     # testing group in "interface"
     # this rule should be identical to rule 3
+    # firewall2:Policy:2: error: Rule '2 (fw2i1,3)' shadows rule '3 (eth1,eth3)'  below it
+
     $IPTABLES -N In_RULE_2
     $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
     $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   --dports 68,67  -j In_RULE_2
@@ -936,6 +942,9 @@ script_body() {
     # testing choice of chains in case when several
     # interfaces are used and rule matches 'any' or
     # broadcast 
+    # firewall2:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
+    # firewall2:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
+
     $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
@@ -998,16 +1007,18 @@ script_body() {
     # 
     echo "Rule 10 (global)"
     # 
+    # firewall2:Policy:10: error: Rule '10 (global)' shadows rule '11 (global)'  below it
+    # firewall2:Policy:10: error: Rule '10 (global)' shadows rule '12 (global)'  below it
+    # firewall2:Policy:10: error: Rule '10 (global)' shadows rule '13 (global)'  below it
+    # firewall2:Policy:10: error: Rule '10 (global)' shadows rule '14 (global)'  below it
+    # firewall2:Policy:10: error: Rule '10 (global)' shadows rule '20 (global)'  below it
     # firewall2:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -N RULE_10
     $IPTABLES -A OUTPUT -p udp -m udp  --dport 161  -j RULE_10
-    # firewall2:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A INPUT -p udp -m udp  --dport 161  -j RULE_10
-    # firewall2:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A FORWARD -p udp -m udp  --dport 161  -j RULE_10
-    # firewall2:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_10  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 10 - REJECT **" --ulog-qthreshold 1
-    # firewall2:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A RULE_10  -j REJECT  --reject-with icmp-net-unreachable
     # 
     # Rule 11 (global)
@@ -1347,6 +1358,8 @@ script_body() {
     # 
     echo "Rule 25 (global)"
     # 
+    # firewall2:Policy:25: error: Rule '25 (global)' shadows rule '26 (global)'  below it
+
     $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -s 192.168.2.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
@@ -1407,11 +1420,10 @@ script_body() {
     # 
     # 'catch all' rule
     # firewall2:Policy:29: error: Object 'net-err' has address or netmask 0.0.0.0, which is equivalent to 'any'. This is likely an error.
+
     $IPTABLES -N RULE_29
     $IPTABLES -A INPUT  -s 1.2.3.0/0   -j RULE_29
-    # firewall2:Policy:29: error: Object 'net-err' has address or netmask 0.0.0.0, which is equivalent to 'any'. This is likely an error.
     $IPTABLES -A OUTPUT  -s 1.2.3.0/0   -j RULE_29
-    # firewall2:Policy:29: error: Object 'net-err' has address or netmask 0.0.0.0, which is equivalent to 'any'. This is likely an error.
     $IPTABLES -A FORWARD  -s 1.2.3.0/0   -j RULE_29
     $IPTABLES -A RULE_29  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 29 - DENY **" --ulog-qthreshold 1
     $IPTABLES -A RULE_29  -j DROP
@@ -1470,7 +1482,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:04:37 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 20:58:32 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

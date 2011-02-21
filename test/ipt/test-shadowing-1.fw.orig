@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:08:46 2011 PST by vadim
+#  Generated Sun Feb 20 21:02:44 2011 PST by vadim
 #
 # files: * test-shadowing-1.fw /etc/test-shadowing-1.fw
 #
@@ -324,6 +324,8 @@ script_body() {
     echo "Rule 0 (eth0)"
     # 
     # shades rule below
+    # test-shadowing-1:Policy:0: error: Rule '0 (eth0)' shadows rule '1 (eth0)'  below it
+
     $IPTABLES -A OUTPUT -o eth0   -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -o eth0   -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
@@ -342,6 +344,8 @@ script_body() {
     # 
     # firewall is part
     # of any for this rule
+    # test-shadowing-1:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+
     $IPTABLES -A OUTPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p tcp -m tcp  --dport 80  -m state --state NEW  -j ACCEPT
@@ -361,6 +365,8 @@ script_body() {
     # 
     echo "Rule 4 (global)"
     # 
+    # test-shadowing-1:Policy:4: error: Rule '4 (global)' shadows rule '5 (global)'  below it
+
     $IPTABLES -A INPUT -p tcp -m tcp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -p tcp -m tcp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p tcp -m tcp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
@@ -377,6 +383,8 @@ script_body() {
     # 
     echo "Rule 6 (global)"
     # 
+    # test-shadowing-1:Policy:6: error: Rule '6 (global)' shadows rule '7 (global)'  below it
+
     $IPTABLES -A INPUT -p udp -m udp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -p udp -m udp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p udp -m udp  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
@@ -395,6 +403,8 @@ script_body() {
     # 
     # this rule should shadow rule below it because
     # it uses IPService object with protocol 0
+    # test-shadowing-1:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
+
     $IPTABLES -A INPUT -p all  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -p all  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -p all  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
@@ -461,7 +471,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:08:46 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:02:44 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

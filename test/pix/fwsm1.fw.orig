@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:15 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:32 2011 PST by vadim
 !
 ! Compiled for fwsm 2.3
 ! Outbound ACLs: supported
@@ -239,6 +239,8 @@ access-list outside_acl_in permit icmp any any 3
 ! 
 ! Rule  3 (ethernet1)
 ! anti-spoofing rule
+! fwsm1:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 0 interval 300
 ! 
 ! Rule  4 (ethernet0)
@@ -292,6 +294,7 @@ access-list outside_acl_in permit ip object-group id444A03DE9567.dst.net.0 objec
 ! 
 ! Rule  13 (global)
 ! fwsm1:Policy:13: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
+
 access-list inside_acl_in permit tcp host 192.168.1.10 object-group id444A04429567.dst.net.0 eq 3128 
 ! 
 ! Rule  14 (global)
@@ -318,6 +321,8 @@ access-list inside_acl_in permit tcp any object-group id444A04749567.dst.net.0 o
 access-list dmz_acl_in permit tcp any object-group id444A04749567.dst.net.0 object-group id444A04679567.srv.tcp.0 
 ! 
 ! Rule  18 (global)
+! fwsm1:Policy:18: error: Rule '18 (global)' shadows rule '20 (global)'  below it
+
 access-list outside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id444A04819567.srv.tcp.0 
 access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id444A04819567.srv.tcp.0 
 access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id444A04819567.srv.tcp.0 

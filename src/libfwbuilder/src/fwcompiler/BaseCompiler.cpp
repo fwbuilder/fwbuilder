@@ -70,7 +70,24 @@ string BaseCompiler::getErrors(const string &comment_sep)
 void BaseCompiler::clearErrors()
 {
     errors_buffer.str("");
+    rule_errors.clear();
 }
+
+string BaseCompiler::getErrorsForRule(Rule *rule, const std::string &comment_sep)
+{
+    string rule_label = rule->getLabel();
+    rule_errors[rule_label].sort();
+    ostringstream ostr;
+    list<string>::iterator it;
+    string prev;  // used to remove duplicate messages
+    for (it=rule_errors[rule_label].begin(); it!=rule_errors[rule_label].end(); ++it)
+    {
+        if (*it != prev) ostr << comment_sep << *it << endl;
+        prev = *it;
+    }
+    return ostr.str();
+}
+
 
 /*
  * Error and warning format:
@@ -126,7 +143,11 @@ void BaseCompiler::message(const std::string &level,
     string str = setLevel(level, stdErrorMessage(fw, ruleset, rule, errstr));
     printError(str);
     Rule *cast_rule = Rule::cast(rule);
-    if (cast_rule) cast_rule->setCompilerMessage(str);
+    if (cast_rule)
+    {
+        cast_rule->setCompilerMessage(str);
+        rule_errors[cast_rule->getLabel()].push_back(str);
+    }
 }
 
 void BaseCompiler::printError(const string &errstr)

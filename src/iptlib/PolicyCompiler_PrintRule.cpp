@@ -199,13 +199,16 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
                 res << "# " << line.toStdString() << endl;
             }
             //res << "# " << endl;
+
+            string err = compiler->getErrorsForRule(rule, "# ");
+            if (!err.empty()) res << err << endl;
         }
     }
 
     current_rule_label = rl;
 
-    string err = rule->getCompilerMessage();
-    if (!err.empty()) res << "# " << err << endl;
+//    string err = rule->getCompilerMessage();
+//    if (!err.empty()) res << "# " << err << endl;
 
     return res.str();
 }

@@ -72,6 +72,7 @@ pass  log  quick inet proto icmp  from any  to 192.168.1.1 icmp-type 8 code 0  k
 # 
 # Rule  6 (global)
 # firewall4:Policy:6: warning: Changing rule direction due to self reference
+
 block in   log  quick inet proto icmp  from ! <tbl.r6.s>  to <tbl.r2> icmp-type 3  
 # 
 # Rule  7 (global)

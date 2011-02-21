@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Sun Feb 20 16:55:55 2011 PST by vadim
+#  Generated Sun Feb 20 21:29:37 2011 PST by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -163,7 +163,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Sun Feb 20 16:55:55 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:29:37 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -193,6 +193,7 @@ prolog_commands
 # 
 # Rule  2 (global)
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 "$IPFW" add 80 set 1 permit all  from 192.0.2.1  to any      keep-state  || exit 1
 # 
 # Rule  3 (global)
@@ -213,6 +214,7 @@ prolog_commands
 # 
 # Rule  6 (global)
 # firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 "$IPFW" add 190 set 1 skipto 210 all  from any  to 192.0.2.1       || exit 1
 "$IPFW" add 200 set 1 permit all  from any  to any      keep-state  || exit 1
 # 

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipfw v4.2.0.3483
 #
-#  Generated Sun Feb 20 16:55:56 2011 PST by vadim
+#  Generated Sun Feb 20 21:29:38 2011 PST by vadim
 #
 # files: * mac.fw /etc/mac.fw
 #
@@ -77,7 +77,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 16:55:56 2011 by vadim"
+log "Activating firewall script generated Sun Feb 20 21:29:38 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -99,6 +99,7 @@ prolog_commands
 # 
 # Rule  1 (global)
 # mac:Policy:1: warning: Changing rule direction due to self reference
+
 "$IPFW" add 20 set 1 permit tcp  from any  to me established  in  keep-state  || exit 1
 # 
 # Rule  2 (global)
@@ -107,18 +108,16 @@ prolog_commands
 # 
 # Rule  3 (global)
 # mac:Policy:3: warning: Changing rule direction due to self reference
+
 "$IPFW" add 50 set 1 permit icmp  from any  to me icmptypes 11,11,0,3 in  keep-state  || exit 1
-# mac:Policy:3: warning: Changing rule direction due to self reference
 "$IPFW" add 60 set 1 permit tcp  from any  to me 22,25 in  setup keep-state  || exit 1
-# mac:Policy:3: warning: Changing rule direction due to self reference
 "$IPFW" add 70 set 1 permit udp  from any  to me  in  keep-state  || exit 1
 # 
 # Rule  4 (global)
 # mac:Policy:4: warning: Changing rule direction due to self reference
+
 "$IPFW" add 80 set 1 permit icmp  from me  to any icmptypes 11,11,0,3 out keep-state  || exit 1
-# mac:Policy:4: warning: Changing rule direction due to self reference
 "$IPFW" add 90 set 1 permit tcp  from me  to any  out setup keep-state  || exit 1
-# mac:Policy:4: warning: Changing rule direction due to self reference
 "$IPFW" add 100 set 1 permit udp  from me  to any 53,68,67 out keep-state  || exit 1
 # 
 # Rule  5 (global)

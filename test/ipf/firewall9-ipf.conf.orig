@@ -31,8 +31,8 @@ count out  log   from any  to any
 # 
 # Rule  5 (global)
 # firewall9:Policy:5: warning: Changing rule direction due to self reference
+
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 flags S keep state 
-# firewall9:Policy:5: warning: Changing rule direction due to self reference
 pass  in  quick proto tcp  from any  to 192.168.1.1 port = 22 flags S keep state 
 # 
 # Rule  6 (global)

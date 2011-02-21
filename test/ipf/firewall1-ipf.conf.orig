@@ -99,38 +99,26 @@ block out  log  quick proto icmp  from any  to any icmp-type 3
 # 
 # Rule  9 (global)
 # firewall1:Policy:9: warning: Changing rule direction due to self reference
+
 skip 11 in  proto icmp  from 192.168.1.10  to 22.22.22.22 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 10 in  proto icmp  from 192.168.1.10  to 22.22.23.23 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 9 in  proto icmp  from 192.168.1.10  to 192.168.1.1 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 8 in  proto icmp  from 192.168.1.10  to 192.168.2.1 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 7 in  proto icmp  from 192.168.1.20  to 22.22.22.22 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 6 in  proto icmp  from 192.168.1.20  to 22.22.23.23 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 5 in  proto icmp  from 192.168.1.20  to 192.168.1.1 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 skip 4 in  proto icmp  from 192.168.1.20  to 192.168.2.1 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 22.22.22.22 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 22.22.23.23 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 192.168.1.1 icmp-type 3  
-# firewall1:Policy:9: warning: Changing rule direction due to self reference
 block in   log  quick proto icmp  from any  to 192.168.2.1 icmp-type 3  
 # 
 # Rule  10 (global)
 # firewall1:Policy:10: warning: Changing rule direction due to self reference
+
 skip 5 out  from 22.22.22.22  to 192.168.1.0/24 
-# firewall1:Policy:10: warning: Changing rule direction due to self reference
 skip 4 out  from 22.22.23.23  to 192.168.1.0/24 
-# firewall1:Policy:10: warning: Changing rule direction due to self reference
 skip 3 out  from 192.168.1.1  to 192.168.1.0/24 
-# firewall1:Policy:10: warning: Changing rule direction due to self reference
 skip 2 out  from 192.168.2.1  to 192.168.1.0/24 
 skip 1 in   from 192.168.2.0/24  to 192.168.1.0/24 
 skip 1 out  from 192.168.2.0/24  to 192.168.1.0/24 
@@ -153,12 +141,10 @@ block out  log  quick  from 192.168.2.0/24  to any
 # 
 # Rule  12 (global)
 # firewall1:Policy:12: warning: Changing rule direction due to self reference
+
 skip 4 in   from any  to 22.22.22.22 
-# firewall1:Policy:12: warning: Changing rule direction due to self reference
 skip 3 in   from any  to 22.22.23.23 
-# firewall1:Policy:12: warning: Changing rule direction due to self reference
 skip 2 in   from any  to 192.168.1.1 
-# firewall1:Policy:12: warning: Changing rule direction due to self reference
 skip 1 in   from any  to 192.168.2.1 
 block in  quick  from any  to any 
 block out quick  from any  to any 

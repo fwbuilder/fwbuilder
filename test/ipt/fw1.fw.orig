@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:08:35 2011 PST by vadim
+#  Generated Sun Feb 20 21:02:33 2011 PST by vadim
 #
 # files: * fw1.fw /etc/fw1.fw
 #
@@ -405,6 +405,12 @@ script_body() {
     # 
     echo "Rule 1 (global)"
     # 
+    # fw1:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
+    # fw1:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
+    # fw1:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
+    # fw1:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
+    # fw1:Policy:1: error: Rule '1 (global)' shadows rule '6 (global)'  below it
+
     $IPTABLES -A OUTPUT  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -m state --state NEW  -j ACCEPT
@@ -519,7 +525,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:08:35 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 21:02:33 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -78,8 +78,8 @@ bool RoutingCompiler_pix::PrintRule::processNext()
         compiler->output << "! " << endl;
     }
     
-    string err = rule->getCompilerMessage();
-    if (!err.empty()) compiler->output << "# " << err << endl;
+//    string err = rule->getCompilerMessage();
+//    if (!err.empty()) compiler->output << "# " << err << endl;
 
     if( rule->getRuleType() != RoutingRule::MultiPath )
     {
@@ -92,7 +92,11 @@ bool RoutingCompiler_pix::PrintRule::processNext()
             }
             compiler->output << "! " << comm.substr(c1) << endl;
             compiler->output << "! " << endl;
-            current_rule_label=rl;
+
+            string err = compiler->getErrorsForRule(rule, "! ");
+            if (!err.empty()) compiler->output << err << endl;
+
+            current_rule_label = rl;
         }
         
         string command_line = RoutingRuleToString(rule);
@@ -100,6 +104,9 @@ bool RoutingCompiler_pix::PrintRule::processNext()
     
     } else
     {
+        string err = compiler->getErrorsForRule(rule, "! ");
+        if (!err.empty()) compiler->output << err << endl;
+            
         compiler->abort(rule, "MultiPath routing not supported by platform");
     }
     return true;

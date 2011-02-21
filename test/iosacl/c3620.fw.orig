@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3457
+!  Firewall Builder  fwb_iosacl v4.2.0.3483
 !
-!  Generated Thu Feb  3 10:04:19 2011 PST by vadim
+!  Generated Sun Feb 20 21:26:38 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -38,7 +38,6 @@ ip access-list extended e1_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
 ! 
@@ -77,7 +76,6 @@ ip access-list extended e1_0_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 ! 
@@ -98,7 +96,6 @@ ip access-list extended e1_1_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
 ! 
@@ -133,7 +130,6 @@ ip access-list extended e1_1_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 exit
@@ -142,7 +138,6 @@ ip access-list extended fe0_0_in
 ! 
 ! Rule  -1 backup ssh access rule (automatic)
    remark -1 backup ssh access rule (automatic)
-  permit tcp  host 10.3.14.41 host 0.0.0.0 eq 22 
   permit tcp  host 10.3.14.41 host 10.3.14.201 eq 22 
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
 ! 
@@ -173,7 +168,6 @@ ip access-list extended fe0_0_out
 ! 
 ! Rule  -2 backup ssh access rule (out) (automatic)
    remark -2 backup ssh access rule (out) (automatic)
-  permit tcp  host 0.0.0.0 eq 22 host 10.3.14.41 
   permit tcp  host 10.3.14.201 eq 22 host 10.3.14.41 
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 ! 
@@ -225,15 +219,11 @@ exit
 ! 
 ! Rule 0 (main)
 ! 
-! "Routing rule 0 (main)"
-! 
 ! 
 ! 
 ip route 10.10.10.0 255.255.255.0 10.3.14.254 1
 ! 
 ! Rule 1 (main)
-! 
-! "Routing rule 1 (main)"
 ! 
 ! 
 ! 
@@ -241,15 +231,11 @@ ip route 10.10.11.0 255.255.255.0 FastEthernet0/0 1
 ! 
 ! Rule 2 (main)
 ! 
-! "Routing rule 2 (main)"
-! 
 ! 
 ! 
 ip route 10.10.12.0 255.255.255.0 FastEthernet0/0 1
 ! 
 ! Rule 3 (main)
-! 
-! "Routing rule 3 (main)"
 ! 
 ! 
 ! 

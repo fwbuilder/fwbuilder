@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3483
 #
-#  Generated Sun Feb 20 20:04:35 2011 PST by vadim
+#  Generated Sun Feb 20 20:58:29 2011 PST by vadim
 #
 # files: * firewall19.fw /etc/fw/firewall19.fw
 #
@@ -429,10 +429,9 @@ script_body() {
     echo "Rule 10 (global)"
     # 
     # firewall19:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
+
     $IPTABLES -A INPUT  -s 192.168.1.0/24   -p tcp ! --syn -dport 5190 -m state --state NEW  -j REJECT  --reject-with icmp-host-prohibited
-    # firewall19:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -p tcp ! --syn -dport 5190 -m state --state NEW  -j REJECT  --reject-with icmp-host-prohibited
-    # firewall19:Policy:10: warning: Rule action 'Reject' with TCP RST can be used only with TCP services.
     $IPTABLES -A FORWARD  -s 192.168.1.0/24   -p tcp ! --syn -dport 5190 -m state --state NEW  -j REJECT  --reject-with icmp-host-prohibited
     # 
     # Rule 11 (global)
@@ -509,7 +508,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:04:35 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 20 20:58:29 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

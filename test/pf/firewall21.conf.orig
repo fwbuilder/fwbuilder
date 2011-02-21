@@ -17,6 +17,7 @@ rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any
 # 
 # Rule  3 (NAT)
 # firewall21:NAT:3: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
+
 nat-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
 rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
 

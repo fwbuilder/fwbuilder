@@ -32,13 +32,25 @@ pass  quick on lo inet6  from any  to any keep state  label "RULE 0 -- ACCEPT "
 pass  quick inet6 proto tcp  from fe80::/64  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 1 -- ACCEPT "  
 # 
 # Rule  2 (global)
+# firewall-ipv6-1:Policy:2: error: Rule '2 (global)' shadows rule '4 (global)'  below it
+# firewall-ipv6-1:Policy:2: error: Rule '2 (global)' shadows rule '5 (global)'  below it
+# firewall-ipv6-1:Policy:2: error: Rule '2 (global)' shadows rule '6 (global)'  below it
+# firewall-ipv6-1:Policy:2: error: Rule '2 (global)' shadows rule '7 (global)'  below it
+
 pass  quick inet6 proto tcp  from 2001:5c0:0:2::24  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 2 -- ACCEPT "  
 # 
 # Rule  3 (global)
+# firewall-ipv6-1:Policy:3: error: Rule '3 (global)' shadows rule '4 (global)'  below it
+# firewall-ipv6-1:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
+# firewall-ipv6-1:Policy:3: error: Rule '3 (global)' shadows rule '6 (global)'  below it
+# firewall-ipv6-1:Policy:3: error: Rule '3 (global)' shadows rule '7 (global)'  below it
 # firewall-ipv6-1:Policy:3: warning: Changing rule direction due to self reference
+
 pass in   log  quick inet6 proto tcp  from 3ffe:1200:2001:1:8000::1  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 3 -- ACCEPT "  
 # 
 # Rule  4 (global)
+# firewall-ipv6-1:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
+
 pass  log  quick inet6 proto tcp  from <tbl.r4.s>  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 4 -- ACCEPT "  
 # 
 # Rule  5 (global)
@@ -46,10 +58,12 @@ pass  log  quick inet6 proto tcp  from <tbl.r5.s>  to fe80::21d:9ff:fe8b:8e94 po
 # 
 # Rule  6 (global)
 # firewall-ipv6-1:Policy:6: warning: Changing rule direction due to self reference
+
 pass in   log  quick inet6 proto tcp  from <tbl.r4.s>  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 6 -- ACCEPT "  
 # 
 # Rule  7 (global)
 # firewall-ipv6-1:Policy:7: warning: Changing rule direction due to self reference
+
 pass in   log  quick inet6 proto tcp  from <tbl.r5.s>  to fe80::21d:9ff:fe8b:8e94 port 22 keep state  label "RULE 7 -- ACCEPT "  
 # 
 # Rule  8 (global)
@@ -59,6 +73,8 @@ pass in   log  quick inet6  from any  to fe80::21d:9ff:fe8b:8e94 keep state  lab
 pass  log  quick inet6  from fe80::/64  to any keep state  label "RULE 9 -- ACCEPT "  
 # 
 # Rule  10 (global)
+# firewall-ipv6-1:Policy:10: error: Rule '10 (global)' shadows rule '11 (global)'  below it
+
 pass  log  quick inet6  from <tbl.r4.s>  to any keep state  label "RULE 10 -- ACCEPT "  
 # 
 # Rule  11 (global)

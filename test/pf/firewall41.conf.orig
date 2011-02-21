@@ -25,6 +25,7 @@ pass out  log  quick inet  from <tbl.r0.s>  to <spammers> keep state  label "RUL
 # 
 # Rule  3 (global)
 # firewall41:Policy:3: error: File not found for Address Table: missing table (file_does_not_exist.tbl) Using dummy address in test mode
+
 pass out  log  quick inet  from <tbl.r0.s>  to 192.0.2.0/24 keep state  label "RULE 3 -- ACCEPT "  
 # 
 # Rule  4 (global)

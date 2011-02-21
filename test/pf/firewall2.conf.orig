@@ -203,6 +203,7 @@ pass  quick inet  from 192.168.1.0/24  to any keep state  label "RULE 10 - ACCEP
 # 
 # Rule  12 (global)
 # firewall2:Policy:12: warning: Changing rule direction due to self reference
+
 pass in   quick inet proto tcp  from any  to <tbl.r16> port { 21, 80, 25 } keep state  label "RULE 12 - ACCEPT **"  
 pass  quick inet proto tcp  from any  to 192.168.1.10 port { 21, 80, 25 } keep state  label "RULE 12 - ACCEPT **"  
 # 

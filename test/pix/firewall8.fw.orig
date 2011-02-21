@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:10 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:27 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -121,11 +121,13 @@ static (dmz,outside) interface 192.168.2.100  0 0
 ! 
 ! Rule  5 (NAT)
 ! firewall8:NAT:5: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+
 global (inside) 1 interface
 ! 
 ! 
 ! Rule  6 (NAT)
 ! firewall8:NAT:6: warning: Original destination is ignored in 'nat' NAT rules when compiling for PIX v6.2 and earlier.
+
 global (dmz) 1 interface
 !
 

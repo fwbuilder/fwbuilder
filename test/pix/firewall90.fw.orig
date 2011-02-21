@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:13 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:30 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -314,12 +314,14 @@ nat (inside,outside) source dynamic internal_subnet_1.0 firewall90:FastEthernet1
 ! for #1902
 ! can't use dns with destination matching or translation
 ! firewall90:NAT:13: error: Option 'translate dns' can not be used in combination with destination matching or translation
+
 nat (inside,outside) source dynamic internal_subnet_1.0 firewall90:FastEthernet1:ip-1.0 destination static spamhost1.0 spamhost1.0 dns description "13 (NAT)"
 ! 
 ! Rule  14 (NAT)
 ! for #1902
 ! cant use dns with service translation either
 ! firewall90:NAT:14: error: Option 'translate dns' can not be used in combination with service matching or translation
+
 nat (inside,outside) source dynamic internal_subnet_1.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 dns description "14 (NAT)"
 ! 
 ! Rule  15 (NAT)
@@ -348,6 +350,7 @@ nat (inside,outside) source dynamic hostA:eth0.0 id21177X3720.tsrc.net.0 interfa
 ! for #1908
 ! "static" vs "dynamic"
 ! firewall90:NAT:19: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
+
 nat (outside,outside) source dynamic outside_range.0 firewall90:FastEthernet1:ip-1.0 description "19 (NAT)"
 ! 
 ! Rule  20 (NAT)

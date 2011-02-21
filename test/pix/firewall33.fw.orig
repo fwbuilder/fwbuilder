@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:06 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:23 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -110,6 +110,7 @@ access-list outside_acl_in permit ip object-group id43867C2418346.src.net.0 any
 ! 
 ! Rule  3 (global)
 ! firewall33:Policy:3: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 access-list outside_acl_in permit ip host 192.0.2.1 any 
 ! 
 ! Rule  5 (global)
@@ -118,8 +119,8 @@ access-list inside_acl_in deny   ip any object-group id43867C2418346.src.net.0
 ! 
 ! Rule  7 (global)
 ! firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+
 access-list outside_acl_in permit ip any host 192.0.2.1 
-! firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 access-list inside_acl_in permit ip any host 192.0.2.1 
 ! 
 ! Rule  9 (global)
@@ -141,17 +142,13 @@ static (inside,outside) interface  access-list id43867C4918346.0 0 0
 ! 
 ! Rule  1 (NAT)
 ! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
+
 global (outside) 1 interface
 access-list id43876E2618346.0 permit ip any  host 157.166.224.25  
-! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 access-list id43876E2618346.0 permit ip any  host 157.166.224.26  
-! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 access-list id43876E2618346.0 permit ip any  host 157.166.226.25  
-! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 access-list id43876E2618346.0 permit ip any  host 157.166.226.26  
-! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 access-list id43876E2618346.0 permit ip any  host 157.166.255.18  
-! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 access-list id43876E2618346.0 permit ip any  host 157.166.255.19  
 nat (outside) 1 access-list id43876E2618346.0 0 0
 

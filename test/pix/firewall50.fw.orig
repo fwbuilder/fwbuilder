@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sun Feb 20 18:01:08 2011 PST by vadim
+!  Generated Sun Feb 20 21:18:25 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -257,6 +257,8 @@ access-list outside_acl_in permit icmp any any 3
 ! 
 ! Rule  3 (ethernet1)
 ! anti-spoofing rule
+! firewall50:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 0 interval 300
 ! 
 ! Rule  4 (ethernet0)
@@ -274,6 +276,8 @@ access-list inside_acl_in deny   ip any host 192.168.1.255
 access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 ! 
 ! Rule  9 (ethernet2,ethernet0)
+! firewall50:Policy:9: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
 access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 access-list inside_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
@@ -318,6 +322,7 @@ access-list outside_acl_in permit ip object-group id45142FA628543.dst.net.0 obje
 ! 
 ! Rule  15 (global)
 ! firewall50:Policy:15: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
+
 access-list inside_acl_in permit tcp host 192.168.1.10 object-group id4514300A28543.dst.net.0 eq 3128 
 ! 
 ! Rule  16 (global)
