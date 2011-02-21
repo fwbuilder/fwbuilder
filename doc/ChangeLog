@@ -1,5 +1,10 @@
 2011-02-21  vadim  <vadim@netcitadel.com>
 
+	* platform/pix.xml: see #1990 "Change default value for Cisco
+	ASA/PIX 7+ to generate outbound ACLs". Newly created PIX/ASA
+	firewall objects will now have "generate outbound acl" option
+	turned on by default.
+
 	* newFirewallDialog.cpp (showPage): fixes #1678 "When creating a
 	firewall from template it appears that a default template is
 	selected". When user arrives at the page where they choose

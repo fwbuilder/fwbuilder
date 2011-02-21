@@ -15,6 +15,7 @@
       <options>
         <default>
           <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_generate_out_acl>true</pix_generate_out_acl>
           <pix_include_comments>true</pix_include_comments>
           <pix_use_acl_remarks>true</pix_use_acl_remarks>
           <pix_add_clear_statements>true</pix_add_clear_statements>
@@ -127,6 +128,7 @@ nameif %in %il security%sl
 
         <version_4.x>
           <pix_emulate_out_acl>true</pix_emulate_out_acl>
+          <pix_generate_out_acl>true</pix_generate_out_acl>
           <pix_include_comments>true</pix_include_comments>
           <pix_use_acl_remarks>true</pix_use_acl_remarks>
           <pix_add_clear_statements>true</pix_add_clear_statements>
