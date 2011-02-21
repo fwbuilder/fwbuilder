@@ -455,7 +455,9 @@ void Compiler::_expand_interface(Rule *rule,
             continue;
         }
 
-        if (Address::cast(o)!=NULL && MatchesAddressFamily(o)) ol.push_back(o);
+        if ( ! iface->isUnnumbered() &&
+             Address::cast(o)!=NULL &&
+             MatchesAddressFamily(o)) ol.push_back(o);
     }
 
     if (expand_cluster_interfaces_fully && iface->isFailoverInterface())

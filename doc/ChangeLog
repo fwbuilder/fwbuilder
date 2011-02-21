@@ -1,3 +1,11 @@
+2011-02-20  vadim  <vadim@netcitadel.com>
+
+	* Compiler.cpp (_expand_interface): fixes #1920 "Setting host
+	interface to unnumbered after it has been assigned IP address
+	doesn't have desired effect". Compiler still used ip addresses
+	that belonged to the interface even if it switchd to "unnumbered".
+	These children address objects should be ignored.
+
 2011-02-19  vadim  <vadim@netcitadel.com>
 
 	* NATCompiler_pix.cpp (processNext): see #2098 Added support for
