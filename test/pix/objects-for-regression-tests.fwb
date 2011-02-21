@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1298168677" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1298252555" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -432,6 +432,11 @@
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <IPv4 id="id18881X29796" name="firewall80:FastEthernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
     <IPv4 id="id18876X29796" name="firewall80:FastEthernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+    <Interface id="id36616X14603" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="unknown1" comment="" ro="False">
+      <InterfaceOptions>
+        <Option name="type">ethernet</Option>
+      </InterfaceOptions>
+    </Interface>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -1092,8 +1097,8 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34055" name="outside-host-2" comment="some host outside our network" ro="False">
-          <Interface id="id3FA34056" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
-            <IPv4 id="id3FA34057" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.255"/>
+          <Interface id="id3FA34056" dedicated_failover="False" dyn="False" label="host-2-eth0" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id3FA34057" name="outside-host-2:eth0:ip" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
           <Management address="200.200.200.200">
@@ -5929,7 +5934,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="pix_os" inactive="False" lastCompiled="1265004822" lastInstalled="0" lastModified="1265004815" platform="pix" version="6.3" name="firewall2" comment="lots of different combinations of objects in the NAT rules&#10;" ro="False">
+      <Firewall id="id3AFB66C6" host_OS="pix_os" inactive="False" lastCompiled="1265004822" lastInstalled="0" lastModified="1298252675" platform="pix" version="6.3" name="firewall2" comment="lots of different combinations of objects in the NAT rules&#10;" ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3D1BFA5B" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -6726,7 +6731,34 @@ no sysopt nodnsalias outbound
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id47B6CF4921818" disabled="False" group="" position="29" action="Translate" comment="">
+          <NATRule id="id36573X14603" disabled="False" group="" position="29" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3FA34056"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="host-hostA"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id3B5009F7"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id47B6CF4921818" disabled="False" group="" position="30" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6753,7 +6785,7 @@ no sysopt nodnsalias outbound
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1C0B6A" disabled="True" group="" position="30" action="Translate" comment="">
+          <NATRule id="id3D1C0B6A" disabled="True" group="" position="31" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>

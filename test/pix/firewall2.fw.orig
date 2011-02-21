@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3482
+!  Firewall Builder  fwb_pix v4.2.0.3483
 !
-!  Generated Sat Feb 19 18:59:27 2011 PST by vadim
+!  Generated Sun Feb 20 17:44:51 2011 PST by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -229,6 +229,10 @@ static (inside,outside) tcp interface 80  access-list id3B7313C4.0 0 0
 access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
 ! 
 ! Rule  29 (NAT)
+access-list id36573X14603.0 permit tcp host 192.168.1.10  eq 3128 any 
+static (inside,outside) tcp interface 80  access-list id36573X14603.0 0 0
+! 
+! Rule  30 (NAT)
 access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
 static (inside,outside) tcp interface 80  access-list id47B6CF3421818.0 0 0
 
