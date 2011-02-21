@@ -114,16 +114,6 @@ void guessSecurityLevel(const std::string &platform,
                         libfwbuilder::InterfaceData *idata);
 
 /**
- *  This method is a collection of heuristics that allow us to assign
- *  a reasonable security level to many interfaces based on firewall
- *  platform, their names and labels and other parameters. This method
- *  compares parameters of many interfaces and in certain cases can
- *  guess their relative security levels.
- */
-void  guessSecurityLevel(const std::string &platform, 
-                         std::list<libfwbuilder::InterfaceData> &interfaces);
-
-/**
  * !!! returns a list of log levels that can be used to populate qcombobox
  * !!! widget.  I do not see how log levels can be different for various
  * !!! fw platforms, but who knows.

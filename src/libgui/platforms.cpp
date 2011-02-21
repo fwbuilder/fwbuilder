@@ -1167,7 +1167,7 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
 
     if ( llbl.find("dmz")!=string::npos ) idata->securityLevel = 50;
 
-    if ( (*(idata->addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
+    if ((*(idata->addr_mask.front()->getAddressPtr()))==InetAddr::getLoopbackAddr())
         idata->securityLevel = 100; 
 
     if (idata->name=="Null0") idata->securityLevel = 100; 
@@ -1175,13 +1175,13 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
     if (idata->securityLevel==-1 &&
         ! idata->isDyn && ! idata->isUnnumbered && ! idata->isBridgePort)
     {
-        if (n10.belongs(  InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
+        if (n10.belongs(InetAddr(*(idata->addr_mask.front()->getAddressPtr()))))
+            idata->securityLevel = 100;
+        
+        if (n172.belongs(InetAddr(*(idata->addr_mask.front()->getAddressPtr()))))
             idata->securityLevel = 100;
 
-        if (n172.belongs( InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
-            idata->securityLevel = 100;
-
-        if (n192.belongs( InetAddr( *(idata->addr_mask.front()->getAddressPtr()) ) ))
+        if (n192.belongs(InetAddr(*(idata->addr_mask.front()->getAddressPtr()))))
             idata->securityLevel = 100;
     }
 
@@ -1190,85 +1190,5 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
 
     if (idata->securityLevel==-1) idata->securityLevel = 0;
 }
-
-
-class sort_order_func_adaptor
-{
-    public:
-
-    explicit sort_order_func_adaptor() {}
-
-    bool operator()(const InterfaceData &a, const InterfaceData &b)
-    {
-        if (a.label=="outside") return true;
-        if (b.label=="inside")  return true;
-        return (a.securityLevel<b.securityLevel || a.label<b.label || a.name<b.name);
-    }
-};
-
-
-
-
-void guessSecurityLevel(const string &platform, list<InterfaceData> &ifaces)
-{
-// first pass - try to find internal and external interfaces and
-// assign sec. levels and labels
-
-//    bool supports_security_levels=Resources::getTargetCapabilityBool(platform,
-//                                                                     "security_levels");
-
-    list<InterfaceData> res;
-
-    if (ifaces.size()==1)
-    {
-        guessSecurityLevel(platform, &(ifaces.front()));
-        return;
-    }
-
-    if (ifaces.size()==2)
-    {
-        const InetAddr *address = ifaces.front().addr_mask.front()->getAddressPtr();
-        if (*address==InetAddr::getLoopbackAddr())
-        {
-            ifaces.front().securityLevel=100;
-            ifaces.back().securityLevel=0;
-        } else
-        {
-            const InetAddr *address = ifaces.back().addr_mask.front()->getAddressPtr();
-            if (*address==InetAddr::getLoopbackAddr()) 
-            {
-                ifaces.front().securityLevel=0;
-                ifaces.back().securityLevel=100;
-            } else
-            {
-                guessSecurityLevel(platform, &(ifaces.front()));
-                guessSecurityLevel(platform, &(ifaces.back()));
-            }
-        }
-        ifaces.sort(sort_order_func_adaptor());
-        return;
-    }
-    else
-    {
-        for (list<InterfaceData>::iterator i=ifaces.begin(); i!=ifaces.end(); i++)
-        {
-            guessSecurityLevel(platform, &(*i));
-        }
-    }
-
-    ifaces.sort(sort_order_func_adaptor());
-
-// second pass - Assign sec. levels evenly if it is pix, or all zeros in all other cases.
-
-    int sec_level_step= 100 / ( ifaces.size() - 1 );
-    int sec_level = 0;
-
-    for (list<InterfaceData>::iterator i=ifaces.begin(); i!=ifaces.end(); i++)
-    {
-        i->securityLevel=sec_level;
-        sec_level += sec_level_step;
-    }
-}
-
 
 
