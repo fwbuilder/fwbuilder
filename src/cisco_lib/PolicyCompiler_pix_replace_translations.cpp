@@ -48,11 +48,6 @@ bool PolicyCompiler_pix::matchTranslatedAddresses::processNext()
 
     transformed_rules.clear();
 
-//    string rule_iface_id=rule->getInterfaceId();
-
-//    Address *src=compiler->getFirstSrc(rule);
-//    Service *srv=compiler->getFirstSrv(rule);
-
     RuleElementSrc *srcrel = rule->getSrc();
     RuleElementDst *dstrel = rule->getDst();
     RuleElementSrv *srvrel = rule->getSrv();
@@ -132,8 +127,12 @@ void PolicyCompiler_pix::replaceTranslatedAddresses::action(
     PolicyRule* policy_rule,
     NATRule* nat_rule, Address *src, Address*, Service *srv)
 {
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(
-        policy_rule->getInterfaceId());
+
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(
+//        policy_rule->getInterfaceId());
+
+    RuleElementItf *intf_re = policy_rule->getItf();
+    FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
 
     RuleElement *re = nat_rule->getOSrc();
     FWObject *o = FWReference::getObject(re->front());
@@ -204,8 +203,12 @@ void PolicyCompiler_pix::warnWhenTranslatedAddressesAreUsed::action(
     PolicyRule* policy_rule,
     NATRule* nat_rule, Address*, Address *dst, Service*)
 {
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(
-        policy_rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(
+//        policy_rule->getInterfaceId());
+
+    RuleElementItf *intf_re = policy_rule->getItf();
+    FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
+
     string version = compiler->fw->getStr("version");
 
     RuleElement *re;

@@ -272,8 +272,13 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
     FWObject *srv = srvrel->front();
     if (FWReference::cast(srv)!=NULL) srv = FWReference::cast(srv)->getPointer();
 
-    Interface *rule_iface =
-        Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+    // Interface *rule_iface =
+    //     Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
+
     assert(rule_iface);
 
     if (PIXObjectGroup::cast(srv)!=NULL)
@@ -314,18 +319,20 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
 
 string PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
 {
-//    Helper helper(this);
-
     ostringstream  str;
     int port;
 
-    RuleElementSrc *rel=rule->getSrc();
-    Service        *srv=compiler->getFirstSrv(rule);
+    RuleElementSrc *rel = rule->getSrc();
+    Service *srv = compiler->getFirstSrv(rule);
 
-    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+//    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
     assert(rule_iface);
     
-    port=TCPUDPService::cast(srv)->getDstRangeStart();
+    port = TCPUDPService::cast(srv)->getDstRangeStart();
 
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); ++i)
     {

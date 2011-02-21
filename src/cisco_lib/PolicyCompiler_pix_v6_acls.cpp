@@ -67,24 +67,26 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+
 bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
 
     bool icmp_cmd = rule->getBool("icmp_cmd");
     bool ssh_telnet_cmd = rule->getBool("ssh_telnet_cmd");
 
-    int interface_id = rule->getInterfaceId();
+//    int interface_id = rule->getInterfaceId();
+    RuleElementItf *intf_re = rule->getItf();
 
     if (rule->getDirection()==PolicyRule::Undefined) 
         rule->setDirection( PolicyRule::Both );
 
-    if (interface_id==-1 && rule->getDirection()==PolicyRule::Both)
+    if (intf_re->isAny() && rule->getDirection()==PolicyRule::Both)
         return true;
 
-    if (interface_id==-1 && !icmp_cmd && !ssh_telnet_cmd && (
+    if (intf_re->isAny() && !icmp_cmd && !ssh_telnet_cmd && (
             rule->getDirection()==PolicyRule::Inbound ||
             rule->getDirection()==PolicyRule::Outbound)
     ) compiler->abort(rule, "Direction set without interface");
@@ -106,12 +108,13 @@ bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
  */
 bool PolicyCompiler_pix::SplitDirection_v6::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    RuleElementItf *intf_re = rule->getItf();
 
     if (rule->getDirection()==PolicyRule::Both)
     {
-        if (rule_iface!=NULL)
+        if ( ! intf_re->isAny())
         {
             PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -176,9 +179,11 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
 {
     Helper helper(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    RuleElementItf *intf_re = rule->getItf();
+    FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
 
-    if (rule->getDirection()==PolicyRule::Outbound && rule_iface!=NULL)
+    if (rule->getDirection()==PolicyRule::Outbound && ! intf_re->isAny())
     {
         if ( compiler->fw->getOptionsObject()->getBool("pix_emulate_out_acl") )
         {
@@ -196,7 +201,7 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
  * network zone is the same as the one this rule is assigned to, but
  * direction is Outbound - drop this rule 
  */
-                    if (iface1_id==rule->getInterfaceId())
+                    if (iface1_id == rule_iface->getId())
                     {
                         compiler->warning(rule, 
                             "Rule with direction 'Outbound' was suppressed "
@@ -206,7 +211,10 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
                         return true;
                     }
 
-                    rule->setInterfaceId(iface1_id);
+//                    rule->setInterfaceId(iface1_id);
+                    intf_re->reset();
+                    intf_re->addRef(compiler->dbcopy->findInIndex(iface1_id));
+
                     rule->setDirection(PolicyRule::Inbound);
                     tmp_queue.push_back(rule);
                 } else
@@ -215,16 +223,21 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
                     iface2_id = helper.findInterfaceByNetzone(
                         compiler->getFirstDst(rule) );
 
-                    list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
+                    list<FWObject*> l2 = compiler->fw->getByTypeDeep(
+                        Interface::TYPENAME);
                     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
                     {
                         if ( (*i)->getId()==iface2_id ) continue;
 
-                        PolicyRule *r= compiler->dbcopy->createPolicyRule();
+                        PolicyRule *r = compiler->dbcopy->createPolicyRule();
                         compiler->temp_ruleset->add(r);
 
                         r->duplicate(rule);
-                        r->setInterfaceId((*i)->getId());
+//                        r->setInterfaceId((*i)->getId());
+                        RuleElementItf *itf_re = r->getItf(); assert(itf_re!=NULL);
+                        itf_re->reset();
+                        itf_re->addRef(*i);
+
                         rule->setDirection(PolicyRule::Inbound);
 
                         tmp_queue.push_back(r);
@@ -283,21 +296,27 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
  */
 bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     Helper helper(compiler);
 
-    RuleElementSrc *src=rule->getSrc();    assert(src);
-    RuleElementDst *dst=rule->getDst();    assert(dst);
+    RuleElementSrc *src = rule->getSrc();    assert(src);
+    RuleElementDst *dst = rule->getDst();    assert(dst);
 
-    if (rule->getInterfaceId()==-1) 
+    RuleElementItf *intf_re = rule->getItf();
+//    FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
+
+    if (intf_re->isAny())
     {
         try
         {
             if (! src->isAny() )
             {
-                Address *a=compiler->getFirstSrc(rule);
+                Address *a = compiler->getFirstSrc(rule);
                 int iface1_id = helper.findInterfaceByNetzone(a);
-                rule->setInterfaceId(iface1_id);
+//                rule->setInterfaceId(iface1_id);
+                intf_re->reset();
+                intf_re->addRef(compiler->dbcopy->findInIndex(iface1_id));
+
                 tmp_queue.push_back(rule);
             } else
             {
@@ -305,7 +324,10 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 if ( ! dst->isAny() && compiler->complexMatch(a,compiler->fw))
                 {
                     int iface2_id = helper.findInterfaceByNetzone( a );
-                    rule->setInterfaceId(iface2_id);
+//                    rule->setInterfaceId(iface2_id);
+                    intf_re->reset();
+                    intf_re->addRef(compiler->dbcopy->findInIndex(iface2_id));
+
                     rule->setStr("direction","Inbound");
                     tmp_queue.push_back(rule);
                     return true;
@@ -316,13 +338,18 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 {
                     Interface *intf = Interface::cast(*i);
                     if (intf->isUnprotected()) continue;
-                    if (intf->getOptionsObject()->getBool("cluster_interface")) continue;
+                    if (intf->getOptionsObject()->getBool("cluster_interface"))
+                        continue;
 
                     PolicyRule *r = compiler->dbcopy->createPolicyRule();
                     compiler->temp_ruleset->add(r);
 
                     r->duplicate(rule);
-                    r->setInterfaceId(intf->getId());
+//                    r->setInterfaceId(intf->getId());
+                    RuleElementItf *itf_re = r->getItf(); assert(itf_re!=NULL);
+                    itf_re->reset();
+                    itf_re->addRef(intf);
+
                     r->setStr("direction","Inbound");
 
                     tmp_queue.push_back(r);
@@ -351,13 +378,18 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
  */
 bool PolicyCompiler_pix::pickACL_v6::processNext()
 {
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-    if(rule_iface==NULL)
+    PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+//    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
+
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
+
+    if (intf_re->isAny() || rule_iface==NULL)
         compiler->abort(rule, "Missing interface assignment");
 
-    string acl_name= rule_iface->getLabel() + "_acl_in";
+    string acl_name = rule_iface->getLabel() + "_acl_in";
     rule->setStr("acl", acl_name);
 
     ciscoACL *acl = new ciscoACL(acl_name, rule_iface, "in");

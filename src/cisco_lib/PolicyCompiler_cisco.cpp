@@ -131,15 +131,18 @@ string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 {
     ostringstream str;
     PolicyRule *rule = PolicyRule::cast(r);
-    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
-    string iname = (rule_iface!=NULL)?rule_iface->getName():"";
+
+//    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
+//    string iname = (rule_iface!=NULL)?rule_iface->getName():"";
 
     string dir = rule->getDirectionAsString();
 
     str << PolicyCompiler::debugPrintRule(rule) <<
-        " " << dir << " " << iname << " " << rule->getStr("acl") <<
-        " intfId=" << rule->getInterfaceId() <<
-        " intfstr=" << rule->getInterfaceStr();
+        " " << dir 
+//        << " " << iname
+        << " " << rule->getStr("acl");
+//        " intfId=" << rule->getInterfaceId() <<
+//        " intfstr=" << rule->getInterfaceStr();
     return str.str();
 }
 
@@ -449,15 +452,16 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::dropDynamicInterface(
     PolicyRule  *rule, PolicyRule::Direction cmp_dir, RuleElement *re)
 {
     PolicyRule::Direction dir=rule->getDirection();
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+
+    RuleElementItf *intf_re = rule->getItf();
+    FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
 
     list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
-        FWObject *o   = *i1;
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-        Interface  *ifs   =Interface::cast( obj );
+        FWObject *obj = FWObjectReference::getObject(*i1);
+        Interface  *ifs = Interface::cast( obj );
 
         if (ifs!=NULL && ifs->isDyn()) 
         {
@@ -585,11 +589,14 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
 bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
 
-    if (rule_iface!=NULL && rule->getDirection()==PolicyRule::Outbound)
+    if ( rule_iface!=NULL && rule->getDirection()==PolicyRule::Outbound)
     {
-        RuleElementSrc *src=rule->getSrc();
+        RuleElementSrc *src = rule->getSrc();
         
         if (compiler->getFirstSrc(rule)->getId()==compiler->fw->getId()) 
         {
@@ -605,11 +612,14 @@ bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 bool PolicyCompiler_cisco::replaceFWinDSTInterfacePolicy::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
 
-    if (rule_iface!=NULL && rule->getDirection()==PolicyRule::Inbound)
+    if ( rule_iface!=NULL && rule->getDirection()==PolicyRule::Inbound)
     {
-        RuleElementDst *dst=rule->getDst();
+        RuleElementDst *dst = rule->getDst();
 
         if (compiler->getFirstDst(rule)->getId()==compiler->fw->getId()) 
         {
@@ -630,12 +640,13 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
 {
     Helper helper(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+//    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
+    RuleElementItf *intf_re = rule->getItf();
 
-    if (rule_iface==NULL)
+    if (intf_re->isAny())
     {
-        RuleElementSrc *src=rule->getSrc();
-        RuleElementDst *dst=rule->getDst();
+        RuleElementSrc *src = rule->getSrc();
+        RuleElementDst *dst = rule->getDst();
 
         if (!src->isAny() && compiler->getFirstDst(rule)->getId()==compiler->fw->getId()) 
         {

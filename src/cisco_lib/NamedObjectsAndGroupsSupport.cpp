@@ -106,10 +106,6 @@ bool CreateObjectGroups::processNext()
     string version = compiler->fw->getStr("version");
     string platform = compiler->fw->getStr("platform");
 
-    // Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(
-    //                                             rule->getInterfaceId()));
-    //assert(rule_iface);
-
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     if (re->size()==1)

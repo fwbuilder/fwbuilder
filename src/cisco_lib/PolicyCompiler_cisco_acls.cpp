@@ -75,13 +75,18 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
 
     list<int> intf_id_list;
 
-    if (rule->getInterfaceId() == -1)
+    RuleElementItf *intf_re = rule->getItf();
+
+    if (intf_re->isAny())
     {
-        bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+        bool cluster_member =
+            compiler->fw->getOptionsObject()->getBool("cluster_member");
+
         Cluster *cluster = NULL;
         if (cluster_member)
             cluster = Cluster::cast(
-                compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+                compiler->dbcopy->findInIndex(
+                    compiler->fw->getInt("parent_cluster_id")));
 
         RuleElementSrc *srcre = rule->getSrc();
         RuleElementDst *dstre = rule->getDst();
@@ -108,7 +113,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
-            new_rule->setInterfaceId(intf_id);
+//            new_rule->setInterfaceId(intf_id);
+
+            RuleElementItf *itf_re = new_rule->getItf(); assert(itf_re!=NULL);
+            itf_re->reset();
+            itf_re->addRef(ifs);
+
             new_rule->setDirection(PolicyRule::Inbound);
             new_rule->setBool("interface_and_direction_set_from_src",true);
             tmp_queue.push_back(new_rule);
@@ -144,15 +154,20 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         return true;
     }
 
+    RuleElementItf *intf_re = rule->getItf();
+
     list<int> intf_id_list;
 
-    if (rule->getInterfaceId() == -1)
+    if (intf_re->isAny())
     {
-        bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+        bool cluster_member =
+            compiler->fw->getOptionsObject()->getBool("cluster_member");
+
         Cluster *cluster = NULL;
         if (cluster_member)
             cluster = Cluster::cast(
-                compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+                compiler->dbcopy->findInIndex(
+                    compiler->fw->getInt("parent_cluster_id")));
 
         RuleElementDst *dstre = rule->getDst();
         Address *dstobj = compiler->getFirstDst(rule);
@@ -178,7 +193,13 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
             PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
-            new_rule->setInterfaceId(intf_id);
+
+//            new_rule->setInterfaceId(intf_id);
+
+            RuleElementItf *itf_re = new_rule->getItf(); assert(itf_re!=NULL);
+            itf_re->reset();
+            itf_re->addRef(ifs);
+
             new_rule->setDirection(PolicyRule::Outbound);
             new_rule->setBool("interface_and_direction_set_from_dst",true);
             tmp_queue.push_back(new_rule);
@@ -195,7 +216,9 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
     //RuleElementItf *itfre=rule->getItf(); 
 
-    if (rule->getInterfaceId() == -1 ||
+    RuleElementItf *intf_re = rule->getItf();
+
+    if (intf_re->isAny() ||
         rule->getBool("interface_and_direction_set_from_src") ||
         rule->getBool("interface_and_direction_set_from_dst"))
     {
@@ -205,16 +228,22 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
 
     PolicyRule *new_rule;
                     
-    if ( rule->getInterfaceId() > -1 )
+    if ( ! intf_re->isAny())
     {
-        int rule_iface_id = rule->getInterfaceId();
+        FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
+        RuleElementItf *itf_re;
 
         if (rule->getDirection()==PolicyRule::Both)
         {
             new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
-            new_rule->setInterfaceId( rule_iface_id );
+
+//            new_rule->setInterfaceId( rule_iface_id );
+            itf_re = new_rule->getItf(); assert(itf_re!=NULL);
+            itf_re->reset();
+            itf_re->addRef(rule_iface);
+
             new_rule->setDirection(PolicyRule::Inbound);
             new_rule->setBool("interface_and_direction_set",true);
             tmp_queue.push_back(new_rule);
@@ -222,7 +251,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
             new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
-            new_rule->setInterfaceId( rule_iface_id );
+
+//            new_rule->setInterfaceId( rule_iface_id );
+            itf_re = new_rule->getItf(); assert(itf_re!=NULL);
+            itf_re->reset();
+            itf_re->addRef(rule_iface);
+
             new_rule->setDirection(PolicyRule::Outbound);
             new_rule->setBool("interface_and_direction_set",true);
             tmp_queue.push_back(new_rule);
@@ -231,7 +265,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionIfInterfaceSet::processNext()
             new_rule =compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
             new_rule->duplicate(rule);
-            new_rule->setInterfaceId( rule_iface_id );
+
+//            new_rule->setInterfaceId( rule_iface_id );
+            itf_re = new_rule->getItf(); assert(itf_re!=NULL);
+            itf_re->reset();
+            itf_re->addRef(rule_iface);
+
             // direction is copied from the original rule
             new_rule->setBool("interface_and_direction_set",true);
             tmp_queue.push_back(new_rule);
@@ -244,10 +283,15 @@ bool PolicyCompiler_cisco::pickACL::processNext()
 {
     PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(
         compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
     
-    Interface  *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(
-                                                 rule->getInterfaceId()));
+//    Interface  *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(
+//                                                 rule->getInterfaceId()));
+
+    RuleElementItf *intf_re = rule->getItf();
+    Interface *rule_iface = Interface::cast(
+        FWObjectReference::getObject(intf_re->front()));
+
     if(rule_iface==NULL)
     {
         compiler->abort(rule, "Missing interface assignment");
