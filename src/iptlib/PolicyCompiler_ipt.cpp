@@ -2171,18 +2171,32 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
 bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     FWOptions  *ruleopt = rule->getOptionsObject();
+    FWOptions *fwopt = compiler->getCachedFwOpt();
 
-/* commented to fix bug #1112470
- * if fw is considered part of any, we should place rule in INPUT/OUTPUT
- * chains even if it is a bridging fw since fw itself may send or receive
- * packets
- */
+    /* commented to fix bug #1112470
+     * if fw is considered part of any, we should place rule in INPUT/OUTPUT
+     * chains even if it is a bridging fw since fw itself may send or receive
+     * packets
+     */
+
     if ( /* fwopt->getBool("bridging_fw") || */
          ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 ||
          ruleopt->getBool("no_output_chain")) 
+    {
+	tmp_queue.push_back(rule);
+	return true;
+    }
+
+    /* See #2008. It appears "--physdev-out" is not allowed in OUTPUT
+     * chain.
+     */
+    RuleElementItf *itfre = rule->getItf(); assert(itfre);
+    Interface *itf = compiler->getFirstItf(rule);
+
+    if (fwopt->getBool("bridging_fw") && itf && itf->isBridgePort())
     {
 	tmp_queue.push_back(rule);
 	return true;

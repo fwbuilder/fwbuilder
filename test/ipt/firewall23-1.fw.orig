@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3483
+#  Firewall Builder  fwb_ipt v4.2.0.3484
 #
-#  Generated Sun Feb 20 20:58:48 2011 PST by vadim
+#  Generated Mon Feb 21 16:56:59 2011 PST by vadim
 #
 # files: * firewall23-1.fw /etc/fw/firewall23-1.fw
 #
@@ -397,8 +397,6 @@ script_body() {
     # 
     echo "Rule 8 (eth2,eth3)"
     # 
-    $IPTABLES -A OUTPUT -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
@@ -413,7 +411,6 @@ script_body() {
     # 
     echo "Rule 10 (eth2)"
     # 
-    $IPTABLES -A OUTPUT -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 11 (eth2)
@@ -564,7 +561,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 20:58:48 2011 by vadim"
+        log "Activating firewall script generated Mon Feb 21 16:56:59 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

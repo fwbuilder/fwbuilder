@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3483
+#  Firewall Builder  fwb_ipt v4.2.0.3484
 #
-#  Generated Sun Feb 20 21:02:20 2011 PST by vadim
+#  Generated Mon Feb 21 17:02:48 2011 PST by vadim
 #
 # files: * firewall-ipv6-4-1.fw /etc/firewall-ipv6-4-1.fw
 #
@@ -373,14 +373,8 @@ script_body() {
 
     echo ":RULE_8 - [0:0]"
     echo "-A FORWARD  -d 192.0.2.1   -j RULE_8 "
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo "-A FORWARD  -d 207.251.84.150   -j RULE_8 "
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo "-A RULE_8  -j ULOG  --ulog-nlgroup 1 --ulog-prefix \"RULE 8 -- DENY \" --ulog-qthreshold 1 "
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo "-A RULE_8  -j DROP "
     # 
     # Rule  9 (global)
@@ -463,11 +457,7 @@ script_body() {
 
     echo ":RULE_8 - [0:0]"
     echo "-A FORWARD  -d 2001:db8::1   -j RULE_8 "
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo "-A RULE_8  -j LOG  --log-level info --log-prefix \"RULE 8 -- DENY \""
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo "-A RULE_8  -j DROP "
     # 
     # Rule  11 (global)
@@ -555,7 +545,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 21:02:20 2011 by vadim"
+        log "Activating firewall script generated Mon Feb 21 17:02:48 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

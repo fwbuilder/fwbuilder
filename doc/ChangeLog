@@ -1,5 +1,12 @@
 2011-02-21  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_ipt.cpp (processNext): fixes #2008 "option
+	"--physdev-out" is not allowed in OUTPUT chain". After this
+	change, compiler avoids INPUT/OUTPUT chain if interface in the
+	rule column "Interface" is a bridge port and firewall is bridging
+	firewall (which means we are going to use --physdev-in or
+	--physdev-out option for this rule).
+
 	* newFirewallDialog.cpp (monitor): see #2126 Using snmp sysDescr
 	OID to guess version of the new firewall when it is created using
 	snmp polling.

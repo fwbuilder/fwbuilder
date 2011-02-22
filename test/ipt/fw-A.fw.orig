@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3483
+#  Firewall Builder  fwb_ipt v4.2.0.3484
 #
-#  Generated Sun Feb 20 21:02:37 2011 PST by vadim
+#  Generated Mon Feb 21 17:01:44 2011 PST by vadim
 #
 # files: * fw-A.fw /sw/FWbuilder/fw-A.fw
 #
@@ -611,7 +611,7 @@ script_body() {
     # 
     # 
     # fw-A:Routing:0: error: Object "gw_200" used as gateway in the routing rule 0 (main) is not in the same local network as interface eth3
-    fw-A:Routing:0: error: Object "gw_200" used as gateway in the routing rule 0 (main) is not reachable because it is not in any local network of the firewall
+    # fw-A:Routing:0: error: Object "gw_200" used as gateway in the routing rule 0 (main) is not reachable because it is not in any local network of the firewall
 
     $IP route add default via 200.200.200.200 dev eth3 \
     || route_command_error "0 (main)"
@@ -724,7 +724,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 20 21:02:37 2011 by vadim"
+        log "Activating firewall script generated Mon Feb 21 17:01:44 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
