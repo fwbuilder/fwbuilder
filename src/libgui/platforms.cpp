@@ -1191,4 +1191,69 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
     if (idata->securityLevel==-1) idata->securityLevel = 0;
 }
 
+void guessOSAndPlatformFromSysDescr(
+    const QString &sysDescr, QString &platform, QString &hostOS, QString &version)
+{
+    QRegExp pix1("Cisco PIX Security Appliance Version ([0-9\\.]+)");
+    QRegExp pix2("Cisco Adaptive Security Appliance Version ([0-9\\.]+)");
+    QRegExp ios1("Cisco Internetwork Operating System Software .* Version ([0-9\\.]+)");
+
+    platform = "";
+    hostOS = "";
+    version = "";
+
+    if (fwbdebug)
+        qDebug() << "guessOSAndPlatformFromSysDescr:"
+                 << "sysdescr=" << sysDescr;
+
+    list<QStringPair> allowed_versions;
+    string version_from_sysdescr;
+
+    if (pix1.indexIn(sysDescr) > -1)
+    {
+        platform = "pix";
+        hostOS = "pix_os";
+        version_from_sysdescr = pix1.cap(1).toStdString();
+    }
+
+    if (pix2.indexIn(sysDescr) > -1)
+    {
+        platform = "pix";
+        hostOS = "pix_os";
+        version_from_sysdescr = pix2.cap(1).toStdString();
+    }
+
+    if (ios1.indexIn(sysDescr) > -1)
+    {
+        platform = "iosacl";
+        hostOS = "ios";
+        version_from_sysdescr = ios1.cap(1).toStdString();
+    }
+
+    if (fwbdebug)
+        qDebug() << "guessOSAndPlatformFromSysDescr:"
+                 << "platform=" << platform
+                 << "hostOS=" << hostOS
+                 << "version=" << version_from_sysdescr.c_str();
+
+    if ( ! platform.isEmpty())
+    {
+        getVersionsForPlatform(platform, allowed_versions);
+
+        if ( ! version_from_sysdescr.empty())
+        {
+            string version_fit;
+            list<QStringPair>::iterator it;
+            foreach (QStringPair p, allowed_versions)
+            {
+                string vers = p.first.toStdString();
+                if (XMLTools::version_compare(vers, version_from_sysdescr)>0) break;
+                version_fit = vers;
+            }
+            version = version_fit.c_str();
+        }
+    }
+}
+
+
 

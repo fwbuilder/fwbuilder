@@ -44,7 +44,7 @@ namespace libfwbuilder {
     class Firewall;
     class Interface;
     class Logger;
-    class SNMP_interface_query;
+    class SNMPQuery;
 };
 
 class QTreeWidgetItem;
@@ -55,21 +55,24 @@ class newFirewallDialog : public QDialog, public FakeWizard
 {
     Q_OBJECT;
     
-    Ui::newFirewallDialog_q            *m_dialog;
+    Ui::newFirewallDialog_q *m_dialog;
 
-    libfwbuilder::FWObject             *currentTemplate;
-    libfwbuilder::Firewall             *nfw;
-    bool                                snmpPollCompleted;
-    libfwbuilder::Logger               *logger;
-    libfwbuilder::SNMP_interface_query *q;
-    QTimer                             *timer;
-    libfwbuilder::FWObjectDatabase     *db;
-    libfwbuilder::FWObjectDatabase     *tmpldb;
-    libfwbuilder::FWObject             *parent;
+    libfwbuilder::FWObject *currentTemplate;
+    libfwbuilder::Firewall *nfw;
+    bool snmpPollCompleted;
+    libfwbuilder::Logger *logger;
+    libfwbuilder::SNMPQuery *q;
+    QTimer *timer;
+    libfwbuilder::FWObjectDatabase *db;
+    libfwbuilder::FWObjectDatabase *tmpldb;
+    libfwbuilder::FWObject *parent;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
-    bool                                unloadTemplatesLib;
-    bool                                getInterfacesBusy;
-
+    bool unloadTemplatesLib;
+    bool getInterfacesBusy;
+    QString discovered_platform;
+    QString discovered_host_os;
+    QString discovered_version;
+    
     std::list<std::string>              possible_inside_interface_labels;
     std::list<std::string>              possible_outside_interface_labels;
     std::list<std::string>              possible_dmz_interface_labels;

@@ -1,5 +1,9 @@
 2011-02-21  vadim  <vadim@netcitadel.com>
 
+	* newFirewallDialog.cpp (monitor): see #2126 Using snmp sysDescr
+	OID to guess version of the new firewall when it is created using
+	snmp polling.
+
 	* platform/pix.xml: see #1990 "Change default value for Cisco
 	ASA/PIX 7+ to generate outbound ACLs". Newly created PIX/ASA
 	firewall objects will now have "generate outbound acl" option

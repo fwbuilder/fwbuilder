@@ -184,6 +184,9 @@ QString readHostOS(QComboBox *hostOS);
 void setPlatform(QComboBox *platform, const QString &pl);
 void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os);
 
+void guessOSAndPlatformFromSysDescr(const QString &sysDescr,
+                                    QString &platform, QString &hostOS, QString &version);
+
 /*
  * Internal: Auxiliary function that copies elements from the list returned by
  * Resources::getResourceStrList()  to the list of string pairs

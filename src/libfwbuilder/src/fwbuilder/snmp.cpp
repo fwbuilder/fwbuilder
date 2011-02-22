@@ -1842,9 +1842,13 @@ CrawlerFind::~CrawlerFind()
 {
 }
 
-void SNMP_interface_query::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMP_interface_query::run_impl(Logger *logger, SyncFlag *stop_program)
+    throw(FWException)
 {
-    fetchInterfaces(logger,stop_program);
+    fetchSysInfo(logger, stop_program);
+    CHECK_STOP_AND_THROW_EXCEPTION;
+    
+    fetchInterfaces(logger, stop_program);
     
 #if 0
     // See #2084 this takes forever on decides with large routing
@@ -1860,7 +1864,7 @@ void SNMP_interface_query::run_impl(Logger *logger,SyncFlag *stop_program) throw
     // We do not fail if this query does not succeed.
     try
     {
-        fetchRoutingTable(logger,stop_program);
+        fetchRoutingTable(logger, stop_program);
     } catch(FWException &ex)
     {
         *logger << "Error fetching routing table, external interface will not be detected.\n";

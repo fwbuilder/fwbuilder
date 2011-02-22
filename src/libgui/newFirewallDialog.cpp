@@ -348,6 +348,15 @@ void newFirewallDialog::monitor()
 
     QString platform = readPlatform(m_dialog->platform);
 
+    guessOSAndPlatformFromSysDescr(q->getDescr().c_str(),
+                                   discovered_platform,
+                                   discovered_host_os,
+                                   discovered_version);
+
+    if (fwbdebug)
+        qDebug() << "Guessed version as " << discovered_version;
+
+
     map<int, InterfaceData>* intf = q->getInterfaces();
     map<int, InterfaceData>::iterator i;
     this->m_dialog->interfaceEditor1->clear();
@@ -471,6 +480,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
     m_dialog->snmpProgress->clear();
 
     if (q!=NULL) delete q;
+
     q = new SNMP_interface_query();
     q->init(addr.toString(), rcomm, SNMP_DEFAULT_RETRIES, SNMP_DEFAULT_TIMEOUT);
 
@@ -1130,6 +1140,9 @@ void newFirewallDialog::finishClicked()
 
         o->setStr("host_OS", host_os);
         Resources::setDefaultTargetOptions(host_os , nfw);
+
+        if ( ! discovered_version.isEmpty())
+            o->setStr("version", discovered_version.toStdString());
 
 /* create interfaces */
 
