@@ -1,5 +1,14 @@
 2011-02-22  Vadim Kurland  <vadim@netcitadel.com>
 
+	* configlets/linux24/shell_functions: see #2130 "unnecessary
+	output when iptables script runs on the firewall". Ever since I
+	switched to using "command" to verify that various system
+	utilities generated script needs are present and can be used, the
+	scirpt produced extra lines in the log printing full path and
+	names to /usr/bin/logger, /sbin/ip etc. These lines are
+	unnecessary and should not be there. This problem was introduced
+	some time during the work on 4.2.0
+
 	* instOptionsDialog.cpp (instOptionsDialog): fixes #2129
 	'deprecate "test install" function'. We have decided to deprecate
 	test install because it is rather heavy-handed on Linux and PIX

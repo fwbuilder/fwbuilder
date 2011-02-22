@@ -38,7 +38,7 @@
 
 find_program() {
   PGM=$1
-  command -v $PGM &>/dev/null || {
+  command -v $PGM >/dev/null 2>&1 || {
     echo "$PGM not found"
     exit 1
   }
