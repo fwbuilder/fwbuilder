@@ -1,3 +1,10 @@
+2011-02-22  Vadim Kurland  <vadim@netcitadel.com>
+
+	* instOptionsDialog.cpp (instOptionsDialog): fixes #2129
+	'deprecate "test install" function'. We have decided to deprecate
+	test install because it is rather heavy-handed on Linux and PIX
+	where it reboots the firewall and plain does not work on *BSD.
+
 2011-02-21  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_ipt.cpp (processNext): fixes #2008 "option

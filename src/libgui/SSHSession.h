@@ -108,7 +108,6 @@ class SSHSession : public QObject {
     bool        dry_run;
     bool        saveStandby;
     bool        stripComments;
-    bool        testRun;
     QString     wdir;
     QString     script;
     QString     backupFile;
@@ -191,7 +190,6 @@ public:
     void setIncr(bool f) { incremental=f; }
     void setDryRun(bool f) { dry_run=f; }
     void setSaveStandby(bool f) { saveStandby=f; }
-    void setTestRun(bool f) { testRun=f; }
     void setStripComments(bool f) { stripComments=f; }
     void setWDir(const QString &wd) { wdir=wd; }
     void setScript(const QString &cf) { script=cf; }

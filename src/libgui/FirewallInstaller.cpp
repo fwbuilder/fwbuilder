@@ -708,10 +708,15 @@ QString FirewallInstaller::getActivationCmd()
     Configlet configlet(host_os, os_family, configlet_name);
     configlet.removeComments();
     configlet.collapseEmptyStrings(true);
-    configlet.setVariable("test",  cnf->testRun);
-    configlet.setVariable("run", ! cnf->testRun);
-    configlet.setVariable("with_rollback",   cnf->rollback);
-    configlet.setVariable("no_rollback",   ! cnf->rollback);
+
+    // test run and rollback were deprecated in 4.2.0. On Linux, BSD
+    // and PIX rollback was implemented by rebooting firewall which is
+    // too heavy-handed and it did not work on BSD at all.
+    configlet.setVariable("test", false);
+    configlet.setVariable("run", true);
+    configlet.setVariable("with_rollback", false);
+    configlet.setVariable("no_rollback", true);
+
     configlet.setVariable("with_compression",  cnf->compressScript);
     configlet.setVariable("no_compression",  ! cnf->compressScript);
 
@@ -763,50 +768,21 @@ void FirewallInstaller::replaceMacrosInCommand(Configlet *conf)
     conf->setVariable("fwbprompt", fwb_prompt);
     conf->setVariable("fwdir", cnf->fwdir);
     conf->setVariable("fwscript", fwbscript);
-
-    conf->setVariable("rbtimeout", cnf->rollbackTime);
-    conf->setVariable("rbtimeout_sec", cnf->rollbackTime * 60);
 }
 
 
 /*
- * Takes destination directory defined in the configlet (or XML
- * resource file) and substitutes {{$fwbdir}} macro with
- * @fwdir. Returned directory path always ends with separator ("/")
- *
- * Main purpose of this method is to get the right directory depending
- * on the setting of the "test install" option. In case of test
- * install we copy all files into a different directory and run them
- * from there. The directory is defined in the resource (or configlet)
- * file.
+ * Returned directory path always ends with separator ("/")
  */
 QString FirewallInstaller::getDestinationDir(const QString &fwdir)
 {
-    QString dir = "";
-
-    if (cnf->testRun)
-    {
-        string optpath = "activation/fwdir_test/";
-        dir = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
-                                            optpath).c_str();
-        // need to trim dir because it picks up '\n' and possibly spaces
-        // from XML element body text formatting
-        dir = dir.trimmed();
-    }
+    QString dir = fwdir;
 
     if (fwbdebug)
         qDebug() << "FirewallInstaller::getDestinationDir:  "
                  << "destination directory=" << dir
                  << "cnf->fwdir=" << cnf->fwdir;
     
-    // dir can contain macro %FWDIR% which should be replaced with cnf->fwdir
-    // empty dir is equivalent to just the value of cnf->fwdir
-
-    if (!dir.isEmpty())
-        dir.replace("{{$fwdir}}", fwdir);
-    else
-        dir = fwdir;
-
     if (!dir.endsWith(QDir::separator())) return dir + "/";
     return dir;
 }

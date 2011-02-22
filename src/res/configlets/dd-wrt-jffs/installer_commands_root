@@ -23,27 +23,6 @@ chmod +x {{$fwdir}}/{{$fwscript}};
 /usr/sbin/nvram unset rc_firewall;
 /usr/sbin/nvram set rc_firewall="{{$fwdir}}/{{$fwscript}}";
 /usr/sbin/nvram commit;
-sh {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && shutdown -c; echo 'Policy activated' )
+sh {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
-
-{{if test}}
-
-## sudo -b runs process in the background. Useful, even if this is executed as root
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-cp /tmp/crontab /tmp/crontab.o;
-echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d{{$rbtimeout_sec}}' >> /tmp/crontab;
-chmod +x /tmp/{{$fwscript}};
-sh /tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x /tmp/{{$fwscript}};
-sh /tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-
-{{endif}}
-
 

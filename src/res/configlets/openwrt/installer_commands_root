@@ -17,29 +17,7 @@
 ##
 
 
-{{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-{{$fwdir}}/{{$fwscript}} start && ( killall -q -9 reboot; echo 'Policy activated' )
-{{endif}}
-
-{{if test}}
-
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-echo '* * * * * rm /etc/crontabs/root; reboot -d{{$rbtimeout_sec}}' > /etc/crontabs/root
-chmod 0600 /etc/crontabs/root
-chmod +x /tmp/{{$fwscript}};
-/tmp/{{$fwscript}} start && echo 'Policy activated'
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x /tmp/{{$fwscript}};
-/tmp/{{$fwscript}} start && echo 'Policy activated'
-{{endif}}
-
-
-{{endif}}
-
+{{$fwdir}}/{{$fwscript}} start && echo 'Policy activated'
 

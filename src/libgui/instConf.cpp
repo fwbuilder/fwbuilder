@@ -53,17 +53,11 @@ instConf::instConf()
 QString instConf::getCmdFromResource(const QString &resource_name)
 {
     if (fwbdebug)
-        qDebug() << QString("instConf::getCmdFromResource testRun=%1  resource_name=%2")
-            .arg(testRun).arg(resource_name);
+        qDebug() << QString("instConf::getCmdFromResource resource_name=%1")
+            .arg(resource_name);
 
-    string optpath_root = "activation/reg_user/";
-    string optpath;
-
-    if (testRun)
-        optpath_root = optpath_root + "test";
-    else
-        optpath_root = optpath_root + "run";
-    optpath = optpath_root + "/" + resource_name.toAscii().constData();
+    string optpath_root = "activation/reg_user/run/";
+    string optpath = optpath_root + resource_name.toStdString();
     QString cmd = Resources::getTargetOptionStr(fwobj->getStr("host_OS"),
                                                 optpath).c_str();
     cmd = cmd.trimmed();

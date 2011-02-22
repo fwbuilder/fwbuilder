@@ -34,12 +34,13 @@ class instConf;
 
 class instOptionsDialog : public QDialog
 {
-    Q_OBJECT
- private:
+    Q_OBJECT;
+
+private:
     int delta_y;
     instConf *cnf;
 
- public:
+public:
     instOptionsDialog(QWidget *parent, instConf *_cnf, bool cancelAllVisible = true);
     ~instOptionsDialog();
 
@@ -53,7 +54,6 @@ class instOptionsDialog : public QDialog
 
 public slots:
     void cancelAll();
-    void testModeToggled();
 };
 
 #endif 

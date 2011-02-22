@@ -212,10 +212,15 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     Configlet pre_config(host_os, os_family, "installer_commands_pre_config");
     pre_config.removeComments();
-    pre_config.setVariable("test",   cnf->testRun);
-    pre_config.setVariable("run",  ! cnf->testRun);
-    pre_config.setVariable("schedule_rollback", cnf->rollback);
-    pre_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
+
+    // test run and rollback were deprecated in 4.2.0. On Linux, BSD
+    // and PIX rollback was implemented by rebooting firewall which is
+    // too heavy-handed and it did not work on BSD at all.
+    pre_config.setVariable("test", false);
+    pre_config.setVariable("run", true);
+    pre_config.setVariable("schedule_rollback", false);
+    pre_config.setVariable("cancel_rollback", false);
+
     pre_config.setVariable("save_standby", cnf->saveStandby);
     pre_config.setVariable("version_lt_124", version_lt_124);
     pre_config.setVariable("version_ge_124", version_ge_124);
@@ -224,10 +229,12 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     Configlet post_config(host_os, os_family, "installer_commands_post_config");
     post_config.removeComments();
-    post_config.setVariable("test",   cnf->testRun);
-    post_config.setVariable("run",  ! cnf->testRun);
-    post_config.setVariable("schedule_rollback", cnf->rollback);
-    post_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
+
+    post_config.setVariable("test", false);
+    post_config.setVariable("run", true);
+    post_config.setVariable("schedule_rollback", false);
+    post_config.setVariable("cancel_rollback", false);
+
     post_config.setVariable("save_standby", cnf->saveStandby);
     post_config.setVariable("version_lt_124", version_lt_124);
     post_config.setVariable("version_ge_124", version_ge_124);

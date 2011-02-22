@@ -48,9 +48,6 @@ class instConf {
     bool      stripComments;
     bool      compressScript;
     bool      copyFWB;
-    bool      testRun;
-    bool      rollback;
-    bool      cancelRollbackIfSuccess;
     bool      saveStandby;
     bool      batchInstall;
     bool      useSCPForRouter; // use scp for cisco ios, pix and hp procurve
@@ -67,8 +64,6 @@ class instConf {
     QString   sshArgs;
     QString   scpArgs;
     QString   fwdir;
-    int       rollbackTime;
-    QString   rollbackTimeUnit;
     
     libfwbuilder::Firewall  *fwobj;
 

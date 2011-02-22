@@ -103,10 +103,6 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
     m_dialog->stripComments->setChecked( cnf->stripComments );
     m_dialog->compressScript->setChecked( cnf->compressScript );
     m_dialog->copyFWB->setChecked( cnf->copyFWB );
-    m_dialog->testRun->setChecked( cnf->testRun );
-    m_dialog->rollback->setChecked( cnf->rollback );
-    m_dialog->rollbackTime->setValue( cnf->rollbackTime );
-    m_dialog->cancelRollbackIfSuccess->setChecked( cnf->cancelRollbackIfSuccess );
 
     // If we have user name, bring focus to the password input field
     // if we do not have user name, focus goes to the user name field
@@ -117,10 +113,6 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
     if (cnf->batchInstall)
     {
         //m_dialog->copyFWB->hide();
-        m_dialog->rollback->hide();
-        m_dialog->rollbackTime->hide();
-        m_dialog->rollbackTimeUnit->hide();
-        m_dialog->cancelRollbackIfSuccess->hide();
         m_dialog->PIXgroupBox->hide();
         m_dialog->backupConfigFile->hide();
         m_dialog->backupConfigFileLbl->hide();
@@ -141,36 +133,14 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
             platform=="procurve_acl" )
         {
             m_dialog->copyFWB->hide();
-
-            if (platform == "iosacl")
-            {
-                if (XMLTools::version_compare(version, "12.4") >= 0)
-                {
-                    m_dialog->rollback->setText("Schedule roll back using EEM in ");
-                    m_dialog->cancelRollbackIfSuccess->setText(
-                        "Cancel rollback if policy activation was successfull");
-                } else
-                {
-                    m_dialog->rollback->setText("Schedule reboot in ");
-                    m_dialog->cancelRollbackIfSuccess->setText(
-                        "Cancel reboot if policy activation was successfull");
-                }
-            }
-
             m_dialog->PIXgroupBox->hide();
 
         } else
         {
-            m_dialog->rollback->setText("Schedule reboot in ");
-            m_dialog->cancelRollbackIfSuccess->setText(
-                "Cancel reboot if policy activation was successfull");
             m_dialog->epwd->hide();
             m_dialog->epwdLbl->hide();
             m_dialog->PIXgroupBox->hide();
             m_dialog->test->hide();  // dry run option
-            // cancelling rollback at the end of activation is currently
-            // only supported on pix,fwsm and ios
-            m_dialog->cancelRollbackIfSuccess->hide();
         }
     }
 
@@ -183,7 +153,6 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
 
     m_dialog->PIXgroupBox->adjustSize();
     m_dialog->generalOptionsBox->adjustSize();
-    m_dialog->testOptionsBox->adjustSize();
     m_dialog->mainBox->adjustSize();
 
     adjustSize();
@@ -206,8 +175,6 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
         qDebug() << QString("instOptionsDialog:  buttonsFrame: top=%1 bottom=%2")
             .arg(bfr.top()).arg(bfr.bottom());
     }
-
-    testModeToggled();
 
     //resize( minimumSizeHint() );
 
@@ -248,13 +215,5 @@ QString instOptionsDialog::getEPWD()  { return m_dialog->epwd->text();  }
 void instOptionsDialog::cancelAll()
 {
     this->done(-1);
-}
-
-void instOptionsDialog::testModeToggled()
-{
-    m_dialog->rollback->setEnabled(m_dialog->testRun->isChecked());
-    m_dialog->rollbackTime->setEnabled(m_dialog->testRun->isChecked());
-
-    if ( ! m_dialog->testRun->isChecked()) m_dialog->rollback->setChecked(false);
 }
 

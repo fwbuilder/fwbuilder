@@ -245,8 +245,6 @@ public slots:
     void finishClicked();
     void cancelClicked();
      
-    void testRunRequested();
-     
     void addToLog(const QString &buf); 
     void updateProgressBar(int n,bool setsize);
 

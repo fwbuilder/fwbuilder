@@ -29,13 +29,5 @@
 ##  race condition which breaks installation process.
 
 
-{{if run}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && sudo -S pkill shutdown; echo 'Policy activated' {{endif}}
-
-{{if test}}
-
-{{if with_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; echo 'sudo -S /sbin/shutdown -y -i6 -g{{$rbtimeout_sec}} &' | sh; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
-{{if no_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
-
-{{endif}}
-
+echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
 

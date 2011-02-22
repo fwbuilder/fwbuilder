@@ -611,10 +611,6 @@ int instDialog::findFilesToInspect(QStringList &files)
     return files.size();
 }
  
-void instDialog::testRunRequested()
-{
-}
-
 struct CaseInsensitiveComparison :
     public std::binary_function<libfwbuilder::FWObject*, libfwbuilder::FWObject*, bool>
 {

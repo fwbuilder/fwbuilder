@@ -40,7 +40,7 @@ echo "Saving data to flash memory";
 echo "Flash memory:";
 /usr/sbin/nvram show >/dev/null;
 echo "Activating policy";
-/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh && (killall reboot;echo 'Policy activated')
+/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh && echo 'Policy activated'
 {{endif}}
 
 {{if no_compression}}
@@ -55,26 +55,8 @@ echo "Saving data to flash memory";
 echo "Flash memory:";
 /usr/sbin/nvram show >/dev/null;
 echo "Activating policy";
-/usr/sbin/nvram get fwb|sh && (killall reboot; echo 'Policy activated')
+/usr/sbin/nvram get fwb|sh && echo 'Policy activated'
 {{endif}}
-
-{{endif}}
-
-
-
-{{if test}}
-
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-cp /tmp/crontab /tmp/crontab.o;
-echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d{{$rbtimeout_sec}}' >> /tmp/crontab;
-sh /tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}'; sh /tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
 
 {{endif}}
 

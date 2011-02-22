@@ -26,25 +26,6 @@
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/{{$fwscript}} && (ps ax|awk '/shutdown/ && \!/awk/ {printf "kill %d\n",$1;}'|sh; echo 'Policy activated')
+sh {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
-
-{{if test}}
-
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-/sbin/shutdown -r +{{$rbtimeout}}
-chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
-{{endif}}
-
-
-{{endif}}
-
 

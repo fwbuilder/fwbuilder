@@ -25,28 +25,7 @@
 ##  See #1368 for the explanation of the need for the "sleep2; echo" commands
 
 
-{{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/{{$fwscript}} && ( pkill shutdown; echo 'Policy activated'; sleep 2; echo )
-{{endif}}
-
-{{if test}}
-
-{{if with_rollback}}
-echo '{{$fwbprompt}}';
-/sbin/shutdown -r +{{$rbtimeout}}
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && (echo 'Policy activated'; sleep 2; echo )
-{{endif}}
-
-{{if no_rollback}}
-echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-sh {{$fwdir}}/tmp/{{$fwscript}} && (echo 'Policy activated'; sleep 2; echo )
-{{endif}}
-
-
-{{endif}}
-
+sh {{$fwdir}}/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo )
 

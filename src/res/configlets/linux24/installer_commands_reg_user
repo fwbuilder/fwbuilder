@@ -20,13 +20,5 @@
 ##  on the input of sudo and other commands. This creates difficult to catch
 ##  race condition which breaks installation process.
 
-{{if run}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && sudo -S shutdown -c; echo 'Policy activated' ) {{endif}}
-
-{{if test}}
-
-{{if with_rollback}} echo '{{$fwbprompt}}'; sudo -S -b /sbin/shutdown -r +{{$rbtimeout}} chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
-{{if no_rollback}} echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/tmp/{{$fwscript}}; sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated' {{endif}}
-
-{{endif}}
-
+echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
 

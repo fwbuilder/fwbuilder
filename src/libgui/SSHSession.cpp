@@ -101,7 +101,6 @@ SSHSession::SSHSession(QWidget *_par,
     backup=false;
     incremental=false;
     dry_run=false;
-    testRun=false;
     stripComments = false;
     wdir="";
     script="";
@@ -239,7 +238,6 @@ void SSHSession::setOptions(instConf *cnf)
     //setIncr(cnf->incremental);
     setDryRun(cnf->dry_run);
     setSaveStandby(cnf->saveStandby);
-    setTestRun(cnf->testRun);
     setStripComments(cnf->stripComments);
     setWDir(cnf->wdir);
     setScript(cnf->script);
