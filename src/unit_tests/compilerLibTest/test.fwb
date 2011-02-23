@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1275952357" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1275952357" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -445,7 +445,7 @@
     <ObjectGroup id="id1566X80784" name="Firewalls" comment="" ro="False">
       <Firewall id="id3522X80784" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275950255" platform="iptables" version="" name="fw1" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
         <NAT id="id3547X80784" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3549X80784" disabled="False" position="0" action="Translate" comment="no need to translate&#10;between DMZ and &#10;internal net">
+          <NATRule id="id3549X80784" disabled="False" group="" position="0" action="Translate" comment="no need to translate&#10;between DMZ and &#10;internal net">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-2"/>
             </OSrc>
@@ -464,9 +464,15 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3582X80784" disabled="False" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id3582X80784" disabled="False" group="" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3DC75CE7-2"/>
@@ -486,9 +492,15 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3616X80784" disabled="False" position="2" action="Translate" comment="">
+          <NATRule id="id3616X80784" disabled="False" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -507,6 +519,12 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -619,7 +637,7 @@
       </Firewall>
       <Firewall id="id4399X15797" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275952379" platform="iptables" version="" name="member1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id4420X15797" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4422X15797" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id4422X15797" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -638,6 +656,12 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
@@ -709,7 +733,7 @@
       </Firewall>
       <Firewall id="id4661X15797" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275952384" platform="iptables" version="" name="member2" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id4769X15797" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4770X15797" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id4770X15797" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -728,6 +752,12 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>

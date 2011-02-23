@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1284658651" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1284658651" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -442,7 +442,7 @@
     <ObjectGroup id="id1809X5592" name="Firewalls" comment="" ro="False">
       <Firewall id="id2393X25033" host_OS="solaris" inactive="False" lastCompiled="1284654406" lastInstalled="0" lastModified="1284659631" platform="ipf" version="" name="ipf1" comment="# Firewall object test1 comment&#10;" ro="False">
         <NAT id="id2397X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2503X28067" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2503X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -461,12 +461,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2395X25033" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2410X25033" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2410X25033" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -516,7 +522,7 @@
       </Firewall>
       <Firewall id="id2422X25033" host_OS="solaris" inactive="False" lastCompiled="1284669164" lastInstalled="0" lastModified="1284659302" platform="ipf" version="" name="ipf2" comment="output file name is set to ipf2-1.fw" ro="False">
         <NAT id="id2449X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2754X28067" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2754X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -535,12 +541,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2435X25033" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2436X25033" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2436X25033" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -625,7 +637,7 @@
       </Firewall>
       <Firewall id="id2540X25033" host_OS="solaris" inactive="False" lastCompiled="1284659421" lastInstalled="0" lastModified="1284659417" platform="ipf" version="" name="ipf3" comment="" ro="False">
         <NAT id="id2567X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2768X28067" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2768X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -644,12 +656,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2553X25033" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2554X25033" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2554X25033" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -734,7 +752,7 @@
       </Firewall>
       <Firewall id="id2685X25033" host_OS="solaris" inactive="False" lastCompiled="1284659501" lastInstalled="0" lastModified="1284659497" platform="ipf" version="" name="ipf4" comment="" ro="False">
         <NAT id="id2712X25033" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2782X28067" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2782X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -753,12 +771,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2698X25033" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2699X25033" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2699X25033" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -843,7 +867,7 @@
       </Firewall>
       <Firewall id="id2541X28067" host_OS="solaris" inactive="False" lastCompiled="1284659208" lastInstalled="0" lastModified="1284659299" platform="ipf" version="" name="ipf2a" comment="output file name is set to ipf2a-1" ro="False">
         <NAT id="id2568X28067" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2740X28067" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2740X28067" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -862,12 +886,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2554X28067" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2555X28067" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2555X28067" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

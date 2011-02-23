@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="1263678434" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1263678434" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -439,7 +439,7 @@
     <ObjectGroup id="id14951X3268" name="Firewalls" comment="" ro="False">
       <Firewall id="id16544X3268" host_OS="linux24" inactive="False" lastCompiled="1279119420" lastInstalled="0" lastModified="1263673477" platform="iptables" version="" name="test1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id16565X3268" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id16567X3268" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id16567X3268" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -458,12 +458,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id16601X3268" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id16603X3268" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id16603X3268" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id16544X3268"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -482,7 +488,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16632X3268" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id16632X3268" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -500,7 +506,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16660X3268" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id16660X3268" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -518,7 +524,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16688X3268" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id16688X3268" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id16544X3268"/>
             </Src>
@@ -536,7 +542,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16716X3268" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id16716X3268" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -554,7 +560,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16744X3268" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id16744X3268" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -572,7 +578,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id16772X3268" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id16772X3268" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -655,7 +661,7 @@
       </Firewall>
       <Firewall id="id2198X35122" host_OS="linux24" inactive="False" lastCompiled="1279119543" lastInstalled="0" lastModified="1263673484" platform="iptables" version="" name="test2" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id2306X35122" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2307X35122" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2307X35122" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -674,12 +680,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2219X35122" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2220X35122" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id2220X35122" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id2198X35122"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -698,7 +710,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2233X35122" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2233X35122" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -716,7 +728,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2245X35122" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id2245X35122" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -734,7 +746,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2257X35122" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id2257X35122" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id2198X35122"/>
             </Src>
@@ -752,7 +764,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2269X35122" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id2269X35122" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -770,7 +782,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2281X35122" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2281X35122" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -788,7 +800,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2293X35122" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2293X35122" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -871,7 +883,7 @@
       </Firewall>
       <Firewall id="id2427X41369" host_OS="linux24" inactive="False" lastCompiled="1279119543" lastInstalled="0" lastModified="1263678441" platform="iptables" version="" name="test3" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id2535X41369" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2536X41369" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2536X41369" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -890,12 +902,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2448X41369" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2449X41369" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id2449X41369" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id2427X41369"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -914,7 +932,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2462X41369" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2462X41369" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -932,7 +950,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2474X41369" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id2474X41369" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -950,7 +968,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2486X41369" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id2486X41369" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id2427X41369"/>
             </Src>
@@ -968,7 +986,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2498X41369" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id2498X41369" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -986,7 +1004,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2510X41369" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2510X41369" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1004,7 +1022,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2522X41369" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2522X41369" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1087,7 +1105,7 @@
       </Firewall>
       <Firewall id="id2560X41369" host_OS="linux24" inactive="False" lastCompiled="1279119543" lastInstalled="0" lastModified="1263678446" platform="iptables" version="" name="test4" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id2668X41369" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id2669X41369" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id2669X41369" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1106,12 +1124,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id2581X41369" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2582X41369" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id2582X41369" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id2560X41369"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1130,7 +1154,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2595X41369" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2595X41369" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1148,7 +1172,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2607X41369" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id2607X41369" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1166,7 +1190,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2619X41369" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id2619X41369" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id2560X41369"/>
             </Src>
@@ -1184,7 +1208,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2631X41369" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id2631X41369" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1202,7 +1226,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2643X41369" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2643X41369" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1220,7 +1244,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2655X41369" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2655X41369" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1303,7 +1327,7 @@
       </Firewall>
       <Firewall id="id5323X19499" host_OS="linux24" inactive="False" lastCompiled="1279119527" lastInstalled="0" lastModified="1268942652" platform="iptables" version="" name="firewall name" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
         <NAT id="id5344X19499" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id5346X19499" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id5346X19499" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1322,12 +1346,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id5380X19499" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id5382X19499" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id5382X19499" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id5323X19499"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1372,7 +1402,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id5411X19499" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id5411X19499" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1390,7 +1420,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5439X19499" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
+          <PolicyRule id="id5439X19499" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1409,7 +1439,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5468X19499" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
+          <PolicyRule id="id5468X19499" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3F6D115D"/>
@@ -1429,7 +1459,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5498X19499" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
+          <PolicyRule id="id5498X19499" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
             <Src neg="False">
               <ObjectRef ref="id5323X19499"/>
             </Src>
@@ -1447,7 +1477,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5526X19499" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
+          <PolicyRule id="id5526X19499" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
             <Src neg="False">
               <ObjectRef ref="id5323X19499"/>
             </Src>
@@ -1465,7 +1495,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5554X19499" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id5554X19499" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1509,7 +1539,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id5582X19499" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id5582X19499" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1527,7 +1557,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5610X19499" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id5610X19499" disabled="False" group="" log="True" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1637,7 +1667,7 @@
       </Firewall>
       <Firewall id="id5639X22322" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942667" platform="iptables" version="" name="firewall !@#$%^&amp;()-+{},;" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
         <NAT id="id5664X22322" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id5666X22322" disabled="False" position="0" action="Translate" comment="no need to translate&#10;between DMZ and &#10;internal net">
+          <NATRule id="id5666X22322" disabled="False" group="" position="0" action="Translate" comment="no need to translate&#10;between DMZ and &#10;internal net">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-2"/>
             </OSrc>
@@ -1656,9 +1686,15 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id5699X22322" disabled="False" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id5699X22322" disabled="False" group="" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3DC75CE7-2"/>
@@ -1678,9 +1714,15 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id5733X22322" disabled="False" position="2" action="Translate" comment="">
+          <NATRule id="id5733X22322" disabled="False" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1699,12 +1741,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id5767X22322" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id5769X22322" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id5769X22322" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id5639X22322"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1724,7 +1772,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5799X22322" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id5799X22322" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1742,7 +1790,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5827X22322" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id5827X22322" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1760,7 +1808,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5855X22322" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id5855X22322" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id5639X22322"/>
             </Src>
@@ -1778,7 +1826,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5883X22322" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id5883X22322" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1796,7 +1844,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5911X22322" disabled="False" log="False" position="5" action="Reject" direction="Both" comment="Quickly reject attempts to connect&#10;to ident server to avoid SMTP delays">
+          <PolicyRule id="id5911X22322" disabled="False" group="" log="False" position="5" action="Reject" direction="Both" comment="Quickly reject attempts to connect&#10;to ident server to avoid SMTP delays">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1840,7 +1888,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id5939X22322" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="Mail relay on DMZ can accept&#10;connections from hosts on the&#10;Internet">
+          <PolicyRule id="id5939X22322" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="Mail relay on DMZ can accept&#10;connections from hosts on the&#10;Internet">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1858,7 +1906,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5967X22322" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="this rule permits a mail relay&#10;located on DMZ to connect&#10;to internal mail server">
+          <PolicyRule id="id5967X22322" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="this rule permits a mail relay&#10;located on DMZ to connect&#10;to internal mail server">
             <Src neg="False">
               <ObjectRef ref="id3D84EECF"/>
             </Src>
@@ -1876,7 +1924,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id5995X22322" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="Mail relay needs DNS and can&#10;connect to mail servers on the&#10;Internet">
+          <PolicyRule id="id5995X22322" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="Mail relay needs DNS and can&#10;connect to mail servers on the&#10;Internet">
             <Src neg="False">
               <ObjectRef ref="id3D84EECF"/>
             </Src>
@@ -1895,7 +1943,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6024X22322" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="All other access from DMZ to&#10;internal  net is denied">
+          <PolicyRule id="id6024X22322" disabled="False" group="" log="True" position="9" action="Deny" direction="Both" comment="All other access from DMZ to&#10;internal  net is denied">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-2"/>
             </Src>
@@ -1939,7 +1987,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id6052X22322" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="This permits access from internal net&#10;to the Internet and DMZ">
+          <PolicyRule id="id6052X22322" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="This permits access from internal net&#10;to the Internet and DMZ">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -1957,7 +2005,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6080X22322" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id6080X22322" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2072,7 +2120,7 @@
       </Firewall>
       <Firewall id="id6102X22330" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942625" platform="iptables" version="" name="!@#$%^&amp;()-+{},;" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id6123X22330" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id6125X22330" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id6125X22330" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -2091,12 +2139,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id6159X22330" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id6161X22330" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id6161X22330" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id6102X22330"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -2141,7 +2195,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id6190X22330" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id6190X22330" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2159,7 +2213,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6218X22330" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+          <PolicyRule id="id6218X22330" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -2177,7 +2231,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6246X22330" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id6246X22330" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id6102X22330"/>
             </Src>
@@ -2195,7 +2249,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6274X22330" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id6274X22330" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2239,7 +2293,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id6302X22330" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id6302X22330" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -2257,7 +2311,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6330X22330" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id6330X22330" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2367,7 +2421,7 @@
       </Firewall>
       <Firewall id="id6362X22937" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942652" platform="iptables" version="" name="русский фаерволл" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
         <NAT id="id6383X22937" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id6385X22937" disabled="False" position="0" action="Translate" comment="">
+          <NATRule id="id6385X22937" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -2386,12 +2440,18 @@
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
             </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id6419X22937" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id6421X22937" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id6421X22937" disabled="False" group="" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id6362X22937"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -2436,7 +2496,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id6450X22937" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id6450X22937" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2454,7 +2514,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6478X22937" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
+          <PolicyRule id="id6478X22937" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -2473,7 +2533,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6507X22937" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
+          <PolicyRule id="id6507X22937" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
               <ObjectRef ref="id3F6D115D"/>
@@ -2493,7 +2553,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6537X22937" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
+          <PolicyRule id="id6537X22937" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
             <Src neg="False">
               <ObjectRef ref="id6362X22937"/>
             </Src>
@@ -2511,7 +2571,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6565X22937" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
+          <PolicyRule id="id6565X22937" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
             <Src neg="False">
               <ObjectRef ref="id6362X22937"/>
             </Src>
@@ -2529,7 +2589,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6593X22937" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id6593X22937" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2573,7 +2633,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id6621X22937" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id6621X22937" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -2591,7 +2651,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id6649X22937" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id6649X22937" disabled="False" group="" log="True" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
