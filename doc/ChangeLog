@@ -1,3 +1,11 @@
+2011-02-24  vadim  <vadim@netcitadel.com>
+
+	* AddressTableEditor.cpp (load): fixes #2139 "Provide "Cancel"
+	button if Address Table file is read-only". IF the file configured
+	with Address Table object is read-only, the GUI shows warning when
+	user clicks "Edit" button and offers a choice: open it for viewing
+	read-only or cancel.
+
 2011-02-23  vadim  <vadim@netcitadel.com>
 
 	* AddressTableEditor.cpp (save): fixes #2135 "Editing table

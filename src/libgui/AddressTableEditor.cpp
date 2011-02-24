@@ -52,6 +52,10 @@ AddressTableEditor::AddressTableEditor(QWidget *parent,
     m_dialog->setupUi(static_cast<QDialog*>(this));
 
     if (!title.isEmpty()) setWindowTitle(title);
+}
+
+bool AddressTableEditor::load()
+{
 
     QFile rf(file_name);
     if (rf.exists())
@@ -60,18 +64,25 @@ AddressTableEditor::AddressTableEditor(QWidget *parent,
             QObject::tr("File %1 not found").arg(file_name)
         );
     }
+
     QFileInfo fi(file_name);
     if ( ! fi.isWritable())
     {
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("The file is read-only, you can't save the changes."),
-            tr("&Continue"), QString::null, QString::null, 0, 0 );
+        switch (
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("The file is read-only, you can't save the changes."),
+                tr("&View the file"), tr("&Cancel"), QString::null, 0, 1 ))
+        {
+        case 0:  // open read-only
+            m_dialog->editor->setReadOnly(true);
+            m_dialog->ok_button->hide();
+            m_dialog->cancel_button->setText(tr("Close"));
+            break;
 
-        m_dialog->editor->setReadOnly(true);
-
-        m_dialog->ok_button->hide();
-        m_dialog->cancel_button->setText(tr("Close"));
+        default:  // cancel
+            return false;
+        }
     }
 
     if (rf.open(QIODevice::ReadOnly))
@@ -84,6 +95,7 @@ AddressTableEditor::AddressTableEditor(QWidget *parent,
         m_dialog->editor->setPlainText(rf.errorString());
     }
 
+    return true;
 }
 
 AddressTableEditor::~AddressTableEditor()

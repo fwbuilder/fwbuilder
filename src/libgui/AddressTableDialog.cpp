@@ -173,6 +173,7 @@ void AddressTableDialog::editFile( void )
 {
     QString filePath = m_dialog->filename->text();
     AddressTableEditor editor(this, filePath);
-    editor.exec();  // its modal dialog
+    if (editor.load())
+        editor.exec();  // its modal dialog
 }
 

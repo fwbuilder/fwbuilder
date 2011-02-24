@@ -42,6 +42,9 @@ class AddressTableEditor : public QDialog
                        const QString &title="");
     ~AddressTableEditor();
 
+    // load data, return true if successful
+    bool load();
+    
 protected:
     virtual void closeEvent(QCloseEvent *ev);
     
