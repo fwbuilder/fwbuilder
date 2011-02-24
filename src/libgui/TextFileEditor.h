@@ -25,9 +25,9 @@
 #define __ADDRESSTABLEEDITOR_H__
 
 #include "../../config.h"
-#include <ui_addresstableeditor_q.h>
+#include <ui_textfileeditor_q.h>
 
-class AddressTableEditor : public QDialog
+class TextFileEditor : public QDialog
 {
     Q_OBJECT;
 
@@ -35,12 +35,12 @@ class AddressTableEditor : public QDialog
     QString original_data;
     
  public:
-    Ui::AddressTableEditor_q *m_dialog;
+    Ui::TextFileEditor_q *m_dialog;
     
-    AddressTableEditor(QWidget *parent,
-                       const QString &file_name,
-                       const QString &title="");
-    ~AddressTableEditor();
+    TextFileEditor(QWidget *parent,
+                   const QString &file_name,
+                   const QString &title="");
+    ~TextFileEditor();
 
     // load data, return true if successful
     bool load();

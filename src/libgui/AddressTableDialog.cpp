@@ -28,7 +28,7 @@
 #include "utils.h"
 #include "ProjectPanel.h"
 #include "AddressTableDialog.h"
-#include "AddressTableEditor.h"
+#include "TextFileEditor.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "FWCmdChange.h"
@@ -191,7 +191,7 @@ void AddressTableDialog::browse()
 void AddressTableDialog::editFile( void )
 {
     QString filePath = m_dialog->filename->text();
-    AddressTableEditor editor(this, filePath);
+    TextFileEditor editor(this, filePath);
     if (editor.load())
         editor.exec();  // its modal dialog
 }

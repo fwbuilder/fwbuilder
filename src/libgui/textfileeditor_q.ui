@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddressTableEditor_q</class>
- <widget class="QDialog" name="AddressTableEditor_q">
+ <class>TextFileEditor_q</class>
+ <widget class="QDialog" name="TextFileEditor_q">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -98,7 +98,7 @@
   <connection>
    <sender>ok_button</sender>
    <signal>clicked()</signal>
-   <receiver>AddressTableEditor_q</receiver>
+   <receiver>TextFileEditor_q</receiver>
    <slot>save()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -114,7 +114,7 @@
   <connection>
    <sender>cancel_button</sender>
    <signal>clicked()</signal>
-   <receiver>AddressTableEditor_q</receiver>
+   <receiver>TextFileEditor_q</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

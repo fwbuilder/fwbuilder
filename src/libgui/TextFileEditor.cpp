@@ -26,7 +26,7 @@
 #include "../../config.h"
 #include "global.h"
 
-#include "AddressTableEditor.h"
+#include "TextFileEditor.h"
 #include "FWBSettings.h"
 
 #include <qmessagebox.h>
@@ -42,21 +42,21 @@
 
 using namespace std;
 
-AddressTableEditor::AddressTableEditor(QWidget *parent,
-                                       const QString &file_name,
-                                       const QString &title) : QDialog(parent)
+
+TextFileEditor::TextFileEditor(QWidget *parent,
+                               const QString &file_name,
+                               const QString &title) : QDialog(parent)
 {
     this->file_name = file_name;
 
-    m_dialog = new Ui::AddressTableEditor_q;
+    m_dialog = new Ui::TextFileEditor_q;
     m_dialog->setupUi(static_cast<QDialog*>(this));
 
     if (!title.isEmpty()) setWindowTitle(title);
 }
 
-bool AddressTableEditor::load()
+bool TextFileEditor::load()
 {
-
     QFile rf(file_name);
     if ( ! rf.exists())
     {
@@ -103,12 +103,12 @@ bool AddressTableEditor::load()
     return true;
 }
 
-AddressTableEditor::~AddressTableEditor()
+TextFileEditor::~TextFileEditor()
 {
     delete m_dialog;
 }
 
-void AddressTableEditor::save()
+void TextFileEditor::save()
 {
     QFile owf(file_name);
     if ( ! owf.exists())
@@ -153,7 +153,7 @@ void AddressTableEditor::save()
             "&Continue", QString::null, QString::null, 0, 1 );
 }
 
-void AddressTableEditor::closeEvent(QCloseEvent* ev)
+void TextFileEditor::closeEvent(QCloseEvent* ev)
 {
     if (m_dialog->editor->toPlainText() != original_data)
     {
