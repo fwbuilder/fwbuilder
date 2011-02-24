@@ -113,7 +113,18 @@ update_addresses_of_interface() {
       test -z "$FWBDEBUG" && exit 1
     }
 
-    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
-    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+## carp interface on FreeBSD does not like to have two ip
+## addresses. This means we should delete address first, then add new
+## one. All other interfaces work with >1 address, so we add first,
+## then delete to make sure there is no time window when interface has
+## no address at all.
+
+    echo "$interface" | grep -q carp && {
+        diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+        diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    } || {
+        diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+        diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+    }
 }
 
