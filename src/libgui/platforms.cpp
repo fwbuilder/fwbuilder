@@ -1194,9 +1194,13 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
 void guessOSAndPlatformFromSysDescr(
     const QString &sysDescr, QString &platform, QString &hostOS, QString &version)
 {
-    QRegExp pix1("Cisco PIX Security Appliance Version ([0-9\\.]+)");
-    QRegExp pix2("Cisco Adaptive Security Appliance Version ([0-9\\.]+)");
-    QRegExp ios1("Cisco Internetwork Operating System Software .* Version ([0-9\\.]+)");
+    QList<QRegExp> pix_re;
+    pix_re << QRegExp("Cisco PIX Firewall Version ([0-9\\.]+)")
+           << QRegExp("Cisco PIX Security Appliance Version ([0-9\\.]+)")
+           << QRegExp("Cisco Adaptive Security Appliance Version ([0-9\\.]+)");
+
+    QList<QRegExp> ios_re;
+    ios_re << QRegExp("Cisco Internetwork Operating System Software .* Version ([0-9\\.]+)");
 
     platform = "";
     hostOS = "";
@@ -1209,25 +1213,25 @@ void guessOSAndPlatformFromSysDescr(
     list<QStringPair> allowed_versions;
     string version_from_sysdescr;
 
-    if (pix1.indexIn(sysDescr) > -1)
+    foreach (QRegExp re, pix_re)
     {
-        platform = "pix";
-        hostOS = "pix_os";
-        version_from_sysdescr = pix1.cap(1).toStdString();
+        if (re.indexIn(sysDescr) > -1)
+        {
+            platform = "pix";
+            hostOS = "pix_os";
+            version_from_sysdescr = re.cap(1).toStdString();
+        }
     }
 
-    if (pix2.indexIn(sysDescr) > -1)
-    {
-        platform = "pix";
-        hostOS = "pix_os";
-        version_from_sysdescr = pix2.cap(1).toStdString();
-    }
 
-    if (ios1.indexIn(sysDescr) > -1)
+    foreach (QRegExp re, ios_re)
     {
-        platform = "iosacl";
-        hostOS = "ios";
-        version_from_sysdescr = ios1.cap(1).toStdString();
+        if (re.indexIn(sysDescr) > -1)
+        {
+            platform = "iosacl";
+            hostOS = "ios";
+            version_from_sysdescr = re.cap(1).toStdString();
+        }
     }
 
     if (fwbdebug)
