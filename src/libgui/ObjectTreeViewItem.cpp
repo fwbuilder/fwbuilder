@@ -30,6 +30,7 @@
 #include "ObjectTreeView.h"
 
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
@@ -54,12 +55,14 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
 {
     if (column == 0 && role == Qt::FontRole)
     {
-        QFont usual = QTreeWidgetItem::data(column, role).value<QFont>();
+        QFont item_font = QTreeWidgetItem::data(column, role).value<QFont>();
 
         FWObject *obj = getFWObject();
         Firewall *o = NULL;
 
-        if (obj!=NULL && getProperty("type")==Firewall::TYPENAME)
+        if (obj!=NULL && (
+                getProperty("type")==Firewall::TYPENAME ||
+                getProperty("type")==Cluster::TYPENAME))
         {
             o = Firewall::cast( obj );
         }
@@ -67,12 +70,12 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
         if (o!=NULL)
         {
             bool mf = !o->getInactive() && (o->needsCompile()) ;
-            usual.setBold (mf);
-            usual.setStrikeOut(o->getInactive());
-            return QVariant(usual);
+            item_font.setBold (mf);
+            item_font.setStrikeOut(o->getInactive());
+            return QVariant(item_font);
         }
         else
-            return QVariant(usual);
+            return QVariant(item_font);
     }
     return QTreeWidgetItem::data(column, role);
 }
