@@ -58,11 +58,16 @@ bool AddressTableEditor::load()
 {
 
     QFile rf(file_name);
-    if (rf.exists())
+    if ( ! rf.exists())
     {
-        m_dialog->editor->setPlainText(
-            QObject::tr("File %1 not found").arg(file_name)
-        );
+        if (QMessageBox::warning(
+                this, "Firewall Builder",
+                tr("The file %1 does not exist but it will be created "
+                   "when you save your changes.").arg(file_name),
+                tr("&Open the file"), tr("&Cancel"), QString::null, 0, 1 ) == 1)
+            return false;
+
+        return true;
     }
 
     QFileInfo fi(file_name);
@@ -105,7 +110,24 @@ AddressTableEditor::~AddressTableEditor()
 
 void AddressTableEditor::save()
 {
+    QFile owf(file_name);
+    if ( ! owf.exists())
+    {
+        if (owf.open(QIODevice::WriteOnly) &&
+            owf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
+        {
+            owf.close();
+        } else
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("Error saving data to file '%1': %2")
+                .arg(file_name).arg(owf.errorString()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+        return;
+    }
+    
     QString tmp_file_name = file_name + ".tmp";
+
     QFile wf(tmp_file_name);
     if (wf.open(QIODevice::WriteOnly) &&
         wf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
@@ -126,7 +148,7 @@ void AddressTableEditor::save()
     } else
         QMessageBox::critical(
             this,"Firewall Builder",
-            tr("Can not open temporary file '%1' to save the data: %2")
+            tr("Error saving data to a temporary file '%1': %2")
             .arg(tmp_file_name).arg(wf.errorString()),
             "&Continue", QString::null, QString::null, 0, 1 );
 }

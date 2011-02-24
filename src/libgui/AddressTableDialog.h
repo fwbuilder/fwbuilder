@@ -42,10 +42,12 @@ class AddressTableDialog : public BaseObjectDialog
 
     Ui::AddressTableDialog_q *m_dialog;
 
- public:
+public:
      AddressTableDialog(QWidget *parent);
      ~AddressTableDialog();
-    
+
+     void updateButtons();
+     
 public slots:
     virtual void applyChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);

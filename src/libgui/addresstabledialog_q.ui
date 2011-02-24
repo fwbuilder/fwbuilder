@@ -151,14 +151,14 @@
               <string>Browse</string>
              </property>
              <property name="text">
-              <string>Browse</string>
+              <string>Choose File</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="editButton">
              <property name="text">
-              <string>Edit</string>
+              <string>Edit file</string>
              </property>
             </widget>
            </item>

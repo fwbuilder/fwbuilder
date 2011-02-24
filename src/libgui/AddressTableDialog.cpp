@@ -87,7 +87,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     assert(s!=NULL);
 
 
-    init=true;
+    init = true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
@@ -109,7 +109,14 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setReadOnly(o->isReadOnly());
     setDisabledPalette(m_dialog->comment);
 
-    init=false;
+    updateButtons();
+
+    init = false;
+}
+
+void AddressTableDialog::updateButtons()
+{
+    m_dialog->editButton->setEnabled( ! m_dialog->filename->text().isEmpty());
 }
 
 void AddressTableDialog::validate(bool *res)
@@ -120,8 +127,6 @@ void AddressTableDialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
-
-
 
 void AddressTableDialog::applyChanges()
 {
@@ -138,6 +143,8 @@ void AddressTableDialog::applyChanges()
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
+    updateButtons();
+
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
@@ -150,25 +157,37 @@ void AddressTableDialog::browse()
 {
 
     QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
+    dir = st->getWDir();
+    if (dir.isEmpty())  dir = st->getOpenFileDir();
+    if (dir.isEmpty())  dir = "~";
 
-    QString s = QFileDialog::getOpenFileName(this,
-                    "Choose a file",
-                    dir,
-                    "All files (*)");
+    // build a dialog that will let user select existing file or enter
+    // a name even if the file does not exist
 
-    if (!s.isEmpty())
+    QFileDialog fd(this);
+    fd.setWindowTitle(tr("Choose a file or type the name to create new"));
+    fd.setDirectory(dir);
+    fd.setFileMode(QFileDialog::AnyFile);
+    fd.setNameFilter(tr("All files (*)"));
+    fd.setViewMode(QFileDialog::Detail);
+
+    if (fd.exec())
     {
-        m_dialog->filename->setText(s);
-        // assign focus to the "file name" input field so that it
-        // generates signal editFinished when user clicks
-        // elsewhere. We use this signal to call changed() which in
-        // turn calls applyChanges() to save data
-        m_dialog->filename->setFocus(Qt::OtherFocusReason);
+        QString s = fd.selectedFiles()[0];
+
+        if (!s.isEmpty())
+        {
+            m_dialog->filename->setText(s);
+            // assign focus to the "file name" input field so that it
+            // generates signal editFinished when user clicks
+            // elsewhere. We use this signal to call changed() which in
+            // turn calls applyChanges() to save data
+            m_dialog->filename->setFocus(Qt::OtherFocusReason);
+            updateButtons();
+        }
     }
 }
+
 void AddressTableDialog::editFile( void )
 {
     QString filePath = m_dialog->filename->text();
