@@ -48,6 +48,7 @@ HEADERS += ../../config.h \
     DialogData.h \
     SimpleTextEditor.h \
     SimpleIntEditor.h \
+	AddressTableEditor.h \
     FWBSettings.h \
     FWBTree.h \
     RCS.h \
@@ -227,6 +228,7 @@ SOURCES += ProjectPanel.cpp \
     DialogData.cpp \
     SimpleTextEditor.cpp \
     SimpleIntEditor.cpp \
+	AddressTableEditor.cpp \
     FWBSettings.cpp \
     FWBTree.cpp \
     RCS.cpp \
@@ -416,6 +418,7 @@ FORMS = FWBMainWindow_q.ui \
     procurveacladvanceddialog_q.ui \
     simpletexteditor_q.ui \
     simpleinteditor_q.ui \
+	addresstableeditor_q.ui \
     aboutdialog_q.ui \
     libexport_q.ui \
     ruleoptionsdialog_q.ui \

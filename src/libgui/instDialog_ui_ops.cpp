@@ -1065,7 +1065,9 @@ bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
     {
         // In non-batch mode installer options from the dialog
         // overwrite options set in the fw object itself.
-        instOptionsDialog *inst_opt_dlg = new instOptionsDialog(this, &cnf, cancelAllVisible);
+        instOptionsDialog *inst_opt_dlg = new instOptionsDialog(
+            this, &cnf, cancelAllVisible);
+
         int resultCode = inst_opt_dlg->exec();
         // 0 - rejected
         // 1 - accepted

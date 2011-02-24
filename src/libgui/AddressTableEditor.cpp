@@ -1,0 +1,150 @@
+/*
+
+                          Firewall Builder
+
+                 Copyright (C) 2011 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@fwbuilder.org
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+
+
+#include "../../config.h"
+#include "global.h"
+
+#include "AddressTableEditor.h"
+#include "FWBSettings.h"
+
+#include <qmessagebox.h>
+#include <qtextedit.h>
+#include <qpushbutton.h>
+
+#include <QFile>
+#include <QFileInfo>
+#include <QDir>
+#include <QCloseEvent>
+#include <QtDebug>
+
+
+using namespace std;
+
+AddressTableEditor::AddressTableEditor(QWidget *parent,
+                                       const QString &file_name,
+                                       const QString &title) : QDialog(parent)
+{
+    this->file_name = file_name;
+
+    m_dialog = new Ui::AddressTableEditor_q;
+    m_dialog->setupUi(static_cast<QDialog*>(this));
+
+    if (!title.isEmpty()) setWindowTitle(title);
+
+    QFile rf(file_name);
+    if (rf.exists())
+    {
+        m_dialog->editor->setPlainText(
+            QObject::tr("File %1 not found").arg(file_name)
+        );
+    }
+    QFileInfo fi(file_name);
+    if ( ! fi.isWritable())
+    {
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("The file is read-only, you can't save the changes."),
+            tr("&Continue"), QString::null, QString::null, 0, 0 );
+
+        m_dialog->editor->setReadOnly(true);
+
+        m_dialog->ok_button->hide();
+        m_dialog->cancel_button->setText(tr("Close"));
+    }
+
+    if (rf.open(QIODevice::ReadOnly))
+    {
+        original_data = rf.readAll();
+        m_dialog->editor->setPlainText(original_data);
+        rf.close();
+    } else
+    {
+        m_dialog->editor->setPlainText(rf.errorString());
+    }
+
+}
+
+AddressTableEditor::~AddressTableEditor()
+{
+    delete m_dialog;
+}
+
+void AddressTableEditor::save()
+{
+    QString tmp_file_name = file_name + ".tmp";
+    QFile wf(tmp_file_name);
+    if (wf.open(QIODevice::WriteOnly) &&
+        wf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
+    {
+        wf.close();
+        QFile old_file(file_name);
+        if (old_file.remove() && wf.rename(tmp_file_name, file_name))
+        {
+            QDialog::accept();
+            return;
+        } else
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("Can not rename file %1 to %2: %3")
+                .arg(tmp_file_name).arg(file_name).arg(wf.errorString()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+
+    } else
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            tr("Can not open temporary file '%1' to save the data: %2")
+            .arg(tmp_file_name).arg(wf.errorString()),
+            "&Continue", QString::null, QString::null, 0, 1 );
+}
+
+void AddressTableEditor::closeEvent(QCloseEvent* ev)
+{
+    if (m_dialog->editor->toPlainText() != original_data)
+    {
+        switch (
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Dialog contains modified data. Do you want to save it?"),
+                tr("&Save"), tr("&Discard"), tr("&Cancel"),
+                0,    // enter: button 0 
+                2 ))  // escape: button 2
+        {
+        case 0:
+            save();
+            QDialog::closeEvent(ev);
+            break;
+
+        case 1:
+            QDialog::closeEvent(ev);
+            break;
+
+        case 2:
+            ev->ignore();
+            return;
+        }
+    }
+    QDialog::closeEvent(ev);
+}
+

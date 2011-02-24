@@ -1,3 +1,12 @@
+2011-02-23  vadim  <vadim@netcitadel.com>
+
+	* AddressTableEditor.cpp (save): fixes #2135 "Editing table
+	objects".  Dialog of the AddressTable object now offers button
+	"Edit" that lets the user edit address table file. This only
+	works if the file is located on the same machine where the GUI
+	is running, so it is probably most useful for compile time
+	objects.
+
 2011-02-22  Vadim Kurland  <vadim@netcitadel.com>
 
 	* configlets/linux24/shell_functions: see #2130 "unnecessary

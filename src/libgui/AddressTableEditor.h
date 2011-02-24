@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,37 +21,32 @@
 
 */
 
-
-#ifndef __ADDRESSTABLEDIALOG_H_
-#define __ADDRESSTABLEDIALOG_H_
+#ifndef __ADDRESSTABLEEDITOR_H__
+#define __ADDRESSTABLEEDITOR_H__
 
 #include "../../config.h"
-#include <ui_addresstabledialog_q.h>
-#include "BaseObjectDialog.h"
-#include <QWidget>
+#include <ui_addresstableeditor_q.h>
 
-#include "fwbuilder/FWObject.h"
-
-
-class ProjectPanel;
-class AddressTableDialog : public BaseObjectDialog
+class AddressTableEditor : public QDialog
 {
     Q_OBJECT;
 
-    Ui::AddressTableDialog_q *m_dialog;
-
+    QString file_name;
+    QString original_data;
+    
  public:
-     AddressTableDialog(QWidget *parent);
-     ~AddressTableDialog();
+    Ui::AddressTableEditor_q *m_dialog;
+    
+    AddressTableEditor(QWidget *parent,
+                       const QString &file_name,
+                       const QString &title="");
+    ~AddressTableEditor();
+
+protected:
+    virtual void closeEvent(QCloseEvent *ev);
     
 public slots:
-    virtual void applyChanges();
-    virtual void loadFWObject(libfwbuilder::FWObject *obj);
-    virtual void validate(bool*);
-    virtual void browse();
-    virtual void editFile( void  );
-    virtual void getHelpName(QString*);
-
+     virtual void save();
 };
 
-#endif 
+#endif

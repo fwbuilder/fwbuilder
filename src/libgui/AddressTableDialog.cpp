@@ -28,7 +28,7 @@
 #include "utils.h"
 #include "ProjectPanel.h"
 #include "AddressTableDialog.h"
-#include "SimpleTextView.h"
+#include "AddressTableEditor.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "FWCmdChange.h"
@@ -169,33 +169,10 @@ void AddressTableDialog::browse()
         m_dialog->filename->setFocus(Qt::OtherFocusReason);
     }
 }
-void AddressTableDialog::preview( void )
+void AddressTableDialog::editFile( void )
 {
-    SimpleTextView tv(this);
-    tv.setName(m_dialog->obj_name->text());
-
-    QFile f;
-    QTextStream ts;
     QString filePath = m_dialog->filename->text();
-
-    if (QDir::isRelativePath(filePath))
-        f.setFileName(getFileDir(mw->getCurrentFileName()) + "/" + filePath);
-    else
-        f.setFileName(filePath);
-
-    if (f.exists())
-    {
-        if(f.open(QIODevice::ReadOnly ))
-        {
-            ts.setDevice(&f);
-            tv.setText(ts.readAll());
-            f.close();
-        }
-    }
-    else
-    {
-        tv.setText("File not found.");
-    }
-    tv.exec();
+    AddressTableEditor editor(this, filePath);
+    editor.exec();  // its modal dialog
 }
 
