@@ -25,7 +25,15 @@
 ##  See #1368 for the explanation of the need for the "sleep2; echo" commands
 
 
+{{if shell_script_format}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
 sh {{$fwdir}}/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo)
+{{endif}}
+
+{{if rc_conf_format}}
+echo '{{$fwbprompt}}';
+/etc/rc.d/pf reload && ( echo 'Policy activated'; sleep 2; echo)
+{{endif}}
+
 

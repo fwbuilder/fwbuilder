@@ -690,6 +690,8 @@ QString FirewallInstaller::getActivationCmd()
         return cnf->activationCmd;
     }
 
+    FWOptions *fwopt = cnf->fwobj->getOptionsObject();
+
     QString configlet_name = "installer_commands_";
     if (cnf->user=="root") configlet_name += "root";
     else                   configlet_name += "reg_user";
@@ -719,6 +721,16 @@ QString FirewallInstaller::getActivationCmd()
 
     configlet.setVariable("with_compression",  cnf->compressScript);
     configlet.setVariable("no_compression",  ! cnf->compressScript);
+
+    // On FreeBSD where we can generate either shell script or rc.conf
+    // file, installation commands differ.
+    //
+    // TODO: find more generic way to do this so that GUI installer does not
+    // have to be aware of the differences in generated file format.
+    configlet.setVariable("rc_conf_format",
+                          fwopt->getBool("generate_rc_conf_file"));
+    configlet.setVariable("shell_script_format",
+                          ! fwopt->getBool("generate_rc_conf_file"));
 
     replaceMacrosInCommand(&configlet);
 

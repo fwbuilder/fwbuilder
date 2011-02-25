@@ -1,4 +1,8 @@
-2011-02-24  vadim  <vadim@netcitadel.com>
+2011-02-24  Vadim Kurland  <vadim@netcitadel.com>
+
+	* configlets/freebsd/installer_commands_root: see #2143 "installer
+	should run /etc/rc.d/pf script to reload PF rules on FreeBSD when
+	generated script is in rc.conf format"
 
 	* AddressTableDialog.cpp (browse): see #2140 "Attempting to create
 	new Address Table file results in read-only error". Implemented

@@ -28,6 +28,15 @@
 ##  on the input of sudo and other commands. This creates difficult to catch
 ##  race condition which breaks installation process.
 
+{{if shell_script_format}}
+echo '{{$fwbprompt}}';
+chmod +x {{$fwdir}}/{{$fwscript}};
+sudo -S {{$fwdir}}/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo)
+{{endif}}
 
-echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && ( echo 'Policy activated'; sleep 2; echo)
+{{if rc_conf_format}}
+echo '{{$fwbprompt}}';
+sudo -S /etc/rc.d/pf reload && ( echo 'Policy activated'; sleep 2; echo)
+{{endif}}
+
 
