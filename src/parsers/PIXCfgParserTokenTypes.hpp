@@ -1,0 +1,101 @@
+#ifndef INC_PIXCfgParserTokenTypes_hpp_
+#define INC_PIXCfgParserTokenTypes_hpp_
+
+/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgParserTokenTypes.hpp"$ */
+
+#ifndef CUSTOM_API
+# define CUSTOM_API
+#endif
+
+#ifdef __cplusplus
+struct CUSTOM_API PIXCfgParserTokenTypes {
+#endif
+	enum {
+		EOF_ = 1,
+		NEWLINE = 4,
+		IP = 5,
+		QUIT = 6,
+		COMMUNITY_LIST = 7,
+		WORD = 8,
+		CERTIFICATE = 9,
+		PIX_WORD = 10,
+		ASA_WORD = 11,
+		VERSION_WORD = 12,
+		NUMBER = 13,
+		HOSTNAME = 14,
+		STRING = 15,
+		ACCESS_LIST = 16,
+		INT_CONST = 17,
+		PERMIT = 18,
+		DENY = 19,
+		ICMP = 20,
+		TCP = 21,
+		UDP = 22,
+		P_EQ = 23,
+		P_GT = 24,
+		P_LT = 25,
+		P_NEQ = 26,
+		P_RANGE = 27,
+		HOST = 28,
+		IPV4 = 29,
+		ANY = 30,
+		LOG = 31,
+		LOG_INPUT = 32,
+		ESTABLISHED = 33,
+		FRAGMENTS = 34,
+		TIME_RANGE = 35,
+		CONTROLLER = 36,
+		INTRFACE = 37,
+		NAMEIF = 38,
+		DESCRIPTION = 39,
+		REMARK = 40,
+		SHUTDOWN = 41,
+		ADDRESS = 42,
+		SECONDARY = 43,
+		SWITCHPORT = 44,
+		ACCESS = 45,
+		VLAN = 46,
+		ACCESS_GROUP = 47,
+		EXIT = 48,
+		LINE_COMMENT = 49,
+		COLON_COMMENT = 50,
+		EXTENDED = 51,
+		STANDARD = 52,
+		Whitespace = 53,
+		HEX_CONST = 54,
+		NEG_INT_CONST = 55,
+		DIGIT = 56,
+		HEXDIGIT = 57,
+		PIPE_CHAR = 58,
+		NUMBER_SIGN = 59,
+		PERCENT = 60,
+		AMPERSAND = 61,
+		APOSTROPHE = 62,
+		OPENING_PAREN = 63,
+		CLOSING_PAREN = 64,
+		STAR = 65,
+		PLUS = 66,
+		COMMA = 67,
+		MINUS = 68,
+		DOT = 69,
+		SLASH = 70,
+		COLON = 71,
+		SEMICOLON = 72,
+		LESS_THAN = 73,
+		EQUALS = 74,
+		GREATER_THAN = 75,
+		QUESTION = 76,
+		COMMERCIAL_AT = 77,
+		OPENING_SQUARE = 78,
+		CLOSING_SQUARE = 79,
+		CARET = 80,
+		UNDERLINE = 81,
+		OPENING_BRACE = 82,
+		CLOSING_BRACE = 83,
+		TILDE = 84,
+		NULL_TREE_LOOKAHEAD = 3
+	};
+#ifdef __cplusplus
+};
+#endif
+#endif /*INC_PIXCfgParserTokenTypes_hpp_*/

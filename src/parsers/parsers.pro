@@ -7,7 +7,9 @@ TEMPLATE = lib
 SOURCES	 =  IOSCfgLexer.cpp  \
 			IOSCfgParser.cpp \
 			IPTCfgLexer.cpp  \
-			IPTCfgParser.cpp
+			IPTCfgParser.cpp \
+			PIXCfgLexer.cpp  \
+			PIXCfgParser.cpp
 
 HEADERS	 = ../../config.h    \
 			IOSCfgLexer.hpp  \
@@ -16,6 +18,9 @@ HEADERS	 = ../../config.h    \
 			IPTCfgLexer.hpp  \
 			IPTCfgParser.hpp \
 			IPTCfgParserTokenTypes.hpp \
+			PIXCfgLexer.hpp  \
+			PIXCfgParser.hpp \
+			PIXCfgParserTokenTypes.hpp \
 
 
 CONFIG += staticlib

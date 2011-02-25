@@ -33,6 +33,7 @@ HEADERS += ../../config.h \
     Importer.h \
     IOSImporter.h \
     IPTImporter.h \
+    PIXImporter.h \
     SSHSession.h \
     SSHUnx.h \
     SSHCisco.h \
@@ -213,6 +214,8 @@ SOURCES += ProjectPanel.cpp \
     IOSImporterRun.cpp \
     IPTImporter.cpp \
     IPTImporterRun.cpp \
+    PIXImporter.cpp \
+    PIXImporterRun.cpp \
     SSHSession.cpp \
     SSHUnx.cpp \
     SSHCisco.cpp \

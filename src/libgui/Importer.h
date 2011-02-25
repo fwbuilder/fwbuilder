@@ -52,7 +52,8 @@ class Importer;
  */
 
 
-class UnidirectionalRuleSet {
+class UnidirectionalRuleSet
+{
 
 public:
     libfwbuilder::RuleSet* ruleset;
@@ -73,7 +74,8 @@ public:
     std::string toString() { return err; }
 };
 
-class Importer {
+class Importer
+{
 
     // firewall object
     // one instance of Importer creates only one firewall object.
@@ -96,6 +98,8 @@ protected:
     
     std::string platform;
 
+    std::string discovered_version;
+    
     libfwbuilder::Interface* current_interface;
     
     // map :  ruleset name : ruleset
@@ -261,14 +265,18 @@ public:
 
     virtual void run();
 
+    void setPlatform(const std::string &pl) { platform = pl; }
+    
     int errorCounter() { return error_counter; }
 
+    virtual void setDiscoveredVersion(const std::string &v);
     virtual void setHostName(const std::string &hn);
     virtual void newInterface(const std::string &interface_name);
     virtual void clearCurrentInterface() { current_interface = NULL; }
     virtual void addInterfaceAddress(const std::string &a,
                                      const std::string &nm);
     virtual void addInterfaceComment(const std::string &descr);
+    virtual void addInterfaceLabel(const std::string &descr);
     virtual void addRuleComment(const std::string &comm);
 
     /**

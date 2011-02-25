@@ -247,7 +247,13 @@ Firewall* Importer::getFirewallObject()
 void Importer::setHostName(const std::string &hn)
 {
     getFirewallObject()->setName(hn);
-    *logger << "Host name: " << hn << "\n";
+    *logger << "Host name: " + hn + "\n";
+}
+
+void Importer::setDiscoveredVersion(const std::string &v)
+{
+    discovered_version = v;
+    *logger << "Version: " + v + "\n";
 }
 
 void Importer::newInterface(const std::string &name)
@@ -257,8 +263,7 @@ void Importer::newInterface(const std::string &name)
     current_interface = Interface::cast(nobj);
     current_interface->setUnnumbered(true);
     all_interfaces[name] = current_interface;
-
-    *logger << "Interface: " << name << "\n";
+    *logger << "Interface: " + name + "\n";
 }
 
 void Importer::addInterfaceAddress(const std::string &a,
@@ -275,7 +280,7 @@ void Importer::addInterfaceAddress(const std::string &a,
         IPv4::cast(nobj)->setAddress( InetAddr(a) );
         IPv4::cast(nobj)->setNetmask( InetAddr(nm) );
 
-        *logger << "Interface address: " << a << "/" << nm << "\n";
+        *logger << "Interface address: " + a + "/" + nm + "\n";
     }
 }
 
@@ -289,14 +294,23 @@ void Importer::addInterfaceComment(const std::string &descr)
     if (current_interface!=NULL)
     {
         current_interface->setComment(descr);
-        *logger << "Interface comment: " << descr << "\n";
+        *logger << "Interface comment: " + descr + "\n";
+    }
+}
+
+void Importer::addInterfaceLabel(const std::string &descr)
+{
+    if (current_interface!=NULL)
+    {
+        current_interface->setLabel(descr);
+        *logger << "Interface label: " + descr + "\n";
     }
 }
 
 void Importer::addRuleComment(const std::string &comm)
 {
     rule_comment += comm;
-    *logger << "Rule comment: " << comm << "\n";
+    *logger << "Rule comment: " + comm + "\n";
 }
 
 UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
@@ -359,17 +373,19 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
         if (rs->intf_dir[intf] != "both" && rs->intf_dir[intf] != _dir)
             rs->intf_dir[intf] = "both";
     }
-    *logger << "Interface " << _intf_name
-            << " ruleset " << ruleset_name
-            << " direction '" << _dir << "' "
-            << "(set to '" << rs->intf_dir[intf] << "')"
-            << "\n";
+    ostringstream str;
+    str << "Interface " << _intf_name
+        << " ruleset " << ruleset_name
+        << " direction '" << _dir << "' "
+        << "(set to '" << rs->intf_dir[intf] << "')"
+        << "\n";
+    *logger << str.str();
 }
 
 void Importer::newUnidirRuleSet(const std::string &ruleset_name)
 {
     current_ruleset = getUnidirRuleSet(ruleset_name);  // creates if new
-    *logger << "Ruleset: " << ruleset_name << "\n";
+    *logger << "Ruleset: " + ruleset_name + "\n";
 }
 
 /*
@@ -386,7 +402,7 @@ void Importer::setDefaultAction(const std::string &iptables_action_name)
         default_action_str = "Accept";
     } else current_ruleset->default_action = PolicyRule::Deny;
 
-    *logger << "Default action: " << default_action_str << "\n";
+    *logger << "Default action: " + default_action_str + "\n";
 }
 
 
@@ -564,13 +580,14 @@ FWObject* Importer::getCustomService(const std::string &platform,
     s->setCodeForPlatform(platform, code);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-
-    *logger << "Custom Service object: " << nstr.str()
-            << ": "
-            << platform
-            << ": "
-            << code
-            << "\n";
+    ostringstream str;
+    str << "Custom Service object: " << nstr.str()
+        << ": "
+        << platform
+        << ": "
+        << code
+        << "\n";
+    *logger << str.str();
     return s;
 }
 
@@ -599,7 +616,7 @@ FWObject* Importer::getIPService(int proto)
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
 
-    *logger << "IP Service object: " << nstr.str() << "\n";
+    *logger << "IP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -622,7 +639,7 @@ FWObject* Importer::getICMPService(int type, int code)
     s->setInt("code", code);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "ICMP Service object: " << nstr.str() << "\n";
+    *logger << "ICMP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -719,7 +736,7 @@ FWObject* Importer::getTCPService(int srs, int sre,
     s->setEstablished(established);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "TCP Service object: " << nstr.str() << "\n";
+    *logger << "TCP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -747,7 +764,7 @@ FWObject* Importer::getUDPService(int srs, int sre, int drs, int dre)
 
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "UDP Service object: " << nstr.str() << "\n";
+    *logger << "UDP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -769,7 +786,7 @@ FWObject* Importer::getTagService(const std::string &tagcode)
     s->setCode(tagcode);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "Tag Service object: " << nstr.str() << "\n";
+    *logger << "Tag Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -924,7 +941,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 " " + addr + "/" + netmask;
             a->setComment(comment);
             all_objects[sig] = a;
-            *logger << "Address object: " << name << "\n";
+            *logger << "Address object: " + name + "\n";
             return a;
         } catch(FWException &ex)
         {
@@ -939,7 +956,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 " " + addr;
             da->setComment(comment);
             all_objects[sig] = da;
-            *logger << "DNSName object: " << name << "\n";
+            *logger << "DNSName object: " + name + "\n";
             return da;
         }
 
@@ -993,7 +1010,7 @@ FWObject* Importer::createAddress(const std::string &addr,
 
         net->setComment(comment);
         all_objects[sig] = net;
-        *logger << "Network object: " << name << "\n";
+        *logger << "Network object: " + name + "\n";
         return net;
     }
     return NULL;
@@ -1031,7 +1048,7 @@ FWObject* Importer::createAddressRange(const std::string &addr1,
 
     ar->setComment(comment);
     all_objects[sig] = ar;
-    *logger << "AddressRange object: " << name << "\n";
+    *logger << "AddressRange object: " + name + "\n";
     return ar;
 }
 
@@ -1051,7 +1068,7 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     //current_rule->setComment(comment);
 
     *logger << QObject::tr("Parser error:\n").toUtf8().constData()
-        << comment << "\n";
+        + comment + "\n";
 
     error_counter++;
 }

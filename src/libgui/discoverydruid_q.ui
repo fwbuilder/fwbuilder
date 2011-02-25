@@ -48,7 +48,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="WizardPage0">
       <layout class="QGridLayout">
@@ -413,6 +413,11 @@
            <item>
             <property name="text">
              <string>iptables</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pix</string>
             </property>
            </item>
           </widget>

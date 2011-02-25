@@ -88,6 +88,8 @@
 
 #include "IOSImporter.h"
 #include "IPTImporter.h"
+#include "PIXImporter.h"
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -779,6 +781,7 @@ void DiscoveryDruid::startConfigImport()
         {
         case 0: platform = "iosacl"; break;
         case 1: platform = "iptables"; break;
+        case 2: platform = "pix"; break;
         }
 
         //
@@ -2673,6 +2676,7 @@ void ConfigImport::run()
     *Log << "Discovery method: Import firewall configuration.\n";
 
     std::istringstream instream(*buffer);
+
     imp = NULL;
     if (platform == "iosacl") imp = new IOSImporter(mw->getCurrentLib(),
                                                     instream,
@@ -2680,6 +2684,9 @@ void ConfigImport::run()
     if (platform == "iptables") imp = new IPTImporter(mw->getCurrentLib(),
                                                       instream,
                                                       Log, fwname);
+    if (platform == "pix") imp = new PIXImporter(mw->getCurrentLib(),
+                                                 instream,
+                                                 Log, fwname);
 
     // add other platforms here when available
 

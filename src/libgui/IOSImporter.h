@@ -41,10 +41,10 @@
 class IOSImporter : public Importer
 {
 
-    std::map<std::string, std::pair<int,int> > ios_icmp_specs;
-    std::map<std::string, int>                 ios_proto_specs;
-    std::map<std::string, int>                 ios_tcp_specs;
-    std::map<std::string, int>                 ios_udp_specs;
+    std::map<std::string, std::pair<int,int> > cisco_icmp_specs;
+    std::map<std::string, int>                 cisco_proto_specs;
+    std::map<std::string, int>                 cisco_tcp_specs;
+    std::map<std::string, int>                 cisco_udp_specs;
     
     virtual libfwbuilder::FWObject* createAddress(const std::string &a,
                                                   const std::string &nm);

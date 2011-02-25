@@ -56,118 +56,118 @@ IOSImporter::IOSImporter(FWObject *lib,
                          Logger *log,
                          const std::string &fwname) : Importer(lib, "iosacl", input, log, fwname)
 {
-    ios_icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
-    ios_icmp_specs["unreachable"] = std::pair<int,int>(3, -1); // all "unreachables"
-    ios_icmp_specs["net-unreachable"] = std::pair<int,int>(3, 0);
-    ios_icmp_specs["host-unreachable"] = std::pair<int,int>(3, 1);
-    ios_icmp_specs["protocol-unreachable"] = std::pair<int,int>(3, 2);
-    ios_icmp_specs["port-unreachable"] = std::pair<int,int>(3, 3);
-    ios_icmp_specs["packet-too-big"] = std::pair<int,int>(3, 4);
-    ios_icmp_specs["source-route-failed"] = std::pair<int,int>(3, 5);
-    ios_icmp_specs["network-unknown"] = std::pair<int,int>(3, 6);
-    ios_icmp_specs["host-unknown"] = std::pair<int,int>(3, 7);
-    ios_icmp_specs["host-isolated"] = std::pair<int,int>(3, 8);
-    ios_icmp_specs["dod-net-prohibited"] = std::pair<int,int>(3, 9);
-    ios_icmp_specs["dod-host-prohibited"] = std::pair<int,int>(3, 10);
-    ios_icmp_specs["net-tos-unreachable"] = std::pair<int,int>(3, 11);
-    ios_icmp_specs["host-tos-unreachable"] = std::pair<int,int>(3, 12);
-    ios_icmp_specs["administratively-prohibited"] = std::pair<int,int>(3, 13);
-    ios_icmp_specs["host-precedence-unreachable"] = std::pair<int,int>(3, 14);
-    ios_icmp_specs["precedence-unreachable"] = std::pair<int,int>(3, 15);
-    ios_icmp_specs["source-quench"] = std::pair<int,int>(4, 0);
-    ios_icmp_specs["net-redirect"] = std::pair<int,int>(5, 0);
-    ios_icmp_specs["host-redirect"] = std::pair<int,int>(5, 1);
-    ios_icmp_specs["net-tos-redirect"] = std::pair<int,int>(5, 2);
-    ios_icmp_specs["host-tos-redirect"] = std::pair<int,int>(5, 3);
-    ios_icmp_specs["echo"] = std::pair<int,int>(8, 0);
-    ios_icmp_specs["router-advertisement"] = std::pair<int,int>(9, 0);
-    ios_icmp_specs["router-solicitation"] = std::pair<int,int>(10, 0);
-    ios_icmp_specs["ttl-exceeded"] = std::pair<int,int>(11, 0);
-    ios_icmp_specs["reassembly-timeout"] = std::pair<int,int>(11, 1);
-    ios_icmp_specs["general-parameter-problem"] = std::pair<int,int>(12, 0);
-    ios_icmp_specs["option-missing"] = std::pair<int,int>(12, 1);
-    ios_icmp_specs["timestamp-request"] = std::pair<int,int>(13, 0);
-    ios_icmp_specs["timestamp-reply"] = std::pair<int,int>(14, 0);
-    ios_icmp_specs["information-request"] = std::pair<int,int>(15, 0);
-    ios_icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
-    ios_icmp_specs["mask-request"] = std::pair<int,int>(17, 0);
-    ios_icmp_specs["mask-reply"] = std::pair<int,int>(18, 0);
+    cisco_icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
+    cisco_icmp_specs["unreachable"] = std::pair<int,int>(3, -1); // all "unreachables"
+    cisco_icmp_specs["net-unreachable"] = std::pair<int,int>(3, 0);
+    cisco_icmp_specs["host-unreachable"] = std::pair<int,int>(3, 1);
+    cisco_icmp_specs["protocol-unreachable"] = std::pair<int,int>(3, 2);
+    cisco_icmp_specs["port-unreachable"] = std::pair<int,int>(3, 3);
+    cisco_icmp_specs["packet-too-big"] = std::pair<int,int>(3, 4);
+    cisco_icmp_specs["source-route-failed"] = std::pair<int,int>(3, 5);
+    cisco_icmp_specs["network-unknown"] = std::pair<int,int>(3, 6);
+    cisco_icmp_specs["host-unknown"] = std::pair<int,int>(3, 7);
+    cisco_icmp_specs["host-isolated"] = std::pair<int,int>(3, 8);
+    cisco_icmp_specs["dod-net-prohibited"] = std::pair<int,int>(3, 9);
+    cisco_icmp_specs["dod-host-prohibited"] = std::pair<int,int>(3, 10);
+    cisco_icmp_specs["net-tos-unreachable"] = std::pair<int,int>(3, 11);
+    cisco_icmp_specs["host-tos-unreachable"] = std::pair<int,int>(3, 12);
+    cisco_icmp_specs["administratively-prohibited"] = std::pair<int,int>(3, 13);
+    cisco_icmp_specs["host-precedence-unreachable"] = std::pair<int,int>(3, 14);
+    cisco_icmp_specs["precedence-unreachable"] = std::pair<int,int>(3, 15);
+    cisco_icmp_specs["source-quench"] = std::pair<int,int>(4, 0);
+    cisco_icmp_specs["net-redirect"] = std::pair<int,int>(5, 0);
+    cisco_icmp_specs["host-redirect"] = std::pair<int,int>(5, 1);
+    cisco_icmp_specs["net-tos-redirect"] = std::pair<int,int>(5, 2);
+    cisco_icmp_specs["host-tos-redirect"] = std::pair<int,int>(5, 3);
+    cisco_icmp_specs["echo"] = std::pair<int,int>(8, 0);
+    cisco_icmp_specs["router-advertisement"] = std::pair<int,int>(9, 0);
+    cisco_icmp_specs["router-solicitation"] = std::pair<int,int>(10, 0);
+    cisco_icmp_specs["ttl-exceeded"] = std::pair<int,int>(11, 0);
+    cisco_icmp_specs["reassembly-timeout"] = std::pair<int,int>(11, 1);
+    cisco_icmp_specs["general-parameter-problem"] = std::pair<int,int>(12, 0);
+    cisco_icmp_specs["option-missing"] = std::pair<int,int>(12, 1);
+    cisco_icmp_specs["timestamp-request"] = std::pair<int,int>(13, 0);
+    cisco_icmp_specs["timestamp-reply"] = std::pair<int,int>(14, 0);
+    cisco_icmp_specs["information-request"] = std::pair<int,int>(15, 0);
+    cisco_icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
+    cisco_icmp_specs["mask-request"] = std::pair<int,int>(17, 0);
+    cisco_icmp_specs["mask-reply"] = std::pair<int,int>(18, 0);
 
-    ios_proto_specs["ah"] = 51;
-    ios_proto_specs["ahp"] = 51;
-    ios_proto_specs["eigrp"] = 88;
-    ios_proto_specs["esp"] = 50;
-    ios_proto_specs["gre"] = 47;
-    ios_proto_specs["igmp"] = 2;
-    ios_proto_specs["igrp"] = 9;
-    ios_proto_specs["ip"] = 0;
-    ios_proto_specs["ipinip"] = 4;
-    ios_proto_specs["nos"] = 94;
-    ios_proto_specs["ospf"] = 89;
-    ios_proto_specs["pim"] = 103;
-    ios_proto_specs["pcp"] = 108;
-    ios_proto_specs["snp"] = 109;
+    cisco_proto_specs["ah"] = 51;
+    cisco_proto_specs["ahp"] = 51;
+    cisco_proto_specs["eigrp"] = 88;
+    cisco_proto_specs["esp"] = 50;
+    cisco_proto_specs["gre"] = 47;
+    cisco_proto_specs["igmp"] = 2;
+    cisco_proto_specs["igrp"] = 9;
+    cisco_proto_specs["ip"] = 0;
+    cisco_proto_specs["ipinip"] = 4;
+    cisco_proto_specs["nos"] = 94;
+    cisco_proto_specs["ospf"] = 89;
+    cisco_proto_specs["pim"] = 103;
+    cisco_proto_specs["pcp"] = 108;
+    cisco_proto_specs["snp"] = 109;
 
-    ios_tcp_specs["bgp"] = 179;
-    ios_tcp_specs["chargen"] = 19;
-    ios_tcp_specs["cmd"] = 514;
-    ios_tcp_specs["daytime"] = 13;
-    ios_tcp_specs["discard"] = 9;
-    ios_tcp_specs["domain"] = 53;
-    ios_tcp_specs["echo"] = 7;
-    ios_tcp_specs["exec"] = 512;
-    ios_tcp_specs["finger"] = 79;
-    ios_tcp_specs["ftp"] = 21;
-    ios_tcp_specs["ftp-data"] = 20;
-    ios_tcp_specs["gopher"] = 70;
-    ios_tcp_specs["hostname"] = 101;
-    ios_tcp_specs["ident"] = 113;
-    ios_tcp_specs["irc"] = 194;
-    ios_tcp_specs["klogin"] = 543;
-    ios_tcp_specs["kshell"] = 544;
-    ios_tcp_specs["login"] = 513;
-    ios_tcp_specs["lpd"] = 515;
-    ios_tcp_specs["nntp"] = 119;
-    ios_tcp_specs["pop2"] = 109;
-    ios_tcp_specs["pop3"] = 110;
-    ios_tcp_specs["smtp"] = 25;
-    ios_tcp_specs["sunrpc"] = 111;
-    ios_tcp_specs["syslog"] = 514;
-    ios_tcp_specs["tacacs"] = 49;
-    ios_tcp_specs["tacacs-ds"] = 63;
-    ios_tcp_specs["talk"] = 517;
-    ios_tcp_specs["telnet"] = 23;
-    ios_tcp_specs["time"] = 37;
-    ios_tcp_specs["uucp"] = 540;
-    ios_tcp_specs["whois"] = 43;
-    ios_tcp_specs["www"] = 80;
+    cisco_tcp_specs["bgp"] = 179;
+    cisco_tcp_specs["chargen"] = 19;
+    cisco_tcp_specs["cmd"] = 514;
+    cisco_tcp_specs["daytime"] = 13;
+    cisco_tcp_specs["discard"] = 9;
+    cisco_tcp_specs["domain"] = 53;
+    cisco_tcp_specs["echo"] = 7;
+    cisco_tcp_specs["exec"] = 512;
+    cisco_tcp_specs["finger"] = 79;
+    cisco_tcp_specs["ftp"] = 21;
+    cisco_tcp_specs["ftp-data"] = 20;
+    cisco_tcp_specs["gopher"] = 70;
+    cisco_tcp_specs["hostname"] = 101;
+    cisco_tcp_specs["ident"] = 113;
+    cisco_tcp_specs["irc"] = 194;
+    cisco_tcp_specs["klogin"] = 543;
+    cisco_tcp_specs["kshell"] = 544;
+    cisco_tcp_specs["login"] = 513;
+    cisco_tcp_specs["lpd"] = 515;
+    cisco_tcp_specs["nntp"] = 119;
+    cisco_tcp_specs["pop2"] = 109;
+    cisco_tcp_specs["pop3"] = 110;
+    cisco_tcp_specs["smtp"] = 25;
+    cisco_tcp_specs["sunrpc"] = 111;
+    cisco_tcp_specs["syslog"] = 514;
+    cisco_tcp_specs["tacacs"] = 49;
+    cisco_tcp_specs["tacacs-ds"] = 63;
+    cisco_tcp_specs["talk"] = 517;
+    cisco_tcp_specs["telnet"] = 23;
+    cisco_tcp_specs["time"] = 37;
+    cisco_tcp_specs["uucp"] = 540;
+    cisco_tcp_specs["whois"] = 43;
+    cisco_tcp_specs["www"] = 80;
 
-    ios_udp_specs["biff"] =         512;
-    ios_udp_specs["bootpc"] =       68;
-    ios_udp_specs["bootps"] =       67;
-    ios_udp_specs["discard"] =      9;
-    ios_udp_specs["dnsix"] =        195;
-    ios_udp_specs["domain"] =       53;
-    ios_udp_specs["echo"] =         7;
-    ios_udp_specs["isakmp"] =       500;
-    ios_udp_specs["mobile-ip"] =    434;
-    ios_udp_specs["nameserver"] =   42;
-    ios_udp_specs["netbios-dgm"] =  138;
-    ios_udp_specs["netbios-ns"] =   137;
-    ios_udp_specs["netbios-ss"] =   139;
-    ios_udp_specs["ntp"] =          123;
-    ios_udp_specs["pim-auto-rp"] =  496;
-    ios_udp_specs["rip"] =          520;
-    ios_udp_specs["snmp"] =         161;
-    ios_udp_specs["snmptrap"] =     162;
-    ios_udp_specs["sunrpc"] =       111;
-    ios_udp_specs["syslog"] =       514;
-    ios_udp_specs["tacacs"] =       49;
-    ios_udp_specs["talk"] =         517;
-    ios_udp_specs["tftp"] =         69;
-    ios_udp_specs["time"] =         37;
-    ios_udp_specs["who"] =          513;
-    ios_udp_specs["xdmcp"] =        177;
+    cisco_udp_specs["biff"] =         512;
+    cisco_udp_specs["bootpc"] =       68;
+    cisco_udp_specs["bootps"] =       67;
+    cisco_udp_specs["discard"] =      9;
+    cisco_udp_specs["dnsix"] =        195;
+    cisco_udp_specs["domain"] =       53;
+    cisco_udp_specs["echo"] =         7;
+    cisco_udp_specs["isakmp"] =       500;
+    cisco_udp_specs["mobile-ip"] =    434;
+    cisco_udp_specs["nameserver"] =   42;
+    cisco_udp_specs["netbios-dgm"] =  138;
+    cisco_udp_specs["netbios-ns"] =   137;
+    cisco_udp_specs["netbios-ss"] =   139;
+    cisco_udp_specs["ntp"] =          123;
+    cisco_udp_specs["pim-auto-rp"] =  496;
+    cisco_udp_specs["rip"] =          520;
+    cisco_udp_specs["snmp"] =         161;
+    cisco_udp_specs["snmptrap"] =     162;
+    cisco_udp_specs["sunrpc"] =       111;
+    cisco_udp_specs["syslog"] =       514;
+    cisco_udp_specs["tacacs"] =       49;
+    cisco_udp_specs["talk"] =         517;
+    cisco_udp_specs["tftp"] =         69;
+    cisco_udp_specs["time"] =         37;
+    cisco_udp_specs["who"] =          513;
+    cisco_udp_specs["xdmcp"] =        177;
 
 }
 
@@ -216,9 +216,9 @@ FWObject* IOSImporter::createICMPService()
     {
         // Cisco is trying to be too helpful, they translate many
         // icmp type/code combinations into stings
-        if (ios_icmp_specs.count(icmpspec)!=0)
+        if (cisco_icmp_specs.count(icmpspec)!=0)
         {
-            std::pair<int,int> pp = ios_icmp_specs[icmpspec];
+            std::pair<int,int> pp = cisco_icmp_specs[icmpspec];
             std::ostringstream s1, s2;
             s1 << pp.first;
             icmp_type = s1.str();
@@ -239,10 +239,10 @@ FWObject* IOSImporter::createICMPService()
 
 FWObject* IOSImporter::createIPService()
 {
-    if (ios_proto_specs.count(protocol)!=0)
+    if (cisco_proto_specs.count(protocol)!=0)
     {
         std::ostringstream s;
-        s << ios_proto_specs[protocol];
+        s << cisco_proto_specs[protocol];
         protocol = s.str();
     }
     return Importer::createIPService();
@@ -326,11 +326,11 @@ FWObject* IOSImporter::createTCPService()
     std::string name = "tcp " + src_port_spec + " " + dst_port_spec;
 
     std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, ios_tcp_specs);
+        convertPortSpec(src_port_op, src_port_spec, cisco_tcp_specs);
     int srs = pr.first;
     int sre = pr.second;
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, ios_tcp_specs);
+    pr = convertPortSpec(dst_port_op, dst_port_spec, cisco_tcp_specs);
     int drs = pr.first;
     int dre = pr.second;
 
@@ -350,11 +350,11 @@ FWObject* IOSImporter::createUDPService()
     std::string name = "udp " + src_port_spec + " " + dst_port_spec;
 
     std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, ios_udp_specs);
+        convertPortSpec(src_port_op, src_port_spec, cisco_udp_specs);
     int srs = pr.first;
     int sre = pr.second;
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, ios_udp_specs);
+    pr = convertPortSpec(dst_port_op, dst_port_spec, cisco_udp_specs);
     int drs = pr.first;
     int dre = pr.second;
 
@@ -397,7 +397,6 @@ Firewall* IOSImporter::finalize()
         fw->setStr("host_OS", "ios");
         Resources::setDefaultTargetOptions("ios" , fw);
         fw->setStr("version", "");  // default version "any"
-        Management *mgmt = fw->getManagementObject(); // creates management obj
 
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );
