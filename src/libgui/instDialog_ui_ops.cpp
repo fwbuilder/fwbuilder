@@ -1230,7 +1230,13 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         cnf.fwdir = s;
 
-        cnf.script = FirewallInstaller::getGeneratedFileFullPath(fw);
+        /*
+         * Generated files should be saved in the same directory where
+         * the .fwb file is located, except if user specified full path
+         * in the advaced settings dialog.
+         */
+//        cnf.script = FirewallInstaller::getGeneratedFileFullPath(fw);
+        cnf.script = FirewallInstaller::getGeneratedFileName(fw);
         cnf.remote_script = ""; // filled in FirewallInstaller::readManifest()
         cnf.fwbfile = project->db()->getFileName().c_str();
         cnf.wdir = getFileDir( project->getRCS()->getFileName() );

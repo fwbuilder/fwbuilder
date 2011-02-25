@@ -242,16 +242,19 @@ Can't compile firewall policy."),
         for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
         {
             QString fw_id = project->db()->getStringId((*it)->getId()).c_str();
+//            name_pairs.push_back(
+//                fw_id + "," + FirewallInstaller::getGeneratedFileFullPath(*it)
+//            );
             name_pairs.push_back(
-                fw_id + "," + FirewallInstaller::getGeneratedFileFullPath(*it)
+                fw_id + "," + FirewallInstaller::getGeneratedFileName(*it)
             );
         }
         args.push_back(name_pairs.join(","));
     } else 
     {
         args.push_back("-o");
-        args.push_back(
-            FirewallInstaller::getGeneratedFileFullPath(fw));
+//        args.push_back(FirewallInstaller::getGeneratedFileFullPath(fw));
+        args.push_back(FirewallInstaller::getGeneratedFileName(fw));
     }
 
     args.push_back("-i");

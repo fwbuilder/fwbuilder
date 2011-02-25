@@ -114,6 +114,7 @@ public:
     virtual void activatePolicy(const QString &script, const QString &args);
 
     static QString getGeneratedFileFullPath(libfwbuilder::Firewall *fw);
+    static QString getGeneratedFileName(libfwbuilder::Firewall *fw);
     virtual bool readManifest(const QString &conffie,
                               QMap<QString, QString> *all_files);
 

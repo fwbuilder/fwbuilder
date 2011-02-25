@@ -597,7 +597,17 @@ int instDialog::findFilesToInspect(QStringList &files)
 
     foreach(Firewall *f, fwlist)
     {
+        /*
+         * get full path to the generated file. The path is built from
+         * the file name returned by
+         * FirewallInstaller::getGeneratedFileName() and directory
+         * path from the .fwb file. Note that we use the same
+         * algorithm when GUI launches policy compiler, except there
+         * the path is passed to it via "-d" command line option.
+         */
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(f);
+//        QString mainFile = FirewallInstaller::getGeneratedFileName(f);
+
         if (!QFile::exists(mainFile)) continue;
         instConf cnf;
         cnf.fwobj = f;

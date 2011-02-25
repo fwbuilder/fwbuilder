@@ -921,7 +921,18 @@ void ProjectPanel::inspect(set<Firewall *> fws)
     foreach(Firewall *fw, fws)
     {
         if (first_fw == NULL) first_fw = fw;
+
+        /*
+         * get full path to the generated file. The path is built from
+         * the file name returned by
+         * FirewallInstaller::getGeneratedFileName() and directory
+         * path from the .fwb file. Note that we use the same
+         * algorithm when GUI launches policy compiler, except there
+         * the path is passed to it via "-d" command line option.
+         */
         QString mainFile = FirewallInstaller::getGeneratedFileFullPath(fw);
+//        QString mainFile = FirewallInstaller::getGeneratedFileName(fw);
+
         if (QFile::exists(mainFile))
         {
             instConf cnf;

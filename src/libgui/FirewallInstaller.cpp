@@ -805,6 +805,18 @@ QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)
  * setting that user enters in the "Compiler" tab of fw advanced
  * dialog can be either local or absolute path. 
  */
+    QString generated_file = getGeneratedFileName(fw);
+    QFileInfo gen_file_info(generated_file);
+    if (!gen_file_info.isAbsolute())
+    {
+        QFileInfo fwb_file_info = QFileInfo(mw->getRCS()->getFileName());
+        generated_file = fwb_file_info.dir().path() + "/" + generated_file;
+    }
+    return QDir::toNativeSeparators(generated_file);
+}
+ 
+QString FirewallInstaller::getGeneratedFileName(Firewall *fw)
+{
     FWOptions  *fwopt = fw->getOptionsObject();
     QString generated_file;
     QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
@@ -813,14 +825,7 @@ QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)
         generated_file = ofname;
     } else
         generated_file = QString::fromUtf8(fw->getName().c_str()) + ".fw";
-
-    QFileInfo gen_file_info(generated_file);
-    if (!gen_file_info.isAbsolute())
-    {
-        QFileInfo fwb_file_info = QFileInfo(mw->getRCS()->getFileName());
-        generated_file = fwb_file_info.dir().path() + "/" + generated_file;
-    }
-    return QDir::toNativeSeparators(generated_file);
+    return generated_file;
 }
  
 void FirewallInstaller::terminate()

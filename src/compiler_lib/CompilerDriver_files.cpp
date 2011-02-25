@@ -130,8 +130,12 @@ void CompilerDriver::determineOutputFileNames(Cluster *cluster,
                 QString::fromUtf8(options->getStr(
                                       opt_name.arg(i).toStdString()).c_str());
 
-            if (!name_from_option.isEmpty()) file_names[i] = name_from_option;
-            else
+            if (!name_from_option.isEmpty())
+            {
+                // user provided a name for the conf1 file in the
+                // firewall settings dialog.
+                file_names[i] = name_from_option;
+            } else
             {
                 // special-case file names for the 2-d and subsequent conf
                 // files: if we have the name for the first conf file from

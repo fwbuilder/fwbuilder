@@ -1,5 +1,14 @@
 2011-02-24  Vadim Kurland  <vadim@netcitadel.com>
 
+	* FirewallInstaller.cpp (getGeneratedFileName): see #2047 "Inspect
+	generated files button shows different path information". Do not
+	pass full path to the output file as an argument of the "-o"
+	option when the GUI launches policy compiler. Since the "-d"
+	option passes directory path where files sould be saved, actual
+	file names do not need to be absolute path, except if the user
+	entered absolute path for the output file name in the firewall
+	settings dialog.
+
 	* configlets/freebsd/installer_commands_root: see #2143 "installer
 	should run /etc/rc.d/pf script to reload PF rules on FreeBSD when
 	generated script is in rc.conf format"
