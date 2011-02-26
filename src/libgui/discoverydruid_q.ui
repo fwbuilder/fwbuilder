@@ -412,12 +412,12 @@
            </item>
            <item>
             <property name="text">
-             <string>iptables</string>
+             <string>Cisco PIX, Cisco ASA</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>pix</string>
+             <string>iptables</string>
             </property>
            </item>
           </widget>

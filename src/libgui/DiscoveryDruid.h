@@ -56,6 +56,11 @@ using namespace libfwbuilder;
 
 class Importer;
 
+#define IMPORT_IOS 0
+#define IMPORT_PIX 1
+#define IMPORT_IPT 2
+
+
 // ---------------- OBJECT DESCRIPTOR ------------------ //
 
 class ObjectDescriptor 
@@ -172,7 +177,7 @@ public:
 
 class DiscoveryDruid : public QDialog, public FakeWizard
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 private:
     WorkerThread *thread;
@@ -189,6 +194,7 @@ private:
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
 
+    bool init;
     bool isSeedHostOK;
     bool isSNMPInclNetOK;
     bool userIsTyping;

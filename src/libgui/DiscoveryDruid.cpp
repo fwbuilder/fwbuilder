@@ -97,7 +97,7 @@ using namespace libfwbuilder;
 DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     QDialog(parent)
 {
-    blockSignals(true);
+    init = true;
 
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
@@ -108,8 +108,6 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
-
-    blockSignals(false);
 
     QTextCursor cursor(m_dialog->discoverylog->textCursor());
     normal_format = cursor.charFormat();
@@ -205,6 +203,8 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     }
 
     prg_timer->start(100);
+
+    init = false;
 }
 
 void DiscoveryDruid::nextClicked()
@@ -435,6 +435,8 @@ void DiscoveryDruid::dnsFinish(QHostInfo host)
 
 void DiscoveryDruid::changedSelected( const int &page )
 {
+    if (init) return;
+
     switch (page)
     {
 
@@ -783,9 +785,9 @@ void DiscoveryDruid::startConfigImport()
         string platform = "";
         switch (m_dialog->import_platform->currentIndex())
         {
-        case 0: platform = "iosacl"; break;
-        case 1: platform = "iptables"; break;
-        case 2: platform = "pix"; break;
+        case IMPORT_IOS: platform = "iosacl"; break;
+        case IMPORT_IPT: platform = "iptables"; break;
+        case IMPORT_PIX: platform = "pix"; break;
         }
 
         //
@@ -2476,7 +2478,7 @@ void DiscoveryDruid::importPlatformChanged(int cp)
 
     switch (cp)
     {
-    case 0:
+    case IMPORT_IOS:
         m_dialog->import_text->setText(
             QObject::tr("Firewall Builder can import Cisco IOS access lists "
                         "from the router configuration saved using 'show run' "
@@ -2487,7 +2489,20 @@ void DiscoveryDruid::importPlatformChanged(int cp)
             )
         );
         break;
-    case 1:
+
+    case IMPORT_PIX:
+        m_dialog->import_text->setText(
+            QObject::tr("Firewall Builder can import Cisco PIX and ASA "
+                        "configuration saved with 'show run' command.  "
+                        "The name of the created firewall object, all of "
+                        "its interfaces and their addresses will be "
+                        "configured automatically if this information can "
+                        "be found in the configuration file."
+            )
+        );
+        break;
+
+    case IMPORT_IPT:
         m_dialog->import_text->setText(
             QObject::tr("Firewall Builder can import iptables rules "
                         "from a file in iptables-save format. Firewall "
@@ -2497,8 +2512,9 @@ void DiscoveryDruid::importPlatformChanged(int cp)
             )
         );
         break;
+            
     }
-
+    
 }
 
 //----------------------------------------------------------------------
