@@ -127,6 +127,9 @@ protected:
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                          const std::string &objType,
                                          const std::string &objName);
+    void addAddressObjectToInterface(libfwbuilder::Interface*intf,
+                                     const std::string &addr,
+                                     const std::string &netm);
     std::string getBadRuleColor();
 
     // this method returns fw. It is created if fw==NULL
@@ -275,8 +278,17 @@ public:
     virtual void clearCurrentInterface() { current_interface = NULL; }
     virtual void addInterfaceAddress(const std::string &a,
                                      const std::string &nm);
-    virtual void addInterfaceComment(const std::string &descr);
-    virtual void addInterfaceLabel(const std::string &descr);
+    virtual void addInterfaceAddress(const std::string &label,
+                                     const std::string &a,
+                                     const std::string &nm);
+    virtual void setInterfaceComment(const std::string &descr);
+    virtual void setInterfaceLabel(const std::string &descr);
+    virtual void setInterfaceSecurityLevel(const std::string &seclevel);
+    virtual void setInterfaceParametes(const std::string &phys_intf,
+                                       const std::string &label,
+                                       const std::string &sec_level);
+    virtual void setInterfaceVlanId(const std::string &vlan_id);
+
     virtual void addRuleComment(const std::string &comm);
 
     /**

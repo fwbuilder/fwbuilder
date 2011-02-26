@@ -51,7 +51,7 @@ header "post_include_cpp"
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../gui/IOSImporter.h"
+#include "../libgui/IOSImporter.h"
 }
 
 header
@@ -496,7 +496,7 @@ description : DESCRIPTION
                 descr += LT(1)->getText() + " ";
                 consume();
             }
-            importer->addInterfaceComment( descr );
+            importer->setInterfaceComment( descr );
             *dbg << " DESCRIPTION " << descr << std::endl;
             //consumeUntil(NEWLINE);
         }

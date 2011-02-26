@@ -8,7 +8,7 @@
 
 #line 10 "IPTCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "iptables.g" -> "IPTCfgLexer.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>

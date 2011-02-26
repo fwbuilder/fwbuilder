@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.7 (20100319): "iptables.g" -> "IPTCfgLexer.cpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgLexer.cpp"$ */
 #line 42 "iptables.g"
 
     // gets inserted before the antlr generated includes in the cpp

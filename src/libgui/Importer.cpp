@@ -259,11 +259,26 @@ void Importer::setDiscoveredVersion(const std::string &v)
 void Importer::newInterface(const std::string &name)
 {
     if (all_interfaces.count(name)>0) return;
-    FWObject *nobj = createObject(fw, Interface::TYPENAME, name);
+    FWObject *nobj = createObject(getFirewallObject(), Interface::TYPENAME, name);
     current_interface = Interface::cast(nobj);
     current_interface->setUnnumbered(true);
     all_interfaces[name] = current_interface;
-    *logger << "Interface: " + name + "\n";
+    *logger << "New interface: " + name + "\n";
+}
+
+void Importer::addAddressObjectToInterface(Interface*intf,
+                                           const string &addr,
+                                           const string &netm)
+{
+    intf->setUnnumbered(false);
+    if (addr == "dhcp") intf->setDyn(true);
+    else
+    {
+        string aname = getFirewallObject()->getName() + ":" + intf->getName() + ":ip";
+        FWObject *nobj = createObject(intf, IPv4::TYPENAME, aname);
+        IPv4::cast(nobj)->setAddress( InetAddr(addr) );
+        IPv4::cast(nobj)->setNetmask( InetAddr(netm) );
+    }
 }
 
 void Importer::addInterfaceAddress(const std::string &a,
@@ -271,20 +286,28 @@ void Importer::addInterfaceAddress(const std::string &a,
 {
     if (current_interface!=NULL)
     {
-        std::string aname = getFirewallObject()->getName() + ":"
-            + current_interface->getName() + ":ip";
-        FWObject *nobj = createObject(current_interface,
-                                      IPv4::TYPENAME,
-                                      aname);
-        current_interface->setUnnumbered(false);
-        IPv4::cast(nobj)->setAddress( InetAddr(a) );
-        IPv4::cast(nobj)->setNetmask( InetAddr(nm) );
-
+        addAddressObjectToInterface(current_interface, a, nm);
         *logger << "Interface address: " + a + "/" + nm + "\n";
     }
 }
 
-void Importer::addInterfaceComment(const std::string &descr)
+void Importer::addInterfaceAddress(const std::string &label,
+                                   const std::string &a,
+                                   const std::string &nm)
+{
+    map<const string,Interface*>::iterator it;
+    for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+    {
+        Interface *intf = it->second;
+        if (intf->getLabel() == label)
+        {
+            addAddressObjectToInterface(intf, a, nm);
+            *logger << "Interface address: " + a + "/" + nm + "\n";
+        }
+    }
+}
+
+void Importer::setInterfaceComment(const std::string &descr)
 {
     // current_interface can be NULL if parser encountered command
     // that looked like interface description but in reality was 
@@ -298,12 +321,59 @@ void Importer::addInterfaceComment(const std::string &descr)
     }
 }
 
-void Importer::addInterfaceLabel(const std::string &descr)
+void Importer::setInterfaceLabel(const std::string &descr)
 {
     if (current_interface!=NULL)
     {
         current_interface->setLabel(descr);
         *logger << "Interface label: " + descr + "\n";
+    }
+}
+
+void Importer::setInterfaceParametes(const std::string &phys_intf_or_label,
+                                     const std::string &label,
+                                     const std::string &sec_level)
+{
+    *logger << "Interface parameters: " + phys_intf_or_label + " " + label + " " + sec_level + "\n";
+    if (all_interfaces.count(phys_intf_or_label))
+    {
+        // since first arg. is physical interface name, this must be pix6
+        // "nameif ethernet0 outside security0"
+        Interface *intf = all_interfaces[phys_intf_or_label];
+        intf->setLabel(label);
+        QRegExp pix6_sec_level("security(\\d+)");
+        if (pix6_sec_level.indexIn(sec_level.c_str()) > -1)
+            intf->setSecurityLevel(pix6_sec_level.cap(1).toInt());
+    } else
+    {
+        // since first arg is not physical interface name, it must be a label
+        // as in pix7 config
+        //
+        // interface Ethernet0.101
+        //  vlan 101
+        //  nameif outside
+        //  security-level 0
+        //  ip address 192.0.2.253 255.255.255.0
+        setInterfaceLabel(phys_intf_or_label);
+    }
+}
+
+void Importer::setInterfaceSecurityLevel(const std::string &seclevel)
+{
+    if (current_interface!=NULL)
+    {
+        QString sl(seclevel.c_str());
+        current_interface->setSecurityLevel(sl.toInt());
+    }
+}
+
+void Importer::setInterfaceVlanId(const std::string &vlan_id)
+{
+    if (current_interface!=NULL)
+    {
+        current_interface->setStr("type", "8021q");
+        FWOptions *ifopt = (Interface::cast(current_interface))->getOptionsObject();
+        ifopt->setStr("vlan_id", vlan_id);
     }
 }
 

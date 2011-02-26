@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.6 (20070910): "iosacl.g" -> "IOSCfgLexer.cpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iosacl.g" -> "IOSCfgLexer.cpp"$ */
 #line 42 "iosacl.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -51,37 +51,37 @@ void IOSCfgLexer::initLiterals()
 	literals["access-list"] = 14;
 	literals["interface"] = 37;
 	literals["remark"] = 39;
-	literals["fragments"] = 33;
+	literals["certificate"] = 9;
 	literals["exit"] = 44;
 	literals["udp"] = 21;
 	literals["tcp"] = 20;
+	literals["controller"] = 36;
 	literals["eq"] = 22;
 	literals["ip"] = 5;
+	literals["access-group"] = 41;
+	literals["time-range"] = 34;
 	literals["version"] = 10;
+	literals["community-list"] = 7;
 	literals["icmp"] = 19;
 	literals["description"] = 38;
-	literals["permit"] = 17;
-	literals["lt"] = 24;
-	literals["standard"] = 46;
-	literals["log-input"] = 31;
-	literals["range"] = 26;
-	literals["gt"] = 23;
 	literals["secondary"] = 43;
+	literals["lt"] = 24;
+	literals["range"] = 26;
+	literals["log-input"] = 31;
+	literals["standard"] = 46;
+	literals["gt"] = 23;
+	literals["permit"] = 17;
 	literals["extended"] = 16;
 	literals["address"] = 42;
 	literals["established"] = 32;
-	literals["community-list"] = 7;
 	literals["neq"] = 25;
 	literals["quit"] = 6;
 	literals["vlan"] = 35;
-	literals["time-range"] = 34;
 	literals["any"] = 29;
 	literals["deny"] = 18;
-	literals["access-group"] = 41;
 	literals["shutdown"] = 40;
 	literals["hostname"] = 12;
-	literals["controller"] = 36;
-	literals["certificate"] = 9;
+	literals["fragments"] = 33;
 }
 
 ANTLR_USE_NAMESPACE(antlr)RefToken IOSCfgLexer::nextToken()

@@ -91,6 +91,12 @@ cfgfile :
         |
             intrface
         |
+            vlan_interface
+        |
+            sec_level
+        |
+            nameif
+        |
             controller
         |
             access_list_commands
@@ -415,23 +421,77 @@ controller : CONTROLLER
     ;
 
 //****************************************************************
+//
+// **************** PIX 6 "interface" command:
+//
+//	interface <hardware_id> [<hw_speed> [shutdown]]
+//	[no] interface <hardware_id> <vlan_id> [logical|physical] [shutdown]
+//	interface <hardware_id> change-vlan <old_vlan_id> <new_vlan_id>
+//	show interface
+//
+// Example:
+//
+// interface ethernet0 auto
+// interface ethernet1 auto
+// nameif ethernet0 outside security0
+// nameif ethernet1 inside security100
+//
+// **************** PIX 7 "interface" command
+//
+//	interface <type> <port>
+//	interface <type> <port>.<subif_number>
+//	no interface <type> <port>.<subif_number>
+//
+// Examples:
+//
+// interface Ethernet0
+//  no nameif
+//  no security-level
+//  no ip address
+// !
+// interface Ethernet0.101
+//  vlan 101
+//  nameif outside
+//  security-level 0
+//  ip address 192.0.2.253 255.255.255.0
+// !
+
+
+// vlans in pix6 config format are not parsed
 
 intrface  : INTRFACE in:WORD
         {
             importer->newInterface( in->getText() );
             *dbg << in->getLine() << ":"
                 << " INTRFACE: " << in->getText() << std::endl;
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+vlan_interface : VLAN vlan_id:INT_CONST
+        {
+            importer->setInterfaceVlanId(vlan_id->getText());
+            *dbg << " VLAN: " << vlan_id->getText() << std::endl;
         }
         NEWLINE
     ;
 
-nameif  : NAMEIF in:WORD
+sec_level : SEC_LEVEL sec_level:INT_CONST
         {
-            importer->addInterfaceLabel( in->getText() );
-            *dbg << in->getLine() << ":"
-                << " INTRFACE LABEL: " << in->getText() << std::endl;
+            importer->setInterfaceSecurityLevel(sec_level->getText());
+            *dbg << "SEC_LEVEL: " << sec_level->getText() << std::endl;
         }
         NEWLINE
+    ;
+
+nameif  : NAMEIF phys_intf:WORD (NEWLINE | intf_label:WORD sec_level:WORD NEWLINE)
+        {
+            std::string label = (intf_label) ? intf_label->getText() : "";
+            std::string seclevel = (sec_level) ? sec_level->getText() : "";
+            importer->setInterfaceParametes(phys_intf->getText(), label, seclevel);
+            *dbg << " NAMEIF: "
+                 << phys_intf->getText() << label << seclevel << std::endl;
+        }
     ;
 
 // interface description
@@ -445,7 +505,7 @@ description : DESCRIPTION
                 descr += LT(1)->getText() + " ";
                 consume();
             }
-            importer->addInterfaceComment( descr );
+            importer->setInterfaceComment( descr );
             *dbg << " DESCRIPTION " << descr << std::endl;
             //consumeUntil(NEWLINE);
         }
@@ -488,29 +548,73 @@ interface_known_commands :
         ) NEWLINE ;
 
 
-// need this because "ospf", "bgp" and others are a known tokens
-// (needed for protocol and ports in access lists) and "ip ospf" and
-// similar are legit interface commands
+// Interface IP address.
+//
+// **************** PIX 6
+//
+// ip address outside dhcp setroute retry 10
+// ip address inside 10.3.14.202 255.255.255.0
+//
+// **************** PIX 7
+//
+// interface Ethernet0.101
+//  vlan 101
+//  nameif outside
+//  security-level 0
+//  ip address 192.0.2.253 255.255.255.0 
+// !
+//
+// interface Vlan1
+//  nameif inside
+//  security-level 100
+//  ip address dhcp setroute 
+// !
 
-// ignore_interface_commands : (BGP | OSPF | DHCP)
-//         {
-//             consumeUntil(NEWLINE);
-//         }
-//     ;
+intf_address : ADDRESS (v6_ip_address | v7_ip_address) ;
 
-intf_address : ADDRESS a:IPV4 m:IPV4 (s:SECONDARY)? 
+v6_ip_address : lbl:WORD (dhcp:DHCP | (a:IPV4 m:IPV4))
         {
-            importer->addInterfaceAddress(a->getText(), m->getText());
+            std::string label = lbl->getText();
+            std::string addr;
+            if (a) addr = a->getText();
+            if (dhcp) addr = dhcp->getText();
+            std::string netm;
+            if (m) netm = m->getText();
+            importer->addInterfaceAddress(label, addr, netm);
             *dbg << LT(1)->getLine() << ":"
-                << " INTRFACE ADDRESS: " << a->getText()
-                << "/" << m->getText() << " ";
+                 << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
+        }
+        NEWLINE
+    ;
+
+v7_ip_address : v7_dhcp_address | v7_static_address;
+
+v7_dhcp_address : dhcp:DHCP (SETROUTE) ?
+        {
+            std::string addr = dhcp->getText();
+            importer->addInterfaceAddress(addr, "");
+            *dbg << LT(1)->getLine() << ":"
+                << " INTRFACE ADDRESS: " << addr << std::endl;
+        }
+        NEWLINE
+    ;
+
+v7_static_address : a:IPV4 m:IPV4 (s:SECONDARY)?
+        {
+            std::string addr = a->getText();
+            std::string netm = m->getText();
+            importer->addInterfaceAddress(addr, netm);
+            *dbg << LT(1)->getLine() << ":"
+                << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
             if (s)
             {
                 *dbg << s->getText();
             }
             *dbg <<  std::endl;
         }
+        NEWLINE
     ;
+
 
 switchport : SWITCHPORT ACCESS VLAN vlan_num:WORD
         {
@@ -582,6 +686,7 @@ tokens
     SWITCHPORT = "switchport";
     ACCESS = "access";
     NAMEIF = "nameif";
+    SEC_LEVEL = "security-level";
 
     ACCESS_LIST = "access-list";
     ACCESS_GROUP = "access-group";
@@ -593,6 +698,9 @@ tokens
 
     PERMIT = "permit";
     DENY = "deny";
+
+    DHCP = "dhcp";
+    SETROUTE = "setroute";
 
 // protocols for 'permit' and 'deny' commands
 

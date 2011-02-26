@@ -71,6 +71,9 @@ public:
 	public: void hostname();
 	public: void ip_commands();
 	public: void intrface();
+	public: void vlan_interface();
+	public: void sec_level();
+	public: void nameif();
 	public: void controller();
 	public: void access_list_commands();
 	public: void exit();
@@ -98,9 +101,12 @@ public:
 	public: void port_range();
 	public: void port_spec();
 	public: void hostaddr_std();
-	public: void nameif();
 	public: void intf_address();
 	public: void switchport();
+	public: void v6_ip_address();
+	public: void v7_ip_address();
+	public: void v7_dhcp_address();
+	public: void v7_static_address();
 	public: void access_group_by_name();
 public:
 	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
@@ -113,10 +119,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 85;
+	static const int NUM_TOKENS = 88;
 #else
 	enum {
-		NUM_TOKENS = 85
+		NUM_TOKENS = 88
 	};
 #endif
 	

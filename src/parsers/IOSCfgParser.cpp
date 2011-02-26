@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.6 (20070910): "iosacl.g" -> "IOSCfgParser.cpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iosacl.g" -> "IOSCfgParser.cpp"$ */
 #line 42 "iosacl.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -444,7 +444,7 @@ void IOSCfgParser::description() {
 			descr += LT(1)->getText() + " ";
 			consume();
 			}
-			importer->addInterfaceComment( descr );
+			importer->setInterfaceComment( descr );
 			*dbg << " DESCRIPTION " << descr << std::endl;
 			//consumeUntil(NEWLINE);
 			

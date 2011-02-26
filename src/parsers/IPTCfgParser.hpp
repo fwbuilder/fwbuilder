@@ -8,7 +8,7 @@
 
 #line 10 "IPTCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "iptables.g" -> "IPTCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "IPTCfgParserTokenTypes.hpp"
