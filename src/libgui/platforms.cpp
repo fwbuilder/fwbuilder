@@ -1211,7 +1211,7 @@ void guessOSAndPlatformFromSysDescr(
                  << "sysdescr=" << sysDescr;
 
     list<QStringPair> allowed_versions;
-    string version_from_sysdescr;
+    QString version_from_sysdescr;
 
     foreach (QRegExp re, pix_re)
     {
@@ -1219,7 +1219,7 @@ void guessOSAndPlatformFromSysDescr(
         {
             platform = "pix";
             hostOS = "pix_os";
-            version_from_sysdescr = re.cap(1).toStdString();
+            version_from_sysdescr = re.cap(1);
         }
     }
 
@@ -1230,7 +1230,7 @@ void guessOSAndPlatformFromSysDescr(
         {
             platform = "iosacl";
             hostOS = "ios";
-            version_from_sysdescr = re.cap(1).toStdString();
+            version_from_sysdescr = re.cap(1);
         }
     }
 
@@ -1238,25 +1238,35 @@ void guessOSAndPlatformFromSysDescr(
         qDebug() << "guessOSAndPlatformFromSysDescr:"
                  << "platform=" << platform
                  << "hostOS=" << hostOS
-                 << "version=" << version_from_sysdescr.c_str();
+                 << "version=" << version_from_sysdescr;
 
     if ( ! platform.isEmpty())
-    {
-        getVersionsForPlatform(platform, allowed_versions);
+        version = findBestVersionMatch(platform, version_from_sysdescr);
 
-        if ( ! version_from_sysdescr.empty())
+}
+
+QString findBestVersionMatch(const QString &platform,
+                             const QString &discovered_version)
+{
+    list<QStringPair> allowed_versions;
+
+    getVersionsForPlatform(platform, allowed_versions);
+
+    if ( ! discovered_version.isEmpty())
+    {
+        QString version_fit;
+        list<QStringPair>::iterator it;
+        foreach (QStringPair p, allowed_versions)
         {
-            string version_fit;
-            list<QStringPair>::iterator it;
-            foreach (QStringPair p, allowed_versions)
-            {
-                string vers = p.first.toStdString();
-                if (XMLTools::version_compare(vers, version_from_sysdescr)>0) break;
-                version_fit = vers;
-            }
-            version = version_fit.c_str();
+            QString vers = p.first;
+            if (XMLTools::version_compare(vers.toStdString(),
+                                          discovered_version.toStdString())>0)
+                break;
+            version_fit = vers;
         }
+        return version_fit;
     }
+    return "";
 }
 
 

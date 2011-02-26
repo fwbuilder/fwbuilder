@@ -187,6 +187,9 @@ void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os);
 void guessOSAndPlatformFromSysDescr(const QString &sysDescr,
                                     QString &platform, QString &hostOS, QString &version);
 
+QString findBestVersionMatch(const QString &platform,
+                             const QString &discovered_version);
+
 /*
  * Internal: Auxiliary function that copies elements from the list returned by
  * Resources::getResourceStrList()  to the list of string pairs

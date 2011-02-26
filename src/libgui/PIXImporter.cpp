@@ -81,7 +81,11 @@ Firewall* PIXImporter::finalize()
         Firewall *fw = Firewall::cast(getFirewallObject());
         fw->setStr("host_OS", "pix");
         Resources::setDefaultTargetOptions("pix" , fw);
-        fw->setStr("version", discovered_version);
+
+        string version = findBestVersionMatch(
+            "pix", discovered_version.c_str()).toStdString();
+        if ( ! version.empty())
+            fw->setStr("version", version);
 
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );

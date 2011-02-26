@@ -1,3 +1,15 @@
+2011-02-26  vadim  <vadim@netcitadel.com>
+
+	* platforms.cpp (findBestVersionMatch): fixes #2147 "ASA Import -
+	some versions are not detected correctly". when user imports
+	PIX/ASA configuration, firewall object will automatically be
+	configured with the version setting that best fits version
+	indicated in the imported configuration. Note that fwbuilder does
+	not provide the list of version numbers that match PIX/ASA
+	versions exactly, for example we do not have settings "7.1" and
+	"7.2". Devices running these versions of PIX/ASA software should
+	be configured with version "7.0" in fwbuilder.
+
 2011-02-25  vadim  <vadim@netcitadel.com>
 
 	* parsers/pix.g (intf_address): see #87 "Import of PIX
