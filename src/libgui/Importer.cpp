@@ -371,8 +371,8 @@ void Importer::setInterfaceVlanId(const std::string &vlan_id)
 {
     if (current_interface!=NULL)
     {
-        current_interface->setStr("type", "8021q");
         FWOptions *ifopt = (Interface::cast(current_interface))->getOptionsObject();
+        ifopt->setStr("type", "8021q");
         ifopt->setStr("vlan_id", vlan_id);
     }
 }

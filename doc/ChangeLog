@@ -1,5 +1,11 @@
 2011-02-26  vadim  <vadim@netcitadel.com>
 
+	* PIXImporter.cpp (rearrangeVlanInterfaces): see #2145 "ASA Import
+	of VLAN interfaces - Advanced Interface Settings not available".
+	Vlan interfaces discovered in the process of PIX configuration
+	import should be created as subinterfaces of the corresponding
+	parent with correct interface type and vlan id.
+
 	* parsers/pix.g (intf_address): fixes #2146 Issue a warning when
 	parser encounters "standby" parameter in an interface
 	configuration. We do not support import of PIX failover

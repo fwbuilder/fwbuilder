@@ -52,6 +52,8 @@ class PIXImporter : public IOSImporter
     // this method actually adds interfaces to the firewall object
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
+
+    void rearrangeVlanInterfaces();
 };
 
 #endif
