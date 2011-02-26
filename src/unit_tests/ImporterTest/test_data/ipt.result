@@ -19,11 +19,11 @@ Created branch OUTPUT_established_1
 Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
-Interface: lo
+New interface: lo
 UDP Service object: udp 1604-1604
 Created branch Policy_eth1
-Interface: eth1
-Interface: eth0
+New interface: eth1
+New interface: eth0
 Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
 TCP Service object: tcp 0-8000
 UDP Service object: udp 0-8000
@@ -134,7 +134,7 @@ Skip command with '-j CONNMARK --restore-mark' This rule is generated automatica
 TCP Service object: tcp 25-25:
 Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
 Tag Service object: tag-1
-Interface: eth2
+New interface: eth2
 Tag Service object: tag-2
 Ruleset: nat / PREROUTING
 Default action: Accept

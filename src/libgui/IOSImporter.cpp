@@ -397,6 +397,7 @@ Firewall* IOSImporter::finalize()
         fw->setStr("host_OS", "ios");
         Resources::setDefaultTargetOptions("ios" , fw);
         fw->setStr("version", "");  // default version "any"
+        fw->getManagementObject(); // creates management obj
 
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );

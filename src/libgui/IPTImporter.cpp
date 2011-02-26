@@ -1283,6 +1283,7 @@ Firewall* IPTImporter::finalize()
         fw->setStr("host_OS", "linux24");
         Resources::setDefaultTargetOptions("linux24" , fw);
         fw->setStr("version", "");  // default version "any"
+        fw->getManagementObject(); // creates management obj
 
         FWOptions  *fwopt = fw->getOptionsObject();
         assert(fwopt!=NULL);
