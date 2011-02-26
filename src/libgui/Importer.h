@@ -337,6 +337,7 @@ public:
     int getTotalNumberOfRules();
     int getNumberOfInterfaces();
 
+    void addMessageToLog(const std::string &msg);
 };
 
 #endif

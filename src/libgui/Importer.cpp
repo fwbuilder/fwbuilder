@@ -1215,4 +1215,9 @@ QString Importer::commonFailureErrorMessage()
         "at this time");
 }
 
+void Importer::addMessageToLog(const std::string &msg)
+{
+    *logger << msg + "\n";
+}
+
 

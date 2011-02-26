@@ -1,5 +1,10 @@
 2011-02-26  vadim  <vadim@netcitadel.com>
 
+	* parsers/pix.g (intf_address): fixes #2146 Issue a warning when
+	parser encounters "standby" parameter in an interface
+	configuration. We do not support import of PIX failover
+	configuration at this time.
+
 	* platforms.cpp (findBestVersionMatch): fixes #2147 "ASA Import -
 	some versions are not detected correctly". when user imports
 	PIX/ASA configuration, firewall object will automatically be

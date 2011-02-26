@@ -1817,6 +1817,9 @@ void DiscoveryDruid::addToLog(const QString &buf)
         if (line.contains("Parser error"))
             format = error_format;
 
+        if (line.contains("Parser warning"))
+            format = warning_format;
+
         if (line.contains("SNMP error, status 2 Timeout"))
             format = warning_format;
 

@@ -615,7 +615,7 @@ v7_dhcp_address : dhcp:DHCP
 //        NEWLINE
     ;
 
-v7_static_address : a:IPV4 m:IPV4
+v7_static_address : a:IPV4 m:IPV4 (s:STANDBY)?
         {
             std::string addr = a->getText();
             std::string netm = m->getText();
@@ -624,6 +624,12 @@ v7_static_address : a:IPV4 m:IPV4
                 << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
 // there can be other parameters after address/netmask pair, such as "standby"
 // We do not parse them yet.
+            if (s)
+            {
+                importer->addMessageToLog("Parser warning: failover IP detected. "
+                                          "Failover is not supported by import "
+                                          "at this time");
+            }
             consumeUntil(NEWLINE);
         }
 //        NEWLINE

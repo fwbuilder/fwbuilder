@@ -1864,7 +1864,7 @@ void PIXCfgParser::switchport() {
 		vlan_num = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 634 "pix.g"
+#line 640 "pix.g"
 			
 			
 #line 1871 "PIXCfgParser.cpp"
@@ -2042,12 +2042,31 @@ void PIXCfgParser::v7_static_address() {
 	Tracer traceInOut(this, "v7_static_address");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  a = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  m = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  s = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	
 	try {      // for error handling
 		a = LT(1);
 		match(IPV4);
 		m = LT(1);
 		match(IPV4);
+		{
+		switch ( LA(1)) {
+		case STANDBY:
+		{
+			s = LT(1);
+			match(STANDBY);
+			break;
+		}
+		case NEWLINE:
+		{
+			break;
+		}
+		default:
+		{
+			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
 		if ( inputState->guessing==0 ) {
 #line 619 "pix.g"
 			
@@ -2058,9 +2077,15 @@ void PIXCfgParser::v7_static_address() {
 			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
 			// there can be other parameters after address/netmask pair, such as "standby"
 			// We do not parse them yet.
+			if (s)
+			{
+			importer->addMessageToLog("Parser warning: failover IP detected. "
+			"Failover is not supported by import "
+			"at this time");
+			}
 			consumeUntil(NEWLINE);
 			
-#line 2064 "PIXCfgParser.cpp"
+#line 2089 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2089,7 +2114,7 @@ void PIXCfgParser::access_group_by_name() {
 		intf_label = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 641 "pix.g"
+#line 647 "pix.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
@@ -2100,7 +2125,7 @@ void PIXCfgParser::access_group_by_name() {
 			<< " " << intf_label->getText()
 			<< " " << dir->getText() << std::endl;
 			
-#line 2104 "PIXCfgParser.cpp"
+#line 2129 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2163,6 +2188,7 @@ const char* PIXCfgParser::tokenNames[] = {
 	"\"shutdown\"",
 	"\"address\"",
 	"\"dhcp\"",
+	"\"standby\"",
 	"\"switchport\"",
 	"\"access\"",
 	"\"access-group\"",
@@ -2170,7 +2196,6 @@ const char* PIXCfgParser::tokenNames[] = {
 	"LINE_COMMENT",
 	"COLON_COMMENT",
 	"\"secondary\"",
-	"\"standby\"",
 	"\"setroute\"",
 	"\"extended\"",
 	"\"standard\"",
@@ -2212,7 +2237,7 @@ const char* PIXCfgParser::tokenNames[] = {
 const unsigned long PIXCfgParser::_tokenSet_0_data_[] = { 2UL, 0UL, 0UL, 0UL };
 // EOF 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_0(_tokenSet_0_data_,4);
-const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 85874UL, 920560UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 85874UL, 1838064UL, 0UL, 0UL };
 // EOF NEWLINE "ip" "quit" WORD "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "controller" "interface" "vlan" "security-level" "nameif" "description" 
 // "shutdown" "exit" LINE_COMMENT COLON_COMMENT 
