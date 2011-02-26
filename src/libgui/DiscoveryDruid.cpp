@@ -95,6 +95,8 @@ using namespace libfwbuilder;
 DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     QDialog(parent)
 {
+    blockSignals(true);
+
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
 
@@ -104,6 +106,8 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
                       m_dialog->backButton,
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
+
+    blockSignals(false);
 
     QTextCursor cursor(m_dialog->discoverylog->textCursor());
     normal_format = cursor.charFormat();
