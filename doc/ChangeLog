@@ -1,3 +1,13 @@
+2011-02-25  vadim  <vadim@netcitadel.com>
+
+	* parsers/pix.g (intf_address): see #87 "Import of PIX
+	configuration".  Basic grammar that can parse host name, version,
+	interfaces, their names, labels, addresses, security levels and
+	few other things for PIX 6, 7 and ASA 8. PIX standby configuration
+	is not parsed (so we can't import cluster configuration at this
+	time). More work needs to be done to import named objects, object
+	groups, as well as policy and nat rules.
+
 2011-02-24  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FirewallInstaller.cpp (getGeneratedFileName): see #2047 "Inspect

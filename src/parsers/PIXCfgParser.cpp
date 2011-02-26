@@ -1864,7 +1864,7 @@ void PIXCfgParser::switchport() {
 		vlan_num = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 620 "pix.g"
+#line 634 "pix.g"
 			
 			
 #line 1871 "PIXCfgParser.cpp"
@@ -1882,54 +1882,18 @@ void PIXCfgParser::switchport() {
 
 void PIXCfgParser::v6_ip_address() {
 	Tracer traceInOut(this, "v6_ip_address");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  lbl = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  dhcp = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  a = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  m = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	
 	try {      // for error handling
-		lbl = LT(1);
-		match(WORD);
-		{
-		switch ( LA(1)) {
-		case DHCP:
-		{
-			dhcp = LT(1);
-			match(DHCP);
-			break;
+		if ((LA(1) == WORD) && (LA(2) == DHCP)) {
+			v6_dhcp_address();
 		}
-		case IPV4:
-		{
-			{
-			a = LT(1);
-			match(IPV4);
-			m = LT(1);
-			match(IPV4);
-			}
-			break;
+		else if ((LA(1) == WORD) && (LA(2) == IPV4)) {
+			v6_static_address();
 		}
-		default:
-		{
+		else {
 			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
 		}
-		}
-		}
-		if ( inputState->guessing==0 ) {
-#line 576 "pix.g"
-			
-			std::string label = lbl->getText();
-			std::string addr;
-			if (a) addr = a->getText();
-			if (dhcp) addr = dhcp->getText();
-			std::string netm;
-			if (m) netm = m->getText();
-			importer->addInterfaceAddress(label, addr, netm);
-			*dbg << LT(1)->getLine() << ":"
-			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
-			
-#line 1931 "PIXCfgParser.cpp"
-		}
-		match(NEWLINE);
+		
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
@@ -1972,6 +1936,79 @@ void PIXCfgParser::v7_ip_address() {
 	}
 }
 
+void PIXCfgParser::v6_dhcp_address() {
+	Tracer traceInOut(this, "v6_dhcp_address");
+	ANTLR_USE_NAMESPACE(antlr)RefToken  lbl = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  dhcp = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	
+	try {      // for error handling
+		lbl = LT(1);
+		match(WORD);
+		dhcp = LT(1);
+		match(DHCP);
+		if ( inputState->guessing==0 ) {
+#line 578 "pix.g"
+			
+			std::string label = lbl->getText();
+			std::string addr = dhcp->getText();
+			importer->addInterfaceAddress(label, addr, "");
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << std::endl;
+			// there can be some other parameters after "dhcp", such as "setroute", "retry" etc.
+			// which we do not support
+			consumeUntil(NEWLINE);
+			
+#line 1962 "PIXCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
+void PIXCfgParser::v6_static_address() {
+	Tracer traceInOut(this, "v6_static_address");
+	ANTLR_USE_NAMESPACE(antlr)RefToken  lbl = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  a = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  m = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	
+	try {      // for error handling
+		lbl = LT(1);
+		match(WORD);
+		a = LT(1);
+		match(IPV4);
+		m = LT(1);
+		match(IPV4);
+		if ( inputState->guessing==0 ) {
+#line 591 "pix.g"
+			
+			std::string label = lbl->getText();
+			std::string addr = a->getText();
+			std::string netm = m->getText();
+			importer->addInterfaceAddress(label, addr, netm);
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
+			// in case there are some other parameters after address and netmask
+			consumeUntil(NEWLINE);
+			
+#line 2000 "PIXCfgParser.cpp"
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		if( inputState->guessing == 0 ) {
+			reportError(ex);
+			recover(ex,_tokenSet_2);
+		} else {
+			throw;
+		}
+	}
+}
+
 void PIXCfgParser::v7_dhcp_address() {
 	Tracer traceInOut(this, "v7_dhcp_address");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  dhcp = ANTLR_USE_NAMESPACE(antlr)nullToken;
@@ -1979,34 +2016,17 @@ void PIXCfgParser::v7_dhcp_address() {
 	try {      // for error handling
 		dhcp = LT(1);
 		match(DHCP);
-		{
-		switch ( LA(1)) {
-		case SETROUTE:
-		{
-			match(SETROUTE);
-			break;
-		}
-		case NEWLINE:
-		{
-			break;
-		}
-		default:
-		{
-			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
-		}
-		}
-		}
 		if ( inputState->guessing==0 ) {
-#line 593 "pix.g"
+#line 608 "pix.g"
 			
 			std::string addr = dhcp->getText();
 			importer->addInterfaceAddress(addr, "");
 			*dbg << LT(1)->getLine() << ":"
 			<< " INTRFACE ADDRESS: " << addr << std::endl;
+			consumeUntil(NEWLINE);
 			
-#line 2008 "PIXCfgParser.cpp"
+#line 2029 "PIXCfgParser.cpp"
 		}
-		match(NEWLINE);
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
@@ -2022,48 +2042,26 @@ void PIXCfgParser::v7_static_address() {
 	Tracer traceInOut(this, "v7_static_address");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  a = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  m = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  s = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	
 	try {      // for error handling
 		a = LT(1);
 		match(IPV4);
 		m = LT(1);
 		match(IPV4);
-		{
-		switch ( LA(1)) {
-		case SECONDARY:
-		{
-			s = LT(1);
-			match(SECONDARY);
-			break;
-		}
-		case NEWLINE:
-		{
-			break;
-		}
-		default:
-		{
-			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
-		}
-		}
-		}
 		if ( inputState->guessing==0 ) {
-#line 603 "pix.g"
+#line 619 "pix.g"
 			
 			std::string addr = a->getText();
 			std::string netm = m->getText();
 			importer->addInterfaceAddress(addr, netm);
 			*dbg << LT(1)->getLine() << ":"
 			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
-			if (s)
-			{
-			*dbg << s->getText();
-			}
-			*dbg <<  std::endl;
+			// there can be other parameters after address/netmask pair, such as "standby"
+			// We do not parse them yet.
+			consumeUntil(NEWLINE);
 			
-#line 2065 "PIXCfgParser.cpp"
+#line 2064 "PIXCfgParser.cpp"
 		}
-		match(NEWLINE);
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
@@ -2091,7 +2089,7 @@ void PIXCfgParser::access_group_by_name() {
 		intf_label = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 627 "pix.g"
+#line 641 "pix.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
@@ -2102,7 +2100,7 @@ void PIXCfgParser::access_group_by_name() {
 			<< " " << intf_label->getText()
 			<< " " << dir->getText() << std::endl;
 			
-#line 2106 "PIXCfgParser.cpp"
+#line 2104 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2165,14 +2163,15 @@ const char* PIXCfgParser::tokenNames[] = {
 	"\"shutdown\"",
 	"\"address\"",
 	"\"dhcp\"",
-	"\"setroute\"",
-	"\"secondary\"",
 	"\"switchport\"",
 	"\"access\"",
 	"\"access-group\"",
 	"\"exit\"",
 	"LINE_COMMENT",
 	"COLON_COMMENT",
+	"\"secondary\"",
+	"\"standby\"",
+	"\"setroute\"",
 	"\"extended\"",
 	"\"standard\"",
 	"Whitespace",
@@ -2213,7 +2212,7 @@ const char* PIXCfgParser::tokenNames[] = {
 const unsigned long PIXCfgParser::_tokenSet_0_data_[] = { 2UL, 0UL, 0UL, 0UL };
 // EOF 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_0(_tokenSet_0_data_,4);
-const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 85874UL, 3673072UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 85874UL, 920560UL, 0UL, 0UL };
 // EOF NEWLINE "ip" "quit" WORD "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "controller" "interface" "vlan" "security-level" "nameif" "description" 
 // "shutdown" "exit" LINE_COMMENT COLON_COMMENT 

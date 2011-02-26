@@ -572,47 +572,61 @@ interface_known_commands :
 
 intf_address : ADDRESS (v6_ip_address | v7_ip_address) ;
 
-v6_ip_address : lbl:WORD (dhcp:DHCP | (a:IPV4 m:IPV4))
+v6_ip_address : v6_dhcp_address | v6_static_address;
+
+v6_dhcp_address : lbl:WORD dhcp:DHCP
         {
             std::string label = lbl->getText();
-            std::string addr;
-            if (a) addr = a->getText();
-            if (dhcp) addr = dhcp->getText();
-            std::string netm;
-            if (m) netm = m->getText();
+            std::string addr = dhcp->getText();
+            importer->addInterfaceAddress(label, addr, "");
+            *dbg << LT(1)->getLine() << ":"
+                 << " INTRFACE ADDRESS: " << addr << std::endl;
+// there can be some other parameters after "dhcp", such as "setroute", "retry" etc.
+// which we do not support
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+v6_static_address : lbl:WORD a:IPV4 m:IPV4
+        {
+            std::string label = lbl->getText();
+            std::string addr = a->getText();
+            std::string netm = m->getText();
             importer->addInterfaceAddress(label, addr, netm);
             *dbg << LT(1)->getLine() << ":"
                  << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
+// in case there are some other parameters after address and netmask
+            consumeUntil(NEWLINE);
         }
-        NEWLINE
     ;
+
+
 
 v7_ip_address : v7_dhcp_address | v7_static_address;
 
-v7_dhcp_address : dhcp:DHCP (SETROUTE) ?
+v7_dhcp_address : dhcp:DHCP
         {
             std::string addr = dhcp->getText();
             importer->addInterfaceAddress(addr, "");
             *dbg << LT(1)->getLine() << ":"
                 << " INTRFACE ADDRESS: " << addr << std::endl;
+            consumeUntil(NEWLINE);
         }
-        NEWLINE
+//        NEWLINE
     ;
 
-v7_static_address : a:IPV4 m:IPV4 (s:SECONDARY)?
+v7_static_address : a:IPV4 m:IPV4
         {
             std::string addr = a->getText();
             std::string netm = m->getText();
             importer->addInterfaceAddress(addr, netm);
             *dbg << LT(1)->getLine() << ":"
                 << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
-            if (s)
-            {
-                *dbg << s->getText();
-            }
-            *dbg <<  std::endl;
+// there can be other parameters after address/netmask pair, such as "standby"
+// We do not parse them yet.
+            consumeUntil(NEWLINE);
         }
-        NEWLINE
+//        NEWLINE
     ;
 
 
@@ -693,6 +707,7 @@ tokens
 
     ADDRESS = "address";
     SECONDARY = "secondary";
+    STANDBY = "standby";
 
     COMMUNITY_LIST = "community-list";
 

@@ -81,7 +81,22 @@ void PIXImporter::run()
     if (haveFirewallObject())
     {
         if (countInterfaces()==0) err << noInterfacesErrorMessage();
-        if (countRules()==0) err << noRulesErrorMessage();
+//        if (countRules()==0) err << noRulesErrorMessage();
+        if (countRules()==0)
+        {
+            // temporary error message, replace with the standard one when
+            // done
+            err << QObject::tr(
+                "\n\n"
+                "Import of PIX and ASA policy and NAT rules is not "
+                "implemented yet but is planned for fwbuilder v4.2.0 release. "
+                "Please watch nightly builds on "
+                "http://www.fwbuilder.org/nightly_builds/fwbuilder-4.2/current_build/ "
+                "if you are interested in this feature."
+                "\n\n"
+            );
+
+        }
     } else
     {
         err << parser_err;

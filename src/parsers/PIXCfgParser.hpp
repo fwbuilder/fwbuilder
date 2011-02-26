@@ -105,6 +105,8 @@ public:
 	public: void switchport();
 	public: void v6_ip_address();
 	public: void v7_ip_address();
+	public: void v6_dhcp_address();
+	public: void v6_static_address();
 	public: void v7_dhcp_address();
 	public: void v7_static_address();
 	public: void access_group_by_name();
@@ -119,10 +121,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 88;
+	static const int NUM_TOKENS = 89;
 #else
 	enum {
-		NUM_TOKENS = 88
+		NUM_TOKENS = 89
 	};
 #endif
 	
