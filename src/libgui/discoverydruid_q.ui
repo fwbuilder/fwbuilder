@@ -48,7 +48,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>13</number>
+      <number>14</number>
      </property>
      <widget class="QWidget" name="WizardPage0">
       <layout class="QGridLayout">

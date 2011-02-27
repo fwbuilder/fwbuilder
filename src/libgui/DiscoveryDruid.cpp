@@ -85,6 +85,7 @@
 #include "UserWorkflow.h"
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
+#include "networkZoneManager.h"
 
 #include "IOSImporter.h"
 #include "IPTImporter.h"
@@ -98,6 +99,8 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     QDialog(parent)
 {
     init = true;
+
+    discovered_fw = NULL;
 
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
@@ -221,6 +224,45 @@ void DiscoveryDruid::backClicked()
 
 void DiscoveryDruid::finishClicked()
 {
+    if (current_task == BT_IMPORT && selectedPlatform() == "pix" && currentPage() == 14)
+    {
+        // read and configure network zones
+        list<FWObject*> all_interfaces = discovered_fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*>::iterator it;
+        int row = 0;
+        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+        {
+            Interface *iface = Interface::cast(*it);
+
+            string  network_zone_str_id = "";
+
+            QList<QTableWidgetItem*> ltwi =
+                m_dialog->iface_nz_list->findItems( iface->getName().c_str(),
+                                                    Qt::MatchExactly );
+            if ( ! ltwi.empty())
+            {
+                QTableWidgetItem *itm2 = ltwi[0];
+                assert(itm2!=NULL);
+                int row = itm2->row();
+                QComboBox *cb = dynamic_cast<QComboBox*>(
+                    m_dialog->iface_nz_list->cellWidget(row, 3));
+                assert(cb!=NULL);
+                int network_zone_int_id =
+                    cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
+                if (network_zone_int_id != 0)
+                    network_zone_str_id = FWObjectDatabase::getStringId(
+                        network_zone_int_id);
+                else
+                    network_zone_str_id = "";
+            }
+
+            // only set network zone if it is supported and is not empty. See #2014
+            if (!network_zone_str_id.empty())
+                iface->setStr("network_zone", network_zone_str_id);
+
+        }
+    }
+
     QDialog::accept();
 }
 
@@ -576,6 +618,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         setNextEnabled(page, false);
         setFinishEnabled(page, true);
         finishButton->setFocus();
+        fillNetworkZones();
         break;
     }
 
@@ -1234,6 +1277,55 @@ void DiscoveryDruid::selectAllObjs()
     m_dialog->objectlist->selectAll();
 }
 
+void DiscoveryDruid::fillNetworkZones()
+{
+    m_dialog->iface_nz_list->clear();
+
+    QStringList labels;
+    labels << QObject::tr("Name") << QObject::tr("Label")
+           << QObject::tr("Address") << QObject::tr("Network Zone");
+    m_dialog->iface_nz_list->setHorizontalHeaderLabels(labels);
+
+    NetworkZoneManager netzone_manager;
+    netzone_manager.load(mw->activeProject()->db());
+
+    list<FWObject*> all_interfaces = discovered_fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator it;
+    int row = 0;
+    for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+    {
+        Interface *iface = Interface::cast(*it);
+
+        m_dialog->iface_nz_list->insertRow(row);
+
+        QTableWidgetItem* itm;
+
+        itm = new QTableWidgetItem(iface->getName().c_str());
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 0, itm);
+
+        itm = new QTableWidgetItem(iface->getLabel().c_str());
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 1, itm);
+
+        QString addr_str;
+        const InetAddr* addr = iface->getAddressPtr();
+        if (addr) addr_str = addr->toString().c_str();
+
+        itm = new QTableWidgetItem(addr_str);
+        itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+        m_dialog->iface_nz_list->setItem(row, 2, itm);
+
+        QComboBox *widget = new QComboBox();
+        netzone_manager.packComboBox(widget, -1);
+        m_dialog->iface_nz_list->setCellWidget(row, 3, widget);
+
+        row++;
+    }
+
+    m_dialog->iface_nz_list->resizeColumnToContents(3);
+}
+
 void DiscoveryDruid::fillNetworks()
 {
     ObjectDescriptor buf;
@@ -1360,6 +1452,7 @@ void DiscoveryDruid::loadDataFromImporter()
 
         if (fw) // fw can be NULL if import was uncussessful
         {
+            discovered_fw = fw;
 
             ProjectPanel *pp = mw->activeProject();
             QString filename = pp->getFileName();

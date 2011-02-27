@@ -217,6 +217,8 @@ private:
     QProgressBar *unBar;
     QLabel *errMessage;
     QString HostName;
+
+    libfwbuilder::Firewall *discovered_fw;
     
     void setDiscoveryMethod_file();
     void setDiscoveryMethod_DNS();
@@ -254,6 +256,7 @@ public:
     void loadDataFromCrawler();
     void loadDataFromDNS();
     void fillListOfNetworks();
+    void fillNetworkZones();
     void createRealObjects();
 //    void stripObjects();
     void getNameServers();

@@ -1,5 +1,11 @@
 2011-02-26  vadim  <vadim@netcitadel.com>
 
+	* DiscoveryDruid.cpp (finishClicked): see #2153 "Add Network Zone
+	explanation and selection dialog to ASA/PIX import". Wizard shows
+	additional page when user imports PIX/ASA config. This page
+	explains concept of network zones and offers UI to let them choose
+	network objects or groups as a network zone of each interface.
+
 	* PIXImporter.cpp (rearrangeVlanInterfaces): see #2145 "ASA Import
 	of VLAN interfaces - Advanced Interface Settings not available".
 	Vlan interfaces discovered in the process of PIX configuration
