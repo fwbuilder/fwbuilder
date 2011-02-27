@@ -238,6 +238,8 @@ private:
                            libfwbuilder::InterfaceData *in,
                            bool skip_ip_address_check);
     void addToLog(const QString &buf);
+
+    std::string selectedPlatform();
     
 public:
 
@@ -320,11 +322,12 @@ public slots:
     
     
 };
-const int  WIZARD_PAGES=13;        
-const bool WIZARD_FILE_PAGES[] =   {1,1,0,0,0,0,0,0,1,0,1,0,1,1};
-const bool WIZARD_DNS_PAGES[]  =   {1,0,0,1,1,0,0,0,1,0,1,0,1,1};
-const bool WIZARD_SNMP_PAGES[] =   {1,0,0,0,0,1,1,1,1,1,1,1,1,1};
-const bool WIZARD_IMPORT_PAGES[] = {1,0,1,0,0,0,0,0,1,0,0,0,0,0};
+
+const int  WIZARD_PAGES = 15;
+const bool WIZARD_FILE_PAGES[] =   {1,1,0,0,0,0,0,0,1,0,1,0,1,1,0};
+const bool WIZARD_DNS_PAGES[]  =   {1,0,0,1,1,0,0,0,1,0,1,0,1,1,0};
+const bool WIZARD_SNMP_PAGES[] =   {1,0,0,0,0,1,1,1,1,1,1,1,1,1,0};
+const bool WIZARD_IMPORT_PAGES[] = {1,0,1,0,0,0,0,0,1,0,0,0,0,0,1};
 
 
 

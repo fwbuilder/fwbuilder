@@ -442,7 +442,7 @@ void DiscoveryDruid::changedSelected( const int &page )
 
     case 1: // Reading file in hosts format
     {
-        setNextEnabled(page,false);
+        setNextEnabled(page, false);
         changedHostsFileName();
         m_dialog->filename->setFocus();
         break;
@@ -451,8 +451,8 @@ void DiscoveryDruid::changedSelected( const int &page )
     case 2: // import config
     {
         m_dialog->obj_name->setFocus();
-        setBackEnabled(page,true);
-        setFinishEnabled(page,false);
+        setBackEnabled(page, true);
+        setFinishEnabled(page, false);
         break;
     }
 
@@ -563,7 +563,18 @@ void DiscoveryDruid::changedSelected( const int &page )
         setBackEnabled(page,false);
         cancelButton->hide();
         createRealObjects();
-        setFinishEnabled(page,true);
+        setNextEnabled(page, false);
+        setFinishEnabled(page, true);
+        finishButton->setFocus();
+        break;
+    }
+
+    case 14: // Network zones for PIX
+    {
+        setBackEnabled(page, false);
+        cancelButton->hide();
+        setNextEnabled(page, false);
+        setFinishEnabled(page, true);
         finishButton->setFocus();
         break;
     }
@@ -571,7 +582,7 @@ void DiscoveryDruid::changedSelected( const int &page )
     default : {}
 
     }
-    FromPage=page;
+    FromPage = page;
 }
 
 void DiscoveryDruid::startBackgroundProcess()
@@ -669,9 +680,9 @@ void DiscoveryDruid::getNameServers()
 
 void DiscoveryDruid::setDiscoveryMethod_file()
 {
-    current_task=BT_HOSTS;
     m_dialog->processname->setText(tr("Hosts file parsing ..."));
-    for (int i=0;i<WIZARD_PAGES;i++)
+    current_task = BT_HOSTS;
+    for (int i=0; i<WIZARD_PAGES; i++)
     {
         setAppropriate( i, WIZARD_FILE_PAGES[i]);
     }
@@ -680,8 +691,8 @@ void DiscoveryDruid::setDiscoveryMethod_file()
 void DiscoveryDruid::setDiscoveryMethod_DNS()
 {
     m_dialog->processname->setText(tr("DNS zone transfer ..."));
-    current_task=BT_DNS;
-    for (int i=0;i<WIZARD_PAGES;i++)
+    current_task = BT_DNS;
+    for (int i=0; i<WIZARD_PAGES; i++)
     {
         setAppropriate( i, WIZARD_DNS_PAGES[i]);
     }
@@ -690,8 +701,8 @@ void DiscoveryDruid::setDiscoveryMethod_DNS()
 void DiscoveryDruid::setDiscoveryMethod_SNMP()
 {
     m_dialog->processname->setText(tr("Network discovery using SNMP ..."));
-    current_task=BT_SNMP;
-    for (int i=0;i<WIZARD_PAGES;i++)
+    current_task = BT_SNMP;
+    for (int i=0; i<WIZARD_PAGES; i++)
     {
         setAppropriate( i, WIZARD_SNMP_PAGES[i]);
     }
@@ -700,8 +711,8 @@ void DiscoveryDruid::setDiscoveryMethod_SNMP()
 void DiscoveryDruid::setDiscoveryMethod_Import()
 {
     m_dialog->processname->setText(tr("Import configuration from file ..."));
-    current_task=BT_IMPORT;
-    for (int i=0;i<WIZARD_PAGES;i++)
+    current_task = BT_IMPORT;
+    for (int i=0; i<WIZARD_PAGES; i++)
     {
         setAppropriate( i, WIZARD_IMPORT_PAGES[i]);
     }
@@ -782,13 +793,7 @@ void DiscoveryDruid::startConfigImport()
 
         // need to pick right platform string based on
         // m_dialog->import_platform->currentItem()
-        string platform = "";
-        switch (m_dialog->import_platform->currentIndex())
-        {
-        case IMPORT_IOS: platform = "iosacl"; break;
-        case IMPORT_IPT: platform = "iptables"; break;
-        case IMPORT_PIX: platform = "pix"; break;
-        }
+        string platform = selectedPlatform();
 
         //
         // ConfigImport "owns" buffer - it is deleted
@@ -806,6 +811,18 @@ void DiscoveryDruid::startConfigImport()
           tr("Could not open file %1").arg(m_dialog->import_filename->text()));
         setBackEnabled(currentPage(),true);
     }
+}
+
+string DiscoveryDruid::selectedPlatform()
+{
+    string platform = "";
+    switch (m_dialog->import_platform->currentIndex())
+    {
+    case IMPORT_IOS: platform = "iosacl"; break;
+    case IMPORT_IPT: platform = "iptables"; break;
+    case IMPORT_PIX: platform = "pix"; break;
+    }
+    return platform;
 }
 
 InetAddr DiscoveryDruid::getNS()
@@ -1657,9 +1674,11 @@ void DiscoveryDruid::customEvent(QEvent *event)
         case BT_HOSTS:
             loadDataFromFile();
             break;
+
         case BT_IMPORT:
             loadDataFromImporter();
             break;
+
         default:
             break;
         }
@@ -1685,10 +1704,22 @@ void DiscoveryDruid::customEvent(QEvent *event)
                 nextButton->setEnabled(false);
             }
             break;
+
         case BT_IMPORT:
-            setFinishEnabled(currentPage(),true);
-            finishButton->setFocus();
+        {
+            // if imported PIX, need to show one more page to select network zones
+            if (selectedPlatform() == "pix")
+            {
+                setNextEnabled(currentPage(), true);
+                setFinishEnabled(currentPage(), false);
+            } else
+            {
+                setNextEnabled(currentPage(), false);
+                setFinishEnabled(currentPage(), true);
+                finishButton->setFocus();
+            }
             break;
+        }
         default:
             break;
         }
