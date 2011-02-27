@@ -1,3 +1,10 @@
+2011-02-27  vadim  <vadim@netcitadel.com>
+
+	* instDialog_ui_ops.cpp (readInstallerOptionsFromFirewallObject):
+	fixes #2160 "Installer reports error "Generated script file
+	<firewall>.fw not found."". The problem was intorduced earlier
+	while fixing #2047
+
 2011-02-26  vadim  <vadim@netcitadel.com>
 
 	* DiscoveryDruid.cpp (finishClicked): see #2153 "Add Network Zone
