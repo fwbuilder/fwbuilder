@@ -191,17 +191,17 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
 
     importPlatformChanged(m_dialog->import_platform->currentIndex());
 
-    showPage(0);
-    setNextEnabled(0, true);
+    showPage(CHOOSE_METHOD_PAGE);
+    setNextEnabled(CHOOSE_METHOD_PAGE, true);
 
     if (start_with_import)
     {
         m_dialog->dm_import_config->setDown(true);
         setDiscoveryMethod_Import();
-        setAppropriate( 0, false );
+        setAppropriate( CHOOSE_METHOD_PAGE, false );
         // show the first page of the "import policy" track of the wizard
-        showPage( 2 );
-        setNextEnabled(2, false);
+        showPage( IMPORT_CONFIG_PAGE );
+        setNextEnabled(IMPORT_CONFIG_PAGE, false);
         cancelButton->show();
     }
 
@@ -224,12 +224,14 @@ void DiscoveryDruid::backClicked()
 
 void DiscoveryDruid::finishClicked()
 {
-    if (current_task == BT_IMPORT && selectedPlatform() == "pix" && currentPage() == 14)
+    if (current_task == BT_IMPORT &&
+        selectedPlatform() == "pix" &&
+        currentPage() == NETWORK_ZONES_PAGE &&
+        discovered_fw != NULL)
     {
         // read and configure network zones
         list<FWObject*> all_interfaces = discovered_fw->getByTypeDeep(Interface::TYPENAME);
         list<FWObject*>::iterator it;
-        int row = 0;
         for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
         {
             Interface *iface = Interface::cast(*it);
@@ -482,7 +484,7 @@ void DiscoveryDruid::changedSelected( const int &page )
     switch (page)
     {
 
-    case 1: // Reading file in hosts format
+    case READ_HOSTS_FILE_PAGE: // Reading file in hosts format
     {
         setNextEnabled(page, false);
         changedHostsFileName();
@@ -490,7 +492,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 2: // import config
+    case IMPORT_CONFIG_PAGE: // import config
     {
         m_dialog->obj_name->setFocus();
         setBackEnabled(page, true);
@@ -498,7 +500,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 3: // Import DNS zone
+    case IMPORT_DNS_ZONE_PAGE: // Import DNS zone
     {
         changedDomainName();
         m_dialog->domainname->setFocus();
@@ -506,7 +508,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 4: // Name server
+    case NAME_SERVER_PAGE: // Name server
     {
         if (page>FromPage)
             getNameServers();
@@ -519,7 +521,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 5: // Network discovery using SNMP
+    case SNMP_DISCOVERY_PAGE: // Network discovery using SNMP
     {
         disconnect(timer,SIGNAL(timeout()),0,0);
         connect(timer,SIGNAL(timeout()),this,SLOT(checkHostName()));
@@ -533,21 +535,21 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 6: // Network scan options
+    case NETWORK_SCAN_OPTIONS_PAGE: // Network scan options
     {
         m_dialog->snmprecursive->setFocus();
         //setNextEnabled(page,false);
         break;
     }
 
-    case 7: // SNMP and DNS reverse lookup queries parameters
+    case SNMP_PARAMETERS_PAGE: // SNMP and DNS reverse lookup queries parameters
     {
         checkSNMPCommunity();
         m_dialog->snmpcommunity->setFocus();
         break;
     }
 
-    case 8: // Background process (import from hosts and from config file)
+    case BACKGROUND_PROCESS_PAGE: // Background process (import from hosts and from config file)
     {
         m_dialog->discoveryprogress->setValue(-1);
         m_dialog->discoverylog->clear();
@@ -568,7 +570,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 9: // Networks
+    case CHOOSE_NETWORKS_PAGE: // Networks
     {
         fillListOfNetworks();
         fillNetworks();
@@ -577,7 +579,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 10: // Objects
+    case CHOOSE_OBJECTS_PAGE: // Objects
     {
         if (Networks.size()==0)
             setBackEnabled(page,false);
@@ -588,19 +590,19 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 11: // Adjust Object type
+    case ADJUST_OBJECT_TYPES_PAGE: // Adjust Object type
     {
         setBackEnabled(page,true);
         fillTypeChangingList();
         break;
     }
 
-    case 12: // Target library
+    case TARGET_LIB_PAGE: // Target library
     {
         break;
     }
 
-    case 13: // Objects creation ...
+    case CREATE_OBJECTS_PAGE: // Objects creation ...
     {
         setBackEnabled(page,false);
         cancelButton->hide();
@@ -611,7 +613,7 @@ void DiscoveryDruid::changedSelected( const int &page )
         break;
     }
 
-    case 14: // Network zones for PIX
+    case NETWORK_ZONES_PAGE: // Network zones for PIX
     {
         setBackEnabled(page, false);
         cancelButton->hide();
