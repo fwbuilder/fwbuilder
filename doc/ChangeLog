@@ -1,5 +1,8 @@
 2011-02-27  vadim  <vadim@netcitadel.com>
 
+	* DiscoveryDruid.cpp (finishClicked): fixes #2156 "After import
+	the firewall should be opened in object tree".
+
 	* instDialog_ui_ops.cpp (readInstallerOptionsFromFirewallObject):
 	fixes #2160 "Installer reports error "Generated script file
 	<firewall>.fw not found."". The problem was intorduced earlier

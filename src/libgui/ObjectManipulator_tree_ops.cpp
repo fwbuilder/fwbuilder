@@ -171,9 +171,31 @@ QString ObjectManipulator::getTreeLabel(FWObject *obj, int col)
     return "";
 }
 
+void ObjectManipulator::expandObjectInTree(FWObject *obj)
+{
+    FWObject *o = FWReference::getObject(obj);
+
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::expandObjectInTree"
+                 << "o=" << QString::fromUtf8(o->getName().c_str());
+
+    //if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+
+    QTreeWidgetItem *it = allItems[o];
+    if (it==NULL)
+    {
+        if (fwbdebug) qDebug() << "####  Tree node not found";
+        return;
+    }
+
+    expandOrCollapseCurrentTreeNode(it, true);
+}
+
 void ObjectManipulator::expandOrCollapseCurrentTreeNode(QTreeWidgetItem *item,
                                                         bool expand)
 {
+    QTreeWidgetItem *parent = item->parent();
+    if (expand && ! parent->isExpanded()) parent->setExpanded(true);
     item->setExpanded(expand);
     for (int i=0; i<item->childCount(); ++i)
         expandOrCollapseCurrentTreeNode(item->child(i), expand);

@@ -1262,17 +1262,6 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
     otvi->getTree()->setFocus(Qt::OtherFocusReason);
 }
 
-void ObjectManipulator::expandObjectInTree(FWObject *obj)
-{
-    FWObject *o = obj;
-    if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
-
-    QTreeWidgetItem *it = allItems[o];
-    if (it==NULL) return;
-
-    expandOrCollapseCurrentTreeNode(it, true);
-}
-
 void ObjectManipulator::libChangedById(int obj_id)
 {
     for (int i=0; i<libs_model->rowCount(); ++i)

@@ -224,45 +224,60 @@ void DiscoveryDruid::backClicked()
 
 void DiscoveryDruid::finishClicked()
 {
-    if (current_task == BT_IMPORT &&
-        selectedPlatform() == "pix" &&
-        currentPage() == NETWORK_ZONES_PAGE &&
-        discovered_fw != NULL)
+    if (current_task == BT_IMPORT && discovered_fw != NULL)
     {
-        // read and configure network zones
-        list<FWObject*> all_interfaces = discovered_fw->getByTypeDeep(Interface::TYPENAME);
-        list<FWObject*>::iterator it;
-        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+        if (selectedPlatform() == "pix" && currentPage() == NETWORK_ZONES_PAGE)
         {
-            Interface *iface = Interface::cast(*it);
-
-            string  network_zone_str_id = "";
-
-            QList<QTableWidgetItem*> ltwi =
-                m_dialog->iface_nz_list->findItems( iface->getName().c_str(),
-                                                    Qt::MatchExactly );
-            if ( ! ltwi.empty())
+            // read and configure network zones
+            list<FWObject*> all_interfaces =
+                discovered_fw->getByTypeDeep(Interface::TYPENAME);
+            list<FWObject*>::iterator it;
+            for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
             {
-                QTableWidgetItem *itm2 = ltwi[0];
-                assert(itm2!=NULL);
-                int row = itm2->row();
-                QComboBox *cb = dynamic_cast<QComboBox*>(
-                    m_dialog->iface_nz_list->cellWidget(row, 3));
-                assert(cb!=NULL);
-                int network_zone_int_id =
-                    cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
-                if (network_zone_int_id != 0)
-                    network_zone_str_id = FWObjectDatabase::getStringId(
-                        network_zone_int_id);
-                else
-                    network_zone_str_id = "";
+                Interface *iface = Interface::cast(*it);
+
+                string  network_zone_str_id = "";
+
+                QList<QTableWidgetItem*> ltwi =
+                    m_dialog->iface_nz_list->findItems( iface->getName().c_str(),
+                                                        Qt::MatchExactly );
+                if ( ! ltwi.empty())
+                {
+                    QTableWidgetItem *itm2 = ltwi[0];
+                    assert(itm2!=NULL);
+                    int row = itm2->row();
+                    QComboBox *cb = dynamic_cast<QComboBox*>(
+                        m_dialog->iface_nz_list->cellWidget(row, 3));
+                    assert(cb!=NULL);
+                    int network_zone_int_id =
+                        cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
+                    if (network_zone_int_id != 0)
+                        network_zone_str_id = FWObjectDatabase::getStringId(
+                            network_zone_int_id);
+                    else
+                        network_zone_str_id = "";
+                }
+
+                // only set network zone if it is supported and is not
+                // empty. See #2014
+                if (!network_zone_str_id.empty())
+                    iface->setStr("network_zone", network_zone_str_id);
+
             }
-
-            // only set network zone if it is supported and is not empty. See #2014
-            if (!network_zone_str_id.empty())
-                iface->setStr("network_zone", network_zone_str_id);
-
         }
+
+        QCoreApplication::postEvent(
+            mw->activeProject(), new expandObjectInTreeEvent(
+                mw->activeProject()->getFileName(), discovered_fw->getId()));
+
+        QCoreApplication::postEvent(
+            mw->activeProject(), new showObjectInTreeEvent(
+                mw->activeProject()->getFileName(), discovered_fw->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(
+                mw->activeProject()->getFileName(), discovered_fw->getId()));
+
     }
 
     QDialog::accept();

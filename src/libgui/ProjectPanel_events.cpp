@@ -68,6 +68,10 @@ bool ProjectPanel::event(QEvent *event)
 
         if (fwbdebug)
             qDebug() << this
+                     << "rcs:"
+                     << rcs
+                     << "rcs->getFileName():"
+                     << QString((rcs!=NULL) ? rcs->getFileName() : "")
                      << "file:"
                      << data_file
                      << "event:"
