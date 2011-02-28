@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3484
+#  Firewall Builder  fwb_ipt v4.2.0.3490
 #
-#  Generated Mon Feb 21 16:57:18 2011 PST by vadim
+#  Generated Sun Feb 27 22:32:12 2011 PST by vadim
 #
 # files: * firewall3.fw /etc/fw/firewall3.fw
 #
@@ -38,7 +38,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
+    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 getInterfaceVarName() {
@@ -93,7 +93,7 @@ diff_intf() {
 
 find_program() {
   PGM=$1
-  command -v $PGM &>/dev/null || {
+  command -v $PGM >/dev/null 2>&1 || {
     echo "$PGM not found"
     exit 1
   }
@@ -578,7 +578,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Feb 21 16:57:18 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 27 22:32:12 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

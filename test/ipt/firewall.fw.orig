@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3484
+#  Firewall Builder  fwb_ipt v4.2.0.3490
 #
-#  Generated Mon Feb 21 16:56:24 2011 PST by vadim
+#  Generated Sun Feb 27 22:31:16 2011 PST by vadim
 #
 # files: * firewall.fw /etc/fw/firewall.fw
 #
@@ -61,7 +61,7 @@ LOGGER="/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
+    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 getInterfaceVarName() {
@@ -116,7 +116,7 @@ diff_intf() {
 
 find_program() {
   PGM=$1
-  command -v $PGM &>/dev/null || {
+  command -v $PGM >/dev/null 2>&1 || {
     echo "$PGM not found"
     exit 1
   }
@@ -447,54 +447,73 @@ script_body() {
     # 
     echo "Rule 14 (NAT)"
     # 
+    # hsould match mac and ip addresses
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 15 (NAT)
+    # 
+    echo "Rule 15 (NAT)"
+    # 
+    # ensure generated rules match different mac addresses
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    # 
+    # Rule 16 (NAT)
+    # 
+    echo "Rule 16 (NAT)"
+    # 
+    # should match mac and ip addresses
     $IPTABLES -t nat -N Cid445F52DE31658.0
     $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid445F52DE31658.0
     $IPTABLES -t nat -A Cid445F52DE31658.0  -d 61.150.47.112  -j RETURN
     $IPTABLES -t nat -A Cid445F52DE31658.0  -d 223.223.223.223  -j RETURN
     $IPTABLES -t nat -A Cid445F52DE31658.0 -p tcp -m tcp   --dport 80 -j SNAT --to-source 222.222.222.222
     # 
-    # Rule 15 (NAT)
-    # 
-    echo "Rule 15 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10:80
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 1024:65535  -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10:80
-    # 
-    # Rule 16 (NAT)
-    # 
-    echo "Rule 16 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 53  -d 192.168.1.1  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 53  -d 222.222.222.222  -j DNAT --to-destination 192.168.1.10
-    # 
     # Rule 17 (NAT)
     # 
     echo "Rule 17 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 222.222.222.222  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 1024:65535  -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10:80
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 1024:65535  -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10:80
     # 
     # Rule 18 (NAT)
     # 
     echo "Rule 18 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 4000:4010 -j SNAT --to-source 222.222.222.222
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 53  -d 192.168.1.1  -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  --sport 53  -d 222.222.222.222  -j DNAT --to-destination 192.168.1.10
     # 
     # Rule 19 (NAT)
     # 
     echo "Rule 19 (NAT)"
     # 
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   --dport 3128 -j DNAT --to-destination :80
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 222.222.222.222  --dport 4000:4010 -j DNAT --to-destination 192.168.1.10:4000-4010
     # 
     # Rule 20 (NAT)
     # 
     echo "Rule 20 (NAT)"
     # 
-    $IPTABLES -t nat -A OUTPUT -p tcp -m tcp   --dport 3128 -j DNAT --to-destination :80
+    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 4000:4010 -j SNAT --to-source 222.222.222.222
     # 
     # Rule 21 (NAT)
     # 
     echo "Rule 21 (NAT)"
+    # 
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   --dport 3128 -j DNAT --to-destination :80
+    # 
+    # Rule 22 (NAT)
+    # 
+    echo "Rule 22 (NAT)"
+    # 
+    $IPTABLES -t nat -A OUTPUT -p tcp -m tcp   --dport 3128 -j DNAT --to-destination :80
+    # 
+    # Rule 23 (NAT)
+    # 
+    echo "Rule 23 (NAT)"
     # 
     # should use multiport
     # and account for
@@ -505,9 +524,9 @@ script_body() {
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513 -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 514,4321,465,1080,111,7100 -j DNAT --to-destination 192.168.1.10
     # 
-    # Rule 22 (NAT)
+    # Rule 24 (NAT)
     # 
-    echo "Rule 22 (NAT)"
+    echo "Rule 24 (NAT)"
     # 
     # should use multiport
     # and account for
@@ -1342,7 +1361,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Feb 21 16:56:24 2011 by vadim"
+        log "Activating firewall script generated Sun Feb 27 22:31:16 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
