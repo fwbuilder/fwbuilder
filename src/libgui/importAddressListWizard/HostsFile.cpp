@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2001 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Vadim Zaliva lord@crocodile.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -44,7 +44,7 @@ void HostsFile::parse() throw(FWException)
     data.clear();
 
     QRegExp comment("^\\s*#");
-    QRegExp hosts_line("(\\S+)\\s+(.*)$");
+    QRegExp hosts_line("^\\s*(\\S+)\\s+(\\S*)");
 
     while ( ! file.atEnd())
     {
@@ -60,8 +60,7 @@ void HostsFile::parse() throw(FWException)
 
             if (fwbdebug)
                 qDebug() << "cap(1)=" << hosts_line.cap(1)
-                         << "cap(2)=" << hosts_line.cap(2)
-                         << "cap(3)=" << hosts_line.cap(3);
+                         << "cap(2)=" << hosts_line.cap(2);
 
             try
             {
