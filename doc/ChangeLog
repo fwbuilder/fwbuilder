@@ -1,3 +1,13 @@
+2011-03-01  vadim  <vadim@netcitadel.com>
+
+	* importAddressListWizard/ImportAddressListWizard.cpp
+	(ImportAddressListWizard): see #2163 code that imports addresses
+	from a file in /etc/hosts format moved to its own wizard; using
+	QWizard and QWizardPage classes with correct implementation of
+	page sequencing and validation; old discovery druid has been
+	disabled. SNMP discovery and ios/pix/iptables configuration import
+	will move to their own wizards later.
+
 2011-02-27  vadim  <vadim@netcitadel.com>
 
 	* DiscoveryDruid.cpp (finishClicked): fixes #2156 "After import
