@@ -31,6 +31,7 @@
 
 #include "FilterDialog.h"
 #include "ObjectManipulator.h"
+#include "ObjectDescriptor.h"
 #include "FWBSettings.h"
 
 #include "fwbuilder/Library.h"
