@@ -69,6 +69,7 @@ HEADERS += ../../config.h \
     ObjectListView.h \
     ObjectIconView.h \
     ObjectTreeViewItem.h \
+	ObjectSelectorWidget.h \
     InstallFirewallViewItem.h \
     DialogFactory.h \
     HostDialog.h \
@@ -261,6 +262,7 @@ SOURCES += ProjectPanel.cpp \
     ObjectTreeView.cpp \
     ObjectListView.cpp \
     ObjectIconView.cpp \
+	ObjectSelectorWidget.cpp \
     DialogFactory.cpp \
     HostDialog.cpp \
     FirewallDialog.cpp \
@@ -504,6 +506,7 @@ FORMS = FWBMainWindow_q.ui \
     TutorialDialog.ui \
     WorkflowIcons.ui \
     FirewallCodeViewer.ui \
+	objectselectorwidget_q.ui \
 \
 	importAddressListWizard/chooseobjectspage_q.ui \
 	importAddressListWizard/createobjectspage_q.ui \

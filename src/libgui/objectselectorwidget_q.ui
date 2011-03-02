@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ObjectSelectorWidget_q</class>
+ <widget class="QWidget" name="ObjectSelectorWidget_q">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>691</width>
+    <height>455</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="_6">
+     <property name="margin">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QListWidget" name="objectResultList">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="_7">
+       <property name="margin">
+        <number>6</number>
+       </property>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="remObjFilterButton">
+         <property name="text">
+          <string>Remove Filter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="selAllResButton">
+         <property name="text">
+          <string>Select All</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="objFilterButton">
+         <property name="text">
+          <string>Filter ...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="unselAllResButton">
+         <property name="text">
+          <string>Unselect All</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="_8">
+     <property name="margin">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="addObjButton">
+       <property name="text">
+        <string>-&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="remObjButton">
+       <property name="text">
+        <string>&lt;-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>240</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <layout class="QVBoxLayout" name="_9">
+     <property name="margin">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QListWidget" name="objectList">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="_10">
+       <property name="margin">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="selAllObjButton">
+         <property name="text">
+          <string>Select All</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="unselAllObjButton">
+         <property name="text">
+          <string>Unselect All</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>addObjButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>addObject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>objFilterButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>addFilter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>84</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remObjButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>removeObject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remObjFilterButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>removeFilter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selAllObjButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>selectAllUsed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selAllResButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>selectAllResults()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>84</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unselAllObjButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>unselectAllUsed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>605</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unselAllResButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ObjectSelectorWidget_q</receiver>
+   <slot>unselectAllResults()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>addFilter()</slot>
+  <slot>removeFilter()</slot>
+  <slot>selectAllResults()</slot>
+  <slot>unselectAllResults()</slot>
+  <slot>selectAllUsed()</slot>
+  <slot>unselectAllUsed()</slot>
+  <slot>addObject()</slot>
+  <slot>removeObject()</slot>
+ </slots>
+</ui>

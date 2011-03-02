@@ -26,28 +26,14 @@
 
 #include "ui_chooseobjectspage_q.h"
 
-#include "fwbuilder/InetAddr.h"
-
 #include <QStringList>
 
-class Filter;
-class FilterDialog;
 
 class ChooseObjectsPage : public QWizardPage
 {
     Q_OBJECT;
 
     Ui::ChooseObjectsPage_q *m_dialog;
-
-    Filter * flt_obj;
-    FilterDialog * flt_obj_d;
-    std::map<libfwbuilder::InetAddr, QStringList> reverse_hosts;
-    QStringList objects_to_use;
-
-    // configure this as a proprty so it can be accessed as a field after
-    // registering with registerField(). Now it can be accessed from
-    // other pages of the wizard
-    Q_PROPERTY(QStringList objectsToUse READ getObjectsToUse WRITE setObjectsToUse);
     
 public:
     ChooseObjectsPage(QWidget *parent);
@@ -58,23 +44,6 @@ public:
 
     virtual bool isComplete() const;
 
-    void fillListOfObjects();
-    void updateObjectsToUse();
-
-    QStringList getObjectsToUse() { return objects_to_use; }
-    void setObjectsToUse(const QStringList &lst) { objects_to_use = lst; }
-    
-public slots:
-
-    void addFilter();
-    void removeFilter();
-    void selectAllResults();
-    void unselectAllResults();
-    void selectAllUsed();
-    void unselectAllUsed();
-    void addObject();
-    void removeObject();
-    
 };
 
 
