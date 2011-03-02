@@ -30,7 +30,6 @@
 #include "VERSION.h"
 
 #include "FilterDialog.h"
-#include "DiscoveryDruid.h"
 #include "ObjectManipulator.h"
 #include "FWBSettings.h"
 
