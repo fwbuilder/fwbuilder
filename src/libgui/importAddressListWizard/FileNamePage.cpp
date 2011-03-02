@@ -23,9 +23,9 @@
 
 #include "../../../config.h"
 #include "../global.h"
+#include "../FWBSettings.h"
 
 #include "FileNamePage.h"
-#include "../FWBSettings.h"
 
 #include <QFileInfo>
 #include <QFileDialog>

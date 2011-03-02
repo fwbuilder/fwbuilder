@@ -67,7 +67,7 @@ void HostsFile::parse() throw(FWException)
             {
                 InetAddr addr(AF_INET6, addr_s.toStdString());
                 foreach(QString name, names) data[addr] << name.trimmed();
-            } catch (FWException &ex)
+            } catch (FWException&)
             {
                 try
                 {

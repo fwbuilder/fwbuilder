@@ -24,10 +24,10 @@
 #include "../../../config.h"
 #include "../global.h"
 #include "../events.h"
-
-#include "CreateObjectsPage.h"
 #include "../FWWindow.h"
 #include "../ProjectPanel.h"
+
+#include "CreateObjectsPage.h"
 
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"

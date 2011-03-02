@@ -29,10 +29,10 @@
 
 #include "fwbuilder/InetAddr.h"
 
-#include "FilterDialog.h"
-
 #include <QStringList>
 
+class Filter;
+class FilterDialog;
 
 class ChooseObjectsPage : public QWizardPage
 {
