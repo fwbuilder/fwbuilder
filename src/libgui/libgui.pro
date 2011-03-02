@@ -518,10 +518,6 @@ FORMS += transferdialog_q.ui
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
 DEFINES += $$ANTLR_DEFINES
 
-# add ".." to includepath to make sure #include works when we compile modules
-# in subdirectories, such as importAddressListWizard and other wizards
-INCLUDEPATH += ..
-
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 INCLUDEPATH += ../common \
     ../iptlib \
