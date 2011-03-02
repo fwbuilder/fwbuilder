@@ -146,7 +146,6 @@ HEADERS += ../../config.h \
     TagServiceDialog.h \
     ActionsDialog.h \
     SimpleTextView.h \
-    DiscoveryDruid.h \
     BlankDialog.h \
     DNSNameDialog.h \
     instOptionsDialog.h \
@@ -193,7 +192,16 @@ HEADERS += ../../config.h \
     FWBApplication.h \
     WorkflowIcons.h \
     FirewallCodeViewer.h \
-	networkZoneManager.h
+	networkZoneManager.h  \
+\
+	ObjectDescriptor.h \
+\
+	importAddressListWizard/ChooseObjectsPage.h \
+	importAddressListWizard/CreateObjectsPage.h \
+	importAddressListWizard/FileNamePage.h \
+	importAddressListWizard/SelectLibraryPage.h \
+	importAddressListWizard/ImportAddressListWizard.h \
+	importAddressListWizard/HostsFile.h \
 
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
@@ -333,7 +341,6 @@ SOURCES += ProjectPanel.cpp \
     TagServiceDialog.cpp \
     ActionsDialog.cpp \
     SimpleTextView.cpp \
-    DiscoveryDruid.cpp \
     BlankDialog.cpp \
     DNSNameDialog.cpp \
     ObjectTreeViewItem.cpp \
@@ -381,7 +388,16 @@ SOURCES += ProjectPanel.cpp \
     FWBApplication.cpp \
     WorkflowIcons.cpp \
     FirewallCodeViewer.cpp \
-	networkZoneManager.cpp
+	networkZoneManager.cpp \
+\
+	ObjectDescriptor.cpp \
+\
+	importAddressListWizard/ChooseObjectsPage.cpp \
+	importAddressListWizard/CreateObjectsPage.cpp \
+	importAddressListWizard/FileNamePage.cpp \
+	importAddressListWizard/SelectLibraryPage.cpp \
+	importAddressListWizard/ImportAddressListWizard.cpp \
+	importAddressListWizard/HostsFile.cpp \
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
@@ -460,7 +476,6 @@ FORMS = FWBMainWindow_q.ui \
     actionsdialog_q.ui \
     simpletextview_q.ui \
     helpview_q.ui \
-    discoverydruid_q.ui \
     filterdialog_q.ui \
     natruleoptionsdialog_q.ui \
     instoptionsdialog_q.ui \
@@ -488,7 +503,13 @@ FORMS = FWBMainWindow_q.ui \
     ClusterInterfaceWidget.ui \
     TutorialDialog.ui \
     WorkflowIcons.ui \
-    FirewallCodeViewer.ui
+    FirewallCodeViewer.ui \
+\
+	importAddressListWizard/chooseobjectspage_q.ui \
+	importAddressListWizard/createobjectspage_q.ui \
+	importAddressListWizard/filenamepage_q.ui \
+	importAddressListWizard/selectlibrarypage_q.ui \
+
 
 # fwtransfer stuff.
 HEADERS += transferDialog.h

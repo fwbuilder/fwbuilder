@@ -34,7 +34,6 @@ SOURCES  = 	InetAddr.cpp \
 			FWServiceReference.cpp \
 			Group.cpp \
 			Host.cpp \
-			HostsFile.cpp \
 			ICMPService.cpp \
 			ICMP6Service.cpp \
 			Interface.cpp \
@@ -107,7 +106,6 @@ HEADERS  = 	inet_net.h \
 			FWServiceReference.h \
 			Group.h \
 			Host.h \
-			HostsFile.h \
 			ICMPService.h \
 			ICMP6Service.h \
 			Interface.h \

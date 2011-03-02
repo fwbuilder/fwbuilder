@@ -52,7 +52,7 @@
 #include "PrefsDialog.h"
 #include "LibExportDialog.h"
 #include "findDialog.h"
-#include "DiscoveryDruid.h"
+#include "importAddressListWizard/ImportAddressListWizard.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "CompilerOutputPanel.h"
@@ -858,14 +858,15 @@ void FWWindow::fileExit()
     app->quit();
 }
 
-void FWWindow::toolsDiscoveryDruid()
+void FWWindow::toolsImportAddressesFromFile()
 {
     if (activeProject())
     {
-        DiscoveryDruid druid(this);
-        druid.exec();
+        ImportAddressListWizard wiz(this);
+        wiz.exec();
     }
 }
+
 
 void FWWindow::importPolicy()
 {
@@ -874,8 +875,8 @@ void FWWindow::importPolicy()
         if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
             return;
 
-        DiscoveryDruid druid(this, true);
-        druid.exec();
+//        DiscoveryDruid druid(this, true);
+//        druid.exec();
     }
 }
 
@@ -1000,7 +1001,6 @@ void FWWindow::prepareFileMenu()
 
 void FWWindow::prepareToolsMenu()
 {
-    m_mainWindow->DiscoveryDruidAction->setEnabled(db()!=NULL);
 }
 
 void FWWindow::prepareWindowsMenu()

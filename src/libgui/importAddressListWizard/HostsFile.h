@@ -2,12 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2001 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Vadim Zaliva lord@crocodile.org
-
-  $Id$
-
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -30,13 +27,8 @@
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/InetAddr.h>
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
+#include <QStringList>
 
-namespace libfwbuilder
-{
 
 /**
  * This class is parser for file in hosts(5) format
@@ -44,20 +36,22 @@ namespace libfwbuilder
  */
 class HostsFile
 {
-    public:
+    QString file_name;
+    
+public:
 
-    void parse(const std::string &filename) throw(FWException);
-    void parse(std::istream &from) throw(FWException);
+    HostsFile(const QString &file_name) { this->file_name = file_name; }
+    
+    void parse() throw(libfwbuilder::FWException);
     
     // Returns all hosts found
-    std::map<InetAddr, std::vector<std::string> > getAll() { return data; }
+    std::map<libfwbuilder::InetAddr, QStringList> getAll() { return data; }
 
     private:
     
-    std::map<InetAddr, std::vector<std::string> > data;
+    std::map<libfwbuilder::InetAddr, QStringList> data;
 };
 
-}
 
 #endif // _HOSTS_FILE_HH_
 

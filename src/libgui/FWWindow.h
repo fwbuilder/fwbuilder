@@ -231,8 +231,8 @@ public slots:
     virtual void prepareRulesMenu();
     virtual void cleanRulesMenu();
 
-    virtual void toolsDiscoveryDruid();
-
+    virtual void toolsImportAddressesFromFile();
+    
     virtual void checkForUpgrade(const QString&);
 
     virtual void projectWindowClosed();
