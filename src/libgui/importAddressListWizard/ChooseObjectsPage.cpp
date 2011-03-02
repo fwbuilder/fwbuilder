@@ -21,14 +21,14 @@
 
 */
 
-#include "../../../config.h"
-#include "../global.h"
+#include "../../config.h"
+#include "global.h"
 
 #include "ChooseObjectsPage.h"
 #include "HostsFile.h"
 
-#include "../ObjectDescriptor.h"
-#include "../FilterDialog.h"
+#include "ObjectDescriptor.h"
+#include "FilterDialog.h"
 
 #include <QProgressDialog>
 #include <QMessageBox>

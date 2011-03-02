@@ -21,10 +21,9 @@
 
 */
 
-//#include "../../config.h"
-#include "../global.h"
-#include "../utils.h"
-#include "../FWWindow.h"
+#include "global.h"
+#include "utils.h"
+#include "FWWindow.h"
 
 #include "SelectLibraryPage.h"
 

@@ -21,9 +21,9 @@
 
 */
 
-#include "../../../config.h"
-#include "../global.h"
-#include "../FWBSettings.h"
+#include "../../config.h"
+#include "global.h"
+#include "FWBSettings.h"
 
 #include "FileNamePage.h"
 

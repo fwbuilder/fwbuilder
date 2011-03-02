@@ -21,11 +21,11 @@
 
 */
 
-#include "../../../config.h"
-#include "../global.h"
-#include "../events.h"
-#include "../FWWindow.h"
-#include "../ProjectPanel.h"
+#include "../../config.h"
+#include "global.h"
+#include "events.h"
+#include "FWWindow.h"
+#include "ProjectPanel.h"
 
 #include "CreateObjectsPage.h"
 
