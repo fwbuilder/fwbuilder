@@ -203,6 +203,19 @@ HEADERS += ../../config.h \
 	importAddressListWizard/SelectLibraryPage.h \
 	importAddressListWizard/ImportAddressListWizard.h \
 	importAddressListWizard/HostsFile.h \
+\
+	snmpNetworkDiscoveryWizard/ND_ChooseNetworksPage.h \
+	snmpNetworkDiscoveryWizard/ND_ChooseObjectsPage.h \
+	snmpNetworkDiscoveryWizard/ND_ChooseObjectTypePage.h \
+	snmpNetworkDiscoveryWizard/ND_CreateObjectsPage.h \
+	snmpNetworkDiscoveryWizard/ND_DiscoveryParametersPage.h \
+	snmpNetworkDiscoveryWizard/ND_ProgressPage.h \
+	snmpNetworkDiscoveryWizard/ND_SelectLibraryPage.h \
+	snmpNetworkDiscoveryWizard/ND_SetupPage.h \
+	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.h \
+	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h
+
+
 
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
@@ -400,6 +413,17 @@ SOURCES += ProjectPanel.cpp \
 	importAddressListWizard/SelectLibraryPage.cpp \
 	importAddressListWizard/ImportAddressListWizard.cpp \
 	importAddressListWizard/HostsFile.cpp \
+\
+	snmpNetworkDiscoveryWizard/ND_ChooseNetworksPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_ChooseObjectsPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_ChooseObjectTypePage.cpp \
+	snmpNetworkDiscoveryWizard/ND_CreateObjectsPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_DiscoveryParametersPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_ProgressPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_SelectLibraryPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_SetupPage.cpp \
+	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.cpp \
+	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
@@ -512,6 +536,16 @@ FORMS = FWBMainWindow_q.ui \
 	importAddressListWizard/createobjectspage_q.ui \
 	importAddressListWizard/filenamepage_q.ui \
 	importAddressListWizard/selectlibrarypage_q.ui \
+\
+	snmpNetworkDiscoveryWizard/nd_choosenetworkspage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_chooseobjectspage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_chooseobjecttypepage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_createobjectspage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_discoveryparameterspage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_progresspage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_selectlibrarypage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_setuppage_q.ui \
+	snmpNetworkDiscoveryWizard/nd_snmpparameterspage_q.ui \
 
 
 # fwtransfer stuff.

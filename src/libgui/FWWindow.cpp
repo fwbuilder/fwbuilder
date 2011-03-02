@@ -53,6 +53,7 @@
 #include "LibExportDialog.h"
 #include "findDialog.h"
 #include "importAddressListWizard/ImportAddressListWizard.h"
+#include "snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "CompilerOutputPanel.h"
@@ -867,6 +868,14 @@ void FWWindow::toolsImportAddressesFromFile()
     }
 }
 
+void FWWindow::toolsSNMPDiscovery()
+{
+    if (activeProject())
+    {
+        SNMPNetworkDiscoveryWizard wiz(this);
+        wiz.exec();
+    }
+}
 
 void FWWindow::importPolicy()
 {

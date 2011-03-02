@@ -742,7 +742,7 @@
      <x>0</x>
      <y>0</y>
      <width>1144</width>
-     <height>26</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -774,6 +774,7 @@
     </property>
     <addaction name="fileCompareAction"/>
     <addaction name="ImportAddressesFromFileAction"/>
+    <addaction name="SNMPDiscoveryAction"/>
    </widget>
    <widget class="QMenu" name="helpMenu">
     <property name="title">
@@ -1377,6 +1378,11 @@
   <action name="ImportAddressesFromFileAction">
    <property name="text">
     <string>Import Addresses From File</string>
+   </property>
+  </action>
+  <action name="SNMPDiscoveryAction">
+   <property name="text">
+    <string>Discover networks and hosts using SNMP</string>
    </property>
   </action>
  </widget>
@@ -2262,6 +2268,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>SNMPDiscoveryAction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toolsSNMPDiscovery()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2276,5 +2298,6 @@
   <slot>showTutorial()</slot>
   <slot>inspect()</slot>
   <slot>toolsImportAddressesFromFile()</slot>
+  <slot>toolsSNMPDiscovery()</slot>
  </slots>
 </ui>

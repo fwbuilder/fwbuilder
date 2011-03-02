@@ -232,6 +232,7 @@ public slots:
     virtual void cleanRulesMenu();
 
     virtual void toolsImportAddressesFromFile();
+    virtual void toolsSNMPDiscovery();
     
     virtual void checkForUpgrade(const QString&);
 

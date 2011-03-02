@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ND_ChooseObjectTypePage_q</class>
+ <widget class="QWizardPage" name="ND_ChooseObjectTypePage_q">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>578</width>
+    <height>519</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="textLabel1_6">
+     <property name="text">
+      <string>Here you can change type of the objects to be created for each address discovered by the scanner. By default, an &quot;Address&quot; object is created for the host with just one interface with single IP address and &quot;Host&quot; object is created for the host with multiple interfaces, however you can change their types on this page.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignVCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="typeChangingList">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Object</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Interfaces</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QGridLayout">
+     <item row="1" column="2">
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>30</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="unselAllLastButton">
+       <property name="text">
+        <string>Unselect All</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="removeLastFilterButton">
+       <property name="text">
+        <string>Remove Filter</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="addLastFilterButton">
+       <property name="text">
+        <string>Filter ...</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="selAllLastButton">
+       <property name="text">
+        <string>Select All</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3" rowspan="2">
+      <widget class="QGroupBox" name="groupBox4">
+       <property name="title">
+        <string>Change type of selected objects:</string>
+       </property>
+       <layout class="QHBoxLayout" name="_2">
+        <property name="margin">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="addresTypeButton">
+          <property name="text">
+           <string>Address</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="hostTypeButton">
+          <property name="text">
+           <string>Host</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton26">
+          <property name="text">
+           <string>Firewall</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <zorder>textLabel1_6</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>typeChangingList</zorder>
+  <zorder>groupBox4</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
