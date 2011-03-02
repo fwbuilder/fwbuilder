@@ -24,7 +24,7 @@
 #ifndef __FILENAMEPAGE_H_
 #define __FILENAMEPAGE_H_
 
-#include "../../config.h"
+//#include "../../config.h"
 #include "ui_filenamepage_q.h"
 
 

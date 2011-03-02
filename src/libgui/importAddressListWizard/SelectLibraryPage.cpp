@@ -21,12 +21,13 @@
 
 */
 
-#include "../../config.h"
-#include "global.h"
+//#include "../../config.h"
+#include "../global.h"
 
 #include "SelectLibraryPage.h"
-#include "platforms.h"
-#include "FWWindow.h"
+
+#include "../utils.h"
+#include "../FWWindow.h"
 
 #include <QtDebug>
 

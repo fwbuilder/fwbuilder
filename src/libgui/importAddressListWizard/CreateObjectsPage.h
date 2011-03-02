@@ -24,7 +24,7 @@
 #ifndef __CREATEOBJECTSPAGE_H_
 #define __CREATEOBJECTSPAGE_H_
 
-#include "../../config.h"
+//#include "../../config.h"
 #include "ui_createobjectspage_q.h"
 
 

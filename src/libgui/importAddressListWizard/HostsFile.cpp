@@ -21,8 +21,7 @@
 
 */
 
-#include "../../config.h"
-#include "global.h"
+//#include "../../config.h"
 
 #include "HostsFile.h"
 
@@ -30,6 +29,7 @@
 #include <QRegExp>
 #include <QtDebug>
 
+extern int fwbdebug;
 
 using namespace std;
 using namespace libfwbuilder;

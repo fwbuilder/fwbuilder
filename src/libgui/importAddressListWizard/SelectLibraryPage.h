@@ -24,7 +24,7 @@
 #ifndef __SELECTLIBRARYPAGE_H_
 #define __SELECTLIBRARYPAGE_H_
 
-#include "../../config.h"
+//#include "../../config.h"
 #include "ui_selectlibrarypage_q.h"
 
 

@@ -24,7 +24,7 @@
 #ifndef __CHOOSEOBJECTSPAGE_H_
 #define __CHOOSEOBJECTSPAGE_H_
 
-#include "../../config.h"
+//#include "../../config.h"
 #include "ui_chooseobjectspage_q.h"
 
 #include "fwbuilder/InetAddr.h"

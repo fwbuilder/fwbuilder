@@ -21,8 +21,8 @@
 
 */
 
-#include "../../config.h"
-#include "global.h"
+//#include "../../../config.h"
+#include "../global.h"
 
 #include "ImportAddressListWizard.h"
 #include "FileNamePage.h"
@@ -49,9 +49,6 @@ ImportAddressListWizard::ImportAddressListWizard(QWidget *parent) : QWizard(pare
     addPage(new SelectLibraryPage(this));
     addPage(new CreateObjectsPage(this));
 
-//    adjustSize();
-    resize(700, 400);
-
-//    setDefaultProperty("QListWidget", "itemChanged", SIGNAL(itemChanged(QListWidgetItem*)));
+    resize(700, 500);
 }
 
