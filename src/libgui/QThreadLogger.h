@@ -21,37 +21,32 @@
 
 */
 
-#ifndef __ND_PROGRESSPAGE_H_
-#define __ND_PROGRESSPAGE_H_
+#ifndef _QTHREAD_LOGGER_H_
+#define _QTHREAD_LOGGER_H_
 
-#include "ui_nd_progresspage_q.h"
+#include "fwbuilder/Logger.h"
 
-#include <QTextCharFormat>
-
-class SNMPCrawlerThread;
+#include <QWidget>
 
 
-class ND_ProgressPage : public QWizardPage
+class QThreadLogger : public QObject, public libfwbuilder::Logger
 {
     Q_OBJECT;
-
-    Ui::ND_ProgressPage_q *m_dialog;
-    QTextCharFormat normal_format;
-    QTextCharFormat error_format;
-    QTextCharFormat warning_format;
-    SNMPCrawlerThread *crawler;
     
 public:
-    ND_ProgressPage(QWidget *parent);
-    virtual ~ND_ProgressPage();
 
-    virtual void initializePage();
-    virtual void cleanupPage();
+    QThreadLogger();
+        
+    virtual Logger& operator<< (char c)            ;
+    virtual Logger& operator<< (char  *str)        ;
+    virtual Logger& operator<< (const char  *str)  ;
+    virtual Logger& operator<< (const std::string &str) ;
+    virtual Logger& operator<< (int    i  )        ;
+    virtual Logger& operator<< (long   l  )        ;
+    virtual Logger& operator<< (std::ostringstream &sstr);
 
-public slots:
-    void stop();
-    void saveLog();
-    void logLine(const QString &line);
+signals:
+    void lineReady(const QString &txt);
 };
 
 

@@ -52,6 +52,7 @@ public:
     virtual ~ND_SetupPage();
 
     virtual void initializePage();
+    virtual bool validatePage();
     virtual bool isComplete() const;
 
 public slots:

@@ -38,6 +38,7 @@ public:
     virtual ~ND_DiscoveryParametersPage() {}
 
     virtual void initializePage();
+    virtual bool validatePage();
 
 public slots:
 

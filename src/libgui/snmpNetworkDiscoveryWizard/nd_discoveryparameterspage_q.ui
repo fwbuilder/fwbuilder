@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QCheckBox" name="snmprecursive">
+    <widget class="QCheckBox" name="snmpRecursive">
      <property name="text">
       <string>Run network scan recursively</string>
      </property>
@@ -61,7 +61,7 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QCheckBox" name="snmpfollowp2p">
+    <widget class="QCheckBox" name="snmpFollowP2P">
      <property name="text">
       <string>Follow point-to-point links</string>
      </property>
@@ -94,7 +94,7 @@
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QCheckBox" name="snmpincludeunnumbered">
+    <widget class="QCheckBox" name="snmpIncludeUnnumbered">
      <property name="text">
       <string>Include interfaces with no ip addresses</string>
      </property>
@@ -127,7 +127,7 @@
     </widget>
    </item>
    <item row="10" column="0">
-    <widget class="QCheckBox" name="snmpdodns">
+    <widget class="QCheckBox" name="snmpDoDNS">
      <property name="text">
       <string>Run reverse name lookup DNS queries to determine host names</string>
      </property>

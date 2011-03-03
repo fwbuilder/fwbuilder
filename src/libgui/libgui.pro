@@ -196,6 +196,7 @@ HEADERS += ../../config.h \
 	networkZoneManager.h  \
 \
 	ObjectDescriptor.h \
+	QThreadLogger.h \
 \
 	importAddressListWizard/ChooseObjectsPage.h \
 	importAddressListWizard/CreateObjectsPage.h \
@@ -213,8 +214,8 @@ HEADERS += ../../config.h \
 	snmpNetworkDiscoveryWizard/ND_SelectLibraryPage.h \
 	snmpNetworkDiscoveryWizard/ND_SetupPage.h \
 	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.h \
-	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h
-
+	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h \
+	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.h
 
 
 SOURCES += ProjectPanel.cpp \
@@ -406,6 +407,7 @@ SOURCES += ProjectPanel.cpp \
 	networkZoneManager.cpp \
 \
 	ObjectDescriptor.cpp \
+	QThreadLogger.cpp \
 \
 	importAddressListWizard/ChooseObjectsPage.cpp \
 	importAddressListWizard/CreateObjectsPage.cpp \
@@ -423,7 +425,9 @@ SOURCES += ProjectPanel.cpp \
 	snmpNetworkDiscoveryWizard/ND_SelectLibraryPage.cpp \
 	snmpNetworkDiscoveryWizard/ND_SetupPage.cpp \
 	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.cpp \
-	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.cpp
+	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.cpp \
+	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.cpp
+
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \

@@ -24,6 +24,7 @@
 #include "global.h"
 #include "utils.h"
 #include "FWWindow.h"
+#include "FWBSettings.h"
 
 #include "ND_SetupPage.h"
 
@@ -36,6 +37,10 @@
 using namespace std;
 using namespace libfwbuilder;
 
+#define DISCOVERY_DRUID_PREFIX "DiscoveryDruid/"
+#define DISCOVERY_DRUID_SEEDHOST "SeedHost"
+#define DISCOVERY_DRUID_SNMPINADDR "SNMPInAddr"
+#define DISCOVERY_DRUID_SNMPINMASK "SNMPInMask"
 
 ND_SetupPage::ND_SetupPage(QWidget *parent) : QWizardPage(parent)
 {
@@ -49,6 +54,13 @@ ND_SetupPage::ND_SetupPage(QWidget *parent) : QWizardPage(parent)
     seedHostOK = false;
     limitScanConfigurationOK = true;
 
+    m_dialog->seedHostName->setText(st->getStr(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST));
+    m_dialog->snmpInAddr->setText(st->getStr(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINADDR));
+    m_dialog->snmpInMask->setText(st->getStr(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINMASK));
+
     registerField("seedHostName*", m_dialog->seedHostName);
     registerField("snmpInAddr", m_dialog->snmpInAddr);
     registerField("snmpInMask", m_dialog->snmpInMask);
@@ -60,6 +72,21 @@ void ND_SetupPage::initializePage()
 {
     if (fwbdebug)
         qDebug() << "ND_SetupPage::initializePage()";
+}
+
+bool ND_SetupPage::validatePage()
+{
+    st->setStr(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SEEDHOST,
+            m_dialog->seedHostName->text());
+    st->setStr(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINADDR,
+            m_dialog->snmpInAddr->text());
+    st->setStr(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINMASK,
+            m_dialog->snmpInMask->text());
+
+    return true;
 }
 
 bool ND_SetupPage::isComplete() const

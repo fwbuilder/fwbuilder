@@ -24,6 +24,7 @@
 #include "global.h"
 #include "utils.h"
 #include "FWWindow.h"
+#include "FWBSettings.h"
 
 #include "ND_DiscoveryParametersPage.h"
 
@@ -34,10 +35,30 @@ using namespace std;
 //using namespace libfwbuilder;
 
 
+#define DISCOVERY_DRUID_PREFIX "DiscoveryDruid/"
+#define DISCOVERY_DRUID_SNMPRECURSIVE "SNMPRecursive"
+#define DISCOVERY_DRUID_SNMPFOLLOWP2P "SNMPFollowP2P"
+#define DISCOVERY_DRUID_SNMPINCLUDEUNNUMBERED "SnmpIncludeUnnumbered"
+#define DISCOVERY_DRUID_SNMPDODNS "SNMPDoDNS"
+
 ND_DiscoveryParametersPage::ND_DiscoveryParametersPage(QWidget *parent) : QWizardPage(parent)
 {
     m_dialog = new Ui::ND_DiscoveryParametersPage_q;
     m_dialog->setupUi(this);
+
+    m_dialog->snmpRecursive->setChecked(st->getBool(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPRECURSIVE));
+    m_dialog->snmpFollowP2P->setChecked(st->getBool(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPFOLLOWP2P));
+    m_dialog->snmpIncludeUnnumbered->setChecked(st->getBool(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINCLUDEUNNUMBERED));
+    m_dialog->snmpDoDNS->setChecked(st->getBool(
+                QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPDODNS));
+
+    registerField("snmpRecursive", m_dialog->snmpRecursive);
+    registerField("snmpFollowP2P", m_dialog->snmpFollowP2P);
+    registerField("snmpIncludeUnnumbered", m_dialog->snmpIncludeUnnumbered);
+    registerField("snmpDoDNS", m_dialog->snmpDoDNS);
 
 }
 
@@ -47,3 +68,22 @@ void ND_DiscoveryParametersPage::initializePage()
         qDebug() << "ND_DiscoveryParametersPage::initializePage()";
 
 }
+
+bool ND_DiscoveryParametersPage::validatePage()
+{
+    st->setBool(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPRECURSIVE,
+            m_dialog->snmpRecursive->isChecked());
+    st->setBool(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPFOLLOWP2P,
+            m_dialog->snmpFollowP2P->isChecked());
+    st->setBool(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPINCLUDEUNNUMBERED,
+            m_dialog->snmpIncludeUnnumbered->isChecked());
+    st->setBool(
+            QString(DISCOVERY_DRUID_PREFIX) + DISCOVERY_DRUID_SNMPDODNS,
+            m_dialog->snmpDoDNS->isChecked());
+
+    return true;
+}
+

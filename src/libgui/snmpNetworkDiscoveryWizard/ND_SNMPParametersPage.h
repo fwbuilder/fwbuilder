@@ -38,6 +38,7 @@ public:
     virtual ~ND_SNMPParametersPage() {}
 
     virtual void initializePage();
+    virtual bool validatePage();
     
 public slots:
 

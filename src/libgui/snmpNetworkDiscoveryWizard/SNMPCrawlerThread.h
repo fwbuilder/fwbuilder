@@ -21,37 +21,36 @@
 
 */
 
-#ifndef __ND_PROGRESSPAGE_H_
-#define __ND_PROGRESSPAGE_H_
+#ifndef _SNMPCRAWLERTHREAD_H_
+#define _SNMPCRAWLERTHREAD_H_
 
-#include "ui_nd_progresspage_q.h"
+#include "fwbuilder/snmp.h"
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/ThreadTools.h"
 
-#include <QTextCharFormat>
+#include <QWidget>
+#include <QThread>
 
-class SNMPCrawlerThread;
 
-
-class ND_ProgressPage : public QWizardPage
+class SNMPCrawlerThread : public QThread
 {
-    Q_OBJECT;
+    libfwbuilder::SNMPCrawler *q;
+    libfwbuilder::SyncFlag *stop_flag;
 
-    Ui::ND_ProgressPage_q *m_dialog;
-    QTextCharFormat normal_format;
-    QTextCharFormat error_format;
-    QTextCharFormat warning_format;
-    SNMPCrawlerThread *crawler;
+    QWidget *ui;
     
 public:
-    ND_ProgressPage(QWidget *parent);
-    virtual ~ND_ProgressPage();
-
-    virtual void initializePage();
-    virtual void cleanupPage();
-
-public slots:
+    SNMPCrawlerThread(QWidget *ui,
+                      const QString &seedHost,
+                      const QString &community,
+                      bool recursive,
+                      bool followP2P,
+                      int snmpRetries,
+                      int snmpTimeout,
+                      const std::vector<libfwbuilder::InetAddrMask> *include);
+    virtual ~SNMPCrawlerThread();
+    void run();
     void stop();
-    void saveLog();
-    void logLine(const QString &line);
 };
 
 
