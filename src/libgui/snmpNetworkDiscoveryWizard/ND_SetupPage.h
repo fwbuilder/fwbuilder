@@ -26,19 +26,38 @@
 
 #include "ui_nd_setuppage_q.h"
 
+#include <QHostInfo>
+
 
 class ND_SetupPage : public QWizardPage
 {
     Q_OBJECT;
 
     Ui::ND_SetupPage_q *m_dialog;
+    QString last_error;
+    int dns_op_id;
+    bool seedHostOK;
+    bool limitScanConfigurationOK;
+    
+    bool isSeedHostOK(const QString &s);
+    bool looksLikeIpAddress(const QString &s);
+    void displayStatusError(const QString &err);
+    void displayStatusSuccess(const QString &err);
+    void displayStatusNeutral(const QString &err);
+    void showProgressBar();
+    void hideProgressBar();
     
 public:
     ND_SetupPage(QWidget *parent);
-    virtual ~ND_SetupPage() {}
+    virtual ~ND_SetupPage();
 
     virtual void initializePage();
+    virtual bool isComplete() const;
 
+public slots:
+    void changedSeedHost();
+    void changedLimitScanConfiguraton();
+    void dnsFinish(const QHostInfo &host);
 };
 
 
