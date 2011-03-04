@@ -21,6 +21,7 @@
 
 */
 
+#include "global.h"
 #include "SNMPCrawlerThread.h"
 
 #include "utils.h"
@@ -67,6 +68,7 @@ SNMPCrawlerThread::SNMPCrawlerThread(QWidget *ui,
 
 SNMPCrawlerThread::~SNMPCrawlerThread()
 {
+    if (fwbdebug) qDebug() << "SNMPCrawlerThread::~SNMPCrawlerThread()";
     delete q;
     delete stop_flag;
 }
@@ -81,11 +83,12 @@ void SNMPCrawlerThread::run()
 
     *logger << string("\n");
     *logger << string("Network crawler stopped");
+    
+    deleteLater(); // mark this object for destruction on the next run of event loop
 }
 
 void SNMPCrawlerThread::stop()
 {
     stop_flag->set(true);
 }
-
 

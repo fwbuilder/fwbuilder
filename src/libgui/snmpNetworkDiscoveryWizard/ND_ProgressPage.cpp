@@ -42,6 +42,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
+bool fwbdebug_nd = fwbdebug;
+
 
 ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
 {
@@ -70,17 +72,34 @@ ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
 
 ND_ProgressPage::~ND_ProgressPage()
 {
-    if (crawler)
+    if (fwbdebug_nd) qDebug() << "ND_ProgressPage::~ND_ProgressPage()";
+
+    disconnect(this, SLOT(logLine(QString)));
+
+    if (crawler != NULL && crawler->isRunning())
     {
-        stop();
-        crawler->wait();
-        delete crawler;
+        if (fwbdebug_nd)
+            qDebug() << "ND_ProgressPage::initializePage()"
+                     << "crawler is still runnig; stopping";
+        crawler->stop();
+        // crawler->wait();
+        // do not delete crawler thread object, we call deleteLater()
+        // in SNMPCrawlerThread::run() to make sure crawler thread
+        // object is only deleted after snmp crawler has finished and
+        // thread terminated
     }
+}
+
+void ND_ProgressPage::crawlerDestroyed(QObject *obj)
+{
+    if (fwbdebug_nd)
+        qDebug() << "ND_ProgressPage::crawlerDestroyed() obj=" << obj;
+    if (obj == crawler) crawler = NULL;
 }
 
 void ND_ProgressPage::initializePage()
 {
-    if (fwbdebug) qDebug() << "ND_ProgressPage::initializePage()";
+    if (fwbdebug_nd) qDebug() << "ND_ProgressPage::initializePage()";
 
 #ifdef HAVE_LIBSNMP
     QString seedHostName = field("seedHostName").toString();
@@ -118,8 +137,18 @@ void ND_ProgressPage::initializePage()
         }
     }
 
-    if (crawler != NULL) delete crawler;
+    if (crawler != NULL && crawler->isRunning())
+    {
+        if (fwbdebug_nd)
+            qDebug() << "ND_ProgressPage::initializePage()"
+                     << "crawler is still runnig; stopping";
+        crawler->stop();
+        crawler->wait();
+        delete crawler;
+    }
 
+    // note that crawler deletes itself using call to deleteLater() after
+    // underlying SNMPCrawler finishes its work.
     crawler = new SNMPCrawlerThread(this,
                                     seedHostName,
                                     snmpCommunity,
@@ -128,6 +157,8 @@ void ND_ProgressPage::initializePage()
                                     snmpRetries,
                                     snmpTimeoutSec,
                                     &include_networks);
+    connect(crawler, SIGNAL(destroyed(QObject*)),
+            this, SLOT(crawlerDestroyed(QObject*)));
     crawler->start();
 
 #endif
@@ -136,12 +167,18 @@ void ND_ProgressPage::initializePage()
 
 void ND_ProgressPage::cleanupPage()
 {
-    stop();
+    if (fwbdebug_nd) qDebug() << "ND_ProgressPage::cleanupPage()";
+    disconnect(this, SLOT(logLine(QString)));
+    if (crawler != NULL && crawler->isRunning()) crawler->stop();
 }
 
 void ND_ProgressPage::stop()
 {
-    crawler->stop();
+    if (crawler != NULL && crawler->isRunning())
+    {
+        logLine(tr("Stopping network crawler process..."));
+        crawler->stop();
+    }
 }
 
 

@@ -52,6 +52,7 @@ public slots:
     void stop();
     void saveLog();
     void logLine(const QString &line);
+    void crawlerDestroyed(QObject*);
 };
 
 

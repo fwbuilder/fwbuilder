@@ -49,6 +49,7 @@ public:
                       int snmpTimeout,
                       const std::vector<libfwbuilder::InetAddrMask> *include);
     virtual ~SNMPCrawlerThread();
+
     void run();
     void stop();
 };
