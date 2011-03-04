@@ -26,13 +26,22 @@
 
 #include "ui_nd_createobjectspage_q.h"
 
+namespace libfwbuilder
+{
+    class InterfaceData;
+    class FWObject;
+};
 
 class ND_CreateObjectsPage : public QWizardPage
 {
     Q_OBJECT;
 
     Ui::ND_CreateObjectsPage_q *m_dialog;
-    
+
+    libfwbuilder::FWObject* addInterface(libfwbuilder::FWObject *parent,
+                                         libfwbuilder::InterfaceData *in,
+                                         bool skip_ip_address_check);
+
 public:
     ND_CreateObjectsPage(QWidget *parent);
     virtual ~ND_CreateObjectsPage() {}

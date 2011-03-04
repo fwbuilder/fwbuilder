@@ -44,7 +44,7 @@ class ObjectSelectorWidget : public QWidget
 
     Filter * flt_obj;
     FilterDialog * flt_obj_d;
-    std::list<ObjectDescriptor> objects;
+    QList<ObjectDescriptor> objects;
     QStringList objects_to_use;
 
     // configure this as a proprty so it can be accessed as a field after
@@ -56,7 +56,7 @@ public:
     ObjectSelectorWidget(QWidget *parent);
     virtual ~ObjectSelectorWidget();
 
-    void init(const std::list<ObjectDescriptor> &objects);
+    void init(const QList<ObjectDescriptor> &objects);
 
     int count() { return objects_to_use.count(); }
     

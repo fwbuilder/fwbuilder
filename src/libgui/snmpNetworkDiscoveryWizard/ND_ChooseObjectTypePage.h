@@ -24,6 +24,8 @@
 #ifndef __ND_CHOOSEOBJECTTYPEPAGE_H_
 #define __ND_CHOOSEOBJECTTYPEPAGE_H_
 
+#include "SNMPNetworkDiscoveryWizard.h"
+
 #include "ui_nd_chooseobjecttypepage_q.h"
 
 
@@ -32,6 +34,8 @@ class ND_ChooseObjectTypePage : public QWizardPage
     Q_OBJECT;
 
     Ui::ND_ChooseObjectTypePage_q *m_dialog;
+    ObjectDescriptorList *objects;
+    QStringList *objectsToUse;
     
 public:
     ND_ChooseObjectTypePage(QWidget *parent);
@@ -39,8 +43,14 @@ public:
 
     virtual void initializePage();
 
+    void fillTypeChangingList();
+
+    void changeTargetObject(const QString &buf);
     
 public slots:
+    void typeAddress();
+    void typeHost();
+    void typeFirewall();
 
 };
 

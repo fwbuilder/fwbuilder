@@ -26,12 +26,13 @@
 #include "FWWindow.h"
 
 #include "ND_ChooseObjectTypePage.h"
+#include "SNMPNetworkDiscoveryWizard.h"
 
 #include <QtDebug>
 
 
 using namespace std;
-//using namespace libfwbuilder;
+using namespace libfwbuilder;
 
 
 ND_ChooseObjectTypePage::ND_ChooseObjectTypePage(QWidget *parent) : QWizardPage(parent)
@@ -45,4 +46,70 @@ void ND_ChooseObjectTypePage::initializePage()
 {
     if (fwbdebug)
         qDebug() << "ND_ChooseObjectTypePage::initializePage()";
+
+    objects = dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjects();
+    objectsToUse = dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjectsToUse();
+
+    fillTypeChangingList();
 }
+
+void ND_ChooseObjectTypePage::fillTypeChangingList()
+{
+    m_dialog->typeChangingList->clear();
+
+    qDebug() << objectsToUse;
+
+    int idx = 0;
+    foreach(ObjectDescriptor od, *objects)
+    {
+        if (objectsToUse->contains(QString::fromUtf8(od.sysname.c_str())))
+        {
+            QString ins;
+            ins = (od.interfaces.size()) ?
+                QString("%1").arg(od.interfaces.size()) : "";
+            QStringList sl;
+            sl << QString::fromUtf8(od.toString().c_str())
+               << ins << od.type.c_str();
+            QTreeWidgetItem *itm = new QTreeWidgetItem(
+                m_dialog->typeChangingList, sl );
+            itm->setData(0, Qt::UserRole, idx);
+        }
+        idx++;
+    }
+
+    m_dialog->typeChangingList->resizeColumnToContents(0);
+    m_dialog->typeChangingList->resizeColumnToContents(1);
+}
+
+void ND_ChooseObjectTypePage::typeAddress()
+{
+    changeTargetObject(IPv4::TYPENAME);
+}
+
+void ND_ChooseObjectTypePage::typeHost()
+{
+    changeTargetObject(Host::TYPENAME);
+}
+
+void ND_ChooseObjectTypePage::typeFirewall()
+{
+    changeTargetObject(Firewall::TYPENAME);
+}
+
+void ND_ChooseObjectTypePage::changeTargetObject(const QString &buf)
+{
+    QTreeWidgetItem* item = m_dialog->typeChangingList->topLevelItem(0);
+
+    while (item!=0)
+    {
+        if (item->isSelected())
+        {
+            int idx = item->data(0, Qt::UserRole).toInt();
+            (*objects)[idx].type = buf.toStdString();
+            item->setText(2, buf);
+        }
+        item = m_dialog->typeChangingList->topLevelItem(
+            m_dialog->typeChangingList->indexOfTopLevelItem(item)+1);
+    }
+}
+

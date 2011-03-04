@@ -58,7 +58,7 @@ void ChooseObjectsPage::initializePage()
         importer.parse();
         map<InetAddr, QStringList> imported_hosts_info = importer.getAll();
 
-        list<ObjectDescriptor> objects;
+        QList<ObjectDescriptor> objects;
         map<InetAddr, QStringList>::iterator i;
         for (i=imported_hosts_info.begin(); i!=imported_hosts_info.end(); ++i)
         {

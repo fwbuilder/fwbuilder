@@ -54,7 +54,7 @@ ObjectSelectorWidget::~ObjectSelectorWidget()
     delete flt_obj_d;
 }
 
-void ObjectSelectorWidget::init(const list<ObjectDescriptor> &objects)
+void ObjectSelectorWidget::init(const QList<ObjectDescriptor> &objects)
 {
     this->objects = objects;
     fillListOfObjects();

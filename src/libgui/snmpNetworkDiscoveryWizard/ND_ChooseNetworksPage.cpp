@@ -26,7 +26,7 @@
 #include "FWWindow.h"
 
 #include "ND_ChooseNetworksPage.h"
-#include "ND_ProgressPage.h"
+#include "SNMPNetworkDiscoveryWizard.h"
 
 #include <QtDebug>
 
@@ -49,15 +49,10 @@ void ND_ChooseNetworksPage::initializePage()
     if (fwbdebug)
         qDebug() << "ND_ChooseNetworksPage::initializePage()";
 
-    ND_ProgressPage *progress_page = NULL;
-    foreach(int page_id, wizard()->pageIds())
-    {
-        progress_page = dynamic_cast<ND_ProgressPage*>(wizard()->page(page_id));
-        if (progress_page != NULL) break;
-    }
-    assert(progress_page != NULL);
+    ObjectDescriptorList *networks = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getNetworks();
 
-    m_dialog->objectSelector->init(progress_page->getNetworks());
+    m_dialog->objectSelector->init(*networks);
 
     /*
       list<ObjectDescriptor> objects;

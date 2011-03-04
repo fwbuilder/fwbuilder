@@ -29,6 +29,7 @@
 
 #include "ND_ProgressPage.h"
 #include "SNMPCrawlerThread.h"
+#include "SNMPNetworkDiscoveryWizard.h"
 
 #include "fwbuilder/snmp.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -97,14 +98,17 @@ ND_ProgressPage::~ND_ProgressPage()
 
 bool ND_ProgressPage::validatePage()
 {
+    ObjectDescriptorList *objects = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjects();
+
     if (fwbdebug_nd)
         qDebug() << "ND_ProgressPage::validatePage()"
                  << "crawler=" << crawler
                  << "isRunning=" << ((crawler) ? crawler->isRunning() : 0)
-                 << "objects.size()=" << objects.size();
+                 << "objects->size()=" << objects->size();
 
     if (crawler != NULL && crawler->isRunning()) return false;
-    return (objects.size() > 0);
+    return (objects->size() > 0);
 }
 
 void ND_ProgressPage::crawlerDestroyed(QObject *obj)
@@ -118,6 +122,14 @@ void ND_ProgressPage::initializePage()
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::initializePage()";
 
 #ifdef HAVE_LIBSNMP
+
+    ObjectDescriptorList *objects = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjects();
+
+    ObjectDescriptorList *networks = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getNetworks();
+
+
     QString seedHostName = field("seedHostName").toString();
     QString snmpInclAddr = field("snmpInAddr").toString();
     QString snmpInclMask = field("snmpInMask").toString();
@@ -163,8 +175,8 @@ void ND_ProgressPage::initializePage()
         delete crawler;
     }
 
-    objects.clear();
-    networks.clear();
+    objects->clear();
+    networks->clear();
 
     emit completeChanged();
 
@@ -215,6 +227,13 @@ void ND_ProgressPage::crawlerFinished()
 {
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::crawlerFinished()";
 
+    ObjectDescriptorList *networks = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getNetworks();
+
+    ObjectDescriptorList *objects = 
+        dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjects();
+
+
     logLine("\n");
     logLine(tr("Network crawler stopped"));
 
@@ -252,7 +271,7 @@ void ND_ProgressPage::crawlerFinished()
         od.netmask = *(net->getNetmaskPtr());
         od.isSelected = false;
 
-        networks.push_back(od);
+        networks->push_back(od);
     }
 
     logLine(tr("Discovered %1 addresses").arg(discovered_addresses.size()));
@@ -288,10 +307,10 @@ void ND_ProgressPage::crawlerFinished()
             for(si=od.dns_info.aliases.begin(); si!=od.dns_info.aliases.end(); ++si)
             {
                 od.sysname = (*si);
-                objects.push_back(od);;
+                objects->push_back(od);;
             }
         } else
-            objects.push_back(od);
+            objects->push_back(od);
 
     }
 

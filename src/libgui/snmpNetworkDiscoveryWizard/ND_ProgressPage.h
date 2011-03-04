@@ -25,14 +25,11 @@
 #define __ND_PROGRESSPAGE_H_
 
 #include "ui_nd_progresspage_q.h"
-#include "ObjectDescriptor.h"
 
 #include <QTextCharFormat>
 
 class SNMPCrawlerThread;
 
-
-typedef std::list<ObjectDescriptor> ObjectDescriptorMap;
 
 class ND_ProgressPage : public QWizardPage
 {
@@ -43,8 +40,6 @@ class ND_ProgressPage : public QWizardPage
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
     SNMPCrawlerThread *crawler;
-    ObjectDescriptorMap networks;
-    ObjectDescriptorMap objects;
     
 public:
     ND_ProgressPage(QWidget *parent);
@@ -54,9 +49,6 @@ public:
     virtual void cleanupPage();
     virtual bool validatePage();
 
-    ObjectDescriptorMap getNetworks() { return networks; }
-    ObjectDescriptorMap getObjects() { return objects; }
-    
 public slots:
     void stop();
     void saveLog();

@@ -24,16 +24,28 @@
 #ifndef __SNMPNETWORKDISCOVERYWIZARD_H_
 #define __SNMPNETWORKDISCOVERYWIZARD_H_
 
+#include "ObjectDescriptor.h"
+
+#include <QList>
 #include <QWizard>
 
+typedef QList<ObjectDescriptor> ObjectDescriptorList;
 
 class SNMPNetworkDiscoveryWizard : public QWizard
 {
     Q_OBJECT;
 
+    ObjectDescriptorList networks;
+    ObjectDescriptorList objects;
+    QStringList objectsToUse;
+    
 public:
     SNMPNetworkDiscoveryWizard(QWidget *parent);
     virtual ~SNMPNetworkDiscoveryWizard() {}
+
+    ObjectDescriptorList* getNetworks() { return &networks; }
+    ObjectDescriptorList* getObjects() { return &objects; }
+    QStringList* getObjectsToUse() { return &objectsToUse; }
     
 public slots:
         
