@@ -1,3 +1,16 @@
+2011-03-04  vadim  <vadim@netcitadel.com>
+
+	* IC_PlatformWarningPage.cpp (initializePage): see #2161 "import
+	workflow and automatic detection of firewall platform from the
+	config file". When user imports existing firewall configuration,
+	the GUI automatically detects firewall platform from the format
+	of the config file and shows platform-specific warning to explain
+	what parts of the config can and can not be imported. It also
+	detects firewall host name where possible (currently Cisco IOS
+	and ASA/PIX). Importer wizard has been reimplemented using
+	QWizard and QWizardPage classes and its workflow significantly
+	improved.
+
 2011-03-01  vadim  <vadim@netcitadel.com>
 
 	* importAddressListWizard/ImportAddressListWizard.cpp

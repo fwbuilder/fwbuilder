@@ -215,7 +215,14 @@ HEADERS += ../../config.h \
 	snmpNetworkDiscoveryWizard/ND_SetupPage.h \
 	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.h \
 	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h \
-	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.h
+	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.h \
+\
+	importFirewallConfigurationWizard/IC_FileNamePage.h \
+	importFirewallConfigurationWizard/IC_FirewallNamePage.h \
+	importFirewallConfigurationWizard/IC_PlatformWarningPage.h \
+	importFirewallConfigurationWizard/IC_ProgressPage.h \
+	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h \
+
 
 
 SOURCES += ProjectPanel.cpp \
@@ -426,7 +433,13 @@ SOURCES += ProjectPanel.cpp \
 	snmpNetworkDiscoveryWizard/ND_SetupPage.cpp \
 	snmpNetworkDiscoveryWizard/ND_SNMPParametersPage.cpp \
 	snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.cpp \
-	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.cpp
+	snmpNetworkDiscoveryWizard/SNMPCrawlerThread.cpp \
+\
+	importFirewallConfigurationWizard/IC_FileNamePage.cpp \
+	importFirewallConfigurationWizard/IC_FirewallNamePage.cpp \
+	importFirewallConfigurationWizard/IC_PlatformWarningPage.cpp \
+	importFirewallConfigurationWizard/IC_ProgressPage.cpp \
+	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.cpp \
 
 
 FORMS = FWBMainWindow_q.ui \
@@ -550,6 +563,11 @@ FORMS = FWBMainWindow_q.ui \
 	snmpNetworkDiscoveryWizard/nd_selectlibrarypage_q.ui \
 	snmpNetworkDiscoveryWizard/nd_setuppage_q.ui \
 	snmpNetworkDiscoveryWizard/nd_snmpparameterspage_q.ui \
+\
+	importFirewallConfigurationWizard/ic_filenamepage_q.ui \
+	importFirewallConfigurationWizard/ic_firewallnamepage_q.ui \
+	importFirewallConfigurationWizard/ic_platformwarningpage_q.ui \
+	importFirewallConfigurationWizard/ic_progresspage_q.ui \
 
 
 # fwtransfer stuff.

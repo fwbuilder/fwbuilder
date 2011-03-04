@@ -48,7 +48,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>14</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="WizardPage0">
       <layout class="QGridLayout">
@@ -2052,7 +2052,7 @@ Please enter the domain name below:</string>
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="MainRes.qrc">:/Images/network_zone_dialog.png</pixmap>
+          <pixmap>:/Images/network_zone_dialog.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

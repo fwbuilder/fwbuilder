@@ -52,8 +52,6 @@
 #include "PrefsDialog.h"
 #include "LibExportDialog.h"
 #include "findDialog.h"
-#include "importAddressListWizard/ImportAddressListWizard.h"
-#include "snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "CompilerOutputPanel.h"
@@ -74,6 +72,10 @@
 #include "transferDialog.h"
 
 #include "events.h"
+
+#include "importAddressListWizard/ImportAddressListWizard.h"
+#include "snmpNetworkDiscoveryWizard/SNMPNetworkDiscoveryWizard.h"
+#include "importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h"
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
@@ -883,9 +885,9 @@ void FWWindow::importPolicy()
     {
         if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
             return;
-
-//        DiscoveryDruid druid(this, true);
-//        druid.exec();
+        
+        ImportFirewallConfigurationWizard wiz(this);
+        wiz.exec();
     }
 }
 
