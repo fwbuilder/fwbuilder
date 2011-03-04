@@ -31,6 +31,10 @@
 #include "SNMPCrawlerThread.h"
 
 #include "fwbuilder/snmp.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include <QFileDialog>
 #include <QFile>
@@ -42,7 +46,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-bool fwbdebug_nd = fwbdebug;
+bool fwbdebug_nd = true;
 
 
 ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
@@ -75,6 +79,7 @@ ND_ProgressPage::~ND_ProgressPage()
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::~ND_ProgressPage()";
 
     disconnect(this, SLOT(logLine(QString)));
+    disconnect(this, SLOT(crawlerFinished()));
 
     if (crawler != NULL && crawler->isRunning())
     {
@@ -90,10 +95,21 @@ ND_ProgressPage::~ND_ProgressPage()
     }
 }
 
-void ND_ProgressPage::crawlerDestroyed(QObject *obj)
+bool ND_ProgressPage::validatePage()
 {
     if (fwbdebug_nd)
-        qDebug() << "ND_ProgressPage::crawlerDestroyed() obj=" << obj;
+        qDebug() << "ND_ProgressPage::validatePage()"
+                 << "crawler=" << crawler
+                 << "isRunning=" << ((crawler) ? crawler->isRunning() : 0)
+                 << "objects.size()=" << objects.size();
+
+    if (crawler != NULL && crawler->isRunning()) return false;
+    return (objects.size() > 0);
+}
+
+void ND_ProgressPage::crawlerDestroyed(QObject *obj)
+{
+    if (fwbdebug_nd) qDebug() << "ND_ProgressPage::crawlerDestroyed() obj=" << obj;
     if (obj == crawler) crawler = NULL;
 }
 
@@ -147,6 +163,11 @@ void ND_ProgressPage::initializePage()
         delete crawler;
     }
 
+    objects.clear();
+    networks.clear();
+
+    emit completeChanged();
+
     // note that crawler deletes itself using call to deleteLater() after
     // underlying SNMPCrawler finishes its work.
     crawler = new SNMPCrawlerThread(this,
@@ -157,8 +178,12 @@ void ND_ProgressPage::initializePage()
                                     snmpRetries,
                                     snmpTimeoutSec,
                                     &include_networks);
+
     connect(crawler, SIGNAL(destroyed(QObject*)),
             this, SLOT(crawlerDestroyed(QObject*)));
+    connect(crawler, SIGNAL(finished()),
+            this, SLOT(crawlerFinished()));
+
     crawler->start();
 
 #endif
@@ -169,6 +194,7 @@ void ND_ProgressPage::cleanupPage()
 {
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::cleanupPage()";
     disconnect(this, SLOT(logLine(QString)));
+    disconnect(this, SLOT(crawlerFinished()));
     if (crawler != NULL && crawler->isRunning()) crawler->stop();
 }
 
@@ -181,6 +207,96 @@ void ND_ProgressPage::stop()
     }
 }
 
+/*
+ * SNMPCrawlerThread emits signal finished() that should be connected
+ * to this slot. We collect all the data here.
+ */
+void ND_ProgressPage::crawlerFinished()
+{
+    if (fwbdebug_nd) qDebug() << "ND_ProgressPage::crawlerFinished()";
+
+    logLine("\n");
+    logLine(tr("Network crawler stopped"));
+
+    bool snmpDoDNS = field("snmpDoDNS").toBool();
+
+    if (crawler==NULL) return;
+
+    set<InetAddrMask*>::iterator m;
+    set<InetAddrMask*> discovered_networks = crawler->getNetworks();
+    map<InetAddr, CrawlerFind> discovered_addresses = crawler->getAllIPs();
+
+    logLine(tr("Discovered %1 networks").arg(discovered_networks.size()));
+
+    for (m=discovered_networks.begin(); m!=discovered_networks.end(); ++m)
+    {
+        ObjectDescriptor od;
+        InetAddrMask *net = *m;
+
+        logLine(QString("network %1").arg(net->toString().c_str()));
+
+        // if address in *m is ipv6, recreate it as Inet6AddrMask and
+        // use type NetworkIPv6
+        if (net->getAddressPtr()->isV6())
+        {
+            Inet6AddrMask in6am(*(net->getAddressPtr()),
+                                *(net->getNetmaskPtr()));
+            od.sysname = in6am.toString(); // different from ipv6
+            od.type = NetworkIPv6::TYPENAME;
+        } else
+        {
+            od.sysname = net->toString();
+            od.type = Network::TYPENAME;
+        }
+        od.addr = *(net->getAddressPtr());
+        od.netmask = *(net->getNetmaskPtr());
+        od.isSelected = false;
+
+        networks.push_back(od);
+    }
+
+    logLine(tr("Discovered %1 addresses").arg(discovered_addresses.size()));
+
+    int cntr = 0;
+    map<InetAddr, CrawlerFind>::iterator j;
+    for(j = discovered_addresses.begin(); j!=discovered_addresses.end(); ++j,++cntr)
+    {
+        ObjectDescriptor od( (*j).second );
+        od.addr = (*j).first;
+        od.type = (od.interfaces.size()>1) ? (Host::TYPENAME) : (IPv4::TYPENAME);
+
+        od.isSelected = false;
+
+        if (od.sysname.empty())
+        {
+            od.sysname = string("h-") + od.addr.toString();
+
+            if (snmpDoDNS)
+            {
+                QString hostName = getNameByAddr( od.addr.toString().c_str() );
+                if (!hostName.isEmpty())
+                    od.sysname = hostName.toUtf8().constData();
+            }
+
+            logLine(
+                QString(od.addr.toString().c_str()) + " : " + od.sysname.c_str());
+        }
+
+        if (snmpDoDNS && od.dns_info.aliases.size() > 0)
+        {
+            set<string>::iterator si;
+            for(si=od.dns_info.aliases.begin(); si!=od.dns_info.aliases.end(); ++si)
+            {
+                od.sysname = (*si);
+                objects.push_back(od);;
+            }
+        } else
+            objects.push_back(od);
+
+    }
+
+    emit completeChanged();
+}
 
 void ND_ProgressPage::logLine(const QString &buf)
 {

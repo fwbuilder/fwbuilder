@@ -26,12 +26,13 @@
 #include "FWWindow.h"
 
 #include "ND_ChooseNetworksPage.h"
+#include "ND_ProgressPage.h"
 
 #include <QtDebug>
 
 
 using namespace std;
-//using namespace libfwbuilder;
+using namespace libfwbuilder;
 
 
 ND_ChooseNetworksPage::ND_ChooseNetworksPage(QWidget *parent) : QWizardPage(parent)
@@ -47,6 +48,16 @@ void ND_ChooseNetworksPage::initializePage()
 {
     if (fwbdebug)
         qDebug() << "ND_ChooseNetworksPage::initializePage()";
+
+    ND_ProgressPage *progress_page = NULL;
+    foreach(int page_id, wizard()->pageIds())
+    {
+        progress_page = dynamic_cast<ND_ProgressPage*>(wizard()->page(page_id));
+        if (progress_page != NULL) break;
+    }
+    assert(progress_page != NULL);
+
+    m_dialog->objectSelector->init(progress_page->getNetworks());
 
     /*
       list<ObjectDescriptor> objects;

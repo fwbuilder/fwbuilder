@@ -31,9 +31,14 @@
 #include <QWidget>
 #include <QThread>
 
+#include <map>
+#include <set>
+
 
 class SNMPCrawlerThread : public QThread
 {
+    Q_OBJECT;
+    
     libfwbuilder::SNMPCrawler *q;
     libfwbuilder::SyncFlag *stop_flag;
 
@@ -52,6 +57,12 @@ public:
 
     void run();
     void stop();
+
+    std::map<libfwbuilder::InetAddr, libfwbuilder::CrawlerFind>  getAllIPs();
+    std::set<libfwbuilder::InetAddrMask*> getNetworks();
+    
+signals:
+    void finished();
 };
 
 

@@ -26,12 +26,15 @@
 #include "FWWindow.h"
 
 #include "ND_ChooseObjectsPage.h"
+#include "ND_ProgressPage.h"
 
 #include <QtDebug>
 
+#include <map>
+
 
 using namespace std;
-//using namespace libfwbuilder;
+using namespace libfwbuilder;
 
 
 ND_ChooseObjectsPage::ND_ChooseObjectsPage(QWidget *parent) : QWizardPage(parent)
@@ -47,6 +50,16 @@ void ND_ChooseObjectsPage::initializePage()
 {
     if (fwbdebug)
         qDebug() << "ND_ChooseObjectsPage::initializePage()";
+
+    ND_ProgressPage *progress_page = NULL;
+    foreach(int page_id, wizard()->pageIds())
+    {
+        progress_page = dynamic_cast<ND_ProgressPage*>(wizard()->page(page_id));
+        if (progress_page != NULL) break;
+    }
+    assert(progress_page != NULL);
+
+    m_dialog->objectSelector->init(progress_page->getObjects());
 
     /*
       list<ObjectDescriptor> objects;

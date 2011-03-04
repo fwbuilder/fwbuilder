@@ -81,14 +81,23 @@ void SNMPCrawlerThread::run()
             Qt::QueuedConnection);
     q->run_impl(logger, stop_flag);
 
-    *logger << string("\n");
-    *logger << string("Network crawler stopped");
-    
+    emit finished();
+
     deleteLater(); // mark this object for destruction on the next run of event loop
 }
 
 void SNMPCrawlerThread::stop()
 {
     stop_flag->set(true);
+}
+
+map<InetAddr, CrawlerFind>  SNMPCrawlerThread::getAllIPs()
+{
+    return q->getAllIPs();
+}
+
+set<InetAddrMask*> SNMPCrawlerThread::getNetworks()
+{
+    return q->getNetworks();
 }
 
