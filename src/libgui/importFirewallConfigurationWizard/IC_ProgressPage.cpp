@@ -194,10 +194,13 @@ void IC_ProgressPage::logLine(const QString &buf)
         if (line.contains("Parser error"))
             format = error_format;
 
+        if (line.contains("Error: "))
+            format = error_format;
+
         if (line.contains("Parser warning"))
             format = warning_format;
 
-        if (line.contains("SNMP error, status 2 Timeout"))
+        if (line.contains("Warning: "))
             format = warning_format;
 
         QString txt = line;
