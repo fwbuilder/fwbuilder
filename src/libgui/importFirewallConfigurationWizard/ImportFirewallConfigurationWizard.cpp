@@ -57,7 +57,7 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(QWidget *pa
     setPage(Page_Progess, new IC_ProgressPage(this));
     setPage(Page_NetworkZones, new IC_NetworkZonesPage(this));
 
-    resize(600, 600);
+    resize(700, 600);
 }
 
 void ImportFirewallConfigurationWizard::accept()

@@ -191,6 +191,7 @@ void IC_PlatformWarningPage::initializePage()
                    "<li>VPN</li>"
                    "<li>Dynamic routing protocols</li>"
                    "<li>QoS</li>"
+                   "</ul>"
                 ));
             platformOk = true;
         }
@@ -199,7 +200,22 @@ void IC_PlatformWarningPage::initializePage()
         {
             m_dialog->platform->setText(tr("Cisco Router IOS"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Warning lines for IOS import"));
+                tr("Not all Cisco IOS configuration commands are "
+                   "supported by Firewall Builder. The following "
+                   "configuration components will be imported and "
+                   "can be managed using Firewall Builder:"
+                   "<ul>"
+                   "<li>Interface configurations (IP address)</li>"
+                   "<li>Extended access lists</li>"
+                   "</ul>"
+                   "The following configuration components will not be imported:"
+                   "<ul>"
+                   "<li>VPN</li>"
+                   "<li>Static routes</li>"
+                   "<li>Dynamic routing protocols (OSPF, RIP, etc.)</li>"
+                   "<li>QoS</li>"
+                   "</ul>"
+                ));
             platformOk = true;
         }
 
@@ -207,7 +223,18 @@ void IC_PlatformWarningPage::initializePage()
         {
             m_dialog->platform->setText(tr("iptables"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Warning lines for iptables import"));
+                tr("Firewall Builder will import all the rules defined "
+                   "in the iptables configuration. Discovered IP networks "
+                   "and IP addresses used in the iptables rules will "
+                   "automatically have objects created in the object tree. "
+                   "Each user defined chain will be created as its own Policy "
+                   "object in Firewall Builder."
+                   ""
+                   "The import process will also attempt to detect interface "
+                   "names and IP addresses based on -i and -o parameters in "
+                   "the configuration, but you may have to update the firewall "
+                   "object with additional interface information like IP addresses."
+                ));
             platformOk = true;
         }
 
