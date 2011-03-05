@@ -40,6 +40,8 @@ class IC_ProgressPage : public QWizardPage
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
     ImporterThread *importer;
+    int errors_count;
+    int warnings_count;
     
 public:
     IC_ProgressPage(QWidget *parent);

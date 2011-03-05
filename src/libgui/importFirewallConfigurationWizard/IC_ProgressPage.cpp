@@ -52,6 +52,9 @@ IC_ProgressPage::IC_ProgressPage(QWidget *parent) : QWizardPage(parent)
     m_dialog->setupUi(this);
     importer = NULL;
 
+    errors_count = 0;
+    warnings_count = 0;
+
     QTextCursor cursor(m_dialog->importLog->textCursor());
     normal_format = cursor.charFormat();
 
@@ -125,6 +128,8 @@ void IC_ProgressPage::initializePage()
     }
 
     m_dialog->importLog->clear();
+    m_dialog->errors_count_display->setText("0");
+    m_dialog->warnings_count_display->setText("0");
 
     QString platform = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
@@ -211,16 +216,28 @@ void IC_ProgressPage::logLine(const QString &buf)
         QTextCharFormat format = normal_format;
 
         if (line.contains("Parser error"))
+        {
             format = error_format;
+            errors_count++;
+        }
 
         if (line.contains("Error: "))
+        {
             format = error_format;
+            errors_count++;
+        }
 
         if (line.contains("Parser warning"))
+        {
             format = warning_format;
+            warnings_count++;
+        }
 
         if (line.contains("Warning: "))
+        {
             format = warning_format;
+            warnings_count++;
+        }
 
         QString txt = line;
         while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
@@ -232,10 +249,13 @@ void IC_ProgressPage::logLine(const QString &buf)
         QTextCursor cursor = m_dialog->importLog->textCursor();
         cursor.insertBlock();
         cursor.insertText(txt, format);
+
+        QString s;
+        m_dialog->errors_count_display->setText(s.setNum(errors_count));
+        m_dialog->warnings_count_display->setText(s.setNum(warnings_count));
     }
 
     m_dialog->importLog->ensureCursorVisible();
-
 }
 
 void IC_ProgressPage::saveLog()
