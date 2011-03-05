@@ -86,6 +86,11 @@ void IC_PlatformWarningPage::initializePage()
                                   << QRegExp("^\\[\\d+:\\d+\\] -A OUTPUT ")
                                   << QRegExp("^\\[\\d+:\\d+\\] -A FORWARD ");
 
+        QList<QRegExp> pf_conf_re;
+        pf_conf_re << QRegExp("^scrub\\s+\\S+")
+                   << QRegExp("^set\\s+timeout\\s+\\S+")
+                   << QRegExp("");
+
         m_dialog->configFileBrowser->clear();
         m_dialog->platform->setText(tr("Unknown"));
 
@@ -140,6 +145,15 @@ void IC_PlatformWarningPage::initializePage()
                     if (re.indexIn(line) > -1)
                     {
                         detectedPlatform = "iptables";
+                        break;
+                    }
+                }
+
+                foreach (QRegExp re, pf_conf_re)
+                {
+                    if (re.indexIn(line) > -1)
+                    {
+                        detectedPlatform = "pf";
                         break;
                     }
                 }
@@ -247,6 +261,14 @@ void IC_PlatformWarningPage::initializePage()
                    "and it includes packet counters. Please save configuration "
                    "using command \"iptables-save\" without option \"-c\" and "
                    "try to import it again."));
+            platformOk = false;
+        }
+
+        if (detectedPlatform == "pf")
+        {
+            m_dialog->platform->setText(tr("iptables"));
+            m_dialog->platformSpecificWarning->setText(
+                tr("Import of PF rules is not supported"));
             platformOk = false;
         }
 
