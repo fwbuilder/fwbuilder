@@ -39,6 +39,8 @@
 # define nil NULL
 #endif
 
+#include "../../../config.h"
+
 #include <string>
 #include <map>
 #include <list>
@@ -77,15 +79,6 @@ namespace libfwbuilder
     char *cxx_strdup(const std::string &x);
 
     std::string int2string(int n);
-
-    /**
-     * Replace all occurences of ${MACRO} in the source string
-     * with value from given map. If value not found, depending on
-     * value of 'strict' flag eitehr exception is thrown or empty 
-     * value is inserted.
-     */
-    std::string substituteMacros(const std::string &source, const std::map<std::string, std::string> &macros, bool strict=false) throw(libfwbuilder::FWException);
-
 
     /**
      * portable function that gets a list of files that reside in a given

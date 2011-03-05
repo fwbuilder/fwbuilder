@@ -24,6 +24,8 @@
 #ifndef _SNMPCRAWLERTHREAD_H_
 #define _SNMPCRAWLERTHREAD_H_
 
+#include "../../config.h"
+
 #include "fwbuilder/snmp.h"
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/ThreadTools.h"

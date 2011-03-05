@@ -35,7 +35,7 @@
 #include <sstream>
 
 /*
- * this is workaround, by some reason dirent.h defines DIR as a typedef
+ * this is workaround, for some reason dirent.h defines DIR as a typedef
  * for struct __dirstream which is not defined anywhere.  07/12/02  vk
  */
 #ifndef __dirstream
@@ -72,68 +72,6 @@ char *cxx_strdup(const char *x)
 
     char *res=new char[strlen(x)+1];
     strcpy(res,x);
-    return res;
-}
-
-string substituteMacros(const string &source, const map<string, string> &macros, bool strict) throw(libfwbuilder::FWException)
-{
-    string name;
-    string res;
-
-    enum {
-        MODE_TEXT,
-        MODE_META,
-        MODE_NAME
-    } m = MODE_TEXT;
-    
-    for(size_t i=0;i<source.length();i++)
-    {
-        char c = source[i];
-        switch(m)
-        {
-        case MODE_TEXT:
-            if(c=='$')
-                m=MODE_META;
-            else
-                res+=c;
-            break;
-        case MODE_META:
-            if(c=='$')
-            {
-                // double '$' means '$'
-                res+=c;
-            } else
-            {
-                if(c=='{')
-                {
-                    m    = MODE_NAME;
-                    name = "";
-                } else
-                {
-                    ostringstream err;
-                    err << "Unexpected symbol after '$' at postion " << i;
-                    throw FWException(err.str());
-                }
-            }
-            break;
-        case MODE_NAME:
-            if(c=='}')
-            {
-                map<string, string>::const_iterator i=macros.find(name);
-                if(i!=macros.end())
-                    res+=(*i).second;
-                else if(strict)
-                    throw FWException(string("Undefined macro '")+name+"'");
-                m = MODE_TEXT;
-            } else
-                name+=c;
-            break;
-        }
-    }
-    
-    if(m!=MODE_TEXT)
-        throw FWException("Unexpected end of string");
-
     return res;
 }
 
