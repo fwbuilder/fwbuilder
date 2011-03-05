@@ -43,7 +43,7 @@ class IC_ProgressPage : public QWizardPage
     
 public:
     IC_ProgressPage(QWidget *parent);
-    virtual ~IC_ProgressPage() {}
+    virtual ~IC_ProgressPage();
 
     virtual void initializePage();
     virtual void cleanupPage();

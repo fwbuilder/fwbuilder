@@ -53,6 +53,7 @@ ImporterThread::ImporterThread(QWidget *ui,
     this->platform = platform;
     this->firewallName = firewallName;
     importer = NULL;
+    stopFlag = false;
 }
 
 ImporterThread::~ImporterThread()
@@ -96,14 +97,17 @@ void ImporterThread::run()
                 << platform.toStdString() << "\n";
     }
 
-    fw = importer->finalize();
-
-    emit finished();
+    if ( ! stopFlag)
+    {
+        fw = importer->finalize();
+        emit finished();
+    }
 
     deleteLater(); // mark this object for destruction on the next run of event loop
 }
 
 void ImporterThread::stop()
 {
+    stopFlag = true;
 }
 

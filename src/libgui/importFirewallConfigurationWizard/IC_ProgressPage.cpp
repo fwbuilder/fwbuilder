@@ -70,6 +70,13 @@ IC_ProgressPage::IC_ProgressPage(QWidget *parent) : QWizardPage(parent)
     warning_format.setAnchorHref("http://somewhere.com");
 }
 
+IC_ProgressPage::~IC_ProgressPage()
+{
+    disconnect(this, SLOT(logLine(QString)));
+    disconnect(this, SLOT(importerFinished()));
+    if (importer != NULL && importer->isRunning()) importer->stop();
+}
+
 int IC_ProgressPage::nextId () const
 {
     QString platform = 
@@ -143,7 +150,8 @@ void IC_ProgressPage::cleanupPage()
     if (fwbdebug_ic) qDebug() << "IC_ProgressPage::cleanupPage()";
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(importerFinished()));
-    if (importer != NULL && importer->isRunning()) importer->wait();
+    if (importer != NULL && importer->isRunning()) importer->stop();
+//    if (importer != NULL && importer->isRunning()) importer->wait();
 }
 
 void IC_ProgressPage::importerFinished()

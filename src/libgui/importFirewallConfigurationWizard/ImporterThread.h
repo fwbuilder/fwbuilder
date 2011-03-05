@@ -51,6 +51,7 @@ class ImporterThread : public QThread
     QString platform;
     QWidget *ui;
     libfwbuilder::Firewall *fw;
+    bool stopFlag;
     
 public:
     ImporterThread(QWidget *ui,
