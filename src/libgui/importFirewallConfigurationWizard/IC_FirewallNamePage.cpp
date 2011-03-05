@@ -55,7 +55,7 @@ void IC_FirewallNamePage::initializePage()
 
     qDebug() << "platform=" << platform;
 
-    if (platform == "pix" || platform == "ios_acl")
+    if (platform == "pix" || platform == "fwsm" || platform == "ios_acl")
     {
         QRegExp cisco_re("^hostname\\s+(\\S+)");
 

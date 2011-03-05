@@ -78,7 +78,7 @@ void ImporterThread::run()
     if (platform == "iptables") importer = new IPTImporter(
         lib, instream, logger, firewallName.toUtf8().constData());
 
-    if (platform == "pix") importer = new PIXImporter(
+    if (platform == "pix" || platform == "fwsm") importer = new PIXImporter(
         lib, instream, logger, firewallName.toUtf8().constData());
 
     if (importer)

@@ -83,7 +83,7 @@ int IC_ProgressPage::nextId () const
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getPlatform();
 
-    if (platform == "pix")
+    if (platform == "pix" || platform == "fwsm")
         return ImportFirewallConfigurationWizard::Page_NetworkZones;
 
     return -1;
@@ -108,7 +108,7 @@ bool IC_ProgressPage::isComplete() const
 
 void IC_ProgressPage::importerDestroyed(QObject *obj)
 {
-    if (fwbdebug_ic) qDebug() << "ND_ProgressPage::importerDestroyed() obj=" << obj;
+    if (fwbdebug_ic) qDebug() << "IC_ProgressPage::importerDestroyed() obj=" << obj;
     if (obj == importer) importer = NULL;
 }
 
@@ -117,7 +117,7 @@ void IC_ProgressPage::initializePage()
     if (importer != NULL && importer->isRunning())
     {
         if (fwbdebug_ic)
-            qDebug() << "ND_ProgressPage::initializePage()"
+            qDebug() << "IC_ProgressPage::initializePage()"
                      << "importer is still runnig; stopping";
         importer->stop();
         importer->wait();
@@ -165,22 +165,41 @@ void IC_ProgressPage::importerFinished()
 
     if (fw) // fw can be NULL if import was uncussessful
     {
+        // importer does not correctly detect fwsm platform and sets platform
+        // to "pix"
+        QString platform = 
+            dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
+            getPlatform();
+        if (platform == "fwsm")
+        {
+            fw->setStr("platform", "fwsm");
+            fw->setStr("hostOS", "fwsm_os");
+        }
+
         ProjectPanel *pp = mw->activeProject();
         QString filename = pp->getFileName();
 
-        QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
-        if (mw->isEditorVisible())
-            QCoreApplication::postEvent(
-                mw, new openObjectInEditorEvent(filename, fw->getId()));
         QCoreApplication::postEvent(
-            mw, new showObjectInTreeEvent(filename, fw->getId()));
+            mw, new reloadObjectTreeImmediatelyEvent(filename));
+
+        QCoreApplication::postEvent(
+            pp, new showObjectInTreeEvent(filename, fw->getId()));
+
+        QCoreApplication::postEvent(
+            pp, new expandObjectInTreeEvent(
+                mw->activeProject()->getFileName(), fw->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(filename, fw->getId()));
 
         // Open first created Policy ruleset object
         FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
         if (first_policy)
             QCoreApplication::postEvent(
-                mw, new openRulesetEvent(filename, first_policy->getId()));
+                pp, new openRulesetEvent(filename, first_policy->getId()));
     }
+
+    emit completeChanged();
 }
 
 void IC_ProgressPage::logLine(const QString &buf)

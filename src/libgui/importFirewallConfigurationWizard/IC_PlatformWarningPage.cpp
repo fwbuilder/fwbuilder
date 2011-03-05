@@ -65,6 +65,9 @@ void IC_PlatformWarningPage::initializePage()
                << QRegExp("^nameif \\S+")
                << QRegExp("^fixup \\S+");
 
+        QList<QRegExp> fwsm_re;
+        fwsm_re << QRegExp("^FWSM Version");
+
         QList<QRegExp> ios_re;
         ios_re << QRegExp("IOS Version")
                << QRegExp("^[vV]ersion 1[012]\\..*");
@@ -103,39 +106,54 @@ void IC_PlatformWarningPage::initializePage()
 
         foreach (QString line, *buf)
         {
-            foreach (QRegExp re, pix_re)
+            if (detectedPlatform.isEmpty())
             {
-                if (re.indexIn(line) > -1)
+                foreach (QRegExp re, pix_re)
                 {
-                    detectedPlatform = "pix";
-                    break;
+                    if (re.indexIn(line) > -1)
+                    {
+                        detectedPlatform = "pix";
+                        break;
+                    }
+                }
+
+                foreach (QRegExp re, fwsm_re)
+                {
+                    if (re.indexIn(line) > -1)
+                    {
+                        detectedPlatform = "fwsm";
+                        break;
+                    }
+                }
+
+                foreach (QRegExp re, ios_re)
+                {
+                    if (re.indexIn(line) > -1)
+                    {
+                        detectedPlatform = "iosacl";
+                        break;
+                    }
+                }
+
+                foreach (QRegExp re, iptables_re)
+                {
+                    if (re.indexIn(line) > -1)
+                    {
+                        detectedPlatform = "iptables";
+                        break;
+                    }
                 }
             }
 
-            foreach (QRegExp re, ios_re)
+            if (detectedPlatform == "iptables")
             {
-                if (re.indexIn(line) > -1)
+                foreach (QRegExp re, iptables_with_counters_re)
                 {
-                    detectedPlatform = "iosacl";
-                    break;
-                }
-            }
-
-            foreach (QRegExp re, iptables_re)
-            {
-                if (re.indexIn(line) > -1)
-                {
-                    detectedPlatform = "iptables";
-                    break;
-                }
-            }
-
-            foreach (QRegExp re, iptables_with_counters_re)
-            {
-                if (re.indexIn(line) > -1)
-                {
-                    iptables_c = true;
-                    break;
+                    if (re.indexIn(line) > -1)
+                    {
+                        iptables_c = true;
+                        break;
+                    }
                 }
             }
         }
@@ -153,9 +171,9 @@ void IC_PlatformWarningPage::initializePage()
             platformOk = false;
         }
 
-        if (detectedPlatform == "pix")
+        if (detectedPlatform == "pix" || detectedPlatform == "fwsm")
         {
-            m_dialog->platform->setText(tr("Cisco PIX / CIsco ASA"));
+            m_dialog->platform->setText(tr("Cisco PIX / CIsco ASA / Cisco FWSM"));
             m_dialog->platformSpecificWarning->setText(
                 tr("Not all Cisco ASA and PIX configuration commands are "
                    "supported by Firewall Builder. "
