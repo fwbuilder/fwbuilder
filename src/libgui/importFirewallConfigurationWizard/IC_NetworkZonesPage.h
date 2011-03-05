@@ -21,43 +21,29 @@
 
 */
 
-#ifndef IC_PROGRESSPAGE_H
-#define IC_PROGRESSPAGE_H
+#ifndef NETWORKZONESPAGE_H
+#define NETWORKZONESPAGE_H
 
-#include "ui_ic_progresspage_q.h"
+#include "ui_ic_networkzonespage_q.h"
+#include <QtGui/QWizardPage>
 
-#include <QTextCharFormat>
+namespace Ui {
+    class IC_NetworkZonesPage_q;
+}
 
-class ImporterThread;
-
-
-class IC_ProgressPage : public QWizardPage
+class IC_NetworkZonesPage : public QWizardPage
 {
     Q_OBJECT;
 
-    Ui::IC_ProgressPage_q *m_dialog;
-    QTextCharFormat normal_format;
-    QTextCharFormat error_format;
-    QTextCharFormat warning_format;
-    ImporterThread *importer;
-    
+    Ui::IC_NetworkZonesPage_q *m_dialog;
+
 public:
-    IC_ProgressPage(QWidget *parent);
-    virtual ~IC_ProgressPage() {}
+    explicit IC_NetworkZonesPage(QWidget *parent = 0);
+    virtual ~IC_NetworkZonesPage();
 
     virtual void initializePage();
-    virtual void cleanupPage();
-    virtual bool validatePage();
 
-    virtual int nextId () const;
-        
-    
-public slots:
-    void saveLog();
-    void logLine(const QString &line);
-    void importerDestroyed(QObject*);
-    void importerFinished();
-
+    void setNetworkZones();
 };
 
-#endif // IC_PROGRESSPAGE_H
+#endif // NETWORKZONESPAGE_H

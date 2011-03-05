@@ -86,19 +86,22 @@ void IC_PlatformWarningPage::initializePage()
         m_dialog->configFileBrowser->clear();
         m_dialog->platform->setText(tr("Unknown"));
 
-        QStringList buf;
+        QStringList *buf = 
+            dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
+            getBufferPtr();
+
         QTextStream stream(&cf);
         while (true)
         {
             QString line = stream.readLine().trimmed();
             if (line.isNull()) break;
             m_dialog->configFileBrowser->append(line);
-            buf << line;
+            *buf << line;
         }
 
         bool iptables_c = false;
 
-        foreach (QString line, buf)
+        foreach (QString line, *buf)
         {
             foreach (QRegExp re, pix_re)
             {
@@ -113,7 +116,7 @@ void IC_PlatformWarningPage::initializePage()
             {
                 if (re.indexIn(line) > -1)
                 {
-                    detectedPlatform = "ios_acl";
+                    detectedPlatform = "iosacl";
                     break;
                 }
             }
@@ -174,7 +177,7 @@ void IC_PlatformWarningPage::initializePage()
             platformOk = true;
         }
 
-        if (detectedPlatform == "ios_acl")
+        if (detectedPlatform == "iosacl")
         {
             m_dialog->platform->setText(tr("Cisco Router IOS"));
             m_dialog->platformSpecificWarning->setText(

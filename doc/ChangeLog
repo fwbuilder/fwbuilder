@@ -1,5 +1,9 @@
 2011-03-04  vadim  <vadim@netcitadel.com>
 
+	* IC_NetworkZonesPage.cpp (setNetworkZones): see #2161 policy
+	import wizard shows the page where user can set up network zones
+	of interfaces if firewall platform was determined to be PIX.
+
 	* IC_PlatformWarningPage.cpp (initializePage): see #2161 "import
 	workflow and automatic detection of firewall platform from the
 	config file". When user imports existing firewall configuration,

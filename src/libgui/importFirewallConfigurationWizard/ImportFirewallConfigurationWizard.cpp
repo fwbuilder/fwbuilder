@@ -29,8 +29,10 @@
 #include "IC_FirewallNamePage.h"
 #include "IC_PlatformWarningPage.h"
 #include "IC_ProgressPage.h"
+#include "IC_NetworkZonesPage.h"
 
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/Firewall.h"
 
 #include <QtDebug>
 
@@ -41,17 +43,30 @@ using namespace libfwbuilder;
 ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(QWidget *parent) :
     QWizard(parent)
 {
+    fw = NULL;
+
     QPixmap pm;
     pm.load(":/Images/fwbuilder3-72x72.png");
     setPixmap(QWizard::LogoPixmap, pm);
 
     setWindowTitle(tr("Import Firewall Configuration"));
 
-    addPage(new IC_FileNamePage(this));
-    addPage(new IC_PlatformWarningPage(this));
-    addPage(new IC_FirewallNamePage(this));
-    addPage(new IC_ProgressPage(this));
+    setPage(Page_FileName, new IC_FileNamePage(this));
+    setPage(Page_Platform, new IC_PlatformWarningPage(this));
+    setPage(Page_FirewallName, new IC_FirewallNamePage(this));
+    setPage(Page_Progess, new IC_ProgressPage(this));
+    setPage(Page_NetworkZones, new IC_NetworkZonesPage(this));
 
-    resize(700, 500);
+    resize(600, 600);
 }
 
+void ImportFirewallConfigurationWizard::accept()
+{
+    qDebug() << "ImportFirewallConfigurationWizard::accept()";
+
+    if (platform == "pix" || platform == "fwsm")
+        dynamic_cast<IC_NetworkZonesPage*>(
+            page(Page_NetworkZones))->setNetworkZones();
+
+    QWizard::accept();
+}

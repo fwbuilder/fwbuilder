@@ -221,7 +221,9 @@ HEADERS += ../../config.h \
 	importFirewallConfigurationWizard/IC_FirewallNamePage.h \
 	importFirewallConfigurationWizard/IC_PlatformWarningPage.h \
 	importFirewallConfigurationWizard/IC_ProgressPage.h \
+	importFirewallConfigurationWizard/IC_NetworkZonesPage.h \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h \
+	importFirewallConfigurationWizard/ImporterThread.h \
 
 
 
@@ -439,7 +441,9 @@ SOURCES += ProjectPanel.cpp \
 	importFirewallConfigurationWizard/IC_FirewallNamePage.cpp \
 	importFirewallConfigurationWizard/IC_PlatformWarningPage.cpp \
 	importFirewallConfigurationWizard/IC_ProgressPage.cpp \
+	importFirewallConfigurationWizard/IC_NetworkZonesPage.cpp \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.cpp \
+	importFirewallConfigurationWizard/ImporterThread.cpp
 
 
 FORMS = FWBMainWindow_q.ui \
@@ -568,6 +572,7 @@ FORMS = FWBMainWindow_q.ui \
 	importFirewallConfigurationWizard/ic_firewallnamepage_q.ui \
 	importFirewallConfigurationWizard/ic_platformwarningpage_q.ui \
 	importFirewallConfigurationWizard/ic_progresspage_q.ui \
+	importFirewallConfigurationWizard/ic_networkzonespage_q.ui \
 
 
 # fwtransfer stuff.

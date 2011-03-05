@@ -21,42 +21,52 @@
 
 */
 
-#ifndef __IMPORTFIREWALLCONFIGURATIONWIZARD_H_
-#define __IMPORTFIREWALLCONFIGURATIONWIZARD_H_
+#ifndef _IMPORTERTHREAD_H_
+#define _IMPORTERTHREAD_H_
 
-#include <QWizard>
+#include "Importer.h"
+
+#include <QWidget>
+#include <QThread>
 #include <QStringList>
+
+#include <map>
+#include <set>
+
 
 namespace libfwbuilder
 {
+    class FWObject;
     class Firewall;
 };
 
-
-class ImportFirewallConfigurationWizard : public QWizard
+class ImporterThread : public QThread
 {
     Q_OBJECT;
-    QString platform;
+
+    libfwbuilder::FWObject *lib;
+    Importer *importer;
     QStringList buffer;
+    QString firewallName;
+    QString platform;
+    QWidget *ui;
     libfwbuilder::Firewall *fw;
     
 public:
-    enum { Page_FileName, Page_Platform, Page_FirewallName,
-           Page_Progess, Page_NetworkZones };
+    ImporterThread(QWidget *ui,
+                   libfwbuilder::FWObject *lib,
+                   const QStringList &buffer,
+                   const QString &platform,
+                   const QString &firewallName);
+    virtual ~ImporterThread();
+
+    void run();
+    void stop();
+
+    libfwbuilder::Firewall* getFirewallObject() { return fw; }
     
-    ImportFirewallConfigurationWizard(QWidget *parent);
-    virtual ~ImportFirewallConfigurationWizard() {}
-
-    QString getPlatform() { return platform; }
-    void setPlatform(const QString &s) { platform = s; }
-
-    QStringList* getBufferPtr() { return &buffer; }
-
-    libfwbuilder::Firewall* getFirewall() { return fw; }
-    void setFirewall(libfwbuilder::Firewall* _fw) { fw = _fw; }
-    
-public slots:
-    virtual void accept();
+signals:
+    void finished();
 };
 
 

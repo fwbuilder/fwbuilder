@@ -49,31 +49,26 @@ void IC_FirewallNamePage::initializePage()
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getPlatform();
 
-    QString fileName = field("fileName").toString();
+    QStringList *buf = 
+        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
+        getBufferPtr();
 
     qDebug() << "platform=" << platform;
 
     if (platform == "pix" || platform == "ios_acl")
     {
-        QFile cf(fileName);
-        if (cf.open(QIODevice::ReadOnly ))
+        QRegExp cisco_re("^hostname\\s+(\\S+)");
+
+        foreach(QString line, *buf)
         {
-            QRegExp cisco_re("^hostname\\s+(\\S+)");
-
-            QTextStream stream(&cf);
-            while (true)
+            if (cisco_re.indexIn(line) > -1)
             {
-                QString line = stream.readLine().trimmed();
-                if (line.isNull()) break;
-
-                if (cisco_re.indexIn(line) > -1)
-                {
-                    m_dialog->firewallName->setText(cisco_re.cap(1));
-                    break;
-                }
+                m_dialog->firewallName->setText(cisco_re.cap(1));
+                break;
             }
         }
     }
+    setCommitPage(true);
     emit completeChanged();
 }
 
