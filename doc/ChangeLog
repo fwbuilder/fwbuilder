@@ -1,3 +1,10 @@
+2011-03-05  vadim  <vadim@netcitadel.com>
+
+	* FWBMainWindow_q.ui: see #2162 menu item "File / Import Policy"
+	renamed to "File / Import Firewall". This menu item launches
+	wizard that imports existing iptables, Cisco router IOS or
+	Cisco PIX/ASA config.
+
 2011-03-04  vadim  <vadim@netcitadel.com>
 
 	* IC_NetworkZonesPage.cpp (setNetworkZones): see #2161 policy

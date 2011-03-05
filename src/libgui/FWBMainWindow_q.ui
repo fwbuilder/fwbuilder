@@ -742,7 +742,7 @@
      <x>0</x>
      <y>0</y>
      <width>1144</width>
-     <height>27</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -1304,7 +1304,7 @@
   </action>
   <action name="policyImportAction">
    <property name="text">
-    <string>Import Po&amp;licy</string>
+    <string>Import &amp;Firewall</string>
    </property>
    <property name="iconText">
     <string>Import Policy</string>

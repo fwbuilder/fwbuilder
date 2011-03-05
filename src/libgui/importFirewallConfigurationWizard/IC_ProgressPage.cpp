@@ -93,6 +93,12 @@ bool IC_ProgressPage::validatePage()
     return true;
 }
 
+bool IC_ProgressPage::isComplete() const
+{
+    if (importer != NULL && importer->isRunning()) return false;
+    return true;
+}
+
 void IC_ProgressPage::importerDestroyed(QObject *obj)
 {
     if (fwbdebug_ic) qDebug() << "ND_ProgressPage::importerDestroyed() obj=" << obj;

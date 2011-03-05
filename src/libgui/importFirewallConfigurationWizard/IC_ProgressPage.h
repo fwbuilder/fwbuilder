@@ -48,7 +48,7 @@ public:
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
-
+    virtual bool isComplete() const;
     virtual int nextId () const;
         
     
