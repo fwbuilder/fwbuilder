@@ -23,13 +23,14 @@
 
 #include "../../config.h"
 #include "global.h"
-#include "SNMPCrawlerThread.h"
+
+#include <QWidget>
+#include <QtDebug>
 
 #include "utils.h"
 #include "QThreadLogger.h"
 
-#include <QWidget>
-#include <QtDebug>
+#include "SNMPCrawlerThread.h"
 
 
 using namespace std;

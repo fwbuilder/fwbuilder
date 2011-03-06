@@ -6,8 +6,6 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -23,7 +21,7 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef HAVE_LIBSNMP
 
@@ -32,10 +30,10 @@
 #include <fcntl.h>
 #include <time.h>
 
-#include <fwbuilder/physAddress.h>
-#include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/Inet6AddrMask.h>
-#include <fwbuilder/IPv4.h>
+#include "fwbuilder/physAddress.h"
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/Inet6AddrMask.h"
+#include "fwbuilder/IPv4.h"
 
 /*
  * we do not really use getops here, but net-snmp does. On FreeBSD, if
@@ -49,7 +47,8 @@
  * processed
  */
 #define _GETOPT_H
-#include <fwbuilder/snmp.h>
+
+#include "fwbuilder/snmp.h"
 
 #ifdef UCD_SNMP
 #include <ucd-snmp/parse.h>

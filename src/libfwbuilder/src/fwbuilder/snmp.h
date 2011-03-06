@@ -6,9 +6,6 @@
 
   Author:  Vadim Zaliva lord@crocodile.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -28,20 +25,20 @@
 #ifndef __SNMP_HH_FLAG__
 #define __SNMP_HH_FLAG__
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef HAVE_LIBSNMP
 
 #include <vector>
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/BackgroundOp.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/InterfaceData.h>
-#include <fwbuilder/IPRoute.h>
-#include <fwbuilder/dns.h>
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/BackgroundOp.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InterfaceData.h"
+#include "fwbuilder/IPRoute.h"
+#include "fwbuilder/dns.h"
 
 #ifdef UCD_SNMP
 #include <ucd-snmp/ucd-snmp-config.h>
