@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1298422069" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1299444111" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1664,7 +1664,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id456" disabled="False" group="" log="False" position="25" action="Reject" direction="Both" comment="Unknown parameter of target REJECT: icmp-foo-prohibited. Chain INPUT. ">
+          <PolicyRule id="id456" disabled="False" group="" log="False" position="25" action="Reject" direction="Both" comment="Warning: Unknown parameter of target REJECT: icmp-foo-prohibited.&#10;Chain INPUT. ">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1686,7 +1686,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id468" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Unknown parameter of target REJECT: foo-prohib. Chain INPUT. ">
+          <PolicyRule id="id468" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Warning: Unknown parameter of target REJECT: foo-prohib.&#10;Chain INPUT. ">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2501,7 +2501,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1285" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Port spec 'foo' unknown. Error basic_ios::clear&#10;Port spec 'foo' unknown. Error basic_ios::clearChain user_chain. ">
+          <PolicyRule id="id1285" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Port spec 'foo' unknown &#10;Port spec 'foo' unknown Chain user_chain. ">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -3724,7 +3724,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id1976" name="Mangle" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id1978" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Can not reproduce default action in table 'mangle' chain 'FORWARD'.">
+          <PolicyRule id="id1978" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Warning: Can not reproduce default action in table 'mangle' chain 'FORWARD'.&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3745,7 +3745,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1990" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Can not reproduce default action in table 'mangle' chain 'INPUT'.">
+          <PolicyRule id="id1990" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Warning: Can not reproduce default action in table 'mangle' chain 'INPUT'.&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

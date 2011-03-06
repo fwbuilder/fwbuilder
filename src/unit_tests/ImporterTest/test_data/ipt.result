@@ -6,29 +6,29 @@ Ruleset: filter / OUTPUT
 Default action: Accept
 Ruleset: filter / user_chain
 Default action: Deny
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 Address object: h-21.21.21.21
 TCP Service object: tcp 22-22:
 Created branch OUTPUT_established_0
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 TCP Service object: tcp 23-23
 Created branch OUTPUT_established_1
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
-Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
+Warning: Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 New interface: lo
 UDP Service object: udp 1604-1604
 Created branch Policy_eth1
 New interface: eth1
 New interface: eth0
-Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
+Warning: Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
 TCP Service object: tcp 0-8000
 UDP Service object: udp 0-8000
-Unknown parameter of target REJECT: icmp-foo-prohibited. 
-Unknown parameter of target REJECT: foo-prohib. 
+Warning: Unknown parameter of target REJECT: icmp-foo-prohibited.
+Warning: Unknown parameter of target REJECT: foo-prohib.
 AddressRange object: range-10.212.66.2-10.212.66.3
 AddressRange object: range-192.11.1.11-192.11.1.63
 Address object: h-10.212.66.2
@@ -39,7 +39,7 @@ ICMP Service object: icmp -1/-1
 Address object: h-192.168.1.1
 IP Service object: ip-47
 Network object: net-1.1.0.0/16
-Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
 Network object: net-192.168.19.0/24
 TCP Service object: tcp 5432-5432
 Address object: h-192.168.16.125
@@ -66,10 +66,8 @@ TCP Service object: tcp fsrpau/f
 TCP Service object: tcp sr/sr
 TCP Service object: tcp fs/fs
 TCP Service object: tcp fsrpau/N
-Parser error:
-Port spec 'foo' unknown. Error basic_ios::clear
-Parser error:
-Port spec 'foo' unknown. Error basic_ios::clear
+Parser error: Port spec 'foo' unknown 
+Parser error: Port spec 'foo' unknown 
 TCP Service object: tcp 
 TCP Service object: tcp 427-427
 UDP Service object: udp 427-427
@@ -104,14 +102,12 @@ Tag Service object: tag-0x4
 Created branch user_chain_47_mod_match
 TCP Service object: tcp 53-53:
 Created branch user_chain_48_mod_match
-Parser error:
-Original rule combines match of tcp/udp/icmp 
+Parser error: Original rule combines match of tcp/udp/icmp 
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
 branches to implement this complex match.
 Created branch user_chain_49_mod_match
-Parser error:
-Original rule combines match of tcp/udp/icmp 
+Parser error: Original rule combines match of tcp/udp/icmp 
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
 branches to implement this complex match.
@@ -130,9 +126,9 @@ Tag Service object: tag-16
 TCP Service object: tcp 25-25
 Tag Service object: tag-0xa
 Tag Service object: tag-0xB
-Skip command with '-j CONNMARK --restore-mark' This rule is generated automatically.
+Warning: Skip command with '-j CONNMARK --restore-mark' This rule is generated automatically.
 TCP Service object: tcp 25-25:
-Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
+Warning: Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
 Tag Service object: tag-1
 New interface: eth2
 Tag Service object: tag-2
@@ -144,28 +140,22 @@ Ruleset: nat / OUTPUT
 Default action: Accept
 Network object: net-192.168.1.0/24
 Address object: h-222.222.222.222
-Parser error:
-Original rule defines outbound interface 'eth1'.
+Parser error: Original rule defines outbound interface 'eth1'.
  Replace address in TSrc with matching interface of the firewall.
-Parser error:
-Original rule defines outbound interface 'eth0'.
+Parser error: Original rule defines outbound interface 'eth0'.
  Replace address in TSrc with matching interface of the firewall.
 Network object: net-192.168.1.32/27
 Address object: h-222.222.222.100
-Parser error:
-Original rule defines outbound interface 'eth+'.
+Parser error: Original rule defines outbound interface 'eth+'.
  Replace address in TSrc with matching interface of the firewall.
 Address object: h-192.168.1.20
-Parser error:
-Original rule defines outbound interface 'eth+'.
+Parser error: Original rule defines outbound interface 'eth+'.
  Replace address in TSrc with matching interface of the firewall.
 Address object: h-192.168.1.10
-Parser error:
-Original rule defines outbound interface 'eth+'.
+Parser error: Original rule defines outbound interface 'eth+'.
  Replace address in TSrc with matching interface of the firewall.
 TCP Service object: tcp 1000-1010:
-Parser error:
-Original rule defines outbound interface 'eth1'.
+Parser error: Original rule defines outbound interface 'eth1'.
  Replace address in TSrc with matching interface of the firewall.
 Network object: net-222.222.222.0/24
 TCP Service object: tcp 25-50
@@ -183,19 +173,18 @@ TCP Service object: tcp 13-13
 TCP Service object: tcp 2105-2105
 Address object: h-192.168.3.145
 Address object: h-1.1.1.1
-Parser error:
-Original rule defines inbound interface 'eth0'.
+Parser error: Original rule defines inbound interface 'eth0'.
  Replace address in ODst with matching interface of the firewall.
 Network object: net-192.168.2.0/24
 Address object: h-192.168.1.22
 Address object: h-192.168.2.10
 Address object: h-22.22.22.23
 ICMP Service object: icmp 11/0
-Added rule to reproduce default policy ACCEPT in filter/OUTPUT
-Can not reproduce default action in table 'mangle' chain 'FORWARD'.
-Added rule to reproduce default policy ACCEPT in mangle/FORWARD
-Can not reproduce default action in table 'mangle' chain 'INPUT'.
-Added rule to reproduce default policy ACCEPT in mangle/INPUT
-Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
-Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
-Added rule to reproduce default policy ACCEPT in mangle/PREROUTING
+Warning: Added rule to reproduce default policy ACCEPT in filter/OUTPUT
+Warning: Can not reproduce default action in table 'mangle' chain 'FORWARD'.
+Warning: Added rule to reproduce default policy ACCEPT in mangle/FORWARD
+Warning: Can not reproduce default action in table 'mangle' chain 'INPUT'.
+Warning: Added rule to reproduce default policy ACCEPT in mangle/INPUT
+Warning: Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
+Warning: Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
+Warning: Added rule to reproduce default policy ACCEPT in mangle/PREROUTING

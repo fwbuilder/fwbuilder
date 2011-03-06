@@ -30,6 +30,8 @@ HEADERS += ../../config.h \
     TextEditWidget.h \
     utils.h \
     utils_no_qt.h \
+	getProtoByName.h \
+	getServByName.h \
     Importer.h \
     IOSImporter.h \
     IPTImporter.h \
@@ -241,6 +243,8 @@ SOURCES += ProjectPanel.cpp \
     ssh_wrappers.cpp \
     utils.cpp \
     utils_no_qt.cpp \
+	getProtoByName.cpp \
+	getServByName.cpp \
     Importer.cpp \
     IOSImporter.cpp \
     IOSImporterRun.cpp \

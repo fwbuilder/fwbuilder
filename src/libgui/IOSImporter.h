@@ -42,9 +42,6 @@ class IOSImporter : public Importer
 {
 
     std::map<std::string, std::pair<int,int> > cisco_icmp_specs;
-    std::map<std::string, int>                 cisco_proto_specs;
-    std::map<std::string, int>                 cisco_tcp_specs;
-    std::map<std::string, int>                 cisco_udp_specs;
     
     virtual libfwbuilder::FWObject* createAddress(const std::string &a,
                                                   const std::string &nm);
@@ -53,12 +50,11 @@ class IOSImporter : public Importer
     virtual libfwbuilder::FWObject* createTCPService();
     virtual libfwbuilder::FWObject* createUDPService();
 
-    int convertPort(const std::string &port,
-                    std::map<std::string, int> &port_map);
+    int convertPort(const std::string &port, const std::string &proto);
 
     std::pair<int,int> convertPortSpec(const std::string &port_op,
                                        const std::string &port_spec,
-                                       std::map<std::string, int> &port_map);
+                                       const std::string &proto);
 
     public:
 

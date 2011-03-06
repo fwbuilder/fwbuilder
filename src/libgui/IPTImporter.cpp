@@ -30,18 +30,20 @@
 
 
 #include "IPTImporter.h"
+#include "getProtoByName.h"
+#include "getServByName.h"
 
 #include <ios>
 #include <iostream>
 #include <algorithm>
 #include <map>
 
-#ifndef _WIN32
-#  include <netdb.h>
-#  include <netinet/in.h>
-#else
-#  include <winsock2.h>
-#endif
+// #ifndef _WIN32
+// #  include <netdb.h>
+// #  include <netinet/in.h>
+// #else
+// #  include <winsock2.h>
+// #endif
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Resources.h"
@@ -258,15 +260,25 @@ FWObject* IPTImporter::createICMPService()
 
 FWObject* IPTImporter::createIPService()
 {
-    struct protoent *pe = getprotobyname(protocol.c_str());
-    if (pe!=NULL)
+    int proto = GetProtoByName::getProtocolByName(protocol.c_str());
+    if (proto > -1)
     {
         std::ostringstream s;
-        s << pe->p_proto;
+        s << proto;
         protocol = s.str();
         //free(pe);
     }
     return Importer::createIPService();
+
+    // struct protoent *pe = getprotobyname(protocol.c_str());
+    // if (pe!=NULL)
+    // {
+    //     std::ostringstream s;
+    //     s << pe->p_proto;
+    //     protocol = s.str();
+    //     //free(pe);
+    // }
+    // return Importer::createIPService();
 }
 
 std::pair<int,int> IPTImporter::convertPortRange(str_tuple &range,
@@ -280,11 +292,19 @@ int IPTImporter::convertPort(const std::string &port_spec,
                              const char *proto,
                              int default_port)
 {
-    int port = 0;
-    std::string ps = strip(port_spec);
+    QString ps = QString(port_spec.c_str()).trimmed();
     if (ps == "") return 0;
     if (ps == ":") return default_port;
 
+    int port = GetServByName::getPortByName(ps, proto);
+    if (port == -1)
+    {
+        markCurrentRuleBad(std::string("Port spec '") + port_spec + "' unknown ");
+        port = 0;
+    }
+    return port;
+
+/*
     struct servent *se = getservbyname(ps.c_str(), proto);
     if (se!=NULL)
     {
@@ -304,6 +324,7 @@ int IPTImporter::convertPort(const std::string &port_spec,
                            "' unknown. Error " + ex.what());
     }
     return port;
+*/
 }
 
 FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,

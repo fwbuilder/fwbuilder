@@ -30,6 +30,8 @@
 
 
 #include "IOSImporter.h"
+#include "getProtoByName.h"
+#include "getServByName.h"
 
 #include <ios>
 #include <iostream>
@@ -92,83 +94,6 @@ IOSImporter::IOSImporter(FWObject *lib,
     cisco_icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
     cisco_icmp_specs["mask-request"] = std::pair<int,int>(17, 0);
     cisco_icmp_specs["mask-reply"] = std::pair<int,int>(18, 0);
-
-    cisco_proto_specs["ah"] = 51;
-    cisco_proto_specs["ahp"] = 51;
-    cisco_proto_specs["eigrp"] = 88;
-    cisco_proto_specs["esp"] = 50;
-    cisco_proto_specs["gre"] = 47;
-    cisco_proto_specs["igmp"] = 2;
-    cisco_proto_specs["igrp"] = 9;
-    cisco_proto_specs["ip"] = 0;
-    cisco_proto_specs["ipinip"] = 4;
-    cisco_proto_specs["nos"] = 94;
-    cisco_proto_specs["ospf"] = 89;
-    cisco_proto_specs["pim"] = 103;
-    cisco_proto_specs["pcp"] = 108;
-    cisco_proto_specs["snp"] = 109;
-
-    cisco_tcp_specs["bgp"] = 179;
-    cisco_tcp_specs["chargen"] = 19;
-    cisco_tcp_specs["cmd"] = 514;
-    cisco_tcp_specs["daytime"] = 13;
-    cisco_tcp_specs["discard"] = 9;
-    cisco_tcp_specs["domain"] = 53;
-    cisco_tcp_specs["echo"] = 7;
-    cisco_tcp_specs["exec"] = 512;
-    cisco_tcp_specs["finger"] = 79;
-    cisco_tcp_specs["ftp"] = 21;
-    cisco_tcp_specs["ftp-data"] = 20;
-    cisco_tcp_specs["gopher"] = 70;
-    cisco_tcp_specs["hostname"] = 101;
-    cisco_tcp_specs["ident"] = 113;
-    cisco_tcp_specs["irc"] = 194;
-    cisco_tcp_specs["klogin"] = 543;
-    cisco_tcp_specs["kshell"] = 544;
-    cisco_tcp_specs["login"] = 513;
-    cisco_tcp_specs["lpd"] = 515;
-    cisco_tcp_specs["nntp"] = 119;
-    cisco_tcp_specs["pop2"] = 109;
-    cisco_tcp_specs["pop3"] = 110;
-    cisco_tcp_specs["smtp"] = 25;
-    cisco_tcp_specs["sunrpc"] = 111;
-    cisco_tcp_specs["syslog"] = 514;
-    cisco_tcp_specs["tacacs"] = 49;
-    cisco_tcp_specs["tacacs-ds"] = 63;
-    cisco_tcp_specs["talk"] = 517;
-    cisco_tcp_specs["telnet"] = 23;
-    cisco_tcp_specs["time"] = 37;
-    cisco_tcp_specs["uucp"] = 540;
-    cisco_tcp_specs["whois"] = 43;
-    cisco_tcp_specs["www"] = 80;
-
-    cisco_udp_specs["biff"] =         512;
-    cisco_udp_specs["bootpc"] =       68;
-    cisco_udp_specs["bootps"] =       67;
-    cisco_udp_specs["discard"] =      9;
-    cisco_udp_specs["dnsix"] =        195;
-    cisco_udp_specs["domain"] =       53;
-    cisco_udp_specs["echo"] =         7;
-    cisco_udp_specs["isakmp"] =       500;
-    cisco_udp_specs["mobile-ip"] =    434;
-    cisco_udp_specs["nameserver"] =   42;
-    cisco_udp_specs["netbios-dgm"] =  138;
-    cisco_udp_specs["netbios-ns"] =   137;
-    cisco_udp_specs["netbios-ss"] =   139;
-    cisco_udp_specs["ntp"] =          123;
-    cisco_udp_specs["pim-auto-rp"] =  496;
-    cisco_udp_specs["rip"] =          520;
-    cisco_udp_specs["snmp"] =         161;
-    cisco_udp_specs["snmptrap"] =     162;
-    cisco_udp_specs["sunrpc"] =       111;
-    cisco_udp_specs["syslog"] =       514;
-    cisco_udp_specs["tacacs"] =       49;
-    cisco_udp_specs["talk"] =         517;
-    cisco_udp_specs["tftp"] =         69;
-    cisco_udp_specs["time"] =         37;
-    cisco_udp_specs["who"] =          513;
-    cisco_udp_specs["xdmcp"] =        177;
-
 }
 
 
@@ -239,18 +164,29 @@ FWObject* IOSImporter::createICMPService()
 
 FWObject* IOSImporter::createIPService()
 {
-    if (cisco_proto_specs.count(protocol)!=0)
+    int proto = GetProtoByName::getProtocolByName(protocol.c_str());
+    if (proto > -1)
     {
         std::ostringstream s;
-        s << cisco_proto_specs[protocol];
+        s << proto;
         protocol = s.str();
     }
     return Importer::createIPService();
 }
 
 int IOSImporter::convertPort(const std::string &port_str,
-                             std::map<std::string, int> &port_map)
+                             const std::string &proto)
 {
+    QString ps = QString(port_str.c_str()).trimmed();
+    int port = GetServByName::getPortByName(ps, proto.c_str());
+    if (port == -1)
+    {
+        markCurrentRuleBad(std::string("Port spec '") + port_str + "' unknown ");
+        port = 0;
+    }
+    return port;
+
+/*
     int port = 0;
     std::string ps = strip(port_str);
     if (port_map.count(ps)>0) port = port_map[ps];
@@ -269,11 +205,12 @@ int IOSImporter::convertPort(const std::string &port_str,
         }
     }
     return port;
+*/
 }
 
 std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
                                                 const std::string &port_spec,
-                                        std::map<std::string, int> &port_map)
+                                                const std::string &proto)
 {
     int range_start;
     int range_end;
@@ -297,8 +234,8 @@ std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
         s1 = portspec;
         s2 = portspec;
     }
-    range_start = convertPort(s1, port_map);
-    range_end   = convertPort(s2, port_map);
+    range_start = convertPort(s1, proto);
+    range_end   = convertPort(s2, proto);
 
     if (portop=="lt")  range_start = 0;
     if (portop=="gt")  range_end = 65535;
@@ -326,11 +263,11 @@ FWObject* IOSImporter::createTCPService()
     std::string name = "tcp " + src_port_spec + " " + dst_port_spec;
 
     std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, cisco_tcp_specs);
+        convertPortSpec(src_port_op, src_port_spec, "tcp");
     int srs = pr.first;
     int sre = pr.second;
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, cisco_tcp_specs);
+    pr = convertPortSpec(dst_port_op, dst_port_spec, "tcp");
     int drs = pr.first;
     int dre = pr.second;
 
@@ -350,11 +287,11 @@ FWObject* IOSImporter::createUDPService()
     std::string name = "udp " + src_port_spec + " " + dst_port_spec;
 
     std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, cisco_udp_specs);
+        convertPortSpec(src_port_op, src_port_spec, "udp");
     int srs = pr.first;
     int sre = pr.second;
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, cisco_udp_specs);
+    pr = convertPortSpec(dst_port_op, dst_port_spec, "udp");
     int drs = pr.first;
     int dre = pr.second;
 
