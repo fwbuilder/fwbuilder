@@ -755,7 +755,8 @@ void IPTImporter::pushPolicyRule()
                 action_on_reject_code = "ICMP admin prohibited";
 
                 QString err = QObject::tr(
-                    "Warning: Unknown parameter of target REJECT: %1.\n")
+                    "Warning: Line %1: Unknown parameter of target REJECT: %2.\n")
+                    .arg(getCurrentLineNumber())
                     .arg(iptables_reject_arg.c_str());
                 ropt->setStr("color", getBadRuleColor());
                 rule_comment += string(err.toUtf8().constData());
@@ -866,10 +867,9 @@ void IPTImporter::pushPolicyRule()
     {
         fwopt->setBool("clamp_mss_to_mtu", true);
         skip_rule = true;
-        *Importer::logger
-            << "Warning: Using automatic rule controlled by option "
-            << "Clamp MSS to MTU"
-            << "\n";
+        QString err("Warning: Line %1: Using automatic rule controlled by option "
+                    "Clamp MSS to MTU\n");
+        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
     }
 
     if (target=="TOS")
@@ -963,13 +963,14 @@ void IPTImporter::pushPolicyRule()
             srv->addRef(estab);
         }
 
-        *Importer::logger <<
-            "Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using "
-            "automatic rule controlled by the checkbox in the firewall "
-            "settings dialog. Automatic rule matches in all standard chains "
-            "which may be different from the original imported configuration. "
-            "This requires manual checking."
-            "\n";
+        QString err("Warning: Line %1: Rule matches states 'RELATED,ESTABLISHED'. "
+                    "Consider using "
+                    "automatic rule controlled by the checkbox in the firewall "
+                    "settings dialog. Automatic rule matches in all standard chains "
+                    "which may be different from the original imported configuration. "
+                    "This requires manual checking."
+                    "\n");
+        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
     }
 
     if (rule->getSrc()->isAny() &&
@@ -980,11 +981,12 @@ void IPTImporter::pushPolicyRule()
         if (target=="DROP") fwopt->setBool("drop_invalid", true);
         if (target=="LOG")  fwopt->setBool("log_invalid", true);
         skip_rule = true;
-        *Importer::logger <<
-            "Warning: Using automatic rule controlled by option "
-            "'Drop packet that do not match any known connection' to match "
-            "state INVALID"
-            "\n";
+
+        QString err("Warning: Line %1: Using automatic rule controlled by option "
+                    "'Drop packet that do not match any known connection' to match "
+                    "state INVALID"
+                    "\n");
+        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
     }
 
     if (target=="CONNMARK" &&
@@ -995,10 +997,11 @@ void IPTImporter::pushPolicyRule()
         assert(lmr_ropt!=NULL);
         lmr_ropt->setBool("ipt_mark_connections", true);
         skip_rule = true;
-        *Importer::logger <<
-            "Warning: Turned option on in previous rule with action Mark "
-            "for '-j CONNMARK --save-mark' "
-            "\n";
+        QString err("Warning: Line %1: Turned option on in previous rule "
+                    "with action Mark "
+                    "for '-j CONNMARK --save-mark' "
+                    "\n");
+        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
     }
 
     if (target=="CONNMARK" &&
@@ -1008,10 +1011,10 @@ void IPTImporter::pushPolicyRule()
         // MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
         // if we have at least one rule with CONNMARK target in the policy
         skip_rule = true;
-        *Importer::logger <<
-            "Warning: Skip command with '-j CONNMARK --restore-mark' "
-            "This rule is generated automatically."
-            "\n";
+        QString err("Warning: Line %1: Skip command with '-j CONNMARK --restore-mark' "
+                    "This rule is generated automatically."
+                    "\n");
+        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
     }
 
     if (!skip_rule)
@@ -1104,11 +1107,12 @@ void IPTImporter::pushPolicyRule()
                 " Both inbound and outbound interfaces "
                 "in original iptables command: %1").arg(interfaces).toStdString();
 
-            QString log_str = QString("Warning: Creating branch ruleset '%1' to "
-                                      "match inbound and outbound interfaces %2\n")
-                .arg(branch_ruleset_name.c_str()).arg(interfaces);
-
-            *Importer::logger << log_str.toUtf8().constData();
+            QString log_str("Warning: Line %1: Creating branch ruleset '%2' to "
+                            "match inbound and outbound interfaces %3\n");
+            *Importer::logger << log_str
+                .arg(getCurrentLineNumber())
+                .arg(branch_ruleset_name.c_str()).arg(interfaces)
+                .toUtf8().constData();
 
             // markCurrentRuleBad(
             //     std::string("Can not set inbound and outbound interface simultaneously. Was: -i ") + i_intf + " -o " + o_intf);
@@ -1349,11 +1353,11 @@ Firewall* IPTImporter::finalize()
                     if (rs_index.find("mangle") != string::npos)
                     {
                         QString err = QObject::tr(
-                            "Warning: Can not reproduce default action in "
+                            "Warning: Line %1: Can not reproduce default action in "
                             "table 'mangle' chain 'FORWARD'.\n");
                         ropt->setStr("color", getBadRuleColor());
                         rule->setComment(err.toUtf8().constData());
-                        *Importer::logger << err.toUtf8().constData();
+                        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
                     }
                 }
 
@@ -1367,11 +1371,11 @@ Firewall* IPTImporter::finalize()
                     if (rs_index.find("mangle") != string::npos)
                     {
                         QString err = QObject::tr(
-                            "Warning: Can not reproduce default action in "
+                            "Warning: Line %1: Can not reproduce default action in "
                             "table 'mangle' chain 'INPUT'.\n");
                         ropt->setStr("color", getBadRuleColor());
                         rule->setComment(err.toUtf8().constData());
-                        *Importer::logger << err.toUtf8().constData();
+                        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
                     }
                 }
 
@@ -1394,9 +1398,11 @@ Firewall* IPTImporter::finalize()
                 }
 
                 rs->ruleset->add(rule);
-                QString l("Warning: Added rule to reproduce default "
-                          "policy ACCEPT in %1\n");
-                *Importer::logger << l.arg(rs_index.c_str()).toUtf8().constData();
+                QString l("Warning: Line %1: Added rule to reproduce default "
+                          "policy ACCEPT in %2\n");
+                *Importer::logger << l.arg(getCurrentLineNumber()).arg(rs_index.c_str()).toUtf8().constData();
+                
+
             }
         }
 

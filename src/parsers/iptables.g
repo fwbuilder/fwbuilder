@@ -177,6 +177,7 @@ add_rule : ADD_RULE chain_def
             *dbg << std::endl;
             importer->pushRule();
             // start new one
+            importer->setCurrentLineNumber(LT(0)->getLine());
             if (importer->current_table=="nat")
                 importer->newNATRule();
             else

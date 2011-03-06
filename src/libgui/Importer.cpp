@@ -1137,7 +1137,8 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     rule_comment += comment;
     //current_rule->setComment(comment);
 
-    QString err = QObject::tr("Parser error: %1\n")
+    QString err = QObject::tr("Parser error: Line %1: %2\n")
+        .arg(getCurrentLineNumber())
         .arg(QString::fromUtf8(comment.c_str()));
     *logger << err.toUtf8().constData();
     error_counter++;

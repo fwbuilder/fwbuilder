@@ -90,8 +90,11 @@ class Importer
    
 protected:
 
-    int  error_counter;
+    int error_counter;
 
+    // line number in the original stream being imported
+    int current_line_number;
+    
     libfwbuilder::FWObject *library;
 
     std::istringstream &input;
@@ -317,6 +320,9 @@ public:
     virtual void newNATRule();
     virtual void pushRule();
 
+    void setCurrentLineNumber(int n) { current_line_number = n; }
+    int getCurrentLineNumber() { return current_line_number;}
+    
     void markCurrentRuleBad(const std::string &comment);
     
     

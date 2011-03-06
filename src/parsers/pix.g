@@ -219,6 +219,7 @@ ip_access_list_ext : ACCESS_LIST name:WORD
 //****************************************************************
 permit_ext: PERMIT 
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "permit";
             *dbg << LT(1)->getLine() << ":" << " permit ";
@@ -231,6 +232,7 @@ permit_ext: PERMIT
 
 deny_ext: DENY
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "deny";
             *dbg << LT(1)->getLine() << ":" << " deny   ";

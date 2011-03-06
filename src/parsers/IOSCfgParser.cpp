@@ -283,7 +283,7 @@ void IOSCfgParser::intrface() {
 		in = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 480 "iosacl.g"
+#line 484 "iosacl.g"
 			
 			importer->newInterface( in->getText() );
 			*dbg << in->getLine() << ":"
@@ -308,7 +308,7 @@ void IOSCfgParser::controller() {
 	try {      // for error handling
 		match(CONTROLLER);
 		if ( inputState->guessing==0 ) {
-#line 471 "iosacl.g"
+#line 475 "iosacl.g"
 			
 			importer->clearCurrentInterface();
 			consumeUntil(NEWLINE);
@@ -349,7 +349,7 @@ void IOSCfgParser::vlan() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 462 "iosacl.g"
+#line 466 "iosacl.g"
 			
 			importer->clearCurrentInterface();
 			consumeUntil(NEWLINE);
@@ -435,7 +435,7 @@ void IOSCfgParser::description() {
 	try {      // for error handling
 		match(DESCRIPTION);
 		if ( inputState->guessing==0 ) {
-#line 491 "iosacl.g"
+#line 495 "iosacl.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string descr;
@@ -466,7 +466,7 @@ void IOSCfgParser::shutdown() {
 	try {      // for error handling
 		match(SHUTDOWN);
 		if ( inputState->guessing==0 ) {
-#line 524 "iosacl.g"
+#line 528 "iosacl.g"
 			
 			*dbg<< LT(1)->getLine() << ":"
 			<< " INTERFACE SHUTDOWN " << std::endl;
@@ -680,22 +680,23 @@ void IOSCfgParser::permit_std() {
 	try {      // for error handling
 		match(PERMIT);
 		if ( inputState->guessing==0 ) {
-#line 247 "iosacl.g"
+#line 249 "iosacl.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
 			
-#line 690 "IOSCfgParser.cpp"
+#line 691 "IOSCfgParser.cpp"
 		}
 		rule_std();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 253 "iosacl.g"
+#line 256 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 699 "IOSCfgParser.cpp"
+#line 700 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -713,22 +714,23 @@ void IOSCfgParser::deny_std() {
 	try {      // for error handling
 		match(DENY);
 		if ( inputState->guessing==0 ) {
-#line 259 "iosacl.g"
+#line 262 "iosacl.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
 			
-#line 723 "IOSCfgParser.cpp"
+#line 725 "IOSCfgParser.cpp"
 		}
 		rule_std();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 265 "iosacl.g"
+#line 269 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 732 "IOSCfgParser.cpp"
+#line 734 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -748,20 +750,21 @@ void IOSCfgParser::permit_ext() {
 		if ( inputState->guessing==0 ) {
 #line 222 "iosacl.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
 			
-#line 756 "IOSCfgParser.cpp"
+#line 759 "IOSCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 228 "iosacl.g"
+#line 229 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 765 "IOSCfgParser.cpp"
+#line 768 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -779,22 +782,23 @@ void IOSCfgParser::deny_ext() {
 	try {      // for error handling
 		match(DENY);
 		if ( inputState->guessing==0 ) {
-#line 234 "iosacl.g"
+#line 235 "iosacl.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
 			
-#line 789 "IOSCfgParser.cpp"
+#line 793 "IOSCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 240 "iosacl.g"
+#line 242 "iosacl.g"
 			
 			importer->pushRule();
 			
-#line 798 "IOSCfgParser.cpp"
+#line 802 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -812,7 +816,7 @@ void IOSCfgParser::remark() {
 	try {      // for error handling
 		match(REMARK);
 		if ( inputState->guessing==0 ) {
-#line 509 "iosacl.g"
+#line 513 "iosacl.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string rem;
@@ -825,7 +829,7 @@ void IOSCfgParser::remark() {
 			*dbg << " REMARK " << rem << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 829 "IOSCfgParser.cpp"
+#line 833 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -849,15 +853,15 @@ void IOSCfgParser::rule_ext() {
 			ip_protocols();
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 275 "iosacl.g"
+#line 279 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 855 "IOSCfgParser.cpp"
+#line 859 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 276 "iosacl.g"
+#line 280 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 861 "IOSCfgParser.cpp"
+#line 865 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -922,24 +926,24 @@ void IOSCfgParser::rule_ext() {
 		{
 			match(ICMP);
 			if ( inputState->guessing==0 ) {
-#line 282 "iosacl.g"
+#line 286 "iosacl.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 931 "IOSCfgParser.cpp"
+#line 935 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 286 "iosacl.g"
+#line 290 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 937 "IOSCfgParser.cpp"
+#line 941 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 287 "iosacl.g"
+#line 291 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 943 "IOSCfgParser.cpp"
+#line 947 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1044,18 +1048,18 @@ void IOSCfgParser::rule_ext() {
 			}
 			}
 			if ( inputState->guessing==0 ) {
-#line 294 "iosacl.g"
+#line 298 "iosacl.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 1053 "IOSCfgParser.cpp"
+#line 1057 "IOSCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 298 "iosacl.g"
+#line 302 "iosacl.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 1059 "IOSCfgParser.cpp"
+#line 1063 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1067,9 +1071,9 @@ void IOSCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 299 "iosacl.g"
+#line 303 "iosacl.g"
 					importer->SaveTmpPortToSrc();
-#line 1073 "IOSCfgParser.cpp"
+#line 1077 "IOSCfgParser.cpp"
 				}
 				break;
 			}
@@ -1087,9 +1091,9 @@ void IOSCfgParser::rule_ext() {
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 300 "iosacl.g"
+#line 304 "iosacl.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 1093 "IOSCfgParser.cpp"
+#line 1097 "IOSCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1101,9 +1105,9 @@ void IOSCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 301 "iosacl.g"
+#line 305 "iosacl.g"
 					importer->SaveTmpPortToDst();
-#line 1107 "IOSCfgParser.cpp"
+#line 1111 "IOSCfgParser.cpp"
 				}
 				break;
 			}
@@ -1209,11 +1213,11 @@ void IOSCfgParser::rule_ext() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 307 "iosacl.g"
+#line 311 "iosacl.g"
 			
 			*dbg << std::endl;
 			
-#line 1217 "IOSCfgParser.cpp"
+#line 1221 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1232,9 +1236,9 @@ void IOSCfgParser::rule_std() {
 		{
 		hostaddr_std();
 		if ( inputState->guessing==0 ) {
-#line 315 "iosacl.g"
+#line 319 "iosacl.g"
 			importer->SaveTmpAddrToSrc(); *dbg << "(std) ";
-#line 1238 "IOSCfgParser.cpp"
+#line 1242 "IOSCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -1256,11 +1260,11 @@ void IOSCfgParser::rule_std() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 318 "iosacl.g"
+#line 322 "iosacl.g"
 			
 			*dbg << std::endl;
 			
-#line 1264 "IOSCfgParser.cpp"
+#line 1268 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1295,12 +1299,12 @@ void IOSCfgParser::ip_protocols() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 326 "iosacl.g"
+#line 330 "iosacl.g"
 			
 			importer->protocol = LT(0)->getText();
 			*dbg << "protocol " << LT(0)->getText() << " ";
 			
-#line 1304 "IOSCfgParser.cpp"
+#line 1308 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1328,13 +1332,13 @@ void IOSCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 378 "iosacl.g"
+#line 382 "iosacl.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << h->getText() << "/0.0.0.0";
 				
-#line 1338 "IOSCfgParser.cpp"
+#line 1342 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1347,13 +1351,13 @@ void IOSCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 385 "iosacl.g"
+#line 389 "iosacl.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 1357 "IOSCfgParser.cpp"
+#line 1361 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1361,13 +1365,13 @@ void IOSCfgParser::hostaddr_ext() {
 		{
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 392 "iosacl.g"
+#line 396 "iosacl.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 1371 "IOSCfgParser.cpp"
+#line 1375 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1395,12 +1399,12 @@ void IOSCfgParser::time_range() {
 		tr_name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 444 "iosacl.g"
+#line 448 "iosacl.g"
 			
 			importer->time_range_name = tr_name->getText();
 			*dbg << "time_range " << tr_name->getText() << " ";
 			
-#line 1404 "IOSCfgParser.cpp"
+#line 1408 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1418,12 +1422,12 @@ void IOSCfgParser::fragments() {
 	try {      // for error handling
 		match(FRAGMENTS);
 		if ( inputState->guessing==0 ) {
-#line 437 "iosacl.g"
+#line 441 "iosacl.g"
 			
 			importer->fragments = true;
 			*dbg << "fragments ";
 			
-#line 1427 "IOSCfgParser.cpp"
+#line 1431 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1458,12 +1462,12 @@ void IOSCfgParser::log() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 423 "iosacl.g"
+#line 427 "iosacl.g"
 			
 			importer->logging = true;
 			*dbg << "logging ";
 			
-#line 1467 "IOSCfgParser.cpp"
+#line 1471 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1493,7 +1497,7 @@ void IOSCfgParser::icmp_spec() {
 			match(INT_CONST);
 			}
 			if ( inputState->guessing==0 ) {
-#line 334 "iosacl.g"
+#line 338 "iosacl.g"
 				
 				importer->icmp_type = icmp_type->getText();
 				importer->icmp_code = icmp_code->getText();
@@ -1501,7 +1505,7 @@ void IOSCfgParser::icmp_spec() {
 				*dbg << icmp_type->getText() << " "
 				<< icmp_code->getText() << " ";
 				
-#line 1505 "IOSCfgParser.cpp"
+#line 1509 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1510,12 +1514,12 @@ void IOSCfgParser::icmp_spec() {
 			icmp_word = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 343 "iosacl.g"
+#line 347 "iosacl.g"
 				
 				importer->icmp_spec = icmp_word->getText();
 				*dbg << icmp_word->getText() << " ";
 				
-#line 1519 "IOSCfgParser.cpp"
+#line 1523 "IOSCfgParser.cpp"
 			}
 			break;
 		}
@@ -1574,12 +1578,12 @@ void IOSCfgParser::established() {
 	try {      // for error handling
 		match(ESTABLISHED);
 		if ( inputState->guessing==0 ) {
-#line 430 "iosacl.g"
+#line 434 "iosacl.g"
 			
 			importer->established = true;
 			*dbg << "established ";
 			
-#line 1583 "IOSCfgParser.cpp"
+#line 1587 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1604,13 +1608,13 @@ void IOSCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 401 "iosacl.g"
+#line 405 "iosacl.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << h->getText() << "/0.0.0.0";
 				
-#line 1614 "IOSCfgParser.cpp"
+#line 1618 "IOSCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == IPV4) && (LA(2) == IPV4)) {
@@ -1621,25 +1625,25 @@ void IOSCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 408 "iosacl.g"
+#line 412 "iosacl.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 1631 "IOSCfgParser.cpp"
+#line 1635 "IOSCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == ANY)) {
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 415 "iosacl.g"
+#line 419 "iosacl.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 1643 "IOSCfgParser.cpp"
+#line 1647 "IOSCfgParser.cpp"
 			}
 		}
 		else {
@@ -1689,12 +1693,12 @@ void IOSCfgParser::single_port_op() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 354 "iosacl.g"
+#line 358 "iosacl.g"
 			
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1698 "IOSCfgParser.cpp"
+#line 1702 "IOSCfgParser.cpp"
 		}
 		port_spec();
 	}
@@ -1713,12 +1717,12 @@ void IOSCfgParser::port_range() {
 	try {      // for error handling
 		match(P_RANGE);
 		if ( inputState->guessing==0 ) {
-#line 362 "iosacl.g"
+#line 366 "iosacl.g"
 			
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1722 "IOSCfgParser.cpp"
+#line 1726 "IOSCfgParser.cpp"
 		}
 		port_spec();
 		port_spec();
@@ -1755,12 +1759,12 @@ void IOSCfgParser::port_spec() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 370 "iosacl.g"
+#line 374 "iosacl.g"
 			
 			importer->tmp_port_spec += (std::string(" ") + LT(0)->getText());
 			*dbg << LT(0)->getText() << " ";
 			
-#line 1764 "IOSCfgParser.cpp"
+#line 1768 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1784,7 +1788,7 @@ void IOSCfgParser::access_group_by_name() {
 		dir = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 550 "iosacl.g"
+#line 554 "iosacl.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
@@ -1794,7 +1798,7 @@ void IOSCfgParser::access_group_by_name() {
 			<< " INTRFACE: ACL '" << acln->getText() << "'"
 			<< " " << dir->getText() << std::endl;
 			
-#line 1798 "IOSCfgParser.cpp"
+#line 1802 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1818,7 +1822,7 @@ void IOSCfgParser::access_group_by_number() {
 		dir = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 565 "iosacl.g"
+#line 569 "iosacl.g"
 			
 			importer->setInterfaceAndDirectionForRuleSet(
 			std::string("acl_") + acln->getText(),
@@ -1828,7 +1832,7 @@ void IOSCfgParser::access_group_by_number() {
 			<< " INTRFACE: ACL '" << acln->getText() << "'"
 			<< " " << dir->getText() << std::endl;
 			
-#line 1832 "IOSCfgParser.cpp"
+#line 1836 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1871,7 +1875,7 @@ void IOSCfgParser::intf_address() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 577 "iosacl.g"
+#line 581 "iosacl.g"
 			
 			importer->addInterfaceAddress(a->getText(), m->getText());
 			*dbg << LT(1)->getLine() << ":"
@@ -1883,7 +1887,7 @@ void IOSCfgParser::intf_address() {
 			}
 			*dbg <<  std::endl;
 			
-#line 1887 "IOSCfgParser.cpp"
+#line 1891 "IOSCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {

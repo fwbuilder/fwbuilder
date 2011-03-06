@@ -1,3 +1,9 @@
+2011-03-06  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushPolicyRule): see #2189 Policy importer
+	warnings and errors now include line numbers to help find relevant
+	lines in the original configuration file.
+
 2011-03-05  vadim  <vadim@netcitadel.com>
 
 	* importFirewallConfigurationWizard/IC_ProgressPage.cpp (logLine):
