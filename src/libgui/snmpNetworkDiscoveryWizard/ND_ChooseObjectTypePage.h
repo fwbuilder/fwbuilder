@@ -24,9 +24,8 @@
 #ifndef __ND_CHOOSEOBJECTTYPEPAGE_H_
 #define __ND_CHOOSEOBJECTTYPEPAGE_H_
 
-#include "SNMPNetworkDiscoveryWizard.h"
-
 #include "ui_nd_chooseobjecttypepage_q.h"
+#include "ObjectDescriptor.h"
 
 
 class ND_ChooseObjectTypePage : public QWizardPage

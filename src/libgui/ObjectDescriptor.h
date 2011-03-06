@@ -24,13 +24,19 @@
 #ifndef __OBJECTDESCRIPTOR_H_
 #define __OBJECTDESCRIPTOR_H_
 
+#include <QList>
+
 #include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/dns.h"
-#include "fwbuilder/snmp.h"
 
 #include <string>
 #include <map>
 
+// avoid #include "snmp.h" since it conflicts with Qt, see #2185
+namespace libfwbuilder
+{
+    class CrawlerFind;
+};
 
 class ObjectDescriptor 
 {
@@ -63,7 +69,7 @@ class ObjectDescriptor
     }
     
 #ifdef HAVE_LIBSNMP
-    ObjectDescriptor(const libfwbuilder::CrawlerFind& cf);
+    ObjectDescriptor(const libfwbuilder::CrawlerFind *cf);
 #endif
 
     virtual ~ObjectDescriptor();
@@ -71,6 +77,8 @@ class ObjectDescriptor
     ObjectDescriptor& operator=(const ObjectDescriptor& od);
 
 };
+
+typedef QList<ObjectDescriptor> ObjectDescriptorList;
 
 
 #endif

@@ -27,21 +27,22 @@
 #include "utils.h"
 #include "FWBSettings.h"
 
-#include "ND_ProgressPage.h"
-#include "SNMPCrawlerThread.h"
-#include "SNMPNetworkDiscoveryWizard.h"
-
-#include "fwbuilder/snmp.h"
-#include "fwbuilder/NetworkIPv6.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/IPv4.h"
-#include "fwbuilder/IPv6.h"
-
 #include <QFileDialog>
 #include <QFile>
 #include <QTextCharFormat>
 #include <QTextCursor>
 #include <QtDebug>
+
+#include "ND_ProgressPage.h"
+#include "SNMPCrawlerThread.h"
+#include "SNMPNetworkDiscoveryWizard.h"
+
+// #include snmp.h only after all Qt headers; see #2185
+#include "fwbuilder/snmp.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 
 using namespace std;
@@ -280,8 +281,8 @@ void ND_ProgressPage::crawlerFinished()
     map<InetAddr, CrawlerFind>::iterator j;
     for(j = discovered_addresses.begin(); j!=discovered_addresses.end(); ++j,++cntr)
     {
-        ObjectDescriptor od( (*j).second );
-        od.addr = (*j).first;
+        ObjectDescriptor od( &(j->second) );
+        od.addr = j->first;
         od.type = (od.interfaces.size()>1) ? (Host::TYPENAME) : (IPv4::TYPENAME);
 
         od.isSelected = false;

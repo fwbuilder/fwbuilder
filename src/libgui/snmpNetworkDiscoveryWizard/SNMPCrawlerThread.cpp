@@ -29,8 +29,10 @@
 
 #include "utils.h"
 #include "QThreadLogger.h"
-
 #include "SNMPCrawlerThread.h"
+
+// #include snmp.h only after all Qt headers; see #2185
+#include "fwbuilder/snmp.h"
 
 
 using namespace std;

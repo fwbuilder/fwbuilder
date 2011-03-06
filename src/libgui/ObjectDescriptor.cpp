@@ -27,6 +27,10 @@
 
 #include "ObjectDescriptor.h"
 
+// #include snmp.h only after all Qt headers; see #2185
+#include "fwbuilder/snmp.h"
+
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -52,17 +56,17 @@ ObjectDescriptor::ObjectDescriptor(const ObjectDescriptor& od)
 }
 
 #ifdef HAVE_LIBSNMP
-ObjectDescriptor::ObjectDescriptor(const libfwbuilder::CrawlerFind& cf)
+ObjectDescriptor::ObjectDescriptor(const libfwbuilder::CrawlerFind *cf)
 {
-    have_snmpd       = cf.have_snmpd;
-    descr            = cf.descr;
-    contact          = cf.contact;
-    location         = cf.location;
-    sysname          = cf.sysname;
-    interfaces       = cf.interfaces;
-    MAC_addr         = cf.found_phys_addr;
-    dns_info.name    = cf.name;
-    dns_info.aliases = cf.aliases;
+    have_snmpd       = cf->have_snmpd;
+    descr            = cf->descr;
+    contact          = cf->contact;
+    location         = cf->location;
+    sysname          = cf->sysname;
+    interfaces       = cf->interfaces;
+    MAC_addr         = cf->found_phys_addr;
+    dns_info.name    = cf->name;
+    dns_info.aliases = cf->aliases;
 }
 #endif
 

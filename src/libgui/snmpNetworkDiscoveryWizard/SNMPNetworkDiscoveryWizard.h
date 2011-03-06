@@ -26,10 +26,8 @@
 
 #include "ObjectDescriptor.h"
 
-#include <QList>
 #include <QWizard>
 
-typedef QList<ObjectDescriptor> ObjectDescriptorList;
 
 class SNMPNetworkDiscoveryWizard : public QWizard
 {

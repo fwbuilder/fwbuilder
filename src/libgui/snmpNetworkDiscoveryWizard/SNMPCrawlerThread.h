@@ -36,7 +36,15 @@
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/ThreadTools.h"
-#include "fwbuilder/snmp.h"
+
+
+// avoid #include "snmp.h" since it conflicts with Qt, see #2185
+namespace libfwbuilder
+{
+    class SNMPCrawler;
+    class SyncFlag;
+    class CrawlerFind;
+};
 
 
 class SNMPCrawlerThread : public QThread
