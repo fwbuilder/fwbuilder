@@ -181,6 +181,9 @@ void IC_ProgressPage::importerFinished()
             fw->setStr("hostOS", "fwsm_os");
         }
 
+        QString fwName = field("firewallName").toString();
+        fw->setName(fwName.toUtf8().constData());
+
         ProjectPanel *pp = mw->activeProject();
         QString filename = pp->getFileName();
 
