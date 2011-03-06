@@ -88,8 +88,7 @@ void IC_PlatformWarningPage::initializePage()
 
         QList<QRegExp> pf_conf_re;
         pf_conf_re << QRegExp("^scrub\\s+\\S+")
-                   << QRegExp("^set\\s+timeout\\s+\\S+")
-                   << QRegExp("");
+                   << QRegExp("^set\\s+timeout\\s+\\S+");
 
         m_dialog->configFileBrowser->clear();
         m_dialog->platform->setText(tr("Unknown"));
