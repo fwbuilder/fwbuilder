@@ -133,6 +133,12 @@ namespace fwcompiler
         DECLARE_NAT_RULE_PROCESSOR(VerifyRules2);
 
 	/**
+	 *  verifies correctness of the combination of interface
+	 *  specification and chain.
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(VerifyRules3);
+
+	/**
 	 * splits rule with multiple objects in ODst. This needs to be
 	 * done only * for DNAT rules. Call this processor when
 	 * negation has been dealt with already.

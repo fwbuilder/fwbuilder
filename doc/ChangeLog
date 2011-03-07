@@ -1,5 +1,14 @@
 2011-03-06  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_ipt.cpp (processNext): see #2170 "Compiler should
+	generate error for invalid iptables NAT configs". Now that we
+	allow the user to specify inbound and outbound interfaces in
+	iptables NAT rules, compiler should verify that combination of
+	requested "-i" and "-o" interfaces is in fact valid. For example
+	iptables does not allow "-o" interface spec with rules that go
+	into PREROUTING chain (DNAT rules) or "-i" interface spec with
+	rules in POSTROUTING chain (SNAT rules).
+
 	* IPTImporter.cpp (pushPolicyRule): see #2189 Policy importer
 	warnings and errors now include line numbers to help find relevant
 	lines in the original configuration file.

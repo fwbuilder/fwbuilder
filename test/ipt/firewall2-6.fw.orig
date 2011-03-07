@@ -2,15 +2,29 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3490
+#  Firewall Builder  fwb_ipt v4.2.0.3496
 #
-#  Generated Sun Feb 27 22:32:03 2011 PST by vadim
+#  Generated Sun Mar  6 19:49:57 2011 PST by vadim
 #
 # files: * firewall2-6.fw /etc/fw/firewall2-6.fw
 #
 # Compiled for iptables (any version)
 #
 # tests for nat rules with inbound and outbound interfaces
+
+# firewall2-6:NAT:6: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:7: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:8: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:9: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:10: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:11: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:12: error: Can not use inbound interface specification with rules that translate source because iptables does not allow "-i" in POSTROUTING chain
+# firewall2-6:NAT:17: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
+# firewall2-6:NAT:17: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
+# firewall2-6:NAT:18: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
+# firewall2-6:NAT:19: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
+# firewall2-6:NAT:20: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
+# firewall2-6:NAT:21: error: Can not use inbound interface specification with rules that translate destination because iptables does not allow "-o" in PREROUTING chain
 
 # firewall2-6::: warning: Can not add virtual address 22.22.22.0 (object external_net)
 
@@ -358,66 +372,6 @@ script_body() {
     $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
     $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
     # 
-    # Rule 6 (NAT)
-    # 
-    echo "Rule 6 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 7 (NAT)
-    # 
-    echo "Rule 7 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 8 (NAT)
-    # 
-    echo "Rule 8 (NAT)"
-    # 
-    # should be -i eth2 -o eth1
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 9 (NAT)
-    # 
-    echo "Rule 9 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth1 -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth1 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth1 -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth3 -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth3 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth3 -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 10 (NAT)
-    # 
-    echo "Rule 10 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 11 (NAT)
-    # 
-    echo "Rule 11 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
-    # Rule 12 (NAT)
-    # 
-    echo "Rule 12 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth0 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    $IPTABLES -t nat -A POSTROUTING -i eth2 -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.40
-    # 
     # Rule 13 (NAT)
     # 
     echo "Rule 13 (NAT)"
@@ -443,44 +397,6 @@ script_body() {
     # 
     $IPTABLES -t nat -A PREROUTING -i eth3  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -i eth1  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    # 
-    # Rule 17 (NAT)
-    # 
-    echo "Rule 17 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A OUTPUT -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    # 
-    # Rule 18 (NAT)
-    # 
-    echo "Rule 18 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -i eth1 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    # 
-    # Rule 19 (NAT)
-    # 
-    echo "Rule 19 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    # 
-    # Rule 20 (NAT)
-    # 
-    echo "Rule 20 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth1 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth1 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    # 
-    # Rule 21 (NAT)
-    # 
-    echo "Rule 21 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -i eth1 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth1 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth0  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -i eth3 -o eth2  -d 222.222.222.40  -j DNAT --to-destination 192.168.1.10
     # 
     # Rule 22 (NAT)
     # 
@@ -566,7 +482,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Feb 27 22:32:03 2011 by vadim"
+        log "Activating firewall script generated Sun Mar  6 19:49:57 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

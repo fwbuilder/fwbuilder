@@ -612,7 +612,6 @@ bool NATCompiler_ipt::VerifyRules::processNext()
                 "Translated Source of a Source translation rule.");
             return true;
         }
-
     }
 
     if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 
@@ -688,6 +687,59 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
     tmp_queue.push_back(rule);
     return true;
 }
+
+/*
+ * make sure combination of "-i" or "-o" interface spec and chosen chain
+ * is allowed
+ */
+bool NATCompiler_ipt::VerifyRules3::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElement *itf_i_re = rule->getItfInb();
+    assert(itf_i_re!=NULL);
+    RuleElement *itf_o_re = rule->getItfOutb();
+    assert(itf_o_re!=NULL);
+
+    if (rule->getRuleType()==NATRule::SNAT &&  ! itf_i_re->isAny())
+    {
+        // iptables does not allow "-i" in POSTROUTING chain
+        compiler->abort(
+            rule,
+            "Can not use inbound interface specification with "
+            "rules that translate source because iptables does not "
+            "allow \"-i\" in POSTROUTING chain");
+        return true;
+    }
+
+    if (rule->getRuleType()==NATRule::DNAT &&  ! itf_o_re->isAny())
+    {
+        // iptables does not allow "-o" in PREROUTING chain
+        compiler->abort(
+            rule,
+            "Can not use inbound interface specification with "
+            "rules that translate destination because iptables does not "
+            "allow \"-o\" in PREROUTING chain");
+        return true;
+    }
+
+    string chain = rule->getStr("ipt_chain");
+
+    if (chain == "OUTPUT" && ! itf_i_re->isAny())
+    {
+        // iptables does not allow "-i" in POSTROUTING chain
+        compiler->abort(
+            rule,
+            "Can not use inbound interface specification with "
+            "this rule  because iptables does not "
+            "allow \"-i\" in OUTPUT chain");
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 
 bool NATCompiler_ipt::convertToAtomicportForOSrv::processNext()
 {
@@ -2542,9 +2594,9 @@ void NATCompiler_ipt::compile()
     add( new splitMultiSrcAndDst(
              "split rules where multiple srcs and dsts are present" ) );
 
-    add( new groupServicesByProtocol("group services by protocol") );
-    add( new VerifyRules2("check correctness of TSrv") );
-    add( new separatePortRanges("separate port ranges") );
+    add( new groupServicesByProtocol("group services by protocol"));
+    add( new VerifyRules2("check correctness of TSrv"));
+    add( new separatePortRanges("separate port ranges"));
 
     add( new separateSrcPort("separate objects with src ports") );
 
@@ -2558,6 +2610,7 @@ void NATCompiler_ipt::compile()
     add( new addVirtualAddress("add virtual addresses") );
 
     add( new AssignInterface("assign rules to interfaces") );
+    add( new VerifyRules3("check combination of interface spec and chain"));
     add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
     add( new dynamicInterfaceInTSrc(
              "set target if dynamic interface in TSrc" ) );
