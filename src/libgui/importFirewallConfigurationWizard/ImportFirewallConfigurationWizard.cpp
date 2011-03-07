@@ -49,6 +49,9 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(QWidget *pa
     pm.load(":/Images/fwbuilder3-72x72.png");
     setPixmap(QWizard::LogoPixmap, pm);
 
+    pm.load(":/Images/fwbuilder3-256x256-fade.png");
+    setPixmap(QWizard::BackgroundPixmap, pm);
+
     setWindowTitle(tr("Import Firewall Configuration"));
 
     setPage(Page_FileName, new IC_FileNamePage(this));

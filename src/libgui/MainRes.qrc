@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/" >
+    <file>Images/fwbuilder3-256x256-fade.png</file>
+    <file>Images/fwbuilder3-256x256.png</file>
     <file>Images/fwbuilder3-72x72.png</file>
     <file>Images/network_zone_dialog.png</file>
     <file>Images/logo1.png</file>
