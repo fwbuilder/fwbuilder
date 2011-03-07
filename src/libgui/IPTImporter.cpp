@@ -1356,7 +1356,8 @@ Firewall* IPTImporter::finalize()
                             "Warning: Line %1: Can not reproduce default action in "
                             "table 'mangle' chain 'FORWARD'.\n");
                         ropt->setStr("color", getBadRuleColor());
-                        rule->setComment(err.toUtf8().constData());
+                        rule->setComment(
+                            err.arg(getCurrentLineNumber()).toUtf8().constData());
                         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
                     }
                 }
@@ -1374,7 +1375,8 @@ Firewall* IPTImporter::finalize()
                             "Warning: Line %1: Can not reproduce default action in "
                             "table 'mangle' chain 'INPUT'.\n");
                         ropt->setStr("color", getBadRuleColor());
-                        rule->setComment(err.toUtf8().constData());
+                        rule->setComment(
+                            err.arg(getCurrentLineNumber()).toUtf8().constData());
                         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
                     }
                 }
@@ -1400,9 +1402,8 @@ Firewall* IPTImporter::finalize()
                 rs->ruleset->add(rule);
                 QString l("Warning: Line %1: Added rule to reproduce default "
                           "policy ACCEPT in %2\n");
-                *Importer::logger << l.arg(getCurrentLineNumber()).arg(rs_index.c_str()).toUtf8().constData();
-                
-
+                *Importer::logger <<
+                    l.arg(getCurrentLineNumber()).arg(rs_index.c_str()).toUtf8().constData();
             }
         }
 
