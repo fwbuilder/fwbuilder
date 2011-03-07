@@ -1,5 +1,9 @@
 2011-03-06  vadim  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (pushNATRule): see #2181 "Update iptables
+	importer to detect inbound & outbound interfaces in NAT rules".
+	Importer can now import nat rules with "-i" or "-o" interface spec.
+
 	* NATCompiler_ipt.cpp (processNext): see #2170 "Compiler should
 	generate error for invalid iptables NAT configs". Now that we
 	allow the user to specify inbound and outbound interfaces in

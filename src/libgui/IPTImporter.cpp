@@ -1218,11 +1218,18 @@ void IPTImporter::pushNATRule()
             assert(re!=NULL);
             re->addRef(s);
         }
+
         if (!o_intf.empty())
-            markCurrentRuleBad(
-                std::string("Original rule defines outbound interface '") + o_intf + "'.\n Replace address in TSrc with matching interface of the firewall.");
+        {
+            RuleElement *itf_o_re = rule->getItfOutb();
+            assert(itf_o_re!=NULL);
+            newInterface(o_intf);
+            Interface *intf = all_interfaces[o_intf];
+            itf_o_re->addRef(intf);
+        }
 
     }
+
     if (target=="DNAT")
     {
         rule->setRuleType(NATRule::DNAT);
@@ -1246,10 +1253,15 @@ void IPTImporter::pushNATRule()
             assert(re!=NULL);
             re->addRef(s);
         }
-        if (!i_intf.empty())
-            markCurrentRuleBad(
-                std::string("Original rule defines inbound interface '") + i_intf + "'.\n Replace address in ODst with matching interface of the firewall.");
 
+        if (!i_intf.empty())
+        {
+            RuleElement *itf_i_re = rule->getItfInb();
+            assert(itf_i_re!=NULL);
+            newInterface(i_intf);
+            Interface *intf = all_interfaces[i_intf];
+            itf_i_re->addRef(intf);
+        }
     }
     if (target=="NETMAP")
     {
