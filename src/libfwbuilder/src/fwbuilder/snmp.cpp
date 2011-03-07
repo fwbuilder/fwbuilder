@@ -1562,8 +1562,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                         included(*(net->getAddressPtr())) &&
                         !point2point(*net, j->second))
                     {
-                        str << "Network " << net->toString() << " found"
-                            << " (" << networks.size() << ")";
+                        str << "Network " << net->toString() << "\n";
                         *logger << str;
 
                         // NOTE: net is a pointer to InetAddrMask object

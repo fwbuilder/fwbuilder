@@ -34,7 +34,9 @@
 #include "ND_SelectLibraryPage.h"
 #include "ND_SetupPage.h"
 #include "ND_SNMPParametersPage.h"
+#include "FWWindow.h"
 
+#include <QDesktopWidget>
 #include <QtDebug>
 
 using namespace std;
@@ -59,6 +61,20 @@ SNMPNetworkDiscoveryWizard::SNMPNetworkDiscoveryWizard(QWidget *parent) : QWizar
     addPage(new ND_SelectLibraryPage(this));
     addPage(new ND_CreateObjectsPage(this));
 
-    resize(700, 500);
+    QRect sg = QApplication::desktop()->screenGeometry(mw);
+    QSize screen_size = sg.size();
+
+#if defined(Q_OS_MACX)
+    QSize desired_size(900, 700);
+#else
+    QSize desired_size(800, 700);
+#endif
+
+    if (desired_size.width() > screen_size.width())
+        desired_size.setWidth(screen_size.width());
+    if (desired_size.height() > screen_size.height())
+        desired_size.setHeight(screen_size.height());
+
+    resize(desired_size);
 }
 

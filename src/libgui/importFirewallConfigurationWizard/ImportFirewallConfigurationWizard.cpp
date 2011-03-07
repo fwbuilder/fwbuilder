@@ -30,10 +30,12 @@
 #include "IC_PlatformWarningPage.h"
 #include "IC_ProgressPage.h"
 #include "IC_NetworkZonesPage.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Firewall.h"
 
+#include <QDesktopWidget>
 #include <QtDebug>
 
 using namespace std;
@@ -60,7 +62,21 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(QWidget *pa
     setPage(Page_Progess, new IC_ProgressPage(this));
     setPage(Page_NetworkZones, new IC_NetworkZonesPage(this));
 
-    resize(700, 600);
+    QRect sg = QApplication::desktop()->screenGeometry(mw);
+    QSize screen_size = sg.size();
+
+#if defined(Q_OS_MACX)
+    QSize desired_size(900, 700);
+#else
+    QSize desired_size(800, 700);
+#endif
+
+    if (desired_size.width() > screen_size.width())
+        desired_size.setWidth(screen_size.width());
+    if (desired_size.height() > screen_size.height())
+        desired_size.setHeight(screen_size.height());
+
+    resize(desired_size);
 }
 
 void ImportFirewallConfigurationWizard::accept()
