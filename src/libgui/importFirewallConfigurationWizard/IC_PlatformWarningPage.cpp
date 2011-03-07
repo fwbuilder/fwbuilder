@@ -265,7 +265,7 @@ void IC_PlatformWarningPage::initializePage()
 
         if (detectedPlatform == "pf")
         {
-            m_dialog->platform->setText(tr("iptables"));
+            m_dialog->platform->setText(tr("pf"));
             m_dialog->platformSpecificWarning->setText(
                 tr("Import of PF rules is not supported"));
             platformOk = false;
