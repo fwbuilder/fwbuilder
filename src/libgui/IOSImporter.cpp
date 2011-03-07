@@ -298,6 +298,20 @@ FWObject* IOSImporter::createUDPService()
     return getUDPService(srs,sre,drs,dre);
 }
 
+void IOSImporter::ignoreCurrentInterface()
+{
+    if (current_interface)
+    {
+        Importer::ignoreCurrentInterface();
+        QString err("Warning: interface %1 was not imported because it "
+                    "is in \"shutdown\" mode\n");
+        *Importer::logger <<
+            err.arg(current_interface->getName().c_str()).toStdString();
+    }
+}
+
+
+
 void IOSImporter::merge_rule::operator()(FWObject* r)
 {
     PolicyRule *rule = PolicyRule::cast(r);

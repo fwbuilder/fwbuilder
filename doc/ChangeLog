@@ -1,5 +1,9 @@
 2011-03-06  vadim  <vadim@netcitadel.com>
 
+	* Importer.cpp (ignoreCurrentInterface): see #2152 "ASA Import -
+	shutdown interfaces". Importer recognizes and skips ASA interfaces
+	in "shutdown" mode.
+
 	* IPTImporter.cpp (pushNATRule): see #2181 "Update iptables
 	importer to detect inbound & outbound interfaces in NAT rules".
 	Importer can now import nat rules with "-i" or "-o" interface spec.

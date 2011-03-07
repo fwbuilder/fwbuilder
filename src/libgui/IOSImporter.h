@@ -56,7 +56,7 @@ class IOSImporter : public Importer
                                        const std::string &port_spec,
                                        const std::string &proto);
 
-    public:
+public:
 
     IOSImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
@@ -69,6 +69,8 @@ class IOSImporter : public Importer
     virtual void setInterfaceAndDirectionForRuleSet(const std::string &ruleset_name,
                                                     const std::string &interface_name,
                                                     const std::string &dir);
+
+    virtual void ignoreCurrentInterface();
 
     // this method actually adds interfaces to the firewall object
     // and does final clean up.

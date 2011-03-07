@@ -81,6 +81,7 @@ public:
 	public: void shutdown();
 	public: void certificate();
 	public: void quit();
+	public: void crypto();
 	public: void unknown_command();
 	public: void ip_access_list_ext();
 	public: void interface_known_commands();
@@ -121,10 +122,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 89;
+	static const int NUM_TOKENS = 90;
 #else
 	enum {
-		NUM_TOKENS = 89
+		NUM_TOKENS = 90
 	};
 #endif
 	

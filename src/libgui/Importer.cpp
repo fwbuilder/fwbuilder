@@ -266,6 +266,20 @@ void Importer::newInterface(const std::string &name)
     *logger << "New interface: " + name + "\n";
 }
 
+/*
+ * We call this when importer for PIX or IOS encounters interface in
+ * state "shutdown"
+ */
+void Importer::ignoreCurrentInterface()
+{
+    if (current_interface)
+    {
+        string name = current_interface->getName();
+        current_interface->getParent()->remove(current_interface);
+        all_interfaces.erase(name);
+    }
+}
+
 void Importer::addAddressObjectToInterface(Interface*intf,
                                            const string &addr,
                                            const string &netm)

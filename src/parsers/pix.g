@@ -111,6 +111,8 @@ cfgfile :
         |
             quit
         |
+            crypto
+        |
             unknown_command
         |
             NEWLINE
@@ -131,6 +133,13 @@ quit : QUIT
 
 //****************************************************************
 community_list_command : COMMUNITY_LIST 
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+crypto : CRYPTO
         {
             consumeUntil(NEWLINE);
         }
@@ -535,6 +544,7 @@ remark : REMARK
 
 shutdown : SHUTDOWN
         {
+            importer->ignoreCurrentInterface();
             *dbg<< LT(1)->getLine() << ":"
                 << " INTERFACE SHUTDOWN " << std::endl;
         }
@@ -766,6 +776,8 @@ tokens
     PIX_WORD = "PIX" ;
     ASA_WORD = "ASA" ;
     VERSION_WORD = "Version" ;
+
+    CRYPTO = "crypto";
 }
 
 
