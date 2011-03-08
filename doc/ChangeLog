@@ -1,5 +1,8 @@
 2011-03-07  vadim  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (pushNATRule): fixes #2195 "incorrect iptables
+	import of nat rule with NETMAP target"
+
 	* IPTImporter.cpp (pushNATRule): see #2196 "iptables nat rules
 	with target REDIRECT not imported". Iptables NAT rules with target
 	REDIRECT where not imported correctly.

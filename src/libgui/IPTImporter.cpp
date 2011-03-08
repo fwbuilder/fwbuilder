@@ -1340,13 +1340,11 @@ void IPTImporter::pushNATRule()
     if (target=="NETMAP")
     {
         FWObject *o = NULL;
+
         if (!src_a.empty())
         {
             rule_type = NATRule::SNetnat;
 
-            o = createAddress(src_a, src_nm);
-            RuleElementOSrc *osrc = rule->getOSrc();
-            osrc->addRef(o);
             RuleElementTSrc *tsrc = rule->getTSrc();
             assert(tsrc!=NULL);
             o = createAddress(nat_addr1, nat_nm);
@@ -1357,9 +1355,6 @@ void IPTImporter::pushNATRule()
         {
             rule_type = NATRule::DNetnat;
 
-            o = createAddress(dst_a, dst_nm);
-            RuleElementOSrc *odst = rule->getOSrc();
-            odst->addRef(o);
             RuleElementTDst *tdst = rule->getTDst();
             assert(tdst!=NULL);
             o = createAddress(nat_addr1, nat_nm);
