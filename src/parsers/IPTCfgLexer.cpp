@@ -681,7 +681,7 @@ void IPTCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1183 "iptables.g"
+#line 1186 "iptables.g"
 		newline(); resetText();
 #line 687 "IPTCfgLexer.cpp"
 	}
@@ -762,7 +762,7 @@ void IPTCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1181 "iptables.g"
+#line 1184 "iptables.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 768 "IPTCfgLexer.cpp"
 	}
@@ -1029,7 +1029,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		match('.' /* charlit */ );
 		mNUM_3DIGIT(false);
 		if ( inputState->guessing==0 ) {
-#line 1246 "iptables.g"
+#line 1249 "iptables.g"
 			_ttype = IPV4;
 #line 1035 "IPTCfgLexer.cpp"
 		}
@@ -1055,7 +1055,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 1249 "iptables.g"
+#line 1252 "iptables.g"
 			_ttype = HEX_CONST;
 #line 1061 "IPTCfgLexer.cpp"
 		}
@@ -1076,7 +1076,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		_loop198:;
 		}  // ( ... )+
 		if ( inputState->guessing==0 ) {
-#line 1251 "iptables.g"
+#line 1254 "iptables.g"
 			_ttype = INT_CONST;
 #line 1082 "IPTCfgLexer.cpp"
 		}
@@ -1392,7 +1392,7 @@ void IPTCfgLexer::mRSOURCE(bool _createToken) {
 	
 	match("--rsource");
 	if ( inputState->guessing==0 ) {
-#line 1275 "iptables.g"
+#line 1278 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1398 "IPTCfgLexer.cpp"
 	}
@@ -2055,7 +2055,7 @@ void IPTCfgLexer::mULOG_QTHR(bool _createToken) {
 	
 	match("--ulog-qthreshold");
 	if ( inputState->guessing==0 ) {
-#line 1342 "iptables.g"
+#line 1345 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2061 "IPTCfgLexer.cpp"
 	}
@@ -2074,7 +2074,7 @@ void IPTCfgLexer::mULOG_NLG(bool _createToken) {
 	
 	match("--ulog-nlgroup");
 	if ( inputState->guessing==0 ) {
-#line 1343 "iptables.g"
+#line 1346 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2080 "IPTCfgLexer.cpp"
 	}
@@ -2093,7 +2093,7 @@ void IPTCfgLexer::mULOG_CPR(bool _createToken) {
 	
 	match("--ulog-cprange");
 	if ( inputState->guessing==0 ) {
-#line 1344 "iptables.g"
+#line 1347 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2099 "IPTCfgLexer.cpp"
 	}

@@ -156,7 +156,8 @@ protected:
 
     // finds and rturns pointer to ruleset "rsname". If it does not
     // exists, it is created
-    virtual UnidirectionalRuleSet* getUnidirRuleSet(const std::string &rsname);
+    virtual UnidirectionalRuleSet* getUnidirRuleSet(
+        const std::string &ruleset_name, const std::string &ruleset_type_name);
     
     virtual libfwbuilder::FWObject* getCustomService(const std::string &platform,
                                                      const std::string &code,
@@ -300,7 +301,8 @@ public:
      * has interface association and direction that apply to all rules
      * in the set.
      */
-    virtual void newUnidirRuleSet(const std::string &name);
+    virtual void newUnidirRuleSet(const std::string &name,
+                                  const std::string &ruleset_type);
 
     /**
      * Sets default action for the current rule set.

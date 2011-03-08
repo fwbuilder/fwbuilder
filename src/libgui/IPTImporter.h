@@ -37,6 +37,8 @@
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
 
                               
 typedef std::pair<std::string,std::string> str_tuple;
@@ -75,10 +77,14 @@ class IPTImporter : public Importer
     void addRecentMatch(libfwbuilder::PolicyRule *rule);
     void addPktTypeMatch(libfwbuilder::PolicyRule *rule);
 
-    libfwbuilder::PolicyRule* createBranch(
+    libfwbuilder::PolicyRule* createPolicyBranch(
         libfwbuilder::PolicyRule *rule, const std::string &branch_name,
         bool clear_rule_elements, bool make_stateless);
-    
+
+    libfwbuilder::NATRule* createNATBranch(
+        libfwbuilder::NATRule *rule, const std::string &branch_name,
+        bool clear_rule_elements);
+
     public:
 
     int service_group_name_seed;
@@ -161,12 +167,12 @@ class IPTImporter : public Importer
     virtual void pushRule();
 
     virtual UnidirectionalRuleSet* getUnidirRuleSet(
-        const std::string &rsname);
+        const std::string &rsname, const std::string &ruleset_type_name);
 
     virtual UnidirectionalRuleSet* checkUnidirRuleSet(
         const std::string &rsname);
     
-    virtual void newUnidirRuleSet(const std::string &name);
+    virtual void newUnidirRuleSet(const std::string &name, const std::string &ruleset_type);
 
     // this method actually adds interfaces to the firewall object
     // and does final clean up.

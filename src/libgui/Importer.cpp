@@ -403,25 +403,19 @@ UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
     return all_rulesets[ruleset_name];
 }
 
-UnidirectionalRuleSet* Importer::getUnidirRuleSet(const std::string &ruleset_name)
+UnidirectionalRuleSet* Importer::getUnidirRuleSet(
+    const std::string &ruleset_name, const string &ruleset_type_name)
 {
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
     if (rs==NULL)
     {
         // got 'ip access-group' command before the access list was defined
-
         rs = new UnidirectionalRuleSet();
         rs->name = ruleset_name;
         FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
-        if (ruleset_name == "nat")
-            rs->ruleset = RuleSet::cast(dbroot->create(NAT::TYPENAME));
-        else
-            rs->ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
-
+        rs->ruleset = RuleSet::cast(dbroot->create(ruleset_type_name));
         rs->ruleset->setName(ruleset_name);
-
         all_rulesets[ruleset_name] = rs;
-
         // add this ruleset to the firewall temporarily
         // because ruleset must belong to the tree somewhere in
         // order for other objects to be added properly.
@@ -443,7 +437,8 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
                                                   const std::string &_intf_name,
                                                   const std::string &_dir)
 {
-    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name);
+    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name, Policy::TYPENAME);
+
     std::string intf;
     if ( !_intf_name.empty()) intf = _intf_name;
     else                      intf = current_interface->getName();
@@ -466,9 +461,10 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
     *logger << str.str();
 }
 
-void Importer::newUnidirRuleSet(const std::string &ruleset_name)
+void Importer::newUnidirRuleSet(const string &ruleset_name,
+                                const string &ruleset_type)
 {
-    current_ruleset = getUnidirRuleSet(ruleset_name);  // creates if new
+    current_ruleset = getUnidirRuleSet(ruleset_name, ruleset_type);  // creates if new
     *logger << "Ruleset: " + ruleset_name + "\n";
 }
 

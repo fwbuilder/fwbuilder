@@ -1,3 +1,14 @@
+2011-03-07  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushNATRule): see #2196 "iptables nat rules
+	with target REDIRECT not imported". Iptables NAT rules with target
+	REDIRECT where not imported correctly.
+
+	* IPTImporter.cpp (pushNATRule): see #2190 "support for import of
+	branches in NAT rules for iptables". Implemented import of NAT
+	rules in user-defined chains for iptables, these translate into
+	branching NAT rules in fwbuilder.
+
 2011-03-06  vadim  <vadim@netcitadel.com>
 
 	* Importer.cpp (ignoreCurrentInterface): see #2152 "ASA Import -

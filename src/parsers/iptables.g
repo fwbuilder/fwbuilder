@@ -158,7 +158,10 @@ chain_def : (INPUT | FORWARD | OUTPUT | PREROUTING | POSTROUTING | WORD)
 
 create_chain : COLON chain_def
         {
-            importer->newUnidirRuleSet(LT(0)->getText());
+            if (importer->current_table=="nat")
+                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::NAT::TYPENAME);
+            else
+                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::Policy::TYPENAME);
             *dbg << "NEW CHAIN " << LT(0)->getText() << std::endl;
         }
         (WORD | MINUS)
