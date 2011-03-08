@@ -1,8 +1,12 @@
 2011-03-07  vadim  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (pushNATRule): see #2197 "iptables nat rules in
+	chain OUTPUT not imported correctly"
+
 	* iptables.g (nat_addr_range): see #2194 "iptables import problem
 	with SNAT rule translating to an address range". NAT rules
-	translating into address range did not import correctly
+	translating into address range with "-j SNAT --to-source
+	192.168.1.1-192.168.1.10" did not import correctly
 
 	* IPTImporter.cpp (pushNATRule): fixes #2195 "incorrect iptables
 	import of nat rule with NETMAP target"

@@ -1277,6 +1277,14 @@ void IPTImporter::pushNATRule()
     {
         rule_type = NATRule::DNAT;
 
+        // if chain is "OUTPUT", put fw object in OSrc
+        if (current_chain == "OUTPUT")
+        {
+            RuleElementOSrc *re = rule->getOSrc();
+            assert(re!=NULL);
+            re->addRef(getFirewallObject());
+        }
+
         FWObject *tdst = NULL;
         if (nat_addr1!=nat_addr2)
             tdst = createAddressRange(nat_addr1, nat_addr2);
