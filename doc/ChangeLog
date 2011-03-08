@@ -1,5 +1,9 @@
 2011-03-07  vadim  <vadim@netcitadel.com>
 
+	* iptables.g (nat_addr_range): see #2194 "iptables import problem
+	with SNAT rule translating to an address range". NAT rules
+	translating into address range did not import correctly
+
 	* IPTImporter.cpp (pushNATRule): fixes #2195 "incorrect iptables
 	import of nat rule with NETMAP target"
 
