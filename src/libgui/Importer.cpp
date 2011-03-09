@@ -535,7 +535,7 @@ void Importer::pushRule()
 
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
-    current_rule->setComment(rule_comment);
+    current_rule->setComment(addStandardRuleComment(rule_comment));
 
 //     *logger << "Rule: " << action << " "
 //             << protocol << " "
@@ -1240,6 +1240,18 @@ QString Importer::commonFailureErrorMessage()
 void Importer::addMessageToLog(const std::string &msg)
 {
     *logger << msg + "\n";
+}
+
+string Importer::addStandardRuleComment(const string &comment)
+{
+    string rule_comment = comment;
+    if (!rule_comment.empty()) rule_comment += "\n";
+    QString file_and_line("Created during import of %1 line %2");
+    rule_comment += string(
+        file_and_line
+        .arg(QString::fromUtf8(input_file_name.c_str()))
+        .arg(getCurrentLineNumber()).toUtf8().constData());
+    return rule_comment;
 }
 
 

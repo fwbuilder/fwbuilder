@@ -97,6 +97,7 @@ protected:
     
     libfwbuilder::FWObject *library;
 
+    std::string input_file_name;
     std::istringstream &input;
     
     std::string platform;
@@ -272,7 +273,12 @@ public:
 
     virtual void run();
 
+    void setFileName(const std::string &fn) { input_file_name = fn; }
     void setPlatform(const std::string &pl) { platform = pl; }
+
+    // add standard line to rule comment, this adds something like
+    // "created during import from <file>, line <line>"
+    std::string addStandardRuleComment(const std::string &comment);
     
     int errorCounter() { return error_counter; }
 

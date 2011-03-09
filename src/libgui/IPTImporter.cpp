@@ -1258,8 +1258,7 @@ void IPTImporter::pushPolicyRule()
 
         processModuleMatches();
 
-        current_rule->setComment(rule_comment);
-
+        current_rule->setComment(addStandardRuleComment(rule_comment));
     }
 
     current_rule = NULL;
@@ -1491,7 +1490,7 @@ void IPTImporter::pushNATRule()
     // renumber to clean-up rule positions
     ruleset->renumberRules();
 
-    current_rule->setComment(rule_comment);
+    current_rule->setComment(addStandardRuleComment(rule_comment));
 
     // RuleSet *nat = RuleSet::cast(
     //     getFirewallObject()->getFirstByType(NAT::TYPENAME));

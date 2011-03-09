@@ -1,5 +1,9 @@
 2011-03-08  vadim  <vadim@netcitadel.com>
 
+	* Importer.cpp (addStandardRuleComment): see #2189 Program adds
+	the file name and the line number to comments of policy and nat
+	rules it creates during import.
+
 	* IPTImporter.cpp (pushPolicyRule): see #2202 importer for
 	iptables creates Custom Service object to match combination of
 	states it does not recognize. This includes "NEW,ESTABLISHED".

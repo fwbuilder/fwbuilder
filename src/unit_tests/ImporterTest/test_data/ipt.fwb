@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1299635118" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1299636808" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -612,7 +612,7 @@
     <ObjectGroup id="id153" name="Firewalls" comment="" ro="False">
       <Firewall id="id154" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="test_fw" comment="" ro="False">
         <NAT id="id686" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id688" disabled="False" group="" position="0" action="Translate" comment="">
+          <NATRule id="id688" disabled="False" group="" position="0" action="Translate" comment="Created during import of  line 257">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -639,7 +639,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id706" disabled="False" group="" position="1" action="Translate" comment="">
+          <NATRule id="id706" disabled="False" group="" position="1" action="Translate" comment="Created during import of  line 258">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -666,7 +666,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id724" disabled="False" group="" position="2" action="Translate" comment="">
+          <NATRule id="id724" disabled="False" group="" position="2" action="Translate" comment="Created during import of  line 259">
             <OSrc neg="False">
               <ObjectRef ref="id29"/>
             </OSrc>
@@ -693,7 +693,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id742" disabled="False" group="" position="3" action="Translate" comment="">
+          <NATRule id="id742" disabled="False" group="" position="3" action="Translate" comment="Created during import of  line 260">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -720,7 +720,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id760" disabled="False" group="" position="4" action="Translate" comment="">
+          <NATRule id="id760" disabled="False" group="" position="4" action="Translate" comment="Created during import of  line 261">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -747,7 +747,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id778" disabled="False" group="" position="5" action="Translate" comment="">
+          <NATRule id="id778" disabled="False" group="" position="5" action="Translate" comment="Created during import of  line 262">
             <OSrc neg="False">
               <ObjectRef ref="id12"/>
             </OSrc>
@@ -774,7 +774,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id796" disabled="False" group="" position="6" action="Translate" comment="">
+          <NATRule id="id796" disabled="False" group="" position="6" action="Translate" comment="Created during import of  line 264">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -801,7 +801,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id814" disabled="False" group="" position="7" action="Translate" comment="">
+          <NATRule id="id814" disabled="False" group="" position="7" action="Translate" comment="Created during import of  line 266">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -828,7 +828,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id832" disabled="False" group="" position="8" action="Translate" comment="">
+          <NATRule id="id832" disabled="False" group="" position="8" action="Translate" comment="Created during import of  line 268">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -855,7 +855,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id850" disabled="False" group="" position="9" action="Translate" comment="">
+          <NATRule id="id850" disabled="False" group="" position="9" action="Translate" comment="Created during import of  line 269">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -882,7 +882,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id868" disabled="False" group="" position="10" action="Translate" comment="">
+          <NATRule id="id868" disabled="False" group="" position="10" action="Translate" comment="Created during import of  line 270">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -909,7 +909,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id886" disabled="False" group="" position="11" action="Translate" comment="">
+          <NATRule id="id886" disabled="False" group="" position="11" action="Translate" comment="Created during import of  line 271">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -936,7 +936,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id904" disabled="False" group="" position="12" action="Translate" comment="">
+          <NATRule id="id904" disabled="False" group="" position="12" action="Translate" comment="Created during import of  line 272">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -963,7 +963,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id922" disabled="False" group="" position="13" action="Translate" comment="">
+          <NATRule id="id922" disabled="False" group="" position="13" action="Translate" comment="Created during import of  line 273">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -990,7 +990,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id940" disabled="False" group="" position="14" action="Translate" comment="">
+          <NATRule id="id940" disabled="False" group="" position="14" action="Translate" comment="Created during import of  line 276">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1017,7 +1017,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id958" disabled="False" group="" position="15" action="Translate" comment="">
+          <NATRule id="id958" disabled="False" group="" position="15" action="Translate" comment="Created during import of  line 279">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -1044,7 +1044,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id976" disabled="False" group="" position="16" action="Translate" comment="">
+          <NATRule id="id976" disabled="False" group="" position="16" action="Translate" comment="Created during import of  line 282">
             <OSrc neg="False">
               <ObjectRef ref="id28"/>
             </OSrc>
@@ -1071,7 +1071,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id994" disabled="False" group="" position="17" action="Translate" comment="">
+          <NATRule id="id994" disabled="False" group="" position="17" action="Translate" comment="Created during import of  line 285">
             <OSrc neg="False">
               <ObjectRef ref="id154"/>
             </OSrc>
@@ -1098,7 +1098,7 @@
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id1012" disabled="False" group="" position="18" action="Translate" comment="">
+          <NATRule id="id1012" disabled="False" group="" position="18" action="Translate" comment="Created during import of  line 286">
             <OSrc neg="False">
               <ObjectRef ref="id154"/>
             </OSrc>
@@ -1128,7 +1128,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id156" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id158" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id158" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 9">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1148,7 +1148,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id170" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id170" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 12">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1168,7 +1168,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id182" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="Chain OUTPUT. ">
+          <PolicyRule id="id182" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 13">
             <Src neg="False">
               <ObjectRef ref="id154"/>
             </Src>
@@ -1188,7 +1188,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id194" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id194" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 14">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1208,7 +1208,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id206" disabled="False" group="" log="False" position="4" action="Branch" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id206" disabled="False" group="" log="False" position="4" action="Branch" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 18">
             <Src neg="False">
               <ObjectRef ref="id23"/>
             </Src>
@@ -1230,7 +1230,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id218" disabled="False" group="" log="False" position="5" action="Branch" direction="Both" comment="Chain OUTPUT. ">
+          <PolicyRule id="id218" disabled="False" group="" log="False" position="5" action="Branch" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 23">
             <Src neg="False">
               <ObjectRef ref="id154"/>
             </Src>
@@ -1252,7 +1252,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id230" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="Chain OUTPUT. ">
+          <PolicyRule id="id230" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 28">
             <Src neg="False">
               <ObjectRef ref="id154"/>
             </Src>
@@ -1274,7 +1274,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id242" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="Chain INPUT. ">
+          <PolicyRule id="id242" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="Chain INPUT. &#10;Created during import of  line 37">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1294,7 +1294,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id254" disabled="False" group="" log="False" position="8" action="Branch" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id254" disabled="False" group="" log="False" position="8" action="Branch" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 38">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1316,7 +1316,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id266" disabled="False" group="" log="False" position="9" action="Branch" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id266" disabled="False" group="" log="False" position="9" action="Branch" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 39">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1338,7 +1338,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id278" disabled="False" group="" log="False" position="10" action="Branch" direction="Inbound" comment="Chain FORWARD.  Both inbound and outbound interfaces in original iptables command: -i eth0 -o eth1">
+          <PolicyRule id="id278" disabled="False" group="" log="False" position="10" action="Branch" direction="Inbound" comment="Chain FORWARD.  Both inbound and outbound interfaces in original iptables command: -i eth0 -o eth1&#10;Created during import of  line 42">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1360,7 +1360,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id290" disabled="False" group="" log="False" position="11" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id290" disabled="False" group="" log="False" position="11" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 45">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1381,7 +1381,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id302" disabled="False" group="" log="False" position="12" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id302" disabled="False" group="" log="False" position="12" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 47">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1402,7 +1402,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id314" disabled="False" group="" log="False" position="13" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id314" disabled="False" group="" log="False" position="13" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 48">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1423,7 +1423,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id326" disabled="False" group="" log="False" position="14" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id326" disabled="False" group="" log="False" position="14" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 50">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1444,7 +1444,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id338" disabled="False" group="" log="False" position="15" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id338" disabled="False" group="" log="False" position="15" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 51">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1465,7 +1465,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id350" disabled="False" group="" log="False" position="16" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id350" disabled="False" group="" log="False" position="16" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 53">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1486,7 +1486,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id362" disabled="False" group="" log="False" position="17" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id362" disabled="False" group="" log="False" position="17" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 54">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1507,7 +1507,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id374" disabled="False" group="" log="False" position="18" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id374" disabled="False" group="" log="False" position="18" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 56">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1528,7 +1528,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id386" disabled="False" group="" log="False" position="19" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id386" disabled="False" group="" log="False" position="19" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 57">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1549,7 +1549,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id398" disabled="False" group="" log="False" position="20" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id398" disabled="False" group="" log="False" position="20" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 59">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1570,7 +1570,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id410" disabled="False" group="" log="False" position="21" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id410" disabled="False" group="" log="False" position="21" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 60">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1591,7 +1591,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id422" disabled="False" group="" log="False" position="22" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id422" disabled="False" group="" log="False" position="22" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 62">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1612,7 +1612,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id434" disabled="False" group="" log="False" position="23" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id434" disabled="False" group="" log="False" position="23" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 63">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1633,7 +1633,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id446" disabled="False" group="" log="False" position="24" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id446" disabled="False" group="" log="False" position="24" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 65">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1654,7 +1654,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id458" disabled="False" group="" log="False" position="25" action="Reject" direction="Both" comment="Chain INPUT. ">
+          <PolicyRule id="id458" disabled="False" group="" log="False" position="25" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 66">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1675,7 +1675,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id470" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Warning: Line 69: Unknown parameter of target REJECT: icmp-foo-prohibited.&#10;Chain INPUT. ">
+          <PolicyRule id="id470" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Warning: Line 69: Unknown parameter of target REJECT: icmp-foo-prohibited.&#10;Chain INPUT. &#10;Created during import of  line 69">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1697,7 +1697,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id482" disabled="False" group="" log="False" position="27" action="Reject" direction="Both" comment="Warning: Line 70: Unknown parameter of target REJECT: foo-prohib.&#10;Chain INPUT. ">
+          <PolicyRule id="id482" disabled="False" group="" log="False" position="27" action="Reject" direction="Both" comment="Warning: Line 70: Unknown parameter of target REJECT: foo-prohib.&#10;Chain INPUT. &#10;Created during import of  line 70">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1719,7 +1719,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id494" disabled="False" group="" log="False" position="28" action="Branch" direction="Both" comment="Chain OUTPUT. ">
+          <PolicyRule id="id494" disabled="False" group="" log="False" position="28" action="Branch" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 77">
             <Src neg="False">
               <ObjectRef ref="id154"/>
             </Src>
@@ -1741,7 +1741,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id506" disabled="False" group="" log="False" position="29" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id506" disabled="False" group="" log="False" position="29" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 80">
             <Src neg="False">
               <ObjectRef ref="id32"/>
             </Src>
@@ -1761,7 +1761,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id518" disabled="False" group="" log="False" position="30" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id518" disabled="False" group="" log="False" position="30" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 81">
             <Src neg="False">
               <ObjectRef ref="id4"/>
             </Src>
@@ -1781,7 +1781,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id530" disabled="False" group="" log="False" position="31" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id530" disabled="False" group="" log="False" position="31" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 82">
             <Src neg="False">
               <ObjectRef ref="id32"/>
             </Src>
@@ -1801,7 +1801,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id542" disabled="False" group="" log="False" position="32" action="Accept" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id542" disabled="False" group="" log="False" position="32" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 85">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -1821,7 +1821,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id554" disabled="False" group="" log="True" position="33" action="Continue" direction="Both" comment="Chain FORWARD. ">
+          <PolicyRule id="id554" disabled="False" group="" log="True" position="33" action="Continue" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 88">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1846,7 +1846,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id566" disabled="False" group="" log="False" position="34" action="Tag" direction="Inbound" comment="Chain FORWARD. ">
+          <PolicyRule id="id566" disabled="False" group="" log="False" position="34" action="Tag" direction="Inbound" comment="Chain FORWARD. &#10;Created during import of  line 225">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1868,7 +1868,7 @@
               <Option name="tagobject_id">id148</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id578" disabled="False" group="" log="False" position="35" action="Tag" direction="Inbound" comment="Chain FORWARD. ">
+          <PolicyRule id="id578" disabled="False" group="" log="False" position="35" action="Tag" direction="Inbound" comment="Chain FORWARD. &#10;Created during import of  line 228">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1890,7 +1890,7 @@
               <Option name="tagobject_id">id149</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id590" disabled="False" group="" log="False" position="36" action="Tag" direction="Inbound" comment="Chain FORWARD. ">
+          <PolicyRule id="id590" disabled="False" group="" log="False" position="36" action="Tag" direction="Inbound" comment="Chain FORWARD. &#10;Created during import of  line 229">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1912,7 +1912,7 @@
               <Option name="tagobject_id">id150</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id602" disabled="False" group="" log="False" position="37" action="Tag" direction="Inbound" comment="Chain PREROUTING. ">
+          <PolicyRule id="id602" disabled="False" group="" log="False" position="37" action="Tag" direction="Inbound" comment="Chain PREROUTING. &#10;Created during import of  line 232">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1934,7 +1934,7 @@
               <Option name="tagobject_id">id148</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id614" disabled="False" group="" log="False" position="38" action="Tag" direction="Outbound" comment="Chain POSTROUTING. ">
+          <PolicyRule id="id614" disabled="False" group="" log="False" position="38" action="Tag" direction="Outbound" comment="Chain POSTROUTING. &#10;Created during import of  line 238">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1957,7 +1957,7 @@
               <Option name="tagobject_id">id148</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id626" disabled="False" group="" log="False" position="39" action="Route" direction="Both" comment="Chain POSTROUTING. ">
+          <PolicyRule id="id626" disabled="False" group="" log="False" position="39" action="Route" direction="Both" comment="Chain POSTROUTING. &#10;Created during import of  line 242">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1982,7 +1982,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id638" disabled="False" group="" log="False" position="40" action="Route" direction="Both" comment="Chain POSTROUTING. ">
+          <PolicyRule id="id638" disabled="False" group="" log="False" position="40" action="Route" direction="Both" comment="Chain POSTROUTING. &#10;Created during import of  line 243">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2007,7 +2007,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id650" disabled="False" group="" log="False" position="41" action="Custom" direction="Both" comment="Chain POSTROUTING. ">
+          <PolicyRule id="id650" disabled="False" group="" log="False" position="41" action="Custom" direction="Both" comment="Chain POSTROUTING. &#10;Created during import of  line 247">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2028,7 +2028,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id662" disabled="False" group="" log="False" position="42" action="Custom" direction="Both" comment="Chain POSTROUTING. ">
+          <PolicyRule id="id662" disabled="False" group="" log="False" position="42" action="Custom" direction="Both" comment="Chain POSTROUTING. &#10;Created during import of  line 248">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2072,7 +2072,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id1032" name="user_chain" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id1034" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1034" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 92">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2092,7 +2092,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1046" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Chain user_chain. ">
+          <PolicyRule id="id1046" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Chain user_chain. &#10;Created during import of  line 95">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2112,7 +2112,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1058" disabled="False" group="" log="False" position="2" action="Continue" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1058" disabled="False" group="" log="False" position="2" action="Continue" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 98">
             <Src neg="False">
               <ObjectRef ref="id26"/>
             </Src>
@@ -2132,7 +2132,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1070" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1070" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 103">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2152,7 +2152,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1082" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1082" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 105">
             <Src neg="False">
               <ObjectRef ref="id27"/>
             </Src>
@@ -2172,7 +2172,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1094" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1094" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 106">
             <Src neg="False">
               <ObjectRef ref="id7"/>
             </Src>
@@ -2192,7 +2192,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1106" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1106" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 107">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2212,7 +2212,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1118" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1118" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 108">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2232,7 +2232,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1130" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1130" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 109">
             <Src neg="False">
               <ObjectRef ref="id8"/>
             </Src>
@@ -2252,7 +2252,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1142" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1142" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 110">
             <Src neg="False">
               <ObjectRef ref="id27"/>
             </Src>
@@ -2272,7 +2272,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1154" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1154" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 113">
             <Src neg="False">
               <ObjectRef ref="id27"/>
             </Src>
@@ -2292,7 +2292,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1166" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1166" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 114">
             <Src neg="False">
               <ObjectRef ref="id27"/>
             </Src>
@@ -2312,7 +2312,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1178" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1178" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 116">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2332,7 +2332,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1190" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1190" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 117">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2352,7 +2352,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1202" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1202" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 118">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2372,7 +2372,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1214" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1214" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 119">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2392,7 +2392,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1226" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1226" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 120">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2412,7 +2412,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1238" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1238" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 122">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2432,7 +2432,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1250" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1250" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 123">
             <Src neg="False">
               <ObjectRef ref="id8"/>
             </Src>
@@ -2452,7 +2452,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1262" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1262" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 125">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2472,7 +2472,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1274" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1274" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 127">
             <Src neg="False">
               <ObjectRef ref="id9"/>
             </Src>
@@ -2492,7 +2492,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1286" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1286" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 128">
             <Src neg="False">
               <ObjectRef ref="id9"/>
             </Src>
@@ -2512,7 +2512,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1298" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Port spec 'foo' unknown &#10;Port spec 'foo' unknown Chain user_chain. ">
+          <PolicyRule id="id1298" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Port spec 'foo' unknown &#10;Port spec 'foo' unknown Chain user_chain. &#10;Created during import of  line 150">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2533,7 +2533,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1310" disabled="False" group="" log="True" position="23" action="Continue" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1310" disabled="False" group="" log="True" position="23" action="Continue" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 154">
             <Src neg="True">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2560,7 +2560,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1322" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1322" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 156">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2580,7 +2580,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1334" disabled="False" group="" log="False" position="25" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1334" disabled="False" group="" log="False" position="25" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 157">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2600,7 +2600,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1346" disabled="False" group="" log="False" position="26" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1346" disabled="False" group="" log="False" position="26" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 158">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2620,7 +2620,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1358" disabled="False" group="" log="False" position="27" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1358" disabled="False" group="" log="False" position="27" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 159">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2640,7 +2640,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1370" disabled="False" group="" log="False" position="28" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1370" disabled="False" group="" log="False" position="28" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 160">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2660,7 +2660,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1382" disabled="False" group="" log="False" position="29" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1382" disabled="False" group="" log="False" position="29" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 161">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2680,7 +2680,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1394" disabled="False" group="" log="False" position="30" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1394" disabled="False" group="" log="False" position="30" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 162">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2700,7 +2700,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1406" disabled="False" group="" log="False" position="31" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1406" disabled="False" group="" log="False" position="31" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 166">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2720,7 +2720,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1418" disabled="False" group="" log="False" position="32" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1418" disabled="False" group="" log="False" position="32" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 170">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2740,7 +2740,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1430" disabled="False" group="" log="False" position="33" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1430" disabled="False" group="" log="False" position="33" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 173">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2760,7 +2760,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1442" disabled="False" group="" log="False" position="34" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1442" disabled="False" group="" log="False" position="34" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 174">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2780,7 +2780,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1454" disabled="False" group="" log="False" position="35" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1454" disabled="False" group="" log="False" position="35" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 177">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2801,7 +2801,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1467" disabled="False" group="" log="False" position="36" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1467" disabled="False" group="" log="False" position="36" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 178">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2822,7 +2822,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1480" disabled="False" group="" log="False" position="37" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1480" disabled="False" group="" log="False" position="37" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 181">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2842,7 +2842,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1492" disabled="False" group="" log="False" position="38" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1492" disabled="False" group="" log="False" position="38" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 182">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2862,7 +2862,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1504" disabled="False" group="" log="False" position="39" action="Accept" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1504" disabled="False" group="" log="False" position="39" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 183">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2882,7 +2882,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1516" disabled="False" group="" log="False" position="40" action="Deny" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1516" disabled="False" group="" log="False" position="40" action="Deny" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 187">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2902,7 +2902,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1528" disabled="False" group="" log="False" position="41" action="Deny" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1528" disabled="False" group="" log="False" position="41" action="Deny" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 190">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2922,7 +2922,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1540" disabled="False" group="" log="False" position="42" action="Branch" direction="Inbound" comment="Chain user_chain. ">
+          <PolicyRule id="id1540" disabled="False" group="" log="False" position="42" action="Branch" direction="Inbound" comment="Chain user_chain. &#10;Created during import of  line 191">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2944,7 +2944,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1552" disabled="False" group="" log="False" position="43" action="Branch" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1552" disabled="False" group="" log="False" position="43" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 195">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2966,7 +2966,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1564" disabled="False" group="" log="False" position="44" action="Branch" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1564" disabled="False" group="" log="False" position="44" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 196">
             <Src neg="False">
               <ObjectRef ref="id25"/>
             </Src>
@@ -2988,7 +2988,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1576" disabled="False" group="" log="False" position="45" action="Branch" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1576" disabled="False" group="" log="False" position="45" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 197">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3010,7 +3010,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1588" disabled="False" group="" log="False" position="46" action="Branch" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1588" disabled="False" group="" log="False" position="46" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 200">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3032,7 +3032,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1600" disabled="False" group="" log="False" position="47" action="Branch" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1600" disabled="False" group="" log="False" position="47" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 203">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3054,7 +3054,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1612" disabled="False" group="" log="False" position="48" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.">
+          <PolicyRule id="id1612" disabled="False" group="" log="False" position="48" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.&#10;Created during import of  line 206">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3077,7 +3077,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1624" disabled="False" group="" log="False" position="49" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.">
+          <PolicyRule id="id1624" disabled="False" group="" log="False" position="49" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.&#10;Created during import of  line 207">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3100,7 +3100,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1636" disabled="False" group="" log="False" position="50" action="Deny" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1636" disabled="False" group="" log="False" position="50" action="Deny" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 210">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3120,7 +3120,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1648" disabled="False" group="" log="False" position="51" action="Deny" direction="Both" comment="Chain user_chain. ">
+          <PolicyRule id="id1648" disabled="False" group="" log="False" position="51" action="Deny" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 212">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3215,7 +3215,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id1705" name="scan_checks_chain" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id1707" disabled="False" group="" log="True" position="0" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1707" disabled="False" group="" log="True" position="0" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 133">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3242,7 +3242,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1719" disabled="False" group="" log="True" position="1" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1719" disabled="False" group="" log="True" position="1" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 134">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3269,7 +3269,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1731" disabled="False" group="" log="True" position="2" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1731" disabled="False" group="" log="True" position="2" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 135">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3296,7 +3296,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1743" disabled="False" group="" log="True" position="3" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1743" disabled="False" group="" log="True" position="3" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 136">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3323,7 +3323,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1755" disabled="False" group="" log="True" position="4" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1755" disabled="False" group="" log="True" position="4" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 137">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3350,7 +3350,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1767" disabled="False" group="" log="True" position="5" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1767" disabled="False" group="" log="True" position="5" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 138">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3377,7 +3377,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1779" disabled="False" group="" log="True" position="6" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1779" disabled="False" group="" log="True" position="6" action="Continue" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 139">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3404,7 +3404,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1791" disabled="False" group="" log="False" position="7" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1791" disabled="False" group="" log="False" position="7" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 140">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3424,7 +3424,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1803" disabled="False" group="" log="False" position="8" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1803" disabled="False" group="" log="False" position="8" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 141">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3444,7 +3444,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1815" disabled="False" group="" log="False" position="9" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1815" disabled="False" group="" log="False" position="9" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 142">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3464,7 +3464,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1827" disabled="False" group="" log="False" position="10" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1827" disabled="False" group="" log="False" position="10" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 143">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3484,7 +3484,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1839" disabled="False" group="" log="False" position="11" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1839" disabled="False" group="" log="False" position="11" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 144">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3504,7 +3504,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1851" disabled="False" group="" log="False" position="12" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1851" disabled="False" group="" log="False" position="12" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 145">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3524,7 +3524,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1863" disabled="False" group="" log="False" position="13" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. ">
+          <PolicyRule id="id1863" disabled="False" group="" log="False" position="13" action="Deny" direction="Inbound" comment="Chain scan_checks_chain. &#10;Created during import of  line 146">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
