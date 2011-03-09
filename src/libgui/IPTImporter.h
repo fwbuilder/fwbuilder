@@ -76,7 +76,10 @@ class IPTImporter : public Importer
     void addLimitMatch(libfwbuilder::PolicyRule *rule);
     void addRecentMatch(libfwbuilder::PolicyRule *rule);
     void addPktTypeMatch(libfwbuilder::PolicyRule *rule);
+    void addStateMatch(libfwbuilder::PolicyRule *rule, const std::string &state);
 
+    std::string getBranchName(const std::string &suffix);
+    
     libfwbuilder::PolicyRule* createPolicyBranch(
         libfwbuilder::PolicyRule *rule, const std::string &branch_name,
         bool clear_rule_elements, bool make_stateless);

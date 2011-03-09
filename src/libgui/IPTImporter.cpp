@@ -190,6 +190,14 @@ void IPTImporter::clear()
     iprange_dst_to = "";
 }
 
+string IPTImporter::getBranchName(const std::string &suffix)
+{
+    ostringstream str;
+    str << current_chain << suffix << aux_branch_number;
+    aux_branch_number++;
+    return str.str();
+}
+
 void IPTImporter::startSrcMultiPort()
 {
     src_port_list.clear();
@@ -634,6 +642,18 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
     }
 }
 
+void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &state)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
+    if (rule->getSrv()->isAny() && !state.empty())
+    {
+        // create custom service with module "state"
+        srv->addRef(getCustomService(
+                        "iptables", "-m state --state " + state, ""));
+        recent_match = "";
+    }
+}
 
 /**
  * Special method that takes a rule and converts it into a branching
@@ -662,6 +682,10 @@ PolicyRule* IPTImporter::createPolicyBranch(
 
     rule->setAction(PolicyRule::Branch);
     rule->setBranch(rs->ruleset);
+
+    FWOptions  *ropt = rule->getOptionsObject();
+    assert(ropt!=NULL);
+    ropt->setBool("stateless", true);
 
     if (rule->getParent() != NULL)
     {
@@ -944,12 +968,9 @@ void IPTImporter::pushPolicyRule()
 
         branch_rulesets[branch_ruleset_name] = rs;
 
-        //current_rule->add(rs->ruleset);
-        //ropt->setStr("branch_name", branch_ruleset_name);
-        //getFirewallObject()->remove(rs->ruleset, false);
-
         rs->ruleset->setName(target);
         rule->setBranch(rs->ruleset);
+        ropt->setBool("stateless", true);
     }
 
     rule->setAction(action);
@@ -958,13 +979,6 @@ void IPTImporter::pushPolicyRule()
     addDst();
     addSrv();
 
-/* Recognize some typical rule patterns and set firewall and rule
- * options appropriately
- */
-    if (current_state=="NEW")
-    {
-        ropt->setBool("stateless", false);
-    }
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
 
@@ -972,6 +986,15 @@ void IPTImporter::pushPolicyRule()
     rule->getDst()->setNeg(dst_neg);
     rule->getSrv()->setNeg(srv_neg);
     rule->getItf()->setNeg(intf_neg);
+
+/* Recognize some typical rule patterns and set firewall and rule
+ * options appropriately
+ */
+    if (current_state == "NEW")
+    {
+        ropt->setBool("stateless", false);
+        current_state = "";
+    }
 
     if (current_state == "RELATED,ESTABLISHED" ||
         current_state == "ESTABLISHED,RELATED")
@@ -991,10 +1014,7 @@ void IPTImporter::pushPolicyRule()
 
         if (!rule->getSrv()->isAny())
         {
-            ostringstream str;
-            str << current_chain << "_established_" << aux_branch_number;
-            aux_branch_number++;
-            string branch_ruleset_name = str.str();
+            string branch_ruleset_name = getBranchName("_established_");
 
             // two boolean args of createPolicyBranch() clear all rule elements
             // of the rule in the branch rule set and make it stateless
@@ -1010,14 +1030,17 @@ void IPTImporter::pushPolicyRule()
             srv->addRef(estab);
         }
 
-        QString err("Warning: Line %1: Rule matches states 'RELATED,ESTABLISHED'. "
-                    "Consider using "
-                    "automatic rule controlled by the checkbox in the firewall "
-                    "settings dialog. Automatic rule matches in all standard chains "
-                    "which may be different from the original imported configuration. "
-                    "This requires manual checking."
-                    "\n");
+        QString err(
+            "Warning: Line %1: Rule matches states 'RELATED,ESTABLISHED'. "
+            "Consider using "
+            "automatic rule controlled by the checkbox in the firewall "
+            "settings dialog. Automatic rule matches in all standard chains "
+            "which may be different from the original imported configuration. "
+            "This requires manual checking."
+            "\n");
         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+
+        current_state = "";
     }
 
     if (rule->getSrc()->isAny() &&
@@ -1034,7 +1057,59 @@ void IPTImporter::pushPolicyRule()
                     "state INVALID"
                     "\n");
         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+
+        current_state = "";
     }
+
+    // finally, process unrecognized combination of states
+    if ( ! current_state.empty())
+    {
+        RuleElementSrv *srv = rule->getSrv();
+
+        FWObject *state_match_srv = getCustomService(
+            "iptables", "-m state --state " + current_state, "");
+
+        if ( ! rule->getSrv()->isAny())
+        {
+            string branch_ruleset_name = getBranchName("_state_match_");
+
+            // two boolean args of createPolicyBranch() clear all rule elements
+            // of the rule in the branch rule set and make it stateless
+            PolicyRule *new_rule = createPolicyBranch(rule, branch_ruleset_name,
+                                                      true, true);
+
+            new_rule->setDirection(PolicyRule::Both);
+            RuleElement* re = new_rule->getSrv();
+            re->addRef(state_match_srv);
+        } else
+        {
+            srv->clearChildren();
+            srv->addRef(state_match_srv);
+        }
+
+        // no need to make rule stateless since compiler is smart enough to drop
+        // --state NEW when service object adds its own state match
+        // ropt->setBool("stateless", false);
+
+        QString err(
+            "Warning: Line %1: Rule matches combination of states '%2'. "
+            "Iptables rules generated by fwbuilder can be stateless (match "
+            "no state) or stateful (match state NEW). Fwbuilder also adds "
+            "a rule at the top of the script to match states "
+            "ESTABLISHED,RELATED. Combination of states '%3' does not fit "
+            "these standard cases and to match it, the program created "
+            "new Custom Service object.  This may require manual checking."
+            "\n");
+        *Importer::logger << err
+            .arg(getCurrentLineNumber())
+            .arg(current_state.c_str())
+            .arg(current_state.c_str())
+            .toStdString();
+
+        current_state = "";
+    }
+
+
 
     if (target=="CONNMARK" &&
         last_mark_rule != NULL &&

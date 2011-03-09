@@ -1,3 +1,9 @@
+2011-03-08  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushPolicyRule): see #2202 importer for
+	iptables creates Custom Service object to match combination of
+	states it does not recognize. This includes "NEW,ESTABLISHED".
+
 2011-03-07  vadim  <vadim@netcitadel.com>
 
 	* IPTImporter.cpp (pushNATRule): see #2197 "iptables nat rules in
