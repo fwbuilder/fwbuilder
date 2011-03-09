@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QRegExp>
 #include <QTextStream>
+#include <QDesktopServices>
 
 
 IC_PlatformWarningPage::IC_PlatformWarningPage(QWidget *parent) : QWizardPage(parent)
@@ -39,6 +40,8 @@ IC_PlatformWarningPage::IC_PlatformWarningPage(QWidget *parent) : QWizardPage(pa
     m_dialog->setupUi(this);
 
     setField("platform", "");
+
+    m_dialog->voteForFeatureButton->hide();
 
     platformOk = false;
 }
@@ -272,8 +275,12 @@ void IC_PlatformWarningPage::initializePage()
         {
             m_dialog->platform->setText(tr("pf"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Import of PF rules is not supported"));
+                tr("Firewall Builder does not support import of PF "
+                   "configurations at this time. Click the button below to "
+                   "register for updates about when PF import support will "
+                   "be available."));
             platformOk = false;
+            m_dialog->voteForFeatureButton->show();
         }
 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
@@ -282,5 +289,11 @@ void IC_PlatformWarningPage::initializePage()
     }
 
     emit completeChanged();
+}
+
+void IC_PlatformWarningPage::voteForFeature()
+{
+    QString url("http://www.fwbuilder.org/4.0/surveys/pf_import_registration.html");
+    QDesktopServices::openUrl(QUrl(url, QUrl::StrictMode));
 }
 
