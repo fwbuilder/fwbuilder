@@ -1,5 +1,10 @@
 2011-03-08  vadim  <vadim@netcitadel.com>
 
+	* CustomServiceDialog.cpp (loadFWObject): fixes #2201 "Some fields
+	of locked object are editable". Some input fields of the Custom
+	Service object dialog were editable even when object was locked
+	read-only.
+
 	* GroupObjectDialog.cpp (loadFWObject): fixes #2203 "Crash when
 	attempting to add an object to a locked group".
 

@@ -160,6 +160,17 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     m_dialog->code->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->code);
 
+    m_dialog->platform->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->platform);
+
+    m_dialog->protocol->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->protocol);
+
+    m_dialog->ipv4->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->ipv4);
+
+    m_dialog->ipv6->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->ipv6);
 
     init=false;
 }
