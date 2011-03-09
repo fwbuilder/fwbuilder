@@ -13,6 +13,10 @@
 -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
 
+# unusual combination of states, creates custom service object. Also, since the same rule
+# matches tcp service and custom service, branch will be created
+-A INPUT -s 192.168.2.0/24 -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT 
+
 # this creates a branch, matching service in the main policy and
 # ESTABLISHED,RELATE states in the branch
 #
