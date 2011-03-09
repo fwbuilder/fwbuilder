@@ -465,6 +465,8 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setEnabled(!o->isReadOnly() && !FWBTree().isSystem(o));
     setDisabledPalette(m_dialog->comment);
 
+    m_dialog->newButton->setEnabled(!o->isReadOnly());
+
 //    listView->setEnabled(!o->isReadOnly());
     setDisabledPalette(listView);
 

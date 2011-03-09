@@ -1,5 +1,8 @@
 2011-03-08  vadim  <vadim@netcitadel.com>
 
+	* GroupObjectDialog.cpp (loadFWObject): fixes #2203 "Crash when
+	attempting to add an object to a locked group".
+
 	* PolicyCompiler.cpp (checkForShadowing): see #2204 "Shadowing
 	detected for rule with action Continue". Policy rules with action
 	"Continue" should not shadow other rules and can not be shadowed.
