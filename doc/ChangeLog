@@ -1,5 +1,9 @@
 2011-03-08  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler.cpp (checkForShadowing): see #2204 "Shadowing
+	detected for rule with action Continue". Policy rules with action
+	"Continue" should not shadow other rules and can not be shadowed.
+
 	* Importer.cpp (addStandardRuleComment): see #2189 Program adds
 	the file name and the line number to comments of policy and nat
 	rules it creates during import.
