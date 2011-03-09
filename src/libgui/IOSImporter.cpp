@@ -302,11 +302,11 @@ void IOSImporter::ignoreCurrentInterface()
 {
     if (current_interface)
     {
-        Importer::ignoreCurrentInterface();
         QString err("Warning: interface %1 was not imported because it "
                     "is in \"shutdown\" mode\n");
         *Importer::logger <<
             err.arg(current_interface->getName().c_str()).toStdString();
+        Importer::ignoreCurrentInterface(); // this clears current_interface
     }
 }
 

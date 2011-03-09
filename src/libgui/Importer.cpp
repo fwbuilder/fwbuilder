@@ -277,6 +277,7 @@ void Importer::ignoreCurrentInterface()
         string name = current_interface->getName();
         current_interface->getParent()->remove(current_interface);
         all_interfaces.erase(name);
+        current_interface = NULL;
     }
 }
 
@@ -441,7 +442,17 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
 
     std::string intf;
     if ( !_intf_name.empty()) intf = _intf_name;
-    else                      intf = current_interface->getName();
+    else
+    {
+        if (current_interface) intf = current_interface->getName();
+        else
+        {
+            // current_interface is NULL and _intf_name is empty. Not enough
+            // information to associate ruleset with an interface.
+            QString err("Can not associate rule set %1 with any interface\n");
+            *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+        }
+    }
 
     if (rs->intf_dir.count(intf)==0)
         rs->intf_dir[intf] = _dir;
