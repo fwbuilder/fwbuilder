@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3483
+#  Firewall Builder  fwb_pf v4.2.0.3496
 #
-#  Generated Sun Feb 20 21:16:40 2011 PST by vadim
+#  Generated Thu Mar 10 21:08:35 2011 PST by vadim
 #
 # files: * firewall-base-rulesets.fw /etc/fw/firewall-base-rulesets.fw
 # files:   firewall-base-rulesets.conf /etc/fw/firewall-base-rulesets.conf
@@ -30,7 +30,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
+    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -127,8 +127,14 @@ update_addresses_of_interface() {
       test -z "$FWBDEBUG" && exit 1
     }
 
-    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
-    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+
+    echo "$interface" | grep -q carp && {
+        diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+        diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    } || {
+        diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+        diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+    }
 }
 
 verify_interfaces() {
@@ -163,7 +169,7 @@ configure_interfaces() {
     update_addresses_of_interface "en2 192.168.100.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Sun Feb 20 21:16:40 2011 by vadim"
+log "Activating firewall script generated Thu Mar 10 21:08:35 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
