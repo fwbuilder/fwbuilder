@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipfw v4.2.0.3483
+#  Firewall Builder  fwb_ipfw v4.2.0.3496
 #
-#  Generated Sun Feb 20 21:29:38 2011 PST by vadim
+#  Generated Fri Mar 11 09:18:25 2011 PST by vadim
 #
 # files: * mac.fw /etc/mac.fw
 #
@@ -28,7 +28,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" &>/dev/null && $LOGGER -p info "$1"
+    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 diff_intf() {
@@ -77,7 +77,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sun Feb 20 21:29:38 2011 by vadim"
+log "Activating firewall script generated Fri Mar 11 09:18:25 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
