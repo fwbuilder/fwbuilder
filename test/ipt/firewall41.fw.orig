@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3496
+#  Firewall Builder  fwb_ipt v4.2.0.3498
 #
-#  Generated Sun Mar  6 19:50:48 2011 PST by vadim
+#  Generated Tue Mar  8 18:57:32 2011 PST by vadim
 #
 # files: * firewall41.fw /etc/firewall41.fw
 #
@@ -14,12 +14,7 @@
 
 # firewall41:Policy:5: error: File not found for Address Table: missing table (this_table_does_not_exist.tbl) Using dummy address in test mode
 # firewall41:Policy:5: error: File not found for Address Table: missing table (this_table_does_not_exist.tbl) Using dummy address in test mode
-# firewall41:Policy:6: error: DNSName object "does not resolve" (compile time) can not resolve dns name "does_not_resolve.local" (AF_INET): Host or network 'does_not_resolve.local' not found; last error: Unknown error Using dummy address in test mode
-# firewall41:Policy:5: error: Rule '5 (global)' shadows rule '6 (global)'  below it
-# firewall41:Policy:6: error: DNSName object "does not resolve" (compile time) can not resolve dns name "does_not_resolve.local" (AF_INET): Host or network 'does_not_resolve.local' not found; last error: Unknown error Using dummy address in test mode
-# firewall41:Policy:5: error: Rule '5 (global)' shadows rule '6 (global)'  below it
 # firewall41:Policy:5: error: File not found for Address Table: missing table (this_table_does_not_exist.tbl) Using dummy address in test mode
-# firewall41:Policy:6: error: DNSName object "does not resolve" (compile time) can not resolve dns name "does_not_resolve.local" (AF_INET): Host or network 'does_not_resolve.local' not found; last error: Unknown error Using dummy address in test mode
 
 
 FWBDEBUG=""
@@ -387,7 +382,6 @@ script_body() {
     # 
     # there should be warning saying the table could not be found
     # firewall41:Policy:5: error: File not found for Address Table: missing table (this_table_does_not_exist.tbl) Using dummy address in test mode
-    # firewall41:Policy:5: error: Rule '5 (global)' shadows rule '6 (global)'  below it
 
     $IPTABLES -N RULE_5
     $IPTABLES -A OUTPUT  -d 192.0.2.0/24   -j RULE_5
@@ -398,10 +392,8 @@ script_body() {
     # 
     echo "Rule 6 (global)"
     # 
-    # firewall41:Policy:6: error: DNSName object "does not resolve" (compile time) can not resolve dns name "does_not_resolve.local" (AF_INET): Host or network 'does_not_resolve.local' not found; last error: Unknown error Using dummy address in test mode
-
     $IPTABLES -N RULE_6
-    $IPTABLES -A OUTPUT  -d 192.0.2.1   -j RULE_6
+    $IPTABLES -A OUTPUT  -d 208.68.143.50   -j RULE_6
     $IPTABLES -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- DENY "
     $IPTABLES -A RULE_6  -j DROP
 }
@@ -459,7 +451,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Mar  6 19:50:48 2011 by vadim"
+        log "Activating firewall script generated Tue Mar  8 18:57:32 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

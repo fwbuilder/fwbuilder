@@ -138,10 +138,13 @@ void IC_ProgressPage::initializePage()
     QStringList *buffer = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getBufferPtr();
+    QString fileName = field("fileName").toString();
 
     importer = new ImporterThread(this,
                                   mw->getCurrentLib(),
-                                  *buffer, platform, firewallName);
+                                  *buffer, platform, firewallName, fileName);
+
+
     connect(importer, SIGNAL(destroyed(QObject*)),
             this, SLOT(importerDestroyed(QObject*)));
     connect(importer, SIGNAL(finished()),

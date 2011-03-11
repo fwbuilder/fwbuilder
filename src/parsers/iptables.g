@@ -158,7 +158,10 @@ chain_def : (INPUT | FORWARD | OUTPUT | PREROUTING | POSTROUTING | WORD)
 
 create_chain : COLON chain_def
         {
-            importer->newUnidirRuleSet(LT(0)->getText());
+            if (importer->current_table=="nat")
+                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::NAT::TYPENAME);
+            else
+                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::Policy::TYPENAME);
             *dbg << "NEW CHAIN " << LT(0)->getText() << std::endl;
         }
         (WORD | MINUS)
@@ -579,12 +582,12 @@ nat_spec :
 //****************************************************************
 nat_addr_range : 
         (IPV4 MINUS) => (
-          IPV4 MINUS s:IPV4
+          a1:IPV4 MINUS a2:IPV4
           {
             importer->nat_port_range_start = "";
             importer->nat_port_range_end = "";
-            importer->nat_addr1 = LT(0)->getText();
-            importer->nat_addr2 = s->getText();
+            importer->nat_addr1 = a1->getText();
+            importer->nat_addr2 = a2->getText();
           }
         )
     |

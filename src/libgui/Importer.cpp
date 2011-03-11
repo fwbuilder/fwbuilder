@@ -277,6 +277,7 @@ void Importer::ignoreCurrentInterface()
         string name = current_interface->getName();
         current_interface->getParent()->remove(current_interface);
         all_interfaces.erase(name);
+        current_interface = NULL;
     }
 }
 
@@ -403,25 +404,19 @@ UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
     return all_rulesets[ruleset_name];
 }
 
-UnidirectionalRuleSet* Importer::getUnidirRuleSet(const std::string &ruleset_name)
+UnidirectionalRuleSet* Importer::getUnidirRuleSet(
+    const std::string &ruleset_name, const string &ruleset_type_name)
 {
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
     if (rs==NULL)
     {
         // got 'ip access-group' command before the access list was defined
-
         rs = new UnidirectionalRuleSet();
         rs->name = ruleset_name;
         FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
-        if (ruleset_name == "nat")
-            rs->ruleset = RuleSet::cast(dbroot->create(NAT::TYPENAME));
-        else
-            rs->ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
-
+        rs->ruleset = RuleSet::cast(dbroot->create(ruleset_type_name));
         rs->ruleset->setName(ruleset_name);
-
         all_rulesets[ruleset_name] = rs;
-
         // add this ruleset to the firewall temporarily
         // because ruleset must belong to the tree somewhere in
         // order for other objects to be added properly.
@@ -443,10 +438,21 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
                                                   const std::string &_intf_name,
                                                   const std::string &_dir)
 {
-    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name);
+    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name, Policy::TYPENAME);
+
     std::string intf;
     if ( !_intf_name.empty()) intf = _intf_name;
-    else                      intf = current_interface->getName();
+    else
+    {
+        if (current_interface) intf = current_interface->getName();
+        else
+        {
+            // current_interface is NULL and _intf_name is empty. Not enough
+            // information to associate ruleset with an interface.
+            QString err("Can not associate rule set %1 with any interface\n");
+            *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+        }
+    }
 
     if (rs->intf_dir.count(intf)==0)
         rs->intf_dir[intf] = _dir;
@@ -466,9 +472,10 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
     *logger << str.str();
 }
 
-void Importer::newUnidirRuleSet(const std::string &ruleset_name)
+void Importer::newUnidirRuleSet(const string &ruleset_name,
+                                const string &ruleset_type)
 {
-    current_ruleset = getUnidirRuleSet(ruleset_name);  // creates if new
+    current_ruleset = getUnidirRuleSet(ruleset_name, ruleset_type);  // creates if new
     *logger << "Ruleset: " + ruleset_name + "\n";
 }
 
@@ -528,7 +535,7 @@ void Importer::pushRule()
 
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
-    current_rule->setComment(rule_comment);
+    current_rule->setComment(addStandardRuleComment(rule_comment));
 
 //     *logger << "Rule: " << action << " "
 //             << protocol << " "
@@ -1233,6 +1240,18 @@ QString Importer::commonFailureErrorMessage()
 void Importer::addMessageToLog(const std::string &msg)
 {
     *logger << msg + "\n";
+}
+
+string Importer::addStandardRuleComment(const string &comment)
+{
+    string rule_comment = comment;
+    if (!rule_comment.empty()) rule_comment += "\n";
+    QString file_and_line("Created during import of %1 line %2");
+    rule_comment += string(
+        file_and_line
+        .arg(QString::fromUtf8(input_file_name.c_str()))
+        .arg(getCurrentLineNumber()).toUtf8().constData());
+    return rule_comment;
 }
 
 

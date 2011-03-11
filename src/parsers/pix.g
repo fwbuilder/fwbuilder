@@ -187,7 +187,8 @@ hostname : HOSTNAME ( STRING | WORD )
 //
 access_list_commands : ACCESS_LIST acl_num:INT_CONST
         {
-            importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText() );
+            importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
+                                        libfwbuilder::Policy::TYPENAME );
             *dbg << acl_num->getLine() << ":"
                 << " ACL #" << acl_num->getText() << " ";
         }
@@ -204,7 +205,7 @@ access_list_commands : ACCESS_LIST acl_num:INT_CONST
 
 ip_access_list_ext : ACCESS_LIST name:WORD
         {
-            importer->newUnidirRuleSet( name->getText() );
+            importer->newUnidirRuleSet( name->getText(), libfwbuilder::Policy::TYPENAME );
             *dbg << name->getLine() << ":"
                 << " ACL ext " << name->getText() << std::endl;
         }

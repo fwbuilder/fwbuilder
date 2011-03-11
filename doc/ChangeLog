@@ -1,3 +1,47 @@
+2011-03-08  vadim  <vadim@netcitadel.com>
+
+	* CustomServiceDialog.cpp (loadFWObject): fixes #2201 "Some fields
+	of locked object are editable". Some input fields of the Custom
+	Service object dialog were editable even when object was locked
+	read-only.
+
+	* GroupObjectDialog.cpp (loadFWObject): fixes #2203 "Crash when
+	attempting to add an object to a locked group".
+
+	* PolicyCompiler.cpp (checkForShadowing): see #2204 "Shadowing
+	detected for rule with action Continue". Policy rules with action
+	"Continue" should not shadow other rules and can not be shadowed.
+
+	* Importer.cpp (addStandardRuleComment): see #2189 Program adds
+	the file name and the line number to comments of policy and nat
+	rules it creates during import.
+
+	* IPTImporter.cpp (pushPolicyRule): see #2202 importer for
+	iptables creates Custom Service object to match combination of
+	states it does not recognize. This includes "NEW,ESTABLISHED".
+
+2011-03-07  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushNATRule): see #2197 "iptables nat rules in
+	chain OUTPUT not imported correctly"
+
+	* iptables.g (nat_addr_range): see #2194 "iptables import problem
+	with SNAT rule translating to an address range". NAT rules
+	translating into address range with "-j SNAT --to-source
+	192.168.1.1-192.168.1.10" did not import correctly
+
+	* IPTImporter.cpp (pushNATRule): fixes #2195 "incorrect iptables
+	import of nat rule with NETMAP target"
+
+	* IPTImporter.cpp (pushNATRule): see #2196 "iptables nat rules
+	with target REDIRECT not imported". Iptables NAT rules with target
+	REDIRECT where not imported correctly.
+
+	* IPTImporter.cpp (pushNATRule): see #2190 "support for import of
+	branches in NAT rules for iptables". Implemented import of NAT
+	rules in user-defined chains for iptables, these translate into
+	branching NAT rules in fwbuilder.
+
 2011-03-06  vadim  <vadim@netcitadel.com>
 
 	* Importer.cpp (ignoreCurrentInterface): see #2152 "ASA Import -

@@ -45,13 +45,15 @@ ImporterThread::ImporterThread(QWidget *ui,
                                FWObject *lib,
                                const QStringList &buffer,
                                const QString &platform,
-                               const QString &firewallName)
+                               const QString &firewallName,
+                               const QString &fileName)
 {
     this->lib = lib;
     this->ui = ui;
     this->buffer = buffer;
     this->platform = platform;
     this->firewallName = firewallName;
+    this->fileName = fileName;
     importer = NULL;
     stopFlag = false;
 }
@@ -83,6 +85,9 @@ void ImporterThread::run()
 
     if (importer)
     {
+
+        importer->setFileName(fileName.toUtf8().constData());
+
         try
         {
             importer->run();

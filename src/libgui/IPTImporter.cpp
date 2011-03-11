@@ -190,6 +190,14 @@ void IPTImporter::clear()
     iprange_dst_to = "";
 }
 
+string IPTImporter::getBranchName(const std::string &suffix)
+{
+    ostringstream str;
+    str << current_chain << suffix << aux_branch_number;
+    aux_branch_number++;
+    return str.str();
+}
+
 void IPTImporter::startSrcMultiPort()
 {
     src_port_list.clear();
@@ -551,8 +559,8 @@ void IPTImporter::processModuleMatches()
             string branch_chain = str.str();
             branch_depth++;
 
-            PolicyRule *new_rule = createBranch(rule, branch_chain,
-                                                true, true);
+            PolicyRule *new_rule = createPolicyBranch(rule, branch_chain,
+                                                      true, true);
 
             addAllModuleMatches(new_rule);
         }
@@ -634,6 +642,18 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
     }
 }
 
+void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &state)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
+    if (rule->getSrv()->isAny() && !state.empty())
+    {
+        // create custom service with module "state"
+        srv->addRef(getCustomService(
+                        "iptables", "-m state --state " + state, ""));
+        recent_match = "";
+    }
+}
 
 /**
  * Special method that takes a rule and converts it into a branching
@@ -644,14 +664,13 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
  * and other attributes. The original rule's action changes however
  * and becomes "Branch".
  */
-PolicyRule* IPTImporter::createBranch(PolicyRule *rule,
-                                      const std::string &branch_ruleset_name,
-                                      bool clear_rule_elements,
-                                      bool make_stateless)
+PolicyRule* IPTImporter::createPolicyBranch(
+    PolicyRule *rule, const std::string &branch_ruleset_name,
+    bool clear_rule_elements, bool make_stateless)
 {
     UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
     if (rs==NULL)
-        rs = getUnidirRuleSet(branch_ruleset_name);
+        rs = getUnidirRuleSet(branch_ruleset_name, Policy::TYPENAME);
     branch_rulesets[branch_ruleset_name] = rs;
     rs->ruleset->setName(branch_ruleset_name);
 
@@ -663,6 +682,10 @@ PolicyRule* IPTImporter::createBranch(PolicyRule *rule,
 
     rule->setAction(PolicyRule::Branch);
     rule->setBranch(rs->ruleset);
+
+    FWOptions  *ropt = rule->getOptionsObject();
+    assert(ropt!=NULL);
+    ropt->setBool("stateless", true);
 
     if (rule->getParent() != NULL)
     {
@@ -686,6 +709,54 @@ PolicyRule* IPTImporter::createBranch(PolicyRule *rule,
         FWOptions  *ropt = new_rule->getOptionsObject();
         assert(ropt!=NULL);
         ropt->setBool("stateless", true);
+    }
+
+    QString l("Created branch %1\n");
+    *Importer::logger << l.arg(branch_ruleset_name.c_str()).toUtf8().constData();
+
+    return new_rule;
+}
+
+NATRule* IPTImporter::createNATBranch(
+    NATRule *rule, const std::string &branch_ruleset_name,
+    bool clear_rule_elements)
+{
+    UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
+    if (rs==NULL)
+        rs = getUnidirRuleSet(branch_ruleset_name, NAT::TYPENAME);
+    branch_rulesets[branch_ruleset_name] = rs;
+    rs->ruleset->setName(branch_ruleset_name);
+
+    FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+    NATRule *new_rule = NATRule::cast(dbroot->create(NATRule::TYPENAME));
+    rs->ruleset->add(new_rule);
+
+    new_rule->duplicate(rule);
+
+    rule->setRuleType(NATRule::NATBranch);
+    rule->setBranch(rs->ruleset);
+
+    if (rule->getParent() != NULL)
+    {
+        ostringstream str1;
+        str1 << "Called from ruleset " << rule->getParent()->getName()
+             << ", rule " << rule->getPosition();
+        new_rule->setComment(str1.str());
+    }
+
+    if (clear_rule_elements)
+    {
+        RuleElement* re;
+        re = new_rule->getOSrc();   re->reset();
+        re = new_rule->getODst();   re->reset();
+        re = new_rule->getOSrv();   re->reset();
+
+        re = new_rule->getTSrc();   re->reset();
+        re = new_rule->getTDst();   re->reset();
+        re = new_rule->getTSrv();   re->reset();
+
+        re = new_rule->getItfInb();   re->reset();
+        re = new_rule->getItfOutb();  re->reset();
     }
 
     QString l("Created branch %1\n");
@@ -893,16 +964,13 @@ void IPTImporter::pushPolicyRule()
         action = PolicyRule::Branch;
         UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
         if (rs==NULL)
-            rs = getUnidirRuleSet(branch_ruleset_name);
+            rs = getUnidirRuleSet(branch_ruleset_name, Policy::TYPENAME);
 
         branch_rulesets[branch_ruleset_name] = rs;
 
-        //current_rule->add(rs->ruleset);
-        //ropt->setStr("branch_name", branch_ruleset_name);
-        //getFirewallObject()->remove(rs->ruleset, false);
-
         rs->ruleset->setName(target);
         rule->setBranch(rs->ruleset);
+        ropt->setBool("stateless", true);
     }
 
     rule->setAction(action);
@@ -911,13 +979,6 @@ void IPTImporter::pushPolicyRule()
     addDst();
     addSrv();
 
-/* Recognize some typical rule patterns and set firewall and rule
- * options appropriately
- */
-    if (current_state=="NEW")
-    {
-        ropt->setBool("stateless", false);
-    }
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
 
@@ -925,6 +986,15 @@ void IPTImporter::pushPolicyRule()
     rule->getDst()->setNeg(dst_neg);
     rule->getSrv()->setNeg(srv_neg);
     rule->getItf()->setNeg(intf_neg);
+
+/* Recognize some typical rule patterns and set firewall and rule
+ * options appropriately
+ */
+    if (current_state == "NEW")
+    {
+        ropt->setBool("stateless", false);
+        current_state = "";
+    }
 
     if (current_state == "RELATED,ESTABLISHED" ||
         current_state == "ESTABLISHED,RELATED")
@@ -944,15 +1014,12 @@ void IPTImporter::pushPolicyRule()
 
         if (!rule->getSrv()->isAny())
         {
-            ostringstream str;
-            str << current_chain << "_established_" << aux_branch_number;
-            aux_branch_number++;
-            string branch_ruleset_name = str.str();
+            string branch_ruleset_name = getBranchName("_established_");
 
-            // two boolean args of createBranch() clear all rule elements
+            // two boolean args of createPolicyBranch() clear all rule elements
             // of the rule in the branch rule set and make it stateless
-            PolicyRule *new_rule = createBranch(rule, branch_ruleset_name,
-                                                true, true);
+            PolicyRule *new_rule = createPolicyBranch(rule, branch_ruleset_name,
+                                                      true, true);
 
             new_rule->setDirection(PolicyRule::Both);
             RuleElement* re = new_rule->getSrv();
@@ -963,14 +1030,17 @@ void IPTImporter::pushPolicyRule()
             srv->addRef(estab);
         }
 
-        QString err("Warning: Line %1: Rule matches states 'RELATED,ESTABLISHED'. "
-                    "Consider using "
-                    "automatic rule controlled by the checkbox in the firewall "
-                    "settings dialog. Automatic rule matches in all standard chains "
-                    "which may be different from the original imported configuration. "
-                    "This requires manual checking."
-                    "\n");
+        QString err(
+            "Warning: Line %1: Rule matches states 'RELATED,ESTABLISHED'. "
+            "Consider using "
+            "automatic rule controlled by the checkbox in the firewall "
+            "settings dialog. Automatic rule matches in all standard chains "
+            "which may be different from the original imported configuration. "
+            "This requires manual checking."
+            "\n");
         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+
+        current_state = "";
     }
 
     if (rule->getSrc()->isAny() &&
@@ -987,7 +1057,59 @@ void IPTImporter::pushPolicyRule()
                     "state INVALID"
                     "\n");
         *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+
+        current_state = "";
     }
+
+    // finally, process unrecognized combination of states
+    if ( ! current_state.empty())
+    {
+        RuleElementSrv *srv = rule->getSrv();
+
+        FWObject *state_match_srv = getCustomService(
+            "iptables", "-m state --state " + current_state, "");
+
+        if ( ! rule->getSrv()->isAny())
+        {
+            string branch_ruleset_name = getBranchName("_state_match_");
+
+            // two boolean args of createPolicyBranch() clear all rule elements
+            // of the rule in the branch rule set and make it stateless
+            PolicyRule *new_rule = createPolicyBranch(rule, branch_ruleset_name,
+                                                      true, true);
+
+            new_rule->setDirection(PolicyRule::Both);
+            RuleElement* re = new_rule->getSrv();
+            re->addRef(state_match_srv);
+        } else
+        {
+            srv->clearChildren();
+            srv->addRef(state_match_srv);
+        }
+
+        // no need to make rule stateless since compiler is smart enough to drop
+        // --state NEW when service object adds its own state match
+        // ropt->setBool("stateless", false);
+
+        QString err(
+            "Warning: Line %1: Rule matches combination of states '%2'. "
+            "Iptables rules generated by fwbuilder can be stateless (match "
+            "no state) or stateful (match state NEW). Fwbuilder also adds "
+            "a rule at the top of the script to match states "
+            "ESTABLISHED,RELATED. Combination of states '%3' does not fit "
+            "these standard cases and to match it, the program created "
+            "new Custom Service object.  This may require manual checking."
+            "\n");
+        *Importer::logger << err
+            .arg(getCurrentLineNumber())
+            .arg(current_state.c_str())
+            .arg(current_state.c_str())
+            .toStdString();
+
+        current_state = "";
+    }
+
+
 
     if (target=="CONNMARK" &&
         last_mark_rule != NULL &&
@@ -1049,7 +1171,7 @@ void IPTImporter::pushPolicyRule()
             ruleset->add(current_rule);
         } else
         {
-            UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain);
+            UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain, Policy::TYPENAME);
             assert(rs!=NULL);
             rs->ruleset->add(current_rule);
             ruleset = rs->ruleset;
@@ -1076,9 +1198,9 @@ void IPTImporter::pushPolicyRule()
             // note that this new rule only matches interface and
             // direction, everything else has been matched by the main
             // rule. There is no need for the rule in the branch to be stateful
-            // (that is what the last bool argument for createBranch() is for)
-            PolicyRule *new_rule = createBranch(rule, branch_ruleset_name,
-                                                true, true);
+            // (that is what the last bool argument for createPolicyBranch() is for)
+            PolicyRule *new_rule = createPolicyBranch(rule, branch_ruleset_name,
+                                                      true, true);
 
             // Important: at this point we have assembled the
             // current_rule completely. This means all rule elements,
@@ -1113,9 +1235,6 @@ void IPTImporter::pushPolicyRule()
                 .arg(getCurrentLineNumber())
                 .arg(branch_ruleset_name.c_str()).arg(interfaces)
                 .toUtf8().constData();
-
-            // markCurrentRuleBad(
-            //     std::string("Can not set inbound and outbound interface simultaneously. Was: -i ") + i_intf + " -o " + o_intf);
         } else
         {
             if ( !i_intf.empty())
@@ -1139,16 +1258,8 @@ void IPTImporter::pushPolicyRule()
 
         processModuleMatches();
 
-        current_rule->setComment(rule_comment);
-
+        current_rule->setComment(addStandardRuleComment(rule_comment));
     }
-
-//     *Importer::logger << "Rule: " << rule->getActionAsString() << " "
-//                       << "protocol=" << protocol << " "
-//                       << "src=" << src_a << "/" << src_nm << " ";
-//      if (dst_a!="")
-//          *Importer::logger << "dst=" <<  dst_a << "/" << dst_nm << " ";
-//      *Importer::logger << "\n";
 
     current_rule = NULL;
     rule_comment = "";
@@ -1176,13 +1287,17 @@ void IPTImporter::pushNATRule()
     if (dst_nm.empty()) dst_nm = InetAddr::getAllOnes().toString();
     if (nat_nm.empty()) nat_nm = InetAddr::getAllOnes().toString();
 
+    NATRule::NATRuleTypes rule_type = NATRule::Unknown;
+
     if (target=="ACCEPT")
     {
-        rule->setRuleType(NATRule::NONAT);
+        rule_type = NATRule::NONAT;
     }
+
     if (target=="MASQUERADE")
     {
-        rule->setRuleType(NATRule::Masq);
+        rule_type = NATRule::Masq;
+
         RuleElementTSrc *re = rule->getTSrc();
         assert(re!=NULL);
         if ( !o_intf.empty() )
@@ -1195,9 +1310,11 @@ void IPTImporter::pushNATRule()
             re->addRef(getFirewallObject());
         }
     }
+
     if (target=="SNAT")
     {
-        rule->setRuleType(NATRule::SNAT);
+        rule_type = NATRule::SNAT;
+
         FWObject *tsrc = NULL;
         if (nat_addr1!=nat_addr2)
             tsrc = createAddressRange(nat_addr1, nat_addr2);
@@ -1232,7 +1349,16 @@ void IPTImporter::pushNATRule()
 
     if (target=="DNAT")
     {
-        rule->setRuleType(NATRule::DNAT);
+        rule_type = NATRule::DNAT;
+
+        // if chain is "OUTPUT", put fw object in OSrc
+        if (current_chain == "OUTPUT")
+        {
+            RuleElementOSrc *re = rule->getOSrc();
+            assert(re!=NULL);
+            re->addRef(getFirewallObject());
+        }
+
         FWObject *tdst = NULL;
         if (nat_addr1!=nat_addr2)
             tdst = createAddressRange(nat_addr1, nat_addr2);
@@ -1263,26 +1389,54 @@ void IPTImporter::pushNATRule()
             itf_i_re->addRef(intf);
         }
     }
+
+    if (target=="REDIRECT")
+    {
+        rule_type = NATRule::Redirect;
+
+        RuleElementTDst *re = rule->getTDst();
+        assert(re!=NULL);
+        re->addRef(getFirewallObject());
+
+        if (!nat_port_range_start.empty())
+        {
+            str_tuple empty_range("0", "0");
+            str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
+            FWObject *s = createTCPUDPService(empty_range, nat_port_range,
+                                              protocol);
+            RuleElementTSrv *re = rule->getTSrv();
+            assert(re!=NULL);
+            re->addRef(s);
+        }
+
+        if ( ! o_intf.empty())
+        {
+            RuleElement *itf_o_re = rule->getItfOutb();
+            assert(itf_o_re!=NULL);
+            newInterface(o_intf);
+            Interface *intf = all_interfaces[o_intf];
+            itf_o_re->addRef(intf);
+        }
+    }
+
     if (target=="NETMAP")
     {
         FWObject *o = NULL;
+
         if (!src_a.empty())
         {
-            rule->setRuleType(NATRule::SNetnat);
-            o = createAddress(src_a, src_nm);
-            RuleElementOSrc *osrc = rule->getOSrc();
-            osrc->addRef(o);
+            rule_type = NATRule::SNetnat;
+
             RuleElementTSrc *tsrc = rule->getTSrc();
             assert(tsrc!=NULL);
             o = createAddress(nat_addr1, nat_nm);
             tsrc->addRef(o);
         }
+
         if (!dst_a.empty())
         {
-            rule->setRuleType(NATRule::DNetnat);
-            o = createAddress(dst_a, dst_nm);
-            RuleElementOSrc *odst = rule->getOSrc();
-            odst->addRef(o);
+            rule_type = NATRule::DNetnat;
+
             RuleElementTDst *tdst = rule->getTDst();
             assert(tdst!=NULL);
             o = createAddress(nat_addr1, nat_nm);
@@ -1290,12 +1444,58 @@ void IPTImporter::pushNATRule()
         }
     }
 
-    current_rule->setComment(rule_comment);
+    if (rule_type==NATRule::Unknown)
+    {
+        if (fwbdebug)
+            qDebug("Unknown target %s, creating branch", target.c_str());
 
-    RuleSet *nat = RuleSet::cast(
-        getFirewallObject()->getFirstByType(NAT::TYPENAME));
-    assert( nat!=NULL );
-    nat->add(current_rule);
+        // unknown target, consider it a branch
+        //
+        std::string branch_ruleset_name = target;
+
+        rule_type = NATRule::NATBranch;
+        rule->setAction(NATRule::Branch);
+
+        UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
+        if (rs==NULL)
+        {
+            rs = getUnidirRuleSet(branch_ruleset_name, NAT::TYPENAME);
+            branch_rulesets[branch_ruleset_name] = rs;
+        }
+
+        rs->ruleset->setName(target);
+
+        rule->setBranch(rs->ruleset);
+    }
+
+    rule->setRuleType(rule_type);
+
+    //  add rule to the right ruleset
+    RuleSet *ruleset = NULL;
+    std::string ruleset_name = "";
+    if (isStandardChain(current_chain))
+    {
+        ruleset = RuleSet::cast(
+            getFirewallObject()->getFirstByType(NAT::TYPENAME));
+        assert(ruleset!=NULL);
+        ruleset->add(current_rule);
+    } else
+    {
+        UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain, NAT::TYPENAME);
+        assert(rs!=NULL);
+        rs->ruleset->add(current_rule);
+        ruleset = rs->ruleset;
+    }
+
+    // renumber to clean-up rule positions
+    ruleset->renumberRules();
+
+    current_rule->setComment(addStandardRuleComment(rule_comment));
+
+    // RuleSet *nat = RuleSet::cast(
+    //     getFirewallObject()->getFirstByType(NAT::TYPENAME));
+    // assert( nat!=NULL );
+    // nat->add(current_rule);
 
     current_rule = NULL;
     rule_comment = "";
@@ -1449,7 +1649,7 @@ UnidirectionalRuleSet* IPTImporter::checkUnidirRuleSet(
 }
 
 UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
-    const std::string &ruleset_name)
+    const std::string &ruleset_name, const string &ruleset_type_name)
 {
     string all_rulesets_index = current_table + "/" + ruleset_name;
     UnidirectionalRuleSet *rs = all_rulesets[all_rulesets_index];
@@ -1460,7 +1660,7 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
 
         if (isStandardChain(ruleset_name))
         {
-            if (current_table == "nat")
+            if (ruleset_type_name == NAT::TYPENAME)
                 ruleset = RuleSet::cast(
                     getFirewallObject()->getFirstByType(NAT::TYPENAME));
             else
@@ -1521,12 +1721,7 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
 
         } else
         {
-
-            if (current_table == "nat")
-                ruleset = RuleSet::cast(dbroot->create(NAT::TYPENAME));
-            else
-                ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
-
+            ruleset = RuleSet::cast(dbroot->create(ruleset_type_name));
             ruleset->setName(ruleset_name);
             getFirewallObject()->add(ruleset);
         }
@@ -1540,9 +1735,10 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
     return rs;
 }
 
-void IPTImporter::newUnidirRuleSet(const std::string &chain_name)
+void IPTImporter::newUnidirRuleSet(const string &chain_name,
+                                   const string &ruleset_type)
 {
-    current_ruleset = getUnidirRuleSet(chain_name);  // creates if new
+    current_ruleset = getUnidirRuleSet(chain_name, ruleset_type);  // creates if new
     QString l("Ruleset: %1 / %2\n");
     *Importer::logger << l.arg(current_table.c_str()).arg(current_ruleset->name.c_str())
         .toStdString();

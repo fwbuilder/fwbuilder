@@ -46,6 +46,7 @@ class ImporterThread : public QThread
 
     libfwbuilder::FWObject *lib;
     Importer *importer;
+    QString fileName;
     QStringList buffer;
     QString firewallName;
     QString platform;
@@ -58,7 +59,8 @@ public:
                    libfwbuilder::FWObject *lib,
                    const QStringList &buffer,
                    const QString &platform,
-                   const QString &firewallName);
+                   const QString &firewallName,
+                   const QString &fileName);
     virtual ~ImporterThread();
 
     void run();
