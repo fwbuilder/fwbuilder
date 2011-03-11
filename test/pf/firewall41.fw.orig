@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3496
+#  Firewall Builder  fwb_pf v4.2.0.3499
 #
-#  Generated Thu Mar 10 21:09:02 2011 PST by vadim
+#  Generated Fri Mar 11 10:32:53 2011 PST by vadim
 #
 # files: * firewall41.fw /etc/firewall41.fw
 # files:   firewall41.conf /etc/firewall41.conf
@@ -169,7 +169,7 @@ configure_interfaces() {
     update_addresses_of_interface "eth1 2.2.2.2/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Mar 10 21:09:02 2011 by vadim"
+log "Activating firewall script generated Fri Mar 11 10:32:53 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

@@ -9,12 +9,12 @@ match out all scrub (random-id min-ttl  1 max-mss  1460)
 
 
 # Tables: (1)
-table <tbl.r9998.d> { bridge0 , 10.1.1.81 , 10.3.14.81 } 
+table <tbl.r0.d> { bridge0 , 10.1.1.81 , 10.3.14.81 } 
 
 # 
 # Rule  backup ssh access rule
 #    backup ssh access rule 
-pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r9998.d> port 22  label "RULE 9998 -- ACCEPT "  
+pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r0.d> port 22  label "RULE -1 -- ACCEPT "  
 # 
 # Rule  0 (global)
 block  log  quick inet  from any  to any no state  label "RULE 0 -- DROP "  

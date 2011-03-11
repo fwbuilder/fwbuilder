@@ -768,15 +768,13 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) 
     {
-	FWObject *o1= *i;
-	if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
-	Service *s=Service::cast( o1 );
+	FWObject *o1 = FWReference::getObject(*i);
+	Service *s = Service::cast( o1 );
 	assert(s);
 
         for (FWObject::iterator j=dst->begin(); j!=dst->end(); j++) 
         {
-            FWObject *o2= *j;
-            if (FWReference::cast(o2)!=NULL) o2=FWReference::cast(o2)->getPointer();
+            FWObject *o2 = FWReference::getObject(*j);
             Address *a = Address::cast( o2 );
             assert(a);
 
@@ -784,8 +782,10 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
             for (k=pf_comp->redirect_rules_info->begin();
                  k!=pf_comp->redirect_rules_info->end(); ++k)
             {
-                FWObject *old_tdst_obj = compiler->dbcopy->findInIndex(k->old_tdst);
-                FWObject *tsrv_obj = compiler->dbcopy->findInIndex(k->tsrv);
+                Address *old_tdst_obj = Address::cast(
+                    compiler->dbcopy->findInIndex(k->old_tdst));
+                Service *tsrv_obj = Service::cast(
+                    compiler->dbcopy->findInIndex(k->tsrv));
 
                 if ( *a == *(old_tdst_obj) &&  *s == *(tsrv_obj) )
                 {
