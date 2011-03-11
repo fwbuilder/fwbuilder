@@ -294,7 +294,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             copies_of_cluster_interfaces.pop_front();
         }
 
-        NamedObjectsManagerPIX named_objects_manager(fw);
+        NamedObjectsManagerPIX named_objects_manager(persistent_objects, fw);
 
         all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
@@ -408,7 +408,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                       named_objects_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
                                       named_objects_manager.haveObjectGroups());
-                named_objects_manager.saveObjectGroups();
+                //named_objects_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in NAT");
         }
@@ -441,7 +441,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                       named_objects_manager.haveNamedObjects());
                 have_object_groups = (have_object_groups ||
                                       named_objects_manager.haveObjectGroups());
-                named_objects_manager.saveObjectGroups();
+                //named_objects_manager.saveObjectGroups();
             } else
                 info(" Nothing to compile in Policy");
         }

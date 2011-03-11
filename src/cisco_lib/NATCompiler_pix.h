@@ -112,8 +112,7 @@ namespace fwcompiler
 //  first: interface->getId(), second: rule->getId()
         std::map<int,int> first_nonat_rule_id;
 
-        libfwbuilder::RuleSet *final_ruleset;
-
+        int final_ruleset_id;
 
         std::string debugPrintRule(libfwbuilder::Rule *r);
 

@@ -174,7 +174,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         if (!single_rule_compile_on)
             system_configuration_script = safetyNetInstall(fw);
 
-        NamedObjectsManagerIOS named_objects_manager(fw);
+        NamedObjectsManagerIOS named_objects_manager(persistent_objects, fw);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -267,7 +267,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                     }
                     policy_script +=  c.getCompiledScript();
                     clear_commands += c.printClearCommands();
-                    named_objects_manager.saveObjectGroups();
+                    //named_objects_manager.saveObjectGroups();
 
                 } else
                     info(" Nothing to compile in Policy");

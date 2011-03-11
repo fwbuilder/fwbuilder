@@ -29,22 +29,23 @@
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManager.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/NAT.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/InetAddr.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/Cluster.h"
-#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
 
 #include <algorithm>
 #include <functional>
@@ -92,8 +93,6 @@ NATCompiler_pix::~NATCompiler_pix()
     static_commands.clear();
     nonat_rules.clear();
     first_nonat_rule_id.clear();
-    if (final_ruleset != NULL) delete final_ruleset;
-
 }
 
 bool StaticCmd::operator==(const StaticCmd &other)
@@ -230,8 +229,10 @@ int NATCompiler_pix::prolog()
 {
     global_pool_no = 1;
 
-    final_ruleset = new NAT();
-    fw->add( final_ruleset );
+    NAT *final_ruleset = new NAT();
+    final_ruleset->setName("Final NAT Rule Set");
+    persistent_objects->add( final_ruleset );
+    final_ruleset_id = final_ruleset->getId();
 
     return NATCompiler::prolog();
 }
@@ -308,13 +309,30 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
         os.str();
 }
 
+/*
+ * store final nat rules in final rule set object in
+ * persistent_obejcts. Note that we can't add the same rules since an
+ * object can not be placed in two different places in the tree, so we
+ * have to add copies.
+ */
 bool NATCompiler_pix::storeProcessedRules::processNext()
 {
-    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-    tmp_queue.push_back(rule);
+    NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
 
-    pix_comp->final_ruleset->add(rule);
+    FWObject *final_ruleset = compiler->persistent_objects->getRoot()->findInIndex(
+        pix_comp->final_ruleset_id);
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    for (deque<Rule*>::iterator k=tmp_queue.begin(); k!=tmp_queue.end(); ++k) 
+    {
+        NATRule *rule = NATRule::cast( *k );
+
+        NATRule *r = compiler->dbcopy->createNATRule();
+        final_ruleset->add(r);
+        r->duplicate(rule);
+    }
 
     return true;
 }
@@ -1389,6 +1407,5 @@ class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
 void NATCompiler_pix::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
-    mgr->setWorkingObjectTree(dbcopy);
 }
 

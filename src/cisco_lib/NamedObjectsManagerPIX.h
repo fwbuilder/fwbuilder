@@ -28,8 +28,12 @@
 
 #include "NamedObjectsManager.h"
 
-#include "fwbuilder/Firewall.h"
-
+namespace libfwbuilder
+{
+    class Group;
+    class Firewall;
+    class Library;
+};
 
 namespace fwcompiler
 {
@@ -38,7 +42,8 @@ namespace fwcompiler
     {
 
 public:
-        NamedObjectsManagerPIX(const libfwbuilder::Firewall *_fw);
+        NamedObjectsManagerPIX(libfwbuilder::Library *persistent_objects,
+                               const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectsManagerPIX();
 
         virtual std::string getClearCommands();

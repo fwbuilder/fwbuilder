@@ -114,5 +114,4 @@ string RoutingCompiler_cisco::debugPrintRule(Rule *r)
 void RoutingCompiler_cisco::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
-    mgr->setWorkingObjectTree(dbcopy);
 }

@@ -540,40 +540,34 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
         std::list<FWObject*> cl;
         for (list<FWObject*>::iterator i1=srv->begin(); i1!=srv->end(); ++i1) 
         {
-            FWObject *o   = *i1;
-            FWObject *obj = NULL;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-            Service *s=Service::cast(obj);
+            FWObject *obj = FWReference::getObject(*i1);
+            Service *s = Service::cast(obj);
             assert(s!=NULL);
 
             if (TCPService::isA(s) && 
                 TCPUDPService::cast(s)->getDstRangeStart()==port && 
-                TCPUDPService::cast(s)->getDstRangeEnd()==port) cl.push_back(o);
+                TCPUDPService::cast(s)->getDstRangeEnd()==port) cl.push_back(obj);
         }
         if (!cl.empty()) 
         {
-
-            PolicyRule  *r= compiler->dbcopy->createPolicyRule();
+            PolicyRule  *r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            RuleElementDst *ndst=r->getDst();
+            RuleElementDst *ndst = r->getDst();
             ndst->clearChildren();
-            ndst->setAnyElement();
-
-            // Was commented out in r50
             ndst->addRef( compiler->fw );
 
-            RuleElementSrv *nsrv=r->getSrv();
+            RuleElementSrv *nsrv = r->getSrv();
             nsrv->clearChildren();
-            nsrv->add( cl.front() );
+            nsrv->addRef( cl.front() );
             r->setBool("ssh_telnet_cmd",true);
             tmp_queue.push_back(r);
 
             for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
-                srv->remove( (*i1) );
+                srv->removeRef(*i1);
 
-            if (srv->size()>0)
-                tmp_queue.push_back(rule);
+            if ( ! srv->isAny()) tmp_queue.push_back(rule);
+
         } else
             tmp_queue.push_back(rule);
     } else
@@ -834,7 +828,5 @@ string PolicyCompiler_cisco::printClearCommands()
 void PolicyCompiler_cisco::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;
-    // initialize object groups support
-    mgr->setWorkingObjectTree(dbcopy);
 }
 

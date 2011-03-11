@@ -210,7 +210,8 @@ bool PolicyCompiler_iosacl::mirrorRule::processNext()
             {
                 Service *nobj = mirror.getMirroredService(
                     Service::cast(FWReference::getObject(*i1)));
-                compiler->persistent_objects->add(nobj, false);
+                if (nobj->getParent() == NULL)
+                    compiler->persistent_objects->add(nobj, false);
                 nsrv->addRef(nobj);
             }
         }

@@ -40,6 +40,14 @@ bool SpecialServices::processNext()
     PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+
+    if (re->size() == 0)
+    {
+        cerr << "Rule " << rule->getLabel()
+             << "rule element " << re_type <<  " is empty" << endl;
+        assert(re->size() != 0);
+    }
+
     FWObject *obj = FWReference::getObject(re->front());
     Service *s = Service::cast(obj);
 

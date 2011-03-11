@@ -27,6 +27,9 @@
 #include "NamedObject.h"
 #include "BaseObjectGroup.h"
 
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Library.h"
+
 #include <sstream>
 #include <assert.h>
 
@@ -36,8 +39,8 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectsManagerIOS::NamedObjectsManagerIOS(const Firewall *fw) :
-    NamedObjectsManager(fw)
+NamedObjectsManagerIOS::NamedObjectsManagerIOS(Library *po, const Firewall *fw) :
+    NamedObjectsManager(po, fw)
 {
 }
 
@@ -49,8 +52,7 @@ string NamedObjectsManagerIOS::getClearCommands()
 {
     ostringstream output;
 
-    FWObject *object_groups = object_groups_tree->findInIndex(
-        FWObjectDatabase::getIntId(object_groups_group_id));
+    FWObject *object_groups = getObjectGroupsGroup();
 
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {

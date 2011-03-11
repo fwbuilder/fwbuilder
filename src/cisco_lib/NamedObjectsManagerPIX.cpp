@@ -26,6 +26,8 @@
 #include "NamedObjectsManagerPIX.h"
 #include "PIXObjectGroup.h"
 
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Resources.h"
 
 #include <sstream>
@@ -37,8 +39,8 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectsManagerPIX::NamedObjectsManagerPIX(const Firewall *fw) :
-    NamedObjectsManager(fw)
+NamedObjectsManagerPIX::NamedObjectsManagerPIX(Library *po, const Firewall *fw) :
+    NamedObjectsManager(po, fw)
 {
 }
 

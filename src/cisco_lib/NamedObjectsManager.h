@@ -28,10 +28,12 @@
 
 #include "BaseObjectGroup.h"
 
-#include "fwbuilder/Group.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Firewall.h"
-
+namespace libfwbuilder
+{
+    class Group;
+    class Firewall;
+    class Library;
+};
 
 namespace fwcompiler
 {
@@ -45,31 +47,14 @@ protected:
         // command object-group
         std::string object_groups_group_id;
 
-        /*
-         * This is a storage object tree. Method saveObjectGroups()
-         * copies object groups objects created during compiler pass
-         * in the working tree work_db to this tree. There should be
-         * no access to the storage tree from outside, it should only
-         * be used by methods of this class that generate commands for
-         * object groups definitions or "clear" commands.
-         */
-        libfwbuilder::FWObjectDatabase *object_groups_tree;
-
-        /*
-         * This is a working object tree. When compilers need to
-         * interact with named object manager, they should use this
-         * object tree. Access to the group that holds created object
-         * groups is provided by method
-         * getObjectGroupsGroupInWorkTree() that finds it in the
-         * working tree
-         */
-        libfwbuilder::FWObjectDatabase *work_db;
+        libfwbuilder::Library *persistent_objects;
         
 public:
-        std::map<int, NamedObject*> named_objects;
 
+        std::map<int, NamedObject*> named_objects;
         
-        NamedObjectsManager(const libfwbuilder::Firewall *_fw);
+        NamedObjectsManager(libfwbuilder::Library *persistent_objects,
+                            const libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectsManager();
         void addNamedObject(const libfwbuilder::FWObject *obj);
         NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
@@ -81,26 +66,7 @@ public:
         bool haveObjectGroups();
 
         BaseObjectGroup* createObjectGroup();
-        libfwbuilder::Group* getObjectGroupsGroupInWorkTree();
-
-        void setWorkingObjectTree(libfwbuilder::FWObjectDatabase *dbcopy);
-
-        /*
-         * saveObjectGroups() moves group that holds all newly created
-         * object groups from the object database used by the compiler
-         * (referenced by work_db) to object_groups_tree. Note that we
-         * just simply re-parent group object which breaks all
-         * references to it from rules in work_db. Call this from the
-         * run() function only at the point where compiler's copy of
-         * the object tree is not needed anymore. Good moment is right
-         * after the call to epilog().
-         *
-         * Again, THIS METHOD BREAKS OBJECT TREE inside policy
-         * compiler this instance of NamedObjectsManager works with
-         * (they get associated by the call to method setNamedObjectsManager()
-         * of the compiler)
-         */
-        void saveObjectGroups();
+        libfwbuilder::Group* getObjectGroupsGroup();
 
     };
     
