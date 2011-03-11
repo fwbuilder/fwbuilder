@@ -108,6 +108,16 @@ xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
 }
 
 
+/*
+ * take domain name from the "dnsrec" attribute and try to run DNS
+ * query. If successful, create corresponding IPv4 or IPv6 object, add
+ * it to the object database and add reference to it to @this. If
+ * unsuccessful, create dummy object and add it to the database and
+ * referece to it, then throw exception.
+ *
+ * TODO: new object should be added to some kind of special group in
+ * the object tree, something with the name "tmp" or similar.
+ */
 void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
 {
     int af_type = (ipv6)?AF_INET6:AF_INET;
@@ -122,6 +132,7 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
             Address *a = NULL;
             if (ipv6) { a = getRoot()->createIPv6(); af = AF_INET6; }
             else a = getRoot()->createIPv4();
+            getRoot()->add(a);
             a->setAddress(*i);
             a->setNetmask(InetAddr::getAllOnes(af));
             addRef(a);
@@ -159,6 +170,7 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
                 a->setAddress("192.0.2.1");
                 a->setNetmask(InetAddr::getAllOnes(af));
             }
+            getRoot()->add(a);
             addRef(a);
             a->setBool(".rule_error", true);
             a->setStr(".error_msg", err.str());

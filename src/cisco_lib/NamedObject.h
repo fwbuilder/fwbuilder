@@ -30,7 +30,8 @@
 #include <QSet>
 
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
     class NamedObject
     {

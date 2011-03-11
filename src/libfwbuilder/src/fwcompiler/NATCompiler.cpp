@@ -56,44 +56,24 @@ int NATCompiler::prolog()
     NAT *nat = NAT::cast(fw->getFirstByType(NAT::TYPENAME));
     assert(nat);
 
-    combined_ruleset = new NAT();
-    fw->add( combined_ruleset );
+    if (source_ruleset == NULL) source_ruleset = nat;
+
+    source_ruleset->renumberRules();
 
     temp_ruleset = new NAT();   // working copy of the policy
     fw->add( temp_ruleset  );
 
+    temp_ruleset->setName(source_ruleset->getName());
 
-/*
- *  build combined policy by collapsing all the rules together.
- *  store ID of the interface in each rule of interface policy.
- *
- *  also calculate global numbers for all rules and store them, too.
- *  These are used to detect rule shadowing.
- */
-    int global_num=0;
-
-
-//    list<FWObject*> l3=nat->getByType(NATRule::TYPENAME);
-//    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) {
-
-    RuleSet *ruleset = source_ruleset;
-    if (ruleset == NULL)
-    {
-        source_ruleset = RuleSet::cast(nat);
-        ruleset = nat;
-    }
-
-    ruleset->renumberRules();
-
-    combined_ruleset->setName(ruleset->getName());
-    temp_ruleset->setName(ruleset->getName());
+    int global_num = 0;
 
     string label_prefix = "";
-    if (ruleset->getName() != "NAT") label_prefix = ruleset->getName();
+    if (source_ruleset->getName() != "NAT") label_prefix = source_ruleset->getName();
 
-    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
+    int rule_counter = 0;
+    for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
-	Rule *r= Rule::cast(*i);
+	Rule *r = Rule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
 
         /*
@@ -112,12 +92,12 @@ int NATCompiler::prolog()
 	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 	r->setAbsRuleNumber(global_num); global_num++;
         r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
-	combined_ruleset->add( r );
+        rule_counter++;
     }
 
-    initialized=true;
+    initialized = true;
 
-    return combined_ruleset->size();
+    return rule_counter;
 }
 
 

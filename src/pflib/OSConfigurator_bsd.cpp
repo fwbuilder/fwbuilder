@@ -75,7 +75,7 @@ void OSConfigurator_bsd::addVirtualAddressForNAT(const Address *addr)
     FWObject *iaddr = findAddressFor(addr, fw );
     if (iaddr!=NULL)
     {
-        virtual_addresses.insert(addr);
+        virtual_addresses.insert(addr->getId());
     } else
         warning("Can not add virtual address " +
                 addr->getAddressPtr()->toString() );

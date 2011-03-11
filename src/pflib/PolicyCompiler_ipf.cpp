@@ -28,16 +28,17 @@
 #include "PolicyCompiler_ipf.h"
 #include "fwcompiler/Compiler.h"
 
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/IPService.h"
+#include "fwbuilder/Firewall.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/AddressTable.h"
 
 #include <iostream>
 
@@ -55,15 +56,15 @@ int PolicyCompiler_ipf::prolog()
 
     anytcp = dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::generateUniqueId()); //ANY_TCP_OBJ_ID);
-    dbcopy->add(anytcp,false);
+    persistent_objects->add(anytcp,false);
 
     anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::generateUniqueId()); //ANY_UDP_OBJ_ID);
-    dbcopy->add(anyudp,false);
+    persistent_objects->add(anyudp,false);
 
     anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::generateUniqueId()); //ANY_ICMP_OBJ_ID);
-    dbcopy->add(anyicmp,false);
+    persistent_objects->add(anyicmp,false);
 
     return n;
 }

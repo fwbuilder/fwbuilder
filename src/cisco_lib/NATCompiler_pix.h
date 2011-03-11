@@ -507,7 +507,7 @@ namespace fwcompiler
         virtual std::string printClearCommands();
 
         /**
-         * scans all rules in combined_ruleset and finds rules (if
+         * scans all rules in source_ruleset and finds rules (if
          * any) that define DNAT translation for a combination of
          * src,dst and srv where src matches OSrc, srv matches OSrv
          * and dst matches rule element defined by argument

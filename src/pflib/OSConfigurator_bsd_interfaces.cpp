@@ -248,10 +248,10 @@ string OSConfigurator_bsd::configureInterfaces()
                     if (ipaddr->isV6()) have_ipv6 = true;
                 }
 
-                set<const Address*>::iterator it;
+                set<int>::iterator it;
                 for (it=virtual_addresses.begin(); it!=virtual_addresses.end(); ++it)
                 {
-                    const Address *addr = *it;
+                    const Address *addr = Address::constcast(dbcopy->findInIndex(*it));
                     const InetAddr *ipaddr = addr->getAddressPtr();
                     FWObject *iaddr = findAddressFor(addr, fw );
                     if (iaddr!=NULL)

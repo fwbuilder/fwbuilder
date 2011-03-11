@@ -132,6 +132,7 @@ protected:
         std::map<std::string,libfwbuilder::RuleSet*> branches;
 
         libfwbuilder::FWObjectDatabase *objdb;
+        libfwbuilder::Library *persistent_objects;
 
         void determineOutputFileNames(libfwbuilder::Cluster *cluster,
                                       libfwbuilder::Firewall *current_fw,

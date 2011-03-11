@@ -46,22 +46,23 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
-#include "fwbuilder/FWObject.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/Policy.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/NAT.h"
-#include "fwbuilder/Routing.h"
+#include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/Rule.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
 
 #include "fwcompiler/Compiler.h"
 
@@ -92,6 +93,9 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     ipv6_run = true;
     fw_by_id = false;
     objdb = new FWObjectDatabase(*db);
+    persistent_objects = new Library();
+    persistent_objects->setName("Persistent Objects");
+    objdb->add(persistent_objects);
     prolog_done = false;
     epilog_done = false;
     have_filter = false;

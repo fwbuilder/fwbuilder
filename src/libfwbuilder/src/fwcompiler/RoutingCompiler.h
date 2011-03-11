@@ -37,8 +37,8 @@
 
 #include <string>
 
-namespace fwcompiler {
-    
+namespace fwcompiler
+{
     using namespace std;
 
     #define DECLARE_ROUTING_RULE_PROCESSOR(_Name) \
@@ -52,12 +52,13 @@ namespace fwcompiler {
 	};
 
 
-    class RoutingCompiler : public Compiler {
-
+    class RoutingCompiler : public Compiler
+    {
 	public:
 
 	RoutingCompiler(libfwbuilder::FWObjectDatabase *_db,
-                        libfwbuilder::Firewall *fw, bool ipv6_policy,
+                        libfwbuilder::Firewall *fw,
+                        bool ipv6_policy,
                         fwcompiler::OSConfigurator *_oscnf)   :
         Compiler(_db, fw, ipv6_policy, _oscnf) {}
  

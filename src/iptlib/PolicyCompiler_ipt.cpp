@@ -368,7 +368,7 @@ void PolicyCompiler_ipt::_expand_interface(Rule *rule,
             if (use_mac)
             {
                 combinedAddress *ca = new combinedAddress();
-                dbcopy->add(ca);
+                persistent_objects->add(ca);
                 ca->setName( "CA("+iface->getName()+")" );
                 ca->setAddress( *ip_addr );
                 ca->setNetmask( *ip_netm );
@@ -466,44 +466,43 @@ int PolicyCompiler_ipt::prolog()
     anytcp=dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::registerStringId(ANY_TCP_OBJ_ID));
     anytcp->setName("AnyTCP");
-    dbcopy->add(anytcp);
+    persistent_objects->add(anytcp);
 
     tcpsyn=dbcopy->createTCPService();
     tcpsyn->setId(FWObjectDatabase::registerStringId(TCP_SYN_OBJ_ID));
     tcpsyn->setName("tcpSYN");
     tcpsyn->setTCPFlag(TCPService::SYN,true);
     tcpsyn->setAllTCPFlagMasks();
-    dbcopy->add(tcpsyn);
+    persistent_objects->add(tcpsyn);
 
     anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::registerStringId(ANY_UDP_OBJ_ID));
     anyudp->setName("AnyUDP");
-    dbcopy->add(anyudp);
+    persistent_objects->add(anyudp);
 
     anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::registerStringId(ANY_ICMP_OBJ_ID));
     anyicmp->setName("AnyICMP");
-    dbcopy->add(anyicmp);
+    persistent_objects->add(anyicmp);
 
     anyip=dbcopy->createIPService();
     anyip->setId(FWObjectDatabase::registerStringId(ANY_IP_OBJ_ID));
     anyip->setName("AnyIP");
-    dbcopy->add(anyip);
+    persistent_objects->add(anyip);
 
     bcast255=dbcopy->createIPv4();
     bcast255->setId(FWObjectDatabase::registerStringId(BCAST_255_OBJ_ID));
     bcast255->setName("Broadcast_addr");
     bcast255->setAddress(InetAddr::getAllOnes());
     bcast255->setNetmask(InetAddr(InetAddr::getAllOnes()));
-    dbcopy->add(bcast255);
-
+    persistent_objects->add(bcast255);
 
     bool global_afpa = fwopt->getBool("firewall_is_part_of_any_and_networks");
     int n = 0;
-    for(FWObject::iterator i=combined_ruleset->begin();
-        i!=combined_ruleset->end(); i++)
+    for(FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	Rule *r = Rule::cast( *i );
+        if (r == NULL) continue;
 	if (r->isDisabled()) continue;
 
         FWOptions *ruleopt = r->getOptionsObject();
@@ -532,7 +531,7 @@ int PolicyCompiler_ipt::prolog()
                           fwopt->getBool("use_m_set"));
     actually_used_module_set = false;
 
-    build_interface_groups(dbcopy, fw, ipv6, regular_interfaces);
+    build_interface_groups(dbcopy, persistent_objects, fw, ipv6, regular_interfaces);
     return n;
 }
 
@@ -4729,14 +4728,14 @@ void PolicyCompiler_ipt::insertConntrackRule()
     // Why the whole multicast adress range ?
     //conntrack_dst->setNetmask(InetAddr("240.0.0.0"));
     conntrack_dst->setComment("CONNTRACK Multicast Address");
-    dbcopy->add(conntrack_dst);
+    persistent_objects->add(conntrack_dst);
 
     UDPService *conntrack_srv = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
     conntrack_srv->setName("CONNTRACK-UDP");
     conntrack_srv->setDstRangeStart(atoi(port.c_str()));
     conntrack_srv->setDstRangeEnd(atoi(port.c_str()));
     conntrack_srv->setComment("CONNTRACK UDP port");
-    dbcopy->add(conntrack_srv);
+    persistent_objects->add(conntrack_srv);
 
     /* Find conntrack interface */
     Interface* conntrack_iface = Interface::cast(fw->findObjectByName(Interface::TYPENAME, conntrack_iface_name));
@@ -4866,7 +4865,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 vrrp_dst->setAddress(InetAddr("224.0.0.18"));
                 vrrp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
                 vrrp_dst->setComment("VRRP Multicast Address");
-                dbcopy->add(vrrp_dst);
+                persistent_objects->add(vrrp_dst);
 
                 bool use_ipsec_ah = false;
 
@@ -4882,7 +4881,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                     dbcopy->create(IPService::TYPENAME));
                 vrrp_srv->setComment("VRRP service");
                 vrrp_srv->setProtocolNumber(112);
-                dbcopy->add(vrrp_srv);
+                persistent_objects->add(vrrp_srv);
 
                 /*
                  * Add AH-Service to database.
@@ -4893,7 +4892,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                     dbcopy->create(IPService::TYPENAME));
                 ah_srv->setComment("IPSEC-AH");
                 ah_srv->setProtocolNumber(51);
-                dbcopy->add(ah_srv);
+                persistent_objects->add(ah_srv);
 
                 for (FWObjectTypedChildIterator it =
                          failover_group->findByType(FWObjectReference::TYPENAME);
@@ -4967,13 +4966,13 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 heartbeat_dst->setAddress(InetAddr(addr));
                 heartbeat_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
                 heartbeat_dst->setComment("HEARTBEAT Multicast Address");
-                dbcopy->add(heartbeat_dst);
+                persistent_objects->add(heartbeat_dst);
 
                 heartbeat_srv->setName("HEARTBEAT-UDP");
                 heartbeat_srv->setDstRangeStart(atoi(port.c_str()));
                 heartbeat_srv->setDstRangeEnd(atoi(port.c_str()));
                 heartbeat_srv->setComment("HEARTBEAT UDP port");
-                dbcopy->add(heartbeat_srv);
+                persistent_objects->add(heartbeat_srv);
 
                 // Heartbeat can use either multicast or unicast
                 for (FWObjectTypedChildIterator it =
@@ -5028,7 +5027,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 openais_dst->setAddress(InetAddr(addr));
                 openais_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
                 openais_dst->setComment("OPENAIS Multicast Address");
-                dbcopy->add(openais_dst);
+                persistent_objects->add(openais_dst);
 
                 UDPService *openais_srv = UDPService::cast(
                     dbcopy->create(UDPService::TYPENAME));
@@ -5037,7 +5036,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 openais_srv->setDstRangeStart(atoi(port.c_str()));
                 openais_srv->setDstRangeEnd(atoi(port.c_str()));
                 openais_srv->setComment("OPENAIS UDP port");
-                dbcopy->add(openais_srv);
+                persistent_objects->add(openais_srv);
 
                 for (FWObjectTypedChildIterator it =
                          failover_group->findByType(FWObjectReference::TYPENAME);

@@ -51,8 +51,8 @@ int MangleTableCompiler_ipt::prolog()
 
     int n = 0;
 
-    for(FWObject::iterator i=combined_ruleset->begin();
-        i!=combined_ruleset->end(); i++)
+    for(FWObject::iterator i=source_ruleset->begin();
+        i!=source_ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast( *i );
         if (r == NULL) continue; // skip RuleSetOptions object

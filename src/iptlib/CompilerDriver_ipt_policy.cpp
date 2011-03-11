@@ -39,6 +39,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Library.h"
 
 #include <fstream>
 #include <iostream>
@@ -96,6 +97,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 
     mangle_compiler->setSourceRuleSet( policy );
     mangle_compiler->setRuleSetName(branch_name);
+    mangle_compiler->setPersistentObjects(persistent_objects);
 
     mangle_compiler->setSingleRuleCompileMode(single_rule_id);
     mangle_compiler->setDebugLevel( dl );
@@ -171,6 +173,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 
     policy_compiler->setSourceRuleSet( policy );
     policy_compiler->setRuleSetName(branch_name);
+    policy_compiler->setPersistentObjects(persistent_objects);
 
     if ( (policy_rules_count=policy_compiler->prolog()) > 0 )
     {

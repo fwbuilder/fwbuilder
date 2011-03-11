@@ -443,6 +443,8 @@ namespace fwcompiler
             tables = tbf;
         }
 
+        virtual ~PolicyCompiler_pf();
+        
 	virtual int  prolog();
 	virtual void compile();
 	virtual void epilog();

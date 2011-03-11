@@ -1,3 +1,9 @@
+2011-03-10  vadim  <vadim@netcitadel.com>
+
+	* libfwbuilder/src/fwcompiler/Compiler.cpp (Compiler): see #2207
+	fixed memory leak in policy compilers. The impact of this leak was
+	especially severe on Windows with very large object databases.
+
 2011-03-08  vadim  <vadim@netcitadel.com>
 
 	* CustomServiceDialog.cpp (loadFWObject): fixes #2201 "Some fields

@@ -30,18 +30,19 @@
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManager.h"
 
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Management.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
 
 #include <iostream>
 #include <iomanip>
@@ -158,18 +159,18 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
         TCPService *ssh = dbcopy->createTCPService();
         ssh->setDstRangeStart(22);
         ssh->setDstRangeEnd(22);
-        dbcopy->add(ssh, false);
+        persistent_objects->add(ssh, false);
 
         TCPService *ssh_rev = dbcopy->createTCPService();
         ssh_rev->setSrcRangeStart(22);
         ssh_rev->setSrcRangeEnd(22);
-        dbcopy->add(ssh_rev, false);
+        persistent_objects->add(ssh_rev, false);
 
         Network *mgmt_workstation = dbcopy->createNetwork();
         mgmt_workstation->setAddressNetmask(
             getCachedFwOpt()->getStr("mgmt_addr"));
 
-        dbcopy->add(mgmt_workstation, false);
+        persistent_objects->add(mgmt_workstation, false);
 
         PolicyCompiler::addMgmtRule(
             mgmt_workstation, fw, ssh,

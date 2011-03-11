@@ -36,12 +36,12 @@ using namespace std;
 
 
 void build_interface_groups(
-    FWObjectDatabase *dbcopy, Firewall *fw, bool ipv6,
+    FWObjectDatabase *dbcopy, Library *persistent_objects, Firewall *fw, bool ipv6,
     QMap<QString, libfwbuilder::FWObject*> &regular_interfaces)
 {
     // object group that will hold all regular inetrfaces
     FWObject *all_itf_group = dbcopy->create(ObjectGroup::TYPENAME);
-    dbcopy->add(all_itf_group);
+    persistent_objects->add(all_itf_group);
     all_itf_group->setName("*");
     regular_interfaces["*"] = all_itf_group;
 
@@ -84,7 +84,7 @@ void build_interface_groups(
             if (regular_interfaces.count(iname) == 0)
             {
                 FWObject *itf_group = dbcopy->create(ObjectGroup::TYPENAME);
-                dbcopy->add(itf_group);
+                persistent_objects->add(itf_group);
                 itf_group->setName(iname.toStdString());
                 regular_interfaces[iname] = itf_group;
             }

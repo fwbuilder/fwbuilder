@@ -88,11 +88,21 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+/*
+ * read file specified by the "filename" attribute and interpret lines
+ * as addresses. Create corresponding address or network objects, add
+ * them to the object database and add references to them to @this. If
+ * file does not exist and we run in test mode, create dummy object
+ * and add it to the database and referece to it, then throw
+ * exception.
+ *
+ * TODO: new objects should be added to some kind of special group in
+ * the object tree, something with the name "tmp" or similar.
+ */
 void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
 {
     ifstream fs(getStr("filename").c_str());
     ostringstream exmess;
-    FWObject *root = getParent();
     string buf;
     size_type pos;
     int line = 1;
@@ -160,10 +170,10 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
 
                 if (new_addr)
                 {
-                    root->add(new_addr);
                     new_addr->setName(buf);
                     if (validateChild(new_addr))
                     {
+                        getRoot()->add(new_addr);
                         addRef(new_addr);
                         cntr++;
                     }
@@ -193,10 +203,10 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
                 net->setAddressNetmask("192.0.2.0/24");
                 new_addr = net;
             }
-            root->add(new_addr);
             new_addr->setName(buf);
             if (validateChild(new_addr))
             {
+                getRoot()->add(new_addr);
                 addRef(new_addr);
                 cntr++;
             }

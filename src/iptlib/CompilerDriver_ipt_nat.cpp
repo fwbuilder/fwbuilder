@@ -34,6 +34,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Library.h"
 
 #include <fstream>
 #include <iostream>
@@ -80,6 +81,7 @@ bool CompilerDriver_ipt::processNatRuleSet(
 
     nat_compiler->setSourceRuleSet( nat );
     nat_compiler->setRuleSetName(branch_name);
+    nat_compiler->setPersistentObjects(persistent_objects);
 
     nat_compiler->setSingleRuleCompileMode(single_rule_id);
     nat_compiler->setDebugLevel( dl );

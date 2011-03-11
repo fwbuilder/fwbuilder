@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3498
+#  Firewall Builder  fwb_ipt v4.2.0.3499
 #
-#  Generated Tue Mar  8 18:57:32 2011 PST by vadim
+#  Generated Thu Mar 10 21:50:53 2011 PST by vadim
 #
 # files: * firewall41.fw /etc/firewall41.fw
 #
@@ -393,7 +393,7 @@ script_body() {
     echo "Rule 6 (global)"
     # 
     $IPTABLES -N RULE_6
-    $IPTABLES -A OUTPUT  -d 208.68.143.50   -j RULE_6
+    $IPTABLES -A OUTPUT  -d 208.68.139.38   -j RULE_6
     $IPTABLES -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- DENY "
     $IPTABLES -A RULE_6  -j DROP
 }
@@ -451,7 +451,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Mar  8 18:57:32 2011 by vadim"
+        log "Activating firewall script generated Thu Mar 10 21:50:53 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

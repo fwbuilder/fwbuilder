@@ -48,27 +48,24 @@
 
 #include "Helper.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-#include "fwbuilder/Routing.h"
-#include "fwbuilder/IPv4.h"
-#include "fwbuilder/IPv6.h"
-
-#include "fwcompiler/Preprocessor.h"
-
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+
+#include "fwcompiler/Preprocessor.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -392,6 +389,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             n->setNamedObjectsManager(&named_objects_manager);
             n->setSourceRuleSet(nat);
             n->setRuleSetName(nat->getName());
+            n->setPersistentObjects(persistent_objects);
 
             if (inTestMode()) n->setTestMode();
             if (inEmbeddedMode()) n->setEmbeddedMode();
@@ -424,6 +422,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             c->setNamedObjectsManager(&named_objects_manager);
             c->setSourceRuleSet(policy);
             c->setRuleSetName(policy->getName());
+            c->setPersistentObjects(persistent_objects);
 
             if (inTestMode()) c->setTestMode();
             if (inEmbeddedMode()) c->setEmbeddedMode();
@@ -456,7 +455,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             r->setNamedObjectsManager(&named_objects_manager);
             r->setSourceRuleSet(routing);
             r->setRuleSetName(routing->getName());
-
+            r->setPersistentObjects(persistent_objects);
+                
             if (inTestMode()) r->setTestMode();
             if (inEmbeddedMode()) r->setEmbeddedMode();
             r->setSingleRuleCompileMode(single_rule_id);
@@ -471,6 +471,13 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             } else
                 info(" Nothing to compile in Routing");
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

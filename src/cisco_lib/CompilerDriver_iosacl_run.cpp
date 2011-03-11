@@ -44,28 +44,22 @@
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManagerIOS.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-#include "fwbuilder/Routing.h"
-
-#include "fwcompiler/Preprocessor.h"
-
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/Routing.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+
+#include "fwcompiler/Preprocessor.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -250,6 +244,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                 c.setNamedObjectsManager(&named_objects_manager);
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
+                c.setPersistentObjects(persistent_objects);
 
                 c.setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) c.setTestMode();
@@ -301,6 +296,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                 r.setNamedObjectsManager(&named_objects_manager);
                 r.setSourceRuleSet(routing);
                 r.setRuleSetName(routing->getName());
+                r.setPersistentObjects(persistent_objects);
 
                 r.setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) r.setTestMode();
@@ -324,6 +320,13 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                     info(" Nothing to compile in Routing");
             }
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

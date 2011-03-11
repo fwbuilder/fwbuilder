@@ -215,7 +215,7 @@ FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 FWObject::~FWObject() 
 {
     busy = true;  // ignore read-only
-    destroyChildren();
+    if (size() > 0) destroyChildren();
     data.clear();
     private_data.clear();
 }
@@ -517,21 +517,36 @@ FWObjectDatabase* FWObject::getRoot() const
     return dbroot;
 }
 
-string FWObject::getPath(bool relative) const
+class pathAccumulator : public string
 {
-    string res;
-    const FWObject *p=this;
-    bool  first=true;
+    public:
+    void operator()(const string &s)
+    {
+        append("/" + s);
+    }
+};
+
+string FWObject::getPath(bool relative, bool detailed) const
+{
+    list<string> res;
+    const FWObject *p = this;
+
+    if (p == NULL) res.push_front("(0x0)");
+
     while (p!=NULL)
     {
-        if (relative && Library::isA(p)) return res;
-        if (!first) res="/"+res;
-        res=p->getName()+res;
-        p=p->getParent();
-        first=false;
+        if (relative && Library::isA(p)) break;
+        ostringstream s;
+        s << p->getName();
+        if (detailed)
+        {
+            s << "(" << p << ")";
+        }
+        res.push_front(s.str());
+        p = p->getParent();
     }
-    res="/"+res;
-    return res;
+
+    return std::for_each(res.begin(), res.end(), pathAccumulator());
 }
 
 const string& FWObject::getComment() const
@@ -748,7 +763,7 @@ void FWObject::_adopt(FWObject *obj)
 
 void FWObject::addAt(int where_id, FWObject *obj)
 {
-    FWObject *p=getRoot()->findInIndex( where_id );
+    FWObject *p = getRoot()->findInIndex( where_id );
     assert (p!=NULL);
     p->add(obj);
 }
@@ -757,12 +772,53 @@ void FWObject::add(FWObject *obj, bool validate)
 {
     checkReadOnly();
 
+    FWObject *old_parent = obj->getParent();
+    if (old_parent != NULL)
+    {
+        cerr << "WARNING: object " << obj << " "
+             << "(name: " << obj->getName()
+             << " type: " << obj->getTypeName() << ") "
+             << "that is a child of " << old_parent << " "
+             << "(name: " << old_parent->getName()
+             << " type: " << old_parent->getTypeName() << ") "
+             << "is being added to the new parent " << this << " "
+             << "(name: " << getName()
+             << " type: " << getTypeName() << ") "
+             << endl;
+
+        assert(old_parent == NULL);
+    }
+
+    // do not allow to add the same object twice
+    if (old_parent == this)
+    {
+        cerr << "WARNING: object " << obj << " "
+             << "(name: " << obj->getName()
+             << " type: " << obj->getTypeName() << ") "
+             << "that is a child of " << old_parent << " "
+             << "(name: " << old_parent->getName()
+             << " type: " << old_parent->getTypeName() << ") "
+             << "is being added to the same parent again"
+             << endl;
+
+        assert(old_parent != this);
+    }
+
     if (!validate || validateChild(obj)) 
     {
 	push_back(obj);
 	_adopt(obj);
 	setDirty(true);
     }
+}
+
+void FWObject::reparent(FWObject *obj, bool validate)
+{
+    FWObject *old_parent = obj->getParent();
+    if (old_parent != NULL && old_parent != this)
+        old_parent->remove(obj, false);
+    add(obj, validate);
+    obj->fixTree();
 }
 
 FWReference* FWObject::createRef()
@@ -843,7 +899,7 @@ void FWObject::swapObjects(FWObject *o1, FWObject *o2)
 void FWObject::remove(FWObject *obj, bool delete_if_last)
 {
     FWObject::iterator fi=std::find(begin(), end(), obj);
-    if(fi!=end())
+    if (fi!=end())
     {
         checkReadOnly();
 
@@ -851,12 +907,14 @@ void FWObject::remove(FWObject *obj, bool delete_if_last)
         setDirty(true);
         obj->unref();
 
-        if (delete_if_last && obj->ref_counter==0)
+        if (delete_if_last && obj->ref_counter <= 0)
         {
             FWObjectDatabase *db = getRoot();
             if (db) db->removeFromIndex(obj->getId());
             delete obj;
         }
+
+        obj->parent = NULL;
     }
 }
 
@@ -948,21 +1006,8 @@ set<FWReference*> FWObject::findAllReferences(const FWObject *obj)
     return res;
 }
 
-bool FWObject::validateChild(FWObject *obj)
+bool FWObject::validateChild(FWObject*)
 { 
-    return true;
-
-    /*
-     *  Check if object "this" is a descendant of object "obj" to avoid loops
-     *
-     *  check disabled for now since we need to be able to add firewall to its
-     *  own policy
-     */
-    FWObject *p;
-    p=this;
-    do {
-	if (p==obj) return false;
-    } while ((p=p->getParent())!=NULL);
     return true;
 }
 
@@ -972,14 +1017,41 @@ bool FWObject::validateChild(FWObject *obj)
  */
 void FWObject::destroyChildren()
 {
+#ifdef DEBUG_DESTROY_CHILDREN
+    cerr << "destroyChildren() " << this
+         << " name=" << name
+         << " type=" << getTypeName()
+         << " parent=" << getParent()
+         << " path=" << getPath()
+         << endl;
+#endif
+
     FWObjectDatabase *dbr = getRoot();
     while (size() > 0)
     {
         FWObject *o = front();
+
+#ifdef DEBUG_DESTROY_CHILDREN
+        cerr << "                  " << this
+             << " size=" << size()
+             << " o=" << o
+             << " o->size=" << o->size()
+             << endl;
+#endif
+
         if (o)
         {
             if (o->size()) o->destroyChildren();
             if (dbr && !dbr->busy) dbr->removeFromIndex( o->getId() );
+
+#ifdef DEBUG_DESTROY_CHILDREN
+            cerr << "                  " << this
+                 << " delete " << o
+                 << " " << o->name
+                 << " " << o->getTypeName()
+                 << endl;
+#endif
+
             delete o;
         }
         pop_front();
@@ -990,23 +1062,65 @@ void FWObject::destroyChildren()
 /*
  * Walks the tree, looking for objects that are referenced by two parents
  */
-void FWObject::findDuplicateLinksInTree()
+bool FWObject::verifyTree()
 {
+    bool res = false;
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o = *m;
-        if (o->getParent() != this)
+        FWObject *o_parent = o->getParent();
+        if (o_parent != this)
         {
-            cerr << "Object '" << o->getName() << "' (" << o->getTypeName() << ") "
-                 << " has two parents in the tree: "
-                 << o->getParent()->getRoot() << "::"
-                 << o->getParent()->getPath(true)
-                 << " and "
-                 << getRoot() << "::"
-                 << getPath(true)
-                 << endl;
+            if (o_parent != NULL)
+            {
+                cerr << "WARNING: Object " << o << " (name: '" << o->getName()
+                     << "' type: " << o->getTypeName() << ")"
+                     << " has two parents in the tree:" << endl;
+
+                cerr << "    " << o_parent->getPath(false, true) << endl;
+                cerr << "    " << getPath(false, true) << endl;
+
+                bool o_parent_real = false;
+                for (FWObject::iterator k=o_parent->begin(); k!=o_parent->end(); ++k)
+                {
+                    FWObject *o1 = *k;
+                    if (o1 == o) { o_parent_real = true; break; }
+                }
+
+                if ( ! o_parent_real)
+                {
+                    cerr << "WARNING: Parent " << o_parent_real
+                         << " does not have child "
+                         << o << endl;
+                }
+            } else
+            {
+                cerr << "WARNING: Object " << o << " (name: '" << o->getName()
+                     << "' type: " << o->getTypeName() << ")"
+                     << " was not correctly added to its parent "
+                     << "(getParent()==NULL):" << endl;
+                cerr << "    " << getPath(false, true) << endl;
+            }
+
+            o->dump(true, false);  // recursive, not brief
+
+            res = true;
         }
-        o->findDuplicateLinksInTree();
+        res |= o->verifyTree();
+    }
+    return res;
+}
+
+void FWObject::fixTree()
+{
+    getRoot()->addToIndex(this);
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    {
+        FWObject *o = *m;
+        if (o->getRoot() != getRoot()) o->setRoot(getRoot());
+        if (o->getParent() != this) o->setParent(this);
+        getRoot()->addToIndex(o);
+        o->fixTree();
     }
 }
 

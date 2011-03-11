@@ -217,7 +217,7 @@ int NATCompiler_ipt::prolog()
             if ( iface->isDyn())  iface->setBool("use_var_address",true);
 	}
 
-        build_interface_groups(dbcopy, fw, ipv6, regular_interfaces);
+        build_interface_groups(dbcopy, persistent_objects, fw, ipv6, regular_interfaces);
     }
 
     string version = fw->getStr("version");
@@ -265,7 +265,7 @@ void NATCompiler_ipt::_expand_interface(Rule *rule,
         if (ip_addr!=NULL && use_mac && pa!=NULL)
         {
             combinedAddress *ca = new combinedAddress();
-            dbcopy->add(ca);
+            persistent_objects->add(ca);
             dbcopy->addToIndex(ca);
             ca->setName( "CA("+iface->getName()+")" );
             ca->setAddress( *ip_addr );
@@ -339,7 +339,7 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
         ar->setRangeEnd( *(al.back()) );
         ar->setName(string("%")+al.front()->toString()
                     +"-"+al.back()->toString()+"%" );
-        compiler->dbcopy->add(ar,false);
+        compiler->persistent_objects->add(ar,false);
         tdst->clearChildren();
         tdst->addRef(ar);
 
@@ -439,12 +439,15 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
  * change OSrc
  */
 
-        odst=r->getODst();
+        odst = r->getODst();
         odst->setNeg(false);
 
         odst->clearChildren();
         for (FWObject::iterator i=rule->getTDst()->begin(); i!=rule->getTDst()->end(); i++)
-            odst->add( *i );
+        {
+            FWObject *obj = FWObjectReference::getObject(*i);
+            odst->addRef(obj);
+        }
 
         if ( ! rule->getTSrv()->isAny())
         {
@@ -478,7 +481,7 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
                     match_service = TCPUDPService::cast(
                         compiler->dbcopy->create(tsrv->getTypeName()));
                     match_service->setName(tsrv->getName() + "_dport");
-                    compiler->dbcopy->add(match_service);
+                    compiler->persistent_objects->add(match_service);
                     match_service->setDstRangeStart(tu_tsrv->getDstRangeStart());
                     match_service->setDstRangeEnd(tu_tsrv->getDstRangeEnd());
                 }
@@ -757,9 +760,9 @@ bool NATCompiler_ipt::convertToAtomicportForOSrv::processNext()
 
             FWObject *s;
         
-            s=r->getOSrv();	assert(s);
+            s = r->getOSrv();	assert(s);
             s->clearChildren();
-            s->add( *i1 );
+            s->addRef(FWReference::getObject(*i1));
             
             tmp_queue.push_back(r);
         }

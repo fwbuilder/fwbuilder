@@ -53,9 +53,10 @@ namespace fwcompiler {
         std::string ruleSetName;
 
 public:
-        TableFactory(BaseCompiler *comp);
+        TableFactory(BaseCompiler *comp, libfwbuilder::Library *persistent_objects);
 
         void init(libfwbuilder::FWObjectDatabase *_dbroot);
+        void detach();
 
         void setRuleSetName(const std::string &rsn="") { ruleSetName=rsn; }
 

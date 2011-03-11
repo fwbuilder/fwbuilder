@@ -55,7 +55,7 @@ protected:
         QMap<QString, QStringList> interface_configuration_lines;
         QStringList cloned_interfaces;
 
-	std::set<const libfwbuilder::Address*> virtual_addresses;
+	std::set<int> virtual_addresses;
 
         virtual void setKernelVariable(libfwbuilder::Firewall *fw,
                                        const std::string &var_name,

@@ -66,6 +66,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Library.h"
 
 #include <QString>
 #include <QStringList>
@@ -391,6 +392,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         {
             routing_compiler->setSourceRuleSet(routing);
             routing_compiler->setRuleSetName(routing->getName());
+            routing_compiler->setPersistentObjects(persistent_objects);
 
             routing_compiler->setSingleRuleCompileMode(single_rule_id);
             routing_compiler->setDebugLevel( dl );
@@ -408,6 +410,13 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             if (routing_compiler->haveErrorsAndWarnings())
                 all_errors.push_back(routing_compiler->getErrors("").c_str());
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {
