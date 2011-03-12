@@ -375,7 +375,7 @@ void RuleSet::assignUniqueRuleIds()
     for (FWObject::iterator it=begin(); it!=end(); ++it)
     {
         Rule *r = Rule::cast(*it);
-        if (r != NULL)
+        if (r != NULL && r->getUniqueId().empty())
             r->setUniqueId(FWObjectDatabase::getStringId((*it)->getId()) );
 
     }

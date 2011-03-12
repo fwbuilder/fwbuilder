@@ -7,3 +7,17 @@
 # but uses address of carp0 for translation
 nat on en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 172.24.0.1 
 
+# 
+# Rule  -3 CARP (automatic)
+pass  quick on vlan100 inet proto carp  from any  to any  label "RULE -4 -- ACCEPT "  
+# 
+# Rule  -2 CARP (automatic)
+pass  quick on en1 inet proto carp  from any  to any  label "RULE -3 -- ACCEPT "  
+# 
+# Rule  -1 CARP (automatic)
+pass  quick on en0 inet proto carp  from any  to any  label "RULE -2 -- ACCEPT "  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE -1 -- DROP "  
+

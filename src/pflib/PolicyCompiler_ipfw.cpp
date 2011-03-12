@@ -534,7 +534,6 @@ void PolicyCompiler_ipfw::compile()
 
     Compiler::compile();
 
-    addDefaultPolicyRule();
     bool check_for_recursive_groups=true;
 
     if ( fw->getOptionsObject()->getBool("check_shading") &&

@@ -36,7 +36,8 @@ SOURCES	 =  TableFactory.cpp \
 			RoutingCompiler_openbsd.cpp \
 			RoutingCompiler_openbsd_writers.cpp \
 			RoutingCompiler_freebsd.cpp \
-			RoutingCompiler_freebsd_writers.cpp
+			RoutingCompiler_freebsd_writers.cpp \
+			AutomaticRules_pf.cpp
 
 HEADERS	 = ../../config.h \
 			OSData.h \
@@ -57,7 +58,8 @@ HEADERS	 = ../../config.h \
 			CompilerDriver_ipf.h \
 			CompilerDriver_ipfw.h \
 			RoutingCompiler_openbsd.h \
-			RoutingCompiler_freebsd.h
+			RoutingCompiler_freebsd.h \
+			AutomaticRules_pf.h
 
 macx:LIBS  += $$LIBS_FWCOMPILER
 

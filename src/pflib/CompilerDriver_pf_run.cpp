@@ -45,6 +45,7 @@
 #include "Preprocessor_pf.h"
 #include "RoutingCompiler_openbsd.h"
 #include "RoutingCompiler_freebsd.h"
+#include "AutomaticRules_pf.h"
 
 #include "OSConfigurator_openbsd.h"
 #include "OSConfigurator_freebsd.h"
@@ -277,6 +278,18 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         findImportedRuleSets(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
+
+        try
+        {
+            AutomaticRules_pf auto_rules(fw, persistent_objects);
+            auto_rules.addSshAccessRule();
+            auto_rules.addCarpRules();
+            auto_rules.addPfsyncRules();
+            auto_rules.addFallbackRule();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         // assign unique rule ids that later will be used to generate
         // chain names.  This should be done after calls to

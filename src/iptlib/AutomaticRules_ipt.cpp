@@ -74,6 +74,8 @@ PolicyRule* AutomaticRules_ipt::addMgmtRule(
 
 void AutomaticRules_ipt::addConntrackRule()
 {
+    if (ruleset == NULL) return;
+
     FWOptions* options = fw->getOptionsObject();
     string conntrack_iface_name = options->getStr("state_sync_interface");
     if (conntrack_iface_name.empty())
@@ -204,6 +206,8 @@ void AutomaticRules_ipt::addConntrackRule()
 
 void AutomaticRules_ipt::addFailoverRules()
 {
+    if (ruleset == NULL) return;
+
     Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
     assert(os_res != NULL);
 

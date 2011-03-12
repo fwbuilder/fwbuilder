@@ -40,6 +40,7 @@
 
 #include "PolicyCompiler_ipf.h"
 #include "NATCompiler_ipf.h"
+#include "AutomaticRules_pf.h"
 
 #include "OSConfigurator_openbsd.h"
 #include "OSConfigurator_freebsd.h"
@@ -212,6 +213,18 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
+        try
+        {
+            AutomaticRules_pf auto_rules(fw, persistent_objects);
+            auto_rules.addSshAccessRule();
+            auto_rules.addCarpRules();
+            auto_rules.addPfsyncRules();
+            auto_rules.addFallbackRule();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         PolicyCompiler_ipf c(objdb , fw, false , oscnf.get() );
 

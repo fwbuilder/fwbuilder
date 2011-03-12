@@ -1,6 +1,11 @@
 
 
 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any  label "RULE -1 -- DROP "  
+
 load anchor mail_server_inbound from "/etc/fw/firewall-base-rulesets-mail_server_inbound.conf"
 load anchor mail_server_outbound from "/etc/fw/firewall-base-rulesets-mail_server_outbound.conf"
 load anchor web_server_inbound from "/etc/fw/firewall-base-rulesets-web_server_inbound.conf"

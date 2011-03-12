@@ -390,119 +390,16 @@ bool PolicyCompiler_pf::fillDirection::processNext()
         {
             rule->setDirection( PolicyRule::Outbound );
             compiler->warning(
-                                  rule, "Changing rule direction due to self reference");
+                rule, "Changing rule direction due to self reference");
         }
         if (!dst->isAny() && compiler->complexMatch(compiler->fw, dst))
         {
             rule->setDirection( PolicyRule::Inbound );
             compiler->warning(
-                                  rule, "Changing rule direction due to self reference");
+                rule, "Changing rule direction due to self reference");
         }
     }
     return true;
-}
-
-/*
- * add default and auto-generated rules, except when we process rules
- * in a branch (i.e. anchor, since this is PF)
- */
-void PolicyCompiler_pf::addDefaultPolicyRule()
-{
-    if (getSourceRuleSet()->isTop() && !inSingleRuleCompileMode())
-    {
-        if (getCachedFwOpt()->getBool("mgmt_ssh") &&
-             !getCachedFwOpt()->getStr("mgmt_addr").empty())
-        {
-            PolicyRule *r;
-            TCPService *ssh = dbcopy->createTCPService();
-            ssh->setDstRangeStart(22);
-            ssh->setDstRangeEnd(22);
-
-            ssh->setName("mgmt_ssh");
-            persistent_objects->add(ssh,false);
-
-            string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
-            InetAddr  addr;
-            InetAddr netmask(InetAddr::getAllOnes());
-            try
-            {
-                addr = InetAddr(mgmt_addr);
-                string::size_type sep = mgmt_addr.find("/");
-                if (sep != string::npos)
-                {
-                    addr = InetAddr(mgmt_addr.substr(0,sep));
-                    string nm = mgmt_addr.substr(sep+1);
-                    int o1,o2,o3,o4;
-                    if (sscanf(nm.c_str(),
-                               "%3u.%3u.%3u.%3u", &o1, &o2, &o3, &o4)==4)
-                    {
-                        netmask = InetAddr(nm);
-                    } else
-                    {
-                        sscanf(nm.c_str(),"%u",&o1);
-                        netmask = InetAddr(o1);
-                    }
-                }
-            } catch(FWException &ex)
-            {
-                QString err("Invalid address for the backup ssh access: '%1'");
-                abort(err.arg(mgmt_addr.c_str()).toStdString());
-            }
-
-            Network *mgmt_workstation = dbcopy->createNetwork();
-            mgmt_workstation->setName("mgmt_addr");
-            mgmt_workstation->setAddress(addr);
-            mgmt_workstation->setNetmask(netmask);
-            persistent_objects->add(mgmt_workstation,false);
-
-            // r = dbcopy->createPolicyRule();
-            // source_ruleset->push_front(r);
-
-            r = PolicyRule::cast(source_ruleset->insertRuleAtTop(true));
-
-            r->setAction(PolicyRule::Accept);
-            r->setLogging(false);
-            r->setDirection(PolicyRule::Inbound);
-            r->setPosition(9998);
-            r->setComment("   backup ssh access rule ");
-            r->setHidden(true);
-            r->setFallback(false);
-            r->setLabel("backup ssh access rule");
-            r->setBool("needs_established",true);  // supported in ipfw
-
-            RuleElement *src = r->getSrc();
-            assert(src!=NULL);
-            src->addRef(mgmt_workstation);
-
-            RuleElement *dst = r->getDst();
-            assert(dst!=NULL);
-            dst->addRef(fw);
-
-            RuleElement *srv = r->getSrv();
-            assert(srv!=NULL);
-            srv->addRef(ssh);
-        }
-
-        insertCarpRule();
-        insertPfsyncRule();
-
-        // PolicyRule *r = dbcopy->createPolicyRule();
-        // source_ruleset->push_back(r);
-
-        PolicyRule *r = PolicyRule::cast(source_ruleset->appendRuleAtBottom(true));
-
-        FWOptions *ruleopt;
-        r->setAction(PolicyRule::Deny);
-        r->setLogging(getCachedFwOpt()->getBool("fallback_log"));
-        r->setDirection(PolicyRule::Both);
-        r->setPosition(10000);
-        r->setComment("   fallback rule ");
-        r->setHidden(true);
-        r->setFallback(true);
-        r->setLabel("fallback rule");
-        ruleopt = r->getOptionsObject();
-        ruleopt->setBool("stateless", true);
-    }
 }
 
 bool PolicyCompiler_pf::SpecialServices::processNext()
@@ -944,7 +841,6 @@ void PolicyCompiler_pf::compile()
 
     Compiler::compile();
 
-    addDefaultPolicyRule();
     bool check_for_recursive_groups=true;
 
     if (fw->getOptionsObject()->getBool("check_shading") &&
@@ -1109,83 +1005,6 @@ void PolicyCompiler_pf::compile()
 
 void PolicyCompiler_pf::epilog()
 {
-}
-
-void PolicyCompiler_pf::insertCarpRule()
-{
-    /* Add CARP-Service to database */
-    IPService* carp_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
-    carp_service->setComment("CARP service");
-    carp_service->setProtocolNumber(112);
-    persistent_objects->add(carp_service);
-
-    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
-    for (; interfaces != interfaces.end(); ++interfaces) 
-    {
-        Interface *iface = Interface::cast(*interfaces);
-
-        if (iface->isFailoverInterface())
-        {
-            FWObject *failover_group =
-                iface->getFirstByType(FailoverClusterGroup::TYPENAME);
-            if (failover_group->getStr("type") == "carp")
-            {
-                /* Add automatic rules for CARP 
-                 * Rule should be associated with physical interface
-                 */
-                
-                string phys_iface_name = iface->getOptionsObject()->getStr("base_device");
-                Interface *phys_iface = Interface::cast(
-                    fw->findObjectByName(Interface::TYPENAME, phys_iface_name));
-                if (phys_iface)
-                {
-                    PolicyRule *rule = 
-                        addMgmtRule(NULL, NULL, carp_service, phys_iface,
-                                    PolicyRule::Both, PolicyRule::Accept, "CARP");
-                    FWOptions *ruleopt = rule->getOptionsObject();
-                    assert(ruleopt!=NULL);
-                    ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
-                } else
-                {
-                    warning(
-                        "Can not find interface " + phys_iface_name + 
-                        " for the CARP interface " + iface->getName() +
-                        " of the cluster");
-                }
-            }
-        }
-    }
-}
-
-void PolicyCompiler_pf::insertPfsyncRule()
-{
-    /* Add pfsync service to database */
-    IPService* pfsync_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
-    pfsync_service->setComment("pfsync service");
-    pfsync_service->setProtocolNumber(240);
-    persistent_objects->add(pfsync_service);
-
-    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
-    for (; interfaces != interfaces.end(); ++interfaces) 
-    {
-        Interface *iface = Interface::cast(*interfaces);
-        if (iface->getOptionsObject()->getBool("state_sync_group_member"))
-        {
-            FWObject *state_sync_group = dbcopy->findInIndex(
-                dbcopy->getIntId(
-                    iface->getOptionsObject()->getStr("state_sync_group_id")));
-            assert(state_sync_group!=NULL);
-            if (state_sync_group && state_sync_group->getStr("type") == "pfsync")
-            {
-                PolicyRule *rule = addMgmtRule(NULL, NULL, pfsync_service, iface,
-                                               PolicyRule::Both,
-                                               PolicyRule::Accept, "pfsync");
-                FWOptions *ruleopt = rule->getOptionsObject();
-                assert(ruleopt!=NULL);
-                ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
-            }
-        }
-    }
 }
 
 /**

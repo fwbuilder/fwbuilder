@@ -234,13 +234,6 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         findBranchesInMangleTable(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
 
-        // assign unique rule ids that later will be used to generate
-        // chain names.  This should be done after calls to
-        // findImportedRuleSets()
-
-        assignUniqueRuleIds(all_policies);
-        assignUniqueRuleIds(all_nat);
-
         try
         {
             AutomaticRules_ipt auto_rules(fw, persistent_objects);
@@ -250,6 +243,13 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         {
             abort(ex.toString());
         }
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+
+        assignUniqueRuleIds(all_policies);
+        assignUniqueRuleIds(all_nat);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 

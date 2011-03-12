@@ -38,6 +38,7 @@
 
 #include "CompilerDriver_ipfw.h"
 #include "PolicyCompiler_ipfw.h"
+#include "AutomaticRules_pf.h"
 
 #include "OSConfigurator_freebsd.h"
 #include "OSConfigurator_macosx.h"
@@ -164,6 +165,18 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
         int ipfw_rule_number = 0;
 
         findImportedRuleSets(fw, all_policies);
+
+        try
+        {
+            AutomaticRules_pf auto_rules(fw, persistent_objects);
+            auto_rules.addSshAccessRule();
+            auto_rules.addCarpRules();
+            auto_rules.addPfsyncRules();
+            auto_rules.addFallbackRule();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         // assign unique rule ids that later will be used to generate
         // chain names.  This should be done after calls to
