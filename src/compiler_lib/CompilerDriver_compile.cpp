@@ -31,11 +31,12 @@
 
 #include "CompilerDriver.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Rule.h"
 
 #include "fwcompiler/Compiler.h"
@@ -144,8 +145,15 @@ QMap<QString,QString> CompilerDriver::compileSingleRule(const string &rule_id)
     if (cluster)
     {
         commonChecks(cluster);
+
         list<Firewall*> members;
         Cluster::cast(cluster)->getMembersList(members);
+
+        // this copy of CompilerDriver is not going to do any useful work and
+        // does not need these.
+        objdb->remove(persistent_objects, false);
+        objdb->remove(workspace, false);
+
         for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
         {
             CompilerDriver *cl_driver = clone();

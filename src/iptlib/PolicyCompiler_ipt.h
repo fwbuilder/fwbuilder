@@ -101,19 +101,6 @@ protected:
         bool isChainDescendantOfOutput(const std::string &chain_name);
         bool isChainDescendantOfInput(const std::string &chain_name);
 
-	void insertConntrackRule();
-	void insertFailoverRule();
-
-        libfwbuilder::PolicyRule* addMgmtRule(
-            libfwbuilder::Address* src,
-            libfwbuilder::Address* dst,
-            libfwbuilder::Service* service,
-            libfwbuilder::Interface* iface,
-            const libfwbuilder::PolicyRule::Direction direction,
-            const libfwbuilder::PolicyRule::Action action,
-            const std::string label,
-            const bool related = false);
-        
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);

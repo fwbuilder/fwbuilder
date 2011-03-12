@@ -537,11 +537,11 @@ int PolicyCompiler_ipt::prolog()
 
 void PolicyCompiler_ipt::addPredefinedPolicyRules()
 {
-    if (getSourceRuleSet()->isTop() && !inSingleRuleCompileMode())
-    {
-        insertConntrackRule();
-        insertFailoverRule();
-    }
+    // if (getSourceRuleSet()->isTop() && !inSingleRuleCompileMode())
+    // {
+    //     insertConntrackRule();
+    //     insertFailoverRule();
+    // }
 }
 
 bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
@@ -4499,52 +4499,60 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         ostringstream dst;
         string srv=" ";
         string time=" ";
-        string itf=" ";
+        ostringstream itf;
 
         if (srcrel->getNeg()) src << "!";
         if (dstrel->getNeg()) dst << "!";
         if (srvrel->getNeg()) srv  = "!";
         if (intrel->getNeg()) time = "!";
-        if (itfrel->getNeg()) itf  = "!";
+        if (itfrel->getNeg()) itf  << "!";
 
-        if (i1!=srcrel->end()) {
-            FWObject *o=*i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i1!=srcrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i1);
             src << o->getName();
             if (Group::cast(o)!=NULL)
                 src << "[" << o->size() << "]";
         }
 
-        if (i2!=dstrel->end()) {
-            FWObject *o=*i2;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (i2!=dstrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i2);
             dst << o->getName();
             if (Group::cast(o)!=NULL)
                 dst << "[" << o->size() << "]";
         }
 
-        if (i3!=srvrel->end()) {
-            FWObject *o=*i3;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            srv+=o->getName();
+        if (i3!=srvrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i3);
+            srv += o->getName();
         }
 
-        if (i4!=intrel->end()) {
-            FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            time+=o->getName();
+        if (i4!=intrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i4);
+            time += o->getName();
         }
 
-        if (i5!=itfrel->end()) {
-            FWObject *o=*i5;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            itf+=o->getName();
+        if (i5!=itfrel->end())
+        {
+            FWObject *o = FWReference::getObject(*i5);
+            Interface *iface = Interface::cast(o);
+            itf << o->getName() << "(" << o->getId() << ")";
+            if (iface)
+            {
+                if (iface->isDyn()) itf << "D";
+                if (iface->isUnnumbered()) itf << "U";
+                if (iface->isFailoverInterface()) itf << "F";
+            }
         }
 
         int w=0;
-        if (no==0) {
+        if (no==0)
+        {
             str << rule->getLabel();
-            w=rule->getLabel().length();
+            w = rule->getLabel().length();
         }
         
         str <<  setw(15-w)  << setfill(' ') << " ";
@@ -4553,7 +4561,7 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         str <<  setw(18) << setfill(' ') << dst.str();
         str <<  setw(12) << setfill(' ') << srv.c_str();
         str <<  setw(10) << setfill(' ') << time.c_str();
-        str <<  setw(8)  << setfill(' ') << itf.c_str();
+        str <<  setw(8)  << setfill(' ') << itf.str();
 
         if (no==0)
         {
@@ -4573,6 +4581,8 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     }
 
     str << " pos=" << rule->getPosition();
+
+    str << " u=" << rule->getUniqueId();
 
     str << " c=" << printChains(rule);
 
@@ -4674,430 +4684,6 @@ bool PolicyCompiler_ipt::newIptables(const string &version)
 {
     return (version.empty() || version=="ge_1.2.6" ||
             XMLTools::version_compare(version, "1.2.6")>0);
-}
-
-void PolicyCompiler_ipt::insertConntrackRule()
-{
-    FWOptions* options = fw->getOptionsObject();
-    string conntrack_iface_name = options->getStr("state_sync_interface");
-    if (conntrack_iface_name.empty())
-    {
-        /* CONNTRACK not active, nothing left to do */
-        return;
-    }
-
-    string conntrack_group_id = options->getStr("state_sync_group_id");
-    StateSyncClusterGroup *state_sync_group = 
-        StateSyncClusterGroup::cast(
-            dbcopy->findInIndex(
-                FWObjectDatabase::getIntId(conntrack_group_id)));
-
-    Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
-    assert(os_res != NULL);
-
-    string default_address =
-        os_res->getResourceStr("/FWBuilderResources/Target/protocols/conntrack/default_address");
-    string default_port =
-        os_res->getResourceStr("/FWBuilderResources/Target/protocols/conntrack/default_port");
-
-    bool ucast = state_sync_group->getOptionsObject()->getBool("conntrack_unicast");
-    string addr = state_sync_group->getOptionsObject()->getStr("conntrack_address");
-    if (addr.empty()) addr = default_address;
-
-    try
-    {
-        InetAddr(addr);
-    } catch (FWException &ex)
-    {
-        try
-        {
-            InetAddr(AF_INET6, addr);
-        } catch (FWException &ex)
-        {
-            abort(string("Invalid IP address for conntrack: ") + addr);
-        }
-    }
-
-    string port = state_sync_group->getOptionsObject()->getStr("conntrack_port");
-    if (port.empty()) port = default_port;
-
-    /* Add CONNTRACK-Address to database */
-    Address *conntrack_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
-    conntrack_dst->setName("CONNTRACK-Address");
-    conntrack_dst->setAddress(InetAddr(addr));
-    // Why the whole multicast adress range ?
-    //conntrack_dst->setNetmask(InetAddr("240.0.0.0"));
-    conntrack_dst->setComment("CONNTRACK Multicast Address");
-    persistent_objects->add(conntrack_dst);
-
-    UDPService *conntrack_srv = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    conntrack_srv->setName("CONNTRACK-UDP");
-    conntrack_srv->setDstRangeStart(atoi(port.c_str()));
-    conntrack_srv->setDstRangeEnd(atoi(port.c_str()));
-    conntrack_srv->setComment("CONNTRACK UDP port");
-    persistent_objects->add(conntrack_srv);
-
-    /* Find conntrack interface */
-    Interface* conntrack_iface = Interface::cast(fw->findObjectByName(Interface::TYPENAME, conntrack_iface_name));
-
-    if (conntrack_iface == NULL)
-    {
-        this->abort(
-            "Unable to get CONNTRACK interface ("+ conntrack_iface_name +")");
-    }
-
-    /* Add automatic rules for CONNTRACK */
-    if (ucast)
-    {
-        Interface *fw_iface = NULL;
-        list<Interface*> other_interfaces;
-        for (FWObjectTypedChildIterator it =
-                 state_sync_group->findByType(FWObjectReference::TYPENAME);
-             it != it.end(); ++it)
-        {
-            Interface *iface =
-                Interface::cast(FWObjectReference::getObject(*it));
-            assert(iface);
-            if (iface->isChildOf(fw))
-            {
-                fw_iface = iface;
-            } else
-            {
-                other_interfaces.push_back(iface);
-            }
-        }
-        foreach(Interface *other_iface, other_interfaces)
-        {
-            addMgmtRule(other_iface,
-                        fw,
-                        conntrack_srv,
-                        fw_iface,
-                        PolicyRule::Inbound,
-                        PolicyRule::Accept,
-                        "CONNTRACK");
-            addMgmtRule(fw,
-                        other_iface,
-                        conntrack_srv,
-                        fw_iface,
-                        PolicyRule::Outbound,
-                        PolicyRule::Accept,
-                        "CONNTRACK");
-        }
-    } else
-    {
-        addMgmtRule(NULL,
-                    conntrack_dst,
-                    conntrack_srv,
-                    conntrack_iface,
-                    PolicyRule::Inbound,
-                    PolicyRule::Accept,
-                    "CONNTRACK");
-
-        addMgmtRule(fw,
-                    conntrack_dst,
-                    conntrack_srv,
-                    conntrack_iface,
-                    PolicyRule::Outbound,
-                    PolicyRule::Accept,
-                    "CONNTRACK");
-    }
-}
-
-void PolicyCompiler_ipt::insertFailoverRule()
-{
-    Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
-    assert(os_res != NULL);
-
-    string default_heartbeat_port =
-        os_res->getResourceStr(
-            "/FWBuilderResources/Target/protocols/heartbeat/default_port");
-    string default_heartbeat_address =
-        os_res->getResourceStr(
-            "/FWBuilderResources/Target/protocols/heartbeat/default_address");
-    string default_openais_port =
-        os_res->getResourceStr(
-            "/FWBuilderResources/Target/protocols/openais/default_port");
-    string default_openais_address =
-        os_res->getResourceStr(
-            "/FWBuilderResources/Target/protocols/openais/default_address");
-
-    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
-    for (; interfaces != interfaces.end(); ++interfaces)
-    {
-        Interface *iface = Interface::cast(*interfaces);
-
-        /*
-          We add copies of cluster interface objects to fw objects
-          so each interface appears twice, the original interface
-          of the firewall, plus a copy of the cluster
-          interface. To deduplicate will use only copies of
-          cluster interfaces because these include VRRP interfaces.
-        */
-
-        if (iface->isFailoverInterface() &&
-            iface->getOptionsObject()->getBool("cluster_interface"))
-        {
-            FWObject *failover_group =
-                iface->getFirstByType(FailoverClusterGroup::TYPENAME);
-            PolicyRule *rule = NULL;
-
-            string fw_iface_id = iface->getOptionsObject()->getStr("base_interface_id");
-            Interface *fw_iface =
-                Interface::cast(
-                    dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_iface_id)));
-            if (fw_iface == NULL)
-            {
-                warning(
-                    QString("Can not find interface of the firewall "
-                            "for the cluster failover group %1. "
-                            "Falling back using cluster interface object.")
-                    .arg(failover_group->getName().c_str()).toStdString());
-                fw_iface = iface;
-            }
-
-            if (failover_group->getStr("type") == "vrrp")
-            {
-                /* Add VRRP-Address to database */
-                Address *vrrp_dst = Address::cast(
-                    dbcopy->create(IPv4::TYPENAME));
-
-                vrrp_dst->setName("VRRP-Address");
-                vrrp_dst->setAddress(InetAddr("224.0.0.18"));
-                vrrp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-                vrrp_dst->setComment("VRRP Multicast Address");
-                persistent_objects->add(vrrp_dst);
-
-                bool use_ipsec_ah = false;
-
-                FWOptions *failover_opts =
-                    FailoverClusterGroup::cast(failover_group)->getOptionsObject();
-                if (failover_opts)
-                {
-                    use_ipsec_ah = failover_opts->getBool("vrrp_over_ipsec_ah");
-                }
-
-                /* Add VRRP-Service to database */
-                IPService* vrrp_srv = IPService::cast(
-                    dbcopy->create(IPService::TYPENAME));
-                vrrp_srv->setComment("VRRP service");
-                vrrp_srv->setProtocolNumber(112);
-                persistent_objects->add(vrrp_srv);
-
-                /*
-                 * Add AH-Service to database.
-                 * According to RFC 2338 section 5.3.6.3, VRRP can use
-                 * IPsec AH.
-                 */
-                IPService* ah_srv = IPService::cast(
-                    dbcopy->create(IPService::TYPENAME));
-                ah_srv->setComment("IPSEC-AH");
-                ah_srv->setProtocolNumber(51);
-                persistent_objects->add(ah_srv);
-
-                for (FWObjectTypedChildIterator it =
-                         failover_group->findByType(FWObjectReference::TYPENAME);
-                     it != it.end(); ++it)
-                {
-                    Interface *other_iface =
-                        Interface::cast(FWObjectReference::getObject(*it));
-                    assert(other_iface);
-                    if (other_iface->getId() == fw_iface->getId()) continue;
-                    // if interface is dynamic, we can't use it in the rule
-                    // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
-                    // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
-
-                    if (!use_ipsec_ah)
-                    {
-                        addMgmtRule(other_iface, vrrp_dst, vrrp_srv, iface,
-                                    PolicyRule::Inbound, PolicyRule::Accept,
-                                    "VRRP");
-                    } else
-                    {
-                        addMgmtRule(other_iface, vrrp_dst, ah_srv, iface,
-                                    PolicyRule::Inbound, PolicyRule::Accept,
-                                    "VRRP (with IPSEC-AH)");
-                    }
-                }
-                // outbound rule does not use other_interface and
-                // should be created outside the loop to avoid
-                // duplicates. Duplicates happen when cluster has 3 or
-                // more members.
-                if (!use_ipsec_ah)
-                {
-                    addMgmtRule(fw, vrrp_dst, vrrp_srv, iface,
-                                PolicyRule::Outbound, PolicyRule::Accept,
-                                "VRRP");
-                } else
-                {
-                    addMgmtRule(fw, vrrp_dst, ah_srv, iface,
-                                PolicyRule::Outbound, PolicyRule::Accept,
-                                "VRRP (with IPSEC-AH)");
-                }
-            }
-
-            if (failover_group->getStr("type") == "heartbeat")
-            {
-                /*
-                 * Note that iface is a copy of the cluster inetrface.
-                 * Find interface of the member firewall fw that corresponds
-                 * to the cluster interface iface
-                 */
-
-                bool ucast = FailoverClusterGroup::cast(failover_group)->
-                    getOptionsObject()->getBool("heartbeat_unicast");
-
-                string addr = FailoverClusterGroup::cast(failover_group)->
-                    getOptionsObject()->getStr("heartbeat_address");
-                if (addr.empty()) addr = default_heartbeat_address;
-
-                string port = FailoverClusterGroup::cast(failover_group)->
-                    getOptionsObject()->getStr("heartbeat_port");
-                if (port.empty()) port = default_heartbeat_port;
-
-                UDPService *heartbeat_srv = UDPService::cast(
-                    dbcopy->create(UDPService::TYPENAME));
-
-                /* Add heartbeat-Address to database */
-                Address *heartbeat_dst = Address::cast(dbcopy->create(
-                                                           IPv4::TYPENAME));
-                heartbeat_dst->setName("HEARTBEAT-Address");
-                heartbeat_dst->setAddress(InetAddr(addr));
-                heartbeat_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-                heartbeat_dst->setComment("HEARTBEAT Multicast Address");
-                persistent_objects->add(heartbeat_dst);
-
-                heartbeat_srv->setName("HEARTBEAT-UDP");
-                heartbeat_srv->setDstRangeStart(atoi(port.c_str()));
-                heartbeat_srv->setDstRangeEnd(atoi(port.c_str()));
-                heartbeat_srv->setComment("HEARTBEAT UDP port");
-                persistent_objects->add(heartbeat_srv);
-
-                // Heartbeat can use either multicast or unicast
-                for (FWObjectTypedChildIterator it =
-                         failover_group->findByType(FWObjectReference::TYPENAME);
-                     it != it.end(); ++it)
-                {
-                    Interface *other_iface =
-                        Interface::cast(FWObjectReference::getObject(*it));
-                    assert(other_iface);
-                    if (other_iface->getId() == fw_iface->getId()) continue;
-                    // if interface is dynamic, we can't use it in the rule
-                    // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
-                    // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
-
-                    if (ucast)
-                    {
-                        addMgmtRule(other_iface, fw, heartbeat_srv, fw_iface,
-                                    PolicyRule::Inbound, PolicyRule::Accept,
-                                    "heartbeat");
-                        addMgmtRule(fw, other_iface, heartbeat_srv, fw_iface,
-                                    PolicyRule::Outbound, PolicyRule::Accept,
-                                    "heartbeat");
-                    }
-                    else
-                    {
-                        addMgmtRule(other_iface, heartbeat_dst, heartbeat_srv, fw_iface,
-                                    PolicyRule::Inbound, PolicyRule::Accept,
-                                    "heartbeat");
-                        addMgmtRule(fw, heartbeat_dst, heartbeat_srv, fw_iface,
-                                    PolicyRule::Outbound, PolicyRule::Accept,
-                                    "heartbeat");
-                    }
-                }
-            }
-
-            if (failover_group->getStr("type") == "openais")
-            {
-                string addr = FailoverClusterGroup::cast(failover_group)->
-                    getOptionsObject()->getStr("openais_address");
-                if (addr.empty()) addr = default_openais_address;
-
-                string port = FailoverClusterGroup::cast(failover_group)->
-                    getOptionsObject()->getStr("openais_port");
-                if (port.empty()) port = default_openais_port;
-
-                /* Add OPENAIS-Address to database */
-                Address *openais_dst = Address::cast(dbcopy->create(
-                                                         IPv4::TYPENAME));
-                openais_dst->setName("OPENAIS-Address");
-                openais_dst->setAddress(InetAddr(addr));
-                openais_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-                openais_dst->setComment("OPENAIS Multicast Address");
-                persistent_objects->add(openais_dst);
-
-                UDPService *openais_srv = UDPService::cast(
-                    dbcopy->create(UDPService::TYPENAME));
-
-                openais_srv->setName("OPENAIS-UDP");
-                openais_srv->setDstRangeStart(atoi(port.c_str()));
-                openais_srv->setDstRangeEnd(atoi(port.c_str()));
-                openais_srv->setComment("OPENAIS UDP port");
-                persistent_objects->add(openais_srv);
-
-                for (FWObjectTypedChildIterator it =
-                         failover_group->findByType(FWObjectReference::TYPENAME);
-                     it != it.end(); ++it)
-                {
-                    Interface *other_iface =
-                        Interface::cast(FWObjectReference::getObject(*it));
-                    assert(other_iface);
-                    if (other_iface->getId() == fw_iface->getId()) continue;
-                    // if interface is dynamic, we can't use it in the rule
-                    // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
-                    // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
-
-                    addMgmtRule(other_iface, openais_dst, openais_srv, iface,
-                                PolicyRule::Inbound, PolicyRule::Accept,
-                                "openais");
-                    addMgmtRule(fw, openais_dst, openais_srv, iface,
-                                PolicyRule::Outbound, PolicyRule::Accept,
-                                "openais");
-                }
-            }
-
-            if (rule)
-            {
-                FWOptions *ruleopt = rule->getOptionsObject();
-                assert(ruleopt!=NULL);
-                ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
-            }
-        }
-    }
-}
-
-
-/* TODO: Add error-handling (exceptions) */
-PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* src,
-                                            Address* dst,
-                                            Service* service,
-                                            Interface* iface,
-                                            const PolicyRule::Direction direction,
-                                            const PolicyRule::Action action,
-                                            const string label,
-                                            const bool related)
-{
-    PolicyRule *rule = PolicyCompiler::addMgmtRule(src, dst, service,
-                                                   iface, direction, action,
-                                                   label);
-
-    FWOptions *ruleopt = rule->getOptionsObject(); assert(ruleopt!=NULL);
-    if (related)
-    {
-        ruleopt->setBool("stateless", false);
-        ruleopt->setBool("accept_established", true);
-    } else
-    {
-        ruleopt->setBool("stateless", true);
-    }
-    ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
-
-    return rule;
 }
 
 list<string> PolicyCompiler_ipt::getUsedChains()

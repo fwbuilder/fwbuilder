@@ -109,13 +109,9 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
                                  const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -168,6 +164,13 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
         int ipfw_rule_number = 0;
 
         findImportedRuleSets(fw, all_policies);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not used by this compiler
+
+        assignUniqueRuleIds(all_policies);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 

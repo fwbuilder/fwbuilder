@@ -133,6 +133,7 @@ protected:
 
         libfwbuilder::FWObjectDatabase *objdb;
         libfwbuilder::Library *persistent_objects;
+        libfwbuilder::Library *workspace;
 
         void determineOutputFileNames(libfwbuilder::Cluster *cluster,
                                       libfwbuilder::Firewall *current_fw,
@@ -251,9 +252,16 @@ public:
          */
         virtual libfwbuilder::Firewall* locateObject();
 
+        void getFirewallAndClusterObjects(const std::string &cluster_id,
+                                          const std::string &fw_id,
+                                          libfwbuilder::Cluster **cl,
+                                          libfwbuilder::Firewall **fw);
+        
         void findImportedRuleSets(libfwbuilder::Firewall *fw,
                                   std::list<libfwbuilder::FWObject*> &all_policies);
 
+        void assignUniqueRuleIds(std::list<libfwbuilder::FWObject*> &all_policies);
+        
         virtual bool prepare(const QStringList &args);
         virtual void compile();
         virtual QMap<QString,QString> compileSingleRule(const std::string &rule_id);

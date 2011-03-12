@@ -19,7 +19,8 @@ SOURCES	 =  CompilerDriver.cpp \
 			iosInterfaces.cpp \
 			procurveInterfaces.cpp \
 			pixInterfaces.cpp \
-			interfacePropertiesObjectFactory.cpp
+			interfacePropertiesObjectFactory.cpp \
+			AutomaticRules.cpp
 
 HEADERS	 = ../../config.h \
 			CompilerDriver.h \
@@ -31,7 +32,8 @@ HEADERS	 = ../../config.h \
 			iosInterfaces.h \
 			procurveInterfaces.h \
 			pixInterfaces.h \
-			interfacePropertiesObjectFactory.h
+			interfacePropertiesObjectFactory.h \
+			AutomaticRules.h
 
 INCLUDEPATH += ../libfwbuilder/src
 

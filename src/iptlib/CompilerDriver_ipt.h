@@ -40,18 +40,23 @@
 #include <QMap>
 
 
-namespace libfwbuilder {
+namespace libfwbuilder
+{
     class FWObjectDatabase;
     class Cluster;
     class ClusterGroup;
     class Firewall;
     class RuleSet;
     class Interface;
+    class Address;
+    class PolicyRule;
 };
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class CompilerDriver_ipt : public CompilerDriver {
+    class CompilerDriver_ipt : public CompilerDriver
+    {
 
         // commands that pass control to branch chains should go into
         // POSTROUTING or PREROUTING chains depending on the targets used
@@ -78,7 +83,8 @@ namespace fwcompiler {
 public:
 
         CompilerDriver_ipt(libfwbuilder::FWObjectDatabase *db);
-
+        virtual ~CompilerDriver_ipt();
+        
         // create a copy of itself, including objdb
         virtual CompilerDriver* clone();
     
@@ -120,7 +126,6 @@ public:
             int policy_af,
             std::map<const std::string, bool> &minus_n_commands_nat);
 
-        
     };
 };
 

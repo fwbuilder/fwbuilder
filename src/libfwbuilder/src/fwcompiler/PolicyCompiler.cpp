@@ -101,27 +101,31 @@ int PolicyCompiler::prolog()
          */
 	//if (r->isDisabled()) continue;
 
-        RuleElementItf *itfre = r->getItf();
-        assert(itfre);
+        if (r->getLabel().empty())
+        {
+            RuleElementItf *itfre = r->getItf();
+            assert(itfre);
 
-        if (itfre->isAny())
-        {
-            r->setLabel( createRuleLabel(label_prefix, 
-                                         "global", r->getPosition()) );
-        } else
-        {
-            string interfaces = "";
-            for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
+            if (itfre->isAny())
             {
-                FWObject *o = FWReference::getObject(*i);
-                if (interfaces!="") interfaces += ",";
-                interfaces += o->getName();
+                r->setLabel( createRuleLabel(label_prefix, 
+                                             "global", r->getPosition()) );
+            } else
+            {
+                string interfaces = "";
+                for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
+                {
+                    FWObject *o = FWReference::getObject(*i);
+                    if (interfaces!="") interfaces += ",";
+                    interfaces += o->getName();
+                }
+                r->setLabel( createRuleLabel(label_prefix, 
+                                             interfaces, r->getPosition()) );
             }
-            r->setLabel( createRuleLabel(label_prefix, 
-                                         interfaces, r->getPosition()) );
         }
-	r->setAbsRuleNumber(global_num); global_num++;
-        r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
+
+	r->setAbsRuleNumber(global_num);
+        global_num++;
         rule_counter++;
     }
 
@@ -1131,16 +1135,19 @@ string PolicyCompiler::debugPrintRule(Rule *r)
             srv_id = o->getId();
         }
 
-        if (i4!=itfrel->end()) {
-            FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            itf+=o->getName();
+        if (i4!=itfrel->end())
+        {
+            ostringstream str;
+            FWObject *o = FWReference::getObject(*i4);
+            str << o->getName() << "(" << o->getId() << ")";
+            itf += str.str();
         }
 
-        int w=0;
-        if (no==0) {
+        int w = 0;
+        if (no==0)
+        {
             str << rule->getLabel();
-            w=rule->getLabel().length();
+            w = rule->getLabel().length();
         }
         
         str <<  setw(10-w)  << setfill(' ') << " ";

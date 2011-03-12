@@ -370,4 +370,15 @@ int RuleSet::getRuleSetSize()
     return getChildrenCount() - 1;
 }
 
+void RuleSet::assignUniqueRuleIds()
+{
+    for (FWObject::iterator it=begin(); it!=end(); ++it)
+    {
+        Rule *r = Rule::cast(*it);
+        if (r != NULL)
+            r->setUniqueId(FWObjectDatabase::getStringId((*it)->getId()) );
+
+    }
+}
+
 

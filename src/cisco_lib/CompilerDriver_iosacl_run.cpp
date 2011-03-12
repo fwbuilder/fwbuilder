@@ -119,13 +119,9 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                                    const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -180,6 +176,13 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
         oscnf->processFirewallOptions();
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not used by this compiler
+
+        assignUniqueRuleIds(all_policies);
 
         vector<int> ipv4_6_runs;
 

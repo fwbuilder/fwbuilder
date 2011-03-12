@@ -165,11 +165,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                 const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     // Copy rules from the cluster object
     populateClusterElements(cluster, fw);
@@ -386,6 +384,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)
         {
+            nat->assignUniqueRuleIds();
+
             n->setNamedObjectsManager(&named_objects_manager);
             n->setSourceRuleSet(nat);
             n->setRuleSetName(nat->getName());
@@ -419,6 +419,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
         if (policy)
         {
+            policy->assignUniqueRuleIds();
+
             c->setNamedObjectsManager(&named_objects_manager);
             c->setSourceRuleSet(policy);
             c->setRuleSetName(policy->getName());
@@ -452,6 +454,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)
         {
+            routing->assignUniqueRuleIds();
+
             r->setNamedObjectsManager(&named_objects_manager);
             r->setSourceRuleSet(routing);
             r->setRuleSetName(routing->getName());

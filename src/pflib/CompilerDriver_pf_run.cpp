@@ -206,13 +206,9 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                                const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -281,6 +277,14 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         findImportedRuleSets(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not really used by compiler for PF
+
+        assignUniqueRuleIds(all_policies);
+        assignUniqueRuleIds(all_nat);
 
         list<FWObject*> all_rulesets;
         all_rulesets.insert(

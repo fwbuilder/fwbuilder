@@ -30,13 +30,19 @@
 #include "PolicyCompiler_ipt.h"
 #include "PolicyCompiler_secuwall.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Address.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/IPService.h"
 
 #include <fstream>
 #include <iostream>
@@ -56,6 +62,10 @@ CompilerDriver_ipt::CompilerDriver_ipt(FWObjectDatabase *db) :
     have_connmark_in_output = false;
 }
 
+CompilerDriver_ipt::~CompilerDriver_ipt()
+{
+}
+
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_ipt::clone()
 {
@@ -73,11 +83,10 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
         if (rule == NULL) continue; // skip RuleSetOptions object
         if (rule->isDisabled()) continue;
 
-        //rule->setStr("parent_rule_num", parentRuleNum);
-
         if (!ruleset->isTop())
             rule->setStr("ipt_chain", branch_name);
-        rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
+// ???
+//        rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
     }
 
 }
@@ -222,5 +231,4 @@ std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
 
     return policy_compiler;
 }
-
 

@@ -88,10 +88,10 @@ int NATCompiler::prolog()
 	//if (r->isDisabled()) continue;
 
 	//r->setInterfaceId(-1);
+        if (r->getLabel().empty())
+            r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 
-	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 	r->setAbsRuleNumber(global_num); global_num++;
-        r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
         rule_counter++;
     }
 

@@ -86,7 +86,10 @@ int RoutingCompiler::prolog()
     {
 	Rule *r = Rule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
-	r->setLabel( createRuleLabel("", "main", r->getPosition()) );
+
+        if (r->getLabel().empty())
+            r->setLabel( createRuleLabel("", "main", r->getPosition()) );
+
         rule_counter++;
     }
 

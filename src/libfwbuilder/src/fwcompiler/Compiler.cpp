@@ -159,12 +159,17 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
     {
         assert(_fw->getRoot() == _db);
 
-        string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
-        dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
-        fw = Firewall::cast(
-            dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
+        dbcopy = _db;
+        fw = _fw;
         fwopt = fw->getOptionsObject();
         fw_id = fw->getId();
+
+        // string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
+        // dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
+        // fw = Firewall::cast(
+        //     dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
+        // fwopt = fw->getOptionsObject();
+        // fw_id = fw->getId();
     }
 }
 
@@ -213,6 +218,7 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 
 Compiler::~Compiler()
 {
+#ifdef DBCOPY_IS_TRUE_COPY
     if (dbcopy) 
     {
         if (dbcopy->verifyTree())
@@ -227,6 +233,8 @@ Compiler::~Compiler()
 
         delete dbcopy;
     }
+#endif
+
     dbcopy = NULL;
 }
 

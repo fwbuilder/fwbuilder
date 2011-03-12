@@ -31,6 +31,8 @@
 #include <time.h>   // for time_t
 
 #include <list>
+#include <map>
+
 
 namespace libfwbuilder
 {
@@ -42,7 +44,8 @@ namespace libfwbuilder
 
 class Firewall : public Host 
 {
-
+    std::map<int, int> id_mapping_for_duplicate;
+    
     void duplicateInterfaces(FWObject *target,
                              const FWObject *source,
                              std::map<int,int> &id_mapping,
@@ -70,7 +73,7 @@ public:
     /**
      * verify whether given object type is approppriate as a child
      */
-    virtual bool    validateChild(FWObject *o);
+    virtual bool validateChild(FWObject *o);
 
     virtual FWOptions* getOptionsObject();
 
@@ -91,10 +94,27 @@ public:
      */
     virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
 
+    /*
+     * Return id mapping table created during latest run of duplicate()
+     */
+    const std::map<int, int>& getIDMappingTable()
+    {
+        return id_mapping_for_duplicate;
+    }
+    
     Policy  *getPolicy();
     NAT     *getNAT();
     Routing *getRouting();
 
+    /**
+     * scan all rules of all rule sets and call setUniqueId() to set
+     * unique string id for each rule. These IDs will be carried
+     * through calls to duplicate() when firewall object and its rule
+     * sets are cloned. These IDs are used by compilers to generate
+     * stable labels for chains and such.
+     */
+    void assignUniqueRuleIds();
+    
     /**
      * Return list of interfaces of given type. This walks all interfaces recursively,
      * including subinterfaces.

@@ -816,9 +816,11 @@ void FWObject::reparent(FWObject *obj, bool validate)
 {
     FWObject *old_parent = obj->getParent();
     if (old_parent != NULL && old_parent != this)
+    {
         old_parent->remove(obj, false);
-    add(obj, validate);
-    obj->fixTree();
+        add(obj, validate);
+        obj->fixTree();
+    }
 }
 
 FWReference* FWObject::createRef()
