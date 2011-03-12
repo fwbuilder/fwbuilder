@@ -30,21 +30,22 @@
 #include "ASA8ObjectGroup.h"
 #include "IOSObjectGroup.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/CustomService.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Management.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Policy.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/AddressRange.h"
-#include "fwbuilder/Firewall.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
 
 #include "fwcompiler/Compiler.h"
 
@@ -84,15 +85,17 @@ FWObject* create_ASA8ObjectGroup(int id)
     return nobj;
 }
 
-NamedObjectsManager::NamedObjectsManager(const Firewall *fw)
+NamedObjectsManager::NamedObjectsManager(Library *persistent_objects,
+                                         const Firewall *fw)
 {
     version = fw->getStr("version");
     platform = fw->getStr("platform");
 
-    object_groups_tree = new FWObjectDatabase();
+    this->persistent_objects = persistent_objects;
+
     Group *object_groups = new Group();
     object_groups->setName("Object Groups");
-    object_groups_tree->add( object_groups );
+    persistent_objects->add( object_groups );
     object_groups_group_id = FWObjectDatabase::getStringId(object_groups->getId());
 
     BaseObjectGroup::name_disambiguation.clear();
@@ -136,7 +139,7 @@ bool NamedObjectsManager::haveNamedObjects()
 
 bool NamedObjectsManager::haveObjectGroups()
 {
-    FWObject *object_groups = object_groups_tree->findInIndex(
+    FWObject *object_groups = persistent_objects->getRoot()->findInIndex(
         FWObjectDatabase::getIntId(object_groups_group_id));
     return (object_groups->size() > 0);
 }
@@ -153,7 +156,7 @@ string NamedObjectsManager::getNamedObjectsDefinitions()
         output << nobj->getCommand();
     }
 
-    FWObject *object_groups = object_groups_tree->findInIndex(
+    FWObject *object_groups = persistent_objects->getRoot()->findInIndex(
         FWObjectDatabase::getIntId(object_groups_group_id));
 
     for (FWObject::iterator i=object_groups->begin();
@@ -185,58 +188,15 @@ BaseObjectGroup* NamedObjectsManager::createObjectGroup()
 
     }
     if (platform == "iosacl") grp = new IOSObjectGroup();
+
     assert(grp!=NULL);
-    grp->init(work_db);
+    
     return grp;
 }
 
-void NamedObjectsManager::setWorkingObjectTree(FWObjectDatabase *dbcopy)
+Group* NamedObjectsManager::getObjectGroupsGroup()
 {
-    FWObjectDatabase::ConflictResolutionPredicate merge_predicate;
-    dbcopy->merge(object_groups_tree, &merge_predicate);
-    work_db = dbcopy;
-}
-
-/*
- * copy group that holds new object groups from the working tree, that
- * belongs to the compiler to our own tree in object_groups_tree. We
- * simply add group object to object_groups_tree (this changes its
- * parent AND BREAKS OBJECT TREE IT USED TO BELONG TO). We have to
- * scan all groups inside of it and create copies of objects they
- * reference. We add copies of these objects right into the root of
- * object_groups_tree.
- */
-void NamedObjectsManager::saveObjectGroups()
-{
-    object_groups_tree->clearChildren();
-
-    FWObject *work_object_groups = getObjectGroupsGroupInWorkTree(); // finds it in work_db
-// move from work tree to object_groups_tree
-    object_groups_tree->add(work_object_groups);  
-
-    for (FWObject::iterator i=work_object_groups->begin();
-         i!=work_object_groups->end(); ++i)
-    {
-        FWObject *grp = *i;
-        grp->setRoot(object_groups_tree);
-
-        for (FWObject::iterator i1=grp->begin(); i1!=grp->end(); ++i1)
-        {
-            FWObject *obj = FWReference::getObject(*i1);
-            object_groups_tree->add(obj);
-            obj->setRoot(object_groups_tree);
-
-            (*i1)->setRoot(object_groups_tree);
-        }
-    }
-    object_groups_tree->addToIndexRecursive(work_object_groups);
-
-    //object_groups_tree->dump(true, true);
-}
-
-Group* NamedObjectsManager::getObjectGroupsGroupInWorkTree()
-{
-    return Group::cast(work_db->findInIndex(
+    return Group::cast(persistent_objects->getRoot()->findInIndex(
                            FWObjectDatabase::getIntId(object_groups_group_id)));
 }
 

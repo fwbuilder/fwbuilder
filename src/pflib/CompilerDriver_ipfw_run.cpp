@@ -42,26 +42,21 @@
 #include "OSConfigurator_freebsd.h"
 #include "OSConfigurator_macosx.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-
-#include "fwcompiler/Preprocessor.h"
-
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+
+#include "fwcompiler/Preprocessor.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -114,13 +109,9 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
                                  const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -173,6 +164,13 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
         int ipfw_rule_number = 0;
 
         findImportedRuleSets(fw, all_policies);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not used by this compiler
+
+        assignUniqueRuleIds(all_policies);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -238,6 +236,8 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
                 c.setIPFWNumber(ipfw_rule_number);
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(branch_name);
+                c.setPersistentObjects(persistent_objects);
+
                 c.setSingleRuleCompileMode(single_rule_id);
                 c.setDebugLevel( dl );
                 if (rule_debug_on) c.setDebugRule(  drp );
@@ -285,6 +285,13 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
 
             generated_script += c_str.str();
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

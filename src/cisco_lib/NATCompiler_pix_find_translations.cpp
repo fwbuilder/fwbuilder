@@ -23,13 +23,14 @@
 
 #include "NATCompiler_pix.h"
 
-#include "fwbuilder/Interface.h"
+#include "fwbuilder/Address.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/InetAddr.h"
-#include "fwbuilder/Address.h"
-#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <sstream>
 
@@ -79,8 +80,9 @@ list<NATRule*> NATCompiler_pix::findMatchingDNATRules(
     list<NATRule*> res;
     map<string,NATRule*> res_dict;
 
-    for (FWObject::iterator i=final_ruleset->begin();
-         i!=final_ruleset->end(); ++i)
+    FWObject *final_ruleset = persistent_objects->getRoot()->findInIndex(final_ruleset_id);
+
+    for (FWObject::iterator i=final_ruleset->begin(); i!=final_ruleset->end(); ++i)
     {
         NATRule *rule = NATRule::cast(*i);
         if (rule == NULL) continue; // skip RuleSetOptions object

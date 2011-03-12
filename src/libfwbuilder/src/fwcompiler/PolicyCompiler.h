@@ -50,10 +50,10 @@ namespace fwcompiler {
 	protected:
 
 	/**
-	 *  this method scans combined_ruleset looking for atomic rule
+	 *  this method scans source_ruleset looking for atomic rule
 	 *  which yields non-empty intersection with atomic rule r.
 	 *  
-	 *  it can start scan either from the beginning of combined_ruleset,
+	 *  it can start scan either from the beginning of source_ruleset,
 	 *  or from iterator 'start_here'
 	 *
 	 *  it returns iterator pointing at rule it has found (so we

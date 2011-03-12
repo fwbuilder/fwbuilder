@@ -27,19 +27,20 @@
 
 #include "NATCompiler_ipf.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/NAT.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/IPService.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Host.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
-#include "fwbuilder/Host.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/AddressTable.h"
 
 #include <QString>
 
@@ -165,7 +166,7 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
             newSrv->duplicate(osrv,true);
             TCPUDPService::cast(newSrv)->setDstRangeStart(p);
             TCPUDPService::cast(newSrv)->setDstRangeEnd(p);
-            compiler->dbcopy->add(newSrv,false);
+            compiler->persistent_objects->add(newSrv,false);
             compiler->dbcopy->addToIndex(newSrv);
 
             RuleElementOSrv *nosrv = r->getOSrv();

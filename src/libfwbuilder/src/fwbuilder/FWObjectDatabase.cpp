@@ -165,7 +165,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
 FWObjectDatabase::~FWObjectDatabase()
 {
     busy = true;
-    //findDuplicateLinksInTree(); // debugging
+    //verifyTree(); // debugging
     destroyChildren();
 }
 

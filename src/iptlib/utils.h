@@ -23,11 +23,14 @@
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Library.h"
 
 #include <QMap>
 #include <QString>
 
 
 extern void build_interface_groups(
-    libfwbuilder::FWObjectDatabase *dbcopy, libfwbuilder::Firewall *fw, bool ipv6,
+    libfwbuilder::FWObjectDatabase *dbcopy,
+    libfwbuilder::Library *persistent_objects,
+    libfwbuilder::Firewall *fw, bool ipv6,
     QMap<QString, libfwbuilder::FWObject*> &regular_interfaces);

@@ -45,17 +45,27 @@ using namespace std;
 static int infinite_recursion_breaker = 0;
 string Preprocessor::myPlatformName() { return "generic_preprocessor"; }
 
-Preprocessor::~Preprocessor() {}
+Preprocessor::~Preprocessor()
+{
+    dbcopy = NULL;
+}
 
 Preprocessor::Preprocessor(FWObjectDatabase *_db,
-                           Firewall *fw, bool ipv6_policy) :
-    Compiler(_db, fw, ipv6_policy)
+                           Firewall *_fw, bool ipv6_policy) :
+    Compiler(NULL, _fw, ipv6_policy)
 {
     // This is the main difference between Preprocessor and other
     // compilers.  All compilers create a copy of the whole database
     // and work with it, but Preprocessor works with the original
     // database. Therefore it copies only pointer here.
     dbcopy = _db;
+
+    fw_id = _fw->getId();
+    fwopt = _fw->getOptionsObject();
+
+    string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
+    fw = Firewall::cast(
+        dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
 }
 
 void Preprocessor::convertObject(FWObject *obj)

@@ -1,9 +1,15 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
+<<<<<<< HEAD
 !  Firewall Builder  fwb_pix v4.2.0.3496
 !
 !  Generated Sat Mar 12 14:44:18 2011 PST by vadim
+=======
+!  Firewall Builder  fwb_pix v4.2.0.3499
+!
+!  Generated Fri Mar 11 12:16:53 2011 PST by vadim
+>>>>>>> cb7662fdaed92246c0956ec9ac25bd37d755f271
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -86,11 +92,19 @@ object-group network id43867C2418346.src.net.0
 exit
 
 object-group network id438728A918346.dst.net.0
+<<<<<<< HEAD
   network-object host 74.125.224.16 
   network-object host 74.125.224.17 
   network-object host 74.125.224.18 
   network-object host 74.125.224.19 
   network-object host 74.125.224.20 
+=======
+  network-object host 74.125.224.48 
+  network-object host 74.125.224.49 
+  network-object host 74.125.224.50 
+  network-object host 74.125.224.51 
+  network-object host 74.125.224.52 
+>>>>>>> cb7662fdaed92246c0956ec9ac25bd37d755f271
   network-object host 157.166.224.25 
   network-object host 157.166.224.26 
   network-object host 157.166.226.25 

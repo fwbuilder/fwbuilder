@@ -45,27 +45,21 @@
 #include "OSConfigurator_freebsd.h"
 #include "OSConfigurator_solaris.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-
-#include "fwcompiler/Preprocessor.h"
-
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+
+#include "fwcompiler/Preprocessor.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -165,13 +159,9 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                                 const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -229,6 +219,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
         c.setSourceRuleSet(Policy::cast(policy));
         c.setRuleSetName(policy->getName());
+        c.setPersistentObjects(persistent_objects);
 
         c.setSingleRuleCompileMode(single_rule_id);
         c.setDebugLevel( dl );
@@ -250,6 +241,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
 
         n.setSourceRuleSet(NAT::cast(nat));
         n.setRuleSetName(nat->getName());
+        n.setPersistentObjects(persistent_objects);
 
         n.setSingleRuleCompileMode(single_rule_id);
         n.setDebugLevel( dl );
@@ -264,6 +256,13 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
             n.compile();
             n.epilog();
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

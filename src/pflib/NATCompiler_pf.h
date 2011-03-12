@@ -63,15 +63,20 @@ namespace fwcompiler
 
         struct redirectRuleInfo
         {
-            std::string            natrule_label;
-            libfwbuilder::FWObject *old_tdst;
-            libfwbuilder::FWObject *new_tdst;
-            libfwbuilder::Service *tsrv;
+            std::string natrule_label;
+            int old_tdst;
+            int new_tdst;
+            int tsrv;
             redirectRuleInfo(const std::string &rl,
                              libfwbuilder::FWObject *oa,
                              libfwbuilder::FWObject *na,
                              libfwbuilder::Service *s) 
-            {  natrule_label=rl; old_tdst=oa; new_tdst=na; tsrv=s; }
+            {
+                natrule_label = rl;
+                old_tdst = oa->getId();
+                new_tdst = na->getId();
+                tsrv = s->getId();
+            }
         };
 
 
@@ -388,12 +393,12 @@ namespace fwcompiler
                        bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf,
                        TableFactory *tbf = NULL
-        ) :
-        NATCompiler(_db, fw, ipv6_policy, _oscnf)
+        ) : NATCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             tables = tbf;
         }
 
+        virtual ~NATCompiler_pf();
 
 	virtual int  prolog();
 	virtual void compile();

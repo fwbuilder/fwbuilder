@@ -50,29 +50,23 @@
 #include "OSConfigurator_freebsd.h"
 #include "OSConfigurator_solaris.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/ClusterGroup.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/NAT.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/Routing.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
 
 #include "fwcompiler/Preprocessor.h"
 #include "fwcompiler/exceptions.h"
-
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Cluster.h"
-#include "fwbuilder/ClusterGroup.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -212,13 +206,9 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                                const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -287,6 +277,14 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         findImportedRuleSets(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not really used by compiler for PF
+
+        assignUniqueRuleIds(all_policies);
+        assignUniqueRuleIds(all_nat);
 
         list<FWObject*> all_rulesets;
         all_rulesets.insert(
@@ -459,7 +457,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (table_factories.count(ruleset_name) == 0)
                 {
-                    table_factories[ruleset_name] = new fwcompiler::TableFactory(this);
+                    table_factories[ruleset_name] =
+                        new fwcompiler::TableFactory(this, persistent_objects);
                 }
 
                 NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
@@ -468,6 +467,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(nat->getName());
+                n.setPersistentObjects(persistent_objects);
 
                 n.setSingleRuleCompileMode(single_rule_id);
                 n.setDebugLevel( dl );
@@ -532,7 +532,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (table_factories.count(ruleset_name) == 0)
                 {
-                    table_factories[ruleset_name] = new fwcompiler::TableFactory(this);
+                    table_factories[ruleset_name] =
+                        new fwcompiler::TableFactory(this, persistent_objects);
                 }
 
                 PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),
@@ -542,6 +543,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
+                c.setPersistentObjects(persistent_objects);
 
                 c.setSingleRuleCompileMode(single_rule_id);
                 c.setDebugLevel( dl );
@@ -609,6 +611,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         {
             routing_compiler->setSourceRuleSet(routing);
             routing_compiler->setRuleSetName(routing->getName());
+            routing_compiler->setPersistentObjects(persistent_objects);
 
             routing_compiler->setSingleRuleCompileMode(single_rule_id);
             routing_compiler->setDebugLevel( dl );
@@ -629,6 +632,12 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             routing_script += routing_compiler->getCompiledScript();
         }
 
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {
@@ -703,7 +712,13 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 if (ruleset_name == "__main__")
                 {
                     printStaticOptions(pf_str, fw);
+
+                    // attach persistent_tables subtree inside TableFactory object
+                    // to the object tree
+                    table_factories[ruleset_name]->init(objdb);
+
                     pf_str << table_factories[ruleset_name]->PrintTables();
+
                     if (prolog_place == "pf_file_after_tables")
                         printProlog(pf_str, pre_hook);
                 } else 

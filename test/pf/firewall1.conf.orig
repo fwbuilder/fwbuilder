@@ -18,11 +18,12 @@
 scrub in all fragment reassemble
 
 
-# Tables: (6)
+# Tables: (7)
 table <tbl.r0.s> { 22.22.22.22 , 192.168.1.1 } 
 table <tbl.r11> { 192.168.1.10 , 192.168.1.20 } 
 table <tbl.r11.s> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.0/24 , 192.168.2.1 } 
 table <tbl.r16> { 33.33.33.0/24 , 33.33.44.0/24 } 
+table <tbl.r18.d> { 22.22.22.22 , 22.22.23.23 , 127.0.0.1 , 192.168.1.1 , 192.168.2.1 } 
 table <tbl.r7> { 192.168.1.0/24 , 192.168.2.0/24 } 
 table <tbl.r9> { 22.22.22.22 , 22.22.23.23 , 192.168.1.1 , 192.168.2.1 } 
 
@@ -167,7 +168,7 @@ pass  quick inet  from 192.168.1.0/24  to any keep state
 # Rule  18 (global)
 # firewall1:Policy:18: warning: Changing rule direction due to self reference
 
-pass in   quick inet proto tcp  from any  to <tbl.r9> port 3128 keep state 
+pass in   quick inet proto tcp  from any  to <tbl.r18.d> port 3128 keep state 
 # 
 # Rule  19 (eth0)
 # rule from http://www.benzedrine.cx/transquid.html

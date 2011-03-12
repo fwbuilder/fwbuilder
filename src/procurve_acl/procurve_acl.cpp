@@ -153,17 +153,20 @@ int main(int argc, char **argv)
         FWObject *slib = objdb->getById(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
 
-        CompilerDriver_procurve_acl driver(objdb);
-        if (!driver.prepare(args))
+        CompilerDriver_procurve_acl *driver = new CompilerDriver_procurve_acl(objdb);
+        if (!driver->prepare(args))
         {
             usage(argv[0]);
             exit(1);
         }
 
-        driver.compile();
+        driver->compile();
+        int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+
+        delete driver;
         delete objdb;
 
-        return (driver.getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        return ret;
         
     } catch(libfwbuilder::FWException &ex)
     {

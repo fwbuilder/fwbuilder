@@ -36,11 +36,12 @@
 #include <QString>
 
 
-namespace fwcompiler {
-
+namespace fwcompiler
+{
     class NamedObjectsManager;
     
-    class BaseObjectGroup : public libfwbuilder::Group {
+    class BaseObjectGroup : public libfwbuilder::Group
+    {
 public:
 
         typedef enum { UNKNOWN, 

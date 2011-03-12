@@ -170,10 +170,10 @@ Rule* RuleSet::insertRuleAtTop(bool hidden_rule)
 
 Rule* RuleSet::insertRuleBefore(int rule_n) 
 {
-    Rule *old_rule=getRuleByNum(rule_n);
-    Rule *r=createRule();
+    Rule *old_rule = getRuleByNum(rule_n);
+    Rule *r = createRule();
     if (old_rule==NULL) add(r);
-    else                insert_before(old_rule,r);
+    else insert_before(old_rule, r);
     renumberRules();
     return(r);
 }
@@ -182,8 +182,14 @@ Rule* RuleSet::appendRuleAtBottom(bool hidden_rule)
 {
     Rule *r = createRule();
     r->setHidden(hidden_rule);
-    int last_rule_position = Rule::cast(back())->getPosition();
-    if (hidden_rule) r->setPosition(last_rule_position + 1000);
+    int last_rule_position;
+    Rule *last_rule = Rule::cast(back());
+    if (last_rule != NULL)
+    {
+        last_rule_position = last_rule->getPosition() + 1000;
+    } else
+        last_rule_position = 1000;
+    if (hidden_rule) r->setPosition(last_rule_position);
     add(r);            // FWObject::add adds to the end of the list
     renumberRules();
     return(r);
@@ -362,6 +368,17 @@ Rule* RuleSet::getRuleByNum(int n)
 int RuleSet::getRuleSetSize()
 {
     return getChildrenCount() - 1;
+}
+
+void RuleSet::assignUniqueRuleIds()
+{
+    for (FWObject::iterator it=begin(); it!=end(); ++it)
+    {
+        Rule *r = Rule::cast(*it);
+        if (r != NULL)
+            r->setUniqueId(FWObjectDatabase::getStringId((*it)->getId()) );
+
+    }
 }
 
 

@@ -354,12 +354,17 @@ public:
      *   is true, the path is built relative to the library 'this' is
      *   a part of (name of the library is not included).
      */
-    std::string getPath(bool relative=false) const;
+    std::string getPath(bool relative=false, bool detailed=false) const;
 
     void addAt(int where_id, FWObject *obj);
     virtual void add(FWObject *obj,bool validate=true);
     virtual void insert_before(FWObject *o1,FWObject *obj);
     virtual void insert_after(FWObject *o1,FWObject *obj);
+
+    /**
+     * call add(), but first remove() object from its old parent
+     */
+    virtual void reparent(FWObject *obj,bool validate=true);
 
     /**
      * In direct children of 'this' swaps all references
@@ -432,8 +437,20 @@ public:
 
     /**
      * Walks the tree, looking for objects that are referenced by two parents
+     * or those with this->parent == NULL. Prints report to stderr and
+     * returns true if such objects have been found.
      */
-    void findDuplicateLinksInTree();
+    bool verifyTree();
+
+    /**
+     * sometimes we need to move object subtree from one object
+     * database to another. For example, this can be a useful
+     * mechanism to maintain persistent objects between compiler
+     * passes. However when the object and its children are added to
+     * the new tree, "parent" and "root" pointers in obejcts still
+     * point to the old object tree and need to be fixed.
+     */
+    void fixTree();
     
     int getChildrenCount() const;
 

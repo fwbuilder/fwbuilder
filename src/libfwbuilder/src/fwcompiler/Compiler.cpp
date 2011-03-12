@@ -29,33 +29,34 @@
 
 #include "fwbuilder/libfwbuilder-config.h"
 
-#include "fwbuilder/FWServiceReference.h"
-#include "fwbuilder/FWObjectReference.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Cluster.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/NetworkIPv6.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/ICMP6Service.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/RuleSet.h"
-#include "fwbuilder/Interface.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Group.h"
+#include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/DNSName.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/MultiAddress.h"
-#include "fwbuilder/FailoverClusterGroup.h"
-#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
 #include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Group.h"
 
 #include <iostream>
 #include <iomanip>
@@ -69,8 +70,6 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-
-Compiler::~Compiler() {}
 
 int Compiler::prolog() 
 {
@@ -141,7 +140,6 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
     _cntr_ = 1; 
 
     temp_ruleset = NULL; 
-    combined_ruleset = NULL;
 
     debug = 0;
     debug_rule = -1;
@@ -151,15 +149,28 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
     single_rule_ruleset_name = "";
     single_rule_position = -1;
 
-    fw_id = _fw->getId();
-    fwopt = _fw->getOptionsObject();
+    dbcopy = NULL;
+    persistent_objects = NULL;
+    fw = NULL;
+    fwopt = NULL;
+    fw_id = -1;
 
-    assert(_fw->getRoot() == _db);
+    if (_db != NULL && _fw != NULL)
+    {
+        assert(_fw->getRoot() == _db);
 
-    string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
-    
-    dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
-    fw = Firewall::cast(dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
+        dbcopy = _db;
+        fw = _fw;
+        fwopt = fw->getOptionsObject();
+        fw_id = fw->getId();
+
+        // string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
+        // dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
+        // fw = Firewall::cast(
+        //     dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
+        // fwopt = fw->getOptionsObject();
+        // fw_id = fw->getId();
+    }
 }
 
 Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
@@ -169,6 +180,7 @@ Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
+    persistent_objects = NULL;
     _init(_db, fw);
 }
 
@@ -180,6 +192,7 @@ Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy,
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
+    persistent_objects = NULL;
     _init(_db, fw);
 }
 
@@ -193,14 +206,49 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
     ipv6 = ipv6_policy;
     initialized = false;
     _cntr_ = 1; 
+    persistent_objects = NULL;
     fw = NULL; 
     temp_ruleset = NULL; 
-    combined_ruleset = NULL;
     debug = 0;
     debug_rule = -1;
     rule_debug_on = false;
     verbose = true;
     single_rule_mode = false;
+}
+
+Compiler::~Compiler()
+{
+#ifdef DBCOPY_IS_TRUE_COPY
+    if (dbcopy) 
+    {
+        if (dbcopy->verifyTree())
+        {
+            cerr << "source_ruleset=" << source_ruleset << endl;
+            cerr << "temp_ruleset=" << temp_ruleset << endl;
+            // dbcopy->dump(true, true);
+        }
+
+        if (persistent_objects != NULL)
+            dbcopy->remove(persistent_objects, false);
+
+        delete dbcopy;
+    }
+#endif
+
+    dbcopy = NULL;
+}
+
+void Compiler::setPersistentObjects(Library* po)
+{
+    persistent_objects = po;
+    dbcopy->reparent(persistent_objects);
+    persistent_objects->fixTree();
+}
+
+void Compiler::setSourceRuleSet(RuleSet *rs)
+{
+    FWObject *copy_rs = dbcopy->findInIndex(rs->getId());
+    source_ruleset = RuleSet::cast(copy_rs);
 }
 
 void Compiler::setSingleRuleCompileMode(const string &rule_id)
@@ -241,8 +289,6 @@ string Compiler::getUniqueRuleLabel()
 void Compiler::compile()
 {
     assert(fw);
-    assert(combined_ruleset);
-
 }
 
 void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
@@ -261,6 +307,7 @@ void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
  * run-time address tables
  */
     MultiAddress *adt = MultiAddress::cast(o);
+
     if ((Group::cast(o)!=NULL && adt==NULL) ||
         (adt!=NULL && adt->isCompileTime()))
     {
@@ -568,7 +615,7 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
                     h->setName(string("%n-")+(*i).toString()+string("%") );
                     h->setNetmask(*(i->getNetmaskPtr()));
                     h->setAddress(*(i->getAddressPtr()));
-                    dbcopy->add(h,false);
+                    persistent_objects->add(h, false);
                     cl.push_back(h);
                 }
             }
@@ -592,10 +639,11 @@ void Compiler::normalizePortRange(int &rs,int &re)
 
 void Compiler::debugRule()
 {
-    for (FWObject::iterator i=combined_ruleset->begin();
-         i!=combined_ruleset->end(); i++)
+    for (FWObject::iterator i=source_ruleset->begin();
+         i!=source_ruleset->end(); i++)
     {
 	Rule *rule = Rule::cast( *i );
+        if (rule == NULL) continue;
         if (rule_debug_on && rule->getPosition()==debug_rule )
         {
             info(debugPrintRule(rule));
@@ -667,19 +715,20 @@ bool Compiler::Begin::processNext()
     assert(compiler!=NULL);
     if (!init)
     {
-        for (FWObject::iterator i=compiler->combined_ruleset->begin();
-             i!=compiler->combined_ruleset->end(); ++i)
+        for (FWObject::iterator i=compiler->source_ruleset->begin();
+             i!=compiler->source_ruleset->end(); ++i)
         {
             Rule *rule = Rule::cast(*i);
+            if (rule == NULL) continue;
             if (rule->isDisabled()) continue;
             Rule  *r = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             tmp_queue.push_back( r );
         }
-        init=true;
-        if (!name.empty())
-            compiler->info(string(" ") + name);
+        init = true;
+
+        if (!name.empty()) compiler->info(string(" ") + name);
 
         return true;
     }
@@ -959,28 +1008,31 @@ bool Compiler::eliminateDuplicatesInRE::processNext()
 {
     Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
     
-    if (comparator==NULL)    comparator=new equalObj();
+    if (comparator==NULL) comparator = new equalObj();
 
-    RuleElement *re=RuleElement::cast(rule->getFirstByType(re_type));
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-    vector<FWObject*> cl;
+    list<FWObject*> cl;
 
     for(list<FWObject*>::iterator i=re->begin(); i!=re->end(); ++i)
     {
         FWObject *obj = FWReference::getObject(*i);
+        if (obj == NULL) continue;
+
         comparator->set(obj);
 
-        bool found=false;
-        for (vector<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
+        bool found = false;
+        for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
         {
-            if ( (*comparator)( (*i1) ) ) { found=true; break; }
+            FWObject *o2 = *i1;
+            if ( (*comparator)(o2) ) { found=true; break; }
         }
         if (!found) cl.push_back(obj);
     }
     if (!cl.empty())
     {
         re->clearChildren();
-        for (vector<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
+        for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
             re->addRef( (*i1) );
     }
 
@@ -1191,7 +1243,7 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
 
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
-                compiler->dbcopy->add(mart);
+                compiler->persistent_objects->add(mart);
             }
             re->removeRef(ma);
             re->addRef(mart);

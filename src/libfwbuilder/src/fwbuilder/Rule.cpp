@@ -90,7 +90,6 @@ FWObject& Rule::shallowDuplicate(const FWObject *x,
     unique_id = rx->unique_id;
     abs_rule_number = rx->abs_rule_number;
     compiler_message = rx->compiler_message;
-
     return  FWObject::shallowDuplicate(x,preserve_id);
 }
 

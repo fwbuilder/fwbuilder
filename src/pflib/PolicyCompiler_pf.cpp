@@ -28,20 +28,21 @@
 #include "PolicyCompiler_pf.h"
 #include "NATCompiler_pf.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/TagService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Network.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
 
 #include <algorithm>
 #include <functional>
@@ -156,7 +157,7 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
 
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
-                compiler->dbcopy->add(mart);
+                compiler->persistent_objects->add(mart);
 
 // register this object as a table
                 string tblname = atbl->getName();
@@ -418,7 +419,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             ssh->setDstRangeEnd(22);
 
             ssh->setName("mgmt_ssh");
-            dbcopy->add(ssh,false);
+            persistent_objects->add(ssh,false);
 
             string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
             InetAddr  addr;
@@ -452,12 +453,13 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             mgmt_workstation->setName("mgmt_addr");
             mgmt_workstation->setAddress(addr);
             mgmt_workstation->setNetmask(netmask);
-//        IPv4 *mgmt_workstation = IPv4::cast(dbcopy->create(IPv4::TYPENAME));
-//        mgmt_workstation->setAddress(getCachedFwOpt()->getStr("mgmt_addr"));
-            dbcopy->add(mgmt_workstation,false);
+            persistent_objects->add(mgmt_workstation,false);
 
-            r = dbcopy->createPolicyRule();
-            temp_ruleset->add(r);
+            // r = dbcopy->createPolicyRule();
+            // source_ruleset->push_front(r);
+
+            r = PolicyRule::cast(source_ruleset->insertRuleAtTop(true));
+
             r->setAction(PolicyRule::Accept);
             r->setLogging(false);
             r->setDirection(PolicyRule::Inbound);
@@ -479,17 +481,17 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             RuleElement *srv = r->getSrv();
             assert(srv!=NULL);
             srv->addRef(ssh);
-
-            combined_ruleset->push_front(r);
-
         }
 
         insertCarpRule();
         insertPfsyncRule();
 
-        PolicyRule *r = dbcopy->createPolicyRule();
+        // PolicyRule *r = dbcopy->createPolicyRule();
+        // source_ruleset->push_back(r);
+
+        PolicyRule *r = PolicyRule::cast(source_ruleset->appendRuleAtBottom(true));
+
         FWOptions *ruleopt;
-        temp_ruleset->add(r);
         r->setAction(PolicyRule::Deny);
         r->setLogging(getCachedFwOpt()->getBool("fallback_log"));
         r->setDirection(PolicyRule::Both);
@@ -500,7 +502,6 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
         r->setLabel("fallback rule");
         ruleopt = r->getOptionsObject();
         ruleopt->setBool("stateless", true);
-        combined_ruleset->push_back(r);
     }
 }
 
@@ -749,12 +750,11 @@ bool PolicyCompiler_pf::doSrvNegation::processNext()
 
 bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyCompiler_pf *pf_comp = dynamic_cast<PolicyCompiler_pf*>(compiler);
 
-//    RuleElementSrc *src=rule->getSrc();
-    RuleElementDst *dst=rule->getDst();
-    RuleElementSrv *srv=rule->getSrv();
+    RuleElementDst *dst = rule->getDst();
+    RuleElementSrv *srv = rule->getSrv();
 
     if (pf_comp->redirect_rules_info==NULL)
         compiler->abort(
@@ -764,41 +764,34 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 
     tmp_queue.push_back(rule);
 
-    //const list<NATCompiler_pf::redirectRuleInfo> lst = 
-    //  pf_comp->natcmp->getRedirRulesInfo();
-
     if (pf_comp->redirect_rules_info->empty()) return true;
-
-/*
- *  struct redirectRuleInfo {
- *    string   natrule_label;
- *    Address *tdst;
- *    Service *tsrv;
- *  };
- */
 
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) 
     {
-	FWObject *o1= *i;
-	if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
-	Service *s=Service::cast( o1 );
+	FWObject *o1 = FWReference::getObject(*i);
+	Service *s = Service::cast( o1 );
 	assert(s);
 
         for (FWObject::iterator j=dst->begin(); j!=dst->end(); j++) 
         {
-            FWObject *o2= *j;
-            if (FWReference::cast(o2)!=NULL) o2=FWReference::cast(o2)->getPointer();
-            Address *a=Address::cast( o2 );
+            FWObject *o2 = FWReference::getObject(*j);
+            Address *a = Address::cast( o2 );
             assert(a);
 
             list<NATCompiler_pf::redirectRuleInfo>::const_iterator k;
             for (k=pf_comp->redirect_rules_info->begin();
                  k!=pf_comp->redirect_rules_info->end(); ++k)
             {
-                if ( *a == *(k->old_tdst) &&  *s == *(k->tsrv) )
+                Address *old_tdst_obj = Address::cast(
+                    compiler->dbcopy->findInIndex(k->old_tdst));
+                Service *tsrv_obj = Service::cast(
+                    compiler->dbcopy->findInIndex(k->tsrv));
+
+                if ( *a == *(old_tdst_obj) &&  *s == *(tsrv_obj) )
                 {
 // insert address used for redirection in the NAT rule.
-                    dst->addRef( k->new_tdst );
+                    FWObject *new_tdst_obj = compiler->dbcopy->findInIndex(k->new_tdst);
+                    dst->addRef(new_tdst_obj);
                     return true;
                 }
             }
@@ -1124,7 +1117,7 @@ void PolicyCompiler_pf::insertCarpRule()
     IPService* carp_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
     carp_service->setComment("CARP service");
     carp_service->setProtocolNumber(112);
-    dbcopy->add(carp_service);
+    persistent_objects->add(carp_service);
 
     FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
     for (; interfaces != interfaces.end(); ++interfaces) 
@@ -1170,7 +1163,7 @@ void PolicyCompiler_pf::insertPfsyncRule()
     IPService* pfsync_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
     pfsync_service->setComment("pfsync service");
     pfsync_service->setProtocolNumber(240);
-    dbcopy->add(pfsync_service);
+    persistent_objects->add(pfsync_service);
 
     FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
     for (; interfaces != interfaces.end(); ++interfaces) 
@@ -1211,4 +1204,7 @@ bool PolicyCompiler_pf::checkForShadowingPlatformSpecific(PolicyRule *,
     return true;
 }
 
-
+PolicyCompiler_pf::~PolicyCompiler_pf()
+{
+    // if (tables) tables->detach();
+}

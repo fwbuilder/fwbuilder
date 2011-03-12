@@ -9,7 +9,7 @@ match out all scrub (random-id min-ttl  1 max-mss  1460)
 
 
 # Tables: (1)
-table <tbl.r9998.d> { 10.1.1.81 , 10.3.14.81 } 
+table <tbl.r0.d> { 10.1.1.81 , 10.3.14.81 } 
 
 # NAT compiler errors and warnings:
 # firewall92:NAT:2: error: No translation rules are not supported for PF 4.7, use negation to implement exclusions
@@ -28,12 +28,12 @@ match in on em0 proto udp from any to 10.3.14.81 port 161 rdr-to 10.1.1.1 port 1
 # 
 # Rule  backup ssh access rule
 #    backup ssh access rule 
-pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r9998.d> port 22  label "RULE 9998 -- ACCEPT "  
+pass in   quick inet proto tcp  from 10.3.14.30  to <tbl.r0.d> port 22  label "RULE -1 -- ACCEPT "  
 # 
 # Rule  0 (global)
 # firewall92:Policy:0: warning: Changing rule direction due to self reference
 
-pass in   quick inet proto tcp  from 10.3.14.0/24  to <tbl.r9998.d> port 22  label "RULE 0 -- ACCEPT "  
+pass in   quick inet proto tcp  from 10.3.14.0/24  to <tbl.r0.d> port 22  label "RULE 0 -- ACCEPT "  
 # 
 # Rule  1 (global)
 pass  quick inet  from 10.1.1.0/24  to any  label "RULE 1 -- ACCEPT "  

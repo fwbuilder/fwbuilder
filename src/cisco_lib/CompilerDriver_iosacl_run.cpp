@@ -44,28 +44,22 @@
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManagerIOS.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-#include "fwbuilder/Routing.h"
-
-#include "fwcompiler/Preprocessor.h"
-
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/Routing.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+
+#include "fwcompiler/Preprocessor.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -125,13 +119,9 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                                    const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+    Firewall *fw = NULL;
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
     {
@@ -187,12 +177,19 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
 
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+        // NB: these ids are not used by this compiler
+
+        assignUniqueRuleIds(all_policies);
+
         vector<int> ipv4_6_runs;
 
         if (!single_rule_compile_on)
             system_configuration_script = safetyNetInstall(fw);
 
-        NamedObjectsManagerIOS named_objects_manager(fw);
+        NamedObjectsManagerIOS named_objects_manager(persistent_objects, fw);
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -250,6 +247,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                 c.setNamedObjectsManager(&named_objects_manager);
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
+                c.setPersistentObjects(persistent_objects);
 
                 c.setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) c.setTestMode();
@@ -284,7 +282,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                     }
                     policy_script +=  c.getCompiledScript();
                     clear_commands += c.printClearCommands();
-                    named_objects_manager.saveObjectGroups();
+                    //named_objects_manager.saveObjectGroups();
 
                 } else
                     info(" Nothing to compile in Policy");
@@ -301,6 +299,7 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                 r.setNamedObjectsManager(&named_objects_manager);
                 r.setSourceRuleSet(routing);
                 r.setRuleSetName(routing->getName());
+                r.setPersistentObjects(persistent_objects);
 
                 r.setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) r.setTestMode();
@@ -324,6 +323,13 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                     info(" Nothing to compile in Routing");
             }
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

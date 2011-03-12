@@ -46,22 +46,23 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
-#include "fwbuilder/FWObject.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWException.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
-#include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/Policy.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/NAT.h"
-#include "fwbuilder/Routing.h"
+#include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/Rule.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/FailoverClusterGroup.h"
 
 #include "fwcompiler/Compiler.h"
 
@@ -91,7 +92,19 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     ipv4_run = true;
     ipv6_run = true;
     fw_by_id = false;
+
     objdb = new FWObjectDatabase(*db);
+
+    //objdb = db;
+
+    persistent_objects = new Library();
+    persistent_objects->setName("Persistent Objects");
+    objdb->add(persistent_objects);
+
+    workspace = new Library();
+    workspace->setName("Workspace");
+    objdb->add(workspace);
+
     prolog_done = false;
     epilog_done = false;
     have_filter = false;
@@ -101,6 +114,28 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
 
 CompilerDriver::~CompilerDriver()
 {
+    if (persistent_objects->getParent() == NULL)
+        delete persistent_objects;
+    else
+    {
+        if (persistent_objects->getParent() == objdb)
+        {
+            objdb->remove(persistent_objects, false);
+            delete persistent_objects;
+        }
+    }
+    
+    if (workspace->getParent() == NULL)
+        delete workspace;
+    else
+    {
+        if (workspace->getParent() == objdb)
+        {
+            objdb->remove(workspace, false);
+            delete workspace;
+        }
+    }
+
     delete objdb;
 }
 
@@ -685,9 +720,12 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
 
                     if (branch_ruleset->isChildOf(fw)) continue;
 
-                    list<FWObject*>::iterator it = std::find(imported_policies.begin(),
-                                                             imported_policies.end(),
-                                                             branch_ruleset);
+                    list<FWObject*>::iterator it =
+                        std::find(
+                            imported_policies.begin(),
+                            imported_policies.end(),
+                            branch_ruleset);
+
                     if (it != imported_policies.end()) continue;
 
                     // Additional check: the rule set may be child of a
@@ -703,6 +741,7 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
             }
         }
     }
+
     if (imported_policies.size() > 0)
         all_policies.insert(all_policies.end(),
                             imported_policies.begin(), imported_policies.end());
@@ -734,6 +773,11 @@ void CompilerDriver::_findImportedRuleSetsRecursively(
     }
 }
 
+void CompilerDriver::assignUniqueRuleIds(list<FWObject*> &all_rulesets)
+{
+    for_each(all_rulesets.begin(), all_rulesets.end(),
+             RuleSet::UniqueRuleIdsSetter());
+}
 
 QString CompilerDriver::run(const std::string&, const std::string&, const std::string&)
 {
@@ -855,8 +899,10 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
     {
         FWObject *ruleset = *p;
 
-        FWObject::iterator i = std::find_if(fw->begin(), fw->end(),
-                                            FWObjectNameEQPredicate(ruleset->getName()));
+        FWObject::iterator i = std::find_if(
+            fw->begin(), fw->end(),
+            FWObjectNameEQPredicate(ruleset->getName()));
+
         if (i!=fw->end() && (*i)->getTypeName() == type)
         {
             FWObject *fw_ruleset = *i;
@@ -924,6 +970,20 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
 void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 {
     if (cluster==NULL) return;
+
+#ifdef DEBUG_CLUSTER_INTERFACES
+    cerr << "CompilerDriver::populateClusterElements " << endl;
+
+    cerr << cluster->getPath(false, true) << endl;
+    list<FWObject*> cl_interfaces = cluster->getByTypeDeep(Interface::TYPENAME);
+    cerr << cl_interfaces.size() << " interface" << endl;
+    cluster->dump(false, true);
+
+    cerr << fw->getPath(false, true) << endl;
+    list<FWObject*> fw_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+    cerr << fw_interfaces.size() << " interface" << endl;
+    fw->dump(false, true);
+#endif
 
 //    int addedPolicies = 0;
     set<string> state_sync_types;
@@ -1185,3 +1245,51 @@ QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_cod
     return res;
 }
 
+void CompilerDriver::getFirewallAndClusterObjects(const string &cluster_id,
+                                                  const string &firewall_id,
+                                                  Cluster **cl,
+                                                  Firewall **fw)
+{
+    if (!cluster_id.empty())
+    {
+        Cluster *orig_cluster = Cluster::cast(
+            objdb->findInIndex(objdb->getIntId(cluster_id)));
+
+#ifdef WORK_ON_COPIES
+        *cl = objdb->createCluster();
+        workspace->add(*cl);
+        (*cl)->duplicate(orig_cluster);
+#else
+
+        *cl = orig_cluster;
+
+#endif
+
+    }
+
+    Firewall *orig_fw = Firewall::cast(
+        objdb->findInIndex(objdb->getIntId(firewall_id)));
+    assert(orig_fw);
+
+#ifdef WORK_ON_COPIES
+
+    *fw = objdb->createFirewall();
+    workspace->add(*fw);
+    (*fw)->duplicate(orig_fw);
+
+    if (*cl != NULL)
+    {
+        const map<int, int> &id_map = (*fw)->getIDMappingTable();
+        map<int, int>::const_iterator it;
+        for (it=id_map.begin(); it!=id_map.end(); ++it)
+            (*cl)->replaceRef(it->first, it->second);
+    }
+#else
+
+    *fw = orig_fw;
+
+#endif
+
+}
+
+        

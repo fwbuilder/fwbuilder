@@ -72,48 +72,34 @@ int RoutingCompiler::prolog()
     Routing *routing = Routing::cast(fw->getFirstByType(Routing::TYPENAME));
     assert(routing);
 
-    combined_ruleset = new Routing();   // combined ruleset
-    fw->add( combined_ruleset );
+    if (source_ruleset == NULL) source_ruleset = routing;
+
+    source_ruleset->renumberRules();
 
     temp_ruleset = new Routing();   // working copy of the routing
     fw->add( temp_ruleset );
 
-    combined_ruleset->setName(routing->getName());
-    temp_ruleset->setName(routing->getName());
+    temp_ruleset->setName(source_ruleset->getName());
 
-    routing->renumberRules();
-
-    list<FWObject*> l = routing->getByType(RoutingRule::TYPENAME);
-    for (list<FWObject*>::iterator j=l.begin(); j!=l.end(); ++j) 
+    int rule_counter = 0;
+    for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
-	Rule *r= Rule::cast(*j);
+	Rule *r = Rule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
 
-        /*
-         * do not remove disabled rules just yet because some
-         * compilers might use RuleSet::insertRuleAtTop() and other
-         * similar methods from prolog() or
-         * addPredefinedPolicyRules()() and these methods renumber
-         * rules (labels stop matching rule positions when this is
-         * done because labels are configured in prolog() method of
-         * the base class. See fwbuilder ticket 1173)
-         */
-	// if (r->isDisabled()) continue;
+        if (r->getLabel().empty())
+            r->setLabel( createRuleLabel("", "main", r->getPosition()) );
 
-	// r->setInterfaceId(-1);
-
-	r->setLabel( createRuleLabel("", "main", r->getPosition()) );
-	combined_ruleset->add( r );
+        rule_counter++;
     }
 
-    initialized=true;
+    initialized = true;
     
-    return combined_ruleset->size();
+    return rule_counter;
 }
 
 
-bool RoutingCompiler::cmpRules(const RoutingRule &r1,
-                              const RoutingRule &r2)
+bool RoutingCompiler::cmpRules(const RoutingRule &r1, const RoutingRule &r2)
 {
     if (r1.getRDst()!=r2.getRDst()) return false;
     if (r1.getRGtw()!=r2.getRGtw()) return false;
@@ -125,11 +111,11 @@ bool RoutingCompiler::cmpRules(const RoutingRule &r1,
 
 string RoutingCompiler::debugPrintRule(Rule *r)
 {
-    RoutingRule *rule=RoutingRule::cast(r);
+    RoutingRule *rule = RoutingRule::cast(r);
 
-    RuleElementRDst *dstrel=rule->getRDst();
-    RuleElementRItf *itfrel=rule->getRItf();
-    RuleElementRGtw *gtwrel=rule->getRGtw();
+    RuleElementRDst *dstrel = rule->getRDst();
+    RuleElementRItf *itfrel = rule->getRItf();
+    RuleElementRGtw *gtwrel = rule->getRGtw();
 
     ostringstream str;
 
@@ -138,27 +124,27 @@ string RoutingCompiler::debugPrintRule(Rule *r)
     string dst, itf, gtw;
    
     FWObject *obj = FWReference::getObject(itfrel->front());
-    itf = obj->getName();
+    itf = (obj) ? obj->getName() : "NULL";
 
     obj = FWReference::getObject(gtwrel->front());
-    gtw = obj->getName();    
+    gtw = (obj) ? obj->getName() : "NULL";
      
     
-    int no=0;
-    FWObject::iterator i1=dstrel->begin();
+    int no = 0;
+    FWObject::iterator i1 = dstrel->begin();
     while ( i1!=dstrel->end())
     {
         str << endl;
 
         dst = " ";
 
-        if (i1!=dstrel->end())
+        if (i1 != dstrel->end())
         {
             FWObject *o = FWReference::getObject(*i1);
-            dst = o->getName();
+            dst = (o) ? o->getName() : "NULL";
         }
 
-        int w=0;
+        int w = 0;
         if (no==0)
         {
             str << rule->getLabel();
@@ -174,7 +160,7 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 
         ++no;
 
-        if ( i1!=dstrel->end() ) ++i1;
+        if ( i1 != dstrel->end() ) ++i1;
     }
     return str.str();
 }
@@ -199,21 +185,15 @@ bool RoutingCompiler::ConvertToAtomicForDST::processNext()
     //RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementRDst *dst=rule->getRDst();    assert(dst);
 
-
     for (FWObject::iterator it=dst->begin(); it!=dst->end(); ++it)
     {
         RoutingRule *r = compiler->dbcopy->createRoutingRule();
         r->duplicate(rule);
         compiler->temp_ruleset->add(r);
 
-        FWObject *s;
-        //s=r->getSrc();	assert(s);
-        //s->clearChildren();
-        //s->add( *i1 );
-
-        s=r->getRDst();	assert(s);
+        FWObject *s = r->getRDst(); assert(s);
         s->clearChildren();
-        s->add( *it );
+        s->addRef(FWReference::getObject(*it));
 
         tmp_queue.push_back(r);
     }
@@ -532,7 +512,6 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     if (itfrel->isAny()) return true;
 
     FWObject *o = FWReference::cast(itfrel->front())->getPointer();
-    if (o->isChildOf(compiler->fw)) return true;
 
     // the interface is not a child of the firewall. Could be
     // cluster interface though. In that case make sure the
@@ -540,14 +519,19 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     Interface *iface = Interface::cast(o);
     if (iface)
     {
-        Cluster *cluster = Cluster::cast(iface->getParentHost());
+        FWObject *parent = iface->getParentHost();
+        if (parent->getId() == compiler->fw->getId()) return true;
+
+        Cluster *cluster = Cluster::cast(parent);
         if (cluster)
         {            
             list<Firewall*> members;
             cluster->getMembersList(members);
-            if (std::find(members.begin(), members.end(),
-                          compiler->fw) != members.end())
-                return true;
+            list<Firewall*>::iterator it;
+            for (it=members.begin(); it!=members.end(); ++it)
+            {
+                if ((*it)->getId() == compiler->fw->getId()) return true;
+            }
         }
     }
     string msg;

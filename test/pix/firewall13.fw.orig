@@ -1,9 +1,15 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
+<<<<<<< HEAD
 !  Firewall Builder  fwb_pix v4.2.0.3496
 !
 !  Generated Sat Mar 12 14:44:13 2011 PST by vadim
+=======
+!  Firewall Builder  fwb_pix v4.2.0.3499
+!
+!  Generated Fri Mar 11 12:16:48 2011 PST by vadim
+>>>>>>> cb7662fdaed92246c0956ec9ac25bd37d755f271
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported

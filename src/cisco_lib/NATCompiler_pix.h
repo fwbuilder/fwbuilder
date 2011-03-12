@@ -112,8 +112,7 @@ namespace fwcompiler
 //  first: interface->getId(), second: rule->getId()
         std::map<int,int> first_nonat_rule_id;
 
-        libfwbuilder::RuleSet *final_ruleset;
-
+        int final_ruleset_id;
 
         std::string debugPrintRule(libfwbuilder::Rule *r);
 
@@ -507,7 +506,7 @@ namespace fwcompiler
         virtual std::string printClearCommands();
 
         /**
-         * scans all rules in combined_ruleset and finds rules (if
+         * scans all rules in source_ruleset and finds rules (if
          * any) that define DNAT translation for a combination of
          * src,dst and srv where src matches OSrc, srv matches OSrv
          * and dst matches rule element defined by argument

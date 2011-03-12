@@ -1,3 +1,17 @@
+2011-03-11  vadim  <vadim@netcitadel.com>
+
+	* FWObject.cpp (add): fixes #2209 "do not allow the same object to
+	be child of different objects in the tree". Method FWObject::add()
+	enforces this. Subsequent clean-up and fixes in many places to
+	follow this logic. This makes code much cleaner, better organized
+	and more reliable.
+
+2011-03-10  vadim  <vadim@netcitadel.com>
+
+	* libfwbuilder/src/fwcompiler/Compiler.cpp (Compiler): see #2207
+	fixed memory leak in policy compilers. The impact of this leak was
+	especially severe on Windows with very large object databases.
+
 2011-03-08  vadim  <vadim@netcitadel.com>
 
 	* CustomServiceDialog.cpp (loadFWObject): fixes #2201 "Some fields

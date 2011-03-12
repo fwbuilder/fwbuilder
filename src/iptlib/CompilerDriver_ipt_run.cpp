@@ -47,6 +47,8 @@
 #include "OSConfigurator_linux24.h"
 #include "OSConfigurator_secuwall.h"
 #include "OSConfigurator_ipcop.h"
+#include "combinedAddress.h"
+#include "AutomaticRules_ipt.h"
 
 #include "Configlet.h"
 
@@ -66,6 +68,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Library.h"
 
 #include <QString>
 #include <QStringList>
@@ -74,6 +77,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QtDebug>
+#include <QTime>
 
 
 using namespace std;
@@ -81,6 +85,14 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 extern QString user_name;
+
+FWObject* create_combinedAddress(int id)
+{
+    FWObject *nobj = new combinedAddress();
+    if (id > -1) nobj->setId(id);
+    return nobj;
+}
+
 
 /*
  * Go through paces to compile firewall which may be a member of a
@@ -93,14 +105,17 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
-    assert(fw);
+    FWObjectDatabase::registerObjectType(combinedAddress::TYPENAME,
+                                         &create_combinedAddress);
+
+    // see #2212 Create temporary copy of the firewall and cluster
+    // objects and pass them to the compilers.
+
+    Cluster *cluster = NULL;
+    Firewall *fw = NULL;
+
+    getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     string generated_script;
 
@@ -218,6 +233,23 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         findImportedRuleSets(fw, all_policies);
         findBranchesInMangleTable(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
+
+        // assign unique rule ids that later will be used to generate
+        // chain names.  This should be done after calls to
+        // findImportedRuleSets()
+
+        assignUniqueRuleIds(all_policies);
+        assignUniqueRuleIds(all_nat);
+
+        try
+        {
+            AutomaticRules_ipt auto_rules(fw, persistent_objects);
+            auto_rules.addConntrackRule();
+            auto_rules.addFailoverRules();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         // command line options -4 and -6 control address family for which
         // script will be generated. If "-4" is used, only ipv4 part will 
@@ -391,6 +423,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         {
             routing_compiler->setSourceRuleSet(routing);
             routing_compiler->setRuleSetName(routing->getName());
+            routing_compiler->setPersistentObjects(persistent_objects);
 
             routing_compiler->setSingleRuleCompileMode(single_rule_id);
             routing_compiler->setDebugLevel( dl );
@@ -408,6 +441,13 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             if (routing_compiler->haveErrorsAndWarnings())
                 all_errors.push_back(routing_compiler->getErrors("").c_str());
         }
+
+        /*
+         * compilers detach persistent objects when they finish, this
+         * means at this point library persistent_objects is not part
+         * of any object tree.
+         */
+        objdb->reparent(persistent_objects);
 
         if (haveErrorsAndWarnings())
         {

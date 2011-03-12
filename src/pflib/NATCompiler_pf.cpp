@@ -29,21 +29,22 @@
 
 #include "fwcompiler/OSConfigurator.h"
 
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/NAT.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/IPService.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Host.h"
 #include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
-#include "fwbuilder/Host.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/IPv4.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/FailoverClusterGroup.h"
-#include "fwbuilder/Cluster.h"
 
 #include <iostream>
 #include <iomanip>
@@ -94,7 +95,7 @@ int NATCompiler_pf::prolog()
 
     IPv4::cast(loopback_address)->setAddress(InetAddr::getLoopbackAddr());
 
-    dbcopy->add(loopback_address,false);
+    persistent_objects->add(loopback_address,false);
 
     if (tables)
     {
@@ -279,7 +280,10 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
         odst=r->getODst();
         odst->clearChildren();
         for (FWObject::iterator i=rule->getTDst()->begin(); i!=rule->getTDst()->end(); i++)
-            odst->add( *i );
+        {
+            FWObject *o = FWReference::getObject(*i);
+            odst->addRef(o);
+        }
 
         if ( ! rule->getTSrv()->isAny())
         {
@@ -317,7 +321,7 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
                     match_service = TCPUDPService::cast(
                         compiler->dbcopy->create(tsrv->getTypeName()));
                     match_service->setName(tsrv->getName() + "_dport");
-                    compiler->dbcopy->add(match_service);
+                    compiler->persistent_objects->add(match_service);
                     match_service->setDstRangeStart(tu_tsrv->getDstRangeStart());
                     match_service->setDstRangeEnd(tu_tsrv->getDstRangeEnd());
                 }
@@ -1014,7 +1018,7 @@ bool NATCompiler_pf::swapAddressTableObjectsInRE::processNext()
 
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
-                compiler->dbcopy->add(mart);
+                compiler->persistent_objects->add(mart);
 
 // register this object as a table
                 string tblname = atbl->getName();
@@ -1311,3 +1315,9 @@ void NATCompiler_pf::compile()
 void NATCompiler_pf::epilog()
 {
 }
+
+NATCompiler_pf::~NATCompiler_pf()
+{
+    //if (tables) tables->detach();
+}
+

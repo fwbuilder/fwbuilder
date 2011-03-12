@@ -29,29 +29,24 @@
 
 #include <fwbuilder/libfwbuilder-config.h>
 
-#include <fwbuilder/Firewall.h>
-
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/StateSyncClusterGroup.h>
 #include <fwbuilder/FailoverClusterGroup.h>
-#include <fwbuilder/Management.h>
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
-
-#include <fwbuilder/Policy.h>
+#include <fwbuilder/Interface.h>
+#include <fwbuilder/Management.h>
 #include <fwbuilder/NAT.h>
-
+#include <fwbuilder/Policy.h>
 #include <fwbuilder/Routing.h>
-#include <iostream>
-
 #include <fwbuilder/RuleElement.h>
-
+#include <fwbuilder/StateSyncClusterGroup.h>
 #include <fwbuilder/XMLTools.h>
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -310,8 +305,6 @@ FWObject& Firewall::duplicate(const FWObject *obj,
 {
     string err="Error creating object with type: ";
 
-    map<int, int> id_mapping;
-
     checkReadOnly();
     bool xro = obj->getRO();
 
@@ -322,29 +315,31 @@ FWObject& Firewall::duplicate(const FWObject *obj,
 
     destroyChildren();
 
-    duplicateInterfaces(this, obj, id_mapping, preserve_id);
+    id_mapping_for_duplicate.clear();
+
+    duplicateInterfaces(this, obj, id_mapping_for_duplicate, preserve_id);
 
     for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
          it != it.end(); ++it)
     {
         FWObject *new_ruleset = addCopyOf(*it, preserve_id);
-        id_mapping[(*it)->getId()] = new_ruleset->getId();
+        id_mapping_for_duplicate[(*it)->getId()] = new_ruleset->getId();
     }
     for (FWObjectTypedChildIterator it = obj->findByType(NAT::TYPENAME);
          it != it.end(); ++it)
     {
         FWObject *new_ruleset = addCopyOf(*it, preserve_id);
-        id_mapping[(*it)->getId()] = new_ruleset->getId();
+        id_mapping_for_duplicate[(*it)->getId()] = new_ruleset->getId();
     }
     for (FWObjectTypedChildIterator it = obj->findByType(Routing::TYPENAME);
          it != it.end(); ++it)
     {
         FWObject *new_ruleset = addCopyOf(*it, preserve_id);
-        id_mapping[(*it)->getId()] = new_ruleset->getId();
+        id_mapping_for_duplicate[(*it)->getId()] = new_ruleset->getId();
     }
 
     // replace references to old fw (obj) with references to this fw
-    id_mapping[obj->getId()] = getId();
+    id_mapping_for_duplicate[obj->getId()] = getId();
 
     FWObject *o=obj->getFirstByType( Management::TYPENAME );
     addCopyOf(o,preserve_id);
@@ -354,7 +349,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
 
     // replace references to old objects in rules
     map<int, int>::iterator it;
-    for (it=id_mapping.begin(); it!=id_mapping.end(); ++it)
+    for (it=id_mapping_for_duplicate.begin(); it!=id_mapping_for_duplicate.end(); ++it)
     {
         int old_id = it->first;
         int new_id = it->second;
@@ -457,5 +452,10 @@ list<Interface*> Firewall::getInterfacesByType(const string &iface_type)
         }
     }
     return res;
+}
+
+void Firewall::assignUniqueRuleIds()
+{
+    std::for_each(begin(), end(), RuleSet::UniqueRuleIdsSetter());
 }
 

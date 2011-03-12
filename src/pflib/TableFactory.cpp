@@ -27,13 +27,14 @@
 
 #include "TableFactory.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
 
 #include <algorithm>
 #include <functional>
@@ -47,23 +48,26 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-TableFactory::TableFactory(BaseCompiler *comp)
+TableFactory::TableFactory(BaseCompiler *comp, Library *persistent_objects)
 {
     compiler = comp;
     ruleSetName = "";
     dbroot = NULL;
     persistent_tables = new ObjectGroup();
+    persistent_tables->setName("PF Tables");
+    persistent_objects->add(persistent_tables);
 }
 
 void TableFactory::init(FWObjectDatabase *_dbr)
 {
     dbroot = _dbr;
-    dbroot->add(persistent_tables);
-    dbroot->addToIndex(persistent_tables);
-    for (FWObject::iterator i=persistent_tables->begin(); i!=persistent_tables->end(); i++)
-    {
-        dbroot->addToIndex(*i);
-    }
+    // dbroot->add(persistent_tables);
+    // persistent_tables->fixTree();
+}
+
+void TableFactory::detach()
+{
+    // dbroot->remove(persistent_tables, false);
 }
 
 struct joinIDs : public unary_function<string, void>
@@ -149,8 +153,7 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
 
         for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
         {
-            FWObject *o= *i;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            FWObject *o = FWReference::getObject(*i);
             tblgrp->addRef( o );
         }
     }
@@ -190,11 +193,8 @@ string TableFactory::PrintTables()
         for (FWObject::iterator i=grp->begin(); i!=grp->end(); i++)
         {
             if (i!=grp->begin())  output << ", ";
-            FWObject *o= *i;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            if (o==NULL)
-                compiler->abort("broken table object ");
-
+            FWObject *o = FWReference::getObject(*i);
+            if (o==NULL) compiler->abort("broken table object ");
 
             MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
             if (atrt!=NULL)

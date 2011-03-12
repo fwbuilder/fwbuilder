@@ -70,29 +70,22 @@ int PolicyCompiler::prolog()
     Policy *policy = Policy::cast(fw->getFirstByType(Policy::TYPENAME));
     assert(policy);
 
-    combined_ruleset = new Policy();   // combined ruleset (all interface policies and global policy)
-    fw->add( combined_ruleset );
+    if (source_ruleset == NULL) source_ruleset = policy;
+
+    source_ruleset->renumberRules();
 
     temp_ruleset = new Policy();   // working copy of the policy
     fw->add( temp_ruleset );
 
-    int global_num=0;
+    temp_ruleset->setName(source_ruleset->getName());
 
-    RuleSet *ruleset = source_ruleset;
-    if (ruleset == NULL)
-    {
-        source_ruleset = RuleSet::cast(policy);
-        ruleset = policy;
-    }
-    ruleset->renumberRules();
-
-    combined_ruleset->setName(ruleset->getName());
-    temp_ruleset->setName(ruleset->getName());
+    int global_num = 0;
 
     string label_prefix = "";
-    if (ruleset->getName() != "Policy") label_prefix = ruleset->getName();
+    if (source_ruleset->getName() != "Policy") label_prefix = source_ruleset->getName();
 
-    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
+    int rule_counter = 0;
+    for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
@@ -108,33 +101,37 @@ int PolicyCompiler::prolog()
          */
 	//if (r->isDisabled()) continue;
 
-        RuleElementItf *itfre = r->getItf();
-        assert(itfre);
+        if (r->getLabel().empty())
+        {
+            RuleElementItf *itfre = r->getItf();
+            assert(itfre);
 
-        if (itfre->isAny())
-        {
-            r->setLabel( createRuleLabel(label_prefix, 
-                                         "global", r->getPosition()) );
-        } else
-        {
-            string interfaces = "";
-            for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
+            if (itfre->isAny())
             {
-                FWObject *o = FWReference::getObject(*i);
-                if (interfaces!="") interfaces += ",";
-                interfaces += o->getName();
+                r->setLabel( createRuleLabel(label_prefix, 
+                                             "global", r->getPosition()) );
+            } else
+            {
+                string interfaces = "";
+                for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
+                {
+                    FWObject *o = FWReference::getObject(*i);
+                    if (interfaces!="") interfaces += ",";
+                    interfaces += o->getName();
+                }
+                r->setLabel( createRuleLabel(label_prefix, 
+                                             interfaces, r->getPosition()) );
             }
-            r->setLabel( createRuleLabel(label_prefix, 
-                                         interfaces, r->getPosition()) );
         }
-	r->setAbsRuleNumber(global_num); global_num++;
-        r->setUniqueId( FWObjectDatabase::getStringId(r->getId()) );
-	combined_ruleset->add( r );
+
+	r->setAbsRuleNumber(global_num);
+        global_num++;
+        rule_counter++;
     }
 
-    initialized=true;
+    initialized = true;
 
-    return combined_ruleset->size();
+    return rule_counter;
 }
 
 
@@ -1138,16 +1135,19 @@ string PolicyCompiler::debugPrintRule(Rule *r)
             srv_id = o->getId();
         }
 
-        if (i4!=itfrel->end()) {
-            FWObject *o=*i4;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            itf+=o->getName();
+        if (i4!=itfrel->end())
+        {
+            ostringstream str;
+            FWObject *o = FWReference::getObject(*i4);
+            str << o->getName() << "(" << o->getId() << ")";
+            itf += str.str();
         }
 
-        int w=0;
-        if (no==0) {
+        int w = 0;
+        if (no==0)
+        {
             str << rule->getLabel();
-            w=rule->getLabel().length();
+            w = rule->getLabel().length();
         }
         
         str <<  setw(10-w)  << setfill(' ') << " ";
@@ -1183,7 +1183,7 @@ PolicyRule* PolicyCompiler::addMgmtRule(Address* src,
                                         const PolicyRule::Action action,
                                         const string &label)
 {
-    assert(combined_ruleset != NULL);
+    assert(source_ruleset != NULL);
 
     /* Insert PolicyRules at top so they do not get shadowed by other
      * rules. Call insertRuleAtTop() with hidden_rule argument true to
@@ -1192,7 +1192,7 @@ PolicyRule* PolicyCompiler::addMgmtRule(Address* src,
      * rules are not considered for shadowing.
      */
 
-    PolicyRule* rule = PolicyRule::cast(combined_ruleset->insertRuleAtTop(true));
+    PolicyRule* rule = PolicyRule::cast(source_ruleset->insertRuleAtTop(true));
     assert(rule != NULL);
 
     ostringstream str;

@@ -114,12 +114,31 @@ class RuleSet : public FWObject
 
     int  getRuleSetSize();
     
-    virtual Rule*   createRule()  =0;
+    virtual Rule* createRule() = 0;
     
     virtual bool isPrimaryObject() const { return false; }
 
     void   renumberRules();
         
+    /**
+     * scan all rules of all rule sets and call setUniqueId() to set
+     * unique string id for each rule. These IDs will be carried
+     * through calls to duplicate() when firewall object and its rule
+     * sets are cloned. These IDs are used by compilers to generate
+     * stable labels for chains and such.
+     */
+    void assignUniqueRuleIds();
+
+    struct UniqueRuleIdsSetter
+    {
+        void operator()(FWObject *o)
+        {
+            RuleSet *rs = RuleSet::cast(o);
+            if (rs != NULL) rs->assignUniqueRuleIds();
+        }
+    };
+
+    
 }; //__RULESET_HH_FLAG__
 
 }

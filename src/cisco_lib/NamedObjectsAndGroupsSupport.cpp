@@ -77,7 +77,7 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         relement.push_back(FWReference::getObject(*i1));
 
-    FWObject *object_groups = named_objects_manager->getObjectGroupsGroupInWorkTree();
+    FWObject *object_groups = named_objects_manager->getObjectGroupsGroup();
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
@@ -118,7 +118,7 @@ bool CreateObjectGroups::processNext()
     if (obj_group==NULL)
     {
         obj_group = named_objects_manager->createObjectGroup();
-        named_objects_manager->getObjectGroupsGroupInWorkTree()->add(obj_group);
+        named_objects_manager->getObjectGroupsGroup()->add(obj_group);
 
         packObjects(re, obj_group);
 

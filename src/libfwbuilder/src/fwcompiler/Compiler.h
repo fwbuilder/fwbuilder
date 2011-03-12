@@ -213,7 +213,7 @@ protected:
         int                                     fw_id;
         libfwbuilder::FWOptions                *fwopt;
 
-	public:
+public:
 
 	int  debug;
 	int  debug_rule;
@@ -226,12 +226,12 @@ protected:
 
 	fwcompiler::OSConfigurator *osconfigurator;
 	libfwbuilder::FWObjectDatabase *dbcopy;
+	libfwbuilder::Library *persistent_objects;
 	libfwbuilder::Firewall *fw;
 
         std::string ruleSetName;;
         
 	libfwbuilder::RuleSet *source_ruleset;
-	libfwbuilder::RuleSet *combined_ruleset;
 	libfwbuilder::RuleSet *temp_ruleset;
 
         libfwbuilder::Group *temp;
@@ -927,11 +927,13 @@ protected:
         void setSingleRuleCompileMode(const std::string &rule_id);
         bool inSingleRuleCompileMode() { return single_rule_mode; }
 
-        void setSourceRuleSet(libfwbuilder::RuleSet *rs) { source_ruleset = rs; }
+        void setSourceRuleSet(libfwbuilder::RuleSet *rs);
         libfwbuilder::RuleSet* getSourceRuleSet() { return source_ruleset; }
 
         void setRuleSetName(const std::string &name) { ruleSetName = name; }
         std::string getRuleSetName() { return ruleSetName; }
+
+        void setPersistentObjects(libfwbuilder::Library* po);
         
 	std::string getCompiledScript();
         int getCompiledScriptLength();
@@ -955,8 +957,7 @@ protected:
                                          bool suppress_comment=false);
 
 	/**
-	 * prolog should pack rules into combined_ruleset and return
-	 * number of rules found
+	 * prolog return number of rules found
 	 */
 	virtual int  prolog();
 	virtual void compile();
