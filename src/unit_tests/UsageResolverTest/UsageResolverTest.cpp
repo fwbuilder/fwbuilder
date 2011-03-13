@@ -75,7 +75,6 @@ void UsageResolverTest::setUp()
     grp1->setName("Group 1");
     grp2->setName("Group 2");
     grp3->setName("Group 3");
-    grp1->addRef(addr1);
 
     addToLib(grp1);
     addToLib(grp2);
@@ -83,11 +82,11 @@ void UsageResolverTest::setUp()
 
     // addr1 belongs to grp1
     // addr2 belongs to grp2
-    // grp2 belongs to grp1
-    grp1->add(addr1);
-    grp2->add(addr2);
-    grp2->add(grp1);
-    grp3->add(grp2);
+    // grp1 belongs to grp2
+    grp1->addRef(addr1);
+    grp2->addRef(addr2);
+    grp2->addRef(grp1);
+    grp3->addRef(grp2);
 
     Policy *policy = fw1->getPolicy();
     PolicyRule *rule;
@@ -147,7 +146,12 @@ void UsageResolverTest::setUp()
 
 }
 
-
+/*
+ * addr1 is found in:
+ *  - system group "Addresses"
+ *  - group grp1
+ *  - rule 1 of firewall 1
+ */
 void UsageResolverTest::findWhereObjectIsUsed()
 {
 //    db->dump(true, true);
@@ -155,7 +159,7 @@ void UsageResolverTest::findWhereObjectIsUsed()
     set<FWObject*> res;
 
     db->findWhereObjectIsUsed(addr1, db, res);
-    CPPUNIT_ASSERT(res.size() == 4);
+    CPPUNIT_ASSERT(res.size() == 3);
 
     set<FWObject*>::iterator iter = res.begin();
     while (iter!=res.end())
@@ -166,16 +170,27 @@ void UsageResolverTest::findWhereObjectIsUsed()
 
         if (FWReference::cast(obj))
         {
-            // if we get reference, the parent must be rule element
+            // if we get reference, the parent must be rule element or user group
             obj = obj->getParent();
-            CPPUNIT_ASSERT(obj->getTypeName() == RuleElementSrc::TYPENAME || obj->getTypeName() == ObjectGroup::TYPENAME);
-            CPPUNIT_ASSERT(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1" || obj->getParent()->getName() == "Group 2");
+
+            CPPUNIT_ASSERT(
+                obj->getTypeName() == RuleElementSrc::TYPENAME ||
+                obj->getTypeName() == ObjectGroup::TYPENAME);
+
+            if (RuleElementSrc::isA(obj))
+            {
+                CPPUNIT_ASSERT(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1");
+            }
+
+            if (ObjectGroup::isA(obj))
+            {
+                CPPUNIT_ASSERT(obj->getName() == "Group 1");
+            }
+
         } else
         {
-            // otherwise we should get the group grp1 or
-            // system folder "Addresses"
-            CPPUNIT_ASSERT(name == "Group 1" ||
-                           name == "Addresses" );
+            // otherwise we should get system folder "Addresses"
+            CPPUNIT_ASSERT(name == "Addresses" );
         }
         iter++;
     }
