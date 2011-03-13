@@ -321,7 +321,7 @@ void IOSImporter::merge_rule::operator()(FWObject* r)
     // skip it.
     if (rule==NULL) return;
 
-    target_ruleset->add(rule);
+    target_ruleset->reparent(rule);
 //    target_ruleset->renumberRules();
 
     RuleElementItf* re =rule->getItf();
@@ -405,37 +405,46 @@ Firewall* IOSImporter::finalize()
                     if (all_in.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_in);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Inbound,
-                                                 policy)
-                        );
+                        merge_rule mr(irs->name,
+                                      og,
+                                      PolicyRule::Inbound,
+                                      policy);
+                        while (irs->ruleset->size() > 0)
+                        {
+                            Rule *rule = Rule::cast(irs->ruleset->front());
+                            if (rule) mr(rule);
+                            else irs->ruleset->pop_front();
+                        }
                     }
 
                     if (all_out.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_out);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Outbound,
-                                                 policy)
-                        );
+                        merge_rule mr(irs->name,
+                                      og,
+                                      PolicyRule::Outbound,
+                                      policy);
+                        while (irs->ruleset->size() > 0)
+                        {
+                            Rule *rule = Rule::cast(irs->ruleset->front());
+                            if (rule) mr(rule);
+                            else irs->ruleset->pop_front();
+                        }
                     }
 
                     if (all_both.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_both);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Both,
-                                                 policy)
-                        );
+                        merge_rule mr(irs->name,
+                                      og,
+                                      PolicyRule::Both,
+                                      policy);
+                        while (irs->ruleset->size() > 0)
+                        {
+                            Rule *rule = Rule::cast(irs->ruleset->front());
+                            if (rule) mr(rule);
+                            else irs->ruleset->pop_front();
+                        }
                     }
 
                 }
@@ -456,15 +465,16 @@ Firewall* IOSImporter::finalize()
                             if (fwbdebug)
                                 qDebug() << "    interface=" 
                                          << intf->getName().c_str();
-
-                            std::for_each(
-                                irs->ruleset->begin(),
-                                irs->ruleset->end(),
-                                merge_rule(irs->name,
-                                           intf,
-                                           direction,
-                                           policy)
-                            );
+                            merge_rule mr(irs->name,
+                                          intf,
+                                          direction,
+                                          policy);
+                            while (irs->ruleset->size() > 0)
+                            {
+                                Rule *rule = Rule::cast(irs->ruleset->front());
+                                if (rule) mr(rule);
+                                else irs->ruleset->pop_front();
+                            }
                         }
                     }
                 }
