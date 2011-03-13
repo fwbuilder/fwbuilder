@@ -143,19 +143,6 @@ namespace fwcompiler {
         bool cmpRules(libfwbuilder::PolicyRule &r1,
                       libfwbuilder::PolicyRule &r2);
 
-        /**
-         * Insert rule on top of the policy. Use this to add implied
-         * rules.
-         */
-        libfwbuilder::PolicyRule* addMgmtRule(libfwbuilder::Address* src,
-                                              libfwbuilder::Address* dst,
-                                              libfwbuilder::Service* service,
-                                              libfwbuilder::Interface* iface,
-                                              const libfwbuilder::PolicyRule::Direction direction,
-                                              const libfwbuilder::PolicyRule::Action action,
-                                              const std::string &label);
-
-
 	/**
 	 * this processor checks if the rule is associated with an
 	 * interface and uses setInterfaceId to record its id. If the
