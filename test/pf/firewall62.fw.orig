@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.2.0.3499
 #
-#  Generated Sat Mar 12 15:44:13 2011 PST by vadim
+#  Generated Sat Mar 12 19:45:23 2011 PST by vadim
 #
 # files: * firewall62.fw /etc/firewall62.fw
 # files:   firewall62.conf /etc/firewall62.conf
@@ -22,14 +22,14 @@
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
-# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '4 (global)'  below it
-# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
+# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
+# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '6 (global)'  below it
 # firewall62:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
 # firewall62:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
@@ -191,7 +191,7 @@ configure_interfaces() {
     update_addresses_of_interface "en1 222.222.222.222/0xffffff00" ""
 }
 
-log "Activating firewall script generated Sat Mar 12 15:44:13 2011 by vadim"
+log "Activating firewall script generated Sat Mar 12 19:45:23 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

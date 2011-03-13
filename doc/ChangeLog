@@ -1,5 +1,20 @@
 2011-03-12  vadim  <vadim@netcitadel.com>
 
+	* Compiler.cpp (expandGroupsInRuleElement): sorting objects in the
+	rule element by name after group is expanded, this helps ensure
+	stable ordering of objects in generated configuration.
+
+	* Compiler.cpp (replaceClusterInterfaceInItfRE::processNext):
+	sorting objects in rule element after cluster interfaces have been
+	replaced, this helps ensure stable ordering of objects in generated
+	configuration.
+
+	* FWObject.h (FWObjectNameCmpPredicate): moved this class from
+	gui-specific module to libfwbuilder as it is universally useful.
+	It can compare FWObject objects by name and can optionally can
+	follow references; it can be used with std::sort() to sort lists
+	of FWObject pointers or directly sort rule elements.
+
 	* Compiler.cpp (_init): see #2212 "Performance improvement in
 	compilers". This change brings significant improvement in compile
 	time on large object trees. The speed-up is especially noticeable

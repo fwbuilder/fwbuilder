@@ -25,7 +25,7 @@ pass  quick on en0 inet  from any  to any  label "RULE 1 -- ACCEPT "
 pass  quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.s> port 22  label "RULE 2 -- ACCEPT "  
 # 
 # Rule  3 (cl3 itf)
-pass  quick on { en1 en0 } inet proto tcp  from any  to <tbl.r0.s> port 22  label "RULE 3 -- ACCEPT "  
+pass  quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.s> port 22  label "RULE 3 -- ACCEPT "  
 # 
 # Rule  4 (carp0)
 pass  quick on { en1 en2 vlan100 } inet  from any  to any  label "RULE 4 -- ACCEPT "  

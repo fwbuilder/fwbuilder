@@ -16,7 +16,7 @@ nat on eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1
 pass in   quick inet proto tcp  from 192.168.1.100  to 192.168.1.1 port 22 modulate state 
 # 
 # Rule  0 (eth0)
-pass in   quick on eth0 inet proto tcp  from 192.168.1.0/24  to any port { 22, 80 } modulate state 
+pass in   quick on eth0 inet proto tcp  from 192.168.1.0/24  to any port { 80, 22 } modulate state 
 # 
 # Rule  1 (lo0)
 pass  quick on lo0 inet  from any  to any no state 

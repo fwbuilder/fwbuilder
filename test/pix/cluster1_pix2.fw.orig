@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:50 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:58 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -185,44 +185,44 @@ access-list inside_out permit udp object-group id2913X78273.src.net.1 10.3.14.0 
 access-list inside_out permit udp object-group id2913X78273.src.net.2 10.3.14.0 255.255.255.0 eq 53 log 3 interval 300
 ! 
 ! Rule  5 (Ethernet0.101,Ethernet0.102)
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
 ! 
 ! Rule  6 (cl1 itf)
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
-ssh    0.0.0.0 0.0.0.0 dmz20
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
 ssh    0.0.0.0 0.0.0.0 outside
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
+ssh    0.0.0.0 0.0.0.0 dmz20
 ! 
 ! Rule  7 (Ethernet0.101,Ethernet0.102)
-access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
-access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
 access-list outside_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
 access-list outside_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
 ! 
 ! Rule  8 (cl1 itf)
-access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
-access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
 access-list outside_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
 access-list outside_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_in permit udp any 10.3.14.0 255.255.255.0 eq 53 
+access-list dmz20_out permit udp any 10.3.14.0 255.255.255.0 eq 53 
 ! 
 ! Rule  9 (global)
 ! All other attempts to connect to

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3499
 #
-#  Generated Thu Mar 10 21:51:17 2011 PST by vadim
+#  Generated Sat Mar 12 19:41:49 2011 PST by vadim
 #
 # files: * firewall62.fw /etc/firewall62.fw
 #
@@ -421,8 +421,8 @@ script_body() {
     # bug 2186568
     # firewall62:Policy:10: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
 
-    $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j ACCEPT
     # 
     # Rule 11 (global)
     # 
@@ -432,8 +432,8 @@ script_body() {
     # firewall62:Policy:11: warning: Iptables does not support module 'owner' in a chain other than OUTPUT
 
     $IPTABLES -N Cid55369X1137.0
-    $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j Cid55369X1137.0
     $IPTABLES -A OUTPUT -m owner --uid-owner 2000  -m state --state NEW  -j Cid55369X1137.0
+    $IPTABLES -A OUTPUT -m owner --uid-owner 500  -m state --state NEW  -j Cid55369X1137.0
     $IPTABLES -A Cid55369X1137.0  -d 192.168.1.1   -j ACCEPT
     $IPTABLES -A Cid55369X1137.0  -d 222.222.222.222   -j ACCEPT
     # 
@@ -467,8 +467,8 @@ script_body() {
     $IPTABLES -A INPUT  -s 192.168.1.1   -m state --state NEW  -j Cid124556X1137.0
     $IPTABLES -A INPUT  -s 222.222.222.222   -m state --state NEW  -j Cid124556X1137.0
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid124556X1137.0
-    $IPTABLES -A Cid124556X1137.0 -m owner --uid-owner 500  -j RETURN
     $IPTABLES -A Cid124556X1137.0 -m owner --uid-owner 2000  -j RETURN
+    $IPTABLES -A Cid124556X1137.0 -m owner --uid-owner 500  -j RETURN
     $IPTABLES -A Cid124556X1137.0  -j ACCEPT
     # 
     # Rule 15 (global)
@@ -480,8 +480,8 @@ script_body() {
     $IPTABLES -A OUTPUT  -d 192.168.1.1   -m state --state NEW  -j Cid124573X1137.0
     $IPTABLES -A OUTPUT  -d 222.222.222.222   -m state --state NEW  -j Cid124573X1137.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid124573X1137.0
-    $IPTABLES -A Cid124573X1137.0 -m owner --uid-owner 500  -j RETURN
     $IPTABLES -A Cid124573X1137.0 -m owner --uid-owner 2000  -j RETURN
+    $IPTABLES -A Cid124573X1137.0 -m owner --uid-owner 500  -j RETURN
     $IPTABLES -A Cid124573X1137.0  -j ACCEPT
     # 
     # Rule 16 (global)
@@ -569,7 +569,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Mar 10 21:51:17 2011 by vadim"
+        log "Activating firewall script generated Sat Mar 12 19:41:49 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

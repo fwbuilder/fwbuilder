@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3499
 !
-!  Generated Sat Mar 12 16:07:15 2011 PST by vadim
+!  Generated Sat Mar 12 19:44:08 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -114,9 +114,9 @@ ip access-list extended e0_in
 ! 
 ! Rule  10 (ethernet0)
   permit tcp  object-group id115999X79820.src.net.0 object-group id115999X79820.dst.net.0 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  object-group id115999X79820.src.net.0 object-group id115999X79820.dst.net.0 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  object-group id115999X79820.src.net.0 eq 80 object-group id115999X79820.dst.net.0 established 
   permit tcp  object-group id115999X79820.src.net.0 eq 443 object-group id115999X79820.dst.net.0 established 
+  permit tcp  object-group id115999X79820.src.net.0 object-group id115999X79820.dst.net.0 match-all -urg +ack -psh -rst +syn -fin 
   permit ip  object-group id115999X79820.src.net.0 object-group id115999X79820.dst.net.0 
 ! 
 ! Rule  11 (ethernet0)

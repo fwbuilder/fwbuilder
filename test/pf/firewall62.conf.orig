@@ -10,14 +10,14 @@ table <tbl.r1.s> { 192.168.1.1 , 222.222.222.222 }
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '2 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '3 (global)'  below it
-# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '4 (global)'  below it
-# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
+# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '4 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:3: error: Rule '3 (global)' shadows rule '5 (global)'  below it
+# firewall62:Policy:1: error: Rule '1 (global)' shadows rule '5 (global)'  below it
 # firewall62:Policy:1: error: Rule '1 (global)' shadows rule '6 (global)'  below it
 # firewall62:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it
 # firewall62:Policy:8: error: Rule '8 (global)' shadows rule '9 (global)'  below it

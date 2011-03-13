@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3499
 !
-!  Generated Sat Mar 12 16:07:15 2011 PST by vadim
+!  Generated Sat Mar 12 19:44:08 2011 PST by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -122,17 +122,17 @@ ip access-list extended e0_in
 ! 
 ! Rule  10 (ethernet0)
   permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+  permit tcp  22.22.21.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.10.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 eq 80 
+  permit tcp  22.22.22.0 0.0.0.255 10.10.11.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
 ! 
 ! Rule  11 (ethernet0)
   permit tcp  22.22.21.0 0.0.0.255 10.10.10.0 0.0.0.255 
@@ -253,17 +253,17 @@ ip access-list extended e0_out
 ! 
 ! Rule  10 (ethernet0)
   permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.10.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+  permit tcp  10.10.10.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.21.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.21.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst -syn -fin 
-  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
   permit tcp  10.10.11.0 0.0.0.255 eq 80 22.22.22.0 0.0.0.255 established 
+  permit tcp  10.10.11.0 0.0.0.255 22.22.22.0 0.0.0.255 match-all -urg +ack -psh -rst +syn -fin 
 ! 
 ! Rule  11 (ethernet0)
   permit tcp  10.10.10.0 0.0.0.255 22.22.21.0 0.0.0.255 established 

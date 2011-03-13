@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3499
 #
-#  Generated Thu Mar 10 21:50:37 2011 PST by vadim
+#  Generated Sat Mar 12 19:41:26 2011 PST by vadim
 #
 # files: * firewall37-1.fw /etc/fw/firewall37-1.fw
 #
@@ -567,7 +567,7 @@ script_body() {
     $IPTABLES -t mangle -A Cid45AB5BC825451.0  -j CLASSIFY  --set-class 1:11
     $IPTABLES -t mangle -A Cid45AB5BC825451.0  -j ACCEPT
     $IPTABLES -N Cid45AB5BC825451.1 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -j Cid45AB5BC825451.1
+    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j Cid45AB5BC825451.1
     $IPTABLES -t mangle -A Cid45AB5BC825451.1  -j CLASSIFY  --set-class 1:11
     $IPTABLES -t mangle -A Cid45AB5BC825451.1  -j ACCEPT
     $IPTABLES -N Cid45AB5BC825451.2 -t mangle
@@ -646,7 +646,7 @@ script_body() {
     $IPTABLES -t mangle -A Cid45AB5C1425451.0  -j CLASSIFY  --set-class 1:11
     $IPTABLES -t mangle -A Cid45AB5C1425451.0  -j ACCEPT
     $IPTABLES -N Cid45AB5C1425451.1 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -j Cid45AB5C1425451.1
+    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j Cid45AB5C1425451.1
     $IPTABLES -t mangle -A Cid45AB5C1425451.1  -j CLASSIFY  --set-class 1:11
     $IPTABLES -t mangle -A Cid45AB5C1425451.1  -j ACCEPT
     $IPTABLES -N Cid45AB5C1425451.2 -t mangle
@@ -769,7 +769,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Mar 10 21:50:37 2011 by vadim"
+        log "Activating firewall script generated Sat Mar 12 19:41:26 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -39,24 +39,6 @@
 
 /* Utility functions that do not depend on QT */
 
-struct FWObjectNameCmpPredicate :
-    public std::binary_function<libfwbuilder::FWObject*, libfwbuilder::FWObject*, bool>
-{
-    bool operator()(libfwbuilder::FWObject *a,libfwbuilder::FWObject *b)
-    {
-        return a->getName() < b->getName();
-    }
-};
-
-class findFWObjectIDPredicate : public std::unary_function<libfwbuilder::FWObject*, bool>
-{
-    int _id;
-    public:
-    findFWObjectIDPredicate(int id):_id(id) {}
-    bool operator()(const libfwbuilder::FWObject *o) const
-    {return o->getId()==_id;}
-};
-
 extern void findFirewalls(libfwbuilder::FWObject *o,
                           std::list<libfwbuilder::FWObject*> &fwlist,
                           bool skip_system_libs=true);

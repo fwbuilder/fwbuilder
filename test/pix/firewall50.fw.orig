@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:43 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:51 2011 PST by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -135,29 +135,29 @@ exit
 object-group service id45142FA628543.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
+  port-object eq 443
+  port-object eq 143
   port-object eq 25
   port-object eq 22
   port-object eq 540
-  port-object eq 443
-  port-object eq 143
 exit
 
 object-group icmp-type id45142FCB28543.srv.icmp.0
-  icmp-object 11
-  icmp-object 0
   icmp-object 3
+  icmp-object 0
+  icmp-object 11
 exit
 
 object-group service id45142FD728543.srv.tcp.0 tcp
-  port-object eq 3128
   port-object eq 70
   port-object eq 6667
+  port-object eq 3128
   port-object eq 23
 exit
 
 object-group service id45142FD728543.srv.udp.0 udp
-  port-object eq 161
   port-object eq 53
+  port-object eq 161
 exit
 
 object-group network id45142FFC28543.dst.net.0
@@ -186,12 +186,12 @@ exit
 object-group service id4514302F28543.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
-  port-object eq 25
-  port-object eq 22
-  port-object eq 540
   port-object eq 443
   port-object eq 143
+  port-object eq 25
   port-object eq 3128
+  port-object eq 22
+  port-object eq 540
 exit
 
 object-group network id4514303C28543.dst.net.0
@@ -200,24 +200,17 @@ object-group network id4514303C28543.dst.net.0
 exit
 
 object-group service id4514304928543.srv.tcp.0 tcp
-  port-object eq 3128
-  port-object range 10000 11000
-  port-object eq 6667
   port-object eq 113
-  port-object eq 53
-  port-object eq 21
-  port-object eq 80
-  port-object eq 119
-  port-object eq 25
-  port-object eq 22
-  port-object eq 23
-  port-object eq 540
-  port-object eq 70
   port-object eq 13
+  port-object eq 53
   port-object eq 2105
+  port-object eq 21
+  port-object eq 70
+  port-object eq 80
   port-object eq 443
   port-object eq 143
   port-object eq 993
+  port-object eq 6667
   port-object eq 6667
   port-object eq 543
   port-object eq 544
@@ -225,6 +218,7 @@ object-group service id4514304928543.srv.tcp.0 tcp
   port-object eq 98
   port-object eq 3306
   port-object eq 2049
+  port-object eq 119
   port-object eq 110
   port-object eq 5432
   port-object eq 515
@@ -233,9 +227,15 @@ object-group service id4514304928543.srv.tcp.0 tcp
   port-object eq 513
   port-object eq 514
   port-object eq 4321
+  port-object eq 25
   port-object eq 465
   port-object eq 1080
+  port-object eq 3128
+  port-object eq 22
   port-object eq 111
+  port-object eq 23
+  port-object range 10000 11000
+  port-object eq 540
   port-object eq 7100
 exit
 
@@ -278,8 +278,8 @@ access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22
 ! Rule  9 (ethernet2,ethernet0)
 ! firewall50:Policy:9: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
 
-access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 access-list inside_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
+access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 access-list dmz_acl_in permit tcp host 192.168.2.10 host 192.168.1.10 eq 22 
 ! 
 ! Rule  10 (global)
@@ -362,12 +362,12 @@ access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494
 access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494 
 ! 
 ! Rule  22 (global)
-access-list outside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list dmz_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
 access-list outside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
 access-list inside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
 access-list dmz_acl_in permit udp any range 10000 10010 host 192.168.1.10 
+access-list outside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list inside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list dmz_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
 access-list outside_acl_in permit tcp any range 20000 20020 host 192.168.1.10 
 access-list inside_acl_in permit tcp any range 20000 20020 host 192.168.1.10 
 access-list dmz_acl_in permit tcp any range 20000 20020 host 192.168.1.10 

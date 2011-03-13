@@ -17,10 +17,10 @@ skip 3 in   from any  to 192.168.2.20
 skip 2 in   from any  to 192.168.2.30 
 skip 1 in   from any  to 192.168.2.40 
 skip 13 in   from any  to any 
-skip 12 in  proto tcp  from any  to any port = 80 
-skip 11 in  proto tcp  from any  to any port = 21 
-skip 10 in  proto tcp  from any  to any port = 25 
-skip 9 in  proto tcp  from any  to any port = 119 
+skip 12 in  proto tcp  from any  to any port = 21 
+skip 11 in  proto tcp  from any  to any port = 80 
+skip 10 in  proto tcp  from any  to any port = 119 
+skip 9 in  proto tcp  from any  to any port = 25 
 skip 5 out  from 192.168.1.10  to any 
 skip 4 out  from 192.168.1.20  to any 
 skip 3 out  from 192.168.1.100  to any 
@@ -32,28 +32,28 @@ skip 3 out  from any  to 192.168.2.20
 skip 2 out  from any  to 192.168.2.30 
 skip 1 out  from any  to 192.168.2.40 
 skip 13 out  from any  to any 
-skip 12 out proto tcp  from any  to any port = 80 
-skip 11 out proto tcp  from any  to any port = 21 
-skip 10 out proto tcp  from any  to any port = 25 
-skip 9 out proto tcp  from any  to any port = 119 
+skip 12 out proto tcp  from any  to any port = 21 
+skip 11 out proto tcp  from any  to any port = 80 
+skip 10 out proto tcp  from any  to any port = 119 
+skip 9 out proto tcp  from any  to any port = 25 
 skip 4 in   from any  to 192.168.2.10 
 skip 3 in   from any  to 192.168.2.20 
 skip 2 in   from any  to 192.168.2.30 
 skip 1 in   from any  to 192.168.2.40 
 skip 4 in   from any  to any 
-pass  in  quick proto tcp  from any  to any port = 80 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 21 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 80 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 119 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
 skip 4 out  from any  to 192.168.2.10 
 skip 3 out  from any  to 192.168.2.20 
 skip 2 out  from any  to 192.168.2.30 
 skip 1 out  from any  to 192.168.2.40 
 skip 4 out  from any  to any 
-pass  out quick proto tcp  from any  to any port = 80 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 21 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 80 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 119 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
 # 
 # Rule  2 (global)
 # firewall10:Policy:2: warning: Changing rule direction due to self reference
@@ -64,10 +64,10 @@ skip 3 in   from any  to 22.22.22.22
 skip 2 in   from any  to 192.168.1.1 
 skip 1 in   from any  to 192.168.2.0 
 skip 7 in   from any  to any 
+pass  in  quick proto icmp  from any  to any icmp-type 3  keep state 
+pass  in  quick proto icmp  from any  to any icmp-type 0 code 0  keep state 
 pass  in  quick proto icmp  from any  to any icmp-type 11 code 0  keep state 
 pass  in  quick proto icmp  from any  to any icmp-type 11 code 1  keep state 
-pass  in  quick proto icmp  from any  to any icmp-type 0 code 0  keep state 
-pass  in  quick proto icmp  from any  to any icmp-type 3  keep state 
 pass  in  quick proto tcp  from 192.168.1.0/24  to 22.22.22.22 port = 22 flags S keep state 
 pass  in  quick proto tcp  from 192.168.1.0/24  to 192.168.1.1 port = 22 flags S keep state 
 pass  in  quick proto tcp  from 192.168.1.0/24  to 192.168.2.0 port = 22 flags S keep state 
@@ -84,10 +84,10 @@ skip 3 in   from any  to 192.168.2.20
 skip 2 in   from any  to 192.168.2.30 
 skip 1 in   from any  to 192.168.2.40 
 skip 4 in   from any  to any 
-block in  quick proto tcp  from any  to any port = 80 
 block in  quick proto tcp  from any  to any port = 21 
-block in  quick proto tcp  from any  to any port = 25 
+block in  quick proto tcp  from any  to any port = 80 
 block in  quick proto tcp  from any  to any port = 119 
+block in  quick proto tcp  from any  to any port = 25 
 skip 5 out  from 192.168.1.10  to any 
 skip 4 out  from 192.168.1.20  to any 
 skip 3 out  from 192.168.1.100  to any 
@@ -99,10 +99,10 @@ skip 3 out  from any  to 192.168.2.20
 skip 2 out  from any  to 192.168.2.30 
 skip 1 out  from any  to 192.168.2.40 
 skip 4 out  from any  to any 
-block out quick proto tcp  from any  to any port = 80 
 block out quick proto tcp  from any  to any port = 21 
-block out quick proto tcp  from any  to any port = 25 
+block out quick proto tcp  from any  to any port = 80 
 block out quick proto tcp  from any  to any port = 119 
+block out quick proto tcp  from any  to any port = 25 
 # 
 # Rule  4 (global)
 skip 1 in   from 192.168.1.10  to any 
@@ -112,10 +112,10 @@ skip 3 in   from any  to 192.168.2.20
 skip 2 in   from any  to 192.168.2.30 
 skip 1 in   from any  to 192.168.2.40 
 skip 4 in   from any  to any 
-block in  quick proto tcp  from any  to any port = 80 
 block in  quick proto tcp  from any  to any port = 21 
-block in  quick proto tcp  from any  to any port = 25 
+block in  quick proto tcp  from any  to any port = 80 
 block in  quick proto tcp  from any  to any port = 119 
+block in  quick proto tcp  from any  to any port = 25 
 skip 1 out  from 192.168.1.10  to any 
 skip 9 out  from any  to any 
 skip 4 out  from any  to 192.168.2.10 
@@ -123,10 +123,10 @@ skip 3 out  from any  to 192.168.2.20
 skip 2 out  from any  to 192.168.2.30 
 skip 1 out  from any  to 192.168.2.40 
 skip 4 out  from any  to any 
-block out quick proto tcp  from any  to any port = 80 
 block out quick proto tcp  from any  to any port = 21 
-block out quick proto tcp  from any  to any port = 25 
+block out quick proto tcp  from any  to any port = 80 
 block out quick proto tcp  from any  to any port = 119 
+block out quick proto tcp  from any  to any port = 25 
 # 
 # Rule  5 (global)
 skip 5 in   from 192.168.1.10  to any 
@@ -135,20 +135,20 @@ skip 3 in   from 192.168.1.100  to any
 skip 2 in   from 192.168.1.110  to any 
 skip 1 in   from 192.168.1.120  to any 
 skip 4 in   from any  to any 
-block in  quick proto tcp  from any  to 192.168.2.10 port = 80 
 block in  quick proto tcp  from any  to 192.168.2.10 port = 21 
-block in  quick proto tcp  from any  to 192.168.2.10 port = 25 
+block in  quick proto tcp  from any  to 192.168.2.10 port = 80 
 block in  quick proto tcp  from any  to 192.168.2.10 port = 119 
+block in  quick proto tcp  from any  to 192.168.2.10 port = 25 
 skip 5 out  from 192.168.1.10  to any 
 skip 4 out  from 192.168.1.20  to any 
 skip 3 out  from 192.168.1.100  to any 
 skip 2 out  from 192.168.1.110  to any 
 skip 1 out  from 192.168.1.120  to any 
 skip 4 out  from any  to any 
-block out quick proto tcp  from any  to 192.168.2.10 port = 80 
 block out quick proto tcp  from any  to 192.168.2.10 port = 21 
-block out quick proto tcp  from any  to 192.168.2.10 port = 25 
+block out quick proto tcp  from any  to 192.168.2.10 port = 80 
 block out quick proto tcp  from any  to 192.168.2.10 port = 119 
+block out quick proto tcp  from any  to 192.168.2.10 port = 25 
 # 
 # Rule  6 (global)
 skip 5 in   from 192.168.1.10  to any 

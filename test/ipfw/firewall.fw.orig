@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipfw v4.2.0.3496
+#  Firewall Builder  fwb_ipfw v4.2.0.3499
 #
-#  Generated Fri Mar 11 09:18:23 2011 PST by vadim
+#  Generated Sat Mar 12 19:44:43 2011 PST by vadim
 #
 # files: * firewall.fw ipfw.fw
 #
@@ -81,7 +81,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Fri Mar 11 09:18:23 2011 by vadim"
+log "Activating firewall script generated Sat Mar 12 19:44:43 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -150,31 +150,31 @@ prolog_commands
 "$IPFW" add 180 set 1 permit tcp  from 211.22.22.22  to 192.168.1.10 53     setup keep-state  || exit 1
 # 
 # Rule  13 (global)
-"$IPFW" add 190 set 1 permit tcp  from any  to 192.168.1.10 10000-11000,6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443,143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513,514,4321,465,1080,111,7100     setup keep-state  || exit 1
+"$IPFW" add 190 set 1 permit tcp  from any  to 192.168.1.10 10000-11000,113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389,98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080,3128,22,111,23,540,7100     setup keep-state  || exit 1
 # 
 # Rule  14 (global)
-"$IPFW" add 200 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 200 set 1 permit tcp  from any  to 192.168.1.11 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
 # 
 # Rule  15 (global)
-"$IPFW" add 210 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
-"$IPFW" add 220 set 1 permit tcp  from any  to 192.168.1.12/30 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 210 set 1 permit tcp  from any  to 192.168.1.11 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
+"$IPFW" add 220 set 1 permit tcp  from any  to 192.168.1.12/30 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
 # 
 # Rule  16 (global)
-"$IPFW" add 230 set 1 permit tcp  from any  to 192.168.1.11 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
-"$IPFW" add 240 set 1 permit tcp  from any  to 192.168.1.12 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
-"$IPFW" add 250 set 1 permit tcp  from any  to 192.168.1.13 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
-"$IPFW" add 260 set 1 permit tcp  from any  to 192.168.1.14 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
-"$IPFW" add 270 set 1 permit tcp  from any  to 192.168.1.15 113,80,25,22,540,443,143,3128     setup keep-state  || exit 1
+"$IPFW" add 230 set 1 permit tcp  from any  to 192.168.1.11 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
+"$IPFW" add 240 set 1 permit tcp  from any  to 192.168.1.12 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
+"$IPFW" add 250 set 1 permit tcp  from any  to 192.168.1.13 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
+"$IPFW" add 260 set 1 permit tcp  from any  to 192.168.1.14 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
+"$IPFW" add 270 set 1 permit tcp  from any  to 192.168.1.15 113,80,443,143,25,3128,22,540     setup keep-state  || exit 1
 # 
 # Rule  17 (global)
-"$IPFW" add 280 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 11,11,0,3     keep-state  || exit 1
+"$IPFW" add 280 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 3,0,11,11     keep-state  || exit 1
 "$IPFW" add 290 set 1 permit tcp  from any  to 192.168.1.0/24 3128     setup keep-state  || exit 1
 # 
 # Rule  18 (global)
-"$IPFW" add 300 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 11,11,0,3     keep-state  || exit 1
+"$IPFW" add 300 set 1 permit icmp  from any  to 192.168.1.0/24 icmptypes 3,0,11,11     keep-state  || exit 1
 "$IPFW" add 310 set 1 permit tcp  from any 20 to 192.168.1.0/24 1024-65535     setup keep-state  || exit 1
 "$IPFW" add 320 set 1 permit tcp  from any  to 192.168.1.0/24 10000-11000     setup keep-state  || exit 1
-"$IPFW" add 330 set 1 permit tcp  from any  to 192.168.1.0/24 6000-6063,3128,6667,113,53,21,80,119,25,22,23,540,70,13,2105,443,143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513,514,4321,465,1080,111,7100     setup keep-state  || exit 1
+"$IPFW" add 330 set 1 permit tcp  from any  to 192.168.1.0/24 6000-6063,113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389,98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080,3128,22,111,23,540,7100     setup keep-state  || exit 1
 # 
 # Rule  19 (global)
 "$IPFW" add 340 set 1 permit  log all  from me  to me      keep-state  || exit 1

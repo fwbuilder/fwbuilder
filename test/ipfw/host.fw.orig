@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipfw v4.2.0.3496
+#  Firewall Builder  fwb_ipfw v4.2.0.3499
 #
-#  Generated Fri Mar 11 09:18:25 2011 PST by vadim
+#  Generated Sat Mar 12 19:44:45 2011 PST by vadim
 #
 # files: * host.fw /etc/host.fw
 #
@@ -79,7 +79,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Fri Mar 11 09:18:25 2011 by vadim"
+log "Activating firewall script generated Sat Mar 12 19:44:45 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
@@ -120,7 +120,7 @@ prolog_commands
 # host:Policy:5: warning: Changing rule direction due to self reference
 
 "$IPFW" add 60 set 1 permit icmp  from any  to me icmptypes 3 in  keep-state  || exit 1
-"$IPFW" add 70 set 1 permit tcp  from any  to me 25,80,22,21,23 in  setup keep-state  || exit 1
+"$IPFW" add 70 set 1 permit tcp  from any  to me 21,80,25,22,23 in  setup keep-state  || exit 1
 # 
 # Rule  6 (global)
 # allow all outgoing connections

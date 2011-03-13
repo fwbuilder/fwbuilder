@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3499
 #
-#  Generated Thu Mar 10 21:49:22 2011 PST by vadim
+#  Generated Sat Mar 12 19:40:31 2011 PST by vadim
 #
 # files: * firewall.fw /etc/fw/firewall.fw
 #
@@ -520,9 +520,9 @@ script_body() {
     # no more than 15 ports
     # per rule
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 222.222.222.222  --dport 10000:11000 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 514,4321,465,1080,111,7100 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp -m multiport   -d 222.222.222.222  --dports 3128,22,111,23,540,7100 -j DNAT --to-destination 192.168.1.10
     # 
     # Rule 24 (NAT)
     # 
@@ -535,9 +535,9 @@ script_body() {
     $IPTABLES -t nat -N Cid3EF4288E.0
     $IPTABLES -t nat -A PREROUTING  -d 222.222.222.222  -j Cid3EF4288E.0
     $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp   --dport 10000:11000 -j RETURN
-    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443 -j RETURN
-    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513 -j RETURN
-    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 514,4321,465,1080,111,7100 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080 -j RETURN
+    $IPTABLES -t nat -A Cid3EF4288E.0 -p tcp -m tcp -m multiport   --dports 3128,22,111,23,540,7100 -j RETURN
     $IPTABLES -t nat -A Cid3EF4288E.0  -j DNAT --to-destination 192.168.1.10
 
 
@@ -784,17 +784,17 @@ script_body() {
     # 
     $IPTABLES -N RULE_22
     $IPTABLES -A OUTPUT -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
     $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
-    $IPTABLES -A OUTPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
     $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
-    $IPTABLES -A INPUT -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type any  -j RULE_22
+    $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags SYN,RST,ACK SYN   -j RULE_22
     $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags ALL ACK,RST,SYN,FIN  -j RULE_22
-    $IPTABLES -A FORWARD -p tcp -m tcp   --tcp-flags ALL NONE  -j RULE_22
     $IPTABLES -A RULE_22  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
     $IPTABLES -A RULE_22  -j DROP
     # 
@@ -979,9 +979,9 @@ script_body() {
 
     $IPTABLES -N Cpol-firewall2-2.0
     $IPTABLES -A FORWARD -p tcp -m tcp  -d 192.168.1.10   --dport 10000:11000  -m state --state NEW  -j Cpol-firewall2-2.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cpol-firewall2-2.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513  -m state --state NEW  -j Cpol-firewall2-2.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 514,4321,465,1080,111,7100  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080  -m state --state NEW  -j Cpol-firewall2-2.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -d 192.168.1.10   --dports 3128,22,111,23,540,7100  -m state --state NEW  -j Cpol-firewall2-2.0
     $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:10:4b:de:e9:70  -j ACCEPT
     $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:10:4b:de:e9:71  -j ACCEPT
     $IPTABLES -A Cpol-firewall2-2.0  -m mac --mac-source 00:00:00:00:00:00  -j ACCEPT
@@ -1037,9 +1037,9 @@ script_body() {
     # 
     $IPTABLES -N Cid3FB8455E.0
     $IPTABLES -A FORWARD -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j Cid3FB8455E.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid3FB8455E.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 143,993,6667,543,544,389,98,3306,2049,110,5432,515,26000,512,513  -m state --state NEW  -j Cid3FB8455E.0
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 514,4321,465,1080,111,7100  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,143,993,6667,6667,543,544,389  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 98,3306,2049,119,110,5432,515,26000,512,513,514,4321,25,465,1080  -m state --state NEW  -j Cid3FB8455E.0
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  --dports 3128,22,111,23,540,7100  -m state --state NEW  -j Cid3FB8455E.0
     $IPTABLES -N Cid3FB8455E.1
     $IPTABLES -A Cid3FB8455E.0  -s 211.11.11.11   -j Cid3FB8455E.1
     $IPTABLES -A Cid3FB8455E.0  -s 211.22.22.22   -j Cid3FB8455E.1
@@ -1071,24 +1071,24 @@ script_body() {
     # 
     $IPTABLES -N Cpol-firewall2-4.0
     $IPTABLES -A OUTPUT  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.0
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.0 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     $IPTABLES -N Cpol-firewall2-4.1
     $IPTABLES -A INPUT  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.1
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.1 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     $IPTABLES -N Cpol-firewall2-4.2
     $IPTABLES -A FORWARD  -d 192.168.1.0/24   -m state --state NEW  -j Cpol-firewall2-4.2
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
+    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 11/0   -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 11/1   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 0/0   -j ACCEPT
-    $IPTABLES -A Cpol-firewall2-4.2 -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
     $IPTABLES -A Cpol-firewall2-4.2  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     # 
     # Rule 47 (global)
@@ -1098,17 +1098,17 @@ script_body() {
     $IPTABLES -N Cid3CD8770E.0
     $IPTABLES -A OUTPUT  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.0
     $IPTABLES -A OUTPUT  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.0
-    $IPTABLES -A Cid3CD8770E.0 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.0 -p tcp -m tcp  -m multiport  --dports 113,80,443,143,25,22,540  -j ACCEPT
     $IPTABLES -A Cid3CD8770E.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     $IPTABLES -N Cid3CD8770E.1
     $IPTABLES -A INPUT  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.1
     $IPTABLES -A INPUT  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.1
-    $IPTABLES -A Cid3CD8770E.1 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.1 -p tcp -m tcp  -m multiport  --dports 113,80,443,143,25,22,540  -j ACCEPT
     $IPTABLES -A Cid3CD8770E.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     $IPTABLES -N Cid3CD8770E.2
     $IPTABLES -A FORWARD  -d 192.168.1.11   -m state --state NEW  -j Cid3CD8770E.2
     $IPTABLES -A FORWARD  -d 192.168.1.12/30   -m state --state NEW  -j Cid3CD8770E.2
-    $IPTABLES -A Cid3CD8770E.2 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD8770E.2 -p tcp -m tcp  -m multiport  --dports 113,80,443,143,25,22,540  -j ACCEPT
     $IPTABLES -A Cid3CD8770E.2  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     # 
     # Rule 48 (global)
@@ -1121,7 +1121,7 @@ script_body() {
     $IPTABLES -A OUTPUT  -d 192.168.1.13   -m state --state NEW  -j Cid3CD87B1E.0
     $IPTABLES -A OUTPUT  -d 192.168.1.14   -m state --state NEW  -j Cid3CD87B1E.0
     $IPTABLES -A OUTPUT  -d 192.168.1.15   -m state --state NEW  -j Cid3CD87B1E.0
-    $IPTABLES -A Cid3CD87B1E.0 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD87B1E.0 -p tcp -m tcp  -m multiport  --dports 113,80,443,143,25,22,540  -j ACCEPT
     $IPTABLES -A Cid3CD87B1E.0  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     $IPTABLES -N Cid3CD87B1E.1
     $IPTABLES -A FORWARD  -d 192.168.1.11   -m state --state NEW  -j Cid3CD87B1E.1
@@ -1129,7 +1129,7 @@ script_body() {
     $IPTABLES -A FORWARD  -d 192.168.1.13   -m state --state NEW  -j Cid3CD87B1E.1
     $IPTABLES -A FORWARD  -d 192.168.1.14   -m state --state NEW  -j Cid3CD87B1E.1
     $IPTABLES -A FORWARD  -d 192.168.1.15   -m state --state NEW  -j Cid3CD87B1E.1
-    $IPTABLES -A Cid3CD87B1E.1 -p tcp -m tcp  -m multiport  --dports 113,80,25,22,540,443,143  -j ACCEPT
+    $IPTABLES -A Cid3CD87B1E.1 -p tcp -m tcp  -m multiport  --dports 113,80,443,143,25,22,540  -j ACCEPT
     $IPTABLES -A Cid3CD87B1E.1  -m ip_conntrack_talk -m ip_nat_talk  -j ACCEPT
     # 
     # Rule 49 (global)
@@ -1159,18 +1159,18 @@ script_body() {
     # in the rule with a single service at all.
     $IPTABLES -N Cid41D0F052.0
     $IPTABLES -A OUTPUT -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.0
-    $IPTABLES -A OUTPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.0
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -m state --state NEW  -j Cid41D0F052.0
     $IPTABLES -N RULE_50
     $IPTABLES -A Cid41D0F052.0  -d 192.168.1.11   -j RULE_50
     $IPTABLES -A Cid41D0F052.0  -d 192.168.1.12/30   -j RULE_50
     $IPTABLES -N Cid41D0F052.1
     $IPTABLES -A INPUT -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.1
-    $IPTABLES -A INPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.1
+    $IPTABLES -A INPUT -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -m state --state NEW  -j Cid41D0F052.1
     $IPTABLES -A Cid41D0F052.1  -d 192.168.1.11   -j RULE_50
     $IPTABLES -A Cid41D0F052.1  -d 192.168.1.12/30   -j RULE_50
     $IPTABLES -N Cid41D0F052.2
     $IPTABLES -A FORWARD -p tcp -m tcp  -s 192.168.1.0/24   --dport 10000:11000  -m state --state NEW  -j Cid41D0F052.2
-    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 6667,3128,113,53,21,80,119,25,22,23,540,70,13,2105,443  -m state --state NEW  -j Cid41D0F052.2
+    $IPTABLES -A FORWARD -p tcp -m tcp  -m multiport  -s 192.168.1.0/24   --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -m state --state NEW  -j Cid41D0F052.2
     $IPTABLES -A Cid41D0F052.2  -d 192.168.1.11   -j RULE_50
     $IPTABLES -A Cid41D0F052.2  -d 192.168.1.12/30   -j RULE_50
     $IPTABLES -A RULE_50  -m limit --limit 5/second -j LOG  --log-level 7 --log-prefix "CUSTOM LOGGING"
@@ -1361,7 +1361,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Mar 10 21:49:22 2011 by vadim"
+        log "Activating firewall script generated Sat Mar 12 19:40:31 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -20,10 +20,10 @@ rdr on eth0.100 proto tcp from <tbl.r1> to (eth0.100) port 25 -> 192.168.1.10 po
 nat on eth0.100 proto {tcp udp icmp} from 192.168.1.0/24 to ! <block these> -> (eth0.100) 
 # 
 # Rule  3 (NAT)
-rdr proto tcp from any to (eth0.100) port 25 -> { 192.168.1.1 , 192.168.1.2 , 192.168.1.3/30 , 192.168.2.128/25 , 192.168.1.200 , 192.168.1.201 } port 25 
+rdr proto tcp from any to (eth0.100) port 25 -> { 192.168.1.1 , 192.168.1.2 , 192.168.1.200 , 192.168.1.201 , 192.168.1.3/30 , 192.168.2.128/25 } port 25 
 # 
 # Rule  4 (NAT)
-rdr proto {tcp udp icmp} from any to (eth0.100) -> { 192.168.1.1 , 192.168.1.2 , 192.168.1.3/30 , 192.168.2.128/25 , 192.168.1.200 , 192.168.1.201 } 
+rdr proto {tcp udp icmp} from any to (eth0.100) -> { 192.168.1.1 , 192.168.1.2 , 192.168.1.200 , 192.168.1.201 , 192.168.1.3/30 , 192.168.2.128/25 } 
 # 
 # Rule  5 (NAT)
 no nat proto {tcp udp icmp} from 192.168.1.0/24 to <block these> 

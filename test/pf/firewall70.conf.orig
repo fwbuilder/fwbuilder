@@ -31,7 +31,7 @@ pass in   quick on { en0 en1 } inet proto tcp  from any  to <tbl.r0.d> port 22 f
 # Rule  3 (en2,en0,en1,en3)
 # firewall70:Policy:3: warning: Changing rule direction due to self reference
 
-pass in   quick on { en2 en0 en1 en3 } inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
+pass in   quick on { en0 en1 en2 en3 } inet proto tcp  from any  to <tbl.r0.d> port 22 flags S/SA keep state 
 # 
 # Rule  4 (en0)
 # firewall70:Policy:4: warning: Changing rule direction due to self reference

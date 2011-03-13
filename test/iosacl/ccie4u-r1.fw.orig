@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3499
 !
-!  Generated Sat Mar 12 16:09:13 2011 PST by vadim
+!  Generated Sat Mar 12 19:44:06 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -29,15 +29,15 @@
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 12 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 12 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
+! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:1: error: Rule 'r1-ipv6 1 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 ! ccie4u-r1:r1-ipv6:3: error: Rule 'r1-ipv6 3 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
-! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
-! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
-! ccie4u-r1:r1-ipv6:9: error: Rule 'r1-ipv6 9 (global)' shadows rule 'r1-ipv6 13 (global)'  below it
 
 !
 ! Prolog script:

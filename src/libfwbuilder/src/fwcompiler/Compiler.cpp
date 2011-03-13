@@ -345,6 +345,8 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
     s->clearChildren();
     //s->setAnyElement();
 
+    cl.sort(FWObjectNameCmpPredicate());
+
     for(FWObject::iterator i2=cl.begin(); i2!=cl.end(); ++i2)
     {
         s->addRef( *i2 );
@@ -983,6 +985,8 @@ bool Compiler::replaceClusterInterfaceInItfRE::processNext()
         itfre->removeRef(r->first);
         itfre->addRef(r->second);
     }
+
+    itfre->sort(FWObjectNameCmpPredicate(true));
 
     tmp_queue.push_back(rule);
     return true;

@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:46 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:54 2011 PST by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -181,8 +181,8 @@ object-group network id178211X29963.osrc.net.0
 exit
 
 object-group network id21353X4994.osrc.net.0
-  network-object object internal_subnet_1.0
   network-object object Internal_net.0
+  network-object object internal_subnet_1.0
   network-object object internal_subnet_2.0
 exit
 

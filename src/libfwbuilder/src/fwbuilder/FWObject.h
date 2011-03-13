@@ -435,6 +435,8 @@ public:
 
     void clearChildren(bool recursive=true);
 
+    void sortChildrenByName(bool follow_references=false);
+    
     /**
      * Walks the tree, looking for objects that are referenced by two parents
      * or those with this->parent == NULL. Prints report to stderr and
@@ -607,6 +609,23 @@ class FWObjectNameEQPredicate: public std::unary_function<FWObject*, bool>
     {
         return o->getName()==n;
     }
+};
+
+struct FWObjectNameCmpPredicate :
+    public std::binary_function<FWObject*, FWObject*, bool>
+{
+    bool follow_references;
+    FWObjectNameCmpPredicate(bool follow_refs=false);
+    bool operator()(FWObject *a,FWObject *b);
+};
+
+class findFWObjectIDPredicate : public std::unary_function<FWObject*, bool>
+{
+    int _id;
+    public:
+    findFWObjectIDPredicate(int id):_id(id) {}
+    bool operator()(const FWObject *o) const
+    {return o->getId()==_id;}
 };
 
 /**

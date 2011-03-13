@@ -142,10 +142,10 @@ nat on eth1 proto  {tcp udp icmp gre} from 192.168.1.0/24 to any -> 22.22.22.22
 nat on eth1 from 192.168.1.0/24 to any -> 22.22.22.22 
 # 
 # Rule  33 (NAT)
-nat on eth1 proto 47 from 192.168.1.0/24 to any -> 22.22.22.22 
-nat on eth1 proto icmp from 192.168.1.0/24 to any -> 22.22.22.22 
 nat on eth1 proto tcp from 192.168.1.0/24 to any  -> 22.22.22.22 
 nat on eth1 proto udp from 192.168.1.0/24 to any  -> 22.22.22.22 
+nat on eth1 proto 47 from 192.168.1.0/24 to any -> 22.22.22.22 
+nat on eth1 proto icmp from 192.168.1.0/24 to any -> 22.22.22.22 
 
 # Policy compiler errors and warnings:
 # firewall2:Policy:12: warning: Changing rule direction due to self reference

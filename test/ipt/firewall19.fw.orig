@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3499
 #
-#  Generated Thu Mar 10 21:49:38 2011 PST by vadim
+#  Generated Sat Mar 12 19:40:43 2011 PST by vadim
 #
 # files: * firewall19.fw /etc/fw/firewall19.fw
 #
@@ -336,17 +336,17 @@ script_body() {
     # 
     echo "Rule 1 (lo)"
     # 
-    $IPTABLES -A INPUT -i lo   -d 66.66.66.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -i lo   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -i lo   -d 66.66.66.130   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i lo   -d 66.66.66.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -i lo   -d 127.0.0.1   -m state --state NEW  -j ACCEPT
     for i_ppp0 in $i_ppp0_list
     do
     test -n "$i_ppp0" && $IPTABLES -A INPUT -i lo   -d $i_ppp0   -m state --state NEW  -j ACCEPT 
     done
-    $IPTABLES -A OUTPUT -o lo   -d 66.66.66.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -o lo   -d 192.168.1.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -o lo   -d 66.66.66.130   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo   -d 66.66.66.1   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -o lo   -d 127.0.0.1   -m state --state NEW  -j ACCEPT
     for i_ppp0 in $i_ppp0_list
     do
@@ -438,10 +438,10 @@ script_body() {
     # 
     echo "Rule 11 (global)"
     # 
-    $IPTABLES -A OUTPUT -p tcp -m tcp  -d 127.0.0.1   --dport 3128  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -p tcp -m tcp  -d 66.66.66.130   --dport 3128  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT -p tcp -m tcp  -d 127.0.0.1   --dport 3128  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp  -d 127.0.0.1   --dport 3128  -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp  -d 66.66.66.130   --dport 3128  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -p tcp -m tcp  -d 127.0.0.1   --dport 3128  -m state --state NEW  -j ACCEPT
     # 
     # Rule 12 (global)
     # 
@@ -508,7 +508,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Mar 10 21:49:38 2011 by vadim"
+        log "Activating firewall script generated Sat Mar 12 19:40:43 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

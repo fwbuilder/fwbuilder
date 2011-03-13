@@ -1063,6 +1063,13 @@ void FWObject::destroyChildren()
     //clear();
 }
 
+void FWObject::sortChildrenByName(bool follow_references)
+{
+    if (!follow_references)
+        sort(FWObjectNameCmpPredicate());
+
+}
+
 /*
  * Walks the tree, looking for objects that are referenced by two parents
  */
@@ -1569,3 +1576,14 @@ void FWObject::_findDependencies_internal(FWObject *obj,
 
 bool FWObject::isPrimaryObject() const { return false; }
 
+FWObjectNameCmpPredicate::FWObjectNameCmpPredicate(bool follow_refs)
+{
+    follow_references = follow_refs;
+}
+
+bool FWObjectNameCmpPredicate::operator()(FWObject *a, FWObject *b)
+{
+    FWObject *o1 = (follow_references) ? FWReference::getObject(a) : a;
+    FWObject *o2 = (follow_references) ? FWReference::getObject(b) : b;
+    return o1->getName() < o2->getName();
+}

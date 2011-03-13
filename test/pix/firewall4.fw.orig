@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:42 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:51 2011 PST by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -87,8 +87,8 @@ clear object-group
 
 
 object-group service id3D79A1C2.srv.tcp.0 tcp
-  port-object eq 22
   port-object eq 80
+  port-object eq 22
 exit
 
 object-group network id3D79A1E4.dst.net.0

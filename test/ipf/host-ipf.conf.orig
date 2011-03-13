@@ -79,10 +79,10 @@ block in   log  quick  from any  to 22.22.22.22  with short
 # host:Policy:5: warning: Changing rule direction due to self reference
 
 pass  in  quick proto icmp  from any  to 22.22.22.22 icmp-type 3  keep state 
-pass  in  quick proto tcp  from any  to 22.22.22.22 port = 25 keep state 
-pass  in  quick proto tcp  from any  to 22.22.22.22 port = 80 keep state 
-pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 keep state 
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 21 keep state 
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 80 keep state 
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 25 keep state 
+pass  in  quick proto tcp  from any  to 22.22.22.22 port = 22 keep state 
 pass  in  quick proto tcp  from any  to 22.22.22.22 port = 23 keep state 
 # 
 # Rule  6 (global)

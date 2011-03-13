@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_iosacl v4.2.0.3499
 !
-!  Generated Sat Mar 12 16:07:13 2011 PST by vadim
+!  Generated Sat Mar 12 19:44:06 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -27,15 +27,15 @@
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 12 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 12 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
+! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:1: error: Rule 'fw-ipv6-1-ipv6 1 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 ! firewall-ipv6-1:fw-ipv6-1-ipv6:3: error: Rule 'fw-ipv6-1-ipv6 3 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
-! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
-! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
-! firewall-ipv6-1:fw-ipv6-1-ipv6:9: error: Rule 'fw-ipv6-1-ipv6 9 (global)' shadows rule 'fw-ipv6-1-ipv6 13 (global)'  below it
 
 !
 ! Prolog script:

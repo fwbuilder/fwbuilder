@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:47 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:56 2011 PST by vadim
 !
 ! Compiled for fwsm 2.3
 ! Outbound ACLs: supported
@@ -116,29 +116,29 @@ exit
 object-group service id444A03DE9567.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
+  port-object eq 443
+  port-object eq 143
   port-object eq 25
   port-object eq 22
   port-object eq 540
-  port-object eq 443
-  port-object eq 143
 exit
 
 object-group icmp-type id444A04039567.srv.icmp.0
-  icmp-object 11
-  icmp-object 0
   icmp-object 3
+  icmp-object 0
+  icmp-object 11
 exit
 
 object-group service id444A040F9567.srv.tcp.0 tcp
-  port-object eq 3128
   port-object eq 70
   port-object eq 6667
+  port-object eq 3128
   port-object eq 23
 exit
 
 object-group service id444A040F9567.srv.udp.0 udp
-  port-object eq 161
   port-object eq 53
+  port-object eq 161
 exit
 
 object-group network id444A04349567.dst.net.0
@@ -167,12 +167,12 @@ exit
 object-group service id444A04679567.srv.tcp.0 tcp
   port-object eq 113
   port-object eq 80
-  port-object eq 25
-  port-object eq 22
-  port-object eq 540
   port-object eq 443
   port-object eq 143
+  port-object eq 25
   port-object eq 3128
+  port-object eq 22
+  port-object eq 540
 exit
 
 object-group network id444A04749567.dst.net.0
@@ -181,24 +181,17 @@ object-group network id444A04749567.dst.net.0
 exit
 
 object-group service id444A04819567.srv.tcp.0 tcp
-  port-object eq 3128
-  port-object range 10000 11000
-  port-object eq 6667
   port-object eq 113
-  port-object eq 53
-  port-object eq 21
-  port-object eq 80
-  port-object eq 119
-  port-object eq 25
-  port-object eq 22
-  port-object eq 23
-  port-object eq 540
-  port-object eq 70
   port-object eq 13
+  port-object eq 53
   port-object eq 2105
+  port-object eq 21
+  port-object eq 70
+  port-object eq 80
   port-object eq 443
   port-object eq 143
   port-object eq 993
+  port-object eq 6667
   port-object eq 6667
   port-object eq 543
   port-object eq 544
@@ -206,6 +199,7 @@ object-group service id444A04819567.srv.tcp.0 tcp
   port-object eq 98
   port-object eq 3306
   port-object eq 2049
+  port-object eq 119
   port-object eq 110
   port-object eq 5432
   port-object eq 515
@@ -214,9 +208,15 @@ object-group service id444A04819567.srv.tcp.0 tcp
   port-object eq 513
   port-object eq 514
   port-object eq 4321
+  port-object eq 25
   port-object eq 465
   port-object eq 1080
+  port-object eq 3128
+  port-object eq 22
   port-object eq 111
+  port-object eq 23
+  port-object range 10000 11000
+  port-object eq 540
   port-object eq 7100
 exit
 

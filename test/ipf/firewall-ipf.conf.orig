@@ -77,30 +77,24 @@ pass  out quick proto tcp  from 211.11.11.11  to 192.168.1.10 port = 53 flags S 
 pass  out quick proto tcp  from 211.22.22.22  to 192.168.1.10 port = 53 flags S keep state 
 # 
 # Rule  12 (global)
-pass  in  quick proto tcp  from any  to 192.168.1.10 port 9999 >< 10041 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 6667 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 3128 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 113 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 53 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 21 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 80 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 119 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 25 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 22 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 23 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 540 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.10 port = 70 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 13 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 53 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 2105 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 21 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 70 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 80 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 443 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 143 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 993 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 6667 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 543 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 544 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 389 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 98 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 3306 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 2049 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 119 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 110 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 5432 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 515 flags S keep state 
@@ -109,34 +103,34 @@ pass  in  quick proto tcp  from any  to 192.168.1.10 port = 512 flags S keep sta
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 513 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 514 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 4321 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 25 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 465 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 1080 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 3128 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 22 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 111 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 23 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port 9999 >< 10041 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.10 port = 540 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.10 port = 7100 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port 9999 >< 10041 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 6667 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 3128 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 113 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 53 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 21 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 80 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 119 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 25 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 22 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 23 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 540 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.10 port = 70 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 13 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 53 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 2105 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 21 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 70 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 80 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 443 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 143 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 993 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 6667 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 543 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 544 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 389 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 98 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 3306 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 2049 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 119 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 110 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 5432 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 515 flags S keep state 
@@ -145,21 +139,27 @@ pass  out quick proto tcp  from any  to 192.168.1.10 port = 512 flags S keep sta
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 513 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 514 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 4321 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 25 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 465 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 1080 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 3128 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 22 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 111 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 23 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port 9999 >< 10041 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.10 port = 540 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.10 port = 7100 flags S keep state 
 # 
 # Rule  13 (global)
+pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 3  keep state 
+pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 0 code 0  keep state 
 pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 11 code 0  keep state 
 pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 11 code 1  keep state 
-pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 0 code 0  keep state 
-pass  in  quick proto icmp  from any  to 192.168.1.0/24 icmp-type 3  keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.0/24 port = 3128 flags S keep state 
+pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 3  keep state 
+pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 0 code 0  keep state 
 pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 11 code 0  keep state 
 pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 11 code 1  keep state 
-pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 0 code 0  keep state 
-pass  out quick proto icmp  from any  to 192.168.1.0/24 icmp-type 3  keep state 
 pass  out quick proto tcp  from any  to 192.168.1.0/24 port = 3128 flags S keep state 
 # 
 # Rule  14 (global)
@@ -168,41 +168,41 @@ skip 1 in   from any  to 192.168.1.12/30
 skip 8 in   from any  to any 
 pass  in  quick proto tcp  from any  to any port = 113 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 80 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 22 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 540 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 443 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 143 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 3128 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 22 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 540 flags S keep state 
 skip 2 out  from any  to 192.168.1.11 
 skip 1 out  from any  to 192.168.1.12/30 
 skip 8 out  from any  to any 
 pass  out quick proto tcp  from any  to any port = 113 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 80 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 22 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 540 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 443 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 143 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 3128 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 22 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 540 flags S keep state 
 # 
 # Rule  15 (global)
 pass  in  quick proto tcp  from any  to 192.168.1.11 port = 113 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.11 port = 80 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.11 port = 25 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.11 port = 22 flags S keep state 
-pass  in  quick proto tcp  from any  to 192.168.1.11 port = 540 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.11 port = 443 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.11 port = 143 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.11 port = 25 flags S keep state 
 pass  in  quick proto tcp  from any  to 192.168.1.11 port = 3128 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.11 port = 22 flags S keep state 
+pass  in  quick proto tcp  from any  to 192.168.1.11 port = 540 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.11 port = 113 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.11 port = 80 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.11 port = 25 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.11 port = 22 flags S keep state 
-pass  out quick proto tcp  from any  to 192.168.1.11 port = 540 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.11 port = 443 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.11 port = 143 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.11 port = 25 flags S keep state 
 pass  out quick proto tcp  from any  to 192.168.1.11 port = 3128 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.11 port = 22 flags S keep state 
+pass  out quick proto tcp  from any  to 192.168.1.11 port = 540 flags S keep state 
 # 
 # Rule  16 (global)
 skip 5 in   from any  to 192.168.1.11 
@@ -213,12 +213,12 @@ skip 1 in   from any  to 192.168.1.15
 skip 8 in   from any  to any 
 pass  in  quick proto tcp  from any  to any port = 113 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 80 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 22 flags S keep state 
-pass  in  quick proto tcp  from any  to any port = 540 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 443 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 143 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 25 flags S keep state 
 pass  in  quick proto tcp  from any  to any port = 3128 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 22 flags S keep state 
+pass  in  quick proto tcp  from any  to any port = 540 flags S keep state 
 skip 5 out  from any  to 192.168.1.11 
 skip 4 out  from any  to 192.168.1.12 
 skip 3 out  from any  to 192.168.1.13 
@@ -227,12 +227,12 @@ skip 1 out  from any  to 192.168.1.15
 skip 8 out  from any  to any 
 pass  out quick proto tcp  from any  to any port = 113 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 80 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 22 flags S keep state 
-pass  out quick proto tcp  from any  to any port = 540 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 443 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 143 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 25 flags S keep state 
 pass  out quick proto tcp  from any  to any port = 3128 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 22 flags S keep state 
+pass  out quick proto tcp  from any  to any port = 540 flags S keep state 
 # 
 # Rule  17 (global)
 pass  in   log  level local0.warning quick proto icmp  from 192.168.1.1  to 192.168.1.1 keep state 

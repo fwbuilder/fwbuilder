@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3499
 !
-!  Generated Sat Mar 12 15:05:44 2011 PST by vadim
+!  Generated Sat Mar 12 19:45:53 2011 PST by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -98,8 +98,8 @@ clear config object
 
 
 object-group icmp-type id19186X29796.srv.icmp.0
-  icmp-object 8
   icmp-object 0
+  icmp-object 8
 exit
 
 object-group service id19186X29796.srv.tcp.0 tcp
@@ -108,13 +108,13 @@ object-group service id19186X29796.srv.tcp.0 tcp
 exit
 
 object-group service id19186X29796.srv.udp.0 udp
-  port-object eq 123
   port-object eq 53
+  port-object eq 123
 exit
 
 object-group icmp-type id21447X11252.srv.icmp.0
-  icmp-object 8
   icmp-object 3
+  icmp-object 8
 exit
 
 
@@ -148,10 +148,10 @@ access-list inside_acl_in permit 51 any host 192.168.1.10
 ! 
 ! Rule  5 (global)
 ! matching source ports
-access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
 access-list outside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
 access-list inside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
+access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list inside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
 ! 
 ! Rule  6 (global)
 access-list outside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 
@@ -171,8 +171,8 @@ access-list inside_acl_in deny   tcp any host 192.168.1.10
 ! Rule  8 (global)
 ! for #1938 matching
 ! mixed services
-icmp permit 192.168.1.0 255.255.255.192 8 inside
 icmp permit 192.168.1.0 255.255.255.192 3 inside
+icmp permit 192.168.1.0 255.255.255.192 8 inside
 access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 host 192.168.1.1 object-group id21447X11252.srv.icmp.0 
 access-list inside_acl_in permit icmp 192.168.1.0 255.255.255.192 any object-group id21447X11252.srv.icmp.0 
 access-list inside_acl_in permit tcp 192.168.1.0 255.255.255.192 any eq 3128 
