@@ -760,10 +760,12 @@ bool NATCompiler_pix::ReplaceFirewallObjectsODst::processNext()
 		if (! iface->isLoopback() && iface->getSecurityLevel()==0 )
                     cl.push_back(iface);
 	    }
-	    if ( ! cl.empty() ) {
-		while (rel->size()) 
-		    rel->remove( rel->front()  );
-		
+	    if ( ! cl.empty() )
+            {
+		// while (rel->size()) 
+		//     rel->remove( rel->front()  );
+                rel->clearChildren();
+
 		for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
 		{
 		    rel->addRef( *i1 );
@@ -807,14 +809,17 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
             osrc_level = osrc_iface->getSecurityLevel();
         }
 
-	rel=rule->getTSrc();      assert(rel);
+	rel = rule->getTSrc();
+        assert(rel);
+
         if (rel->size() == 0)
         {
             compiler->abort(rule, "Empty TSrc");
             return true;
         }
 
-	obj=compiler->getFirstTSrc(rule);  assert(obj!=NULL);
+	obj = compiler->getFirstTSrc(rule);
+        assert(obj!=NULL);
 
 	if (obj->getId()==compiler->getFwId() ) 
 	{
@@ -840,10 +845,13 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
                         helper.findInterfaceByNetzone(odst ) );
                 if (odst_iface!=NULL) cl.push_back(odst_iface);
             }
-	    if ( ! cl.empty() ) {
-		while (rel->size()) 
-		    rel->remove( rel->front()  );
-		
+
+	    if ( ! cl.empty() )
+            {
+		// while (rel->size()) 
+		//     rel->remove( rel->front() );
+                rel->clearChildren();
+
 		for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
 		{
 		    rel->addRef( *i1 );

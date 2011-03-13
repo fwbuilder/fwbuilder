@@ -373,33 +373,30 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
  */
 bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(compiler);
 
-    RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
-    int nre=re->size();
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+    int nre = re->size();
 
     list<FWObject*> cl;
 
     for (list<FWObject*>::iterator i1=re->begin(); nre>1 && i1!=re->end(); ++i1)
     {
-	FWObject *o   = *i1;
-	FWObject *obj = NULL;
-	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-        Address *a=Address::cast(obj);
+	FWObject *obj = FWReference::getObject(*i1);
+        Address *a = Address::cast(obj);
         assert(a!=NULL);
 
-//        InetAddr obj_addr=a->getAddress();
+        if (cisco_comp->complexMatch(a,cisco_comp->fw))
+        {
+	    cl.push_back(obj);
 
-        if (cisco_comp->complexMatch(a,cisco_comp->fw)) {
-
-	    cl.push_back(o);   // can not remove right now because remove invalidates iterator
             nre--;
 
-	    PolicyRule  *new_rule= compiler->dbcopy->createPolicyRule();
+	    PolicyRule  *new_rule = compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(new_rule);
 	    new_rule->duplicate(rule);
-            RuleElement *new_re=RuleElement::cast(new_rule->getFirstByType(re_type));
+            RuleElement *new_re = RuleElement::cast(new_rule->getFirstByType(re_type));
 	    new_re->clearChildren();
 	    new_re->setAnyElement();
 	    new_re->addRef( a );
@@ -407,10 +404,11 @@ bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
         }
         
     }
+
     if (!cl.empty())
     {
         for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)
-            re->remove( (*i1) );
+            re->removeRef(*i1);
     }
 
     tmp_queue.push_back(rule);
