@@ -252,41 +252,41 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    PolicyRule     *r;
-    RuleElementSrc *src=rule->getSrc();    assert(src);
+    PolicyRule *r;
+    RuleElementSrc *src = rule->getSrc();
+    assert(src);
 
     if (src->size()==1 || src->getNeg())
     {
 	tmp_queue.push_back(rule);
 	return true;
     }
-    FWObject       *fw_in_src=NULL;
-    vector<FWObject*> cl;
-    for (FWObject::iterator i1=src->begin(); i1!=src->end(); ++i1) {
 
-	FWObject *o   = *i1;
-	FWObject *obj = NULL;
-//	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+    FWObject *fw_in_src = NULL;
+    vector<FWObject*> cl;
+    for (FWObject::iterator i1=src->begin(); i1!=src->end(); ++i1)
+    {
+	FWObject *obj = FWReference::getObject(*i1);
 	if (obj==NULL)
             compiler->abort(rule, "Broken Src object");
 
-	if (obj->getId()==compiler->getFwId()) {
-	    fw_in_src=o;   // can not remove right now because remove invalidates iterator
+	if (obj->getId()==compiler->getFwId())
+        {
+	    fw_in_src = obj;
 
 	    RuleElementSrc *nsrc;
 
-	    r= compiler->dbcopy->createPolicyRule();
+	    r = compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
-	    nsrc=r->getSrc();
+	    nsrc = r->getSrc();
 	    nsrc->clearChildren();
 	    nsrc->setAnyElement();
 	    nsrc->addRef( compiler->fw );
 	    tmp_queue.push_back(r);
 	}
     }
-    if (fw_in_src!=NULL) src->remove( fw_in_src );
+    if (fw_in_src!=NULL) src->removeRef( fw_in_src );
 
     tmp_queue.push_back(rule);
     return true;
