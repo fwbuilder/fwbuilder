@@ -51,7 +51,6 @@
 using namespace libfwbuilder;
 using namespace std;
 
-extern const char* standardFolders[];
 
 void FWBTreeTest::isSystem()
 {
@@ -75,19 +74,12 @@ void FWBTreeTest::isSystem()
     CPPUNIT_ASSERT(fwbtree.isSystem(&fw) == false);
 }
 
-bool FWBTreeTest::isStandardFolder(string path)
-{
-    for (const char **cptr=standardFolders; *cptr!=NULL; cptr++)
-        if (path == *cptr) return true;
-    return false;
-}
-
 QSet<FWObject*> FWBTreeTest::getStandardFolders(FWObject *root)
 {
     QSet<FWObject*> res;
     for (FWObject::iterator i = root->begin(); i != root->end(); i++)
     {
-        if (isStandardFolder((*i)->getPath(true))) res.insert(*i);
+        if (FWBTree().isStandardFolder(*i)) res.insert(*i);
         res += getStandardFolders(*i);
     }
     return res;

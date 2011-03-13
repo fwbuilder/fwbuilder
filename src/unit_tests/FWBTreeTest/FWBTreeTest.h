@@ -34,7 +34,6 @@
 
 class FWBTreeTest : public CppUnit::TestFixture
 {
-    bool isStandardFolder(std::string path);
     QSet<libfwbuilder::FWObject*> getStandardFolders(libfwbuilder::FWObject *root);
 
 public:
