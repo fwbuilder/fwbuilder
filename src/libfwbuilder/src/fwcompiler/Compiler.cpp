@@ -218,23 +218,7 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 
 Compiler::~Compiler()
 {
-#ifdef DBCOPY_IS_TRUE_COPY
-    if (dbcopy) 
-    {
-        if (dbcopy->verifyTree())
-        {
-            cerr << "source_ruleset=" << source_ruleset << endl;
-            cerr << "temp_ruleset=" << temp_ruleset << endl;
-            // dbcopy->dump(true, true);
-        }
-
-        if (persistent_objects != NULL)
-            dbcopy->remove(persistent_objects, false);
-
-        delete dbcopy;
-    }
-#endif
-
+    deleteRuleProcessors();
     dbcopy = NULL;
 }
 
@@ -692,12 +676,12 @@ void Compiler::runRuleProcessors()
 
 void Compiler::deleteRuleProcessors()
 {
-    list<BasicRuleProcessor*>::iterator i=rule_processors.begin();
-    for ( ; i!=rule_processors.end(); ++i)
+    while (rule_processors.size() > 0)
     {
-        delete *i;
+        BasicRuleProcessor *rp = rule_processors.front();
+        rule_processors.pop_front();
+        delete rp;
     }
-    rule_processors.clear();
 }
 
 Compiler::Begin::Begin() : BasicRuleProcessor("")
