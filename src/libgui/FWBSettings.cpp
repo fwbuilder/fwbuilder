@@ -177,7 +177,8 @@ FWBSettings::~FWBSettings()
  */
 void FWBSettings::init(bool force_first_time_run)
 {
-    bool ok=false;
+    bool ok = false;
+    first_run = false;
 
     ok = contains(reminderAboutStandardLibSuppressed);
     if (!ok)
