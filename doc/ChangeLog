@@ -1,3 +1,11 @@
+2011-03-12  vadim  <vadim@netcitadel.com>
+
+	* Compiler.cpp (_init): see #2212 "Performance improvement in
+	compilers". This change brings significant improvement in compile
+	time on large object trees. The speed-up is especially noticeable
+	in single rule compile where the time before generated firewall
+	configuration appears in the GUI shrank by up to a factor of 10.
+
 2011-03-11  vadim  <vadim@netcitadel.com>
 
 	* FWObject.cpp (add): fixes #2209 "do not allow the same object to
