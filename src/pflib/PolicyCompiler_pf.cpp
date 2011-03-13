@@ -295,10 +295,10 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 
 bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    PolicyRule     *r;
-    RuleElementDst *dst=rule->getDst();    assert(dst);
+    PolicyRule *r;
+    RuleElementDst *dst = rule->getDst();    assert(dst);
 
     if (dst->size()==1 || dst->getNeg())
     {
@@ -306,33 +306,31 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 	return true;
     }
 
-    FWObject       *fw_in_dst=NULL;
+    FWObject *fw_in_dst = NULL;
     vector<FWObject*> cl;
     for (FWObject::iterator i1=dst->begin(); i1!=dst->end(); ++i1)
     {
-	FWObject *o   = *i1;
-	FWObject *obj = NULL;
-//	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+	FWObject *obj = FWReference::getObject(*i1);
 	if (obj==NULL)
             compiler->abort(rule, "Broken Dst");
 
-	if (obj->getId()==compiler->getFwId()) {
-	    fw_in_dst=o;   // can not remove right now because remove invalidates iterator
+	if (obj->getId()==compiler->getFwId())
+        {
+	    fw_in_dst = obj;
 
 	    RuleElementDst *ndst;
 
-	    r= compiler->dbcopy->createPolicyRule();
+	    r = compiler->dbcopy->createPolicyRule();
 	    compiler->temp_ruleset->add(r);
 	    r->duplicate(rule);
-	    ndst=r->getDst();
+	    ndst = r->getDst();
 	    ndst->clearChildren();
 	    ndst->setAnyElement();
 	    ndst->addRef( compiler->fw );
 	    tmp_queue.push_back(r);
 	}
     }
-    if (fw_in_dst!=NULL) dst->remove( fw_in_dst );
+    if (fw_in_dst!=NULL) dst->removeRef( fw_in_dst );
 
     tmp_queue.push_back(rule);
     return true;
