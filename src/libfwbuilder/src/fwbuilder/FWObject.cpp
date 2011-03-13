@@ -546,7 +546,9 @@ string FWObject::getPath(bool relative, bool detailed) const
         p = p->getParent();
     }
 
-    return std::for_each(res.begin(), res.end(), pathAccumulator());
+    string path = std::for_each(res.begin(), res.end(), pathAccumulator());
+    if (relative && path[0] == '/') path.erase(0, 1);
+    return path;
 }
 
 const string& FWObject::getComment() const

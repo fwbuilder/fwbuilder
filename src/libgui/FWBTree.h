@@ -42,6 +42,8 @@ namespace libfwbuilder {
 class FWBTree
 {
 
+    static QStringList            standardFolders;
+
     static QMap<QString,QString>  systemGroupTypes;
     static QMap<QString,QString>  systemGroupNames;
     static QMap<QString,QString>  systemGroupPaths;

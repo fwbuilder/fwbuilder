@@ -74,33 +74,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-const char* standardFolders[] = {
-    "Objects",
-    "Objects/Addresses",
-    "Objects/DNS Names",
-    "Objects/Address Tables",
-    "Objects/Address Ranges",
-    "Objects/Groups",
-    "Objects/Hosts",
-    "Objects/Networks",
 
-    "Services",
-    "Services/Custom",
-    "Services/Groups",
-    "Services/IP",
-    "Services/ICMP",
-    "Services/TCP",
-    "Services/UDP",
-    "Services/TagServices",
-    "Services/Users",
-
-    "Firewalls",
-    "Clusters",
-    "Time",
-
-    NULL
-};
-
+QStringList            FWBTree::standardFolders;
 QSet<QString>          FWBTree::standardIDs;
 QMap<QString,QString>  FWBTree::systemGroupTypes;
 QMap<QString,QString>  FWBTree::systemGroupNames;
@@ -121,6 +96,33 @@ void FWBTree::init_statics()
 {
     if (systemGroupPaths.size() == 0)
     {
+        // Names of the standard folders should be translatable.
+        // Function isStandardFolder() takes this into account.
+
+        standardFolders << "Objects";
+        standardFolders << "Objects/Addresses";
+        standardFolders << "Objects/DNS Names";
+        standardFolders << "Objects/Address Tables";
+        standardFolders << "Objects/Address Ranges";
+        standardFolders << "Objects/Groups";
+        standardFolders << "Objects/Hosts";
+        standardFolders << "Objects/Networks";
+
+        standardFolders << "Services";
+        standardFolders << "Services/Custom";
+        standardFolders << "Services/Groups";
+        standardFolders << "Services/IP";
+        standardFolders << "Services/ICMP";
+        standardFolders << "Services/TCP";
+        standardFolders << "Services/UDP";
+        standardFolders << "Services/TagServices";
+        standardFolders << "Services/Users";
+
+        standardFolders << "Firewalls";
+        standardFolders << "Clusters";
+        standardFolders << "Time";
+
+
         systemGroupPaths[Library::TYPENAME]       = "";
 
         systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
@@ -387,9 +389,7 @@ bool FWBTree::isSystem(FWObject *obj)
 bool FWBTree::isStandardFolder(FWObject *obj)
 {
     string path = obj->getPath(true);  // relative path
-    for (const char **cptr=standardFolders; *cptr!=NULL; cptr++)
-        if (path== *cptr) return true;
-    return false;
+    return (standardFolders.contains(QString::fromUtf8(path.c_str())));
 }
 
 bool FWBTree::isStandardId(FWObject *obj)
