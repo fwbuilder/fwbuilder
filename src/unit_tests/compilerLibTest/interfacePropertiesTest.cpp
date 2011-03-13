@@ -368,7 +368,6 @@ void interfacePropertiesTest::isEligibleForCluster()
     Interface *parent1 = Interface::cast(db->create(Interface::TYPENAME));
     Interface *iface1 = Interface::cast(db->create(Interface::TYPENAME));
     db->add(parent1);
-    db->add(iface1);
     parent1->add(iface1);
 
     iface1->getOptionsObject()->setStr("type", "ethernet");
@@ -402,7 +401,6 @@ void interfacePropertiesTest::isEligibleForCluster()
     Interface *subface = Interface::cast(db->create(Interface::TYPENAME));
     subface->setName("iface");
     fw->add(iface);
-    fw->add(subface);
     iface->getOptionsObject()->setStr("type", "bonding");
     iface->add(subface);
     CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(subface) == false );
