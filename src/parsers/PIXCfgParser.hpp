@@ -81,11 +81,13 @@ public:
 	public: void shutdown();
 	public: void certificate();
 	public: void quit();
+	public: void names_section();
 	public: void crypto();
 	public: void unknown_command();
 	public: void ip_access_list_ext();
 	public: void interface_known_commands();
 	public: void community_list_command();
+	public: void name_entry();
 	public: void permit_ext();
 	public: void deny_ext();
 	public: void remark();
@@ -122,10 +124,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 90;
+	static const int NUM_TOKENS = 92;
 #else
 	enum {
-		NUM_TOKENS = 90
+		NUM_TOKENS = 92
 	};
 #endif
 	
@@ -149,6 +151,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_8;
 	static const unsigned long _tokenSet_9_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_9;
+	static const unsigned long _tokenSet_10_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

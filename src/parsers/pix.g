@@ -111,6 +111,8 @@ cfgfile :
         |
             quit
         |
+            names_section
+        |
             crypto
         |
             unknown_command
@@ -133,6 +135,21 @@ quit : QUIT
 
 //****************************************************************
 community_list_command : COMMUNITY_LIST 
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+names_section : NAMES (name_entry)*
+        {
+            importer->addMessageToLog("Parser warning: \"names\" section detected. "
+                                      "Import of configuration that uses \"names\" "
+                                      "is not supported at this time");
+        }
+    ;
+
+name_entry : NAME
         {
             consumeUntil(NEWLINE);
         }
@@ -779,6 +796,10 @@ tokens
     VERSION_WORD = "Version" ;
 
     CRYPTO = "crypto";
+
+    NAMES = "names";
+    NAME = "name";
+
 }
 
 
