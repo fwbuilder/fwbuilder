@@ -29,7 +29,7 @@
      <item row="1" column="0" colspan="3">
       <widget class="QPushButton" name="voteForFeatureButton">
        <property name="text">
-        <string>Register (opens registration page in the web browser)</string>
+        <string>Vote for PF import feature (opens web browser)</string>
        </property>
       </widget>
      </item>
