@@ -1,0 +1,206 @@
+: Saved
+:
+PIX Version 7.2(1) 
+!
+terminal width 511
+hostname pix1
+domain-name some-domain.org
+enable password XXXXXXXXXXXXXXXX encrypted
+names
+name 1.2.3.4 gw
+name 192.168.3.0 fake_network
+name 192.168.4.1 inside_ip
+!
+dns-guard
+!
+interface Ethernet0
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet0.101
+ vlan 101
+ nameif outside
+ security-level 0
+ ip address 192.0.2.253 255.255.255.0 
+!
+interface Ethernet0.102
+ vlan 102
+ nameif dmz20 
+ security-level 20
+ ip address 10.0.0.253 255.255.255.0 standby 10.0.0.254 
+!
+interface Ethernet1
+ speed 100
+ duplex full
+ nameif inside
+ security-level 100
+ ip address 10.1.1.206 255.255.255.0 
+!
+interface Ethernet2
+ description LAN/STATE Failover Interface
+ speed 10
+!
+interface Ethernet3
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!             
+interface Ethernet5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+passwd MMMMMMMMMMMMMMMM encrypted
+boot system flash:/pix721.bin
+ftp mode passive
+clock timezone PDT -7
+dns server-group DefaultDNS
+ domain-name some-domain.org
+object-group network outside.id12051X6282.src.net.0
+ network-object host 10.1.1.206
+ network-object host 10.1.1.207
+object-group network outside.id12051X6282.src.net.1
+ network-object host 172.17.1.253
+ network-object host 172.17.1.254
+ network-object host 192.0.2.253
+ network-object host 192.0.2.254
+object-group network outside.id12051X6282.src.net.2
+ network-object host 10.0.0.253
+ network-object host 10.0.0.254
+access-list outside_in extended deny ip object-group outside.id12051X6282.src.net.0 any log warnings 
+access-list outside_in extended deny ip object-group outside.id12051X6282.src.net.1 any log warnings 
+access-list outside_in extended deny ip object-group outside.id12051X6282.src.net.2 any log warnings 
+access-list outside_in extended deny ip 10.1.1.0 255.255.255.0 any log warnings 
+access-list inside_out extended permit udp object-group outside.id12051X6282.src.net.0 10.1.1.0 255.255.255.0 eq domain log warnings 
+access-list inside_out extended permit udp object-group outside.id12051X6282.src.net.1 10.1.1.0 255.255.255.0 eq domain log warnings 
+access-list inside_out extended permit udp object-group outside.id12051X6282.src.net.2 10.1.1.0 255.255.255.0 eq domain log warnings 
+access-list inside_out extended permit ip 10.1.1.0 255.255.255.0 any 
+access-list inside_out extended deny ip any any log warnings 
+access-list inside_in extended deny ip any object-group outside.id12051X6282.src.net.0 log warnings 
+access-list inside_in extended deny ip any object-group outside.id12051X6282.src.net.1 log warnings 
+access-list inside_in extended deny ip any object-group outside.id12051X6282.src.net.2 log warnings 
+access-list inside_in extended permit ip 10.1.1.0 255.255.255.0 any 
+access-list inside_in extended deny ip any any log warnings 
+access-list id12251X6282.0 extended permit ip 10.1.1.0 255.255.255.0 any 
+pager lines 24
+logging enable
+logging emblem
+logging trap debugging
+logging history informational
+logging facility 16
+logging queue 10
+logging device-id ipaddress inside
+logging host inside 192.168.240.20
+logging host inside 10.1.1.40 format emblem
+logging class config buffered debugging 
+mtu outside 1500
+mtu dmz20 1500
+mtu inside 1500
+failover
+failover lan unit primary
+failover lan interface failover Ethernet2
+failover lan enable
+failover key *****
+failover link failover Ethernet2
+failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
+no asdm history enable
+arp timeout 14400
+nat-control
+global (outside) 1 interface
+nat (inside) 1 access-list id12251X6282.0
+access-group outside_in in interface outside
+access-group inside_in in interface inside
+access-group inside_out out interface inside
+route inside 192.168.10.0 255.255.255.0 10.1.1.254 1
+route inside 10.1.2.0 255.255.255.0 10.1.1.201 1
+timeout xlate 3:00:00
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout uauth 2:00:00 absolute
+aaa-server TACACS+ protocol tacacs+
+aaa-server RADIUS protocol radius
+username fwbtest password AAAAAAAAAAAAAAAA encrypted privilege 15
+aaa authentication ssh console LOCAL 
+snmp-server host inside 10.1.1.180 community public
+snmp-server host inside 10.1.1.30 community public
+snmp-server host inside 10.1.1.40 poll community public version 2c
+no snmp-server location
+no snmp-server contact
+snmp-server community public
+crypto ipsec transform-set spde esp-des esp-sha-hmac 
+crypto map spdemap 21 set peer 192.0.2.254 
+crypto map spdemap 21 set transform-set spde
+crypto isakmp identity address 
+crypto isakmp policy 21
+ authentication pre-share
+ encryption des
+ hash sha
+ group 1
+ lifetime 3600
+crypto isakmp policy 65535
+ authentication pre-share
+ encryption 3des
+ hash sha
+ group 2
+ lifetime 86400
+tunnel-group 192.0.2.254 type ipsec-l2l
+tunnel-group 192.0.2.254 ipsec-attributes
+ pre-shared-key *
+telnet timeout 5
+ssh scopy enable
+ssh 10.1.1.0 255.255.255.0 inside
+ssh timeout 20
+console timeout 0
+!
+class-map custom_h323_h225_inspection
+ match port tcp range h323 1721
+class-map custom_http_inspection
+ match port tcp range www 88
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns migrated_dns_map_1
+ parameters   
+  message-length maximum 512
+policy-map global_policy
+ class inspection_default
+  inspect dns migrated_dns_map_1 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect http 
+  inspect netbios 
+  inspect rsh 
+  inspect rtsp 
+  inspect skinny 
+  inspect sqlnet 
+  inspect sunrpc 
+  inspect tftp 
+  inspect sip 
+  inspect xdmcp 
+  inspect ctiqbe 
+  inspect icmp 
+  inspect ils 
+  inspect mgcp 
+  inspect esmtp 
+ class custom_h323_h225_inspection
+  inspect h323 h225 
+ class custom_http_inspection
+  inspect http 
+!
+service-policy global_policy global
+prompt hostname context 
+Cryptochecksum:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+: end
+
