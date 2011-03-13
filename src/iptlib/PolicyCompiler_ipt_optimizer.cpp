@@ -285,7 +285,7 @@ bool PolicyCompiler_ipt::optimize2::processNext()
 bool PolicyCompiler_ipt::optimize3::processNext()
 {
     PolicyRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule = getNext(); if (rule==NULL) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -300,6 +300,7 @@ bool PolicyCompiler_ipt::optimize3::processNext()
         printRule->initialize();
     }
     string thisRule = rule->getLabel() + " " + printRule->PolicyRuleToString(rule);
+
     if (rules_seen_so_far.count(thisRule)!=0) return true;
 
     tmp_queue.push_back(rule);

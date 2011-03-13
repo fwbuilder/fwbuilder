@@ -109,6 +109,13 @@ const std::list<std::string>& PolicyCompiler_ipt::getStandardChains()
 PolicyCompiler_ipt::~PolicyCompiler_ipt()
 {
 //    if (printRule) delete printRule;
+    while (chains.size() > 0)
+    {
+        map<string, chain_list*>::iterator i = chains.begin();
+        chain_list *cl = i->second;
+        chains.erase(i);
+        delete cl;
+    }
 }
 
 string PolicyCompiler_ipt::myPlatformName() { return "iptables"; }

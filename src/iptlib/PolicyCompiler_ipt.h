@@ -795,9 +795,11 @@ protected:
             std::map<std::string, bool> rules_seen_so_far;
             PolicyCompiler_ipt::PrintRule *printRule;
             public:
-            optimize3(const std::string &name) : PolicyRuleProcessor(name){
-                printRule=NULL;
+            optimize3(const std::string &name) : PolicyRuleProcessor(name)
+            {
+                printRule = NULL;
             }
+            virtual ~optimize3() { if (printRule) delete printRule; }
             virtual bool processNext();
         };
         friend class PolicyCompiler_ipt::optimize3;

@@ -199,6 +199,8 @@ string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
     if (XMLTools::version_compare(version, "1.3.0")>=0)
         res << prp->_clampTcpToMssRule();
 
+    delete prp;
+
     return res.str();
 }
 

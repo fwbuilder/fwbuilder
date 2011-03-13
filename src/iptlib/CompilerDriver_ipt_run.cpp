@@ -474,7 +474,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
  * now write generated scripts to files
  */
 
-        char *timestr;
+        char *timestr = NULL;
         time_t tm;
         struct tm *stm;
 
@@ -783,6 +783,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                   .arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
 
+        free(timestr);
     }
     catch (FWException &ex)
     {
