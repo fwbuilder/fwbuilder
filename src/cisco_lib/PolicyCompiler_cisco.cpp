@@ -148,37 +148,6 @@ string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 }
 
 
-void PolicyCompiler_cisco::addDefaultPolicyRule()
-{
-/*
- * set up backup ssh access to the firewall if told to do so
- */
-    if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
-         !getCachedFwOpt()->getStr("mgmt_addr").empty() )
-    {
-        TCPService *ssh = dbcopy->createTCPService();
-        ssh->setDstRangeStart(22);
-        ssh->setDstRangeEnd(22);
-        persistent_objects->add(ssh, false);
-
-        TCPService *ssh_rev = dbcopy->createTCPService();
-        ssh_rev->setSrcRangeStart(22);
-        ssh_rev->setSrcRangeEnd(22);
-        persistent_objects->add(ssh_rev, false);
-
-        Network *mgmt_workstation = dbcopy->createNetwork();
-        mgmt_workstation->setAddressNetmask(
-            getCachedFwOpt()->getStr("mgmt_addr"));
-
-        persistent_objects->add(mgmt_workstation, false);
-
-        PolicyCompiler::addMgmtRule(
-            mgmt_workstation, fw, ssh,
-            NULL, PolicyRule::Inbound, PolicyRule::Accept,
-            "backup ssh access rule");
-    }
-}
-
 bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;

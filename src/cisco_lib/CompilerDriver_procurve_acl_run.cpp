@@ -37,6 +37,7 @@
 #include <iomanip>
 
 #include "CompilerDriver_procurve_acl.h"
+#include "AutomaticRules_iosacl.h"
 
 #include "PolicyCompiler_procurve_acl.h"
 #include "RoutingCompiler_procurve_acl.h"
@@ -164,6 +165,15 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
         oscnf->processFirewallOptions();
 
         list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+
+        try
+        {
+            AutomaticRules_iosacl auto_rules(fw, persistent_objects);
+            auto_rules.addSshAccessRule();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         // assign unique rule ids that later will be used to generate
         // chain names.  This should be done after calls to

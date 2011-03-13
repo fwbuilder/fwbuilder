@@ -57,8 +57,6 @@ namespace fwcompiler {
 
         std::string comment_symbol;
         
-	virtual void addDefaultPolicyRule();
-
         /**
          * dynamic interfaces can not be used in policy rules in IOS ACLs
          */

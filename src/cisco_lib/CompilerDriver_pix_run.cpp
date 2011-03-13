@@ -45,6 +45,7 @@
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManagerPIX.h"
 #include "NamedObjectsManagerASA8.h"
+#include "AutomaticRules_cisco.h"
 
 #include "Helper.h"
 
@@ -351,6 +352,16 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
          *
          std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
         */
+
+
+        try
+        {
+            AutomaticRules_cisco auto_rules(fw, persistent_objects);
+            auto_rules.addSshAccessRule();
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
 
         std::auto_ptr<Preprocessor> prep(
             new Preprocessor(objdb , fw, false));

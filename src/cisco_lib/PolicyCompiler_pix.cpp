@@ -440,8 +440,6 @@ void PolicyCompiler_pix::compile()
 
     Compiler::compile();
 
-    addDefaultPolicyRule();
-
     if ( fw->getOptionsObject()->getBool ("check_shading") &&
          ! inSingleRuleCompileMode())
     {

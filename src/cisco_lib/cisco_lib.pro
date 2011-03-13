@@ -54,7 +54,9 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PolicyCompiler_pix_v6_acls.cpp   \
 			PolicyCompiler_pix_replace_translations.cpp   \
 			RoutingCompiler_pix.cpp          \
-			RoutingCompiler_pix_writers.cpp
+			RoutingCompiler_pix_writers.cpp  \
+			AutomaticRules_cisco.cpp         \
+			AutomaticRules_iosacl.cpp
 
 HEADERS	 = ../../config.h                   \
 			splitByNetworkZonesForRE.h      \
@@ -89,6 +91,9 @@ HEADERS	 = ../../config.h                   \
 			IOSObjectGroup.h                \
 			PolicyCompiler_pix.h            \
 			RoutingCompiler_pix.h           \
+			AutomaticRules_cisco.h          \
+			AutomaticRules_iosacl.h
+
 
 macx:LIBS  += $$LIBS_FWCOMPILER
 

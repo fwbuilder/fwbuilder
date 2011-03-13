@@ -95,36 +95,6 @@ int PolicyCompiler_iosacl::prolog()
     return PolicyCompiler::prolog();
 }
 
-void PolicyCompiler_iosacl::addDefaultPolicyRule()
-{
-    PolicyCompiler_cisco::addDefaultPolicyRule();
-
-/*
- * PolicyCompiler_cisco::addDefaultPolicyRule() adds a rule to permit
- * backup ssh access to the firewall. Since IOS ACL are stateless, we
- * need to add another rule to permit reply packets.
- */
-    if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
-         !getCachedFwOpt()->getStr("mgmt_addr").empty() )
-    {
-        TCPService *ssh_rev = dbcopy->createTCPService();
-        ssh_rev->setSrcRangeStart(22);
-        ssh_rev->setSrcRangeEnd(22);
-        persistent_objects->add(ssh_rev, false);
-
-        Network *mgmt_workstation = dbcopy->createNetwork();
-        mgmt_workstation->setAddressNetmask(
-            getCachedFwOpt()->getStr("mgmt_addr"));
-
-        persistent_objects->add(mgmt_workstation, false);
-
-        PolicyCompiler::addMgmtRule(
-            fw, mgmt_workstation, ssh_rev,
-            NULL, PolicyRule::Outbound, PolicyRule::Accept,
-            "backup ssh access rule (out)");
-    }
-}
-
 bool PolicyCompiler_iosacl::checkForDynamicInterface::findDynamicInterface(
     PolicyRule *rule, RuleElement *rel)
 {
@@ -311,8 +281,6 @@ void PolicyCompiler_iosacl::compile()
     string platform = fw->getStr("platform");
 
     Compiler::compile();
-
-    addDefaultPolicyRule();
 
     if ( fw->getOptionsObject()->getBool ("check_shading") &&
          ! inSingleRuleCompileMode())

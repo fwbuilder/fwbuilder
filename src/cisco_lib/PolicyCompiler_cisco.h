@@ -55,15 +55,6 @@ namespace fwcompiler {
 
 protected:
 
-	/**
-	 * our firewall policy must block everything by default even
-	 * if there are no rules. In iptables we do this by setting
-	 * default chain policies to DROP. Here we do this by adding
-	 * this unconditional blocking rule in the end. See also comment
-	 * in the code regarding "pass_all_out" option
-	 */
-	virtual void addDefaultPolicyRule();
-
         /**
          * prints rule in some universal format (close to that visible
          * to user in the GUI). Used for debugging purposes. This method
