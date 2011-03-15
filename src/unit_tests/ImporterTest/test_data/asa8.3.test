@@ -44,11 +44,11 @@ ftp mode passive
 
 !
 object network internal_subnet_1 
- description Internal Subnet 1
  subnet 192.168.1.0 255.255.255.192
+ description Internal Subnet 1
 object network internal_subnet_2 
- description Internal Subnet 2
  subnet 192.168.1.64 255.255.255.192
+ description Internal Subnet 2
 object network Internal_net 
  subnet 192.168.1.0 255.255.255.0
 object network outside_range-1 
@@ -74,6 +74,15 @@ object network my-inside-net
  subnet 192.168.2.0 255.255.255.0
  nat (inside,outside) dynamic my-range-ob
 !
+
+! ipv6 addresses
+!
+object network ipv6-host-object-1 
+ description Example of IPv6 host object 
+ host 2001::1 
+object network ipv6-network-object-1 
+ description IPv6 network object example 
+ subnet 2001::/64
 
 !
 object service smtp 
