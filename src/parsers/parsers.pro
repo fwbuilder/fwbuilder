@@ -4,6 +4,7 @@ include(../../qmake.inc)
 #
 TEMPLATE = lib
 #
+
 SOURCES	 =  IOSCfgLexer.cpp  \
 			IOSCfgParser.cpp \
 			IPTCfgLexer.cpp  \
@@ -21,7 +22,6 @@ HEADERS	 = ../../config.h    \
 			PIXCfgLexer.hpp  \
 			PIXCfgParser.hpp \
 			PIXCfgParserTokenTypes.hpp \
-
 
 CONFIG += staticlib
 

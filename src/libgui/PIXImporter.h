@@ -38,6 +38,8 @@
 
 class PIXImporter : public IOSImporter
 {
+    virtual libfwbuilder::FWObject* createAddress(const std::string &a,
+                                                  const std::string &nm);
 
     public:
 

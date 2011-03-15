@@ -1,3 +1,9 @@
+2011-03-14  vadim  <vadim@netcitadel.com>
+
+	* pix.g (named_object_network): see #2223 Implemented import of
+	named objects for Cisco PIX and ASA ("object network name" and
+	"object service name")
+
 2011-03-12  vadim  <vadim@netcitadel.com>
 
 	* Compiler.cpp (expandGroupsInRuleElement): sorting objects in the

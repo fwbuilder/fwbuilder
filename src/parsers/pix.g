@@ -93,6 +93,10 @@ cfgfile :
         |
             vlan_interface
         |
+            switchport
+        |
+            shutdown
+        |
             sec_level
         |
             nameif
@@ -103,15 +107,17 @@ cfgfile :
         |
             exit
         |
-            description
-        |
-            shutdown
-        | 
             certificate
         |
             quit
         |
             names_section
+        |
+            name_entry
+        |
+            named_object_network
+        |
+            named_object_service
         |
             crypto
         |
@@ -123,7 +129,7 @@ cfgfile :
 
 //****************************************************************
 
-ip_commands : IP ( ip_access_list_ext | interface_known_commands | community_list_command | unknown_command )
+ip_commands : IP ( ip_access_list_ext | community_list_command | unknown_command )
     ;
 
 //****************************************************************
@@ -141,19 +147,195 @@ community_list_command : COMMUNITY_LIST
     ;
 
 //****************************************************************
-names_section : NAMES (name_entry)*
+names_section : NAMES
         {
-            importer->addMessageToLog("Parser warning: \"names\" section detected. "
-                                      "Import of configuration that uses \"names\" "
-                                      "is not supported at this time");
+            importer->addMessageToLog(
+                "Parser warning: \"names\" section detected. "
+                "Import of configuration that uses \"names\" "
+                "is not supported at this time");
         }
     ;
 
-name_entry : NAME
+name_entry : NAME a:IPV4 n:WORD
         {
+            importer->addMessageToLog(
+                "Name " + a->getText() + " " + n->getText());
+            *dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
+        }
+    ;
+
+//****************************************************************
+
+named_object_network : OBJECT NETWORK name:WORD
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newNamedObjectAddress(name->getText());
+            *dbg << name->getLine() << ":"
+                << " Named Object " << name->getText() << std::endl;
+            importer->clear();
+        }
+        (
+            named_object_network_parameters
+        )+
+    ;
+
+named_object_network_parameters : 
+        NEWLINE
+        (
+            named_object_nat
+        | 
+            named_object_description
+        |
+            host_addr
+        |
+            range_addr
+        |
+            subnet_addr
+        )
+    ;
+
+named_object_nat : NAT
+        {
+            importer->addMessageToLog(
+                "Parser warning: "
+                "Import of named objects with \"nat\" command "
+                "is not supported at this time");
             consumeUntil(NEWLINE);
         }
     ;
+
+named_object_description : DESCRIPTION
+        {
+            *dbg << LT(1)->getLine() << ":";
+            std::string descr;
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            {
+                descr += LT(1)->getText() + " ";
+                consume();
+            }
+            importer->named_object_comment = descr;
+            *dbg << " DESCRIPTION " << descr << std::endl;
+        }
+    ;
+
+host_addr : (HOST h:IPV4)
+        {
+            importer->tmp_a = h->getText();
+            importer->tmp_nm = "255.255.255.255";
+            importer->commitNamedAddressObject();
+            *dbg << h->getText() << "/255.255.255.255";
+        }
+    ;
+
+range_addr : (RANGE r1:IPV4 r2:IPV4)
+        {
+            importer->tmp_range_1 = r1->getText();
+            importer->tmp_range_2 = r2->getText();
+            importer->commitNamedAddressRangeObject();
+            *dbg << r1->getText() << "/" << r2->getText();
+        }
+    ;
+
+subnet_addr : (SUBNET a:IPV4 nm:IPV4)
+        {
+            importer->tmp_a = a->getText();
+            importer->tmp_nm = nm->getText();
+            importer->commitNamedAddressObject();
+            *dbg << a->getText() << "/" << nm->getText();
+        }
+    ;
+//****************************************************************
+
+named_object_service : OBJECT SERVICE name:WORD
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newNamedObjectService(name->getText());
+            *dbg << name->getLine() << ":"
+                << " Named Object " << name->getText() << std::endl;
+            importer->clear();
+        }
+        (
+            named_object_service_parameters
+        )+
+    ;
+
+named_object_service_parameters :
+        NEWLINE
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+        (
+            named_object_description
+        |
+            service_icmp
+        |
+            service_icmp6
+        |
+            service_tcp_udp
+        |
+            service_other
+        )
+    ;
+
+service_icmp : SERVICE ICMP
+        (
+            icmp_type:INT_CONST
+            {
+                importer->icmp_type = LT(0)->getText();
+            }
+        | icmp_word:WORD
+            {
+                importer->icmp_spec = icmp_word->getText();
+            }
+        )
+        {
+            importer->commitNamedICMPServiceObject();
+            *dbg << "NAMED OBJECT SERVICE ICMP " << LT(0)->getText() << " ";
+        }
+    ;
+
+service_icmp6 : SERVICE ICMP6 (INT_CONST | WORD)
+        {
+            importer->addMessageToLog("Parser warning: "
+                                      "Import of IPv6 addresses and servcies "
+                                      "is not supported at this time");
+            *dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+service_tcp_udp : SERVICE (TCP|UDP)
+        {
+            importer->protocol = LT(0)->getText();
+            *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
+        }
+        ( src_port_spec )?
+        ( dst_port_spec )?
+        {
+            importer->commitNamedTCPUDPServiceObject();
+        }
+    ;
+
+src_port_spec : SOURCE xoperator
+        {
+            importer->SaveTmpPortToSrc();
+        }
+    ;
+
+dst_port_spec : DESTINATION xoperator
+        {
+            importer->SaveTmpPortToDst();
+        }
+    ;
+
+service_other : SERVICE n:WORD
+        {
+            importer->protocol = LT(0)->getText();
+            importer->commitNamedIPServiceObject();
+            *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
+        }
+    ;
+
 
 //****************************************************************
 crypto : CRYPTO
@@ -350,18 +532,29 @@ single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
         port_spec
     ;
 
-port_range : P_RANGE
-        {
-            importer->tmp_port_op = LT(0)->getText();
-            *dbg << LT(0)->getText() << " ";
-        }
-         port_spec port_spec
-    ;
-
 port_spec : (WORD|INT_CONST)
         {
-            importer->tmp_port_spec += (std::string(" ") + LT(0)->getText());
-            *dbg << LT(0)->getText() << " ";
+            importer->tmp_port_spec = (std::string(" ") + LT(0)->getText());
+            *dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
+        }
+    ;
+
+port_range : RANGE pair_of_ports_spec
+        {
+            importer->tmp_port_op = "range";
+            *dbg << "range ";
+        }
+    ;
+
+pair_of_ports_spec : (s1:WORD|s2:INT_CONST) (e1:WORD|e2:INT_CONST)
+        {
+            importer->tmp_port_spec = "";
+            if (s1) importer->tmp_port_spec += s1->getText();
+            if (s2) importer->tmp_port_spec += s2->getText();
+            importer->tmp_port_spec += " ";
+            if (e1) importer->tmp_port_spec += e1->getText();
+            if (e2) importer->tmp_port_spec += e2->getText();
+            *dbg << "pair of ports: " << importer->tmp_port_spec;
         }
     ;
 
@@ -369,8 +562,8 @@ hostaddr_ext :
         (HOST h:IPV4)
         {
             importer->tmp_a = h->getText();
-            importer->tmp_nm = "0.0.0.0";
-            *dbg << h->getText() << "/0.0.0.0";
+            importer->tmp_nm = "255.255.255.255";
+            *dbg << h->getText() << "/255.255.255.255";
         }
     | 
         (a:IPV4 m:IPV4)
@@ -490,11 +683,37 @@ controller : CONTROLLER
 
 intrface  : INTRFACE in:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newInterface( in->getText() );
             *dbg << in->getLine() << ":"
                 << " INTRFACE: " << in->getText() << std::endl;
             consumeUntil(NEWLINE);
         }
+        (
+            interface_parameters
+        )+
+    ;
+   
+interface_parameters :
+        NEWLINE
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+        (
+            intf_address
+        |
+            vlan_interface
+        |
+            sec_level
+        |
+            nameif
+        |
+            interface_description
+        |
+            switchport
+        |
+            shutdown
+        )
     ;
 
 vlan_interface : VLAN vlan_id:INT_CONST
@@ -525,7 +744,7 @@ nameif  : NAMEIF phys_intf:WORD (NEWLINE | intf_label:WORD sec_level:WORD NEWLIN
 
 // interface description
 // Use it for comment
-description : DESCRIPTION
+interface_description : DESCRIPTION
         {
             *dbg << LT(1)->getLine() << ":";
             std::string descr;
@@ -536,26 +755,6 @@ description : DESCRIPTION
             }
             importer->setInterfaceComment( descr );
             *dbg << " DESCRIPTION " << descr << std::endl;
-            //consumeUntil(NEWLINE);
-        }
-    ;
-
-//****************************************************************
-
-// remark. According to the Cisco docs, can only be used
-// within access list
-// Use it for the current rule comment
-remark : REMARK
-        {
-            *dbg << LT(1)->getLine() << ":";
-            std::string rem;
-            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
-            {
-                rem += LT(1)->getText() + " ";
-                consume();
-            }
-            importer->addRuleComment( rem );
-            *dbg << " REMARK " << rem << std::endl;
             //consumeUntil(NEWLINE);
         }
     ;
@@ -571,10 +770,6 @@ shutdown : SHUTDOWN
 interface_known_commands :
         (
             intf_address
-        |
-            switchport
-        |
-            shutdown
         ) NEWLINE ;
 
 
@@ -600,7 +795,7 @@ interface_known_commands :
 //  ip address dhcp setroute 
 // !
 
-intf_address : ADDRESS (v6_ip_address | v7_ip_address) ;
+intf_address : IP ADDRESS (v6_ip_address | v7_ip_address) ;
 
 v6_ip_address : v6_dhcp_address | v6_static_address;
 
@@ -666,8 +861,30 @@ v7_static_address : a:IPV4 m:IPV4 (s:STANDBY)?
     ;
 
 
-switchport : SWITCHPORT ACCESS VLAN vlan_num:WORD
+switchport : SWITCHPORT ACCESS VLAN vlan_num:INT_CONST
         {
+            importer->addMessageToLog("Switch port vlan " + vlan_num->getText());
+            *dbg << "Switch port vlan " <<  vlan_num->getText() << std::endl;
+        }
+    ;
+
+//****************************************************************
+
+// remark. According to the Cisco docs, can only be used
+// within access list
+// Use it for the current rule comment
+remark : REMARK
+        {
+            *dbg << LT(1)->getLine() << ":";
+            std::string rem;
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            {
+                rem += LT(1)->getText() + " ";
+                consume();
+            }
+            importer->addRuleComment( rem );
+            *dbg << " REMARK " << rem << std::endl;
+            //consumeUntil(NEWLINE);
         }
     ;
 
@@ -711,12 +928,12 @@ comment : (LINE_COMMENT | COLON_COMMENT) ;
 //****************************************************************
 
 class PIXCfgLexer extends Lexer;
-options {
+options
+{
     k = 10;
     // ASCII only
     charVocabulary = '\3'..'\377';
 }
-
 
 tokens
 {
@@ -760,6 +977,9 @@ tokens
     TCP  = "tcp";
     UDP  = "udp";
 
+    DESTINATION = "destination";
+    SOURCE = "source";
+
 //     AHP = "ahp";
 //     EIGRP = "eigrp";
 //     ESP = "esp";
@@ -779,7 +999,8 @@ tokens
     P_GT = "gt";
     P_LT = "lt";
     P_NEQ = "neq";
-    P_RANGE = "range";
+
+    RANGE = "range";
 
     LOG = "log";
     LOG_INPUT = "log-input";
@@ -800,6 +1021,15 @@ tokens
     NAMES = "names";
     NAME = "name";
 
+    OBJECT = "object";
+    OBJECT_GROUP = "object-group";
+
+    NETWORK = "network";
+    SERVICE = "service";
+
+    SUBNET = "subnet";
+
+    NAT = "nat";
 }
 
 
@@ -817,7 +1047,7 @@ Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'
 
 //COMMENT_START : '!' ;
 
-NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline(); } ;
+NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline();  } ;
 
 protected
 INT_CONST:;

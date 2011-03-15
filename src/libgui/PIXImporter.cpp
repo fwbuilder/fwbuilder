@@ -71,6 +71,11 @@ PIXImporter::~PIXImporter()
 {
 }
 
+FWObject* PIXImporter::createAddress(const string &a, const string &nm)
+{
+    return Importer::createAddress(a, nm);
+}
+
 /*
  * Rearrange vlan interfaces. Importer creates all interfaces as
  * children of the firewall. Vlan interfaces should become

@@ -177,11 +177,12 @@ protected:
 
     virtual libfwbuilder::FWObject* getTagService(const std::string &tagcode);
 
-    
+
     virtual libfwbuilder::FWObject* createAddress(const std::string &a,
                                                   const std::string &nm);
     virtual libfwbuilder::FWObject* createAddressRange(const std::string &a1,
                                                        const std::string &a2);
+
     virtual libfwbuilder::FWObject* createIPService();
     virtual libfwbuilder::FWObject* createICMPService();
     virtual libfwbuilder::FWObject* createTCPService();
@@ -240,6 +241,9 @@ public:
     std::string tmp_port_op;
     std::string tmp_port_spec;
 
+    std::string tmp_range_1;
+    std::string tmp_range_2;
+
     int            tmp_tcp_flag_code;
     std::list<int> tmp_tcp_flags_list;
     std::list<int> tcp_flags_mask;
@@ -256,6 +260,9 @@ public:
 
     std::string time_range_name;
 
+    std::string named_object_name;
+    std::string named_object_comment;
+    
     void SaveTmpAddrToSrc();
     void SaveTmpAddrToDst();
 
@@ -329,11 +336,22 @@ public:
     virtual void newNATRule();
     virtual void pushRule();
 
+    virtual void newNamedObjectAddress(const std::string &name);
+    virtual void newNamedObjectService(const std::string &name);
+
+    virtual void commitNamedObject(libfwbuilder::FWObject *obj);
+    
+    virtual void commitNamedAddressObject();
+    virtual void commitNamedAddressRangeObject();
+    virtual void commitNamedIPServiceObject();
+    virtual void commitNamedICMPServiceObject();
+    virtual void commitNamedTCPUDPServiceObject();
+    
     void setCurrentLineNumber(int n) { current_line_number = n; }
     int getCurrentLineNumber() { return current_line_number;}
     
     void markCurrentRuleBad(const std::string &comment);
-    
+    void reportError(const std::string &comment);
     
     // this method actually adds interfaces to the firewall object
     // and does final clean up.

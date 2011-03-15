@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -127,8 +125,9 @@ FWObject* IOSImporter::createAddress(const std::string &addr,
         return Importer::createAddress(addr, correct_nm);
     } catch (FWException &ex)
     {
-        markCurrentRuleBad(
-            std::string("Error converting netmask '") + netmask + "' (address " + addr + ")");
+        reportError(
+            std::string("Error converting netmask '") +
+            netmask + "' (address " + addr + ")");
         return Importer::createAddress(addr, InetAddr::getAllOnes().toString());
     }
 
@@ -151,7 +150,7 @@ FWObject* IOSImporter::createICMPService()
             icmp_code = s2.str();
         } else
         {
-            markCurrentRuleBad(
+            reportError(
                 std::string("Import of icmp protocol '") + icmp_spec + "' failed");
             icmp_code = "-1";
             icmp_type = "-1";
@@ -181,31 +180,10 @@ int IOSImporter::convertPort(const std::string &port_str,
     int port = GetServByName::getPortByName(ps, proto.c_str());
     if (port == -1)
     {
-        markCurrentRuleBad(std::string("Port spec '") + port_str + "' unknown ");
+        reportError(std::string("Port spec '") + port_str + "' unknown ");
         port = 0;
     }
     return port;
-
-/*
-    int port = 0;
-    std::string ps = strip(port_str);
-    if (port_map.count(ps)>0) port = port_map[ps];
-    else
-    {
-        if (ps=="") return 0;
-        std::istringstream str1(ps);
-        str1.exceptions(std::ios::failbit);
-        try
-        {
-            str1 >> port;
-        } catch (const std::exception &ex) {
-            // could not convert port_spec to an integer
-            markCurrentRuleBad(std::string("Port spec '") + port_str +
-                               "' unknown. Error " + ex.what());
-        }
-    }
-    return port;
-*/
 }
 
 std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,

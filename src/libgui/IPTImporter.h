@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -56,8 +54,6 @@ class IPTImporter : public Importer
 
     libfwbuilder::FWObject* createTCPUDPService(const std::string &proto);
     
-    virtual libfwbuilder::FWObject* createAddress(const std::string &a,
-                                                  const std::string &nm);
     virtual libfwbuilder::FWObject* createIPService();
     virtual libfwbuilder::FWObject* createICMPService();
     virtual libfwbuilder::FWObject* createTCPService();

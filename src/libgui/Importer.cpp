@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -197,6 +195,8 @@ void Importer::clear()
     tmp_nm = "";
     tmp_port_op = "";
     tmp_port_spec = "";
+    tmp_range_1 = "";
+    tmp_range_2 = "";
 
     logging = false;
     established = false;
@@ -211,8 +211,9 @@ void Importer::clear()
     if (!tcp_flags_mask.empty()) tcp_flags_mask.clear();
     if (!tcp_flags_comp.empty()) tcp_flags_comp.clear();
     if (!tmp_tcp_flags_list.empty()) tmp_tcp_flags_list.clear();
-}
 
+    named_object_comment = "";
+}
 
 Firewall* Importer::getFirewallObject()
 {
@@ -349,7 +350,9 @@ void Importer::setInterfaceParametes(const std::string &phys_intf_or_label,
                                      const std::string &label,
                                      const std::string &sec_level)
 {
-    *logger << "Interface parameters: " + phys_intf_or_label + " " + label + " " + sec_level + "\n";
+    *logger << "Interface parameters: " + phys_intf_or_label +
+        " " + label + " " + sec_level + "\n";
+
     if (all_interfaces.count(phys_intf_or_label))
     {
         // since first arg. is physical interface name, this must be pix6
@@ -496,7 +499,6 @@ void Importer::setDefaultAction(const std::string &iptables_action_name)
     *logger << "Default action: " + default_action_str + "\n";
 }
 
-
 void Importer::newPolicyRule()
 {
     FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
@@ -536,13 +538,6 @@ void Importer::pushRule()
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
     current_rule->setComment(addStandardRuleComment(rule_comment));
-
-//     *logger << "Rule: " << action << " "
-//             << protocol << " "
-//             << src_a << "/" << src_nm << " ";
-//     if (dst_a!="")
-//         *logger << dst_a << "/" << dst_nm << " ";
-//     *logger << "\n";
 
     current_rule = NULL;
     rule_comment = "";
@@ -671,14 +666,16 @@ FWObject* Importer::getCustomService(const std::string &platform,
     s->setCodeForPlatform(platform, code);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    ostringstream str;
-    str << "Custom Service object: " << nstr.str()
-        << ": "
-        << platform
-        << ": "
-        << code
-        << "\n";
-    *logger << str.str();
+
+    // ostringstream str;
+    // str << "Custom Service object: " << nstr.str()
+    //     << ": "
+    //     << platform
+    //     << ": "
+    //     << code
+    //     << "\n";
+    // *logger << str.str();
+
     return s;
 }
 
@@ -707,7 +704,7 @@ FWObject* Importer::getIPService(int proto)
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
 
-    *logger << "IP Service object: " + nstr.str() + "\n";
+//    *logger << "IP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -730,7 +727,8 @@ FWObject* Importer::getICMPService(int type, int code)
     s->setInt("code", code);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "ICMP Service object: " + nstr.str() + "\n";
+
+//    *logger << "ICMP Service object: " + nstr.str() + "\n";
     return s;
 }
 
@@ -827,7 +825,9 @@ FWObject* Importer::getTCPService(int srs, int sre,
     s->setEstablished(established);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "TCP Service object: " + nstr.str() + "\n";
+
+//    *logger << "TCP Service object: " + nstr.str() + "\n";
+
     return s;
 }
 
@@ -855,7 +855,9 @@ FWObject* Importer::getUDPService(int srs, int sre, int drs, int dre)
 
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "UDP Service object: " + nstr.str() + "\n";
+
+//    *logger << "UDP Service object: " + nstr.str() + "\n";
+
     return s;
 }
 
@@ -877,7 +879,9 @@ FWObject* Importer::getTagService(const std::string &tagcode)
     s->setCode(tagcode);
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
-    *logger << "Tag Service object: " + nstr.str() + "\n";
+
+//    *logger << "Tag Service object: " + nstr.str() + "\n";
+
     return s;
 }
 
@@ -898,7 +902,7 @@ FWObject* Importer::createICMPService()
         {
             // could not convert
             type = -1;
-            markCurrentRuleBad(std::string("ICMP type '") + icmp_type + "' unknown");
+            reportError(std::string("ICMP type '") + icmp_type + "' unknown");
         }
     }
 
@@ -912,7 +916,7 @@ FWObject* Importer::createICMPService()
         {
             // could not convert
             code = -1;
-            markCurrentRuleBad(std::string("ICMP code '") + icmp_code + "' unknown");
+            reportError(std::string("ICMP code '") + icmp_code + "' unknown");
         }
     }
 
@@ -932,7 +936,7 @@ FWObject* Importer::createIPService()
     {
         // could not convert protocol number
         proto_num = 0;
-        markCurrentRuleBad(std::string("Protocol '") + protocol + "' unknown");
+        reportError(std::string("Protocol '") + protocol + "' unknown");
     }
     return getIPService(proto_num);
 }
@@ -1032,7 +1036,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 " " + addr + "/" + netmask;
             a->setComment(comment);
             all_objects[sig] = a;
-            *logger << "Address object: " + name + "\n";
+//            *logger << "Address object: " + name + "\n";
             return a;
         } catch(FWException &ex)
         {
@@ -1047,7 +1051,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 " " + addr;
             da->setComment(comment);
             all_objects[sig] = da;
-            *logger << "DNSName object: " + name + "\n";
+//            *logger << "DNSName object: " + name + "\n";
             return da;
         }
 
@@ -1061,8 +1065,7 @@ FWObject* Importer::createAddress(const std::string &addr,
             net->setAddress( InetAddr(addr) );
         } catch (FWException &ex)
         {
-            markCurrentRuleBad(
-                std::string("Error converting address '") + addr + "'");
+            reportError(std::string("Error converting address '") + addr + "'");
         }
 
         try
@@ -1073,8 +1076,7 @@ FWObject* Importer::createAddress(const std::string &addr,
             if (netmask.find('.')!=std::string::npos)
             {
                 // netmask has '.' in it but conversion failed.
-                markCurrentRuleBad(
-                    std::string("Error converting netmask '") + netmask + "'");
+                reportError(std::string("Error converting netmask '") + netmask + "'");
             } else
             {
                 // no dot in netmask, perhaps it is specified by its length?
@@ -1090,7 +1092,7 @@ FWObject* Importer::createAddress(const std::string &addr,
                 } catch (std::exception& e)
                 {
                     // could not convert netmask as simple integer
-                    markCurrentRuleBad(
+                    reportError(
                         std::string("Error converting netmask '") + netmask + "'");
                 }
             }
@@ -1101,7 +1103,7 @@ FWObject* Importer::createAddress(const std::string &addr,
 
         net->setComment(comment);
         all_objects[sig] = net;
-        *logger << "Network object: " + name + "\n";
+//        *logger << "Network object: " + name + "\n";
         return net;
     }
     return NULL;
@@ -1124,8 +1126,7 @@ FWObject* Importer::createAddressRange(const std::string &addr1,
         ar->setRangeStart( InetAddr(addr1) );
     } catch (FWException &ex)
     {
-        markCurrentRuleBad(
-            std::string("Error converting address '") + addr1 + "'");
+        reportError(std::string("Error converting address '") + addr1 + "'");
     }
 
     try
@@ -1133,13 +1134,14 @@ FWObject* Importer::createAddressRange(const std::string &addr1,
         ar->setRangeEnd( InetAddr(addr2) );
     } catch (FWException &ex)
     {
-        markCurrentRuleBad(
-            std::string("Error converting address '") + addr2 + "'");
+        reportError(std::string("Error converting address '") + addr2 + "'");
     }
 
     ar->setComment(comment);
     all_objects[sig] = ar;
-    *logger << "AddressRange object: " + name + "\n";
+
+//    *logger << "AddressRange object: " + name + "\n";
+
     return ar;
 }
 
@@ -1151,18 +1153,19 @@ void Importer::markCurrentRuleBad(const std::string &comment)
 {
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
-
     ropt->setStr("color", getBadRuleColor());
-
     if (!rule_comment.empty()) rule_comment += "\n";
     rule_comment += comment;
-    //current_rule->setComment(comment);
+}
 
+void Importer::reportError(const std::string &comment)
+{
+    error_counter++;
     QString err = QObject::tr("Parser error: Line %1: %2\n")
         .arg(getCurrentLineNumber())
         .arg(QString::fromUtf8(comment.c_str()));
     *logger << err.toUtf8().constData();
-    error_counter++;
+    if (current_rule != NULL) markCurrentRuleBad(comment);
 }
 
 int Importer::countRules()
@@ -1252,6 +1255,74 @@ string Importer::addStandardRuleComment(const string &comment)
         .arg(QString::fromUtf8(input_file_name.c_str()))
         .arg(getCurrentLineNumber()).toUtf8().constData());
     return rule_comment;
+}
+
+/*
+ * Named objects
+ *
+ * At least in the case of Cisco configurations, I can only create an
+ * object after I saw the line "host ... ", "subnet ..." or "range
+ * ..." so I know its type. This means things like the name and
+ * comment are known before the type. I use methods
+ * commitNamed*Object() to create objects once all information is available.
+ *
+ * I other platforms information about named objects may not be
+ * arranged in this way, for example in PF configs named objects are
+ * represented by macros which do not have explicit type and have all
+ * information on one line. Still, in that case the same commit*()
+ * method will work if called by the grammar after all variables have
+ * been parsed and values assigned to temporary member variables
+ * inside the Importer object.
+ */
+
+void Importer::newNamedObjectAddress(const string &name)
+{
+    named_object_name = name;
+    *logger << "Named object (address) " + name;
+}
+
+void Importer::newNamedObjectService(const string &name)
+{
+    named_object_name = name;
+    *logger << "Named object (service) " + name;
+}
+
+void Importer::commitNamedObject(FWObject *obj)
+{
+    if (obj)
+    {
+        if ( ! named_object_name.empty()) obj->setName(named_object_name);
+        if ( ! named_object_comment.empty())
+            obj->setComment(named_object_comment + "\n" + obj->getComment());
+    }
+}
+
+void Importer::commitNamedAddressObject()
+{
+    commitNamedObject(createAddress(tmp_a, tmp_nm));
+}
+
+void Importer::commitNamedAddressRangeObject()
+{
+    commitNamedObject(createAddressRange(tmp_range_1, tmp_range_2));
+}
+
+void Importer::commitNamedIPServiceObject()
+{
+    commitNamedObject(createIPService());
+}
+
+void Importer::commitNamedICMPServiceObject()
+{
+    commitNamedObject(createICMPService());
+}
+
+void Importer::commitNamedTCPUDPServiceObject()
+{
+    FWObject *new_obj = NULL;
+    if (protocol == "tcp") new_obj = createTCPService();
+    if (protocol == "udp") new_obj = createUDPService();
+    commitNamedObject(new_obj);
 }
 
 

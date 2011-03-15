@@ -21,6 +21,7 @@ interface Vlan2
  ip address 192.168.2.1 255.255.255.0 
 !
 interface Ethernet0/0
+ description Switch port 0/0
  switchport access vlan 2
 !
 interface Ethernet0/1
@@ -39,32 +40,128 @@ interface Ethernet0/7
 !
 boot system disk0:/asa832-k8.bin
 ftp mode passive
+!
+
+!
 object network internal_subnet_1 
+ description Internal Subnet 1
  subnet 192.168.1.0 255.255.255.192
 object network internal_subnet_2 
+ description Internal Subnet 2
  subnet 192.168.1.64 255.255.255.192
-object service smtp 
- service tcp destination eq smtp 
-object network firewall90:FastEthernet1:ip-1 
- host 22.22.22.23
 object network Internal_net 
  subnet 192.168.1.0 255.255.255.0
-object service http 
- service tcp destination eq www 
+object network outside_range-1 
+ range 22.22.22.30 22.22.22.40
+object network range_1
+ range 10.1.1.1 10.1.1.100
+object network firewall90:FastEthernet1:ip-1 
+ host 22.22.22.23
 object network hostA:eth0 
  host 192.168.1.10
-object service squid 
- service tcp destination eq 3128 
 object network spamhost1 
  host 61.150.47.112
 object network spamhost2 
  host 61.150.47.113
-object service smtps 
- service tcp destination eq 465 
-object network outside_range-1 
- range 22.22.22.30 22.22.22.40
 object network external_gw2 
  host 22.22.22.100
+!
+! Example of a named object with "nat" command
+!
+object network my-range-obj
+ range 10.2.2.1 10.2.2.10
+object network my-inside-net
+ subnet 192.168.2.0 255.255.255.0
+ nat (inside,outside) dynamic my-range-ob
+!
+
+!
+object service smtp 
+ service tcp destination eq smtp 
+object service http 
+ service tcp destination eq www 
+object service squid 
+ service tcp destination eq 3128 
+object service smtps 
+ service tcp destination eq 465 
+!
+object service icmp1 
+ service icmp echo
+object service icmp2 
+ service icmp unreachable
+!
+
+object service tcp-src-1
+ service tcp source lt 1024
+object service tcp-src-2
+ service tcp source gt 1024
+object service tcp-src-3
+ service tcp source eq 80
+object service tcp-src-4
+ service tcp source neq 88
+object service tcp-src-5
+ service tcp source range 1000 1010
+!
+object service tcp-dst-1
+ service tcp destination lt 1024
+object service tcp-dst-2
+ service tcp destination gt 1024
+object service tcp-dst-3
+ service tcp destination eq 80
+object service tcp-dst-4
+ service tcp destination neq 88
+object service tcp-dst-5
+ service tcp destination range 1001 1011
+!
+
+object service tcp-src-dst-1
+ service tcp source lt 1024 destination eq 80
+object service tcp-src-dst-2
+ service tcp source gt 1024 destination eq 2222
+object service tcp-src-dst-3
+ service tcp source eq 80 destination gt 1024
+object service tcp-src-dst-4
+ service tcp source neq 88 destination gt 1024
+object service tcp-src-dst-5
+ service tcp source range 1002 1012 destination gt 1024
+!
+
+object service udp-src-1
+ service udp source lt 1024
+object service udp-src-2
+ service udp source gt 1024
+object service udp-src-3
+ service udp source eq 80
+object service udp-src-4
+ service udp source neq 80
+object service udp-src-5
+ service udp source range 1000 1010
+!
+object service udp-dst-1
+ service udp destination lt 1024
+object service udp-dst-2
+ service udp destination gt 1024
+object service udp-dst-3
+ service udp destination eq 80
+object service udp-dst-4
+ service udp destination neq 80
+object service udp-dst-5
+ service udp destination range 1001 1011
+!
+
+object service ip1 
+ service ip 
+object service ip2 
+ service eigrp 
+object service icmp6-1 
+ service icmp6 neighbor-advertisement
+!
+
+! incomplete statement
+!
+object service ip3 
+
+!
 object-group network outside.id178211X29963.osrc.net.0
  network-object object internal_subnet_1
  network-object object internal_subnet_2

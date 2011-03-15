@@ -72,22 +72,37 @@ public:
 	public: void ip_commands();
 	public: void intrface();
 	public: void vlan_interface();
+	public: void switchport();
+	public: void shutdown();
 	public: void sec_level();
 	public: void nameif();
 	public: void controller();
 	public: void access_list_commands();
 	public: void exit();
-	public: void description();
-	public: void shutdown();
 	public: void certificate();
 	public: void quit();
 	public: void names_section();
+	public: void name_entry();
+	public: void named_object_network();
+	public: void named_object_service();
 	public: void crypto();
 	public: void unknown_command();
 	public: void ip_access_list_ext();
-	public: void interface_known_commands();
 	public: void community_list_command();
-	public: void name_entry();
+	public: void named_object_network_parameters();
+	public: void named_object_nat();
+	public: void named_object_description();
+	public: void host_addr();
+	public: void range_addr();
+	public: void subnet_addr();
+	public: void named_object_service_parameters();
+	public: void service_icmp();
+	public: void service_icmp6();
+	public: void service_tcp_udp();
+	public: void service_other();
+	public: void src_port_spec();
+	public: void dst_port_spec();
+	public: void xoperator();
 	public: void permit_ext();
 	public: void deny_ext();
 	public: void remark();
@@ -98,14 +113,16 @@ public:
 	public: void fragments();
 	public: void log();
 	public: void icmp_spec();
-	public: void xoperator();
 	public: void established();
 	public: void single_port_op();
 	public: void port_range();
 	public: void port_spec();
+	public: void pair_of_ports_spec();
 	public: void hostaddr_std();
+	public: void interface_parameters();
 	public: void intf_address();
-	public: void switchport();
+	public: void interface_description();
+	public: void interface_known_commands();
 	public: void v6_ip_address();
 	public: void v7_ip_address();
 	public: void v6_dhcp_address();
@@ -124,10 +141,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 92;
+	static const int NUM_TOKENS = 101;
 #else
 	enum {
-		NUM_TOKENS = 92
+		NUM_TOKENS = 101
 	};
 #endif
 	

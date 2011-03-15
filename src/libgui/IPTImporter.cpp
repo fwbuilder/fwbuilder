@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -37,13 +35,6 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
-
-// #ifndef _WIN32
-// #  include <netdb.h>
-// #  include <netinet/in.h>
-// #else
-// #  include <winsock2.h>
-// #endif
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Resources.h"
@@ -232,12 +223,6 @@ void IPTImporter::pushTmpPortSpecToBothPortList()
 }
 
 
-FWObject* IPTImporter::createAddress(const std::string &addr,
-                                     const std::string &netmask)
-{
-    return Importer::createAddress(addr, netmask);
-}
-
 FWObject* IPTImporter::createICMPService()
 {
     std::string icmpspec = strip(icmp_spec);
@@ -255,7 +240,7 @@ FWObject* IPTImporter::createICMPService()
             icmp_code = s2.str();
         } else
         {
-            markCurrentRuleBad(
+            reportError(
                 std::string("Import of icmp protocol '") + icmp_spec + "' failed");
             icmp_code = "-1";
             icmp_type = "-1";
@@ -307,32 +292,10 @@ int IPTImporter::convertPort(const std::string &port_spec,
     int port = GetServByName::getPortByName(ps, proto);
     if (port == -1)
     {
-        markCurrentRuleBad(std::string("Port spec '") + port_spec + "' unknown ");
+        reportError(std::string("Port spec '") + port_spec + "' unknown ");
         port = 0;
     }
     return port;
-
-/*
-    struct servent *se = getservbyname(ps.c_str(), proto);
-    if (se!=NULL)
-    {
-        port = ntohs(se->s_port);
-        //free(se);
-        return port;
-    }
-
-    std::istringstream str1(ps);
-    str1.exceptions(std::ios::failbit);
-    try
-    {
-        str1 >> port;
-    } catch (const std::exception &ex) {
-        // could not convert port_spec to an integer
-        markCurrentRuleBad(std::string("Port spec '") + port_spec +
-                           "' unknown. Error " + ex.what());
-    }
-    return port;
-*/
 }
 
 FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
@@ -550,7 +513,7 @@ void IPTImporter::processModuleMatches()
                     "protocols with two or more module matches, such as \n"
                     "module 'mark', 'recent' or 'length'. Use additional \n"
                     "branches to implement this complex match.");
-                markCurrentRuleBad(err.toUtf8().constData());
+                reportError(err.toUtf8().constData());
                 break;
             }
 
@@ -874,8 +837,7 @@ void IPTImporter::pushPolicyRule()
                 ropt->setStr("log_level", levels[llevel]);
             else
             {
-                markCurrentRuleBad(
-                    std::string("Unrecognized log level '") + slevel);
+                reportError(std::string("Unrecognized log level '") + slevel);
             }
 
         } catch (const std::exception &ex) {
