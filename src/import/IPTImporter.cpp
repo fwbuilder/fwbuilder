@@ -423,8 +423,9 @@ FWObject* IPTImporter::makeSrcObj()
 {
     if (using_iprange_src)
     {
-        return address_maker->createAddressRange(iprange_src_from.c_str(),
-                                                 iprange_src_to.c_str());
+        return commitObject(
+            address_maker->createAddressRange(iprange_src_from.c_str(),
+                                              iprange_src_to.c_str()));
     } else
         return Importer::makeSrcObj();
 }
@@ -433,8 +434,9 @@ FWObject* IPTImporter::makeDstObj()
 {
     if (using_iprange_dst)
     {
-        return address_maker->createAddressRange(iprange_dst_from.c_str(),
-                                                 iprange_dst_to.c_str());
+        return commitObject(
+            address_maker->createAddressRange(iprange_dst_from.c_str(),
+                                              iprange_dst_to.c_str()));
     } else
         return Importer::makeDstObj();
 }

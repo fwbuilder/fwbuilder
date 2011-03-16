@@ -237,12 +237,11 @@ FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
     FWObject *obj = findMatchingObject(sig);
     if (obj) return obj;
 
-    QStringList nl;
-
-    nl << QString("udp %1:%2 / %3:%4").arg(srs).arg(sre).arg(drs).arg(dre);
+    QString name =  QString("udp %1:%2 / %3:%4")
+        .arg(srs).arg(sre).arg(drs).arg(dre);
 
     UDPService* s = UDPService::cast(
-        createObject(UDPService::TYPENAME, nl.join("").toStdString()));
+        createObject(UDPService::TYPENAME, name.toStdString()));
     s->setSrcRangeStart(srs);
     s->setSrcRangeEnd(sre);
     s->setDstRangeStart(drs);
