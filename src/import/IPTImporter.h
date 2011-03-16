@@ -38,14 +38,18 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
 
-                              
+#include <QString>
+#include <QStringList>
+#include <QMap>
+
+
 typedef std::pair<std::string,std::string> str_tuple;
 
 class IPTImporter : public Importer
 {
 
-    std::map<std::string, std::pair<int,int> > icmp_specs;
-    std::map<std::string, std::string> reject_action_arg_mapping;
+    QMap<QString, QStringList> icmp_specs;
+    QMap<QString, QString> reject_action_arg_mapping;
     int aux_branch_number;
 
     libfwbuilder::FWObject* createTCPUDPService(str_tuple &src_range,

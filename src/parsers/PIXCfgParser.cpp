@@ -237,13 +237,14 @@ void PIXCfgParser::version() {
 		match(VERSION_WORD);
 		match(NUMBER);
 		if ( inputState->guessing==0 ) {
-#line 364 "pix.g"
+#line 375 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setDiscoveredVersion(LT(0)->getText());
 			*dbg << "VERSION " << LT(0)->getText() << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 247 "PIXCfgParser.cpp"
+#line 248 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -279,14 +280,15 @@ void PIXCfgParser::hostname() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 373 "pix.g"
+#line 385 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setHostName( LT(0)->getText() );
 			*dbg << "HOSTNAME "
 			<< "LT0=" << LT(0)->getText()
 			<< std::endl;
 			
-#line 290 "PIXCfgParser.cpp"
+#line 292 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -345,7 +347,7 @@ void PIXCfgParser::intrface() {
 		in = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 685 "pix.g"
+#line 700 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newInterface( in->getText() );
@@ -353,7 +355,7 @@ void PIXCfgParser::intrface() {
 			<< " INTRFACE: " << in->getText() << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 357 "PIXCfgParser.cpp"
+#line 359 "PIXCfgParser.cpp"
 		}
 		{ // ( ... )+
 		int _cnt98=0;
@@ -388,12 +390,12 @@ void PIXCfgParser::vlan_interface() {
 		vlan_id = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 720 "pix.g"
+#line 735 "pix.g"
 			
 			importer->setInterfaceVlanId(vlan_id->getText());
 			*dbg << " VLAN: " << vlan_id->getText() << std::endl;
 			
-#line 397 "PIXCfgParser.cpp"
+#line 399 "PIXCfgParser.cpp"
 		}
 		match(NEWLINE);
 	}
@@ -417,12 +419,12 @@ void PIXCfgParser::switchport() {
 		vlan_num = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 865 "pix.g"
+#line 880 "pix.g"
 			
 			importer->addMessageToLog("Switch port vlan " + vlan_num->getText());
 			*dbg << "Switch port vlan " <<  vlan_num->getText() << std::endl;
 			
-#line 426 "PIXCfgParser.cpp"
+#line 428 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -440,13 +442,13 @@ void PIXCfgParser::shutdown() {
 	try {      // for error handling
 		match(SHUTDOWN);
 		if ( inputState->guessing==0 ) {
-#line 763 "pix.g"
+#line 778 "pix.g"
 			
 			importer->ignoreCurrentInterface();
 			*dbg<< LT(1)->getLine() << ":"
 			<< " INTERFACE SHUTDOWN " << std::endl;
 			
-#line 450 "PIXCfgParser.cpp"
+#line 452 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -467,12 +469,12 @@ void PIXCfgParser::sec_level() {
 		sec_level = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 728 "pix.g"
+#line 743 "pix.g"
 			
 			importer->setInterfaceSecurityLevel(sec_level->getText());
 			*dbg << "SEC_LEVEL: " << sec_level->getText() << std::endl;
 			
-#line 476 "PIXCfgParser.cpp"
+#line 478 "PIXCfgParser.cpp"
 		}
 		match(NEWLINE);
 	}
@@ -518,7 +520,7 @@ void PIXCfgParser::nameif() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 736 "pix.g"
+#line 751 "pix.g"
 			
 			std::string label = (intf_label) ? intf_label->getText() : "";
 			std::string seclevel = (sec_level) ? sec_level->getText() : "";
@@ -526,7 +528,7 @@ void PIXCfgParser::nameif() {
 			*dbg << " NAMEIF: "
 			<< phys_intf->getText() << label << seclevel << std::endl;
 			
-#line 530 "PIXCfgParser.cpp"
+#line 532 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -544,12 +546,12 @@ void PIXCfgParser::controller() {
 	try {      // for error handling
 		match(CONTROLLER);
 		if ( inputState->guessing==0 ) {
-#line 639 "pix.g"
+#line 654 "pix.g"
 			
 			importer->clearCurrentInterface();
 			consumeUntil(NEWLINE);
 			
-#line 553 "PIXCfgParser.cpp"
+#line 555 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -570,14 +572,15 @@ void PIXCfgParser::access_list_commands() {
 		acl_num = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 388 "pix.g"
+#line 401 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
 			libfwbuilder::Policy::TYPENAME );
 			*dbg << acl_num->getLine() << ":"
 			<< " ACL #" << acl_num->getText() << " ";
 			
-#line 581 "PIXCfgParser.cpp"
+#line 584 "PIXCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -634,12 +637,12 @@ void PIXCfgParser::certificate() {
 		match(CERTIFICATE);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 356 "pix.g"
+#line 367 "pix.g"
 			
 			consumeUntil(NEWLINE);
 			consumeUntil(QUIT);
 			
-#line 643 "PIXCfgParser.cpp"
+#line 646 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -661,7 +664,7 @@ void PIXCfgParser::quit() {
 			
 			consumeUntil(NEWLINE);
 			
-#line 665 "PIXCfgParser.cpp"
+#line 668 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -681,12 +684,13 @@ void PIXCfgParser::names_section() {
 		if ( inputState->guessing==0 ) {
 #line 151 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->addMessageToLog(
 			"Parser warning: \"names\" section detected. "
 			"Import of configuration that uses \"names\" "
 			"is not supported at this time");
 			
-#line 690 "PIXCfgParser.cpp"
+#line 694 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -710,13 +714,14 @@ void PIXCfgParser::name_entry() {
 		n = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 160 "pix.g"
+#line 161 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->addMessageToLog(
 			"Name " + a->getText() + " " + n->getText());
 			*dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
 			
-#line 720 "PIXCfgParser.cpp"
+#line 725 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -738,7 +743,7 @@ void PIXCfgParser::named_object_network() {
 		name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 170 "pix.g"
+#line 172 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newNamedObjectAddress(name->getText());
@@ -746,7 +751,7 @@ void PIXCfgParser::named_object_network() {
 			<< " Named Object " << name->getText() << std::endl;
 			importer->clear();
 			
-#line 750 "PIXCfgParser.cpp"
+#line 755 "PIXCfgParser.cpp"
 		}
 		{ // ( ... )+
 		int _cnt12=0;
@@ -782,15 +787,16 @@ void PIXCfgParser::named_object_service() {
 		name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 250 "pix.g"
+#line 256 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newNamedObjectService(name->getText());
 			*dbg << name->getLine() << ":"
 			<< " Named Object " << name->getText() << std::endl;
 			importer->clear();
 			
-#line 794 "PIXCfgParser.cpp"
+#line 800 "PIXCfgParser.cpp"
 		}
 		{ // ( ... )+
 		int _cnt25=0;
@@ -822,11 +828,11 @@ void PIXCfgParser::crypto() {
 	try {      // for error handling
 		match(CRYPTO);
 		if ( inputState->guessing==0 ) {
-#line 342 "pix.g"
+#line 353 "pix.g"
 			
 			consumeUntil(NEWLINE);
 			
-#line 830 "PIXCfgParser.cpp"
+#line 836 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -844,11 +850,11 @@ void PIXCfgParser::unknown_command() {
 	try {      // for error handling
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 349 "pix.g"
+#line 360 "pix.g"
 			
 			consumeUntil(NEWLINE);
 			
-#line 852 "PIXCfgParser.cpp"
+#line 858 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -869,13 +875,14 @@ void PIXCfgParser::ip_access_list_ext() {
 		name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 406 "pix.g"
+#line 420 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newUnidirRuleSet( name->getText(), libfwbuilder::Policy::TYPENAME );
 			*dbg << name->getLine() << ":"
 			<< " ACL ext " << name->getText() << std::endl;
 			
-#line 879 "PIXCfgParser.cpp"
+#line 886 "PIXCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -912,12 +919,12 @@ void PIXCfgParser::ip_access_list_ext() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 422 "pix.g"
+#line 437 "pix.g"
 			
 			*dbg << LT(0)->getLine() << ":"
 			<< " ACL line end" << std::endl << std::endl;
 			
-#line 921 "PIXCfgParser.cpp"
+#line 928 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -939,7 +946,7 @@ void PIXCfgParser::community_list_command() {
 			
 			consumeUntil(NEWLINE);
 			
-#line 943 "PIXCfgParser.cpp"
+#line 950 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1005,7 +1012,7 @@ void PIXCfgParser::named_object_nat() {
 	try {      // for error handling
 		match(NAT);
 		if ( inputState->guessing==0 ) {
-#line 198 "pix.g"
+#line 200 "pix.g"
 			
 			importer->addMessageToLog(
 			"Parser warning: "
@@ -1013,7 +1020,7 @@ void PIXCfgParser::named_object_nat() {
 			"is not supported at this time");
 			consumeUntil(NEWLINE);
 			
-#line 1017 "PIXCfgParser.cpp"
+#line 1024 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1031,8 +1038,9 @@ void PIXCfgParser::named_object_description() {
 	try {      // for error handling
 		match(DESCRIPTION);
 		if ( inputState->guessing==0 ) {
-#line 208 "pix.g"
+#line 210 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			*dbg << LT(1)->getLine() << ":";
 			std::string descr;
 			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -1043,7 +1051,7 @@ void PIXCfgParser::named_object_description() {
 			importer->named_object_comment = descr;
 			*dbg << " DESCRIPTION " << descr << std::endl;
 			
-#line 1047 "PIXCfgParser.cpp"
+#line 1055 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1066,14 +1074,15 @@ void PIXCfgParser::host_addr() {
 		match(IPV4);
 		}
 		if ( inputState->guessing==0 ) {
-#line 222 "pix.g"
+#line 225 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->tmp_a = h->getText();
 			importer->tmp_nm = "255.255.255.255";
 			importer->commitNamedAddressObject();
 			*dbg << h->getText() << "/255.255.255.255";
 			
-#line 1077 "PIXCfgParser.cpp"
+#line 1086 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1099,14 +1108,15 @@ void PIXCfgParser::range_addr() {
 		match(IPV4);
 		}
 		if ( inputState->guessing==0 ) {
-#line 231 "pix.g"
+#line 235 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->tmp_range_1 = r1->getText();
 			importer->tmp_range_2 = r2->getText();
 			importer->commitNamedAddressRangeObject();
 			*dbg << r1->getText() << "/" << r2->getText();
 			
-#line 1110 "PIXCfgParser.cpp"
+#line 1120 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1132,14 +1142,15 @@ void PIXCfgParser::subnet_addr() {
 		match(IPV4);
 		}
 		if ( inputState->guessing==0 ) {
-#line 240 "pix.g"
+#line 245 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->tmp_a = a->getText();
 			importer->tmp_nm = nm->getText();
 			importer->commitNamedAddressObject();
 			*dbg << a->getText() << "/" << nm->getText();
 			
-#line 1143 "PIXCfgParser.cpp"
+#line 1154 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1157,11 +1168,11 @@ void PIXCfgParser::named_object_service_parameters() {
 	try {      // for error handling
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 264 "pix.g"
+#line 271 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			
-#line 1165 "PIXCfgParser.cpp"
+#line 1176 "PIXCfgParser.cpp"
 		}
 		{
 		if ((LA(1) == DESCRIPTION)) {
@@ -1209,11 +1220,11 @@ void PIXCfgParser::service_icmp() {
 			icmp_type = LT(1);
 			match(INT_CONST);
 			if ( inputState->guessing==0 ) {
-#line 283 "pix.g"
+#line 290 "pix.g"
 				
 				importer->icmp_type = LT(0)->getText();
 				
-#line 1217 "PIXCfgParser.cpp"
+#line 1228 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -1222,11 +1233,11 @@ void PIXCfgParser::service_icmp() {
 			icmp_word = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 287 "pix.g"
+#line 294 "pix.g"
 				
 				importer->icmp_spec = icmp_word->getText();
 				
-#line 1230 "PIXCfgParser.cpp"
+#line 1241 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -1237,12 +1248,13 @@ void PIXCfgParser::service_icmp() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 291 "pix.g"
+#line 298 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->commitNamedICMPServiceObject();
 			*dbg << "NAMED OBJECT SERVICE ICMP " << LT(0)->getText() << " ";
 			
-#line 1246 "PIXCfgParser.cpp"
+#line 1258 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1279,15 +1291,16 @@ void PIXCfgParser::service_icmp6() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 298 "pix.g"
+#line 306 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->addMessageToLog("Parser warning: "
 			"Import of IPv6 addresses and servcies "
 			"is not supported at this time");
 			*dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
 			consumeUntil(NEWLINE);
 			
-#line 1291 "PIXCfgParser.cpp"
+#line 1304 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1323,12 +1336,12 @@ void PIXCfgParser::service_tcp_udp() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 308 "pix.g"
+#line 317 "pix.g"
 			
 			importer->protocol = LT(0)->getText();
 			*dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
 			
-#line 1332 "PIXCfgParser.cpp"
+#line 1345 "PIXCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -1412,11 +1425,12 @@ void PIXCfgParser::service_tcp_udp() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 314 "pix.g"
+#line 323 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->commitNamedTCPUDPServiceObject();
 			
-#line 1420 "PIXCfgParser.cpp"
+#line 1434 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1437,13 +1451,14 @@ void PIXCfgParser::service_other() {
 		n = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 332 "pix.g"
+#line 342 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->protocol = LT(0)->getText();
 			importer->commitNamedIPServiceObject();
 			*dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
 			
-#line 1447 "PIXCfgParser.cpp"
+#line 1462 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1462,11 +1477,11 @@ void PIXCfgParser::src_port_spec() {
 		match(SOURCE);
 		xoperator();
 		if ( inputState->guessing==0 ) {
-#line 320 "pix.g"
+#line 330 "pix.g"
 			
 			importer->SaveTmpPortToSrc();
 			
-#line 1470 "PIXCfgParser.cpp"
+#line 1485 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1485,11 +1500,11 @@ void PIXCfgParser::dst_port_spec() {
 		match(DESTINATION);
 		xoperator();
 		if ( inputState->guessing==0 ) {
-#line 326 "pix.g"
+#line 336 "pix.g"
 			
 			importer->SaveTmpPortToDst();
 			
-#line 1493 "PIXCfgParser.cpp"
+#line 1508 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1540,23 +1555,23 @@ void PIXCfgParser::permit_ext() {
 	try {      // for error handling
 		match(PERMIT);
 		if ( inputState->guessing==0 ) {
-#line 430 "pix.g"
+#line 445 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
 			
-#line 1551 "PIXCfgParser.cpp"
+#line 1566 "PIXCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 437 "pix.g"
+#line 452 "pix.g"
 			
 			importer->pushRule();
 			
-#line 1560 "PIXCfgParser.cpp"
+#line 1575 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1574,23 +1589,23 @@ void PIXCfgParser::deny_ext() {
 	try {      // for error handling
 		match(DENY);
 		if ( inputState->guessing==0 ) {
-#line 443 "pix.g"
+#line 458 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
 			
-#line 1585 "PIXCfgParser.cpp"
+#line 1600 "PIXCfgParser.cpp"
 		}
 		rule_ext();
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 450 "pix.g"
+#line 465 "pix.g"
 			
 			importer->pushRule();
 			
-#line 1594 "PIXCfgParser.cpp"
+#line 1609 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1608,8 +1623,9 @@ void PIXCfgParser::remark() {
 	try {      // for error handling
 		match(REMARK);
 		if ( inputState->guessing==0 ) {
-#line 877 "pix.g"
+#line 892 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			*dbg << LT(1)->getLine() << ":";
 			std::string rem;
 			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -1621,7 +1637,7 @@ void PIXCfgParser::remark() {
 			*dbg << " REMARK " << rem << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 1625 "PIXCfgParser.cpp"
+#line 1641 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -1645,15 +1661,15 @@ void PIXCfgParser::rule_ext() {
 			ip_protocols();
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 460 "pix.g"
+#line 475 "pix.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 1651 "PIXCfgParser.cpp"
+#line 1667 "PIXCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 461 "pix.g"
+#line 476 "pix.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 1657 "PIXCfgParser.cpp"
+#line 1673 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1718,24 +1734,24 @@ void PIXCfgParser::rule_ext() {
 		{
 			match(ICMP);
 			if ( inputState->guessing==0 ) {
-#line 467 "pix.g"
+#line 482 "pix.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 1727 "PIXCfgParser.cpp"
+#line 1743 "PIXCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 471 "pix.g"
+#line 486 "pix.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 1733 "PIXCfgParser.cpp"
+#line 1749 "PIXCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 472 "pix.g"
+#line 487 "pix.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 1739 "PIXCfgParser.cpp"
+#line 1755 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1840,18 +1856,18 @@ void PIXCfgParser::rule_ext() {
 			}
 			}
 			if ( inputState->guessing==0 ) {
-#line 479 "pix.g"
+#line 494 "pix.g"
 				
 				importer->protocol = LT(0)->getText();
 				*dbg << "protocol " << LT(0)->getText() << " ";
 				
-#line 1849 "PIXCfgParser.cpp"
+#line 1865 "PIXCfgParser.cpp"
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 483 "pix.g"
+#line 498 "pix.g"
 				importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 1855 "PIXCfgParser.cpp"
+#line 1871 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1863,9 +1879,9 @@ void PIXCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 484 "pix.g"
+#line 499 "pix.g"
 					importer->SaveTmpPortToSrc();
-#line 1869 "PIXCfgParser.cpp"
+#line 1885 "PIXCfgParser.cpp"
 				}
 				break;
 			}
@@ -1883,9 +1899,9 @@ void PIXCfgParser::rule_ext() {
 			}
 			hostaddr_ext();
 			if ( inputState->guessing==0 ) {
-#line 485 "pix.g"
+#line 500 "pix.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 1889 "PIXCfgParser.cpp"
+#line 1905 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -1897,9 +1913,9 @@ void PIXCfgParser::rule_ext() {
 			{
 				xoperator();
 				if ( inputState->guessing==0 ) {
-#line 486 "pix.g"
+#line 501 "pix.g"
 					importer->SaveTmpPortToDst();
-#line 1903 "PIXCfgParser.cpp"
+#line 1919 "PIXCfgParser.cpp"
 				}
 				break;
 			}
@@ -2005,11 +2021,11 @@ void PIXCfgParser::rule_ext() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 492 "pix.g"
+#line 507 "pix.g"
 			
 			*dbg << std::endl;
 			
-#line 2013 "PIXCfgParser.cpp"
+#line 2029 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2044,12 +2060,12 @@ void PIXCfgParser::ip_protocols() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 500 "pix.g"
+#line 515 "pix.g"
 			
 			importer->protocol = LT(0)->getText();
 			*dbg << "protocol " << LT(0)->getText() << " ";
 			
-#line 2053 "PIXCfgParser.cpp"
+#line 2069 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2077,13 +2093,13 @@ void PIXCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 563 "pix.g"
+#line 578 "pix.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "255.255.255.255";
 				*dbg << h->getText() << "/255.255.255.255";
 				
-#line 2087 "PIXCfgParser.cpp"
+#line 2103 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -2096,13 +2112,13 @@ void PIXCfgParser::hostaddr_ext() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 570 "pix.g"
+#line 585 "pix.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 2106 "PIXCfgParser.cpp"
+#line 2122 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -2110,13 +2126,13 @@ void PIXCfgParser::hostaddr_ext() {
 		{
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 577 "pix.g"
+#line 592 "pix.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 2120 "PIXCfgParser.cpp"
+#line 2136 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -2144,12 +2160,12 @@ void PIXCfgParser::time_range() {
 		tr_name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 629 "pix.g"
+#line 644 "pix.g"
 			
 			importer->time_range_name = tr_name->getText();
 			*dbg << "time_range " << tr_name->getText() << " ";
 			
-#line 2153 "PIXCfgParser.cpp"
+#line 2169 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2167,12 +2183,12 @@ void PIXCfgParser::fragments() {
 	try {      // for error handling
 		match(FRAGMENTS);
 		if ( inputState->guessing==0 ) {
-#line 622 "pix.g"
+#line 637 "pix.g"
 			
 			importer->fragments = true;
 			*dbg << "fragments ";
 			
-#line 2176 "PIXCfgParser.cpp"
+#line 2192 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2207,12 +2223,12 @@ void PIXCfgParser::log() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 608 "pix.g"
+#line 623 "pix.g"
 			
 			importer->logging = true;
 			*dbg << "logging ";
 			
-#line 2216 "PIXCfgParser.cpp"
+#line 2232 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2242,7 +2258,7 @@ void PIXCfgParser::icmp_spec() {
 			match(INT_CONST);
 			}
 			if ( inputState->guessing==0 ) {
-#line 508 "pix.g"
+#line 523 "pix.g"
 				
 				importer->icmp_type = icmp_type->getText();
 				importer->icmp_code = icmp_code->getText();
@@ -2250,7 +2266,7 @@ void PIXCfgParser::icmp_spec() {
 				*dbg << icmp_type->getText() << " "
 				<< icmp_code->getText() << " ";
 				
-#line 2254 "PIXCfgParser.cpp"
+#line 2270 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -2259,12 +2275,12 @@ void PIXCfgParser::icmp_spec() {
 			icmp_word = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 517 "pix.g"
+#line 532 "pix.g"
 				
 				importer->icmp_spec = icmp_word->getText();
 				*dbg << icmp_word->getText() << " ";
 				
-#line 2268 "PIXCfgParser.cpp"
+#line 2284 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -2290,12 +2306,12 @@ void PIXCfgParser::established() {
 	try {      // for error handling
 		match(ESTABLISHED);
 		if ( inputState->guessing==0 ) {
-#line 615 "pix.g"
+#line 630 "pix.g"
 			
 			importer->established = true;
 			*dbg << "established ";
 			
-#line 2299 "PIXCfgParser.cpp"
+#line 2315 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2340,12 +2356,12 @@ void PIXCfgParser::single_port_op() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 528 "pix.g"
+#line 543 "pix.g"
 			
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 2349 "PIXCfgParser.cpp"
+#line 2365 "PIXCfgParser.cpp"
 		}
 		port_spec();
 	}
@@ -2365,12 +2381,12 @@ void PIXCfgParser::port_range() {
 		match(RANGE);
 		pair_of_ports_spec();
 		if ( inputState->guessing==0 ) {
-#line 543 "pix.g"
+#line 558 "pix.g"
 			
 			importer->tmp_port_op = "range";
 			*dbg << "range ";
 			
-#line 2374 "PIXCfgParser.cpp"
+#line 2390 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2405,12 +2421,12 @@ void PIXCfgParser::port_spec() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 536 "pix.g"
+#line 551 "pix.g"
 			
 			importer->tmp_port_spec = (std::string(" ") + LT(0)->getText());
 			*dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
 			
-#line 2414 "PIXCfgParser.cpp"
+#line 2430 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2471,7 +2487,7 @@ void PIXCfgParser::pair_of_ports_spec() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 550 "pix.g"
+#line 565 "pix.g"
 			
 			importer->tmp_port_spec = "";
 			if (s1) importer->tmp_port_spec += s1->getText();
@@ -2481,7 +2497,7 @@ void PIXCfgParser::pair_of_ports_spec() {
 			if (e2) importer->tmp_port_spec += e2->getText();
 			*dbg << "pair of ports: " << importer->tmp_port_spec;
 			
-#line 2485 "PIXCfgParser.cpp"
+#line 2501 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2506,13 +2522,13 @@ void PIXCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 586 "pix.g"
+#line 601 "pix.g"
 				
 				importer->tmp_a = h->getText();
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << h->getText() << "/0.0.0.0";
 				
-#line 2516 "PIXCfgParser.cpp"
+#line 2532 "PIXCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == IPV4) && (LA(2) == IPV4)) {
@@ -2523,25 +2539,25 @@ void PIXCfgParser::hostaddr_std() {
 			match(IPV4);
 			}
 			if ( inputState->guessing==0 ) {
-#line 593 "pix.g"
+#line 608 "pix.g"
 				
 				importer->tmp_a = a->getText();
 				importer->tmp_nm = m->getText();
 				*dbg << a->getText() << "/" << m->getText();
 				
-#line 2533 "PIXCfgParser.cpp"
+#line 2549 "PIXCfgParser.cpp"
 			}
 		}
 		else if ((LA(1) == ANY)) {
 			match(ANY);
 			if ( inputState->guessing==0 ) {
-#line 600 "pix.g"
+#line 615 "pix.g"
 				
 				importer->tmp_a = "0.0.0.0";
 				importer->tmp_nm = "0.0.0.0";
 				*dbg << "0.0.0.0/0.0.0.0";
 				
-#line 2545 "PIXCfgParser.cpp"
+#line 2561 "PIXCfgParser.cpp"
 			}
 		}
 		else {
@@ -2564,11 +2580,11 @@ void PIXCfgParser::interface_parameters() {
 	try {      // for error handling
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 699 "pix.g"
+#line 714 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			
-#line 2572 "PIXCfgParser.cpp"
+#line 2588 "PIXCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -2664,7 +2680,7 @@ void PIXCfgParser::interface_description() {
 	try {      // for error handling
 		match(DESCRIPTION);
 		if ( inputState->guessing==0 ) {
-#line 748 "pix.g"
+#line 763 "pix.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string descr;
@@ -2677,7 +2693,7 @@ void PIXCfgParser::interface_description() {
 			*dbg << " DESCRIPTION " << descr << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 2681 "PIXCfgParser.cpp"
+#line 2697 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2772,7 +2788,7 @@ void PIXCfgParser::v6_dhcp_address() {
 		dhcp = LT(1);
 		match(DHCP);
 		if ( inputState->guessing==0 ) {
-#line 803 "pix.g"
+#line 818 "pix.g"
 			
 			std::string label = lbl->getText();
 			std::string addr = dhcp->getText();
@@ -2783,7 +2799,7 @@ void PIXCfgParser::v6_dhcp_address() {
 			// which we do not support
 			consumeUntil(NEWLINE);
 			
-#line 2787 "PIXCfgParser.cpp"
+#line 2803 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2809,7 +2825,7 @@ void PIXCfgParser::v6_static_address() {
 		m = LT(1);
 		match(IPV4);
 		if ( inputState->guessing==0 ) {
-#line 816 "pix.g"
+#line 831 "pix.g"
 			
 			std::string label = lbl->getText();
 			std::string addr = a->getText();
@@ -2820,7 +2836,7 @@ void PIXCfgParser::v6_static_address() {
 			// in case there are some other parameters after address and netmask
 			consumeUntil(NEWLINE);
 			
-#line 2824 "PIXCfgParser.cpp"
+#line 2840 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2840,7 +2856,7 @@ void PIXCfgParser::v7_dhcp_address() {
 		dhcp = LT(1);
 		match(DHCP);
 		if ( inputState->guessing==0 ) {
-#line 833 "pix.g"
+#line 848 "pix.g"
 			
 			std::string addr = dhcp->getText();
 			importer->addInterfaceAddress(addr, "");
@@ -2848,7 +2864,7 @@ void PIXCfgParser::v7_dhcp_address() {
 			<< " INTRFACE ADDRESS: " << addr << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 2852 "PIXCfgParser.cpp"
+#line 2868 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2913,7 +2929,7 @@ void PIXCfgParser::v7_static_address() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 844 "pix.g"
+#line 859 "pix.g"
 			
 			std::string addr = a->getText();
 			std::string netm = m->getText();
@@ -2930,7 +2946,7 @@ void PIXCfgParser::v7_static_address() {
 			}
 			consumeUntil(NEWLINE);
 			
-#line 2934 "PIXCfgParser.cpp"
+#line 2950 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -2958,8 +2974,9 @@ void PIXCfgParser::access_group_by_name() {
 		intf_label = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 894 "pix.g"
+#line 910 "pix.g"
 			
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
 			intf_label->getText(),
@@ -2969,7 +2986,7 @@ void PIXCfgParser::access_group_by_name() {
 			<< " " << intf_label->getText()
 			<< " " << dir->getText() << std::endl;
 			
-#line 2973 "PIXCfgParser.cpp"
+#line 2990 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {

@@ -5,7 +5,11 @@ include(../../qmake.inc)
 TEMPLATE = lib
 #
 
-SOURCES = getProtoByName.cpp \
+SOURCES = QStringListOperators.cpp \
+	  objectMaker.cpp \
+          addressObjectMaker.cpp \
+          serviceObjectMaker.cpp \
+          getProtoByName.cpp \
 	  getServByName.cpp \
           Importer.cpp \
           IOSImporter.cpp \
@@ -15,7 +19,11 @@ SOURCES = getProtoByName.cpp \
           PIXImporter.cpp \
           PIXImporterRun.cpp \
 
-HEADERS	 = getProtoByName.h \
+HEADERS	 = QStringListOperators.h \
+           objectMaker.h \
+           addressObjectMaker.h \
+           serviceObjectMaker.h \
+           getProtoByName.h \
 	   getServByName.h \
            Importer.h \
            IOSImporter.h \

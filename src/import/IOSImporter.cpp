@@ -61,6 +61,8 @@ IOSImporter::IOSImporter(FWObject *lib,
                          Logger *log,
                          const std::string &fwname) : Importer(lib, "iosacl", input, log, fwname)
 {
+    address_maker->setInvertedNetmasks(true);
+
     cisco_icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
     cisco_icmp_specs["unreachable"] = std::pair<int,int>(3, -1); // all "unreachables"
     cisco_icmp_specs["net-unreachable"] = std::pair<int,int>(3, 0);
@@ -114,27 +116,6 @@ void IOSImporter::setInterfaceAndDirectionForRuleSet(
 {
     Importer::setInterfaceAndDirectionForRuleSet(
         ruleset_name, _intf_name, _dir);
-
-}
-
-FWObject* IOSImporter::createAddress(const std::string &addr,
-                                     const std::string &netmask)
-{
-    std::string correct_nm = netmask;
-
-    // invert netmask (this is IOS)
-    try
-    {
-        InetAddr orig_nm(netmask);
-        correct_nm = (~orig_nm).toString();
-        return Importer::createAddress(addr, correct_nm);
-    } catch (FWException &ex)
-    {
-        reportError(
-            std::string("Error converting netmask '") +
-            netmask + "' (address " + addr + ")");
-        return Importer::createAddress(addr, InetAddr::getAllOnes().toString());
-    }
 
 }
 
@@ -257,9 +238,9 @@ FWObject* IOSImporter::createTCPService()
     int drs = pr.first;
     int dre = pr.second;
 
-    return getTCPService(srs,sre,
-                         drs,dre,
-                         established,tcp_flags_mask,tcp_flags_comp);
+    return service_maker->getTCPService(srs, sre,
+                                        drs, dre,
+                                        established, tcp_flags_mask, tcp_flags_comp);
 }
 
 FWObject* IOSImporter::createUDPService()
@@ -281,7 +262,7 @@ FWObject* IOSImporter::createUDPService()
     int drs = pr.first;
     int dre = pr.second;
 
-    return getUDPService(srs,sre,drs,dre);
+    return service_maker->getUDPService(srs, sre, drs, dre);
 }
 
 void IOSImporter::ignoreCurrentInterface()

@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -32,6 +30,10 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Logger.h"
+
+#include "objectMaker.h"
+#include "addressObjectMaker.h"
+#include "serviceObjectMaker.h"
 
 #include <map>
 #include <list>
@@ -61,17 +63,25 @@ public:
     // interface names and directions
     std::map<std::string,std::string> intf_dir;
     libfwbuilder::PolicyRule::Action default_action;
-
-    UnidirectionalRuleSet() { default_action = libfwbuilder::PolicyRule::Deny; }
+    int created_from_line_number;
+    int default_action_line_number;
+    
+    UnidirectionalRuleSet()
+    {
+        created_from_line_number = -1;
+        default_action_line_number = -1;
+        default_action = libfwbuilder::PolicyRule::Deny;
+    }
 };
 
 class ImporterException : public std::exception
 {
-    std::string err;
+    QString err;
 public:
-    ImporterException(const std::string &e) { err = e; }
+    ImporterException(const std::string &e) { err = e.c_str(); }
+    ImporterException(const QString &e) { err = e; }
     virtual ~ImporterException() throw() {}
-    std::string toString() { return err; }
+    QString toString() { return err; }
 };
 
 class Importer
@@ -87,8 +97,11 @@ class Importer
 
     libfwbuilder::Firewall *fw;
     std::string fwname;
-   
+    
 protected:
+
+    AddressObjectMaker *address_maker;
+    ServiceObjectMaker *service_maker;
 
     int error_counter;
 
@@ -119,18 +132,10 @@ protected:
     // use this to quickly find objects to avoid creating duplicates
     std::map<const std::string,libfwbuilder::FWObject*>   all_objects;
 
-    int custom_service_code_tracker;
-    std::map<const std::string, int> custom_service_codes;
-
     UnidirectionalRuleSet* current_ruleset;
     
     libfwbuilder::Rule* current_rule;
 
-    libfwbuilder::FWObject* createObject(const std::string &objType,
-                                         const std::string &objName);
-    libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
-                                         const std::string &objType,
-                                         const std::string &objName);
     void addAddressObjectToInterface(libfwbuilder::Interface*intf,
                                      const std::string &addr,
                                      const std::string &netm);
@@ -160,29 +165,6 @@ protected:
     virtual UnidirectionalRuleSet* getUnidirRuleSet(
         const std::string &ruleset_name, const std::string &ruleset_type_name);
     
-    virtual libfwbuilder::FWObject* getCustomService(const std::string &platform,
-                                                     const std::string &code,
-                                                     const std::string &protocol);
-    virtual libfwbuilder::FWObject* getIPService(int proto);
-    virtual libfwbuilder::FWObject* getICMPService(int type, int code);
-
-    virtual libfwbuilder::FWObject* getTCPService(int srs, int sre,
-                                                  int drs, int dre,
-                                                  bool established,
-                                                  std::list<int> &flags_mask,
-                                                  std::list<int> &flags_comp);
-
-    virtual libfwbuilder::FWObject* getUDPService(int srs, int sre,
-                                                  int drs, int dre);
-
-    virtual libfwbuilder::FWObject* getTagService(const std::string &tagcode);
-
-
-    virtual libfwbuilder::FWObject* createAddress(const std::string &a,
-                                                  const std::string &nm);
-    virtual libfwbuilder::FWObject* createAddressRange(const std::string &a1,
-                                                       const std::string &a2);
-
     virtual libfwbuilder::FWObject* createIPService();
     virtual libfwbuilder::FWObject* createICMPService();
     virtual libfwbuilder::FWObject* createTCPService();
@@ -244,11 +226,10 @@ public:
     std::string tmp_range_1;
     std::string tmp_range_2;
 
-    int            tmp_tcp_flag_code;
-    std::list<int> tmp_tcp_flags_list;
-    std::list<int> tcp_flags_mask;
-    std::list<int> tcp_flags_comp;
-    std::map<int,std::string> tcp_flag_names;
+    int  tmp_tcp_flag_code;
+    QList<int> tmp_tcp_flags_list;
+    QList<int> tcp_flags_mask;
+    QList<int> tcp_flags_comp;
     
     bool  logging;
     bool  established;
@@ -285,7 +266,8 @@ public:
 
     // add standard line to rule comment, this adds something like
     // "created during import from <file>, line <line>"
-    std::string addStandardRuleComment(const std::string &comment);
+    void addStandardImportComment(libfwbuilder::FWObject *obj,
+                                  const QString &additional_comment);
     
     int errorCounter() { return error_counter; }
 
@@ -339,7 +321,7 @@ public:
     virtual void newNamedObjectAddress(const std::string &name);
     virtual void newNamedObjectService(const std::string &name);
 
-    virtual void commitNamedObject(libfwbuilder::FWObject *obj);
+    virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
     
     virtual void commitNamedAddressObject();
     virtual void commitNamedAddressRangeObject();

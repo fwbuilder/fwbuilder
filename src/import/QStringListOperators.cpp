@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -15,44 +15,53 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
+#include "QStringListOperators.h"
 
-#ifndef _FWB_POLICY_IMPORTER_PIX_H_
-#define _FWB_POLICY_IMPORTER_PIX_H_
+#include <QStringList>
+#include <QList>
 
-#include <map>
-#include <list>
-#include <string>
-#include <functional>
-#include <sstream>
 
-#include "IOSImporter.h"
-
-#include "fwbuilder/libfwbuilder-config.h"
-#include "fwbuilder/Logger.h"
-
-class PIXImporter : public IOSImporter
+QStringList& operator<<(QStringList &lst, const char* x)
 {
-    public:
+    lst << QString::fromUtf8(x);
+    return lst;
+}
 
-    PIXImporter(libfwbuilder::FWObject *lib,
-                std::istringstream &input,
-                libfwbuilder::Logger *log,
-                const std::string &fwname);
-    ~PIXImporter();
+QStringList& operator<<(QStringList &lst, const std::string &x)
+{
+    lst << QString::fromUtf8(x.c_str());
+    return lst;
+}
 
-    virtual void run();
-    
-    // this method actually adds interfaces to the firewall object
-    // and does final clean up.
-    virtual libfwbuilder::Firewall* finalize();
+QStringList& operator<<(QStringList &lst, int x)
+{
+    QString s;
+    lst << s.setNum(x);
+    return lst;
+}
 
-    void rearrangeVlanInterfaces();
-};
+QStringList& operator<<(QStringList &lst, bool x)
+{
+    QString s;
+    lst << s.setNum(x);
+    return lst;
+}
 
-#endif
+QStringList& operator<<(QStringList &lst, const QList<int> &x)
+{
+    QStringList r;
+    foreach(int i, x)
+    {
+        QString s;
+        r << s.setNum(i);
+    }
+    lst << "[" + r.join(",") + "]";
+    return lst;
+}
+

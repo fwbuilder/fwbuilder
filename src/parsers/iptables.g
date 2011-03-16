@@ -158,10 +158,13 @@ chain_def : (INPUT | FORWARD | OUTPUT | PREROUTING | POSTROUTING | WORD)
 
 create_chain : COLON chain_def
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             if (importer->current_table=="nat")
-                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::NAT::TYPENAME);
+                importer->newUnidirRuleSet(LT(0)->getText(),
+                                           libfwbuilder::NAT::TYPENAME);
             else
-                importer->newUnidirRuleSet(LT(0)->getText(), libfwbuilder::Policy::TYPENAME);
+                importer->newUnidirRuleSet(LT(0)->getText(),
+                                           libfwbuilder::Policy::TYPENAME);
             *dbg << "NEW CHAIN " << LT(0)->getText() << std::endl;
         }
         (WORD | MINUS)
@@ -1108,14 +1111,11 @@ tcp_flags : MATCH_TCP_FLAGS
             importer->tcp_flags_comp = importer->tmp_tcp_flags_list;
             importer->tmp_tcp_flags_list.clear();
             *dbg << " TCP FLAGS=";
-            std::list<int>::iterator i;
-            for (i=importer->tcp_flags_mask.begin();
-                 i!=importer->tcp_flags_mask.end(); ++i)
-                *dbg << *i << "|";
+            foreach(int x, importer->tcp_flags_mask)
+                *dbg << x << "|";
             *dbg << " ";
-            for (i=importer->tcp_flags_comp.begin();
-                 i!=importer->tcp_flags_comp.end(); ++i)
-                *dbg << *i << "|";
+            foreach(int x, importer->tcp_flags_comp)
+                *dbg << x << "|";
         }
     ;
 

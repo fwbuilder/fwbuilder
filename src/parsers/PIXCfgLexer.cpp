@@ -454,7 +454,7 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1050 "pix.g"
+#line 1067 "pix.g"
 		newline();
 #line 460 "PIXCfgLexer.cpp"
 	}
@@ -578,7 +578,7 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1045 "pix.g"
+#line 1062 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 584 "PIXCfgLexer.cpp"
 	}
@@ -814,7 +814,7 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 1070 "pix.g"
+#line 1087 "pix.g"
 			_ttype = IPV4;
 #line 820 "PIXCfgLexer.cpp"
 		}
@@ -917,7 +917,7 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1076 "pix.g"
+#line 1093 "pix.g"
 				_ttype = HEX_CONST;
 #line 923 "PIXCfgLexer.cpp"
 			}
@@ -938,7 +938,7 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 			_loop172:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 1074 "pix.g"
+#line 1091 "pix.g"
 				_ttype = INT_CONST;
 #line 944 "PIXCfgLexer.cpp"
 			}

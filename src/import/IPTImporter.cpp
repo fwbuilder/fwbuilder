@@ -23,10 +23,6 @@
 
 #include "../../config.h"
 
-// #include "global.h"
-// #include "utils_no_qt.h"
-// #include "platforms.h"
-
 #include "IPTImporter.h"
 #include "getProtoByName.h"
 #include "getServByName.h"
@@ -36,22 +32,23 @@
 #include <algorithm>
 #include <map>
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/InetAddr.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/TagService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/NAT.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/FWServiceReference.h"
 #include "fwbuilder/CustomService.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
 
 #include <QString>
 #include <QtDebug>
@@ -78,48 +75,48 @@ IPTImporter::IPTImporter(FWObject *lib,
 
     clear();
 
-    icmp_specs["any"] = std::pair<int,int>(-1, -1);
-    icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
+    icmp_specs["any"] << "-1" << "-1";
+    icmp_specs["echo-reply"] << "0" << "0";
     // all "unreachables"
-    icmp_specs["destination-unreachable"] = std::pair<int,int>(3, -1);
-    icmp_specs["network-unreachable"] = std::pair<int,int>(3, 0);
-    icmp_specs["host-unreachable"] = std::pair<int,int>(3, 1);
-    icmp_specs["protocol-unreachable"] = std::pair<int,int>(3, 2);
-    icmp_specs["port-unreachable"] = std::pair<int,int>(3, 3);
-    icmp_specs["fragmentation-needed"] = std::pair<int,int>(3, 4);
-    icmp_specs["source-route-failed"] = std::pair<int,int>(3, 5);
-    icmp_specs["network-unknown"] = std::pair<int,int>(3, 6);
-    icmp_specs["host-unknown"] = std::pair<int,int>(3, 7);
-    icmp_specs["host-isolated"] = std::pair<int,int>(3, 8);
-    icmp_specs["network-prohibited"] = std::pair<int,int>(3, 9);
-    icmp_specs["host-prohibited"] = std::pair<int,int>(3, 10);
-    icmp_specs["TOS-network-unreachable"] = std::pair<int,int>(3, 11);
-    icmp_specs["TOS-host-unreachable"] = std::pair<int,int>(3, 12);
-    icmp_specs["communication-prohibited"] = std::pair<int,int>(3, 13);
-    icmp_specs["host-precedence-violation"] = std::pair<int,int>(3, 14);
-    icmp_specs["precedence-cutoff"] = std::pair<int,int>(3, 15);
-    icmp_specs["source-quench"] = std::pair<int,int>(4, 0);
-    icmp_specs["redirect"] = std::pair<int,int>(5, -1);
-    icmp_specs["network-redirect"] = std::pair<int,int>(5, 0);
-    icmp_specs["host-redirect"] = std::pair<int,int>(5, 1);
-    icmp_specs["TOS-network-redirect"] = std::pair<int,int>(5, 2);
-    icmp_specs["TOS-host-redirect"] = std::pair<int,int>(5, 3);
-    icmp_specs["echo-request"] = std::pair<int,int>(8, 0);
-    icmp_specs["router-advertisement"] = std::pair<int,int>(9, 0);
-    icmp_specs["router-solicitation"] = std::pair<int,int>(10, 0);
-    icmp_specs["ttl-exceeded"] = std::pair<int,int>(11, 0);
-    icmp_specs["time-exceeded"] = std::pair<int,int>(11, 0);
-    icmp_specs["ttl-zero-during-transit"] = std::pair<int,int>(11, 0);
-    icmp_specs["ttl-zero-during-reassembly"] = std::pair<int,int>(11, 1);
-    icmp_specs["parameter-problem"] = std::pair<int,int>(12, 0);
-    icmp_specs["ip-header-bad"] = std::pair<int,int>(12, 0);
-    icmp_specs["required-option-missing"] = std::pair<int,int>(12, 1);
-    icmp_specs["timestamp-request"] = std::pair<int,int>(13, 0);
-    icmp_specs["timestamp-reply"] = std::pair<int,int>(14, 0);
-    icmp_specs["information-request"] = std::pair<int,int>(15, 0);
-    icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
-    icmp_specs["address-mask-request"] = std::pair<int,int>(17, 0);
-    icmp_specs["address-mask-reply"] = std::pair<int,int>(18, 0);
+    icmp_specs["destination-unreachable"] << "3" << "-1";
+    icmp_specs["network-unreachable"] << "3" << "0";
+    icmp_specs["host-unreachable"] << "3" << "1";
+    icmp_specs["protocol-unreachable"] << "3" << "2";
+    icmp_specs["port-unreachable"] << "3" << "3";
+    icmp_specs["fragmentation-needed"] << "3" << "4";
+    icmp_specs["source-route-failed"] << "3" << "5";
+    icmp_specs["network-unknown"] << "3" << "6";
+    icmp_specs["host-unknown"] << "3" << "7";
+    icmp_specs["host-isolated"] << "3" << "8";
+    icmp_specs["network-prohibited"] << "3" << "9";
+    icmp_specs["host-prohibited"] << "3" << "10";
+    icmp_specs["TOS-network-unreachable"] << "3" << "11";
+    icmp_specs["TOS-host-unreachable"] << "3" << "12";
+    icmp_specs["communication-prohibited"] << "3" << "13";
+    icmp_specs["host-precedence-violation"] << "3" << "14";
+    icmp_specs["precedence-cutoff"] << "3" << "15";
+    icmp_specs["source-quench"] << "4" << "0";
+    icmp_specs["redirect"] << "5" << "-1";
+    icmp_specs["network-redirect"] << "5" << "0";
+    icmp_specs["host-redirect"] << "5" << "1";
+    icmp_specs["TOS-network-redirect"] << "5" << "2";
+    icmp_specs["TOS-host-redirect"] << "5" << "3";
+    icmp_specs["echo-request"] << "8" << "0";
+    icmp_specs["router-advertisement"] << "9" << "0";
+    icmp_specs["router-solicitation"] << "10" << "0";
+    icmp_specs["ttl-exceeded"] << "11" << "0";
+    icmp_specs["time-exceeded"] << "11" << "0";
+    icmp_specs["ttl-zero-during-transit"] << "11" << "0";
+    icmp_specs["ttl-zero-during-reassembly"] << "11" << "1";
+    icmp_specs["parameter-problem"] << "12" << "0";
+    icmp_specs["ip-header-bad"] << "12" << "0";
+    icmp_specs["required-option-missing"] << "12" << "1";
+    icmp_specs["timestamp-request"] << "13" << "0";
+    icmp_specs["timestamp-reply"] << "14" << "0";
+    icmp_specs["information-request"] << "15" << "0";
+    icmp_specs["information-reply"] << "16" << "0";
+    icmp_specs["address-mask-request"] << "17" << "0";
+    icmp_specs["address-mask-reply"] << "18" << "0";
 
     // mapping between REJECT target argument and our internal name for it.
     // See also comment in IPTImporter::pushPolicyRule()
@@ -150,6 +147,7 @@ IPTImporter::~IPTImporter()
 void IPTImporter::clear()
 {
     Importer::clear();
+
     if (!src_port_list.empty())   src_port_list.clear();
     if (!dst_port_list.empty())   dst_port_list.clear();
     if (!both_port_list.empty())  both_port_list.clear();
@@ -233,14 +231,11 @@ FWObject* IPTImporter::createICMPService()
     {
         // Cisco is trying to be too helpful, they translate many
         // icmp type/code combinations into stings
-        if (icmp_specs.count(icmpspec.toStdString())!=0)
+        if (icmp_specs.count(icmpspec) > 0)
         {
-            std::pair<int,int> pp = icmp_specs[icmpspec.toStdString()];
-            std::ostringstream s1, s2;
-            s1 << pp.first;
-            icmp_type = s1.str();
-            s2 << pp.second;
-            icmp_code = s2.str();
+            QStringList pp = icmp_specs[icmpspec];
+            icmp_type = pp[0].toStdString();
+            icmp_code = pp[1].toStdString();
         } else
         {
             QString err("Import of icmp protocol %1 failed");
@@ -334,13 +329,13 @@ FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
     FWObject *o;
     if (proto=="tcp")
     {
-        o = getTCPService(srs,sre,
-                          drs,dre,
-                          established,
-                          tcp_flags_mask,tcp_flags_comp);
+        o = service_maker->getTCPService(srs, sre,
+                                         drs, dre,
+                                         established,
+                                         tcp_flags_mask, tcp_flags_comp);
     } else
-        o = getUDPService(srs,sre,drs,dre);
-    return o;
+        o = service_maker->getUDPService(srs, sre, drs, dre);
+    return commitObject(o);
 }
 
 FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
@@ -392,7 +387,11 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
                 QString("Group of %1 services with name '%2', sig '%3'")
                 .arg(proto.c_str()).arg(name.c_str()).arg(sig.c_str());
 
-        ServiceGroup *sg = ServiceGroup::cast(createObject(ServiceGroup::TYPENAME, name));
+        ObjectMaker maker(Library::cast(library));
+        ServiceGroup *sg = ServiceGroup::cast(
+            commitObject(
+                commitObject(maker.createObject(ServiceGroup::TYPENAME, name))));
+
         for (FWObject::iterator j=olist.begin(); j!=olist.end(); ++j)
         {
             sg->addRef(*j);
@@ -424,7 +423,8 @@ FWObject* IPTImporter::makeSrcObj()
 {
     if (using_iprange_src)
     {
-        return createAddressRange(iprange_src_from, iprange_src_to);
+        return address_maker->createAddressRange(iprange_src_from.c_str(),
+                                                 iprange_src_to.c_str());
     } else
         return Importer::makeSrcObj();
 }
@@ -433,7 +433,8 @@ FWObject* IPTImporter::makeDstObj()
 {
     if (using_iprange_dst)
     {
-        return createAddressRange(iprange_dst_from, iprange_dst_to);
+        return address_maker->createAddressRange(iprange_dst_from.c_str(),
+                                                 iprange_dst_to.c_str());
     } else
         return Importer::makeDstObj();
 }
@@ -548,7 +549,7 @@ void IPTImporter::addMarkMatch(PolicyRule *rule)
     assert(srv!=NULL);
     if (rule->getSrv()->isAny() && !match_mark.empty())
     {
-        srv->addRef( getTagService(match_mark) );
+        srv->addRef( commitObject(service_maker->getTagService(match_mark.c_str())) );
         if (neg_match_mark) srv->setNeg(true);
         match_mark = "";
     }
@@ -561,8 +562,11 @@ void IPTImporter::addLengthMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !length_spec.empty())
     {
         // create custom service with module "length"
-        srv->addRef(getCustomService(
-                        "iptables", "-m length --length " + length_spec, ""));
+        srv->addRef(commitObject(
+                        service_maker->getCustomService(
+                            "iptables",
+                            QString("-m length --length %1").arg(length_spec.c_str()),
+                            "")));
         length_spec = "";
     }
 }
@@ -574,8 +578,11 @@ void IPTImporter::addPktTypeMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !pkt_type_spec.empty())
     {
         // create custom service with module "pkttype"
-        srv->addRef(getCustomService(
-                        "iptables", "-m pkttype --pkt-type " + pkt_type_spec, ""));
+        srv->addRef(commitObject(
+                        service_maker->getCustomService(
+                            "iptables",
+                            QString("-m pkttype --pkt-type %1").arg(pkt_type_spec.c_str()),
+                            "")));
         pkt_type_spec = "";
     }
 }
@@ -602,8 +609,11 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !recent_match.empty())
     {
         // create custom service with module "recent"
-        srv->addRef(getCustomService(
-                        "iptables", "-m recent " + recent_match, ""));
+        srv->addRef(commitObject(
+                        service_maker->getCustomService(
+                            "iptables",
+                            QString("-m recent %1").arg(recent_match.c_str()),
+                            "")));
         recent_match = "";
     }
 }
@@ -615,8 +625,11 @@ void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &st
     if (rule->getSrv()->isAny() && !state.empty())
     {
         // create custom service with module "state"
-        srv->addRef(getCustomService(
-                        "iptables", "-m state --state " + state, ""));
+        srv->addRef(commitObject(
+                        service_maker->getCustomService(
+                            "iptables", 
+                            QString("-m state --state %1").arg(state.c_str()),
+                            "")));
         recent_match = "";
     }
 }
@@ -782,9 +795,9 @@ void IPTImporter::pushPolicyRule()
              * in reject_action_arg_mapping must match iptables arguments for
              * the target REJECT
              */
-            string iptables_reject_arg = action_params["reject_with"];
-            string action_on_reject_code;
-            if (reject_action_arg_mapping.count(iptables_reject_arg) != 0)
+            QString iptables_reject_arg = action_params["reject_with"].c_str();
+            QString action_on_reject_code;
+            if (reject_action_arg_mapping.count(iptables_reject_arg) > 0)
                 action_on_reject_code =
                     reject_action_arg_mapping[iptables_reject_arg];
             else
@@ -794,13 +807,13 @@ void IPTImporter::pushPolicyRule()
                 QString err = QObject::tr(
                     "Warning: Line %1: Unknown parameter of target REJECT: %2.\n")
                     .arg(getCurrentLineNumber())
-                    .arg(iptables_reject_arg.c_str());
+                    .arg(iptables_reject_arg);
                 ropt->setStr("color", getBadRuleColor());
                 rule_comment += string(err.toUtf8().constData());
                 *Importer::logger << err.toUtf8().constData();
             }
 
-            ropt->setStr("action_on_reject", action_on_reject_code);
+            ropt->setStr("action_on_reject", action_on_reject_code.toStdString());
         }
     }
 
@@ -873,7 +886,8 @@ void IPTImporter::pushPolicyRule()
         action = PolicyRule::Tag;
         last_mark_rule = rule;
         std::string mark_code = action_params["set_mark"];
-        FWObject *tag_service = getTagService(mark_code);
+        FWObject *tag_service = commitObject(
+            service_maker->getTagService(mark_code.c_str()));
         rule->setTagObject(tag_service);
     }
     if (target=="CONNMARK")        action = PolicyRule::Continue;
@@ -973,8 +987,9 @@ void IPTImporter::pushPolicyRule()
         estab = std_obj->findObjectByName(CustomService::TYPENAME, "ESTABLISHED");
         if (estab == NULL)
         {
-            estab = getCustomService(
-                "iptables", "-m state --state RELATED,ESTABLISHED", "");
+            estab = commitObject(
+                service_maker->getCustomService(
+                    "iptables", "-m state --state RELATED,ESTABLISHED", ""));
         }
 
         if (!rule->getSrv()->isAny())
@@ -1031,8 +1046,11 @@ void IPTImporter::pushPolicyRule()
     {
         RuleElementSrv *srv = rule->getSrv();
 
-        FWObject *state_match_srv = getCustomService(
-            "iptables", "-m state --state " + current_state, "");
+        FWObject *state_match_srv = commitObject(
+            service_maker->getCustomService(
+                "iptables",
+                QString("-m state --state %1").arg(current_state.c_str()),
+                ""));
 
         if ( ! rule->getSrv()->isAny())
         {
@@ -1223,7 +1241,7 @@ void IPTImporter::pushPolicyRule()
 
         processModuleMatches();
 
-        current_rule->setComment(addStandardRuleComment(rule_comment));
+        addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
     }
 
     current_rule = NULL;
@@ -1282,9 +1300,11 @@ void IPTImporter::pushNATRule()
 
         FWObject *tsrc = NULL;
         if (nat_addr1!=nat_addr2)
-            tsrc = createAddressRange(nat_addr1, nat_addr2);
+            tsrc = commitObject(
+                address_maker->createAddressRange(nat_addr1.c_str(), nat_addr2.c_str()));
         else
-            tsrc = createAddress(nat_addr1, nat_nm);
+            tsrc = commitObject(
+                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
 
         RuleElementTSrc *re = rule->getTSrc();
         assert(re!=NULL);
@@ -1294,8 +1314,7 @@ void IPTImporter::pushNATRule()
         {
             str_tuple empty_range("0", "0");
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
-            FWObject *s = createTCPUDPService(nat_port_range, empty_range,
-                                              protocol);
+            FWObject *s = createTCPUDPService(nat_port_range, empty_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
             assert(re!=NULL);
             re->addRef(s);
@@ -1326,9 +1345,11 @@ void IPTImporter::pushNATRule()
 
         FWObject *tdst = NULL;
         if (nat_addr1!=nat_addr2)
-            tdst = createAddressRange(nat_addr1, nat_addr2);
+            tdst = commitObject(
+                address_maker->createAddressRange(nat_addr1.c_str(), nat_addr2.c_str()));
         else
-            tdst = createAddress(nat_addr1, nat_nm);
+            tdst = commitObject(
+                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
 
         RuleElementTDst *re = rule->getTDst();
         assert(re!=NULL);
@@ -1338,8 +1359,7 @@ void IPTImporter::pushNATRule()
         {
             str_tuple empty_range("0", "0");
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
-            FWObject *s = createTCPUDPService(empty_range, nat_port_range,
-                                              protocol);
+            FWObject *s = createTCPUDPService(empty_range, nat_port_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
             assert(re!=NULL);
             re->addRef(s);
@@ -1367,8 +1387,7 @@ void IPTImporter::pushNATRule()
         {
             str_tuple empty_range("0", "0");
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
-            FWObject *s = createTCPUDPService(empty_range, nat_port_range,
-                                              protocol);
+            FWObject *s = createTCPUDPService(empty_range, nat_port_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
             assert(re!=NULL);
             re->addRef(s);
@@ -1394,7 +1413,8 @@ void IPTImporter::pushNATRule()
 
             RuleElementTSrc *tsrc = rule->getTSrc();
             assert(tsrc!=NULL);
-            o = createAddress(nat_addr1, nat_nm);
+            o = commitObject(
+                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
             tsrc->addRef(o);
         }
 
@@ -1404,7 +1424,8 @@ void IPTImporter::pushNATRule()
 
             RuleElementTDst *tdst = rule->getTDst();
             assert(tdst!=NULL);
-            o = createAddress(nat_addr1, nat_nm);
+            o = commitObject(
+                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
             tdst->addRef(o);
         }
     }
@@ -1455,7 +1476,7 @@ void IPTImporter::pushNATRule()
     // renumber to clean-up rule positions
     ruleset->renumberRules();
 
-    current_rule->setComment(addStandardRuleComment(rule_comment));
+    addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
 
     // RuleSet *nat = RuleSet::cast(
     //     getFirewallObject()->getFirstByType(NAT::TYPENAME));
@@ -1530,12 +1551,19 @@ Firewall* IPTImporter::finalize()
                     if (rs_index.find("mangle") != string::npos)
                     {
                         QString err = QObject::tr(
-                            "Warning: Line %1: Can not reproduce default action in "
-                            "table 'mangle' chain 'FORWARD'.\n");
+                            "Warning: Line %1: Can not reproduce default "
+                            "action in table 'mangle' chain 'FORWARD'.\n"
+                            "(Generated rule may not generate equivalent "
+                            "iptables command when compiled)"
+                        );
                         ropt->setStr("color", getBadRuleColor());
+
                         rule->setComment(
-                            err.arg(getCurrentLineNumber()).toUtf8().constData());
-                        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+                            err.arg(
+                                rs->default_action_line_number).toUtf8().constData());
+                        *Importer::logger << err.arg(
+                            rs->default_action_line_number).toUtf8().constData();
+
                     }
                 }
 
@@ -1549,12 +1577,19 @@ Firewall* IPTImporter::finalize()
                     if (rs_index.find("mangle") != string::npos)
                     {
                         QString err = QObject::tr(
-                            "Warning: Line %1: Can not reproduce default action in "
-                            "table 'mangle' chain 'INPUT'.\n");
+                            "Warning: Line %1: Can not reproduce default "
+                            "action in table 'mangle' chain 'INPUT'.\n"
+                            "(Generated rule may not generate equivalent "
+                            "iptables command when compiled)"
+                        );
                         ropt->setStr("color", getBadRuleColor());
+
                         rule->setComment(
-                            err.arg(getCurrentLineNumber()).toUtf8().constData());
-                        *Importer::logger << err.arg(getCurrentLineNumber()).toStdString();
+                            err.arg(
+                                rs->default_action_line_number).toUtf8().constData());
+                        *Importer::logger << err.arg(
+                            rs->default_action_line_number).toUtf8().constData();
+
                     }
                 }
 
@@ -1577,10 +1612,13 @@ Firewall* IPTImporter::finalize()
                 }
 
                 rs->ruleset->add(rule);
+
                 QString l("Warning: Line %1: Added rule to reproduce default "
                           "policy ACCEPT in %2\n");
+
                 *Importer::logger <<
-                    l.arg(getCurrentLineNumber()).arg(rs_index.c_str()).toUtf8().constData();
+                    l.arg(rs->default_action_line_number)
+                    .arg(rs_index.c_str()).toUtf8().constData();
             }
         }
 

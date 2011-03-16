@@ -22,37 +22,33 @@
 */
 
 
-#ifndef _FWB_POLICY_IMPORTER_PIX_H_
-#define _FWB_POLICY_IMPORTER_PIX_H_
+#ifndef _ADDRESS_OBJECT_MAKER_H_
+#define _ADDRESS_OBJECT_MAKER_H_
 
-#include <map>
-#include <list>
-#include <string>
-#include <functional>
-#include <sstream>
+#include "objectMaker.h"
 
-#include "IOSImporter.h"
+#include <QString>
 
-#include "fwbuilder/libfwbuilder-config.h"
-#include "fwbuilder/Logger.h"
 
-class PIXImporter : public IOSImporter
+class AddressObjectMaker : public ObjectMaker
 {
-    public:
-
-    PIXImporter(libfwbuilder::FWObject *lib,
-                std::istringstream &input,
-                libfwbuilder::Logger *log,
-                const std::string &fwname);
-    ~PIXImporter();
-
-    virtual void run();
+    bool inverted_netmasks;
     
-    // this method actually adds interfaces to the firewall object
-    // and does final clean up.
-    virtual libfwbuilder::Firewall* finalize();
+public:
+    
+    AddressObjectMaker(libfwbuilder::Library *l) : ObjectMaker(l)
+    {
+        inverted_netmasks = false;
+    }
+    virtual ~AddressObjectMaker();
 
-    void rearrangeVlanInterfaces();
+    void setInvertedNetmasks(bool f) { inverted_netmasks = f; }
+    
+    virtual libfwbuilder::FWObject* createAddress(const QString &a,
+                                                  const QString &nm);
+    virtual libfwbuilder::FWObject* createAddressRange(const QString &a1,
+                                                       const QString &a2);
+
 };
 
 #endif

@@ -30,6 +30,7 @@
 #include "IOSImporter.h"
 #include "IPTImporter.h"
 #include "PIXImporter.h"
+#include "objectMaker.h"
 
 #include <QWidget>
 #include <QtDebug>
@@ -40,6 +41,12 @@
 using namespace std;
 using namespace libfwbuilder;
 
+
+Logger& operator<<(Logger &logger, const QString &str)
+{
+    logger << str.toUtf8().constData();
+    return logger;
+}
 
 ImporterThread::ImporterThread(QWidget *ui,
                                FWObject *lib,
@@ -92,6 +99,9 @@ void ImporterThread::run()
         {
             importer->run();
         } catch(ImporterException &e)
+        {
+            *logger << e.toString() << "\n";
+        } catch(ObjectMakerException &e)
         {
             *logger << e.toString() << "\n";
         }

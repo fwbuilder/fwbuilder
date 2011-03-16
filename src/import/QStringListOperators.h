@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -15,44 +15,18 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-
-#ifndef _FWB_POLICY_IMPORTER_PIX_H_
-#define _FWB_POLICY_IMPORTER_PIX_H_
-
-#include <map>
-#include <list>
 #include <string>
-#include <functional>
-#include <sstream>
+#include <QStringList>
 
-#include "IOSImporter.h"
+extern QStringList& operator<<(QStringList &lst, const char* x);
+extern QStringList& operator<<(QStringList &lst, const std::string &x);
+extern QStringList& operator<<(QStringList &lst, int x);
+extern QStringList& operator<<(QStringList &lst, bool x);
+extern QStringList& operator<<(QStringList &lst, const QList<int> &x);
 
-#include "fwbuilder/libfwbuilder-config.h"
-#include "fwbuilder/Logger.h"
-
-class PIXImporter : public IOSImporter
-{
-    public:
-
-    PIXImporter(libfwbuilder::FWObject *lib,
-                std::istringstream &input,
-                libfwbuilder::Logger *log,
-                const std::string &fwname);
-    ~PIXImporter();
-
-    virtual void run();
-    
-    // this method actually adds interfaces to the firewall object
-    // and does final clean up.
-    virtual libfwbuilder::Firewall* finalize();
-
-    void rearrangeVlanInterfaces();
-};
-
-#endif

@@ -149,6 +149,7 @@ community_list_command : COMMUNITY_LIST
 //****************************************************************
 names_section : NAMES
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
                 "Parser warning: \"names\" section detected. "
                 "Import of configuration that uses \"names\" "
@@ -158,6 +159,7 @@ names_section : NAMES
 
 name_entry : NAME a:IPV4 n:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
                 "Name " + a->getText() + " " + n->getText());
             *dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
@@ -206,6 +208,7 @@ named_object_nat : NAT
 
 named_object_description : DESCRIPTION
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             *dbg << LT(1)->getLine() << ":";
             std::string descr;
             while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -220,6 +223,7 @@ named_object_description : DESCRIPTION
 
 host_addr : (HOST h:IPV4)
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->tmp_a = h->getText();
             importer->tmp_nm = "255.255.255.255";
             importer->commitNamedAddressObject();
@@ -229,6 +233,7 @@ host_addr : (HOST h:IPV4)
 
 range_addr : (RANGE r1:IPV4 r2:IPV4)
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->tmp_range_1 = r1->getText();
             importer->tmp_range_2 = r2->getText();
             importer->commitNamedAddressRangeObject();
@@ -238,6 +243,7 @@ range_addr : (RANGE r1:IPV4 r2:IPV4)
 
 subnet_addr : (SUBNET a:IPV4 nm:IPV4)
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->tmp_a = a->getText();
             importer->tmp_nm = nm->getText();
             importer->commitNamedAddressObject();
@@ -248,6 +254,7 @@ subnet_addr : (SUBNET a:IPV4 nm:IPV4)
 
 named_object_service : OBJECT SERVICE name:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newNamedObjectService(name->getText());
             *dbg << name->getLine() << ":"
@@ -289,6 +296,7 @@ service_icmp : SERVICE ICMP
             }
         )
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->commitNamedICMPServiceObject();
             *dbg << "NAMED OBJECT SERVICE ICMP " << LT(0)->getText() << " ";
         }
@@ -296,6 +304,7 @@ service_icmp : SERVICE ICMP
 
 service_icmp6 : SERVICE ICMP6 (INT_CONST | WORD)
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog("Parser warning: "
                                       "Import of IPv6 addresses and servcies "
                                       "is not supported at this time");
@@ -312,6 +321,7 @@ service_tcp_udp : SERVICE (TCP|UDP)
         ( src_port_spec )?
         ( dst_port_spec )?
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->commitNamedTCPUDPServiceObject();
         }
     ;
@@ -330,6 +340,7 @@ dst_port_spec : DESTINATION xoperator
 
 service_other : SERVICE n:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = LT(0)->getText();
             importer->commitNamedIPServiceObject();
             *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
@@ -362,6 +373,7 @@ certificate : CERTIFICATE WORD
 //****************************************************************
 version : (PIX_WORD | ASA_WORD) VERSION_WORD NUMBER
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setDiscoveredVersion(LT(0)->getText());
             *dbg << "VERSION " << LT(0)->getText() << std::endl;
             consumeUntil(NEWLINE);
@@ -371,6 +383,7 @@ version : (PIX_WORD | ASA_WORD) VERSION_WORD NUMBER
 //****************************************************************
 hostname : HOSTNAME ( STRING | WORD )
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setHostName( LT(0)->getText() );
             *dbg << "HOSTNAME "
                 << "LT0=" << LT(0)->getText()
@@ -386,6 +399,7 @@ hostname : HOSTNAME ( STRING | WORD )
 //
 access_list_commands : ACCESS_LIST acl_num:INT_CONST
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
                                         libfwbuilder::Policy::TYPENAME );
             *dbg << acl_num->getLine() << ":"
@@ -404,6 +418,7 @@ access_list_commands : ACCESS_LIST acl_num:INT_CONST
 
 ip_access_list_ext : ACCESS_LIST name:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet( name->getText(), libfwbuilder::Policy::TYPENAME );
             *dbg << name->getLine() << ":"
                 << " ACL ext " << name->getText() << std::endl;
@@ -875,6 +890,7 @@ switchport : SWITCHPORT ACCESS VLAN vlan_num:INT_CONST
 // Use it for the current rule comment
 remark : REMARK
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             *dbg << LT(1)->getLine() << ":";
             std::string rem;
             while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -892,6 +908,7 @@ remark : REMARK
 
 access_group_by_name : ACCESS_GROUP acln:WORD dir:WORD INTRFACE intf_label:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setInterfaceAndDirectionForRuleSet(
                 acln->getText(),
                 intf_label->getText(),

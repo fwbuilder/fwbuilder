@@ -45,8 +45,6 @@ class IOSImporter : public Importer
 
     std::map<std::string, std::pair<int,int> > cisco_icmp_specs;
     
-    virtual libfwbuilder::FWObject* createAddress(const std::string &a,
-                                                  const std::string &nm);
     virtual libfwbuilder::FWObject* createIPService();
     virtual libfwbuilder::FWObject* createICMPService();
     virtual libfwbuilder::FWObject* createTCPService();

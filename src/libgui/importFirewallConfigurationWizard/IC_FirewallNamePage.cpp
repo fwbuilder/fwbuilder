@@ -63,7 +63,8 @@ void IC_FirewallNamePage::initializePage()
         {
             if (cisco_re.indexIn(line) > -1)
             {
-                m_dialog->firewallName->setText(cisco_re.cap(1));
+                QString name = cisco_re.cap(1).replace("\"", "").replace("'", "");
+                m_dialog->firewallName->setText(name);
                 break;
             }
         }

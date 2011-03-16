@@ -432,7 +432,7 @@ void IOSCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 703 "iosacl.g"
+#line 712 "iosacl.g"
 		newline();
 #line 438 "IOSCfgLexer.cpp"
 	}
@@ -513,7 +513,7 @@ void IOSCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 698 "iosacl.g"
+#line 707 "iosacl.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 519 "IOSCfgLexer.cpp"
 	}
@@ -749,7 +749,7 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 723 "iosacl.g"
+#line 732 "iosacl.g"
 			_ttype = IPV4;
 #line 755 "IOSCfgLexer.cpp"
 		}
@@ -852,7 +852,7 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 729 "iosacl.g"
+#line 738 "iosacl.g"
 				_ttype = HEX_CONST;
 #line 858 "IOSCfgLexer.cpp"
 			}
@@ -873,7 +873,7 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			_loop124:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 727 "iosacl.g"
+#line 736 "iosacl.g"
 				_ttype = INT_CONST;
 #line 879 "IOSCfgLexer.cpp"
 			}

@@ -70,17 +70,13 @@ PIXImporter::PIXImporter(FWObject *lib,
     IOSImporter(lib, input, log, fwname)
 {
     setPlatform("pix");
+    address_maker->setInvertedNetmasks(false); // since parent class sets to true
 }
 
 
 
 PIXImporter::~PIXImporter()
 {
-}
-
-FWObject* PIXImporter::createAddress(const string &a, const string &nm)
-{
-    return Importer::createAddress(a, nm);
 }
 
 /*

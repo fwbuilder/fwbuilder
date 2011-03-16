@@ -107,6 +107,6 @@ void PIXImporter::run()
     }
 
     if (!err.isEmpty())
-        throw ImporterException(err.join("\n").toUtf8().constData());
+        throw ImporterException(err.join("\n"));
 }
 

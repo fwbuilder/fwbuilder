@@ -1,3 +1,5 @@
+#-*- mode: makefile; tab-width: 4; -*-
+#
 include(../../qmake.inc)
 
 OBJECTS_DIR = .obj
@@ -8,15 +10,18 @@ QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 CONFIG -= release
 CONFIG += debug
 
-INCLUDEPATH += ../../..
-INCLUDEPATH += ../..
-INCLUDEPATH += ../../libfwbuilder/src
-INCLUDEPATH += ../../libgui
-INCLUDEPATH += ../../libgui/.ui
-INCLUDEPATH += ../../compiler_lib
-INCLUDEPATH += ../../iptlib
-INCLUDEPATH += ../../cisco_lib
-INCLUDEPATH += ../../pflib
+INCLUDEPATH += ../../.. \
+               ../.. \
+               ../../common \
+               ../../parsers \
+               ../../import \
+               ../../compiler_lib/ \
+               ../../libgui \
+               ../../libgui/.ui \
+               ../../iptlib \
+               ../../pflib \
+               ../../cisco_lib/ \
+               ../../libfwbuilder/src
 
 run_tests.commands = echo "Running tests..."; ./${TARGET}
 run_tests.depends = build_tests
@@ -37,13 +42,6 @@ contains( HAVE_QTDBUS, 1 ):unix {
 }
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
-INCLUDEPATH += ../../common \
-    ../../iptlib \
-    ../../pflib \
-    ../../cisco_lib/ \
-    ../../compiler_lib/ \
-    ../../libgui \
-    ../../libfwbuilder/src
 
 DEPENDPATH = ../../common \
     ../../iptlib \
@@ -64,9 +62,10 @@ STATIC_LIBS += \
     ../../cisco_lib/libfwbcisco.a \
     ../../compiler_lib/libcompilerdriver.a \
     ../../fwtransfer/libfwtransfer.a \
-    ../../parsers/libfwbparser.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+    ../../import/libimport.a \
+    ../../parsers/libfwbparser.a \
     $$ANTLR_LIBS \
     $$CPPUNIT_LIBS
 
@@ -78,6 +77,7 @@ PRE_TARGETDEPS += ../../common/libcommon.a \
     ../../compiler_lib/libcompilerdriver.a \
     ../../fwtransfer/libfwtransfer.a \
     ../../parsers/libfwbparser.a \
+    ../../import/libimport.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
     $$ANTLR_LIBS

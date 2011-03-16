@@ -159,6 +159,7 @@ version : IOSVERSION v:NUMBER
 //****************************************************************
 hostname : HOSTNAME ( STRING | WORD )
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setHostName( LT(0)->getText() );
             *dbg << "HOSTNAME "
                 << "LT0=" << LT(0)->getText()
@@ -465,6 +466,7 @@ time_range : TIME_RANGE tr_name:WORD
 //
 vlan  : VLAN (WORD | INT_CONST )
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clearCurrentInterface();
             consumeUntil(NEWLINE);
         }
@@ -474,6 +476,7 @@ vlan  : VLAN (WORD | INT_CONST )
 
 controller : CONTROLLER
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clearCurrentInterface();
             consumeUntil(NEWLINE);
         }
@@ -483,6 +486,7 @@ controller : CONTROLLER
 
 intrface  : INTRFACE in:WORD
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newInterface( in->getText() );
             *dbg << in->getLine() << ":"
                 << " INTRFACE: " << in->getText() << std::endl;
@@ -494,6 +498,7 @@ intrface  : INTRFACE in:WORD
 // Use it for comment
 description : DESCRIPTION
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             *dbg << LT(1)->getLine() << ":";
             std::string descr;
             while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -512,6 +517,7 @@ description : DESCRIPTION
 // Use it for the current rule comment
 remark : REMARK
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             *dbg << LT(1)->getLine() << ":";
             std::string rem;
             while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -553,6 +559,7 @@ interface_known_ip_commands :
 
 access_group_by_name : ACCESS_GROUP acln:WORD dir:WORD 
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setInterfaceAndDirectionForRuleSet(
                 acln->getText(),
                 "",
@@ -568,6 +575,7 @@ access_group_by_name : ACCESS_GROUP acln:WORD dir:WORD
 // and "ip access-group NNN" commands
 access_group_by_number : ACCESS_GROUP acln:INT_CONST dir:WORD 
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setInterfaceAndDirectionForRuleSet(
                 std::string("acl_") + acln->getText(),
                 "",
@@ -580,6 +588,7 @@ access_group_by_number : ACCESS_GROUP acln:INT_CONST dir:WORD
 
 intf_address : ADDRESS a:IPV4 m:IPV4 (s:SECONDARY)? 
         {
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addInterfaceAddress(a->getText(), m->getText());
             *dbg << LT(1)->getLine() << ":"
                 << " INTRFACE ADDRESS: " << a->getText()
