@@ -53,7 +53,8 @@ ImporterThread::ImporterThread(QWidget *ui,
                                const QStringList &buffer,
                                const QString &platform,
                                const QString &firewallName,
-                               const QString &fileName)
+                               const QString &fileName,
+                               bool deduplicate)
 {
     this->lib = lib;
     this->ui = ui;
@@ -61,6 +62,7 @@ ImporterThread::ImporterThread(QWidget *ui,
     this->platform = platform;
     this->firewallName = firewallName;
     this->fileName = fileName;
+    this->deduplicate = deduplicate;
     importer = NULL;
     stopFlag = false;
 }
@@ -94,6 +96,7 @@ void ImporterThread::run()
     {
 
         importer->setFileName(fileName.toUtf8().constData());
+        if (deduplicate) importer->prepareForDeduplication();
 
         try
         {

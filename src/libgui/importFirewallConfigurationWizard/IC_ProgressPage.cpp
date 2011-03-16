@@ -135,6 +135,8 @@ void IC_ProgressPage::initializePage()
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getPlatform();
     QString firewallName = field("firewallName").toString();
+    bool deduplicate = field("deduplicate").toBool();
+
     QStringList *buffer = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getBufferPtr();
@@ -142,9 +144,9 @@ void IC_ProgressPage::initializePage()
 
     importer = new ImporterThread(this,
                                   mw->getCurrentLib(),
-                                  *buffer, platform, firewallName, fileName);
-
-
+                                  *buffer, platform, firewallName, fileName,
+                                  deduplicate);
+    
     connect(importer, SIGNAL(destroyed(QObject*)),
             this, SLOT(importerDestroyed(QObject*)));
     connect(importer, SIGNAL(finished()),

@@ -135,6 +135,12 @@ Importer::Importer(FWObject *_lib,
     service_maker = new ServiceObjectMaker(Library::cast(library));
 }
 
+void Importer::prepareForDeduplication()
+{
+    address_maker->prepareForDeduplication(library->getRoot());
+    service_maker->prepareForDeduplication(library->getRoot());
+}
+
 void Importer::run()
 {
     // create and run parsers in derived classes

@@ -50,6 +50,7 @@ class ImporterThread : public QThread
     QStringList buffer;
     QString firewallName;
     QString platform;
+    bool deduplicate;
     QWidget *ui;
     libfwbuilder::Firewall *fw;
     bool stopFlag;
@@ -60,7 +61,8 @@ public:
                    const QStringList &buffer,
                    const QString &platform,
                    const QString &firewallName,
-                   const QString &fileName);
+                   const QString &fileName,
+                   bool deduplicate);
     virtual ~ImporterThread();
 
     void run();

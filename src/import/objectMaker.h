@@ -26,6 +26,7 @@
 #define _OBJECT_MAKER_H_
 
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/Dispatch.h"
 
 #include <QString>
 #include <QMap>
@@ -33,7 +34,23 @@
 
 namespace libfwbuilder
 {
+    class AddressRange;
+    class Cluster;
+    class CustomService;
+    class Firewall;
+    class Host;
+    class ICMPService;
+    class IPService;
+    class IPv4;
+    class IPv6;
+    class Interface;
     class Library;
+    class Network;
+    class NetworkIPv6;
+    class TCPService;
+    class TagService;
+    class UDPService;
+    class physAddress;
 };
 
 
@@ -48,7 +65,7 @@ public:
 };
 
 
-class ObjectSignature
+class ObjectSignature : public libfwbuilder::Dispatch
 {
 public:
     QString type_name;
@@ -87,6 +104,25 @@ public:
     QString tag;
 
     QString toString() const;
+
+    // The following methods build signature from given object taking
+    // into account its type
+    virtual void* dispatch(libfwbuilder::Network*, void*);
+    virtual void* dispatch(libfwbuilder::NetworkIPv6*, void*);
+    virtual void* dispatch(libfwbuilder::IPv4*, void*);
+    virtual void* dispatch(libfwbuilder::IPv6*, void*);
+    virtual void* dispatch(libfwbuilder::AddressRange*, void*);
+    virtual void* dispatch(libfwbuilder::AddressTable*, void*);
+    virtual void* dispatch(libfwbuilder::physAddress*, void*);
+    virtual void* dispatch(libfwbuilder::IPService*, void*);
+    virtual void* dispatch(libfwbuilder::ICMPService*, void*);
+    virtual void* dispatch(libfwbuilder::ICMP6Service*, void*);
+    virtual void* dispatch(libfwbuilder::TCPService*, void*);
+    virtual void* dispatch(libfwbuilder::UDPService*, void*);
+    virtual void* dispatch(libfwbuilder::CustomService*, void*);
+    virtual void* dispatch(libfwbuilder::TagService*, void*);
+    virtual void* dispatch(libfwbuilder::DNSName*, void*);
+
 };
 
 class ObjectMaker
@@ -112,13 +148,10 @@ public:
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                          const std::string &objType,
                                          const std::string &objName);
-
     
-    void addStandardImportComment(libfwbuilder::FWObject *obj,
-                                  const QString &file_name,
-                                  int line_num);
-
     libfwbuilder::FWObject *getLastCreatedObject() { return last_created; }
+
+    void prepareForDeduplication(libfwbuilder::FWObject *root);
     
 };
 

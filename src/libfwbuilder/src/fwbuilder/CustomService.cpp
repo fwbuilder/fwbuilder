@@ -184,6 +184,17 @@ const string CustomService::getCodeForPlatform(const string& platform) const
     return it->second;
 }
 
+list<string> CustomService::getAllKnownPlatforms()
+{
+    list<string> res;
+    map<string, string>::const_iterator i;
+    for (i=codes.begin(); i!=codes.end(); ++i)  
+    {
+        res.push_back( (*i).first);
+    }
+    return res;
+}
+
 void  CustomService::setProtocol(const string& proto)
 {
     protocol = proto;

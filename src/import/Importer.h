@@ -263,7 +263,8 @@ public:
 
     void setFileName(const std::string &fn) { input_file_name = fn; }
     void setPlatform(const std::string &pl) { platform = pl; }
-
+    void prepareForDeduplication();
+    
     // add standard line to rule comment, this adds something like
     // "created during import from <file>, line <line>"
     void addStandardImportComment(libfwbuilder::FWObject *obj,

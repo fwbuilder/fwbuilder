@@ -40,7 +40,10 @@ IC_FirewallNamePage::IC_FirewallNamePage(QWidget *parent) : QWizardPage(parent)
     m_dialog = new Ui::IC_FirewallNamePage_q;
     m_dialog->setupUi(this);
 
+    m_dialog->deduplicateOnImport->setChecked(true);
+
     registerField("firewallName*", m_dialog->firewallName);
+    registerField("deduplicate", m_dialog->deduplicateOnImport);
 }
 
 void IC_FirewallNamePage::initializePage()
