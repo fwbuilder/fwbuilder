@@ -205,7 +205,7 @@ void IC_PlatformWarningPage::initializePage()
                    "<li>Interface configurations (IP address, security level, "
                    "name, etc.)</li>"
                    "<li>Access lists</li>"
-                   "<li>Static routes [if we decide to support this]</li>"
+                   "<li>Static routes</li>"
                    "</ul>"
                    "The following configuration components will not be imported:"
                    "<ul>"
