@@ -24,10 +24,6 @@
 */
 
 #include "../../config.h"
-#include "global.h"
-#include "utils_no_qt.h"
-#include "platforms.h"
-
 
 #include "PIXImporter.h"
 
@@ -50,10 +46,21 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
 
+#include <QString>
 #include <QtDebug>
+
+extern int fwbdebug;
+
+// TODO: this should move to some common library, together with
+// getVersionsForPlatform() it uses. Currently these functions are
+// defined in libgui/platforms.cpp
+
+extern QString findBestVersionMatch(const QString &platform,
+                                    const QString &discovered_version);
 
 using namespace std;
 using namespace libfwbuilder;
+
 
 
 PIXImporter::PIXImporter(FWObject *lib,

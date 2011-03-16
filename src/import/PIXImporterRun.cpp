@@ -24,9 +24,8 @@
 */
 
 #include "../../config.h"
-#include "global.h"
 
-#include "IOSImporter.h"
+#include "PIXImporter.h"
 
 #include <QString>
 #include <QStringList>
@@ -37,16 +36,18 @@
 
 #include <antlr/ANTLRException.hpp>
 
-// parser and lexer for Cisco IOS access lists
-#include "../parsers/IOSCfgLexer.hpp"
-#include "../parsers/IOSCfgParser.hpp"
+#include "../parsers/PIXCfgLexer.hpp"
+#include "../parsers/PIXCfgParser.hpp"
+
+extern int fwbdebug;
+
 
 /*
- * Only this module depends on IOSCfgLexer and IOSCfgParser,
+ * Only this module depends on PIXCfgLexer and PIXCfgParser,
  * so only this file is recompiled when we change grammar
  */
 
-void IOSImporter::run()
+void PIXImporter::run()
 {
 // it is probably safer to create an empty firewall if we do not have
 // ANTLR on the system rather than try to #ifdef out chunks of code
@@ -60,8 +61,8 @@ void IOSImporter::run()
     QString parser_err = QObject::tr("Parser error:\n");
     std::ostringstream parser_debug;
 
-    IOSCfgLexer lexer(input);
-    IOSCfgParser parser(lexer);
+    PIXCfgLexer lexer(input);
+    PIXCfgParser parser(lexer);
     parser.importer = this;
     if (fwbdebug)   parser.dbg = &std::cerr;
     else            parser.dbg = &parser_debug;
@@ -82,7 +83,22 @@ void IOSImporter::run()
     if (haveFirewallObject())
     {
         if (countInterfaces()==0) err << noInterfacesErrorMessage();
-        if (countRules()==0) err << noRulesErrorMessage();
+//        if (countRules()==0) err << noRulesErrorMessage();
+        if (countRules()==0)
+        {
+            // temporary error message, replace with the standard one when
+            // done
+            err << QObject::tr(
+                "\n\n"
+                "Import of PIX and ASA policy and NAT rules is not "
+                "implemented yet but is planned for fwbuilder v4.2.0 release. "
+                "Please watch nightly builds on "
+                "http://www.fwbuilder.org/nightly_builds/fwbuilder-4.2/current_build/ "
+                "if you are interested in this feature."
+                "\n\n"
+            );
+
+        }
     } else
     {
         err << parser_err;

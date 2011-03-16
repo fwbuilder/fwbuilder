@@ -21,7 +21,7 @@
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../libgui/PIXImporter.h"
+#include "PIXImporter.h"
 
 #line 27 "PIXCfgLexer.cpp"
 #line 1 "pix.g"

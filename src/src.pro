@@ -11,8 +11,9 @@ TARGET   = src
 
 SUBDIRS  =  libfwbuilder \
 			res \
-			parsers \
 			antlr \
+			parsers \
+            import \
 			common \
 			compiler_lib \
 			fwbedit \

@@ -51,7 +51,7 @@ header "post_include_cpp"
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../libgui/IPTImporter.h"
+#include "IPTImporter.h"
 
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/Logger.h"

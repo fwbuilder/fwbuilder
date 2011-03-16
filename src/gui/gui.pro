@@ -12,19 +12,21 @@ SOURCES += main.cpp
 # Arrange static libraries before dynamic ones in the linker command
 # line.  libgui goes first
 win32 {
+    IMPORT_LIB = ../import/release/import.lib
     FWBPARSER_LIB = ../parsers/release/fwbparser.lib
     FWTRANSFER_LIB = ../fwtransfer/release/fwtransfer.lib
     STATIC_LIBS += ../libgui/release/gui.lib
 }
 
 !win32 {
+    IMPORT_LIB = ../import/libimport.a
     FWBPARSER_LIB = ../parsers/libfwbparser.a
     FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
     STATIC_LIBS += ../libgui/libgui.a
 }
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-STATIC_LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
+STATIC_LIBS += $$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
 DEFINES += $$ANTLR_DEFINES
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
@@ -39,6 +41,7 @@ contains( HAVE_QTDBUS, 1 ):unix {
 # !macx:STATIC_LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 INCLUDEPATH +=  \
 	../common \
+    ../import \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
@@ -51,6 +54,7 @@ win32:INCLUDEPATH += ../libgui/ui
 
 DEPENDPATH =  \
 	../common \
+    ../import \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
@@ -86,7 +90,8 @@ win32:PRE_TARGETDEPS = \
     ../compiler_lib/release/compilerdriver.lib \
 	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
 	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
-    $$FWBPARSER_LIB
+    $$FWBPARSER_LIB \
+    $$IMPORT_LIB
 
 !win32:PRE_TARGETDEPS = \
     ../libgui/libgui.a \
@@ -97,7 +102,8 @@ win32:PRE_TARGETDEPS = \
     ../compiler_lib/libcompilerdriver.a \
     ../libfwbuilder/src/fwbuilder/libfwbuilder.a \
     ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-    $$FWBPARSER_LIB
+    $$FWBPARSER_LIB \
+    $$IMPORT_LIB
 
 macx:STATIC_LIBS += -framework \
     Carbon

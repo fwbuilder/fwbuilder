@@ -352,6 +352,7 @@ public:
     
     void markCurrentRuleBad(const std::string &comment);
     void reportError(const std::string &comment);
+    void reportError(const QString &comment);
     
     // this method actually adds interfaces to the firewall object
     // and does final clean up.

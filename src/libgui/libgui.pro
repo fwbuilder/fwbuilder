@@ -30,12 +30,6 @@ HEADERS += ../../config.h \
     TextEditWidget.h \
     utils.h \
     utils_no_qt.h \
-	getProtoByName.h \
-	getServByName.h \
-    Importer.h \
-    IOSImporter.h \
-    IPTImporter.h \
-    PIXImporter.h \
     SSHSession.h \
     SSHUnx.h \
     SSHCisco.h \
@@ -243,15 +237,6 @@ SOURCES += ProjectPanel.cpp \
     ssh_wrappers.cpp \
     utils.cpp \
     utils_no_qt.cpp \
-	getProtoByName.cpp \
-	getServByName.cpp \
-    Importer.cpp \
-    IOSImporter.cpp \
-    IOSImporterRun.cpp \
-    IPTImporter.cpp \
-    IPTImporterRun.cpp \
-    PIXImporter.cpp \
-    PIXImporterRun.cpp \
     SSHSession.cpp \
     SSHUnx.cpp \
     SSHCisco.cpp \
@@ -588,6 +573,7 @@ DEFINES += $$ANTLR_DEFINES
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 INCLUDEPATH += ../common \
+    ../import \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
@@ -595,6 +581,7 @@ INCLUDEPATH += ../common \
 	../libfwbuilder/src
 
 DEPENDPATH = ../common \
+    ../import \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \

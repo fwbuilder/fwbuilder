@@ -22,9 +22,10 @@
 */
 
 #include "../../config.h"
-#include "global.h"
-#include "utils_no_qt.h"
-#include "platforms.h"
+
+// #include "global.h"
+// #include "utils_no_qt.h"
+// #include "platforms.h"
 
 
 #include "IOSImporter.h"
@@ -46,7 +47,11 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
 
+#include <QString>
 #include <QtDebug>
+
+
+extern int fwbdebug;
 
 using namespace std;
 using namespace libfwbuilder;
@@ -135,7 +140,8 @@ FWObject* IOSImporter::createAddress(const std::string &addr,
 
 FWObject* IOSImporter::createICMPService()
 {
-    std::string icmpspec = strip(icmp_spec);
+// TODO: convert icmp_spec to QString and cisco_icmp_specs to QMap
+    std::string icmpspec = QString(icmp_spec.c_str()).trimmed().toStdString();
     if (!icmpspec.empty())
     {
         // Cisco is trying to be too helpful, they translate many
@@ -193,8 +199,10 @@ std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
     int range_start;
     int range_end;
     std::string s1,s2;
-    std::string portop = strip(port_op);
-    std::string portspec = strip(port_spec);
+
+    // TODO: convert port_op and port_spec to QString
+    std::string portop = QString(port_op.c_str()).trimmed().toStdString();
+    std::string portspec = QString(port_spec.c_str()).trimmed().toStdString();
 
     if (fwbdebug)
         qDebug() << QString("Convert TCP/UDP port spec: port_op=%1 port_spec=%2").

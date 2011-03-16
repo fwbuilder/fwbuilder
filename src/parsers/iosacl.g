@@ -51,7 +51,7 @@ header "post_include_cpp"
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../libgui/IOSImporter.h"
+#include "IOSImporter.h"
 }
 
 header

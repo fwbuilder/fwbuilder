@@ -22,10 +22,10 @@
 */
 
 #include "../../config.h"
-#include "global.h"
-#include "utils_no_qt.h"
-#include "platforms.h"
 
+// #include "global.h"
+// #include "utils_no_qt.h"
+// #include "platforms.h"
 
 #include "IPTImporter.h"
 #include "getProtoByName.h"
@@ -56,9 +56,11 @@
 #include <QString>
 #include <QtDebug>
 
+extern int fwbdebug;
 
 using namespace std;
 using namespace libfwbuilder;
+
 
 IPTImporter::IPTImporter(FWObject *lib,
                          std::istringstream &input,
@@ -225,14 +227,15 @@ void IPTImporter::pushTmpPortSpecToBothPortList()
 
 FWObject* IPTImporter::createICMPService()
 {
-    std::string icmpspec = strip(icmp_spec);
-    if (!icmpspec.empty())
+    // TODO: convert icmp_spec to QString
+    QString icmpspec = QString(icmp_spec.c_str()).trimmed();
+    if ( ! icmpspec.isEmpty())
     {
         // Cisco is trying to be too helpful, they translate many
         // icmp type/code combinations into stings
-        if (icmp_specs.count(icmpspec)!=0)
+        if (icmp_specs.count(icmpspec.toStdString())!=0)
         {
-            std::pair<int,int> pp = icmp_specs[icmpspec];
+            std::pair<int,int> pp = icmp_specs[icmpspec.toStdString()];
             std::ostringstream s1, s2;
             s1 << pp.first;
             icmp_type = s1.str();
@@ -240,8 +243,8 @@ FWObject* IPTImporter::createICMPService()
             icmp_code = s2.str();
         } else
         {
-            reportError(
-                std::string("Import of icmp protocol '") + icmp_spec + "' failed");
+            QString err("Import of icmp protocol %1 failed");
+            reportError(err.arg(icmpspec));
             icmp_code = "-1";
             icmp_type = "-1";
         }
@@ -292,7 +295,7 @@ int IPTImporter::convertPort(const std::string &port_spec,
     int port = GetServByName::getPortByName(ps, proto);
     if (port == -1)
     {
-        reportError(std::string("Port spec '") + port_spec + "' unknown ");
+        reportError(QString("Port spec %1 is unknown").arg(ps));
         port = 0;
     }
     return port;
@@ -513,7 +516,7 @@ void IPTImporter::processModuleMatches()
                     "protocols with two or more module matches, such as \n"
                     "module 'mark', 'recent' or 'length'. Use additional \n"
                     "branches to implement this complex match.");
-                reportError(err.toUtf8().constData());
+                reportError(err);
                 break;
             }
 
@@ -583,7 +586,7 @@ void IPTImporter::addLimitMatch(PolicyRule *rule)
     assert(ropt!=NULL);
     if (target!="LOG" && !limit_val.empty())
     {
-        /* TODO: this is where we should add support for hashlimit */
+        // TODO: this is where we should add support for hashlimit
         ropt->setStr("limit_value", limit_val);
         ropt->setStr("limit_suffix", std::string("/") + limit_suffix);
         if (!limit_burst.empty())

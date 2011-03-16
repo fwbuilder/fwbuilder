@@ -49,7 +49,7 @@ header "post_include_cpp"
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "../libgui/PIXImporter.h"
+#include "PIXImporter.h"
 }
 
 header

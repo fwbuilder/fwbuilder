@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "global.h"
 
 #include "IPTImporter.h"
 
@@ -40,6 +39,8 @@
 // parser and lexer for files produced by iptables-save
 #include "../parsers/IPTCfgLexer.hpp"
 #include "../parsers/IPTCfgParser.hpp"
+
+extern int fwbdebug;
 
 using namespace std;
 

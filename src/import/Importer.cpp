@@ -21,11 +21,12 @@
 
 */
 
-#include "../../config.h"
-#include "global.h"
-#include "utils_no_qt.h"
-#include "platforms.h"
+/*
+ * Trying to avoid dependency on libgui (except for FWBTree, which
+ * will be refactored into some other common module in the future).
+ */
 
+#include "../../config.h"
 
 #include "Importer.h"
 
@@ -51,13 +52,13 @@
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/RuleElement.h"
 
-#include "FWWindow.h"
-#include "ProjectPanel.h"
-#include "FWBTree.h"
+#include "../libgui/FWBTree.h"
 
 #include <QString>
 #include <QtDebug>
 
+
+extern int fwbdebug;
 
 using namespace libfwbuilder;
 using namespace std;
@@ -888,39 +889,40 @@ FWObject* Importer::getTagService(const std::string &tagcode)
 FWObject* Importer::createICMPService()
 {
     int type, code;
-    std::istringstream s1(icmp_type), s2(icmp_code);
-    s1.exceptions(std::ios::failbit);
-    s2.exceptions(std::ios::failbit);
 
-    if (strip(icmp_type).empty()) type = -1;
+    // TODO: convert icmp_type and icmp_code to QString
+    QString icmp_type_qs = QString(icmp_type.c_str()).trimmed();
+    QString icmp_code_qs = QString(icmp_code.c_str()).trimmed();
+
+    if (icmp_type_qs.isEmpty()) type = -1;
     else
     {
-        try
-        {
-            s1 >> type;
-        } catch (std::exception& e)
+        bool ok = false;
+        type = icmp_type_qs.toInt(&ok);
+        if (!ok)
         {
             // could not convert
             type = -1;
-            reportError(std::string("ICMP type '") + icmp_type + "' unknown");
+            QString err("ICMP type %1 is unknown");
+            reportError(err.arg(icmp_type_qs));
         }
     }
 
-    if (strip(icmp_code).empty()) code = -1;
+    if (icmp_code_qs.isEmpty()) code = -1;
     else
     {
-        try
-        {
-            s2 >> code;
-        } catch (std::exception& e)
+        bool ok = false;
+        type = icmp_code_qs.toInt(&ok);
+        if (!ok)
         {
             // could not convert
-            code = -1;
-            reportError(std::string("ICMP code '") + icmp_code + "' unknown");
+            type = -1;
+            QString err("ICMP code %1 is unknown");
+            reportError(err.arg(icmp_code_qs));
         }
     }
 
-    return getICMPService(type,code);
+    return getICMPService(type, code);
 }
 
 FWObject* Importer::createIPService()
@@ -1160,12 +1162,16 @@ void Importer::markCurrentRuleBad(const std::string &comment)
 
 void Importer::reportError(const std::string &comment)
 {
+    reportError(QString::fromUtf8(comment.c_str()));
+}
+
+void Importer::reportError(const QString &comment)
+{
     error_counter++;
     QString err = QObject::tr("Parser error: Line %1: %2\n")
-        .arg(getCurrentLineNumber())
-        .arg(QString::fromUtf8(comment.c_str()));
+        .arg(getCurrentLineNumber()).arg(comment);
     *logger << err.toUtf8().constData();
-    if (current_rule != NULL) markCurrentRuleBad(comment);
+    if (current_rule != NULL) markCurrentRuleBad(comment.toUtf8().constData());
 }
 
 int Importer::countRules()
