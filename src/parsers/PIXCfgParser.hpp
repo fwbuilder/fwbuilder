@@ -170,6 +170,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_9;
 	static const unsigned long _tokenSet_10_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
+	static const unsigned long _tokenSet_11_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

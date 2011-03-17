@@ -730,7 +730,7 @@ interface_parameters :
             switchport
         |
             shutdown
-        )
+        )+
     ;
 
 vlan_interface : VLAN vlan_id:INT_CONST
