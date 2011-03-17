@@ -79,6 +79,11 @@ PIXImporter::~PIXImporter()
 {
 }
 
+/*
+ * do not clear named_objects_registry because this function is called
+ * when we start processing each named object, object-group and some other
+ * lines in the config
+ */
 void PIXImporter::clear()
 {
     Importer::clear();
@@ -86,6 +91,10 @@ void PIXImporter::clear()
     current_named_object = NULL;
     named_object_name = "";
     named_object_comment = "";
+
+    current_object_group = NULL;
+    object_group_name = "";
+    object_group_comment = "";
 }
 
 /*
@@ -348,22 +357,26 @@ void PIXImporter::commitNamedAddressObject()
 {
     current_named_object = commitObject(
         address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
+    named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedAddressRangeObject()
 {
     current_named_object = commitObject(
         address_maker->createAddressRange(tmp_range_1.c_str(), tmp_range_2.c_str()));
+    named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedIPServiceObject()
 {
     current_named_object = commitObject(createIPService());
+    named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedICMPServiceObject()
 {
     current_named_object = commitObject(createICMPService());
+    named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedTCPUDPServiceObject()
@@ -372,6 +385,7 @@ void PIXImporter::commitNamedTCPUDPServiceObject()
     if (protocol == "tcp") new_obj = createTCPService();
     if (protocol == "udp") new_obj = createUDPService();
     current_named_object = commitObject(new_obj);
+    named_objects_registry[named_object_name] = current_named_object;
 }
 
 FWObject* PIXImporter::commitObject(FWObject *obj)
@@ -382,8 +396,17 @@ FWObject* PIXImporter::commitObject(FWObject *obj)
         if (obj->isReadOnly()) return obj;
 
         if ( ! named_object_name.isEmpty())
+        {
             obj->setName(named_object_name.toUtf8().constData());
-        addStandardImportComment(obj, named_object_comment);
+            addStandardImportComment(obj, named_object_comment);
+        }
+
+        if ( ! object_group_name.isEmpty())
+        {
+            obj->setName(object_group_name.toUtf8().constData());
+            addStandardImportComment(obj, object_group_comment);
+        }
+
     }
     return obj;
 }
@@ -410,5 +433,79 @@ void PIXImporter::setNamedObjectDescription(const std::string &txt)
     }
 }
 
+/************************************************************************/
 
+void PIXImporter::newObjectGroupNetwork(const string &name)
+{
+    object_group_name = QString::fromUtf8(name.c_str());
+    object_group_comment = "";
+
+    current_object_group = 
+        commitObject(address_maker->createObject(ObjectGroup::TYPENAME, name));
+
+    *logger << "Object Group (network) " + name;
+}
+
+void PIXImporter::newObjectGroupService(const string &name)
+{
+    object_group_name = QString::fromUtf8(name.c_str());
+    object_group_comment = "";
+
+    current_object_group = 
+        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+
+    *logger << "Object Group (service) " + name;
+}
+
+void PIXImporter::newObjectGroupProtocol(const string &name)
+{
+    object_group_name = QString::fromUtf8(name.c_str());
+    object_group_comment = "";
+
+    current_object_group = 
+        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+
+    *logger << "Object Group (protocol) " + name;
+}
+
+void PIXImporter::newObjectGroupICMP(const string &name)
+{
+    object_group_name = QString::fromUtf8(name.c_str());
+    object_group_comment = "";
+
+    current_object_group = 
+        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+
+    *logger << "Object Group (icmp) " + name;
+}
+
+void PIXImporter::setObjectGroupDescription(const std::string &descr)
+{
+    object_group_comment = QString::fromUtf8(descr.c_str());
+    if (current_object_group != NULL && ! object_group_name.isEmpty())
+    {
+        current_object_group->setBool(".import-commited", false);
+        current_object_group->setComment("");
+        commitObject(current_object_group);
+    }
+}
+
+void PIXImporter::addNetworkToObjectGroup()
+{
+    FWObject *obj = commitObject(
+        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
+    current_object_group->addRef(obj);
+}
+
+void PIXImporter::addNamedObjectToGroup(const std::string &object_name)
+{
+    QString no_name = QString::fromUtf8(object_name.c_str());
+    if (named_objects_registry.count(no_name) > 0)
+    {
+        current_object_group->addRef(named_objects_registry[no_name]);
+    } else
+        throw ImporterException(
+            QString("Attempt to add yet undefined named object '%1' "
+                    "to object group '%2'").arg(no_name).arg(object_group_name));
+}
 

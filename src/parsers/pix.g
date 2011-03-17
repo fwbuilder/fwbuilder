@@ -67,7 +67,7 @@ options
 class PIXCfgParser extends Parser;
 options
 {
-    k = 3;
+    k = 2;
 //    defaultErrorHandler=false;
 }
 {
@@ -112,6 +112,8 @@ cfgfile :
             named_object_network
         |
             named_object_service
+        |
+            object_group_network
         |
             crypto
         |
@@ -162,6 +164,19 @@ name_entry : NAME a:IPV4 n:WORD
 
 //****************************************************************
 
+//
+// these are used in access-list and named object definitions
+//
+ip_protocol_names : (
+            AH | EIGRP | ESP | GRE |
+            IGMP |  IGRP |  IP |  IPINIP |  IPSEC |
+            NOS |  OSPF |  PCP |  PIM |  PPTP |  SNP )
+    ;
+
+//****************************************************************
+
+//****************************************************************
+
 named_object_network : OBJECT NETWORK name:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -171,22 +186,22 @@ named_object_network : OBJECT NETWORK name:WORD
                 << " Named Object " << name->getText() << std::endl;
         }
         (
+            NEWLINE
             named_object_network_parameters
-        )+
+        )*
     ;
 
 named_object_network_parameters : 
-        NEWLINE
         (
             named_object_nat
-        | 
-            named_object_description
         |
             host_addr
         |
             range_addr
         |
             subnet_addr
+        | 
+            named_object_description
         )
     ;
 
@@ -254,12 +269,10 @@ named_object_service : OBJECT SERVICE name:WORD
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
         }
-        NEWLINE
-        named_object_service_parameters
         (
             NEWLINE
-            named_object_description
-        )?
+            named_object_service_parameters
+        )*
     ;
 
 named_object_service_parameters :
@@ -271,6 +284,8 @@ named_object_service_parameters :
             service_tcp_udp
         |
             service_other
+        |
+            named_object_description
         )
     ;
 
@@ -328,16 +343,93 @@ dst_port_spec : DESTINATION xoperator
         }
     ;
 
-service_other : SERVICE (ip:IP|n:WORD)
+service_other : SERVICE ip_protocol_names
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            if (ip) importer->protocol = "ip";
-            if (n) importer->protocol = n->getText();
+            importer->protocol = LT(0)->getText();
             importer->commitNamedIPServiceObject();
             *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
         }
     ;
 
+
+//****************************************************************
+
+object_group_network : OBJECT_GROUP NETWORK name:WORD
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->clear();
+            importer->newObjectGroupNetwork(name->getText());
+            *dbg << name->getLine() << ":"
+                 << " Object Group " << name->getText() << std::endl;
+        }
+        (
+            object_group_network_parameters
+        )+
+    ;
+
+object_group_network_parameters : 
+        NEWLINE
+        (
+            object_group_description
+        |
+            group_object
+        |
+            network_object
+        )
+    ;
+
+object_group_description : DESCRIPTION
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            *dbg << LT(1)->getLine() << ":";
+            std::string descr;
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            {
+                descr += LT(1)->getText() + " ";
+                consume();
+            }
+            importer->setObjectGroupDescription(descr);
+            *dbg << " DESCRIPTION " << descr << std::endl;
+        }
+    ;
+
+group_object : GROUP_OBJECT name:WORD
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addNamedObjectToGroup(name->getText());
+            *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+        }
+    ;
+
+network_object : NETWORK_OBJECT
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+        (
+        a:IPV4 nm:IPV4
+        {
+            importer->tmp_a = a->getText();
+            importer->tmp_nm = nm->getText();
+            importer->addNetworkToObjectGroup();
+            *dbg << a->getText() << "/" << nm->getText();
+        }
+    |
+        HOST h:IPV4
+        {
+            importer->tmp_a = h->getText();
+            importer->tmp_nm = "255.255.255.255";
+            importer->addNetworkToObjectGroup();
+            *dbg << h->getText() << "/255.255.255.255";
+        }
+    |
+        OBJECT name:WORD
+        {
+            importer->addNamedObjectToGroup(name->getText());
+            *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+        }
+    )
+    ;
 
 //****************************************************************
 crypto : CRYPTO
@@ -511,8 +603,7 @@ rule_ext :
     ;
 
 //****************************************************************
-// ip_protocols : (IP | AHP | EIGRP | ESP | GRE | IGRP | IPINIP | NOS | OSPF | PCP | PIM )
-ip_protocols : (IP | WORD )
+ip_protocols : ip_protocol_names
         {
             importer->protocol = LT(0)->getText();
             *dbg << "protocol " << LT(0)->getText() << " ";
@@ -1115,6 +1206,8 @@ tokens
 
     OBJECT = "object";
     OBJECT_GROUP = "object-group";
+    GROUP_OBJECT = "group-object";
+    NETWORK_OBJECT = "network-object";
 
     NETWORK = "network";
     SERVICE = "service";

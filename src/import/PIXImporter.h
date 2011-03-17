@@ -46,6 +46,12 @@ class PIXImporter : public IOSImporter
     QString named_object_name;
     QString named_object_comment;
     libfwbuilder::FWObject *current_named_object;
+
+    QString object_group_name;
+    QString object_group_comment;
+    libfwbuilder::FWObject *current_object_group;
+
+    QMap<QString,libfwbuilder::FWObject*> named_objects_registry;
     
     PIXImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
@@ -80,7 +86,15 @@ class PIXImporter : public IOSImporter
     virtual void commitNamedTCPUDPServiceObject();
 
     virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
-        
+
+    void newObjectGroupNetwork(const std::string &group_name);
+    void newObjectGroupService(const std::string &group_name);
+    void newObjectGroupProtocol(const std::string &group_name);
+    void newObjectGroupICMP(const std::string &group_name);
+    void addNetworkToObjectGroup();
+    void addNamedObjectToGroup(const std::string &object_name);
+    void setObjectGroupDescription(const std::string &descr);
+    
     void rearrangeVlanInterfaces();
 };
 

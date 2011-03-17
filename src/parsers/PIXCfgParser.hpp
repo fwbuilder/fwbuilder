@@ -82,14 +82,16 @@ public:
 	public: void name_entry();
 	public: void named_object_network();
 	public: void named_object_service();
+	public: void object_group_network();
 	public: void crypto();
 	public: void unknown_command();
+	public: void ip_protocol_names();
 	public: void named_object_network_parameters();
 	public: void named_object_nat();
-	public: void named_object_description();
 	public: void host_addr();
 	public: void range_addr();
 	public: void subnet_addr();
+	public: void named_object_description();
 	public: void named_object_service_parameters();
 	public: void service_icmp();
 	public: void service_icmp6();
@@ -98,6 +100,10 @@ public:
 	public: void src_port_spec();
 	public: void dst_port_spec();
 	public: void xoperator();
+	public: void object_group_network_parameters();
+	public: void object_group_description();
+	public: void group_object();
+	public: void network_object();
 	public: void permit_ext();
 	public: void deny_ext();
 	public: void remark();
@@ -142,10 +148,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 125;
+	static const int NUM_TOKENS = 131;
 #else
 	enum {
-		NUM_TOKENS = 125
+		NUM_TOKENS = 131
 	};
 #endif
 	
@@ -173,6 +179,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
 	static const unsigned long _tokenSet_11_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
+	static const unsigned long _tokenSet_12_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

@@ -91,6 +91,8 @@ object network ipv6-network-object-1
  description IPv6 network object example 
  subnet 2001::/64
 
+! empty named object definition
+object network dummy-address
 !
 object service smtp 
  service tcp destination eq smtp 
