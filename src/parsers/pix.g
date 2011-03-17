@@ -254,19 +254,16 @@ named_object_service : OBJECT SERVICE name:WORD
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
         }
+        NEWLINE
+        named_object_service_parameters
         (
-            named_object_service_parameters
-        )+
+            NEWLINE
+            named_object_description
+        )?
     ;
 
 named_object_service_parameters :
-        NEWLINE
-        {
-            importer->setCurrentLineNumber(LT(0)->getLine());
-        }
         (
-            named_object_description
-        |
             service_icmp
         |
             service_icmp6
@@ -709,8 +706,12 @@ intrface  : INTRFACE in:WORD
             consumeUntil(NEWLINE);
         }
         (
+            interface_description
+        )?
+        (
             interface_parameters
         )+
+        NEWLINE LINE_COMMENT
     ;
    
 interface_parameters :
@@ -732,6 +733,8 @@ interface_parameters :
             switchport
         |
             shutdown
+        |
+            interface_no_commands
         |
             unsupported_interface_commands
         )
@@ -776,6 +779,14 @@ unsupported_interface_commands :
         )
         {
             *dbg << " UNSUPPORTED INTERFACE COMMAND: "
+                 << LT(0)->getText() << std::endl;
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+interface_no_commands : NO WORD
+        {
+            *dbg << " INTERFACE \"NO\" COMMAND: "
                  << LT(0)->getText() << std::endl;
             consumeUntil(NEWLINE);
         }
@@ -1009,6 +1020,8 @@ tokens
     EXIT = "exit";
     QUIT = "quit";
 
+    NO = "no";
+
     HOSTNAME = "hostname";
     CERTIFICATE = "certificate";
     
@@ -1193,3 +1206,4 @@ OPENING_BRACE : '{' ;
 CLOSING_BRACE : '}' ;
 TILDE : '~' ;
 
+EXLAMATION : '!';

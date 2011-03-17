@@ -114,14 +114,15 @@ public:
 	public: void port_spec();
 	public: void pair_of_ports_spec();
 	public: void hostaddr_std();
+	public: void interface_description();
 	public: void interface_parameters();
 	public: void intf_address();
 	public: void vlan_interface();
 	public: void sec_level();
 	public: void nameif();
-	public: void interface_description();
 	public: void switchport();
 	public: void shutdown();
+	public: void interface_no_commands();
 	public: void unsupported_interface_commands();
 	public: void v6_ip_address();
 	public: void v7_ip_address();
@@ -141,10 +142,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 123;
+	static const int NUM_TOKENS = 125;
 #else
 	enum {
-		NUM_TOKENS = 123
+		NUM_TOKENS = 125
 	};
 #endif
 	
@@ -172,12 +173,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
 	static const unsigned long _tokenSet_11_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
-	static const unsigned long _tokenSet_12_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
-	static const unsigned long _tokenSet_13_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
-	static const unsigned long _tokenSet_14_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_14;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

@@ -11,11 +11,13 @@ name 192.168.3.0 fake_network
 name 192.168.4.1 inside_ip
 !
 interface Vlan1
+ description inside interface
  nameif inside
  security-level 100
  ip address dhcp setroute 
 !
 interface Vlan2
+ description outside interface
  nameif outside
  security-level 0
  ip address 192.168.2.1 255.255.255.0 
@@ -24,6 +26,11 @@ interface Ethernet0/0
  description Switch port 0/0
  switchport access vlan 2
 !
+interface Vlan2020
+ no nameif
+ no security-level
+ no ip address
+!         
 interface Ethernet0/1
 !
 interface Ethernet0/2

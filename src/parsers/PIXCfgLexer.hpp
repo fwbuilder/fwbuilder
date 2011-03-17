@@ -85,6 +85,7 @@ public:
 	public: void mOPENING_BRACE(bool _createToken);
 	public: void mCLOSING_BRACE(bool _createToken);
 	public: void mTILDE(bool _createToken);
+	public: void mEXLAMATION(bool _createToken);
 private:
 	
 	static const unsigned long _tokenSet_0_data_[];
