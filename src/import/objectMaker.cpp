@@ -293,6 +293,18 @@ FWObject* ObjectMaker::createObject(FWObject *parent,
     FWObject*  o = library->getRoot()->create(objType);
     if (parent != NULL)
     {
+        if (parent->isReadOnly())
+        {     
+            QString pn = QString::fromUtf8(parent->getName().c_str());
+            if (parent->getLibrary()->isReadOnly())
+                throw ObjectMakerException(
+                    QObject::tr("Can not add new objects to folder %1 because "
+                                "it belongs to a locked library").arg(pn));
+            else
+                throw ObjectMakerException(
+                    QObject::tr("Can not add new objects to folder %1 because "
+                                "it is locked").arg(pn));
+        }
         parent->add(o);
     }
     o->setName(objName);

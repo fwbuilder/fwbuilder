@@ -229,7 +229,7 @@ void IC_ProgressPage::logLine(const QString &buf)
             errors_count++;
         }
 
-        if (line.contains("Error: "))
+        if (line.contains("Error:"))
         {
             format = error_format;
             errors_count++;
@@ -241,7 +241,7 @@ void IC_ProgressPage::logLine(const QString &buf)
             warnings_count++;
         }
 
-        if (line.contains("Warning: "))
+        if (line.contains("Warning:"))
         {
             format = warning_format;
             warnings_count++;

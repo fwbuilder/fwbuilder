@@ -60,7 +60,8 @@ void IOSImporter::run()
 //
 
     QStringList err;
-    QString parser_err = QObject::tr("Parser error:\n");
+    QString parser_err = QObject::tr("Parser error:");
+    QString gen_err = QObject::tr("Error:");
     std::ostringstream parser_debug;
 
     IOSCfgLexer lexer(input);
@@ -76,6 +77,10 @@ void IOSImporter::run()
     {
         err << parser_err;
         err << e.toString().c_str();
+    } catch(ObjectMakerException &e)
+    {
+        err << gen_err;
+        err << e.toString();
     } catch(std::exception& e)
     {
         err << parser_err;

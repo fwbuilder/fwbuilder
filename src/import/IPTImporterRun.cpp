@@ -111,7 +111,8 @@ void IPTImporter::run()
     if (fwbdebug)   parser.dbg = &std::cerr;
     else            parser.dbg = &parser_debug;
 
-    QString parser_err = QObject::tr("Parser error:\n");
+    QString parser_err = QObject::tr("Parser error:");
+    QString gen_err = QObject::tr("Error:");
 
     try
     {
@@ -120,6 +121,10 @@ void IPTImporter::run()
     {
         err << parser_err;
         err << e.toString().c_str();
+    } catch(ObjectMakerException &e)
+    {
+        err << gen_err;
+        err << e.toString();
     } catch(std::exception& e)
     {
         err << parser_err;
