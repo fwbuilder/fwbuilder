@@ -6,7 +6,9 @@
 	optionally re-use existing objects from both Standard Objects and
 	user-defined libraries when it imports existing firewall
 	configuration. This works for any firewall platform for which we
-	support policy import.
+	support policy import. Objects are matched by attributes such as
+	address, netmask, port etc. Object name and comment are not taken
+	into account
 
 2011-03-14  vadim  <vadim@netcitadel.com>
 
