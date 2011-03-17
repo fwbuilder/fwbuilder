@@ -320,6 +320,9 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
         registerObject(sig, root);
     }
 
+    if (Library::isA(root) && root->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        return;
+
     for (FWObject::iterator it=root->begin(); it!=root->end(); ++it)
     {
         prepareForDeduplication(*it);
