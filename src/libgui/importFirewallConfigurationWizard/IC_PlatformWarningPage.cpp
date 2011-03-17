@@ -244,17 +244,19 @@ void IC_PlatformWarningPage::initializePage()
         {
             m_dialog->platform->setText(tr("iptables"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Firewall Builder will import all the rules defined "
+                tr("<html><p>Firewall Builder will import all the rules defined "
                    "in the iptables configuration. Discovered IP networks "
                    "and IP addresses used in the iptables rules will "
                    "automatically have objects created in the object tree. "
                    "Each user defined chain will be created as its own Policy "
                    "object in Firewall Builder."
-                   ""
+                   "</p>"
+                   "<p>"
                    "The import process will also attempt to detect interface "
                    "names and IP addresses based on -i and -o parameters in "
                    "the configuration, but you may have to update the firewall "
                    "object with additional interface information like IP addresses."
+                   "</p></html>"
                 ));
             platformOk = true;
         }
