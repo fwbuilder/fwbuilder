@@ -719,6 +719,8 @@ QString FirewallInstaller::getActivationCmd()
     configlet.setVariable("with_rollback", false);
     configlet.setVariable("no_rollback", true);
 
+    configlet.setVariable("firewall_name", cnf->fwobj->getName());
+
     configlet.setVariable("with_compression",  cnf->compressScript);
     configlet.setVariable("no_compression",  ! cnf->compressScript);
 

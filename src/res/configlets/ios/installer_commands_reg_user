@@ -16,6 +16,8 @@
 ##  {{$rbtimeout}} -- rollback timeout
 ##  {{$rbtimeout_sec}} -- rollback timeout (sec)
 ##
+##  {{$firewall_name}} -- the name of the firewall object
+##
 
 {{if using_scp}}
 copy {{$fwdir}}{{$fwscript}} running-config

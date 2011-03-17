@@ -174,10 +174,13 @@ object service ip2
 object service icmp6-1 
  service icmp6 neighbor-advertisement
 !
+! named object using unknown protocol name
+object service ip3
+ service some_weird_protocol
 
 ! incomplete statement
 !
-object service ip3 
+object service ip4 
 
 !
 object-group network outside.id178211X29963.osrc.net.0

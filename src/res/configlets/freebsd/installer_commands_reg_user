@@ -21,6 +21,8 @@
 ##  {{$fwscript}}  -- script name on the firewall
 ##  {{$rbtimeout}} -- rollback timeout
 ##
+##  {{$firewall_name}} -- the name of the firewall object
+##
 ##  See #1368 for the explanation of the need for the "sleep2; echo" commands
 ##
 ##  Note: all commands should be on one line to avoid unnecessary linefeeds.

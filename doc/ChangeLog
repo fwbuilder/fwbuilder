@@ -1,3 +1,13 @@
+2011-03-17  vadim  <vadim@netcitadel.com>
+
+	* PIXImporter.cpp (newObjectGroupNetwork): see #2234 Added support
+	for import of PIX/ASA "object-group" statements.
+
+	* FirewallInstaller.cpp (getActivationCmd): see #2239 Added
+	variable "firewall_name" to configlets that define commands
+	installer runs on the firewall to activate new policy (all
+	platforms).
+
 2011-03-16  vadim  <vadim@netcitadel.com>
 
 	* Importer.cpp (prepareForDeduplication): fixed #1548 "Object

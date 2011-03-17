@@ -22,6 +22,8 @@
 ##  {{$fwscript}}  -- script name on the firewall
 ##  {{$rbtimeout}} -- rollback timeout
 ##
+##  {{$firewall_name}} -- the name of the firewall object
+##
 ##
 ##  On IPCOP we use standard system script to reload firewall policy
 

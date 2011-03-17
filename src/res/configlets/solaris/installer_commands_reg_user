@@ -23,6 +23,8 @@
 ##  {{$rbtimeout}} -- rollback timeout (min)
 ##  {{$rbtimeout_sec}} -- rollback timeout (sec)
 ##
+##  {{$firewall_name}} -- the name of the firewall object
+##
 ##  Note: all commands should be on one line to avoid unnecessary linefeeds.
 ##  These linefeeds are sent to the server side (to the firewall) and end up
 ##  on the input of sudo and other commands. This creates difficult to catch

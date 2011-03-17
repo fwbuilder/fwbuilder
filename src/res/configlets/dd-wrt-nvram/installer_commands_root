@@ -23,6 +23,8 @@
 ##  {{$rbtimeout}}  -- rollback timeout (min)
 ##  {{$rbtimeout_sec}}  -- rollback timeout (sec)
 ##
+##  {{$firewall_name}} -- the name of the firewall object
+##
 
 
 {{if run}}
