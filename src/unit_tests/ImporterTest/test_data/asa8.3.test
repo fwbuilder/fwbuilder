@@ -102,6 +102,15 @@ object network ipv6-network-object-1
 ! empty named object definition
 object network dummy-address
 !
+! more good network objects after the empty one
+object network internal_subnet_5
+ subnet 10.10.1.0 255.255.255.0
+!
+! another test for an empty object and non-empty object but no comments this time
+object network dummy-address-1
+object network internal_subnet_6
+ subnet 10.10.2.0 255.255.255.0
+!
 object service smtp 
  service tcp destination eq smtp 
 object service http 
