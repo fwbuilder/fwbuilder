@@ -1,9 +1,8 @@
 2011-03-16  vadim  <vadim@netcitadel.com>
 
 	* Importer.cpp (prepareForDeduplication): fixed #1548 "Object
-	de-duplication during import process". Also SourceForge bug
-	2980566 "Import from hostsfile may cause duplicate Objects" and
-	3030072 "remove duplicates during any import". Now the program can
+	de-duplication during import process". Also SourceForge 3030072
+	"remove duplicates during any import". Now the program can
 	optionally re-use existing objects from both Standard Objects and
 	user-defined libraries when it imports existing firewall
 	configuration. This works for any firewall platform for which we
