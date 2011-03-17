@@ -72,15 +72,20 @@ void ServiceObjectMaker::clear()
 
 FWObject* ServiceObjectMaker::getCustomService(const QString &platform,
                                                const QString &code,
-                                               const QString &protocol)
+                                               const QString &protocol,
+                                               bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = CustomService::TYPENAME;
     sig.platform = platform;
     sig.protocol_name = protocol;
     sig.code = code;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QString custom_service_name_sig = platform + "-" + code;
     if (custom_service_codes.count(custom_service_name_sig) > 0)
@@ -100,14 +105,19 @@ FWObject* ServiceObjectMaker::getCustomService(const QString &platform,
     return s;
 }
 
-FWObject* ServiceObjectMaker::getIPService(int proto, bool fragments)
+FWObject* ServiceObjectMaker::getIPService(int proto, bool fragments,
+                                           bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = IPService::TYPENAME;
     sig.protocol = proto;
     sig.fragments = fragments;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QString name = QString("ip-%1").arg(proto);
     if (fragments) name += "-frag";
@@ -121,14 +131,18 @@ FWObject* ServiceObjectMaker::getIPService(int proto, bool fragments)
     return s;
 }
 
-FWObject* ServiceObjectMaker::getICMPService(int type, int code)
+FWObject* ServiceObjectMaker::getICMPService(int type, int code, bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = ICMPService::TYPENAME;
     sig.icmp_type = type;
     sig.icmp_code = code;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QString name = QString("icmp %1/%2").arg(type).arg(code);
 
@@ -146,7 +160,8 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
                                             int drs, int dre,
                                             bool established,
                                             QList<int> &flags_mask,
-                                            QList<int> &flags_comp)
+                                            QList<int> &flags_comp,
+                                            bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = TCPService::TYPENAME;
@@ -157,8 +172,12 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
     sig.established = established;
     sig.flags_mask = flags_mask;
     sig.flags_comp = flags_comp;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QStringList nl;
 
@@ -226,7 +245,8 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
     return s;
 }
 
-FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
+FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre,
+                                            bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = UDPService::TYPENAME;
@@ -234,8 +254,12 @@ FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
     sig.src_port_range_end = sre;
     sig.dst_port_range_start = drs;
     sig.dst_port_range_end = dre;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QString name =  QString("udp %1:%2 / %3:%4")
         .arg(srs).arg(sre).arg(drs).arg(dre);
@@ -252,13 +276,18 @@ FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
     return s;
 }
 
-FWObject* ServiceObjectMaker::getTagService(const QString &tagcode)
+FWObject* ServiceObjectMaker::getTagService(const QString &tagcode,
+                                            bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = TagService::TYPENAME;
     sig.tag = tagcode;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     TagService *s = NULL;
 

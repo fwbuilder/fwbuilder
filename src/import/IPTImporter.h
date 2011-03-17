@@ -54,14 +54,16 @@ class IPTImporter : public Importer
 
     libfwbuilder::FWObject* createTCPUDPService(str_tuple &src_range,
                                                 str_tuple &dst_range,
-                                                const std::string &proto);
+                                                const std::string &proto,
+                                                bool deduplicate=true);
 
-    libfwbuilder::FWObject* createTCPUDPService(const std::string &proto);
+    libfwbuilder::FWObject* createTCPUDPService(const std::string &proto,
+                                                bool deduplicate=true);
     
-    virtual libfwbuilder::FWObject* createIPService();
-    virtual libfwbuilder::FWObject* createICMPService();
-    virtual libfwbuilder::FWObject* createTCPService();
-    virtual libfwbuilder::FWObject* createUDPService();
+    virtual libfwbuilder::FWObject* createIPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createICMPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createTCPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createUDPService(bool deduplicate=true);
 
     virtual libfwbuilder::FWObject* makeSrcObj();
     virtual libfwbuilder::FWObject* makeDstObj();

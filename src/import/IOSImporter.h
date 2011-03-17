@@ -47,10 +47,10 @@ class IOSImporter : public Importer
 
 protected:
     
-    virtual libfwbuilder::FWObject* createIPService();
-    virtual libfwbuilder::FWObject* createICMPService();
-    virtual libfwbuilder::FWObject* createTCPService();
-    virtual libfwbuilder::FWObject* createUDPService();
+    virtual libfwbuilder::FWObject* createIPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createICMPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createTCPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createUDPService(bool deduplicate=true);
 
     int convertPort(const std::string &port, const std::string &proto);
 

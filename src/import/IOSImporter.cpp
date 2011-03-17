@@ -119,7 +119,7 @@ void IOSImporter::setInterfaceAndDirectionForRuleSet(
 
 }
 
-FWObject* IOSImporter::createICMPService()
+FWObject* IOSImporter::createICMPService(bool deduplicate)
 {
 // TODO: convert icmp_spec to QString and cisco_icmp_specs to QMap
     std::string icmpspec = QString(icmp_spec.c_str()).trimmed().toStdString();
@@ -145,10 +145,10 @@ FWObject* IOSImporter::createICMPService()
     }
     icmp_spec = "";
 
-    return Importer::createICMPService();
+    return Importer::createICMPService(deduplicate);
 }
 
-FWObject* IOSImporter::createIPService()
+FWObject* IOSImporter::createIPService(bool deduplicate)
 {
     int proto = GetProtoByName::getProtocolByName(protocol.c_str());
     if (proto > -1)
@@ -157,7 +157,7 @@ FWObject* IOSImporter::createIPService()
         s << proto;
         protocol = s.str();
     }
-    return Importer::createIPService();
+    return Importer::createIPService(deduplicate);
 }
 
 int IOSImporter::convertPort(const std::string &port_str,
@@ -219,7 +219,7 @@ std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
     return std::pair<int,int>(range_start, range_end);
 }
 
-FWObject* IOSImporter::createTCPService()
+FWObject* IOSImporter::createTCPService(bool deduplicate)
 {
     // use src_port_op, src_port_spec, dst_port_op, dst_port_spec
     // port_op can be: lt (less than), gt (greater than), eq (equal),
@@ -240,10 +240,11 @@ FWObject* IOSImporter::createTCPService()
 
     return service_maker->getTCPService(srs, sre,
                                         drs, dre,
-                                        established, tcp_flags_mask, tcp_flags_comp);
+                                        established, tcp_flags_mask, tcp_flags_comp,
+                                        deduplicate);
 }
 
-FWObject* IOSImporter::createUDPService()
+FWObject* IOSImporter::createUDPService(bool deduplicate)
 {
     // use src_port_op, src_port_spec, dst_port_op, dst_port_spec
     // port_op can be: lt (less than), gt (greater than), eq (equal),
@@ -262,7 +263,7 @@ FWObject* IOSImporter::createUDPService()
     int drs = pr.first;
     int dre = pr.second;
 
-    return service_maker->getUDPService(srs, sre, drs, dre);
+    return service_maker->getUDPService(srs, sre, drs, dre, deduplicate);
 }
 
 void IOSImporter::ignoreCurrentInterface()

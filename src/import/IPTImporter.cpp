@@ -223,7 +223,7 @@ void IPTImporter::pushTmpPortSpecToBothPortList()
 }
 
 
-FWObject* IPTImporter::createICMPService()
+FWObject* IPTImporter::createICMPService(bool deduplicate)
 {
     // TODO: convert icmp_spec to QString
     QString icmpspec = QString(icmp_spec.c_str()).trimmed();
@@ -246,10 +246,10 @@ FWObject* IPTImporter::createICMPService()
     }
     icmp_spec = "";
 
-    return Importer::createICMPService();
+    return Importer::createICMPService(deduplicate);
 }
 
-FWObject* IPTImporter::createIPService()
+FWObject* IPTImporter::createIPService(bool deduplicate)
 {
     int proto = GetProtoByName::getProtocolByName(protocol.c_str());
     if (proto > -1)
@@ -259,7 +259,7 @@ FWObject* IPTImporter::createIPService()
         protocol = s.str();
         //free(pe);
     }
-    return Importer::createIPService();
+    return Importer::createIPService(deduplicate);
 
     // struct protoent *pe = getprotobyname(protocol.c_str());
     // if (pe!=NULL)
@@ -298,7 +298,8 @@ int IPTImporter::convertPort(const std::string &port_spec,
 
 FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
                                            str_tuple &dst_range,
-                                           const std::string &proto)
+                                           const std::string &proto,
+                                           bool deduplicate)
 {
     if (fwbdebug)
     {
@@ -332,13 +333,13 @@ FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
         o = service_maker->getTCPService(srs, sre,
                                          drs, dre,
                                          established,
-                                         tcp_flags_mask, tcp_flags_comp);
+                                         tcp_flags_mask, tcp_flags_comp, deduplicate);
     } else
-        o = service_maker->getUDPService(srs, sre, drs, dre);
+        o = service_maker->getUDPService(srs, sre, drs, dre, deduplicate);
     return commitObject(o);
 }
 
-FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
+FWObject* IPTImporter::createTCPUDPService(const std::string &proto, bool deduplicate)
 {
     str_tuple empty_range("0","0");
 
@@ -371,7 +372,7 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
             o = createTCPUDPService(
                 (list_ptr == &src_port_list) ? *i : empty_range,
                 (list_ptr == &dst_port_list) ? *i : empty_range,
-                proto);
+                proto, deduplicate);
 
             olist.push_back(o);
             list_names.push_back(o->getName());
@@ -403,18 +404,18 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
         return createTCPUDPService(
             (src_port_list.size()>0) ? src_port_list.front() : empty_range,
             (dst_port_list.size()>0) ? dst_port_list.front() : empty_range,
-            proto);
+            proto, deduplicate);
     }
 }
 
-FWObject* IPTImporter::createTCPService()
+FWObject* IPTImporter::createTCPService(bool deduplicate)
 {
-    return createTCPUDPService("tcp");
+    return createTCPUDPService("tcp", deduplicate);
 }
 
-FWObject* IPTImporter::createUDPService()
+FWObject* IPTImporter::createUDPService(bool deduplicate)
 {
-    return createTCPUDPService("udp");
+    return createTCPUDPService("udp", deduplicate);
 }
 
 

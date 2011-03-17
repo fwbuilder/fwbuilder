@@ -42,7 +42,8 @@ using namespace std;
 AddressObjectMaker::~AddressObjectMaker() {}
 
 FWObject* AddressObjectMaker::createAddress(const QString &addr,
-                                            const QString &netmask)
+                                            const QString &netmask,
+                                            bool deduplicate)
 {
     QString correct_nm = netmask;
     if (inverted_netmasks)
@@ -60,8 +61,12 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
             sig.type_name = IPv4::TYPENAME;
             sig.address = addr;
             sig.netmask = correct_nm;
-            FWObject *obj = findMatchingObject(sig);
-            if (obj) return obj;
+
+            if (deduplicate)
+            {
+                FWObject *obj = findMatchingObject(sig);
+                if (obj) return obj;
+            }
 
             InetAddr obj_addr(addr.toStdString()); // testing if string converts to an address
             name = QString("h-") + addr;
@@ -79,8 +84,12 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
             ObjectSignature sig;
             sig.type_name = DNSName::TYPENAME;
             sig.dns_name = addr;
-            FWObject *obj = findMatchingObject(sig);
-            if (obj) return obj;
+
+            if (deduplicate)
+            {
+                FWObject *obj = findMatchingObject(sig);
+                if (obj) return obj;
+            }
 
             name = addr;
             DNSName *da = DNSName::cast(
@@ -97,8 +106,12 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
         sig.type_name = Network::TYPENAME;
         sig.address = addr;
         sig.netmask = correct_nm;
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
+
+        if (deduplicate)
+        {
+            FWObject *obj = findMatchingObject(sig);
+            if (obj) return obj;
+        }
 
         QString name = QString("net-") + addr + "/" + correct_nm;
         Network *net = Network::cast(
@@ -149,14 +162,18 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
 }
 
 FWObject* AddressObjectMaker::createAddressRange(const QString &addr1,
-                                                 const QString &addr2)
+                                                 const QString &addr2,
+                                                 bool deduplicate)
 {
     ObjectSignature sig;
     sig.type_name = AddressRange::TYPENAME;
     sig.address_range_start = addr1;
     sig.address_range_end = addr2;
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+    if (deduplicate)
+    {
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
+    }
 
     QString name = QString("range-") + addr1 + "-" + addr2;
     AddressRange *ar = AddressRange::cast(

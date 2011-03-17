@@ -45,9 +45,11 @@ public:
     void setInvertedNetmasks(bool f) { inverted_netmasks = f; }
     
     virtual libfwbuilder::FWObject* createAddress(const QString &a,
-                                                  const QString &nm);
+                                                  const QString &nm,
+                                                  bool deduplicate=true);
     virtual libfwbuilder::FWObject* createAddressRange(const QString &a1,
-                                                       const QString &a2);
+                                                       const QString &a2,
+                                                       bool deduplicate=true);
 
 };
 

@@ -165,10 +165,10 @@ protected:
     virtual UnidirectionalRuleSet* getUnidirRuleSet(
         const std::string &ruleset_name, const std::string &ruleset_type_name);
     
-    virtual libfwbuilder::FWObject* createIPService();
-    virtual libfwbuilder::FWObject* createICMPService();
-    virtual libfwbuilder::FWObject* createTCPService();
-    virtual libfwbuilder::FWObject* createUDPService();
+    virtual libfwbuilder::FWObject* createIPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createICMPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createTCPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createUDPService(bool deduplicate=true);
 
     // create libfwbuilder::ObjectGroup and place all interfaces in it
     // argument represents a list of interface names

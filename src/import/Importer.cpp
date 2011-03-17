@@ -622,7 +622,7 @@ Firewall* Importer::finalize()
     return fw;
 }
 
-FWObject* Importer::createICMPService()
+FWObject* Importer::createICMPService(bool deduplicate)
 {
     int type, code;
 
@@ -658,10 +658,10 @@ FWObject* Importer::createICMPService()
         }
     }
 
-    return service_maker->getICMPService(type, code);
+    return service_maker->getICMPService(type, code, deduplicate);
 }
 
-FWObject* Importer::createIPService()
+FWObject* Importer::createIPService(bool deduplicate)
 {
     // this assumes protocol is represented by a number
     std::istringstream str(protocol);
@@ -676,10 +676,10 @@ FWObject* Importer::createIPService()
         proto_num = 0;
         reportError(std::string("Protocol '") + protocol + "' unknown");
     }
-    return service_maker->getIPService(proto_num, fragments);
+    return service_maker->getIPService(proto_num, fragments, deduplicate);
 }
 
-FWObject* Importer::createTCPService()
+FWObject* Importer::createTCPService(bool deduplicate)
 {
     // Default implementation
     //
@@ -700,10 +700,11 @@ FWObject* Importer::createTCPService()
     return service_maker->getTCPService(sport, sport,
                                         dport, dport,
                                         established,
-                                        tcp_flags_mask, tcp_flags_comp);
+                                        tcp_flags_mask, tcp_flags_comp,
+                                        deduplicate);
 }
 
-FWObject* Importer::createUDPService()
+FWObject* Importer::createUDPService(bool deduplicate)
 {
     // Default implementation
     //
@@ -721,7 +722,7 @@ FWObject* Importer::createUDPService()
     src_str >> sport;
     dst_str >> dport;
 
-    return service_maker->getUDPService(sport, sport, dport, dport);
+    return service_maker->getUDPService(sport, sport, dport, dport, deduplicate);
 }
 
 FWObject* Importer::createGroupOfInterfaces(

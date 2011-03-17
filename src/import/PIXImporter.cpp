@@ -356,34 +356,35 @@ void PIXImporter::newNamedObjectService(const string &name)
 void PIXImporter::commitNamedAddressObject()
 {
     current_named_object = commitObject(
-        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
+        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str(), false));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedAddressRangeObject()
 {
     current_named_object = commitObject(
-        address_maker->createAddressRange(tmp_range_1.c_str(), tmp_range_2.c_str()));
+        address_maker->createAddressRange(
+            tmp_range_1.c_str(), tmp_range_2.c_str(), false));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedIPServiceObject()
 {
-    current_named_object = commitObject(createIPService());
+    current_named_object = commitObject(createIPService(false));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedICMPServiceObject()
 {
-    current_named_object = commitObject(createICMPService());
+    current_named_object = commitObject(createICMPService(false));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedTCPUDPServiceObject()
 {
     FWObject *new_obj = NULL;
-    if (protocol == "tcp") new_obj = createTCPService();
-    if (protocol == "udp") new_obj = createUDPService();
+    if (protocol == "tcp") new_obj = createTCPService(false);
+    if (protocol == "udp") new_obj = createUDPService(false);
     current_named_object = commitObject(new_obj);
     named_objects_registry[named_object_name] = current_named_object;
 }

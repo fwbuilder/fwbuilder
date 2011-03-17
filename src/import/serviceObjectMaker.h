@@ -43,20 +43,26 @@ public:
     
     virtual libfwbuilder::FWObject* getCustomService(const QString &platform,
                                                      const QString &code,
-                                                     const QString &protocol);
-    virtual libfwbuilder::FWObject* getIPService(int proto, bool fragments);
-    virtual libfwbuilder::FWObject* getICMPService(int type, int code);
+                                                     const QString &protocol,
+                                                     bool deduplicate=true);
+    virtual libfwbuilder::FWObject* getIPService(int proto, bool fragments,
+                                                 bool deduplicate=true);
+    virtual libfwbuilder::FWObject* getICMPService(int type, int code,
+                                                   bool deduplicate=true);
 
     virtual libfwbuilder::FWObject* getTCPService(int srs, int sre,
                                                   int drs, int dre,
                                                   bool established,
                                                   QList<int> &flags_mask,
-                                                  QList<int> &flags_comp);
+                                                  QList<int> &flags_comp,
+                                                  bool deduplicate=true);
 
     virtual libfwbuilder::FWObject* getUDPService(int srs, int sre,
-                                                  int drs, int dre);
+                                                  int drs, int dre,
+                                                  bool deduplicate=true);
 
-    virtual libfwbuilder::FWObject* getTagService(const QString &tagcode);
+    virtual libfwbuilder::FWObject* getTagService(const QString &tagcode,
+                                                  bool deduplicate=true);
 
 
 
