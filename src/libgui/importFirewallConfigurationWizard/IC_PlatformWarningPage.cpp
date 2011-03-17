@@ -104,6 +104,7 @@ void IC_PlatformWarningPage::initializePage()
         QStringList *buf = 
             dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
             getBufferPtr();
+        buf->clear();
 
         QTextStream stream(&cf);
         while (true)
@@ -115,6 +116,8 @@ void IC_PlatformWarningPage::initializePage()
         }
 
         bool iptables_c = false;
+        detectedPlatform = "";
+        platformOk = false;
 
         foreach (QString line, *buf)
         {
