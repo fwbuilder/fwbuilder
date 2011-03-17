@@ -56,6 +56,14 @@ object network internal_subnet_1
 object network internal_subnet_2 
  subnet 192.168.1.64 255.255.255.192
  description Internal Subnet 2
+! this object matches network in standard objects lib, but it should be created anyway
+object network internal_subnet_3
+ subnet 192.168.1.0 255.255.255.0
+ description Internal Subnet 1
+! this object matches internale_subnet_1 but has different name and should be created
+object network internal_subnet_4
+ subnet 192.168.1.0 255.255.255.192
+
 object network Internal_net 
  subnet 192.168.1.0 255.255.255.0
 object network outside_range-1 

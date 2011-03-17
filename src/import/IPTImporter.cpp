@@ -389,8 +389,7 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
 
         ObjectMaker maker(Library::cast(library));
         ServiceGroup *sg = ServiceGroup::cast(
-            commitObject(
-                commitObject(maker.createObject(ServiceGroup::TYPENAME, name))));
+                commitObject(maker.createObject(ServiceGroup::TYPENAME, name)));
 
         for (FWObject::iterator j=olist.begin(); j!=olist.end(); ++j)
         {
