@@ -193,7 +193,6 @@ void Importer::clear()
     if (!tcp_flags_comp.empty()) tcp_flags_comp.clear();
     if (!tmp_tcp_flags_list.empty()) tmp_tcp_flags_list.clear();
 
-    named_object_comment = "";
 }
 
 Firewall* Importer::getFirewallObject()
@@ -864,40 +863,14 @@ void Importer::addMessageToLog(const std::string &msg)
     *logger << msg + "\n";
 }
 
-/*
- * Named objects
- *
- * At least in the case of Cisco configurations, I can only create an
- * object after I saw the line "host ... ", "subnet ..." or "range
- * ..." so I know its type. This means things like the name and
- * comment are known before the type. I use methods
- * commitNamed*Object() to create objects once all information is available.
- *
- * I other platforms information about named objects may not be
- * arranged in this way, for example in PF configs named objects are
- * represented by macros which do not have explicit type and have all
- * information on one line. Still, in that case the same commit*()
- * method will work if called by the grammar after all variables have
- * been parsed and values assigned to temporary member variables
- * inside the Importer object.
- */
-
-void Importer::newNamedObjectAddress(const string &name)
-{
-    named_object_name = name;
-    *logger << "Named object (address) " + name;
-}
-
-void Importer::newNamedObjectService(const string &name)
-{
-    named_object_name = name;
-    *logger << "Named object (service) " + name;
-}
-
-
 void Importer::addStandardImportComment(FWObject *obj,
                                         const QString &additional_comment)
 {
+    if (obj == NULL) return;
+
+    // what if this object has been found in a read-only library?
+    if (obj->isReadOnly()) return;
+
     // this function may get called again if object is being reused
     if ( obj->getBool(".import-commited")) return;
 
@@ -919,43 +892,7 @@ void Importer::addStandardImportComment(FWObject *obj,
 
 FWObject* Importer::commitObject(FWObject *obj)
 {
-    if (obj)
-    {
-        if ( ! named_object_name.empty()) obj->setName(named_object_name);
-        addStandardImportComment(
-            obj, QString::fromUtf8(named_object_comment.c_str()));
-    }
+    if (obj) addStandardImportComment(obj, "");
     return obj;
 }
-
-void Importer::commitNamedAddressObject()
-{
-    commitObject(
-        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
-}
-
-void Importer::commitNamedAddressRangeObject()
-{
-    commitObject(
-        address_maker->createAddressRange(tmp_range_1.c_str(), tmp_range_2.c_str()));
-}
-
-void Importer::commitNamedIPServiceObject()
-{
-    commitObject(createIPService());
-}
-
-void Importer::commitNamedICMPServiceObject()
-{
-    commitObject(createICMPService());
-}
-
-void Importer::commitNamedTCPUDPServiceObject()
-{
-    FWObject *new_obj = NULL;
-    if (protocol == "tcp") new_obj = createTCPService();
-    if (protocol == "udp") new_obj = createUDPService();
-    commitObject(new_obj);
-}
-
 

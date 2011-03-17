@@ -79,6 +79,15 @@ PIXImporter::~PIXImporter()
 {
 }
 
+void PIXImporter::clear()
+{
+    Importer::clear();
+
+    current_named_object = NULL;
+    named_object_name = "";
+    named_object_comment = "";
+}
+
 /*
  * Rearrange vlan interfaces. Importer creates all interfaces as
  * children of the firewall. Vlan interfaces should become
@@ -302,3 +311,104 @@ Firewall* PIXImporter::finalize()
         return NULL;
     }
 }
+
+/*
+ * Named objects
+ *
+ * At least in the case of Cisco configurations, I can only create an
+ * object after I saw the line "host ... ", "subnet ..." or "range
+ * ..." so I know its type. This means things like the name and
+ * comment are known before the type. I use methods
+ * commitNamed*Object() to create objects once all information is available.
+ *
+ * I other platforms information about named objects may not be
+ * arranged in this way, for example in PF configs named objects are
+ * represented by macros which do not have explicit type and have all
+ * information on one line. Still, in that case the same commit*()
+ * method will work if called by the grammar after all variables have
+ * been parsed and values assigned to temporary member variables
+ * inside the Importer object.
+ */
+
+void PIXImporter::newNamedObjectAddress(const string &name)
+{
+    named_object_name = QString::fromUtf8(name.c_str());
+    named_object_comment = "";
+    *logger << "Named object (address) " + name;
+}
+
+void PIXImporter::newNamedObjectService(const string &name)
+{
+    named_object_name = QString::fromUtf8(name.c_str());
+    named_object_comment = "";
+    *logger << "Named object (service) " + name;
+}
+
+void PIXImporter::commitNamedAddressObject()
+{
+    current_named_object = commitObject(
+        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
+}
+
+void PIXImporter::commitNamedAddressRangeObject()
+{
+    current_named_object = commitObject(
+        address_maker->createAddressRange(tmp_range_1.c_str(), tmp_range_2.c_str()));
+}
+
+void PIXImporter::commitNamedIPServiceObject()
+{
+    current_named_object = commitObject(createIPService());
+}
+
+void PIXImporter::commitNamedICMPServiceObject()
+{
+    current_named_object = commitObject(createICMPService());
+}
+
+void PIXImporter::commitNamedTCPUDPServiceObject()
+{
+    FWObject *new_obj = NULL;
+    if (protocol == "tcp") new_obj = createTCPService();
+    if (protocol == "udp") new_obj = createUDPService();
+    current_named_object = commitObject(new_obj);
+}
+
+FWObject* PIXImporter::commitObject(FWObject *obj)
+{
+    if (obj)
+    {
+        // what if this object has been found in a read-only library?
+        if (obj->isReadOnly()) return obj;
+
+        if ( ! named_object_name.isEmpty())
+            obj->setName(named_object_name.toUtf8().constData());
+        addStandardImportComment(obj, named_object_comment);
+    }
+    return obj;
+}
+
+/*
+ * it looks like "description" line is always the last in the named
+ * object block output of "show run" command on ASA, however
+ * "description" is optional and we create the object when we see
+ * "subnet", "host" or "service" line. This function adds description
+ * to existing named object if it exists or just sets the variable
+ * named_object_comment. I dont want to lose the ability to parse the
+ * description if it happens to appear first in the named object
+ * block.
+ */
+void PIXImporter::setNamedObjectDescription(const std::string &txt)
+{
+    named_object_comment = QString::fromUtf8(txt.c_str());
+
+    if (current_named_object != NULL && ! named_object_name.isEmpty())
+    {
+        current_named_object->setBool(".import-commited", false);
+        current_named_object->setComment("");
+        commitObject(current_named_object);
+    }
+}
+
+
+

@@ -241,9 +241,6 @@ public:
 
     std::string time_range_name;
 
-    std::string named_object_name;
-    std::string named_object_comment;
-    
     void SaveTmpAddrToSrc();
     void SaveTmpAddrToDst();
 
@@ -267,8 +264,10 @@ public:
     
     // add standard line to rule comment, this adds something like
     // "created during import from <file>, line <line>"
-    void addStandardImportComment(libfwbuilder::FWObject *obj,
-                                  const QString &additional_comment);
+    virtual void addStandardImportComment(libfwbuilder::FWObject *obj,
+                                          const QString &additional_comment);
+    
+    virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
     
     int errorCounter() { return error_counter; }
 
@@ -319,17 +318,6 @@ public:
     virtual void newNATRule();
     virtual void pushRule();
 
-    virtual void newNamedObjectAddress(const std::string &name);
-    virtual void newNamedObjectService(const std::string &name);
-
-    virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
-    
-    virtual void commitNamedAddressObject();
-    virtual void commitNamedAddressRangeObject();
-    virtual void commitNamedIPServiceObject();
-    virtual void commitNamedICMPServiceObject();
-    virtual void commitNamedTCPUDPServiceObject();
-    
     void setCurrentLineNumber(int n) { current_line_number = n; }
     int getCurrentLineNumber() { return current_line_number;}
     

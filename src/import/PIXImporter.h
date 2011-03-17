@@ -36,22 +36,51 @@
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
 
+#include <QString>
+
+
 class PIXImporter : public IOSImporter
 {
     public:
 
+    QString named_object_name;
+    QString named_object_comment;
+    libfwbuilder::FWObject *current_named_object;
+    
     PIXImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
                 libfwbuilder::Logger *log,
                 const std::string &fwname);
     ~PIXImporter();
 
+    virtual void clear();
+    
     virtual void run();
     
     // this method actually adds interfaces to the firewall object
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
+    virtual void newNamedObjectAddress(const std::string &name);
+    virtual void newNamedObjectService(const std::string &name);
+
+    /*
+     * it looks like "description" line is always the last in the
+     * named object block output of "show run" command on ASA, however
+     * "description" is optional and we create the object when we see
+     * "subnet", "host" or "service" line. This function adds
+     * description to existing named object.
+     */
+    virtual void setNamedObjectDescription(const std::string &txt);
+    
+    virtual void commitNamedAddressObject();
+    virtual void commitNamedAddressRangeObject();
+    virtual void commitNamedIPServiceObject();
+    virtual void commitNamedICMPServiceObject();
+    virtual void commitNamedTCPUDPServiceObject();
+
+    virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
+        
     void rearrangeVlanInterfaces();
 };
 

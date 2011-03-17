@@ -171,10 +171,10 @@ name_entry : NAME a:IPV4 n:WORD
 named_object_network : OBJECT NETWORK name:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->clear();
             importer->newNamedObjectAddress(name->getText());
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
-            importer->clear();
         }
         (
             named_object_network_parameters
@@ -216,7 +216,7 @@ named_object_description : DESCRIPTION
                 descr += LT(1)->getText() + " ";
                 consume();
             }
-            importer->named_object_comment = descr;
+            importer->setNamedObjectDescription(descr);
             *dbg << " DESCRIPTION " << descr << std::endl;
         }
     ;
@@ -255,11 +255,10 @@ subnet_addr : (SUBNET a:IPV4 nm:IPV4)
 named_object_service : OBJECT SERVICE name:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->clear();
             importer->newNamedObjectService(name->getText());
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
-            importer->clear();
         }
         (
             named_object_service_parameters
@@ -400,6 +399,7 @@ hostname : HOSTNAME ( STRING | WORD )
 access_list_commands : ACCESS_LIST acl_num:INT_CONST
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->clear();
             importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
                                         libfwbuilder::Policy::TYPENAME );
             *dbg << acl_num->getLine() << ":"
@@ -419,7 +419,9 @@ access_list_commands : ACCESS_LIST acl_num:INT_CONST
 ip_access_list_ext : ACCESS_LIST name:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->newUnidirRuleSet( name->getText(), libfwbuilder::Policy::TYPENAME );
+            importer->clear();
+            importer->newUnidirRuleSet(
+                name->getText(), libfwbuilder::Policy::TYPENAME );
             *dbg << name->getLine() << ":"
                 << " ACL ext " << name->getText() << std::endl;
         }
