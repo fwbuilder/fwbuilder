@@ -67,7 +67,7 @@ options
 class PIXCfgParser extends Parser;
 options
 {
-    k = 2;
+    k = 3;
 //    defaultErrorHandler=false;
 }
 {
@@ -87,19 +87,13 @@ cfgfile :
         |
             hostname
         |
-            ip_commands
+            ip_access_list_ext
+        |
+            community_list_command
+        |
+            unknown_ip_command 
         |
             intrface
-        |
-            vlan_interface
-        |
-            switchport
-        |
-            shutdown
-        |
-            sec_level
-        |
-            nameif
         |
             controller
         |
@@ -129,8 +123,8 @@ cfgfile :
 
 //****************************************************************
 
-ip_commands : IP ( ip_access_list_ext | community_list_command | unknown_command )
-    ;
+// ip_commands : IP ( ip_access_list_ext | community_list_command | unknown_ip_command )
+//    ;
 
 //****************************************************************
 quit : QUIT
@@ -140,7 +134,7 @@ quit : QUIT
     ;
 
 //****************************************************************
-community_list_command : COMMUNITY_LIST 
+community_list_command : IP COMMUNITY_LIST 
         {
             consumeUntil(NEWLINE);
         }
@@ -337,10 +331,11 @@ dst_port_spec : DESTINATION xoperator
         }
     ;
 
-service_other : SERVICE n:WORD
+service_other : SERVICE (ip:IP|n:WORD)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->protocol = LT(0)->getText();
+            if (ip) importer->protocol = "ip";
+            if (n) importer->protocol = n->getText();
             importer->commitNamedIPServiceObject();
             *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
         }
@@ -349,6 +344,13 @@ service_other : SERVICE n:WORD
 
 //****************************************************************
 crypto : CRYPTO
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+unknown_ip_command : IP WORD 
         {
             consumeUntil(NEWLINE);
         }
@@ -416,7 +418,7 @@ access_list_commands : ACCESS_LIST acl_num:INT_CONST
 
 //****************************************************************
 
-ip_access_list_ext : ACCESS_LIST name:WORD
+ip_access_list_ext : IP ACCESS_LIST name:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
@@ -730,7 +732,9 @@ interface_parameters :
             switchport
         |
             shutdown
-        )+
+        |
+            unsupported_interface_commands
+        )
     ;
 
 vlan_interface : VLAN vlan_id:INT_CONST
@@ -738,7 +742,43 @@ vlan_interface : VLAN vlan_id:INT_CONST
             importer->setInterfaceVlanId(vlan_id->getText());
             *dbg << " VLAN: " << vlan_id->getText() << std::endl;
         }
-        NEWLINE
+    ;
+
+unsupported_interface_commands : 
+        (
+            SPEED
+        |
+            DUPLEX
+        |
+            DDNS
+        |
+            FORWARD
+        |
+            DELAY
+        |
+            HOLD_TIME
+        |
+            IGMP
+        |
+            IPV6
+        |
+            MAC_ADDRESS
+        |
+            MULTICAST
+        |
+            OSPF
+        |
+            PIM
+        |
+            PPPOE
+        |
+            RIP
+        )
+        {
+            *dbg << " UNSUPPORTED INTERFACE COMMAND: "
+                 << LT(0)->getText() << std::endl;
+            consumeUntil(NEWLINE);
+        }
     ;
 
 sec_level : SEC_LEVEL sec_level:INT_CONST
@@ -746,16 +786,31 @@ sec_level : SEC_LEVEL sec_level:INT_CONST
             importer->setInterfaceSecurityLevel(sec_level->getText());
             *dbg << "SEC_LEVEL: " << sec_level->getText() << std::endl;
         }
-        NEWLINE
     ;
 
-nameif  : NAMEIF phys_intf:WORD (NEWLINE | intf_label:WORD sec_level:WORD NEWLINE)
+//
+// If there is a word after label, then there must be sec_level
+// also. Otherwise there must be nothing.
+//
+// In case of pix6 configs, "nameif" is not really inside interface
+// context but is rather located at the top level, the same level
+// where "interface" line is found. Also, pix6 places all definitions
+// of physical interfaces ("interface") first, then all nameif lines
+// under them. Even though match for nameif is in the interface
+// context in the grammar, function setInterfaceParametes() can locate
+// right interface using its first parameter.
+//
+nameif  : NAMEIF p_intf:WORD 
+        (
+            ( WORD ) => intf_label:WORD sec_level:WORD |
+            ( )
+        )
         {
             std::string label = (intf_label) ? intf_label->getText() : "";
             std::string seclevel = (sec_level) ? sec_level->getText() : "";
-            importer->setInterfaceParametes(phys_intf->getText(), label, seclevel);
+            importer->setInterfaceParametes(p_intf->getText(), label, seclevel);
             *dbg << " NAMEIF: "
-                 << phys_intf->getText() << label << seclevel << std::endl;
+                 << p_intf->getText() << label << seclevel << std::endl;
         }
     ;
 
@@ -783,11 +838,6 @@ shutdown : SHUTDOWN
                 << " INTERFACE SHUTDOWN " << std::endl;
         }
     ;
-
-interface_known_commands :
-        (
-            intf_address
-        ) NEWLINE ;
 
 
 // Interface IP address.
@@ -967,6 +1017,15 @@ tokens
     DESCRIPTION = "description";
     REMARK = "remark";
     SHUTDOWN = "shutdown";
+    SPEED = "speed";
+    DUPLEX = "duplex";
+    DELAY = "delay";
+    DDNS = "ddns";
+    FORWARD = "forward";
+    HOLD_TIME = "hold-time";
+    IPV6 = "ipv6";
+    MAC_ADDRESS = "mac-address";
+    MULTICAST = "multicast";
 
     VLAN = "vlan";
     SWITCHPORT = "switchport";
@@ -999,17 +1058,18 @@ tokens
     DESTINATION = "destination";
     SOURCE = "source";
 
-//     AHP = "ahp";
-//     EIGRP = "eigrp";
-//     ESP = "esp";
-//     GRE = "gre";
-//     IGMP = "igmp";
-//     IGRP = "igrp";
-//     IPINIP = "ipinip";
-//     NOS = "nos";
-//     OSPF = "ospf";
-//     PCP = "pcp";
-//     PIM = "pim";
+    AHP = "ahp";
+    EIGRP = "eigrp";
+    ESP = "esp";
+    GRE = "gre";
+    IGMP = "igmp";
+    IGRP = "igrp";
+    IPINIP = "ipinip";
+    NOS = "nos";
+    OSPF = "ospf";
+    PCP = "pcp";
+    PIM = "pim";
+    RIP = "rip";
 
     HOST = "host";
     ANY  = "any";
