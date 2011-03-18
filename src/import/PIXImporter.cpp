@@ -98,6 +98,15 @@ void PIXImporter::clear()
 }
 
 /*
+ * this clears temporary variables inside Importer but does not touch
+ * current_named_object and current_object_group
+ */
+void PIXImporter::clearTempVars()
+{
+    Importer::clear();
+}
+
+/*
  * Rearrange vlan interfaces. Importer creates all interfaces as
  * children of the firewall. Vlan interfaces should become
  * subinterfaces of the corresponding physical interfaces.
@@ -357,6 +366,7 @@ void PIXImporter::commitNamedAddressObject()
 {
     current_named_object = commitObject(
         address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str(), false));
+    setNameOfNamedObject(current_named_object);
     named_objects_registry[named_object_name] = current_named_object;
 }
 
@@ -365,18 +375,21 @@ void PIXImporter::commitNamedAddressRangeObject()
     current_named_object = commitObject(
         address_maker->createAddressRange(
             tmp_range_1.c_str(), tmp_range_2.c_str(), false));
+    setNameOfNamedObject(current_named_object);
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedIPServiceObject()
 {
     current_named_object = commitObject(createIPService(false));
+    setNameOfNamedObject(current_named_object);
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedICMPServiceObject()
 {
     current_named_object = commitObject(createICMPService(false));
+    setNameOfNamedObject(current_named_object);
     named_objects_registry[named_object_name] = current_named_object;
 }
 
@@ -386,29 +399,25 @@ void PIXImporter::commitNamedTCPUDPServiceObject()
     if (protocol == "tcp") new_obj = createTCPService(false);
     if (protocol == "udp") new_obj = createUDPService(false);
     current_named_object = commitObject(new_obj);
+    setNameOfNamedObject(current_named_object);
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 FWObject* PIXImporter::commitObject(FWObject *obj)
 {
-    if (obj)
-    {
-        // what if this object has been found in a read-only library?
-        if (obj->isReadOnly()) return obj;
+    return Importer::commitObject(obj);
+}
 
-        if ( ! named_object_name.isEmpty())
-        {
-            obj->setName(named_object_name.toUtf8().constData());
-            addStandardImportComment(obj, named_object_comment);
-        }
+FWObject* PIXImporter::setNameOfNamedObject(FWObject *obj)
+{
+    if (obj->isReadOnly()) return obj;
 
-        if ( ! object_group_name.isEmpty())
-        {
-            obj->setName(object_group_name.toUtf8().constData());
-            addStandardImportComment(obj, object_group_comment);
-        }
+    if ( ! named_object_name.isEmpty())
+        obj->setName(named_object_name.toUtf8().constData());
 
-    }
+    if ( ! object_group_name.isEmpty())
+        obj->setName(object_group_name.toUtf8().constData());
+    
     return obj;
 }
 
@@ -430,7 +439,7 @@ void PIXImporter::setNamedObjectDescription(const std::string &txt)
     {
         current_named_object->setBool(".import-commited", false);
         current_named_object->setComment("");
-        commitObject(current_named_object);
+        setNameOfNamedObject(commitObject(current_named_object));
     }
 }
 
@@ -442,7 +451,9 @@ void PIXImporter::newObjectGroupNetwork(const string &name)
     object_group_comment = "";
 
     current_object_group = 
-        commitObject(address_maker->createObject(ObjectGroup::TYPENAME, name));
+        setNameOfNamedObject(
+            commitObject(
+                address_maker->createObject(ObjectGroup::TYPENAME, name)));
 
     *logger << "Object Group (network) " + name;
 }
@@ -453,7 +464,9 @@ void PIXImporter::newObjectGroupService(const string &name)
     object_group_comment = "";
 
     current_object_group = 
-        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+        setNameOfNamedObject(
+            commitObject(
+                address_maker->createObject(ServiceGroup::TYPENAME, name)));
 
     *logger << "Object Group (service) " + name;
 }
@@ -464,7 +477,9 @@ void PIXImporter::newObjectGroupProtocol(const string &name)
     object_group_comment = "";
 
     current_object_group = 
-        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+        setNameOfNamedObject(
+            commitObject(
+                address_maker->createObject(ServiceGroup::TYPENAME, name)));
 
     *logger << "Object Group (protocol) " + name;
 }
@@ -475,7 +490,9 @@ void PIXImporter::newObjectGroupICMP(const string &name)
     object_group_comment = "";
 
     current_object_group = 
-        commitObject(address_maker->createObject(ServiceGroup::TYPENAME, name));
+        setNameOfNamedObject(
+            commitObject(
+                address_maker->createObject(ServiceGroup::TYPENAME, name)));
 
     *logger << "Object Group (icmp) " + name;
 }
@@ -487,7 +504,7 @@ void PIXImporter::setObjectGroupDescription(const std::string &descr)
     {
         current_object_group->setBool(".import-commited", false);
         current_object_group->setComment("");
-        commitObject(current_object_group);
+        setNameOfNamedObject(commitObject(current_object_group));
     }
 }
 
@@ -498,7 +515,7 @@ void PIXImporter::addNetworkToObjectGroup()
     current_object_group->addRef(obj);
 }
 
-void PIXImporter::addNamedObjectToGroup(const std::string &object_name)
+void PIXImporter::addNamedObjectToObjectGroup(const std::string &object_name)
 {
     QString no_name = QString::fromUtf8(object_name.c_str());
     if (named_objects_registry.count(no_name) > 0)
@@ -508,5 +525,26 @@ void PIXImporter::addNamedObjectToGroup(const std::string &object_name)
         throw ImporterException(
             QString("Attempt to add yet undefined named object '%1' "
                     "to object group '%2'").arg(no_name).arg(object_group_name));
+}
+
+void PIXImporter::addIPServiceToObjectGroup()
+{
+    FWObject *s = createIPService();
+    current_object_group->addRef(s);
+}
+
+void PIXImporter::addTCPUDPServiceToObjectGroup()
+{
+    FWObject *new_obj = NULL;
+    if (protocol == "tcp") new_obj = createTCPService();
+    if (protocol == "udp") new_obj = createUDPService();
+    if (new_obj)
+        current_object_group->addRef(new_obj);
+}
+
+void PIXImporter::addICMPServiceToObjectGroup()
+{
+    FWObject *s = commitObject(createICMPService());
+    current_object_group->addRef(s);
 }
 

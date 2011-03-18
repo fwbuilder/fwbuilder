@@ -83,6 +83,7 @@ public:
 	public: void named_object_network();
 	public: void named_object_service();
 	public: void object_group_network();
+	public: void object_group_service();
 	public: void crypto();
 	public: void unknown_command();
 	public: void ip_protocol_names();
@@ -104,6 +105,8 @@ public:
 	public: void object_group_description();
 	public: void group_object();
 	public: void network_object();
+	public: void object_group_service_parameters();
+	public: void service_object();
 	public: void permit_ext();
 	public: void deny_ext();
 	public: void remark();
@@ -148,10 +151,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 131;
+	static const int NUM_TOKENS = 132;
 #else
 	enum {
-		NUM_TOKENS = 131
+		NUM_TOKENS = 132
 	};
 #endif
 	

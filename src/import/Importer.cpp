@@ -664,17 +664,13 @@ FWObject* Importer::createICMPService(bool deduplicate)
 FWObject* Importer::createIPService(bool deduplicate)
 {
     // this assumes protocol is represented by a number
-    std::istringstream str(protocol);
-    str.exceptions(std::ios::failbit);
-    int proto_num;
-    try
-    {
-        str >> proto_num;
-    } catch (std::exception& e)
+    bool ok = false;
+    int proto_num = QString(protocol.c_str()).toInt(&ok);
+    if ( ! ok)
     {
         // could not convert protocol number
         proto_num = 0;
-        reportError(std::string("Protocol '") + protocol + "' unknown");
+        reportError(QString("Protocol '%1' is unknown").arg(protocol.c_str()));
     }
     return service_maker->getIPService(proto_num, fragments, deduplicate);
 }
@@ -893,6 +889,8 @@ void Importer::addStandardImportComment(FWObject *obj,
 
 FWObject* Importer::commitObject(FWObject *obj)
 {
+    // what if this object has been found in a read-only library?
+    if (obj->isReadOnly()) return obj;
     if (obj) addStandardImportComment(obj, "");
     return obj;
 }

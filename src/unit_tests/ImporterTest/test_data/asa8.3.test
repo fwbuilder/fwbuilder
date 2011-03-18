@@ -228,6 +228,33 @@ object-group network outside.id77971X5929.odst.net.0
 object-group network outside.id77971X5929.tsrc.net.0
  network-object object outside_range-1
  network-object object external_gw2
+!
+object-group service sg1
+ service-object ip 
+ service-object eigrp 
+ service-object gre 
+ service-object 111
+object-group service sg2
+ service-object icmp echo
+ service-object icmp echo-reply
+ service-object icmp 111
+object-group service sg3
+ service-object tcp source gt 1024 destination eq www 
+ service-object tcp source gt 1024 destination range 10000 10010 
+ service-object tcp source gt 1024 destination neq www 
+ service-object tcp source gt 1024 destination lt 1024 
+ service-object tcp destination eq 22
+object-group service sg4
+ service-object tcp source gt 1024 
+ service-object tcp source lt 1024 
+ service-object tcp source eq www 
+ service-object tcp source neq www 
+object-group service sg5
+ service-object udp source gt 1024 
+ service-object udp source gt 1024 destination eq www 
+ service-object udp destination eq domain
+ service-object udp destination eq 5353
+
 access-list outside_acl_in extended deny ip any any log 
 pager lines 24
 logging enable

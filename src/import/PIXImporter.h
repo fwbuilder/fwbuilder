@@ -60,6 +60,8 @@ class PIXImporter : public IOSImporter
     ~PIXImporter();
 
     virtual void clear();
+
+    void clearTempVars();
     
     virtual void run();
     
@@ -86,15 +88,24 @@ class PIXImporter : public IOSImporter
     virtual void commitNamedTCPUDPServiceObject();
 
     virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
-
+    virtual libfwbuilder::FWObject* setNameOfNamedObject(
+        libfwbuilder::FWObject *obj);
+    
     void newObjectGroupNetwork(const std::string &group_name);
     void newObjectGroupService(const std::string &group_name);
     void newObjectGroupProtocol(const std::string &group_name);
     void newObjectGroupICMP(const std::string &group_name);
-    void addNetworkToObjectGroup();
-    void addNamedObjectToGroup(const std::string &object_name);
+
     void setObjectGroupDescription(const std::string &descr);
     
+    void addNamedObjectToObjectGroup(const std::string &object_name);
+
+    void addNetworkToObjectGroup();
+    void addIPServiceToObjectGroup();
+    void addTCPUDPServiceToObjectGroup();
+    void addICMPServiceToObjectGroup();
+    
+        
     void rearrangeVlanInterfaces();
 };
 

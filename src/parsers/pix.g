@@ -115,6 +115,8 @@ cfgfile :
         |
             object_group_network
         |
+            object_group_service
+        |
             crypto
         |
             unknown_command
@@ -179,8 +181,8 @@ ip_protocol_names : (
 
 named_object_network : OBJECT NETWORK name:WORD
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newNamedObjectAddress(name->getText());
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
@@ -263,8 +265,8 @@ subnet_addr : (SUBNET a:IPV4 nm:IPV4)
 
 named_object_service : OBJECT SERVICE name:WORD
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newNamedObjectService(name->getText());
             *dbg << name->getLine() << ":"
                 << " Named Object " << name->getText() << std::endl;
@@ -357,8 +359,8 @@ service_other : SERVICE ip_protocol_names
 
 object_group_network : OBJECT_GROUP NETWORK name:WORD
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newObjectGroupNetwork(name->getText());
             *dbg << name->getLine() << ":"
                  << " Object Group " << name->getText() << std::endl;
@@ -396,14 +398,16 @@ object_group_description : DESCRIPTION
 
 group_object : GROUP_OBJECT name:WORD
         {
+            importer->clearTempVars();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addNamedObjectToGroup(name->getText());
+            importer->addNamedObjectToObjectGroup(name->getText());
             *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
         }
     ;
 
 network_object : NETWORK_OBJECT
         {
+            importer->clearTempVars();
             importer->setCurrentLineNumber(LT(0)->getLine());
         }
         (
@@ -425,7 +429,82 @@ network_object : NETWORK_OBJECT
     |
         OBJECT name:WORD
         {
-            importer->addNamedObjectToGroup(name->getText());
+            importer->addNamedObjectToObjectGroup(name->getText());
+            *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+        }
+    )
+    ;
+
+//****************************************************************
+
+object_group_service : OBJECT_GROUP SERVICE name:WORD
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newObjectGroupService(name->getText());
+            *dbg << name->getLine() << ":"
+                 << " Object Group " << name->getText() << std::endl;
+        }
+        (
+            object_group_service_parameters
+        )+
+    ;
+
+object_group_service_parameters : 
+        NEWLINE
+        (
+            object_group_description
+        |
+            group_object
+        |
+            service_object
+        )
+    ;
+
+service_object : SERVICE_OBJECT
+        {
+            importer->clearTempVars();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+    (
+        ip_protocol_names
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->protocol = LT(0)->getText();
+            importer->addIPServiceToObjectGroup();
+            *dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+        }
+    |
+        ( TCP | UDP )
+        {
+            importer->protocol = LT(0)->getText();
+            *dbg << " SERVICE TCP/UDP" << LT(0)->getText() << " ";
+        }
+        ( src_port_spec )?
+        ( dst_port_spec )?
+        {
+            importer->addTCPUDPServiceToObjectGroup();
+        }
+    |
+        ICMP
+        (
+            icmp_type:INT_CONST
+            {
+                importer->icmp_type = LT(0)->getText();
+            }
+        | icmp_word:WORD
+            {
+                importer->icmp_spec = icmp_word->getText();
+            }
+        )
+        {
+            importer->addICMPServiceToObjectGroup();
+            *dbg << " SERVICE ICMP " << LT(0)->getText() << " ";
+        }
+    |
+        OBJECT name:WORD
+        {
+            importer->addNamedObjectToObjectGroup(name->getText());
             *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
         }
     )
@@ -489,8 +568,8 @@ hostname : HOSTNAME ( STRING | WORD )
 //
 access_list_commands : ACCESS_LIST acl_num:INT_CONST
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
                                         libfwbuilder::Policy::TYPENAME );
             *dbg << acl_num->getLine() << ":"
@@ -509,8 +588,8 @@ access_list_commands : ACCESS_LIST acl_num:INT_CONST
 
 ip_access_list_ext : IP ACCESS_LIST name:WORD
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet(
                 name->getText(), libfwbuilder::Policy::TYPENAME );
             *dbg << name->getLine() << ":"
@@ -1208,6 +1287,7 @@ tokens
     OBJECT_GROUP = "object-group";
     GROUP_OBJECT = "group-object";
     NETWORK_OBJECT = "network-object";
+    SERVICE_OBJECT = "service-object";
 
     NETWORK = "network";
     SERVICE = "service";
