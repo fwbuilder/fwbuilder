@@ -124,6 +124,8 @@ object service icmp1
  service icmp echo
 object service icmp2 
  service icmp unreachable
+object service ip5 
+ service 111 
 !
 
 object service tcp-src-1
@@ -234,6 +236,7 @@ object-group service sg1
  service-object eigrp 
  service-object gre 
  service-object 111
+ group-object ip5
 object-group service sg2
  service-object icmp echo
  service-object icmp echo-reply
@@ -254,6 +257,9 @@ object-group service sg5
  service-object udp source gt 1024 destination eq www 
  service-object udp destination eq domain
  service-object udp destination eq 5353
+ group-object udp-dst-1
+ group-object udp-dst-2
+
 
 access-list outside_acl_in extended deny ip any any log 
 pager lines 24

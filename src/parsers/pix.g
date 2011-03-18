@@ -345,7 +345,7 @@ dst_port_spec : DESTINATION xoperator
         }
     ;
 
-service_other : SERVICE ip_protocol_names
+service_other : SERVICE ( INT_CONST | ip_protocol_names )
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = LT(0)->getText();
@@ -467,7 +467,7 @@ service_object : SERVICE_OBJECT
             importer->setCurrentLineNumber(LT(0)->getLine());
         }
     (
-        ip_protocol_names
+        ( INT_CONST | ip_protocol_names)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = LT(0)->getText();
