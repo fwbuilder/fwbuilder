@@ -437,6 +437,54 @@ network_object : NETWORK_OBJECT
 
 //****************************************************************
 
+object_group_protocol : OBJECT_GROUP PROTOCOL name:WORD
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newObjectGroupProtocol(name->getText());
+            *dbg << name->getLine() << ":"
+                 << " Object Group " << name->getText() << std::endl;
+        }
+        (
+            object_group_protocol_parameters
+        )+
+    ;
+
+object_group_protocol_parameters : 
+        NEWLINE
+        (
+            object_group_description
+        |
+            group_object
+        |
+            protocol_object
+        )
+    ;
+
+protocol_object : PROTOCOL_OBJECT
+        {
+            importer->clearTempVars();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+    (
+        ( INT_CONST | ip_protocol_names)
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->protocol = LT(0)->getText();
+            importer->addIPServiceToObjectGroup();
+            *dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+        }
+    |
+        OBJECT name:WORD
+        {
+            importer->addNamedObjectToObjectGroup(name->getText());
+            *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+        }
+    )
+    ;
+
+//****************************************************************
+
 object_group_service : OBJECT_GROUP SERVICE name:WORD
         {
             importer->clear();
@@ -1288,6 +1336,7 @@ tokens
     GROUP_OBJECT = "group-object";
     NETWORK_OBJECT = "network-object";
     SERVICE_OBJECT = "service-object";
+    PROTOCOL_OBJECT = "protocol-object";
 
     NETWORK = "network";
     SERVICE = "service";

@@ -236,7 +236,6 @@ object-group service sg1
  service-object eigrp 
  service-object gre 
  service-object 111
- group-object ip5
 object-group service sg2
  service-object icmp echo
  service-object icmp echo-reply
@@ -257,8 +256,20 @@ object-group service sg5
  service-object udp source gt 1024 destination eq www 
  service-object udp destination eq domain
  service-object udp destination eq 5353
- group-object udp-dst-1
- group-object udp-dst-2
+ service-object object udp-dst-1
+ service-object object udp-dst-2
+ group-object sg1
+ group-object sg2
+!
+object-group protocol pg1
+ protocol-object 111
+ protocol-object ah
+ protocol-object ip
+ protocol-object eigrp
+object-group protocol pg2
+ protocol-object 112
+ protocol-object object ip5
+ group-object pg1
 
 
 access-list outside_acl_in extended deny ip any any log 

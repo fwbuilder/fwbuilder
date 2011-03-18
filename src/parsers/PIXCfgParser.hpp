@@ -105,6 +105,9 @@ public:
 	public: void object_group_description();
 	public: void group_object();
 	public: void network_object();
+	public: void object_group_protocol();
+	public: void object_group_protocol_parameters();
+	public: void protocol_object();
 	public: void object_group_service_parameters();
 	public: void service_object();
 	public: void permit_ext();
@@ -151,10 +154,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 132;
+	static const int NUM_TOKENS = 134;
 #else
 	enum {
-		NUM_TOKENS = 132
+		NUM_TOKENS = 134
 	};
 #endif
 	
@@ -184,6 +187,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
 	static const unsigned long _tokenSet_12_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
+	static const unsigned long _tokenSet_13_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

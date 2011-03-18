@@ -125,6 +125,10 @@ void IPTImporter::run()
     {
         err << gen_err;
         err << e.toString();
+    } catch(ImporterException &e)
+    {
+        err << gen_err;
+        err << e.toString();
     } catch(std::exception& e)
     {
         err << parser_err;

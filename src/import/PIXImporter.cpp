@@ -454,6 +454,7 @@ void PIXImporter::newObjectGroupNetwork(const string &name)
         setNameOfNamedObject(
             commitObject(
                 address_maker->createObject(ObjectGroup::TYPENAME, name)));
+    named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (network) " + name;
 }
@@ -467,6 +468,7 @@ void PIXImporter::newObjectGroupService(const string &name)
         setNameOfNamedObject(
             commitObject(
                 address_maker->createObject(ServiceGroup::TYPENAME, name)));
+    named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (service) " + name;
 }
@@ -480,6 +482,7 @@ void PIXImporter::newObjectGroupProtocol(const string &name)
         setNameOfNamedObject(
             commitObject(
                 address_maker->createObject(ServiceGroup::TYPENAME, name)));
+    named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (protocol) " + name;
 }
@@ -493,6 +496,7 @@ void PIXImporter::newObjectGroupICMP(const string &name)
         setNameOfNamedObject(
             commitObject(
                 address_maker->createObject(ServiceGroup::TYPENAME, name)));
+    named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (icmp) " + name;
 }
