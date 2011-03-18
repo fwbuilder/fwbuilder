@@ -270,6 +270,16 @@ object-group protocol pg2
  protocol-object 112
  protocol-object object ip5
  group-object pg1
+!
+object-group icmp-type ig1
+ icmp-object echo
+ icmp-object 111
+object-group icmp-type ig2
+ icmp-object echo-reply
+ icmp-object 112
+object-group icmp-type ig3
+ icmp-object mask-reply
+ group-object ig1
 
 
 access-list outside_acl_in extended deny ip any any log 

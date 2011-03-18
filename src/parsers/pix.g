@@ -117,6 +117,10 @@ cfgfile :
         |
             object_group_service
         |
+            object_group_protocol
+        |
+            object_group_icmp
+        |
             crypto
         |
             unknown_command
@@ -473,6 +477,61 @@ protocol_object : PROTOCOL_OBJECT
             importer->protocol = LT(0)->getText();
             importer->addIPServiceToObjectGroup();
             *dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+        }
+    |
+        OBJECT name:WORD
+        {
+            importer->addNamedObjectToObjectGroup(name->getText());
+            *dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+        }
+    )
+    ;
+
+//****************************************************************
+
+object_group_icmp : OBJECT_GROUP ICMP_TYPE name:WORD
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newObjectGroupICMP(name->getText());
+            *dbg << name->getLine() << ":"
+                 << " Object Group " << name->getText() << std::endl;
+        }
+        (
+            object_group_icmp_parameters
+        )+
+    ;
+
+object_group_icmp_parameters : 
+        NEWLINE
+        (
+            object_group_description
+        |
+            group_object
+        |
+            icmp_object
+        )
+    ;
+
+icmp_object : ICMP_OBJECT
+        {
+            importer->clearTempVars();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+        }
+    (
+        (
+            icmp_type:INT_CONST
+            {
+                importer->icmp_type = LT(0)->getText();
+            }
+        | icmp_word:WORD
+            {
+                importer->icmp_spec = icmp_word->getText();
+            }
+        )
+        {
+            importer->addICMPServiceToObjectGroup();
+            *dbg << " SERVICE ICMP " << LT(0)->getText() << " ";
         }
     |
         OBJECT name:WORD
@@ -1289,7 +1348,7 @@ tokens
     DESTINATION = "destination";
     SOURCE = "source";
 
-    AHP = "ahp";
+    AH = "ah";
     EIGRP = "eigrp";
     ESP = "esp";
     GRE = "gre";
@@ -1337,9 +1396,12 @@ tokens
     NETWORK_OBJECT = "network-object";
     SERVICE_OBJECT = "service-object";
     PROTOCOL_OBJECT = "protocol-object";
+    ICMP_OBJECT = "icmp-object";
+    ICMP_TYPE = "icmp-type";
 
     NETWORK = "network";
     SERVICE = "service";
+    PROTOCOL = "protocol";
 
     SUBNET = "subnet";
 
