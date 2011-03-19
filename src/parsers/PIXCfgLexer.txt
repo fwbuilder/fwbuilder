@@ -40,9 +40,13 @@ The lexer nextToken rule is synthesized from all of the user-defined
 lexer rules.  It logically consists of one big alternative block with
 each user-defined rule being an alternative.
 
+The grammar analyzer has determined that the synthesized
+nextToken rule is non-deterministic (i.e., it has ambiguities)
+This means that there is some overlap of the character
+lookahead for two or more of your lexer rules.
 Start of an alternative block.
 	The lookahead set for this block is:
-		{ 
+		k==1: {
 			'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
 			'\u0008', '\t', '\n', '\u000b', '\u000c', '\r', 
 			'\u000e', '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', 
@@ -86,11 +90,146 @@ Start of an alternative block.
 			'\u00f4', '\u00f5', '\u00f6', '\u00f7', '\u00f8', '\u00f9', 
 			'\u00fa', '\u00fb', '\u00fc', '\u00fd', '\u00fe', '\u00ff'
 		 }
+		k==2: {
+			'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+			'\u0008', '\t', '\n', '\u000b', '\u000c', '\r', 
+			'\u000e', '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', 
+			'\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', 
+			'\u001a', '\u001b', '\u001c', '\u001d', '\u001e', '\u001f', 
+			' ', '!', '"', '#', '$', '%', 
+			'&', '\'', '(', ')', '*', '+', 
+			',', '-', '.', '/', '0', '1', 
+			'2', '3', '4', '5', '6', '7', 
+			'8', '9', ':', ';', '<', '=', 
+			'>', '?', '@', 'A', 'B', 'C', 
+			'D', 'E', 'F', 'G', 'H', 'I', 
+			'J', 'K', 'L', 'M', 'N', 'O', 
+			'P', 'Q', 'R', 'S', 'T', 'U', 
+			'V', 'W', 'X', 'Y', 'Z', '[', 
+			'\\', ']', '^', '_', '`', 'a', 
+			'b', 'c', 'd', 'e', 'f', 'g', 
+			'h', 'i', 'j', 'k', 'l', 'm', 
+			'n', 'o', 'p', 'q', 'r', 's', 
+			't', 'u', 'v', 'w', 'x', 'y', 
+			'z', '{', '|', '}', '~', '\u007f', 
+			'\u0080', '\u0081', '\u0082', '\u0083', '\u0084', '\u0085', 
+			'\u0086', '\u0087', '\u0088', '\u0089', '\u008a', '\u008b', 
+			'\u008c', '\u008d', '\u008e', '\u008f', '\u0090', '\u0091', 
+			'\u0092', '\u0093', '\u0094', '\u0095', '\u0096', '\u0097', 
+			'\u0098', '\u0099', '\u009a', '\u009b', '\u009c', '\u009d', 
+			'\u009e', '\u009f', '\u00a0', '\u00a1', '\u00a2', '\u00a3', 
+			'\u00a4', '\u00a5', '\u00a6', '\u00a7', '\u00a8', '\u00a9', 
+			'\u00aa', '\u00ab', '\u00ac', '\u00ad', '\u00ae', '\u00af', 
+			'\u00b0', '\u00b1', '\u00b2', '\u00b3', '\u00b4', '\u00b5', 
+			'\u00b6', '\u00b7', '\u00b8', '\u00b9', '\u00ba', '\u00bb', 
+			'\u00bc', '\u00bd', '\u00be', '\u00bf', '\u00c0', '\u00c1', 
+			'\u00c2', '\u00c3', '\u00c4', '\u00c5', '\u00c6', '\u00c7', 
+			'\u00c8', '\u00c9', '\u00ca', '\u00cb', '\u00cc', '\u00cd', 
+			'\u00ce', '\u00cf', '\u00d0', '\u00d1', '\u00d2', '\u00d3', 
+			'\u00d4', '\u00d5', '\u00d6', '\u00d7', '\u00d8', '\u00d9', 
+			'\u00da', '\u00db', '\u00dc', '\u00dd', '\u00de', '\u00df', 
+			'\u00e0', '\u00e1', '\u00e2', '\u00e3', '\u00e4', '\u00e5', 
+			'\u00e6', '\u00e7', '\u00e8', '\u00e9', '\u00ea', '\u00eb', 
+			'\u00ec', '\u00ed', '\u00ee', '\u00ef', '\u00f0', '\u00f1', 
+			'\u00f2', '\u00f3', '\u00f4', '\u00f5', '\u00f6', '\u00f7', 
+			'\u00f8', '\u00f9', '\u00fa', '\u00fb', '\u00fc', '\u00fd', 
+			'\u00fe', '\u00ff'
+		 }
+		k==3: {
+			'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+			'\u0008', '\t', '\n', '\u000b', '\u000c', '\r', 
+			'\u000e', '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', 
+			'\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', 
+			'\u001a', '\u001b', '\u001c', '\u001d', '\u001e', '\u001f', 
+			' ', '!', '"', '#', '$', '%', 
+			'&', '\'', '(', ')', '*', '+', 
+			',', '-', '.', '/', '0', '1', 
+			'2', '3', '4', '5', '6', '7', 
+			'8', '9', ':', ';', '<', '=', 
+			'>', '?', '@', 'A', 'B', 'C', 
+			'D', 'E', 'F', 'G', 'H', 'I', 
+			'J', 'K', 'L', 'M', 'N', 'O', 
+			'P', 'Q', 'R', 'S', 'T', 'U', 
+			'V', 'W', 'X', 'Y', 'Z', '[', 
+			'\\', ']', '^', '_', '`', 'a', 
+			'b', 'c', 'd', 'e', 'f', 'g', 
+			'h', 'i', 'j', 'k', 'l', 'm', 
+			'n', 'o', 'p', 'q', 'r', 's', 
+			't', 'u', 'v', 'w', 'x', 'y', 
+			'z', '{', '|', '}', '~', '\u007f', 
+			'\u0080', '\u0081', '\u0082', '\u0083', '\u0084', '\u0085', 
+			'\u0086', '\u0087', '\u0088', '\u0089', '\u008a', '\u008b', 
+			'\u008c', '\u008d', '\u008e', '\u008f', '\u0090', '\u0091', 
+			'\u0092', '\u0093', '\u0094', '\u0095', '\u0096', '\u0097', 
+			'\u0098', '\u0099', '\u009a', '\u009b', '\u009c', '\u009d', 
+			'\u009e', '\u009f', '\u00a0', '\u00a1', '\u00a2', '\u00a3', 
+			'\u00a4', '\u00a5', '\u00a6', '\u00a7', '\u00a8', '\u00a9', 
+			'\u00aa', '\u00ab', '\u00ac', '\u00ad', '\u00ae', '\u00af', 
+			'\u00b0', '\u00b1', '\u00b2', '\u00b3', '\u00b4', '\u00b5', 
+			'\u00b6', '\u00b7', '\u00b8', '\u00b9', '\u00ba', '\u00bb', 
+			'\u00bc', '\u00bd', '\u00be', '\u00bf', '\u00c0', '\u00c1', 
+			'\u00c2', '\u00c3', '\u00c4', '\u00c5', '\u00c6', '\u00c7', 
+			'\u00c8', '\u00c9', '\u00ca', '\u00cb', '\u00cc', '\u00cd', 
+			'\u00ce', '\u00cf', '\u00d0', '\u00d1', '\u00d2', '\u00d3', 
+			'\u00d4', '\u00d5', '\u00d6', '\u00d7', '\u00d8', '\u00d9', 
+			'\u00da', '\u00db', '\u00dc', '\u00dd', '\u00de', '\u00df', 
+			'\u00e0', '\u00e1', '\u00e2', '\u00e3', '\u00e4', '\u00e5', 
+			'\u00e6', '\u00e7', '\u00e8', '\u00e9', '\u00ea', '\u00eb', 
+			'\u00ec', '\u00ed', '\u00ee', '\u00ef', '\u00f0', '\u00f1', 
+			'\u00f2', '\u00f3', '\u00f4', '\u00f5', '\u00f6', '\u00f7', 
+			'\u00f8', '\u00f9', '\u00fa', '\u00fb', '\u00fc', '\u00fd', 
+			'\u00fe', '\u00ff'
+		 }
 	This block has multiple alternatives:
 		
 		Alternate(1) will be taken IF:
 		The lookahead set: 
-			{ '!' }
+			k==1: {'!' }
+			k==2: {
+				'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+				'\u0008', '\t', '\n', '\u000b', '\u000c', '\r', 
+				'\u000e', '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', 
+				'\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', 
+				'\u001a', '\u001b', '\u001c', '\u001d', '\u001e', '\u001f', 
+				' ', '!', '"', '#', '$', '%', 
+				'&', '\'', '(', ')', '*', '+', 
+				',', '-', '.', '/', '0', '1', 
+				'2', '3', '4', '5', '6', '7', 
+				'8', '9', ':', ';', '<', '=', 
+				'>', '?', '@', 'A', 'B', 'C', 
+				'D', 'E', 'F', 'G', 'H', 'I', 
+				'J', 'K', 'L', 'M', 'N', 'O', 
+				'P', 'Q', 'R', 'S', 'T', 'U', 
+				'V', 'W', 'X', 'Y', 'Z', '[', 
+				'\\', ']', '^', '_', '`', 'a', 
+				'b', 'c', 'd', 'e', 'f', 'g', 
+				'h', 'i', 'j', 'k', 'l', 'm', 
+				'n', 'o', 'p', 'q', 'r', 's', 
+				't', 'u', 'v', 'w', 'x', 'y', 
+				'z', '{', '|', '}', '~', '\u007f', 
+				'\u0080', '\u0081', '\u0082', '\u0083', '\u0084', '\u0085', 
+				'\u0086', '\u0087', '\u0088', '\u0089', '\u008a', '\u008b', 
+				'\u008c', '\u008d', '\u008e', '\u008f', '\u0090', '\u0091', 
+				'\u0092', '\u0093', '\u0094', '\u0095', '\u0096', '\u0097', 
+				'\u0098', '\u0099', '\u009a', '\u009b', '\u009c', '\u009d', 
+				'\u009e', '\u009f', '\u00a0', '\u00a1', '\u00a2', '\u00a3', 
+				'\u00a4', '\u00a5', '\u00a6', '\u00a7', '\u00a8', '\u00a9', 
+				'\u00aa', '\u00ab', '\u00ac', '\u00ad', '\u00ae', '\u00af', 
+				'\u00b0', '\u00b1', '\u00b2', '\u00b3', '\u00b4', '\u00b5', 
+				'\u00b6', '\u00b7', '\u00b8', '\u00b9', '\u00ba', '\u00bb', 
+				'\u00bc', '\u00bd', '\u00be', '\u00bf', '\u00c0', '\u00c1', 
+				'\u00c2', '\u00c3', '\u00c4', '\u00c5', '\u00c6', '\u00c7', 
+				'\u00c8', '\u00c9', '\u00ca', '\u00cb', '\u00cc', '\u00cd', 
+				'\u00ce', '\u00cf', '\u00d0', '\u00d1', '\u00d2', '\u00d3', 
+				'\u00d4', '\u00d5', '\u00d6', '\u00d7', '\u00d8', '\u00d9', 
+				'\u00da', '\u00db', '\u00dc', '\u00dd', '\u00de', '\u00df', 
+				'\u00e0', '\u00e1', '\u00e2', '\u00e3', '\u00e4', '\u00e5', 
+				'\u00e6', '\u00e7', '\u00e8', '\u00e9', '\u00ea', '\u00eb', 
+				'\u00ec', '\u00ed', '\u00ee', '\u00ef', '\u00f0', '\u00f1', 
+				'\u00f2', '\u00f3', '\u00f4', '\u00f5', '\u00f6', '\u00f7', 
+				'\u00f8', '\u00f9', '\u00fa', '\u00fb', '\u00fc', '\u00fd', 
+				'\u00fe', '\u00ff'
+			 }
 		is matched.
 		Rule Reference: mLINE_COMMENT
 		
@@ -101,6 +240,64 @@ Start of an alternative block.
 		Rule Reference: mNEWLINE
 		
 		Otherwise, Alternate(3) will be taken IF:
+		The lookahead set: 
+			k==1: {':' }
+			k==2: {
+				'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+				'\u0008', '\t', '\n', '\u000b', '\u000c', '\r', 
+				'\u000e', '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', 
+				'\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', 
+				'\u001a', '\u001b', '\u001c', '\u001d', '\u001e', '\u001f', 
+				' ', '!', '"', '#', '$', '%', 
+				'&', '\'', '(', ')', '*', '+', 
+				',', '-', '.', '/', '0', '1', 
+				'2', '3', '4', '5', '6', '7', 
+				'8', '9', ':', ';', '<', '=', 
+				'>', '?', '@', 'A', 'B', 'C', 
+				'D', 'E', 'F', 'G', 'H', 'I', 
+				'J', 'K', 'L', 'M', 'N', 'O', 
+				'P', 'Q', 'R', 'S', 'T', 'U', 
+				'V', 'W', 'X', 'Y', 'Z', '[', 
+				'\\', ']', '^', '_', '`', 'a', 
+				'b', 'c', 'd', 'e', 'f', 'g', 
+				'h', 'i', 'j', 'k', 'l', 'm', 
+				'n', 'o', 'p', 'q', 'r', 's', 
+				't', 'u', 'v', 'w', 'x', 'y', 
+				'z', '{', '|', '}', '~', '\u007f', 
+				'\u0080', '\u0081', '\u0082', '\u0083', '\u0084', '\u0085', 
+				'\u0086', '\u0087', '\u0088', '\u0089', '\u008a', '\u008b', 
+				'\u008c', '\u008d', '\u008e', '\u008f', '\u0090', '\u0091', 
+				'\u0092', '\u0093', '\u0094', '\u0095', '\u0096', '\u0097', 
+				'\u0098', '\u0099', '\u009a', '\u009b', '\u009c', '\u009d', 
+				'\u009e', '\u009f', '\u00a0', '\u00a1', '\u00a2', '\u00a3', 
+				'\u00a4', '\u00a5', '\u00a6', '\u00a7', '\u00a8', '\u00a9', 
+				'\u00aa', '\u00ab', '\u00ac', '\u00ad', '\u00ae', '\u00af', 
+				'\u00b0', '\u00b1', '\u00b2', '\u00b3', '\u00b4', '\u00b5', 
+				'\u00b6', '\u00b7', '\u00b8', '\u00b9', '\u00ba', '\u00bb', 
+				'\u00bc', '\u00bd', '\u00be', '\u00bf', '\u00c0', '\u00c1', 
+				'\u00c2', '\u00c3', '\u00c4', '\u00c5', '\u00c6', '\u00c7', 
+				'\u00c8', '\u00c9', '\u00ca', '\u00cb', '\u00cc', '\u00cd', 
+				'\u00ce', '\u00cf', '\u00d0', '\u00d1', '\u00d2', '\u00d3', 
+				'\u00d4', '\u00d5', '\u00d6', '\u00d7', '\u00d8', '\u00d9', 
+				'\u00da', '\u00db', '\u00dc', '\u00dd', '\u00de', '\u00df', 
+				'\u00e0', '\u00e1', '\u00e2', '\u00e3', '\u00e4', '\u00e5', 
+				'\u00e6', '\u00e7', '\u00e8', '\u00e9', '\u00ea', '\u00eb', 
+				'\u00ec', '\u00ed', '\u00ee', '\u00ef', '\u00f0', '\u00f1', 
+				'\u00f2', '\u00f3', '\u00f4', '\u00f5', '\u00f6', '\u00f7', 
+				'\u00f8', '\u00f9', '\u00fa', '\u00fb', '\u00fc', '\u00fd', 
+				'\u00fe', '\u00ff'
+			 }
+		is matched.
+		Rule Reference: mCOLON_COMMENT
+		
+		Otherwise, Alternate(4) will be taken IF:
+		The lookahead set: 
+			k==1: {':' }
+			k==2: { }
+		is matched.
+		Rule Reference: mCOLON
+		
+		Otherwise, Alternate(5) will be taken IF:
 		The lookahead set: 
 			{ 
 				'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
@@ -134,24 +331,37 @@ Start of an alternative block.
 		is matched.
 		Rule Reference: mWhitespace
 		
-		Otherwise, Alternate(4) will be taken IF:
+		Otherwise, Alternate(6) will be taken IF:
 		The lookahead set: 
-			{ 
+			k==1: {
 				'0', '1', '2', '3', '4', 
-				'5', '6', '7', '8', '9'
+				'5', '6', '7', '8', '9', 'a', 
+				'b', 'c', 'd', 'e', 'f'
+			 }
+			k==2: {
+				'.', '0', '1', '2', '3', 
+				'4', '5', '6', '7', '8', '9', 
+				':', 'a', 'b', 'c', 'd', 'e', 
+				'f'
+			 }
+			k==3: {
+				'.', '0', '1', '2', '3', 
+				'4', '5', '6', '7', '8', '9', 
+				':', 'a', 'b', 'c', 'd', 'e', 
+				'f'
 			 }
 		is matched.
 		Rule Reference: mNUMBER
 		
-		Otherwise, Alternate(5) will be taken IF:
+		Otherwise, Alternate(7) will be taken IF:
 		The lookahead set: 
 			{ '.' }
 		is matched.
 		Rule Reference: mDOT
 		
-		Otherwise, Alternate(6) will be taken IF:
+		Otherwise, Alternate(8) will be taken IF:
 		The lookahead set: 
-			{ 
+			k==1: {
 				'$', 'A', 'B', 'C', 'D', 
 				'E', 'F', 'G', 'H', 'I', 'J', 
 				'K', 'L', 'M', 'N', 'O', 'P', 
@@ -162,170 +372,205 @@ Start of an alternative block.
 				'o', 'p', 'q', 'r', 's', 't', 
 				'u', 'v', 'w', 'x', 'y', 'z'
 			 }
+			k==2: {
+				'!', '"', '#', '$', '%', 
+				'&', '\'', '(', ')', '*', '+', 
+				',', '-', '.', '/', '0', '1', 
+				'2', '3', '4', '5', '6', '7', 
+				'8', '9', ':', ';', '<', '=', 
+				'>', '?', '@', 'A', 'B', 'C', 
+				'D', 'E', 'F', 'G', 'H', 'I', 
+				'J', 'K', 'L', 'M', 'N', 'O', 
+				'P', 'Q', 'R', 'S', 'T', 'U', 
+				'V', 'W', 'X', 'Y', 'Z', '\\', 
+				'^', '_', '`', 'a', 'b', 'c', 
+				'd', 'e', 'f', 'g', 'h', 'i', 
+				'j', 'k', 'l', 'm', 'n', 'o', 
+				'p', 'q', 'r', 's', 't', 'u', 
+				'v', 'w', 'x', 'y', 'z'
+			 }
+			k==3: {
+				'!', '"', '#', '$', '%', 
+				'&', '\'', '(', ')', '*', '+', 
+				',', '-', '.', '/', '0', '1', 
+				'2', '3', '4', '5', '6', '7', 
+				'8', '9', ':', ';', '<', '=', 
+				'>', '?', '@', 'A', 'B', 'C', 
+				'D', 'E', 'F', 'G', 'H', 'I', 
+				'J', 'K', 'L', 'M', 'N', 'O', 
+				'P', 'Q', 'R', 'S', 'T', 'U', 
+				'V', 'W', 'X', 'Y', 'Z', '\\', 
+				'^', '_', '`', 'a', 'b', 'c', 
+				'd', 'e', 'f', 'g', 'h', 'i', 
+				'j', 'k', 'l', 'm', 'n', 'o', 
+				'p', 'q', 'r', 's', 't', 'u', 
+				'v', 'w', 'x', 'y', 'z'
+			 }
 		is matched.
 		Rule Reference: mWORD
 		
-		Otherwise, Alternate(7) will be taken IF:
+		Otherwise, Alternate(9) will be taken IF:
 		The lookahead set: 
 			{ '"' }
 		is matched.
 		Rule Reference: mSTRING
 		
-		Otherwise, Alternate(8) will be taken IF:
+		Otherwise, Alternate(10) will be taken IF:
 		The lookahead set: 
 			{ '|' }
 		is matched.
 		Rule Reference: mPIPE_CHAR
 		
-		Otherwise, Alternate(9) will be taken IF:
+		Otherwise, Alternate(11) will be taken IF:
 		The lookahead set: 
 			{ '#' }
 		is matched.
 		Rule Reference: mNUMBER_SIGN
 		
-		Otherwise, Alternate(10) will be taken IF:
+		Otherwise, Alternate(12) will be taken IF:
 		The lookahead set: 
 			{ '%' }
 		is matched.
 		Rule Reference: mPERCENT
 		
-		Otherwise, Alternate(11) will be taken IF:
+		Otherwise, Alternate(13) will be taken IF:
 		The lookahead set: 
 			{ '&' }
 		is matched.
 		Rule Reference: mAMPERSAND
 		
-		Otherwise, Alternate(12) will be taken IF:
+		Otherwise, Alternate(14) will be taken IF:
 		The lookahead set: 
 			{ '\'' }
 		is matched.
 		Rule Reference: mAPOSTROPHE
 		
-		Otherwise, Alternate(13) will be taken IF:
+		Otherwise, Alternate(15) will be taken IF:
 		The lookahead set: 
 			{ '(' }
 		is matched.
 		Rule Reference: mOPENING_PAREN
 		
-		Otherwise, Alternate(14) will be taken IF:
+		Otherwise, Alternate(16) will be taken IF:
 		The lookahead set: 
 			{ ')' }
 		is matched.
 		Rule Reference: mCLOSING_PAREN
 		
-		Otherwise, Alternate(15) will be taken IF:
+		Otherwise, Alternate(17) will be taken IF:
 		The lookahead set: 
 			{ '*' }
 		is matched.
 		Rule Reference: mSTAR
 		
-		Otherwise, Alternate(16) will be taken IF:
+		Otherwise, Alternate(18) will be taken IF:
 		The lookahead set: 
 			{ '+' }
 		is matched.
 		Rule Reference: mPLUS
 		
-		Otherwise, Alternate(17) will be taken IF:
+		Otherwise, Alternate(19) will be taken IF:
 		The lookahead set: 
 			{ ',' }
 		is matched.
 		Rule Reference: mCOMMA
 		
-		Otherwise, Alternate(18) will be taken IF:
+		Otherwise, Alternate(20) will be taken IF:
 		The lookahead set: 
 			{ '-' }
 		is matched.
 		Rule Reference: mMINUS
 		
-		Otherwise, Alternate(19) will be taken IF:
+		Otherwise, Alternate(21) will be taken IF:
 		The lookahead set: 
 			{ '/' }
 		is matched.
 		Rule Reference: mSLASH
 		
-		Otherwise, Alternate(20) will be taken IF:
-		The lookahead set: 
-			{ ':' }
-		is matched.
-		Rule Reference: mCOLON
-		
-		Otherwise, Alternate(21) will be taken IF:
+		Otherwise, Alternate(22) will be taken IF:
 		The lookahead set: 
 			{ ';' }
 		is matched.
 		Rule Reference: mSEMICOLON
 		
-		Otherwise, Alternate(22) will be taken IF:
+		Otherwise, Alternate(23) will be taken IF:
 		The lookahead set: 
 			{ '<' }
 		is matched.
 		Rule Reference: mLESS_THAN
 		
-		Otherwise, Alternate(23) will be taken IF:
+		Otherwise, Alternate(24) will be taken IF:
 		The lookahead set: 
 			{ '=' }
 		is matched.
 		Rule Reference: mEQUALS
 		
-		Otherwise, Alternate(24) will be taken IF:
+		Otherwise, Alternate(25) will be taken IF:
 		The lookahead set: 
 			{ '>' }
 		is matched.
 		Rule Reference: mGREATER_THAN
 		
-		Otherwise, Alternate(25) will be taken IF:
+		Otherwise, Alternate(26) will be taken IF:
 		The lookahead set: 
 			{ '?' }
 		is matched.
 		Rule Reference: mQUESTION
 		
-		Otherwise, Alternate(26) will be taken IF:
+		Otherwise, Alternate(27) will be taken IF:
 		The lookahead set: 
 			{ '@' }
 		is matched.
 		Rule Reference: mCOMMERCIAL_AT
 		
-		Otherwise, Alternate(27) will be taken IF:
+		Otherwise, Alternate(28) will be taken IF:
 		The lookahead set: 
 			{ '[' }
 		is matched.
 		Rule Reference: mOPENING_SQUARE
 		
-		Otherwise, Alternate(28) will be taken IF:
+		Otherwise, Alternate(29) will be taken IF:
 		The lookahead set: 
 			{ ']' }
 		is matched.
 		Rule Reference: mCLOSING_SQUARE
 		
-		Otherwise, Alternate(29) will be taken IF:
+		Otherwise, Alternate(30) will be taken IF:
 		The lookahead set: 
 			{ '^' }
 		is matched.
 		Rule Reference: mCARET
 		
-		Otherwise, Alternate(30) will be taken IF:
+		Otherwise, Alternate(31) will be taken IF:
 		The lookahead set: 
 			{ '_' }
 		is matched.
 		Rule Reference: mUNDERLINE
 		
-		Otherwise, Alternate(31) will be taken IF:
+		Otherwise, Alternate(32) will be taken IF:
 		The lookahead set: 
 			{ '{' }
 		is matched.
 		Rule Reference: mOPENING_BRACE
 		
-		Otherwise, Alternate(32) will be taken IF:
+		Otherwise, Alternate(33) will be taken IF:
 		The lookahead set: 
 			{ '}' }
 		is matched.
 		Rule Reference: mCLOSING_BRACE
 		
-		Otherwise, Alternate(33) will be taken IF:
+		Otherwise, Alternate(34) will be taken IF:
 		The lookahead set: 
 			{ '~' }
 		is matched.
 		Rule Reference: mTILDE
+		
+		Otherwise, Alternate(35) will be taken IF:
+		The lookahead set: 
+			k==1: {'!' }
+			k==2: { }
+		is matched.
+		Rule Reference: mEXLAMATION
 		
 		OTHERWISE, a NoViableAlt exception will be thrown
 		
@@ -570,6 +815,211 @@ End of alternative block.
 			
 		End of alternative block.
 	*** End Lexer Rule: mNEWLINE
+	
+	*** Lexer Rule: mCOLON_COMMENT
+		Access: public
+		Return value: lexical rule returns an implicit token type
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ ':' }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ ':' }
+			is matched.
+			Rule Reference: mCOLON
+			Start ZERO-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+							'\u0008', '\t', '\u000b', '\u000c', '\u000e', '\u000f', 
+							'\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', 
+							'\u0016', '\u0017', '\u0018', '\u0019', '\u001a', '\u001b', 
+							'\u001c', '\u001d', '\u001e', '\u001f', ' ', '!', 
+							'"', '#', '$', '%', '&', '\'', 
+							'(', ')', '*', '+', ',', '-', 
+							'.', '/', '0', '1', '2', '3', 
+							'4', '5', '6', '7', '8', '9', 
+							':', ';', '<', '=', '>', '?', 
+							'@', 'A', 'B', 'C', 'D', 'E', 
+							'F', 'G', 'H', 'I', 'J', 'K', 
+							'L', 'M', 'N', 'O', 'P', 'Q', 
+							'R', 'S', 'T', 'U', 'V', 'W', 
+							'X', 'Y', 'Z', '[', '\\', ']', 
+							'^', '_', '`', 'a', 'b', 'c', 
+							'd', 'e', 'f', 'g', 'h', 'i', 
+							'j', 'k', 'l', 'm', 'n', 'o', 
+							'p', 'q', 'r', 's', 't', 'u', 
+							'v', 'w', 'x', 'y', 'z', '{', 
+							'|', '}', '~', '\u007f', '\u0080', '\u0081', 
+							'\u0082', '\u0083', '\u0084', '\u0085', '\u0086', '\u0087', 
+							'\u0088', '\u0089', '\u008a', '\u008b', '\u008c', '\u008d', 
+							'\u008e', '\u008f', '\u0090', '\u0091', '\u0092', '\u0093', 
+							'\u0094', '\u0095', '\u0096', '\u0097', '\u0098', '\u0099', 
+							'\u009a', '\u009b', '\u009c', '\u009d', '\u009e', '\u009f', 
+							'\u00a0', '\u00a1', '\u00a2', '\u00a3', '\u00a4', '\u00a5', 
+							'\u00a6', '\u00a7', '\u00a8', '\u00a9', '\u00aa', '\u00ab', 
+							'\u00ac', '\u00ad', '\u00ae', '\u00af', '\u00b0', '\u00b1', 
+							'\u00b2', '\u00b3', '\u00b4', '\u00b5', '\u00b6', '\u00b7', 
+							'\u00b8', '\u00b9', '\u00ba', '\u00bb', '\u00bc', '\u00bd', 
+							'\u00be', '\u00bf', '\u00c0', '\u00c1', '\u00c2', '\u00c3', 
+							'\u00c4', '\u00c5', '\u00c6', '\u00c7', '\u00c8', '\u00c9', 
+							'\u00ca', '\u00cb', '\u00cc', '\u00cd', '\u00ce', '\u00cf', 
+							'\u00d0', '\u00d1', '\u00d2', '\u00d3', '\u00d4', '\u00d5', 
+							'\u00d6', '\u00d7', '\u00d8', '\u00d9', '\u00da', '\u00db', 
+							'\u00dc', '\u00dd', '\u00de', '\u00df', '\u00e0', '\u00e1', 
+							'\u00e2', '\u00e3', '\u00e4', '\u00e5', '\u00e6', '\u00e7', 
+							'\u00e8', '\u00e9', '\u00ea', '\u00eb', '\u00ec', '\u00ed', 
+							'\u00ee', '\u00ef', '\u00f0', '\u00f1', '\u00f2', '\u00f3', 
+							'\u00f4', '\u00f5', '\u00f6', '\u00f7', '\u00f8', '\u00f9', 
+							'\u00fa', '\u00fb', '\u00fc', '\u00fd', '\u00fe', '\u00ff'
+						 }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						{ 
+							'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+							'\u0008', '\t', '\u000b', '\u000c', '\u000e', '\u000f', 
+							'\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', 
+							'\u0016', '\u0017', '\u0018', '\u0019', '\u001a', '\u001b', 
+							'\u001c', '\u001d', '\u001e', '\u001f', ' ', '!', 
+							'"', '#', '$', '%', '&', '\'', 
+							'(', ')', '*', '+', ',', '-', 
+							'.', '/', '0', '1', '2', '3', 
+							'4', '5', '6', '7', '8', '9', 
+							':', ';', '<', '=', '>', '?', 
+							'@', 'A', 'B', 'C', 'D', 'E', 
+							'F', 'G', 'H', 'I', 'J', 'K', 
+							'L', 'M', 'N', 'O', 'P', 'Q', 
+							'R', 'S', 'T', 'U', 'V', 'W', 
+							'X', 'Y', 'Z', '[', '\\', ']', 
+							'^', '_', '`', 'a', 'b', 'c', 
+							'd', 'e', 'f', 'g', 'h', 'i', 
+							'j', 'k', 'l', 'm', 'n', 'o', 
+							'p', 'q', 'r', 's', 't', 'u', 
+							'v', 'w', 'x', 'y', 'z', '{', 
+							'|', '}', '~', '\u007f', '\u0080', '\u0081', 
+							'\u0082', '\u0083', '\u0084', '\u0085', '\u0086', '\u0087', 
+							'\u0088', '\u0089', '\u008a', '\u008b', '\u008c', '\u008d', 
+							'\u008e', '\u008f', '\u0090', '\u0091', '\u0092', '\u0093', 
+							'\u0094', '\u0095', '\u0096', '\u0097', '\u0098', '\u0099', 
+							'\u009a', '\u009b', '\u009c', '\u009d', '\u009e', '\u009f', 
+							'\u00a0', '\u00a1', '\u00a2', '\u00a3', '\u00a4', '\u00a5', 
+							'\u00a6', '\u00a7', '\u00a8', '\u00a9', '\u00aa', '\u00ab', 
+							'\u00ac', '\u00ad', '\u00ae', '\u00af', '\u00b0', '\u00b1', 
+							'\u00b2', '\u00b3', '\u00b4', '\u00b5', '\u00b6', '\u00b7', 
+							'\u00b8', '\u00b9', '\u00ba', '\u00bb', '\u00bc', '\u00bd', 
+							'\u00be', '\u00bf', '\u00c0', '\u00c1', '\u00c2', '\u00c3', 
+							'\u00c4', '\u00c5', '\u00c6', '\u00c7', '\u00c8', '\u00c9', 
+							'\u00ca', '\u00cb', '\u00cc', '\u00cd', '\u00ce', '\u00cf', 
+							'\u00d0', '\u00d1', '\u00d2', '\u00d3', '\u00d4', '\u00d5', 
+							'\u00d6', '\u00d7', '\u00d8', '\u00d9', '\u00da', '\u00db', 
+							'\u00dc', '\u00dd', '\u00de', '\u00df', '\u00e0', '\u00e1', 
+							'\u00e2', '\u00e3', '\u00e4', '\u00e5', '\u00e6', '\u00e7', 
+							'\u00e8', '\u00e9', '\u00ea', '\u00eb', '\u00ec', '\u00ed', 
+							'\u00ee', '\u00ef', '\u00f0', '\u00f1', '\u00f2', '\u00f3', 
+							'\u00f4', '\u00f5', '\u00f6', '\u00f7', '\u00f8', '\u00f9', 
+							'\u00fa', '\u00fb', '\u00fc', '\u00fd', '\u00fe', '\u00ff'
+						 }
+					is matched.
+					Start of alternative block.
+						Start of an alternative block.
+							The lookahead set for this block is:
+								{ 
+									'\u0003', '\u0004', '\u0005', '\u0006', '\u0007', 
+									'\u0008', '\t', '\u000b', '\u000c', '\u000e', '\u000f', 
+									'\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', 
+									'\u0016', '\u0017', '\u0018', '\u0019', '\u001a', '\u001b', 
+									'\u001c', '\u001d', '\u001e', '\u001f', ' ', '!', 
+									'"', '#', '$', '%', '&', '\'', 
+									'(', ')', '*', '+', ',', '-', 
+									'.', '/', '0', '1', '2', '3', 
+									'4', '5', '6', '7', '8', '9', 
+									':', ';', '<', '=', '>', '?', 
+									'@', 'A', 'B', 'C', 'D', 'E', 
+									'F', 'G', 'H', 'I', 'J', 'K', 
+									'L', 'M', 'N', 'O', 'P', 'Q', 
+									'R', 'S', 'T', 'U', 'V', 'W', 
+									'X', 'Y', 'Z', '[', '\\', ']', 
+									'^', '_', '`', 'a', 'b', 'c', 
+									'd', 'e', 'f', 'g', 'h', 'i', 
+									'j', 'k', 'l', 'm', 'n', 'o', 
+									'p', 'q', 'r', 's', 't', 'u', 
+									'v', 'w', 'x', 'y', 'z', '{', 
+									'|', '}', '~', '\u007f', '\u0080', '\u0081', 
+									'\u0082', '\u0083', '\u0084', '\u0085', '\u0086', '\u0087', 
+									'\u0088', '\u0089', '\u008a', '\u008b', '\u008c', '\u008d', 
+									'\u008e', '\u008f', '\u0090', '\u0091', '\u0092', '\u0093', 
+									'\u0094', '\u0095', '\u0096', '\u0097', '\u0098', '\u0099', 
+									'\u009a', '\u009b', '\u009c', '\u009d', '\u009e', '\u009f', 
+									'\u00a0', '\u00a1', '\u00a2', '\u00a3', '\u00a4', '\u00a5', 
+									'\u00a6', '\u00a7', '\u00a8', '\u00a9', '\u00aa', '\u00ab', 
+									'\u00ac', '\u00ad', '\u00ae', '\u00af', '\u00b0', '\u00b1', 
+									'\u00b2', '\u00b3', '\u00b4', '\u00b5', '\u00b6', '\u00b7', 
+									'\u00b8', '\u00b9', '\u00ba', '\u00bb', '\u00bc', '\u00bd', 
+									'\u00be', '\u00bf', '\u00c0', '\u00c1', '\u00c2', '\u00c3', 
+									'\u00c4', '\u00c5', '\u00c6', '\u00c7', '\u00c8', '\u00c9', 
+									'\u00ca', '\u00cb', '\u00cc', '\u00cd', '\u00ce', '\u00cf', 
+									'\u00d0', '\u00d1', '\u00d2', '\u00d3', '\u00d4', '\u00d5', 
+									'\u00d6', '\u00d7', '\u00d8', '\u00d9', '\u00da', '\u00db', 
+									'\u00dc', '\u00dd', '\u00de', '\u00df', '\u00e0', '\u00e1', 
+									'\u00e2', '\u00e3', '\u00e4', '\u00e5', '\u00e6', '\u00e7', 
+									'\u00e8', '\u00e9', '\u00ea', '\u00eb', '\u00ec', '\u00ed', 
+									'\u00ee', '\u00ef', '\u00f0', '\u00f1', '\u00f2', '\u00f3', 
+									'\u00f4', '\u00f5', '\u00f6', '\u00f7', '\u00f8', '\u00f9', 
+									'\u00fa', '\u00fb', '\u00fc', '\u00fd', '\u00fe', '\u00ff'
+								 }
+							This block has multiple alternatives:
+								
+								Alternate(1) will be taken IF:
+								The lookahead set: 
+									{ '\r' }
+								is matched.
+								Match character '\r'
+								
+								Otherwise, Alternate(2) will be taken IF:
+								The lookahead set: 
+									{ '\n' }
+								is matched.
+								Match character '\n'
+								
+								OTHERWISE, a NoViableAlt exception will be thrown
+								
+							End of alternatives
+						End of alternative block.
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ZERO-OR-MORE block.
+			Rule Reference: mNEWLINE
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+	*** End Lexer Rule: mCOLON_COMMENT
+	
+	*** Lexer Rule: mCOLON
+		Access: public
+		Return value: lexical rule returns an implicit token type
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ ':' }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ ':' }
+			is matched.
+			Match character ':'
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+	*** End Lexer Rule: mCOLON
 	
 	*** Lexer Rule: mWhitespace
 		Access: public
@@ -842,33 +1292,22 @@ End of alternative block.
 		Start of an alternative block.
 			The lookahead set for this block is:
 				{ 
-					'0', '1', '2', '3', '4', 
-					'5', '6', '7', '8', '9', 'A', 
-					'B', 'C', 'D', 'E', 'F'
+					'a', 'b', 'c', 'd', 'e', 
+					'f'
 				 }
-			This block has multiple alternatives:
-				
-				Alternate(1) will be taken IF:
-				The lookahead set: 
-					{ 
-						'0', '1', '2', '3', '4', 
-						'5', '6', '7', '8', '9'
-					 }
-				is matched.
-				Match character range: '0'..'9'
-				
-				Otherwise, Alternate(2) will be taken IF:
-				The lookahead set: 
-					{ 
-						'A', 'B', 'C', 'D', 'E', 
-						'F'
-					 }
-				is matched.
-				Match character range: 'A'..'F'
-				
-				OTHERWISE, a NoViableAlt exception will be thrown
-				
-			End of alternatives
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ 
+					'a', 'b', 'c', 'd', 'e', 
+					'f'
+				 }
+			is matched.
+			Match character range: 'a'..'f'
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
 		End of alternative block.
 	*** End Lexer Rule: mHEXDIGIT
 	
@@ -879,7 +1318,8 @@ End of alternative block.
 			The lookahead set for this block is:
 				{ 
 					'0', '1', '2', '3', '4', 
-					'5', '6', '7', '8', '9'
+					'5', '6', '7', '8', '9', 'a', 
+					'b', 'c', 'd', 'e', 'f'
 				 }
 			This block has a single alternative
 			
@@ -887,7 +1327,8 @@ End of alternative block.
 			The lookahead set: 
 				{ 
 					'0', '1', '2', '3', '4', 
-					'5', '6', '7', '8', '9'
+					'5', '6', '7', '8', '9', 'a', 
+					'b', 'c', 'd', 'e', 'f'
 				 }
 			is matched.
 			Start of alternative block.
@@ -896,52 +1337,20 @@ End of alternative block.
 					The lookahead set for this block is:
 						k==1: {
 							'0', '1', '2', '3', '4', 
-							'5', '6', '7', '8', '9'
+							'5', '6', '7', '8', '9', 'a', 
+							'b', 'c', 'd', 'e', 'f'
 						 }
 						k==2: {
 							'.', '0', '1', '2', '3', 
 							'4', '5', '6', '7', '8', '9', 
-							'x'
+							':', 'a', 'b', 'c', 'd', 'e', 
+							'f'
 						 }
 						k==3: {
 							'.', '0', '1', '2', '3', 
 							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==4: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==5: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==6: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==7: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==8: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==9: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
-						 }
-						k==10: {
-							'.', '0', '1', '2', '3', 
-							'4', '5', '6', '7', '8', '9', 
-							'A', 'B', 'C', 'D', 'E', 'F'
+							':', 'a', 'b', 'c', 'd', 'e', 
+							'f'
 						 }
 					This block has multiple alternatives:
 						
@@ -959,34 +1368,6 @@ End of alternative block.
 								'.', '0', '1', '2', '3', 
 								'4', '5', '6', '7', '8', '9'
 							 }
-							k==4: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==5: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==6: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==7: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==8: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==9: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==10: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
 						is matched, AND the syntactic predicate:
 							Start of alternative block.
 								Start of an alternative block.
@@ -1000,6 +1381,409 @@ End of alternative block.
 									Alternate(1) will be taken IF:
 									The lookahead set: 
 										{ 
+											'0', '1', '2', '3', '4', 
+											'5', '6', '7', '8', '9'
+										 }
+									is matched.
+									Rule Reference: mDIGIT
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternative block.
+						is matched.
+						Start of alternative block.
+							Warning: This alternative block is non-deterministic
+							Start of an alternative block.
+								The lookahead set for this block is:
+									k==1: {
+										'0', '1', '2', '3', '4', 
+										'5', '6', '7', '8', '9'
+									 }
+									k==2: {
+										'.', '0', '1', '2', '3', 
+										'4', '5', '6', '7', '8', '9'
+									 }
+									k==3: {
+										'.', '0', '1', '2', '3', 
+										'4', '5', '6', '7', '8', '9'
+									 }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										k==1: {
+											'0', '1', '2', '3', '4', 
+											'5', '6', '7', '8', '9'
+										 }
+										k==2: {
+											'.', '0', '1', '2', '3', 
+											'4', '5', '6', '7', '8', '9'
+										 }
+										k==3: {
+											'.', '0', '1', '2', '3', 
+											'4', '5', '6', '7', '8', '9'
+										 }
+									is matched, AND the syntactic predicate:
+										Start of alternative block.
+											Start of an alternative block.
+												The lookahead set for this block is:
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9'
+													 }
+												This block has a single alternative
+												
+												Alternate(1) will be taken IF:
+												The lookahead set: 
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9'
+													 }
+												is matched.
+												Start ONE-OR-MORE (...)+ block:
+													Start of an alternative block.
+														The lookahead set for this block is:
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														This block has a single alternative
+														
+														Alternate(1) will be taken IF:
+														The lookahead set: 
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														is matched.
+														Rule Reference: mDIGIT
+														
+														OTHERWISE, a NoViableAlt exception will be thrown
+														
+													End of alternative block.
+												End ONE-OR-MORE block.
+												Rule Reference: mDOT
+												Start ONE-OR-MORE (...)+ block:
+													Start of an alternative block.
+														The lookahead set for this block is:
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														This block has a single alternative
+														
+														Alternate(1) will be taken IF:
+														The lookahead set: 
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														is matched.
+														Rule Reference: mDIGIT
+														
+														OTHERWISE, a NoViableAlt exception will be thrown
+														
+													End of alternative block.
+												End ONE-OR-MORE block.
+												Rule Reference: mDOT
+												Start ONE-OR-MORE (...)+ block:
+													Start of an alternative block.
+														The lookahead set for this block is:
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														This block has a single alternative
+														
+														Alternate(1) will be taken IF:
+														The lookahead set: 
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														is matched.
+														Rule Reference: mDIGIT
+														
+														OTHERWISE, a NoViableAlt exception will be thrown
+														
+													End of alternative block.
+												End ONE-OR-MORE block.
+												
+												OTHERWISE, a NoViableAlt exception will be thrown
+												
+											End of alternative block.
+									is matched.
+									Start of alternative block.
+										Start of an alternative block.
+											The lookahead set for this block is:
+												{ 
+													'0', '1', '2', '3', '4', 
+													'5', '6', '7', '8', '9'
+												 }
+											This block has a single alternative
+											
+											Alternate(1) will be taken IF:
+											The lookahead set: 
+												{ 
+													'0', '1', '2', '3', '4', 
+													'5', '6', '7', '8', '9'
+												 }
+											is matched.
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											Rule Reference: mDOT
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											Rule Reference: mDOT
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											Rule Reference: mDOT
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											
+											OTHERWISE, a NoViableAlt exception will be thrown
+											
+										End of alternative block.
+									ACTION: _ttype = IPV4;
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										k==1: {
+											'0', '1', '2', '3', '4', 
+											'5', '6', '7', '8', '9'
+										 }
+										k==2: {
+											'.', '0', '1', '2', '3', 
+											'4', '5', '6', '7', '8', '9'
+										 }
+										k==3: {
+											'.', '0', '1', '2', '3', 
+											'4', '5', '6', '7', '8', '9'
+										 }
+									is matched, AND the syntactic predicate:
+										Start of alternative block.
+											Start of an alternative block.
+												The lookahead set for this block is:
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9'
+													 }
+												This block has a single alternative
+												
+												Alternate(1) will be taken IF:
+												The lookahead set: 
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9'
+													 }
+												is matched.
+												Start ONE-OR-MORE (...)+ block:
+													Start of an alternative block.
+														The lookahead set for this block is:
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														This block has a single alternative
+														
+														Alternate(1) will be taken IF:
+														The lookahead set: 
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														is matched.
+														Rule Reference: mDIGIT
+														
+														OTHERWISE, a NoViableAlt exception will be thrown
+														
+													End of alternative block.
+												End ONE-OR-MORE block.
+												Rule Reference: mDOT
+												Start ONE-OR-MORE (...)+ block:
+													Start of an alternative block.
+														The lookahead set for this block is:
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														This block has a single alternative
+														
+														Alternate(1) will be taken IF:
+														The lookahead set: 
+															{ 
+																'0', '1', '2', '3', '4', 
+																'5', '6', '7', '8', '9'
+															 }
+														is matched.
+														Rule Reference: mDIGIT
+														
+														OTHERWISE, a NoViableAlt exception will be thrown
+														
+													End of alternative block.
+												End ONE-OR-MORE block.
+												
+												OTHERWISE, a NoViableAlt exception will be thrown
+												
+											End of alternative block.
+									is matched.
+									Start of alternative block.
+										Start of an alternative block.
+											The lookahead set for this block is:
+												{ 
+													'0', '1', '2', '3', '4', 
+													'5', '6', '7', '8', '9'
+												 }
+											This block has a single alternative
+											
+											Alternate(1) will be taken IF:
+											The lookahead set: 
+												{ 
+													'0', '1', '2', '3', '4', 
+													'5', '6', '7', '8', '9'
+												 }
+											is matched.
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											Rule Reference: mDOT
+											Start ONE-OR-MORE (...)+ block:
+												Start of an alternative block.
+													The lookahead set for this block is:
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													This block has a single alternative
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Rule Reference: mDIGIT
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternative block.
+											End ONE-OR-MORE block.
+											
+											OTHERWISE, a NoViableAlt exception will be thrown
+											
+										End of alternative block.
+									
+									Otherwise, Alternate(3) will be taken IF:
+									The lookahead set: 
+										k==1: {
+											'0', '1', '2', '3', '4', 
+											'5', '6', '7', '8', '9'
+										 }
+										k==2: {
+											'0', '1', '2', '3', '4', 
+											'5', '6', '7', '8', '9'
+										 }
+										k==3: {
 											'0', '1', '2', '3', '4', 
 											'5', '6', '7', '8', '9'
 										 }
@@ -1026,211 +1810,29 @@ End of alternative block.
 											
 										End of alternative block.
 									End ONE-OR-MORE block.
-									Rule Reference: mDOT
-									Start ONE-OR-MORE (...)+ block:
-										Start of an alternative block.
-											The lookahead set for this block is:
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											This block has a single alternative
-											
-											Alternate(1) will be taken IF:
-											The lookahead set: 
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											is matched.
-											Rule Reference: mDIGIT
-											
-											OTHERWISE, a NoViableAlt exception will be thrown
-											
-										End of alternative block.
-									End ONE-OR-MORE block.
-									Rule Reference: mDOT
-									Start ONE-OR-MORE (...)+ block:
-										Start of an alternative block.
-											The lookahead set for this block is:
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											This block has a single alternative
-											
-											Alternate(1) will be taken IF:
-											The lookahead set: 
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											is matched.
-											Rule Reference: mDIGIT
-											
-											OTHERWISE, a NoViableAlt exception will be thrown
-											
-										End of alternative block.
-									End ONE-OR-MORE block.
+									ACTION: _ttype = INT_CONST;
 									
 									OTHERWISE, a NoViableAlt exception will be thrown
 									
-								End of alternative block.
-						is matched.
-						Start of alternative block.
-							Start of an alternative block.
-								The lookahead set for this block is:
-									{ 
-										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
-									 }
-								This block has a single alternative
-								
-								Alternate(1) will be taken IF:
-								The lookahead set: 
-									{ 
-										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
-									 }
-								is matched.
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										is matched.
-										Rule Reference: mDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
-								Rule Reference: mDOT
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										is matched.
-										Rule Reference: mDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
-								Rule Reference: mDOT
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										is matched.
-										Rule Reference: mDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
-								Rule Reference: mDOT
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										is matched.
-										Rule Reference: mDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
-								
-								OTHERWISE, a NoViableAlt exception will be thrown
-								
+								End of alternatives
 							End of alternative block.
-						ACTION: _ttype = IPV4;
 						
 						Otherwise, Alternate(2) will be taken IF:
 						The lookahead set: 
 							k==1: {
 								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
+								'5', '6', '7', '8', '9', 'a', 
+								'b', 'c', 'd', 'e', 'f'
 							 }
 							k==2: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
+								'0', '1', '2', '3', '4', 
+								'5', '6', '7', '8', '9', ':', 
+								'a', 'b', 'c', 'd', 'e', 'f'
 							 }
 							k==3: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==4: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==5: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==6: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==7: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==8: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==9: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
-							 }
-							k==10: {
-								'.', '0', '1', '2', '3', 
-								'4', '5', '6', '7', '8', '9'
+								'0', '1', '2', '3', '4', 
+								'5', '6', '7', '8', '9', ':', 
+								'a', 'b', 'c', 'd', 'e', 'f'
 							 }
 						is matched, AND the syntactic predicate:
 							Start of alternative block.
@@ -1238,7 +1840,8 @@ End of alternative block.
 									The lookahead set for this block is:
 										{ 
 											'0', '1', '2', '3', '4', 
-											'5', '6', '7', '8', '9'
+											'5', '6', '7', '8', '9', 'a', 
+											'b', 'c', 'd', 'e', 'f'
 										 }
 									This block has a single alternative
 									
@@ -1246,7 +1849,8 @@ End of alternative block.
 									The lookahead set: 
 										{ 
 											'0', '1', '2', '3', '4', 
-											'5', '6', '7', '8', '9'
+											'5', '6', '7', '8', '9', 'a', 
+											'b', 'c', 'd', 'e', 'f'
 										 }
 									is matched.
 									Start ONE-OR-MORE (...)+ block:
@@ -1254,46 +1858,35 @@ End of alternative block.
 											The lookahead set for this block is:
 												{ 
 													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
+													'5', '6', '7', '8', '9', 'a', 
+													'b', 'c', 'd', 'e', 'f'
 												 }
-											This block has a single alternative
-											
-											Alternate(1) will be taken IF:
-											The lookahead set: 
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											is matched.
-											Rule Reference: mDIGIT
-											
-											OTHERWISE, a NoViableAlt exception will be thrown
-											
+											This block has multiple alternatives:
+												
+												Alternate(1) will be taken IF:
+												The lookahead set: 
+													{ 
+														'a', 'b', 'c', 'd', 'e', 
+														'f'
+													 }
+												is matched.
+												Match character range: 'a'..'f'
+												
+												Otherwise, Alternate(2) will be taken IF:
+												The lookahead set: 
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9'
+													 }
+												is matched.
+												Match character range: '0'..'9'
+												
+												OTHERWISE, a NoViableAlt exception will be thrown
+												
+											End of alternatives
 										End of alternative block.
 									End ONE-OR-MORE block.
-									Rule Reference: mDOT
-									Start ONE-OR-MORE (...)+ block:
-										Start of an alternative block.
-											The lookahead set for this block is:
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											This block has a single alternative
-											
-											Alternate(1) will be taken IF:
-											The lookahead set: 
-												{ 
-													'0', '1', '2', '3', '4', 
-													'5', '6', '7', '8', '9'
-												 }
-											is matched.
-											Rule Reference: mDIGIT
-											
-											OTHERWISE, a NoViableAlt exception will be thrown
-											
-										End of alternative block.
-									End ONE-OR-MORE block.
+									Rule Reference: mCOLON
 									
 									OTHERWISE, a NoViableAlt exception will be thrown
 									
@@ -1304,7 +1897,8 @@ End of alternative block.
 								The lookahead set for this block is:
 									{ 
 										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
+										'5', '6', '7', '8', '9', 'a', 
+										'b', 'c', 'd', 'e', 'f'
 									 }
 								This block has a single alternative
 								
@@ -1312,15 +1906,17 @@ End of alternative block.
 								The lookahead set: 
 									{ 
 										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
+										'5', '6', '7', '8', '9', 'a', 
+										'b', 'c', 'd', 'e', 'f'
 									 }
 								is matched.
-								Start ONE-OR-MORE (...)+ block:
+								Start of alternative block.
 									Start of an alternative block.
 										The lookahead set for this block is:
 											{ 
 												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
+												'5', '6', '7', '8', '9', 'a', 
+												'b', 'c', 'd', 'e', 'f'
 											 }
 										This block has a single alternative
 										
@@ -1328,156 +1924,53 @@ End of alternative block.
 										The lookahead set: 
 											{ 
 												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
+												'5', '6', '7', '8', '9', 'a', 
+												'b', 'c', 'd', 'e', 'f'
 											 }
 										is matched.
-										Rule Reference: mDIGIT
+										Start ONE-OR-MORE (...)+ block:
+											Start of an alternative block.
+												The lookahead set for this block is:
+													{ 
+														'0', '1', '2', '3', '4', 
+														'5', '6', '7', '8', '9', 'a', 
+														'b', 'c', 'd', 'e', 'f'
+													 }
+												This block has multiple alternatives:
+													
+													Alternate(1) will be taken IF:
+													The lookahead set: 
+														{ 
+															'a', 'b', 'c', 'd', 'e', 
+															'f'
+														 }
+													is matched.
+													Match character range: 'a'..'f'
+													
+													Otherwise, Alternate(2) will be taken IF:
+													The lookahead set: 
+														{ 
+															'0', '1', '2', '3', '4', 
+															'5', '6', '7', '8', '9'
+														 }
+													is matched.
+													Match character range: '0'..'9'
+													
+													OTHERWISE, a NoViableAlt exception will be thrown
+													
+												End of alternatives
+											End of alternative block.
+										End ONE-OR-MORE block.
+										Rule Reference: mCOLON
 										
 										OTHERWISE, a NoViableAlt exception will be thrown
 										
 									End of alternative block.
-								End ONE-OR-MORE block.
-								Rule Reference: mDOT
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9'
-											 }
-										is matched.
-										Rule Reference: mDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
+								ACTION: _ttype = IPV6;
 								
 								OTHERWISE, a NoViableAlt exception will be thrown
 								
 							End of alternative block.
-						
-						Otherwise, Alternate(3) will be taken IF:
-						The lookahead set: 
-							k==1: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==2: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==3: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==4: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==5: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==6: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==7: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==8: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==9: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-							k==10: {
-								'0', '1', '2', '3', '4', 
-								'5', '6', '7', '8', '9'
-							 }
-						is matched.
-						Start ONE-OR-MORE (...)+ block:
-							Start of an alternative block.
-								The lookahead set for this block is:
-									{ 
-										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
-									 }
-								This block has a single alternative
-								
-								Alternate(1) will be taken IF:
-								The lookahead set: 
-									{ 
-										'0', '1', '2', '3', '4', 
-										'5', '6', '7', '8', '9'
-									 }
-								is matched.
-								Rule Reference: mDIGIT
-								
-								OTHERWISE, a NoViableAlt exception will be thrown
-								
-							End of alternative block.
-						End ONE-OR-MORE block.
-						ACTION: _ttype = INT_CONST;
-						
-						Otherwise, Alternate(4) will be taken IF:
-						The lookahead set: 
-							k==1: {'0' }
-							k==2: {'x' }
-						is matched.
-						Start of alternative block.
-							Start of an alternative block.
-								The lookahead set for this block is:
-									{ '0' }
-								This block has a single alternative
-								
-								Alternate(1) will be taken IF:
-								The lookahead set: 
-									{ '0' }
-								is matched.
-								Match character '0'
-								Match character 'x'
-								Start ONE-OR-MORE (...)+ block:
-									Start of an alternative block.
-										The lookahead set for this block is:
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9', 'A', 
-												'B', 'C', 'D', 'E', 'F'
-											 }
-										This block has a single alternative
-										
-										Alternate(1) will be taken IF:
-										The lookahead set: 
-											{ 
-												'0', '1', '2', '3', '4', 
-												'5', '6', '7', '8', '9', 'A', 
-												'B', 'C', 'D', 'E', 'F'
-											 }
-										is matched.
-										Rule Reference: mHEXDIGIT
-										
-										OTHERWISE, a NoViableAlt exception will be thrown
-										
-									End of alternative block.
-								End ONE-OR-MORE block.
-								
-								OTHERWISE, a NoViableAlt exception will be thrown
-								
-							End of alternative block.
-						ACTION: _ttype = HEX_CONST;
 						
 						OTHERWISE, a NoViableAlt exception will be thrown
 						
@@ -2084,25 +2577,6 @@ End of alternative block.
 		End of alternative block.
 	*** End Lexer Rule: mSLASH
 	
-	*** Lexer Rule: mCOLON
-		Access: public
-		Return value: lexical rule returns an implicit token type
-		Start of an alternative block.
-			The lookahead set for this block is:
-				{ ':' }
-			This block has a single alternative
-			
-			Alternate(1) will be taken IF:
-			The lookahead set: 
-				{ ':' }
-			is matched.
-			Match character ':'
-			
-			OTHERWISE, a NoViableAlt exception will be thrown
-			
-		End of alternative block.
-	*** End Lexer Rule: mCOLON
-	
 	*** Lexer Rule: mSEMICOLON
 		Access: public
 		Return value: lexical rule returns an implicit token type
@@ -2349,5 +2823,24 @@ End of alternative block.
 			
 		End of alternative block.
 	*** End Lexer Rule: mTILDE
+	
+	*** Lexer Rule: mEXLAMATION
+		Access: public
+		Return value: lexical rule returns an implicit token type
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ '!' }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ '!' }
+			is matched.
+			Match character '!'
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+	*** End Lexer Rule: mEXLAMATION
 
 *** End User-defined Lexer rules:

@@ -58,7 +58,6 @@ public:
 	protected: void mHEXDIGIT(bool _createToken);
 	public: void mNUMBER(bool _createToken);
 	public: void mDOT(bool _createToken);
-	public: void mWORD(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	public: void mPIPE_CHAR(bool _createToken);
 	public: void mNUMBER_SIGN(bool _createToken);
@@ -98,6 +97,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_3;
 	static const unsigned long _tokenSet_4_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
+	static const unsigned long _tokenSet_5_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_5;
+	static const unsigned long _tokenSet_6_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
 };
 
 #endif /*INC_PIXCfgLexer_hpp_*/

@@ -42,33 +42,43 @@ These are the member declarations that you defined for your class:
 		Start of an alternative block.
 			The lookahead set for this block is:
 				{ 
-					NEWLINE, "ip", "quit", WORD, "certificate", 
+					NEWLINE, "quit", "ip", "names", "name", 
+					WORD, INT_CONST, "object", "object-group", "crypto", "certificate", 
 					"PIX", "ASA", "hostname", "access-list", "controller", "interface", 
-					"description", "shutdown", "exit", LINE_COMMENT
+					LINE_COMMENT, "exit", COLON_COMMENT
 				 }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
 				{ 
-					NEWLINE, "ip", "quit", WORD, "certificate", 
+					NEWLINE, "quit", "ip", "names", "name", 
+					WORD, INT_CONST, "object", "object-group", "crypto", "certificate", 
 					"PIX", "ASA", "hostname", "access-list", "controller", "interface", 
-					"description", "shutdown", "exit", LINE_COMMENT
+					LINE_COMMENT, "exit", COLON_COMMENT
 				 }
 			is matched.
 			Start ONE-OR-MORE (...)+ block:
 				Start of an alternative block.
 					The lookahead set for this block is:
-						{ 
-							NEWLINE, "ip", "quit", WORD, "certificate", 
+						k==1: {
+							NEWLINE, "quit", "ip", "names", "name", 
+							WORD, INT_CONST, "object", "object-group", "crypto", "certificate", 
 							"PIX", "ASA", "hostname", "access-list", "controller", "interface", 
-							"description", "shutdown", "exit", LINE_COMMENT
+							LINE_COMMENT, "exit", COLON_COMMENT
+						 }
+						k==2: {
+							EOF, NEWLINE, "quit", "ip", "community-list", 
+							"names", "name", IPV4, WORD, INT_CONST, "object", 
+							"network", "service", "object-group", "protocol", "icmp-type", "crypto", 
+							"certificate", "PIX", "ASA", "Version", "hostname", STRING, 
+							"access-list", "controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
 						 }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ LINE_COMMENT }
+							{ LINE_COMMENT, COLON_COMMENT }
 						is matched.
 						Rule Reference: comment
 						
@@ -86,45 +96,48 @@ These are the member declarations that you defined for your class:
 						
 						Otherwise, Alternate(4) will be taken IF:
 						The lookahead set: 
-							{ "ip" }
+							k==1: {"ip" }
+							k==2: {"access-list" }
 						is matched.
-						Rule Reference: ip_commands
+						Rule Reference: ip_access_list_ext
 						
 						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							k==1: {"ip" }
+							k==2: {"community-list" }
+						is matched.
+						Rule Reference: community_list_command
+						
+						Otherwise, Alternate(6) will be taken IF:
+						The lookahead set: 
+							k==1: {"ip" }
+							k==2: {WORD }
+						is matched.
+						Rule Reference: unknown_ip_command
+						
+						Otherwise, Alternate(7) will be taken IF:
 						The lookahead set: 
 							{ "interface" }
 						is matched.
 						Rule Reference: intrface
 						
-						Otherwise, Alternate(6) will be taken IF:
+						Otherwise, Alternate(8) will be taken IF:
 						The lookahead set: 
 							{ "controller" }
 						is matched.
 						Rule Reference: controller
 						
-						Otherwise, Alternate(7) will be taken IF:
+						Otherwise, Alternate(9) will be taken IF:
 						The lookahead set: 
 							{ "access-list" }
 						is matched.
 						Rule Reference: access_list_commands
 						
-						Otherwise, Alternate(8) will be taken IF:
+						Otherwise, Alternate(10) will be taken IF:
 						The lookahead set: 
 							{ "exit" }
 						is matched.
 						Rule Reference: exit
-						
-						Otherwise, Alternate(9) will be taken IF:
-						The lookahead set: 
-							{ "description" }
-						is matched.
-						Rule Reference: description
-						
-						Otherwise, Alternate(10) will be taken IF:
-						The lookahead set: 
-							{ "shutdown" }
-						is matched.
-						Rule Reference: shutdown
 						
 						Otherwise, Alternate(11) will be taken IF:
 						The lookahead set: 
@@ -140,11 +153,71 @@ These are the member declarations that you defined for your class:
 						
 						Otherwise, Alternate(13) will be taken IF:
 						The lookahead set: 
+							{ "names" }
+						is matched.
+						Rule Reference: names_section
+						
+						Otherwise, Alternate(14) will be taken IF:
+						The lookahead set: 
+							{ "name", INT_CONST }
+						is matched.
+						Rule Reference: name_entry
+						
+						Otherwise, Alternate(15) will be taken IF:
+						The lookahead set: 
+							k==1: {"object" }
+							k==2: {"network" }
+						is matched.
+						Rule Reference: named_object_network
+						
+						Otherwise, Alternate(16) will be taken IF:
+						The lookahead set: 
+							k==1: {"object" }
+							k==2: {"service" }
+						is matched.
+						Rule Reference: named_object_service
+						
+						Otherwise, Alternate(17) will be taken IF:
+						The lookahead set: 
+							k==1: {"object-group" }
+							k==2: {"network" }
+						is matched.
+						Rule Reference: object_group_network
+						
+						Otherwise, Alternate(18) will be taken IF:
+						The lookahead set: 
+							k==1: {"object-group" }
+							k==2: {"service" }
+						is matched.
+						Rule Reference: object_group_service
+						
+						Otherwise, Alternate(19) will be taken IF:
+						The lookahead set: 
+							k==1: {"object-group" }
+							k==2: {"protocol" }
+						is matched.
+						Rule Reference: object_group_protocol
+						
+						Otherwise, Alternate(20) will be taken IF:
+						The lookahead set: 
+							k==1: {"object-group" }
+							k==2: {"icmp-type" }
+						is matched.
+						Rule Reference: object_group_icmp
+						
+						Otherwise, Alternate(21) will be taken IF:
+						The lookahead set: 
+							{ "crypto" }
+						is matched.
+						Rule Reference: crypto
+						
+						Otherwise, Alternate(22) will be taken IF:
+						The lookahead set: 
 							{ WORD }
 						is matched.
 						Rule Reference: unknown_command
 						
-						Otherwise, Alternate(14) will be taken IF:
+						Otherwise, Alternate(23) will be taken IF:
 						The lookahead set: 
 							{ NEWLINE }
 						is matched.
@@ -171,14 +244,35 @@ These are the member declarations that you defined for your class:
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ LINE_COMMENT }
+				{ LINE_COMMENT, COLON_COMMENT }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ LINE_COMMENT }
+				{ LINE_COMMENT, COLON_COMMENT }
 			is matched.
-			Match token LINE_COMMENT
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ LINE_COMMENT, COLON_COMMENT }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ LINE_COMMENT }
+						is matched.
+						Match token LINE_COMMENT
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ COLON_COMMENT }
+						is matched.
+						Match token COLON_COMMENT
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -187,9 +281,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: comment
 	
@@ -229,10 +324,12 @@ These are the member declarations that you defined for your class:
 					End of alternatives
 				End of alternative block.
 			Match token VERSION_WORD
-			Match token TWO_NUMBER_VERSION
+			Match token NUMBER
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setDiscoveredVersion(LT(0)->getText());
 			*dbg << "VERSION " << LT(0)->getText() << std::endl;
+			consumeUntil(NEWLINE);
 			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
@@ -242,9 +339,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: version
 	
@@ -285,6 +383,7 @@ These are the member declarations that you defined for your class:
 					End of alternatives
 				End of alternative block.
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setHostName( LT(0)->getText() );
 			*dbg << "HOSTNAME "
 			<< "LT0=" << LT(0)->getText()
@@ -298,14 +397,15 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: hostname
 	
 	
-	*** Parser Rule: ip_commands
+	*** Parser Rule: ip_access_list_ext
 		Access: public
 		Return value: none
 		Start of an alternative block.
@@ -318,43 +418,63 @@ These are the member declarations that you defined for your class:
 				{ "ip" }
 			is matched.
 			Match token IP
+			Match token ACCESS_LIST
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newUnidirRuleSet(
+			name->getText(), libfwbuilder::Policy::TYPENAME );
+			*dbg << name->getLine() << ":"
+			<< " ACL ext " << name->getText() << std::endl;
+			
 			Start of alternative block.
 				Start of an alternative block.
 					The lookahead set for this block is:
 						{ 
-							"community-list", WORD, "access-list", "shutdown", "address", 
-							"switchport"
+							NEWLINE, "permit", "deny", LINE_COMMENT, "remark", 
+							COLON_COMMENT
 						 }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ "access-list" }
+							{ "permit" }
 						is matched.
-						Rule Reference: ip_access_list_ext
+						Rule Reference: permit_ext
 						
 						Otherwise, Alternate(2) will be taken IF:
 						The lookahead set: 
-							{ "shutdown", "address", "switchport" }
+							{ "deny" }
 						is matched.
-						Rule Reference: interface_known_commands
+						Rule Reference: deny_ext
 						
 						Otherwise, Alternate(3) will be taken IF:
 						The lookahead set: 
-							{ "community-list" }
+							{ LINE_COMMENT, COLON_COMMENT }
 						is matched.
-						Rule Reference: community_list_command
+						Rule Reference: comment
 						
 						Otherwise, Alternate(4) will be taken IF:
 						The lookahead set: 
-							{ WORD }
+							{ "remark" }
 						is matched.
-						Rule Reference: unknown_command
+						Rule Reference: remark
+						
+						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							{ NEWLINE }
+						is matched.
+						Match token NEWLINE
 						
 						OTHERWISE, a NoViableAlt exception will be thrown
 						
 					End of alternatives
 				End of alternative block.
+			ACTION: 
+			*dbg << LT(0)->getLine() << ":"
+			<< " ACL line end" << std::endl << std::endl;
+			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -363,11 +483,78 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
-	*** End Parser Rule: ip_commands
+	*** End Parser Rule: ip_access_list_ext
+	
+	
+	*** Parser Rule: community_list_command
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "ip" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "ip" }
+			is matched.
+			Match token IP
+			Match token COMMUNITY_LIST
+			ACTION: 
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: community_list_command
+	
+	
+	*** Parser Rule: unknown_ip_command
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "ip" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "ip" }
+			is matched.
+			Match token IP
+			Match token WORD
+			ACTION: 
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: unknown_ip_command
 	
 	
 	*** Parser Rule: intrface
@@ -385,11 +572,63 @@ These are the member declarations that you defined for your class:
 			Match token INTRFACE
 			Match token WORD, label=in
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newInterface( in->getText() );
 			*dbg << in->getLine() << ":"
 			<< " INTRFACE: " << in->getText() << std::endl;
+			consumeUntil(NEWLINE);
 			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ NEWLINE, "description" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: interface_description
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ NEWLINE }
+						is matched.
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			Start ONE-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {
+							"ip", "igmp", "ospf", "pim", "description", 
+							"vlan", "speed", "duplex", "ddns", "forward", "delay", 
+							"hold-time", "ipv6", "mac-address", "multicast", PPPOE, "rip", 
+							"no", "security-level", "nameif", "shutdown", "switchport"
+						 }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {
+							"ip", "igmp", "ospf", "pim", "description", 
+							"vlan", "speed", "duplex", "ddns", "forward", "delay", 
+							"hold-time", "ipv6", "mac-address", "multicast", PPPOE, "rip", 
+							"no", "security-level", "nameif", "shutdown", "switchport"
+						 }
+					is matched.
+					Rule Reference: interface_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ONE-OR-MORE block.
 			Match token NEWLINE
+			Match token LINE_COMMENT
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -398,9 +637,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: intrface
 	
@@ -430,9 +670,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: controller
 	
@@ -452,7 +693,10 @@ These are the member declarations that you defined for your class:
 			Match token ACCESS_LIST
 			Match token INT_CONST, label=acl_num
 			ACTION: 
-			importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText() );
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
+			libfwbuilder::Policy::TYPENAME );
 			*dbg << acl_num->getLine() << ":"
 			<< " ACL #" << acl_num->getText() << " ";
 			
@@ -492,9 +736,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: access_list_commands
 	
@@ -520,83 +765,12 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: exit
-	
-	
-	*** Parser Rule: description
-		Access: public
-		Return value: none
-		Start of an alternative block.
-			The lookahead set for this block is:
-				{ "description" }
-			This block has a single alternative
-			
-			Alternate(1) will be taken IF:
-			The lookahead set: 
-				{ "description" }
-			is matched.
-			Match token DESCRIPTION
-			ACTION: 
-			*dbg << LT(1)->getLine() << ":";
-			std::string descr;
-			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
-			{
-			descr += LT(1)->getText() + " ";
-			consume();
-			}
-			importer->addInterfaceComment( descr );
-			*dbg << " DESCRIPTION " << descr << std::endl;
-			//consumeUntil(NEWLINE);
-			
-			
-			OTHERWISE, a NoViableAlt exception will be thrown
-			
-		End of alternative block.
-		Default error-handling will be generated, which catches all
-		parser exceptions and consumes tokens until the follow-set is seen.
-		The follow set for this rule is:
-			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
-				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
-			 }
-	*** End Parser Rule: description
-	
-	
-	*** Parser Rule: shutdown
-		Access: public
-		Return value: none
-		Start of an alternative block.
-			The lookahead set for this block is:
-				{ "shutdown" }
-			This block has a single alternative
-			
-			Alternate(1) will be taken IF:
-			The lookahead set: 
-				{ "shutdown" }
-			is matched.
-			Match token SHUTDOWN
-			ACTION: 
-			*dbg<< LT(1)->getLine() << ":"
-			<< " INTERFACE SHUTDOWN " << std::endl;
-			
-			
-			OTHERWISE, a NoViableAlt exception will be thrown
-			
-		End of alternative block.
-		Default error-handling will be generated, which catches all
-		parser exceptions and consumes tokens until the follow-set is seen.
-		The follow set for this rule is:
-			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
-				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
-			 }
-	*** End Parser Rule: shutdown
 	
 	
 	*** Parser Rule: certificate
@@ -625,9 +799,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: certificate
 	
@@ -656,11 +831,500 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: quit
+	
+	
+	*** Parser Rule: names_section
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "names" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "names" }
+			is matched.
+			Match token NAMES
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->addMessageToLog(
+			"Parser warning: \"names\" section detected. "
+			"Import of configuration that uses \"names\" "
+			"is not supported at this time");
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: names_section
+	
+	
+	*** Parser Rule: name_entry
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "name", INT_CONST }
+			This block has multiple alternatives:
+				
+				Alternate(1) will be taken IF:
+				The lookahead set: 
+					{ "name" }
+				is matched.
+				Match token NAME
+				Start of alternative block.
+					Start of an alternative block.
+						The lookahead set for this block is:
+							{ IPV4 }
+						This block has a single alternative
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ IPV4 }
+						is matched.
+						Match token IPV4, label=a
+						Match token WORD, label=n
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternative block.
+				
+				Otherwise, Alternate(2) will be taken IF:
+				The lookahead set: 
+					{ INT_CONST }
+				is matched.
+				Start of alternative block.
+					Start of an alternative block.
+						The lookahead set for this block is:
+							{ INT_CONST }
+						This block has a single alternative
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST, label=v6
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternative block.
+				ACTION: 
+				if (a)
+				{
+				importer->setCurrentLineNumber(LT(0)->getLine());
+				importer->addMessageToLog(
+				"Name " + a->getText() + " " + n->getText());
+				*dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
+				}
+				if (v6)
+				{
+				importer->addMessageToLog(
+				"Parser warning: IPv6 import is not supported. ");
+				consumeUntil(NEWLINE);
+				}
+				
+				
+				OTHERWISE, a NoViableAlt exception will be thrown
+				
+			End of alternatives
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: name_entry
+	
+	
+	*** Parser Rule: named_object_network
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object" }
+			is matched.
+			Match token OBJECT
+			Match token NETWORK
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newNamedObjectAddress(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Named Object " << name->getText() << std::endl;
+			
+			Start ZERO-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"nat", "description", "host", "range", "subnet" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"nat", "description", "host", "range", "subnet" }
+					is matched.
+					Match token NEWLINE
+					Rule Reference: named_object_network_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ZERO-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: named_object_network
+	
+	
+	*** Parser Rule: named_object_service
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object" }
+			is matched.
+			Match token OBJECT
+			Match token SERVICE
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newNamedObjectService(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Named Object " << name->getText() << std::endl;
+			
+			Start ZERO-OR-MORE (...)+ block:
+				Warning: This zero-or-more block is non-deterministic
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"description", "service" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"description", "service" }
+					is matched.
+					Match token NEWLINE
+					Rule Reference: named_object_service_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ZERO-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: named_object_service
+	
+	
+	*** Parser Rule: object_group_network
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object-group" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object-group" }
+			is matched.
+			Match token OBJECT_GROUP
+			Match token NETWORK
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newObjectGroupNetwork(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Object Group " << name->getText() << std::endl;
+			
+			Start ONE-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "network-object" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "network-object" }
+					is matched.
+					Rule Reference: object_group_network_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ONE-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_network
+	
+	
+	*** Parser Rule: object_group_service
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object-group" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object-group" }
+			is matched.
+			Match token OBJECT_GROUP
+			Match token SERVICE
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newObjectGroupService(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Object Group " << name->getText() << std::endl;
+			
+			Start ONE-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "service-object" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "service-object" }
+					is matched.
+					Rule Reference: object_group_service_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ONE-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_service
+	
+	
+	*** Parser Rule: object_group_protocol
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object-group" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object-group" }
+			is matched.
+			Match token OBJECT_GROUP
+			Match token PROTOCOL
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newObjectGroupProtocol(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Object Group " << name->getText() << std::endl;
+			
+			Start ONE-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "protocol-object" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "protocol-object" }
+					is matched.
+					Rule Reference: object_group_protocol_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ONE-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_protocol
+	
+	
+	*** Parser Rule: object_group_icmp
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "object-group" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "object-group" }
+			is matched.
+			Match token OBJECT_GROUP
+			Match token ICMP_TYPE
+			Match token WORD, label=name
+			ACTION: 
+			importer->clear();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->newObjectGroupICMP(name->getText());
+			*dbg << name->getLine() << ":"
+			<< " Object Group " << name->getText() << std::endl;
+			
+			Start ONE-OR-MORE (...)+ block:
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "icmp-object" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						k==1: {NEWLINE }
+						k==2: {"description", "group-object", "icmp-object" }
+					is matched.
+					Rule Reference: object_group_icmp_parameters
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			End ONE-OR-MORE block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_icmp
+	
+	
+	*** Parser Rule: crypto
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "crypto" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "crypto" }
+			is matched.
+			Match token CRYPTO
+			ACTION: 
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: crypto
 	
 	
 	*** Parser Rule: unknown_command
@@ -687,76 +1351,138 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: unknown_command
 	
 	
-	*** Parser Rule: ip_access_list_ext
+	*** Parser Rule: ip_protocol_names
 		Access: public
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "access-list" }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP
+				 }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ "access-list" }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP
+				 }
 			is matched.
-			Match token ACCESS_LIST
-			Match token WORD, label=name
-			ACTION: 
-			importer->newUnidirRuleSet( name->getText() );
-			*dbg << name->getLine() << ":"
-			<< " ACL ext " << name->getText() << std::endl;
-			
 			Start of alternative block.
 				Start of an alternative block.
 					The lookahead set for this block is:
-						{ NEWLINE, "permit", "deny", "remark", LINE_COMMENT }
+						{ 
+							"ip", "ah", "eigrp", "esp", "gre", 
+							"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+							"pcp", "pim", PPTP, SNP
+						 }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ "permit" }
+							{ "ah" }
 						is matched.
-						Rule Reference: permit_ext
+						Match token AH
 						
 						Otherwise, Alternate(2) will be taken IF:
 						The lookahead set: 
-							{ "deny" }
+							{ "eigrp" }
 						is matched.
-						Rule Reference: deny_ext
+						Match token EIGRP
 						
 						Otherwise, Alternate(3) will be taken IF:
 						The lookahead set: 
-							{ LINE_COMMENT }
+							{ "esp" }
 						is matched.
-						Rule Reference: comment
+						Match token ESP
 						
 						Otherwise, Alternate(4) will be taken IF:
 						The lookahead set: 
-							{ "remark" }
+							{ "gre" }
 						is matched.
-						Rule Reference: remark
+						Match token GRE
 						
 						Otherwise, Alternate(5) will be taken IF:
 						The lookahead set: 
-							{ NEWLINE }
+							{ "igmp" }
 						is matched.
-						Match token NEWLINE
+						Match token IGMP
+						
+						Otherwise, Alternate(6) will be taken IF:
+						The lookahead set: 
+							{ "igrp" }
+						is matched.
+						Match token IGRP
+						
+						Otherwise, Alternate(7) will be taken IF:
+						The lookahead set: 
+							{ "ip" }
+						is matched.
+						Match token IP
+						
+						Otherwise, Alternate(8) will be taken IF:
+						The lookahead set: 
+							{ "ipinip" }
+						is matched.
+						Match token IPINIP
+						
+						Otherwise, Alternate(9) will be taken IF:
+						The lookahead set: 
+							{ IPSEC }
+						is matched.
+						Match token IPSEC
+						
+						Otherwise, Alternate(10) will be taken IF:
+						The lookahead set: 
+							{ "nos" }
+						is matched.
+						Match token NOS
+						
+						Otherwise, Alternate(11) will be taken IF:
+						The lookahead set: 
+							{ "ospf" }
+						is matched.
+						Match token OSPF
+						
+						Otherwise, Alternate(12) will be taken IF:
+						The lookahead set: 
+							{ "pcp" }
+						is matched.
+						Match token PCP
+						
+						Otherwise, Alternate(13) will be taken IF:
+						The lookahead set: 
+							{ "pim" }
+						is matched.
+						Match token PIM
+						
+						Otherwise, Alternate(14) will be taken IF:
+						The lookahead set: 
+							{ PPTP }
+						is matched.
+						Match token PPTP
+						
+						Otherwise, Alternate(15) will be taken IF:
+						The lookahead set: 
+							{ SNP }
+						is matched.
+						Match token SNP
 						
 						OTHERWISE, a NoViableAlt exception will be thrown
 						
 					End of alternatives
 				End of alternative block.
-			ACTION: 
-			*dbg << LT(0)->getLine() << ":"
-			<< " ACL line end" << std::endl << std::endl;
-			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -765,54 +1491,67 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
-				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"object-group", "crypto", "certificate", "PIX", "ASA", "hostname", 
+				"access-list", "any", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
 			 }
-	*** End Parser Rule: ip_access_list_ext
+	*** End Parser Rule: ip_protocol_names
 	
 	
-	*** Parser Rule: interface_known_commands
+	*** Parser Rule: named_object_network_parameters
 		Access: public
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "shutdown", "address", "switchport" }
+				{ "nat", "description", "host", "range", "subnet" }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ "shutdown", "address", "switchport" }
+				{ "nat", "description", "host", "range", "subnet" }
 			is matched.
 			Start of alternative block.
 				Start of an alternative block.
 					The lookahead set for this block is:
-						{ "shutdown", "address", "switchport" }
+						{ "nat", "description", "host", "range", "subnet" }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ "address" }
+							{ "nat" }
 						is matched.
-						Rule Reference: intf_address
+						Rule Reference: named_object_nat
 						
 						Otherwise, Alternate(2) will be taken IF:
 						The lookahead set: 
-							{ "switchport" }
+							{ "host" }
 						is matched.
-						Rule Reference: switchport
+						Rule Reference: host_addr
 						
 						Otherwise, Alternate(3) will be taken IF:
 						The lookahead set: 
-							{ "shutdown" }
+							{ "range" }
 						is matched.
-						Rule Reference: shutdown
+						Rule Reference: range_addr
+						
+						Otherwise, Alternate(4) will be taken IF:
+						The lookahead set: 
+							{ "subnet" }
+						is matched.
+						Rule Reference: subnet_addr
+						
+						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: named_object_description
 						
 						OTHERWISE, a NoViableAlt exception will be thrown
 						
 					End of alternatives
 				End of alternative block.
-			Match token NEWLINE
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -821,27 +1560,32 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
-	*** End Parser Rule: interface_known_commands
+	*** End Parser Rule: named_object_network_parameters
 	
 	
-	*** Parser Rule: community_list_command
+	*** Parser Rule: named_object_nat
 		Access: public
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "community-list" }
+				{ "nat" }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ "community-list" }
+				{ "nat" }
 			is matched.
-			Match token COMMUNITY_LIST
+			Match token NAT
 			ACTION: 
+			importer->addMessageToLog(
+			"Parser warning: "
+			"Import of named objects with \"nat\" command "
+			"is not supported at this time");
 			consumeUntil(NEWLINE);
 			
 			
@@ -852,11 +1596,1671 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
-	*** End Parser Rule: community_list_command
+	*** End Parser Rule: named_object_nat
+	
+	
+	*** Parser Rule: host_addr
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "host" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "host" }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "host" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						{ "host" }
+					is matched.
+					Match token HOST
+					Start of alternative block.
+						Start of an alternative block.
+							The lookahead set for this block is:
+								{ IPV4, INT_CONST }
+							This block has multiple alternatives:
+								
+								Alternate(1) will be taken IF:
+								The lookahead set: 
+									{ IPV4 }
+								is matched.
+								Match token IPV4, label=h
+								
+								Otherwise, Alternate(2) will be taken IF:
+								The lookahead set: 
+									{ INT_CONST }
+								is matched.
+								Match token INT_CONST, label=v6
+								
+								OTHERWISE, a NoViableAlt exception will be thrown
+								
+							End of alternatives
+						End of alternative block.
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			if (h)
+			{
+			importer->tmp_a = h->getText();
+			importer->tmp_nm = "255.255.255.255";
+			importer->commitNamedAddressObject();
+			*dbg << h->getText() << "/255.255.255.255";
+			}
+			if (v6)
+			{
+			importer->addMessageToLog(
+			"Parser warning: IPv6 import is not supported. ");
+			consumeUntil(NEWLINE);
+			}
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: host_addr
+	
+	
+	*** Parser Rule: range_addr
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "range" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "range" }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "range" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						{ "range" }
+					is matched.
+					Match token RANGE
+					Match token IPV4, label=r1
+					Match token IPV4, label=r2
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->tmp_range_1 = r1->getText();
+			importer->tmp_range_2 = r2->getText();
+			importer->commitNamedAddressRangeObject();
+			*dbg << r1->getText() << "/" << r2->getText();
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: range_addr
+	
+	
+	*** Parser Rule: subnet_addr
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "subnet" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "subnet" }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "subnet" }
+					This block has a single alternative
+					
+					Alternate(1) will be taken IF:
+					The lookahead set: 
+						{ "subnet" }
+					is matched.
+					Match token SUBNET
+					Start of alternative block.
+						Start of an alternative block.
+							The lookahead set for this block is:
+								{ IPV4, INT_CONST }
+							This block has multiple alternatives:
+								
+								Alternate(1) will be taken IF:
+								The lookahead set: 
+									{ IPV4 }
+								is matched.
+								Start of alternative block.
+									Start of an alternative block.
+										The lookahead set for this block is:
+											{ IPV4 }
+										This block has a single alternative
+										
+										Alternate(1) will be taken IF:
+										The lookahead set: 
+											{ IPV4 }
+										is matched.
+										Match token IPV4, label=a
+										Match token IPV4, label=nm
+										
+										OTHERWISE, a NoViableAlt exception will be thrown
+										
+									End of alternative block.
+								
+								Otherwise, Alternate(2) will be taken IF:
+								The lookahead set: 
+									{ INT_CONST }
+								is matched.
+								Match token INT_CONST, label=v6
+								
+								OTHERWISE, a NoViableAlt exception will be thrown
+								
+							End of alternatives
+						End of alternative block.
+					
+					OTHERWISE, a NoViableAlt exception will be thrown
+					
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			if (a)
+			{
+			importer->tmp_a = a->getText();
+			importer->tmp_nm = nm->getText();
+			importer->commitNamedAddressObject();
+			*dbg << a->getText() << "/" << nm->getText();
+			}
+			if (v6)
+			{
+			importer->addMessageToLog(
+			"Parser warning: IPv6 import is not supported. ");
+			consumeUntil(NEWLINE);
+			}
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: subnet_addr
+	
+	
+	*** Parser Rule: named_object_description
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "description" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "description" }
+			is matched.
+			Match token DESCRIPTION
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			*dbg << LT(1)->getLine() << ":";
+			std::string descr;
+			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+			{
+			descr += LT(1)->getText() + " ";
+			consume();
+			}
+			importer->setNamedObjectDescription(descr);
+			*dbg << " DESCRIPTION " << descr << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: named_object_description
+	
+	
+	*** Parser Rule: named_object_service_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "description", "service" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "description", "service" }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						k==1: {"description", "service" }
+						k==2: {
+							EOF, NEWLINE, "quit", "ip", "names", 
+							"name", WORD, INT_CONST, "ah", "eigrp", "esp", 
+							"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+							"ospf", "pcp", "pim", PPTP, SNP, "object", 
+							"icmp", ICMP6, "tcp", "udp", "object-group", "crypto", 
+							"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+							"interface", LINE_COMMENT, "exit", COLON_COMMENT
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							k==1: {"service" }
+							k==2: {"icmp" }
+						is matched.
+						Rule Reference: service_icmp
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							k==1: {"service" }
+							k==2: {ICMP6 }
+						is matched.
+						Rule Reference: service_icmp6
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							k==1: {"service" }
+							k==2: {"tcp", "udp" }
+						is matched.
+						Rule Reference: service_tcp_udp
+						
+						Otherwise, Alternate(4) will be taken IF:
+						The lookahead set: 
+							k==1: {"service" }
+							k==2: {
+								"ip", INT_CONST, "ah", "eigrp", "esp", 
+								"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+								"ospf", "pcp", "pim", PPTP, SNP
+							 }
+						is matched.
+						Rule Reference: service_other
+						
+						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: named_object_description
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: named_object_service_parameters
+	
+	
+	*** Parser Rule: service_icmp
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "service" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "service" }
+			is matched.
+			Match token SERVICE
+			Match token ICMP
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ WORD, INT_CONST }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST, label=icmp_type
+						ACTION: 
+						importer->icmp_type = LT(0)->getText();
+						
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ WORD }
+						is matched.
+						Match token WORD, label=icmp_word
+						ACTION: 
+						importer->icmp_spec = icmp_word->getText();
+						
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->commitNamedICMPServiceObject();
+			*dbg << "NAMED OBJECT SERVICE ICMP " << LT(0)->getText() << " ";
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: service_icmp
+	
+	
+	*** Parser Rule: service_icmp6
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "service" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "service" }
+			is matched.
+			Match token SERVICE
+			Match token ICMP6
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ WORD, INT_CONST }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ WORD }
+						is matched.
+						Match token WORD
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->addMessageToLog("Parser warning: "
+			"Import of IPv6 addresses and servcies "
+			"is not supported at this time");
+			*dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: service_icmp6
+	
+	
+	*** Parser Rule: service_tcp_udp
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "service" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "service" }
+			is matched.
+			Match token SERVICE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "tcp", "udp" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "tcp" }
+						is matched.
+						Match token TCP
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "udp" }
+						is matched.
+						Match token UDP
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->protocol = LT(0)->getText();
+			*dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							EOF, NEWLINE, "quit", "ip", "names", 
+							"name", WORD, INT_CONST, "object", "source", "destination", 
+							"object-group", "crypto", "certificate", "PIX", "ASA", "hostname", 
+							"access-list", "controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "source" }
+						is matched.
+						Rule Reference: src_port_spec
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ 
+								EOF, NEWLINE, "quit", "ip", "names", 
+								"name", WORD, INT_CONST, "object", "destination", "object-group", 
+								"crypto", "certificate", "PIX", "ASA", "hostname", "access-list", 
+								"controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+							 }
+						is matched.
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							EOF, NEWLINE, "quit", "ip", "names", 
+							"name", WORD, INT_CONST, "object", "destination", "object-group", 
+							"crypto", "certificate", "PIX", "ASA", "hostname", "access-list", 
+							"controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "destination" }
+						is matched.
+						Rule Reference: dst_port_spec
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ 
+								EOF, NEWLINE, "quit", "ip", "names", 
+								"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+								"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+								"interface", LINE_COMMENT, "exit", COLON_COMMENT
+							 }
+						is matched.
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->commitNamedTCPUDPServiceObject();
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: service_tcp_udp
+	
+	
+	*** Parser Rule: service_other
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "service" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "service" }
+			is matched.
+			Match token SERVICE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							"ip", INT_CONST, "ah", "eigrp", "esp", 
+							"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+							"ospf", "pcp", "pim", PPTP, SNP
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ 
+								"ip", "ah", "eigrp", "esp", "gre", 
+								"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+								"pcp", "pim", PPTP, SNP
+							 }
+						is matched.
+						Rule Reference: ip_protocol_names
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->protocol = LT(0)->getText();
+			importer->commitNamedIPServiceObject();
+			*dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: service_other
+	
+	
+	*** Parser Rule: src_port_spec
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "source" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "source" }
+			is matched.
+			Match token SOURCE
+			Rule Reference: xoperator
+			ACTION: 
+			importer->SaveTmpPortToSrc();
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "destination", "object-group", 
+				"crypto", "certificate", "PIX", "ASA", "hostname", "access-list", 
+				"controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: src_port_spec
+	
+	
+	*** Parser Rule: dst_port_spec
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "destination" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "destination" }
+			is matched.
+			Match token DESTINATION
+			Rule Reference: xoperator
+			ACTION: 
+			importer->SaveTmpPortToDst();
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: dst_port_spec
+	
+	
+	*** Parser Rule: xoperator
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "range", "eq", "gt", "lt", "neq" }
+			This block has multiple alternatives:
+				
+				Alternate(1) will be taken IF:
+				The lookahead set: 
+					{ "eq", "gt", "lt", "neq" }
+				is matched.
+				Rule Reference: single_port_op
+				
+				Otherwise, Alternate(2) will be taken IF:
+				The lookahead set: 
+					{ "range" }
+				is matched.
+				Rule Reference: port_range
+				
+				OTHERWISE, a NoViableAlt exception will be thrown
+				
+			End of alternatives
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"destination", "object-group", "crypto", "certificate", "PIX", "ASA", 
+				"hostname", "access-list", "any", "log", "log-input", "established", 
+				"fragments", "time-range", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
+			 }
+	*** End Parser Rule: xoperator
+	
+	
+	*** Parser Rule: object_group_network_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ NEWLINE }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ NEWLINE }
+			is matched.
+			Match token NEWLINE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "description", "group-object", "network-object" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: object_group_description
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "group-object" }
+						is matched.
+						Rule Reference: group_object
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "network-object" }
+						is matched.
+						Rule Reference: network_object
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_network_parameters
+	
+	
+	*** Parser Rule: object_group_description
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "description" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "description" }
+			is matched.
+			Match token DESCRIPTION
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			*dbg << LT(1)->getLine() << ":";
+			std::string descr;
+			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+			{
+			descr += LT(1)->getText() + " ";
+			consume();
+			}
+			importer->setObjectGroupDescription(descr);
+			*dbg << " DESCRIPTION " << descr << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_description
+	
+	
+	*** Parser Rule: group_object
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "group-object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "group-object" }
+			is matched.
+			Match token GROUP_OBJECT
+			Match token WORD, label=name
+			ACTION: 
+			importer->clearTempVars();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			importer->addNamedObjectToObjectGroup(name->getText());
+			*dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: group_object
+	
+	
+	*** Parser Rule: network_object
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "network-object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "network-object" }
+			is matched.
+			Match token NETWORK_OBJECT
+			ACTION: 
+			importer->clearTempVars();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ IPV4, INT_CONST, "object", "host" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ IPV4, INT_CONST }
+						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ IPV4, INT_CONST }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ IPV4 }
+									is matched.
+									Start of alternative block.
+										Start of an alternative block.
+											The lookahead set for this block is:
+												{ IPV4 }
+											This block has a single alternative
+											
+											Alternate(1) will be taken IF:
+											The lookahead set: 
+												{ IPV4 }
+											is matched.
+											Match token IPV4, label=a
+											Match token IPV4, label=nm
+											
+											OTHERWISE, a NoViableAlt exception will be thrown
+											
+										End of alternative block.
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST, label=v6
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						if (a)
+						{
+						importer->tmp_a = a->getText();
+						importer->tmp_nm = nm->getText();
+						importer->addNetworkToObjectGroup();
+						*dbg << a->getText() << "/" << nm->getText();
+						}
+						if (v6)
+						{
+						importer->addMessageToLog(
+						"Parser warning: IPv6 import is not supported. ");
+						consumeUntil(NEWLINE);
+						}
+						
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "host" }
+						is matched.
+						Match token HOST
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ IPV4, INT_CONST }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ IPV4 }
+									is matched.
+									Match token IPV4, label=h
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST, label=hv6
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						if (h)
+						{
+						importer->tmp_a = h->getText();
+						importer->tmp_nm = "255.255.255.255";
+						importer->addNetworkToObjectGroup();
+						*dbg << h->getText() << "/255.255.255.255";
+						}
+						if (hv6)
+						{
+						importer->addMessageToLog(
+						"Parser warning: IPv6 import is not supported. ");
+						consumeUntil(NEWLINE);
+						}
+						
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "object" }
+						is matched.
+						Match token OBJECT
+						Match token WORD, label=name
+						ACTION: 
+						importer->addNamedObjectToObjectGroup(name->getText());
+						*dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+						
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: network_object
+	
+	
+	*** Parser Rule: object_group_protocol_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ NEWLINE }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ NEWLINE }
+			is matched.
+			Match token NEWLINE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "description", "group-object", "protocol-object" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: object_group_description
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "group-object" }
+						is matched.
+						Rule Reference: group_object
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "protocol-object" }
+						is matched.
+						Rule Reference: protocol_object
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_protocol_parameters
+	
+	
+	*** Parser Rule: protocol_object
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "protocol-object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "protocol-object" }
+			is matched.
+			Match token PROTOCOL_OBJECT
+			ACTION: 
+			importer->clearTempVars();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							"ip", INT_CONST, "ah", "eigrp", "esp", 
+							"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+							"ospf", "pcp", "pim", PPTP, SNP, "object"
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ 
+								"ip", INT_CONST, "ah", "eigrp", "esp", 
+								"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+								"ospf", "pcp", "pim", PPTP, SNP
+							 }
+						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ 
+										"ip", INT_CONST, "ah", "eigrp", "esp", 
+										"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+										"ospf", "pcp", "pim", PPTP, SNP
+									 }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ 
+											"ip", "ah", "eigrp", "esp", "gre", 
+											"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+											"pcp", "pim", PPTP, SNP
+										 }
+									is matched.
+									Rule Reference: ip_protocol_names
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->setCurrentLineNumber(LT(0)->getLine());
+						importer->protocol = LT(0)->getText();
+						importer->addIPServiceToObjectGroup();
+						*dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+						
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "object" }
+						is matched.
+						Match token OBJECT
+						Match token WORD, label=name
+						ACTION: 
+						importer->addNamedObjectToObjectGroup(name->getText());
+						*dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+						
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: protocol_object
+	
+	
+	*** Parser Rule: object_group_icmp_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ NEWLINE }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ NEWLINE }
+			is matched.
+			Match token NEWLINE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "description", "group-object", "icmp-object" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: object_group_description
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "group-object" }
+						is matched.
+						Rule Reference: group_object
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "icmp-object" }
+						is matched.
+						Rule Reference: icmp_object
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_icmp_parameters
+	
+	
+	*** Parser Rule: icmp_object
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "icmp-object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "icmp-object" }
+			is matched.
+			Match token ICMP_OBJECT
+			ACTION: 
+			importer->clearTempVars();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ WORD, INT_CONST, "object" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ WORD, INT_CONST }
+						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ WORD, INT_CONST }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST, label=icmp_type
+									ACTION: 
+									importer->icmp_type = LT(0)->getText();
+									
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ WORD }
+									is matched.
+									Match token WORD, label=icmp_word
+									ACTION: 
+									importer->icmp_spec = icmp_word->getText();
+									
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->addICMPServiceToObjectGroup();
+						*dbg << " SERVICE ICMP " << LT(0)->getText() << " ";
+						
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "object" }
+						is matched.
+						Match token OBJECT
+						Match token WORD, label=name
+						ACTION: 
+						importer->addNamedObjectToObjectGroup(name->getText());
+						*dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+						
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: icmp_object
+	
+	
+	*** Parser Rule: object_group_service_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ NEWLINE }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ NEWLINE }
+			is matched.
+			Match token NEWLINE
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ "description", "group-object", "service-object" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: object_group_description
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "group-object" }
+						is matched.
+						Rule Reference: group_object
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "service-object" }
+						is matched.
+						Rule Reference: service_object
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: object_group_service_parameters
+	
+	
+	*** Parser Rule: service_object
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "service-object" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "service-object" }
+			is matched.
+			Match token SERVICE_OBJECT
+			ACTION: 
+			importer->clearTempVars();
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							"ip", INT_CONST, "ah", "eigrp", "esp", 
+							"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+							"ospf", "pcp", "pim", PPTP, SNP, "object", 
+							"icmp", "tcp", "udp"
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ 
+								"ip", INT_CONST, "ah", "eigrp", "esp", 
+								"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+								"ospf", "pcp", "pim", PPTP, SNP
+							 }
+						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ 
+										"ip", INT_CONST, "ah", "eigrp", "esp", 
+										"gre", "igmp", "igrp", "ipinip", IPSEC, "nos", 
+										"ospf", "pcp", "pim", PPTP, SNP
+									 }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ 
+											"ip", "ah", "eigrp", "esp", "gre", 
+											"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+											"pcp", "pim", PPTP, SNP
+										 }
+									is matched.
+									Rule Reference: ip_protocol_names
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->setCurrentLineNumber(LT(0)->getLine());
+						importer->protocol = LT(0)->getText();
+						importer->addIPServiceToObjectGroup();
+						*dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+						
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "tcp", "udp" }
+						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ "tcp", "udp" }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ "tcp" }
+									is matched.
+									Match token TCP
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ "udp" }
+									is matched.
+									Match token UDP
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->protocol = LT(0)->getText();
+						*dbg << " SERVICE TCP/UDP" << LT(0)->getText() << " ";
+						
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ 
+										EOF, NEWLINE, "quit", "ip", "names", 
+										"name", WORD, INT_CONST, "object", "source", "destination", 
+										"object-group", "crypto", "certificate", "PIX", "ASA", "hostname", 
+										"access-list", "controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+									 }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ "source" }
+									is matched.
+									Rule Reference: src_port_spec
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ 
+											EOF, NEWLINE, "quit", "ip", "names", 
+											"name", WORD, INT_CONST, "object", "destination", "object-group", 
+											"crypto", "certificate", "PIX", "ASA", "hostname", "access-list", 
+											"controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+										 }
+									is matched.
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ 
+										EOF, NEWLINE, "quit", "ip", "names", 
+										"name", WORD, INT_CONST, "object", "destination", "object-group", 
+										"crypto", "certificate", "PIX", "ASA", "hostname", "access-list", 
+										"controller", "interface", LINE_COMMENT, "exit", COLON_COMMENT
+									 }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ "destination" }
+									is matched.
+									Rule Reference: dst_port_spec
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ 
+											EOF, NEWLINE, "quit", "ip", "names", 
+											"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+											"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+											"interface", LINE_COMMENT, "exit", COLON_COMMENT
+										 }
+									is matched.
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->addTCPUDPServiceToObjectGroup();
+						
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "icmp" }
+						is matched.
+						Match token ICMP
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ WORD, INT_CONST }
+								This block has multiple alternatives:
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ INT_CONST }
+									is matched.
+									Match token INT_CONST, label=icmp_type
+									ACTION: 
+									importer->icmp_type = LT(0)->getText();
+									
+									
+									Otherwise, Alternate(2) will be taken IF:
+									The lookahead set: 
+										{ WORD }
+									is matched.
+									Match token WORD, label=icmp_word
+									ACTION: 
+									importer->icmp_spec = icmp_word->getText();
+									
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternatives
+							End of alternative block.
+						ACTION: 
+						importer->addICMPServiceToObjectGroup();
+						*dbg << " SERVICE ICMP " << LT(0)->getText() << " ";
+						
+						
+						Otherwise, Alternate(4) will be taken IF:
+						The lookahead set: 
+							{ "object" }
+						is matched.
+						Match token OBJECT
+						Match token WORD, label=name
+						ACTION: 
+						importer->addNamedObjectToObjectGroup(name->getText());
+						*dbg << " GROUP MEMBER " << name->getLine() << std::endl;
+						
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
+				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
+			 }
+	*** End Parser Rule: service_object
 	
 	
 	*** Parser Rule: permit_ext
@@ -873,6 +3277,7 @@ These are the member declarations that you defined for your class:
 			is matched.
 			Match token PERMIT
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "permit";
 			*dbg << LT(1)->getLine() << ":" << " permit ";
@@ -890,9 +3295,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: permit_ext
 	
@@ -911,6 +3317,7 @@ These are the member declarations that you defined for your class:
 			is matched.
 			Match token DENY
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newPolicyRule();
 			importer->action = "deny";
 			*dbg << LT(1)->getLine() << ":" << " deny   ";
@@ -928,9 +3335,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: deny_ext
 	
@@ -949,6 +3357,7 @@ These are the member declarations that you defined for your class:
 			is matched.
 			Match token REMARK
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			*dbg << LT(1)->getLine() << ":";
 			std::string rem;
 			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -968,9 +3377,10 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				EOF, NEWLINE, "ip", "quit", WORD, 
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", WORD, INT_CONST, "object", "object-group", "crypto", 
 				"certificate", "PIX", "ASA", "hostname", "access-list", "controller", 
-				"interface", "description", "shutdown", "exit", LINE_COMMENT
+				"interface", LINE_COMMENT, "exit", COLON_COMMENT
 			 }
 	*** End Parser Rule: remark
 	
@@ -980,22 +3390,41 @@ These are the member declarations that you defined for your class:
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "ip", WORD, "icmp", "tcp", "udp" }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP, "icmp", "tcp", 
+					"udp"
+				 }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ "ip", WORD, "icmp", "tcp", "udp" }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP, "icmp", "tcp", 
+					"udp"
+				 }
 			is matched.
 			Start of alternative block.
 				Start of an alternative block.
 					The lookahead set for this block is:
-						{ "ip", WORD, "icmp", "tcp", "udp" }
+						{ 
+							"ip", "ah", "eigrp", "esp", "gre", 
+							"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+							"pcp", "pim", PPTP, SNP, "icmp", "tcp", 
+							"udp"
+						 }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ "ip", WORD }
+							{ 
+								"ip", "ah", "eigrp", "esp", "gre", 
+								"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+								"pcp", "pim", PPTP, SNP
+							 }
 						is matched.
 						Rule Reference: ip_protocols
 						Rule Reference: hostaddr_ext
@@ -1203,21 +3632,21 @@ These are the member declarations that you defined for your class:
 							Start of an alternative block.
 								The lookahead set for this block is:
 									{ 
-										"eq", "gt", "lt", "neq", "range", 
-										"host", IPV4, "any"
+										IPV4, "host", "range", "eq", "gt", 
+										"lt", "neq", "any"
 									 }
 								This block has multiple alternatives:
 									
 									Alternate(1) will be taken IF:
 									The lookahead set: 
-										{ "eq", "gt", "lt", "neq", "range" }
+										{ "range", "eq", "gt", "lt", "neq" }
 									is matched.
 									Rule Reference: xoperator
 									ACTION: importer->SaveTmpPortToSrc();
 									
 									Otherwise, Alternate(2) will be taken IF:
 									The lookahead set: 
-										{ "host", IPV4, "any" }
+										{ IPV4, "host", "any" }
 									is matched.
 									
 									OTHERWISE, a NoViableAlt exception will be thrown
@@ -1230,14 +3659,14 @@ These are the member declarations that you defined for your class:
 							Start of an alternative block.
 								The lookahead set for this block is:
 									{ 
-										NEWLINE, "eq", "gt", "lt", "neq", 
-										"range", "log", "log-input", "established", "fragments", "time-range"
+										NEWLINE, "range", "eq", "gt", "lt", 
+										"neq", "log", "log-input", "established", "fragments", "time-range"
 									 }
 								This block has multiple alternatives:
 									
 									Alternate(1) will be taken IF:
 									The lookahead set: 
-										{ "eq", "gt", "lt", "neq", "range" }
+										{ "range", "eq", "gt", "lt", "neq" }
 									is matched.
 									Rule Reference: xoperator
 									ACTION: importer->SaveTmpPortToDst();
@@ -1365,35 +3794,22 @@ These are the member declarations that you defined for your class:
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "ip", WORD }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP
+				 }
 			This block has a single alternative
 			
 			Alternate(1) will be taken IF:
 			The lookahead set: 
-				{ "ip", WORD }
+				{ 
+					"ip", "ah", "eigrp", "esp", "gre", 
+					"igmp", "igrp", "ipinip", IPSEC, "nos", "ospf", 
+					"pcp", "pim", PPTP, SNP
+				 }
 			is matched.
-			Start of alternative block.
-				Start of an alternative block.
-					The lookahead set for this block is:
-						{ "ip", WORD }
-					This block has multiple alternatives:
-						
-						Alternate(1) will be taken IF:
-						The lookahead set: 
-							{ "ip" }
-						is matched.
-						Match token IP
-						
-						Otherwise, Alternate(2) will be taken IF:
-						The lookahead set: 
-							{ WORD }
-						is matched.
-						Match token WORD
-						
-						OTHERWISE, a NoViableAlt exception will be thrown
-						
-					End of alternatives
-				End of alternative block.
+			Rule Reference: ip_protocol_names
 			ACTION: 
 			importer->protocol = LT(0)->getText();
 			*dbg << "protocol " << LT(0)->getText() << " ";
@@ -1405,7 +3821,7 @@ These are the member declarations that you defined for your class:
 		Default error-handling will be generated, which catches all
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
-			k==1: {"host", IPV4, "any" }
+			k==1: {IPV4, "host", "any" }
 	*** End Parser Rule: ip_protocols
 	
 	
@@ -1414,7 +3830,7 @@ These are the member declarations that you defined for your class:
 		Return value: none
 		Start of an alternative block.
 			The lookahead set for this block is:
-				{ "host", IPV4, "any" }
+				{ IPV4, "host", "any" }
 			This block has multiple alternatives:
 				
 				Alternate(1) will be taken IF:
@@ -1439,8 +3855,8 @@ These are the member declarations that you defined for your class:
 					End of alternative block.
 				ACTION: 
 				importer->tmp_a = h->getText();
-				importer->tmp_nm = "0.0.0.0";
-				*dbg << h->getText() << "/0.0.0.0";
+				importer->tmp_nm = "255.255.255.255";
+				*dbg << h->getText() << "/255.255.255.255";
 				
 				
 				Otherwise, Alternate(2) will be taken IF:
@@ -1488,8 +3904,8 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				NEWLINE, WORD, INT_CONST, "eq", "gt", 
-				"lt", "neq", "range", "host", IPV4, "any", 
+				NEWLINE, IPV4, WORD, INT_CONST, "host", 
+				"range", "eq", "gt", "lt", "neq", "any", 
 				"log", "log-input", "established", "fragments", "time-range"
 			 }
 	*** End Parser Rule: hostaddr_ext
@@ -1688,40 +4104,6 @@ These are the member declarations that you defined for your class:
 	*** End Parser Rule: icmp_spec
 	
 	
-	*** Parser Rule: xoperator
-		Access: public
-		Return value: none
-		Start of an alternative block.
-			The lookahead set for this block is:
-				{ "eq", "gt", "lt", "neq", "range" }
-			This block has multiple alternatives:
-				
-				Alternate(1) will be taken IF:
-				The lookahead set: 
-					{ "eq", "gt", "lt", "neq" }
-				is matched.
-				Rule Reference: single_port_op
-				
-				Otherwise, Alternate(2) will be taken IF:
-				The lookahead set: 
-					{ "range" }
-				is matched.
-				Rule Reference: port_range
-				
-				OTHERWISE, a NoViableAlt exception will be thrown
-				
-			End of alternatives
-		End of alternative block.
-		Default error-handling will be generated, which catches all
-		parser exceptions and consumes tokens until the follow-set is seen.
-		The follow set for this rule is:
-			k==1: {
-				NEWLINE, "host", IPV4, "any", "log", 
-				"log-input", "established", "fragments", "time-range"
-			 }
-	*** End Parser Rule: xoperator
-	
-	
 	*** Parser Rule: established
 		Access: public
 		Return value: none
@@ -1809,8 +4191,12 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				NEWLINE, "host", IPV4, "any", "log", 
-				"log-input", "established", "fragments", "time-range"
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"destination", "object-group", "crypto", "certificate", "PIX", "ASA", 
+				"hostname", "access-list", "any", "log", "log-input", "established", 
+				"fragments", "time-range", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
 			 }
 	*** End Parser Rule: single_port_op
 	
@@ -1827,13 +4213,12 @@ These are the member declarations that you defined for your class:
 			The lookahead set: 
 				{ "range" }
 			is matched.
-			Match token P_RANGE
+			Match token RANGE
+			Rule Reference: pair_of_ports_spec
 			ACTION: 
-			importer->tmp_port_op = LT(0)->getText();
-			*dbg << LT(0)->getText() << " ";
+			importer->tmp_port_op = "range";
+			*dbg << "range ";
 			
-			Rule Reference: port_spec
-			Rule Reference: port_spec
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
 			
@@ -1842,8 +4227,12 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				NEWLINE, "host", IPV4, "any", "log", 
-				"log-input", "established", "fragments", "time-range"
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"destination", "object-group", "crypto", "certificate", "PIX", "ASA", 
+				"hostname", "access-list", "any", "log", "log-input", "established", 
+				"fragments", "time-range", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
 			 }
 	*** End Parser Rule: port_range
 	
@@ -1883,8 +4272,8 @@ These are the member declarations that you defined for your class:
 					End of alternatives
 				End of alternative block.
 			ACTION: 
-			importer->tmp_port_spec += (std::string(" ") + LT(0)->getText());
-			*dbg << LT(0)->getText() << " ";
+			importer->tmp_port_spec = (std::string(" ") + LT(0)->getText());
+			*dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
 			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
@@ -1894,10 +4283,97 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {
-				NEWLINE, WORD, INT_CONST, "host", IPV4, 
-				"any", "log", "log-input", "established", "fragments", "time-range"
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"destination", "object-group", "crypto", "certificate", "PIX", "ASA", 
+				"hostname", "access-list", "any", "log", "log-input", "established", 
+				"fragments", "time-range", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
 			 }
 	*** End Parser Rule: port_spec
+	
+	
+	*** Parser Rule: pair_of_ports_spec
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ WORD, INT_CONST }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ WORD, INT_CONST }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ WORD, INT_CONST }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ WORD }
+						is matched.
+						Match token WORD, label=s1
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST, label=s2
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ WORD, INT_CONST }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ WORD }
+						is matched.
+						Match token WORD, label=e1
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ INT_CONST }
+						is matched.
+						Match token INT_CONST, label=e2
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			importer->tmp_port_spec = "";
+			if (s1) importer->tmp_port_spec += s1->getText();
+			if (s2) importer->tmp_port_spec += s2->getText();
+			importer->tmp_port_spec += " ";
+			if (e1) importer->tmp_port_spec += e1->getText();
+			if (e2) importer->tmp_port_spec += e2->getText();
+			*dbg << "pair of ports: " << importer->tmp_port_spec;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {
+				EOF, NEWLINE, "quit", "ip", "names", 
+				"name", IPV4, WORD, INT_CONST, "object", "host", 
+				"destination", "object-group", "crypto", "certificate", "PIX", "ASA", 
+				"hostname", "access-list", "any", "log", "log-input", "established", 
+				"fragments", "time-range", "controller", "interface", LINE_COMMENT, "exit", 
+				COLON_COMMENT
+			 }
+	*** End Parser Rule: pair_of_ports_spec
 	
 	
 	*** Parser Rule: hostaddr_std
@@ -1984,6 +4460,247 @@ These are the member declarations that you defined for your class:
 	*** End Parser Rule: hostaddr_std
 	
 	
+	*** Parser Rule: interface_description
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "description" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "description" }
+			is matched.
+			Match token DESCRIPTION
+			ACTION: 
+			*dbg << LT(1)->getLine() << ":";
+			std::string descr;
+			while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+			{
+			descr += LT(1)->getText() + " ";
+			consume();
+			}
+			importer->setInterfaceComment( descr );
+			*dbg << " DESCRIPTION " << descr << std::endl;
+			//consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: interface_description
+	
+	
+	*** Parser Rule: interface_parameters
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ NEWLINE }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ NEWLINE }
+			is matched.
+			Match token NEWLINE
+			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
+			
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							"ip", "igmp", "ospf", "pim", "description", 
+							"vlan", "speed", "duplex", "ddns", "forward", "delay", 
+							"hold-time", "ipv6", "mac-address", "multicast", PPPOE, "rip", 
+							"no", "security-level", "nameif", "shutdown", "switchport"
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "ip" }
+						is matched.
+						Rule Reference: intf_address
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "vlan" }
+						is matched.
+						Rule Reference: vlan_interface
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "security-level" }
+						is matched.
+						Rule Reference: sec_level
+						
+						Otherwise, Alternate(4) will be taken IF:
+						The lookahead set: 
+							{ "nameif" }
+						is matched.
+						Rule Reference: nameif
+						
+						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							{ "description" }
+						is matched.
+						Rule Reference: interface_description
+						
+						Otherwise, Alternate(6) will be taken IF:
+						The lookahead set: 
+							{ "switchport" }
+						is matched.
+						Rule Reference: switchport
+						
+						Otherwise, Alternate(7) will be taken IF:
+						The lookahead set: 
+							{ "shutdown" }
+						is matched.
+						Rule Reference: shutdown
+						
+						Otherwise, Alternate(8) will be taken IF:
+						The lookahead set: 
+							{ "no" }
+						is matched.
+						Rule Reference: interface_no_commands
+						
+						Otherwise, Alternate(9) will be taken IF:
+						The lookahead set: 
+							{ 
+								"igmp", "ospf", "pim", "speed", "duplex", 
+								"ddns", "forward", "delay", "hold-time", "ipv6", "mac-address", 
+								"multicast", PPPOE, "rip"
+							 }
+						is matched.
+						Rule Reference: unsupported_interface_commands
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: interface_parameters
+	
+	
+	*** Parser Rule: intf_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "ip" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "ip" }
+			is matched.
+			Match token IP
+			Match token ADDRESS
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ IPV4, WORD, "dhcp" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ WORD }
+						is matched.
+						Rule Reference: v6_ip_address
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ IPV4, "dhcp" }
+						is matched.
+						Rule Reference: v7_ip_address
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: intf_address
+	
+	
+	*** Parser Rule: vlan_interface
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "vlan" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "vlan" }
+			is matched.
+			Match token VLAN
+			Match token INT_CONST, label=vlan_id
+			ACTION: 
+			importer->setInterfaceVlanId(vlan_id->getText());
+			*dbg << " VLAN: " << vlan_id->getText() << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: vlan_interface
+	
+	
+	*** Parser Rule: sec_level
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "security-level" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "security-level" }
+			is matched.
+			Match token SEC_LEVEL
+			Match token INT_CONST, label=sec_level
+			ACTION: 
+			importer->setInterfaceSecurityLevel(sec_level->getText());
+			*dbg << "SEC_LEVEL: " << sec_level->getText() << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: sec_level
+	
+	
 	*** Parser Rule: nameif
 		Access: public
 		Return value: none
@@ -1997,70 +4714,65 @@ These are the member declarations that you defined for your class:
 				{ "nameif" }
 			is matched.
 			Match token NAMEIF
-			Match token WORD, label=in
-			ACTION: 
-			importer->addInterfaceLabel( in->getText() );
-			*dbg << in->getLine() << ":"
-			<< " INTRFACE LABEL: " << in->getText() << std::endl;
-			
-			Match token NEWLINE
-			
-			OTHERWISE, a NoViableAlt exception will be thrown
-			
-		End of alternative block.
-		Default error-handling will be generated, which catches all
-		parser exceptions and consumes tokens until the follow-set is seen.
-		The follow set for this rule is:
-			k==1: {EOF }
-	*** End Parser Rule: nameif
-	
-	
-	*** Parser Rule: intf_address
-		Access: public
-		Return value: none
-		Start of an alternative block.
-			The lookahead set for this block is:
-				{ "address" }
-			This block has a single alternative
-			
-			Alternate(1) will be taken IF:
-			The lookahead set: 
-				{ "address" }
-			is matched.
-			Match token ADDRESS
-			Match token IPV4, label=a
-			Match token IPV4, label=m
+			Match token WORD, label=p_intf
 			Start of alternative block.
 				Start of an alternative block.
 					The lookahead set for this block is:
-						{ NEWLINE, "secondary" }
+						{ NEWLINE, WORD }
 					This block has multiple alternatives:
 						
 						Alternate(1) will be taken IF:
 						The lookahead set: 
-							{ "secondary" }
+							{ WORD }
+						is matched, AND the syntactic predicate:
+							Start of alternative block.
+								Start of an alternative block.
+									The lookahead set for this block is:
+										{ WORD }
+									This block has a single alternative
+									
+									Alternate(1) will be taken IF:
+									The lookahead set: 
+										{ WORD }
+									is matched.
+									Match token WORD
+									
+									OTHERWISE, a NoViableAlt exception will be thrown
+									
+								End of alternative block.
 						is matched.
-						Match token SECONDARY, label=s
+						Match token WORD, label=intf_label
+						Match token WORD, label=sec_level
 						
 						Otherwise, Alternate(2) will be taken IF:
 						The lookahead set: 
 							{ NEWLINE }
 						is matched.
+						Start of alternative block.
+							Start of an alternative block.
+								The lookahead set for this block is:
+									{ NEWLINE }
+								This block has a single alternative
+								
+								Alternate(1) will be taken IF:
+								The lookahead set: 
+									{ NEWLINE }
+								is matched.
+								
+								OTHERWISE, a NoViableAlt exception will be thrown
+								
+							End of alternative block.
 						
 						OTHERWISE, a NoViableAlt exception will be thrown
 						
 					End of alternatives
 				End of alternative block.
 			ACTION: 
-			importer->addInterfaceAddress(a->getText(), m->getText());
-			*dbg << LT(1)->getLine() << ":"
-			<< " INTRFACE ADDRESS: " << a->getText()
-			<< "/" << m->getText() << " ";
-			if (s)
-			{
-			*dbg << s->getText();
-			}
-			*dbg <<  std::endl;
+			std::string label = (intf_label) ? intf_label->getText() : "";
+			std::string seclevel = (sec_level) ? sec_level->getText() : "";
+			importer->setInterfaceParametes(p_intf->getText(), label, seclevel);
+			*dbg << " NAMEIF: "
+			<< p_intf->getText() << label << seclevel << std::endl;
 			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
@@ -2070,7 +4782,7 @@ These are the member declarations that you defined for your class:
 		parser exceptions and consumes tokens until the follow-set is seen.
 		The follow set for this rule is:
 			k==1: {NEWLINE }
-	*** End Parser Rule: intf_address
+	*** End Parser Rule: nameif
 	
 	
 	*** Parser Rule: switchport
@@ -2088,8 +4800,10 @@ These are the member declarations that you defined for your class:
 			Match token SWITCHPORT
 			Match token ACCESS
 			Match token VLAN
-			Match token WORD, label=vlan_num
+			Match token INT_CONST, label=vlan_num
 			ACTION: 
+			importer->addMessageToLog("Switch port vlan " + vlan_num->getText());
+			*dbg << "Switch port vlan " <<  vlan_num->getText() << std::endl;
 			
 			
 			OTHERWISE, a NoViableAlt exception will be thrown
@@ -2100,6 +4814,428 @@ These are the member declarations that you defined for your class:
 		The follow set for this rule is:
 			k==1: {NEWLINE }
 	*** End Parser Rule: switchport
+	
+	
+	*** Parser Rule: shutdown
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "shutdown" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "shutdown" }
+			is matched.
+			Match token SHUTDOWN
+			ACTION: 
+			importer->ignoreCurrentInterface();
+			*dbg<< LT(1)->getLine() << ":"
+			<< " INTERFACE SHUTDOWN " << std::endl;
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: shutdown
+	
+	
+	*** Parser Rule: interface_no_commands
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "no" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "no" }
+			is matched.
+			Match token NO
+			Match token WORD
+			ACTION: 
+			*dbg << " INTERFACE \"NO\" COMMAND: "
+			<< LT(0)->getText() << std::endl;
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: interface_no_commands
+	
+	
+	*** Parser Rule: unsupported_interface_commands
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ 
+					"igmp", "ospf", "pim", "speed", "duplex", 
+					"ddns", "forward", "delay", "hold-time", "ipv6", "mac-address", 
+					"multicast", PPPOE, "rip"
+				 }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ 
+					"igmp", "ospf", "pim", "speed", "duplex", 
+					"ddns", "forward", "delay", "hold-time", "ipv6", "mac-address", 
+					"multicast", PPPOE, "rip"
+				 }
+			is matched.
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ 
+							"igmp", "ospf", "pim", "speed", "duplex", 
+							"ddns", "forward", "delay", "hold-time", "ipv6", "mac-address", 
+							"multicast", PPPOE, "rip"
+						 }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "speed" }
+						is matched.
+						Match token SPEED
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ "duplex" }
+						is matched.
+						Match token DUPLEX
+						
+						Otherwise, Alternate(3) will be taken IF:
+						The lookahead set: 
+							{ "ddns" }
+						is matched.
+						Match token DDNS
+						
+						Otherwise, Alternate(4) will be taken IF:
+						The lookahead set: 
+							{ "forward" }
+						is matched.
+						Match token FORWARD
+						
+						Otherwise, Alternate(5) will be taken IF:
+						The lookahead set: 
+							{ "delay" }
+						is matched.
+						Match token DELAY
+						
+						Otherwise, Alternate(6) will be taken IF:
+						The lookahead set: 
+							{ "hold-time" }
+						is matched.
+						Match token HOLD_TIME
+						
+						Otherwise, Alternate(7) will be taken IF:
+						The lookahead set: 
+							{ "igmp" }
+						is matched.
+						Match token IGMP
+						
+						Otherwise, Alternate(8) will be taken IF:
+						The lookahead set: 
+							{ "ipv6" }
+						is matched.
+						Match token IPV6
+						
+						Otherwise, Alternate(9) will be taken IF:
+						The lookahead set: 
+							{ "mac-address" }
+						is matched.
+						Match token MAC_ADDRESS
+						
+						Otherwise, Alternate(10) will be taken IF:
+						The lookahead set: 
+							{ "multicast" }
+						is matched.
+						Match token MULTICAST
+						
+						Otherwise, Alternate(11) will be taken IF:
+						The lookahead set: 
+							{ "ospf" }
+						is matched.
+						Match token OSPF
+						
+						Otherwise, Alternate(12) will be taken IF:
+						The lookahead set: 
+							{ "pim" }
+						is matched.
+						Match token PIM
+						
+						Otherwise, Alternate(13) will be taken IF:
+						The lookahead set: 
+							{ PPPOE }
+						is matched.
+						Match token PPPOE
+						
+						Otherwise, Alternate(14) will be taken IF:
+						The lookahead set: 
+							{ "rip" }
+						is matched.
+						Match token RIP
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			*dbg << " UNSUPPORTED INTERFACE COMMAND: "
+			<< LT(0)->getText() << std::endl;
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: unsupported_interface_commands
+	
+	
+	*** Parser Rule: v6_ip_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				k==1: {WORD }
+				k==2: {IPV4, "dhcp" }
+			This block has multiple alternatives:
+				
+				Alternate(1) will be taken IF:
+				The lookahead set: 
+					k==1: {WORD }
+					k==2: {"dhcp" }
+				is matched.
+				Rule Reference: v6_dhcp_address
+				
+				Otherwise, Alternate(2) will be taken IF:
+				The lookahead set: 
+					k==1: {WORD }
+					k==2: {IPV4 }
+				is matched.
+				Rule Reference: v6_static_address
+				
+				OTHERWISE, a NoViableAlt exception will be thrown
+				
+			End of alternatives
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v6_ip_address
+	
+	
+	*** Parser Rule: v7_ip_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ IPV4, "dhcp" }
+			This block has multiple alternatives:
+				
+				Alternate(1) will be taken IF:
+				The lookahead set: 
+					{ "dhcp" }
+				is matched.
+				Rule Reference: v7_dhcp_address
+				
+				Otherwise, Alternate(2) will be taken IF:
+				The lookahead set: 
+					{ IPV4 }
+				is matched.
+				Rule Reference: v7_static_address
+				
+				OTHERWISE, a NoViableAlt exception will be thrown
+				
+			End of alternatives
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v7_ip_address
+	
+	
+	*** Parser Rule: v6_dhcp_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ WORD }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ WORD }
+			is matched.
+			Match token WORD, label=lbl
+			Match token DHCP, label=dhcp
+			ACTION: 
+			std::string label = lbl->getText();
+			std::string addr = dhcp->getText();
+			importer->addInterfaceAddress(label, addr, "");
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << std::endl;
+			// there can be some other parameters after "dhcp", such as "setroute", "retry" etc.
+			// which we do not support
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v6_dhcp_address
+	
+	
+	*** Parser Rule: v6_static_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ WORD }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ WORD }
+			is matched.
+			Match token WORD, label=lbl
+			Match token IPV4, label=a
+			Match token IPV4, label=m
+			ACTION: 
+			std::string label = lbl->getText();
+			std::string addr = a->getText();
+			std::string netm = m->getText();
+			importer->addInterfaceAddress(label, addr, netm);
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
+			// in case there are some other parameters after address and netmask
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v6_static_address
+	
+	
+	*** Parser Rule: v7_dhcp_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ "dhcp" }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ "dhcp" }
+			is matched.
+			Match token DHCP, label=dhcp
+			ACTION: 
+			std::string addr = dhcp->getText();
+			importer->addInterfaceAddress(addr, "");
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << std::endl;
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v7_dhcp_address
+	
+	
+	*** Parser Rule: v7_static_address
+		Access: public
+		Return value: none
+		Start of an alternative block.
+			The lookahead set for this block is:
+				{ IPV4 }
+			This block has a single alternative
+			
+			Alternate(1) will be taken IF:
+			The lookahead set: 
+				{ IPV4 }
+			is matched.
+			Match token IPV4, label=a
+			Match token IPV4, label=m
+			Start of alternative block.
+				Start of an alternative block.
+					The lookahead set for this block is:
+						{ NEWLINE, "standby" }
+					This block has multiple alternatives:
+						
+						Alternate(1) will be taken IF:
+						The lookahead set: 
+							{ "standby" }
+						is matched.
+						Match token STANDBY, label=s
+						
+						Otherwise, Alternate(2) will be taken IF:
+						The lookahead set: 
+							{ NEWLINE }
+						is matched.
+						
+						OTHERWISE, a NoViableAlt exception will be thrown
+						
+					End of alternatives
+				End of alternative block.
+			ACTION: 
+			std::string addr = a->getText();
+			std::string netm = m->getText();
+			importer->addInterfaceAddress(addr, netm);
+			*dbg << LT(1)->getLine() << ":"
+			<< " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
+			// there can be other parameters after address/netmask pair, such as "standby"
+			// We do not parse them yet.
+			if (s)
+			{
+			importer->addMessageToLog("Parser warning: failover IP detected. "
+			"Failover is not supported by import "
+			"at this time");
+			}
+			consumeUntil(NEWLINE);
+			
+			
+			OTHERWISE, a NoViableAlt exception will be thrown
+			
+		End of alternative block.
+		Default error-handling will be generated, which catches all
+		parser exceptions and consumes tokens until the follow-set is seen.
+		The follow set for this rule is:
+			k==1: {NEWLINE }
+	*** End Parser Rule: v7_static_address
 	
 	
 	*** Parser Rule: access_group_by_name
@@ -2120,6 +5256,7 @@ These are the member declarations that you defined for your class:
 			Match token INTRFACE
 			Match token WORD, label=intf_label
 			ACTION: 
+			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setInterfaceAndDirectionForRuleSet(
 			acln->getText(),
 			intf_label->getText(),

@@ -9,6 +9,7 @@ names
 name 1.2.3.4 gw
 name 192.168.3.0 fake_network
 name 192.168.4.1 inside_ip
+name 2001:0db8:85a3:0000:0000:8a2e:0370:7334 some_ipv6_address
 !
 interface Vlan1
  description inside interface
@@ -93,11 +94,17 @@ object network my-inside-net
 ! ipv6 addresses
 !
 object network ipv6-host-object-1 
+ host 2001:0db8:85a3:0000:0000:8a2e:0370:7334
  description Example of IPv6 host object 
- host 2001::1 
 object network ipv6-network-object-1 
- description IPv6 network object example 
  subnet 2001::/64
+ description IPv6 network object example 
+object network ipv6-host-object-3
+ host fe80::202:b3ff:fe1e:8329
+ description Example of IPv6 host object 
+object network ipv6-host-object-3
+ host a1b2:c3d4:e5f6:b3ff:fe1e:8329:0:1234
+ description Example of IPv6 host object 
 
 ! empty named object definition
 object network dummy-address
@@ -110,6 +117,13 @@ object network internal_subnet_5
 object network dummy-address-1
 object network internal_subnet_6
  subnet 10.10.2.0 255.255.255.0
+!
+object network ipv6-host-object-2
+ host 2001:af::1
+ description Test IPv6 host
+object network host-1
+ host 10.0.0.1
+
 !
 object service smtp 
  service tcp destination eq smtp 

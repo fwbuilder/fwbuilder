@@ -32,7 +32,7 @@ class PIXImporter;
 #line 33 "PIXCfgParser.hpp"
 class CUSTOM_API PIXCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public PIXCfgParserTokenTypes
 {
-#line 73 "pix.g"
+#line 74 "pix.g"
 
 // additional methods and members
 
@@ -157,10 +157,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 135;
+	static const int NUM_TOKENS = 136;
 #else
 	enum {
-		NUM_TOKENS = 135
+		NUM_TOKENS = 136
 	};
 #endif
 	

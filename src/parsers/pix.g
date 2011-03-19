@@ -69,6 +69,7 @@ options
 {
     k = 2;
 //    defaultErrorHandler=false;
+// see http://www.antlr2.org/doc/options.html
 }
 {
 // additional methods and members
@@ -130,11 +131,6 @@ cfgfile :
     ;
 
 //****************************************************************
-
-// ip_commands : IP ( ip_access_list_ext | community_list_command | unknown_ip_command )
-//    ;
-
-//****************************************************************
 quit : QUIT
         {
             consumeUntil(NEWLINE);
@@ -159,12 +155,21 @@ names_section : NAMES
         }
     ;
 
-name_entry : NAME a:IPV4 n:WORD
+name_entry : NAME (a:IPV4 n:WORD) | (v6:IPV6)
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                "Name " + a->getText() + " " + n->getText());
-            *dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
+            if (a)
+            {
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->addMessageToLog(
+                    "Name " + a->getText() + " " + n->getText());
+                *dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
+            }
+            if (v6)
+            {
+                importer->addMessageToLog(
+                    "Parser warning: IPv6 import is not supported. ");
+                consumeUntil(NEWLINE);
+            }
         }
     ;
 
@@ -236,13 +241,28 @@ named_object_description : DESCRIPTION
         }
     ;
 
-host_addr : (HOST h:IPV4)
+// construct such as "host 2001:0db8:85a3:0000:0000:8a2e:0370:7334" does not
+// parse but the parser should not fail catastrophically and should continue
+// working with input stream. This grammar splits words on ":" boundary and
+// so the ipv6 address appears as token INT_CONST (2001), then a word that
+// starts with ':'.
+//
+host_addr : (HOST (h:IPV4 | v6:IPV6))
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->tmp_a = h->getText();
-            importer->tmp_nm = "255.255.255.255";
-            importer->commitNamedAddressObject();
-            *dbg << h->getText() << "/255.255.255.255";
+            if (h)
+            {
+                importer->tmp_a = h->getText();
+                importer->tmp_nm = "255.255.255.255";
+                importer->commitNamedAddressObject();
+                *dbg << h->getText() << "/255.255.255.255";
+            }
+            if (v6)
+            {
+                importer->addMessageToLog(
+                    "Parser warning: IPv6 import is not supported. ");
+                consumeUntil(NEWLINE);
+            }
         }
     ;
 
@@ -256,15 +276,26 @@ range_addr : (RANGE r1:IPV4 r2:IPV4)
         }
     ;
 
-subnet_addr : (SUBNET a:IPV4 nm:IPV4)
+subnet_addr : (SUBNET ((a:IPV4 nm:IPV4) | v6:IPV6))
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->tmp_a = a->getText();
-            importer->tmp_nm = nm->getText();
-            importer->commitNamedAddressObject();
-            *dbg << a->getText() << "/" << nm->getText();
+            if (a)
+            {
+                importer->tmp_a = a->getText();
+                importer->tmp_nm = nm->getText();
+                importer->commitNamedAddressObject();
+                *dbg << a->getText() << "/" << nm->getText();
+            }
+            if (v6)
+            {
+                importer->addMessageToLog(
+                    "Parser warning: IPv6 import is not supported. ");
+                consumeUntil(NEWLINE);
+            }
         }
     ;
+
+
 //****************************************************************
 
 named_object_service : OBJECT SERVICE name:WORD
@@ -415,20 +446,38 @@ network_object : NETWORK_OBJECT
             importer->setCurrentLineNumber(LT(0)->getLine());
         }
         (
-        a:IPV4 nm:IPV4
+        ( (a:IPV4 nm:IPV4) | v6:IPV6 )
         {
-            importer->tmp_a = a->getText();
-            importer->tmp_nm = nm->getText();
-            importer->addNetworkToObjectGroup();
-            *dbg << a->getText() << "/" << nm->getText();
+            if (a)
+            {
+                importer->tmp_a = a->getText();
+                importer->tmp_nm = nm->getText();
+                importer->addNetworkToObjectGroup();
+                *dbg << a->getText() << "/" << nm->getText();
+            }
+            if (v6)
+            {
+                importer->addMessageToLog(
+                    "Parser warning: IPv6 import is not supported. ");
+                consumeUntil(NEWLINE);
+            }
         }
     |
-        HOST h:IPV4
+        HOST ( h:IPV4 | hv6:IPV6)
         {
-            importer->tmp_a = h->getText();
-            importer->tmp_nm = "255.255.255.255";
-            importer->addNetworkToObjectGroup();
-            *dbg << h->getText() << "/255.255.255.255";
+            if (h)
+            {
+                importer->tmp_a = h->getText();
+                importer->tmp_nm = "255.255.255.255";
+                importer->addNetworkToObjectGroup();
+                *dbg << h->getText() << "/255.255.255.255";
+            }
+            if (hv6)
+            {
+                importer->addMessageToLog(
+                    "Parser warning: IPv6 import is not supported. ");
+                consumeUntil(NEWLINE);
+            }
         }
     |
         OBJECT name:WORD
@@ -1040,7 +1089,7 @@ unsupported_interface_commands :
         |
             IGMP
         |
-            IPV6
+            IPV6_C
         |
             MAC_ADDRESS
         |
@@ -1287,7 +1336,7 @@ comment : (LINE_COMMENT | COLON_COMMENT) ;
 class PIXCfgLexer extends Lexer;
 options
 {
-    k = 10;
+    k = 3;
     // ASCII only
     charVocabulary = '\3'..'\377';
 }
@@ -1313,7 +1362,7 @@ tokens
     DDNS = "ddns";
     FORWARD = "forward";
     HOLD_TIME = "hold-time";
-    IPV6 = "ipv6";
+    IPV6_C = "ipv6";
     MAC_ADDRESS = "mac-address";
     MULTICAST = "multicast";
 
@@ -1438,23 +1487,35 @@ protected
 DIGIT : '0'..'9'  ;
 
 protected
-HEXDIGIT : '0'..'9' | 'A'..'F' ;
+HEXDIGIT : 'a'..'f' ;
 
 NUMBER : 
 		(
-            ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )
-            { _ttype = IPV4; }
-		|
-            ( (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ )
+            ( DIGIT ) =>
+                (
+                    ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ ) =>
+                        ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )
+                        { _ttype = IPV4; }
+                |
+                    ( (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ )
+                |
+                    ( DIGIT )+ { _ttype = INT_CONST; }
+                )
         |
-            ( DIGIT )+ { _ttype = INT_CONST; }
-		|
-            ( '0' 'x' ( HEXDIGIT )+ )  { _ttype = HEX_CONST; }   
+            ( ( 'a'..'f' | '0'..'9' )+ COLON ) =>
+                (
+                    ( ( 'a'..'f' | '0'..'9' )+
+                    ( COLON ( 'a'..'f' | '0'..'9' )* )+ )
+                    { _ttype = IPV6; }
+                )
+        |
+            ( 'a'..'z' | 'A'..'Z' | '$' )
+            ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' |
+              '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
+            { _ttype = WORD; }
         )
     ;
 
-WORD : ( 'a'..'z' | 'A'..'Z' | '$' ) ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' | '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
-    ;
 
 STRING : '"' (~'"')* '"';
 
