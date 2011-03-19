@@ -374,7 +374,7 @@ src_port_spec : SOURCE xoperator
         }
     ;
 
-dst_port_spec : DESTINATION xoperator
+dst_port_spec : ( DESTINATION )? xoperator
         {
             importer->SaveTmpPortToDst();
         }
