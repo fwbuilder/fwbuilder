@@ -424,7 +424,7 @@ void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
     }
 }
 
-QString ObjectSignature::ObjectSignature::toString() const
+QString ObjectSignature::toString() const
 {
     QStringList sig;
 
