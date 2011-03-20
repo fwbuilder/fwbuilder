@@ -48,6 +48,8 @@ namespace libfwbuilder
     class Library;
     class Network;
     class NetworkIPv6;
+    class ObjectGroup;
+    class ServiceGroup;
     class TCPService;
     class TagService;
     class UDPService;
@@ -122,6 +124,8 @@ public:
     // tag service
     QString tag;
 
+    QList<int> group_children_ids;
+
     // convenience methods that populate various attributes from
     // strings taken from imported configs
     void setProtocol(const QString &s);
@@ -165,6 +169,8 @@ public:
     virtual void* dispatch(libfwbuilder::CustomService*, void*);
     virtual void* dispatch(libfwbuilder::TagService*, void*);
     virtual void* dispatch(libfwbuilder::DNSName*, void*);
+    virtual void* dispatch(libfwbuilder::ObjectGroup*, void*);
+    virtual void* dispatch(libfwbuilder::ServiceGroup*, void*);
 
 };
 
@@ -203,6 +209,8 @@ public:
                                          const std::string &objType,
                                          const std::string &objName);
 
+    void promoteToNamedObject(libfwbuilder::FWObject *obj,
+                              const std::string &objName);
 };
 
 #endif

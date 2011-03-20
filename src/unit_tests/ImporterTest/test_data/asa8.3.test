@@ -184,7 +184,7 @@ object service udp-src-2
 object service udp-src-3
  service udp source eq 80
 object service udp-src-4
- service udp source neq 80
+ service udp source neq 88
 object service udp-src-5
  service udp source range 1000 1010
 !
@@ -195,7 +195,7 @@ object service udp-dst-2
 object service udp-dst-3
  service udp destination eq 80
 object service udp-dst-4
- service udp destination neq 80
+ service udp destination neq 88
 object service udp-dst-5
  service udp destination range 1001 1011
 !

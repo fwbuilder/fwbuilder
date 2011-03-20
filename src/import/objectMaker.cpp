@@ -29,25 +29,26 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/FWReference.h"
+#include "fwbuilder/Host.h"
 #include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/ICMPService.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/physAddress.h"
-
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/RuleSet.h"
-#include "fwbuilder/FWReference.h"
-#include "fwbuilder/Host.h"
-#include "fwbuilder/FWOptions.h"
 
 #include "QStringListOperators.h"
 #include "getProtoByName.h"
@@ -478,6 +479,10 @@ QString ObjectSignature::ObjectSignature::toString() const
     if (type_name == TagService::TYPENAME)
         sig << tag;
 
+    if (type_name == ServiceGroup::TYPENAME ||
+        type_name == ObjectGroup::TYPENAME)
+        sig << group_children_ids;
+
     return sig.join("| |");
 }
 
@@ -649,6 +654,29 @@ void* ObjectSignature::dispatch(DNSName *obj, void*)
     return this;
 }
 
+void* ObjectSignature::dispatch(ServiceGroup *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
+    for(FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
+    {
+        FWObject *c = FWReference::getObject(*it);
+        group_children_ids << c->getId();
+    }
+    return this;
+}
+
+void* ObjectSignature::dispatch(ObjectGroup *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
+    for(FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
+    {
+        FWObject *c = FWReference::getObject(*it);
+        group_children_ids << c->getId();
+    }
+    return this;
+}
 
 //****************************************************************
 
@@ -689,6 +717,14 @@ void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig, FWObject* 
     ObjectSignature anon_sig = sig;
     anon_sig.object_name = "";
     anon_object_registry[anon_sig.toString()] = (obj!=NULL) ? obj->getId() : -1;
+}
+
+void ObjectMaker::promoteToNamedObject(FWObject *obj, const std::string &objName)
+{
+    ObjectSignature sig;
+    obj->setName(objName);
+    obj->dispatch(&sig, (void*)(NULL));
+    registerNamedObject(sig, obj);
 }
 
 //****************************************************************
