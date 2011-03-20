@@ -1,5 +1,13 @@
 2011-03-19  vadim  <vadim@netcitadel.com>
 
+	* IOSImporter.cpp (createTCPUDPNeqObject): see #2248 implemented
+	import of Cisco IOS and PIX/ASA service configurations using port
+	operation "neq". Since object model in fwbuilder does not provide
+	direct support for "port not equal to" expression, this
+	configuration is conveted into two tcp or udp service objects with
+	port range extending below and above specified port and these two
+	service objects are then placed in a group.
+
 	* objectMaker.cpp (findMatchingObject): see #2240 better
 	deduplication algorithm on import: we consider objects created
 	from in-line address/netmask and port specifications found inside

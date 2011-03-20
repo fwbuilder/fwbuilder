@@ -46,6 +46,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Library.h"
 
 #include <QString>
 #include <QtDebug>
@@ -120,14 +121,87 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
 
 FWObject* IOSImporter::createTCPService()
 {
+    if (src_port_op == "neq" || dst_port_op == "neq")
+        return createTCPUDPNeqObject("tcp");
+
     ObjectSignature sig = packObjectSignatureTCPService();
     return service_maker->createObject(sig);
 }
 
 FWObject* IOSImporter::createUDPService()
 {
+    if (src_port_op == "neq" || dst_port_op == "neq")
+        return createTCPUDPNeqObject("udp");
+
     ObjectSignature sig =  packObjectSignatureUDPService();
     return service_maker->createObject(sig);
+}
+
+/*
+ * create two tcp service objects to cover port ranges before
+ * and after src_port_spec, put them into service group and
+ * return pointer to the group.  We ignore tcp ports and
+ * "established" flag in combination with "neq"
+ *
+ */
+FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
+{
+    ObjectSignature sig;
+
+    if (proto == "tcp") sig.type_name = TCPService::TYPENAME;
+    if (proto == "udp") sig.type_name = UDPService::TYPENAME;
+
+    QString name;
+    FWObject *srv1 = NULL;
+    FWObject *srv2 = NULL;
+
+    if (src_port_op == "neq")
+    {
+        if ( ! dst_port_spec.empty())
+            name = QString("%1 src neq %2 / dst %3")
+                .arg(proto).arg(src_port_spec.c_str()).arg(dst_port_spec.c_str());
+        else
+            name = QString("%1 src neq %2").arg(proto).arg(src_port_spec.c_str());
+
+        sig.setDstPortRangeFromPortOp(
+            dst_port_op.c_str(), dst_port_spec.c_str(), proto);
+
+        sig.setSrcPortRangeFromPortOp("lt", src_port_spec.c_str(), proto);
+        srv1 = service_maker->createObject(sig);
+
+        sig.setSrcPortRangeFromPortOp("gt", src_port_spec.c_str(), proto);
+        srv2 = service_maker->createObject(sig);
+    }
+
+    if (dst_port_op == "neq")
+    {
+        if ( ! src_port_spec.empty())
+            name = QString("%1 src %2 / dst neq %3")
+                .arg(proto).arg(src_port_spec.c_str()).arg(dst_port_spec.c_str());
+        else
+            name = QString("%1 dst neq %2").arg(proto).arg(dst_port_spec.c_str());
+
+        sig.setSrcPortRangeFromPortOp(
+            src_port_op.c_str(), src_port_spec.c_str(), proto);
+
+        sig.setDstPortRangeFromPortOp("lt", dst_port_spec.c_str(), proto);
+        srv1 = service_maker->createObject(sig);
+
+        sig.setDstPortRangeFromPortOp("gt", dst_port_spec.c_str(), proto);
+        srv2 = service_maker->createObject(sig);
+    }
+
+    assert(srv1 != NULL && srv2 != NULL);
+
+    ObjectMaker maker(Library::cast(library));
+    FWObject *grp = 
+        commitObject(
+            maker.createObject(ServiceGroup::TYPENAME, name.toStdString()));
+
+    grp->addRef(srv1);
+    grp->addRef(srv2);
+
+    return grp;
 }
 
 void IOSImporter::ignoreCurrentInterface()

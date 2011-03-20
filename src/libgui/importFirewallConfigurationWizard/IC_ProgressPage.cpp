@@ -89,9 +89,9 @@ int IC_ProgressPage::nextId () const
     Firewall *fw = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->getFirewall();
 
-    // I can move on to the next page only if firewall object has been created
+    // Move on to the next page only if firewall object has been created
     // and the next page only makes sense for pix and fwsm
-    if (fw && (platform == "pix" || platform == "fwsm"))
+    if (platform == "pix" || platform == "fwsm")
         return ImportFirewallConfigurationWizard::Page_NetworkZones;
 
     return -1;

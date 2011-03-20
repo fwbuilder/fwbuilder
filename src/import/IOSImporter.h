@@ -47,10 +47,12 @@ protected:
     
     virtual libfwbuilder::FWObject* createTCPService();
     virtual libfwbuilder::FWObject* createUDPService();
-
+    virtual libfwbuilder::FWObject* createTCPUDPNeqObject(const QString &proto);
+    
     virtual ObjectSignature packObjectSignatureTCPService();
     virtual ObjectSignature packObjectSignatureUDPService();
 
+    
 public:
 
     IOSImporter(libfwbuilder::FWObject *lib,
