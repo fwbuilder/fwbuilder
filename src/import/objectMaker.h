@@ -209,8 +209,8 @@ public:
                                          const std::string &objType,
                                          const std::string &objName);
 
-    void promoteToNamedObject(libfwbuilder::FWObject *obj,
-                              const std::string &objName);
+    libfwbuilder::FWObject*  promoteToNamedObject(libfwbuilder::FWObject *obj,
+                                                  const std::string &objName);
 };
 
 #endif

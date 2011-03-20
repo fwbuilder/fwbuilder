@@ -29,7 +29,9 @@
 
 namespace libfwbuilder
 {
+    class FWObjectDatabase;
     class Firewall;
+    class Library;
 };
 
 
@@ -39,13 +41,17 @@ class ImportFirewallConfigurationWizard : public QWizard
     QString platform;
     QStringList buffer;
     libfwbuilder::Firewall *fw;
+    libfwbuilder::FWObjectDatabase *db_orig;
+    libfwbuilder::FWObjectDatabase *db_copy;
+    libfwbuilder::Library *current_lib;
     
 public:
     enum { Page_FileName, Page_Platform, Page_FirewallName,
            Page_Progess, Page_NetworkZones };
     
-    ImportFirewallConfigurationWizard(QWidget *parent);
-    virtual ~ImportFirewallConfigurationWizard() {}
+    ImportFirewallConfigurationWizard(QWidget *parent,
+                                      libfwbuilder::FWObjectDatabase *db);
+    virtual ~ImportFirewallConfigurationWizard();
 
     QString getPlatform() { return platform; }
     void setPlatform(const QString &s) { platform = s; }
@@ -54,6 +60,9 @@ public:
 
     libfwbuilder::Firewall* getFirewall() { return fw; }
     void setFirewall(libfwbuilder::Firewall* _fw) { fw = _fw; }
+
+    libfwbuilder::FWObjectDatabase* db() { return db_copy; }
+    libfwbuilder::Library* currentLib() { return current_lib; }
     
 public slots:
     virtual void accept();

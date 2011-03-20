@@ -425,10 +425,10 @@ void PIXImporter::commitNamedTCPUDPServiceObject()
     if (protocol == "tcp") obj = createTCPService();
     if (protocol == "udp") obj = createUDPService();
 
-    service_maker->promoteToNamedObject(obj,
-                                        named_object_name.toUtf8().constData());
+    current_named_object = commitObject(
+        service_maker->promoteToNamedObject(
+            obj, named_object_name.toUtf8().constData()));
 
-    current_named_object = commitObject(obj);
     named_objects_registry[named_object_name] = current_named_object;
 }
 

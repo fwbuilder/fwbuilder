@@ -719,12 +719,36 @@ void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig, FWObject* 
     anon_object_registry[anon_sig.toString()] = (obj!=NULL) ? obj->getId() : -1;
 }
 
-void ObjectMaker::promoteToNamedObject(FWObject *obj, const std::string &objName)
+/*
+ * take anonymous object @obj and make named object from it. 
+ *
+ *  - assignin @objName
+ *  - check if this object is in standard objects library and if it is, create
+ *    a copy since we cant rename objects there
+ *
+ * Note that this means that returned pointer may point to a new object
+ * rather than @obj
+ */
+FWObject* ObjectMaker::promoteToNamedObject(FWObject *obj,
+                                            const std::string &objName)
 {
-    ObjectSignature sig;
-    obj->setName(objName);
-    obj->dispatch(&sig, (void*)(NULL));
-    registerNamedObject(sig, obj);
+    if (obj->getLibrary()->getId() == FWObjectDatabase::STANDARD_LIB_ID)
+    {
+        FWObject *new_obj = library->getRoot()->create(obj->getTypeName());
+        new_obj->duplicate(obj);
+        new_obj->setName(objName);
+        ObjectSignature sig;
+        new_obj->dispatch(&sig, (void*)(NULL));
+        registerNamedObject(sig, new_obj);
+        return new_obj;
+    } else
+    {
+        obj->setName(objName);
+        ObjectSignature sig;
+        obj->dispatch(&sig, (void*)(NULL));
+        registerNamedObject(sig, obj);
+        return obj;
+    }
 }
 
 //****************************************************************

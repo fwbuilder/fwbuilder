@@ -886,7 +886,7 @@ void FWWindow::importPolicy()
         if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
             return;
         
-        ImportFirewallConfigurationWizard wiz(this);
+        ImportFirewallConfigurationWizard wiz(this, db());
         wiz.exec();
     }
 }

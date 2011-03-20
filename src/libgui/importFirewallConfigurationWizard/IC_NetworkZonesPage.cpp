@@ -24,8 +24,6 @@
 #include "global.h"
 #include "events.h"
 #include "FWBSettings.h"
-#include "FWWindow.h"
-#include "ProjectPanel.h"
 #include "networkZoneManager.h"
 
 #include "IC_NetworkZonesPage.h"
@@ -68,7 +66,8 @@ void IC_NetworkZonesPage::initializePage()
     m_dialog->iface_nz_list->setHorizontalHeaderLabels(labels);
 
     NetworkZoneManager netzone_manager;
-    netzone_manager.load(mw->activeProject()->db());
+    netzone_manager.load(
+        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->db());
 
     list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator it;

@@ -25,14 +25,12 @@
 #include "global.h"
 #include "events.h"
 #include "FWBSettings.h"
-#include "FWWindow.h"
-#include "ProjectPanel.h"
 
 #include "IC_ProgressPage.h"
 #include "ImporterThread.h"
 #include "ImportFirewallConfigurationWizard.h"
 
-#include "fwbuilder/Policy.h"
+#include "fwbuilder/Library.h"
 
 #include <QString>
 #include <QFileDialog>
@@ -151,8 +149,10 @@ void IC_ProgressPage::initializePage()
         getBufferPtr();
     QString fileName = field("fileName").toString();
 
+    Library *lib = dynamic_cast<ImportFirewallConfigurationWizard*>(
+        wizard())->currentLib();
     importer = new ImporterThread(this,
-                                  mw->getCurrentLib(),
+                                  lib,
                                   *buffer, platform, firewallName, fileName,
                                   deduplicate);
     
@@ -198,28 +198,6 @@ void IC_ProgressPage::importerFinished()
 
         QString fwName = field("firewallName").toString();
         fw->setName(fwName.toUtf8().constData());
-
-        ProjectPanel *pp = mw->activeProject();
-        QString filename = pp->getFileName();
-
-        QCoreApplication::postEvent(
-            mw, new reloadObjectTreeImmediatelyEvent(filename));
-
-        QCoreApplication::postEvent(
-            pp, new showObjectInTreeEvent(filename, fw->getId()));
-
-        QCoreApplication::postEvent(
-            pp, new expandObjectInTreeEvent(
-                mw->activeProject()->getFileName(), fw->getId()));
-
-        QCoreApplication::postEvent(
-            mw, new openObjectInEditorEvent(filename, fw->getId()));
-
-        // Open first created Policy ruleset object
-        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
-        if (first_policy)
-            QCoreApplication::postEvent(
-                pp, new openRulesetEvent(filename, first_policy->getId()));
 
         setFinalPage(false); // this triggers call to nextId()
 

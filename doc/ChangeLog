@@ -1,3 +1,11 @@
+2011-03-20  vadim  <vadim@netcitadel.com>
+
+	* ImportFirewallConfigurationWizard.cpp (accept): see #2253
+	"importer should not creates objects while still in the middle of
+	the wizard". Importer wizard creates new objects in the object
+	tree only when user clicks Finish and abandons results if they
+	click Cancel.
+
 2011-03-19  vadim  <vadim@netcitadel.com>
 
 	* IOSImporter.cpp (createTCPUDPNeqObject): see #2248 implemented
