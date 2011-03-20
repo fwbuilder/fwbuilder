@@ -998,12 +998,24 @@ void FWWindow::prepareFileMenu()
     m_mainWindow->filePropAction->setEnabled(real_file_opened);
     m_mainWindow->filePrintAction->setEnabled(real_file_opened);
     m_mainWindow->libExportAction->setEnabled(real_file_opened);
-    m_mainWindow->libImportAction->setEnabled(true);
-    m_mainWindow->policyImportAction->setEnabled(true);
+
+    FWObject *lib = activeProject()->getCurrentLib();
+    bool f = (
+        lib == NULL ||
+        lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
+        lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
+        lib->isReadOnly()
+    );
+    bool new_object_op_possible = !f;
+
+    m_mainWindow->libImportAction->setEnabled(new_object_op_possible);
+    m_mainWindow->policyImportAction->setEnabled(new_object_op_possible);
 
     m_mainWindow->addToRCSAction->setEnabled(real_file_opened && !in_rcs);
-    m_mainWindow->fileCommitAction->setEnabled(real_file_opened && in_rcs && needs_saving);
-    m_mainWindow->fileDiscardAction->setEnabled(real_file_opened && in_rcs && needs_saving);
+    m_mainWindow->fileCommitAction->setEnabled(
+        real_file_opened && in_rcs && needs_saving);
+    m_mainWindow->fileDiscardAction->setEnabled(
+        real_file_opened && in_rcs && needs_saving);
 
     m_mainWindow->fileNewAction->setEnabled(true);
     m_mainWindow->fileOpenAction->setEnabled(true);

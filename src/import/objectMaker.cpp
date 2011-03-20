@@ -758,6 +758,12 @@ FWObject* ObjectMaker::createObject(FWObject *parent,
                     QObject::tr("Can not add new objects to folder %1 because "
                                 "it is locked").arg(pn));
         }
+        if (parent->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+        {
+            throw ObjectMakerException(
+                QObject::tr("Can not add new objects to the \"Deleted Objects\" "
+                            "library"));
+        }
         parent->add(o);
     }
     o->setName(objName);
