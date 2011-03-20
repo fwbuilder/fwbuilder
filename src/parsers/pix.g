@@ -1054,11 +1054,17 @@ intrface  : INTRFACE in:WORD
             consumeUntil(NEWLINE);
         }
         (
-            interface_description
-        )?
-        (
-            interface_parameters
-        )+
+            (
+                interface_parameters
+            )+
+        |
+            ( )
+            {
+                importer->ignoreCurrentInterface();
+                *dbg<< LT(1)->getLine() << ":"
+                    << " EMPTY INTERFACE " << std::endl;
+            }
+        )
         NEWLINE LINE_COMMENT
     ;
    
@@ -1132,7 +1138,7 @@ unsupported_interface_commands :
         }
     ;
 
-interface_no_commands : NO WORD
+interface_no_commands : NO (NAMEIF | IP | SEC_LEVEL | SHUTDOWN | WORD)
         {
             *dbg << " INTERFACE \"NO\" COMMAND: "
                  << LT(0)->getText() << std::endl;

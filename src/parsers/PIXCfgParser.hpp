@@ -130,12 +130,12 @@ public:
 	public: void port_spec();
 	public: void pair_of_ports_spec();
 	public: void hostaddr_std();
-	public: void interface_description();
 	public: void interface_parameters();
 	public: void intf_address();
 	public: void vlan_interface();
 	public: void sec_level();
 	public: void nameif();
+	public: void interface_description();
 	public: void switchport();
 	public: void shutdown();
 	public: void interface_no_commands();

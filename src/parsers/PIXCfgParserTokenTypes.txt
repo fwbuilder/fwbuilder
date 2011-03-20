@@ -83,8 +83,8 @@ MULTICAST="multicast"=83
 PPPOE=84
 RIP="rip"=85
 NO="no"=86
-SEC_LEVEL="security-level"=87
-NAMEIF="nameif"=88
+NAMEIF="nameif"=87
+SEC_LEVEL="security-level"=88
 SHUTDOWN="shutdown"=89
 ADDRESS="address"=90
 DHCP="dhcp"=91
