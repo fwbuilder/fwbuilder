@@ -44,12 +44,13 @@ public:
 
     void setInvertedNetmasks(bool f) { inverted_netmasks = f; }
     
+    virtual libfwbuilder::FWObject* createObject(ObjectSignature &sig);
+
+protected:
     virtual libfwbuilder::FWObject* createAddress(const QString &a,
-                                                  const QString &nm,
-                                                  bool deduplicate=true);
+                                                  const QString &nm);
     virtual libfwbuilder::FWObject* createAddressRange(const QString &a1,
-                                                       const QString &a2,
-                                                       bool deduplicate=true);
+                                                       const QString &a2);
 
 };
 

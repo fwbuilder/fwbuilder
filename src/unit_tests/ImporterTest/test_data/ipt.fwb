@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300315782" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300583953" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -511,7 +511,7 @@
         <ICMPService id="id71" code="0" type="11" name="icmp 11/0" comment="Created during import of  line 286" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="id72" name="IP" comment="" ro="False">
-        <IPService id="id73" fragm="False" protocol_num="47" name="ip-47" comment="Created during import of  line 95" ro="False"/>
+        <IPService id="id73" any_opt="False" dscp="" fragm="False" lsrr="False" protocol_num="47" rr="False" rtralt="False" rtralt_value="False" short_fragm="False" ssrr="False" tos="" ts="False" name="ip-47" comment="Created during import of  line 95" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="id74" name="TCP" comment="" ro="False">
         <TCPService id="id75" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 22:22" comment="Created during import of  line 18" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
@@ -537,7 +537,7 @@
         <TCPService id="id95" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="True" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 0:0 sr/sr" comment="Created during import of  line 137" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
         <TCPService id="id96" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="True" fin_flag_mask="True" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 0:0 fs/fs" comment="Created during import of  line 138" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
         <TCPService id="id97" ack_flag="False" ack_flag_mask="True" established="False" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="tcp 0:0 / 0:0 fsrpau/N" comment="Created during import of  line 139" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
-        <TCPService id="id98" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 0:0" comment="Created during import of  line 150" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id98" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 8088:8088" comment="Created during import of  line 150" ro="False" src_range_start="0" src_range_end="0" dst_range_start="8088" dst_range_end="8088"/>
         <TCPService id="id99" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 427:427" comment="Created during import of  line 156" ro="False" src_range_start="0" src_range_end="0" dst_range_start="427" dst_range_end="427"/>
         <TCPService id="id100" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 548:548" comment="Created during import of  line 158" ro="False" src_range_start="0" src_range_end="0" dst_range_start="548" dst_range_end="548"/>
         <TCPService id="id101" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 201:201" comment="Created during import of  line 159" ro="False" src_range_start="0" src_range_end="0" dst_range_start="201" dst_range_end="201"/>
@@ -1675,7 +1675,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id470" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Warning: Line 69: Unknown parameter of target REJECT: icmp-foo-prohibited.&#10;Chain INPUT. &#10;Created during import of  line 69">
+          <PolicyRule id="id470" disabled="False" group="" log="False" position="26" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 69">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1693,11 +1693,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject">ICMP admin prohibited</Option>
-              <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id482" disabled="False" group="" log="False" position="27" action="Reject" direction="Both" comment="Warning: Line 70: Unknown parameter of target REJECT: foo-prohib.&#10;Chain INPUT. &#10;Created during import of  line 70">
+          <PolicyRule id="id482" disabled="False" group="" log="False" position="27" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 70">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1715,7 +1714,6 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject">ICMP admin prohibited</Option>
-              <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2512,7 +2510,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1298" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Port spec foo is unknown&#10;Port spec foo is unknownChain user_chain. &#10;Created during import of  line 150">
+          <PolicyRule id="id1298" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 150">
             <Src neg="False">
               <ObjectRef ref="id24"/>
             </Src>
@@ -2529,7 +2527,6 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>

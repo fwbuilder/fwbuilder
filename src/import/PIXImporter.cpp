@@ -35,6 +35,7 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
+#include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
@@ -45,6 +46,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Library.h"
 
 #include <QString>
 #include <QtDebug>
@@ -364,42 +366,65 @@ void PIXImporter::newNamedObjectService(const string &name)
 
 void PIXImporter::commitNamedAddressObject()
 {
-    current_named_object = commitObject(
-        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str(), false));
-    setNameOfNamedObject(current_named_object);
+    ObjectSignature sig;
+    sig.object_name = named_object_name;
+    sig.type_name = Address::TYPENAME;
+    sig.address = tmp_a.c_str();
+    sig.netmask = tmp_nm.c_str();
+    current_named_object = commitObject(address_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedAddressRangeObject()
 {
-    current_named_object = commitObject(
-        address_maker->createAddressRange(
-            tmp_range_1.c_str(), tmp_range_2.c_str(), false));
-    setNameOfNamedObject(current_named_object);
+    ObjectSignature sig;
+    sig.object_name = named_object_name;
+    sig.type_name = AddressRange::TYPENAME;
+    sig.address_range_start = tmp_range_1.c_str();
+    sig.address_range_end = tmp_range_2.c_str();
+    current_named_object = commitObject(address_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedIPServiceObject()
 {
-    current_named_object = commitObject(createIPService(false));
-    setNameOfNamedObject(current_named_object);
+    ObjectSignature sig;
+    sig.object_name = named_object_name;
+    sig.type_name = IPService::TYPENAME;
+    sig.setProtocol(protocol.c_str());
+    sig.fragments = fragments;
+    current_named_object = commitObject(service_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedICMPServiceObject()
 {
-    current_named_object = commitObject(createICMPService(false));
-    setNameOfNamedObject(current_named_object);
+    ObjectSignature sig;
+    sig.object_name = named_object_name;
+    sig.type_name = ICMPService::TYPENAME;
+
+    if ( ! icmp_spec.empty())
+    {
+        sig.setIcmpFromName(icmp_spec.c_str());
+    } else
+    {
+        sig.setIcmpType(icmp_type.c_str());
+        sig.setIcmpCode(icmp_code.c_str());
+    }
+
+    current_named_object = commitObject(service_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
 void PIXImporter::commitNamedTCPUDPServiceObject()
 {
-    FWObject *new_obj = NULL;
-    if (protocol == "tcp") new_obj = createTCPService(false);
-    if (protocol == "udp") new_obj = createUDPService(false);
-    current_named_object = commitObject(new_obj);
-    setNameOfNamedObject(current_named_object);
+    ObjectSignature sig;
+    if (protocol == "tcp") sig = packObjectSignatureTCPService();
+    if (protocol == "udp") sig = packObjectSignatureUDPService();
+
+    sig.object_name = named_object_name;
+
+    current_named_object = commitObject(service_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
 
@@ -450,10 +475,11 @@ void PIXImporter::newObjectGroupNetwork(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
+    ObjectMaker maker(Library::cast(library));
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
-                address_maker->createObject(ObjectGroup::TYPENAME, name)));
+                maker.createObject(ObjectGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (network) " + name;
@@ -464,10 +490,11 @@ void PIXImporter::newObjectGroupService(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
+    ObjectMaker maker(Library::cast(library));
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
-                address_maker->createObject(ServiceGroup::TYPENAME, name)));
+                maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (service) " + name;
@@ -478,10 +505,11 @@ void PIXImporter::newObjectGroupProtocol(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
+    ObjectMaker maker(Library::cast(library));
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
-                address_maker->createObject(ServiceGroup::TYPENAME, name)));
+                maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (protocol) " + name;
@@ -492,10 +520,11 @@ void PIXImporter::newObjectGroupICMP(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
+    ObjectMaker maker(Library::cast(library));
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
-                address_maker->createObject(ServiceGroup::TYPENAME, name)));
+                maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
     *logger << "Object Group (icmp) " + name;
@@ -514,9 +543,12 @@ void PIXImporter::setObjectGroupDescription(const std::string &descr)
 
 void PIXImporter::addNetworkToObjectGroup()
 {
-    FWObject *obj = commitObject(
-        address_maker->createAddress(tmp_a.c_str(), tmp_nm.c_str()));
-    current_object_group->addRef(obj);
+    ObjectSignature sig;
+    sig.type_name = Address::TYPENAME;
+    sig.address = tmp_a.c_str();
+    sig.netmask = tmp_nm.c_str();
+    current_object_group->addRef(
+        commitObject(address_maker->createObject(sig)));
 }
 
 void PIXImporter::addNamedObjectToObjectGroup(const std::string &object_name)
@@ -533,7 +565,11 @@ void PIXImporter::addNamedObjectToObjectGroup(const std::string &object_name)
 
 void PIXImporter::addIPServiceToObjectGroup()
 {
-    FWObject *s = createIPService();
+    ObjectSignature sig;
+    sig.type_name = IPService::TYPENAME;
+    sig.setProtocol(protocol.c_str());
+    sig.fragments = fragments;
+    FWObject *s = service_maker->createObject(sig);
     current_object_group->addRef(s);
 }
 
@@ -548,7 +584,19 @@ void PIXImporter::addTCPUDPServiceToObjectGroup()
 
 void PIXImporter::addICMPServiceToObjectGroup()
 {
-    FWObject *s = commitObject(createICMPService());
+    ObjectSignature sig;
+    sig.type_name = ICMPService::TYPENAME;
+
+    if ( ! icmp_spec.empty())
+    {
+        sig.setIcmpFromName(icmp_spec.c_str());
+    } else
+    {
+        sig.setIcmpType(icmp_type.c_str());
+        sig.setIcmpCode(icmp_code.c_str());
+    }
+
+    FWObject *s = service_maker->createObject(sig);
     current_object_group->addRef(s);
 }
 

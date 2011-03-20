@@ -503,6 +503,8 @@ void Importer::pushRule()
     assert(current_rule!=NULL);
     // populate all elements of the rule
 
+    //qDebug() << QString("Adding rule from line %1") .arg(getCurrentLineNumber());
+
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
     if (action=="permit") rule->setAction(PolicyRule::Accept);
@@ -517,8 +519,7 @@ void Importer::pushRule()
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
 
-    addStandardImportComment(
-        current_rule, QString::fromUtf8(rule_comment.c_str()));
+    addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
 
     current_rule = NULL;
     rule_comment = "";
@@ -532,9 +533,14 @@ FWObject* Importer::makeSrcObj()
          (src_a==InetAddr::getAny().toString() &&
           src_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
-    if (src_nm=="") src_nm=InetAddr::getAllOnes().toString();
-    return commitObject(
-        address_maker->createAddress(src_a.c_str(), src_nm.c_str()));
+    if (src_nm=="") src_nm = InetAddr::getAllOnes().toString();
+
+    ObjectSignature sig;
+    sig.type_name = Address::TYPENAME;
+    sig.address = src_a.c_str();
+    sig.netmask = src_nm.c_str();
+
+    return commitObject(address_maker->createObject(sig));
 }
 
 FWObject* Importer::makeDstObj()
@@ -544,21 +550,52 @@ FWObject* Importer::makeDstObj()
           dst_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
     if (dst_nm=="") dst_nm=InetAddr::getAllOnes().toString();
-    return commitObject(
-        address_maker->createAddress(dst_a.c_str(), dst_nm.c_str()));
+
+    ObjectSignature sig;
+    sig.type_name = Address::TYPENAME;
+    sig.address = dst_a.c_str();
+    sig.netmask = dst_nm.c_str();
+
+    return commitObject(address_maker->createObject(sig));
 }
 
 FWObject* Importer::makeSrvObj()
 {
     if (protocol=="") return NULL; // this is 'any'
     FWObject *s;
-    if (protocol=="icmp")  s = createICMPService();
-    else
-        if (protocol=="tcp")   s = createTCPService();
-        else
-            if (protocol=="udp")   s = createUDPService();
-            else
-                s = createIPService();
+    if (protocol=="icmp")
+    {
+        ObjectSignature sig;
+        sig.type_name = ICMPService::TYPENAME;
+        if ( ! icmp_spec.empty())
+        {
+            sig.setIcmpFromName(icmp_spec.c_str());
+        } else
+        {
+            sig.setIcmpType(icmp_type.c_str());
+            sig.setIcmpCode(icmp_code.c_str());
+        }
+        s = service_maker->createObject(sig);
+    } else
+    {
+        if (protocol=="tcp")
+        {
+            s = createTCPService();
+        } else
+        {
+            if (protocol=="udp")
+            {
+                s = createUDPService();
+            } else
+            {
+                ObjectSignature sig;
+                sig.type_name = IPService::TYPENAME;
+                sig.setProtocol(protocol.c_str());
+                sig.fragments = fragments;
+                s = service_maker->createObject(sig);
+            }
+        }
+    }
     // if create*Service returns NULL, this is 'any'
     return commitObject(s);
 }
@@ -622,103 +659,16 @@ Firewall* Importer::finalize()
     return fw;
 }
 
-FWObject* Importer::createICMPService(bool deduplicate)
-{
-    int type, code;
-
-    // TODO: convert icmp_type and icmp_code to QString
-    QString icmp_type_qs = QString(icmp_type.c_str()).trimmed();
-    QString icmp_code_qs = QString(icmp_code.c_str()).trimmed();
-
-    if (icmp_type_qs.isEmpty()) type = -1;
-    else
-    {
-        bool ok = false;
-        type = icmp_type_qs.toInt(&ok);
-        if (!ok)
-        {
-            // could not convert
-            type = -1;
-            QString err("ICMP type %1 is unknown");
-            reportError(err.arg(icmp_type_qs));
-        }
-    }
-
-    if (icmp_code_qs.isEmpty()) code = -1;
-    else
-    {
-        bool ok = false;
-        code = icmp_code_qs.toInt(&ok);
-        if (!ok)
-        {
-            // could not convert
-            type = -1;
-            QString err("ICMP code %1 is unknown");
-            reportError(err.arg(icmp_code_qs));
-        }
-    }
-
-    return service_maker->getICMPService(type, code, deduplicate);
-}
-
-FWObject* Importer::createIPService(bool deduplicate)
-{
-    // this assumes protocol is represented by a number
-    bool ok = false;
-    int proto_num = QString(protocol.c_str()).toInt(&ok);
-    if ( ! ok)
-    {
-        // could not convert protocol number
-        proto_num = 0;
-        reportError(QString("Protocol '%1' is unknown").arg(protocol.c_str()));
-    }
-    return service_maker->getIPService(proto_num, fragments, deduplicate);
-}
-
-FWObject* Importer::createTCPService(bool deduplicate)
+FWObject* Importer::createTCPService()
 {
     // Default implementation
-    //
-    // use src_port_spec, dst_port_spec
-    //
-    // here we assume src_port_spec and dst_port_spec are
-    // both numeric and represent a single port.
-
-    std::string name = "tcp " + src_port_spec + " " + dst_port_spec;
-
-    std::istringstream src_str(src_port_spec);
-    std::istringstream dst_str(dst_port_spec);
-    int sport, dport;
-
-    src_str >> sport;
-    dst_str >> dport;
-
-    return service_maker->getTCPService(sport, sport,
-                                        dport, dport,
-                                        established,
-                                        tcp_flags_mask, tcp_flags_comp,
-                                        deduplicate);
+    return NULL;
 }
 
-FWObject* Importer::createUDPService(bool deduplicate)
+FWObject* Importer::createUDPService()
 {
     // Default implementation
-    //
-    // use src_port_spec, dst_port_spec
-    //
-    // here we assume src_port_spec and dst_port_spec are
-    // both numeric and represent a single port.
-
-    std::string name = "udp " + src_port_spec + " " + dst_port_spec;
-
-    std::istringstream src_str(src_port_spec);
-    std::istringstream dst_str(dst_port_spec);
-    int sport, dport;
-
-    src_str >> sport;
-    dst_str >> dport;
-
-    return service_maker->getUDPService(sport, sport, dport, dport, deduplicate);
+    return NULL;
 }
 
 FWObject* Importer::createGroupOfInterfaces(

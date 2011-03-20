@@ -34,16 +34,41 @@
 
 #include "QStringListOperators.h"
 
+#include <string>
+
 extern int fwbdebug;
 
 using namespace libfwbuilder;
 using namespace std;
 
+
 AddressObjectMaker::~AddressObjectMaker() {}
 
+FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
+{
+    assert( ! sig.type_name.isEmpty());
+
+    FWObject *obj = findMatchingObject(sig);
+    if (obj) return obj;
+
+    if (sig.type_name == AddressRange::TYPENAME)
+        obj = createAddressRange(sig.address_range_start, sig.address_range_end);
+    else
+        obj = createAddress(sig.address, sig.netmask);
+
+    if ( ! sig.object_name.isEmpty())
+    {
+        obj->setName(sig.object_name.toUtf8().constData());
+        registerNamedObject(sig, obj);
+    } else
+        registerAnonymousObject(sig, obj);
+
+    return obj;
+}
+        
+
 FWObject* AddressObjectMaker::createAddress(const QString &addr,
-                                            const QString &netmask,
-                                            bool deduplicate)
+                                            const QString &netmask)
 {
     QString correct_nm = netmask;
     if (inverted_netmasks)
@@ -57,65 +82,33 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
         QString name;
         try
         {
-            ObjectSignature sig;
-            sig.type_name = IPv4::TYPENAME;
-            sig.address = addr;
-            sig.netmask = correct_nm;
-
-            if (deduplicate)
-            {
-                FWObject *obj = findMatchingObject(sig);
-                if (obj) return obj;
-            }
-
             InetAddr obj_addr(addr.toStdString()); // testing if string converts to an address
             name = QString("h-") + addr;
             Address *a = Address::cast(
-                createObject(IPv4::TYPENAME, name.toStdString()));
+                ObjectMaker::createObject(IPv4::TYPENAME, name.toStdString()));
             a->setAddress(obj_addr);
             a->setNetmask(InetAddr(InetAddr::getAllOnes()));
-            registerObject(sig, a);
             return a;
         } catch(FWException &ex)
         {
             // address text line can not be converted to ipv4 address.
             // Since parsers do not understand ipv6 yet, assume this
             // is a host address and create DNSName object
-            ObjectSignature sig;
-            sig.type_name = DNSName::TYPENAME;
-            sig.dns_name = addr;
-
-            if (deduplicate)
-            {
-                FWObject *obj = findMatchingObject(sig);
-                if (obj) return obj;
-            }
 
             name = addr;
             DNSName *da = DNSName::cast(
-                createObject(DNSName::TYPENAME, name.toStdString()));
+                ObjectMaker::createObject(DNSName::TYPENAME, name.toStdString()));
             da->setSourceName(addr.toStdString());
             da->setRunTime(true);
-            registerObject(sig, da);
             return da;
         }
 
     } else
     {
-        ObjectSignature sig;
-        sig.type_name = Network::TYPENAME;
-        sig.address = addr;
-        sig.netmask = correct_nm;
-
-        if (deduplicate)
-        {
-            FWObject *obj = findMatchingObject(sig);
-            if (obj) return obj;
-        }
 
         QString name = QString("net-") + addr + "/" + correct_nm;
         Network *net = Network::cast(
-            createObject(Network::TYPENAME, name.toStdString()));
+            ObjectMaker::createObject(Network::TYPENAME, name.toStdString()));
         try
         {
             net->setAddress( InetAddr(addr.toStdString()) );
@@ -154,37 +147,26 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
             }
         }
 
-        registerObject(sig, net);
-
         return net;
     }
     return NULL;
 }
 
 FWObject* AddressObjectMaker::createAddressRange(const QString &addr1,
-                                                 const QString &addr2,
-                                                 bool deduplicate)
+                                                 const QString &addr2)
 {
-    ObjectSignature sig;
-    sig.type_name = AddressRange::TYPENAME;
-    sig.address_range_start = addr1;
-    sig.address_range_end = addr2;
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
 
     QString name = QString("range-") + addr1 + "-" + addr2;
     AddressRange *ar = AddressRange::cast(
-        createObject(AddressRange::TYPENAME, name.toStdString()));
+        ObjectMaker::createObject(AddressRange::TYPENAME, name.toStdString()));
 
     try
     {
         ar->setRangeStart( InetAddr(addr1.toStdString()) );
     } catch (FWException &ex)
     {
-        throw ObjectMakerException(QString("Error converting address '%1'").arg(addr1));
+        throw ObjectMakerException(
+            QString("Error converting address '%1'").arg(addr1));
     }
 
     try
@@ -192,10 +174,9 @@ FWObject* AddressObjectMaker::createAddressRange(const QString &addr1,
         ar->setRangeEnd( InetAddr(addr2.toStdString()) );
     } catch (FWException &ex)
     {
-        throw ObjectMakerException(QString("Error converting address '%1'").arg(addr2));
+        throw ObjectMakerException(
+            QString("Error converting address '%1'").arg(addr2));
     }
-
-    registerObject(sig, ar);
 
     return ar;
 }

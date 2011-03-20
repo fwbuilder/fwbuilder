@@ -40,29 +40,24 @@ public:
     virtual ~ServiceObjectMaker();
 
     virtual void clear();
-    
+
+    virtual libfwbuilder::FWObject* createObject(ObjectSignature &sig);
+        
+protected:
     virtual libfwbuilder::FWObject* getCustomService(const QString &platform,
                                                      const QString &code,
-                                                     const QString &protocol,
-                                                     bool deduplicate=true);
-    virtual libfwbuilder::FWObject* getIPService(int proto, bool fragments,
-                                                 bool deduplicate=true);
-    virtual libfwbuilder::FWObject* getICMPService(int type, int code,
-                                                   bool deduplicate=true);
+                                                     const QString &protocol);
 
     virtual libfwbuilder::FWObject* getTCPService(int srs, int sre,
                                                   int drs, int dre,
                                                   bool established,
                                                   QList<int> &flags_mask,
-                                                  QList<int> &flags_comp,
-                                                  bool deduplicate=true);
+                                                  QList<int> &flags_comp);
 
     virtual libfwbuilder::FWObject* getUDPService(int srs, int sre,
-                                                  int drs, int dre,
-                                                  bool deduplicate=true);
+                                                  int drs, int dre);
 
-    virtual libfwbuilder::FWObject* getTagService(const QString &tagcode,
-                                                  bool deduplicate=true);
+    virtual libfwbuilder::FWObject* getTagService(const QString &tagcode);
 
 
 

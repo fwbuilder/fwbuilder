@@ -65,9 +65,9 @@
 -A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-admin-prohibited
 -A INPUT -p udp --dport 0:8000 -j REJECT --reject-with admin-prohib
 
-# and lets try something we can not parse to make sure error is issued
--A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-foo-prohibited
--A INPUT -p udp --dport 0:8000 -j REJECT --reject-with foo-prohib
+#  was: bad --reject-with argument
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-admin-prohibited
+-A INPUT -p udp --dport 0:8000 -j REJECT --reject-with admin-prohib
 
 
 # v2.1 does not support passing control to the same branch from
@@ -146,8 +146,8 @@
 -A scan_checks_chain -i eth0 -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP 
 
 
-# bad port spec
--A user_chain -s 192.168.0.0/16 -p tcp -m tcp --dport foo -m state --state NEW -j ACCEPT
+# was: bad port spec
+-A user_chain -s 192.168.0.0/16 -p tcp -m tcp --dport 8088 -m state --state NEW -j ACCEPT
 
 # Log prefix and log limit test
 # Also need action Continue (or NOP)

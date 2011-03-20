@@ -62,46 +62,7 @@ IOSImporter::IOSImporter(FWObject *lib,
                          const std::string &fwname) : Importer(lib, "iosacl", input, log, fwname)
 {
     address_maker->setInvertedNetmasks(true);
-
-    cisco_icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
-    cisco_icmp_specs["unreachable"] = std::pair<int,int>(3, -1); // all "unreachables"
-    cisco_icmp_specs["net-unreachable"] = std::pair<int,int>(3, 0);
-    cisco_icmp_specs["host-unreachable"] = std::pair<int,int>(3, 1);
-    cisco_icmp_specs["protocol-unreachable"] = std::pair<int,int>(3, 2);
-    cisco_icmp_specs["port-unreachable"] = std::pair<int,int>(3, 3);
-    cisco_icmp_specs["packet-too-big"] = std::pair<int,int>(3, 4);
-    cisco_icmp_specs["source-route-failed"] = std::pair<int,int>(3, 5);
-    cisco_icmp_specs["network-unknown"] = std::pair<int,int>(3, 6);
-    cisco_icmp_specs["host-unknown"] = std::pair<int,int>(3, 7);
-    cisco_icmp_specs["host-isolated"] = std::pair<int,int>(3, 8);
-    cisco_icmp_specs["dod-net-prohibited"] = std::pair<int,int>(3, 9);
-    cisco_icmp_specs["dod-host-prohibited"] = std::pair<int,int>(3, 10);
-    cisco_icmp_specs["net-tos-unreachable"] = std::pair<int,int>(3, 11);
-    cisco_icmp_specs["host-tos-unreachable"] = std::pair<int,int>(3, 12);
-    cisco_icmp_specs["administratively-prohibited"] = std::pair<int,int>(3, 13);
-    cisco_icmp_specs["host-precedence-unreachable"] = std::pair<int,int>(3, 14);
-    cisco_icmp_specs["precedence-unreachable"] = std::pair<int,int>(3, 15);
-    cisco_icmp_specs["source-quench"] = std::pair<int,int>(4, 0);
-    cisco_icmp_specs["net-redirect"] = std::pair<int,int>(5, 0);
-    cisco_icmp_specs["host-redirect"] = std::pair<int,int>(5, 1);
-    cisco_icmp_specs["net-tos-redirect"] = std::pair<int,int>(5, 2);
-    cisco_icmp_specs["host-tos-redirect"] = std::pair<int,int>(5, 3);
-    cisco_icmp_specs["echo"] = std::pair<int,int>(8, 0);
-    cisco_icmp_specs["router-advertisement"] = std::pair<int,int>(9, 0);
-    cisco_icmp_specs["router-solicitation"] = std::pair<int,int>(10, 0);
-    cisco_icmp_specs["ttl-exceeded"] = std::pair<int,int>(11, 0);
-    cisco_icmp_specs["reassembly-timeout"] = std::pair<int,int>(11, 1);
-    cisco_icmp_specs["general-parameter-problem"] = std::pair<int,int>(12, 0);
-    cisco_icmp_specs["option-missing"] = std::pair<int,int>(12, 1);
-    cisco_icmp_specs["timestamp-request"] = std::pair<int,int>(13, 0);
-    cisco_icmp_specs["timestamp-reply"] = std::pair<int,int>(14, 0);
-    cisco_icmp_specs["information-request"] = std::pair<int,int>(15, 0);
-    cisco_icmp_specs["information-reply"] = std::pair<int,int>(16, 0);
-    cisco_icmp_specs["mask-request"] = std::pair<int,int>(17, 0);
-    cisco_icmp_specs["mask-reply"] = std::pair<int,int>(18, 0);
 }
-
-
 
 IOSImporter::~IOSImporter()
 {
@@ -119,151 +80,54 @@ void IOSImporter::setInterfaceAndDirectionForRuleSet(
 
 }
 
-FWObject* IOSImporter::createICMPService(bool deduplicate)
-{
-// TODO: convert icmp_spec to QString and cisco_icmp_specs to QMap
-    std::string icmpspec = QString(icmp_spec.c_str()).trimmed().toStdString();
-    if (!icmpspec.empty())
-    {
-        // Cisco is trying to be too helpful, they translate many
-        // icmp type/code combinations into stings
-        if (cisco_icmp_specs.count(icmpspec)!=0)
-        {
-            std::pair<int,int> pp = cisco_icmp_specs[icmpspec];
-            std::ostringstream s1, s2;
-            s1 << pp.first;
-            icmp_type = s1.str();
-            s2 << pp.second;
-            icmp_code = s2.str();
-        } else
-        {
-            reportError(
-                std::string("Import of icmp protocol '") + icmp_spec + "' failed");
-            icmp_code = "-1";
-            icmp_type = "-1";
-        }
-    }
-    icmp_spec = "";
-
-    return Importer::createICMPService(deduplicate);
-}
-
-FWObject* IOSImporter::createIPService(bool deduplicate)
-{
-    int proto = GetProtoByName::getProtocolByName(protocol.c_str());
-    if (proto > -1)
-    {
-        std::ostringstream s;
-        s << proto;
-        protocol = s.str();
-    }
-    return Importer::createIPService(deduplicate);
-}
-
-int IOSImporter::convertPort(const std::string &port_str,
-                             const std::string &proto)
-{
-    QString ps = QString(port_str.c_str()).trimmed();
-    int port = GetServByName::getPortByName(ps, proto.c_str());
-    if (port == -1)
-    {
-        reportError(std::string("Port spec '") + port_str + "' unknown ");
-        port = 0;
-    }
-    return port;
-}
-
-std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
-                                                const std::string &port_spec,
-                                                const std::string &proto)
-{
-    int range_start;
-    int range_end;
-    std::string s1,s2;
-
-    // TODO: convert port_op and port_spec to QString
-    std::string portop = QString(port_op.c_str()).trimmed().toStdString();
-    std::string portspec = QString(port_spec.c_str()).trimmed().toStdString();
-
-    if (fwbdebug)
-        qDebug() << QString("Convert TCP/UDP port spec: port_op=%1 port_spec=%2").
-            arg(port_op.c_str()).arg(port_spec.c_str());
-
-    if (portop=="" && portspec=="") return std::pair<int,int>(0, 0);
-
-    std::string::size_type n = portspec.find(' ');
-    if (n!=std::string::npos)
-    {
-        s1 = portspec.substr(0, n);
-        s2 = portspec.substr(n);
-    } else
-    {
-        s1 = portspec;
-        s2 = portspec;
-    }
-    range_start = convertPort(s1, proto);
-    range_end   = convertPort(s2, proto);
-
-    if (portop=="lt")  range_start = 0;
-    if (portop=="gt")  range_end = 65535;
-    if (portop=="eq")
-    {
-        range_start = range_end;
-    }
-    if (portop=="range")
-    {
-        // range_start and range_end have been set
-        ;
-    }
-
-    return std::pair<int,int>(range_start, range_end);
-}
-
-FWObject* IOSImporter::createTCPService(bool deduplicate)
+ObjectSignature IOSImporter::packObjectSignatureTCPService()
 {
     // use src_port_op, src_port_spec, dst_port_op, dst_port_spec
     // port_op can be: lt (less than), gt (greater than), eq (equal),
     // neq (not equal), and range (inclusive range).
-    // here we assume src_port_spec and dst_port_spec are
-    // both numeric and represent a single port.
 
-    std::string name = "tcp " + src_port_spec + " " + dst_port_spec;
+    ObjectSignature sig;
+    sig.type_name = TCPService::TYPENAME;
 
-    std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, "tcp");
-    int srs = pr.first;
-    int sre = pr.second;
+    sig.setSrcPortRangeFromPortOp(
+        src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
+    sig.setDstPortRangeFromPortOp(
+        dst_port_op.c_str(), dst_port_spec.c_str(), protocol.c_str());
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, "tcp");
-    int drs = pr.first;
-    int dre = pr.second;
+    sig.established = established;
+    sig.flags_mask = tcp_flags_mask;
+    sig.flags_comp = tcp_flags_comp;
 
-    return service_maker->getTCPService(srs, sre,
-                                        drs, dre,
-                                        established, tcp_flags_mask, tcp_flags_comp,
-                                        deduplicate);
+    return sig;
 }
 
-FWObject* IOSImporter::createUDPService(bool deduplicate)
+ObjectSignature IOSImporter::packObjectSignatureUDPService()
 {
     // use src_port_op, src_port_spec, dst_port_op, dst_port_spec
     // port_op can be: lt (less than), gt (greater than), eq (equal),
     // neq (not equal), and range (inclusive range).
-    // here we assume src_port_spec and dst_port_spec are
-    // both numeric and represent a single port.
 
-    std::string name = "udp " + src_port_spec + " " + dst_port_spec;
+    ObjectSignature sig;
+    sig.type_name = UDPService::TYPENAME;
 
-    std::pair<int,int> pr =
-        convertPortSpec(src_port_op, src_port_spec, "udp");
-    int srs = pr.first;
-    int sre = pr.second;
+    sig.setSrcPortRangeFromPortOp(
+        src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
+    sig.setDstPortRangeFromPortOp(
+        dst_port_op.c_str(), dst_port_spec.c_str(), protocol.c_str());
 
-    pr = convertPortSpec(dst_port_op, dst_port_spec, "udp");
-    int drs = pr.first;
-    int dre = pr.second;
+    return sig;
+}
 
-    return service_maker->getUDPService(srs, sre, drs, dre, deduplicate);
+FWObject* IOSImporter::createTCPService()
+{
+    ObjectSignature sig = packObjectSignatureTCPService();
+    return service_maker->createObject(sig);
+}
+
+FWObject* IOSImporter::createUDPService()
+{
+    ObjectSignature sig =  packObjectSignatureUDPService();
+    return service_maker->createObject(sig);
 }
 
 void IOSImporter::ignoreCurrentInterface()
@@ -446,7 +310,7 @@ Firewall* IOSImporter::finalize()
                         }
                     }
                 }
-                qDebug("ruleset done");
+                // qDebug("ruleset done");
 
                 // call clearChidren() not recursive because children objects
                 // of all rules should not be deleted

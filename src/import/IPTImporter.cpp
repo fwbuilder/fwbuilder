@@ -75,49 +75,6 @@ IPTImporter::IPTImporter(FWObject *lib,
 
     clear();
 
-    icmp_specs["any"] << "-1" << "-1";
-    icmp_specs["echo-reply"] << "0" << "0";
-    // all "unreachables"
-    icmp_specs["destination-unreachable"] << "3" << "-1";
-    icmp_specs["network-unreachable"] << "3" << "0";
-    icmp_specs["host-unreachable"] << "3" << "1";
-    icmp_specs["protocol-unreachable"] << "3" << "2";
-    icmp_specs["port-unreachable"] << "3" << "3";
-    icmp_specs["fragmentation-needed"] << "3" << "4";
-    icmp_specs["source-route-failed"] << "3" << "5";
-    icmp_specs["network-unknown"] << "3" << "6";
-    icmp_specs["host-unknown"] << "3" << "7";
-    icmp_specs["host-isolated"] << "3" << "8";
-    icmp_specs["network-prohibited"] << "3" << "9";
-    icmp_specs["host-prohibited"] << "3" << "10";
-    icmp_specs["TOS-network-unreachable"] << "3" << "11";
-    icmp_specs["TOS-host-unreachable"] << "3" << "12";
-    icmp_specs["communication-prohibited"] << "3" << "13";
-    icmp_specs["host-precedence-violation"] << "3" << "14";
-    icmp_specs["precedence-cutoff"] << "3" << "15";
-    icmp_specs["source-quench"] << "4" << "0";
-    icmp_specs["redirect"] << "5" << "-1";
-    icmp_specs["network-redirect"] << "5" << "0";
-    icmp_specs["host-redirect"] << "5" << "1";
-    icmp_specs["TOS-network-redirect"] << "5" << "2";
-    icmp_specs["TOS-host-redirect"] << "5" << "3";
-    icmp_specs["echo-request"] << "8" << "0";
-    icmp_specs["router-advertisement"] << "9" << "0";
-    icmp_specs["router-solicitation"] << "10" << "0";
-    icmp_specs["ttl-exceeded"] << "11" << "0";
-    icmp_specs["time-exceeded"] << "11" << "0";
-    icmp_specs["ttl-zero-during-transit"] << "11" << "0";
-    icmp_specs["ttl-zero-during-reassembly"] << "11" << "1";
-    icmp_specs["parameter-problem"] << "12" << "0";
-    icmp_specs["ip-header-bad"] << "12" << "0";
-    icmp_specs["required-option-missing"] << "12" << "1";
-    icmp_specs["timestamp-request"] << "13" << "0";
-    icmp_specs["timestamp-reply"] << "14" << "0";
-    icmp_specs["information-request"] << "15" << "0";
-    icmp_specs["information-reply"] << "16" << "0";
-    icmp_specs["address-mask-request"] << "17" << "0";
-    icmp_specs["address-mask-reply"] << "18" << "0";
-
     // mapping between REJECT target argument and our internal name for it.
     // See also comment in IPTImporter::pushPolicyRule()
     reject_action_arg_mapping["icmp-net-unreachable"] =   "ICMP net unreachable";
@@ -222,84 +179,9 @@ void IPTImporter::pushTmpPortSpecToBothPortList()
         str_tuple( tmp_port_range_start, tmp_port_range_end ) );
 }
 
-
-FWObject* IPTImporter::createICMPService(bool deduplicate)
-{
-    // TODO: convert icmp_spec to QString
-    QString icmpspec = QString(icmp_spec.c_str()).trimmed();
-    if ( ! icmpspec.isEmpty())
-    {
-        // Cisco is trying to be too helpful, they translate many
-        // icmp type/code combinations into stings
-        if (icmp_specs.count(icmpspec) > 0)
-        {
-            QStringList pp = icmp_specs[icmpspec];
-            icmp_type = pp[0].toStdString();
-            icmp_code = pp[1].toStdString();
-        } else
-        {
-            QString err("Import of icmp protocol %1 failed");
-            reportError(err.arg(icmpspec));
-            icmp_code = "-1";
-            icmp_type = "-1";
-        }
-    }
-    icmp_spec = "";
-
-    return Importer::createICMPService(deduplicate);
-}
-
-FWObject* IPTImporter::createIPService(bool deduplicate)
-{
-    int proto = GetProtoByName::getProtocolByName(protocol.c_str());
-    if (proto > -1)
-    {
-        std::ostringstream s;
-        s << proto;
-        protocol = s.str();
-        //free(pe);
-    }
-    return Importer::createIPService(deduplicate);
-
-    // struct protoent *pe = getprotobyname(protocol.c_str());
-    // if (pe!=NULL)
-    // {
-    //     std::ostringstream s;
-    //     s << pe->p_proto;
-    //     protocol = s.str();
-    //     //free(pe);
-    // }
-    // return Importer::createIPService();
-}
-
-std::pair<int,int> IPTImporter::convertPortRange(str_tuple &range,
-                                                 const char *proto)
-{
-    return std::pair<int,int>(convertPort(range.first, proto, 0),
-                              convertPort(range.second, proto, 65535));
-}
-
-int IPTImporter::convertPort(const std::string &port_spec,
-                             const char *proto,
-                             int default_port)
-{
-    QString ps = QString(port_spec.c_str()).trimmed();
-    if (ps == "") return 0;
-    if (ps == ":") return default_port;
-
-    int port = GetServByName::getPortByName(ps, proto);
-    if (port == -1)
-    {
-        reportError(QString("Port spec %1 is unknown").arg(ps));
-        port = 0;
-    }
-    return port;
-}
-
 FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
                                            str_tuple &dst_range,
-                                           const std::string &proto,
-                                           bool deduplicate)
+                                           const std::string &proto)
 {
     if (fwbdebug)
     {
@@ -314,32 +196,30 @@ FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
                  << dst_range.second.c_str();
     }
 
-//     std::string name = proto + " "
-//         + src_range.first + "-" + src_range.second +
-//         + ":"
-//         + dst_range.first + "-" + dst_range.second;
+    ObjectSignature sig;
+    sig.setSrcPortRange(src_range.first.c_str(), src_range.second.c_str(),
+                        proto.c_str());
+    sig.setDstPortRange(dst_range.first.c_str(), dst_range.second.c_str(),
+                        proto.c_str());
 
-    std::pair<int,int> pr = convertPortRange(src_range, proto.c_str());
-    int srs = pr.first;
-    int sre = pr.second;
-
-    pr = convertPortRange(dst_range, proto.c_str());
-    int drs = pr.first;
-    int dre = pr.second;
-
-    FWObject *o;
     if (proto=="tcp")
     {
-        o = service_maker->getTCPService(srs, sre,
-                                         drs, dre,
-                                         established,
-                                         tcp_flags_mask, tcp_flags_comp, deduplicate);
+        sig.type_name = TCPService::TYPENAME;
+        sig.established = established;
+        sig.flags_mask = tcp_flags_mask;
+        sig.flags_comp = tcp_flags_comp;
     } else
-        o = service_maker->getUDPService(srs, sre, drs, dre, deduplicate);
-    return commitObject(o);
+    {
+        sig.type_name = UDPService::TYPENAME;
+    }
+
+    return commitObject( service_maker->createObject(sig));
 }
 
-FWObject* IPTImporter::createTCPUDPService(const std::string &proto, bool deduplicate)
+/*
+ * TODO: fix this
+ */
+FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
 {
     str_tuple empty_range("0","0");
 
@@ -372,7 +252,7 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto, bool dedupl
             o = createTCPUDPService(
                 (list_ptr == &src_port_list) ? *i : empty_range,
                 (list_ptr == &dst_port_list) ? *i : empty_range,
-                proto, deduplicate);
+                proto);
 
             olist.push_back(o);
             list_names.push_back(o->getName());
@@ -404,18 +284,18 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto, bool dedupl
         return createTCPUDPService(
             (src_port_list.size()>0) ? src_port_list.front() : empty_range,
             (dst_port_list.size()>0) ? dst_port_list.front() : empty_range,
-            proto, deduplicate);
+            proto);
     }
 }
 
-FWObject* IPTImporter::createTCPService(bool deduplicate)
+FWObject* IPTImporter::createTCPService()
 {
-    return createTCPUDPService("tcp", deduplicate);
+    return createTCPUDPService("tcp");
 }
 
-FWObject* IPTImporter::createUDPService(bool deduplicate)
+FWObject* IPTImporter::createUDPService()
 {
-    return createTCPUDPService("udp", deduplicate);
+    return createTCPUDPService("udp");
 }
 
 
@@ -423,9 +303,12 @@ FWObject* IPTImporter::makeSrcObj()
 {
     if (using_iprange_src)
     {
-        return commitObject(
-            address_maker->createAddressRange(iprange_src_from.c_str(),
-                                              iprange_src_to.c_str()));
+        ObjectSignature sig;
+        sig.type_name = AddressRange::TYPENAME;
+        sig.address_range_start = iprange_src_from.c_str();
+        sig.address_range_end = iprange_src_to.c_str();
+
+        return commitObject(address_maker->createObject(sig));
     } else
         return Importer::makeSrcObj();
 }
@@ -434,9 +317,12 @@ FWObject* IPTImporter::makeDstObj()
 {
     if (using_iprange_dst)
     {
-        return commitObject(
-            address_maker->createAddressRange(iprange_dst_from.c_str(),
-                                              iprange_dst_to.c_str()));
+        ObjectSignature sig;
+        sig.type_name = AddressRange::TYPENAME;
+        sig.address_range_start = iprange_dst_from.c_str();
+        sig.address_range_end = iprange_dst_to.c_str();
+
+        return commitObject(address_maker->createObject(sig));
     } else
         return Importer::makeDstObj();
 }
@@ -551,7 +437,10 @@ void IPTImporter::addMarkMatch(PolicyRule *rule)
     assert(srv!=NULL);
     if (rule->getSrv()->isAny() && !match_mark.empty())
     {
-        srv->addRef( commitObject(service_maker->getTagService(match_mark.c_str())) );
+        ObjectSignature sig;
+        sig.type_name = TagService::TYPENAME;
+        sig.tag = match_mark.c_str();
+        srv->addRef( commitObject(service_maker->createObject(sig)) );
         if (neg_match_mark) srv->setNeg(true);
         match_mark = "";
     }
@@ -564,11 +453,12 @@ void IPTImporter::addLengthMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !length_spec.empty())
     {
         // create custom service with module "length"
-        srv->addRef(commitObject(
-                        service_maker->getCustomService(
-                            "iptables",
-                            QString("-m length --length %1").arg(length_spec.c_str()),
-                            "")));
+        ObjectSignature sig;
+        sig.type_name = CustomService::TYPENAME;
+        sig.platform = "iptables";
+        sig.code = QString("-m length --length %1").arg(length_spec.c_str());
+        sig.protocol_name = "";
+        srv->addRef(commitObject(service_maker->createObject(sig)));
         length_spec = "";
     }
 }
@@ -580,11 +470,12 @@ void IPTImporter::addPktTypeMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !pkt_type_spec.empty())
     {
         // create custom service with module "pkttype"
-        srv->addRef(commitObject(
-                        service_maker->getCustomService(
-                            "iptables",
-                            QString("-m pkttype --pkt-type %1").arg(pkt_type_spec.c_str()),
-                            "")));
+        ObjectSignature sig;
+        sig.type_name = CustomService::TYPENAME;
+        sig.platform = "iptables";
+        sig.code = QString("-m pkttype --pkt-type %1").arg(pkt_type_spec.c_str());
+        sig.protocol_name = "";
+        srv->addRef(commitObject(service_maker->createObject(sig)));
         pkt_type_spec = "";
     }
 }
@@ -611,11 +502,13 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !recent_match.empty())
     {
         // create custom service with module "recent"
-        srv->addRef(commitObject(
-                        service_maker->getCustomService(
-                            "iptables",
-                            QString("-m recent %1").arg(recent_match.c_str()),
-                            "")));
+        ObjectSignature sig;
+        sig.type_name = CustomService::TYPENAME;
+        sig.platform = "iptables";
+        sig.code = QString("-m recent %1").arg(recent_match.c_str());
+        sig.protocol_name = "";
+        srv->addRef(commitObject(service_maker->createObject(sig)));
+
         recent_match = "";
     }
 }
@@ -627,11 +520,12 @@ void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &st
     if (rule->getSrv()->isAny() && !state.empty())
     {
         // create custom service with module "state"
-        srv->addRef(commitObject(
-                        service_maker->getCustomService(
-                            "iptables", 
-                            QString("-m state --state %1").arg(state.c_str()),
-                            "")));
+        ObjectSignature sig;
+        sig.type_name = CustomService::TYPENAME;
+        sig.platform = "iptables";
+        sig.code = QString("-m state --state %1").arg(state.c_str());
+        sig.protocol_name = "";
+        srv->addRef(commitObject(service_maker->createObject(sig)));
         recent_match = "";
     }
 }
@@ -807,12 +701,14 @@ void IPTImporter::pushPolicyRule()
                 action_on_reject_code = "ICMP admin prohibited";
 
                 QString err = QObject::tr(
-                    "Warning: Line %1: Unknown parameter of target REJECT: %2.\n")
+                    "Error: Line %1: Unknown parameter of target REJECT: %2.\n")
                     .arg(getCurrentLineNumber())
                     .arg(iptables_reject_arg);
-                ropt->setStr("color", getBadRuleColor());
-                rule_comment += string(err.toUtf8().constData());
-                *Importer::logger << err.toUtf8().constData();
+                throw ImporterException(err);
+
+                // ropt->setStr("color", getBadRuleColor());
+                // rule_comment += string(err.toUtf8().constData());
+                // *Importer::logger << err.toUtf8().constData();
             }
 
             ropt->setStr("action_on_reject", action_on_reject_code.toStdString());
@@ -887,9 +783,11 @@ void IPTImporter::pushPolicyRule()
     {
         action = PolicyRule::Tag;
         last_mark_rule = rule;
-        std::string mark_code = action_params["set_mark"];
-        FWObject *tag_service = commitObject(
-            service_maker->getTagService(mark_code.c_str()));
+        
+        ObjectSignature sig;
+        sig.type_name = TagService::TYPENAME;
+        sig.tag = action_params["set_mark"].c_str();
+        FWObject *tag_service = commitObject(service_maker->createObject(sig));
         rule->setTagObject(tag_service);
     }
     if (target=="CONNMARK")        action = PolicyRule::Continue;
@@ -989,9 +887,12 @@ void IPTImporter::pushPolicyRule()
         estab = std_obj->findObjectByName(CustomService::TYPENAME, "ESTABLISHED");
         if (estab == NULL)
         {
-            estab = commitObject(
-                service_maker->getCustomService(
-                    "iptables", "-m state --state RELATED,ESTABLISHED", ""));
+            ObjectSignature sig;
+            sig.type_name = CustomService::TYPENAME;
+            sig.platform = "iptables";
+            sig.code = QString("-m state --state RELATED,ESTABLISHED");
+            sig.protocol_name = "";
+            estab = service_maker->createObject(sig);
         }
 
         if (!rule->getSrv()->isAny())
@@ -1048,11 +949,12 @@ void IPTImporter::pushPolicyRule()
     {
         RuleElementSrv *srv = rule->getSrv();
 
-        FWObject *state_match_srv = commitObject(
-            service_maker->getCustomService(
-                "iptables",
-                QString("-m state --state %1").arg(current_state.c_str()),
-                ""));
+        ObjectSignature sig;
+        sig.type_name = CustomService::TYPENAME;
+        sig.platform = "iptables";
+        sig.code = QString("-m state --state %1").arg(current_state.c_str());
+        sig.protocol_name = "";
+        FWObject *state_match_srv = commitObject(service_maker->createObject(sig));
 
         if ( ! rule->getSrv()->isAny())
         {
@@ -1302,11 +1204,20 @@ void IPTImporter::pushNATRule()
 
         FWObject *tsrc = NULL;
         if (nat_addr1!=nat_addr2)
-            tsrc = commitObject(
-                address_maker->createAddressRange(nat_addr1.c_str(), nat_addr2.c_str()));
-        else
-            tsrc = commitObject(
-                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
+        {
+            ObjectSignature sig;
+            sig.type_name = AddressRange::TYPENAME;
+            sig.address_range_start = nat_addr1.c_str();
+            sig.address_range_end = nat_addr2.c_str();
+            tsrc = commitObject(address_maker->createObject(sig));
+        } else
+        {
+            ObjectSignature sig;
+            sig.type_name = Address::TYPENAME;
+            sig.address = nat_addr1.c_str();
+            sig.netmask = nat_nm.c_str();
+            tsrc = commitObject(address_maker->createObject(sig));
+        }
 
         RuleElementTSrc *re = rule->getTSrc();
         assert(re!=NULL);
@@ -1347,11 +1258,20 @@ void IPTImporter::pushNATRule()
 
         FWObject *tdst = NULL;
         if (nat_addr1!=nat_addr2)
-            tdst = commitObject(
-                address_maker->createAddressRange(nat_addr1.c_str(), nat_addr2.c_str()));
-        else
-            tdst = commitObject(
-                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
+        {
+            ObjectSignature sig;
+            sig.type_name = AddressRange::TYPENAME;
+            sig.address_range_start = nat_addr1.c_str();
+            sig.address_range_end = nat_addr2.c_str();
+            tdst = commitObject(address_maker->createObject(sig));
+        } else
+        {
+            ObjectSignature sig;
+            sig.type_name = Address::TYPENAME;
+            sig.address = nat_addr1.c_str();
+            sig.netmask = nat_nm.c_str();
+            tdst = commitObject(address_maker->createObject(sig));
+        }
 
         RuleElementTDst *re = rule->getTDst();
         assert(re!=NULL);
@@ -1415,8 +1335,12 @@ void IPTImporter::pushNATRule()
 
             RuleElementTSrc *tsrc = rule->getTSrc();
             assert(tsrc!=NULL);
-            o = commitObject(
-                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
+
+            ObjectSignature sig;
+            sig.type_name = Address::TYPENAME;
+            sig.address = nat_addr1.c_str();
+            sig.netmask = nat_nm.c_str();
+            o = commitObject(address_maker->createObject(sig));
             tsrc->addRef(o);
         }
 
@@ -1426,8 +1350,12 @@ void IPTImporter::pushNATRule()
 
             RuleElementTDst *tdst = rule->getTDst();
             assert(tdst!=NULL);
-            o = commitObject(
-                address_maker->createAddress(nat_addr1.c_str(), nat_nm.c_str()));
+
+            ObjectSignature sig;
+            sig.type_name = Address::TYPENAME;
+            sig.address = nat_addr1.c_str();
+            sig.netmask = nat_nm.c_str();
+            o = commitObject(address_maker->createObject(sig));
             tdst->addRef(o);
         }
     }

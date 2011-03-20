@@ -1,3 +1,13 @@
+2011-03-19  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushPolicyRule): change in the importer
+	behavior: configuration import is aborted with an appropriate
+	error message in the log when program enounters protocol or
+	service name that it does not recognize and can not convert to
+	protocol or port number. We used to replace port number with some
+	placeholder (usually 0) and mark rule as "bad" by coloring it red
+	and adding comment.
+
 2011-03-17  vadim  <vadim@netcitadel.com>
 
 	* PIXImporter.cpp (newObjectGroupNetwork): see #2234 Added support

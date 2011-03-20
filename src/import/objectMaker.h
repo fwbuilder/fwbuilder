@@ -30,6 +30,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QPair>
 
 
 namespace libfwbuilder
@@ -67,8 +68,14 @@ public:
 
 class ObjectSignature : public libfwbuilder::Dispatch
 {
+    static QMap<QString, QPair<int,int> > icmp_names;
+
 public:
+    ObjectSignature();
+    ObjectSignature(const ObjectSignature &other);
+    
     QString type_name;
+    QString object_name;
 
     // for address-like objects
     QString address;
@@ -78,9 +85,21 @@ public:
     QString dns_name;
     QString address_table_name;
 
-    // for services
+    // for IP service
     int protocol;
     bool fragments;
+    bool short_fragments;
+    bool any_opt;
+    QString dscp;
+    QString tos;
+    bool lsrr;
+    bool ssrr;
+    bool rr;
+    bool ts;
+    bool rtralt;
+    bool rtralt_value;
+    
+    // for ICMP service
     int icmp_type;
     int icmp_code;
 
@@ -102,6 +121,30 @@ public:
 
     // tag service
     QString tag;
+
+    // convenience methods that populate various attributes from
+    // strings taken from imported configs
+    void setProtocol(const QString &s);
+    void setIcmpFromName(const QString &s);
+    void setIcmpType(const QString &s);
+    void setIcmpCode(const QString &s);
+
+    int portFromString(const QString &port_spec, const QString &proto,
+                       int default_port);
+    
+    void setSrcPortRange(const QString &range_start_spec,
+                         const QString &range_end_spec,
+                         const QString &proto);
+    void setDstPortRange(const QString &range_start_spec,
+                         const QString &range_end_spec,
+                         const QString &proto);
+
+    void setSrcPortRangeFromPortOp(const QString &port_op,
+                                   const QString &port_spec,
+                                   const QString &proto);
+    void setDstPortRangeFromPortOp(const QString &port_op,
+                                   const QString &port_spec,
+                                   const QString &proto);
 
     QString toString() const;
 
@@ -127,10 +170,18 @@ public:
 
 class ObjectMaker
 {
+protected:
     libfwbuilder::Library *library;
     libfwbuilder::FWObject *last_created;
 
-    QMap<QString, int> object_registry;
+    QMap<QString, int> named_object_registry;
+    QMap<QString, int> anon_object_registry;
+
+    libfwbuilder::FWObject* findMatchingObject(const ObjectSignature &sig);
+    void registerNamedObject(const ObjectSignature &sig,
+                             libfwbuilder::FWObject* obj);
+    void registerAnonymousObject(const ObjectSignature &sig,
+                                 libfwbuilder::FWObject* obj);
     
 public:
 
@@ -139,8 +190,11 @@ public:
     
     virtual void clear();
 
-    libfwbuilder::FWObject* findMatchingObject(const ObjectSignature &sig);
-    void registerObject(const ObjectSignature &sig, libfwbuilder::FWObject* obj);
+    virtual libfwbuilder::FWObject* createObject(ObjectSignature &sig);
+    
+    libfwbuilder::FWObject *getLastCreatedObject() { return last_created; }
+
+    void prepareForDeduplication(libfwbuilder::FWObject *root);
     
     libfwbuilder::FWObject* createObject(const std::string &objType,
                                          const std::string &objName);
@@ -148,11 +202,7 @@ public:
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                          const std::string &objType,
                                          const std::string &objName);
-    
-    libfwbuilder::FWObject *getLastCreatedObject() { return last_created; }
 
-    void prepareForDeduplication(libfwbuilder::FWObject *root);
-    
 };
 
 #endif

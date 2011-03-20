@@ -43,20 +43,13 @@
 class IOSImporter : public Importer
 {
 
-    std::map<std::string, std::pair<int,int> > cisco_icmp_specs;
-
 protected:
     
-    virtual libfwbuilder::FWObject* createIPService(bool deduplicate=true);
-    virtual libfwbuilder::FWObject* createICMPService(bool deduplicate=true);
-    virtual libfwbuilder::FWObject* createTCPService(bool deduplicate=true);
-    virtual libfwbuilder::FWObject* createUDPService(bool deduplicate=true);
+    virtual libfwbuilder::FWObject* createTCPService();
+    virtual libfwbuilder::FWObject* createUDPService();
 
-    int convertPort(const std::string &port, const std::string &proto);
-
-    std::pair<int,int> convertPortSpec(const std::string &port_op,
-                                       const std::string &port_spec,
-                                       const std::string &proto);
+    virtual ObjectSignature packObjectSignatureTCPService();
+    virtual ObjectSignature packObjectSignatureUDPService();
 
 public:
 

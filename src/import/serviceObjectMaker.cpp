@@ -35,6 +35,7 @@
 #include "QStringListOperators.h"
 
 #include <QStringList>
+#include <QtDebug>
 
 
 extern int fwbdebug;
@@ -60,7 +61,7 @@ ServiceObjectMaker::ServiceObjectMaker(Library *l) : ObjectMaker(l)
     sig.type_name = IPService::TYPENAME;
     sig.protocol = 0;
     sig.fragments = false;
-    registerObject(sig, NULL);  // "any"
+    registerAnonymousObject(sig, NULL);  // "any"
 }
 
 ServiceObjectMaker::~ServiceObjectMaker() {}
@@ -70,23 +71,77 @@ void ServiceObjectMaker::clear()
     ObjectMaker::clear();
 }
 
-FWObject* ServiceObjectMaker::getCustomService(const QString &platform,
-                                               const QString &code,
-                                               const QString &protocol,
-                                               bool deduplicate)
+FWObject* ServiceObjectMaker::createObject(ObjectSignature &sig)
 {
-    ObjectSignature sig;
-    sig.type_name = CustomService::TYPENAME;
-    sig.platform = platform;
-    sig.protocol_name = protocol;
-    sig.code = code;
+    assert( ! sig.type_name.isEmpty());
 
-    if (deduplicate)
+    FWObject *obj = findMatchingObject(sig);
+
+    // qDebug() << "Create object " << sig.toString()
+    //          << " obj=" << obj;
+
+    if (obj) return obj;
+
+    if (sig.type_name == CustomService::TYPENAME)
+        obj = getCustomService(sig.platform, sig.code, sig.protocol_name);
+
+    if (sig.type_name == IPService::TYPENAME)
     {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
+        QString name;
+        if (sig.protocol > 0) name = QString("ip-%1").arg(sig.protocol);
+        else name = "ip";
+        if (sig.fragments) name += "-fragm";
+        obj = ObjectMaker::createObject(IPService::TYPENAME, name.toStdString());
+        obj->setInt("protocol_num", sig.protocol);
+        obj->setBool("fragm", sig.fragments);
+        obj->setBool("short_fragm", sig.short_fragments);
+        obj->setBool("any_opt", sig.any_opt);
+        obj->setStr("dscp", sig.dscp.toStdString());
+        obj->setStr("tos", sig.tos.toStdString());
+        obj->setBool("lsrr", sig.lsrr);
+        obj->setBool("ssrr", sig.ssrr);
+        obj->setBool("rr", sig.rr);
+        obj->setBool("ts", sig.ts);
+        obj->setBool("rtralt", sig.rtralt);
+        obj->setBool("rtralt_value", sig.rtralt_value);
     }
 
+    if (sig.type_name == ICMPService::TYPENAME)
+    {
+        QString name = QString("icmp %1/%2").arg(sig.icmp_type).arg(sig.icmp_code);
+        obj = ObjectMaker::createObject(ICMPService::TYPENAME, name.toStdString());
+        obj->setInt("type", sig.icmp_type);
+        obj->setInt("code", sig.icmp_code);
+    }
+
+    if (sig.type_name == TCPService::TYPENAME)
+        obj = getTCPService(sig.src_port_range_start, sig.src_port_range_end,
+                            sig.dst_port_range_start, sig.dst_port_range_end,
+                            sig.established,
+                            sig.flags_mask,
+                            sig.flags_comp);
+
+    if (sig.type_name == UDPService::TYPENAME)
+        obj = getUDPService(sig.src_port_range_start, sig.src_port_range_end,
+                            sig.dst_port_range_start, sig.dst_port_range_end);
+
+    if (sig.type_name == TagService::TYPENAME)
+        obj = getTagService(sig.tag);
+
+    if ( ! sig.object_name.isEmpty())
+    {
+        obj->setName(sig.object_name.toUtf8().constData());
+        registerNamedObject(sig, obj);
+    } else
+        registerAnonymousObject(sig, obj);
+
+    return obj;
+}
+
+FWObject* ServiceObjectMaker::getCustomService(const QString &platform,
+                                               const QString &code,
+                                               const QString &protocol)
+{
     QString custom_service_name_sig = platform + "-" + code;
     if (custom_service_codes.count(custom_service_name_sig) > 0)
         custom_service_code_tracker++;
@@ -96,63 +151,9 @@ FWObject* ServiceObjectMaker::getCustomService(const QString &platform,
     if ( ! protocol.isEmpty()) name << "-" << protocol;
 
     CustomService *s = CustomService::cast(
-        createObject(CustomService::TYPENAME, name.join("").toStdString()));
+        ObjectMaker::createObject(CustomService::TYPENAME, name.join("").toStdString()));
     if (!protocol.isEmpty()) s->setProtocol(protocol.toStdString());
     s->setCodeForPlatform(platform.toStdString(), code.toStdString());
-
-    registerObject(sig, s);
-
-    return s;
-}
-
-FWObject* ServiceObjectMaker::getIPService(int proto, bool fragments,
-                                           bool deduplicate)
-{
-    ObjectSignature sig;
-    sig.type_name = IPService::TYPENAME;
-    sig.protocol = proto;
-    sig.fragments = fragments;
-
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
-
-    QString name = QString("ip-%1").arg(proto);
-    if (fragments) name += "-frag";
-    IPService *s = IPService::cast(
-        createObject(IPService::TYPENAME, name.toStdString()));
-    s->setInt("protocol_num", proto);
-    s->setBool("fragm", fragments);
-
-    registerObject(sig, s);
-
-    return s;
-}
-
-FWObject* ServiceObjectMaker::getICMPService(int type, int code, bool deduplicate)
-{
-    ObjectSignature sig;
-    sig.type_name = ICMPService::TYPENAME;
-    sig.icmp_type = type;
-    sig.icmp_code = code;
-
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
-
-    QString name = QString("icmp %1/%2").arg(type).arg(code);
-
-    ICMPService *s = ICMPService::cast(
-        createObject(ICMPService::TYPENAME, name.toStdString()));
-    s->setInt("type", type);
-    s->setInt("code", code);
-
-    registerObject(sig, s);
-
     return s;
 }
 
@@ -160,25 +161,8 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
                                             int drs, int dre,
                                             bool established,
                                             QList<int> &flags_mask,
-                                            QList<int> &flags_comp,
-                                            bool deduplicate)
+                                            QList<int> &flags_comp)
 {
-    ObjectSignature sig;
-    sig.type_name = TCPService::TYPENAME;
-    sig.src_port_range_start = srs;
-    sig.src_port_range_end = sre;
-    sig.dst_port_range_start = drs;
-    sig.dst_port_range_end = dre;
-    sig.established = established;
-    sig.flags_mask = flags_mask;
-    sig.flags_comp = flags_comp;
-
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
-
     QStringList nl;
 
     nl << QString("tcp %1:%2 / %3:%4").arg(srs).arg(sre).arg(drs).arg(dre);
@@ -193,7 +177,7 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
     }
 
     TCPService* s = TCPService::cast(
-        createObject(TCPService::TYPENAME, nl.join(" ").toStdString()));
+        ObjectMaker::createObject(TCPService::TYPENAME, nl.join(" ").toStdString()));
     s->setSrcRangeStart(srs);
     s->setSrcRangeEnd(sre);
     s->setDstRangeStart(drs);
@@ -240,64 +224,34 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
 
     s->setEstablished(established);
     
-    registerObject(sig, s);
-
     return s;
 }
 
-FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre,
-                                            bool deduplicate)
+FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
 {
-    ObjectSignature sig;
-    sig.type_name = UDPService::TYPENAME;
-    sig.src_port_range_start = srs;
-    sig.src_port_range_end = sre;
-    sig.dst_port_range_start = drs;
-    sig.dst_port_range_end = dre;
-
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
-
     QString name =  QString("udp %1:%2 / %3:%4")
         .arg(srs).arg(sre).arg(drs).arg(dre);
 
     UDPService* s = UDPService::cast(
-        createObject(UDPService::TYPENAME, name.toStdString()));
+        ObjectMaker::createObject(UDPService::TYPENAME, name.toStdString()));
     s->setSrcRangeStart(srs);
     s->setSrcRangeEnd(sre);
     s->setDstRangeStart(drs);
     s->setDstRangeEnd(dre);
 
-    registerObject(sig, s);
-
     return s;
 }
 
-FWObject* ServiceObjectMaker::getTagService(const QString &tagcode,
-                                            bool deduplicate)
+FWObject* ServiceObjectMaker::getTagService(const QString &tagcode)
 {
-    ObjectSignature sig;
-    sig.type_name = TagService::TYPENAME;
-    sig.tag = tagcode;
-
-    if (deduplicate)
-    {
-        FWObject *obj = findMatchingObject(sig);
-        if (obj) return obj;
-    }
-
     TagService *s = NULL;
 
     QString name = QString("tag-%1").arg(tagcode);
 
-    s = TagService::cast(createObject(TagService::TYPENAME, name.toStdString()));
+    s = TagService::cast(
+        ObjectMaker::createObject(TagService::TYPENAME, name.toStdString()));
     assert(s!=NULL);
     s->setCode(tagcode.toStdString());
-
-    registerObject(sig, s);
 
     return s;
 }
