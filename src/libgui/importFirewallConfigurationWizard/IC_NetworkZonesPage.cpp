@@ -112,6 +112,8 @@ void IC_NetworkZonesPage::setNetworkZones()
     Firewall *fw = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->getFirewall();
 
+    if (fw == NULL) return;
+
     // read and configure network zones
     list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator it;
