@@ -171,6 +171,27 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
         icmp_names["mask-request"] = QPair<int,int>(17, 0);
         icmp_names["mask-reply"] = QPair<int,int>(18, 0);
 
+        // ASA 8.3 icmp names
+        icmp_names["alternate-address"] = QPair<int,int>(6, 0);
+        icmp_names["conversion-error"] = QPair<int,int>(31, 0);
+        icmp_names["echo"] = QPair<int,int>(8, 0);
+        icmp_names["echo-reply"] = QPair<int,int>(0, 0);
+        icmp_names["information-reply"] = QPair<int,int>(16, 0);
+        icmp_names["information-request"] = QPair<int,int>(15, 0);
+        icmp_names["mask-reply"] = QPair<int,int>(18, 0);
+        icmp_names["mask-request"] = QPair<int,int>(17, 0);
+        icmp_names["mobile-redirect"] = QPair<int,int>(32, 0);
+        icmp_names["parameter-problem"] = QPair<int,int>(12, 0);
+        icmp_names["redirect"] = QPair<int,int>(5, 0);
+        icmp_names["router-advertisement"] = QPair<int,int>(9, 0);
+        icmp_names["router-solicitation"] = QPair<int,int>(10, 0);
+        icmp_names["source-quench"] = QPair<int,int>(4, 0);
+        icmp_names["time-exceeded"] = QPair<int,int>(11, 0);
+        icmp_names["timestamp-reply"] = QPair<int,int>(14, 0);
+        icmp_names["timestamp-request"] = QPair<int,int>(13, 0);
+        icmp_names["traceroute"] = QPair<int,int>(30, 0);
+        icmp_names["unreachable"] = QPair<int,int>(3, 0);
+
         // iptables icmp names
         icmp_names["any"] = QPair<int,int>(-1,-1);
         icmp_names["echo-reply"] = QPair<int,int>(0,0);

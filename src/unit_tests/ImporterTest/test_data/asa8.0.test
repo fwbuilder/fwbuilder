@@ -72,14 +72,14 @@ object-group service service-ranges
  service-object udp gt 1024 
  service-object udp range www 101 
  service-object tcp lt 65535 
-object-group icmp-type icmp-1
+object-group icmp-object icmp-1
  icmp-object echo-reply
-object-group icmp-type icmp-2
+object-group icmp-object icmp-2
  description multiple icmp-objects
  icmp-object 1
  icmp-object redirect
  icmp-object router-advertisement
-object-group icmp-type icmp-3
+object-group icmp-object icmp-3
 object-group protocol protocol-1
  protocol-object ip
  protocol-object igmp
