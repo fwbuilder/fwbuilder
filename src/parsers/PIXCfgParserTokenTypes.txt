@@ -22,7 +22,7 @@ OSPF="ospf"=22
 PCP="pcp"=23
 PIM="pim"=24
 PPTP=25
-SNP=26
+SNP="snp"=26
 OBJECT="object"=27
 NETWORK="network"=28
 NAT="nat"=29
@@ -33,7 +33,7 @@ SUBNET="subnet"=33
 SERVICE="service"=34
 ICMP="icmp"=35
 INT_CONST=36
-ICMP6=37
+ICMP6="icmp6"=37
 TCP="tcp"=38
 UDP="udp"=39
 SOURCE="source"=40

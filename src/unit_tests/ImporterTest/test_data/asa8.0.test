@@ -83,6 +83,24 @@ object-group icmp-object icmp-3
 object-group protocol protocol-1
  protocol-object ip
  protocol-object igmp
+
+object-group protocol proto-icmp
+ protocol-object icmp
+object-group protocol proto-icmp6
+ protocol-object icmp6
+object-group protocol proto-ip
+ protocol-object ip
+object-group protocol proto-ipsec
+ protocol-object esp
+object-group protocol proto-pptp
+ protocol-object gre
+object-group protocol proto-snp
+ protocol-object snp
+object-group protocol proto-tcp
+ protocol-object tcp
+object-group protocol proto-udp
+ protocol-object udp
+
 pager lines 24
 mtu inside 1500
 mtu outside 1500

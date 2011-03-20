@@ -522,12 +522,19 @@ protocol_object : PROTOCOL_OBJECT
             importer->setCurrentLineNumber(LT(0)->getLine());
         }
     (
-        ( INT_CONST | ip_protocol_names)
+        ( INT_CONST | ICMP | TCP | UDP | ip_protocol_names)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = LT(0)->getText();
             importer->addIPServiceToObjectGroup();
             *dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
+        }
+    |
+        ICMP6
+        {
+            importer->addMessageToLog(
+                "Parser warning: IPv6 import is not supported. ");
+            consumeUntil(NEWLINE);
         }
     |
         OBJECT name:WORD
@@ -1406,6 +1413,7 @@ tokens
 
     IP = "ip";
     ICMP = "icmp";
+    ICMP6 = "icmp6";
     TCP  = "tcp";
     UDP  = "udp";
 
@@ -1424,6 +1432,7 @@ tokens
     PCP = "pcp";
     PIM = "pim";
     RIP = "rip";
+    SNP = "snp";
 
     HOST = "host";
     ANY  = "any";
