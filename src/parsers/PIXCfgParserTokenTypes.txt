@@ -7,8 +7,8 @@ COMMUNITY_LIST="community-list"=7
 NAMES="names"=8
 NAME="name"=9
 IPV4=10
-WORD=11
-IPV6=12
+IPV6=11
+WORD=12
 AH="ah"=13
 EIGRP="eigrp"=14
 ESP="esp"=15

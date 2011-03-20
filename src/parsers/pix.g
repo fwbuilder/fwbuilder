@@ -157,7 +157,7 @@ names_section : NAMES
         }
     ;
 
-name_entry : NAME (a:IPV4 n:WORD) | (v6:IPV6)
+name_entry : NAME (a:IPV4 | v6:IPV6) n:WORD
         {
             if (a)
             {
