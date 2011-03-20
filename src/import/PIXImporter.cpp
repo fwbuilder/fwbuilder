@@ -464,7 +464,7 @@ void PIXImporter::setNamedObjectDescription(const std::string &txt)
     {
         current_named_object->setBool(".import-commited", false);
         current_named_object->setComment("");
-        setNameOfNamedObject(commitObject(current_named_object));
+        addStandardImportComment(current_named_object, named_object_comment);
     }
 }
 
@@ -537,7 +537,7 @@ void PIXImporter::setObjectGroupDescription(const std::string &descr)
     {
         current_object_group->setBool(".import-commited", false);
         current_object_group->setComment("");
-        setNameOfNamedObject(commitObject(current_object_group));
+        addStandardImportComment(current_object_group, object_group_comment);
     }
 }
 

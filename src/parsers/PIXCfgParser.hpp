@@ -85,7 +85,8 @@ public:
 	public: void object_group_network();
 	public: void object_group_service();
 	public: void object_group_protocol();
-	public: void object_group_icmp();
+	public: void object_group_icmp_8_0();
+	public: void object_group_icmp_8_3();
 	public: void crypto();
 	public: void unknown_command();
 	public: void ip_protocol_names();

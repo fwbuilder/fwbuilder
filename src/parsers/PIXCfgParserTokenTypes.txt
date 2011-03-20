@@ -43,8 +43,8 @@ GROUP_OBJECT="group-object"=43
 NETWORK_OBJECT="network-object"=44
 PROTOCOL="protocol"=45
 PROTOCOL_OBJECT="protocol-object"=46
-ICMP_TYPE="icmp-type"=47
-ICMP_OBJECT="icmp-object"=48
+ICMP_OBJECT="icmp-object"=47
+ICMP_TYPE="icmp-type"=48
 SERVICE_OBJECT="service-object"=49
 CRYPTO="crypto"=50
 CERTIFICATE="certificate"=51

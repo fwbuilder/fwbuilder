@@ -120,7 +120,9 @@ cfgfile :
         |
             object_group_protocol
         |
-            object_group_icmp
+            object_group_icmp_8_0
+        |
+            object_group_icmp_8_3
         |
             crypto
         |
@@ -538,7 +540,20 @@ protocol_object : PROTOCOL_OBJECT
 
 //****************************************************************
 
-object_group_icmp : OBJECT_GROUP ICMP_TYPE name:WORD
+object_group_icmp_8_0 : OBJECT_GROUP ICMP_OBJECT name:WORD
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newObjectGroupICMP(name->getText());
+            *dbg << name->getLine() << ":"
+                 << " Object Group " << name->getText() << std::endl;
+        }
+        (
+            object_group_icmp_parameters
+        )+
+    ;
+
+object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
