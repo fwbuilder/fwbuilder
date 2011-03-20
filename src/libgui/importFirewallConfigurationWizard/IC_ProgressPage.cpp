@@ -71,6 +71,7 @@ IC_ProgressPage::IC_ProgressPage(QWidget *parent) : QWizardPage(parent)
     warning_format.setProperty(QTextFormat::FontWeight, 99);
     warning_format.setAnchor(true);
     warning_format.setAnchorHref("http://somewhere.com");
+
 }
 
 IC_ProgressPage::~IC_ProgressPage()
@@ -80,8 +81,10 @@ IC_ProgressPage::~IC_ProgressPage()
     if (importer != NULL && importer->isRunning()) importer->stop();
 }
 
-int IC_ProgressPage::nextId () const
+int IC_ProgressPage::nextId() const
 {
+    if (fwbdebug_ic) qDebug() << "IC_ProgressPage::nextId()";
+
     QString platform = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
         getPlatform();
@@ -91,7 +94,7 @@ int IC_ProgressPage::nextId () const
 
     // Move on to the next page only if firewall object has been created
     // and the next page only makes sense for pix and fwsm
-    if (platform == "pix" || platform == "fwsm")
+    if (fw && (platform == "pix" || platform == "fwsm"))
         return ImportFirewallConfigurationWizard::Page_NetworkZones;
 
     return -1;
@@ -122,11 +125,12 @@ void IC_ProgressPage::importerDestroyed(QObject *obj)
 
 void IC_ProgressPage::initializePage()
 {
+    if (fwbdebug_ic)
+        qDebug() << "IC_ProgressPage::initializePage()";
+
     if (importer != NULL && importer->isRunning())
     {
-        if (fwbdebug_ic)
-            qDebug() << "IC_ProgressPage::initializePage()"
-                     << "importer is still runnig; stopping";
+        if (fwbdebug_ic) qDebug() << "importer is still runnig; stopping";
         importer->stop();
         importer->wait();
         delete importer;
@@ -178,13 +182,14 @@ void IC_ProgressPage::importerFinished()
 
     dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->setFirewall(fw);
 
+    QString platform = 
+        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
+        getPlatform();
+
     if (fw) // fw can be NULL if import was uncussessful
     {
         // importer does not correctly detect fwsm platform and sets platform
         // to "pix"
-        QString platform = 
-            dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-            getPlatform();
         if (platform == "fwsm")
         {
             fw->setStr("platform", "fwsm");
@@ -215,6 +220,15 @@ void IC_ProgressPage::importerFinished()
         if (first_policy)
             QCoreApplication::postEvent(
                 pp, new openRulesetEvent(filename, first_policy->getId()));
+
+        setFinalPage(false); // this triggers call to nextId()
+
+    } else
+    {
+        // fw == NULL
+        // normally, wizard would have one more page, but since fw was not
+        // created, this page should be the last
+        setFinalPage(true);
     }
 
     emit completeChanged();

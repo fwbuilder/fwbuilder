@@ -62,6 +62,9 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(QWidget *pa
     setPage(Page_Progess, new IC_ProgressPage(this));
     setPage(Page_NetworkZones, new IC_NetworkZonesPage(this));
 
+    // always show cancel button
+    setOption(QWizard::NoCancelButton, false);
+
     QRect sg = QApplication::desktop()->screenGeometry(mw);
     QSize screen_size = sg.size();
 
