@@ -1,5 +1,17 @@
 2011-03-19  vadim  <vadim@netcitadel.com>
 
+	* objectMaker.cpp (findMatchingObject): see #2240 better
+	deduplication algorithm on import: we consider objects created
+	from in-line address/netmask and port specifications found inside
+	object-group, access-list, filter or nat commands "anonymous"
+	objects. These objects get automatically generated names and are
+	deduplicated using only their relevant attributes but not names.
+	Objects created from pix named object ("object network foo",
+	"object service bar") statements are considered "named"
+	objects. They get the name matching the name in corresponding pix
+	config line and are deduplicated using both relevant attributes
+	and the name.
+
 	* IPTImporter.cpp (pushPolicyRule): change in the importer
 	behavior: configuration import is aborted with an appropriate
 	error message in the log when program enounters protocol or
