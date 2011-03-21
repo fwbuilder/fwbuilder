@@ -393,6 +393,12 @@ service_other : SERVICE ( INT_CONST | ip_protocol_names)
         }
     ;
 
+// we should create a placeholder object even when its protocol is
+// unknown because this object may be used in some object groups or
+// acls later on. Add a note to the object comment to clarify there
+// has been a parser error. Note that this is done because of the
+// overall liberal policy of the importer that tries to import as much
+// as possible even when some constructs are not recognized.
 service_unknown : SERVICE WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
