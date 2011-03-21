@@ -324,6 +324,8 @@ named_object_service_parameters :
         |
             service_other
         |
+            service_unknown
+        |
             named_object_description
         )
     ;
@@ -382,12 +384,21 @@ dst_port_spec : ( DESTINATION )? xoperator
         }
     ;
 
-service_other : SERVICE ( INT_CONST | ip_protocol_names )
+service_other : SERVICE ( INT_CONST | ip_protocol_names)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = LT(0)->getText();
             importer->commitNamedIPServiceObject();
             *dbg << "NAMED OBJECT SERVICE " << LT(0)->getText() << " ";
+        }
+    ;
+
+service_unknown : SERVICE WORD
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addMessageToLog("Parser warning: Unknown service name " +
+                                      LT(0)->getText());
+            *dbg << "UNKNOWN SERVICE " << LT(0)->getText() << " ";
         }
     ;
 

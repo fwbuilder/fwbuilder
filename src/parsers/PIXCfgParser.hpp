@@ -101,6 +101,7 @@ public:
 	public: void service_icmp6();
 	public: void service_tcp_udp();
 	public: void service_other();
+	public: void service_unknown();
 	public: void src_port_spec();
 	public: void dst_port_spec();
 	public: void xoperator();
