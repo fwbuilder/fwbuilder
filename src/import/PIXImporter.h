@@ -90,7 +90,7 @@ class PIXImporter : public IOSImporter
     virtual libfwbuilder::FWObject* commitObject(libfwbuilder::FWObject *obj);
     virtual libfwbuilder::FWObject* setNameOfNamedObject(
         libfwbuilder::FWObject *obj);
-    
+
     void newObjectGroupNetwork(const std::string &group_name);
     void newObjectGroupService(const std::string &group_name);
     void newObjectGroupProtocol(const std::string &group_name);

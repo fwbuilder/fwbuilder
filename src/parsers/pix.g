@@ -396,8 +396,12 @@ service_other : SERVICE ( INT_CONST | ip_protocol_names)
 service_unknown : SERVICE WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog("Parser warning: Unknown service name " +
-                                      LT(0)->getText());
+            importer->protocol = "ip";
+            importer->commitNamedIPServiceObject();
+            std::string err = "Parser warning: Unknown service name " +
+                LT(0)->getText();
+            importer->setNamedObjectDescription(err);
+            importer->addMessageToLog(err);
             *dbg << "UNKNOWN SERVICE " << LT(0)->getText() << " ";
         }
     ;

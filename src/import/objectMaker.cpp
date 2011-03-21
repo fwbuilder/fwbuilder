@@ -690,19 +690,23 @@ void ObjectMaker::clear()
 FWObject* ObjectMaker::findMatchingObject(const ObjectSignature &sig)
 {
     QString signature = sig.toString();
-    if (named_object_registry.count(signature) > 0)
-        return library->getRoot()->findInIndex(named_object_registry[signature]);
 
-    ObjectSignature anon_sig = sig;
-    anon_sig.object_name = "";
-    QString anon_signature = anon_sig.toString();
-    if (anon_object_registry.count(anon_signature) > 0)
-        return library->getRoot()->findInIndex(anon_object_registry[anon_signature]);
+    if ( ! sig.object_name.isEmpty())
+    {
+        if (named_object_registry.count(signature) > 0)
+            return library->getRoot()->findInIndex(
+                named_object_registry[signature]);
+        return NULL;
+    }
+
+    if (anon_object_registry.count(signature) > 0)
+        return library->getRoot()->findInIndex(anon_object_registry[signature]);
 
     return NULL;
 }
 
-void ObjectMaker::registerNamedObject(const ObjectSignature &sig, FWObject* obj)
+void ObjectMaker::registerNamedObject(const ObjectSignature &sig,
+                                      FWObject* obj)
 {
     ObjectSignature anon_sig = sig;
     anon_sig.object_name = "";
@@ -712,7 +716,8 @@ void ObjectMaker::registerNamedObject(const ObjectSignature &sig, FWObject* obj)
     named_object_registry[sig.toString()] = (obj!=NULL) ? obj->getId() : -1;
 }
 
-void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig, FWObject* obj)
+void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig,
+                                          FWObject* obj)
 {
     ObjectSignature anon_sig = sig;
     anon_sig.object_name = "";
