@@ -41,7 +41,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-bool fwbdebug_ic = true;
+bool fwbdebug_ic = fwbdebug;
 
 
 IC_ProgressPage::IC_ProgressPage(QWidget *parent) : QWizardPage(parent)

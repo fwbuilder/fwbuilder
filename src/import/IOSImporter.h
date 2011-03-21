@@ -45,8 +45,8 @@ class IOSImporter : public Importer
 
 protected:
     
-    virtual libfwbuilder::FWObject* createTCPService();
-    virtual libfwbuilder::FWObject* createUDPService();
+    virtual libfwbuilder::FWObject* createTCPService(const QString &name="");
+    virtual libfwbuilder::FWObject* createUDPService(const QString &name="");
     virtual libfwbuilder::FWObject* createTCPUDPNeqObject(const QString &proto);
     
     virtual ObjectSignature packObjectSignatureTCPService();

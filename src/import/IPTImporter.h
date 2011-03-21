@@ -57,8 +57,8 @@ class IPTImporter : public Importer
 
     libfwbuilder::FWObject* createTCPUDPService(const std::string &proto);
     
-    virtual libfwbuilder::FWObject* createTCPService();
-    virtual libfwbuilder::FWObject* createUDPService();
+    virtual libfwbuilder::FWObject* createTCPService(const QString &name="");
+    virtual libfwbuilder::FWObject* createUDPService(const QString &name="");
 
     virtual libfwbuilder::FWObject* makeSrcObj();
     virtual libfwbuilder::FWObject* makeDstObj();

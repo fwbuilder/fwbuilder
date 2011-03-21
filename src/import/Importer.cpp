@@ -659,13 +659,13 @@ Firewall* Importer::finalize()
     return fw;
 }
 
-FWObject* Importer::createTCPService()
+FWObject* Importer::createTCPService(const QString &name)
 {
     // Default implementation
     return NULL;
 }
 
-FWObject* Importer::createUDPService()
+FWObject* Importer::createUDPService(const QString &name)
 {
     // Default implementation
     return NULL;

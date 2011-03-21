@@ -422,12 +422,10 @@ void PIXImporter::commitNamedTCPUDPServiceObject()
     // have to use createTCPService because it processes "neq" port
     // operators and may create a group with two services nstead of
     // just tcp service. Same for udp.
-    if (protocol == "tcp") obj = createTCPService();
-    if (protocol == "udp") obj = createUDPService();
+    if (protocol == "tcp") obj = createTCPService(named_object_name);
+    if (protocol == "udp") obj = createUDPService(named_object_name);
 
-    current_named_object = commitObject(
-        service_maker->promoteToNamedObject(
-            obj, named_object_name.toUtf8().constData()));
+    current_named_object = commitObject(obj);
 
     named_objects_registry[named_object_name] = current_named_object;
 }

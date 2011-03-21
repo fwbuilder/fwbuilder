@@ -75,6 +75,8 @@ class ObjectSignature : public libfwbuilder::Dispatch
 public:
     ObjectSignature();
     ObjectSignature(const ObjectSignature &other);
+
+    bool port_range_inclusive;
     
     QString type_name;
     QString object_name;

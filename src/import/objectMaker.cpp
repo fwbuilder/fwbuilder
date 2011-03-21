@@ -73,6 +73,8 @@ QMap<QString, QPair<int,int> >  ObjectSignature::icmp_names;
 
 ObjectSignature::ObjectSignature()
 {
+    port_range_inclusive = true;
+
     protocol = 0;
 
     fragments = false;
@@ -383,6 +385,12 @@ void ObjectSignature::setSrcPortRangeFromPortOp(const QString &port_op,
         // range_start and range_end have been set
         ;
     }
+
+    if ( ! port_range_inclusive)
+    {
+        if (portop == "lt") src_port_range_end--;
+        if (portop == "gt") src_port_range_start++;
+    }
 }
 
 void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
@@ -421,6 +429,12 @@ void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
     {
         // range_start and range_end have been set
         ;
+    }
+
+    if ((portop == "lt" || portop == "gt") && ! port_range_inclusive)
+    {
+        src_port_range_start++;
+        src_port_range_end--;
     }
 }
 

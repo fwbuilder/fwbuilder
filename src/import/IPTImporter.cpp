@@ -288,12 +288,12 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
     }
 }
 
-FWObject* IPTImporter::createTCPService()
+FWObject* IPTImporter::createTCPService(const QString &name)
 {
     return createTCPUDPService("tcp");
 }
 
-FWObject* IPTImporter::createUDPService()
+FWObject* IPTImporter::createUDPService(const QString &name)
 {
     return createTCPUDPService("udp");
 }

@@ -40,6 +40,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/ServiceGroup.h"
 
 #include <QDesktopWidget>
 #include <QtDebug>
@@ -53,7 +55,8 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(
 {
     fw = NULL;
     db_orig = _db;
-    db_copy = new FWObjectDatabase(*_db);
+    db_copy = new FWObjectDatabase();
+    db_copy->duplicate(_db, false);
     current_lib = Library::cast(db_copy->findInIndex(mw->getCurrentLib()->getId()));
 
     QPixmap pm;
@@ -98,8 +101,6 @@ ImportFirewallConfigurationWizard::~ImportFirewallConfigurationWizard()
 
 void ImportFirewallConfigurationWizard::accept()
 {
-    qDebug() << "ImportFirewallConfigurationWizard::accept()";
-
     if (platform == "pix" || platform == "fwsm")
         dynamic_cast<IC_NetworkZonesPage*>(
             page(Page_NetworkZones))->setNetworkZones();

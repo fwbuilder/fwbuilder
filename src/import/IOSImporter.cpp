@@ -89,6 +89,7 @@ ObjectSignature IOSImporter::packObjectSignatureTCPService()
 
     ObjectSignature sig;
     sig.type_name = TCPService::TYPENAME;
+    sig.port_range_inclusive = false;
 
     sig.setSrcPortRangeFromPortOp(
         src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
@@ -110,6 +111,7 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
 
     ObjectSignature sig;
     sig.type_name = UDPService::TYPENAME;
+    sig.port_range_inclusive = false;
 
     sig.setSrcPortRangeFromPortOp(
         src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
@@ -119,21 +121,23 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
     return sig;
 }
 
-FWObject* IOSImporter::createTCPService()
+FWObject* IOSImporter::createTCPService(const QString &name)
 {
     if (src_port_op == "neq" || dst_port_op == "neq")
         return createTCPUDPNeqObject("tcp");
 
     ObjectSignature sig = packObjectSignatureTCPService();
+    if( ! name.isEmpty()) sig.object_name = name;
     return service_maker->createObject(sig);
 }
 
-FWObject* IOSImporter::createUDPService()
+FWObject* IOSImporter::createUDPService(const QString &name)
 {
     if (src_port_op == "neq" || dst_port_op == "neq")
         return createTCPUDPNeqObject("udp");
 
     ObjectSignature sig =  packObjectSignatureUDPService();
+    if ( ! name.isEmpty()) sig.object_name = name;
     return service_maker->createObject(sig);
 }
 
@@ -147,6 +151,7 @@ FWObject* IOSImporter::createUDPService()
 FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
 {
     ObjectSignature sig;
+    sig.port_range_inclusive = false;
 
     if (proto == "tcp") sig.type_name = TCPService::TYPENAME;
     if (proto == "udp") sig.type_name = UDPService::TYPENAME;
