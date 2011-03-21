@@ -431,10 +431,10 @@ void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
         ;
     }
 
-    if ((portop == "lt" || portop == "gt") && ! port_range_inclusive)
+    if ( ! port_range_inclusive)
     {
-        src_port_range_start++;
-        src_port_range_end--;
+        if (portop == "lt") dst_port_range_end--;
+        if (portop == "gt") dst_port_range_start++;
     }
 }
 
