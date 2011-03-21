@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:47 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:28 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -94,11 +94,11 @@ global (outside) 1 interface
 access-list id3FA34CB5.0 permit ip 10.1.2.0 255.255.255.0  209.165.200.224 255.255.255.224 
 ! 
 ! Rule  2 (NAT)
-access-list id3FA349A3.0 permit tcp 10.1.2.0 255.255.255.0  host 209.165.201.11  eq 80
+access-list id3FA349A3.0 permit tcp 10.1.2.0 255.255.255.0  host 209.165.201.11  eq 80 
 nat (inside) 1 access-list id3FA349A3.0 0 0
 ! 
 ! Rule  3 (NAT)
-access-list id3FA34CB5.0 permit tcp 10.1.2.0 255.255.255.0  host 209.165.201.11  eq 23
+access-list id3FA34CB5.0 permit tcp 10.1.2.0 255.255.255.0  host 209.165.201.11  eq 23 
 ! 
 ! Rule  4 (NAT)
 ! 
@@ -113,11 +113,11 @@ access-list id3FA35063.0 permit ip host 10.1.2.27   209.165.200.224 255.255.255.
 static (inside,outside) interface  access-list id3FA35063.0 0 0
 ! 
 ! Rule  7 (NAT)
-access-list id3FA44ABB.0 permit tcp host 10.1.2.27  eq 80 host 209.165.200.225  
-access-list id3FA44ABB.1 permit tcp host 10.1.2.27  eq 81 host 209.165.200.225  
-access-list id3FA44ABB.0 permit tcp host 10.1.2.27  eq 80 host 209.165.201.11  
+access-list id3FA44ABB.0 permit tcp host 10.1.2.27  eq 80  host 209.165.200.225  
+access-list id3FA44ABB.1 permit tcp host 10.1.2.27  eq 81  host 209.165.200.225  
+access-list id3FA44ABB.0 permit tcp host 10.1.2.27  eq 80  host 209.165.201.11  
 static (inside,outside) tcp interface 80  access-list id3FA44ABB.0 0 0
-access-list id3FA44ABB.1 permit tcp host 10.1.2.27  eq 81 host 209.165.201.11  
+access-list id3FA44ABB.1 permit tcp host 10.1.2.27  eq 81  host 209.165.201.11  
 static (inside,outside) tcp interface 81  access-list id3FA44ABB.1 0 0
 
 

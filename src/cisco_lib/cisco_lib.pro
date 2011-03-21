@@ -59,6 +59,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			AutomaticRules_iosacl.cpp
 
 HEADERS	 = ../../config.h                   \
+            PortRangeConverter.h            \
 			splitByNetworkZonesForRE.h      \
 			specialServices.h               \
 			ACL.h                           \

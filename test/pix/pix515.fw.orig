@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:57 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:37 2011 PDT by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -149,7 +149,7 @@ nat (inside) 1 access-list id47B7A71421818.0 tcp 0 0
 ! 
 ! Rule  1 (NAT)
 clear config access-list id47B7C22E21818.0
-access-list id47B7C22E21818.0 permit tcp host 10.3.14.50  eq 25 any 
+access-list id47B7C22E21818.0 permit tcp host 10.3.14.50  eq 25  any 
 static (inside,outside) tcp interface 2525  access-list id47B7C22E21818.0 tcp 0 0
 
 ! 

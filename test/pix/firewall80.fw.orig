@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:53 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:33 2011 PDT by vadim
 !
 ! Compiled for pix 8.2
 ! Outbound ACLs: supported
@@ -150,8 +150,8 @@ access-list inside_acl_in permit 51 any host 192.168.1.10
 ! matching source ports
 access-list outside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
 access-list inside_acl_in deny   udp any range 10000 10010 host 192.168.1.10 
-access-list outside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in deny   tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list outside_acl_in deny   tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list inside_acl_in deny   tcp any gt 1023 host 192.168.1.10 eq 80 
 ! 
 ! Rule  6 (global)
 access-list outside_acl_in deny   tcp any range 20000 20020 host 192.168.1.10 

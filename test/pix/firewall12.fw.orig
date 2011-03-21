@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:47 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:27 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -169,7 +169,7 @@ global (dmz50) 1 interface
 ! 
 ! 
 ! Rule  1 (NAT)
-access-list id3F8F95A0.0 permit tcp host 10.3.14.30  eq 80 any 
+access-list id3F8F95A0.0 permit tcp host 10.3.14.30  eq 80  any 
 static (inside,outside) tcp interface 80  access-list id3F8F95A0.0 0 0
 
 

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3499
+!  Firewall Builder  fwb_iosacl v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:44:06 2011 PST by vadim
+!  Generated Mon Mar 21 12:45:58 2011 PDT by vadim
 !
 ! Compiled for iosacl 12.4
 !
@@ -150,9 +150,9 @@ ipv6 access-list ipv6_fe0_0_in
 ! 
 ! Rule  1 (FastEthernet0/0)
 ! object-groups can not be used for ipv6
-  permit udp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 gt 1024 
+  permit udp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 gt 1023 
   permit udp  host 2001:5c0:0:2::24 host fe80::21d:9ff:fe8b:8e94 eq 161 
-  permit udp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 gt 1024 
+  permit udp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 gt 1023 
   permit udp  host 3ffe:1200:2001:1:8000::1 host fe80::21d:9ff:fe8b:8e94 eq 161 
 ! 
 ! Rule  12 (global)

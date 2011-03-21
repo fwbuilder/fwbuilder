@@ -1,3 +1,21 @@
+2011-03-21  vadim  <vadim@netcitadel.com>
+
+	* PortRangeConverter.h (PortRangeConverter): see #2252 TCP and UDP
+	service objects that define port ranges assume port ranges are
+	inclusive, that is range boundaries are included in the
+	match. This is the behavior of port range matches in iptables and
+	PF, however policy compilers for Cisco IOS ACL and PIX used to
+	convert these objects into ios and pix access list configurations
+	that excluded port range boundaries from the match. This behavior
+	made TCP and UDP service objects with port ranges incompatible
+	between firewall platforms, that is, the same object could not be
+	used in rules of firewall objects of different platforms because
+	generated configurations would behave differently. This change
+	makes port ranges inclusive in generated IOS and PIX
+	configurations. Users should verify their configurations and
+	adjust port range boundaries in TCP and UDP service objects if
+	necessary.
+
 2011-03-20  vadim  <vadim@netcitadel.com>
 
 	* ImportFirewallConfigurationWizard.cpp (accept): see #2253

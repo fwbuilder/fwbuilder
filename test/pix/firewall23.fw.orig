@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:50 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:30 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -101,19 +101,19 @@ nat (outside) 1 access-list id626114X21763.0 0 0
 ! 
 ! 
 ! Rule  5 (NAT)
-access-list id36895X21071.0 permit tcp host 192.168.1.1  eq 6667 any 
+access-list id36895X21071.0 permit tcp host 192.168.1.1  eq 6667  any 
 static (inside,outside) tcp interface 6667  access-list id36895X21071.0 0 0
 ! 
 ! Rule  6 (NAT)
-access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667  any 
 ! 
 ! Rule  7 (NAT)
-access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667  any 
 ! 
 ! Rule  8 (NAT)
-access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667 any 
+access-list id36809X21071.0 permit tcp host 192.168.1.10  eq 6667  any 
 static (inside,outside) tcp interface 6667  access-list id36809X21071.0 0 0
-access-list id1641340X21763.1 permit tcp host 192.168.1.10  eq 6667 any 
+access-list id1641340X21763.1 permit tcp host 192.168.1.10  eq 6667  any 
 static (inside,dmz) tcp interface 6667  access-list id1641340X21763.1 0 0
 
 

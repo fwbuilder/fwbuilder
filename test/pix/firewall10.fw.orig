@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:46 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:27 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -355,7 +355,7 @@ global (outside) 1 22.22.22.21-22.22.22.25 netmask 255.255.255.0
 ! 
 ! 
 ! Rule  4 (NAT)
-access-list id3DB0F94E.0 permit tcp host 192.168.1.10  eq 25 any 
+access-list id3DB0F94E.0 permit tcp host 192.168.1.10  eq 25  any 
 static (inside,outside) tcp interface 25  access-list id3DB0F94E.0 0 0
 ! 
 ! Rule  5 (NAT)

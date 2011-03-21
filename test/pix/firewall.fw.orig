@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:46 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:26 2011 PDT by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -534,9 +534,9 @@ access-list inside_acl_in permit udp any 192.168.1.0 255.255.255.0 eq 4000
 access-list dmz_acl_in permit udp any 192.168.1.0 255.255.255.0 eq 4000 
 ! 
 ! Rule  20 (global)
-access-list outside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list dmz_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list outside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list inside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list dmz_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
 ! 
 ! Rule  23 (global)
 access-list outside_acl_in permit ip host 22.22.22.22 host 22.22.22.22 

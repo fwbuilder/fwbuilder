@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:51 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:32 2011 PDT by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -365,9 +365,9 @@ access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494
 access-list outside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
 access-list inside_acl_in permit udp any range 10000 10010 host 192.168.1.10 
 access-list dmz_acl_in permit udp any range 10000 10010 host 192.168.1.10 
-access-list outside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list inside_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
-access-list dmz_acl_in permit tcp any gt 1024 host 192.168.1.10 eq 80 
+access-list outside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list inside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list dmz_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
 access-list outside_acl_in permit tcp any range 20000 20020 host 192.168.1.10 
 access-list inside_acl_in permit tcp any range 20000 20020 host 192.168.1.10 
 access-list dmz_acl_in permit tcp any range 20000 20020 host 192.168.1.10 
@@ -422,18 +422,18 @@ global (outside) 1 22.22.22.21-22.22.22.25 netmask 255.255.255.0
 ! 
 ! Rule  5 (NAT)
 clear config access-list id451430F428543.0
-access-list id451430F428543.0 permit tcp host 192.168.1.10  eq 25 any 
+access-list id451430F428543.0 permit tcp host 192.168.1.10  eq 25  any 
 static (inside,outside) tcp interface 25  access-list id451430F428543.0 tcp 0 0
 ! 
 ! Rule  6 (NAT)
 clear config access-list id47B71DF021818.0
-access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25 any 
+access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25  any 
 ! 
 ! Rule  7 (NAT)
-access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25 any 
+access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25  any 
 ! 
 ! Rule  8 (NAT)
-access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25 any 
+access-list id47B71DF021818.0 permit tcp host 192.168.1.10  eq 25  any 
 static (inside,outside) tcp interface 2525  access-list id47B71DF021818.0 tcp 0 0
 ! 
 ! Rule  9 (NAT)

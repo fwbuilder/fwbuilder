@@ -26,6 +26,7 @@
 #include "PolicyCompiler_pix.h"
 #include "PIXObjectGroup.h"
 #include "NamedObjectsManager.h"
+#include "PortRangeConverter.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"
@@ -140,30 +141,20 @@ string PolicyCompiler_pix::PrintRule::_printLog(PolicyRule *rule)
     return str.join(" ").toStdString();
 }
 
+string PolicyCompiler_pix::PrintRule::_printPortRangeOp(int rs, int re)
+{
+    return PortRangeConverter(rs, re).toString();
+}
+
 string PolicyCompiler_pix::PrintRule::_printSrcService(Service *srv)
 {
-    ostringstream  str;
-
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
-	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0)
-        {
-	    if (rs==re)  str << "eq " << rs << " ";
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re << " ";
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs << " ";
-		    else
-			str << "range " << rs << " " << re << " ";
-	}
+	int rs = TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re = TCPUDPService::cast(srv)->getSrcRangeEnd();
+        return _printPortRangeOp(rs, re);
     }
-    return str.str();
+    return "";
 }
 
 string PolicyCompiler_pix::PrintRule::_printDstService(Service *srv)
@@ -174,27 +165,19 @@ string PolicyCompiler_pix::PrintRule::_printDstService(Service *srv)
     {
 	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
 	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0)
-        {
-	    if (rs==re)  str << "eq " << rs << " ";
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re << " ";
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs << " ";
-		    else
-			str << "range " << rs << " " << re << " ";
-	}
+        str <<  _printPortRangeOp(rs, re);
     }
+
     if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
-	    str << srv->getStr("type") << " ";
+    {
+        str << srv->getStr("type") << " ";
+    }
 
     if (CustomService::isA(srv)) 
+    {
 	str << CustomService::cast(srv)->getCodeForPlatform(
             compiler->myPlatformName() ) << " ";
+    }
 
     const IPService *ip_srv = IPService::constcast(srv);
     if (ip_srv && ip_srv->hasIpOptions())

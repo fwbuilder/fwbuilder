@@ -212,6 +212,8 @@ namespace fwcompiler {
             std::map<std::string,std::string>   current_rule_label2;
             int                                 aclLineCounter;
 
+            std::string _printPortRangeOp(int rs, int re);
+            
             std::string getTcpFlagName(const libfwbuilder::TCPService::TCPFlag f);
             std::string _printSrcService(libfwbuilder::Service *srv);
             std::string _printDstService(libfwbuilder::Service *srv);

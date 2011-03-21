@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -365,6 +363,9 @@ namespace fwcompiler
 
             bool          init;
             std::string   current_rule_label;
+
+            std::string _printPortRangeOp(int rs, int re);            
+
             std::string  _printSrcService(libfwbuilder::Service *srv);
             std::string  _printDstService(libfwbuilder::Service *srv);
             virtual void _printPort(libfwbuilder::Service *srv);

@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3499
+!  Firewall Builder  fwb_pix v4.2.0.3505
 !
-!  Generated Sat Mar 12 19:45:48 2011 PST by vadim
+!  Generated Mon Mar 21 12:46:28 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -193,18 +193,18 @@ access-list id3D1BFFA4.0 permit ip host 192.168.1.10   any
 static (inside,outside) interface  access-list id3D1BFFA4.0 0 0
 ! 
 ! Rule  17 (NAT)
-access-list id3D1C0835.0 permit tcp host 192.168.1.10  eq 6667 any 
+access-list id3D1C0835.0 permit tcp host 192.168.1.10  eq 6667  any 
 static (inside,outside) tcp interface 6667  access-list id3D1C0835.0 0 0
 ! 
 ! Rule  18 (NAT)
-access-list id16986X27842.0 permit tcp host 192.168.1.1  eq 6667 any 
+access-list id16986X27842.0 permit tcp host 192.168.1.1  eq 6667  any 
 static (inside,outside) tcp interface 6667  access-list id16986X27842.0 0 0
 ! 
 ! Rule  19 (NAT)
-access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80 any 
+access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80  any 
 ! 
 ! Rule  20 (NAT)
-access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80 any 
+access-list id414351C7.0 permit tcp host 192.168.1.10  eq 80  any 
 static (inside,outside) tcp interface 80  access-list id414351C7.0 0 0
 ! 
 ! Rule  21 (NAT)
@@ -220,22 +220,22 @@ access-list id3D1BFFF6.0 permit ip host 192.168.1.10   192.168.2.0 255.255.255.0
 static (inside,dmz) interface  access-list id3D1BFFF6.0 0 0
 ! 
 ! Rule  25 (NAT)
-access-list id3BEEF6D2.0 permit tcp host 192.168.1.10  eq 119 any 
+access-list id3BEEF6D2.0 permit tcp host 192.168.1.10  eq 119  any 
 static (inside,outside) tcp interface 119  access-list id3BEEF6D2.0 0 0
 ! 
 ! Rule  27 (NAT)
-access-list id3B7313C4.0 permit tcp host 192.168.1.10  eq 3128 any 
+access-list id3B7313C4.0 permit tcp host 192.168.1.10  eq 3128  any 
 static (inside,outside) tcp interface 80  access-list id3B7313C4.0 0 0
 ! 
 ! Rule  28 (NAT)
-access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
+access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128  any 
 ! 
 ! Rule  29 (NAT)
-access-list id36573X14603.0 permit tcp host 192.168.1.10  eq 3128 any 
+access-list id36573X14603.0 permit tcp host 192.168.1.10  eq 3128  any 
 static (inside,outside) tcp interface 80  access-list id36573X14603.0 0 0
 ! 
 ! Rule  30 (NAT)
-access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128 any 
+access-list id47B6CF3421818.0 permit tcp host 192.168.1.10  eq 3128  any 
 static (inside,outside) tcp interface 80  access-list id47B6CF3421818.0 0 0
 
 

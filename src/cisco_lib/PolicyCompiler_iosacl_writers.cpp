@@ -26,6 +26,7 @@
 #include "PolicyCompiler_iosacl.h"
 #include "IOSObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
+#include "PortRangeConverter.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"
@@ -346,30 +347,21 @@ string PolicyCompiler_iosacl::PrintRule::_printLog(PolicyRule *rule)
     return "";
 }
 
+string PolicyCompiler_iosacl::PrintRule::_printPortRangeOp(int rs, int re)
+{
+    return PortRangeConverter(rs, re).toString();
+}
+
 string PolicyCompiler_iosacl::PrintRule::_printSrcService(Service *srv)
 {
-    ostringstream  str;
-
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
-	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0) {
-	    if (rs==re)  str << "eq " << rs << " ";
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re << " ";
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs << " ";
-		    else
-			str << "range " << rs << " " << re << " ";
-	}
+	int rs = TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re = TCPUDPService::cast(srv)->getSrcRangeEnd();
+        return _printPortRangeOp(rs, re);
     }
 
-    return str.str();
+    return "";
 }
 
 string PolicyCompiler_iosacl::PrintRule::_printIPServiceOptions(PolicyRule *r)
@@ -407,21 +399,9 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
 
     if (TCPService::isA(srv) || UDPService::isA(srv))
     {
-	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
-	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0) {
-	    if (rs==re)  str << "eq " << rs << " ";
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re << " ";
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs << " ";
-		    else
-			str << "range " << rs << " " << re << " ";
-	}
+	int rs = TCPUDPService::cast(srv)->getDstRangeStart();
+	int re = TCPUDPService::cast(srv)->getDstRangeEnd();
+        str << _printPortRangeOp(rs, re);
     }
 
     if (TCPService::isA(srv))
@@ -430,8 +410,11 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
         else str << _printTCPFlags(TCPService::cast(srv));
     }
 
-    if ((ICMPService::isA(srv) || ICMP6Service::isA(srv)) && srv->getInt("type")!=-1)
-	    str << srv->getStr("type") << " ";
+    if ((ICMPService::isA(srv) || ICMP6Service::isA(srv)) &&
+        srv->getInt("type")!=-1)
+    {
+        str << srv->getStr("type") << " ";
+    }
 
     if (CustomService::isA(srv)) 
 	str << CustomService::cast(srv)->getCodeForPlatform(

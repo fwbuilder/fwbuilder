@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "NATCompiler_pix.h"
+#include "PortRangeConverter.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -85,60 +86,44 @@ void NATCompiler_pix::PrintRule::_printPort(Service *srv)
 {
     if (TCPService::isA(srv) || UDPService::isA(srv))
     {
-	int drs=TCPUDPService::cast(srv)->getDstRangeStart();
+	int drs = TCPUDPService::cast(srv)->getDstRangeStart();
 
 	if (drs!=0)   compiler->output << drs << " ";
     }
 }
 
+string NATCompiler_pix::PrintRule::_printPortRangeOp(int rs, int re)
+{
+    return PortRangeConverter(rs, re).toString();
+}
+
 string NATCompiler_pix::PrintRule::_printSrcService(Service *srv)
 {
-    ostringstream  str;
-
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	int rs=TCPUDPService::cast(srv)->getSrcRangeStart();
-	int re=TCPUDPService::cast(srv)->getSrcRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0) {
-	    if (rs==re)  str << "eq " << rs;
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re;
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs;
-		    else
-			str << "range " << rs << " " << re;
-	}
+	int rs = TCPUDPService::cast(srv)->getSrcRangeStart();
+	int re = TCPUDPService::cast(srv)->getSrcRangeEnd();
+        return _printPortRangeOp(rs, re);
     }
-    return str.str();
+    return "";
 }
 
 string NATCompiler_pix::PrintRule::_printDstService(Service *srv)
 {
     ostringstream  str;
 
-    if (TCPService::isA(srv) || UDPService::isA(srv)) {
-	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
-	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
-
-        if (rs<0) rs=0;
-        if (re<0) re=0;
-
-	if (rs>0 || re>0) {
-	    if (rs==re)  str << "eq " << rs;
-	    else
-		if (rs==0 && re!=0)      str << "lt " << re;
-		else
-		    if (rs!=0 && re==65535)  str << "gt " << rs;
-		    else
-			str << "range " << rs << " " << re;
-	}
+    if (TCPService::isA(srv) || UDPService::isA(srv))
+    {
+	int rs = TCPUDPService::cast(srv)->getDstRangeStart();
+	int re = TCPUDPService::cast(srv)->getDstRangeEnd();
+        str <<  _printPortRangeOp(rs, re);
     }
+
     if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
-	    str << srv->getStr("type") << " ";
+    {
+        str << srv->getStr("type") << " ";
+    }
+
     return str.str();
 }
 

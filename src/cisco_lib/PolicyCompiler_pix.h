@@ -276,6 +276,8 @@ namespace fwcompiler {
             std::list<std::string>              seen_icmp_commands;
             int                                 aclLineCounter;
             
+            std::string _printPortRangeOp(int rs, int re);
+            
             std::string _printSingleSSHTelnetCommand(int port,
                                         libfwbuilder::Address *a,
                                         const std::string &interfaceLabel);
