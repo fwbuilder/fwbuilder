@@ -104,9 +104,17 @@ list<NATRule*> NATCompiler_pix::findMatchingDNATRules(
             // Address  *tdst = getFirstTDst(rule);  assert(tdst);
             Service  *tsrv = getFirstTSrv(rule);  assert(tsrv);
 
+            const InetAddr *dst_to_compare_addr = dst_to_compare->getAddressPtr();
+
+            // dst_to_compare_addr can be NULL if object in rule
+            // element is a dynamic interface or a group. We should
+            // have expanded groups by now, but dynamic interface can
+            // still be there.
+
             if (*(src->getAddressPtr()) == *(osrc->getAddressPtr()) &&
                 (osrv->isAny() || srv->getId()==tsrv->getId()) &&
-                *(dst->getAddressPtr()) == *(dst_to_compare->getAddressPtr()))
+                (dst_to_compare_addr == NULL || 
+                 *(dst->getAddressPtr()) == *(dst_to_compare_addr)))
             {
                 if (osrv->isAny())
                 {
