@@ -195,7 +195,9 @@ void ObjectManipulator::expandOrCollapseCurrentTreeNode(QTreeWidgetItem *item,
                                                         bool expand)
 {
     QTreeWidgetItem *parent = item->parent();
-    if (expand && ! parent->isExpanded()) parent->setExpanded(true);
+    if (expand && parent != NULL && ! parent->isExpanded())
+        parent->setExpanded(true);
+
     item->setExpanded(expand);
     for (int i=0; i<item->childCount(); ++i)
         expandOrCollapseCurrentTreeNode(item->child(i), expand);
