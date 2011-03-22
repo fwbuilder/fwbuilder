@@ -5,8 +5,9 @@
 
     // gets inserted before antlr generated includes in the header
     // file
+#include "IPTImporter.h"
 
-#line 10 "IPTCfgParser.hpp"
+#line 11 "IPTCfgParser.hpp"
 #include <antlr/config.hpp>
 /* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
@@ -14,7 +15,7 @@
 #include "IPTCfgParserTokenTypes.hpp"
 #include <antlr/LLkParser.hpp>
 
-#line 32 "iptables.g"
+#line 34 "iptables.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -23,16 +24,16 @@
 
 class IPTImporter;
 
-#line 27 "IPTCfgParser.hpp"
-#line 64 "iptables.g"
+#line 28 "IPTCfgParser.hpp"
+#line 63 "iptables.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 33 "IPTCfgParser.hpp"
+#line 34 "IPTCfgParser.hpp"
 class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public IPTCfgParserTokenTypes
 {
-#line 81 "iptables.g"
+#line 80 "iptables.g"
 
 // additional methods and members
 
@@ -40,7 +41,26 @@ class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publ
     
     std::ostream *dbg;
     IPTImporter *importer;
-#line 37 "IPTCfgParser.hpp"
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
+    {
+        importer->addMessageToLog("Parser error: " + ex.toString());
+    }
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser error: " + s);
+    }
+
+    /// Parser warning-reporting function can be overridden in subclass
+    virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser warning: " + s);
+    }
+
+#line 38 "IPTCfgParser.hpp"
 public:
 	void initializeASTFactory( ANTLR_USE_NAMESPACE(antlr)ASTFactory& factory );
 protected:

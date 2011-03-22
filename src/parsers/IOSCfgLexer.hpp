@@ -5,8 +5,9 @@
 
     // gets inserted before antlr generated includes in the header
     // file
+#include "IOSImporter.h"
 
-#line 10 "IOSCfgLexer.hpp"
+#line 11 "IOSCfgLexer.hpp"
 #include <antlr/config.hpp>
 /* $ANTLR 2.7.7 (20090306): "iosacl.g" -> "IOSCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
@@ -14,7 +15,7 @@
 #include <antlr/BitSet.hpp>
 #include "IOSCfgParserTokenTypes.hpp"
 #include <antlr/CharScanner.hpp>
-#line 32 "iosacl.g"
+#line 33 "iosacl.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -23,17 +24,17 @@
 
 class IOSImporter;
 
-#line 27 "IOSCfgLexer.hpp"
-#line 58 "iosacl.g"
+#line 28 "IOSCfgLexer.hpp"
+#line 57 "iosacl.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 33 "IOSCfgLexer.hpp"
+#line 34 "IOSCfgLexer.hpp"
 class CUSTOM_API IOSCfgLexer : public ANTLR_USE_NAMESPACE(antlr)CharScanner, public IOSCfgParserTokenTypes
 {
 #line 1 "iosacl.g"
-#line 37 "IOSCfgLexer.hpp"
+#line 38 "IOSCfgLexer.hpp"
 private:
 	void initLiterals();
 public:

@@ -5,8 +5,9 @@
 
     // gets inserted before antlr generated includes in the header
     // file
+#include "IOSImporter.h"
 
-#line 10 "IOSCfgParser.hpp"
+#line 11 "IOSCfgParser.hpp"
 #include <antlr/config.hpp>
 /* $ANTLR 2.7.7 (20090306): "iosacl.g" -> "IOSCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
@@ -14,7 +15,7 @@
 #include "IOSCfgParserTokenTypes.hpp"
 #include <antlr/LLkParser.hpp>
 
-#line 32 "iosacl.g"
+#line 33 "iosacl.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -23,16 +24,16 @@
 
 class IOSImporter;
 
-#line 27 "IOSCfgParser.hpp"
-#line 58 "iosacl.g"
+#line 28 "IOSCfgParser.hpp"
+#line 57 "iosacl.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 33 "IOSCfgParser.hpp"
+#line 34 "IOSCfgParser.hpp"
 class CUSTOM_API IOSCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public IOSCfgParserTokenTypes
 {
-#line 75 "iosacl.g"
+#line 74 "iosacl.g"
 
 // additional methods and members
 
@@ -40,7 +41,25 @@ class CUSTOM_API IOSCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publ
     
     std::ostream *dbg;
     IOSImporter *importer;
-#line 37 "IOSCfgParser.hpp"
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
+    {
+        importer->addMessageToLog("Parser error: " + ex.toString());
+    }
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser error: " + s);
+    }
+
+    /// Parser warning-reporting function can be overridden in subclass
+    virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser warning: " + s);
+    }
+#line 38 "IOSCfgParser.hpp"
 public:
 	void initializeASTFactory( ANTLR_USE_NAMESPACE(antlr)ASTFactory& factory );
 protected:

@@ -5,8 +5,9 @@
 
     // gets inserted before antlr generated includes in the header
     // file
+#include "IPTImporter.h"
 
-#line 10 "IPTCfgLexer.hpp"
+#line 11 "IPTCfgLexer.hpp"
 #include <antlr/config.hpp>
 /* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
@@ -14,7 +15,7 @@
 #include <antlr/BitSet.hpp>
 #include "IPTCfgParserTokenTypes.hpp"
 #include <antlr/CharScanner.hpp>
-#line 32 "iptables.g"
+#line 34 "iptables.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -23,17 +24,17 @@
 
 class IPTImporter;
 
-#line 27 "IPTCfgLexer.hpp"
-#line 64 "iptables.g"
+#line 28 "IPTCfgLexer.hpp"
+#line 63 "iptables.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 33 "IPTCfgLexer.hpp"
+#line 34 "IPTCfgLexer.hpp"
 class CUSTOM_API IPTCfgLexer : public ANTLR_USE_NAMESPACE(antlr)CharScanner, public IPTCfgParserTokenTypes
 {
 #line 1 "iptables.g"
-#line 37 "IPTCfgLexer.hpp"
+#line 38 "IPTCfgLexer.hpp"
 private:
 	void initLiterals();
 public:

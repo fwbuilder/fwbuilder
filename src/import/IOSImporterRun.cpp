@@ -75,20 +75,16 @@ void IOSImporter::run()
         parser.cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
-        err << parser_err;
-        err << e.toString().c_str();
+        err << parser_err + " " + e.toString().c_str();
     } catch(ObjectMakerException &e)
     {
-        err << gen_err;
-        err << e.toString();
+        err << gen_err + " " + e.toString();
     } catch(ImporterException &e)
     {
-        err << gen_err;
-        err << e.toString();
+        err << gen_err + " " + e.toString();
     } catch(std::exception& e)
     {
-        err << parser_err;
-        err << e.what();
+        err << parser_err + " " + e.what();
     }
 
     if (haveFirewallObject())

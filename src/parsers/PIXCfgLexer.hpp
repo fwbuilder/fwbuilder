@@ -5,8 +5,9 @@
 
     // gets inserted before antlr generated includes in the header
     // file
+#include "PIXImporter.h"
 
-#line 10 "PIXCfgLexer.hpp"
+#line 11 "PIXCfgLexer.hpp"
 #include <antlr/config.hpp>
 /* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
@@ -14,7 +15,7 @@
 #include <antlr/BitSet.hpp>
 #include "PIXCfgParserTokenTypes.hpp"
 #include <antlr/CharScanner.hpp>
-#line 30 "pix.g"
+#line 32 "pix.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -23,17 +24,17 @@
 
 class PIXImporter;
 
-#line 27 "PIXCfgLexer.hpp"
+#line 28 "PIXCfgLexer.hpp"
 #line 56 "pix.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 33 "PIXCfgLexer.hpp"
+#line 34 "PIXCfgLexer.hpp"
 class CUSTOM_API PIXCfgLexer : public ANTLR_USE_NAMESPACE(antlr)CharScanner, public PIXCfgParserTokenTypes
 {
 #line 1 "pix.g"
-#line 37 "PIXCfgLexer.hpp"
+#line 38 "PIXCfgLexer.hpp"
 private:
 	void initLiterals();
 public:

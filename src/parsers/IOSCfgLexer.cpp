@@ -1,5 +1,5 @@
 /* $ANTLR 2.7.7 (20090306): "iosacl.g" -> "IOSCfgLexer.cpp"$ */
-#line 42 "iosacl.g"
+#line 43 "iosacl.g"
 
     // gets inserted before the antlr generated includes in the cpp
     // file
@@ -14,18 +14,16 @@
 #include <antlr/CharStreamIOException.hpp>
 #include <antlr/NoViableAltForCharException.hpp>
 
-#line 48 "iosacl.g"
+#line 49 "iosacl.g"
 
     // gets inserted after the antlr generated includes in the cpp
     // file
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#include "IOSImporter.h"
-
-#line 27 "IOSCfgLexer.cpp"
+#line 25 "IOSCfgLexer.cpp"
 #line 1 "iosacl.g"
-#line 29 "IOSCfgLexer.cpp"
+#line 27 "IOSCfgLexer.cpp"
 IOSCfgLexer::IOSCfgLexer(ANTLR_USE_NAMESPACE(std)istream& in)
 	: ANTLR_USE_NAMESPACE(antlr)CharScanner(new ANTLR_USE_NAMESPACE(antlr)CharBuffer(in),true)
 {
@@ -432,9 +430,9 @@ void IOSCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 712 "iosacl.g"
+#line 729 "iosacl.g"
 		newline();
-#line 438 "IOSCfgLexer.cpp"
+#line 436 "IOSCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -513,9 +511,9 @@ void IOSCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 707 "iosacl.g"
+#line 724 "iosacl.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 519 "IOSCfgLexer.cpp"
+#line 517 "IOSCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -749,9 +747,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 732 "iosacl.g"
+#line 749 "iosacl.g"
 			_ttype = IPV4;
-#line 755 "IOSCfgLexer.cpp"
+#line 753 "IOSCfgLexer.cpp"
 		}
 	}
 	else {
@@ -852,9 +850,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 738 "iosacl.g"
+#line 755 "iosacl.g"
 				_ttype = HEX_CONST;
-#line 858 "IOSCfgLexer.cpp"
+#line 856 "IOSCfgLexer.cpp"
 			}
 		}
 		else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true)) {
@@ -873,9 +871,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			_loop124:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 736 "iosacl.g"
+#line 753 "iosacl.g"
 				_ttype = INT_CONST;
-#line 879 "IOSCfgLexer.cpp"
+#line 877 "IOSCfgLexer.cpp"
 			}
 		}
 	else {

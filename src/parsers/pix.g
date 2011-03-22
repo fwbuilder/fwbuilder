@@ -25,7 +25,9 @@ header "pre_include_hpp"
 {
     // gets inserted before antlr generated includes in the header
     // file
+#include "PIXImporter.h"
 }
+
 header "post_include_hpp"
 {
     // gets inserted after antlr generated includes in the header file
@@ -48,8 +50,6 @@ header "post_include_cpp"
     // file
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
-
-#include "PIXImporter.h"
 }
 
 header
@@ -68,7 +68,14 @@ class PIXCfgParser extends Parser;
 options
 {
     k = 2;
-//    defaultErrorHandler=false;
+
+// when default error handler is disabled, parser errors cause
+// exception and terminate parsing process. We can catch the exception
+// and make the error appear in importer log, but import process
+// terminates which is not always optimal
+//
+//    defaultErrorHandler = false;
+
 // see http://www.antlr2.org/doc/options.html
 }
 {
@@ -78,6 +85,25 @@ options
     
     std::ostream *dbg;
     PIXImporter *importer;
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
+    {
+        importer->addMessageToLog("Parser error: " + ex.toString());
+    }
+
+    /// Parser error-reporting function can be overridden in subclass
+    virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser error: " + s);
+    }
+
+    /// Parser warning-reporting function can be overridden in subclass
+    virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
+    {
+        importer->addMessageToLog("Parser warning: " + s);
+    }
+
 }
 
 cfgfile :
