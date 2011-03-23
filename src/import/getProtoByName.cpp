@@ -88,8 +88,8 @@ int GetProtoByName::getProtocolByName(const QString &name)
         protocols["manet"] = 138;
         protocols["hip"] = 139;
 
-// these are found in Cisco configs. Some of these names duplicate
-// protocols listed above but a few are extras.
+        // these are found in Cisco configs. Some of these names
+        // duplicate protocols listed above but a few are extras.
         protocols["ah"] = 51;
         protocols["ahp"] = 51;
         protocols["eigrp"] = 88;
@@ -104,6 +104,11 @@ int GetProtoByName::getProtocolByName(const QString &name)
         protocols["pim"] = 103;
         protocols["pcp"] = 108;
         protocols["snp"] = 109;
+
+        // ASA configs use protocol name "ipsec" as an alias for "esp"
+        // and "pptp" as an alias for "gre"
+        protocols["ipsec"] = 50;
+        protocols["pptp"] = 47;
 
     }
 

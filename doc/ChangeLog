@@ -1,5 +1,8 @@
 2011-03-22  vadim  <vadim@netcitadel.com>
 
+	* parsers/pix.g (acl_xoperator_src): first attempt at PIX/ASA
+	access-list import. Not done yet.
+
 	* parsers/pix.g (port_object): see #2234 added support for import
 	of "obejct-group service name tcp|udp" constructs in ASA 8.3 with
 	subsequent "port-object" statements.
@@ -8,7 +11,7 @@
 
 	* PortRangeConverter.h (PortRangeConverter): see #2252 TCP and UDP
 	service objects that define port ranges assume port ranges are
-	inclusive, that is range boundaries are included in the
+	inclusive, that is, range boundaries are included in the
 	match. This is the behavior of port range matches in iptables and
 	PF, however policy compilers for Cisco IOS ACL and PIX used to
 	convert these objects into ios and pix access list configurations

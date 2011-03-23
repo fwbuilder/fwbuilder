@@ -70,6 +70,19 @@ class PIXImporter : public IOSImporter
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
+    virtual libfwbuilder::FWObject* makeSrcObj();
+    virtual libfwbuilder::FWObject* makeDstObj();
+    virtual libfwbuilder::FWObject* makeSrvObj();
+
+    /*
+     * the difference is that in PIX, we get interface label instead
+     * of its name in "access-group" command
+     */
+    virtual void setInterfaceAndDirectionForRuleSet(
+        const std::string &ruleset_name,
+        const std::string &interface_name,
+        const std::string &dir);
+    
     virtual void newNamedObjectAddress(const std::string &name);
     virtual void newNamedObjectService(const std::string &name);
 

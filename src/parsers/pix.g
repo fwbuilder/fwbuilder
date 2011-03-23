@@ -114,8 +114,6 @@ cfgfile :
         |
             hostname
         |
-            ip_access_list_ext
-        |
             community_list_command
         |
             unknown_ip_command 
@@ -125,6 +123,8 @@ cfgfile :
             controller
         |
             access_list_commands
+        |
+            access_group
         |
             exit
         |
@@ -810,32 +810,8 @@ hostname : HOSTNAME ( STRING | WORD )
     ;
 
 //****************************************************************
-// note that permit_ext and deny_ext eat NEWLINE. This is necessary
-// because the same parser rules are used for ip access-list commands,
-// where they should work the same way as LINE_COMMENT which eats
-// NEWLINE
-//
-access_list_commands : ACCESS_LIST acl_num:INT_CONST
-        {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->newUnidirRuleSet( std::string("acl_") + acl_num->getText(),
-                                        libfwbuilder::Policy::TYPENAME );
-            *dbg << acl_num->getLine() << ":"
-                << " ACL #" << acl_num->getText() << " ";
-        }
-        (
-            permit_ext
-        | 
-            deny_ext
-        |
-            remark
-        )
-    ;
 
-//****************************************************************
-
-ip_access_list_ext : IP ACCESS_LIST name:WORD
+access_list_commands : ACCESS_LIST name:WORD
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -845,9 +821,9 @@ ip_access_list_ext : IP ACCESS_LIST name:WORD
                 << " ACL ext " << name->getText() << std::endl;
         }
         (
-            permit_ext
+            permit_expr
         |
-            deny_ext
+            deny_expr
         |
             comment
         |
@@ -862,27 +838,27 @@ ip_access_list_ext : IP ACCESS_LIST name:WORD
     ;
 
 //****************************************************************
-permit_ext: PERMIT 
+permit_expr: PERMIT 
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "permit";
             *dbg << LT(1)->getLine() << ":" << " permit ";
         }
-        rule_ext NEWLINE
+        rule_expr NEWLINE
         {
             importer->pushRule();
         }
     ;
 
-deny_ext: DENY
+deny_expr: DENY
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "deny";
             *dbg << LT(1)->getLine() << ":" << " deny   ";
         }
-        rule_ext NEWLINE
+        rule_expr NEWLINE
         {
             importer->pushRule();
         }
@@ -890,11 +866,11 @@ deny_ext: DENY
 
 //****************************************************************
 // the difference between standard and extended acls should be in these rules
-rule_ext : 
+rule_expr : 
         (
             ip_protocols
-            hostaddr_ext { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
-            hostaddr_ext { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
+            hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
+            hostaddr_expr { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
             (time_range)?
             (fragments)?
             (log)?
@@ -904,8 +880,8 @@ rule_ext :
                 importer->protocol = LT(0)->getText();
                 *dbg << "protocol " << LT(0)->getText() << " ";
             }
-            hostaddr_ext { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
-            hostaddr_ext { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
+            hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
+            hostaddr_expr { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
             (icmp_spec)?
             (time_range)?
             (fragments)?
@@ -916,10 +892,10 @@ rule_ext :
                 importer->protocol = LT(0)->getText();
                 *dbg << "protocol " << LT(0)->getText() << " ";
             }
-            hostaddr_ext { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
-            (xoperator { importer->SaveTmpPortToSrc();  } )?
-            hostaddr_ext { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
-            (xoperator { importer->SaveTmpPortToDst();  } )?
+            hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
+            (acl_xoperator_src)?
+            hostaddr_expr { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
+            (acl_xoperator_dst)?
             (established)? 
             (time_range)?
             (fragments)?
@@ -931,11 +907,21 @@ rule_ext :
     ;
 
 //****************************************************************
-ip_protocols : ip_protocol_names
-        {
-            importer->protocol = LT(0)->getText();
-            *dbg << "protocol " << LT(0)->getText() << " ";
-        };
+ip_protocols :
+        (
+            ( ip_protocol_names | ICMP6 )
+            {
+                importer->protocol = LT(0)->getText();
+                *dbg << "protocol " << LT(0)->getText() << " ";
+            }
+        |
+            ( ( OBJECT | OBJECT_GROUP ) name:WORD )
+            {
+                importer->protocol = name->getText();
+                *dbg << "protocol " << name->getText() << " ";
+            }
+        )
+    ;
 
 icmp_spec :
         (
@@ -956,6 +942,37 @@ icmp_spec :
         )
     ;
 
+acl_xoperator_src :
+        (
+            xoperator
+            {
+                importer->SaveTmpPortToSrc();
+            }
+        | 
+            ( ( OBJECT | OBJECT_GROUP ) name:WORD )
+            {
+                importer->tmp_port_spec = name->getText();
+                importer->SaveTmpPortToSrc();
+                *dbg << "source service object " << name->getText() << " ";
+            }
+        )
+    ;
+
+acl_xoperator_dst :
+        (
+            xoperator
+            {
+                importer->SaveTmpPortToDst();
+            }
+        | 
+            ( ( OBJECT | OBJECT_GROUP ) name:WORD )
+            {
+                importer->tmp_port_spec = name->getText();
+                importer->SaveTmpPortToDst();
+                *dbg << "destination service object " << name->getText() << " ";
+            }
+        )
+    ;
 
 xoperator : single_port_op | port_range  ;
 
@@ -993,7 +1010,14 @@ pair_of_ports_spec : (s1:WORD|s2:INT_CONST) (e1:WORD|e2:INT_CONST)
         }
     ;
 
-hostaddr_ext :
+hostaddr_expr :
+        ( ( OBJECT | OBJECT_GROUP ) name:WORD )
+        {
+            importer->tmp_a = name->getText();
+            importer->tmp_nm = "";
+            *dbg << "object " << name->getText() << " ";
+        }
+    |
         (HOST h:IPV4)
         {
             importer->tmp_a = h->getText();
@@ -1039,7 +1063,7 @@ hostaddr_std :
         }
         ;
 
-log : (LOG | LOG_INPUT)
+log : (LOG | LOG_INPUT) (INT_CONST INTERVAL INT_CONST)?
         {
             importer->logging = true;
             *dbg << "logging ";
@@ -1394,15 +1418,15 @@ remark : REMARK
 
 //****************************************************************
 
-access_group_by_name : ACCESS_GROUP acln:WORD dir:WORD INTRFACE intf_label:WORD
+access_group : ACCESS_GROUP aclname:WORD dir:WORD INTRFACE intf_label:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setInterfaceAndDirectionForRuleSet(
-                acln->getText(),
+                aclname->getText(),
                 intf_label->getText(),
                 dir->getText() );
             *dbg << LT(1)->getLine() << ":"
-                << " INTRFACE: ACL '" << acln->getText() << "'"
+                << " INTRFACE: ACL '" << aclname->getText() << "'"
                 << " " << intf_label->getText()
                 << " " << dir->getText() << std::endl;
         }
@@ -1465,6 +1489,8 @@ tokens
     MAC_ADDRESS = "mac-address";
     MULTICAST = "multicast";
 
+    INTERVAL = "interval";
+
     VLAN = "vlan";
     SWITCHPORT = "switchport";
     ACCESS = "access";
@@ -1504,10 +1530,12 @@ tokens
     IGMP = "igmp";
     IGRP = "igrp";
     IPINIP = "ipinip";
+    IPSEC = "ipsec";
     NOS = "nos";
     OSPF = "ospf";
     PCP = "pcp";
     PIM = "pim";
+    PPTP = "pptp";
     RIP = "rip";
     SNP = "snp";
 

@@ -405,6 +405,27 @@ UnidirectionalRuleSet* Importer::getUnidirRuleSet(
     return rs;
 }
 
+void Importer::setInterfaceAndDirectionForRuleSet(
+        Interface *intf, const std::string &ruleset_name, const std::string &dir)
+{
+    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name, Policy::TYPENAME);
+    string intf_name = intf->getName();
+    if (rs->intf_dir.count(intf_name)==0) rs->intf_dir[intf_name] = dir;
+    else
+    {
+        // already have this interface with some direction
+        // compare direction, if different, switcht to "both"
+        if (rs->intf_dir[intf_name] != "both" && rs->intf_dir[intf_name] != dir)
+            rs->intf_dir[intf_name] = "both";
+    }
+    ostringstream str;
+    str << "Interface " << intf_name
+        << " ruleset " << ruleset_name
+        << " direction '" << dir << "' "
+        << "\n";
+    *logger << str.str();
+}
+
 /*
  * associate ruleset <ruleset_name> with interface <intf_name>
  * and direction <dir>
@@ -415,41 +436,26 @@ UnidirectionalRuleSet* Importer::getUnidirRuleSet(
  * and each association can have different direction.
  */
 void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_name,
-                                                  const std::string &_intf_name,
-                                                  const std::string &_dir)
+                                                  const std::string &intf_name,
+                                                  const std::string &dir)
 {
-    UnidirectionalRuleSet *rs = getUnidirRuleSet(ruleset_name, Policy::TYPENAME);
-
-    std::string intf;
-    if ( !_intf_name.empty()) intf = _intf_name;
-    else
+    Interface *intf = NULL;
+    if ( ! intf_name.empty())
     {
-        if (current_interface) intf = current_interface->getName();
-        else
-        {
-            // current_interface is NULL and _intf_name is empty. Not enough
-            // information to associate ruleset with an interface.
-            QString err("Can not associate rule set %1 with any interface\n");
-            *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
-        }
+        intf = all_interfaces[intf_name];
+    } else
+    {
+        if (current_interface) intf = current_interface;
     }
 
-    if (rs->intf_dir.count(intf)==0)
-        rs->intf_dir[intf] = _dir;
-    else
+    if (intf == NULL)
     {
-        // already have this interface with some direction
-        // compare direction, if different, switcht to "both"
-        if (rs->intf_dir[intf] != "both" && rs->intf_dir[intf] != _dir)
-            rs->intf_dir[intf] = "both";
-    }
-    ostringstream str;
-    str << "Interface " << _intf_name
-        << " ruleset " << ruleset_name
-        << " direction '" << _dir << "' "
-        << "(set to '" << rs->intf_dir[intf] << "')"
-        << "\n";
-    *logger << str.str();
+        // current_interface is NULL and _intf_name is empty. Not enough
+        // information to associate ruleset with an interface.
+        QString err("Can not associate rule set %1 with any interface\n");
+        *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+    } else
+        setInterfaceAndDirectionForRuleSet(intf, ruleset_name, dir);
 }
 
 void Importer::newUnidirRuleSet(const string &ruleset_name,
@@ -503,7 +509,8 @@ void Importer::pushRule()
     assert(current_rule!=NULL);
     // populate all elements of the rule
 
-    //qDebug() << QString("Adding rule from line %1") .arg(getCurrentLineNumber());
+    //qDebug() << QString("Adding rule from line %1").arg(getCurrentLineNumber())
+    //         << "current_rule=" << current_rule;
 
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
@@ -659,13 +666,13 @@ Firewall* Importer::finalize()
     return fw;
 }
 
-FWObject* Importer::createTCPService(const QString &name)
+FWObject* Importer::createTCPService(const QString &)
 {
     // Default implementation
     return NULL;
 }
 
-FWObject* Importer::createUDPService(const QString &name)
+FWObject* Importer::createUDPService(const QString &)
 {
     // Default implementation
     return NULL;
@@ -754,8 +761,8 @@ int Importer::countInterfaces()
     if (haveFirewallObject())
     {
         Firewall *fw = Firewall::cast(getFirewallObject());
-        list<FWObject*> all_interfaces =  fw->getByType(Interface::TYPENAME);
-        return all_interfaces.size();
+        list<FWObject*> all_interface_objects = fw->getByType(Interface::TYPENAME);
+        return all_interface_objects.size();
     } else
         return 0;
 }

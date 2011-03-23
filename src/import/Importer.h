@@ -312,6 +312,11 @@ public:
         const std::string &interface_name,
         const std::string &dir);
 
+    virtual void setInterfaceAndDirectionForRuleSet(
+        libfwbuilder::Interface *intf,
+        const std::string &ruleset_name,
+        const std::string &dir);
+
     virtual void newPolicyRule();
     virtual void newNATRule();
     virtual void pushRule();

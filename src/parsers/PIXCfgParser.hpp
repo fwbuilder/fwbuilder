@@ -89,12 +89,12 @@ public:
 	public: void comment();
 	public: void version();
 	public: void hostname();
-	public: void ip_access_list_ext();
 	public: void community_list_command();
 	public: void unknown_ip_command();
 	public: void intrface();
 	public: void controller();
 	public: void access_list_commands();
+	public: void access_group();
 	public: void exit();
 	public: void certificate();
 	public: void quit();
@@ -137,16 +137,18 @@ public:
 	public: void object_group_service_parameters();
 	public: void service_object();
 	public: void port_object();
-	public: void permit_ext();
-	public: void deny_ext();
+	public: void permit_expr();
+	public: void deny_expr();
 	public: void remark();
-	public: void rule_ext();
+	public: void rule_expr();
 	public: void ip_protocols();
-	public: void hostaddr_ext();
+	public: void hostaddr_expr();
 	public: void time_range();
 	public: void fragments();
 	public: void log();
 	public: void icmp_spec();
+	public: void acl_xoperator_src();
+	public: void acl_xoperator_dst();
 	public: void established();
 	public: void single_port_op();
 	public: void port_range();
@@ -169,7 +171,6 @@ public:
 	public: void v6_static_address();
 	public: void v7_dhcp_address();
 	public: void v7_static_address();
-	public: void access_group_by_name();
 public:
 	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
 	{
@@ -181,10 +182,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 137;
+	static const int NUM_TOKENS = 138;
 #else
 	enum {
-		NUM_TOKENS = 137
+		NUM_TOKENS = 138
 	};
 #endif
 	
@@ -216,6 +217,12 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
 	static const unsigned long _tokenSet_13_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
+	static const unsigned long _tokenSet_14_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_14;
+	static const unsigned long _tokenSet_15_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_15;
+	static const unsigned long _tokenSet_16_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_16;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

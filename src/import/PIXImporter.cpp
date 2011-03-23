@@ -109,6 +109,57 @@ void PIXImporter::clearTempVars()
     Importer::clear();
 }
 
+FWObject* PIXImporter::makeSrcObj()
+{
+    if (named_objects_registry.count(src_a.c_str()) > 0)
+    {
+        return named_objects_registry[src_a.c_str()];
+    }
+    return Importer::makeSrcObj();
+}
+
+FWObject* PIXImporter::makeDstObj()
+{
+    if (named_objects_registry.count(dst_a.c_str()) > 0)
+    {
+        return named_objects_registry[dst_a.c_str()];
+    }
+    return Importer::makeDstObj();
+}
+
+FWObject* PIXImporter::makeSrvObj()
+{
+    if (protocol=="tcp" || protocol=="udp")
+    {
+        if (named_objects_registry.count(src_port_spec.c_str()) > 0)
+            return named_objects_registry[src_port_spec.c_str()];
+        if (named_objects_registry.count(dst_port_spec.c_str()) > 0)
+            return named_objects_registry[dst_port_spec.c_str()];
+    } else
+    {
+        if (named_objects_registry.count(protocol.c_str()) > 0)
+            return named_objects_registry[protocol.c_str()];
+    }
+    return Importer::makeSrvObj();
+}
+
+void PIXImporter::setInterfaceAndDirectionForRuleSet(
+    const string &ruleset_name, const string &interface_label, const string &dir)
+{
+    map<const string,Interface*>::iterator it;
+    for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+    {
+        Interface *intf = it->second;
+        if (intf->getLabel() == interface_label)
+        {
+            Importer::setInterfaceAndDirectionForRuleSet(intf, ruleset_name, dir);
+            return;
+        }
+    }
+    QString err("Can not associate rule set %1 with any interface\n");
+    *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+}
+
 /*
  * Rearrange vlan interfaces. Importer creates all interfaces as
  * children of the firewall. Vlan interfaces should become
@@ -120,11 +171,11 @@ void PIXImporter::rearrangeVlanInterfaces()
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             getFirewallObject()));
 
-    list<FWObject*> all_interfaces =
+    list<FWObject*> all_interface_objects =
         getFirewallObject()->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*> vlans;
     list<FWObject*>::iterator it;
-    for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+    for (it=all_interface_objects.begin(); it!=all_interface_objects.end(); ++it)
     {
         Interface *intf = Interface::cast(*it);
         FWOptions *ifopt = intf->getOptionsObject();
@@ -154,7 +205,7 @@ void PIXImporter::rearrangeVlanInterfaces()
             getFirewallObject()->remove(vlan_intf, false); // do not delete
 
             list<FWObject*>::iterator it2;
-            for (it2=all_interfaces.begin(); it2!=all_interfaces.end(); ++it2)
+            for (it2=all_interface_objects.begin(); it2!=all_interface_objects.end(); ++it2)
             {
                 if (base_name == (*it2)->getName().c_str())
                 {
@@ -245,37 +296,28 @@ Firewall* PIXImporter::finalize()
                     if (all_in.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_in);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Inbound,
-                                                 policy)
-                        );
+
+                        MergeRules mr(irs->name, og, PolicyRule::Inbound, policy);
+                        while (irs->ruleset->size() > 0)
+                            mr.move(irs->ruleset->front());
                     }
 
                     if (all_out.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_out);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Outbound,
-                                                 policy)
-                        );
+
+                        MergeRules mr(irs->name, og, PolicyRule::Outbound, policy);
+                        while (irs->ruleset->size() > 0)
+                            mr.move(irs->ruleset->front());
                     }
 
                     if (all_both.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_both);
-                        std::for_each(irs->ruleset->begin(),
-                                      irs->ruleset->end(),
-                                      merge_rule(irs->name,
-                                                 og,
-                                                 PolicyRule::Both,
-                                                 policy)
-                        );
+
+                        MergeRules mr(irs->name, og, PolicyRule::Both, policy);
+                        while (irs->ruleset->size() > 0)
+                            mr.move(irs->ruleset->front());
                     }
 
                 }
@@ -284,31 +326,33 @@ Firewall* PIXImporter::finalize()
                     std::map<std::string,std::string>::iterator j;
                     for (j=irs->intf_dir.begin(); j!=irs->intf_dir.end(); ++j)
                     {
-                        Interface *intf = all_interfaces[ (*j).first ];
+                        string intf_name = (*j).first;
+
+                        Interface *intf = all_interfaces[intf_name];
                         std::string _dir = (*j).second;
                         PolicyRule::Direction direction = PolicyRule::Both;
                         if (_dir=="in")  direction = PolicyRule::Inbound;
                         if (_dir=="out") direction = PolicyRule::Outbound;
 
+                        if (fwbdebug)
+                            qDebug() << "Interface: " << intf
+                                     << "dir: " << _dir.c_str();
+
                         // not all access lists are associated with interfaces
-                        if (intf!=NULL)
+                        if (intf != NULL)
                         {
                             if (fwbdebug)
-                                qDebug() << "    interface=" 
+                                qDebug() << "    interface: " 
                                          << intf->getName().c_str();
 
-                            std::for_each(
-                                irs->ruleset->begin(),
-                                irs->ruleset->end(),
-                                merge_rule(irs->name,
-                                           intf,
-                                           direction,
-                                           policy)
-                            );
+                            MergeRules mr(irs->name, intf, direction, policy);
+                            while (irs->ruleset->size() > 0)
+                                mr.move(irs->ruleset->front());
                         }
                     }
                 }
-                qDebug("ruleset done");
+
+                if (fwbdebug) qDebug("ruleset done");
 
                 // call clearChidren() not recursive because children objects
                 // of all rules should not be deleted

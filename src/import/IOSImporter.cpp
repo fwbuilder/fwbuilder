@@ -223,17 +223,20 @@ void IOSImporter::ignoreCurrentInterface()
 
 
 
-void IOSImporter::merge_rule::operator()(FWObject* r)
+void IOSImporter::MergeRules::move(FWObject* r)
 {
     PolicyRule *rule = PolicyRule::cast(r);
     // Note that Policy object can have children that are objects of
     // classes PolicyRule and RuleSetOptions. If r does not cast to
     // PolicyRule, then it must be RuleSetOptions and we should just
     // skip it.
-    if (rule==NULL) return;
+    if (rule==NULL)
+    {
+        r->getParent()->remove(r);
+        return;
+    }
 
     target_ruleset->reparent(rule);
-//    target_ruleset->renumberRules();
 
     RuleElementItf* re =rule->getItf();
     re->addRef(intf);
@@ -316,46 +319,28 @@ Firewall* IOSImporter::finalize()
                     if (all_in.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_in);
-                        merge_rule mr(irs->name,
-                                      og,
-                                      PolicyRule::Inbound,
-                                      policy);
+
+                        MergeRules mr(irs->name, og, PolicyRule::Inbound, policy);
                         while (irs->ruleset->size() > 0)
-                        {
-                            Rule *rule = Rule::cast(irs->ruleset->front());
-                            if (rule) mr(rule);
-                            else irs->ruleset->pop_front();
-                        }
+                            mr.move(irs->ruleset->front());
                     }
 
                     if (all_out.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_out);
-                        merge_rule mr(irs->name,
-                                      og,
-                                      PolicyRule::Outbound,
-                                      policy);
+
+                        MergeRules mr(irs->name, og, PolicyRule::Outbound, policy);
                         while (irs->ruleset->size() > 0)
-                        {
-                            Rule *rule = Rule::cast(irs->ruleset->front());
-                            if (rule) mr(rule);
-                            else irs->ruleset->pop_front();
-                        }
+                            mr.move(irs->ruleset->front());
                     }
 
                     if (all_both.size()>0)
                     {
                         og = createGroupOfInterfaces(irs->name, all_both);
-                        merge_rule mr(irs->name,
-                                      og,
-                                      PolicyRule::Both,
-                                      policy);
+
+                        MergeRules mr(irs->name, og, PolicyRule::Both, policy);
                         while (irs->ruleset->size() > 0)
-                        {
-                            Rule *rule = Rule::cast(irs->ruleset->front());
-                            if (rule) mr(rule);
-                            else irs->ruleset->pop_front();
-                        }
+                            mr.move(irs->ruleset->front());
                     }
 
                 }
@@ -376,16 +361,10 @@ Firewall* IOSImporter::finalize()
                             if (fwbdebug)
                                 qDebug() << "    interface=" 
                                          << intf->getName().c_str();
-                            merge_rule mr(irs->name,
-                                          intf,
-                                          direction,
-                                          policy);
+
+                            MergeRules mr(irs->name, intf, direction, policy);
                             while (irs->ruleset->size() > 0)
-                            {
-                                Rule *rule = Rule::cast(irs->ruleset->front());
-                                if (rule) mr(rule);
-                                else irs->ruleset->pop_front();
-                            }
+                                mr.move(irs->ruleset->front());
                         }
                     }
                 }

@@ -74,19 +74,20 @@ public:
     virtual libfwbuilder::Firewall* finalize();
 
 
-    class merge_rule : public std::unary_function<libfwbuilder::FWObject*, void>
+    class MergeRules
     {
         std::string ruleset_name;
         libfwbuilder::FWObject *intf;
         libfwbuilder::PolicyRule::Direction dir;
         libfwbuilder::FWObject *target_ruleset;
-      public:
-        merge_rule(const std::string &_n,
+        
+public:
+        MergeRules(const std::string &_n,
                    libfwbuilder::FWObject *i,
                    libfwbuilder::PolicyRule::Direction d,
                    libfwbuilder::FWObject *_rs)
         { ruleset_name = _n; intf = i; dir = d; target_ruleset = _rs; }
-        void operator()(libfwbuilder::FWObject* r);
+        void move(libfwbuilder::FWObject* r);
     };
 
 
