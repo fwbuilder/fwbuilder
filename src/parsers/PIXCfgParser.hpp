@@ -108,6 +108,7 @@ public:
 	public: void object_group_icmp_8_0();
 	public: void object_group_icmp_8_3();
 	public: void crypto();
+	public: void no_commands();
 	public: void unknown_command();
 	public: void ip_protocol_names();
 	public: void named_object_network_parameters();
@@ -135,6 +136,7 @@ public:
 	public: void icmp_object();
 	public: void object_group_service_parameters();
 	public: void service_object();
+	public: void port_object();
 	public: void permit_ext();
 	public: void deny_ext();
 	public: void remark();
@@ -179,10 +181,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 136;
+	static const int NUM_TOKENS = 137;
 #else
 	enum {
-		NUM_TOKENS = 136
+		NUM_TOKENS = 137
 	};
 #endif
 	
@@ -212,6 +214,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
 	static const unsigned long _tokenSet_12_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
+	static const unsigned long _tokenSet_13_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

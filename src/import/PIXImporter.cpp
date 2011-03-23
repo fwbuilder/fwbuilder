@@ -97,6 +97,7 @@ void PIXImporter::clear()
     current_object_group = NULL;
     object_group_name = "";
     object_group_comment = "";
+    object_group_service_protocol = "";
 }
 
 /*
@@ -499,6 +500,8 @@ void PIXImporter::newObjectGroupService(const string &name)
                 maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
+    object_group_service_protocol = "";
+
     *logger << "Object Group (service) " + name;
 }
 
@@ -578,6 +581,9 @@ void PIXImporter::addIPServiceToObjectGroup()
 void PIXImporter::addTCPUDPServiceToObjectGroup()
 {
     FWObject *new_obj = NULL;
+    if (protocol.empty() && ! object_group_service_protocol.isEmpty())
+        protocol = object_group_service_protocol.toStdString();
+
     if (protocol == "tcp") new_obj = createTCPService();
     if (protocol == "udp") new_obj = createUDPService();
     if (new_obj)

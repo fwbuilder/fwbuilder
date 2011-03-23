@@ -1,3 +1,9 @@
+2011-03-22  vadim  <vadim@netcitadel.com>
+
+	* parsers/pix.g (port_object): see #2234 added support for import
+	of "obejct-group service name tcp|udp" constructs in ASA 8.3 with
+	subsequent "port-object" statements.
+
 2011-03-21  vadim  <vadim@netcitadel.com>
 
 	* PortRangeConverter.h (PortRangeConverter): see #2252 TCP and UDP

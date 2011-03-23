@@ -3,13 +3,6 @@
 ASA Version 8.3(2) 
 !
 hostname asa5505
-enable password XXXXXXXXXXXXXXXX encrypted
-passwd YYYYYYYYYYYYYYYY encrypted
-names
-name 1.2.3.4 gw
-name 192.168.3.0 fake_network
-name 192.168.4.1 inside_ip
-name 2001:0db8:85a3:0000:0000:8a2e:0370:7334 some_ipv6_address
 !
 interface Vlan1
  description inside interface
@@ -26,28 +19,6 @@ interface Vlan2
 interface Ethernet0/0
  description Switch port 0/0
  switchport access vlan 2
-!
-interface Vlan2020
- no nameif
- no security-level
- no ip address
-!         
-interface Ethernet0/1
-!
-interface Ethernet0/2
-!             
-interface Ethernet0/3
-!
-interface Ethernet0/4
-!
-interface Ethernet0/5
-!
-interface Ethernet0/6
-!
-interface Ethernet0/7
-!
-boot system disk0:/asa832-k8.bin
-ftp mode passive
 !
 
 !
@@ -246,12 +217,6 @@ object-group service outside.id77971X5929.osrv.1
  service-object object smtp 
  service-object object smtps 
 
-object-group service id5102X14531.srv.tcp.0 tcp
-  port-object eq 80
-  port-object eq 443
-exit
-
-!
 object-group service sg1
  service-object ip 
  service-object eigrp 
@@ -302,63 +267,8 @@ object-group icmp-type ig3
  icmp-object mask-reply
  group-object ig1
 
+object-group service id5102X14531.srv.tcp.0 tcp
+  port-object eq 80
+  port-object eq 443
+exit
 
-access-list outside_acl_in extended deny ip any any log 
-pager lines 24
-logging enable
-logging buffered errors
-logging asdm informational
-mtu inside 1500
-mtu outside 1500
-icmp unreachable rate-limit 1 burst-size 1
-no asdm history enable
-arp timeout 14400
-nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (inside,outside) source dynamic outside.id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
-nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp smtp
-nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps smtps
-timeout xlate 3:00:00
-timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 icmp 0:00:02
-timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
-timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
-timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
-timeout tcp-proxy-reassembly 0:01:00
-dynamic-access-policy-record DfltAccessPolicy
-aaa authentication ssh console LOCAL 
-http server enable
-http 192.168.1.0 255.255.255.0 inside
-no snmp-server location
-no snmp-server contact
-snmp-server enable traps snmp authentication linkup linkdown coldstart
-crypto ipsec security-association lifetime seconds 28800
-crypto ipsec security-association lifetime kilobytes 4608000
-telnet timeout 5
-ssh scopy enable
-ssh 10.10.10.0 255.255.255.0 inside
-ssh 10.1.1.0 255.255.255.0 inside
-ssh timeout 30
-ssh version 2
-console timeout 0
-
-threat-detection basic-threat
-threat-detection statistics access-list
-no threat-detection statistics tcp-intercept
-webvpn
-username foo password AAAAAAAAAAAAAAAA encrypted privilege 15
-!
-!
-prompt hostname context 
-call-home
- profile CiscoTAC-1
-  no active
-  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
-  destination address email callhome@cisco.com
-  destination transport-method http
-  subscribe-to-alert-group diagnostic
-  subscribe-to-alert-group environment
-  subscribe-to-alert-group inventory periodic monthly
-  subscribe-to-alert-group configuration periodic monthly
-  subscribe-to-alert-group telemetry periodic daily
-Cryptochecksum:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-: end

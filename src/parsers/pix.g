@@ -152,6 +152,8 @@ cfgfile :
         |
             crypto
         |
+            no_commands
+        |
             unknown_command
         |
             NEWLINE
@@ -662,11 +664,13 @@ icmp_object : ICMP_OBJECT
 
 //****************************************************************
 
-object_group_service : OBJECT_GROUP SERVICE name:WORD
+object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP )?
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newObjectGroupService(name->getText());
+            if (tcp) importer->setObjectGroupServiceProtocol("tcp");
+            if (udp) importer->setObjectGroupServiceProtocol("udp");
             *dbg << name->getLine() << ":"
                  << " Object Group " << name->getText() << std::endl;
         }
@@ -683,6 +687,8 @@ object_group_service_parameters :
             group_object
         |
             service_object
+        |
+            port_object
         )
     ;
 
@@ -735,6 +741,15 @@ service_object : SERVICE_OBJECT
     )
     ;
 
+port_object : PORT_OBJECT xoperator
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->SaveTmpPortToDst();
+            importer->addTCPUDPServiceToObjectGroup();
+            *dbg << " PORT OBJECT TCP/UDP" << LT(0)->getText() << " ";
+        }
+    ;
+
 //****************************************************************
 crypto : CRYPTO
         {
@@ -752,6 +767,15 @@ unknown_ip_command : IP WORD
 //****************************************************************
 unknown_command : WORD 
         {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+no_commands : NO 
+        {
+            *dbg << " TOP LEVEL \"NO\" COMMAND: "
+                 << LT(0)->getText() << std::endl;
             consumeUntil(NEWLINE);
         }
     ;
@@ -1112,7 +1136,7 @@ intrface  : INTRFACE in:WORD
                     << " EMPTY INTERFACE " << std::endl;
             }
         )
-        NEWLINE LINE_COMMENT
+        NEWLINE ( LINE_COMMENT | EXIT )
     ;
    
 interface_parameters :
@@ -1521,6 +1545,7 @@ tokens
     GROUP_OBJECT = "group-object";
     NETWORK_OBJECT = "network-object";
     SERVICE_OBJECT = "service-object";
+    PORT_OBJECT = "port-object";
     PROTOCOL_OBJECT = "protocol-object";
     ICMP_OBJECT = "icmp-object";
     ICMP_TYPE = "icmp-type";

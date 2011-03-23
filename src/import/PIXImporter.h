@@ -49,6 +49,7 @@ class PIXImporter : public IOSImporter
 
     QString object_group_name;
     QString object_group_comment;
+    QString object_group_service_protocol;
     libfwbuilder::FWObject *current_object_group;
 
     QMap<QString,libfwbuilder::FWObject*> named_objects_registry;
@@ -96,6 +97,9 @@ class PIXImporter : public IOSImporter
     void newObjectGroupProtocol(const std::string &group_name);
     void newObjectGroupICMP(const std::string &group_name);
 
+    void setObjectGroupServiceProtocol(const std::string &proto)
+    { object_group_service_protocol = proto.c_str(); }
+    
     void setObjectGroupDescription(const std::string &descr);
     
     void addNamedObjectToObjectGroup(const std::string &object_name);
