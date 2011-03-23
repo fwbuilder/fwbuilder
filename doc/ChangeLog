@@ -1,3 +1,8 @@
+2011-03-23  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWWindow.cpp (prepareToolsMenu): fixed SF bug 3238026: build
+	failure on systems without net-snmp development libraries.
+
 2011-03-22  vadim  <vadim@netcitadel.com>
 
 	* parsers/pix.g (acl_xoperator_src): first attempt at PIX/ASA

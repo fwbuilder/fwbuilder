@@ -39,22 +39,28 @@ class ND_ProgressPage : public QWizardPage
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
-    SNMPCrawlerThread *crawler;
-    
+
 public:
     ND_ProgressPage(QWidget *parent);
     virtual ~ND_ProgressPage();
+
+#ifdef HAVE_LIBSNMP
+
+private:
+    SNMPCrawlerThread *crawler;
 
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
 
 public slots:
+
     void stop();
     void saveLog();
     void logLine(const QString &line);
     void crawlerDestroyed(QObject*);
     void crawlerFinished();
+#endif
 };
 
 

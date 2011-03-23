@@ -31,6 +31,8 @@
 #include "QThreadLogger.h"
 #include "SNMPCrawlerThread.h"
 
+#ifdef HAVE_LIBSNMP
+
 // #include snmp.h only after all Qt headers; see #2185
 #include "fwbuilder/snmp.h"
 
@@ -105,3 +107,4 @@ set<InetAddrMask*> SNMPCrawlerThread::getNetworks()
     return q->getNetworks();
 }
 
+#endif

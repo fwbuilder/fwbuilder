@@ -1024,6 +1024,9 @@ void FWWindow::prepareFileMenu()
 
 void FWWindow::prepareToolsMenu()
 {
+#ifndef HAVE_LIBSNMP
+    m_mainWindow->SNMPDiscoveryAction->setEnabled(false);
+#endif
 }
 
 void FWWindow::prepareWindowsMenu()

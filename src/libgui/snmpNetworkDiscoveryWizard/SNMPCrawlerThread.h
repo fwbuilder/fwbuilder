@@ -37,6 +37,7 @@
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/ThreadTools.h"
 
+#ifdef HAVE_LIBSNMP
 
 // avoid #include "snmp.h" since it conflicts with Qt, see #2185
 namespace libfwbuilder
@@ -77,5 +78,6 @@ signals:
     void finished();
 };
 
+#endif
 
 #endif

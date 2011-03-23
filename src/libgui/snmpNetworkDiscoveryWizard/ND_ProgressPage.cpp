@@ -56,7 +56,9 @@ ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
     m_dialog = new Ui::ND_ProgressPage_q;
     m_dialog->setupUi(this);
 
+#ifdef HAVE_LIBSNMP
     crawler = NULL;
+#endif
 
     QTextCursor cursor(m_dialog->discoveryLog->textCursor());
     normal_format = cursor.charFormat();
@@ -83,6 +85,8 @@ ND_ProgressPage::~ND_ProgressPage()
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(crawlerFinished()));
 
+#ifdef HAVE_LIBSNMP
+
     if (crawler != NULL && crawler->isRunning())
     {
         if (fwbdebug_nd)
@@ -95,7 +99,10 @@ ND_ProgressPage::~ND_ProgressPage()
         // object is only deleted after snmp crawler has finished and
         // thread terminated
     }
+#endif
 }
+
+#ifdef HAVE_LIBSNMP
 
 bool ND_ProgressPage::validatePage()
 {
@@ -121,8 +128,6 @@ void ND_ProgressPage::crawlerDestroyed(QObject *obj)
 void ND_ProgressPage::initializePage()
 {
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::initializePage()";
-
-#ifdef HAVE_LIBSNMP
 
     ObjectDescriptorList *objects = 
         dynamic_cast<SNMPNetworkDiscoveryWizard*>(wizard())->getObjects();
@@ -198,9 +203,6 @@ void ND_ProgressPage::initializePage()
             this, SLOT(crawlerFinished()));
 
     crawler->start();
-
-#endif
-
 }
 
 void ND_ProgressPage::cleanupPage()
@@ -392,3 +394,4 @@ void ND_ProgressPage::saveLog()
     }
 }
 
+#endif
