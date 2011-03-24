@@ -619,7 +619,7 @@ void PIXImporter::addIPServiceToObjectGroup()
     sig.setProtocol(protocol.c_str());
     sig.fragments = fragments;
     FWObject *s = service_maker->createObject(sig);
-    current_object_group->addRef(s);
+    current_object_group->addRef(commitObject(s));
 }
 
 void PIXImporter::addTCPUDPServiceToObjectGroup()
@@ -631,7 +631,7 @@ void PIXImporter::addTCPUDPServiceToObjectGroup()
     if (protocol == "tcp") new_obj = createTCPService();
     if (protocol == "udp") new_obj = createUDPService();
     if (new_obj)
-        current_object_group->addRef(new_obj);
+        current_object_group->addRef(commitObject(new_obj));
 }
 
 void PIXImporter::addICMPServiceToObjectGroup()
@@ -649,6 +649,6 @@ void PIXImporter::addICMPServiceToObjectGroup()
     }
 
     FWObject *s = service_maker->createObject(sig);
-    current_object_group->addRef(s);
+    current_object_group->addRef(commitObject(s));
 }
 

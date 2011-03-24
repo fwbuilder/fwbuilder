@@ -550,66 +550,119 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
 
 // these are found in Cisco configs. Some of these names duplicate
 // protocols listed above but a few are extras.
-        ports["tcp"]["bgp"] = 179;
-        ports["tcp"]["chargen"] = 19;
-        ports["tcp"]["cmd"] = 514;
-        ports["tcp"]["daytime"] = 13;
-        ports["tcp"]["discard"] = 9;
-        ports["tcp"]["domain"] = 53;
-        ports["tcp"]["echo"] = 7;
-        ports["tcp"]["exec"] = 512;
-        ports["tcp"]["finger"] = 79;
-        ports["tcp"]["ftp"] = 21;
-        ports["tcp"]["ftp-data"] = 20;
-        ports["tcp"]["gopher"] = 70;
-        ports["tcp"]["hostname"] = 101;
-        ports["tcp"]["ident"] = 113;
-        ports["tcp"]["irc"] = 194;
-        ports["tcp"]["klogin"] = 543;
-        ports["tcp"]["kshell"] = 544;
-        ports["tcp"]["login"] = 513;
-        ports["tcp"]["lpd"] = 515;
-        ports["tcp"]["nntp"] = 119;
-        ports["tcp"]["pop2"] = 109;
-        ports["tcp"]["pop3"] = 110;
-        ports["tcp"]["smtp"] = 25;
-        ports["tcp"]["sunrpc"] = 111;
-        ports["tcp"]["syslog"] = 514;
-        ports["tcp"]["tacacs"] = 49;
-        ports["tcp"]["tacacs-ds"] = 63;
-        ports["tcp"]["talk"] = 517;
-        ports["tcp"]["telnet"] = 23;
-        ports["tcp"]["time"] = 37;
-        ports["tcp"]["uucp"] = 540;
-        ports["tcp"]["whois"] = 43;
-        ports["tcp"]["www"] = 80;
+// http://www.cisco.com/en/US/docs/security/asa/asa80/configuration/guide/ports.html
+//
+// this is a mix of port names from PIX/ASA and IOS
 
-        ports["udp"]["biff"] = 512;
-        ports["udp"]["bootpc"] = 68;
-        ports["udp"]["bootps"] = 67;
-        ports["udp"]["discard"] = 9;
-        ports["udp"]["dnsix"] = 195;
-        ports["udp"]["domain"] = 53;
+        ports["tcp"]["aol"] = 5190;         // America Online
+        ports["tcp"]["bgp"] = 179;          // Border Gateway Protocol, RFC 1163
+        ports["tcp"]["chargen"] = 19;       // Character Generator
+        ports["tcp"]["cifs"] = 445;
+        ports["tcp"]["citrix-ica"] = 1494;  // Citrix Independent Computing
+                                            // Architecture (ICA) protocol
+        ports["tcp"]["cmd"] = 514;          // Similar to exec except that cmd
+                                            //  has automatic authentication
+        ports["tcp"]["ctiqbe"] = 2748;      // Computer Telephony Interface
+                                            //  Quick Buffer Encoding
+        ports["tcp"]["daytime"] = 13;       // Day time, RFC 867
+        ports["tcp"]["discard"] = 9;        // Discard
+        ports["tcp"]["domain"] = 53;        // DNS
+        ports["tcp"]["echo"] = 7;           // Echo
+        ports["tcp"]["exec"] = 512;         // Remote process execution
+        ports["tcp"]["finger"] = 79;        // Finger
+        ports["tcp"]["ftp"] = 21;           // File Transfer Protocol (control port)
+        ports["tcp"]["ftp-data"] = 20;      // File Transfer Protocol (data port)
+        ports["tcp"]["gopher"] = 70;        // Gopher
+        ports["tcp"]["h323"] = 1720;        // H.323 call signalling
+        ports["tcp"]["hostname"] = 101;     // NIC Host Name Server
+        ports["tcp"]["https"] = 443;        // HTTP over SSL
+        ports["tcp"]["ident"] = 113;        // Ident authentication service
+        ports["tcp"]["imap4"] = 143;        // Internet Message Access Protocol,
+                                            //  version 4
+        ports["tcp"]["irc"] = 194;          // Internet Relay Chat protocol
+        ports["tcp"]["kerberos"] = 750;     // Kerberos
+        ports["tcp"]["klogin"] = 543;       // KLOGIN
+        ports["tcp"]["kshell"] = 544;       // Korn Shell
+        ports["tcp"]["ldap"] = 389;         // Lightweight Directory Access
+                                            // Protocol
+        ports["tcp"]["ldaps"] = 636;        // Lightweight Directory Access
+                                            //  Protocol (SSL)
+        ports["tcp"]["login"] = 513;        // Remote login
+        ports["tcp"]["lotusnotes"] = 1352;  // IBM Lotus Notes
+        ports["tcp"]["lpd"] = 515;          // Line Printer Daemon - printer spooler
+        ports["tcp"]["netbios-ssn"] = 139;  // NetBIOS Session Service
+        ports["tcp"]["nfs"] = 2049;
+        ports["tcp"]["nntp"] = 119;         // Network News Transfer Protocol
+        ports["tcp"]["pcanywhere-data"] = 5631; // pcAnywhere data
+        ports["tcp"]["pim-auto-rp"] = 496;  // Protocol Independent Multicast,
+                                            //  reverse path flooding, dense mode
+        ports["tcp"]["pop2"] = 109;         // Post Office Protocol - Version 2
+        ports["tcp"]["pop3"] = 110;         // Post Office Protocol - Version 3
+        ports["tcp"]["pptp"] = 1723;        // Point-to-Point Tunneling Protocol
+        ports["tcp"]["rsh"] = 514;
+        ports["tcp"]["rtsp"] = 554;
+        ports["tcp"]["smtp"] = 25;          // Simple Mail Transport Protocol
+        ports["tcp"]["sqlnet"] = 1521;      // Structured Query Language Network
+        ports["tcp"]["ssh"] = 22;           // Secure Shell
+        ports["tcp"]["sip"] = 5060;
+        ports["tcp"]["sunrpc"] = 111;       // 111 Sun Remote Procedure Call
+        ports["tcp"]["syslog"] = 514;
+        ports["tcp"]["tacacs"] = 49;        // Terminal Access Controller
+                                            //  Access Control System Plus
+        ports["tcp"]["tacacs-ds"] = 63;     // ???
+        ports["tcp"]["talk"] = 517;         // Talk
+        ports["tcp"]["telnet"] = 23;        // RFC 854 Telnet
+        ports["tcp"]["time"] = 37;          // ???
+        ports["tcp"]["uucp"] = 540;         // UNIX-to-UNIX Copy Program
+        ports["tcp"]["whois"] = 43;         // Who Is
+        ports["tcp"]["http"] = 80;
+        ports["tcp"]["www"] = 80;           // World Wide Web
+
+
+
+        ports["udp"]["biff"] = 512;         // Used by mail system to notify
+                                            //  users that new mail is received
+        ports["udp"]["bootpc"] = 68;        // Bootstrap Protocol Client
+        ports["udp"]["bootps"] = 67;        // Bootstrap Protocol Server
+        ports["udp"]["discard"] = 9;        // Discard
+        ports["udp"]["dnsix"] = 195;        // DNSIX Session Management
+                                            //  Module Audit Redirector
+        ports["udp"]["domain"] = 53;        // DNS
         ports["udp"]["echo"] = 7;
-        ports["udp"]["isakmp"] = 500;
-        ports["udp"]["mobile-ip"] = 434;
-        ports["udp"]["nameserver"] = 42;
-        ports["udp"]["netbios-dgm"] = 138;
-        ports["udp"]["netbios-ns"] = 137;
+        ports["udp"]["isakmp"] = 500;       // Internet Security Association
+                                            //  and Key Management Protocol
+        ports["udp"]["kerberos"] = 750;     // Kerberos
+        ports["udp"]["mobile-ip"] = 434;    // MobileIP-Agent
+        ports["udp"]["nameserver"] = 42;    // Host Name Server
+        ports["udp"]["netbios-dgm"] = 138;  // NetBIOS Datagram Service
+        ports["udp"]["netbios-ns"] = 137;   // NetBIOS Name Service
         ports["udp"]["netbios-ss"] = 139;
-        ports["udp"]["ntp"] = 123;
-        ports["udp"]["pim-auto-rp"] = 496;
-        ports["udp"]["rip"] = 520;
-        ports["udp"]["snmp"] = 161;
-        ports["udp"]["snmptrap"] = 162;
-        ports["udp"]["sunrpc"] = 111;
-        ports["udp"]["syslog"] = 514;
-        ports["udp"]["tacacs"] = 49;
-        ports["udp"]["talk"] = 517;
-        ports["udp"]["tftp"] = 69;
-        ports["udp"]["time"] = 37;
-        ports["udp"]["who"] = 513;
-        ports["udp"]["xdmcp"] = 177;
+        ports["udp"]["nfs"] = 2049;
+        ports["udp"]["ntp"] = 123;          // Network Time Protocol
+        ports["udp"]["pcanywhere-status"] = 5632; // pcAnywhere status
+        ports["udp"]["pim-auto-rp"] = 496;  // Protocol Independent Multicast,
+                                            //  reverse path flooding, dense mode
+        ports["udp"]["radius"] = 1645;      // Remote Authentication Dial-In
+                                            //  User Service
+        ports["udp"]["radius-acct"] = 1646; // Remote Authentication Dial-In
+                                            //  User Service (accounting)
+        ports["udp"]["rip"] = 520;          // Routing Information Protocol
+        ports["udp"]["rtsp"] = 554;
+        ports["udp"]["secureid-udp"] = 5510; // SecureID over 
+        ports["udp"]["sip"] = 5060;
+        ports["udp"]["snmp"] = 161;         // Simple Network Management Protocol
+        ports["udp"]["snmptrap"] = 162;     // Simple Network Management Protocol
+                                            //  - Trap
+        ports["udp"]["sunrpc"] = 111;       // 111 Sun Remote Procedure Call
+        ports["udp"]["syslog"] = 514;       // System Log
+        ports["udp"]["tacacs"] = 49;        // Terminal Access Controller
+                                            //  Access Control System Plus
+        ports["udp"]["talk"] = 517;         // Talk
+        ports["udp"]["tftp"] = 69;          // Trivial File Transfer Protocol
+        ports["udp"]["time"] = 37;          // Time
+        ports["udp"]["who"] = 513;          // Who
+        ports["udp"]["xdmcp"] = 177;        // X Display Manager Control Protocol
+
 
 
     }
