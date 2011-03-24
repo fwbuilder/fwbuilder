@@ -43,14 +43,13 @@ public:
     virtual ~AddressObjectMaker();
 
     void setInvertedNetmasks(bool f) { inverted_netmasks = f; }
+    bool getInvertedNetmasks() { return inverted_netmasks; }
     
     virtual libfwbuilder::FWObject* createObject(ObjectSignature &sig);
 
 protected:
-    virtual libfwbuilder::FWObject* createAddress(const QString &a,
-                                                  const QString &nm);
-    virtual libfwbuilder::FWObject* createAddressRange(const QString &a1,
-                                                       const QString &a2);
+    virtual libfwbuilder::FWObject* createAddress(ObjectSignature &sig);
+    virtual libfwbuilder::FWObject* createAddressRange(ObjectSignature &sig);
 
 };
 

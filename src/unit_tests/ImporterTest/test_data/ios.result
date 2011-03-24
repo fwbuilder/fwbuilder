@@ -2,22 +2,22 @@ Host name: "c3620"
 New interface: FastEthernet0/0
 Interface address: 192.168.100.100/255.255.255.0
 Interface address: 10.3.14.201/255.255.255.0
-Interface  ruleset fe0_0_acl_in direction 'in' (set to 'in')
-Interface  ruleset fe0_0_acl_out direction 'out' (set to 'out')
+Interface FastEthernet0/0 ruleset fe0_0_acl_in direction 'in' 
+Interface FastEthernet0/0 ruleset fe0_0_acl_out direction 'out' 
 New interface: Ethernet1/0
 Interface comment: Test [ test ] { test } ( and one more test) / weird:characters#$%^&*/ 
 Interface address: 192.168.171.2/255.255.255.0
-Interface  ruleset e1_0_acl_in direction 'in' (set to 'in')
-Interface  ruleset e1_0_acl_out direction 'out' (set to 'out')
+Interface Ethernet1/0 ruleset e1_0_acl_in direction 'in' 
+Interface Ethernet1/0 ruleset e1_0_acl_out direction 'out' 
 New interface: Serial1/0
 New interface: Ethernet1/1
 Interface address: 10.10.10.10/255.255.255.0
-Interface  ruleset acl_133 direction 'in' (set to 'in')
-Interface  ruleset acl_133 direction 'out' (set to 'both')
+Interface Ethernet1/1 ruleset acl_133 direction 'in' 
+Interface Ethernet1/1 ruleset acl_133 direction 'out' 
 New interface: Ethernet1/2
 Interface address: 10.10.20.20/255.255.255.0
-Interface  ruleset acl_133 direction 'in' (set to 'in')
-Interface  ruleset acl_133 direction 'out' (set to 'both')
+Interface Ethernet1/2 ruleset acl_133 direction 'in' 
+Interface Ethernet1/2 ruleset acl_133 direction 'out' 
 Ruleset: e1_0_acl_in
 Ruleset: e1_0_acl_out
 Ruleset: fe0_0_acl_in

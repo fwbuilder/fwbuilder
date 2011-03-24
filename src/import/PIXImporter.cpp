@@ -425,8 +425,8 @@ void PIXImporter::commitNamedAddressRangeObject()
     ObjectSignature sig;
     sig.object_name = named_object_name;
     sig.type_name = AddressRange::TYPENAME;
-    sig.address_range_start = tmp_range_1.c_str();
-    sig.address_range_end = tmp_range_2.c_str();
+    sig.setAddressRangeStart(tmp_range_1.c_str());
+    sig.setAddressRangeEnd(tmp_range_2.c_str());
     current_named_object = commitObject(address_maker->createObject(sig));
     named_objects_registry[named_object_name] = current_named_object;
 }
@@ -594,8 +594,8 @@ void PIXImporter::addNetworkToObjectGroup()
 {
     ObjectSignature sig;
     sig.type_name = Address::TYPENAME;
-    sig.address = tmp_a.c_str();
-    sig.netmask = tmp_nm.c_str();
+    sig.setAddress(tmp_a.c_str());
+    sig.setNetmask(tmp_nm.c_str());
     current_object_group->addRef(
         commitObject(address_maker->createObject(sig)));
 }

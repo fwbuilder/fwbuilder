@@ -288,12 +288,12 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
     }
 }
 
-FWObject* IPTImporter::createTCPService(const QString &name)
+FWObject* IPTImporter::createTCPService(const QString &)
 {
     return createTCPUDPService("tcp");
 }
 
-FWObject* IPTImporter::createUDPService(const QString &name)
+FWObject* IPTImporter::createUDPService(const QString &)
 {
     return createTCPUDPService("udp");
 }
@@ -305,8 +305,8 @@ FWObject* IPTImporter::makeSrcObj()
     {
         ObjectSignature sig;
         sig.type_name = AddressRange::TYPENAME;
-        sig.address_range_start = iprange_src_from.c_str();
-        sig.address_range_end = iprange_src_to.c_str();
+        sig.setAddressRangeStart(iprange_src_from.c_str());
+        sig.setAddressRangeEnd(iprange_src_to.c_str());
 
         return commitObject(address_maker->createObject(sig));
     } else
@@ -319,8 +319,8 @@ FWObject* IPTImporter::makeDstObj()
     {
         ObjectSignature sig;
         sig.type_name = AddressRange::TYPENAME;
-        sig.address_range_start = iprange_dst_from.c_str();
-        sig.address_range_end = iprange_dst_to.c_str();
+        sig.setAddressRangeStart(iprange_dst_from.c_str());
+        sig.setAddressRangeEnd(iprange_dst_to.c_str());
 
         return commitObject(address_maker->createObject(sig));
     } else
@@ -1207,15 +1207,15 @@ void IPTImporter::pushNATRule()
         {
             ObjectSignature sig;
             sig.type_name = AddressRange::TYPENAME;
-            sig.address_range_start = nat_addr1.c_str();
-            sig.address_range_end = nat_addr2.c_str();
+            sig.setAddressRangeStart(nat_addr1.c_str());
+            sig.setAddressRangeEnd(nat_addr2.c_str());
             tsrc = commitObject(address_maker->createObject(sig));
         } else
         {
             ObjectSignature sig;
             sig.type_name = Address::TYPENAME;
-            sig.address = nat_addr1.c_str();
-            sig.netmask = nat_nm.c_str();
+            sig.setAddress(nat_addr1.c_str());
+            sig.setNetmask(nat_nm.c_str());
             tsrc = commitObject(address_maker->createObject(sig));
         }
 
@@ -1261,15 +1261,15 @@ void IPTImporter::pushNATRule()
         {
             ObjectSignature sig;
             sig.type_name = AddressRange::TYPENAME;
-            sig.address_range_start = nat_addr1.c_str();
-            sig.address_range_end = nat_addr2.c_str();
+            sig.setAddressRangeStart(nat_addr1.c_str());
+            sig.setAddressRangeEnd(nat_addr2.c_str());
             tdst = commitObject(address_maker->createObject(sig));
         } else
         {
             ObjectSignature sig;
             sig.type_name = Address::TYPENAME;
-            sig.address = nat_addr1.c_str();
-            sig.netmask = nat_nm.c_str();
+            sig.setAddress(nat_addr1.c_str());
+            sig.setNetmask(nat_nm.c_str());
             tdst = commitObject(address_maker->createObject(sig));
         }
 
@@ -1338,8 +1338,8 @@ void IPTImporter::pushNATRule()
 
             ObjectSignature sig;
             sig.type_name = Address::TYPENAME;
-            sig.address = nat_addr1.c_str();
-            sig.netmask = nat_nm.c_str();
+            sig.setAddress(nat_addr1.c_str());
+            sig.setNetmask(nat_nm.c_str());
             o = commitObject(address_maker->createObject(sig));
             tsrc->addRef(o);
         }
@@ -1353,8 +1353,8 @@ void IPTImporter::pushNATRule()
 
             ObjectSignature sig;
             sig.type_name = Address::TYPENAME;
-            sig.address = nat_addr1.c_str();
-            sig.netmask = nat_nm.c_str();
+            sig.setAddress(nat_addr1.c_str());
+            sig.setNetmask(nat_nm.c_str());
             o = commitObject(address_maker->createObject(sig));
             tdst->addRef(o);
         }

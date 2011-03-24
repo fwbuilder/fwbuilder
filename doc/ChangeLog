@@ -1,4 +1,7 @@
-2011-03-23  Vadim Kurland  <vadim@netcitadel.com>
+2011-03-23  vadim  <vadim@netcitadel.com>
+
+	* addressObjectMaker.cpp (createObject): see #1548 Improved
+	algorithm used to deduplicate Network objects on import.
 
 	* FWWindow.cpp (prepareToolsMenu): fixed SF bug 3238026: build
 	failure on systems without net-snmp development libraries.

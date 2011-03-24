@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300583953" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300949604" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -453,14 +453,14 @@
       <ObjectGroup id="id20" name="Groups" comment="" ro="False"/>
       <ObjectGroup id="id21" name="Hosts" comment="" ro="False"/>
       <ObjectGroup id="id22" name="Networks" comment="" ro="False">
-        <Network id="id23" name="net-192.168.2.0/24" comment="Created during import of  line 18" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
-        <Network id="id24" name="net-192.168.0.0/16" comment="Created during import of  line 85" ro="False" address="192.168.0.0" netmask="255.255.0.0"/>
-        <Network id="id25" name="net-128.143.0.0/16" comment="Created during import of  line 92" ro="False" address="128.143.0.0" netmask="255.255.0.0"/>
-        <Network id="id26" name="net-1.1.0.0/16" comment="Created during import of  line 98" ro="False" address="1.1.0.0" netmask="255.255.0.0"/>
-        <Network id="id27" name="net-192.168.19.0/24" comment="Created during import of  line 105" ro="False" address="192.168.19.0" netmask="255.255.255.0"/>
-        <Network id="id28" name="net-192.168.1.0/24" comment="Created during import of  line 257" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
-        <Network id="id29" name="net-192.168.1.32/27" comment="Created during import of  line 259" ro="False" address="192.168.1.32" netmask="255.255.255.224"/>
-        <Network id="id30" name="net-222.222.222.0/24" comment="Created during import of  line 266" ro="False" address="222.222.222.0" netmask="255.255.255.0"/>
+        <Network id="id23" name="net-192.168.2.0/255.255.255.0" comment="Created during import of  line 18" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
+        <Network id="id24" name="net-192.168.0.0/255.255.0.0" comment="Created during import of  line 85" ro="False" address="192.168.0.0" netmask="255.255.0.0"/>
+        <Network id="id25" name="net-128.143.0.0/255.255.0.0" comment="Created during import of  line 92" ro="False" address="128.143.0.0" netmask="255.255.0.0"/>
+        <Network id="id26" name="net-1.1.0.0/255.255.0.0" comment="Created during import of  line 98" ro="False" address="1.1.0.0" netmask="255.255.0.0"/>
+        <Network id="id27" name="net-192.168.19.0/255.255.255.0" comment="Created during import of  line 105" ro="False" address="192.168.19.0" netmask="255.255.255.0"/>
+        <Network id="id28" name="net-192.168.1.0/255.255.255.0" comment="Created during import of  line 257" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+        <Network id="id29" name="net-192.168.1.32/255.255.255.224" comment="Created during import of  line 259" ro="False" address="192.168.1.32" netmask="255.255.255.224"/>
+        <Network id="id30" name="net-222.222.222.0/255.255.255.0" comment="Created during import of  line 266" ro="False" address="222.222.222.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="id31" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id32" name="range-10.212.66.2-10.212.66.3" comment="Created during import of  line 80" ro="False" start_address="10.212.66.2" end_address="10.212.66.3"/>

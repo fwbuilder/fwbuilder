@@ -544,8 +544,8 @@ FWObject* Importer::makeSrcObj()
 
     ObjectSignature sig;
     sig.type_name = Address::TYPENAME;
-    sig.address = src_a.c_str();
-    sig.netmask = src_nm.c_str();
+    sig.setAddress(src_a.c_str());
+    sig.setNetmask(src_nm.c_str(), address_maker->getInvertedNetmasks());
 
     return commitObject(address_maker->createObject(sig));
 }
@@ -560,8 +560,8 @@ FWObject* Importer::makeDstObj()
 
     ObjectSignature sig;
     sig.type_name = Address::TYPENAME;
-    sig.address = dst_a.c_str();
-    sig.netmask = dst_nm.c_str();
+    sig.setAddress(dst_a.c_str());
+    sig.setNetmask(dst_nm.c_str(), address_maker->getInvertedNetmasks());
 
     return commitObject(address_maker->createObject(sig));
 }

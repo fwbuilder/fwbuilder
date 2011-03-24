@@ -23,11 +23,7 @@ Created branch Policy_eth1
 New interface: eth1
 New interface: eth0
 Warning: Line 42: Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
-Warning: Line 69: Unknown parameter of target REJECT: icmp-foo-prohibited.
-Warning: Line 70: Unknown parameter of target REJECT: foo-prohib.
 Warning: Line 103: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-Parser error: Line 150: Port spec foo is unknown
-Parser error: Line 150: Port spec foo is unknown
 Created branch user_chain_42_mod_match
 Created branch user_chain_43_mod_match
 Created branch user_chain_44_mod_match

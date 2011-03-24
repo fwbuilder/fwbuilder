@@ -49,82 +49,50 @@ AddressObjectMaker::~AddressObjectMaker() {}
 
 FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
 {
-//    FWObject *obj = findMatchingObject(sig);
-//    if (obj) return obj;
-
     FWObject *obj = NULL;
 
     if (sig.type_name == AddressRange::TYPENAME)
-        obj = createAddressRange(sig.address_range_start, sig.address_range_end);
+        obj = createAddressRange(sig);
     else
-        obj = createAddress(sig.address, sig.netmask);
+        obj = createAddress(sig);
+
+    // Now I should build new signature because actual object type has
+    // only been determined in createAddress()
 
     if ( ! sig.object_name.isEmpty())
     {
         obj->setName(sig.object_name.toUtf8().constData());
-        registerNamedObject(sig, obj);
+        ObjectSignature new_sig;
+        obj->dispatch(&new_sig, (void*)(NULL));
+        registerNamedObject(new_sig, obj);
     } else
-        registerAnonymousObject(sig, obj);
+    {
+        ObjectSignature new_sig;
+        obj->dispatch(&new_sig, (void*)(NULL));
+        registerAnonymousObject(new_sig, obj);
+    }
 
     return obj;
 }
-        
 
-FWObject* AddressObjectMaker::createAddress(const QString &addr,
-                                            const QString &netmask)
+FWObject* AddressObjectMaker::createAddress(ObjectSignature &sig)
 {
-    QString correct_nm = netmask;
-    if (inverted_netmasks)
-    {
-        InetAddr orig_nm(netmask.toStdString());
-        correct_nm = (~orig_nm).toString().c_str();
-    }
+    ObjectSignature signature = sig;
 
-    try
-    {
-        InetAddr(correct_nm.toStdString());
-    } catch (FWException &ex)
-    {
-        if (correct_nm.contains('.'))
-        {
-            // netmask has '.' in it but conversion failed.
-            throw ObjectMakerException(
-                QString("Error converting netmask '%1'").arg(correct_nm));
-        } else
-        {
-            // no dot in netmask, perhaps it is specified by its length?
-            // if netmask is specified by length, need to use special
-            // constructor for class Netmask to convert
-            bool ok = false;
-            int nm_len = correct_nm.toInt(&ok);
-            if (ok)
-            {
-                correct_nm = InetAddr(nm_len).toString().c_str();
-            } else
-            {
-                // could not convert netmask as simple integer
-                throw ObjectMakerException(
-                    QString("Error converting netmask '%1'").arg(correct_nm));
-            }
-        }
-    }
+    InetAddr netmask(signature.netmask.toStdString());
 
-    ObjectSignature sig;
-    sig.address = addr;
-    sig.netmask = correct_nm;
-
-    if ( correct_nm == InetAddr::getAllOnes().toString().c_str() )
+    if ( netmask == InetAddr::getAllOnes() )
     {
         QString name;
         try
         {
-            sig.type_name = IPv4::TYPENAME;
+            signature.type_name = IPv4::TYPENAME;
 
-            FWObject *obj = findMatchingObject(sig);
+            FWObject *obj = findMatchingObject(signature);
             if (obj) return obj;
 
-            InetAddr obj_addr(addr.toStdString()); // testing if string converts to an address
-            name = QString("h-") + addr;
+            InetAddr obj_addr(sig.address.toStdString()); // testing if string converts to an address
+            name = QString("h-") + sig.address;
             Address *a = Address::cast(
                 ObjectMaker::createObject(IPv4::TYPENAME, name.toStdString()));
             a->setAddress(obj_addr);
@@ -137,52 +105,55 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
             // Since parsers do not understand ipv6 yet, assume this
             // is a host address and create DNSName object
 
-            sig.type_name = DNSName::TYPENAME;
-            FWObject *obj = findMatchingObject(sig);
+            signature.type_name = DNSName::TYPENAME;
+            FWObject *obj = findMatchingObject(signature);
             if (obj) return obj;
 
-            name = addr;
+            name = sig.address;
             DNSName *da = DNSName::cast(
                 ObjectMaker::createObject(DNSName::TYPENAME, name.toStdString()));
-            da->setSourceName(addr.toStdString());
+            da->setSourceName(sig.address.toStdString());
             da->setRunTime(true);
             return da;
         }
 
     } else
     {
-        sig.type_name = Network::TYPENAME;
+        signature.type_name = Network::TYPENAME;
 
-        qDebug() << "Search for " << sig.toString();
-
-        FWObject *obj = findMatchingObject(sig);
+        FWObject *obj = findMatchingObject(signature);
         if (obj) return obj;
 
-        QString name = QString("net-") + addr + "/" + correct_nm;
+        QString name = QString("net-%1/%2")
+            .arg(signature.address).arg(signature.netmask);
         Network *net = Network::cast(
             ObjectMaker::createObject(Network::TYPENAME, name.toStdString()));
         try
         {
-            net->setAddress( InetAddr(addr.toStdString()) );
+            net->setAddress( InetAddr(sig.address.toStdString()) );
         } catch (FWException &ex)
         {
             throw ObjectMakerException(
-                QString("Error converting address '%1'").arg(addr));
+                QString("Error converting address '%1'").arg(sig.address));
         }
 
         // we have already verified netmask above
-        net->setNetmask( InetAddr(correct_nm.toStdString()) );
+        net->setNetmask(netmask);
 
         return net;
     }
     return NULL;
 }
 
-FWObject* AddressObjectMaker::createAddressRange(const QString &addr1,
-                                                 const QString &addr2)
+FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
 {
+    FWObject *obj = findMatchingObject(sig);
+    if (obj) return obj;
 
-    QString name = QString("range-") + addr1 + "-" + addr2;
+    QString addr1 = sig.address_range_start;
+    QString addr2 = sig.address_range_end;
+    QString name = QString("range-%1-%2").arg(addr1).arg(addr2);
+
     AddressRange *ar = AddressRange::cast(
         ObjectMaker::createObject(AddressRange::TYPENAME, name.toStdString()));
 

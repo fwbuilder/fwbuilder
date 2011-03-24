@@ -242,6 +242,59 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
     }
 }
 
+void ObjectSignature::setAddress(const QString &s)
+{
+    address = s;
+}
+
+void ObjectSignature::setAddressRangeStart(const QString &s)
+{
+    address_range_start = s;
+}
+
+void ObjectSignature::setAddressRangeEnd(const QString &s)
+{
+    address_range_end = s;
+}
+
+void ObjectSignature::setNetmask(const QString &netm, bool inverted_netmask)
+{
+    InetAddr inetaddr_nm;
+
+    try
+    {
+        inetaddr_nm = InetAddr(netm.toStdString());
+        if (inverted_netmask) inetaddr_nm = ~inetaddr_nm;
+
+    } catch (FWException &ex)
+    {
+        if (netm.contains('.'))
+        {
+            // netmask has '.' in it but conversion failed.
+            throw ObjectMakerException(
+                QString("Error converting netmask '%1'").arg(netm));
+        } else
+        {
+            // no dot in netmask, perhaps it is specified by its length?
+            // If netmask is specified by length, need to use special
+            // constructor for class Netmask to convert
+            bool ok = false;
+            int nm_len = netm.toInt(&ok);
+            if (ok)
+            {
+                inetaddr_nm = InetAddr(nm_len);
+            } else
+            {
+                // could not convert netmask as simple integer
+                throw ObjectMakerException(
+                    QString("Error converting netmask '%1'").arg(netm));
+            }
+        }
+    }
+
+    netmask = inetaddr_nm.toString().c_str();
+}
+
 void ObjectSignature::setProtocol(const QString &s)
 {
     // this assumes protocol is represented by a number
@@ -837,8 +890,6 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
         ObjectSignature sig;
 
         root->dispatch(&sig, (void*)(NULL));
-
-        qDebug() << "Registering " << sig.toString();
 
         registerNamedObject(sig, root);
         registerAnonymousObject(sig, root); // this erases sig.object_name

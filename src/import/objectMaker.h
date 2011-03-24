@@ -130,6 +130,10 @@ public:
 
     // convenience methods that populate various attributes from
     // strings taken from imported configs
+    void setAddress(const QString &s);
+    void setNetmask(const QString &s, bool inverted_netmask=false);
+    void setAddressRangeStart(const QString &s);
+    void setAddressRangeEnd(const QString &s);
     void setProtocol(const QString &s);
     void setIcmpFromName(const QString &s);
     void setIcmpType(const QString &s);
