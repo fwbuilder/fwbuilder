@@ -120,12 +120,15 @@ const char* newFirewallPlatform =
     SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
 const char* newClusterFailoverProtocol =
     SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
-const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 const char* abTestingGroup = SETTINGS_PATH_PREFIX "/abTestingGroup";
 const char* startsCounter = SETTINGS_PATH_PREFIX "/startsCounter";
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
 const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
+
+const char* appGUID = "/fwbuilder_gui/ApplicationGUID";
+const char* appGUID_4_0 = "/4.0/ApplicationGUID";
+const char* appGUID_4_1 = "/4.1/ApplicationGUID";
 
 #ifdef _WIN32
 const char* SSHTimeout = "Sessions/fwb_session_with_keepalive/PingIntervalSecs";
@@ -187,17 +190,26 @@ void FWBSettings::init(bool force_first_time_run)
     ok = uuid_settings->contains(appGUID);
     if (!ok)
     {
-        // migrate uuid from the old native format settings to uuid_settings
-        // See #1497
-        ok = contains(appGUID);
+        ok = uuid_settings->contains(appGUID_4_1);
         if (ok)
         {
-            uuid_settings->setValue(appGUID, value(appGUID).toString());
+            uuid_settings->setValue(
+                appGUID, uuid_settings->value(appGUID_4_1).toString());
+            uuid_settings->remove(appGUID_4_1);
         } else
         {
-            qsrand(time(NULL));
-            uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
-            first_run = true;
+            ok = uuid_settings->contains(appGUID_4_0);
+            if (ok) 
+            {
+                uuid_settings->setValue(
+                    appGUID, uuid_settings->value(appGUID_4_0).toString());
+                uuid_settings->remove(appGUID_4_0);
+            } else
+            {
+                qsrand(time(NULL));
+                uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
+                first_run = true;
+            }
         }
     }
 
