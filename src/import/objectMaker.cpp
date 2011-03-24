@@ -838,12 +838,14 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
 
         root->dispatch(&sig, (void*)(NULL));
 
+        qDebug() << "Registering " << sig.toString();
+
         registerNamedObject(sig, root);
         registerAnonymousObject(sig, root); // this erases sig.object_name
     }
 
-    if (Library::isA(root) && root->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
-        return;
+    if (Library::isA(root) &&
+        root->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return;
 
     for (FWObject::iterator it=root->begin(); it!=root->end(); ++it)
     {

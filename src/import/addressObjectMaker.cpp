@@ -36,6 +36,9 @@
 
 #include <string>
 
+#include <QtDebug>
+
+
 extern int fwbdebug;
 
 using namespace libfwbuilder;
@@ -46,10 +49,10 @@ AddressObjectMaker::~AddressObjectMaker() {}
 
 FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
 {
-    assert( ! sig.type_name.isEmpty());
+//    FWObject *obj = findMatchingObject(sig);
+//    if (obj) return obj;
 
-    FWObject *obj = findMatchingObject(sig);
-    if (obj) return obj;
+    FWObject *obj = NULL;
 
     if (sig.type_name == AddressRange::TYPENAME)
         obj = createAddressRange(sig.address_range_start, sig.address_range_end);
@@ -77,11 +80,49 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
         correct_nm = (~orig_nm).toString().c_str();
     }
 
+    try
+    {
+        InetAddr(correct_nm.toStdString());
+    } catch (FWException &ex)
+    {
+        if (correct_nm.contains('.'))
+        {
+            // netmask has '.' in it but conversion failed.
+            throw ObjectMakerException(
+                QString("Error converting netmask '%1'").arg(correct_nm));
+        } else
+        {
+            // no dot in netmask, perhaps it is specified by its length?
+            // if netmask is specified by length, need to use special
+            // constructor for class Netmask to convert
+            bool ok = false;
+            int nm_len = correct_nm.toInt(&ok);
+            if (ok)
+            {
+                correct_nm = InetAddr(nm_len).toString().c_str();
+            } else
+            {
+                // could not convert netmask as simple integer
+                throw ObjectMakerException(
+                    QString("Error converting netmask '%1'").arg(correct_nm));
+            }
+        }
+    }
+
+    ObjectSignature sig;
+    sig.address = addr;
+    sig.netmask = correct_nm;
+
     if ( correct_nm == InetAddr::getAllOnes().toString().c_str() )
     {
         QString name;
         try
         {
+            sig.type_name = IPv4::TYPENAME;
+
+            FWObject *obj = findMatchingObject(sig);
+            if (obj) return obj;
+
             InetAddr obj_addr(addr.toStdString()); // testing if string converts to an address
             name = QString("h-") + addr;
             Address *a = Address::cast(
@@ -89,11 +130,16 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
             a->setAddress(obj_addr);
             a->setNetmask(InetAddr(InetAddr::getAllOnes()));
             return a;
+
         } catch(FWException &ex)
         {
             // address text line can not be converted to ipv4 address.
             // Since parsers do not understand ipv6 yet, assume this
             // is a host address and create DNSName object
+
+            sig.type_name = DNSName::TYPENAME;
+            FWObject *obj = findMatchingObject(sig);
+            if (obj) return obj;
 
             name = addr;
             DNSName *da = DNSName::cast(
@@ -105,6 +151,12 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
 
     } else
     {
+        sig.type_name = Network::TYPENAME;
+
+        qDebug() << "Search for " << sig.toString();
+
+        FWObject *obj = findMatchingObject(sig);
+        if (obj) return obj;
 
         QString name = QString("net-") + addr + "/" + correct_nm;
         Network *net = Network::cast(
@@ -118,34 +170,8 @@ FWObject* AddressObjectMaker::createAddress(const QString &addr,
                 QString("Error converting address '%1'").arg(addr));
         }
 
-        try
-        {
-            net->setNetmask( InetAddr(correct_nm.toStdString()) );
-        } catch (FWException &ex)
-        {
-            if (correct_nm.contains('.'))
-            {
-                // netmask has '.' in it but conversion failed.
-                throw ObjectMakerException(
-                    QString("Error converting netmask '%1'").arg(correct_nm));
-            } else
-            {
-                // no dot in netmask, perhaps it is specified by its length?
-                // if netmask is specified by length, need to use special
-                // constructor for class Netmask to convert
-                bool ok = false;
-                int nm_len = correct_nm.toInt(&ok);
-                if (ok)
-                {
-                    net->setNetmask( InetAddr(nm_len) );
-                } else
-                {
-                    // could not convert netmask as simple integer
-                    throw ObjectMakerException(
-                        QString("Error converting netmask '%1'").arg(correct_nm));
-                }
-            }
-        }
+        // we have already verified netmask above
+        net->setNetmask( InetAddr(correct_nm.toStdString()) );
 
         return net;
     }
