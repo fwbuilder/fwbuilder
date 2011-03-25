@@ -46,18 +46,21 @@ class CUSTOM_API PIXCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publ
     virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
     {
         importer->addMessageToLog("Parser error: " + ex.toString());
+        std::cerr << ex.toString() << std::endl;
     }
 
     /// Parser error-reporting function can be overridden in subclass
     virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser error: " + s);
+        std::cerr << s << std::endl;
     }
 
     /// Parser warning-reporting function can be overridden in subclass
     virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser warning: " + s);
+        std::cerr << s << std::endl;
     }
 
 #line 38 "PIXCfgParser.hpp"
@@ -145,15 +148,19 @@ public:
 	public: void remark();
 	public: void rule_extended();
 	public: void rule_standard();
-	public: void ip_protocols();
 	public: void hostaddr_expr();
+	public: void ip_protocols();
 	public: void time_range();
 	public: void fragments();
 	public: void log();
 	public: void icmp_spec();
-	public: void acl_xoperator_src();
+	public: void tcp_udp_rule_extended();
+	public: void hostaddr_expr_1();
+	public: void acl_tcp_udp_dst_port_spec();
+	public: void hostaddr_expr_2();
 	public: void acl_xoperator_dst();
 	public: void established();
+	public: void hostaddr_expr_3();
 	public: void single_port_op();
 	public: void port_range();
 	public: void port_spec();
@@ -188,10 +195,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 145;
+	static const int NUM_TOKENS = 146;
 #else
 	enum {
-		NUM_TOKENS = 145
+		NUM_TOKENS = 146
 	};
 #endif
 	
@@ -233,6 +240,18 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_17;
 	static const unsigned long _tokenSet_18_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_18;
+	static const unsigned long _tokenSet_19_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_19;
+	static const unsigned long _tokenSet_20_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_20;
+	static const unsigned long _tokenSet_21_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_21;
+	static const unsigned long _tokenSet_22_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_22;
+	static const unsigned long _tokenSet_23_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_23;
+	static const unsigned long _tokenSet_24_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_24;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

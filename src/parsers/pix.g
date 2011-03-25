@@ -90,18 +90,21 @@ options
     virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
     {
         importer->addMessageToLog("Parser error: " + ex.toString());
+        std::cerr << ex.toString() << std::endl;
     }
 
     /// Parser error-reporting function can be overridden in subclass
     virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser error: " + s);
+        std::cerr << s << std::endl;
     }
 
     /// Parser warning-reporting function can be overridden in subclass
     virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser warning: " + s);
+        std::cerr << s << std::endl;
     }
 
 }
@@ -899,6 +902,21 @@ deny_standard: STANDARD DENY
 
 //****************************************************************
 // the difference between standard and extended acls should be in these rules
+
+// standard acl only matches destination address
+rule_standard : 
+        {
+            importer->tmp_a = "0.0.0.0";
+            importer->tmp_nm = "0.0.0.0";
+            importer->SaveTmpAddrToSrc();
+        }
+        hostaddr_expr
+        {
+            importer->SaveTmpAddrToDst();
+            *dbg << "(dst) " << std::endl;
+        }
+    ;
+
 rule_extended : 
         (
             ip_protocols
@@ -920,40 +938,125 @@ rule_extended :
             (fragments)?
             (log)?
         |
-            (TCP|UDP)
-            {
-                importer->protocol = LT(0)->getText();
-                *dbg << "protocol " << LT(0)->getText() << " ";
-            }
-            hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
-            (acl_xoperator_src)?
-            hostaddr_expr { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
-            (acl_xoperator_dst)?
-            (established)? 
-            (time_range)?
-            (fragments)?
-            (log)?
+            tcp_udp_rule_extended
         )
         {
             *dbg << std::endl;
         }
     ;
 
-// standard acl only matches destination address
-rule_standard : 
+tcp_udp_rule_extended : 
+        ( TCP | UDP )
         {
-            importer->tmp_a = "0.0.0.0";
-            importer->tmp_nm = "0.0.0.0";
-            importer->SaveTmpAddrToSrc();
+            importer->protocol = LT(0)->getText();
+            *dbg << "protocol " << LT(0)->getText() << " ";
         }
-        hostaddr_expr
-        {
-            importer->SaveTmpAddrToDst();
-            *dbg << "(dst) " << std::endl;
-        }
+        hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
+        (
+            (OBJECT_GROUP) => (
+                // This object-group can be either
+                // source port or destination address
+                //
+                // Using disambiguating predicate; it must be the first element
+                // in the production (i.e. nothing should precede {}?)
+                { importer->isKnownServiceGroupName(LT(2)->getText()) }?
+                OBJECT_GROUP src_grp_name:WORD
+                {
+                    importer->src_port_spec = src_grp_name->getText();
+                    *dbg << "src port spec: "
+                     << src_grp_name->getText() << std::endl;
+                }
+                // destination address spec follows; hostaddr_expr matches
+                // OBJECT | OBJECT_GROUP among pure addresses
+                hostaddr_expr_1
+                {
+                    importer->SaveTmpAddrToDst();
+                    *dbg << "(dst) ";
+                }
+                acl_tcp_udp_dst_port_spec
+            |
+                // still object-group after src address but this group is not
+                // a known service group - must be dest. address group
+                hostaddr_expr_2
+                {
+                    importer->SaveTmpAddrToDst();
+                    *dbg << "(dst) ";
+                }
+                acl_tcp_udp_dst_port_spec
+            )
+        |
+            // not "object-group" keyword after src address spec.
+            OBJECT dst_addr_name:WORD (acl_xoperator_dst)? (established)? 
+            {
+                // looks like "object foo" at this point can only be dest addr.
+                // (judging by cli prompts on 8.3)
+                importer->tmp_a = dst_addr_name->getText();
+                importer->tmp_nm = "";
+                importer->SaveTmpAddrToDst();
+                *dbg << "dst addr object " << dst_addr_name->getText() << " ";
+            }
+            acl_tcp_udp_dst_port_spec
+        |
+            // if not object-group and object, then it can optionally
+            // be regular inline port spec, followed by dest address spec
+            (
+                xoperator
+                {
+                    importer->SaveTmpPortToSrc();
+                }
+            )?
+            hostaddr_expr_3 { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
+            acl_tcp_udp_dst_port_spec
+        )
+        (time_range)?
+        (fragments)?
+        (log)?
     ;
 
 //****************************************************************
+
+acl_tcp_udp_dst_port_spec : 
+            (
+                // destination port spec. Can be blank, a named
+                // object, object-group or inline
+
+                (OBJECT_GROUP) => (
+                    // This object-group can be only destination port
+                    OBJECT_GROUP dst_port_group_name:WORD
+                    {
+                        importer->dst_port_spec = dst_port_group_name->getText();
+                        *dbg << "dst port spec: "
+                         << dst_port_group_name->getText() << std::endl;
+                    }
+                    (established)? 
+                )
+            |
+                // not "object-group"
+                OBJECT dst_port_obj_name:WORD
+                {
+                    importer->dst_port_spec = dst_port_obj_name->getText();
+                    *dbg << "dst addr object " << dst_port_obj_name->getText()
+                         << std::endl;
+                }
+                (established)? 
+            |
+                // if not object-group and object, then it can optionally
+                // be regular inline port spec
+                (acl_xoperator_dst)?
+                (established)? 
+            )
+;
+
+acl_xoperator_dst : xoperator
+        {
+            importer->SaveTmpPortToDst();
+        }
+    ;
+
+xoperator : single_port_op | port_range  ;
+
+//****************************************************************
+
 ip_protocols :
         (
             ( ip_protocol_names | ICMP6 )
@@ -989,20 +1092,6 @@ icmp_spec :
         )
     ;
 
-acl_xoperator_src : xoperator
-        {
-            importer->SaveTmpPortToSrc();
-        }
-    ;
-
-acl_xoperator_dst : xoperator
-        {
-            importer->SaveTmpPortToDst();
-        }
-    ;
-
-xoperator : single_port_op | port_range  ;
-
 single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
         {
             importer->tmp_port_op = LT(0)->getText();
@@ -1036,6 +1125,11 @@ pair_of_ports_spec : (s1:WORD|s2:INT_CONST) (e1:WORD|e2:INT_CONST)
             *dbg << "pair of ports: " << importer->tmp_port_spec;
         }
     ;
+
+// using these to help with debugging
+hostaddr_expr_1 : hostaddr_expr ;
+hostaddr_expr_2 : hostaddr_expr ;
+hostaddr_expr_3 : hostaddr_expr ;
 
 hostaddr_expr :
         INTRFACE intf_name:WORD
@@ -1606,8 +1700,9 @@ tokens
     NAMES = "names";
     NAME = "name";
 
-    OBJECT = "object";
-    OBJECT_GROUP = "object-group";
+//    OBJECT = "object";
+//    OBJECT_GROUP = "object-group";
+
     GROUP_OBJECT = "group-object";
     NETWORK_OBJECT = "network-object";
     SERVICE_OBJECT = "service-object";
@@ -1634,7 +1729,6 @@ tokens
 
 }
 
-
 LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;
 
 // This is for lines like these that appear at the top of "show run"
@@ -1658,6 +1752,9 @@ protected
 HEX_CONST:;
 
 protected
+NUMBER:;
+
+protected
 NEG_INT_CONST:;
 
 protected
@@ -1666,7 +1763,14 @@ DIGIT : '0'..'9'  ;
 protected
 HEXDIGIT : 'a'..'f' ;
 
-NUMBER : 
+protected
+OBJECT :;
+
+protected
+OBJECT_GROUP :;
+
+
+NUMBER_ADDRESS_OR_WORD : 
 		(
             ( DIGIT ) =>
                 (
@@ -1675,6 +1779,7 @@ NUMBER :
                         { _ttype = IPV4; }
                 |
                     ( (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ )
+                    { _ttype = NUMBER; }
                 |
                     ( DIGIT )+ { _ttype = INT_CONST; }
                 )
@@ -1685,6 +1790,16 @@ NUMBER :
                     ( COLON ( 'a'..'f' | '0'..'9' )* )+ )
                     { _ttype = IPV6; }
                 )
+        |
+            ("obj" "ect") =>
+            (
+                "object" 
+                (
+                    ("-gr" "oup") { _ttype = OBJECT_GROUP; }
+                    |
+                    "" { _ttype = OBJECT; }
+                )
+            )
         |
             ( 'a'..'z' | 'A'..'Z' | '$' )
             ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' |

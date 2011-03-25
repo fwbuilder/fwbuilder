@@ -54,10 +54,13 @@ public:
 	public: void mWhitespace(bool _createToken);
 	protected: void mINT_CONST(bool _createToken);
 	protected: void mHEX_CONST(bool _createToken);
+	protected: void mNUMBER(bool _createToken);
 	protected: void mNEG_INT_CONST(bool _createToken);
 	protected: void mDIGIT(bool _createToken);
 	protected: void mHEXDIGIT(bool _createToken);
-	public: void mNUMBER(bool _createToken);
+	protected: void mOBJECT(bool _createToken);
+	protected: void mOBJECT_GROUP(bool _createToken);
+	public: void mNUMBER_ADDRESS_OR_WORD(bool _createToken);
 	public: void mDOT(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	public: void mPIPE_CHAR(bool _createToken);

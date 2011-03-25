@@ -1,0 +1,199 @@
+: Saved
+:
+ASA Version 8.3(2) 
+!
+hostname asa5505
+
+
+interface Vlan1
+  nameif inside
+  security-level 100
+  ip address 192.168.1.1 255.255.255.0 
+exit
+
+interface Vlan2
+  nameif outside
+  security-level 0
+  ip address dhcp setroute 
+exit
+
+interface Ethernet0/0
+  description Switch port 0/0
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+
+clear xlate
+clear config nat
+clear config access-list
+clear config icmp
+clear config telnet
+clear config object-group
+clear config object
+
+
+object service http.0
+  service tcp destination eq 80
+exit
+
+object service https.0
+  service tcp destination eq 443
+exit
+
+object network server-1.0
+  host 192.168.1.100
+exit
+
+object network Internal_net.0
+  subnet 192.168.1.0 255.255.255.0
+exit
+
+object network external_net.0
+  subnet 192.0.2.0 255.255.255.0
+
+object-group service srv-group-1 tcp
+  port-object eq 80
+  port-object eq 443
+exit
+
+object service ip2 
+ service eigrp 
+
+object-group protocol pg1
+ protocol-object 111
+ protocol-object ah
+ protocol-object ip
+ protocol-object eigrp
+
+object-group network src-network-group-1
+ network-object 192.168.1.0 255.255.255.0
+ network-object 192.168.2.0 255.255.255.0
+
+object-group network dst-network-group-1
+ network-object object external_net.0
+
+
+
+!################
+! 
+
+access-list inside_in  extended permit object-group pg1 192.168.1.0 255.255.255.0 any
+
+
+access-list inside_in extended permit tcp object server-1.0 any
+
+access-list inside_in extended permit tcp object server-1.0 host 192.0.2.1
+
+access-list inside_in extended permit tcp object server-1.0 192.0.2.0 255.255.255.0
+
+access-list inside_in extended permit tcp object server-1.0 object external_net.0
+
+access-list inside_in extended permit tcp object server-1.0 object-group dst-network-group-1
+
+
+! named object in both source and destination
+!
+access-list inside_in extended permit tcp object server-1.0 object external_net.0
+
+
+! src port definitions
+!
+access-list inside_in extended permit tcp object server-1.0 eq 80 any
+
+access-list inside_in extended permit tcp object server-1.0 lt 1024 any
+
+access-list inside_in extended permit tcp object server-1.0 gt 1024 any
+
+access-list inside_in extended permit tcp object server-1.0 range 1000 1100 any
+
+
+! ASA 8.3 does not take this acl definition (assumes object http.0 is dest address)
+! access-list inside_in extended permit tcp object server-1.0 object http.0 any
+
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 any
+
+
+
+
+! dest port is defined using in-line port operators
+!
+access-list inside_in extended permit tcp object server-1.0 any eq 80
+
+access-list inside_in extended permit tcp object server-1.0 host 192.0.2.1 eq 80
+
+access-list inside_in extended permit tcp object server-1.0 192.0.2.0 255.255.255.0 eq 80
+
+access-list inside_in extended permit tcp object server-1.0 object external_net.0 eq 80
+
+access-list inside_in extended permit tcp object server-1.0 object-group dst-network-group-1 eq 80
+
+
+! object-group service is used to define destination ports
+!
+access-list inside_in extended permit tcp object server-1.0 any object-group srv-group-1
+
+access-list inside_in extended permit tcp object server-1.0 host 192.0.2.1 object-group srv-group-1
+
+access-list inside_in extended permit tcp object server-1.0 192.0.2.0 255.255.255.0 object-group srv-group-1
+
+access-list inside_in extended permit tcp object server-1.0 object external_net.0 object-group srv-group-1
+
+
+
+
+! object-group service is used to define source ports
+!
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 any
+
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 host 192.0.2.1
+
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 192.0.2.0 255.255.255.0
+
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 object external_net.0
+
+access-list inside_in extended permit tcp object server-1.0 object-group srv-group-1 object-group dst-network-group-1
+
+
+access-group inside_in in interface inside

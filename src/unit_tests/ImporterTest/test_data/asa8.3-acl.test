@@ -158,7 +158,10 @@ access-list inside_in extended deny   ip any any log 0 interval 300
 ! port definitions in both source and destination
 
 ! the following is unsupported at this time , see #2273
-! access-list inside_in extended permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
+access-list inside_in extended permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
+
+access-list inside_in extended permit tcp object server-1.0 object-group dst-network-group-1
+
 access-list inside_in extended permit tcp object server-1.0 eq 80 any
 access-list inside_in extended permit tcp object server-1.0 gt 1010 any
 access-list inside_in extended permit tcp object server-1.0 lt 1024 any
@@ -201,6 +204,11 @@ access-list inside_out extended permit tcp object-group src-network-group-1 gt 1
 access-list outside_out standard permit 192.0.2.0 255.255.255.0 
 access-list outside_out standard permit host 192.0.2.1
 access-list outside_out standard permit any
+
+! tests for access lists using object groups for both source service and destination address
+
+
+
 
 
 ! access-group statements

@@ -110,6 +110,8 @@ class PIXImporter : public IOSImporter
     void newObjectGroupProtocol(const std::string &group_name);
     void newObjectGroupICMP(const std::string &group_name);
 
+    bool isKnownServiceGroupName(const std::string &object_group_name);
+    
     void setObjectGroupServiceProtocol(const std::string &proto)
     { object_group_service_protocol = proto.c_str(); }
     

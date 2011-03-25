@@ -1,3 +1,13 @@
+2011-03-25  vadim  <vadim@netcitadel.com>
+
+	* parsers/pix.g (tcp_udp_rule_extended): see #2273 Improvements in
+	the parser for PIX/ASA configs to make it recognize object-group
+	and named object names used to define source port, destination
+	address or destination port in "access-list ... tcp|udp" rules,
+	including ambiguous situation when an object-group appears after
+	source address specification because this group can define either
+	source port or destination address.
+
 2011-03-24  vadim  <vadim@netcitadel.com>
 
 	* ASA8ObjectGroup.cpp: see #2263 looks like "object-group service"
