@@ -264,8 +264,13 @@ void IOSImporter::MergeRules::move(FWObject* r)
 
     target_ruleset->reparent(rule);
 
-    RuleElementItf* re =rule->getItf();
-    re->addRef(intf);
+    if (intf)
+    {
+        RuleElementItf* re =rule->getItf();
+        assert(re);
+        re->addRef(intf);
+    }
+
     rule->setDirection(dir);
 
     std::string prev_comment = rule->getComment();

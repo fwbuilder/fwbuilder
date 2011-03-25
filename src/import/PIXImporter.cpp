@@ -35,6 +35,7 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Network.h"
@@ -290,7 +291,26 @@ Firewall* PIXImporter::finalize()
                 {
                     qDebug() << "  irs->name=" << irs->name.c_str();
                     qDebug() << "  irs->intf_dir.size()=" << irs->intf_dir.size();
+                    qDebug() << "  irs->ruleset->getName()="
+                             << irs->ruleset->getName().c_str();
                     qDebug() << "  irs->ruleset->size()=" << irs->ruleset->size();
+                    FWObject *p = irs->ruleset->getParent();
+                    qDebug() << "  irs->ruleset->getParent()="  << p;
+                    if (p)
+                        qDebug() << "                            "  << p->getName().c_str();
+                    qDebug() << "  fw=" << fw;
+                    qDebug() << "  policy=" << policy;
+                }
+
+                if (irs->intf_dir.size() == 0)
+                {
+                    // no interface and direction information for this rule set
+                    // Perhaps no access-group command ?
+                    FWObjectDatabase *dbroot = fw->getRoot();
+                    FWObject *new_ruleset = dbroot->create(
+                        irs->ruleset->getTypeName());
+                    fw->add(new_ruleset);
+                    new_ruleset->duplicate(irs->ruleset);
                 }
 
                 // optimization: If we have several interfaces for
@@ -304,6 +324,7 @@ Firewall* PIXImporter::finalize()
                 // to the same interface both in and out (although in
                 // this case we have already switched direction to "both")
                 //
+
                 if (irs->intf_dir.size()>1)
                 {
                     std::list<std::string> all_in;
@@ -311,15 +332,11 @@ Firewall* PIXImporter::finalize()
                     std::list<std::string> all_both;
 
                     std::map<std::string,std::string>::iterator i;
-                    for (i = irs->intf_dir.begin();
-                         i != irs->intf_dir.end(); ++i)
+                    for (i = irs->intf_dir.begin(); i != irs->intf_dir.end(); ++i)
                     {
-                        if ( (*i).second=="in")
-                            all_in.push_back( (*i).first );
-                        if ( (*i).second=="out")
-                            all_out.push_back( (*i).first );
-                        if ( (*i).second=="both")
-                            all_both.push_back( (*i).first );
+                        if ( (*i).second=="in") all_in.push_back( (*i).first );
+                        if ( (*i).second=="out") all_out.push_back( (*i).first );
+                        if ( (*i).second=="both") all_both.push_back( (*i).first );
                     }
 
                     FWObject *og;
@@ -399,7 +416,7 @@ Firewall* PIXImporter::finalize()
             rs->renumberRules();
         }
 
-        return getFirewallObject();
+        return fw;
     }
     else
     {

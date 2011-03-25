@@ -1,5 +1,11 @@
 2011-03-25  vadim  <vadim@netcitadel.com>
 
+	* PIXImporter.cpp (finalize): see #2277 "Create policy objects for
+	ASA access-lists that are not applied in an access-group". Policy
+	rule set will be created and populated with rules found in the
+	corresponding access-list even if this access-list is not applied
+	to an interface with access-group command.
+
 	* parsers/pix.g (tcp_udp_rule_extended): see #2273 Improvements in
 	the parser for PIX/ASA configs to make it recognize object-group
 	and named object names used to define source port, destination
