@@ -124,80 +124,83 @@ access-list inside_in  remark 0 (global)
 
 ! protocols, including named object and object group
 !
-access-list inside_in  permit   ah 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   eigrp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   esp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   gre 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   icmp 192.168.1.0 255.255.255.0 any
-!  access-list inside_in  permit   icmp6 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   igmp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   igrp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   ip 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   ipinip 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   ipsec 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   nos 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   object ip2 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   object-group pg1 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   ospf 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   pcp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   pim 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   pptp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   snp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   tcp 192.168.1.0 255.255.255.0 any
-access-list inside_in  permit   udp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   ah 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   eigrp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   esp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   gre 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   icmp 192.168.1.0 255.255.255.0 any
+!  access-list inside_in  extended permit   icmp6 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   igmp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   igrp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   ip 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   ipinip 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   ipsec 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   nos 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   object ip2 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   object-group pg1 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   ospf 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   pcp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   pim 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   pptp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   snp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   tcp 192.168.1.0 255.255.255.0 any
+access-list inside_in  extended permit   udp 192.168.1.0 255.255.255.0 any
 
 ! named object reference in source
-access-list inside_in permit ip object Internal_net.0 any 
+access-list inside_in extended permit ip object Internal_net.0 any 
 access-list inside_in  remark 3 (global)
 
 ! logging
-access-list inside_in deny   ip any any log 0 interval 300
+access-list inside_in extended deny   ip any any log 0 interval 300
 
 
 ! more complex tests: named objects, object groups, inline address and
 ! port definitions in both source and destination
 
 ! the following is unsupported at this time , see #2273
-! access-list inside_in permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
-access-list inside_in permit tcp object server-1.0 eq 80 any
-access-list inside_in permit tcp object server-1.0 gt 1010 any
-access-list inside_in permit tcp object server-1.0 lt 1024 any
-access-list inside_in permit tcp object server-1.0 range 1010 1020 any
-access-list inside_in permit tcp object server-1.0 neq 88 any
+! access-list inside_in extended permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
+access-list inside_in extended permit tcp object server-1.0 eq 80 any
+access-list inside_in extended permit tcp object server-1.0 gt 1010 any
+access-list inside_in extended permit tcp object server-1.0 lt 1024 any
+access-list inside_in extended permit tcp object server-1.0 range 1010 1020 any
+access-list inside_in extended permit tcp object server-1.0 neq 88 any
 
 ! the following is unsupported at this time , see #2273
-! access-list inside_in permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 eq 80 any
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 gt 1010 any
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 lt 1024 any
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 range 1010 1020 any
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 neq 88 any
+! access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 eq 80 any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 gt 1010 any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 lt 1024 any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 range 1010 1020 any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 neq 88 any
 
 ! the following is unsupported at this time , see #2273
-! access-list inside_out permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
-access-list inside_out permit tcp any object server-1.0 eq 80
-access-list inside_out permit tcp any object server-1.0 gt 1010
-access-list inside_out permit tcp any object server-1.0 lt 1024
-access-list inside_out permit tcp any object server-1.0 range 1010 1020
-access-list inside_out permit tcp any object server-1.0 neq 88
+! access-list inside_out extended permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
+access-list inside_out extended permit tcp any object server-1.0 eq 80
+access-list inside_out extended permit tcp any object server-1.0 gt 1010
+access-list inside_out extended permit tcp any object server-1.0 lt 1024
+access-list inside_out extended permit tcp any object server-1.0 range 1010 1020
+access-list inside_out extended permit tcp any object server-1.0 neq 88
 
 ! the following is unsupported at this time , see #2273
-! access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 eq 80
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 gt 1010
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 lt 1024
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 range 1010 1020
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 neq 88
+! access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 eq 80
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 gt 1010
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 lt 1024
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 range 1010 1020
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 neq 88
 
 
-access-list inside_out permit tcp any object-group dst-network-group-1
+access-list inside_out extended permit tcp any object-group dst-network-group-1
 
-access-list inside_out permit tcp object-group src-network-group-1 object-group dst-network-group-1
+access-list inside_out extended permit tcp object-group src-network-group-1 object-group dst-network-group-1
 
-access-list inside_out permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 eq 80
+access-list inside_out extended permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 eq 80
 
-access-list inside_out permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 neq 88
+access-list inside_out extended permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 neq 88
 
+access-list outside_out standard permit 192.0.2.0 255.255.255.0 
+access-list outside_out standard permit host 192.0.2.1
+access-list outside_out standard permit any
 
 
 ! access-group statements

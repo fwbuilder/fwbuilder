@@ -137,10 +137,13 @@ public:
 	public: void object_group_service_parameters();
 	public: void service_object();
 	public: void port_object();
-	public: void permit_expr();
-	public: void deny_expr();
+	public: void permit_extended();
+	public: void deny_extended();
+	public: void permit_standard();
+	public: void deny_standard();
 	public: void remark();
-	public: void rule_expr();
+	public: void rule_extended();
+	public: void rule_standard();
 	public: void ip_protocols();
 	public: void hostaddr_expr();
 	public: void time_range();
@@ -154,7 +157,6 @@ public:
 	public: void port_range();
 	public: void port_spec();
 	public: void pair_of_ports_spec();
-	public: void hostaddr_std();
 	public: void interface_parameters();
 	public: void intf_address();
 	public: void vlan_interface();

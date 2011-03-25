@@ -812,7 +812,7 @@ hostname : HOSTNAME ( STRING | WORD )
 
 //****************************************************************
 
-access_list_commands : ACCESS_LIST name:WORD
+access_list_commands : ACCESS_LIST name:WORD 
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -822,9 +822,13 @@ access_list_commands : ACCESS_LIST name:WORD
                 << " ACL ext " << name->getText() << std::endl;
         }
         (
-            permit_expr
+            permit_extended
         |
-            deny_expr
+            deny_extended
+        |
+            permit_standard
+        |
+            deny_standard
         |
             comment
         |
@@ -839,27 +843,53 @@ access_list_commands : ACCESS_LIST name:WORD
     ;
 
 //****************************************************************
-permit_expr: PERMIT 
+permit_extended: EXTENDED PERMIT 
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "permit";
             *dbg << LT(1)->getLine() << ":" << " permit ";
         }
-        rule_expr NEWLINE
+        rule_extended NEWLINE
         {
             importer->pushRule();
         }
     ;
 
-deny_expr: DENY
+deny_extended: EXTENDED DENY
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
             importer->action = "deny";
             *dbg << LT(1)->getLine() << ":" << " deny   ";
         }
-        rule_expr NEWLINE
+        rule_extended NEWLINE
+        {
+            importer->pushRule();
+        }
+    ;
+
+permit_standard: STANDARD PERMIT 
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newPolicyRule();
+            importer->action = "permit";
+            *dbg << LT(1)->getLine() << ":" << " permit ";
+        }
+        rule_standard NEWLINE
+        {
+            importer->pushRule();
+        }
+    ;
+
+deny_standard: STANDARD DENY
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newPolicyRule();
+            importer->action = "deny";
+            *dbg << LT(1)->getLine() << ":" << " deny   ";
+        }
+        rule_standard NEWLINE
         {
             importer->pushRule();
         }
@@ -867,7 +897,7 @@ deny_expr: DENY
 
 //****************************************************************
 // the difference between standard and extended acls should be in these rules
-rule_expr : 
+rule_extended : 
         (
             ip_protocols
             hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
@@ -904,6 +934,20 @@ rule_expr :
         )
         {
             *dbg << std::endl;
+        }
+    ;
+
+// standard acl only matches destination address
+rule_standard : 
+        {
+            importer->tmp_a = "0.0.0.0";
+            importer->tmp_nm = "0.0.0.0";
+            importer->SaveTmpAddrToSrc();
+        }
+        hostaddr_expr
+        {
+            importer->SaveTmpAddrToDst();
+            *dbg << "(dst) " << std::endl;
         }
     ;
 
@@ -1019,30 +1063,7 @@ hostaddr_expr :
             importer->tmp_nm = "0.0.0.0";
             *dbg << "0.0.0.0/0.0.0.0";
         }
-        ;
-
-hostaddr_std :
-        (h:IPV4)
-        {
-            importer->tmp_a = h->getText();
-            importer->tmp_nm = "0.0.0.0";
-            *dbg << h->getText() << "/0.0.0.0";
-        }
-    | 
-        (a:IPV4 m:IPV4)
-        {
-            importer->tmp_a = a->getText();
-            importer->tmp_nm = m->getText();
-            *dbg << a->getText() << "/" << m->getText();
-        }
-    | 
-        ANY
-        {
-            importer->tmp_a = "0.0.0.0";
-            importer->tmp_nm = "0.0.0.0";
-            *dbg << "0.0.0.0/0.0.0.0";
-        }
-        ;
+    ;
 
 log : (LOG | LOG_INPUT) (INT_CONST INTERVAL INT_CONST)?
         {
