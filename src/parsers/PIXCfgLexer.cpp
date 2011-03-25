@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.7 (20100319): "pix.g" -> "PIXCfgLexer.cpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgLexer.cpp"$ */
 #line 42 "pix.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -47,25 +47,26 @@ void PIXCfgLexer::initLiterals()
 	literals["name"] = 9;
 	literals["names"] = 8;
 	literals["ospf"] = 22;
-	literals["established"] = 71;
-	literals["mac-address"] = 86;
-	literals["nameif"] = 90;
+	literals["established"] = 72;
+	literals["mac-address"] = 87;
+	literals["nameif"] = 91;
 	literals["subnet"] = 33;
 	literals["ipsec"] = 20;
-	literals["controller"] = 74;
+	literals["controller"] = 75;
 	literals["object"] = 27;
 	literals["pcp"] = 23;
-	literals["remark"] = 98;
-	literals["access-list"] = 60;
+	literals["remark"] = 99;
+	literals["access-list"] = 61;
 	literals["snp"] = 26;
-	literals["hostname"] = 58;
-	literals["hold-time"] = 84;
+	literals["hostname"] = 59;
+	literals["hold-time"] = 85;
+	literals["tcp-udp"] = 49;
 	literals["community-list"] = 7;
-	literals["permit"] = 61;
+	literals["permit"] = 62;
 	literals["pptp"] = 25;
-	literals["interval"] = 70;
-	literals["security-level"] = 91;
-	literals["no"] = 52;
+	literals["interval"] = 71;
+	literals["security-level"] = 92;
+	literals["no"] = 53;
 	literals["source"] = 40;
 	literals["igrp"] = 18;
 	literals["group-object"] = 43;
@@ -73,66 +74,66 @@ void PIXCfgLexer::initLiterals()
 	literals["nos"] = 21;
 	literals["ipinip"] = 19;
 	literals["quit"] = 5;
-	literals["crypto"] = 51;
+	literals["crypto"] = 52;
 	literals["protocol"] = 45;
 	literals["icmp-type"] = 48;
-	literals["PIX"] = 54;
+	literals["PIX"] = 55;
 	literals["icmp-object"] = 47;
-	literals["exit"] = 77;
+	literals["exit"] = 78;
 	literals["nat"] = 29;
 	literals["object-group"] = 42;
 	literals["range"] = 32;
-	literals["service-object"] = 49;
+	literals["service-object"] = 50;
 	literals["gre"] = 16;
-	literals["gt"] = 64;
+	literals["gt"] = 65;
 	literals["ah"] = 13;
 	literals["host"] = 31;
-	literals["secondary"] = 101;
-	literals["interface"] = 75;
-	literals["rip"] = 89;
+	literals["secondary"] = 102;
+	literals["interface"] = 76;
+	literals["rip"] = 90;
 	literals["protocol-object"] = 46;
 	literals["icmp6"] = 37;
-	literals["standard"] = 104;
+	literals["standard"] = 105;
 	literals["network"] = 28;
 	literals["service"] = 34;
-	literals["vlan"] = 78;
-	literals["access"] = 97;
-	literals["multicast"] = 87;
-	literals["any"] = 67;
-	literals["dhcp"] = 94;
-	literals["speed"] = 79;
-	literals["deny"] = 62;
-	literals["neq"] = 66;
+	literals["vlan"] = 79;
+	literals["access"] = 98;
+	literals["multicast"] = 88;
+	literals["any"] = 68;
+	literals["dhcp"] = 95;
+	literals["speed"] = 80;
+	literals["deny"] = 63;
+	literals["neq"] = 67;
 	literals["esp"] = 15;
-	literals["address"] = 93;
+	literals["address"] = 94;
 	literals["network-object"] = 44;
-	literals["shutdown"] = 92;
-	literals["delay"] = 83;
-	literals["certificate"] = 53;
+	literals["shutdown"] = 93;
+	literals["delay"] = 84;
+	literals["certificate"] = 54;
 	literals["udp"] = 39;
-	literals["fragments"] = 72;
-	literals["eq"] = 63;
+	literals["fragments"] = 73;
+	literals["eq"] = 64;
 	literals["destination"] = 41;
-	literals["duplex"] = 80;
-	literals["setroute"] = 102;
+	literals["duplex"] = 81;
+	literals["setroute"] = 103;
 	literals["ip"] = 6;
 	literals["eigrp"] = 14;
-	literals["log-input"] = 69;
-	literals["switchport"] = 96;
+	literals["log-input"] = 70;
+	literals["switchport"] = 97;
 	literals["description"] = 30;
-	literals["extended"] = 103;
+	literals["extended"] = 104;
 	literals["igmp"] = 17;
-	literals["access-group"] = 99;
-	literals["ddns"] = 81;
-	literals["Version"] = 56;
-	literals["log"] = 68;
-	literals["forward"] = 82;
-	literals["ASA"] = 55;
-	literals["lt"] = 65;
-	literals["ipv6"] = 85;
-	literals["port-object"] = 50;
-	literals["time-range"] = 73;
-	literals["standby"] = 95;
+	literals["access-group"] = 100;
+	literals["ddns"] = 82;
+	literals["Version"] = 57;
+	literals["log"] = 69;
+	literals["forward"] = 83;
+	literals["ASA"] = 56;
+	literals["lt"] = 66;
+	literals["ipv6"] = 86;
+	literals["port-object"] = 51;
+	literals["time-range"] = 74;
+	literals["standby"] = 96;
 	literals["icmp"] = 35;
 	literals["tcp"] = 38;
 }
@@ -484,9 +485,9 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1605 "pix.g"
+#line 1607 "pix.g"
 		newline();
-#line 490 "PIXCfgLexer.cpp"
+#line 491 "PIXCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -608,9 +609,9 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1600 "pix.g"
+#line 1602 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 614 "PIXCfgLexer.cpp"
+#line 615 "PIXCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -837,9 +838,9 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 1639 "pix.g"
+#line 1641 "pix.g"
 			_ttype = IPV6;
-#line 843 "PIXCfgLexer.cpp"
+#line 844 "PIXCfgLexer.cpp"
 		}
 		}
 	}
@@ -984,9 +985,9 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 				}  // ( ... )+
 				}
 				if ( inputState->guessing==0 ) {
-#line 1628 "pix.g"
+#line 1630 "pix.g"
 					_ttype = IPV4;
-#line 990 "PIXCfgLexer.cpp"
+#line 991 "PIXCfgLexer.cpp"
 				}
 			}
 			else {
@@ -1083,9 +1084,9 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 					_loop249:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 1632 "pix.g"
+#line 1634 "pix.g"
 						_ttype = INT_CONST;
-#line 1089 "PIXCfgLexer.cpp"
+#line 1090 "PIXCfgLexer.cpp"
 					}
 				}
 			else {
@@ -1328,9 +1329,9 @@ void PIXCfgLexer::mNUMBER(bool _createToken) {
 			_loop264:;
 			} // ( ... )*
 			if ( inputState->guessing==0 ) {
-#line 1645 "pix.g"
+#line 1647 "pix.g"
 				_ttype = WORD;
-#line 1334 "PIXCfgLexer.cpp"
+#line 1335 "PIXCfgLexer.cpp"
 			}
 		}
 	else {
@@ -1755,7 +1756,7 @@ void PIXCfgLexer::mEXLAMATION(bool _createToken) {
 const unsigned long PIXCfgLexer::_tokenSet_0_data_[] = { 4294958072UL, 1UL, 0UL, 2147483648UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xb 0xc 0xe 0xf 0x10 0x11 0x12 0x13 0x14 
 // 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   0x7f 0x80 0x81 
-// 0x82 0x83 0x84 0x85 0x86 0x87 0x88 0x89 
+// 0x82 0x83 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_0(_tokenSet_0_data_,16);
 const unsigned long PIXCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xb 0xc 0xe 0xf 0x10 0x11 0x12 0x13 0x14 
@@ -1763,7 +1764,7 @@ const unsigned long PIXCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 429496729
 // & \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F G 
 // H I J K L M N O P Q R S T U V W X Y Z [ 0x5c ] ^ _ ` a b c d e f g h 
 // i j k l m n o p q r s t u v w x y z { | } ~ 0x7f 0x80 0x81 0x82 0x83 
-// 0x84 0x85 0x86 0x87 0x88 0x89 
+// 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_1(_tokenSet_1_data_,16);
 const unsigned long PIXCfgLexer::_tokenSet_2_data_[] = { 0UL, 67043328UL, 0UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0 1 2 3 4 5 6 7 8 9 a b c d e f 
@@ -1784,6 +1785,6 @@ const unsigned long PIXCfgLexer::_tokenSet_6_data_[] = { 4294967288UL, 429496729
 // % & \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F 
 // G H I J K L M N O P Q R S T U V W X Y Z [ 0x5c ] ^ _ ` a b c d e f g 
 // h i j k l m n o p q r s t u v w x y z { | } ~ 0x7f 0x80 0x81 0x82 0x83 
-// 0x84 0x85 0x86 0x87 0x88 0x89 
+// 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_6(_tokenSet_6_data_,16);
 

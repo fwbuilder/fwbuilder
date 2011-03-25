@@ -664,13 +664,14 @@ icmp_object : ICMP_OBJECT
 
 //****************************************************************
 
-object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP )?
+object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpudp:TCP_UDP )?
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newObjectGroupService(name->getText());
             if (tcp) importer->setObjectGroupServiceProtocol("tcp");
             if (udp) importer->setObjectGroupServiceProtocol("udp");
+            if (tcpudp) importer->setObjectGroupServiceProtocol("tcp-udp");
             *dbg << name->getLine() << ":"
                  << " Object Group " << name->getText() << std::endl;
         }
@@ -706,7 +707,7 @@ service_object : SERVICE_OBJECT
             *dbg << " GROUP MEMBER " << LT(0)->getText() << " ";
         }
     |
-        ( TCP | UDP )
+        ( TCP | UDP | TCP_UDP )
         {
             importer->protocol = LT(0)->getText();
             *dbg << " SERVICE TCP/UDP" << LT(0)->getText() << " ";
@@ -1519,6 +1520,7 @@ tokens
     ICMP6 = "icmp6";
     TCP  = "tcp";
     UDP  = "udp";
+    TCP_UDP = "tcp-udp";
 
     DESTINATION = "destination";
     SOURCE = "source";

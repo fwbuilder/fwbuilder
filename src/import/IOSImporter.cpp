@@ -124,21 +124,44 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
 FWObject* IOSImporter::createTCPService(const QString &name)
 {
     if (src_port_op == "neq" || dst_port_op == "neq")
-        return createTCPUDPNeqObject("tcp");
+        return createTCPUDPNeqObject("tcp", name);
 
     ObjectSignature sig = packObjectSignatureTCPService();
     if( ! name.isEmpty()) sig.object_name = name;
-    return service_maker->createObject(sig);
+    return commitObject(service_maker->createObject(sig));
 }
 
 FWObject* IOSImporter::createUDPService(const QString &name)
 {
     if (src_port_op == "neq" || dst_port_op == "neq")
-        return createTCPUDPNeqObject("udp");
+        return createTCPUDPNeqObject("udp", name);
 
     ObjectSignature sig =  packObjectSignatureUDPService();
     if ( ! name.isEmpty()) sig.object_name = name;
-    return service_maker->createObject(sig);
+    return commitObject(service_maker->createObject(sig));
+}
+
+FWObject* IOSImporter::createTCPUDPServicePair(const QString &name)
+{
+    FWObject *srv1 = createTCPService((name.isEmpty()) ? "" : name + "-tcp");
+    FWObject *srv2 = createUDPService((name.isEmpty()) ? "" : name + "-udp");
+
+    QString group_name = name;
+    if (name.isEmpty())
+    {
+        group_name = QString(srv1->getName().c_str()).replace("tcp ","tcp-udp ");
+    }
+
+    ObjectMaker maker(Library::cast(library));
+    FWObject *grp = 
+        commitObject(
+            maker.createObject(ServiceGroup::TYPENAME, group_name.toStdString()));
+
+    
+    grp->addRef(srv1);
+    grp->addRef(srv2);
+
+    return grp;
 }
 
 /*
@@ -148,7 +171,8 @@ FWObject* IOSImporter::createUDPService(const QString &name)
  * "established" flag in combination with "neq"
  *
  */
-FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
+FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
+                                             const QString &name)
 {
     ObjectSignature sig;
     sig.port_range_inclusive = false;
@@ -156,17 +180,19 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
     if (proto == "tcp") sig.type_name = TCPService::TYPENAME;
     if (proto == "udp") sig.type_name = UDPService::TYPENAME;
 
-    QString name;
+    if ( ! name.isEmpty()) sig.object_name = name;
+
+    QString group_name;
     FWObject *srv1 = NULL;
     FWObject *srv2 = NULL;
 
     if (src_port_op == "neq")
     {
         if ( ! dst_port_spec.empty())
-            name = QString("%1 src neq %2 / dst %3")
+            group_name = QString("%1 src neq %2 / dst %3")
                 .arg(proto).arg(src_port_spec.c_str()).arg(dst_port_spec.c_str());
         else
-            name = QString("%1 src neq %2").arg(proto).arg(src_port_spec.c_str());
+            group_name = QString("%1 src neq %2").arg(proto).arg(src_port_spec.c_str());
 
         sig.setDstPortRangeFromPortOp(
             dst_port_op.c_str(), dst_port_spec.c_str(), proto);
@@ -181,10 +207,10 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
     if (dst_port_op == "neq")
     {
         if ( ! src_port_spec.empty())
-            name = QString("%1 src %2 / dst neq %3")
+            group_name = QString("%1 src %2 / dst neq %3")
                 .arg(proto).arg(src_port_spec.c_str()).arg(dst_port_spec.c_str());
         else
-            name = QString("%1 dst neq %2").arg(proto).arg(dst_port_spec.c_str());
+            group_name = QString("%1 dst neq %2").arg(proto).arg(dst_port_spec.c_str());
 
         sig.setSrcPortRangeFromPortOp(
             src_port_op.c_str(), src_port_spec.c_str(), proto);
@@ -201,10 +227,10 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto)
     ObjectMaker maker(Library::cast(library));
     FWObject *grp = 
         commitObject(
-            maker.createObject(ServiceGroup::TYPENAME, name.toStdString()));
+            maker.createObject(ServiceGroup::TYPENAME, group_name.toStdString()));
 
-    grp->addRef(srv1);
-    grp->addRef(srv2);
+    grp->addRef(commitObject(srv1));
+    grp->addRef(commitObject(srv2));
 
     return grp;
 }

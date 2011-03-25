@@ -247,6 +247,27 @@ object-group service sg5
  group-object sg1
  group-object sg2
 !
+
+object-group service combo-group-1
+ service-object tcp-udp eq 10000
+ service-object tcp-udp lt 1024
+ service-object tcp-udp gt 1024
+object-group service neq-group-2
+ service-object tcp neq www 
+ service-object tcp neq 81 
+ service-object tcp neq 82 
+ service-object tcp-udp neq 82 
+ service-object tcp-udp neq 83 
+ service-object tcp-udp neq 84 
+ service-object udp neq 85 
+ service-object udp neq 86 
+ service-object udp neq 87 
+ service-object udp neq www 
+ service-object udp neq nfs 
+ service-object udp neq radius 
+ service-object udp neq radius-acct 
+ service-object tcp neq ident 
+
 object-group protocol pg1
  protocol-object 111
  protocol-object ah
@@ -267,8 +288,13 @@ object-group icmp-type ig3
  icmp-object mask-reply
  group-object ig1
 
+! also check for the terminating "exit" line (but this line is absent
+! in show run output so we can't rely on it)
 object-group service id5102X14531.srv.tcp.0 tcp
   port-object eq 80
   port-object eq 443
 exit
+
+object-group service tcp-udp-1 tcp-udp
+ port-object eq 10001
 

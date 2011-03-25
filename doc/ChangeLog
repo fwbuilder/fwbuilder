@@ -1,5 +1,10 @@
 2011-03-24  vadim  <vadim@netcitadel.com>
 
+	* IOSImporter.cpp (createTCPUDPServicePair): see #2267 added
+	support for import of object-group and service-object statements
+	of type "tcp-udp" (these get imported as service group object with
+	two tcp and udp service objects).
+
 	* getServByName.cpp (getPortByName): see #2268 updated list of
 	named tcp and udp ports recognized by the importer for Cisco ASA.
 	It is still unclear what port does the name "cifs" correspond to.

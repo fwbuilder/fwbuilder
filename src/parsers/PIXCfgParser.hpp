@@ -9,7 +9,7 @@
 
 #line 11 "PIXCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pix.g" -> "PIXCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PIXCfgParserTokenTypes.hpp"
@@ -182,10 +182,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 138;
+	static const int NUM_TOKENS = 139;
 #else
 	enum {
-		NUM_TOKENS = 138
+		NUM_TOKENS = 139
 	};
 #endif
 	

@@ -47,7 +47,9 @@ protected:
     
     virtual libfwbuilder::FWObject* createTCPService(const QString &name="");
     virtual libfwbuilder::FWObject* createUDPService(const QString &name="");
-    virtual libfwbuilder::FWObject* createTCPUDPNeqObject(const QString &proto);
+    virtual libfwbuilder::FWObject* createTCPUDPServicePair(const QString &name="");
+    virtual libfwbuilder::FWObject* createTCPUDPNeqObject(const QString &proto,
+                                                          const QString &name="");
     
     virtual ObjectSignature packObjectSignatureTCPService();
     virtual ObjectSignature packObjectSignatureUDPService();

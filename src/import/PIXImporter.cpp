@@ -630,6 +630,8 @@ void PIXImporter::addTCPUDPServiceToObjectGroup()
 
     if (protocol == "tcp") new_obj = createTCPService();
     if (protocol == "udp") new_obj = createUDPService();
+    if (protocol == "tcp-udp") new_obj = createTCPUDPServicePair();
+
     if (new_obj)
         current_object_group->addRef(commitObject(new_obj));
 }
