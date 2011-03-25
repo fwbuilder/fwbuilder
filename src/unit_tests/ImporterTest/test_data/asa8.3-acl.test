@@ -90,6 +90,9 @@ object network Internal_net.0
   subnet 192.168.1.0 255.255.255.0
 exit
 
+object network external_net.0
+  subnet 192.0.2.0 255.255.255.0
+
 object-group service id5102X14531.srv.tcp.0 tcp
   port-object eq 80
   port-object eq 443
@@ -103,6 +106,14 @@ object-group protocol pg1
  protocol-object ah
  protocol-object ip
  protocol-object eigrp
+
+object-group network src-network-group-1
+ network-object 192.168.1.0 255.255.255.0
+ network-object 192.168.2.0 255.255.255.0
+
+object-group network dst-network-group-1
+ network-object object external_net.0
+
 
 
 !################
@@ -146,34 +157,47 @@ access-list inside_in deny   ip any any log 0 interval 300
 ! more complex tests: named objects, object groups, inline address and
 ! port definitions in both source and destination
 
-access-list inside_in permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
+! the following is unsupported at this time , see #2273
+! access-list inside_in permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
 access-list inside_in permit tcp object server-1.0 eq 80 any
 access-list inside_in permit tcp object server-1.0 gt 1010 any
 access-list inside_in permit tcp object server-1.0 lt 1024 any
 access-list inside_in permit tcp object server-1.0 range 1010 1020 any
 access-list inside_in permit tcp object server-1.0 neq 88 any
 
-access-list inside_in permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
+! the following is unsupported at this time , see #2273
+! access-list inside_in permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
 access-list inside_in permit tcp 192.168.2.0 255.255.255.192 eq 80 any
 access-list inside_in permit tcp 192.168.2.0 255.255.255.192 gt 1010 any
 access-list inside_in permit tcp 192.168.2.0 255.255.255.192 lt 1024 any
 access-list inside_in permit tcp 192.168.2.0 255.255.255.192 range 1010 1020 any
 access-list inside_in permit tcp 192.168.2.0 255.255.255.192 neq 88 any
 
-
-access-list inside_out permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
+! the following is unsupported at this time , see #2273
+! access-list inside_out permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
 access-list inside_out permit tcp any object server-1.0 eq 80
 access-list inside_out permit tcp any object server-1.0 gt 1010
 access-list inside_out permit tcp any object server-1.0 lt 1024
 access-list inside_out permit tcp any object server-1.0 range 1010 1020
 access-list inside_out permit tcp any object server-1.0 neq 88
 
-access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
+! the following is unsupported at this time , see #2273
+! access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
 access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 eq 80
 access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 gt 1010
 access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 lt 1024
 access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 range 1010 1020
 access-list inside_out permit tcp any 192.168.2.0 255.255.255.192 neq 88
+
+
+access-list inside_out permit tcp any object-group dst-network-group-1
+
+access-list inside_out permit tcp object-group src-network-group-1 object-group dst-network-group-1
+
+access-list inside_out permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 eq 80
+
+access-list inside_out permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 neq 88
+
 
 
 ! access-group statements

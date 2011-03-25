@@ -943,36 +943,16 @@ icmp_spec :
         )
     ;
 
-acl_xoperator_src :
-        (
-            xoperator
-            {
-                importer->SaveTmpPortToSrc();
-            }
-        | 
-            ( ( OBJECT | OBJECT_GROUP ) name:WORD )
-            {
-                importer->tmp_port_spec = name->getText();
-                importer->SaveTmpPortToSrc();
-                *dbg << "source service object " << name->getText() << " ";
-            }
-        )
+acl_xoperator_src : xoperator
+        {
+            importer->SaveTmpPortToSrc();
+        }
     ;
 
-acl_xoperator_dst :
-        (
-            xoperator
-            {
-                importer->SaveTmpPortToDst();
-            }
-        | 
-            ( ( OBJECT | OBJECT_GROUP ) name:WORD )
-            {
-                importer->tmp_port_spec = name->getText();
-                importer->SaveTmpPortToDst();
-                *dbg << "destination service object " << name->getText() << " ";
-            }
-        )
+acl_xoperator_dst : xoperator
+        {
+            importer->SaveTmpPortToDst();
+        }
     ;
 
 xoperator : single_port_op | port_range  ;
