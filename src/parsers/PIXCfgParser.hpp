@@ -158,7 +158,9 @@ public:
 	public: void port_range();
 	public: void port_spec();
 	public: void pair_of_ports_spec();
-	public: void interface_command();
+	public: void interface_command_6();
+	public: void interface_command_7();
+	public: void pix6_interface_hw_speed();
 	public: void interface_parameters();
 	public: void intf_address();
 	public: void vlan_interface();
@@ -186,10 +188,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 139;
+	static const int NUM_TOKENS = 145;
 #else
 	enum {
-		NUM_TOKENS = 139
+		NUM_TOKENS = 145
 	};
 #endif
 	
@@ -231,10 +233,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_17;
 	static const unsigned long _tokenSet_18_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_18;
-	static const unsigned long _tokenSet_19_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_19;
-	static const unsigned long _tokenSet_20_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_20;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/

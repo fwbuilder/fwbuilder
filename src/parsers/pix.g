@@ -608,7 +608,7 @@ object_group_icmp_8_0 : OBJECT_GROUP ICMP_OBJECT name:WORD
         }
         (
             object_group_icmp_parameters
-        )+
+        )*
     ;
 
 object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
@@ -621,7 +621,7 @@ object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
         }
         (
             object_group_icmp_parameters
-        )+
+        )*
     ;
 
 object_group_icmp_parameters : 
@@ -1151,10 +1151,19 @@ controller : CONTROLLER
 
 // vlans in pix6 config format are not parsed
 
-intrface  : INTRFACE interface_command
+intrface  : INTRFACE ( interface_command_6 | interface_command_7 )
     ;
 
-interface_command : in:WORD
+interface_command_6 : in:WORD pix6_interface_hw_speed    // pix 6
+        {
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newInterface( in->getText() );
+            *dbg << in->getLine() << ":"
+                << " INTRFACE: " << in->getText() << std::endl;
+        }
+    ;
+
+interface_command_7 {bool have_interface_parameters = false;} : in:WORD NEWLINE
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newInterface( in->getText() );
@@ -1162,25 +1171,22 @@ interface_command : in:WORD
                 << " INTRFACE: " << in->getText() << std::endl;
         }
         (
-            ( INT_CONST | WORD )+    // pix 6
-        |
-            (            // pix 7
-                NEWLINE
-                (
-                    (
-                        interface_parameters
-                    )+
-                |
-                    ( )
-                    {
-                        importer->ignoreCurrentInterface();
-                        *dbg<< LT(1)->getLine() << ":"
-                             << " EMPTY INTERFACE " << std::endl;
-                    }
-                )
-            )
+            ( interface_parameters {have_interface_parameters = true;}  )*
+            ( LINE_COMMENT | EXIT )
+            {
+                if ( ! have_interface_parameters )
+                {
+                    importer->ignoreCurrentInterface();
+                    *dbg<< LT(1)->getLine() << ":"
+                        << " EMPTY INTERFACE " << std::endl;
+                }
+            }
         )
-//        NEWLINE ( LINE_COMMENT | EXIT )
+    ;
+
+pix6_interface_hw_speed : (
+        AUI | AUTO | BNC | ( INT_CONST ( FULL | BASET | BASETX | AUTO ) )
+    )
     ;
 
 nameif_top_level  : NAMEIF p_intf:WORD intf_label:WORD sec_level:WORD
@@ -1264,7 +1270,7 @@ unsupported_interface_commands :
         }
     ;
 
-interface_no_commands : NO (NAMEIF | IP | SEC_LEVEL | SHUTDOWN | WORD)
+interface_no_commands : NO (NAMEIF | IP | SEC_LEVEL | SHUTDOWN)
         {
             *dbg << " INTERFACE \"NO\" COMMAND: "
                  << LT(0)->getText() << std::endl;
@@ -1617,6 +1623,15 @@ tokens
     SUBNET = "subnet";
 
     NAT = "nat";
+
+
+    AUI = "aui";
+    AUTO = "auto";
+    BNC = "bnc";
+    BASET = "baseT";
+    FULL = "full";
+    BASETX = "baseTX";
+
 }
 
 
@@ -1677,7 +1692,6 @@ NUMBER :
             { _ttype = WORD; }
         )
     ;
-
 
 STRING : '"' (~'"')* '"';
 
