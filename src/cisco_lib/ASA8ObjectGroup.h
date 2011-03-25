@@ -39,8 +39,6 @@ public:
         DECLARE_FWOBJECT_SUBTYPE(ASA8ObjectGroup);
 
         virtual std::string getObjectGroupClass();
-        //virtual std::string getObjectGroupHeader();
-        //virtual std::string getSrvTypeName();
 
         virtual QString groupMemberToString(
             libfwbuilder::FWObject *obj, NamedObjectsManager *named_obj_manager)

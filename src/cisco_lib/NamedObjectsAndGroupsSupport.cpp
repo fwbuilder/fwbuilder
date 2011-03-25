@@ -147,10 +147,7 @@ void CreateObjectGroups::packObjects(RuleElement *re, BaseObjectGroup *obj_group
 {
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
-        FWObject *o = *i1;
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL)
-            obj = FWReference::cast(o)->getPointer();
+        FWObject *obj = FWReference::getObject(*i1);
         obj_group->addRef(obj);
     }
     re->clearChildren(false); //do not want to destroy children objects

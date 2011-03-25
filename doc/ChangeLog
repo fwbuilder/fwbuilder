@@ -1,5 +1,27 @@
 2011-03-24  vadim  <vadim@netcitadel.com>
 
+	* ASA8ObjectGroup.cpp: see #2263 looks like "object-group service"
+	that includes named objects defined as "service-object" can not be
+	used in access-list commands and therefore is useless. Unless I
+	misunderstood and there is a way to use it, I should not generate
+	ASA configuration like this:
+
+        object-group service id5102X14531.srv.tcp.0 tcp
+          service-object object http.0
+          service-object object https.0
+
+	Object-group with "tcp" or "udp" type-suffix in the end does not
+	allow "service-object" statements at all, so this configuration
+	is incorrect anyway. However even without "tcp" in the end to
+	make "service-object" references acceptable, the group can be built
+	but can not be used in access-list statements.
+
+	Instead, the group should use port-object statements:
+
+	object-group service id5102X14531.srv.tcp.0 tcp
+	  port-object eq 80
+	  port-object eq 443
+
 	* IOSImporter.cpp (createTCPUDPServicePair): see #2267 added
 	support for import of object-group and service-object statements
 	of type "tcp-udp" (these get imported as service group object with

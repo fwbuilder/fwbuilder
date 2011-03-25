@@ -48,20 +48,39 @@ using namespace fwcompiler;
 const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
 
+/*
+ * see #2263. It looks like "object-group service" that includes named
+ * objects defined as "service-object" can not be used in access-list
+ * commands and therefore is useless.  Unless I misunderstood and
+ * there is a way to use it, I should not generate ASA configuration
+ * like this:
+ *
+ * object-group service id5102X14531.srv.tcp.0 tcp
+ *   service-object object http.0
+ *   service-object object https.0
+ * exit
+ *
+ *
+ */
+
 QString ASA8ObjectGroup::groupMemberToString(
     FWObject *obj, NamedObjectsManager *named_objects_manager)
     throw(libfwbuilder::FWException)
 {
-    NamedObject *named_object =
-        named_objects_manager->named_objects[obj->getId()];
-
-    if (named_object)
+    if (this->getObjectGroupType() == NETWORK)
     {
-        return named_object->getCommandWhenObjectGroupMember();
+        NamedObject *named_object =
+            named_objects_manager->named_objects[obj->getId()];
+
+        if (named_object)
+        {
+            return named_object->getCommandWhenObjectGroupMember();
+        }
     }
-        
+
     return PIXObjectGroup::groupMemberToString(obj, named_objects_manager);
 }
+
 
 string ASA8ObjectGroup::getObjectGroupClass()
 {
