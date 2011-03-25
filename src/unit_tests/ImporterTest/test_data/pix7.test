@@ -59,6 +59,8 @@ interface Ethernet5
  no security-level
  no ip address
 !
+interface Ethernet6
+!
 passwd MMMMMMMMMMMMMMMM encrypted
 boot system flash:/pix721.bin
 ftp mode passive
@@ -91,6 +93,10 @@ access-list inside_in extended deny ip any object-group outside.id12051X6282.src
 access-list inside_in extended permit ip 10.1.1.0 255.255.255.0 any 
 access-list inside_in extended deny ip any any log warnings 
 access-list id12251X6282.0 extended permit ip 10.1.1.0 255.255.255.0 any 
+
+access-group inside_in in interface inside
+access-group outside_in in interface outside
+
 pager lines 24
 logging enable
 logging emblem

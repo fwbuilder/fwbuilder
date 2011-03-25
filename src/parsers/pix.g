@@ -120,6 +120,8 @@ cfgfile :
         |
             intrface
         |
+            nameif_top_level
+        |
             controller
         |
             access_list_commands
@@ -843,7 +845,7 @@ access_list_commands : ACCESS_LIST name:WORD
     ;
 
 //****************************************************************
-permit_extended: EXTENDED PERMIT 
+permit_extended: ( EXTENDED )? PERMIT 
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
@@ -856,7 +858,7 @@ permit_extended: EXTENDED PERMIT
         }
     ;
 
-deny_extended: EXTENDED DENY
+deny_extended: ( EXTENDED )? DENY
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
@@ -1036,6 +1038,13 @@ pair_of_ports_spec : (s1:WORD|s2:INT_CONST) (e1:WORD|e2:INT_CONST)
     ;
 
 hostaddr_expr :
+        INTRFACE intf_name:WORD
+        {
+            importer->tmp_a = intf_name->getText();
+            importer->tmp_nm = "interface";
+            *dbg << "object " << intf_name->getText() << " ";
+        }
+    |
         ( ( OBJECT | OBJECT_GROUP ) name:WORD )
         {
             importer->tmp_a = name->getText();
@@ -1065,7 +1074,7 @@ hostaddr_expr :
         }
     ;
 
-log : (LOG | LOG_INPUT) (INT_CONST INTERVAL INT_CONST)?
+log : (LOG | LOG_INPUT) ( (INT_CONST (INTERVAL INT_CONST)? )? | WORD )
         {
             importer->logging = true;
             *dbg << "logging ";
@@ -1142,31 +1151,50 @@ controller : CONTROLLER
 
 // vlans in pix6 config format are not parsed
 
-intrface  : INTRFACE in:WORD
+intrface  : INTRFACE interface_command
+    ;
+
+interface_command : in:WORD
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newInterface( in->getText() );
             *dbg << in->getLine() << ":"
                 << " INTRFACE: " << in->getText() << std::endl;
-            consumeUntil(NEWLINE);
         }
         (
-            (
-                interface_parameters
-            )+
+            ( INT_CONST | WORD )+    // pix 6
         |
-            ( )
-            {
-                importer->ignoreCurrentInterface();
-                *dbg<< LT(1)->getLine() << ":"
-                    << " EMPTY INTERFACE " << std::endl;
-            }
+            (            // pix 7
+                NEWLINE
+                (
+                    (
+                        interface_parameters
+                    )+
+                |
+                    ( )
+                    {
+                        importer->ignoreCurrentInterface();
+                        *dbg<< LT(1)->getLine() << ":"
+                             << " EMPTY INTERFACE " << std::endl;
+                    }
+                )
+            )
         )
-        NEWLINE ( LINE_COMMENT | EXIT )
+//        NEWLINE ( LINE_COMMENT | EXIT )
     ;
+
+nameif_top_level  : NAMEIF p_intf:WORD intf_label:WORD sec_level:WORD
+        {
+            std::string label = (intf_label) ? intf_label->getText() : "";
+            std::string seclevel = (sec_level) ? sec_level->getText() : "";
+            importer->setInterfaceParametes(p_intf->getText(), label, seclevel);
+            *dbg << " NAMEIF: "
+                 << p_intf->getText() << label << seclevel << std::endl;
+        }
+    ;
+
    
 interface_parameters :
-        NEWLINE
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
         }
@@ -1189,6 +1217,7 @@ interface_parameters :
         |
             unsupported_interface_commands
         )
+        NEWLINE
     ;
 
 vlan_interface : VLAN vlan_id:INT_CONST

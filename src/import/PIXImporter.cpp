@@ -111,6 +111,21 @@ void PIXImporter::clearTempVars()
 
 FWObject* PIXImporter::makeSrcObj()
 {
+    if (src_nm == "interface")
+    {
+        map<const string,Interface*>::iterator it;
+        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+        {
+            Interface *intf = it->second;
+            if (intf->getLabel() == src_a)
+            {
+                return intf;
+            }
+        }
+        throw ImporterException(
+            QString("Cannot find interface with label '%1'").arg(src_a.c_str()));
+    }
+
     if (named_objects_registry.count(src_a.c_str()) > 0)
     {
         return named_objects_registry[src_a.c_str()];
@@ -120,6 +135,21 @@ FWObject* PIXImporter::makeSrcObj()
 
 FWObject* PIXImporter::makeDstObj()
 {
+    if (dst_nm == "interface")
+    {
+        map<const string,Interface*>::iterator it;
+        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+        {
+            Interface *intf = it->second;
+            if (intf->getLabel() == dst_a)
+            {
+                return intf;
+            }
+        }
+        throw ImporterException(
+            QString("Cannot find interface with label '%1'").arg(dst_a.c_str()));
+    }
+
     if (named_objects_registry.count(dst_a.c_str()) > 0)
     {
         return named_objects_registry[dst_a.c_str()];

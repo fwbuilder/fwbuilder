@@ -540,6 +540,7 @@ FWObject* Importer::makeSrcObj()
          (src_a==InetAddr::getAny().toString() &&
           src_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
+
     if (src_nm=="") src_nm = InetAddr::getAllOnes().toString();
 
     ObjectSignature sig;
@@ -556,6 +557,7 @@ FWObject* Importer::makeDstObj()
          (dst_a==InetAddr::getAny().toString() &&
           dst_nm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
+
     if (dst_nm=="") dst_nm=InetAddr::getAllOnes().toString();
 
     ObjectSignature sig;

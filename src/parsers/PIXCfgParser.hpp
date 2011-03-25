@@ -92,6 +92,7 @@ public:
 	public: void community_list_command();
 	public: void unknown_ip_command();
 	public: void intrface();
+	public: void nameif_top_level();
 	public: void controller();
 	public: void access_list_commands();
 	public: void access_group();
@@ -157,6 +158,7 @@ public:
 	public: void port_range();
 	public: void port_spec();
 	public: void pair_of_ports_spec();
+	public: void interface_command();
 	public: void interface_parameters();
 	public: void intf_address();
 	public: void vlan_interface();
@@ -221,6 +223,18 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
 	static const unsigned long _tokenSet_14_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_14;
+	static const unsigned long _tokenSet_15_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_15;
+	static const unsigned long _tokenSet_16_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_16;
+	static const unsigned long _tokenSet_17_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_17;
+	static const unsigned long _tokenSet_18_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_18;
+	static const unsigned long _tokenSet_19_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_19;
+	static const unsigned long _tokenSet_20_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_20;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/
