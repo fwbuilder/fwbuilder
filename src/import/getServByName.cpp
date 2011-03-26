@@ -557,7 +557,9 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
         ports["tcp"]["aol"] = 5190;         // America Online
         ports["tcp"]["bgp"] = 179;          // Border Gateway Protocol, RFC 1163
         ports["tcp"]["chargen"] = 19;       // Character Generator
-        ports["tcp"]["cifs"] = 445;
+// about the port value for cifs:
+// http://serverfault.com/questions/71582/list-of-cisco-asa-pre-defined-services
+        ports["tcp"]["cifs"] = 3020;
         ports["tcp"]["citrix-ica"] = 1494;  // Citrix Independent Computing
                                             // Architecture (ICA) protocol
         ports["tcp"]["cmd"] = 514;          // Similar to exec except that cmd
