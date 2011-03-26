@@ -249,6 +249,14 @@ void PIXImporter::rearrangeVlanInterfaces()
 
 }
 
+bool compare_ruleset_names(string a, string b)
+{
+    if (a.find("ssh_commands") == 0) return true;
+    if (a.find("telnet_commands") == 0) return true;
+    if (a.find("icmp_commands") == 0) return true;
+    return a < b;
+}
+
 Firewall* PIXImporter::finalize()
 {
     // scan all UnidirectionalRuleSet objects, set interface and
@@ -282,10 +290,21 @@ Firewall* PIXImporter::finalize()
                 qDebug() << "all_rulesets.size()=" << all_rulesets.size();
             }
 
+            list<string> ruleset_names;
             std::map<const std::string,UnidirectionalRuleSet*>::iterator i;
             for (i=all_rulesets.begin(); i!=all_rulesets.end(); ++i)
             {
-                UnidirectionalRuleSet *irs = (*i).second;
+                ruleset_names.push_back((*i).first);
+            }
+
+            // sort rule sets by name, making sure "ssh_commands_*",
+            // "telnet_commands_*" and "icmp_commands_*" stay on top
+            ruleset_names.sort(compare_ruleset_names);
+
+            list<string>::iterator it;
+            for (it=ruleset_names.begin(); it!=ruleset_names.end(); ++it)
+            {
+                UnidirectionalRuleSet *irs = all_rulesets[*it];
 
                 if (fwbdebug)
                 {
