@@ -493,7 +493,7 @@ void Importer::newPolicyRule()
     // check if all child objects were populated properly
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
-    ropt->setBool("stateless",true);
+    ropt->setBool("stateless", true);
 }
 
 void Importer::newNATRule()
@@ -514,8 +514,20 @@ void Importer::pushRule()
 
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
-    if (action=="permit") rule->setAction(PolicyRule::Accept);
-    if (action=="deny")   rule->setAction(PolicyRule::Deny);
+    FWOptions  *ropt = current_rule->getOptionsObject();
+    assert(ropt!=NULL);
+
+    if (action=="permit")
+    {
+        rule->setAction(PolicyRule::Accept);
+        ropt->setBool("stateless", false);
+    }
+
+    if (action=="deny")
+    {
+        rule->setAction(PolicyRule::Deny);
+        ropt->setBool("stateless", true);
+    }
 
     addSrc();
     addDst();

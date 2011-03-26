@@ -1,5 +1,10 @@
 2011-03-25  vadim  <vadim@netcitadel.com>
 
+	* Importer.cpp (pushRule): fixes #2280 Rules created from PIX
+	config import showed an icon that indicated non-default
+	combination of rule options, yet all rule options looked normal
+	when opened in the editor.
+
 	* parsers/pix.g (icmp_top_level_command): see #2164 Implemented
 	import of "ssh", "telnet" and "icmp" PIX/ASA commands. These
 	commands are imported as regular rules in the main Policy ruleset.
