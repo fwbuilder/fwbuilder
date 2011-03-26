@@ -165,6 +165,8 @@ tunnel-group 192.0.2.254 ipsec-attributes
 telnet timeout 5
 ssh scopy enable
 ssh 10.1.1.0 255.255.255.0 inside
+ssh 10.1.2.0 255.255.255.0 inside
+ssh 192.0.2.100 255.255.255.255 outside
 ssh timeout 20
 console timeout 0
 !

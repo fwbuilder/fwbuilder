@@ -105,7 +105,22 @@ pager lines 24
 mtu inside 1500
 mtu outside 1500
 icmp unreachable rate-limit 1 burst-size 1
+icmp permit any echo outside
+icmp permit any 111 outside
+icmp permit any time-exceeded outside
+icmp permit any echo-reply outside
+icmp permit any unreachable outside
+icmp permit any outside
+icmp permit host 10.1.1.202 time-exceeded inside
+icmp permit host 10.1.1.202 echo-reply inside
+icmp permit host 10.1.1.202 unreachable inside
+icmp permit any echo inside
+icmp permit any time-exceeded inside
+icmp permit any echo-reply inside
+icmp permit any unreachable inside
 icmp permit any inside
+icmp permit 10.1.1.0 255.255.255.0 inside
+
 no asdm history enable
 arp timeout 14400
 timeout xlate 3:00:00

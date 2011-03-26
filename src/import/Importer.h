@@ -220,6 +220,7 @@ public:
     std::string tmp_nm;
     std::string tmp_port_op;
     std::string tmp_port_spec;
+    std::string tmp_port_spec_2;
 
     std::string tmp_range_1;
     std::string tmp_range_2;
@@ -245,6 +246,9 @@ public:
     void SaveTmpPortToSrc();
     void SaveTmpPortToDst();
 
+    void setSrcSelf();
+    void setDstSelf();
+    
     virtual void clear();
     
     Importer(libfwbuilder::FWObject *lib,

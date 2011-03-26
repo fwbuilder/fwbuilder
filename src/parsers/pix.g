@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -15,7 +15,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -82,7 +82,7 @@ options
 // additional methods and members
 
     public:
-    
+
     std::ostream *dbg;
     PIXImporter *importer;
 
@@ -119,7 +119,7 @@ cfgfile :
         |
             community_list_command
         |
-            unknown_ip_command 
+            unknown_ip_command
         |
             intrface
         |
@@ -128,6 +128,12 @@ cfgfile :
             controller
         |
             access_list_commands
+        |
+            ssh_command
+        |
+            telnet_command
+        |
+            icmp_top_level_command
         |
             access_group
         |
@@ -159,6 +165,8 @@ cfgfile :
         |
             no_commands
         |
+            timeout_command
+        |
             unknown_command
         |
             NEWLINE
@@ -173,7 +181,14 @@ quit : QUIT
     ;
 
 //****************************************************************
-community_list_command : IP COMMUNITY_LIST 
+community_list_command : IP COMMUNITY_LIST
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+timeout_command : TIMEOUT
         {
             consumeUntil(NEWLINE);
         }
@@ -237,7 +252,7 @@ named_object_network : OBJECT NETWORK name:WORD
         )*
     ;
 
-named_object_network_parameters : 
+named_object_network_parameters :
         (
             named_object_nat
         |
@@ -246,7 +261,7 @@ named_object_network_parameters :
             range_addr
         |
             subnet_addr
-        | 
+        |
             named_object_description
         )
     ;
@@ -361,7 +376,7 @@ named_object_service_parameters :
         |
             named_object_description
         )
-    ;
+        ;
 
 service_icmp : SERVICE ICMP
         (
@@ -369,9 +384,10 @@ service_icmp : SERVICE ICMP
             {
                 importer->icmp_type = LT(0)->getText();
             }
-        | icmp_word:WORD
+        |
+            icmp_names
             {
-                importer->icmp_spec = icmp_word->getText();
+                importer->icmp_spec = LT(0)->getText();
             }
         )
         {
@@ -461,7 +477,7 @@ object_group_network : OBJECT_GROUP NETWORK name:WORD
         )+
     ;
 
-object_group_network_parameters : 
+object_group_network_parameters :
         NEWLINE
         (
             object_group_description
@@ -559,7 +575,7 @@ object_group_protocol : OBJECT_GROUP PROTOCOL name:WORD
         )+
     ;
 
-object_group_protocol_parameters : 
+object_group_protocol_parameters :
         NEWLINE
         (
             object_group_description
@@ -627,7 +643,7 @@ object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
         )*
     ;
 
-object_group_icmp_parameters : 
+object_group_icmp_parameters :
         NEWLINE
         (
             object_group_description
@@ -649,9 +665,10 @@ icmp_object : ICMP_OBJECT
             {
                 importer->icmp_type = LT(0)->getText();
             }
-        | icmp_word:WORD
+        | 
+            icmp_names
             {
-                importer->icmp_spec = icmp_word->getText();
+                importer->icmp_spec = LT(0)->getText();
             }
         )
         {
@@ -685,7 +702,7 @@ object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpu
         )+
     ;
 
-object_group_service_parameters : 
+object_group_service_parameters :
         NEWLINE
         (
             object_group_description
@@ -729,9 +746,10 @@ service_object : SERVICE_OBJECT
             {
                 importer->icmp_type = LT(0)->getText();
             }
-        | icmp_word:WORD
+        | 
+            icmp_names
             {
-                importer->icmp_spec = icmp_word->getText();
+                importer->icmp_spec = LT(0)->getText();
             }
         )
         {
@@ -764,21 +782,21 @@ crypto : CRYPTO
     ;
 
 //****************************************************************
-unknown_ip_command : IP WORD 
+unknown_ip_command : IP WORD
         {
             consumeUntil(NEWLINE);
         }
     ;
 
 //****************************************************************
-unknown_command : WORD 
+unknown_command : WORD
         {
             consumeUntil(NEWLINE);
         }
     ;
 
 //****************************************************************
-no_commands : NO 
+no_commands : NO
         {
             *dbg << " TOP LEVEL \"NO\" COMMAND: "
                  << LT(0)->getText() << std::endl;
@@ -787,7 +805,7 @@ no_commands : NO
     ;
 
 //****************************************************************
-certificate : CERTIFICATE WORD 
+certificate : CERTIFICATE WORD
         {
             consumeUntil(NEWLINE);
             consumeUntil(QUIT);
@@ -817,7 +835,7 @@ hostname : HOSTNAME ( STRING | WORD )
 
 //****************************************************************
 
-access_list_commands : ACCESS_LIST name:WORD 
+access_list_commands : ACCESS_LIST name:WORD
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -848,7 +866,7 @@ access_list_commands : ACCESS_LIST name:WORD
     ;
 
 //****************************************************************
-permit_extended: ( EXTENDED )? PERMIT 
+permit_extended: ( EXTENDED )? PERMIT
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
@@ -874,7 +892,7 @@ deny_extended: ( EXTENDED )? DENY
         }
     ;
 
-permit_standard: STANDARD PERMIT 
+permit_standard: STANDARD PERMIT
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newPolicyRule();
@@ -904,7 +922,7 @@ deny_standard: STANDARD DENY
 // the difference between standard and extended acls should be in these rules
 
 // standard acl only matches destination address
-rule_standard : 
+rule_standard :
         {
             importer->tmp_a = "0.0.0.0";
             importer->tmp_nm = "0.0.0.0";
@@ -917,7 +935,7 @@ rule_standard :
         }
     ;
 
-rule_extended : 
+rule_extended :
         (
             ip_protocols
             hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
@@ -945,7 +963,7 @@ rule_extended :
         }
     ;
 
-tcp_udp_rule_extended : 
+tcp_udp_rule_extended :
         ( TCP | UDP )
         {
             importer->protocol = LT(0)->getText();
@@ -986,7 +1004,7 @@ tcp_udp_rule_extended :
             )
         |
             // not "object-group" keyword after src address spec.
-            OBJECT dst_addr_name:WORD (acl_xoperator_dst)? (established)? 
+            OBJECT dst_addr_name:WORD (acl_xoperator_dst)? (established)?
             {
                 // looks like "object foo" at this point can only be dest addr.
                 // (judging by cli prompts on 8.3)
@@ -1015,7 +1033,7 @@ tcp_udp_rule_extended :
 
 //****************************************************************
 
-acl_tcp_udp_dst_port_spec : 
+acl_tcp_udp_dst_port_spec :
             (
                 // destination port spec. Can be blank, a named
                 // object, object-group or inline
@@ -1028,7 +1046,7 @@ acl_tcp_udp_dst_port_spec :
                         *dbg << "dst port spec: "
                          << dst_port_group_name->getText() << std::endl;
                     }
-                    (established)? 
+                    (established)?
                 )
             |
                 // not "object-group"
@@ -1038,12 +1056,12 @@ acl_tcp_udp_dst_port_spec :
                     *dbg << "dst addr object " << dst_port_obj_name->getText()
                          << std::endl;
                 }
-                (established)? 
+                (established)?
             |
                 // if not object-group and object, then it can optionally
                 // be regular inline port spec
                 (acl_xoperator_dst)?
-                (established)? 
+                (established)?
             )
 ;
 
@@ -1084,12 +1102,24 @@ icmp_spec :
                     << icmp_code->getText() << " ";
             }
         |
-            icmp_word:WORD
+            icmp_names
             {
-                importer->icmp_spec = icmp_word->getText();
-                *dbg << icmp_word->getText() << " ";
+                importer->icmp_spec = LT(0)->getText();
+                *dbg << LT(0)->getText() << " ";
             }
         )
+    ;
+
+icmp_names :
+            (
+                ALTERNATE_ADDRESS | CONVERSION_ERROR | ECHO |
+                ECHO_REPLY | INFORMATION_REPLY | INFORMATION_REQUEST |
+                MASK_REPLY | MASK_REQUEST | MOBILE_REDIRECT |
+                PARAMETER_PROBLEM | REDIRECT | ROUTER_ADVERTISEMENT |
+                ROUTER_SOLICITATION | SOURCE_QUENCH | TIME_EXCEEDED |
+                TIMESTAMP_REPLY | TIMESTAMP_REQUEST | TRACEROUTE |
+                UNREACHABLE
+            )
     ;
 
 single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
@@ -1100,9 +1130,9 @@ single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
         port_spec
     ;
 
-port_spec : (WORD|INT_CONST)
+port_spec : tcp_udp_port_spec
         {
-            importer->tmp_port_spec = (std::string(" ") + LT(0)->getText());
+            importer->tmp_port_spec = std::string(" ") + importer->tmp_port_spec_2;
             *dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
         }
     ;
@@ -1114,17 +1144,27 @@ port_range : RANGE pair_of_ports_spec
         }
     ;
 
-pair_of_ports_spec : (s1:WORD|s2:INT_CONST) (e1:WORD|e2:INT_CONST)
+pair_of_ports_spec : 
         {
-            importer->tmp_port_spec = "";
-            if (s1) importer->tmp_port_spec += s1->getText();
-            if (s2) importer->tmp_port_spec += s2->getText();
+            importer->tmp_port_spec_2 = "";
+        }
+        tcp_udp_port_spec
+        {
+            importer->tmp_port_spec += importer->tmp_port_spec_2;
+        }
+        tcp_udp_port_spec
+        {
             importer->tmp_port_spec += " ";
-            if (e1) importer->tmp_port_spec += e1->getText();
-            if (e2) importer->tmp_port_spec += e2->getText();
-            *dbg << "pair of ports: " << importer->tmp_port_spec;
+            importer->tmp_port_spec += importer->tmp_port_spec_2;
         }
     ;
+
+tcp_udp_port_spec : (SSH | TELNET | WORD | INT_CONST)
+        {
+            importer->tmp_port_spec_2 = LT(0)->getText();
+        }
+    ;
+
 
 // using these to help with debugging
 hostaddr_expr_1 : hostaddr_expr ;
@@ -1152,14 +1192,14 @@ hostaddr_expr :
             importer->tmp_nm = "255.255.255.255";
             *dbg << h->getText() << "/255.255.255.255";
         }
-    | 
+    |
         (a:IPV4 m:IPV4)
         {
             importer->tmp_a = a->getText();
             importer->tmp_nm = m->getText();
             *dbg << a->getText() << "/" << m->getText();
         }
-    | 
+    |
         ANY
         {
             importer->tmp_a = "0.0.0.0";
@@ -1293,7 +1333,7 @@ nameif_top_level  : NAMEIF p_intf:WORD intf_label:WORD sec_level:WORD
         }
     ;
 
-   
+
 interface_parameters :
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1327,7 +1367,7 @@ vlan_interface : VLAN vlan_id:INT_CONST
         }
     ;
 
-unsupported_interface_commands : 
+unsupported_interface_commands :
         (
             SPEED
         |
@@ -1391,7 +1431,7 @@ sec_level : SEC_LEVEL sec_level:INT_CONST
 // context in the grammar, function setInterfaceParametes() can locate
 // right interface using its first parameter.
 //
-nameif  : NAMEIF p_intf:WORD 
+nameif  : NAMEIF p_intf:WORD
         (
             ( WORD ) => intf_label:WORD sec_level:WORD |
             ( )
@@ -1444,13 +1484,13 @@ shutdown : SHUTDOWN
 //  vlan 101
 //  nameif outside
 //  security-level 0
-//  ip address 192.0.2.253 255.255.255.0 
+//  ip address 192.0.2.253 255.255.255.0
 // !
 //
 // interface Vlan1
 //  nameif inside
 //  security-level 100
-//  ip address dhcp setroute 
+//  ip address dhcp setroute
 // !
 
 intf_address : IP ADDRESS (v6_ip_address | v7_ip_address) ;
@@ -1524,6 +1564,111 @@ switchport : SWITCHPORT ACCESS VLAN vlan_num:INT_CONST
             importer->addMessageToLog("Switch port vlan " + vlan_num->getText());
             *dbg << "Switch port vlan " <<  vlan_num->getText() << std::endl;
         }
+    ;
+
+//****************************************************************
+// pretend ssh commands are rules in access lists with names
+// "ssh_commands_" + interface_label
+ssh_command : SSH ( ( TIMEOUT INT_CONST ) |
+            ( hostaddr_expr intf_label:WORD )
+            {
+                importer->clear();
+                std::string acl_name = "ssh_commands_" + intf_label->getText();
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
+                importer->newPolicyRule();
+                importer->action = "permit";
+                importer->SaveTmpAddrToDst();
+                importer->setDstSelf();
+                importer->protocol = "tcp";
+                importer->dst_port_op = "eq";
+                importer->dst_port_spec = "ssh";
+                importer->setInterfaceAndDirectionForRuleSet(
+                    acl_name, intf_label->getText(), "in" );
+                importer->pushRule();
+            }
+        )
+    ;
+
+telnet_command : TELNET ( ( TIMEOUT INT_CONST ) |
+            ( hostaddr_expr intf_label:WORD )
+            {
+                importer->clear();
+                std::string acl_name = "telnet_commands_" + intf_label->getText();
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
+                importer->newPolicyRule();
+                importer->action = "permit";
+                importer->SaveTmpAddrToDst();
+                importer->setDstSelf();
+                importer->protocol = "tcp";
+                importer->dst_port_op = "eq";
+                importer->dst_port_spec = "telnet";
+                importer->setInterfaceAndDirectionForRuleSet(
+                    acl_name, intf_label->getText(), "in" );
+                importer->pushRule();
+            }
+        )
+    ;
+
+
+// icmp command is non-determenistic syntactically because WORD can be
+// used as a name of icmp type or as interface label.  I am going to
+// define all icmp types as tokens in icmp_types_for_icmp_command
+// Looks like "icmp" command accepts limited set of icmp type names
+// and can accept numeric code.
+//
+icmp_top_level_command : ICMP 
+    (
+        ( UNREACHABLE
+            {
+                consumeUntil(NEWLINE);
+            }
+        )
+    |
+        (
+            (permit:PERMIT | deny:DENY)
+            {
+                importer->clear();
+            }
+            hostaddr_expr
+            {
+                importer->SaveTmpAddrToSrc();
+            }
+            ( icmp_types_for_icmp_command )?
+            intf_label:WORD
+            {
+                std::string acl_name = "icmp_commands_" + intf_label->getText();
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
+                importer->newPolicyRule();
+                if (permit) importer->action = "permit";
+                if (deny) importer->action = "deny";
+                importer->setDstSelf();
+                importer->protocol = "icmp";
+                importer->setInterfaceAndDirectionForRuleSet(
+                    acl_name, intf_label->getText(), "in" );
+                importer->pushRule();
+            }
+         )
+    )
+    ;
+
+icmp_types_for_icmp_command : 
+        INT_CONST
+        {
+            importer->icmp_type = LT(0)->getText();
+            importer->icmp_code = "0";
+            importer->icmp_spec = "";
+        }
+    | 
+        (ECHO | ECHO_REPLY | TIME_EXCEEDED | UNREACHABLE)
+        {
+            importer->icmp_type = "";
+            importer->icmp_code = "0";
+            importer->icmp_spec = LT(0)->getText();
+        }
+
     ;
 
 //****************************************************************
@@ -1604,7 +1749,7 @@ tokens
 
     HOSTNAME = "hostname";
     CERTIFICATE = "certificate";
-    
+
     INTRFACE = "interface";
     CONTROLLER = "controller";
     DESCRIPTION = "description";
@@ -1719,6 +1864,8 @@ tokens
 
     NAT = "nat";
 
+    SSH = "ssh";
+    TELNET = "telnet";
 
     AUI = "aui";
     AUTO = "auto";
@@ -1726,6 +1873,28 @@ tokens
     BASET = "baseT";
     FULL = "full";
     BASETX = "baseTX";
+
+  TIMEOUT = "timeout";
+
+  ALTERNATE_ADDRESS = "alternate-address";
+  CONVERSION_ERROR = "conversion-error";
+  ECHO = "echo";
+  ECHO_REPLY = "echo-reply";
+  INFORMATION_REPLY = "information-reply";
+  INFORMATION_REQUEST = "information-request";
+  MASK_REPLY = "mask-reply";
+  MASK_REQUEST = "mask-request";
+  MOBILE_REDIRECT = "mobile-redirect";
+  PARAMETER_PROBLEM = "parameter-problem";
+  REDIRECT = "redirect";
+  ROUTER_ADVERTISEMENT = "router-advertisement";
+  ROUTER_SOLICITATION = "router-solicitation";
+  SOURCE_QUENCH = "source-quench";
+  TIME_EXCEEDED = "time-exceeded";
+  TIMESTAMP_REPLY = "timestamp-reply";
+  TIMESTAMP_REQUEST = "timestamp-request";
+  TRACEROUTE = "traceroute";
+  UNREACHABLE = "unreachable";
 
 }
 
@@ -1770,7 +1939,7 @@ protected
 OBJECT_GROUP :;
 
 
-NUMBER_ADDRESS_OR_WORD : 
+NUMBER_ADDRESS_OR_WORD :
 		(
             ( DIGIT ) =>
                 (
@@ -1793,7 +1962,7 @@ NUMBER_ADDRESS_OR_WORD :
         |
             ("obj" "ect") =>
             (
-                "object" 
+                "object"
                 (
                     ("-gr" "oup") { _ttype = OBJECT_GROUP; }
                     |

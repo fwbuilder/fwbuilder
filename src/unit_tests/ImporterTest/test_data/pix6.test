@@ -138,6 +138,7 @@ logging device-id ipaddress inside
 logging host inside 10.1.1.10
 logging host inside 10.1.1.40 format emblem
 icmp permit any echo outside
+icmp permit any 111 outside
 icmp permit any time-exceeded outside
 icmp permit any echo-reply outside
 icmp permit any unreachable outside
@@ -151,6 +152,13 @@ icmp permit any echo-reply inside
 icmp permit any unreachable inside
 icmp permit any inside
 icmp permit 10.1.1.0 255.255.255.0 inside
+
+telnet 10.1.1.0 255.255.255.0 inside
+telnet timeout 5
+ssh 10.1.1.30 255.255.255.255 inside
+ssh 10.1.1.0 255.255.255.0 inside
+ssh timeout 5
+
 mtu outside 1500
 mtu inside 1500
 ip address outside dhcp setroute retry 10
@@ -224,11 +232,6 @@ isakmp policy 10 encryption 3des
 isakmp policy 10 hash sha
 isakmp policy 10 group 2
 isakmp policy 10 lifetime 86400
-telnet 10.1.1.0 255.255.255.0 inside
-telnet timeout 5
-ssh 10.1.1.30 255.255.255.255 inside
-ssh 10.1.1.0 255.255.255.0 inside
-ssh timeout 5
 console timeout 0
 username foo password AAAAAAAAAAAAAAAA encrypted privilege 15
 terminal width 256

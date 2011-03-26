@@ -1,5 +1,9 @@
 2011-03-25  vadim  <vadim@netcitadel.com>
 
+	* parsers/pix.g (icmp_top_level_command): see #2164 Implemented
+	import of "ssh", "telnet" and "icmp" PIX/ASA commands. These
+	commands are imported as regular rules in the main Policy ruleset.
+
 	* PIXImporter.cpp (finalize): see #2277 "Create policy objects for
 	ASA access-lists that are not applied in an access-group". Policy
 	rule set will be created and populated with rules found in the

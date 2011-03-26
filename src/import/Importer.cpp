@@ -534,8 +534,23 @@ void Importer::pushRule()
     clear();
 }
 
+void Importer::setSrcSelf()
+{
+    src_a = "self";
+}
+
+void Importer::setDstSelf()
+{
+    dst_a = "self";
+}    
+
 FWObject* Importer::makeSrcObj()
 {
+    if (src_a == "self")
+    {
+        return getFirewallObject();
+    }
+
     if ( (src_a=="" && src_nm=="") || 
          (src_a==InetAddr::getAny().toString() &&
           src_nm==InetAddr::getAny().toString()))
@@ -553,6 +568,11 @@ FWObject* Importer::makeSrcObj()
 
 FWObject* Importer::makeDstObj()
 {
+    if (dst_a == "self")
+    {
+        return getFirewallObject();
+    }
+
     if ( (dst_a=="" && dst_nm=="") || 
          (dst_a==InetAddr::getAny().toString() &&
           dst_nm==InetAddr::getAny().toString()))
