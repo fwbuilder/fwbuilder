@@ -104,11 +104,6 @@ void ProjectPanel::initMain(FWWindow *main)
 
     main->undoGroup->addStack(undoStack);
 
-    // connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-    //         this, SLOT(topLevelChangedForTreePanel(bool)));
-    // connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-    //         this, SLOT(visibilityChangedForTreePanel(bool)));
-
     fd  = new findDialog(this, this);
     fd->hide();
 
@@ -1036,16 +1031,16 @@ void ProjectPanel::showEvent(QShowEvent *ev)
 
     connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChangedForTreePanel(bool)));
-    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(visibilityChangedForTreePanel(bool)));
+    // connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+    //         this, SLOT(visibilityChangedForTreePanel(bool)));
 
     m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
 
     // we get this event when MDI window is maximized or restored
-    loadState();
+    // loadState();
 
-    visibilityChangedForTreePanel(true);
+    // visibilityChangedForTreePanel(true);
 }
 
 void ProjectPanel::hideEvent(QHideEvent *ev)
@@ -1069,8 +1064,8 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
     disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
                this, SLOT(topLevelChangedForTreePanel(bool)));
-    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-               this, SLOT(visibilityChangedForTreePanel(bool)));
+    // disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+    //            this, SLOT(visibilityChangedForTreePanel(bool)));
 
     saveState();
     fileClose();
@@ -1323,11 +1318,16 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     m_panel->treeDockWidget->setFloating(f);
 
     if (fwbdebug)
-        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 1";
-
-    if (!m_panel->treeDockWidget->isWindow())
     {
-#if QT_VERSION > 0x040500
+        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 1";
+        qDebug() << "m_panel->treeDockWidget->isWindow()="
+                 << m_panel->treeDockWidget->isWindow();
+    }
+
+    if ( ! m_panel->treeDockWidget->isWindow())
+    {
+#if QT_VERSION >= 0x040500
+        if (fwbdebug) qDebug() << "Calling loadMainSplitter()";
         loadMainSplitter();
 #endif
     } else

@@ -1129,8 +1129,8 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (subwindow==NULL) return;
 
     if (fwbdebug)
-        qDebug() << "FWWindow::subWindowActivated subwindow="
-                 << subwindow
+        qDebug() << "FWWindow::subWindowActivated subwindow=" << subwindow
+                 << "previous_subwindow=" << previous_subwindow
                  << " "
                  << subwindow->windowTitle()
                  << "isMaximized()=" << subwindow->isMaximized();

@@ -740,6 +740,9 @@ void ObjectTreeView::updateAfterPrefEdit()
 
 void ObjectTreeView::ExpandTreeItems(const set<int> &ids)
 {
+    if (fwbdebug)
+        qDebug() << "ObjectTreeView::ExpandTreeItems()";
+
     QTreeWidgetItemIterator it(this);
     while ( *it )
     {
