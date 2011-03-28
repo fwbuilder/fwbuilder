@@ -49,6 +49,8 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Library.h"
 
+#include "../libgui/platforms.h"
+
 #include <QString>
 #include <QtDebug>
 
@@ -189,6 +191,68 @@ void PIXImporter::setInterfaceAndDirectionForRuleSet(
     }
     QString err("Can not associate rule set %1 with any interface\n");
     *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+}
+
+void PIXImporter::addLogging()
+{
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+    FWOptions *ropt = rule->getOptionsObject();
+
+/*
+  alerts         Immediate action needed           (severity=1)
+  critical       Critical conditions               (severity=2)
+  debugging      Debugging messages                (severity=7)
+  disable        Disable log option on this ACL element, (no log at all)
+  emergencies    System is unusable                (severity=0)
+  errors         Error conditions                  (severity=3)
+  inactive       Keyword for disabling an ACL element
+  informational  Informational messages            (severity=6)
+  interval       Configure log interval, default value is 300 sec
+  notifications  Normal but significant conditions (severity=5)
+  warnings       Warning conditions                (severity=4)
+*/
+    QMap<QString, QString> logging_levels;
+
+    logging_levels["alerts"] = "alert";
+    logging_levels["critical"] = "crit";
+    logging_levels["debugging"] = "debug";
+    logging_levels["emergencies"] = "";
+    logging_levels["errors"] = "error";
+    logging_levels["informational"] = "info";
+    logging_levels["notifications"] = "notice";
+    logging_levels["warnings"] = "warning";
+    logging_levels["0"] = "";
+    logging_levels["1"] = "alert";
+    logging_levels["2"] = "crit";
+    logging_levels["3"] = "error";
+    logging_levels["4"] = "warning";
+    logging_levels["5"] = "notice";
+    logging_levels["6"] = "info";
+    logging_levels["7"] = "debug";
+
+    // QStringList log_levels = getLogLevels("pix");
+
+    rule->setLogging(logging);
+
+    QString log_level_qs = log_level.c_str();
+    if ( ! log_level_qs.isEmpty())
+    {
+        if (logging_levels.count(log_level_qs) != 0)
+            ropt->setStr("log_level", logging_levels[log_level_qs].toStdString());
+        else
+            ropt->setStr("log_level", log_level);
+
+        if (log_level_qs == "disable" || log_level_qs == "inactive")
+            ropt->setBool("disable_logging_for_this_rule", true);
+    }
+
+    if ( ! log_interval.empty())
+    {
+        bool ok = false;
+        int log_interval_int = QString(log_interval.c_str()).toInt(&ok);
+        if (ok)
+            ropt->setInt("log_interval", log_interval_int);
+    }
 }
 
 /*

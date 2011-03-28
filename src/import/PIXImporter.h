@@ -74,6 +74,8 @@ class PIXImporter : public IOSImporter
     virtual libfwbuilder::FWObject* makeDstObj();
     virtual libfwbuilder::FWObject* makeSrvObj();
 
+    virtual void addLogging();
+    
     /*
      * the difference is that in PIX, we get interface label instead
      * of its name in "access-group" command

@@ -181,6 +181,9 @@ void Importer::clear()
     tmp_range_2 = "";
 
     logging = false;
+    log_level = "";
+    log_interval = "";
+
     established = false;
     fragments = false;
 
@@ -534,7 +537,7 @@ void Importer::pushRule()
     addDst();
     addSrv();
 
-    rule->setLogging(logging);
+    addLogging();
 
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
@@ -694,6 +697,14 @@ void Importer::addOSrv()
     assert(srv!=NULL);
     FWObject *s= makeSrvObj();
     if (s) srv->addRef( s );
+}
+
+void Importer::addLogging()
+{
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+    rule->setLogging(logging);
+    // log_level
+    // log_interval
 }
 
 Firewall* Importer::finalize()

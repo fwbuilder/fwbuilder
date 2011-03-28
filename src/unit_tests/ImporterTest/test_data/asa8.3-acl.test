@@ -152,6 +152,8 @@ access-list inside_in  remark 3 (global)
 
 ! logging
 access-list inside_in extended deny   ip any any log 0 interval 300
+access-list inside_in extended deny   ip any any log alerts
+access-list inside_in extended deny   ip any any log disable
 
 
 ! more complex tests: named objects, object groups, inline address and

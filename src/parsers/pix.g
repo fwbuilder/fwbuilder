@@ -1242,10 +1242,18 @@ hostaddr_expr :
 //****************************************************************
 
 
-log : (LOG | LOG_INPUT) ( (INT_CONST (INTERVAL INT_CONST)? )? | WORD )
+log : (LOG | LOG_INPUT)
+      (
+        (level_int:INT_CONST (INTERVAL log_interval:INT_CONST)? )? | level_word:WORD 
+      )
         {
             importer->logging = true;
-            *dbg << "logging ";
+            if (level_int) importer->log_level = level_int->getText();
+            if (level_word) importer->log_level = level_word->getText();
+            if (log_interval) importer->log_interval = log_interval->getText();
+
+            *dbg << "logging " << importer->log_level
+                 << " " << importer->log_interval;
         }
     ;
 

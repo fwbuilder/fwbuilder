@@ -188,6 +188,8 @@ protected:
     virtual void addOSrc();
     virtual void addODst();
     virtual void addOSrv();
+
+    virtual void addLogging();
     
 public:
 
@@ -231,6 +233,9 @@ public:
     QList<int> tcp_flags_comp;
     
     bool  logging;
+    std::string log_level;
+    std::string log_interval;
+    
     bool  established;
     bool  fragments;
 
