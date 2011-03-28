@@ -1,3 +1,10 @@
+2011-03-27  vadim  <vadim@netcitadel.com>
+
+	* getServByName.cpp (getPortByName): see #2268 Making sure all tcp
+	and udp port names are recognized on import; also since PIX/ASA
+	converts udp port numbersin "show run" output to the same names
+	as if they were tcp, using the same name mapping table.
+
 2011-03-25  vadim  <vadim@netcitadel.com>
 
 	* Importer.cpp (pushRule): fixes #2280 Rules created from PIX

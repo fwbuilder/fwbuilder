@@ -47,12 +47,12 @@ void PIXCfgLexer::initLiterals()
 	literals["name"] = 10;
 	literals["names"] = 9;
 	literals["ospf"] = 23;
-	literals["established"] = 97;
-	literals["mac-address"] = 118;
-	literals["nameif"] = 109;
+	literals["established"] = 98;
+	literals["mac-address"] = 119;
+	literals["nameif"] = 110;
 	literals["subnet"] = 34;
 	literals["ipsec"] = 21;
-	literals["controller"] = 100;
+	literals["controller"] = 101;
 	literals["pcp"] = 24;
 	literals["access-list"] = 62;
 	literals["remark"] = 129;
@@ -65,15 +65,15 @@ void PIXCfgLexer::initLiterals()
 	literals["source-quench"] = 80;
 	literals["conversion-error"] = 68;
 	literals["timeout"] = 8;
-	literals["hold-time"] = 116;
+	literals["hold-time"] = 117;
 	literals["time-exceeded"] = 81;
 	literals["tcp-udp"] = 50;
 	literals["community-list"] = 7;
 	literals["permit"] = 64;
 	literals["pptp"] = 26;
-	literals["interval"] = 96;
+	literals["interval"] = 97;
 	literals["parameter-problem"] = 76;
-	literals["aui"] = 103;
+	literals["aui"] = 104;
 	literals["ssh"] = 90;
 	literals["security-level"] = 122;
 	literals["no"] = 54;
@@ -90,7 +90,7 @@ void PIXCfgLexer::initLiterals()
 	literals["icmp-type"] = 49;
 	literals["PIX"] = 56;
 	literals["icmp-object"] = 48;
-	literals["exit"] = 102;
+	literals["exit"] = 103;
 	literals["nat"] = 30;
 	literals["range"] = 33;
 	literals["service-object"] = 51;
@@ -102,62 +102,62 @@ void PIXCfgLexer::initLiterals()
 	literals["ah"] = 14;
 	literals["host"] = 32;
 	literals["mask-request"] = 74;
-	literals["baseTX"] = 108;
+	literals["baseTX"] = 109;
 	literals["secondary"] = 132;
-	literals["interface"] = 92;
-	literals["rip"] = 121;
+	literals["interface"] = 93;
+	literals["rip"] = 92;
 	literals["protocol-object"] = 47;
 	literals["icmp6"] = 38;
 	literals["standard"] = 66;
 	literals["network"] = 29;
 	literals["service"] = 35;
 	literals["access"] = 128;
-	literals["vlan"] = 110;
-	literals["bnc"] = 105;
-	literals["multicast"] = 119;
-	literals["any"] = 93;
-	literals["full"] = 106;
+	literals["vlan"] = 111;
+	literals["bnc"] = 106;
+	literals["multicast"] = 120;
+	literals["any"] = 94;
+	literals["full"] = 107;
 	literals["dhcp"] = 125;
 	literals["redirect"] = 77;
-	literals["speed"] = 111;
+	literals["speed"] = 112;
 	literals["deny"] = 65;
 	literals["neq"] = 89;
 	literals["esp"] = 16;
 	literals["address"] = 124;
 	literals["network-object"] = 45;
 	literals["shutdown"] = 123;
-	literals["delay"] = 115;
-	literals["auto"] = 104;
+	literals["delay"] = 116;
+	literals["auto"] = 105;
 	literals["echo-reply"] = 70;
 	literals["certificate"] = 55;
 	literals["router-advertisement"] = 78;
 	literals["udp"] = 40;
-	literals["fragments"] = 98;
+	literals["fragments"] = 99;
 	literals["eq"] = 86;
 	literals["destination"] = 42;
 	literals["setroute"] = 133;
-	literals["duplex"] = 112;
+	literals["duplex"] = 113;
 	literals["echo"] = 69;
-	literals["baseT"] = 107;
+	literals["baseT"] = 108;
 	literals["ip"] = 6;
 	literals["eigrp"] = 15;
-	literals["log-input"] = 95;
+	literals["log-input"] = 96;
 	literals["switchport"] = 127;
 	literals["timestamp-request"] = 83;
 	literals["description"] = 31;
 	literals["extended"] = 63;
 	literals["igmp"] = 18;
 	literals["access-group"] = 130;
-	literals["ddns"] = 113;
+	literals["ddns"] = 114;
 	literals["Version"] = 58;
-	literals["log"] = 94;
-	literals["forward"] = 114;
+	literals["log"] = 95;
+	literals["forward"] = 115;
 	literals["ASA"] = 57;
 	literals["lt"] = 88;
-	literals["ipv6"] = 117;
+	literals["ipv6"] = 118;
 	literals["port-object"] = 52;
 	literals["unreachable"] = 85;
-	literals["time-range"] = 99;
+	literals["time-range"] = 100;
 	literals["standby"] = 126;
 	literals["icmp"] = 36;
 	literals["tcp"] = 39;
@@ -511,7 +511,7 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1915 "pix.g"
+#line 1917 "pix.g"
 		newline();
 #line 517 "PIXCfgLexer.cpp"
 	}
@@ -635,7 +635,7 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1910 "pix.g"
+#line 1912 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 641 "PIXCfgLexer.cpp"
 	}
@@ -786,7 +786,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			match("oup");
 			}
 			if ( inputState->guessing==0 ) {
-#line 1967 "pix.g"
+#line 1969 "pix.g"
 				_ttype = OBJECT_GROUP;
 #line 792 "PIXCfgLexer.cpp"
 			}
@@ -794,7 +794,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		else {
 			match("");
 			if ( inputState->guessing==0 ) {
-#line 1969 "pix.g"
+#line 1971 "pix.g"
 				_ttype = OBJECT;
 #line 800 "PIXCfgLexer.cpp"
 			}
@@ -948,7 +948,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1960 "pix.g"
+#line 1962 "pix.g"
 				_ttype = IPV6;
 #line 954 "PIXCfgLexer.cpp"
 			}
@@ -1095,7 +1095,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}  // ( ... )+
 					}
 					if ( inputState->guessing==0 ) {
-#line 1948 "pix.g"
+#line 1950 "pix.g"
 						_ttype = IPV4;
 #line 1101 "PIXCfgLexer.cpp"
 					}
@@ -1178,7 +1178,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}  // ( ... )+
 						}
 						if ( inputState->guessing==0 ) {
-#line 1951 "pix.g"
+#line 1953 "pix.g"
 							_ttype = NUMBER;
 #line 1184 "PIXCfgLexer.cpp"
 						}
@@ -1199,7 +1199,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						_loop291:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 1953 "pix.g"
+#line 1955 "pix.g"
 							_ttype = INT_CONST;
 #line 1205 "PIXCfgLexer.cpp"
 						}
@@ -1444,7 +1444,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				_loop311:;
 				} // ( ... )*
 				if ( inputState->guessing==0 ) {
-#line 1976 "pix.g"
+#line 1978 "pix.g"
 					_ttype = WORD;
 #line 1450 "PIXCfgLexer.cpp"
 				}

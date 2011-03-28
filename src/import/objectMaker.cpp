@@ -367,7 +367,8 @@ int ObjectSignature::portFromString(const QString &port_spec, const QString &pro
     int port = GetServByName::getPortByName(ps, proto);
     if (port == -1)
     {
-        throw ObjectMakerException(QString("Port name '%1' is unknown").arg(ps));
+        throw ObjectMakerException(
+            QString("%1 port name '%2' is unknown").arg(proto).arg(ps));
         port = 0;
     }
     return port;

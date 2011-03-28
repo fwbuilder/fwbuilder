@@ -626,6 +626,7 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
                                             //  users that new mail is received
         ports["udp"]["bootpc"] = 68;        // Bootstrap Protocol Client
         ports["udp"]["bootps"] = 67;        // Bootstrap Protocol Server
+        ports["udp"]["cifs"] = 3020;
         ports["udp"]["discard"] = 9;        // Discard
         ports["udp"]["dnsix"] = 195;        // DNSIX Session Management
                                             //  Module Audit Redirector
@@ -666,7 +667,6 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
         ports["udp"]["xdmcp"] = 177;        // X Display Manager Control Protocol
 
 
-
     }
 
     bool ok = false;
@@ -675,6 +675,13 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
 
     if (ports.contains(proto) && ports[proto].contains(name))
         return ports[proto][name];
+
+    // I guess this can be considered a hack. For some reason ASA
+    // converts all UDP ports in "show run" to the same names as if
+    // they were tcp.
+    if ((proto == "udp" || proto == "tcp-udp") && ports["tcp"].contains(name))
+        return ports["tcp"][name];
+
 
     struct servent *se = getservbyname(name.toAscii().constData(),
                                        proto.toAscii().constData());

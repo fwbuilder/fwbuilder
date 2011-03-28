@@ -1159,7 +1159,9 @@ pair_of_ports_spec :
         }
     ;
 
-tcp_udp_port_spec : (SSH | TELNET | WORD | INT_CONST)
+// note that some words coincide as names of protocols or ports and
+// can be used in other parts of configuration
+tcp_udp_port_spec : (SSH | TELNET | WORD | INT_CONST | ECHO | RIP )
         {
             importer->tmp_port_spec_2 = LT(0)->getText();
         }
