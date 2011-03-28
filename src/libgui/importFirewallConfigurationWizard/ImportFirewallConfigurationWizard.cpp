@@ -101,14 +101,23 @@ ImportFirewallConfigurationWizard::~ImportFirewallConfigurationWizard()
 
 void ImportFirewallConfigurationWizard::accept()
 {
-    if (platform == "pix" || platform == "fwsm")
+    if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
+                           << "fw=" << fw;
+
+    if (fw != NULL && (platform == "pix" || platform == "fwsm"))
         dynamic_cast<IC_NetworkZonesPage*>(
             page(Page_NetworkZones))->setNetworkZones();
+
+    if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
+                           << "merging object trees";
 
     // merge dbcopy into db
 
     CompareObjectsDialog cod(this);
     db_orig->merge(db_copy, &cod);
+
+    if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
+                           << "merge done";
 
     ProjectPanel *pp = mw->activeProject();
     QString filename = pp->getFileName();
@@ -116,22 +125,24 @@ void ImportFirewallConfigurationWizard::accept()
     QCoreApplication::postEvent(
         mw, new reloadObjectTreeImmediatelyEvent(filename));
 
-    QCoreApplication::postEvent(
-        pp, new showObjectInTreeEvent(filename, fw->getId()));
-
-    QCoreApplication::postEvent(
-        pp, new expandObjectInTreeEvent(
-            mw->activeProject()->getFileName(), fw->getId()));
-
-    QCoreApplication::postEvent(
-        mw, new openObjectInEditorEvent(filename, fw->getId()));
-
-    // Open first created Policy ruleset object
-    FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
-    if (first_policy)
+    if (fw)
+    {
         QCoreApplication::postEvent(
-            pp, new openRulesetEvent(filename, first_policy->getId()));
+            pp, new showObjectInTreeEvent(filename, fw->getId()));
 
+        QCoreApplication::postEvent(
+            pp, new expandObjectInTreeEvent(
+                mw->activeProject()->getFileName(), fw->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(filename, fw->getId()));
+
+        // Open first created Policy ruleset object
+        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
+        if (first_policy)
+            QCoreApplication::postEvent(
+                pp, new openRulesetEvent(filename, first_policy->getId()));
+    }
 
     QWizard::accept();
 }
