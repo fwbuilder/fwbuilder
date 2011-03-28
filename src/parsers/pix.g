@@ -765,12 +765,17 @@ service_object : SERVICE_OBJECT
     )
     ;
 
-port_object : PORT_OBJECT xoperator
+port_object
+        {
+            importer->tmp_port_spec = "";
+            importer->tmp_port_spec_2 = "";
+        } : PORT_OBJECT xoperator
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
+            *dbg << " PORT OBJECT TCP/UDP " << LT(0)->getText() << " " << std::endl;
             importer->SaveTmpPortToDst();
             importer->addTCPUDPServiceToObjectGroup();
-            *dbg << " PORT OBJECT TCP/UDP" << LT(0)->getText() << " ";
+            *dbg << std::endl;
         }
     ;
 
@@ -1075,6 +1080,74 @@ xoperator : single_port_op | port_range  ;
 
 //****************************************************************
 
+single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
+        {
+            importer->tmp_port_op = LT(0)->getText();
+            *dbg << LT(0)->getText() << " ";
+        }
+        port_spec
+    ;
+
+port_spec : tcp_udp_port_spec
+        {
+            importer->tmp_port_spec = std::string(" ") + importer->tmp_port_spec_2;
+            *dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
+        }
+    ;
+
+port_range : RANGE pair_of_ports_spec
+        {
+            importer->tmp_port_op = "range";
+            *dbg << "range " << importer->tmp_port_spec;
+        }
+    ;
+
+pair_of_ports_spec : 
+        {
+            importer->tmp_port_spec_2 = "";
+        }
+        tcp_udp_port_spec
+        {
+            importer->tmp_port_spec += importer->tmp_port_spec_2;
+        }
+        tcp_udp_port_spec
+        {
+            importer->tmp_port_spec += " ";
+            importer->tmp_port_spec += importer->tmp_port_spec_2;
+        }
+    ;
+
+// note that some words coincide as names of protocols or ports and
+// can be used in other parts of configuration
+tcp_udp_port_spec : (tcp_udp_port_names | WORD | INT_CONST)
+        {
+            importer->tmp_port_spec_2 = LT(0)->getText();
+        }
+    ;
+
+// tokens that can be tcp/udp port names (but can also be used for
+// something else). If I ever decide to make tokens for every known
+// port name, they should be added here
+tcp_udp_port_names : 
+    (
+        ECHO |
+        HOSTNAME |
+        PPTP |
+        RIP |
+        SSH |
+        TELNET
+    )
+    ;
+
+established : ESTABLISHED
+        {
+            importer->established = true;
+            *dbg << "established ";
+        }
+    ;
+
+//****************************************************************
+
 ip_protocols :
         (
             ( ip_protocol_names | ICMP6 )
@@ -1122,51 +1195,7 @@ icmp_names :
             )
     ;
 
-single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
-        {
-            importer->tmp_port_op = LT(0)->getText();
-            *dbg << LT(0)->getText() << " ";
-        }
-        port_spec
-    ;
-
-port_spec : tcp_udp_port_spec
-        {
-            importer->tmp_port_spec = std::string(" ") + importer->tmp_port_spec_2;
-            *dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
-        }
-    ;
-
-port_range : RANGE pair_of_ports_spec
-        {
-            importer->tmp_port_op = "range";
-            *dbg << "range ";
-        }
-    ;
-
-pair_of_ports_spec : 
-        {
-            importer->tmp_port_spec_2 = "";
-        }
-        tcp_udp_port_spec
-        {
-            importer->tmp_port_spec += importer->tmp_port_spec_2;
-        }
-        tcp_udp_port_spec
-        {
-            importer->tmp_port_spec += " ";
-            importer->tmp_port_spec += importer->tmp_port_spec_2;
-        }
-    ;
-
-// note that some words coincide as names of protocols or ports and
-// can be used in other parts of configuration
-tcp_udp_port_spec : (SSH | TELNET | WORD | INT_CONST | ECHO | RIP )
-        {
-            importer->tmp_port_spec_2 = LT(0)->getText();
-        }
-    ;
-
+//****************************************************************
 
 // using these to help with debugging
 hostaddr_expr_1 : hostaddr_expr ;
@@ -1210,17 +1239,13 @@ hostaddr_expr :
         }
     ;
 
+//****************************************************************
+
+
 log : (LOG | LOG_INPUT) ( (INT_CONST (INTERVAL INT_CONST)? )? | WORD )
         {
             importer->logging = true;
             *dbg << "logging ";
-        }
-    ;
-
-established : ESTABLISHED
-        {
-            importer->established = true;
-            *dbg << "established ";
         }
     ;
 

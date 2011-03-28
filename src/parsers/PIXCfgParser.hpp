@@ -171,6 +171,7 @@ public:
 	public: void port_spec();
 	public: void tcp_udp_port_spec();
 	public: void pair_of_ports_spec();
+	public: void tcp_udp_port_names();
 	public: void interface_command_6();
 	public: void interface_command_7();
 	public: void pix6_interface_hw_speed();

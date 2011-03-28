@@ -1,5 +1,8 @@
 2011-03-27  vadim  <vadim@netcitadel.com>
 
+	* parsers/pix.g (tcp_udp_port_spec): see #2284 fixed import of
+	tcp/udp port ranges using mix of port numbers and port names
+
 	* getServByName.cpp (getPortByName): see #2268 Making sure all tcp
 	and udp port names are recognized on import; also since PIX/ASA
 	converts udp port numbersin "show run" output to the same names

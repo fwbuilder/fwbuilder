@@ -176,6 +176,7 @@ void Importer::clear()
     tmp_nm = "";
     tmp_port_op = "";
     tmp_port_spec = "";
+    tmp_port_spec_2 = "";
     tmp_range_1 = "";
     tmp_range_2 = "";
 
