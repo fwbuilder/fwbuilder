@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300948713" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301288681" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -518,7 +518,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id73" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="Imported from acl_133&#10;Created during import of  line 244">
@@ -538,7 +538,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id85" disabled="False" group="" log="True" position="2" action="Deny" direction="Both" comment="Imported from acl_133&#10;Created during import of  line 245">
@@ -598,7 +598,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id121" disabled="False" group="" log="True" position="5" action="Accept" direction="Inbound" comment="Imported from e1_0_acl_in&#10;Created during import of  line 177">
@@ -618,7 +618,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id133" disabled="False" group="" log="True" position="6" action="Accept" direction="Inbound" comment="Imported from e1_0_acl_in&#10;Created during import of  line 178">
@@ -638,7 +638,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id145" disabled="False" group="" log="True" position="7" action="Deny" direction="Inbound" comment="Imported from e1_0_acl_in&#10;Created during import of  line 179">
@@ -678,7 +678,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id169" disabled="False" group="" log="True" position="9" action="Deny" direction="Outbound" comment="Imported from e1_0_acl_out&#10;Created during import of  line 183">
@@ -718,7 +718,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id193" disabled="False" group="" log="True" position="11" action="Accept" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;Created during import of  line 187">
@@ -738,7 +738,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id205" disabled="False" group="" log="True" position="12" action="Accept" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;Created during import of  line 188">
@@ -758,7 +758,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id217" disabled="False" group="" log="True" position="13" action="Deny" direction="Inbound" comment="Imported from fe0_0_acl_in&#10;Created during import of  line 189">
@@ -798,7 +798,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id241" disabled="False" group="" log="True" position="15" action="Deny" direction="Outbound" comment="Imported from fe0_0_acl_out&#10;Created during import of  line 193">
