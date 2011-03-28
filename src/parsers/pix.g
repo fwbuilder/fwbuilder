@@ -1604,16 +1604,25 @@ switchport : SWITCHPORT ACCESS VLAN vlan_num:INT_CONST
 //****************************************************************
 // pretend ssh commands are rules in access lists with names
 // "ssh_commands_" + interface_label
-ssh_command : SSH ( ( TIMEOUT INT_CONST ) |
-            ( hostaddr_expr intf_label:WORD )
+ssh_command : SSH
+        {
+            importer->clear();
+        }
+        (
+            ( TIMEOUT INT_CONST ) |
+            (
+                hostaddr_expr
+                {
+                    importer->SaveTmpAddrToSrc();
+                }
+                intf_label:WORD
+            )
             {
-                importer->clear();
                 std::string acl_name = "ssh_commands_" + intf_label->getText();
                 importer->setCurrentLineNumber(LT(0)->getLine());
                 importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
                 importer->newPolicyRule();
                 importer->action = "permit";
-                importer->SaveTmpAddrToDst();
                 importer->setDstSelf();
                 importer->protocol = "tcp";
                 importer->dst_port_op = "eq";
@@ -1621,20 +1630,30 @@ ssh_command : SSH ( ( TIMEOUT INT_CONST ) |
                 importer->setInterfaceAndDirectionForRuleSet(
                     acl_name, intf_label->getText(), "in" );
                 importer->pushRule();
+                *dbg << std::endl;
             }
         )
     ;
 
-telnet_command : TELNET ( ( TIMEOUT INT_CONST ) |
-            ( hostaddr_expr intf_label:WORD )
+telnet_command : TELNET
+        {
+            importer->clear();
+        }
+        (
+            ( TIMEOUT INT_CONST ) |
+            (
+                hostaddr_expr
+                {
+                    importer->SaveTmpAddrToSrc();
+                }
+                intf_label:WORD
+            )
             {
-                importer->clear();
                 std::string acl_name = "telnet_commands_" + intf_label->getText();
                 importer->setCurrentLineNumber(LT(0)->getLine());
                 importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
                 importer->newPolicyRule();
                 importer->action = "permit";
-                importer->SaveTmpAddrToDst();
                 importer->setDstSelf();
                 importer->protocol = "tcp";
                 importer->dst_port_op = "eq";
@@ -1642,6 +1661,7 @@ telnet_command : TELNET ( ( TIMEOUT INT_CONST ) |
                 importer->setInterfaceAndDirectionForRuleSet(
                     acl_name, intf_label->getText(), "in" );
                 importer->pushRule();
+                *dbg << std::endl;
             }
         )
     ;

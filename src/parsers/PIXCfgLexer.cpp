@@ -511,7 +511,7 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1950 "pix.g"
+#line 1970 "pix.g"
 		newline();
 #line 517 "PIXCfgLexer.cpp"
 	}
@@ -635,7 +635,7 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1945 "pix.g"
+#line 1965 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 641 "PIXCfgLexer.cpp"
 	}
@@ -786,7 +786,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			match("oup");
 			}
 			if ( inputState->guessing==0 ) {
-#line 2002 "pix.g"
+#line 2022 "pix.g"
 				_ttype = OBJECT_GROUP;
 #line 792 "PIXCfgLexer.cpp"
 			}
@@ -794,7 +794,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		else {
 			match("");
 			if ( inputState->guessing==0 ) {
-#line 2004 "pix.g"
+#line 2024 "pix.g"
 				_ttype = OBJECT;
 #line 800 "PIXCfgLexer.cpp"
 			}
@@ -948,7 +948,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1995 "pix.g"
+#line 2015 "pix.g"
 				_ttype = IPV6;
 #line 954 "PIXCfgLexer.cpp"
 			}
@@ -1095,7 +1095,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}  // ( ... )+
 					}
 					if ( inputState->guessing==0 ) {
-#line 1983 "pix.g"
+#line 2003 "pix.g"
 						_ttype = IPV4;
 #line 1101 "PIXCfgLexer.cpp"
 					}
@@ -1178,7 +1178,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}  // ( ... )+
 						}
 						if ( inputState->guessing==0 ) {
-#line 1986 "pix.g"
+#line 2006 "pix.g"
 							_ttype = NUMBER;
 #line 1184 "PIXCfgLexer.cpp"
 						}
@@ -1199,7 +1199,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						_loop293:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 1988 "pix.g"
+#line 2008 "pix.g"
 							_ttype = INT_CONST;
 #line 1205 "PIXCfgLexer.cpp"
 						}
@@ -1444,7 +1444,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				_loop313:;
 				} // ( ... )*
 				if ( inputState->guessing==0 ) {
-#line 2011 "pix.g"
+#line 2031 "pix.g"
 					_ttype = WORD;
 #line 1450 "PIXCfgLexer.cpp"
 				}
