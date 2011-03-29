@@ -302,33 +302,33 @@ void ProjectPanel::loadLastOpenedLib()
                    sid.toAscii().constData());
 
         int last_lib_id = FWObjectDatabase::getIntId(sid.toStdString());
-        if (last_lib_id > 0)
-            m_panel->om->libChangedById(last_lib_id);
-    }
-    else
-    {
-        list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
-        FWObject *first_non_system_lib = NULL;
-        for (list<FWObject*>::iterator i=all_libs.begin(); i!=all_libs.end(); ++i)
+
+        if (last_lib_id > 0 && last_lib_id != FWObjectDatabase::DELETED_OBJECTS_ID)
         {
-            string str_id = FWObjectDatabase::getStringId((*i)->getId());
-            if (str_id.find("sysid")==0) continue;
-            if (first_non_system_lib==NULL) first_non_system_lib = (*i);
-            if ((*i)->getName()=="User")
-            {
-                first_non_system_lib = *i;
-                break;
-            }
+            m_panel->om->libChangedById(last_lib_id);
+            return;
         }
-        if (first_non_system_lib)
-            m_panel->om->libChangedById(first_non_system_lib->getId());
     }
 
-    time_t last_modified = db()->getTimeLastModified();
-    if (fwbdebug)
-        qDebug("ProjectPanel::loadLastOpenedLib(): done: "
-               "dirty=%d last_modified=%s",
-               db()->isDirty(), ctime(&last_modified));
+    list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
+    FWObject *first_non_system_lib = NULL;
+    for (list<FWObject*>::iterator i=all_libs.begin(); i!=all_libs.end(); ++i)
+    {
+        int lib_id = (*i)->getId();
+        if (lib_id == FWObjectDatabase::DELETED_OBJECTS_ID) continue;
+        if (lib_id == FWObjectDatabase::STANDARD_LIB_ID) continue;
+        if (lib_id == FWObjectDatabase::TEMPLATE_LIB_ID) continue;
+
+        if (first_non_system_lib==NULL) first_non_system_lib = (*i);
+        if ((*i)->getName()=="User")
+        {
+            first_non_system_lib = *i;
+            break;
+        }
+    }
+
+    if (first_non_system_lib)
+        m_panel->om->libChangedById(first_non_system_lib->getId());
 }
 
 
