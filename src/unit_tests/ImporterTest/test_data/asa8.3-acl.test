@@ -151,9 +151,15 @@ access-list inside_in extended permit ip object Internal_net.0 any
 access-list inside_in  remark 3 (global)
 
 ! logging
-access-list inside_in extended deny   ip any any log 0 interval 300
+access-list inside_in extended deny   ip any any log
+! interval w/o level
+access-list inside_in extended deny   ip any any log interval 100
+! level w/o interval, numeric and a word
+access-list inside_in extended deny   ip any any log 1
 access-list inside_in extended deny   ip any any log alerts
 access-list inside_in extended deny   ip any any log disable
+! both level and interval
+access-list inside_in extended deny   ip any any log 0 interval 300
 
 
 ! more complex tests: named objects, object groups, inline address and

@@ -412,7 +412,7 @@ void PIXCfgParser::nameif_top_level() {
 		sec_level = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 1362 "pix.g"
+#line 1381 "pix.g"
 			
 			std::string label = (intf_label) ? intf_label->getText() : "";
 			std::string seclevel = (sec_level) ? sec_level->getText() : "";
@@ -438,7 +438,7 @@ void PIXCfgParser::controller() {
 	try {      // for error handling
 		match(CONTROLLER);
 		if ( inputState->guessing==0 ) {
-#line 1278 "pix.g"
+#line 1297 "pix.g"
 			
 			importer->clearCurrentInterface();
 			consumeUntil(NEWLINE);
@@ -536,7 +536,7 @@ void PIXCfgParser::ssh_command() {
 	try {      // for error handling
 		match(SSH);
 		if ( inputState->guessing==0 ) {
-#line 1608 "pix.g"
+#line 1627 "pix.g"
 			
 			importer->clear();
 			
@@ -562,7 +562,7 @@ void PIXCfgParser::ssh_command() {
 			{
 			hostaddr_expr();
 			if ( inputState->guessing==0 ) {
-#line 1615 "pix.g"
+#line 1634 "pix.g"
 				
 				importer->SaveTmpAddrToSrc();
 				
@@ -572,7 +572,7 @@ void PIXCfgParser::ssh_command() {
 			match(WORD);
 			}
 			if ( inputState->guessing==0 ) {
-#line 1620 "pix.g"
+#line 1639 "pix.g"
 				
 				std::string acl_name = "ssh_commands_" + intf_label->getText();
 				importer->setCurrentLineNumber(LT(0)->getLine());
@@ -615,7 +615,7 @@ void PIXCfgParser::telnet_command() {
 	try {      // for error handling
 		match(TELNET);
 		if ( inputState->guessing==0 ) {
-#line 1639 "pix.g"
+#line 1658 "pix.g"
 			
 			importer->clear();
 			
@@ -641,7 +641,7 @@ void PIXCfgParser::telnet_command() {
 			{
 			hostaddr_expr();
 			if ( inputState->guessing==0 ) {
-#line 1646 "pix.g"
+#line 1665 "pix.g"
 				
 				importer->SaveTmpAddrToSrc();
 				
@@ -651,7 +651,7 @@ void PIXCfgParser::telnet_command() {
 			match(WORD);
 			}
 			if ( inputState->guessing==0 ) {
-#line 1651 "pix.g"
+#line 1670 "pix.g"
 				
 				std::string acl_name = "telnet_commands_" + intf_label->getText();
 				importer->setCurrentLineNumber(LT(0)->getLine());
@@ -702,7 +702,7 @@ void PIXCfgParser::icmp_top_level_command() {
 			{
 			match(UNREACHABLE);
 			if ( inputState->guessing==0 ) {
-#line 1679 "pix.g"
+#line 1698 "pix.g"
 				
 				consumeUntil(NEWLINE);
 				
@@ -736,7 +736,7 @@ void PIXCfgParser::icmp_top_level_command() {
 			}
 			}
 			if ( inputState->guessing==0 ) {
-#line 1686 "pix.g"
+#line 1705 "pix.g"
 				
 				importer->clear();
 				
@@ -744,7 +744,7 @@ void PIXCfgParser::icmp_top_level_command() {
 			}
 			hostaddr_expr();
 			if ( inputState->guessing==0 ) {
-#line 1690 "pix.g"
+#line 1709 "pix.g"
 				
 				importer->SaveTmpAddrToSrc();
 				
@@ -774,7 +774,7 @@ void PIXCfgParser::icmp_top_level_command() {
 			intf_label = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 1695 "pix.g"
+#line 1714 "pix.g"
 				
 				std::string acl_name = "icmp_commands_" + intf_label->getText();
 				importer->setCurrentLineNumber(LT(0)->getLine());
@@ -825,7 +825,7 @@ void PIXCfgParser::access_group() {
 		intf_label = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 1753 "pix.g"
+#line 1772 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->setInterfaceAndDirectionForRuleSet(
@@ -3546,7 +3546,7 @@ void PIXCfgParser::remark() {
 	try {      // for error handling
 		match(REMARK);
 		if ( inputState->guessing==0 ) {
-#line 1735 "pix.g"
+#line 1754 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			*dbg << LT(1)->getLine() << ":";
@@ -4106,7 +4106,7 @@ void PIXCfgParser::time_range() {
 		tr_name = LT(1);
 		match(WORD);
 		if ( inputState->guessing==0 ) {
-#line 1268 "pix.g"
+#line 1287 "pix.g"
 			
 			importer->time_range_name = tr_name->getText();
 			*dbg << "time_range " << tr_name->getText() << " ";
@@ -4129,7 +4129,7 @@ void PIXCfgParser::fragments() {
 	try {      // for error handling
 		match(FRAGMENTS);
 		if ( inputState->guessing==0 ) {
-#line 1261 "pix.g"
+#line 1280 "pix.g"
 			
 			importer->fragments = true;
 			*dbg << "fragments ";
@@ -4148,9 +4148,6 @@ void PIXCfgParser::fragments() {
 }
 
 void PIXCfgParser::log() {
-	ANTLR_USE_NAMESPACE(antlr)RefToken  level_int = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  log_interval = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  level_word = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	
 	try {      // for error handling
 		{
@@ -4171,40 +4168,83 @@ void PIXCfgParser::log() {
 		}
 		}
 		}
+		if ( inputState->guessing==0 ) {
+#line 1246 "pix.g"
+			
+			importer->logging = true;
+			
+#line 4177 "PIXCfgParser.cpp"
+		}
+		{
 		{
 		switch ( LA(1)) {
-		case NEWLINE:
 		case INT_CONST:
+		case LOG_LEVEL_ALERTS:
+		case LOG_LEVEL_CRITICAL:
+		case LOG_LEVEL_DEBUGGING:
+		case LOG_LEVEL_EMERGENCIES:
+		case LOG_LEVEL_ERRORS:
+		case LOG_LEVEL_INFORMATIONAL:
+		case LOG_LEVEL_NOTIFICATIONS:
+		case LOG_LEVEL_WARNINGS:
+		case LOG_LEVEL_DISABLE:
+		case LOG_LEVEL_INACTIVE:
 		{
 			{
 			switch ( LA(1)) {
 			case INT_CONST:
 			{
-				level_int = LT(1);
 				match(INT_CONST);
-				{
-				switch ( LA(1)) {
-				case INTERVAL:
-				{
-					match(INTERVAL);
-					log_interval = LT(1);
-					match(INT_CONST);
-					break;
-				}
-				case NEWLINE:
-				{
-					break;
-				}
-				default:
-				{
-					throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
-				}
-				}
-				}
 				break;
 			}
-			case NEWLINE:
+			case LOG_LEVEL_ALERTS:
 			{
+				match(LOG_LEVEL_ALERTS);
+				break;
+			}
+			case LOG_LEVEL_CRITICAL:
+			{
+				match(LOG_LEVEL_CRITICAL);
+				break;
+			}
+			case LOG_LEVEL_DEBUGGING:
+			{
+				match(LOG_LEVEL_DEBUGGING);
+				break;
+			}
+			case LOG_LEVEL_EMERGENCIES:
+			{
+				match(LOG_LEVEL_EMERGENCIES);
+				break;
+			}
+			case LOG_LEVEL_ERRORS:
+			{
+				match(LOG_LEVEL_ERRORS);
+				break;
+			}
+			case LOG_LEVEL_INFORMATIONAL:
+			{
+				match(LOG_LEVEL_INFORMATIONAL);
+				break;
+			}
+			case LOG_LEVEL_NOTIFICATIONS:
+			{
+				match(LOG_LEVEL_NOTIFICATIONS);
+				break;
+			}
+			case LOG_LEVEL_WARNINGS:
+			{
+				match(LOG_LEVEL_WARNINGS);
+				break;
+			}
+			case LOG_LEVEL_DISABLE:
+			{
+				match(LOG_LEVEL_DISABLE);
+				break;
+			}
+			case LOG_LEVEL_INACTIVE:
+			{
+				match(LOG_LEVEL_INACTIVE);
 				break;
 			}
 			default:
@@ -4213,12 +4253,16 @@ void PIXCfgParser::log() {
 			}
 			}
 			}
+			if ( inputState->guessing==0 ) {
+#line 1263 "pix.g"
+				importer->log_level = LT(0)->getText();
+#line 4260 "PIXCfgParser.cpp"
+			}
 			break;
 		}
-		case WORD:
+		case NEWLINE:
+		case INTERVAL:
 		{
-			level_word = LT(1);
-			match(WORD);
 			break;
 		}
 		default:
@@ -4227,18 +4271,41 @@ void PIXCfgParser::log() {
 		}
 		}
 		}
+		{
+		switch ( LA(1)) {
+		case INTERVAL:
+		{
+			{
+			match(INTERVAL);
+			match(INT_CONST);
+			}
+			if ( inputState->guessing==0 ) {
+#line 1268 "pix.g"
+				importer->log_interval = LT(0)->getText();
+#line 4286 "PIXCfgParser.cpp"
+			}
+			break;
+		}
+		case NEWLINE:
+		{
+			break;
+		}
+		default:
+		{
+			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
+		}
 		if ( inputState->guessing==0 ) {
-#line 1249 "pix.g"
+#line 1271 "pix.g"
 			
-			importer->logging = true;
-			if (level_int) importer->log_level = level_int->getText();
-			if (level_word) importer->log_level = level_word->getText();
-			if (log_interval) importer->log_interval = log_interval->getText();
+			//        if (importer->log_level == "log") importer->log_level = "";
+			//        if (importer->log_interval == "log") importer->log_interval = "";
+			*dbg << "logging level '" << importer->log_level
+			<< "' interval '" << importer->log_interval << "'";
 			
-			*dbg << "logging " << importer->log_level
-			<< " " << importer->log_interval;
-			
-#line 4242 "PIXCfgParser.cpp"
+#line 4309 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4275,7 +4342,7 @@ void PIXCfgParser::icmp_spec() {
 				*dbg << icmp_type->getText() << " "
 				<< icmp_code->getText() << " ";
 				
-#line 4279 "PIXCfgParser.cpp"
+#line 4346 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -4306,7 +4373,7 @@ void PIXCfgParser::icmp_spec() {
 				importer->icmp_spec = LT(0)->getText();
 				*dbg << LT(0)->getText() << " ";
 				
-#line 4310 "PIXCfgParser.cpp"
+#line 4377 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -4356,13 +4423,13 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 			importer->protocol = LT(0)->getText();
 			*dbg << "protocol " << LT(0)->getText() << " ";
 			
-#line 4360 "PIXCfgParser.cpp"
+#line 4427 "PIXCfgParser.cpp"
 		}
 		hostaddr_expr();
 		if ( inputState->guessing==0 ) {
 #line 977 "pix.g"
 			importer->SaveTmpAddrToSrc(); *dbg << "(src) ";
-#line 4366 "PIXCfgParser.cpp"
+#line 4433 "PIXCfgParser.cpp"
 		}
 		{
 		bool synPredMatched123 = false;
@@ -4394,7 +4461,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 					*dbg << "src port spec: "
 					<< src_grp_name->getText() << std::endl;
 					
-#line 4398 "PIXCfgParser.cpp"
+#line 4465 "PIXCfgParser.cpp"
 				}
 				hostaddr_expr_1();
 				if ( inputState->guessing==0 ) {
@@ -4403,7 +4470,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 					importer->SaveTmpAddrToDst();
 					*dbg << "(dst) ";
 					
-#line 4407 "PIXCfgParser.cpp"
+#line 4474 "PIXCfgParser.cpp"
 				}
 				acl_tcp_udp_dst_port_spec();
 			}
@@ -4415,7 +4482,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 					importer->SaveTmpAddrToDst();
 					*dbg << "(dst) ";
 					
-#line 4419 "PIXCfgParser.cpp"
+#line 4486 "PIXCfgParser.cpp"
 				}
 				acl_tcp_udp_dst_port_spec();
 			}
@@ -4461,7 +4528,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 				importer->SaveTmpAddrToDst();
 				*dbg << "dst addr object " << dst_addr_name->getText() << " ";
 				
-#line 4465 "PIXCfgParser.cpp"
+#line 4532 "PIXCfgParser.cpp"
 			}
 			acl_tcp_udp_dst_port_spec();
 		}
@@ -4480,7 +4547,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 					
 					importer->SaveTmpPortToSrc();
 					
-#line 4484 "PIXCfgParser.cpp"
+#line 4551 "PIXCfgParser.cpp"
 				}
 				break;
 			}
@@ -4503,7 +4570,7 @@ void PIXCfgParser::tcp_udp_rule_extended() {
 			if ( inputState->guessing==0 ) {
 #line 1031 "pix.g"
 				importer->SaveTmpAddrToDst(); *dbg << "(dst) ";
-#line 4507 "PIXCfgParser.cpp"
+#line 4574 "PIXCfgParser.cpp"
 			}
 			acl_tcp_udp_dst_port_spec();
 		}
@@ -4615,7 +4682,7 @@ void PIXCfgParser::acl_tcp_udp_dst_port_spec() {
 				*dbg << "dst port spec: "
 				<< dst_port_group_name->getText() << std::endl;
 				
-#line 4619 "PIXCfgParser.cpp"
+#line 4686 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -4653,7 +4720,7 @@ void PIXCfgParser::acl_tcp_udp_dst_port_spec() {
 				*dbg << "dst addr object " << dst_port_obj_name->getText()
 				<< std::endl;
 				
-#line 4657 "PIXCfgParser.cpp"
+#line 4724 "PIXCfgParser.cpp"
 			}
 			{
 			switch ( LA(1)) {
@@ -4780,7 +4847,7 @@ void PIXCfgParser::acl_xoperator_dst() {
 			
 			importer->SaveTmpPortToDst();
 			
-#line 4784 "PIXCfgParser.cpp"
+#line 4851 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4803,7 +4870,7 @@ void PIXCfgParser::established() {
 			importer->established = true;
 			*dbg << "established ";
 			
-#line 4807 "PIXCfgParser.cpp"
+#line 4874 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4868,7 +4935,7 @@ void PIXCfgParser::single_port_op() {
 			importer->tmp_port_op = LT(0)->getText();
 			*dbg << LT(0)->getText() << " ";
 			
-#line 4872 "PIXCfgParser.cpp"
+#line 4939 "PIXCfgParser.cpp"
 		}
 		port_spec();
 	}
@@ -4893,7 +4960,7 @@ void PIXCfgParser::port_range() {
 			importer->tmp_port_op = "range";
 			*dbg << "range " << importer->tmp_port_spec;
 			
-#line 4897 "PIXCfgParser.cpp"
+#line 4964 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4916,7 +4983,7 @@ void PIXCfgParser::port_spec() {
 			importer->tmp_port_spec = std::string(" ") + importer->tmp_port_spec_2;
 			*dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
 			
-#line 4920 "PIXCfgParser.cpp"
+#line 4987 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4965,7 +5032,7 @@ void PIXCfgParser::tcp_udp_port_spec() {
 			
 			importer->tmp_port_spec_2 = LT(0)->getText();
 			
-#line 4969 "PIXCfgParser.cpp"
+#line 5036 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -4986,7 +5053,7 @@ void PIXCfgParser::pair_of_ports_spec() {
 			
 			importer->tmp_port_spec_2 = "";
 			
-#line 4990 "PIXCfgParser.cpp"
+#line 5057 "PIXCfgParser.cpp"
 		}
 		tcp_udp_port_spec();
 		if ( inputState->guessing==0 ) {
@@ -4994,7 +5061,7 @@ void PIXCfgParser::pair_of_ports_spec() {
 			
 			importer->tmp_port_spec += importer->tmp_port_spec_2;
 			
-#line 4998 "PIXCfgParser.cpp"
+#line 5065 "PIXCfgParser.cpp"
 		}
 		tcp_udp_port_spec();
 		if ( inputState->guessing==0 ) {
@@ -5003,7 +5070,7 @@ void PIXCfgParser::pair_of_ports_spec() {
 			importer->tmp_port_spec += " ";
 			importer->tmp_port_spec += importer->tmp_port_spec_2;
 			
-#line 5007 "PIXCfgParser.cpp"
+#line 5074 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5076,14 +5143,14 @@ void PIXCfgParser::interface_command_6() {
 		match(WORD);
 		pix6_interface_hw_speed();
 		if ( inputState->guessing==0 ) {
-#line 1327 "pix.g"
+#line 1346 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newInterface( in->getText() );
 			*dbg << in->getLine() << ":"
 			<< " INTRFACE: " << in->getText() << std::endl;
 			
-#line 5087 "PIXCfgParser.cpp"
+#line 5154 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5098,23 +5165,23 @@ void PIXCfgParser::interface_command_6() {
 
 void PIXCfgParser::interface_command_7() {
 	ANTLR_USE_NAMESPACE(antlr)RefToken  in = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 1335 "pix.g"
+#line 1354 "pix.g"
 	bool have_interface_parameters = false;
-#line 5104 "PIXCfgParser.cpp"
+#line 5171 "PIXCfgParser.cpp"
 	
 	try {      // for error handling
 		in = LT(1);
 		match(WORD);
 		match(NEWLINE);
 		if ( inputState->guessing==0 ) {
-#line 1336 "pix.g"
+#line 1355 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->newInterface( in->getText() );
 			*dbg << in->getLine() << ":"
 			<< " INTRFACE: " << in->getText() << std::endl;
 			
-#line 5118 "PIXCfgParser.cpp"
+#line 5185 "PIXCfgParser.cpp"
 		}
 		{
 		{ // ( ... )*
@@ -5122,17 +5189,17 @@ void PIXCfgParser::interface_command_7() {
 			if ((_tokenSet_26.member(LA(1)))) {
 				interface_parameters();
 				if ( inputState->guessing==0 ) {
-#line 1343 "pix.g"
+#line 1362 "pix.g"
 					have_interface_parameters = true;
-#line 5128 "PIXCfgParser.cpp"
+#line 5195 "PIXCfgParser.cpp"
 				}
 			}
 			else {
-				goto _loop186;
+				goto _loop188;
 			}
 			
 		}
-		_loop186:;
+		_loop188:;
 		} // ( ... )*
 		{
 		switch ( LA(1)) {
@@ -5153,7 +5220,7 @@ void PIXCfgParser::interface_command_7() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 1345 "pix.g"
+#line 1364 "pix.g"
 			
 			if ( ! have_interface_parameters )
 			{
@@ -5162,7 +5229,7 @@ void PIXCfgParser::interface_command_7() {
 			<< " EMPTY INTERFACE " << std::endl;
 			}
 			
-#line 5166 "PIXCfgParser.cpp"
+#line 5233 "PIXCfgParser.cpp"
 		}
 		}
 	}
@@ -5252,11 +5319,11 @@ void PIXCfgParser::interface_parameters() {
 	
 	try {      // for error handling
 		if ( inputState->guessing==0 ) {
-#line 1373 "pix.g"
+#line 1392 "pix.g"
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			
-#line 5260 "PIXCfgParser.cpp"
+#line 5327 "PIXCfgParser.cpp"
 		}
 		{
 		switch ( LA(1)) {
@@ -5379,12 +5446,12 @@ void PIXCfgParser::vlan_interface() {
 		vlan_id = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 1399 "pix.g"
+#line 1418 "pix.g"
 			
 			importer->setInterfaceVlanId(vlan_id->getText());
 			*dbg << " VLAN: " << vlan_id->getText() << std::endl;
 			
-#line 5388 "PIXCfgParser.cpp"
+#line 5455 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5405,12 +5472,12 @@ void PIXCfgParser::sec_level() {
 		sec_level = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 1451 "pix.g"
+#line 1470 "pix.g"
 			
 			importer->setInterfaceSecurityLevel(sec_level->getText());
 			*dbg << "SEC_LEVEL: " << sec_level->getText() << std::endl;
 			
-#line 5414 "PIXCfgParser.cpp"
+#line 5481 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5455,7 +5522,7 @@ void PIXCfgParser::nameif() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 1474 "pix.g"
+#line 1493 "pix.g"
 			
 			std::string label = (intf_label) ? intf_label->getText() : "";
 			std::string seclevel = (sec_level) ? sec_level->getText() : "";
@@ -5463,7 +5530,7 @@ void PIXCfgParser::nameif() {
 			*dbg << " NAMEIF: "
 			<< p_intf->getText() << label << seclevel << std::endl;
 			
-#line 5467 "PIXCfgParser.cpp"
+#line 5534 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5481,7 +5548,7 @@ void PIXCfgParser::interface_description() {
 	try {      // for error handling
 		match(DESCRIPTION);
 		if ( inputState->guessing==0 ) {
-#line 1486 "pix.g"
+#line 1505 "pix.g"
 			
 			*dbg << LT(1)->getLine() << ":";
 			std::string descr;
@@ -5494,7 +5561,7 @@ void PIXCfgParser::interface_description() {
 			*dbg << " DESCRIPTION " << descr << std::endl;
 			//consumeUntil(NEWLINE);
 			
-#line 5498 "PIXCfgParser.cpp"
+#line 5565 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5517,12 +5584,12 @@ void PIXCfgParser::switchport() {
 		vlan_num = LT(1);
 		match(INT_CONST);
 		if ( inputState->guessing==0 ) {
-#line 1598 "pix.g"
+#line 1617 "pix.g"
 			
 			importer->addMessageToLog("Switch port vlan " + vlan_num->getText());
 			*dbg << "Switch port vlan " <<  vlan_num->getText() << std::endl;
 			
-#line 5526 "PIXCfgParser.cpp"
+#line 5593 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5540,13 +5607,13 @@ void PIXCfgParser::shutdown() {
 	try {      // for error handling
 		match(SHUTDOWN);
 		if ( inputState->guessing==0 ) {
-#line 1501 "pix.g"
+#line 1520 "pix.g"
 			
 			importer->ignoreCurrentInterface();
 			*dbg<< LT(1)->getLine() << ":"
 			<< " INTERFACE SHUTDOWN " << std::endl;
 			
-#line 5550 "PIXCfgParser.cpp"
+#line 5617 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5592,13 +5659,13 @@ void PIXCfgParser::interface_no_commands() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 1443 "pix.g"
+#line 1462 "pix.g"
 			
 			*dbg << " INTERFACE \"NO\" COMMAND: "
 			<< LT(0)->getText() << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 5602 "PIXCfgParser.cpp"
+#line 5669 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5693,13 +5760,13 @@ void PIXCfgParser::unsupported_interface_commands() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 1435 "pix.g"
+#line 1454 "pix.g"
 			
 			*dbg << " UNSUPPORTED INTERFACE COMMAND: "
 			<< LT(0)->getText() << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 5703 "PIXCfgParser.cpp"
+#line 5770 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5776,7 +5843,7 @@ void PIXCfgParser::v6_dhcp_address() {
 		dhcp = LT(1);
 		match(DHCP);
 		if ( inputState->guessing==0 ) {
-#line 1536 "pix.g"
+#line 1555 "pix.g"
 			
 			std::string label = lbl->getText();
 			std::string addr = dhcp->getText();
@@ -5787,7 +5854,7 @@ void PIXCfgParser::v6_dhcp_address() {
 			// which we do not support
 			consumeUntil(NEWLINE);
 			
-#line 5791 "PIXCfgParser.cpp"
+#line 5858 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5813,7 +5880,7 @@ void PIXCfgParser::v6_static_address() {
 		m = LT(1);
 		match(IPV4);
 		if ( inputState->guessing==0 ) {
-#line 1549 "pix.g"
+#line 1568 "pix.g"
 			
 			std::string label = lbl->getText();
 			std::string addr = a->getText();
@@ -5824,7 +5891,7 @@ void PIXCfgParser::v6_static_address() {
 			// in case there are some other parameters after address and netmask
 			consumeUntil(NEWLINE);
 			
-#line 5828 "PIXCfgParser.cpp"
+#line 5895 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5844,7 +5911,7 @@ void PIXCfgParser::v7_dhcp_address() {
 		dhcp = LT(1);
 		match(DHCP);
 		if ( inputState->guessing==0 ) {
-#line 1566 "pix.g"
+#line 1585 "pix.g"
 			
 			std::string addr = dhcp->getText();
 			importer->addInterfaceAddress(addr, "");
@@ -5852,7 +5919,7 @@ void PIXCfgParser::v7_dhcp_address() {
 			<< " INTRFACE ADDRESS: " << addr << std::endl;
 			consumeUntil(NEWLINE);
 			
-#line 5856 "PIXCfgParser.cpp"
+#line 5923 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5894,7 +5961,7 @@ void PIXCfgParser::v7_static_address() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 1577 "pix.g"
+#line 1596 "pix.g"
 			
 			std::string addr = a->getText();
 			std::string netm = m->getText();
@@ -5911,7 +5978,7 @@ void PIXCfgParser::v7_static_address() {
 			}
 			consumeUntil(NEWLINE);
 			
-#line 5915 "PIXCfgParser.cpp"
+#line 5982 "PIXCfgParser.cpp"
 		}
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5932,13 +5999,13 @@ void PIXCfgParser::icmp_types_for_icmp_command() {
 		{
 			match(INT_CONST);
 			if ( inputState->guessing==0 ) {
-#line 1714 "pix.g"
+#line 1733 "pix.g"
 				
 				importer->icmp_type = LT(0)->getText();
 				importer->icmp_code = "0";
 				importer->icmp_spec = "";
 				
-#line 5942 "PIXCfgParser.cpp"
+#line 6009 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -5976,13 +6043,13 @@ void PIXCfgParser::icmp_types_for_icmp_command() {
 			}
 			}
 			if ( inputState->guessing==0 ) {
-#line 1721 "pix.g"
+#line 1740 "pix.g"
 				
 				importer->icmp_type = "";
 				importer->icmp_code = "0";
 				importer->icmp_spec = LT(0)->getText();
 				
-#line 5986 "PIXCfgParser.cpp"
+#line 6053 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -6104,6 +6171,16 @@ const char* PIXCfgParser::tokenNames[] = {
 	"\"any\"",
 	"\"log\"",
 	"\"log-input\"",
+	"\"alerts\"",
+	"\"critical\"",
+	"\"debugging\"",
+	"\"emergencies\"",
+	"\"errors\"",
+	"\"informational\"",
+	"\"notifications\"",
+	"\"warnings\"",
+	"\"disable\"",
+	"\"inactive\"",
 	"\"interval\"",
 	"\"fragments\"",
 	"\"time-range\"",
@@ -6180,13 +6257,13 @@ const char* PIXCfgParser::tokenNames[] = {
 const unsigned long PIXCfgParser::_tokenSet_0_data_[] = { 2UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_0(_tokenSet_0_data_,6);
-const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 268445554UL, 1407191056UL, 1073743360UL, 16608UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 268445554UL, 1407191056UL, 1073743360UL, 17006592UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "icmp" 
 // OBJECT_GROUP "crypto" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "ssh" "telnet" "interface" "controller" LINE_COMMENT "exit" "nameif" 
 // "access-group" COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_1(_tokenSet_1_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_2_data_[] = { 0UL, 32UL, 0UL, 1792UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_2_data_[] = { 0UL, 32UL, 0UL, 1835008UL, 0UL, 0UL, 0UL, 0UL };
 // INT_CONST "aui" "auto" "bnc" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_2(_tokenSet_2_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_3_data_[] = { 536854592UL, 2512UL, 1UL, 0UL, 0UL, 0UL, 0UL, 0UL };
@@ -6202,7 +6279,7 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_4(_tokenSet_4_dat
 const unsigned long PIXCfgParser::_tokenSet_5_data_[] = { 2147483648UL, 1576960UL, 0UL, 0UL, 0UL, 0UL };
 // "description" "group-object" "service-object" "port-object" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_5(_tokenSet_5_data_,6);
-const unsigned long PIXCfgParser::_tokenSet_6_data_[] = { 268447602UL, 1407191057UL, 3221227008UL, 16608UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_6_data_[] = { 268447602UL, 1407191057UL, 3221227008UL, 17006592UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD OBJECT "host" 
 // "icmp" OBJECT_GROUP "crypto" "no" "certificate" "PIX" "ASA" "hostname" 
 // "access-list" "ssh" "telnet" "interface" "any" "controller" LINE_COMMENT 
@@ -6212,19 +6289,19 @@ const unsigned long PIXCfgParser::_tokenSet_7_data_[] = { 268419136UL, 32UL, 0UL
 // "ip" "ah" "eigrp" "esp" "gre" "igmp" "igrp" "ipinip" "ipsec" "nos" "ospf" 
 // "pcp" "pim" "pptp" "snp" INT_CONST 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_7(_tokenSet_7_data_,6);
-const unsigned long PIXCfgParser::_tokenSet_8_data_[] = { 268445554UL, 1407191056UL, 1073743360UL, 16635UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_8_data_[] = { 268445554UL, 1407191056UL, 1073743360UL, 17031171UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "icmp" 
 // OBJECT_GROUP "crypto" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "ssh" "telnet" "interface" "log" "log-input" "fragments" "time-range" 
 // "controller" LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_8(_tokenSet_8_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_9_data_[] = { 268445554UL, 1407192082UL, 1073743480UL, 16608UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_9_data_[] = { 268445554UL, 1407192082UL, 1073743480UL, 17006592UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "range" 
 // "icmp" "destination" OBJECT_GROUP "crypto" "no" "certificate" "PIX" 
 // "ASA" "hostname" "access-list" "eq" "gt" "lt" "neq" "ssh" "telnet" "interface" 
 // "controller" LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_9(_tokenSet_9_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_10_data_[] = { 268447602UL, 1407192083UL, 3221229176UL, 16635UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_10_data_[] = { 268447602UL, 1407192083UL, 3221229176UL, 17031171UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD OBJECT "host" 
 // "range" "icmp" "destination" OBJECT_GROUP "crypto" "no" "certificate" 
 // "PIX" "ASA" "hostname" "access-list" "eq" "gt" "lt" "neq" "ssh" "telnet" 
@@ -6234,7 +6311,7 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_10(_tokenSet_10_d
 const unsigned long PIXCfgParser::_tokenSet_11_data_[] = { 16UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_11(_tokenSet_11_data_,6);
-const unsigned long PIXCfgParser::_tokenSet_12_data_[] = { 268445712UL, 2083UL, 4294965496UL, 27UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_12_data_[] = { 268445712UL, 2083UL, 4294965496UL, 24579UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE IPV4 WORD OBJECT "host" "range" INT_CONST OBJECT_GROUP "eq" 
 // "gt" "lt" "neq" "echo" "established" "alternate-address" "conversion-error" 
 // "echo-reply" "information-reply" "information-request" "mask-reply" 
@@ -6246,16 +6323,16 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_12(_tokenSet_12_d
 const unsigned long PIXCfgParser::_tokenSet_13_data_[] = { 268437504UL, 2049UL, 3221225472UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // IPV4 OBJECT "host" OBJECT_GROUP "interface" "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_13(_tokenSet_13_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_14_data_[] = { 16UL, 0UL, 0UL, 11UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_14_data_[] = { 16UL, 0UL, 0UL, 8195UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_14(_tokenSet_14_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_15_data_[] = { 16UL, 0UL, 0UL, 3UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_15(_tokenSet_15_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_16_data_[] = { 16UL, 0UL, 0UL, 27UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_16_data_[] = { 16UL, 0UL, 0UL, 24579UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_16(_tokenSet_16_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_17_data_[] = { 268445712UL, 2050UL, 2168UL, 27UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_17_data_[] = { 268445712UL, 2050UL, 2168UL, 24579UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE IPV4 WORD OBJECT "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "established" 
 // "log" "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_17(_tokenSet_17_data_,8);
@@ -6265,34 +6342,38 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_18(_tokenSet_18_d
 const unsigned long PIXCfgParser::_tokenSet_19_data_[] = { 67117056UL, 268435488UL, 1920UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD "pptp" INT_CONST "hostname" "echo" "rip" "ssh" "telnet" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_19(_tokenSet_19_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_20_data_[] = { 268435472UL, 2050UL, 2168UL, 27UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_20_data_[] = { 268435472UL, 2050UL, 2168UL, 24579UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE OBJECT "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "established" 
 // "log" "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_20(_tokenSet_20_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_21_data_[] = { 335554418UL, 1407191090UL, 1073745912UL, 16635UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_21_data_[] = { 335554418UL, 1407191090UL, 1073745912UL, 17039359UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" OBJECT 
 // "range" "icmp" INT_CONST OBJECT_GROUP "crypto" "no" "certificate" "PIX" 
 // "ASA" "hostname" "access-list" "eq" "gt" "lt" "neq" "echo" "rip" "ssh" 
-// "telnet" "established" "interface" "log" "log-input" "fragments" "time-range" 
-// "controller" LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
+// "telnet" "established" "interface" "log" "log-input" "alerts" "critical" 
+// "debugging" "emergencies" "errors" "informational" "notifications" "warnings" 
+// "disable" "inactive" "interval" "fragments" "time-range" "controller" 
+// LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_21(_tokenSet_21_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_22_data_[] = { 335554418UL, 1407191088UL, 1073743744UL, 16635UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_22_data_[] = { 335554418UL, 1407191088UL, 1073743744UL, 17039359UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" OBJECT 
 // "icmp" INT_CONST OBJECT_GROUP "crypto" "no" "certificate" "PIX" "ASA" 
 // "hostname" "access-list" "echo" "rip" "ssh" "telnet" "interface" "log" 
-// "log-input" "fragments" "time-range" "controller" LINE_COMMENT "exit" 
-// "nameif" "access-group" COLON_COMMENT 
+// "log-input" "alerts" "critical" "debugging" "emergencies" "errors" "informational" 
+// "notifications" "warnings" "disable" "inactive" "interval" "fragments" 
+// "time-range" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
+// COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_22(_tokenSet_22_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_23_data_[] = { 268437504UL, 2051UL, 3221225592UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // IPV4 OBJECT "host" "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "interface" 
 // "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_23(_tokenSet_23_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_24_data_[] = { 335554576UL, 268437538UL, 4088UL, 27UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_24_data_[] = { 335554576UL, 268437538UL, 4088UL, 24579UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE IPV4 WORD "pptp" OBJECT "range" INT_CONST OBJECT_GROUP "hostname" 
 // "eq" "gt" "lt" "neq" "echo" "rip" "ssh" "telnet" "established" "log" 
 // "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_24(_tokenSet_24_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_25_data_[] = { 335556466UL, 1407192115UL, 3221229560UL, 16635UL, 12UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_25_data_[] = { 335556466UL, 1407192115UL, 3221229560UL, 17031171UL, 12288UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD "pptp" OBJECT 
 // "host" "range" "icmp" INT_CONST "destination" OBJECT_GROUP "crypto" 
 // "no" "certificate" "PIX" "ASA" "hostname" "access-list" "eq" "gt" "lt" 
@@ -6300,16 +6381,16 @@ const unsigned long PIXCfgParser::_tokenSet_25_data_[] = { 335556466UL, 14071921
 // "log-input" "fragments" "time-range" "controller" LINE_COMMENT "exit" 
 // "nameif" "access-group" COLON_COMMENT 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_25(_tokenSet_25_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_26_data_[] = { 2189688896UL, 4194304UL, 256UL, 2415902720UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_26_data_[] = { 2189688896UL, 4194304UL, 256UL, 4278190080UL, 575UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // "ip" "igmp" "ospf" "pim" "description" "no" "rip" "nameif" "vlan" "speed" 
 // "duplex" "ddns" "forward" "delay" "hold-time" "ipv6" "mac-address" "multicast" 
 // PPPOE "security-level" "shutdown" "switchport" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_26(_tokenSet_26_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_27_data_[] = { 2189688896UL, 4194304UL, 256UL, 2415902912UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_26(_tokenSet_26_data_,12);
+const unsigned long PIXCfgParser::_tokenSet_27_data_[] = { 2189688896UL, 4194304UL, 256UL, 4278386688UL, 575UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // "ip" "igmp" "ospf" "pim" "description" "no" "rip" LINE_COMMENT "exit" 
 // "nameif" "vlan" "speed" "duplex" "ddns" "forward" "delay" "hold-time" 
 // "ipv6" "mac-address" "multicast" PPPOE "security-level" "shutdown" "switchport" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_27(_tokenSet_27_data_,8);
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_27(_tokenSet_27_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_28_data_[] = { 8192UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_28(_tokenSet_28_data_,6);

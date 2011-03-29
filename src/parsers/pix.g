@@ -1243,18 +1243,37 @@ hostaddr_expr :
 
 
 log : (LOG | LOG_INPUT)
-      (
-        (level_int:INT_CONST (INTERVAL log_interval:INT_CONST)? )? | level_word:WORD 
-      )
-        {
-            importer->logging = true;
-            if (level_int) importer->log_level = level_int->getText();
-            if (level_word) importer->log_level = level_word->getText();
-            if (log_interval) importer->log_interval = log_interval->getText();
-
-            *dbg << "logging " << importer->log_level
-                 << " " << importer->log_interval;
-        }
+    {
+        importer->logging = true;
+    }
+    (
+          (
+            (
+                INT_CONST | 
+                LOG_LEVEL_ALERTS |
+                LOG_LEVEL_CRITICAL |
+                LOG_LEVEL_DEBUGGING |
+                LOG_LEVEL_EMERGENCIES |
+                LOG_LEVEL_ERRORS |
+                LOG_LEVEL_INFORMATIONAL |
+                LOG_LEVEL_NOTIFICATIONS |
+                LOG_LEVEL_WARNINGS |
+                LOG_LEVEL_DISABLE |
+                LOG_LEVEL_INACTIVE
+            ) { importer->log_level = LT(0)->getText(); }
+          )?
+          (
+            (
+                INTERVAL INT_CONST
+            ) { importer->log_interval = LT(0)->getText(); }
+          )?
+    )
+    {
+//        if (importer->log_level == "log") importer->log_level = "";
+//        if (importer->log_interval == "log") importer->log_interval = "";
+        *dbg << "logging level '" << importer->log_level
+             << "' interval '" << importer->log_interval << "'";
+    }
     ;
 
 fragments : FRAGMENTS
@@ -1883,6 +1902,17 @@ tokens
 
     LOG = "log";
     LOG_INPUT = "log-input";
+
+    LOG_LEVEL_ALERTS = "alerts";
+    LOG_LEVEL_CRITICAL = "critical";
+    LOG_LEVEL_DEBUGGING = "debugging";
+    LOG_LEVEL_EMERGENCIES = "emergencies";
+    LOG_LEVEL_ERRORS = "errors";
+    LOG_LEVEL_INFORMATIONAL = "informational";
+    LOG_LEVEL_NOTIFICATIONS = "notifications";
+    LOG_LEVEL_WARNINGS = "warnings";
+    LOG_LEVEL_DISABLE = "disable";
+    LOG_LEVEL_INACTIVE = "inactive";
 
     ESTABLISHED = "established";
     FRAGMENTS = "fragments";
