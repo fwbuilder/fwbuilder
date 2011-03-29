@@ -773,6 +773,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
 bool ObjectManipulator::getDeleteMenuState(FWObject *obj)
 {
+    if (obj->isReadOnly()) return false;
+
     QString objPath = obj->getPath(true).c_str();
     bool del_menu_item_state = FWBTree().getDeleteMenuState(objPath);
 

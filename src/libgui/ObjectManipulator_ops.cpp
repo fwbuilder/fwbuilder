@@ -503,6 +503,8 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
     if (object_library->getId() == FWObjectDatabase::STANDARD_LIB_ID)
         return;
 
+    if (obj->isReadOnly()) return;
+
     if (obj->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
         obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return;
     

@@ -1,5 +1,9 @@
 2011-03-28  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator.cpp (getDeleteMenuState): see #2226 fixed GUI
+	crash that happened when user tried to delete or cut an object
+	from locked library.
+
 	* RuleOptionsDialog.cpp (loadFWObject): see #2230 the GUI should
 	allow limit-burst values of up to 10000
 

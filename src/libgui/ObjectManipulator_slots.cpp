@@ -300,7 +300,7 @@ void ObjectManipulator::delObj(QUndoCommand* macro)
     
     if (so2.size()==0) return;
     
-    if (so2.size()>1 || !Library::isA(so2.front()))
+    if (so2.size() > 1 || ! Library::isA(so2.front()))
     {
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         ConfirmDeleteObjectDialog * dlg = new ConfirmDeleteObjectDialog(this);
