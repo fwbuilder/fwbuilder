@@ -1,3 +1,8 @@
+2011-03-28  vadim  <vadim@netcitadel.com>
+
+	* RuleOptionsDialog.cpp (loadFWObject): see #2230 the GUI should
+	allow limit-burst values of up to 10000
+
 2011-03-27  vadim  <vadim@netcitadel.com>
 
 	* import/PIXImporter.cpp (addLogging): see #2279 Support for import

@@ -41,7 +41,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="ipt">
       <layout class="QGridLayout">
@@ -63,7 +63,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="tab1">
           <attribute name="title">
@@ -451,7 +451,11 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="ipt_burst"/>
+            <widget class="QSpinBox" name="ipt_burst">
+             <property name="maximum">
+              <number>10000</number>
+             </property>
+            </widget>
            </item>
            <item row="2" column="2" colspan="6">
             <spacer name="horizontalSpacer_5">
@@ -785,6 +789,9 @@
                  <width>80</width>
                  <height>32767</height>
                 </size>
+               </property>
+               <property name="maximum">
+                <number>10000</number>
                </property>
               </widget>
              </item>
