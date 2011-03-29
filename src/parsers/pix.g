@@ -238,7 +238,7 @@ ip_protocol_names : (
 
 //****************************************************************
 
-named_object_network : OBJECT NETWORK name:WORD
+named_object_network : OBJECT NETWORK name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -247,7 +247,6 @@ named_object_network : OBJECT NETWORK name:WORD
                 << " Named Object " << name->getText() << std::endl;
         }
         (
-            NEWLINE
             named_object_network_parameters
         )*
     ;
@@ -264,6 +263,7 @@ named_object_network_parameters :
         |
             named_object_description
         )
+        NEWLINE
     ;
 
 named_object_nat : NAT
@@ -348,7 +348,7 @@ subnet_addr : (SUBNET ((a:IPV4 nm:IPV4) | v6:IPV6))
 
 //****************************************************************
 
-named_object_service : OBJECT SERVICE name:WORD
+named_object_service : OBJECT SERVICE name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -357,7 +357,6 @@ named_object_service : OBJECT SERVICE name:WORD
                 << " Named Object " << name->getText() << std::endl;
         }
         (
-            NEWLINE
             named_object_service_parameters
         )*
     ;
@@ -376,6 +375,7 @@ named_object_service_parameters :
         |
             named_object_description
         )
+        NEWLINE
         ;
 
 service_icmp : SERVICE ICMP
@@ -464,7 +464,7 @@ service_unknown : SERVICE WORD
 
 //****************************************************************
 
-object_group_network : OBJECT_GROUP NETWORK name:WORD
+object_group_network : OBJECT_GROUP NETWORK name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -478,7 +478,6 @@ object_group_network : OBJECT_GROUP NETWORK name:WORD
     ;
 
 object_group_network_parameters :
-        NEWLINE
         (
             object_group_description
         |
@@ -486,6 +485,7 @@ object_group_network_parameters :
         |
             network_object
         )
+        NEWLINE
     ;
 
 object_group_description : DESCRIPTION
@@ -562,7 +562,7 @@ network_object : NETWORK_OBJECT
 
 //****************************************************************
 
-object_group_protocol : OBJECT_GROUP PROTOCOL name:WORD
+object_group_protocol : OBJECT_GROUP PROTOCOL name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -576,7 +576,6 @@ object_group_protocol : OBJECT_GROUP PROTOCOL name:WORD
     ;
 
 object_group_protocol_parameters :
-        NEWLINE
         (
             object_group_description
         |
@@ -584,6 +583,7 @@ object_group_protocol_parameters :
         |
             protocol_object
         )
+        NEWLINE
     ;
 
 protocol_object : PROTOCOL_OBJECT
@@ -617,7 +617,7 @@ protocol_object : PROTOCOL_OBJECT
 
 //****************************************************************
 
-object_group_icmp_8_0 : OBJECT_GROUP ICMP_OBJECT name:WORD
+object_group_icmp_8_0 : OBJECT_GROUP ICMP_OBJECT name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -630,7 +630,7 @@ object_group_icmp_8_0 : OBJECT_GROUP ICMP_OBJECT name:WORD
         )*
     ;
 
-object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
+object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -644,7 +644,6 @@ object_group_icmp_8_3 : OBJECT_GROUP ICMP_TYPE name:WORD
     ;
 
 object_group_icmp_parameters :
-        NEWLINE
         (
             object_group_description
         |
@@ -652,6 +651,7 @@ object_group_icmp_parameters :
         |
             icmp_object
         )
+        NEWLINE
     ;
 
 icmp_object : ICMP_OBJECT
@@ -686,7 +686,7 @@ icmp_object : ICMP_OBJECT
 
 //****************************************************************
 
-object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpudp:TCP_UDP )?
+object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpudp:TCP_UDP )? NEWLINE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -703,7 +703,6 @@ object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpu
     ;
 
 object_group_service_parameters :
-        NEWLINE
         (
             object_group_description
         |
@@ -713,6 +712,7 @@ object_group_service_parameters :
         |
             port_object
         )
+        NEWLINE
     ;
 
 service_object : SERVICE_OBJECT

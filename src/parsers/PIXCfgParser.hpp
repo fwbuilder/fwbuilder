@@ -268,6 +268,16 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_27;
 	static const unsigned long _tokenSet_28_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_28;
+	static const unsigned long _tokenSet_29_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_29;
+	static const unsigned long _tokenSet_30_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_30;
+	static const unsigned long _tokenSet_31_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_31;
+	static const unsigned long _tokenSet_32_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_32;
+	static const unsigned long _tokenSet_33_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_33;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/
