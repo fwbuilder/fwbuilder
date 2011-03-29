@@ -192,6 +192,9 @@ public:
 	public: void v7_dhcp_address();
 	public: void v7_static_address();
 	public: void icmp_types_for_icmp_command();
+	public: void nat_top_level_command();
+	public: void global_top_level_command();
+	public: void static_top_level_command();
 public:
 	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
 	{
@@ -203,10 +206,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 178;
+	static const int NUM_TOKENS = 180;
 #else
 	enum {
-		NUM_TOKENS = 178
+		NUM_TOKENS = 180
 	};
 #endif
 	

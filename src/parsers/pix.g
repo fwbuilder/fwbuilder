@@ -135,6 +135,14 @@ cfgfile :
         |
             icmp_top_level_command
         |
+//            nat_old_top_level_command
+//        |
+//            nat_new_top_level_command
+//        |
+//            global_top_level_command
+//        |
+//            static_top_level_command
+//        |
             access_group
         |
             exit
@@ -474,7 +482,7 @@ object_group_network : OBJECT_GROUP NETWORK name:WORD NEWLINE
         }
         (
             object_group_network_parameters
-        )+
+        )*
     ;
 
 object_group_network_parameters :
@@ -699,7 +707,7 @@ object_group_service : OBJECT_GROUP SERVICE name:WORD ( tcp:TCP | udp:UDP | tcpu
         }
         (
             object_group_service_parameters
-        )+
+        )*
     ;
 
 object_group_service_parameters :
@@ -1789,19 +1797,33 @@ exit: EXIT
 
 comment : (LINE_COMMENT | COLON_COMMENT) ;
 
-// comment: COMMENT_START
-//         {
-//             *dbg << LT(1)->getLine() << ":";
-//             std::string comm;
-//             while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
-//             {
-//                 comm += LT(1)->getText() + " ";
-//                 consume();
-//             }
-//             importer->addInterfaceComment( comm );
-//             *dbg << " COMMENT " << comm << std::endl;
-//         }
-//     ;
+
+//****************************************************************
+// NAT commands
+
+nat_old_top_level_command : NAT 
+    {
+        consumeUntil(NEWLINE);
+    }
+    ;
+
+nat_new_top_level_command : NAT 
+    {
+        consumeUntil(NEWLINE);
+    }
+    ;
+
+global_top_level_command : GLOBAL
+    {
+        consumeUntil(NEWLINE);
+    }
+    ;
+
+static_top_level_command : STATIC
+    {
+        consumeUntil(NEWLINE);
+    }
+    ;
 
 
 //****************************************************************
@@ -1948,6 +1970,8 @@ tokens
     SUBNET = "subnet";
 
     NAT = "nat";
+    GLOBAL = "global";
+    STATIC = "static";
 
     SSH = "ssh";
     TELNET = "telnet";
