@@ -298,3 +298,5 @@ exit
 object-group service tcp-udp-1 tcp-udp
  port-object eq 10001
 
+access-list inside_in extended permit ip any any
+access-group inside_in in interface inside

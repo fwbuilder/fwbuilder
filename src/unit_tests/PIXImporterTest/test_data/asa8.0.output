@@ -1,0 +1,52 @@
+Version: 8.0
+Host name: pixfirewall
+Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+New interface: Ethernet0
+Interface parameters: inside  
+Interface label: inside
+Interface address: 192.168.2.221/255.255.255.0
+New interface: Ethernet1
+Interface parameters: outside  
+Interface label: outside
+Interface address: 192.0.2.221/255.255.255.0
+New interface: Ethernet2
+Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
+New interface: Ethernet3
+Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
+New interface: Ethernet4
+Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
+Object Group (network) net-1Object Group (network) net-2Object Group (network) host-1Object Group (network) mixed-1Object Group (network) host-2Object Group (service) tcp-1Object Group (service) mixed-service-1Object Group (service) service-rangesObject Group (icmp) icmp-1Object Group (icmp) icmp-2Object Group (icmp) icmp-3Object Group (protocol) protocol-1Object Group (protocol) proto-icmpObject Group (protocol) proto-icmp6Parser warning: IPv6 import is not supported. 
+Object Group (protocol) proto-ipObject Group (protocol) proto-ipsecObject Group (protocol) proto-pptpObject Group (protocol) proto-snpObject Group (protocol) proto-tcpObject Group (protocol) proto-udpRuleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_outside
+Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: icmp_commands_inside
+Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
+Ruleset: telnet_commands_inside
+Interface Ethernet0 ruleset telnet_commands_inside direction 'in' 
+Ruleset: ssh_commands_inside
+Interface Ethernet0 ruleset ssh_commands_inside direction 'in' 

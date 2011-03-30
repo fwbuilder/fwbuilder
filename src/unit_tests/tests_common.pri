@@ -55,6 +55,7 @@ DEPENDPATH = ../../common \
 
 STATIC_LIBS += \
     ../main/libtest_main.a \
+    ../../import/libimport.a \
     ../../libgui/libgui.a \
     ../../common/libcommon.a \
     ../../iptlib/libiptlib.a \
@@ -64,7 +65,6 @@ STATIC_LIBS += \
     ../../fwtransfer/libfwtransfer.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
-    ../../import/libimport.a \
     ../../parsers/libfwbparser.a \
     $$ANTLR_LIBS \
     $$CPPUNIT_LIBS

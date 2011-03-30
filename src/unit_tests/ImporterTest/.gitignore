@@ -1,0 +1,2 @@
+*.fwb
+!test_data/*.fwb

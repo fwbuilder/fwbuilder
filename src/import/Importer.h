@@ -82,6 +82,7 @@ public:
     ImporterException(const QString &e) { err = e; }
     virtual ~ImporterException() throw() {}
     QString toString() { return err; }
+    virtual const char* what() const throw() { return err.toStdString().c_str(); }
 };
 
 class Importer

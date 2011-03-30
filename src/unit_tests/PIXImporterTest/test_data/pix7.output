@@ -1,0 +1,47 @@
+Version: 7.2
+Host name: pix1
+Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+Name 1.2.3.4 gw
+Name 192.168.3.0 fake_network
+Name 192.168.4.1 inside_ip
+New interface: Ethernet0
+New interface: Ethernet0.101
+Interface parameters: outside  
+Interface label: outside
+Interface address: 192.0.2.253/255.255.255.0
+New interface: Ethernet0.102
+Interface parameters: dmz20  
+Interface label: dmz20
+Interface address: 10.0.0.253/255.255.255.0
+Parser warning: failover IP detected. Failover is not supported by import at this time
+New interface: Ethernet1
+Interface parameters: inside  
+Interface label: inside
+Interface address: 10.1.1.206/255.255.255.0
+New interface: Ethernet2
+Interface comment: LAN/STATE Failover Interface 
+New interface: Ethernet3
+Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
+New interface: Ethernet4
+Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
+New interface: Ethernet5
+Warning: interface Ethernet5 was not imported because it is in "shutdown" mode
+New interface: Ethernet6
+Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
+Object Group (network) outside.id12051X6282.src.net.0Object Group (network) outside.id12051X6282.src.net.1Object Group (network) outside.id12051X6282.src.net.2Ruleset: outside_in
+Ruleset: outside_in
+Ruleset: outside_in
+Ruleset: outside_in
+Ruleset: inside_out
+Ruleset: inside_out
+Ruleset: inside_out
+Ruleset: inside_out
+Ruleset: inside_out
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: id12251X6282.0
+Interface Ethernet1 ruleset inside_in direction 'in' 
+Interface Ethernet0.101 ruleset outside_in direction 'in' 

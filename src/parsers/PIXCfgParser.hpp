@@ -192,7 +192,8 @@ public:
 	public: void v7_dhcp_address();
 	public: void v7_static_address();
 	public: void icmp_types_for_icmp_command();
-	public: void nat_top_level_command();
+	public: void nat_old_top_level_command();
+	public: void nat_new_top_level_command();
 	public: void global_top_level_command();
 	public: void static_top_level_command();
 public:

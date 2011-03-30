@@ -1,0 +1,39 @@
+Version: 8.3
+Host name: asa5505
+New interface: Vlan1
+Interface parameters: inside  
+Interface label: inside
+Interface address: 192.168.1.1/255.255.255.0
+New interface: Vlan2
+Interface parameters: outside  
+Interface label: outside
+Interface address: dhcp/
+New interface: Ethernet0/0
+Interface comment: Switch port 0 / 0 
+Named object (service) http.0Named object (service) https.0Named object (address) server-1.0Named object (address) Internal_net.0Named object (address) external_net.0Object Group (service) srv-group-1Named object (service) ip2Object Group (protocol) pg1Object Group (network) src-network-group-1Object Group (network) dst-network-group-1Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Ruleset: inside_in
+Interface Vlan1 ruleset inside_in direction 'in' 

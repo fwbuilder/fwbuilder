@@ -65,6 +65,7 @@ public:
     ObjectMakerException(const QString &e) { err = e; }
     virtual ~ObjectMakerException() throw() {}
     QString toString() { return err; }
+    virtual const char* what() const throw() { return err.toStdString().c_str(); }
 };
 
 

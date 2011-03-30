@@ -682,7 +682,7 @@ void PIXImporter::newObjectGroupService(const string &name)
 bool PIXImporter::isKnownServiceGroupName(const string &object_group_name)
 {
     QString qs_object_group_name = QString::fromUtf8(object_group_name.c_str());
-    qDebug() << "isKnownServiceGroupName:" << qs_object_group_name;
+    if (fwbdebug) qDebug() << "isKnownServiceGroupName:" << qs_object_group_name;
 
     if (named_objects_registry.count(qs_object_group_name) > 0)
     {
