@@ -35,6 +35,8 @@
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/NAT.h"
 
 #include <QString>
 
@@ -53,6 +55,29 @@ class PIXImporter : public IOSImporter
     libfwbuilder::FWObject *current_object_group;
 
     QMap<QString,libfwbuilder::FWObject*> named_objects_registry;
+
+    // variables for the nat rules
+    libfwbuilder::NATRule::NATRuleTypes rule_type;
+    std::string prenat_interface;
+    std::string postnat_interface;
+
+    std::string real_a;
+    std::string real_nm;
+    std::string mapped_a;
+    std::string mapped_nm;
+    std::string real_addr_acl;
+    std::string mapped_port_spec;
+    std::string real_port_spec;
+    std::string static_max_conn;
+    std::string static_max_emb_conn;
+
+    std::string nat_num;
+    std::string nat_a;
+    std::string nat_nm;
+    std::string nat_acl;
+
+    std::string global_pool_num;
+    std::string global_interface;
     
     PIXImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
@@ -65,6 +90,10 @@ class PIXImporter : public IOSImporter
     void clearTempVars();
     
     virtual void run();
+
+    void pushPolicyRule();
+    void pushNATRule();
+    virtual void pushRule();
     
     // this method actually adds interfaces to the firewall object
     // and does final clean up.

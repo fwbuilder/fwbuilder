@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301451903" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301462978" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -880,7 +880,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id292" disabled="False" group="" log="False" position="18" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;1 ( global) &#10;Created during import of  line 86">
+          <PolicyRule id="id292" disabled="False" group="" log="False" position="18" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;1 ( global ) &#10;Created during import of  line 86">
             <Src neg="False">
               <ObjectRef ref="id17"/>
             </Src>
@@ -920,7 +920,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id316" disabled="False" group="" log="False" position="20" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;5 ( global) &#10;Created during import of  line 94">
+          <PolicyRule id="id316" disabled="False" group="" log="False" position="20" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;5 ( global ) &#10;Created during import of  line 94">
             <Src neg="False">
               <ObjectRef ref="id3"/>
             </Src>
@@ -940,7 +940,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id328" disabled="False" group="" log="False" position="21" action="Deny" direction="Inbound" comment="Imported from inside_acl_in&#10;6 ( global) &#10;Created during import of  line 96">
+          <PolicyRule id="id328" disabled="False" group="" log="False" position="21" action="Deny" direction="Inbound" comment="Imported from inside_acl_in&#10;6 ( global ) &#10;Created during import of  line 96">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -960,7 +960,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id340" disabled="False" group="" log="False" position="22" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;7 ( global) &#10;Created during import of  line 98">
+          <PolicyRule id="id340" disabled="False" group="" log="False" position="22" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;7 ( global ) &#10;Created during import of  line 98">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -980,7 +980,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id352" disabled="False" group="" log="False" position="23" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;17 ( global) &#10;Created during import of  line 107">
+          <PolicyRule id="id352" disabled="False" group="" log="False" position="23" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;17 ( global ) &#10;Created during import of  line 107">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1020,7 +1020,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id376" disabled="False" group="" log="False" position="25" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;18 ( global) &#10;Created during import of  line 110">
+          <PolicyRule id="id376" disabled="False" group="" log="False" position="25" action="Accept" direction="Inbound" comment="Imported from inside_acl_in&#10;18 ( global ) &#10;Created during import of  line 110">
             <Src neg="False">
               <ObjectRef ref="id17"/>
             </Src>
@@ -1040,7 +1040,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id388" disabled="False" group="" log="True" position="26" action="Deny" direction="Inbound" comment="Imported from inside_acl_in&#10;19 ( global) ' catch all' rule &#10;Created during import of  line 113">
+          <PolicyRule id="id388" disabled="False" group="" log="True" position="26" action="Deny" direction="Inbound" comment="Imported from inside_acl_in&#10;19 ( global ) ' catch all' rule &#10;Created during import of  line 113">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1061,7 +1061,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id400" disabled="False" group="" log="True" position="27" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;0 ( ethernet0) &#10;Created during import of  line 53">
+          <PolicyRule id="id400" disabled="False" group="" log="True" position="27" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;0 ( ethernet0 ) &#10;Created during import of  line 53">
             <Src neg="False">
               <ObjectRef ref="id3"/>
             </Src>
@@ -1103,7 +1103,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id424" disabled="False" group="" log="False" position="29" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;3 ( global) &#10;Created during import of  line 56">
+          <PolicyRule id="id424" disabled="False" group="" log="False" position="29" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;3 ( global ) &#10;Created during import of  line 56">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1123,7 +1123,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id436" disabled="False" group="" log="False" position="30" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;4 ( global) fw uses DHCP plus many DHCP requests from cable modem 6 ( global) &#10;Created during import of  line 65">
+          <PolicyRule id="id436" disabled="False" group="" log="False" position="30" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;4 ( global ) fw uses DHCP plus many DHCP requests from cable modem 6 ( global ) &#10;Created during import of  line 65">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1143,7 +1143,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id448" disabled="False" group="" log="False" position="31" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;7 ( global) &#10;Created during import of  line 67">
+          <PolicyRule id="id448" disabled="False" group="" log="False" position="31" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;7 ( global ) &#10;Created during import of  line 67">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1163,7 +1163,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id460" disabled="False" group="" log="False" position="32" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;10 ( global) using swatch to automatically block probing ssh connections, so no need to limit &#10;Created during import of  line 72">
+          <PolicyRule id="id460" disabled="False" group="" log="False" position="32" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;10 ( global ) using swatch to automatically block probing ssh connections, so no need to limit &#10;Created during import of  line 72">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1203,7 +1203,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id484" disabled="False" group="" log="False" position="34" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;11 ( global) &#10;Created during import of  line 76">
+          <PolicyRule id="id484" disabled="False" group="" log="False" position="34" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;11 ( global ) &#10;Created during import of  line 76">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1243,7 +1243,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id508" disabled="False" group="" log="False" position="36" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;17 ( global) &#10;Created during import of  line 80">
+          <PolicyRule id="id508" disabled="False" group="" log="False" position="36" action="Accept" direction="Inbound" comment="Imported from outside_acl_in&#10;17 ( global ) &#10;Created during import of  line 80">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1283,7 +1283,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id532" disabled="False" group="" log="True" position="38" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;19 ( global) ' catch all' rule &#10;Created during import of  line 84">
+          <PolicyRule id="id532" disabled="False" group="" log="True" position="38" action="Deny" direction="Inbound" comment="Imported from outside_acl_in&#10;19 ( global ) ' catch all' rule &#10;Created during import of  line 84">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

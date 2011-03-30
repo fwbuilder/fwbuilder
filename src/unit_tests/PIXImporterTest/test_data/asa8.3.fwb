@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301451903" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301464491" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -436,51 +436,81 @@
       </ObjectGroup>
       <ObjectGroup id="id4" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id5" name="Address Tables" comment="" ro="False"/>
-      <ObjectGroup id="id6" name="Groups" comment="" ro="False">
-        <ObjectGroup id="id7" name="outside.id178211X29963.osrc.net.0" comment="Created during import of  line 64" ro="False">
-          <ObjectRef ref="id19"/>
-          <ObjectRef ref="id20"/>
-        </ObjectGroup>
-        <ObjectGroup id="id10" name="outside.id21353X4994.osrc.net.0" comment="Created during import of  line 68" ro="False">
-          <ObjectRef ref="id19"/>
-          <ObjectRef ref="id21"/>
-          <ObjectRef ref="id20"/>
-        </ObjectGroup>
-        <ObjectGroup id="id14" name="outside.id77971X5929.osrc.net.1" comment="Created during import of  line 73" ro="False">
-          <ObjectRef ref="id19"/>
-          <ObjectRef ref="id20"/>
-        </ObjectGroup>
+      <ObjectGroup id="id6" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id7" name="Hosts" comment="" ro="False"/>
+      <ObjectGroup id="id8" name="Networks" comment="" ro="False">
+        <Network id="id9" name="internal_subnet_1" comment="Internal Subnet 1 &#10;Created during import of  line 55" ro="False" address="192.168.1.0" netmask="255.255.255.192"/>
+        <Network id="id10" name="internal_subnet_2" comment="Internal Subnet 2 &#10;Created during import of  line 58" ro="False" address="192.168.1.64" netmask="255.255.255.192"/>
+        <Network id="id11" name="Internal_net" comment="Created during import of  line 60" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+        <Network id="id12" name="net-10.10.10.0/255.255.255.0" comment="Created during import of  line 92" ro="False" address="10.10.10.0" netmask="255.255.255.0"/>
+        <Network id="id13" name="net-10.1.1.0/255.255.255.0" comment="Created during import of  line 93" ro="False" address="10.1.1.0" netmask="255.255.255.0"/>
       </ObjectGroup>
-      <ObjectGroup id="id17" name="Hosts" comment="" ro="False"/>
-      <ObjectGroup id="id18" name="Networks" comment="" ro="False">
-        <Network id="id19" name="internal_subnet_1" comment="Internal Subnet 1 &#10;Created during import of  line 55" ro="False" address="192.168.1.0" netmask="255.255.255.192"/>
-        <Network id="id20" name="internal_subnet_2" comment="Internal Subnet 2 &#10;Created during import of  line 58" ro="False" address="192.168.1.64" netmask="255.255.255.192"/>
-        <Network id="id21" name="Internal_net" comment="Created during import of  line 60" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
-      </ObjectGroup>
-      <ObjectGroup id="id22" name="Address Ranges" comment="" ro="False"/>
+      <ObjectGroup id="id14" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
-    <ServiceGroup id="id23" name="Services" comment="" ro="False">
-      <ServiceGroup id="id24" name="Groups" comment="" ro="False"/>
-      <ServiceGroup id="id25" name="ICMP" comment="" ro="False"/>
-      <ServiceGroup id="id26" name="IP" comment="" ro="False">
-        <IPService id="id27" any_opt="False" dscp="" fragm="False" lsrr="False" protocol_num="0" rr="False" rtralt="False" rtralt_value="False" short_fragm="False" ssrr="False" tos="" ts="False" name="ip" comment="Created during import of  line 78" ro="False"/>
+    <ServiceGroup id="id15" name="Services" comment="" ro="False">
+      <ServiceGroup id="id16" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id17" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id18" name="IP" comment="" ro="False">
+        <IPService id="id19" any_opt="False" dscp="" fragm="False" lsrr="False" protocol_num="0" rr="False" rtralt="False" rtralt_value="False" short_fragm="False" ssrr="False" tos="" ts="False" name="ip" comment="Created during import of  line 65" ro="False"/>
       </ServiceGroup>
-      <ServiceGroup id="id28" name="TCP" comment="" ro="False"/>
-      <ServiceGroup id="id29" name="UDP" comment="" ro="False"/>
-      <ServiceGroup id="id30" name="Users" comment="" ro="False"/>
-      <ServiceGroup id="id31" name="Custom" comment="" ro="False"/>
-      <ServiceGroup id="id32" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id20" name="TCP" comment="" ro="False">
+        <TCPService id="id21" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 22:22" comment="Created during import of  line 92" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+      </ServiceGroup>
+      <ServiceGroup id="id22" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id23" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id24" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id25" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
-    <ObjectGroup id="id33" name="Firewalls" comment="" ro="False">
-      <Firewall id="id34" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="8.3" name="asa5505" comment="Created during import of  line 5" ro="False">
-        <NAT id="id38" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+    <ObjectGroup id="id26" name="Firewalls" comment="" ro="False">
+      <Firewall id="id27" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="8.3" name="asa5505" comment="Created during import of  line 5" ro="False">
+        <NAT id="id55" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
-        <Policy id="id36" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <Policy id="id29" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id31" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Imported from ssh_commands_inside&#10;Created during import of  line 92">
+            <Src neg="False">
+              <ObjectRef ref="id12"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id27"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id59"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id43" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Imported from ssh_commands_inside&#10;Created during import of  line 93">
+            <Src neg="False">
+              <ObjectRef ref="id13"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id27"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id21"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id59"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Policy id="id51" name="outside_acl_in" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id53" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="Created during import of  line 78">
+        <Policy id="id68" name="outside_acl_in" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id70" disabled="False" group="" log="True" position="0" action="Deny" direction="Both" comment="Created during import of  line 65">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -488,7 +518,7 @@
               <ObjectRef ref="sysid0"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id27"/>
+              <ServiceRef ref="id19"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -502,20 +532,20 @@
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Routing id="id40" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <Routing id="id57" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id42" dedicated_failover="False" dyn="True" label="inside" security_level="100" unnum="False" unprotected="False" name="Vlan1" comment="inside interface " ro="False">
+        <Interface id="id59" dedicated_failover="False" dyn="True" label="inside" security_level="100" unnum="False" unprotected="False" name="Vlan1" comment="inside interface " ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id44" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="Vlan2" comment="outside interface " ro="False">
-          <IPv4 id="id45" name="asa5505:Vlan2:ip" comment="Created during import of  line 23" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+        <Interface id="id61" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="Vlan2" comment="outside interface " ro="False">
+          <IPv4 id="id62" name="asa5505:Vlan2:ip" comment="Created during import of  line 23" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id47" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Ethernet0/0" comment="Switch port 0 / 0 " ro="False">
+        <Interface id="id64" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Ethernet0/0" comment="Switch port 0 / 0 " ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id49" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Vlan2020" comment="Created during import of  line 30" ro="False">
+        <Interface id="id66" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Vlan2020" comment="Created during import of  line 30" ro="False">
           <InterfaceOptions/>
         </Interface>
         <FirewallOptions>
@@ -536,7 +566,7 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id65" name="Clusters" comment="" ro="False"/>
-    <IntervalGroup id="id66" name="Time" comment="" ro="False"/>
+    <ObjectGroup id="id82" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id83" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>

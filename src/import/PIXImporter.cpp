@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -101,6 +99,28 @@ void PIXImporter::clear()
     object_group_name = "";
     object_group_comment = "";
     object_group_service_protocol = "";
+
+    rule_type = NATRule::Unknown;
+    prenat_interface = "";
+    postnat_interface = "";
+
+    real_a = "";
+    real_nm = "";
+    mapped_a = "";
+    mapped_nm = "";
+    real_addr_acl = "";
+    mapped_port_spec = "";
+    real_port_spec = "";
+    static_max_conn = "";
+    static_max_emb_conn = "";
+
+    nat_num = "";
+    nat_a = "";
+    nat_nm = "";
+    nat_acl = "";
+    global_pool_num = "";
+    global_interface = "";
+
 }
 
 /*
@@ -255,6 +275,18 @@ void PIXImporter::addLogging()
     }
 }
 
+
+void PIXImporter::pushRule()
+{
+//    assert(current_ruleset!=NULL);
+    if (current_rule==NULL) return;
+
+    if (rule_type == NATRule::Unknown)
+        IOSImporter::pushRule();
+    else
+        pushNATRule();
+}
+ 
 /*
  * Rearrange vlan interfaces. Importer creates all interfaces as
  * children of the firewall. Vlan interfaces should become

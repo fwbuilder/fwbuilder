@@ -226,12 +226,3 @@ access-group inside_out out interface inside
 access-group outside_in in interface outside
 access-group outside_out out interface outside
 
-
-! 
-! Rule  0 (NAT)
-nat (inside,outside) source dynamic Internal_net.0 interface description "0 (NAT)"
-! 
-! Rule  1 (NAT)
-nat (outside,inside) source static any any destination static interface server-1.0 service http.0 http.0 description "1 (NAT)"
-nat (outside,inside) source static any any destination static interface server-1.0 service https.0 https.0 description "1 (NAT)"
-

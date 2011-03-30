@@ -45,3 +45,13 @@ Ruleset: inside_in
 Ruleset: id12251X6282.0
 Interface Ethernet1 ruleset inside_in direction 'in' 
 Interface Ethernet0.101 ruleset outside_in direction 'in' 
+Interface Ethernet0.101 ruleset outside_in direction 'in' 
+Interface Ethernet1 ruleset inside_in direction 'in' 
+Interface Ethernet1 ruleset inside_out direction 'out' 
+Parser error: line 163:5: unexpected token: scopy
+Ruleset: ssh_commands_inside
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
+Ruleset: ssh_commands_inside
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
+Ruleset: ssh_commands_outside
+Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in' 

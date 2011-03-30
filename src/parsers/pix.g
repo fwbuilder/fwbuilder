@@ -135,14 +135,14 @@ cfgfile :
         |
             icmp_top_level_command
         |
-//            nat_old_top_level_command
-//        |
+            nat_old_top_level_command
+        |
 //            nat_new_top_level_command
 //        |
-//            global_top_level_command
-//        |
-//            static_top_level_command
-//        |
+            global_top_level_command
+        |
+            static_top_level_command
+        |
             access_group
         |
             exit
@@ -255,26 +255,26 @@ named_object_network : OBJECT NETWORK name:WORD NEWLINE
                 << " Named Object " << name->getText() << std::endl;
         }
         (
+            named_object_nat
+        |
+            named_object_description
+        |
             named_object_network_parameters
         )*
     ;
 
 named_object_network_parameters :
         (
-            named_object_nat
-        |
             host_addr
         |
             range_addr
         |
             subnet_addr
-        |
-            named_object_description
         )
         NEWLINE
     ;
 
-named_object_nat : NAT
+named_object_nat : NAT OPENING_PAREN interface_label 
         {
             importer->addMessageToLog(
                 "Parser warning: "
@@ -284,7 +284,7 @@ named_object_nat : NAT
         }
     ;
 
-named_object_description : DESCRIPTION
+named_object_description : DESCRIPTION 
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             *dbg << LT(1)->getLine() << ":";
@@ -299,12 +299,6 @@ named_object_description : DESCRIPTION
         }
     ;
 
-// construct such as "host 2001:0db8:85a3:0000:0000:8a2e:0370:7334" does not
-// parse but the parser should not fail catastrophically and should continue
-// working with input stream. This grammar splits words on ":" boundary and
-// so the ipv6 address appears as token INT_CONST (2001), then a word that
-// starts with ':'.
-//
 host_addr : (HOST (h:IPV4 | v6:IPV6))
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1211,11 +1205,11 @@ hostaddr_expr_2 : hostaddr_expr ;
 hostaddr_expr_3 : hostaddr_expr ;
 
 hostaddr_expr :
-        INTRFACE intf_name:WORD
+        INTRFACE interface_label
         {
-            importer->tmp_a = intf_name->getText();
+            importer->tmp_a = LT(0)->getText();
             importer->tmp_nm = "interface";
-            *dbg << "object " << intf_name->getText() << " ";
+            *dbg << "object " << LT(0)->getText() << " ";
         }
     |
         ( ( OBJECT | OBJECT_GROUP ) name:WORD )
@@ -1350,6 +1344,11 @@ controller : CONTROLLER
 intrface  : INTRFACE ( interface_command_6 | interface_command_7 )
     ;
 
+// unfortunately word "outside" is used as a keyword in nat commands
+// and is also common interface label
+interface_label : WORD | OUTSIDE
+    ;
+
 interface_command_6 : in:WORD pix6_interface_hw_speed    // pix 6
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1383,15 +1382,22 @@ interface_command_7 {bool have_interface_parameters = false;} : in:WORD NEWLINE
 pix6_interface_hw_speed : (
         AUI | AUTO | BNC | ( INT_CONST ( FULL | BASET | BASETX | AUTO ) )
     )
-    ;
+        ;
 
-nameif_top_level  : NAMEIF p_intf:WORD intf_label:WORD sec_level:WORD
+nameif_top_level
         {
-            std::string label = (intf_label) ? intf_label->getText() : "";
-            std::string seclevel = (sec_level) ? sec_level->getText() : "";
-            importer->setInterfaceParametes(p_intf->getText(), label, seclevel);
+            std::string intf_name, intf_label, sec_level;
+        } :
+        NAMEIF
+        WORD { intf_name = LT(0)->getText(); }
+        interface_label { intf_label = LT(0)->getText(); }
+        WORD { sec_level = LT(0)->getText(); }
+        {
+            importer->setInterfaceParametes(intf_name, intf_label, sec_level);
             *dbg << " NAMEIF: "
-                 << p_intf->getText() << label << seclevel << std::endl;
+                 << intf_name << " "
+                 << intf_label << " "
+                 << sec_level << std::endl;
         }
     ;
 
@@ -1493,17 +1499,10 @@ sec_level : SEC_LEVEL sec_level:INT_CONST
 // context in the grammar, function setInterfaceParametes() can locate
 // right interface using its first parameter.
 //
-nameif  : NAMEIF p_intf:WORD
-        (
-            ( WORD ) => intf_label:WORD sec_level:WORD |
-            ( )
-        )
+nameif  : NAMEIF interface_label
         {
-            std::string label = (intf_label) ? intf_label->getText() : "";
-            std::string seclevel = (sec_level) ? sec_level->getText() : "";
-            importer->setInterfaceParametes(p_intf->getText(), label, seclevel);
-            *dbg << " NAMEIF: "
-                 << p_intf->getText() << label << seclevel << std::endl;
+            importer->setInterfaceParametes(LT(0)->getText(), "", "");
+            *dbg << " NAMEIF: " << LT(0)->getText() << std::endl;
         }
     ;
 
@@ -1642,10 +1641,11 @@ ssh_command : SSH
                 {
                     importer->SaveTmpAddrToSrc();
                 }
-                intf_label:WORD
+                interface_label
             )
             {
-                std::string acl_name = "ssh_commands_" + intf_label->getText();
+                std::string intf_label = LT(0)->getText();
+                std::string acl_name = "ssh_commands_" + intf_label;
                 importer->setCurrentLineNumber(LT(0)->getLine());
                 importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
                 importer->newPolicyRule();
@@ -1655,7 +1655,7 @@ ssh_command : SSH
                 importer->dst_port_op = "eq";
                 importer->dst_port_spec = "ssh";
                 importer->setInterfaceAndDirectionForRuleSet(
-                    acl_name, intf_label->getText(), "in" );
+                    acl_name, intf_label, "in" );
                 importer->pushRule();
                 *dbg << std::endl;
             }
@@ -1673,10 +1673,11 @@ telnet_command : TELNET
                 {
                     importer->SaveTmpAddrToSrc();
                 }
-                intf_label:WORD
+                interface_label
             )
             {
-                std::string acl_name = "telnet_commands_" + intf_label->getText();
+                std::string intf_label = LT(0)->getText();
+                std::string acl_name = "telnet_commands_" + intf_label;
                 importer->setCurrentLineNumber(LT(0)->getLine());
                 importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
                 importer->newPolicyRule();
@@ -1686,7 +1687,7 @@ telnet_command : TELNET
                 importer->dst_port_op = "eq";
                 importer->dst_port_spec = "telnet";
                 importer->setInterfaceAndDirectionForRuleSet(
-                    acl_name, intf_label->getText(), "in" );
+                    acl_name, intf_label, "in" );
                 importer->pushRule();
                 *dbg << std::endl;
             }
@@ -1718,9 +1719,10 @@ icmp_top_level_command : ICMP
                 importer->SaveTmpAddrToSrc();
             }
             ( icmp_types_for_icmp_command )?
-            intf_label:WORD
+            interface_label
             {
-                std::string acl_name = "icmp_commands_" + intf_label->getText();
+                std::string intf_label = LT(0)->getText();
+                std::string acl_name = "icmp_commands_" + intf_label;
                 importer->setCurrentLineNumber(LT(0)->getLine());
                 importer->newUnidirRuleSet(acl_name, libfwbuilder::Policy::TYPENAME );
                 importer->newPolicyRule();
@@ -1729,7 +1731,7 @@ icmp_top_level_command : ICMP
                 importer->setDstSelf();
                 importer->protocol = "icmp";
                 importer->setInterfaceAndDirectionForRuleSet(
-                    acl_name, intf_label->getText(), "in" );
+                    acl_name, intf_label, "in" );
                 importer->pushRule();
             }
          )
@@ -1776,16 +1778,17 @@ remark : REMARK
 
 //****************************************************************
 
-access_group : ACCESS_GROUP aclname:WORD dir:WORD INTRFACE intf_label:WORD
+access_group : ACCESS_GROUP aclname:WORD dir:WORD INTRFACE interface_label
         {
+            std::string intf_label = LT(0)->getText();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setInterfaceAndDirectionForRuleSet(
                 aclname->getText(),
-                intf_label->getText(),
+                intf_label,
                 dir->getText() );
             *dbg << LT(1)->getLine() << ":"
                 << " INTRFACE: ACL '" << aclname->getText() << "'"
-                << " " << intf_label->getText()
+                << " " << intf_label
                 << " " << dir->getText() << std::endl;
         }
     ;
@@ -1801,10 +1804,69 @@ comment : (LINE_COMMENT | COLON_COMMENT) ;
 //****************************************************************
 // NAT commands
 
-nat_old_top_level_command : NAT 
-    {
-        consumeUntil(NEWLINE);
-    }
+nat_old_top_level_command : 
+        NAT OPENING_PAREN
+        interface_label { importer->prenat_interface = LT(0)->getText(); }
+        CLOSING_PAREN
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
+            *dbg << " SNAT rule " << std::endl;
+            importer->rule_type = libfwbuilder::NATRule::SNAT;
+            
+        }
+
+        //  <0-2147483647>  The <nat_id> of this group of hosts/networks.
+        INT_CONST
+        {
+            importer->nat_num = LT(0)->getText();
+        }
+
+        //  Hostname or A.B.C.D  The hosts/networks in this <nat_id> group
+        //  access-list          Specify access-list name after this keyword
+
+        nat_addr_match
+
+        nat_command_last_parameters
+
+        NEWLINE
+        {
+            importer->pushNATRule();
+        }
+    ;
+
+nat_addr_match :
+        (   
+            host_addr   // real
+            {
+                importer->nat_a = importer->tmp_a;
+                importer->nat_nm = importer->tmp_nm;
+            }
+        |
+            ACCESS_LIST acl_name:WORD
+            {
+                importer->nat_acl = acl_name->getText();
+            }
+        )
+    ;
+
+nat_command_last_parameters :
+        //  <0-65535>    The maximum number of simultaneous TCP connections
+        //  dns          Rewrite DNS address record
+        //  norandomseq  Disable TCP sequence number randomization
+        //  outside      Enable Outside NAT
+        //  tcp          Configure TCP specific parameters
+        //  udp          Configure UDP specific parameters
+        (DNS)?
+        (OUTSIDE)?
+        (TCP | UDP)?
+        max_conn:INT_CONST (max_emb_conn:INT_CONST)?
+        {
+            importer->static_max_conn = max_conn->getText();
+            if (max_emb_conn)
+                importer->static_max_emb_conn = max_emb_conn->getText();
+        }
     ;
 
 nat_new_top_level_command : NAT 
@@ -1813,18 +1875,157 @@ nat_new_top_level_command : NAT
     }
     ;
 
-global_top_level_command : GLOBAL
+global_top_level_command :
+        GLOBAL OPENING_PAREN 
+        interface_label { importer->global_interface = LT(0)->getText(); }
+        CLOSING_PAREN num:INT_CONST 
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->global_pool_num = num->getText();
+            *dbg << " global address pool "
+                 << importer->global_pool_num
+                 << " "
+                 << importer->global_interface
+                 << std::endl;
+        }
     {
         consumeUntil(NEWLINE);
     }
     ;
 
-static_top_level_command : STATIC
-    {
-        consumeUntil(NEWLINE);
-    }
+static_top_level_command :
+        STATIC OPENING_PAREN prenat_intf:WORD
+        COMMA postnat_intf:WORD CLOSING_PAREN
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
+            *dbg << " DNAT rule " << std::endl;
+            importer->rule_type = libfwbuilder::NATRule::DNAT;
+            importer->prenat_interface = prenat_intf->getText();
+            importer->postnat_interface = postnat_intf->getText();
+        }
+        //  Hostname or A.B.C.D  Global or mapped address
+        //  interface            Global address overload from interface
+        //  tcp                  TCP to be used as transport protocol
+        //  udp                  UDP to be used as transport protocol
+        (
+            static_starts_with_hostaddr
+        |
+            static_starts_with_tcp_udp
+        )
+        NEWLINE
+        {
+            importer->pushNATRule();
+        }
     ;
 
+static_starts_with_hostaddr : 
+        static_mapped_addr_match
+
+        //  Hostname or A.B.C.D  Real IP address of the host or hosts
+        //  access-list          Configure access-list name after this keyw
+
+        static_real_addr_match
+
+        static_command_common_last_parameters
+    ;
+
+static_mapped_addr_match :
+        (
+            host_addr
+            {
+                importer->mapped_a = importer->tmp_a;
+                importer->mapped_nm = importer->tmp_nm;
+            }
+        |
+            INTRFACE
+            {
+                importer->mapped_a = "interface";
+                importer->mapped_nm = "";
+            }
+        )
+    ;
+
+static_real_addr_match :
+        (   
+            host_addr   // real
+            {
+                importer->real_a = importer->tmp_a;
+                importer->real_nm = importer->tmp_nm;
+            }
+        |
+            ACCESS_LIST acl_name:WORD
+            {
+                importer->real_addr_acl = acl_name->getText();
+            }
+        )
+    ;
+
+static_starts_with_tcp_udp : ( TCP | UDP )
+        {
+            importer->protocol = LT(0)->getText();
+            *dbg << " SERVICE TCP/UDP" << LT(0)->getText() << " ";
+        }
+        //  Hostname or A.B.C.D  Global or mapped address
+        //  interface            Global address overload from interface
+
+        static_mapped_addr_match
+
+        // <0-65535>        Enter port number (0 - 65535)
+        // aol              
+        // bgp              
+        // chargen          
+        tcp_udp_port_spec
+        {
+            importer->mapped_port_spec = importer->tmp_port_spec_2;
+            *dbg << "mapped port " << importer->mapped_port_spec;
+        }
+
+        // Hostname or A.B.C.D  Real IP address of the host or hosts
+        // access-list          Configure access-list name after this keyword
+
+        static_real_addr_match
+
+        // <0-65535>        Enter port number (0 - 65535)
+        // aol              
+        // bgp              
+        // chargen          
+        tcp_udp_port_spec
+        {
+            importer->real_port_spec = importer->tmp_port_spec_2;
+            *dbg << "real port " << importer->real_port_spec;
+        }
+
+        static_command_common_last_parameters
+    ;
+
+static_command_common_last_parameters :
+        // <0-65535>    The maximum number of simultaneous tcp connections
+        //  dns          Use the created xlate to rewrite DNS address record
+        //  netmask      Configure Netmask to apply to IP addresses
+        //  norandomseq  Disable TCP sequence number randomization
+        //  tcp          Configure TCP specific parameters
+        //  udp          Configure UDP specific parameters
+        NETMASK nm:IPv4
+        {
+            importer->mapped_nm = nm->getText();
+        }
+    |
+        (TCP | UDP)
+        {
+            // <0-65535>  The maximum number of simultaneous tcp connections
+
+        }
+    |
+        max_conn:INT_CONST (max_emb_conn:INT_CONST)?
+        {
+            importer->static_max_conn = max_conn->getText();
+            if (max_emb_conn)
+                importer->static_max_emb_conn = max_emb_conn->getText();
+        }
+    ;
 
 //****************************************************************
 
@@ -1862,6 +2063,8 @@ tokens
     MULTICAST = "multicast";
 
     INTERVAL = "interval";
+
+    OUTSIDE = "outside";
 
     VLAN = "vlan";
     SWITCHPORT = "switchport";
@@ -1921,6 +2124,7 @@ tokens
     P_NEQ = "neq";
 
     RANGE = "range";
+
 
     LOG = "log";
     LOG_INPUT = "log-input";
@@ -2080,7 +2284,7 @@ NUMBER_ADDRESS_OR_WORD :
             )
         |
             ( 'a'..'z' | 'A'..'Z' | '$' )
-            ( '!'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' |
+            ( '!'..'\'' | '*'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' |
               '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
             { _ttype = WORD; }
         )

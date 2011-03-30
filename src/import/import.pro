@@ -6,17 +6,18 @@ TEMPLATE = lib
 #
 
 SOURCES = QStringListOperators.cpp \
-	  objectMaker.cpp \
+          objectMaker.cpp \
           addressObjectMaker.cpp \
           serviceObjectMaker.cpp \
           getProtoByName.cpp \
-	  getServByName.cpp \
+          getServByName.cpp \
           Importer.cpp \
           IOSImporter.cpp \
           IOSImporterRun.cpp \
           IPTImporter.cpp \
           IPTImporterRun.cpp \
           PIXImporter.cpp \
+          PIXImporterNat.cpp \
           PIXImporterRun.cpp \
 
 HEADERS	 = QStringListOperators.h \
@@ -24,7 +25,7 @@ HEADERS	 = QStringListOperators.h \
            addressObjectMaker.h \
            serviceObjectMaker.h \
            getProtoByName.h \
-	   getServByName.h \
+           getServByName.h \
            Importer.h \
            IOSImporter.h \
            IPTImporter.h \

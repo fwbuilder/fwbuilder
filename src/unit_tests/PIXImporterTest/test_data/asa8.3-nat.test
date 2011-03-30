@@ -1,0 +1,156 @@
+: Saved
+:
+ASA Version 8.3(2) 
+!
+hostname asa5505
+
+
+interface Vlan1
+  nameif inside
+  security-level 100
+  ip address 192.168.1.1 255.255.255.0 
+exit
+
+interface Vlan2
+  nameif outside
+  security-level 0
+  ip address dhcp setroute 
+exit
+
+interface Ethernet0/0
+  description Switch port 0/0
+exit
+
+
+no logging buffered
+no logging console
+no logging timestamp
+no logging on
+
+
+timeout xlate 0:0:0 
+timeout conn 0:0:0 
+timeout udp 0:0:0 
+timeout sunrpc 0:0:0 
+timeout h323 0:0:0 
+timeout sip 0:0:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 0:0:0 
+
+
+clear config ssh
+aaa authentication ssh console LOCAL
+
+clear config snmp-server
+no snmp-server enable traps
+
+clear config ntp
+
+
+no service resetinbound
+no service resetoutside
+no sysopt connection timewait
+no sysopt nodnsalias inbound
+no sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+
+service-policy global_policy global
+
+
+
+clear xlate
+clear config nat
+clear config access-list
+clear config icmp
+clear config telnet
+clear config object-group
+clear config object
+
+
+object service http.0
+  service tcp destination eq 80
+exit
+
+object service https.0
+  service tcp destination eq 443
+exit
+
+object network server-1.0
+  host 192.168.1.100
+exit
+
+object network Internal_net.0
+  subnet 192.168.1.0 255.255.255.0
+exit
+
+object network external_net.0
+  subnet 192.0.2.0 255.255.255.0
+
+object-group service id5102X14531.srv.tcp.0 tcp
+  port-object eq 80
+  port-object eq 443
+exit
+
+object service ip2 
+ service eigrp 
+
+object-group protocol pg1
+ protocol-object 111
+ protocol-object ah
+ protocol-object ip
+ protocol-object eigrp
+
+object-group network src-network-group-1
+ network-object 192.168.1.0 255.255.255.0
+ network-object 192.168.2.0 255.255.255.0
+
+object-group network dst-network-group-1
+ network-object object external_net.0
+
+
+object-group network outside.id178211X29963.osrc.net.0
+ network-object object internal_subnet_1
+ network-object object internal_subnet_2
+!
+object-group network outside.id21353X4994.osrc.net.0
+ network-object object internal_subnet_1
+ network-object object Internal_net
+ network-object object internal_subnet_2
+!
+object-group network outside.id77971X5929.osrc.net.1
+ network-object object internal_subnet_1
+ network-object object internal_subnet_2
+
+!################
+! 
+
+access-list outside_in extended deny ip any any log 
+
+
+! access-group statements
+
+access-group outside_in in interface outside
+
+
+! 
+! Rule  0 (NAT)
+nat (inside,outside) source dynamic Internal_net.0 interface description "0 (NAT)"
+! 
+! Rule  1 (NAT)
+nat (outside,inside) source static any any destination static interface server-1.0 service http.0 http.0 description "1 (NAT)"
+nat (outside,inside) source static any any destination static interface server-1.0 service https.0 https.0 description "1 (NAT)"
+
+
+nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (inside,outside) source dynamic outside.id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
+nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
+nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp smtp
+nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps smtps
+

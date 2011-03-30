@@ -120,6 +120,9 @@ failover link failover Ethernet2
 failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
 no asdm history enable
 arp timeout 14400
+nat-control
+global (outside) 1 interface
+nat (inside) 1 access-list id12251X6282.0
 access-group outside_in in interface outside
 access-group inside_in in interface inside
 access-group inside_out out interface inside

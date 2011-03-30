@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301451903" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301462592" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -544,7 +544,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id93" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id95" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Imported from inside_in&#10;0 ( global) &#10;Created during import of  line 127">
+          <PolicyRule id="id95" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Imported from inside_in&#10;0 ( global ) &#10;Created during import of  line 127">
             <Src neg="False">
               <ObjectRef ref="id17"/>
             </Src>
@@ -964,7 +964,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id347" disabled="False" group="" log="True" position="21" action="Deny" direction="Inbound" comment="Imported from inside_in&#10;3 ( global) &#10;Created during import of  line 154">
+          <PolicyRule id="id347" disabled="False" group="" log="True" position="21" action="Deny" direction="Inbound" comment="Imported from inside_in&#10;3 ( global ) &#10;Created during import of  line 154">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

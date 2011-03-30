@@ -26,7 +26,7 @@ interface Ethernet0.101
 !
 interface Ethernet0.102
  vlan 102
- nameif dmz20 
+ nameif dmz102 
  security-level 20
  ip address 10.0.0.253 255.255.255.0 standby 10.0.0.254 
 !
@@ -94,8 +94,10 @@ access-list inside_in extended permit ip 10.1.1.0 255.255.255.0 any
 access-list inside_in extended deny ip any any log warnings 
 access-list id12251X6282.0 extended permit ip 10.1.1.0 255.255.255.0 any 
 
-access-group inside_in in interface inside
-access-group outside_in in interface outside
+access-list id3DB0F94E.0 permit tcp host 192.168.1.10  eq 25  any 
+
+access-list id3DB0F924.0 permit ip 192.168.2.0 255.255.255.0  any 
+access-list id3DB0F924.0 permit ip 192.168.3.0 255.255.255.0  any 
 
 pager lines 24
 logging enable
@@ -109,7 +111,7 @@ logging host inside 192.168.240.20
 logging host inside 10.1.1.40 format emblem
 logging class config buffered debugging 
 mtu outside 1500
-mtu dmz20 1500
+mtu dmz102 1500
 mtu inside 1500
 failover
 failover lan unit primary
@@ -120,9 +122,27 @@ failover link failover Ethernet2
 failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
 no asdm history enable
 arp timeout 14400
+
+nat-control
+
+global (outside) 1 interface
+global (outside) 1 22.22.22.0 netmask 255.255.255.0
+global (outside) 1 22.22.22.21-22.22.22.25 netmask 255.255.255.0
+nat (inside) 1 access-list id12251X6282.0
+
+nat (dmz102) 1 access-list id3DB0F924.0 0 0
+
+static (inside,outside) tcp interface 25  access-list id3DB0F94E.0 0 0
+
+static (inside,dmz102) 192.168.1.0 192.168.1.0 netmask 255.255.255.0
+static (inside,dmz102) 192.168.1.10 192.168.1.10 netmask 255.255.255.255
+static (inside,outside) 192.168.1.10 192.168.1.10 netmask 255.255.255.255
+
+
 access-group outside_in in interface outside
 access-group inside_in in interface inside
 access-group inside_out out interface inside
+
 route inside 192.168.10.0 255.255.255.0 10.1.1.254 1
 route inside 10.1.2.0 255.255.255.0 10.1.1.201 1
 timeout xlate 3:00:00

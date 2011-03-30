@@ -61,19 +61,6 @@ object network Internal_net
 object network hostA:eth0 
  host 192.168.1.10
 
-object-group network outside.id178211X29963.osrc.net.0
- network-object object internal_subnet_1
- network-object object internal_subnet_2
-!
-object-group network outside.id21353X4994.osrc.net.0
- network-object object internal_subnet_1
- network-object object Internal_net
- network-object object internal_subnet_2
-!
-object-group network outside.id77971X5929.osrc.net.1
- network-object object internal_subnet_1
- network-object object internal_subnet_2
-
 
 access-list outside_acl_in extended deny ip any any log 
 pager lines 24
@@ -85,11 +72,6 @@ mtu outside 1500
 icmp unreachable rate-limit 1 burst-size 1
 no asdm history enable
 arp timeout 14400
-nat (inside,outside) source dynamic outside.id178211X29963.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (inside,outside) source dynamic outside.id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1 service smtp smtp
-nat (outside,inside) source static any any destination static interface hostA:eth0 service http squid
-nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.0 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtp smtp
-nat (inside,outside) source dynamic outside.id77971X5929.osrc.net.0 outside.id77971X5929.tsrc.net.1 interface destination static outside.id77971X5929.odst.net.0 outside.id77971X5929.odst.net.0 service smtps smtps
 timeout xlate 3:00:00
 timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 icmp 0:00:02
 timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00

@@ -117,8 +117,10 @@ void PIXImporterTest::compareResults(QueueLogger* logger,
 
     CPPUNIT_ASSERT_MESSAGE(
         QString(
-            "Sizes of the generated importer output and test files are different. "
-            "Expected: %1 (%2)   Obtained: %3 (%4)")
+            "Sizes of the generated importer output and test files are different.\n"
+            "Expected: %1 (%2)\n"
+            "Obtained: %3 (%4)\n"
+            "diff -u  %1 %3 | less -S")
         .arg(expected_result_file_name).arg(expected_result.size())
         .arg(obtained_result_file_name).arg(obtained_result.size()).toStdString(),
         expected_result.size() == obtained_result.size());
@@ -154,7 +156,9 @@ void PIXImporterTest::compareFwbFiles(QString expected_result_file_name,
     // because they are always going to be different
 
     QString err("Sizes of the generated .fwb and test files are different: \n"
-                "expected: %1 (%2) obtained: %3 (%4)");
+                "Expected: %1 (%2)\n"
+                "Obtained: %3 (%4)\n"
+                "diff -u  %1 %3 | less -S");
 
     CPPUNIT_ASSERT_MESSAGE(
         err
@@ -205,8 +209,8 @@ void PIXImporterTest::PIX_6_Test()
     db->setPredictableIds();
     db->saveFile("pix6.fwb");
 
-    compareFwbFiles("test_data/pix6.fwb", "pix6.fwb");
     compareResults(logger, "test_data/pix6.output", "pix6.output");
+    compareFwbFiles("test_data/pix6.fwb", "pix6.fwb");
 }
 
 void PIXImporterTest::PIX_7_Test()
@@ -222,8 +226,8 @@ void PIXImporterTest::PIX_7_Test()
     db->setPredictableIds();
     db->saveFile("pix7.fwb");
 
-    compareFwbFiles("test_data/pix7.fwb", "pix7.fwb");
     compareResults(logger, "test_data/pix7.output", "pix7.output");
+    compareFwbFiles("test_data/pix7.fwb", "pix7.fwb");
 }
 
 void PIXImporterTest::ASA_8_0_Test()
@@ -239,8 +243,8 @@ void PIXImporterTest::ASA_8_0_Test()
     db->setPredictableIds();
     db->saveFile("asa8.0.fwb");
 
-    compareFwbFiles("test_data/asa8.0.fwb", "asa8.0.fwb");
     compareResults(logger, "test_data/asa8.0.output", "asa8.0.output");
+    compareFwbFiles("test_data/asa8.0.fwb", "asa8.0.fwb");
 }
 
 void PIXImporterTest::ASA_8_3_Test()
@@ -256,8 +260,8 @@ void PIXImporterTest::ASA_8_3_Test()
     db->setPredictableIds();
     db->saveFile("asa8.3.fwb");
 
-    compareFwbFiles("test_data/asa8.3.fwb", "asa8.3.fwb");
     compareResults(logger, "test_data/asa8.3.output", "asa8.3.output");
+    compareFwbFiles("test_data/asa8.3.fwb", "asa8.3.fwb");
 }
 
 void PIXImporterTest::ObjectsAndGroupsTest()
@@ -274,8 +278,11 @@ void PIXImporterTest::ObjectsAndGroupsTest()
     db->setPredictableIds();
     db->saveFile("asa8.3-objects-and-groups.fwb");
 
-    compareFwbFiles("test_data/asa8.3-objects-and-groups.fwb", "asa8.3-objects-and-groups.fwb");
-    compareResults(logger, "test_data/asa8.3-objects-and-groups.output", "asa8.3-objects-and-groups.output");
+    compareResults(logger,
+                   "test_data/asa8.3-objects-and-groups.output",
+                   "asa8.3-objects-and-groups.output");
+    compareFwbFiles("test_data/asa8.3-objects-and-groups.fwb",
+                    "asa8.3-objects-and-groups.fwb");
 }
 
 void PIXImporterTest::ACLObjectsAndGroupsTest()
@@ -291,8 +298,11 @@ void PIXImporterTest::ACLObjectsAndGroupsTest()
     db->setPredictableIds();
     db->saveFile("asa8.3-acl-object-groups.fwb");
 
-    compareFwbFiles("test_data/asa8.3-acl-object-groups.fwb", "asa8.3-acl-object-groups.fwb");
-    compareResults(logger, "test_data/asa8.3-acl-object-groups.output", "asa8.3-acl-object-groups.output");
+    compareResults(logger,
+                   "test_data/asa8.3-acl-object-groups.output",
+                   "asa8.3-acl-object-groups.output");
+    compareFwbFiles("test_data/asa8.3-acl-object-groups.fwb",
+                    "asa8.3-acl-object-groups.fwb");
 }
 
 void PIXImporterTest::ACLTest()
@@ -308,7 +318,7 @@ void PIXImporterTest::ACLTest()
     db->setPredictableIds();
     db->saveFile("asa8.3-acl.fwb");
 
-    compareFwbFiles("test_data/asa8.3-acl.fwb", "asa8.3-acl.fwb");
     compareResults(logger, "test_data/asa8.3-acl.output", "asa8.3-acl.output");
+    compareFwbFiles("test_data/asa8.3-acl.fwb", "asa8.3-acl.fwb");
 }
 
