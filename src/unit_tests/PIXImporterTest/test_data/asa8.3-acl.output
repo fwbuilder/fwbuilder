@@ -22,7 +22,8 @@
 114: Object Group (network) dst-network-group-1
 123: Rule comment: 0 ( global ) 
 151: Rule comment: 3 ( global ) 
-227: Interface Vlan1 ruleset inside_in direction 'in'
-228: Interface Vlan1 ruleset inside_out direction 'out'
-229: Interface Vlan2 ruleset outside_in direction 'in'
-230: Interface Vlan2 ruleset outside_out direction 'out'
+200: Error: tcp port name 'foo' is unknown
+225: Interface Vlan1 ruleset inside_in direction 'in'
+226: Interface Vlan1 ruleset inside_out direction 'out'
+227: Interface Vlan2 ruleset outside_in direction 'in'
+228: Interface Vlan2 ruleset outside_out direction 'out'
