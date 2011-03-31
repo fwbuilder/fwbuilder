@@ -135,10 +135,8 @@ cfgfile :
         |
             icmp_top_level_command
         |
-            nat_old_top_level_command
+            nat_top_level_command
         |
-//            nat_new_top_level_command
-//        |
             global_top_level_command
         |
             static_top_level_command
@@ -276,8 +274,9 @@ named_object_network_parameters :
         NEWLINE
     ;
 
-named_object_nat : NAT OPENING_PAREN interface_label 
+named_object_nat : nat_top_level_command
         {
+            *dbg << "Named object with singleton nat command" << std::endl;
             importer->addMessageToLog(
                 "Parser warning: "
                 "Import of named objects with \"nat\" command "
@@ -285,6 +284,16 @@ named_object_nat : NAT OPENING_PAREN interface_label
             consumeUntil(NEWLINE);
         }
     ;
+
+// named_object_nat : NAT OPENING_PAREN interface_label 
+//         {
+//             importer->addMessageToLog(
+//                 "Parser warning: "
+//                 "Import of named objects with \"nat\" command "
+//                 "is not supported at this time");
+//             consumeUntil(NEWLINE);
+//         }
+//     ;
 
 named_object_description : DESCRIPTION 
         {
@@ -299,6 +308,7 @@ named_object_description : DESCRIPTION
             importer->setNamedObjectDescription(descr);
             *dbg << " DESCRIPTION " << descr << std::endl;
         }
+        NEWLINE
     ;
 
 host_addr : HOST single_addr
@@ -1824,8 +1834,12 @@ comment : (LINE_COMMENT | COLON_COMMENT) ;
 //****************************************************************
 // NAT commands
 
-nat_old_top_level_command : 
+nat_top_level_command : 
         NAT OPENING_PAREN
+        ( nat_old_top_level_command | nat_new_top_level_command )
+    ;
+
+nat_old_top_level_command : 
         interface_label { importer->prenat_interface = LT(0)->getText(); }
         CLOSING_PAREN
         {
@@ -1889,16 +1903,22 @@ nat_command_last_parameters :
         }
     ;
 
-nat_new_top_level_command : NAT 
+nat_new_top_level_command :
+        interface_label 
+        COMMA
+        interface_label 
+        CLOSING_PAREN
     {
         consumeUntil(NEWLINE);
     }
     ;
 
 global_top_level_command :
-        GLOBAL OPENING_PAREN 
-        interface_label { importer->global_interface = LT(0)->getText(); }
-        CLOSING_PAREN num:INT_CONST 
+        GLOBAL
+        OPENING_PAREN 
+        interface_label { importer->global_pool_interface = LT(0)->getText(); }
+        CLOSING_PAREN
+        num:INT_CONST 
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1906,12 +1926,41 @@ global_top_level_command :
             *dbg << " global address pool "
                  << importer->global_pool_num
                  << " "
-                 << importer->global_interface
+                 << importer->global_pool_interface;
+        }
+
+        // WORD Enter IP address or a range of IP addresses <start_ip>[-<end_ip>]
+        // interface  Specifies PAT using the IP address at the interface
+        (INTRFACE | single_addr)
+        {
+            importer->global_pool_start = LT(0)->getText();
+            importer->global_pool_end = LT(0)->getText();
+        }
+
+        (
+            MINUS
+            single_addr
+            {
+                importer->global_pool_end = LT(0)->getText();
+            }
+        )?
+
+        // netmask  Specify netmask for the IP address(es) after this keyword
+        // <cr>
+        (
+            NETMASK IPV4
+            {
+                importer->global_pool_netmask = LT(0)->getText();
+            }
+        )?
+
+        NEWLINE
+        {
+            *dbg << " " << importer->global_pool_start
+                 << " " << importer->global_pool_end
+                 << " " << importer->global_pool_netmask
                  << std::endl;
         }
-    {
-        consumeUntil(NEWLINE);
-    }
     ;
 
 static_top_level_command :

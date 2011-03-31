@@ -33,7 +33,11 @@ New interface: Ethernet0/6
 Warning: interface Ethernet0/6 was not imported because it is in "shutdown" mode
 New interface: Ethernet0/7
 Warning: interface Ethernet0/7 was not imported because it is in "shutdown" mode
-Named object (address) internal_subnet_1Named object (address) internal_subnet_2Named object (address) Internal_netNamed object (address) hostA:eth0Ruleset: outside_acl_in
+Named object (address) internal_subnet_1
+Named object (address) internal_subnet_2
+Named object (address) Internal_net
+Named object (address) hostA:eth0
+Ruleset: outside_acl_in
 Ruleset: ssh_commands_inside
 Interface Vlan1 ruleset ssh_commands_inside direction 'in' 
 Ruleset: ssh_commands_inside

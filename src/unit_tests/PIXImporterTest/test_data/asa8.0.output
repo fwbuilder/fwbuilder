@@ -15,8 +15,28 @@ New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
 New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-Object Group (network) net-1Object Group (network) net-2Object Group (network) host-1Object Group (network) mixed-1Object Group (network) host-2Object Group (service) tcp-1Object Group (service) mixed-service-1Object Group (service) service-rangesObject Group (icmp) icmp-1Object Group (icmp) icmp-2Object Group (icmp) icmp-3Object Group (protocol) protocol-1Object Group (protocol) proto-icmpObject Group (protocol) proto-icmp6Parser warning: IPv6 import is not supported. 
-Object Group (protocol) proto-ipObject Group (protocol) proto-ipsecObject Group (protocol) proto-pptpObject Group (protocol) proto-snpObject Group (protocol) proto-tcpObject Group (protocol) proto-udpRuleset: icmp_commands_outside
+Object Group (network) net-1
+Object Group (network) net-2
+Object Group (network) host-1
+Object Group (network) mixed-1
+Object Group (network) host-2
+Object Group (service) tcp-1
+Object Group (service) mixed-service-1
+Object Group (service) service-ranges
+Object Group (icmp) icmp-1
+Object Group (icmp) icmp-2
+Object Group (icmp) icmp-3
+Object Group (protocol) protocol-1
+Object Group (protocol) proto-icmp
+Object Group (protocol) proto-icmp6
+Parser warning: IPv6 import is not supported. 
+Object Group (protocol) proto-ip
+Object Group (protocol) proto-ipsec
+Object Group (protocol) proto-pptp
+Object Group (protocol) proto-snp
+Object Group (protocol) proto-tcp
+Object Group (protocol) proto-udp
+Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
 Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 

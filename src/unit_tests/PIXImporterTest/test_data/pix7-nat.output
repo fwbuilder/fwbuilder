@@ -28,7 +28,12 @@ New interface: Ethernet5
 Warning: interface Ethernet5 was not imported because it is in "shutdown" mode
 New interface: Ethernet6
 Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
-Object Group (network) outside.id12051X6282.src.net.0Object Group (network) outside.id12051X6282.src.net.1Object Group (network) outside.id12051X6282.src.net.2Object Group (network) network-zone-insideObject Group (network) network-zone-dmz20Ruleset: outside_in
+Object Group (network) outside.id12051X6282.src.net.0
+Object Group (network) outside.id12051X6282.src.net.1
+Object Group (network) outside.id12051X6282.src.net.2
+Object Group (network) network-zone-inside
+Object Group (network) network-zone-dmz20
+Ruleset: outside_in
 Ruleset: outside_in
 Ruleset: outside_in
 Ruleset: outside_in

@@ -77,7 +77,10 @@ class PIXImporter : public IOSImporter
     std::string nat_acl;
 
     std::string global_pool_num;
-    std::string global_interface;
+    std::string global_pool_interface;
+    std::string global_pool_start;
+    std::string global_pool_end;
+    std::string global_pool_netmask;
     
     PIXImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,

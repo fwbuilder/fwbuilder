@@ -101,7 +101,7 @@ public:
 	public: void ssh_command();
 	public: void telnet_command();
 	public: void icmp_top_level_command();
-	public: void nat_old_top_level_command();
+	public: void nat_top_level_command();
 	public: void global_top_level_command();
 	public: void static_top_level_command();
 	public: void access_group();
@@ -129,7 +129,6 @@ public:
 	public: void host_addr();
 	public: void range_addr();
 	public: void subnet_addr();
-	public: void interface_label();
 	public: void single_addr();
 	public: void named_object_service_parameters();
 	public: void service_icmp();
@@ -178,6 +177,7 @@ public:
 	public: void tcp_udp_port_spec();
 	public: void pair_of_ports_spec();
 	public: void tcp_udp_port_names();
+	public: void interface_label();
 	public: void interface_command_6();
 	public: void interface_command_7();
 	public: void pix6_interface_hw_speed();
@@ -198,9 +198,10 @@ public:
 	public: void v7_dhcp_address();
 	public: void v7_static_address();
 	public: void icmp_types_for_icmp_command();
+	public: void nat_old_top_level_command();
+	public: void nat_new_top_level_command();
 	public: void nat_addr_match();
 	public: void nat_command_last_parameters();
-	public: void nat_new_top_level_command();
 	public: void static_starts_with_hostaddr();
 	public: void static_starts_with_tcp_udp();
 	public: void static_mapped_addr_match();

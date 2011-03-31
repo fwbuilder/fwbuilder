@@ -119,7 +119,10 @@ void PIXImporter::clear()
     nat_nm = "";
     nat_acl = "";
     global_pool_num = "";
-    global_interface = "";
+    global_pool_interface = "";
+    global_pool_start = "";
+    global_pool_end = "";
+    global_pool_netmask = "";
 
 }
 
@@ -585,14 +588,14 @@ void PIXImporter::newNamedObjectAddress(const string &name)
 {
     named_object_name = QString::fromUtf8(name.c_str());
     named_object_comment = "";
-    *logger << "Named object (address) " + name;
+    *logger << "Named object (address) " + name + "\n";
 }
 
 void PIXImporter::newNamedObjectService(const string &name)
 {
     named_object_name = QString::fromUtf8(name.c_str());
     named_object_comment = "";
-    *logger << "Named object (service) " + name;
+    *logger << "Named object (service) " + name + "\n";
 }
 
 void PIXImporter::commitNamedAddressObject()
@@ -715,7 +718,7 @@ void PIXImporter::newObjectGroupNetwork(const string &name)
                 maker.createObject(ObjectGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
-    *logger << "Object Group (network) " + name;
+    *logger << "Object Group (network) " + name + "\n";
 }
 
 void PIXImporter::newObjectGroupService(const string &name)
@@ -732,7 +735,7 @@ void PIXImporter::newObjectGroupService(const string &name)
 
     object_group_service_protocol = "";
 
-    *logger << "Object Group (service) " + name;
+    *logger << "Object Group (service) " + name + "\n";
 }
 
 bool PIXImporter::isKnownServiceGroupName(const string &object_group_name)
@@ -760,7 +763,7 @@ void PIXImporter::newObjectGroupProtocol(const string &name)
                 maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
-    *logger << "Object Group (protocol) " + name;
+    *logger << "Object Group (protocol) " + name + "\n";
 }
 
 void PIXImporter::newObjectGroupICMP(const string &name)
@@ -775,7 +778,7 @@ void PIXImporter::newObjectGroupICMP(const string &name)
                 maker.createObject(ServiceGroup::TYPENAME, name)));
     named_objects_registry[object_group_name] = current_object_group;
 
-    *logger << "Object Group (icmp) " + name;
+    *logger << "Object Group (icmp) " + name + "\n";
 }
 
 void PIXImporter::setObjectGroupDescription(const std::string &descr)

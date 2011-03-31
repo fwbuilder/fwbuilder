@@ -10,7 +10,17 @@ Interface label: outside
 Interface address: dhcp/
 New interface: Ethernet0/0
 Interface comment: Switch port 0 / 0 
-Named object (service) http.0Named object (service) https.0Named object (address) server-1.0Named object (address) Internal_net.0Named object (address) external_net.0Object Group (service) id5102X14531.srv.tcp.0Named object (service) ip2Object Group (protocol) pg1Object Group (network) src-network-group-1Object Group (network) dst-network-group-1Ruleset: inside_in
+Named object (service) http.0
+Named object (service) https.0
+Named object (address) server-1.0
+Named object (address) Internal_net.0
+Named object (address) external_net.0
+Object Group (service) id5102X14531.srv.tcp.0
+Named object (service) ip2
+Object Group (protocol) pg1
+Object Group (network) src-network-group-1
+Object Group (network) dst-network-group-1
+Ruleset: inside_in
 Rule comment: 0 ( global ) 
 Ruleset: inside_in
 Ruleset: inside_in

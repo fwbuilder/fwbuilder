@@ -13,13 +13,97 @@ Interface address: 192.168.2.1/255.255.255.0
 New interface: Ethernet0/0
 Interface comment: Switch port 0 / 0 
 Switch port vlan 2
-Named object (address) internal_subnet_1Named object (address) internal_subnet_2Named object (address) internal_subnet_3Named object (address) internal_subnet_4Named object (address) Internal_netNamed object (address) outside_range-1Named object (address) range_1Named object (address) firewall90:FastEthernet1:ip-1Named object (address) hostA:eth0Named object (address) spamhost1Named object (address) spamhost2Named object (address) external_gw2Named object (address) my-range-objNamed object (address) my-inside-netParser warning: Import of named objects with "nat" command is not supported at this time
-Named object (address) ipv6-host-object-1Parser warning: IPv6 import is not supported. 
-Named object (address) ipv6-network-object-1Parser warning: IPv6 import is not supported. 
-Named object (address) ipv6-host-object-3Parser warning: IPv6 import is not supported. 
-Named object (address) ipv6-host-object-3Parser warning: IPv6 import is not supported. 
-Named object (address) dummy-addressNamed object (address) internal_subnet_5Named object (address) dummy-address-1Named object (address) internal_subnet_6Named object (address) ipv6-host-object-2Parser warning: IPv6 import is not supported. 
-Named object (address) host-1Named object (service) smtpNamed object (service) httpNamed object (service) squidNamed object (service) smtpsNamed object (service) icmp1Named object (service) icmp2Named object (service) ip5Named object (service) tcp-src-1Named object (service) tcp-src-2Named object (service) tcp-src-3Named object (service) tcp-src-4Named object (service) tcp-src-5Named object (service) tcp-dst-1Named object (service) tcp-dst-2Named object (service) tcp-dst-3Named object (service) tcp-dst-4Named object (service) tcp-dst-5Named object (service) tcp-src-dst-1Named object (service) tcp-src-dst-2Named object (service) tcp-src-dst-3Named object (service) tcp-src-dst-4Named object (service) tcp-src-dst-5Named object (service) udp-src-1Named object (service) udp-src-2Named object (service) udp-src-3Named object (service) udp-src-4Named object (service) udp-src-5Named object (service) udp-dst-1Named object (service) udp-dst-2Named object (service) udp-dst-3Named object (service) udp-dst-4Named object (service) udp-dst-5Named object (service) ip1Named object (service) ip2Named object (service) icmp6-1Parser warning: Import of IPv6 addresses and servcies is not supported at this time
-Named object (service) ip3Parser warning: Unknown service name some_weird_protocol
-Named object (service) ip4Object Group (network) outside.id178211X29963.osrc.net.0Object Group (network) outside.id21353X4994.osrc.net.0Object Group (network) outside.id77971X5929.osrc.net.1Object Group (network) outside.id77971X5929.odst.net.1Object Group (network) outside.id77971X5929.tsrc.net.1Object Group (network) outside.id77971X5929.osrc.net.0Object Group (network) outside.id77971X5929.odst.net.0Object Group (network) outside.id77971X5929.tsrc.net.0Object Group (service) outside.id77971X5929.osrv.1Object Group (service) sg1Object Group (service) sg2Object Group (service) sg3Object Group (service) sg4Object Group (service) sg5Object Group (service) combo-group-1Object Group (service) neq-group-2Object Group (protocol) pg1Object Group (protocol) pg2Object Group (icmp) ig1Object Group (icmp) ig2Object Group (icmp) ig3Object Group (service) id5102X14531.srv.tcp.0Object Group (service) tcp-udp-1Ruleset: inside_in
+Named object (address) internal_subnet_1
+Named object (address) internal_subnet_2
+Named object (address) internal_subnet_3
+Named object (address) internal_subnet_4
+Named object (address) Internal_net
+Named object (address) outside_range-1
+Named object (address) range_1
+Named object (address) firewall90:FastEthernet1:ip-1
+Named object (address) hostA:eth0
+Named object (address) spamhost1
+Named object (address) spamhost2
+Named object (address) external_gw2
+Named object (address) my-range-obj
+Named object (address) my-inside-net
+Parser warning: Import of named objects with "nat" command is not supported at this time
+Named object (address) ipv6-host-object-1
+Parser warning: IPv6 import is not supported. 
+Named object (address) ipv6-network-object-1
+Parser warning: IPv6 import is not supported. 
+Named object (address) ipv6-host-object-3
+Parser warning: IPv6 import is not supported. 
+Named object (address) ipv6-host-object-3
+Parser warning: IPv6 import is not supported. 
+Named object (address) dummy-address
+Named object (address) internal_subnet_5
+Named object (address) dummy-address-1
+Named object (address) internal_subnet_6
+Named object (address) ipv6-host-object-2
+Parser warning: IPv6 import is not supported. 
+Named object (address) host-1
+Named object (service) smtp
+Named object (service) http
+Named object (service) squid
+Named object (service) smtps
+Named object (service) icmp1
+Named object (service) icmp2
+Named object (service) ip5
+Named object (service) tcp-src-1
+Named object (service) tcp-src-2
+Named object (service) tcp-src-3
+Named object (service) tcp-src-4
+Named object (service) tcp-src-5
+Named object (service) tcp-dst-1
+Named object (service) tcp-dst-2
+Named object (service) tcp-dst-3
+Named object (service) tcp-dst-4
+Named object (service) tcp-dst-5
+Named object (service) tcp-src-dst-1
+Named object (service) tcp-src-dst-2
+Named object (service) tcp-src-dst-3
+Named object (service) tcp-src-dst-4
+Named object (service) tcp-src-dst-5
+Named object (service) udp-src-1
+Named object (service) udp-src-2
+Named object (service) udp-src-3
+Named object (service) udp-src-4
+Named object (service) udp-src-5
+Named object (service) udp-dst-1
+Named object (service) udp-dst-2
+Named object (service) udp-dst-3
+Named object (service) udp-dst-4
+Named object (service) udp-dst-5
+Named object (service) ip1
+Named object (service) ip2
+Named object (service) icmp6-1
+Parser warning: Import of IPv6 addresses and servcies is not supported at this time
+Named object (service) ip3
+Parser warning: Unknown service name some_weird_protocol
+Named object (service) ip4
+Object Group (network) outside.id178211X29963.osrc.net.0
+Object Group (network) outside.id21353X4994.osrc.net.0
+Object Group (network) outside.id77971X5929.osrc.net.1
+Object Group (network) outside.id77971X5929.odst.net.1
+Object Group (network) outside.id77971X5929.tsrc.net.1
+Object Group (network) outside.id77971X5929.osrc.net.0
+Object Group (network) outside.id77971X5929.odst.net.0
+Object Group (network) outside.id77971X5929.tsrc.net.0
+Object Group (service) outside.id77971X5929.osrv.1
+Object Group (service) sg1
+Object Group (service) sg2
+Object Group (service) sg3
+Object Group (service) sg4
+Object Group (service) sg5
+Object Group (service) combo-group-1
+Object Group (service) neq-group-2
+Object Group (protocol) pg1
+Object Group (protocol) pg2
+Object Group (icmp) ig1
+Object Group (icmp) ig2
+Object Group (icmp) ig3
+Object Group (service) id5102X14531.srv.tcp.0
+Object Group (service) tcp-udp-1
+Ruleset: inside_in
 Interface Vlan1 ruleset inside_in direction 'in' 
