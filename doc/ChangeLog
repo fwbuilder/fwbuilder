@@ -1,3 +1,8 @@
+2011-03-30  vadim  <vadim@netcitadel.com>
+
+	* PIXImporterNat.cpp (buildDNATRule): import of PIX/ASA "static"
+	commands works for the most part. Needs more testing.
+
 2011-03-28  vadim  <vadim@netcitadel.com>
 
 	* ObjectManipulator.cpp (getDeleteMenuState): see #2226 fixed GUI

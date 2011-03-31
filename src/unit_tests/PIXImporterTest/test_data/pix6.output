@@ -31,7 +31,7 @@ Rule comment: 10 ( global )
 Ruleset: outside_acl_in
 Rule comment: using swatch to automatically 
 Ruleset: outside_acl_in
-Rule comment: block probing ssh connections, so no 
+Rule comment: block probing ssh connections , so no 
 Ruleset: outside_acl_in
 Rule comment: need to limit 
 Ruleset: outside_acl_in

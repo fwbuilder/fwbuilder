@@ -490,6 +490,8 @@ void Importer::setDefaultAction(const std::string &iptables_action_name)
 
 void Importer::newPolicyRule()
 {
+    if (fwbdebug) qDebug() << "Importer::newPolicyRule()";
+
     FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
     FWObject *nobj = dbroot->create(PolicyRule::TYPENAME);
     current_rule = Rule::cast(nobj);
@@ -502,9 +504,13 @@ void Importer::newPolicyRule()
 
 void Importer::newNATRule()
 {
+    if (fwbdebug) qDebug() << "Importer::newNATRule()";
+
     FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
     FWObject *nobj = dbroot->create(NATRule::TYPENAME);
     current_rule = Rule::cast(nobj);
+
+    if (fwbdebug) qDebug() << "current_rule=" << current_rule;
 }
 
 void Importer::pushRule()
@@ -532,6 +538,8 @@ void Importer::pushRule()
         rule->setAction(PolicyRule::Deny);
         ropt->setBool("stateless", true);
     }
+
+    rule->setDirection(PolicyRule::Both);
 
     addSrc();
     addDst();

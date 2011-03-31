@@ -132,19 +132,27 @@ void PIXImporter::clearTempVars()
     Importer::clear();
 }
 
+Interface* PIXImporter::getInterfaceByLabel(const string &label)
+{
+    map<const string,Interface*>::iterator it;
+    for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
+    {
+        Interface *intf = it->second;
+        if (intf->getLabel() == label)
+        {
+            return intf;
+        }
+    }
+    return NULL;
+}
+    
+
 FWObject* PIXImporter::makeSrcObj()
 {
     if (src_nm == "interface")
     {
-        map<const string,Interface*>::iterator it;
-        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
-        {
-            Interface *intf = it->second;
-            if (intf->getLabel() == src_a)
-            {
-                return intf;
-            }
-        }
+        Interface *intf = getInterfaceByLabel(src_a);
+        if (intf) return intf;
         throw ImporterException(
             QString("Cannot find interface with label '%1'").arg(src_a.c_str()));
     }
@@ -160,15 +168,8 @@ FWObject* PIXImporter::makeDstObj()
 {
     if (dst_nm == "interface")
     {
-        map<const string,Interface*>::iterator it;
-        for (it=all_interfaces.begin(); it!=all_interfaces.end(); ++it)
-        {
-            Interface *intf = it->second;
-            if (intf->getLabel() == dst_a)
-            {
-                return intf;
-            }
-        }
+        Interface *intf = getInterfaceByLabel(dst_a);
+        if (intf) return intf;
         throw ImporterException(
             QString("Cannot find interface with label '%1'").arg(dst_a.c_str()));
     }
@@ -378,6 +379,9 @@ Firewall* PIXImporter::finalize()
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
         assert( policy!=NULL );
 
+        FWObject *nat = getFirewallObject()->getFirstByType(NAT::TYPENAME);
+        assert( nat!=NULL );
+
         if (all_rulesets.size()!=0)
         {
             if (fwbdebug)
@@ -400,7 +404,10 @@ Firewall* PIXImporter::finalize()
             list<string>::iterator it;
             for (it=ruleset_names.begin(); it!=ruleset_names.end(); ++it)
             {
-                UnidirectionalRuleSet *irs = all_rulesets[*it];
+                string ruleset_name = *it;
+                if (ruleset_name == "nat") continue;
+
+                UnidirectionalRuleSet *irs = all_rulesets[ruleset_name];
 
                 if (fwbdebug)
                 {
@@ -529,6 +536,23 @@ Firewall* PIXImporter::finalize()
         {
             RuleSet *rs = RuleSet::cast(*i);
             rs->renumberRules();
+        }
+
+        // Deal with NAT ruleset
+        UnidirectionalRuleSet *nat_rs = all_rulesets["nat"];
+        if (nat_rs)
+        {
+            while (nat_rs->ruleset->size() > 0)
+            {
+                FWObject *r = nat_rs->ruleset->front();
+                nat->reparent(r);
+            }
+
+            NAT::cast(nat)->renumberRules();
+
+            nat_rs->ruleset->clearChildren(false);
+            getFirewallObject()->remove(nat_rs->ruleset, false);
+            delete nat_rs->ruleset;
         }
 
         return fw;

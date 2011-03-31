@@ -60,6 +60,7 @@ public:
 
     void PIX_6_Test();
     void PIX_7_Test();
+    void PIX_7_NAT_Test();
     void ASA_8_0_Test();
     void ASA_8_3_Test();
     void ObjectsAndGroupsTest();
@@ -69,6 +70,7 @@ public:
     CPPUNIT_TEST_SUITE(PIXImporterTest);
     CPPUNIT_TEST(PIX_6_Test);
     CPPUNIT_TEST(PIX_7_Test);
+    CPPUNIT_TEST(PIX_7_NAT_Test);
     CPPUNIT_TEST(ASA_8_0_Test);
     CPPUNIT_TEST(ASA_8_3_Test);
     CPPUNIT_TEST(ObjectsAndGroupsTest);

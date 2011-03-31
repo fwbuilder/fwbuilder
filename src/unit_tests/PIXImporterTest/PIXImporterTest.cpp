@@ -230,6 +230,23 @@ void PIXImporterTest::PIX_7_Test()
     compareFwbFiles("test_data/pix7.fwb", "pix7.fwb");
 }
 
+void PIXImporterTest::PIX_7_NAT_Test()
+{
+    platform = "pix";
+
+    std::istringstream instream(openTestFile("test_data/pix7-nat.test"));
+
+    Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pix7-nat.fwb");
+
+    compareResults(logger, "test_data/pix7-nat.output", "pix7-nat.output");
+    compareFwbFiles("test_data/pix7-nat.fwb", "pix7-nat.fwb");
+}
+
 void PIXImporterTest::ASA_8_0_Test()
 {
     platform = "pix";

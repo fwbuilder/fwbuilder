@@ -93,6 +93,9 @@ class PIXImporter : public IOSImporter
 
     void pushPolicyRule();
     void pushNATRule();
+    void buildDNATRule();
+    void buildSNATRule();
+
     virtual void pushRule();
     
     // this method actually adds interfaces to the firewall object
@@ -155,7 +158,8 @@ class PIXImporter : public IOSImporter
     void addTCPUDPServiceToObjectGroup();
     void addICMPServiceToObjectGroup();
     
-        
+    libfwbuilder::Interface* getInterfaceByLabel(const std::string &label);
+            
     void rearrangeVlanInterfaces();
 };
 

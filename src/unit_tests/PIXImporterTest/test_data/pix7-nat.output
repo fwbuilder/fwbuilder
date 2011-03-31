@@ -19,7 +19,7 @@ Interface parameters: inside
 Interface label: inside
 Interface address: 10.1.1.206/255.255.255.0
 New interface: Ethernet2
-Interface comment: LAN/STATE Failover Interface 
+Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
 New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
 New interface: Ethernet4
@@ -28,7 +28,7 @@ New interface: Ethernet5
 Warning: interface Ethernet5 was not imported because it is in "shutdown" mode
 New interface: Ethernet6
 Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
-Object Group (network) outside.id12051X6282.src.net.0Object Group (network) outside.id12051X6282.src.net.1Object Group (network) outside.id12051X6282.src.net.2Ruleset: outside_in
+Object Group (network) outside.id12051X6282.src.net.0Object Group (network) outside.id12051X6282.src.net.1Object Group (network) outside.id12051X6282.src.net.2Object Group (network) network-zone-insideObject Group (network) network-zone-dmz20Ruleset: outside_in
 Ruleset: outside_in
 Ruleset: outside_in
 Ruleset: outside_in
@@ -43,8 +43,15 @@ Ruleset: inside_in
 Ruleset: inside_in
 Ruleset: inside_in
 Ruleset: id12251X6282.0
-Interface Ethernet1 ruleset inside_in direction 'in' 
-Interface Ethernet0.101 ruleset outside_in direction 'in' 
+Ruleset: id12594X2458.0
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
+Ruleset: nat
 Interface Ethernet0.101 ruleset outside_in direction 'in' 
 Interface Ethernet1 ruleset inside_in direction 'in' 
 Interface Ethernet1 ruleset inside_out direction 'out' 

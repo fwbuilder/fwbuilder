@@ -175,6 +175,8 @@ cfgfile :
         |
             timeout_command
         |
+            dns_command
+        |
             unknown_command
         |
             NEWLINE
@@ -299,7 +301,10 @@ named_object_description : DESCRIPTION
         }
     ;
 
-host_addr : (HOST (h:IPV4 | v6:IPV6))
+host_addr : HOST single_addr
+    ;
+
+single_addr : (h:IPV4 | v6:IPV6)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             if (h)
@@ -797,6 +802,13 @@ unknown_ip_command : IP WORD
 
 //****************************************************************
 unknown_command : WORD
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+dns_command : DNS
         {
             consumeUntil(NEWLINE);
         }
@@ -1635,7 +1647,13 @@ ssh_command : SSH
             importer->clear();
         }
         (
-            ( TIMEOUT INT_CONST ) |
+            ( TIMEOUT INT_CONST ) 
+            {
+                // set ssh timeout here
+            }
+        |
+            SCOPY
+        |
             (
                 hostaddr_expr
                 {
@@ -1895,16 +1913,21 @@ global_top_level_command :
     ;
 
 static_top_level_command :
-        STATIC OPENING_PAREN prenat_intf:WORD
-        COMMA postnat_intf:WORD CLOSING_PAREN
+        STATIC
         {
             importer->clear();
+        }
+        OPENING_PAREN 
+        interface_label { importer->prenat_interface = LT(0)->getText(); }
+        COMMA
+        interface_label { importer->postnat_interface = LT(0)->getText(); }
+        CLOSING_PAREN
+        {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
-            *dbg << " DNAT rule " << std::endl;
+            importer->newNATRule();
+            *dbg << " DNAT rule ";
             importer->rule_type = libfwbuilder::NATRule::DNAT;
-            importer->prenat_interface = prenat_intf->getText();
-            importer->postnat_interface = postnat_intf->getText();
         }
         //  Hostname or A.B.C.D  Global or mapped address
         //  interface            Global address overload from interface
@@ -1918,6 +1941,7 @@ static_top_level_command :
         NEWLINE
         {
             importer->pushNATRule();
+            *dbg << std::endl;
         }
     ;
 
@@ -1929,12 +1953,12 @@ static_starts_with_hostaddr :
 
         static_real_addr_match
 
-        static_command_common_last_parameters
+        ( static_command_common_last_parameters )*
     ;
 
 static_mapped_addr_match :
         (
-            host_addr
+            single_addr
             {
                 importer->mapped_a = importer->tmp_a;
                 importer->mapped_nm = importer->tmp_nm;
@@ -1950,7 +1974,7 @@ static_mapped_addr_match :
 
 static_real_addr_match :
         (   
-            host_addr   // real
+            single_addr   // real
             {
                 importer->real_a = importer->tmp_a;
                 importer->real_nm = importer->tmp_nm;
@@ -1966,7 +1990,7 @@ static_real_addr_match :
 static_starts_with_tcp_udp : ( TCP | UDP )
         {
             importer->protocol = LT(0)->getText();
-            *dbg << " SERVICE TCP/UDP" << LT(0)->getText() << " ";
+            *dbg << " SERVICE TCP/UDP " << LT(0)->getText() << " ";
         }
         //  Hostname or A.B.C.D  Global or mapped address
         //  interface            Global address overload from interface
@@ -1980,7 +2004,7 @@ static_starts_with_tcp_udp : ( TCP | UDP )
         tcp_udp_port_spec
         {
             importer->mapped_port_spec = importer->tmp_port_spec_2;
-            *dbg << "mapped port " << importer->mapped_port_spec;
+            *dbg << "mapped port " << importer->mapped_port_spec << " ";
         }
 
         // Hostname or A.B.C.D  Real IP address of the host or hosts
@@ -1995,10 +2019,10 @@ static_starts_with_tcp_udp : ( TCP | UDP )
         tcp_udp_port_spec
         {
             importer->real_port_spec = importer->tmp_port_spec_2;
-            *dbg << "real port " << importer->real_port_spec;
+            *dbg << "real port " << importer->real_port_spec << " ";
         }
 
-        static_command_common_last_parameters
+        ( static_command_common_last_parameters )*
     ;
 
 static_command_common_last_parameters :
@@ -2008,17 +2032,26 @@ static_command_common_last_parameters :
         //  norandomseq  Disable TCP sequence number randomization
         //  tcp          Configure TCP specific parameters
         //  udp          Configure UDP specific parameters
-        NETMASK nm:IPv4
+        //  <cr>
+
+        DNS
+        {
+            importer->addMessageToLog(
+                "Warning: 'static' command option 'dns' is not supported");
+        }
+    |
+        NORANDOMSEQ
+        {
+            importer->addMessageToLog(
+                "Warning: 'static' command option 'norandomseq' is not supported");
+        }
+    |
+        NETMASK nm:IPV4
         {
             importer->mapped_nm = nm->getText();
         }
     |
-        (TCP | UDP)
-        {
-            // <0-65535>  The maximum number of simultaneous tcp connections
-
-        }
-    |
+        (TCP | UDP)?
         max_conn:INT_CONST (max_emb_conn:INT_CONST)?
         {
             importer->static_max_conn = max_conn->getText();
@@ -2055,12 +2088,14 @@ tokens
     SPEED = "speed";
     DUPLEX = "duplex";
     DELAY = "delay";
+    DNS = "dns";
     DDNS = "ddns";
     FORWARD = "forward";
     HOLD_TIME = "hold-time";
     IPV6_C = "ipv6";
     MAC_ADDRESS = "mac-address";
     MULTICAST = "multicast";
+    NETMASK = "netmask";
 
     INTERVAL = "interval";
 
@@ -2209,6 +2244,9 @@ tokens
   TRACEROUTE = "traceroute";
   UNREACHABLE = "unreachable";
 
+    NORANDOMSEQ = "norandomseq";
+
+    SCOPY = "scopy";
 }
 
 LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;
@@ -2283,8 +2321,10 @@ NUMBER_ADDRESS_OR_WORD :
                 )
             )
         |
+// making sure ',' '(' ')' are not part of WORD
             ( 'a'..'z' | 'A'..'Z' | '$' )
-            ( '!'..'\'' | '*'..'/' | '0'..'9' | ':' | ';' | '<' | '=' | '>' |
+            ( '!'..'\'' | '*' | '+' | '-' | '.' | '/' | '0'..'9' | ':' |
+              ';' | '<' | '=' | '>' |
               '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
             { _ttype = WORD; }
         )
