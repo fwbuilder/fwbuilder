@@ -467,7 +467,7 @@ void Importer::newUnidirRuleSet(const string &ruleset_name,
 {
     current_ruleset = getUnidirRuleSet(ruleset_name, ruleset_type);  // creates if new
     current_ruleset->created_from_line_number = getCurrentLineNumber();
-    *logger << "Ruleset: " + ruleset_name + "\n";
+    //*logger << "Ruleset: " + ruleset_name + "\n";
 }
 
 /*

@@ -33,36 +33,25 @@ Object Group (network) outside.id12051X6282.src.net.1
 Object Group (network) outside.id12051X6282.src.net.2
 Object Group (network) network-zone-inside
 Object Group (network) network-zone-dmz20
-Ruleset: outside_in
-Ruleset: outside_in
-Ruleset: outside_in
-Ruleset: outside_in
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: id12251X6282.0
-Ruleset: id12594X2458.0
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
-Ruleset: nat
+Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+Source translation rule ("nat" command)
+Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
+Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
+Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
+Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
+Source translation rule ("nat" command)
+Source translation rule ("nat" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
+Destination translation rule ("static" command)
 Interface Ethernet0.101 ruleset outside_in direction 'in' 
 Interface Ethernet1 ruleset inside_in direction 'in' 
 Interface Ethernet1 ruleset inside_out direction 'out' 
-Ruleset: ssh_commands_inside
 Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Ruleset: ssh_commands_inside
 Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Ruleset: ssh_commands_outside
 Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in' 

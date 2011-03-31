@@ -129,9 +129,18 @@ failover interface ip failover 172.17.1.253 255.255.255.252 standby 172.17.1.254
 no asdm history enable
 arp timeout 14400
 
-! nat-control
-! global (outside) 1 interface
-! nat (inside) 1 access-list id12251X6282.0
+nat-control
+global (outside) 1 interface
+nat (inside) 1 access-list id12251X6282.0
+
+global (outside) 2 192.0.2.10
+global (outside) 2 192.0.2.11-192.0.2.15
+global (outside) 2 192.0.2.128 netmask 255.255.255.240
+global (dmz20) 2 10.0.0.128 netmask 255.255.255.240
+
+nat (inside) 2 10.1.1.1 255.255.255.255
+nat (inside) 2 10.1.1.32 255.255.255.240
+
   
 static (inside,dmz20) 10.0.0.16 10.1.1.16 netmask 255.255.255.240
 static (inside,dmz20) 10.0.0.100 10.1.1.100 netmask 255.255.255.255

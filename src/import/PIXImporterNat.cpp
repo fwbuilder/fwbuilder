@@ -57,39 +57,46 @@ extern int fwbdebug;
 using namespace libfwbuilder;
 using namespace std;
 
-/*
 
-  Variables used to build nat rules
+QString GlobalPool::toString()
+{
+    QString l("number %1, interface %2, address range %3-%4, netmask %5 ");
+    return l.arg(num).arg(interface.c_str())
+        .arg(start.c_str()).arg(end.c_str()).arg(netmask.c_str());
+}
 
-  libfwbuilder::NATRule::NATRuleTypes rule_type;
-  std::string prenat_interface;
-  std::string postnat_interface;
+string GlobalPool::toStdString()
+{
+    return toString().toStdString();
+}
 
-  std::string real_a;
-  std::string real_nm;
-  std::string mapped_a;
-  std::string mapped_nm;
-  std::string real_addr_acl;
-  std::string mapped_port_spec;
-  std::string real_port_spec;
-  std::string static_max_conn;
-  std::string static_max_emb_conn;
+GlobalPool& GlobalPool::operator=(const GlobalPool &other)
+{
+    num = other.num;
+    interface = other.interface;
+    start = other.start;
+    end = other.end;
+    netmask = other.netmask;
+    return *this;
+}
 
-  std::string nat_num;
-  std::string nat_a;
-  std::string nat_nm;
-  std::string nat_acl;
 
-  std::string global_pool_num;
-  std::string global_interface;
-*/
+void PIXImporter::addGlobalPool()
+{
+    bool ok = false;
+    int n;
+    n = QString(tmp_global_pool.str_num.c_str()).toInt(&ok);
+    if (ok)
+    {
+        tmp_global_pool.num = n;
+        global_pools[tmp_global_pool.num].push_back(tmp_global_pool);
+        *logger << "Global address pool: " + tmp_global_pool.toStdString() + "\n";
+    }
+}
 
 void PIXImporter::pushNATRule()
 {
     assert(current_ruleset!=NULL);
-    assert(current_rule!=NULL);
-
-    NATRule *rule = NATRule::cast(current_rule);
 
     switch (rule_type)
     {
@@ -105,10 +112,7 @@ void PIXImporter::pushNATRule()
         assert(rule_type!=NATRule::DNAT && rule_type!=NATRule::SNAT);
     }
 
-    // then add it to the current ruleset
-    current_ruleset->ruleset->add(current_rule);
-
-    addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
+    assert(current_rule!=NULL);
 
     current_rule = NULL;
     rule_comment = "";
@@ -125,6 +129,10 @@ void PIXImporter::pushNATRule()
  */
 void PIXImporter::buildDNATRule()
 {
+    *logger << "Destination translation rule (\"static\" command)\n";
+
+    newNATRule();
+
     NATRule *rule = NATRule::cast(current_rule);
 
     Interface *pre_intf = getInterfaceByLabel(prenat_interface);
@@ -217,10 +225,120 @@ void PIXImporter::buildDNATRule()
     RuleElement *itf_o_re = rule->getItfOutb();
     assert(itf_o_re!=NULL);
     itf_o_re->addRef(pre_intf);
+
+    // add it to the current ruleset
+    current_ruleset->ruleset->add(rule);
+    addStandardImportComment(rule, QString::fromUtf8(rule_comment.c_str()));
 }
 
+/*
+ * SNAT rule. Using rule_type, global_pools, prenat_interface,
+ * nat_num, nat_a, nat_nm, nat_acl, max_conn, max_emb_conn
+ *
+ * Note that there can be multiple global pools with the same number
+ * and same or different interfaces.  In that case we should create
+ * multiple SNAT rules.
+ */
 void PIXImporter::buildSNATRule()
 {
+    *logger << "Source translation rule (\"nat\" command)\n";
+
+    bool ok = false;
+    int pool_num = QString(nat_num.c_str()).toInt(&ok);
+    // Parser matches INT_CONST so it can't be anything but integer...
+    assert (ok);
+
+    foreach(GlobalPool pool, global_pools[pool_num])
+    {
+        if (fwbdebug)
+        {
+            qDebug() << "NAT command num=" << pool_num;
+            qDebug() << "nat_a=" << nat_a.c_str()
+                     << "nat_nm=" << nat_nm.c_str();
+            qDebug() << "Using pool " << pool.toString();
+        }
+
+        Interface *post_intf = getInterfaceByLabel(pool.interface);
+
+        newNATRule();
+
+        NATRule *rule = NATRule::cast(current_rule);
+
+        Interface *pre_intf = getInterfaceByLabel(prenat_interface);
+
+        rule->setAction(NATRule::Translate);
+
+        if ( ! nat_a.empty())
+        {
+            src_a = nat_a;
+            src_nm = nat_nm;
+
+            RuleElement* osrc = rule->getOSrc();
+            assert(osrc!=NULL);
+            FWObject *s = makeSrcObj();
+            if (s) osrc->addRef( s );
+        }
+
+        if ( ! nat_acl.empty())
+        {
+            UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
+            if (rs)
+            {
+                RuleElement* osrc = rule->getOSrc();
+                assert(osrc!=NULL);
+
+                PolicyRule *policy_rule = PolicyRule::cast(
+                    rs->ruleset->getFirstByType(PolicyRule::TYPENAME));
+            
+                if (policy_rule)
+                {
+                    RuleElement *src = policy_rule->getSrc();
+                    for (FWObject::iterator it=src->begin(); it!=src->end(); ++it)
+                    {
+                        FWObject *o = FWReference::getObject(*it);
+                        osrc->addRef(o);
+                    }
+                }
+            }
+        }
+
+        ObjectSignature sig;
+        FWObject *addr = NULL;
+
+        if (pool.start == "interface")
+        {
+            addr = post_intf;
+        } else
+        {
+            if (pool.start == pool.end)
+            {
+                sig.type_name = Address::TYPENAME;
+                sig.address = pool.start.c_str();
+                sig.netmask = pool.netmask.c_str();
+            } else
+            {
+                sig.type_name = AddressRange::TYPENAME;
+                sig.setAddressRangeStart(pool.start.c_str());
+                sig.setAddressRangeEnd(pool.end.c_str());
+            }
+            addr = address_maker->createObject(sig);
+        }
+
+        RuleElement* tsrc = rule->getTSrc();
+        assert(tsrc!=NULL);
+        if (addr) tsrc->addRef( addr );
+
+        RuleElement *itf_i_re = rule->getItfInb();
+        assert(itf_i_re!=NULL);
+        itf_i_re->addRef(post_intf);
+
+        RuleElement *itf_o_re = rule->getItfOutb();
+        assert(itf_o_re!=NULL);
+        itf_o_re->addRef(pre_intf);
+
+        // add it to the current ruleset
+        current_ruleset->ruleset->add(rule);
+        addStandardImportComment(rule, QString::fromUtf8(rule_comment.c_str()));
+    }
 
 }
-

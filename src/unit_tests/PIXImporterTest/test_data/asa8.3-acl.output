@@ -20,66 +20,8 @@ Named object (service) ip2
 Object Group (protocol) pg1
 Object Group (network) src-network-group-1
 Object Group (network) dst-network-group-1
-Ruleset: inside_in
 Rule comment: 0 ( global ) 
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
 Rule comment: 3 ( global ) 
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: inside_out
-Ruleset: outside_out
-Ruleset: outside_out
-Ruleset: outside_out
 Interface Vlan1 ruleset inside_in direction 'in' 
 Interface Vlan1 ruleset inside_out direction 'out' 
 Interface Vlan2 ruleset outside_in direction 'in' 

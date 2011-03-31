@@ -20,30 +20,4 @@ Named object (service) ip2
 Object Group (protocol) pg1
 Object Group (network) src-network-group-1
 Object Group (network) dst-network-group-1
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
-Ruleset: inside_in
 Interface Vlan1 ruleset inside_in direction 'in' 

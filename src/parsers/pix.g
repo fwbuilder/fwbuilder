@@ -285,16 +285,6 @@ named_object_nat : nat_top_level_command
         }
     ;
 
-// named_object_nat : NAT OPENING_PAREN interface_label 
-//         {
-//             importer->addMessageToLog(
-//                 "Parser warning: "
-//                 "Import of named objects with \"nat\" command "
-//                 "is not supported at this time");
-//             consumeUntil(NEWLINE);
-//         }
-//     ;
-
 named_object_description : DESCRIPTION 
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1836,19 +1826,23 @@ comment : (LINE_COMMENT | COLON_COMMENT) ;
 
 nat_top_level_command : 
         NAT OPENING_PAREN
+        {
+            importer->clear();
+        }
         ( nat_old_top_level_command | nat_new_top_level_command )
     ;
 
 nat_old_top_level_command : 
-        interface_label { importer->prenat_interface = LT(0)->getText(); }
+        interface_label
+        {
+            importer->prenat_interface = LT(0)->getText();
+        }
         CLOSING_PAREN
         {
-            importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
-            *dbg << " SNAT rule " << std::endl;
+            *dbg << " SNAT rule ";
             importer->rule_type = libfwbuilder::NATRule::SNAT;
-            
         }
 
         //  <0-2147483647>  The <nat_id> of this group of hosts/networks.
@@ -1862,27 +1856,34 @@ nat_old_top_level_command :
 
         nat_addr_match
 
-        nat_command_last_parameters
+        ( nat_command_last_parameters )*
 
         NEWLINE
         {
             importer->pushNATRule();
+            *dbg << std::endl;
         }
     ;
 
 nat_addr_match :
-        (   
-            host_addr   // real
+        single_addr   // real
+        {
+            importer->nat_a = importer->tmp_a;
+        }
+
+        // A.B.C.D  IP netmask to apply to the local IP address
+        // <cr>
+        (
+            single_addr  
             {
-                importer->nat_a = importer->tmp_a;
-                importer->nat_nm = importer->tmp_nm;
+                importer->nat_nm = importer->tmp_a;
             }
-        |
-            ACCESS_LIST acl_name:WORD
-            {
-                importer->nat_acl = acl_name->getText();
-            }
-        )
+        )?
+    |
+        ACCESS_LIST acl_name:WORD
+        {
+            importer->nat_acl = acl_name->getText();
+        }
     ;
 
 nat_command_last_parameters :
@@ -1892,6 +1893,8 @@ nat_command_last_parameters :
         //  outside      Enable Outside NAT
         //  tcp          Configure TCP specific parameters
         //  udp          Configure UDP specific parameters
+        // <cr>
+
         (DNS)?
         (OUTSIDE)?
         (TCP | UDP)?
@@ -1916,32 +1919,38 @@ nat_new_top_level_command :
 global_top_level_command :
         GLOBAL
         OPENING_PAREN 
-        interface_label { importer->global_pool_interface = LT(0)->getText(); }
-        CLOSING_PAREN
-        num:INT_CONST 
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->global_pool_num = num->getText();
-            *dbg << " global address pool "
-                 << importer->global_pool_num
+        }
+        interface_label
+        {
+            importer->tmp_global_pool.interface = LT(0)->getText();
+        }
+        CLOSING_PAREN
+        num:INT_CONST 
+        {
+            importer->tmp_global_pool.str_num = num->getText();
+            importer->tmp_global_pool.netmask = "255.255.255.255";
+            *dbg << " GLOBAL POOL "
+                 << importer->tmp_global_pool.str_num
                  << " "
-                 << importer->global_pool_interface;
+                 << importer->tmp_global_pool.interface;
         }
 
         // WORD Enter IP address or a range of IP addresses <start_ip>[-<end_ip>]
         // interface  Specifies PAT using the IP address at the interface
         (INTRFACE | single_addr)
         {
-            importer->global_pool_start = LT(0)->getText();
-            importer->global_pool_end = LT(0)->getText();
+            importer->tmp_global_pool.start = LT(0)->getText();
+            importer->tmp_global_pool.end = LT(0)->getText();
         }
 
         (
             MINUS
             single_addr
             {
-                importer->global_pool_end = LT(0)->getText();
+                importer->tmp_global_pool.end = LT(0)->getText();
             }
         )?
 
@@ -1950,25 +1959,26 @@ global_top_level_command :
         (
             NETMASK IPV4
             {
-                importer->global_pool_netmask = LT(0)->getText();
+                importer->tmp_global_pool.netmask = LT(0)->getText();
             }
         )?
 
         NEWLINE
         {
-            *dbg << " " << importer->global_pool_start
-                 << " " << importer->global_pool_end
-                 << " " << importer->global_pool_netmask
+            importer->addGlobalPool();
+            *dbg << " " << importer->tmp_global_pool.start
+                 << " " << importer->tmp_global_pool.end
+                 << " " << importer->tmp_global_pool.netmask
                  << std::endl;
         }
     ;
 
 static_top_level_command :
         STATIC
+        OPENING_PAREN 
         {
             importer->clear();
         }
-        OPENING_PAREN 
         interface_label { importer->prenat_interface = LT(0)->getText(); }
         COMMA
         interface_label { importer->postnat_interface = LT(0)->getText(); }
@@ -1976,7 +1986,6 @@ static_top_level_command :
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
-            importer->newNATRule();
             *dbg << " DNAT rule ";
             importer->rule_type = libfwbuilder::NATRule::DNAT;
         }

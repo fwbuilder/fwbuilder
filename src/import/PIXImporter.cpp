@@ -65,7 +65,6 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-
 PIXImporter::PIXImporter(FWObject *lib,
                          std::istringstream &input,
                          Logger *log,
@@ -80,6 +79,7 @@ PIXImporter::PIXImporter(FWObject *lib,
 
 PIXImporter::~PIXImporter()
 {
+    global_pools.clear();
 }
 
 /*
@@ -118,12 +118,8 @@ void PIXImporter::clear()
     nat_a = "";
     nat_nm = "";
     nat_acl = "";
-    global_pool_num = "";
-    global_pool_interface = "";
-    global_pool_start = "";
-    global_pool_end = "";
-    global_pool_netmask = "";
 
+    tmp_global_pool = GlobalPool();
 }
 
 /*

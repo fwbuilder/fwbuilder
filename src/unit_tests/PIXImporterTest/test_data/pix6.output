@@ -10,122 +10,47 @@ Object Group (icmp) outside.id12363X2458.srv.icmp.0
 Object Group (service) outside.id12376X2458.srv.udp.0
 Object Group (service) outside.id12438X2458.srv.tcp.0
 Object Group (service) outside.id12466X2458.srv.tcp.0
-Ruleset: outside_acl_in
 Rule comment: 0 ( ethernet0 ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 3 ( global ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 4 ( global ) 
-Ruleset: outside_acl_in
 Rule comment: fw uses DHCP 
-Ruleset: outside_acl_in
 Rule comment: plus many DHCP requests 
-Ruleset: outside_acl_in
 Rule comment: from cable modem 
-Ruleset: outside_acl_in
 Rule comment: 6 ( global ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 7 ( global ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 10 ( global ) 
-Ruleset: outside_acl_in
 Rule comment: using swatch to automatically 
-Ruleset: outside_acl_in
 Rule comment: block probing ssh connections , so no 
-Ruleset: outside_acl_in
 Rule comment: need to limit 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 11 ( global ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 17 ( global ) 
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
-Ruleset: outside_acl_in
 Rule comment: 19 ( global ) 
-Ruleset: outside_acl_in
 Rule comment: ' catch all' rule 
-Ruleset: outside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 1 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 5 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 6 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 7 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 17 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 18 ( global ) 
-Ruleset: inside_acl_in
-Ruleset: inside_acl_in
 Rule comment: 19 ( global ) 
-Ruleset: inside_acl_in
 Rule comment: ' catch all' rule 
-Ruleset: inside_acl_in
-Ruleset: id12594X2458.0
-Ruleset: id12594X2458.1
-Ruleset: id12594X2458.2
-Ruleset: id12594X2458.3
-Ruleset: id12626X2458.0
-Ruleset: id12626X2458.1
-Ruleset: id12626X2458.2
-Ruleset: id12642X2458.0
-Ruleset: id12656X2458.0
-Ruleset: id12670X2458.0
-Ruleset: id12684X2458.0
-Ruleset: id12743X2458.0
 Interface ethernet0 ruleset outside_acl_in direction 'in' 
 Interface ethernet1 ruleset inside_acl_in direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface ethernet0 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface ethernet1 ruleset icmp_commands_inside direction 'in' 
-Ruleset: telnet_commands_inside
 Interface ethernet1 ruleset telnet_commands_inside direction 'in' 
-Ruleset: ssh_commands_inside
 Interface ethernet1 ruleset ssh_commands_inside direction 'in' 
-Ruleset: ssh_commands_inside
 Interface ethernet1 ruleset ssh_commands_inside direction 'in' 

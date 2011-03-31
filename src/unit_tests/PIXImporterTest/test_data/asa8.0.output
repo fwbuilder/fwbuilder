@@ -36,37 +36,20 @@ Object Group (protocol) proto-pptp
 Object Group (protocol) proto-snp
 Object Group (protocol) proto-tcp
 Object Group (protocol) proto-udp
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_outside
 Interface Ethernet1 ruleset icmp_commands_outside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: icmp_commands_inside
 Interface Ethernet0 ruleset icmp_commands_inside direction 'in' 
-Ruleset: telnet_commands_inside
 Interface Ethernet0 ruleset telnet_commands_inside direction 'in' 
-Ruleset: ssh_commands_inside
 Interface Ethernet0 ruleset ssh_commands_inside direction 'in' 

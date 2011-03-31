@@ -41,6 +41,30 @@
 #include <QString>
 
 
+struct GlobalPool
+{
+    int num;
+    std::string str_num;
+    std::string interface;
+    std::string start;
+    std::string end;
+    std::string netmask;
+
+    GlobalPool()
+    {
+        num = -1;
+        str_num = "";
+        interface = "";
+        start = "";
+        end = "";
+        netmask = "";
+    }
+
+    GlobalPool& operator=(const GlobalPool &other);
+    std::string toStdString();
+    QString toString();
+};
+
 class PIXImporter : public IOSImporter
 {
     public:
@@ -76,11 +100,8 @@ class PIXImporter : public IOSImporter
     std::string nat_nm;
     std::string nat_acl;
 
-    std::string global_pool_num;
-    std::string global_pool_interface;
-    std::string global_pool_start;
-    std::string global_pool_end;
-    std::string global_pool_netmask;
+    GlobalPool tmp_global_pool;
+    std::map<int, std::list<GlobalPool> > global_pools;
     
     PIXImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
@@ -91,6 +112,8 @@ class PIXImporter : public IOSImporter
     virtual void clear();
 
     void clearTempVars();
+
+    void addGlobalPool();
     
     virtual void run();
 
@@ -98,7 +121,6 @@ class PIXImporter : public IOSImporter
     void pushNATRule();
     void buildDNATRule();
     void buildSNATRule();
-
     virtual void pushRule();
     
     // this method actually adds interfaces to the firewall object
