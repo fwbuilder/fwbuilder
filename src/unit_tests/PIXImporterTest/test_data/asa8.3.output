@@ -38,4 +38,3 @@ Ruleset: ssh_commands_inside
 Interface Vlan1 ruleset ssh_commands_inside direction 'in' 
 Ruleset: ssh_commands_inside
 Interface Vlan1 ruleset ssh_commands_inside direction 'in' 
-Parser error: line 95:5: unexpected token: version

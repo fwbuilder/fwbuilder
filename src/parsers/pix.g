@@ -832,7 +832,7 @@ certificate : CERTIFICATE WORD
     ;
 
 //****************************************************************
-version : (PIX_WORD | ASA_WORD) VERSION_WORD NUMBER
+version : (PIX_WORD | ASA_WORD) VERSION_WORD_CAP NUMBER
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setDiscoveredVersion(LT(0)->getText());
@@ -1654,6 +1654,8 @@ ssh_command : SSH
         |
             SCOPY
         |
+            VERSION_WORD_LOW
+        |
             (
                 hostaddr_expr
                 {
@@ -2184,7 +2186,8 @@ tokens
 
     PIX_WORD = "PIX" ;
     ASA_WORD = "ASA" ;
-    VERSION_WORD = "Version" ;
+    VERSION_WORD_CAP = "Version" ;
+    VERSION_WORD_LOW = "version" ;
 
     CRYPTO = "crypto";
 

@@ -51,7 +51,7 @@ void PIXCfgLexer::initLiterals()
 	literals["duplex"] = 126;
 	literals["dns"] = 55;
 	literals["no"] = 56;
-	literals["static"] = 148;
+	literals["static"] = 149;
 	literals["esp"] = 16;
 	literals["time-range"] = 112;
 	literals["gre"] = 17;
@@ -63,12 +63,12 @@ void PIXCfgLexer::initLiterals()
 	literals["eigrp"] = 15;
 	literals["icmp-type"] = 50;
 	literals["permit"] = 66;
-	literals["remark"] = 143;
+	literals["remark"] = 144;
 	literals["network"] = 29;
 	literals["igmp"] = 18;
 	literals["range"] = 34;
 	literals["destination"] = 43;
-	literals["setroute"] = 153;
+	literals["setroute"] = 154;
 	literals["vlan"] = 124;
 	literals["debugging"] = 102;
 	literals["controller"] = 113;
@@ -85,7 +85,7 @@ void PIXCfgLexer::initLiterals()
 	literals["eq"] = 69;
 	literals["fragments"] = 111;
 	literals["unreachable"] = 95;
-	literals["norandomseq"] = 150;
+	literals["norandomseq"] = 151;
 	literals["delay"] = 129;
 	literals["ip"] = 6;
 	literals["security-level"] = 135;
@@ -103,10 +103,10 @@ void PIXCfgLexer::initLiterals()
 	literals["description"] = 32;
 	literals["timestamp-reply"] = 92;
 	literals["alerts"] = 100;
-	literals["netmask"] = 151;
+	literals["netmask"] = 152;
 	literals["lt"] = 71;
 	literals["bnc"] = 119;
-	literals["global"] = 147;
+	literals["global"] = 148;
 	literals["nos"] = 22;
 	literals["extended"] = 65;
 	literals["certificate"] = 57;
@@ -119,7 +119,7 @@ void PIXCfgLexer::initLiterals()
 	literals["standby"] = 139;
 	literals["crypto"] = 54;
 	literals["pim"] = 25;
-	literals["secondary"] = 152;
+	literals["secondary"] = 153;
 	literals["emergencies"] = 103;
 	literals["disable"] = 108;
 	literals["mask-reply"] = 83;
@@ -143,7 +143,7 @@ void PIXCfgLexer::initLiterals()
 	literals["ipv6"] = 131;
 	literals["rip"] = 74;
 	literals["baseTX"] = 122;
-	literals["access-group"] = 144;
+	literals["access-group"] = 145;
 	literals["critical"] = 101;
 	literals["standard"] = 68;
 	literals["quit"] = 5;
@@ -177,6 +177,7 @@ void PIXCfgLexer::initLiterals()
 	literals["inactive"] = 109;
 	literals["multicast"] = 133;
 	literals["exit"] = 116;
+	literals["version"] = 143;
 	literals["neq"] = 72;
 	literals["alternate-address"] = 78;
 }
@@ -528,9 +529,9 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 2266 "pix.g"
+#line 2269 "pix.g"
 		newline();
-#line 534 "PIXCfgLexer.cpp"
+#line 535 "PIXCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -652,9 +653,9 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 2261 "pix.g"
+#line 2264 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 658 "PIXCfgLexer.cpp"
+#line 659 "PIXCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -803,17 +804,17 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			match("oup");
 			}
 			if ( inputState->guessing==0 ) {
-#line 2318 "pix.g"
+#line 2321 "pix.g"
 				_ttype = OBJECT_GROUP;
-#line 809 "PIXCfgLexer.cpp"
+#line 810 "PIXCfgLexer.cpp"
 			}
 		}
 		else {
 			match("");
 			if ( inputState->guessing==0 ) {
-#line 2320 "pix.g"
+#line 2323 "pix.g"
 				_ttype = OBJECT;
-#line 817 "PIXCfgLexer.cpp"
+#line 818 "PIXCfgLexer.cpp"
 			}
 		}
 		
@@ -965,9 +966,9 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 2311 "pix.g"
+#line 2314 "pix.g"
 				_ttype = IPV6;
-#line 971 "PIXCfgLexer.cpp"
+#line 972 "PIXCfgLexer.cpp"
 			}
 			}
 		}
@@ -1112,9 +1113,9 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}  // ( ... )+
 					}
 					if ( inputState->guessing==0 ) {
-#line 2299 "pix.g"
+#line 2302 "pix.g"
 						_ttype = IPV4;
-#line 1118 "PIXCfgLexer.cpp"
+#line 1119 "PIXCfgLexer.cpp"
 					}
 				}
 				else {
@@ -1195,9 +1196,9 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}  // ( ... )+
 						}
 						if ( inputState->guessing==0 ) {
-#line 2302 "pix.g"
+#line 2305 "pix.g"
 							_ttype = NUMBER;
-#line 1201 "PIXCfgLexer.cpp"
+#line 1202 "PIXCfgLexer.cpp"
 						}
 					}
 					else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true)) {
@@ -1216,9 +1217,9 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						_loop319:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 2304 "pix.g"
+#line 2307 "pix.g"
 							_ttype = INT_CONST;
-#line 1222 "PIXCfgLexer.cpp"
+#line 1223 "PIXCfgLexer.cpp"
 						}
 					}
 				else {
@@ -1478,9 +1479,9 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				_loop339:;
 				} // ( ... )*
 				if ( inputState->guessing==0 ) {
-#line 2329 "pix.g"
+#line 2332 "pix.g"
 					_ttype = WORD;
-#line 1484 "PIXCfgLexer.cpp"
+#line 1485 "PIXCfgLexer.cpp"
 				}
 			}
 	else {
@@ -1908,7 +1909,7 @@ const unsigned long PIXCfgLexer::_tokenSet_0_data_[] = { 4294958072UL, 1UL, 0UL,
 // 0x82 0x83 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 0x8b 0x8c 0x8d 0x8e 0x8f 
 // 0x90 0x91 0x92 0x93 0x94 0x95 0x96 0x97 0x98 0x99 0x9a 0x9b 0x9c 0x9d 
 // 0x9e 0x9f 0xa0 0xa1 0xa2 0xa3 0xa4 0xa5 0xa6 0xa7 0xa8 0xa9 0xaa 0xab 
-// 0xac 0xad 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 
+// 0xac 0xad 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 0xb9 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_0(_tokenSet_0_data_,16);
 const unsigned long PIXCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xb 0xc 0xe 0xf 0x10 0x11 0x12 0x13 0x14 
@@ -1919,7 +1920,7 @@ const unsigned long PIXCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 429496729
 // 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 0x8b 0x8c 0x8d 0x8e 0x8f 0x90 0x91 
 // 0x92 0x93 0x94 0x95 0x96 0x97 0x98 0x99 0x9a 0x9b 0x9c 0x9d 0x9e 0x9f 
 // 0xa0 0xa1 0xa2 0xa3 0xa4 0xa5 0xa6 0xa7 0xa8 0xa9 0xaa 0xab 0xac 0xad 
-// 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 
+// 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 0xb9 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_1(_tokenSet_1_data_,16);
 const unsigned long PIXCfgLexer::_tokenSet_2_data_[] = { 0UL, 67043328UL, 0UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0 1 2 3 4 5 6 7 8 9 a b c d e f 
@@ -1943,6 +1944,6 @@ const unsigned long PIXCfgLexer::_tokenSet_6_data_[] = { 4294967288UL, 429496729
 // 0x84 0x85 0x86 0x87 0x88 0x89 0x8a 0x8b 0x8c 0x8d 0x8e 0x8f 0x90 0x91 
 // 0x92 0x93 0x94 0x95 0x96 0x97 0x98 0x99 0x9a 0x9b 0x9c 0x9d 0x9e 0x9f 
 // 0xa0 0xa1 0xa2 0xa3 0xa4 0xa5 0xa6 0xa7 0xa8 0xa9 0xaa 0xab 0xac 0xad 
-// 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 
+// 0xae 0xaf 0xb0 0xb1 0xb2 0xb3 0xb4 0xb5 0xb6 0xb7 0xb8 0xb9 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgLexer::_tokenSet_6(_tokenSet_6_data_,16);
 
