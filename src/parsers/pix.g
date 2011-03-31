@@ -207,9 +207,9 @@ names_section : NAMES
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                "Parser warning: \"names\" section detected. "
-                "Import of configuration that uses \"names\" "
-                "is not supported at this time");
+                QString("Parser warning: \"names\" section detected. "
+                        "Import of configuration that uses \"names\" "
+                        "is not supported at this time"));
         }
     ;
 
@@ -225,7 +225,7 @@ name_entry : NAME (a:IPV4 | v6:IPV6) n:WORD
             if (v6)
             {
                 importer->addMessageToLog(
-                    "Parser warning: IPv6 import is not supported. ");
+                    QString("Parser warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -278,9 +278,9 @@ named_object_nat : nat_top_level_command
         {
             *dbg << "Named object with singleton nat command" << std::endl;
             importer->addMessageToLog(
-                "Parser warning: "
-                "Import of named objects with \"nat\" command "
-                "is not supported at this time");
+                QString("Parser warning: "
+                        "Import of named objects with \"nat\" command "
+                        "is not supported at this time"));
             consumeUntil(NEWLINE);
         }
     ;
@@ -317,7 +317,7 @@ single_addr : (h:IPV4 | v6:IPV6)
             if (v6)
             {
                 importer->addMessageToLog(
-                    "Parser warning: IPv6 import is not supported. ");
+                    QString("Parser warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -346,7 +346,7 @@ subnet_addr : (SUBNET ((a:IPV4 nm:IPV4) | v6:IPV6))
             if (v6)
             {
                 importer->addMessageToLog(
-                    "Parser warning: IPv6 import is not supported. ");
+                    QString("Parser warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -407,9 +407,10 @@ service_icmp : SERVICE ICMP
 service_icmp6 : SERVICE ICMP6 (INT_CONST | WORD)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog("Parser warning: "
-                                      "Import of IPv6 addresses and servcies "
-                                      "is not supported at this time");
+            importer->addMessageToLog(
+                QString("Parser warning: "
+                        "Import of IPv6 addresses and servcies "
+                        "is not supported at this time"));
             *dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
             consumeUntil(NEWLINE);
         }
@@ -537,7 +538,7 @@ network_object : NETWORK_OBJECT
             if (v6)
             {
                 importer->addMessageToLog(
-                    "Parser warning: IPv6 import is not supported. ");
+                    QString("Parser warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -554,7 +555,7 @@ network_object : NETWORK_OBJECT
             if (hv6)
             {
                 importer->addMessageToLog(
-                    "Parser warning: IPv6 import is not supported. ");
+                    QString("Parser warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -610,7 +611,7 @@ protocol_object : PROTOCOL_OBJECT
         ICMP6
         {
             importer->addMessageToLog(
-                "Parser warning: IPv6 import is not supported. ");
+                QString("Parser warning: IPv6 import is not supported. "));
             consumeUntil(NEWLINE);
         }
     |
@@ -1090,7 +1091,9 @@ acl_xoperator_dst : xoperator
         }
     ;
 
-xoperator : single_port_op | port_range  ;
+xoperator { importer->tmp_port_spec = ""; } :
+        single_port_op | port_range 
+    ;
 
 //****************************************************************
 
@@ -1102,7 +1105,11 @@ single_port_op : (P_EQ | P_GT | P_LT | P_NEQ )
         port_spec
     ;
 
-port_spec : tcp_udp_port_spec
+port_spec : 
+        {
+            importer->tmp_port_spec_2 = "";
+        }
+        tcp_udp_port_spec
         {
             importer->tmp_port_spec = std::string(" ") + importer->tmp_port_spec_2;
             *dbg << LT(0)->getText() << " " << importer->tmp_port_spec;
@@ -1622,9 +1629,10 @@ v7_static_address : a:IPV4 m:IPV4 (s:STANDBY)?
 // We do not parse them yet.
             if (s)
             {
-                importer->addMessageToLog("Parser warning: failover IP detected. "
-                                          "Failover is not supported by import "
-                                          "at this time");
+                importer->addMessageToLog(
+                    QString("Parser warning: failover IP detected. "
+                            "Failover is not supported by import "
+                            "at this time"));
             }
             consumeUntil(NEWLINE);
         }
@@ -2097,13 +2105,13 @@ static_command_common_last_parameters :
         DNS
         {
             importer->addMessageToLog(
-                "Warning: 'static' command option 'dns' is not supported");
+                QString("Warning: 'static' command option 'dns' is not supported"));
         }
     |
         NORANDOMSEQ
         {
             importer->addMessageToLog(
-                "Warning: 'static' command option 'norandomseq' is not supported");
+                QString("Warning: 'static' command option 'norandomseq' is not supported"));
         }
     |
         NETMASK nm:IPV4

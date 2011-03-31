@@ -209,6 +209,8 @@ access-list inside_out extended permit tcp object-group src-network-group-1 gt 1
 
 access-list inside_out extended permit tcp object-group src-network-group-1 gt 1023 object-group dst-network-group-1 neq 88
 
+access-list inside_out extended permit tcp any eq www any range 1024 65535
+
 access-list outside_out standard permit 192.0.2.0 255.255.255.0 
 access-list outside_out standard permit host 192.0.2.1
 access-list outside_out standard permit any
