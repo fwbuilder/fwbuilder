@@ -36,7 +36,8 @@ class AddressObjectMaker : public ObjectMaker
     
 public:
     
-    AddressObjectMaker(libfwbuilder::Library *l) : ObjectMaker(l)
+    AddressObjectMaker(libfwbuilder::Library *l,
+                       ObjectMakerErrorTracker *et) : ObjectMaker(l, et)
     {
         inverted_netmasks = false;
     }

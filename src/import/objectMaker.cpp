@@ -71,8 +71,18 @@ using namespace std;
 
 QMap<QString, QPair<int,int> >  ObjectSignature::icmp_names;
 
-ObjectSignature::ObjectSignature()
+
+void ObjectMakerErrorTracker::registerError(const QString &msg)
 {
+    errors.append(msg);
+    error_status = true;
+}
+
+
+ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
+{
+    error_tracker = et;
+
     port_range_inclusive = true;
 
     protocol = 0;
@@ -100,6 +110,8 @@ ObjectSignature::ObjectSignature()
 
 ObjectSignature::ObjectSignature(const ObjectSignature &other)
 {
+    error_tracker = other.error_tracker;
+
     type_name = other.type_name;
     object_name = other.object_name;
     address = other.address;
@@ -271,7 +283,8 @@ void ObjectSignature::setNetmask(const QString &netm, bool inverted_netmask)
         if (netm.contains('.'))
         {
             // netmask has '.' in it but conversion failed.
-            throw ObjectMakerException(
+//            throw ObjectMakerException(
+            error_tracker->registerError(
                 QString("Error converting netmask '%1'").arg(netm));
         } else
         {
@@ -286,7 +299,8 @@ void ObjectSignature::setNetmask(const QString &netm, bool inverted_netmask)
             } else
             {
                 // could not convert netmask as simple integer
-                throw ObjectMakerException(
+//                throw ObjectMakerException(
+                error_tracker->registerError(
                     QString("Error converting netmask '%1'").arg(netm));
             }
         }
@@ -308,7 +322,9 @@ void ObjectSignature::setProtocol(const QString &s)
         if (protocol == -1)
         {
             protocol = 0;
-            throw ObjectMakerException(QString("Protocol '%1' is unknown").arg(s));
+//            throw ObjectMakerException(
+            error_tracker->registerError(
+                QString("Protocol '%1' is unknown").arg(s));
         }
     }
 }
@@ -321,7 +337,8 @@ void ObjectSignature::setIcmpFromName(const QString &s)
         icmp_type = p.first;
         icmp_code = p.second;
     } else
-        throw ObjectMakerException(
+//        throw ObjectMakerException(
+        error_tracker->registerError(
             QString("ICMP service name '%1' is unknown").arg(s));
 }
 
@@ -336,7 +353,9 @@ void ObjectSignature::setIcmpType(const QString &s)
         {
             // could not convert
             icmp_type = -1;
-            throw ObjectMakerException(QString("ICMP type '%1' is unusable").arg(s));
+//            throw ObjectMakerException(
+            error_tracker->registerError(
+                QString("ICMP type '%1' is unusable").arg(s));
         }
     }
 }
@@ -352,7 +371,9 @@ void ObjectSignature::setIcmpCode(const QString &s)
         {
             // could not convert
             icmp_code = -1;
-            throw ObjectMakerException(QString("ICMP code '%1' is unusable").arg(s));
+//            throw ObjectMakerException(
+            error_tracker->registerError(
+                QString("ICMP code '%1' is unusable").arg(s));
         }
     }
 }
@@ -367,7 +388,8 @@ int ObjectSignature::portFromString(const QString &port_spec, const QString &pro
     int port = GetServByName::getPortByName(ps, proto);
     if (port == -1)
     {
-        throw ObjectMakerException(
+//        throw ObjectMakerException(
+        error_tracker->registerError(
             QString("%1 port name '%2' is unknown").arg(proto).arg(ps));
         port = 0;
     }
@@ -810,14 +832,14 @@ FWObject* ObjectMaker::promoteToNamedObject(FWObject *obj,
         FWObject *new_obj = library->getRoot()->create(obj->getTypeName());
         new_obj->duplicate(obj);
         new_obj->setName(objName);
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         new_obj->dispatch(&sig, (void*)(NULL));
         registerNamedObject(sig, new_obj);
         return new_obj;
     } else
     {
         obj->setName(objName);
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         obj->dispatch(&sig, (void*)(NULL));
         registerNamedObject(sig, obj);
         return obj;
@@ -847,17 +869,20 @@ FWObject* ObjectMaker::createObject(FWObject *parent,
         {     
             QString pn = QString::fromUtf8(parent->getName().c_str());
             if (parent->getLibrary()->isReadOnly())
-                throw ObjectMakerException(
+//                throw ObjectMakerException(
+                error_tracker->registerError(
                     QObject::tr("Can not add new objects to folder %1 because "
                                 "it belongs to a locked library").arg(pn));
             else
-                throw ObjectMakerException(
+//                throw ObjectMakerException(
+                error_tracker->registerError(
                     QObject::tr("Can not add new objects to folder %1 because "
                                 "it is locked").arg(pn));
         }
         if (parent->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
         {
-            throw ObjectMakerException(
+//            throw ObjectMakerException(
+            error_tracker->registerError(
                 QObject::tr("Can not add new objects to the \"Deleted Objects\" "
                             "library"));
         }
@@ -888,7 +913,7 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
 
     if (Address::cast(root) || Service::cast(root))
     {
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
 
         root->dispatch(&sig, (void*)(NULL));
 

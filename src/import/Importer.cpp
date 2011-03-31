@@ -125,14 +125,17 @@ Importer::Importer(FWObject *_lib,
     logger = log;
     platform = _platform;
 
-    clear();
-
     current_interface = NULL;
     current_ruleset = NULL;
     current_rule = NULL;
 
-    address_maker = new AddressObjectMaker(Library::cast(library));
-    service_maker = new ServiceObjectMaker(Library::cast(library));
+    error_tracker = new ObjectMakerErrorTracker();
+
+    address_maker = new AddressObjectMaker(Library::cast(library), error_tracker);
+    service_maker = new ServiceObjectMaker(Library::cast(library), error_tracker);
+
+    clear();
+
 }
 
 void Importer::prepareForDeduplication()
@@ -154,6 +157,8 @@ Importer::~Importer()
 
     delete address_maker;
     delete service_maker;
+
+    delete error_tracker;
 }
 
 void Importer::clear()
@@ -197,13 +202,14 @@ void Importer::clear()
     if (!tcp_flags_comp.empty()) tcp_flags_comp.clear();
     if (!tmp_tcp_flags_list.empty()) tmp_tcp_flags_list.clear();
 
+    error_tracker->clear();
 }
 
 Firewall* Importer::getFirewallObject()
 {
     if (fw!=NULL) return fw;
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *nobj = commitObject(
         maker.createObject(Firewall::TYPENAME, fwname));
 
@@ -237,7 +243,7 @@ void Importer::setDiscoveredVersion(const std::string &v)
 void Importer::newInterface(const std::string &name)
 {
     if (all_interfaces.count(name)>0) return;
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *nobj = commitObject(
         maker.createObject(getFirewallObject(), Interface::TYPENAME, name));
     current_interface = Interface::cast(nobj);
@@ -270,7 +276,7 @@ void Importer::addAddressObjectToInterface(Interface*intf,
     else
     {
         string aname = getFirewallObject()->getName() + ":" + intf->getName() + ":ip";
-        ObjectMaker maker(Library::cast(library));
+        ObjectMaker maker(Library::cast(library), error_tracker);
         FWObject *nobj = commitObject(
             maker.createObject(intf, IPv4::TYPENAME, aname));
         IPv4::cast(nobj)->setAddress( InetAddr(addr) );
@@ -547,7 +553,15 @@ void Importer::pushRule()
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
 
-    addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
+    if (error_tracker->hasErrors())
+    {
+        QStringList err = error_tracker->getErrors();
+        addMessageToLog("Error: " + err.join("\n"));
+        markCurrentRuleBad();
+    }
+
+    addStandardImportComment(
+        current_rule, QString::fromUtf8(rule_comment.c_str()));
 
     current_rule = NULL;
     rule_comment = "";
@@ -579,7 +593,7 @@ FWObject* Importer::makeSrcObj()
 
     if (src_nm=="") src_nm = InetAddr::getAllOnes().toString();
 
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
     sig.setAddress(src_a.c_str());
     sig.setNetmask(src_nm.c_str(), address_maker->getInvertedNetmasks());
@@ -601,7 +615,7 @@ FWObject* Importer::makeDstObj()
 
     if (dst_nm=="") dst_nm=InetAddr::getAllOnes().toString();
 
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
     sig.setAddress(dst_a.c_str());
     sig.setNetmask(dst_nm.c_str(), address_maker->getInvertedNetmasks());
@@ -615,7 +629,7 @@ FWObject* Importer::makeSrvObj()
     FWObject *s;
     if (protocol=="icmp")
     {
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = ICMPService::TYPENAME;
         if ( ! icmp_spec.empty())
         {
@@ -638,7 +652,7 @@ FWObject* Importer::makeSrvObj()
                 s = createUDPService();
             } else
             {
-                ObjectSignature sig;
+                ObjectSignature sig(error_tracker);
                 sig.type_name = IPService::TYPENAME;
                 sig.setProtocol(protocol.c_str());
                 sig.fragments = fragments;
@@ -750,7 +764,7 @@ FWObject* Importer::createGroupOfInterfaces(
 
     if (all_objects.count(sig)!=0) return all_objects[sig];
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     ObjectGroup *og = ObjectGroup::cast(
         commitObject(
             maker.createObject(ObjectGroup::TYPENAME, name)));
@@ -768,13 +782,20 @@ FWObject* Importer::createGroupOfInterfaces(
  *   set color of the current rule  (use red) and add comment
  *   to indicate that the rule could not be properly parsed
  */
-void Importer::markCurrentRuleBad(const std::string &comment)
+void Importer::markCurrentRuleBad()
 {
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
     ropt->setStr("color", getBadRuleColor());
-    if (!rule_comment.empty()) rule_comment += "\n";
-    rule_comment += comment;
+
+    QStringList comment;
+    if ( ! current_rule->getComment().empty())
+        comment.append(QString::fromUtf8(current_rule->getComment().c_str()));
+
+    foreach(QString err, error_tracker->getErrors())
+        comment.append(err);
+
+    current_rule->setComment(comment.join("\n").toUtf8().constData());
 }
 
 void Importer::reportError(const std::string &comment)
@@ -786,9 +807,9 @@ void Importer::reportError(const QString &comment)
 {
     error_counter++;
     QString err = QObject::tr("Parser error: Line %1: %2\n")
-        .arg(getCurrentLineNumber()).arg(comment);
+        .arg(getCurrentLineNumber()).arg(comment);    
     addMessageToLog(err);
-    if (current_rule != NULL) markCurrentRuleBad(comment.toUtf8().constData());
+    error_tracker->registerError(err);
 }
 
 int Importer::countRules()

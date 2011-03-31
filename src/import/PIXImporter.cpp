@@ -152,7 +152,8 @@ FWObject* PIXImporter::makeSrcObj()
     {
         Interface *intf = getInterfaceByLabel(src_a);
         if (intf) return intf;
-        throw ImporterException(
+//        throw ImporterException(
+        reportError(
             QString("Cannot find interface with label '%1'").arg(src_a.c_str()));
     }
 
@@ -169,7 +170,8 @@ FWObject* PIXImporter::makeDstObj()
     {
         Interface *intf = getInterfaceByLabel(dst_a);
         if (intf) return intf;
-        throw ImporterException(
+//        throw ImporterException(
+        reportError(
             QString("Cannot find interface with label '%1'").arg(dst_a.c_str()));
     }
 
@@ -596,7 +598,7 @@ void PIXImporter::newNamedObjectService(const string &name)
 
 void PIXImporter::commitNamedAddressObject()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.object_name = named_object_name;
     sig.type_name = Address::TYPENAME;
     sig.address = tmp_a.c_str();
@@ -607,7 +609,7 @@ void PIXImporter::commitNamedAddressObject()
 
 void PIXImporter::commitNamedAddressRangeObject()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.object_name = named_object_name;
     sig.type_name = AddressRange::TYPENAME;
     sig.setAddressRangeStart(tmp_range_1.c_str());
@@ -618,7 +620,7 @@ void PIXImporter::commitNamedAddressRangeObject()
 
 void PIXImporter::commitNamedIPServiceObject()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.object_name = named_object_name;
     sig.type_name = IPService::TYPENAME;
     sig.setProtocol(protocol.c_str());
@@ -629,7 +631,7 @@ void PIXImporter::commitNamedIPServiceObject()
 
 void PIXImporter::commitNamedICMPServiceObject()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.object_name = named_object_name;
     sig.type_name = ICMPService::TYPENAME;
 
@@ -707,7 +709,7 @@ void PIXImporter::newObjectGroupNetwork(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
@@ -722,7 +724,7 @@ void PIXImporter::newObjectGroupService(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
@@ -752,7 +754,7 @@ void PIXImporter::newObjectGroupProtocol(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
@@ -767,7 +769,7 @@ void PIXImporter::newObjectGroupICMP(const string &name)
     object_group_name = QString::fromUtf8(name.c_str());
     object_group_comment = "";
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     current_object_group = 
         setNameOfNamedObject(
             commitObject(
@@ -790,7 +792,7 @@ void PIXImporter::setObjectGroupDescription(const std::string &descr)
 
 void PIXImporter::addNetworkToObjectGroup()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
     sig.setAddress(tmp_a.c_str());
     sig.setNetmask(tmp_nm.c_str());
@@ -805,14 +807,15 @@ void PIXImporter::addNamedObjectToObjectGroup(const std::string &object_name)
     {
         current_object_group->addRef(named_objects_registry[no_name]);
     } else
-        throw ImporterException(
+//        throw ImporterException(
+        reportError(
             QString("Attempt to add yet undefined named object '%1' "
                     "to object group '%2'").arg(no_name).arg(object_group_name));
 }
 
 void PIXImporter::addIPServiceToObjectGroup()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = IPService::TYPENAME;
     sig.setProtocol(protocol.c_str());
     sig.fragments = fragments;
@@ -836,7 +839,7 @@ void PIXImporter::addTCPUDPServiceToObjectGroup()
 
 void PIXImporter::addICMPServiceToObjectGroup()
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = ICMPService::TYPENAME;
 
     if ( ! icmp_spec.empty())

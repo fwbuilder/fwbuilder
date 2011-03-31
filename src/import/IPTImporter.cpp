@@ -196,7 +196,7 @@ FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
                  << dst_range.second.c_str();
     }
 
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.setSrcPortRange(src_range.first.c_str(), src_range.second.c_str(),
                         proto.c_str());
     sig.setDstPortRange(dst_range.first.c_str(), dst_range.second.c_str(),
@@ -268,7 +268,7 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
                 QString("Group of %1 services with name '%2', sig '%3'")
                 .arg(proto.c_str()).arg(name.c_str()).arg(sig.c_str());
 
-        ObjectMaker maker(Library::cast(library));
+        ObjectMaker maker(Library::cast(library), error_tracker);
         ServiceGroup *sg = ServiceGroup::cast(
                 commitObject(maker.createObject(ServiceGroup::TYPENAME, name)));
 
@@ -303,7 +303,7 @@ FWObject* IPTImporter::makeSrcObj()
 {
     if (using_iprange_src)
     {
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = AddressRange::TYPENAME;
         sig.setAddressRangeStart(iprange_src_from.c_str());
         sig.setAddressRangeEnd(iprange_src_to.c_str());
@@ -317,7 +317,7 @@ FWObject* IPTImporter::makeDstObj()
 {
     if (using_iprange_dst)
     {
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = AddressRange::TYPENAME;
         sig.setAddressRangeStart(iprange_dst_from.c_str());
         sig.setAddressRangeEnd(iprange_dst_to.c_str());
@@ -437,7 +437,7 @@ void IPTImporter::addMarkMatch(PolicyRule *rule)
     assert(srv!=NULL);
     if (rule->getSrv()->isAny() && !match_mark.empty())
     {
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = TagService::TYPENAME;
         sig.tag = match_mark.c_str();
         srv->addRef( commitObject(service_maker->createObject(sig)) );
@@ -453,7 +453,7 @@ void IPTImporter::addLengthMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !length_spec.empty())
     {
         // create custom service with module "length"
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = CustomService::TYPENAME;
         sig.platform = "iptables";
         sig.code = QString("-m length --length %1").arg(length_spec.c_str());
@@ -470,7 +470,7 @@ void IPTImporter::addPktTypeMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !pkt_type_spec.empty())
     {
         // create custom service with module "pkttype"
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = CustomService::TYPENAME;
         sig.platform = "iptables";
         sig.code = QString("-m pkttype --pkt-type %1").arg(pkt_type_spec.c_str());
@@ -502,7 +502,7 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
     if (rule->getSrv()->isAny() && !recent_match.empty())
     {
         // create custom service with module "recent"
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = CustomService::TYPENAME;
         sig.platform = "iptables";
         sig.code = QString("-m recent %1").arg(recent_match.c_str());
@@ -520,7 +520,7 @@ void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &st
     if (rule->getSrv()->isAny() && !state.empty())
     {
         // create custom service with module "state"
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = CustomService::TYPENAME;
         sig.platform = "iptables";
         sig.code = QString("-m state --state %1").arg(state.c_str());
@@ -704,7 +704,8 @@ void IPTImporter::pushPolicyRule()
                     "Error: Line %1: Unknown parameter of target REJECT: %2.\n")
                     .arg(getCurrentLineNumber())
                     .arg(iptables_reject_arg);
-                throw ImporterException(err);
+                reportError(err);
+//                throw ImporterException(err);
 
                 // ropt->setStr("color", getBadRuleColor());
                 // rule_comment += string(err.toUtf8().constData());
@@ -784,7 +785,7 @@ void IPTImporter::pushPolicyRule()
         action = PolicyRule::Tag;
         last_mark_rule = rule;
         
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = TagService::TYPENAME;
         sig.tag = action_params["set_mark"].c_str();
         FWObject *tag_service = commitObject(service_maker->createObject(sig));
@@ -887,7 +888,7 @@ void IPTImporter::pushPolicyRule()
         estab = std_obj->findObjectByName(CustomService::TYPENAME, "ESTABLISHED");
         if (estab == NULL)
         {
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = CustomService::TYPENAME;
             sig.platform = "iptables";
             sig.code = QString("-m state --state RELATED,ESTABLISHED");
@@ -949,7 +950,7 @@ void IPTImporter::pushPolicyRule()
     {
         RuleElementSrv *srv = rule->getSrv();
 
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         sig.type_name = CustomService::TYPENAME;
         sig.platform = "iptables";
         sig.code = QString("-m state --state %1").arg(current_state.c_str());
@@ -1148,6 +1149,13 @@ void IPTImporter::pushPolicyRule()
         addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
     }
 
+    if (error_tracker->hasErrors())
+    {
+        QStringList err = error_tracker->getErrors();
+        addMessageToLog("Error: " + err.join("\n"));
+        markCurrentRuleBad();
+    }
+
     current_rule = NULL;
     rule_comment = "";
 
@@ -1205,14 +1213,14 @@ void IPTImporter::pushNATRule()
         FWObject *tsrc = NULL;
         if (nat_addr1!=nat_addr2)
         {
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = AddressRange::TYPENAME;
             sig.setAddressRangeStart(nat_addr1.c_str());
             sig.setAddressRangeEnd(nat_addr2.c_str());
             tsrc = commitObject(address_maker->createObject(sig));
         } else
         {
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
             sig.setAddress(nat_addr1.c_str());
             sig.setNetmask(nat_nm.c_str());
@@ -1259,14 +1267,14 @@ void IPTImporter::pushNATRule()
         FWObject *tdst = NULL;
         if (nat_addr1!=nat_addr2)
         {
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = AddressRange::TYPENAME;
             sig.setAddressRangeStart(nat_addr1.c_str());
             sig.setAddressRangeEnd(nat_addr2.c_str());
             tdst = commitObject(address_maker->createObject(sig));
         } else
         {
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
             sig.setAddress(nat_addr1.c_str());
             sig.setNetmask(nat_nm.c_str());
@@ -1336,7 +1344,7 @@ void IPTImporter::pushNATRule()
             RuleElementTSrc *tsrc = rule->getTSrc();
             assert(tsrc!=NULL);
 
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
             sig.setAddress(nat_addr1.c_str());
             sig.setNetmask(nat_nm.c_str());
@@ -1351,7 +1359,7 @@ void IPTImporter::pushNATRule()
             RuleElementTDst *tdst = rule->getTDst();
             assert(tdst!=NULL);
 
-            ObjectSignature sig;
+            ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
             sig.setAddress(nat_addr1.c_str());
             sig.setNetmask(nat_nm.c_str());
@@ -1407,6 +1415,8 @@ void IPTImporter::pushNATRule()
     ruleset->renumberRules();
 
     addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
+
+    if (error_tracker->hasErrors()) markCurrentRuleBad();
 
     // RuleSet *nat = RuleSet::cast(
     //     getFirewallObject()->getFirstByType(NAT::TYPENAME));

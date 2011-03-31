@@ -101,6 +101,8 @@ class Importer
     
 protected:
 
+    ObjectMakerErrorTracker *error_tracker;
+    
     AddressObjectMaker *address_maker;
     ServiceObjectMaker *service_maker;
 
@@ -334,7 +336,7 @@ public:
     void setCurrentLineNumber(int n) { current_line_number = n; }
     int getCurrentLineNumber() { return current_line_number;}
     
-    void markCurrentRuleBad(const std::string &comment);
+    void markCurrentRuleBad();
     void reportError(const std::string &comment);
     void reportError(const QString &comment);
     

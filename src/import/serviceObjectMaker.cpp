@@ -44,7 +44,8 @@ using namespace libfwbuilder;
 using namespace std;
 
 
-ServiceObjectMaker::ServiceObjectMaker(Library *l) : ObjectMaker(l)
+ServiceObjectMaker::ServiceObjectMaker(Library *l, ObjectMakerErrorTracker *et) :
+    ObjectMaker(l, et)
 {
     custom_service_code_tracker = 0;
     tcp_flag_names[libfwbuilder::TCPService::URG] = "u";
@@ -57,7 +58,7 @@ ServiceObjectMaker::ServiceObjectMaker(Library *l) : ObjectMaker(l)
     tcp_flag_names[99]="A";   // ALL
 
     // some "built-in" objects
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = IPService::TYPENAME;
     sig.protocol = 0;
     sig.fragments = false;

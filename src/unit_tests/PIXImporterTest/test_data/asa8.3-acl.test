@@ -165,7 +165,6 @@ access-list inside_in extended deny   ip any any log 0 interval 300
 ! more complex tests: named objects, object groups, inline address and
 ! port definitions in both source and destination
 
-! the following is unsupported at this time , see #2273
 access-list inside_in extended permit tcp object server-1.0 object-group id5102X14531.srv.tcp.0 any
 
 access-list inside_in extended permit tcp object server-1.0 object-group dst-network-group-1
@@ -176,30 +175,29 @@ access-list inside_in extended permit tcp object server-1.0 lt 1024 any
 access-list inside_in extended permit tcp object server-1.0 range 1010 1020 any
 access-list inside_in extended permit tcp object server-1.0 neq 88 any
 
-! the following is unsupported at this time , see #2273
-! access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
+access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0  any
 access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 eq 80 any
 access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 gt 1010 any
 access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 lt 1024 any
 access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 range 1010 1020 any
 access-list inside_in extended permit tcp 192.168.2.0 255.255.255.192 neq 88 any
 
-! the following is unsupported at this time , see #2273
-! access-list inside_out extended permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
+access-list inside_out extended permit tcp any object server-1.0 object-group id5102X14531.srv.tcp.0 
 access-list inside_out extended permit tcp any object server-1.0 eq 80
 access-list inside_out extended permit tcp any object server-1.0 gt 1010
 access-list inside_out extended permit tcp any object server-1.0 lt 1024
 access-list inside_out extended permit tcp any object server-1.0 range 1010 1020
 access-list inside_out extended permit tcp any object server-1.0 neq 88
 
-! the following is unsupported at this time , see #2273
-! access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 object-group id5102X14531.srv.tcp.0 
 access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 eq 80
 access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 gt 1010
 access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 lt 1024
 access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 range 1010 1020
 access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 neq 88
 
+! invalid port name
+access-list inside_out extended permit tcp any 192.168.2.0 255.255.255.192 neq foo
 
 access-list inside_out extended permit tcp any object-group dst-network-group-1
 

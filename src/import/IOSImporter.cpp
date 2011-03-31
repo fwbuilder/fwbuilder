@@ -87,7 +87,7 @@ ObjectSignature IOSImporter::packObjectSignatureTCPService()
     // port_op can be: lt (less than), gt (greater than), eq (equal),
     // neq (not equal), and range (inclusive range).
 
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = TCPService::TYPENAME;
     sig.port_range_inclusive = false;
 
@@ -109,7 +109,7 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
     // port_op can be: lt (less than), gt (greater than), eq (equal),
     // neq (not equal), and range (inclusive range).
 
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.type_name = UDPService::TYPENAME;
     sig.port_range_inclusive = false;
 
@@ -152,7 +152,7 @@ FWObject* IOSImporter::createTCPUDPServicePair(const QString &name)
         group_name = QString(srv1->getName().c_str()).replace("tcp ","tcp-udp ");
     }
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *grp = 
         commitObject(
             maker.createObject(ServiceGroup::TYPENAME, group_name.toStdString()));
@@ -174,7 +174,7 @@ FWObject* IOSImporter::createTCPUDPServicePair(const QString &name)
 FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
                                              const QString &name)
 {
-    ObjectSignature sig;
+    ObjectSignature sig(error_tracker);
     sig.port_range_inclusive = false;
 
     if (proto == "tcp") sig.type_name = TCPService::TYPENAME;
@@ -224,7 +224,7 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
 
     assert(srv1 != NULL && srv2 != NULL);
 
-    ObjectMaker maker(Library::cast(library));
+    ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *grp = 
         commitObject(
             maker.createObject(ServiceGroup::TYPENAME, group_name.toStdString()));

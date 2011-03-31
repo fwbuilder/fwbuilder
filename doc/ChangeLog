@@ -1,5 +1,13 @@
 2011-03-31  vadim  <vadim@netcitadel.com>
 
+	* objectMaker.h (ObjectMakerErrorTracker): see #2302 Importer
+	should log and continue when it encounters an error. This matches
+	its behavior in older versions and makes it more resilient to
+	changes in target platform firewall languages. Rule that had an
+	error or unrecognized syntax in it should be marked by changing
+	its color to red and an explanation should be added to its
+	comment.
+
 	* PIXImporterNat.cpp (buildSNATRule): import of PIX/ASA "global"
 	and "nat" commands works.
 

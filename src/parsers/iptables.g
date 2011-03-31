@@ -263,7 +263,7 @@ unknown_option :
         (
             MINUS WORD
             {
-                importer->markCurrentRuleBad(
+                importer->reportError(
                     std::string("Unknown option: -")+LT(0)->getText());
                 *dbg << " UNKNOWN OPTION=-" << LT(0)->getText();
             }
@@ -273,7 +273,7 @@ unknown_option :
         (
             ( MINUS MINUS WORD )
             {
-                importer->markCurrentRuleBad(
+                importer->reportError(
                     std::string("Unknown option: --")+LT(0)->getText());
                 *dbg << " UNKNOWN OPTION=--" << LT(0)->getText();
             }
@@ -283,7 +283,7 @@ unknown_option :
         (
             UNSUPPORTED_OPTION
             {
-                importer->markCurrentRuleBad(
+                importer->reportError(
                     std::string("Unknown option: ")+LT(0)->getText());
                 *dbg << " UNKNOWN OPTION=" << LT(0)->getText();
             }
@@ -305,7 +305,7 @@ unknown_parameter
                 WORD          {s+=LT(0)->getText();}
             )
             {
-                importer->markCurrentRuleBad(
+                importer->reportError(
                     std::string("Unknown parameter: ")+s);
                 *dbg << " UNKNOWN PARMETER=" << s;
             }
@@ -314,7 +314,7 @@ unknown_parameter
         (
             (DIGIT | INT_CONST | WORD)
             {
-                importer->markCurrentRuleBad(
+                importer->reportError(
                     std::string("Unknown parameter: ")+LT(0)->getText());
                 *dbg << " UNKNOWN PARMETER=" << LT(0)->getText();
             }
@@ -647,7 +647,7 @@ fragm    : OPT_FRAGM
 m_unknown_module : WORD
         {
             *dbg << " UNKNOWN MODULE=" << LT(0)->getText();
-            importer->markCurrentRuleBad(
+            importer->reportError(
                 std::string("Unknown module: ")+LT(0)->getText());
         }
     ;

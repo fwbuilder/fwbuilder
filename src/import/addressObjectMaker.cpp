@@ -62,12 +62,12 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
     if ( ! sig.object_name.isEmpty())
     {
         obj->setName(sig.object_name.toUtf8().constData());
-        ObjectSignature new_sig;
+        ObjectSignature new_sig(error_tracker);
         obj->dispatch(&new_sig, (void*)(NULL));
         registerNamedObject(new_sig, obj);
     } else
     {
-        ObjectSignature new_sig;
+        ObjectSignature new_sig(error_tracker);
         obj->dispatch(&new_sig, (void*)(NULL));
         registerAnonymousObject(new_sig, obj);
     }
@@ -133,7 +133,8 @@ FWObject* AddressObjectMaker::createAddress(ObjectSignature &sig)
             net->setAddress( InetAddr(sig.address.toStdString()) );
         } catch (FWException &ex)
         {
-            throw ObjectMakerException(
+//            throw ObjectMakerException(
+            error_tracker->registerError(
                 QString("Error converting address '%1'").arg(sig.address));
         }
 
@@ -162,7 +163,8 @@ FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
         ar->setRangeStart( InetAddr(addr1.toStdString()) );
     } catch (FWException &ex)
     {
-        throw ObjectMakerException(
+//        throw ObjectMakerException(
+        error_tracker->registerError(
             QString("Error converting address '%1'").arg(addr1));
     }
 
@@ -171,7 +173,8 @@ FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
         ar->setRangeEnd( InetAddr(addr2.toStdString()) );
     } catch (FWException &ex)
     {
-        throw ObjectMakerException(
+//        throw ObjectMakerException(
+        error_tracker->registerError(
             QString("Error converting address '%1'").arg(addr2));
     }
 

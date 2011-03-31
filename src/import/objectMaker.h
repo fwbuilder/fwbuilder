@@ -29,6 +29,7 @@
 #include "fwbuilder/Dispatch.h"
 
 #include <QString>
+#include <QStringList>
 #include <QMap>
 #include <QPair>
 
@@ -69,14 +70,32 @@ public:
 };
 
 
+class ObjectMakerErrorTracker
+{
+    QStringList errors;
+    bool error_status;
+    
+public:
+    ObjectMakerErrorTracker() { error_status = false; }
+
+    void clear() { error_status = false; errors.clear(); }
+    
+    void registerError(const QString &msg);
+    bool hasErrors() { return error_status; }
+    QStringList getErrors() { errors.removeDuplicates(); return errors; }
+};
+
+
 class ObjectSignature : public libfwbuilder::Dispatch
 {
     static QMap<QString, QPair<int,int> > icmp_names;
 
 public:
-    ObjectSignature();
+    ObjectSignature(ObjectMakerErrorTracker *error_tracker);
     ObjectSignature(const ObjectSignature &other);
 
+    ObjectMakerErrorTracker *error_tracker;
+    
     bool port_range_inclusive;
     
     QString type_name;
@@ -184,6 +203,9 @@ public:
 class ObjectMaker
 {
 protected:
+
+    ObjectMakerErrorTracker *error_tracker;
+    
     libfwbuilder::Library *library;
     libfwbuilder::FWObject *last_created;
 
@@ -198,7 +220,12 @@ protected:
     
 public:
 
-    ObjectMaker(libfwbuilder::Library *l) { library = l; last_created = NULL; }
+    ObjectMaker(libfwbuilder::Library *l, ObjectMakerErrorTracker *et)
+    {
+        library = l;
+        error_tracker = et;
+        last_created = NULL;
+    }
     virtual ~ObjectMaker() {};
     
     virtual void clear();

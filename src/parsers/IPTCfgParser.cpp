@@ -1864,7 +1864,7 @@ void IPTCfgParser::unknown_option() {
 			if ( inputState->guessing==0 ) {
 #line 265 "iptables.g"
 				
-				importer->markCurrentRuleBad(
+				importer->reportError(
 				std::string("Unknown option: -")+LT(0)->getText());
 				*dbg << " UNKNOWN OPTION=-" << LT(0)->getText();
 				
@@ -1928,7 +1928,7 @@ void IPTCfgParser::unknown_option() {
 			if ( inputState->guessing==0 ) {
 #line 275 "iptables.g"
 				
-				importer->markCurrentRuleBad(
+				importer->reportError(
 				std::string("Unknown option: --")+LT(0)->getText());
 				*dbg << " UNKNOWN OPTION=--" << LT(0)->getText();
 				
@@ -1988,7 +1988,7 @@ void IPTCfgParser::unknown_option() {
 			if ( inputState->guessing==0 ) {
 #line 285 "iptables.g"
 				
-				importer->markCurrentRuleBad(
+				importer->reportError(
 				std::string("Unknown option: ")+LT(0)->getText());
 				*dbg << " UNKNOWN OPTION=" << LT(0)->getText();
 				
@@ -2110,7 +2110,7 @@ void IPTCfgParser::unknown_parameter() {
 			if ( inputState->guessing==0 ) {
 #line 307 "iptables.g"
 				
-				importer->markCurrentRuleBad(
+				importer->reportError(
 				std::string("Unknown parameter: ")+s);
 				*dbg << " UNKNOWN PARMETER=" << s;
 				
@@ -2146,7 +2146,7 @@ void IPTCfgParser::unknown_parameter() {
 			if ( inputState->guessing==0 ) {
 #line 316 "iptables.g"
 				
-				importer->markCurrentRuleBad(
+				importer->reportError(
 				std::string("Unknown parameter: ")+LT(0)->getText());
 				*dbg << " UNKNOWN PARMETER=" << LT(0)->getText();
 				
@@ -2465,7 +2465,7 @@ void IPTCfgParser::m_unknown_module() {
 #line 648 "iptables.g"
 			
 			*dbg << " UNKNOWN MODULE=" << LT(0)->getText();
-			importer->markCurrentRuleBad(
+			importer->reportError(
 			std::string("Unknown module: ")+LT(0)->getText());
 			
 #line 2472 "IPTCfgParser.cpp"

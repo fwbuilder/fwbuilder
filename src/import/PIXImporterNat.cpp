@@ -114,6 +114,13 @@ void PIXImporter::pushNATRule()
 
     assert(current_rule!=NULL);
 
+    if (error_tracker->hasErrors())
+    {
+        QStringList err = error_tracker->getErrors();
+        addMessageToLog("Error: " + err.join("\n"));
+        markCurrentRuleBad();
+    }
+
     current_rule = NULL;
     rule_comment = "";
 
@@ -302,7 +309,7 @@ void PIXImporter::buildSNATRule()
             }
         }
 
-        ObjectSignature sig;
+        ObjectSignature sig(error_tracker);
         FWObject *addr = NULL;
 
         if (pool.start == "interface")

@@ -36,7 +36,7 @@ class ServiceObjectMaker : public ObjectMaker
     
 public:
     
-    ServiceObjectMaker(libfwbuilder::Library *l);
+    ServiceObjectMaker(libfwbuilder::Library *l, ObjectMakerErrorTracker *et);
     virtual ~ServiceObjectMaker();
 
     virtual void clear();
