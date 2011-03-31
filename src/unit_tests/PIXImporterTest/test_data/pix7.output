@@ -1,41 +1,41 @@
-Version: 7.2
-Host name: pix1
-Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
-Name 1.2.3.4 gw
-Name 192.168.3.0 fake_network
-Name 192.168.4.1 inside_ip
-New interface: Ethernet0
-New interface: Ethernet0.101
-Interface parameters: outside  
-Interface label: outside
-Interface address: 192.0.2.253/255.255.255.0
-New interface: Ethernet0.102
-Interface parameters: dmz20  
-Interface label: dmz20
-Interface address: 10.0.0.253/255.255.255.0
-Parser warning: failover IP detected. Failover is not supported by import at this time
-New interface: Ethernet1
-Interface parameters: inside  
-Interface label: inside
-Interface address: 10.1.1.206/255.255.255.0
-New interface: Ethernet2
-Interface comment: LAN/STATE Failover Interface 
-New interface: Ethernet3
+3: Version: 7.2
+6: Host name: pix1
+9: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+10: Name 1.2.3.4 gw
+11: Name 192.168.3.0 fake_network
+12: Name 192.168.4.1 inside_ip
+16: New interface: Ethernet0
+21: New interface: Ethernet0.101
+22: Interface parameters: outside  
+22: Interface label: outside
+24: Interface address: 192.0.2.253/255.255.255.0
+27: New interface: Ethernet0.102
+28: Interface parameters: dmz20  
+28: Interface label: dmz20
+30: Interface address: 10.0.0.253/255.255.255.0
+30: Parser warning: failover IP detected. Failover is not supported by import at this time
+33: New interface: Ethernet1
+35: Interface parameters: inside  
+35: Interface label: inside
+37: Interface address: 10.1.1.206/255.255.255.0
+40: New interface: Ethernet2
+40: Interface comment: LAN/STATE Failover Interface 
+44: New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
-New interface: Ethernet4
+50: New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-New interface: Ethernet5
+56: New interface: Ethernet5
 Warning: interface Ethernet5 was not imported because it is in "shutdown" mode
-New interface: Ethernet6
+62: New interface: Ethernet6
 Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
-Object Group (network) outside.id12051X6282.src.net.0
-Object Group (network) outside.id12051X6282.src.net.1
-Object Group (network) outside.id12051X6282.src.net.2
-Interface Ethernet1 ruleset inside_in direction 'in'
-Interface Ethernet0.101 ruleset outside_in direction 'in'
-Interface Ethernet0.101 ruleset outside_in direction 'in'
-Interface Ethernet1 ruleset inside_in direction 'in'
-Interface Ethernet1 ruleset inside_out direction 'out'
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+70: Object Group (network) outside.id12051X6282.src.net.0
+73: Object Group (network) outside.id12051X6282.src.net.1
+78: Object Group (network) outside.id12051X6282.src.net.2
+97: Interface Ethernet1 ruleset inside_in direction 'in'
+98: Interface Ethernet0.101 ruleset outside_in direction 'in'
+123: Interface Ethernet0.101 ruleset outside_in direction 'in'
+124: Interface Ethernet1 ruleset inside_in direction 'in'
+125: Interface Ethernet1 ruleset inside_out direction 'out'
+164: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+165: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+166: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'

@@ -1,55 +1,55 @@
-Version: 8.0
-Host name: pixfirewall
-Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
-New interface: Ethernet0
-Interface parameters: inside  
-Interface label: inside
-Interface address: 192.168.2.221/255.255.255.0
-New interface: Ethernet1
-Interface parameters: outside  
-Interface label: outside
-Interface address: 192.0.2.221/255.255.255.0
-New interface: Ethernet2
+3: Version: 8.0
+5: Host name: pixfirewall
+7: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+9: New interface: Ethernet0
+9: Interface parameters: inside  
+9: Interface label: inside
+11: Interface address: 192.168.2.221/255.255.255.0
+14: New interface: Ethernet1
+14: Interface parameters: outside  
+14: Interface label: outside
+16: Interface address: 192.0.2.221/255.255.255.0
+19: New interface: Ethernet2
 Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
-New interface: Ethernet3
+25: New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
-New interface: Ethernet4
+31: New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-Object Group (network) net-1
-Object Group (network) net-2
-Object Group (network) host-1
-Object Group (network) mixed-1
-Object Group (network) host-2
-Object Group (service) tcp-1
-Object Group (service) mixed-service-1
-Object Group (service) service-ranges
-Object Group (icmp) icmp-1
-Object Group (icmp) icmp-2
-Object Group (icmp) icmp-3
-Object Group (protocol) protocol-1
-Object Group (protocol) proto-icmp
-Object Group (protocol) proto-icmp6
-Parser warning: IPv6 import is not supported. 
-Object Group (protocol) proto-ip
-Object Group (protocol) proto-ipsec
-Object Group (protocol) proto-pptp
-Object Group (protocol) proto-snp
-Object Group (protocol) proto-tcp
-Object Group (protocol) proto-udp
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
-Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
+39: Object Group (network) net-1
+42: Object Group (network) net-2
+47: Object Group (network) host-1
+49: Object Group (network) mixed-1
+55: Object Group (network) host-2
+58: Object Group (service) tcp-1
+60: Object Group (service) mixed-service-1
+66: Object Group (service) service-ranges
+75: Object Group (icmp) icmp-1
+77: Object Group (icmp) icmp-2
+82: Object Group (icmp) icmp-3
+83: Object Group (protocol) protocol-1
+87: Object Group (protocol) proto-icmp
+89: Object Group (protocol) proto-icmp6
+90: Parser warning: IPv6 import is not supported. 
+91: Object Group (protocol) proto-ip
+93: Object Group (protocol) proto-ipsec
+95: Object Group (protocol) proto-pptp
+97: Object Group (protocol) proto-snp
+99: Object Group (protocol) proto-tcp
+101: Object Group (protocol) proto-udp
+108: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+109: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+110: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+111: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+112: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+113: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+114: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+115: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+116: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+117: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+118: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+119: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+120: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+121: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+122: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+135: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
+137: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'

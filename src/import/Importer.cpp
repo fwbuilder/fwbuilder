@@ -865,12 +865,13 @@ QString Importer::commonFailureErrorMessage()
 
 void Importer::addMessageToLog(const std::string &msg)
 {
-    *logger << msg + "\n";
+    addMessageToLog(QString::fromUtf8(msg.c_str()));
 }
 
 void Importer::addMessageToLog(const QString &msg)
 {
-    addMessageToLog(msg.toStdString());
+    QString log_line("%1: %2\n");
+    *logger << log_line.arg(getCurrentLineNumber()).arg(msg).toUtf8().constData();
 }
 
 void Importer::addStandardImportComment(FWObject *obj,

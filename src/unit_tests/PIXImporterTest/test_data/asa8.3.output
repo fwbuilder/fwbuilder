@@ -1,41 +1,41 @@
-Version: 8.3
-Host name: asa5505
-Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
-Name 1.2.3.4 gw
-Name 192.168.3.0 fake_network
-Name 192.168.4.1 inside_ip
-Parser warning: IPv6 import is not supported. 
-New interface: Vlan1
-Interface comment: inside interface 
-Interface parameters: inside  
-Interface label: inside
-Interface address: dhcp/
-New interface: Vlan2
-Interface comment: outside interface 
-Interface parameters: outside  
-Interface label: outside
-Interface address: 192.168.2.1/255.255.255.0
-New interface: Ethernet0/0
-Interface comment: Switch port 0 / 0 
-Switch port vlan 2
-New interface: Vlan2020
-New interface: Ethernet0/1
+3: Version: 8.3
+5: Host name: asa5505
+8: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+9: Name 1.2.3.4 gw
+10: Name 192.168.3.0 fake_network
+11: Name 192.168.4.1 inside_ip
+11: Parser warning: IPv6 import is not supported. 
+14: New interface: Vlan1
+14: Interface comment: inside interface 
+15: Interface parameters: inside  
+15: Interface label: inside
+17: Interface address: dhcp/
+20: New interface: Vlan2
+20: Interface comment: outside interface 
+21: Interface parameters: outside  
+21: Interface label: outside
+23: Interface address: 192.168.2.1/255.255.255.0
+26: New interface: Ethernet0/0
+26: Interface comment: Switch port 0 / 0 
+27: Switch port vlan 2
+30: New interface: Vlan2020
+35: New interface: Ethernet0/1
 Warning: interface Ethernet0/1 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/2
+37: New interface: Ethernet0/2
 Warning: interface Ethernet0/2 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/3
+39: New interface: Ethernet0/3
 Warning: interface Ethernet0/3 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/4
+41: New interface: Ethernet0/4
 Warning: interface Ethernet0/4 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/5
+43: New interface: Ethernet0/5
 Warning: interface Ethernet0/5 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/6
+45: New interface: Ethernet0/6
 Warning: interface Ethernet0/6 was not imported because it is in "shutdown" mode
-New interface: Ethernet0/7
+47: New interface: Ethernet0/7
 Warning: interface Ethernet0/7 was not imported because it is in "shutdown" mode
-Named object (address) internal_subnet_1
-Named object (address) internal_subnet_2
-Named object (address) Internal_net
-Named object (address) hostA:eth0
-Interface Vlan1 ruleset ssh_commands_inside direction 'in'
-Interface Vlan1 ruleset ssh_commands_inside direction 'in'
+53: Named object (address) internal_subnet_1
+56: Named object (address) internal_subnet_2
+59: Named object (address) Internal_net
+61: Named object (address) hostA:eth0
+92: Interface Vlan1 ruleset ssh_commands_inside direction 'in'
+93: Interface Vlan1 ruleset ssh_commands_inside direction 'in'

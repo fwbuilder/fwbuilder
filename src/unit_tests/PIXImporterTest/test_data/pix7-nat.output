@@ -1,57 +1,57 @@
-Version: 7.2
-Host name: pix1
-Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
-Name 1.2.3.4 gw
-Name 192.168.3.0 fake_network
-Name 192.168.4.1 inside_ip
-New interface: Ethernet0
-New interface: Ethernet0.101
-Interface parameters: outside  
-Interface label: outside
-Interface address: 192.0.2.253/255.255.255.0
-New interface: Ethernet0.102
-Interface parameters: dmz20  
-Interface label: dmz20
-Interface address: 10.0.0.253/255.255.255.0
-Parser warning: failover IP detected. Failover is not supported by import at this time
-New interface: Ethernet1
-Interface parameters: inside  
-Interface label: inside
-Interface address: 10.1.1.206/255.255.255.0
-New interface: Ethernet2
+3: Version: 7.2
+6: Host name: pix1
+9: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+10: Name 1.2.3.4 gw
+11: Name 192.168.3.0 fake_network
+12: Name 192.168.4.1 inside_ip
+16: New interface: Ethernet0
+21: New interface: Ethernet0.101
+22: Interface parameters: outside  
+22: Interface label: outside
+24: Interface address: 192.0.2.253/255.255.255.0
+27: New interface: Ethernet0.102
+28: Interface parameters: dmz20  
+28: Interface label: dmz20
+30: Interface address: 10.0.0.253/255.255.255.0
+30: Parser warning: failover IP detected. Failover is not supported by import at this time
+33: New interface: Ethernet1
+35: Interface parameters: inside  
+35: Interface label: inside
+37: Interface address: 10.1.1.206/255.255.255.0
+40: New interface: Ethernet2
 Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
-New interface: Ethernet3
+45: New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
-New interface: Ethernet4
+51: New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-New interface: Ethernet5
+57: New interface: Ethernet5
 Warning: interface Ethernet5 was not imported because it is in "shutdown" mode
-New interface: Ethernet6
+63: New interface: Ethernet6
 Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
-Object Group (network) outside.id12051X6282.src.net.0
-Object Group (network) outside.id12051X6282.src.net.1
-Object Group (network) outside.id12051X6282.src.net.2
-Object Group (network) network-zone-inside
-Object Group (network) network-zone-dmz20
-Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
-Source translation rule ("nat" command)
-Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
-Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
-Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
-Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
-Source translation rule ("nat" command)
-Source translation rule ("nat" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Destination translation rule ("static" command)
-Interface Ethernet0.101 ruleset outside_in direction 'in'
-Interface Ethernet1 ruleset inside_in direction 'in'
-Interface Ethernet1 ruleset inside_out direction 'out'
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+71: Object Group (network) outside.id12051X6282.src.net.0
+74: Object Group (network) outside.id12051X6282.src.net.1
+79: Object Group (network) outside.id12051X6282.src.net.2
+83: Object Group (network) network-zone-inside
+85: Object Group (network) network-zone-dmz20
+133: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+134: Source translation rule ("nat" command)
+136: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
+137: Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
+138: Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
+139: Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
+141: Source translation rule ("nat" command)
+142: Source translation rule ("nat" command)
+145: Destination translation rule ("static" command)
+146: Destination translation rule ("static" command)
+147: Destination translation rule ("static" command)
+148: Destination translation rule ("static" command)
+149: Destination translation rule ("static" command)
+151: Destination translation rule ("static" command)
+152: Destination translation rule ("static" command)
+153: Destination translation rule ("static" command)
+157: Interface Ethernet0.101 ruleset outside_in direction 'in'
+158: Interface Ethernet1 ruleset inside_in direction 'in'
+159: Interface Ethernet1 ruleset inside_out direction 'out'
+200: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+201: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+202: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'

@@ -1,28 +1,28 @@
-Version: 8.3
-Host name: asa5505
-New interface: Vlan1
-Interface parameters: inside  
-Interface label: inside
-Interface address: 192.168.1.1/255.255.255.0
-New interface: Vlan2
-Interface parameters: outside  
-Interface label: outside
-Interface address: dhcp/
-New interface: Ethernet0/0
-Interface comment: Switch port 0 / 0 
-Named object (service) http.0
-Named object (service) https.0
-Named object (address) server-1.0
-Named object (address) Internal_net.0
-Named object (address) external_net.0
-Object Group (service) id5102X14531.srv.tcp.0
-Named object (service) ip2
-Object Group (protocol) pg1
-Object Group (network) src-network-group-1
-Object Group (network) dst-network-group-1
-Rule comment: 0 ( global ) 
-Rule comment: 3 ( global ) 
-Interface Vlan1 ruleset inside_in direction 'in'
-Interface Vlan1 ruleset inside_out direction 'out'
-Interface Vlan2 ruleset outside_in direction 'in'
-Interface Vlan2 ruleset outside_out direction 'out'
+3: Version: 8.3
+5: Host name: asa5505
+8: New interface: Vlan1
+8: Interface parameters: inside  
+8: Interface label: inside
+10: Interface address: 192.168.1.1/255.255.255.0
+14: New interface: Vlan2
+14: Interface parameters: outside  
+14: Interface label: outside
+16: Interface address: dhcp/
+20: New interface: Ethernet0/0
+20: Interface comment: Switch port 0 / 0 
+77: Named object (service) http.0
+81: Named object (service) https.0
+85: Named object (address) server-1.0
+89: Named object (address) Internal_net.0
+93: Named object (address) external_net.0
+96: Object Group (service) id5102X14531.srv.tcp.0
+101: Named object (service) ip2
+104: Object Group (protocol) pg1
+110: Object Group (network) src-network-group-1
+114: Object Group (network) dst-network-group-1
+123: Rule comment: 0 ( global ) 
+151: Rule comment: 3 ( global ) 
+224: Interface Vlan1 ruleset inside_in direction 'in'
+225: Interface Vlan1 ruleset inside_out direction 'out'
+226: Interface Vlan2 ruleset outside_in direction 'in'
+227: Interface Vlan2 ruleset outside_out direction 'out'
