@@ -225,13 +225,13 @@ Firewall* Importer::getFirewallObject()
 void Importer::setHostName(const std::string &hn)
 {
     getFirewallObject()->setName(hn);
-    *logger << "Host name: " + hn + "\n";
+    addMessageToLog("Host name: " + hn);
 }
 
 void Importer::setDiscoveredVersion(const std::string &v)
 {
     discovered_version = v;
-    *logger << "Version: " + v + "\n";
+    addMessageToLog("Version: " + v);
 }
 
 void Importer::newInterface(const std::string &name)
@@ -243,7 +243,7 @@ void Importer::newInterface(const std::string &name)
     current_interface = Interface::cast(nobj);
     current_interface->setUnnumbered(true);
     all_interfaces[name] = current_interface;
-    *logger << "New interface: " + name + "\n";
+    addMessageToLog("New interface: " + name);
 }
 
 /*
@@ -284,7 +284,7 @@ void Importer::addInterfaceAddress(const std::string &a,
     if (current_interface!=NULL)
     {
         addAddressObjectToInterface(current_interface, a, nm);
-        *logger << "Interface address: " + a + "/" + nm + "\n";
+        addMessageToLog("Interface address: " + a + "/" + nm);
     }
 }
 
@@ -299,7 +299,7 @@ void Importer::addInterfaceAddress(const std::string &label,
         if (intf->getLabel() == label)
         {
             addAddressObjectToInterface(intf, a, nm);
-            *logger << "Interface address: " + a + "/" + nm + "\n";
+            addMessageToLog("Interface address: " + a + "/" + nm);
         }
     }
 }
@@ -314,7 +314,7 @@ void Importer::setInterfaceComment(const std::string &descr)
     if (current_interface!=NULL)
     {
         current_interface->setComment(descr);
-        *logger << "Interface comment: " + descr + "\n";
+        addMessageToLog("Interface comment: " + descr);
     }
 }
 
@@ -323,7 +323,7 @@ void Importer::setInterfaceLabel(const std::string &descr)
     if (current_interface!=NULL)
     {
         current_interface->setLabel(descr);
-        *logger << "Interface label: " + descr + "\n";
+        addMessageToLog("Interface label: " + descr);
     }
 }
 
@@ -331,8 +331,8 @@ void Importer::setInterfaceParametes(const std::string &phys_intf_or_label,
                                      const std::string &label,
                                      const std::string &sec_level)
 {
-    *logger << "Interface parameters: " + phys_intf_or_label +
-        " " + label + " " + sec_level + "\n";
+    addMessageToLog("Interface parameters: " + phys_intf_or_label +
+                    " " + label + " " + sec_level);
 
     if (all_interfaces.count(phys_intf_or_label))
     {
@@ -379,7 +379,7 @@ void Importer::setInterfaceVlanId(const std::string &vlan_id)
 void Importer::addRuleComment(const std::string &comm)
 {
     rule_comment += comm;
-    *logger << "Rule comment: " + comm + "\n";
+    addMessageToLog("Rule comment: " + comm);
 }
 
 UnidirectionalRuleSet* Importer::checkUnidirRuleSet(
@@ -422,12 +422,9 @@ void Importer::setInterfaceAndDirectionForRuleSet(
         if (rs->intf_dir[intf_name] != "both" && rs->intf_dir[intf_name] != dir)
             rs->intf_dir[intf_name] = "both";
     }
-    ostringstream str;
-    str << "Interface " << intf_name
-        << " ruleset " << ruleset_name
-        << " direction '" << dir << "' "
-        << "\n";
-    *logger << str.str();
+    QString l("Interface %1 ruleset %2 direction '%3'");
+    addMessageToLog(
+        l.arg(intf_name.c_str()).arg(ruleset_name.c_str()).arg(dir.c_str()));
 }
 
 /*
@@ -457,7 +454,7 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
         // current_interface is NULL and _intf_name is empty. Not enough
         // information to associate ruleset with an interface.
         QString err("Can not associate rule set %1 with any interface\n");
-        *logger << err.arg(QString::fromUtf8(ruleset_name.c_str())).toStdString();
+        addMessageToLog(err.arg(QString::fromUtf8(ruleset_name.c_str())));
     } else
         setInterfaceAndDirectionForRuleSet(intf, ruleset_name, dir);
 }
@@ -485,7 +482,7 @@ void Importer::setDefaultAction(const std::string &iptables_action_name)
         default_action_str = "Accept";
     } else current_ruleset->default_action = PolicyRule::Deny;
 
-    *logger << "Default action: " + default_action_str + "\n";
+    addMessageToLog("Default action: " + default_action_str);
 }
 
 void Importer::newPolicyRule()
@@ -790,7 +787,7 @@ void Importer::reportError(const QString &comment)
     error_counter++;
     QString err = QObject::tr("Parser error: Line %1: %2\n")
         .arg(getCurrentLineNumber()).arg(comment);
-    *logger << err.toUtf8().constData();
+    addMessageToLog(err);
     if (current_rule != NULL) markCurrentRuleBad(comment.toUtf8().constData());
 }
 
@@ -869,6 +866,11 @@ QString Importer::commonFailureErrorMessage()
 void Importer::addMessageToLog(const std::string &msg)
 {
     *logger << msg + "\n";
+}
+
+void Importer::addMessageToLog(const QString &msg)
+{
+    addMessageToLog(msg.toStdString());
 }
 
 void Importer::addStandardImportComment(FWObject *obj,

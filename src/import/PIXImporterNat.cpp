@@ -90,7 +90,7 @@ void PIXImporter::addGlobalPool()
     {
         tmp_global_pool.num = n;
         global_pools[tmp_global_pool.num].push_back(tmp_global_pool);
-        *logger << "Global address pool: " + tmp_global_pool.toStdString() + "\n";
+        addMessageToLog("Global address pool: " + tmp_global_pool.toString());
     }
 }
 
@@ -129,7 +129,7 @@ void PIXImporter::pushNATRule()
  */
 void PIXImporter::buildDNATRule()
 {
-    *logger << "Destination translation rule (\"static\" command)\n";
+    addMessageToLog(QString("Destination translation rule (\"static\" command)"));
 
     newNATRule();
 
@@ -241,7 +241,7 @@ void PIXImporter::buildDNATRule()
  */
 void PIXImporter::buildSNATRule()
 {
-    *logger << "Source translation rule (\"nat\" command)\n";
+    addMessageToLog(QString("Source translation rule (\"nat\" command)"));
 
     bool ok = false;
     int pool_num = QString(nat_num.c_str()).toInt(&ok);

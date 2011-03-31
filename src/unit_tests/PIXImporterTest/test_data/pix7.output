@@ -31,11 +31,11 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 Object Group (network) outside.id12051X6282.src.net.0
 Object Group (network) outside.id12051X6282.src.net.1
 Object Group (network) outside.id12051X6282.src.net.2
-Interface Ethernet1 ruleset inside_in direction 'in' 
-Interface Ethernet0.101 ruleset outside_in direction 'in' 
-Interface Ethernet0.101 ruleset outside_in direction 'in' 
-Interface Ethernet1 ruleset inside_in direction 'in' 
-Interface Ethernet1 ruleset inside_out direction 'out' 
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in' 
+Interface Ethernet1 ruleset inside_in direction 'in'
+Interface Ethernet0.101 ruleset outside_in direction 'in'
+Interface Ethernet0.101 ruleset outside_in direction 'in'
+Interface Ethernet1 ruleset inside_in direction 'in'
+Interface Ethernet1 ruleset inside_out direction 'out'
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'

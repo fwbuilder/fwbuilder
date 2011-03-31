@@ -356,6 +356,7 @@ public:
     int getNumberOfInterfaces();
 
     void addMessageToLog(const std::string &msg);
+    void addMessageToLog(const QString &msg);
 };
 
 #endif

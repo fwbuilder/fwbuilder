@@ -22,7 +22,7 @@ Object Group (network) src-network-group-1
 Object Group (network) dst-network-group-1
 Rule comment: 0 ( global ) 
 Rule comment: 3 ( global ) 
-Interface Vlan1 ruleset inside_in direction 'in' 
-Interface Vlan1 ruleset inside_out direction 'out' 
-Interface Vlan2 ruleset outside_in direction 'in' 
-Interface Vlan2 ruleset outside_out direction 'out' 
+Interface Vlan1 ruleset inside_in direction 'in'
+Interface Vlan1 ruleset inside_out direction 'out'
+Interface Vlan2 ruleset outside_in direction 'in'
+Interface Vlan2 ruleset outside_out direction 'out'

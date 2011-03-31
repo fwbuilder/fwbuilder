@@ -37,5 +37,5 @@ Named object (address) internal_subnet_1
 Named object (address) internal_subnet_2
 Named object (address) Internal_net
 Named object (address) hostA:eth0
-Interface Vlan1 ruleset ssh_commands_inside direction 'in' 
-Interface Vlan1 ruleset ssh_commands_inside direction 'in' 
+Interface Vlan1 ruleset ssh_commands_inside direction 'in'
+Interface Vlan1 ruleset ssh_commands_inside direction 'in'

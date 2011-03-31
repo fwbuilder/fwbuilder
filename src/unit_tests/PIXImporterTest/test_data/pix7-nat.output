@@ -49,9 +49,9 @@ Destination translation rule ("static" command)
 Destination translation rule ("static" command)
 Destination translation rule ("static" command)
 Destination translation rule ("static" command)
-Interface Ethernet0.101 ruleset outside_in direction 'in' 
-Interface Ethernet1 ruleset inside_in direction 'in' 
-Interface Ethernet1 ruleset inside_out direction 'out' 
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Interface Ethernet1 ruleset ssh_commands_inside direction 'in' 
-Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in' 
+Interface Ethernet0.101 ruleset outside_in direction 'in'
+Interface Ethernet1 ruleset inside_in direction 'in'
+Interface Ethernet1 ruleset inside_out direction 'out'
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
