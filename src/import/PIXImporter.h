@@ -46,7 +46,7 @@ class GlobalPool
 public:
     int num;
     std::string str_num;
-    std::string interface;
+    std::string pool_interface;
     std::string start;
     std::string end;
     std::string netmask;
@@ -55,7 +55,7 @@ public:
     {
         num = -1;
         str_num = "";
-        interface = "";
+        pool_interface = "";
         start = "";
         end = "";
         netmask = "";

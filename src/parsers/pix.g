@@ -2004,7 +2004,7 @@ global_top_level_command :
         }
         interface_label
         {
-            importer->tmp_global_pool.interface = LT(0)->getText();
+            importer->tmp_global_pool.pool_interface = LT(0)->getText();
         }
         CLOSING_PAREN
         num:INT_CONST 
@@ -2014,7 +2014,7 @@ global_top_level_command :
             *dbg << " GLOBAL POOL "
                  << importer->tmp_global_pool.str_num
                  << " "
-                 << importer->tmp_global_pool.interface;
+                 << importer->tmp_global_pool.pool_interface;
         }
 
         // WORD Enter IP address or a range of IP addresses <start_ip>[-<end_ip>]

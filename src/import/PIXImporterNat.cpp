@@ -61,7 +61,7 @@ using namespace std;
 QString GlobalPool::toString()
 {
     QString l("number %1, interface %2, address range %3-%4, netmask %5 ");
-    return l.arg(num).arg(interface.c_str())
+    return l.arg(num).arg(pool_interface.c_str())
         .arg(start.c_str()).arg(end.c_str()).arg(netmask.c_str());
 }
 
@@ -73,7 +73,7 @@ string GlobalPool::toStdString()
 GlobalPool& GlobalPool::operator=(const GlobalPool &other)
 {
     num = other.num;
-    interface = other.interface;
+    pool_interface = other.pool_interface;
     start = other.start;
     end = other.end;
     netmask = other.netmask;
@@ -267,7 +267,7 @@ void PIXImporter::buildSNATRule()
             qDebug() << "Using pool " << pool.toString();
         }
 
-        Interface *post_intf = getInterfaceByLabel(pool.interface);
+        Interface *post_intf = getInterfaceByLabel(pool.pool_interface);
 
         newNATRule();
 

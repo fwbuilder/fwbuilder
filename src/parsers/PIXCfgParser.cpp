@@ -1046,7 +1046,7 @@ void PIXCfgParser::global_top_level_command() {
 		if ( inputState->guessing==0 ) {
 #line 2006 "pix.g"
 			
-			importer->tmp_global_pool.interface = LT(0)->getText();
+			importer->tmp_global_pool.pool_interface = LT(0)->getText();
 			
 #line 1052 "PIXCfgParser.cpp"
 		}
@@ -1061,7 +1061,7 @@ void PIXCfgParser::global_top_level_command() {
 			*dbg << " GLOBAL POOL "
 			<< importer->tmp_global_pool.str_num
 			<< " "
-			<< importer->tmp_global_pool.interface;
+			<< importer->tmp_global_pool.pool_interface;
 			
 #line 1067 "PIXCfgParser.cpp"
 		}
