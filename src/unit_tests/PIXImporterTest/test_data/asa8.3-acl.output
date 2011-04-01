@@ -12,80 +12,102 @@
 20: Interface comment: Switch port 0 / 0 
 77: Named object (service) http.0
 81: Named object (service) https.0
-85: Named object (address) server-1.0
-89: Named object (address) Internal_net.0
-93: Named object (address) external_net.0
-96: Object Group (service) id5102X14531.srv.tcp.0
-101: Named object (service) ip2
-104: Object Group (protocol) pg1
-110: Object Group (network) src-network-group-1
-114: Object Group (network) dst-network-group-1
-123: Rule comment: 0 ( global ) 
-127: access list rule, action permit
-128: access list rule, action permit
-129: access list rule, action permit
-130: access list rule, action permit
-131: access list rule, action permit
-133: access list rule, action permit
-134: access list rule, action permit
-135: access list rule, action permit
-136: access list rule, action permit
-137: access list rule, action permit
-138: access list rule, action permit
-139: access list rule, action permit
-140: access list rule, action permit
-141: access list rule, action permit
-142: access list rule, action permit
-143: access list rule, action permit
-144: access list rule, action permit
-145: access list rule, action permit
-146: access list rule, action permit
-147: access list rule, action permit
+85: Named object (service) match-1
+88: Named object (service) match-2
+91: Named object (address) server-1.0
+95: Named object (address) Internal_net.0
+99: Named object (address) external_net.0
+102: Object Group (service) id5102X14531.srv.tcp.0
+107: Named object (service) ip2
+110: Object Group (protocol) pg1
+116: Object Group (network) src-network-group-1
+120: Object Group (network) dst-network-group-1
+123: Object Group (service) test-service-1
+126: Object Group (service) test-service-2
+129: Object Group (service) test-service-3
+133: Object Group (service) test-service-4
+144: Rule comment: 0 ( global ) 
+148: access list rule, action permit
+149: access list rule, action permit
 150: access list rule, action permit
-151: Rule comment: 3 ( global ) 
-154: access list rule, action deny
-156: access list rule, action deny
-158: access list rule, action deny
-159: access list rule, action deny
-160: access list rule, action deny
-162: access list rule, action deny
+151: access list rule, action permit
+152: access list rule, action permit
+154: access list rule, action permit
+155: access list rule, action permit
+156: access list rule, action permit
+157: access list rule, action permit
+158: access list rule, action permit
+159: access list rule, action permit
+160: access list rule, action permit
+161: access list rule, action permit
+162: access list rule, action permit
+163: access list rule, action permit
+164: access list rule, action permit
+165: access list rule, action permit
+166: access list rule, action permit
+167: access list rule, action permit
 168: access list rule, action permit
-170: access list rule, action permit
-172: access list rule, action permit
-173: access list rule, action permit
-174: access list rule, action permit
-175: access list rule, action permit
-176: access list rule, action permit
-178: access list rule, action permit
-179: access list rule, action permit
-180: access list rule, action permit
-181: access list rule, action permit
-182: access list rule, action permit
-183: access list rule, action permit
-185: access list rule, action permit
-186: access list rule, action permit
-187: access list rule, action permit
-188: access list rule, action permit
+171: access list rule, action permit
+172: Rule comment: 3 ( global ) 
+175: access list rule, action deny
+177: access list rule, action deny
+179: access list rule, action deny
+180: access list rule, action deny
+181: access list rule, action deny
+183: access list rule, action deny
 189: access list rule, action permit
-190: access list rule, action permit
-192: access list rule, action permit
+189: Object Group (service) id5102X14531.srv.tcp.0-mirror
+191: access list rule, action permit
 193: access list rule, action permit
 194: access list rule, action permit
 195: access list rule, action permit
 196: access list rule, action permit
 197: access list rule, action permit
+199: access list rule, action permit
+199: Object Group (service) id5102X14531.srv.tcp.0-mirror
 200: access list rule, action permit
-200: Error: tcp port name 'foo' is unknown
+201: access list rule, action permit
 202: access list rule, action permit
+203: access list rule, action permit
 204: access list rule, action permit
 206: access list rule, action permit
+207: access list rule, action permit
 208: access list rule, action permit
+209: access list rule, action permit
 210: access list rule, action permit
 211: access list rule, action permit
 213: access list rule, action permit
 214: access list rule, action permit
 215: access list rule, action permit
-225: Interface Vlan1 ruleset inside_in direction 'in'
-226: Interface Vlan1 ruleset inside_out direction 'out'
-227: Interface Vlan2 ruleset outside_in direction 'in'
-228: Interface Vlan2 ruleset outside_out direction 'out'
+216: access list rule, action permit
+217: access list rule, action permit
+218: access list rule, action permit
+221: access list rule, action permit
+221: Error: tcp port name 'foo' is unknown
+223: access list rule, action permit
+225: access list rule, action permit
+227: access list rule, action permit
+229: access list rule, action permit
+231: access list rule, action permit
+232: access list rule, action permit
+234: access list rule, action permit
+235: access list rule, action permit
+236: access list rule, action permit
+240: access list rule, action permit
+240: Object Group (service) test-service-1-mirror
+241: access list rule, action permit
+241: Object Group (service) test-service-2-mirror
+242: access list rule, action permit
+242: Object Group (service) test-service-3-mirror
+242: Object Group (service) test-service-1-mirror
+243: access list rule, action permit
+243: Object Group (service) test-service-4-mirror
+243: Object Group (service) test-service-1-mirror
+247: access list rule, action permit
+248: access list rule, action permit
+249: access list rule, action permit
+250: access list rule, action permit
+268: Interface Vlan1 ruleset inside_in direction 'in'
+269: Interface Vlan1 ruleset inside_out direction 'out'
+270: Interface Vlan2 ruleset outside_in direction 'in'
+271: Interface Vlan2 ruleset outside_out direction 'out'

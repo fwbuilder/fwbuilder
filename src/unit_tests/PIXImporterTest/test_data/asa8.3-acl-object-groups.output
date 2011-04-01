@@ -32,6 +32,7 @@
 147: access list rule, action permit
 149: access list rule, action permit
 155: access list rule, action permit
+155: Object Group (service) srv-group-1-mirror
 162: access list rule, action permit
 164: access list rule, action permit
 166: access list rule, action permit
@@ -42,8 +43,13 @@
 179: access list rule, action permit
 181: access list rule, action permit
 188: access list rule, action permit
+188: Object Group (service) srv-group-1-mirror
 190: access list rule, action permit
+190: Object Group (service) srv-group-1-mirror
 192: access list rule, action permit
+192: Object Group (service) srv-group-1-mirror
 194: access list rule, action permit
+194: Object Group (service) srv-group-1-mirror
 196: access list rule, action permit
+196: Object Group (service) srv-group-1-mirror
 199: Interface Vlan1 ruleset inside_in direction 'in'

@@ -242,6 +242,13 @@ access-list outside_in  permit tcp object-group dst-network-group-1 object-group
 access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-3 any
 access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-4 any
 
+! same groups but matching destination ports
+
+access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-1
+access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-2
+access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-3
+access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-4
+
 
 ! however named object can not be used to match source ports in ASA
 ! 8.3 so the following rules are invalid

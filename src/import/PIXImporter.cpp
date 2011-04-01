@@ -187,17 +187,22 @@ FWObject* PIXImporter::makeDstObj()
 
 FWObject* PIXImporter::makeSrvObj()
 {
+
     if (protocol=="tcp" || protocol=="udp")
     {
-        if (named_objects_registry.count(src_port_spec.c_str()) > 0)
+        if (!src_port_spec.empty() &&
+            named_objects_registry.count(src_port_spec.c_str()) > 0)
             return named_objects_registry[src_port_spec.c_str()];
-        if (named_objects_registry.count(dst_port_spec.c_str()) > 0)
+
+        if (!dst_port_spec.empty() &&
+            named_objects_registry.count(dst_port_spec.c_str()) > 0)
             return named_objects_registry[dst_port_spec.c_str()];
     } else
     {
         if (named_objects_registry.count(protocol.c_str()) > 0)
             return named_objects_registry[protocol.c_str()];
     }
+
     return Importer::makeSrvObj();
 }
 
@@ -217,7 +222,7 @@ FWObject* PIXImporter::makeSrvObj()
  */
 void PIXImporter::fixServiceObjectUsedForSrcPorts()
 {
-    if ((protocol=="tcp" || protocol=="udp") &&
+    if ((protocol=="tcp" || protocol=="udp") && ! src_port_spec.empty() &&
         named_objects_registry.count(src_port_spec.c_str()) > 0)
     {
         FWObject *obj = named_objects_registry[src_port_spec.c_str()];
