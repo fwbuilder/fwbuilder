@@ -133,6 +133,8 @@ cfgfile :
         |
             telnet_command
         |
+            http_command
+        |
             icmp_top_level_command
         |
             nat_top_level_command
@@ -174,6 +176,8 @@ cfgfile :
             timeout_command
         |
             dns_command
+        |
+            service_top_level_command
         |
             unknown_command
         |
@@ -355,14 +359,19 @@ subnet_addr : (SUBNET ((a:IPV4 nm:IPV4) | v6:IPV6))
 
 //****************************************************************
 
-named_object_service : OBJECT SERVICE name:WORD NEWLINE
+// Unfortunately any keyword can be used as named object name
+//
+named_object_service : OBJECT SERVICE 
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->newNamedObjectService(name->getText());
-            *dbg << name->getLine() << ":"
-                << " Named Object " << name->getText() << std::endl;
         }
+        (WORD | HTTP | SSH | TELNET)
+        {
+            importer->newNamedObjectService(LT(0)->getText());
+            *dbg << " NAMED OBJECT " << LT(0)->getText() << std::endl;
+        }
+        NEWLINE
         (
             named_object_service_parameters
         )*
@@ -810,6 +819,29 @@ unknown_command : WORD
 
 //****************************************************************
 dns_command : DNS
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+//
+//asa5505(config)# service  ?
+//
+//  call-home          Enable or disable Smart Call-Home
+//  internal           Advanced settings (use only under Cisco supervision)
+//  password-recovery  Password recovery configuration
+//  resetinbound       Send reset to a denied inbound TCP packet
+//  resetoutbound      Send reset to a denied outbound TCP packet
+//  resetoutside       Send reset to a denied TCP packet to outside interface
+
+service_top_level_command : SERVICE
+        ( CALL_HOME |
+          INTERNAL |
+          PASSWORD_RECOVERY |
+          RESETINBOUND |
+          RESETOUTBOUND |
+          RESETOUTSIDE )
         {
             consumeUntil(NEWLINE);
         }
@@ -1662,7 +1694,7 @@ ssh_command : SSH
         |
             SCOPY
         |
-            VERSION_WORD_LOW
+            VERSION_WORD_LOW INT_CONST
         |
             (
                 hostaddr_expr
@@ -1714,6 +1746,45 @@ telnet_command : TELNET
                 importer->protocol = "tcp";
                 importer->dst_port_op = "eq";
                 importer->dst_port_spec = "telnet";
+                importer->setInterfaceAndDirectionForRuleSet(
+                    acl_name, intf_label, "in" );
+                importer->pushRule();
+                *dbg << std::endl;
+            }
+        )
+    ;
+
+// pretend ssh commands are rules in access lists with names
+// "htto_commands_" + interface_label
+http_command : HTTP
+        {
+            importer->clear();
+        }
+        (
+            ( AUTHENTICATION_CERTIFICATE | REDIRECT | SERVER ) 
+            {
+                consumeUntil(NEWLINE);
+            }
+        |
+            (
+                hostaddr_expr
+                {
+                    importer->SaveTmpAddrToSrc();
+                }
+                interface_label
+            )
+            {
+                std::string intf_label = LT(0)->getText();
+                std::string acl_name = "http_commands_" + intf_label;
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newUnidirRuleSet(acl_name,
+                                           libfwbuilder::Policy::TYPENAME );
+                importer->newPolicyRule();
+                importer->action = "permit";
+                importer->setDstSelf();
+                importer->protocol = "tcp";
+                importer->dst_port_op = "eq";
+                importer->dst_port_spec = "www";
                 importer->setInterfaceAndDirectionForRuleSet(
                     acl_name, intf_label, "in" );
                 importer->pushRule();
@@ -2316,6 +2387,17 @@ tokens
     NORANDOMSEQ = "norandomseq";
 
     SCOPY = "scopy";
+
+    CALL_HOME = "call-home";
+    INTERNAL = "internal";
+    PASSWORD_RECOVERY = "password-recovery";
+    RESETINBOUND = "resetinbound";
+    RESETOUTBOUND = "resetoutbound";
+    RESETOUTSIDE = "resetoutside";
+
+    HTTP = "http";
+    AUTHENTICATION_CERTIFICATE = "authentication-certificate";
+    SERVER = "server";
 }
 
 LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;

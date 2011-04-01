@@ -82,9 +82,12 @@ dynamic-access-policy-record DfltAccessPolicy
 aaa authentication ssh console LOCAL 
 http server enable
 http 192.168.1.0 255.255.255.0 inside
+http 10.0.0.0 255.255.255.0 inside
+http 10.1.1.1 255.255.255.255 inside
 no snmp-server location
 no snmp-server contact
 snmp-server enable traps snmp authentication linkup linkdown coldstart
+service resetinbound interface outside
 crypto ipsec security-association lifetime seconds 28800
 crypto ipsec security-association lifetime kilobytes 4608000
 telnet timeout 5
@@ -101,7 +104,35 @@ no threat-detection statistics tcp-intercept
 webvpn
 username foo password AAAAAAAAAAAAAAAA encrypted privilege 15
 !
+class-map inspection_default
+ match default-inspection-traffic
 !
+!
+policy-map global_policy
+ class inspection_default
+  inspect ctiqbe
+  inspect dns
+  inspect ftp
+  inspect h323 h225
+  inspect h323 ras
+  inspect http
+  inspect icmp
+  inspect ils
+  inspect mgcp
+  inspect rsh
+  inspect rtsp
+  inspect sip
+  inspect skinny
+  inspect esmtp
+  inspect sqlnet
+  inspect tftp
+policy-map type inspect ip-options ip-options-map
+ parameters
+  eool action allow
+  nop action allow
+  router-alert action allow
+!
+service-policy global_policy global
 prompt hostname context 
 call-home
  profile CiscoTAC-1

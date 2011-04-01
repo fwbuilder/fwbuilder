@@ -352,6 +352,7 @@ bool compare_ruleset_names(string a, string b)
     if (a.find("ssh_commands") == 0) return true;
     if (a.find("telnet_commands") == 0) return true;
     if (a.find("icmp_commands") == 0) return true;
+    if (a.find("http_commands") == 0) return true;
     return a < b;
 }
 

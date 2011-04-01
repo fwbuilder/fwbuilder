@@ -1,5 +1,8 @@
 2011-03-31  vadim  <vadim@netcitadel.com>
 
+	* parsers/pix.g (http_command): see #2164 fixed import of "ssh"
+	commands and added import of "http" commands
+
 	* objectMaker.h (ObjectMakerErrorTracker): see #2302 Importer
 	should log and continue when it encounters an error. This matches
 	its behavior in older versions and makes it more resilient to

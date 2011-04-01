@@ -100,6 +100,7 @@ public:
 	public: void access_list_commands();
 	public: void ssh_command();
 	public: void telnet_command();
+	public: void http_command();
 	public: void icmp_top_level_command();
 	public: void nat_top_level_command();
 	public: void global_top_level_command();
@@ -121,6 +122,7 @@ public:
 	public: void no_commands();
 	public: void timeout_command();
 	public: void dns_command();
+	public: void service_top_level_command();
 	public: void unknown_command();
 	public: void ip_protocol_names();
 	public: void named_object_nat();
@@ -218,10 +220,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 186;
+	static const int NUM_TOKENS = 195;
 #else
 	enum {
-		NUM_TOKENS = 186
+		NUM_TOKENS = 195
 	};
 #endif
 	
@@ -313,6 +315,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_42;
 	static const unsigned long _tokenSet_43_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_43;
+	static const unsigned long _tokenSet_44_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_44;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/
