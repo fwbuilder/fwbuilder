@@ -65,12 +65,14 @@ public:
     libfwbuilder::PolicyRule::Action default_action;
     int created_from_line_number;
     int default_action_line_number;
+    bool to_be_deleted;
     
     UnidirectionalRuleSet()
     {
         created_from_line_number = -1;
         default_action_line_number = -1;
         default_action = libfwbuilder::PolicyRule::Deny;
+        to_be_deleted = false;
     }
 };
 

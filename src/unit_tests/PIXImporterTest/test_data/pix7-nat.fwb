@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301598505" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301620337" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1337,52 +1337,6 @@
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Policy id="id606" name="id12251X6282.0" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id608" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Created during import of  line 104">
-            <Src neg="False">
-              <ObjectRef ref="id50"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="id64"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <RuleSetOptions/>
-        </Policy>
-        <Policy id="id620" name="id12594X2458.0" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id622" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Created during import of  line 106">
-            <Src neg="False">
-              <ObjectRef ref="id11"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="id66"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <RuleSetOptions/>
-        </Policy>
         <Routing id="id593" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
@@ -1425,7 +1379,7 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id634" name="Clusters" comment="" ro="False"/>
-    <IntervalGroup id="id635" name="Time" comment="" ro="False"/>
+    <ObjectGroup id="id606" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id607" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>

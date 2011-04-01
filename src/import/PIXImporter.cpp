@@ -396,7 +396,7 @@ Firewall* PIXImporter::finalize()
             std::map<const std::string,UnidirectionalRuleSet*>::iterator i;
             for (i=all_rulesets.begin(); i!=all_rulesets.end(); ++i)
             {
-                ruleset_names.push_back((*i).first);
+                ruleset_names.push_back(i->first);
             }
 
             // sort rule sets by name, making sure "ssh_commands_*",
@@ -410,6 +410,13 @@ Firewall* PIXImporter::finalize()
                 if (ruleset_name == "nat") continue;
 
                 UnidirectionalRuleSet *irs = all_rulesets[ruleset_name];
+                if (irs->to_be_deleted)
+                {
+                    irs->ruleset->clearChildren(false);
+                    getFirewallObject()->remove(irs->ruleset, false);
+                    delete irs->ruleset;
+                    continue;
+                }
 
                 if (fwbdebug)
                 {

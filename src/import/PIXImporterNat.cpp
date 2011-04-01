@@ -196,6 +196,8 @@ void PIXImporter::buildDNATRule()
                     tdst->addRef(o);
                 }
             }
+
+            rs->to_be_deleted = true;
         }
     }
 
@@ -306,6 +308,8 @@ void PIXImporter::buildSNATRule()
                         osrc->addRef(o);
                     }
                 }
+
+                rs->to_be_deleted = true;
             }
         }
 
