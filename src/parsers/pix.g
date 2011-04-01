@@ -373,6 +373,8 @@ named_object_service : OBJECT SERVICE
         }
         NEWLINE
         (
+            named_object_description
+        |
             named_object_service_parameters
         )*
     ;
@@ -388,8 +390,6 @@ named_object_service_parameters :
             service_other
         |
             service_unknown
-        |
-            named_object_description
         )
         NEWLINE
         ;
