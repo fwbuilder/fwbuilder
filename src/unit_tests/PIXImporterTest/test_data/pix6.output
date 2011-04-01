@@ -11,46 +11,97 @@
 46: Object Group (service) outside.id12438X2458.srv.tcp.0
 49: Object Group (service) outside.id12466X2458.srv.tcp.0
 52: Rule comment: 0 ( ethernet0 ) 
+53: access list rule, action deny
+54: access list rule, action deny
 55: Rule comment: 3 ( global ) 
+56: access list rule, action permit
 58: Rule comment: 4 ( global ) 
 59: Rule comment: fw uses DHCP 
 60: Rule comment: plus many DHCP requests 
 61: Rule comment: from cable modem 
 64: Rule comment: 6 ( global ) 
+65: access list rule, action deny
 66: Rule comment: 7 ( global ) 
+67: access list rule, action permit
 68: Rule comment: 10 ( global ) 
 69: Rule comment: using swatch to automatically 
 70: Rule comment: block probing ssh connections , so no 
 71: Rule comment: need to limit 
+72: access list rule, action permit
+73: access list rule, action permit
 75: Rule comment: 11 ( global ) 
+76: access list rule, action permit
+77: access list rule, action permit
 79: Rule comment: 17 ( global ) 
+80: access list rule, action permit
+81: access list rule, action permit
 82: Rule comment: 19 ( global ) 
 83: Rule comment: ' catch all' rule 
+84: access list rule, action deny
 85: Rule comment: 1 ( global ) 
+86: access list rule, action permit
+87: access list rule, action permit
 93: Rule comment: 5 ( global ) 
+94: access list rule, action permit
 95: Rule comment: 6 ( global ) 
+96: access list rule, action deny
 97: Rule comment: 7 ( global ) 
+98: access list rule, action permit
 106: Rule comment: 17 ( global ) 
+107: access list rule, action permit
+108: access list rule, action permit
 109: Rule comment: 18 ( global ) 
+110: access list rule, action permit
 111: Rule comment: 19 ( global ) 
 112: Rule comment: ' catch all' rule 
+113: access list rule, action deny
+114: access list rule, action permit
+115: access list rule, action permit
+116: access list rule, action permit
+117: access list rule, action permit
+118: access list rule, action permit
+119: access list rule, action permit
+120: access list rule, action permit
+121: access list rule, action permit
+122: access list rule, action permit
+123: access list rule, action permit
+124: access list rule, action permit
+125: access list rule, action permit
 127: Interface ethernet0 ruleset outside_acl_in direction 'in'
 128: Interface ethernet1 ruleset inside_acl_in direction 'in'
 140: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+140: access list rule, action permit
 141: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+141: access list rule, action permit
 142: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+142: access list rule, action permit
 143: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+143: access list rule, action permit
 144: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+144: access list rule, action permit
 145: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+145: access list rule, action permit
 146: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+146: access list rule, action permit
 147: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+147: access list rule, action permit
 148: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+148: access list rule, action permit
 149: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+149: access list rule, action permit
 150: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+150: access list rule, action permit
 151: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+151: access list rule, action permit
 152: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+152: access list rule, action permit
 153: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+153: access list rule, action permit
 154: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+154: access list rule, action permit
 156: Interface ethernet1 ruleset telnet_commands_inside direction 'in'
+156: access list rule, action permit
 158: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
+158: access list rule, action permit
 159: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
+159: access list rule, action permit

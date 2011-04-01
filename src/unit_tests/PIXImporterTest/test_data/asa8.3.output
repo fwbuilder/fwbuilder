@@ -37,8 +37,14 @@ Warning: interface Ethernet0/7 was not imported because it is in "shutdown" mode
 56: Named object (address) internal_subnet_2
 59: Named object (address) Internal_net
 61: Named object (address) hostA:eth0
+65: access list rule, action deny
 84: Interface Vlan1 ruleset http_commands_inside direction 'in'
+84: access list rule, action permit
 85: Interface Vlan1 ruleset http_commands_inside direction 'in'
+85: access list rule, action permit
 86: Interface Vlan1 ruleset http_commands_inside direction 'in'
+86: access list rule, action permit
 95: Interface Vlan1 ruleset ssh_commands_inside direction 'in'
+95: access list rule, action permit
 96: Interface Vlan1 ruleset ssh_commands_inside direction 'in'
+96: access list rule, action permit

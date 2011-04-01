@@ -33,6 +33,22 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 79: Object Group (network) outside.id12051X6282.src.net.2
 83: Object Group (network) network-zone-inside
 85: Object Group (network) network-zone-dmz20
+89: access list rule, action deny
+90: access list rule, action deny
+91: access list rule, action deny
+92: access list rule, action deny
+93: access list rule, action permit
+94: access list rule, action permit
+95: access list rule, action permit
+96: access list rule, action permit
+97: access list rule, action deny
+98: access list rule, action deny
+99: access list rule, action deny
+100: access list rule, action deny
+101: access list rule, action permit
+102: access list rule, action deny
+104: access list rule, action permit
+106: access list rule, action permit
 133: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
 134: Source translation rule ("nat" command)
 136: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
@@ -53,5 +69,8 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 158: Interface Ethernet1 ruleset inside_in direction 'in'
 159: Interface Ethernet1 ruleset inside_out direction 'out'
 200: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+200: access list rule, action permit
 201: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+201: access list rule, action permit
 202: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+202: access list rule, action permit

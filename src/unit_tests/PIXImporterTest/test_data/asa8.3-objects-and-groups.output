@@ -106,4 +106,5 @@
 289: Object Group (icmp) ig3
 295: Object Group (service) id5102X14531.srv.tcp.0
 300: Object Group (service) tcp-udp-1
+303: access list rule, action permit
 304: Interface Vlan1 ruleset inside_in direction 'in'

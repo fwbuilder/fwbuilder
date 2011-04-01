@@ -21,8 +21,70 @@
 110: Object Group (network) src-network-group-1
 114: Object Group (network) dst-network-group-1
 123: Rule comment: 0 ( global ) 
+127: access list rule, action permit
+128: access list rule, action permit
+129: access list rule, action permit
+130: access list rule, action permit
+131: access list rule, action permit
+133: access list rule, action permit
+134: access list rule, action permit
+135: access list rule, action permit
+136: access list rule, action permit
+137: access list rule, action permit
+138: access list rule, action permit
+139: access list rule, action permit
+140: access list rule, action permit
+141: access list rule, action permit
+142: access list rule, action permit
+143: access list rule, action permit
+144: access list rule, action permit
+145: access list rule, action permit
+146: access list rule, action permit
+147: access list rule, action permit
+150: access list rule, action permit
 151: Rule comment: 3 ( global ) 
+154: access list rule, action deny
+156: access list rule, action deny
+158: access list rule, action deny
+159: access list rule, action deny
+160: access list rule, action deny
+162: access list rule, action deny
+168: access list rule, action permit
+170: access list rule, action permit
+172: access list rule, action permit
+173: access list rule, action permit
+174: access list rule, action permit
+175: access list rule, action permit
+176: access list rule, action permit
+178: access list rule, action permit
+179: access list rule, action permit
+180: access list rule, action permit
+181: access list rule, action permit
+182: access list rule, action permit
+183: access list rule, action permit
+185: access list rule, action permit
+186: access list rule, action permit
+187: access list rule, action permit
+188: access list rule, action permit
+189: access list rule, action permit
+190: access list rule, action permit
+192: access list rule, action permit
+193: access list rule, action permit
+194: access list rule, action permit
+195: access list rule, action permit
+196: access list rule, action permit
+197: access list rule, action permit
+200: access list rule, action permit
 200: Error: tcp port name 'foo' is unknown
+202: access list rule, action permit
+204: access list rule, action permit
+206: access list rule, action permit
+208: access list rule, action permit
+210: access list rule, action permit
+211: access list rule, action permit
+213: access list rule, action permit
+214: access list rule, action permit
+215: access list rule, action permit
 225: Interface Vlan1 ruleset inside_in direction 'in'
 226: Interface Vlan1 ruleset inside_out direction 'out'
 227: Interface Vlan2 ruleset outside_in direction 'in'

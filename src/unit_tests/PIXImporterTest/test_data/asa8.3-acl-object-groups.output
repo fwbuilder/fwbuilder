@@ -20,4 +20,30 @@
 104: Object Group (protocol) pg1
 110: Object Group (network) src-network-group-1
 114: Object Group (network) dst-network-group-1
+122: access list rule, action permit
+125: access list rule, action permit
+127: access list rule, action permit
+129: access list rule, action permit
+131: access list rule, action permit
+133: access list rule, action permit
+138: access list rule, action permit
+143: access list rule, action permit
+145: access list rule, action permit
+147: access list rule, action permit
+149: access list rule, action permit
+155: access list rule, action permit
+162: access list rule, action permit
+164: access list rule, action permit
+166: access list rule, action permit
+168: access list rule, action permit
+170: access list rule, action permit
+175: access list rule, action permit
+177: access list rule, action permit
+179: access list rule, action permit
+181: access list rule, action permit
+188: access list rule, action permit
+190: access list rule, action permit
+192: access list rule, action permit
+194: access list rule, action permit
+196: access list rule, action permit
 199: Interface Vlan1 ruleset inside_in direction 'in'

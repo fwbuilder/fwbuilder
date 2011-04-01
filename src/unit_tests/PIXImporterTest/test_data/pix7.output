@@ -31,11 +31,29 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 70: Object Group (network) outside.id12051X6282.src.net.0
 73: Object Group (network) outside.id12051X6282.src.net.1
 78: Object Group (network) outside.id12051X6282.src.net.2
+81: access list rule, action deny
+82: access list rule, action deny
+83: access list rule, action deny
+84: access list rule, action deny
+85: access list rule, action permit
+86: access list rule, action permit
+87: access list rule, action permit
+88: access list rule, action permit
+89: access list rule, action deny
+90: access list rule, action deny
+91: access list rule, action deny
+92: access list rule, action deny
+93: access list rule, action permit
+94: access list rule, action deny
+95: access list rule, action permit
 97: Interface Ethernet1 ruleset inside_in direction 'in'
 98: Interface Ethernet0.101 ruleset outside_in direction 'in'
 123: Interface Ethernet0.101 ruleset outside_in direction 'in'
 124: Interface Ethernet1 ruleset inside_in direction 'in'
 125: Interface Ethernet1 ruleset inside_out direction 'out'
 164: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+164: access list rule, action permit
 165: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+165: access list rule, action permit
 166: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+166: access list rule, action permit
