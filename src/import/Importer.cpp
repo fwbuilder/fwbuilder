@@ -522,9 +522,6 @@ void Importer::pushRule()
     assert(current_rule!=NULL);
     // populate all elements of the rule
 
-    //qDebug() << QString("Adding rule from line %1").arg(getCurrentLineNumber())
-    //         << "current_rule=" << current_rule;
-
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
     FWOptions  *ropt = current_rule->getOptionsObject();

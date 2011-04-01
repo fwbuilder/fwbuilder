@@ -111,20 +111,6 @@ void PIXImporter::pushNATRule()
     default:
         assert(rule_type!=NATRule::DNAT && rule_type!=NATRule::SNAT);
     }
-
-    assert(current_rule!=NULL);
-
-    if (error_tracker->hasErrors())
-    {
-        QStringList err = error_tracker->getErrors();
-        addMessageToLog("Error: " + err.join("\n"));
-        markCurrentRuleBad();
-    }
-
-    current_rule = NULL;
-    rule_comment = "";
-
-    clear();
 }
 
 /*

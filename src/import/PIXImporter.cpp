@@ -280,14 +280,66 @@ void PIXImporter::addLogging()
 
 void PIXImporter::pushRule()
 {
-//    assert(current_ruleset!=NULL);
-    if (current_rule==NULL) return;
-
     if (rule_type == NATRule::Unknown)
-        IOSImporter::pushRule();
+        pushPolicyRule();
     else
         pushNATRule();
+
+    assert(current_rule!=NULL);
+
+    if (error_tracker->hasErrors())
+    {
+        QStringList err = error_tracker->getErrors();
+        addMessageToLog("Error: " + err.join("\n"));
+        markCurrentRuleBad();
+    }
+
+    current_rule = NULL;
+    rule_comment = "";
+
+    clear();
+
 }
+
+void PIXImporter::pushPolicyRule()
+{
+    assert(current_ruleset!=NULL);
+    assert(current_rule!=NULL);
+    // populate all elements of the rule
+
+    addMessageToLog(QString("access list rule, action %1").arg(action.c_str()));
+    
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+
+    FWOptions  *ropt = current_rule->getOptionsObject();
+    assert(ropt!=NULL);
+
+    if (action=="permit")
+    {
+        rule->setAction(PolicyRule::Accept);
+        ropt->setBool("stateless", false);
+    }
+
+    if (action=="deny")
+    {
+        rule->setAction(PolicyRule::Deny);
+        ropt->setBool("stateless", true);
+    }
+
+    rule->setDirection(PolicyRule::Both);
+
+    addSrc();
+    addDst();
+    addSrv();
+
+    addLogging();
+
+    // then add it to the current ruleset
+    current_ruleset->ruleset->add(current_rule);
+    addStandardImportComment(
+        current_rule, QString::fromUtf8(rule_comment.c_str()));
+}
+
  
 /*
  * Rearrange vlan interfaces. Importer creates all interfaces as
