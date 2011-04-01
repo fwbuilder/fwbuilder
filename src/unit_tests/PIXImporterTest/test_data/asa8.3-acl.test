@@ -82,6 +82,12 @@ object service https.0
   service tcp destination eq 443
 exit
 
+object service match-1
+ service tcp destination eq 80
+
+object service match-2
+ service tcp destination lt 1024
+
 object network server-1.0
   host 192.168.1.100
 exit
@@ -113,6 +119,21 @@ object-group network src-network-group-1
 
 object-group network dst-network-group-1
  network-object object external_net.0
+
+object-group service test-service-1 tcp
+ port-object eq www
+
+object-group service test-service-2 tcp
+ port-object range 1000 1010
+
+object-group service test-service-3 tcp
+ port-object eq 25
+ group-object test-service-1
+
+object-group service test-service-4 tcp
+ port-object eq 25
+ port-object eq 88
+ group-object test-service-1
 
 
 
@@ -213,6 +234,21 @@ access-list inside_out permit tcp any range 1080 1090 any range 1080 1090
 access-list outside_out standard permit 192.0.2.0 255.255.255.0 
 access-list outside_out standard permit host 192.0.2.1
 access-list outside_out standard permit any
+
+! test for access list using service group that matches destination port to match
+! service port
+access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-1 any
+access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-2 any
+access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-3 any
+access-list outside_in  permit tcp object-group dst-network-group-1 object-group test-service-4 any
+
+
+! however named object can not be used to match source ports in ASA
+! 8.3 so the following rules are invalid
+!
+! access-list outside_in  permit tcp object-group dst-network-group-1 object match-1 any
+! access-list outside_in  permit tcp object-group dst-network-group-1 object match-2 any
+
 
 ! tests for access lists using object groups for both source service and destination address
 

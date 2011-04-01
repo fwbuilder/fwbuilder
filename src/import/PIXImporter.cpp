@@ -46,8 +46,11 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Library.h"
+#include "fwbuilder/ObjectMirror.h"
 
 #include "../libgui/platforms.h"
+// TODO: FWBTree needs to be refactored into an independent module
+#include "../libgui/FWBTree.h"
 
 #include <QString>
 #include <QtDebug>
@@ -198,6 +201,100 @@ FWObject* PIXImporter::makeSrvObj()
     return Importer::makeSrvObj();
 }
 
+/*
+ * See #2291
+ *
+ * Service group can be defined to match dstination ports but used to
+ * match source ports in the access-list command. In ASA 8.0 and 8.3 the
+ * following configuration is valid:
+ *
+ * object-group service test-service-1 tcp
+ *   port-object eq www
+ *
+ * Group test-service-1 can be used in the position in an access-list
+ * command where it would match source ports.
+ *
+ */
+void PIXImporter::fixServiceObjectUsedForSrcPorts()
+{
+    if ((protocol=="tcp" || protocol=="udp") &&
+        named_objects_registry.count(src_port_spec.c_str()) > 0)
+    {
+        FWObject *obj = named_objects_registry[src_port_spec.c_str()];
+        FWObject *new_obj = mirrorServiceObjectRecursively(obj);
+        src_port_spec = new_obj->getName();
+    }
+}
+
+FWObject* PIXImporter::mirrorServiceObjectRecursively(FWObject *obj)
+{
+    FWObject *res = NULL;
+    string new_name = obj->getName() + "-mirror";
+
+    if (Service::cast(obj) != NULL)
+    {
+        FWObject *new_obj = getMirroredServiceObject(obj);
+
+        named_objects_registry[QString::fromUtf8(new_name.c_str())] = new_obj;
+        res = new_obj;
+    } else
+    {
+        // newObjectGroupService creates new group object,
+        // registers it as a named object and assigns pointer to
+        // it to current_object_group
+        newObjectGroupService(new_name);
+
+        // if this group includes another group, we'll end up calling
+        // mirrorServiceObjectRecursively() again and at this very
+        // point will overwrite current_object_group with a pointer to
+        // that group's mirror
+        FWObject *new_group = current_object_group;
+
+        for (FWObject::iterator it=obj->begin(); it!=obj->end(); ++it)
+        {
+            FWObject *new_obj = mirrorServiceObjectRecursively(
+                FWReference::getObject(*it));
+            if (new_obj)
+                new_group->addRef(commitObject(new_obj));
+        }
+        res = new_group;
+        current_object_group = new_group;
+    }
+
+    return res;
+}
+
+FWObject* PIXImporter::getMirroredServiceObject(FWObject *obj)
+{
+    string new_name = obj->getName() + "-mirror";
+    QString qs_new_name = QString::fromUtf8(new_name.c_str());
+    if (named_objects_registry.count(qs_new_name) > 0)
+        return named_objects_registry[qs_new_name];
+
+    Service *new_obj = NULL;
+    if (TCPService::isA(obj) || UDPService::isA(obj))
+    {
+        ObjectMirror mirror;
+        new_obj = mirror.getMirroredService(Service::cast(obj));
+        if (new_obj!=NULL)
+        {
+            new_obj->setName(new_name);
+
+            // obj may belong to the standard objects library if it was
+            // deduplicated before
+            FWObject *parent = obj->getParent();
+            if (parent->isReadOnly())
+            {
+                FWBTree tree ;
+                FWObject *slot = tree.getStandardSlotForObject(
+                    library, new_obj->getTypeName().c_str());
+                slot->add(new_obj);
+            } else parent->add(new_obj);
+        }
+    }
+    return new_obj;
+}
+
 void PIXImporter::setInterfaceAndDirectionForRuleSet(
     const string &ruleset_name, const string &interface_label, const string &dir)
 {
@@ -327,6 +424,10 @@ void PIXImporter::pushPolicyRule()
     }
 
     rule->setDirection(PolicyRule::Both);
+
+    // named service object or a group can be defined to match dstination
+    // ports but used to match source ports in the access-list command.
+    fixServiceObjectUsedForSrcPorts();
 
     addSrc();
     addDst();

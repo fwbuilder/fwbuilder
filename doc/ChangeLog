@@ -1,5 +1,13 @@
 2011-04-01  vadim  <vadim@netcitadel.com>
 
+	* PIXImporter.cpp (mirrorServiceObjectRecursively): see #2291 The
+	same service object-group that matches some tcp or udp ports can
+	be used to match both source and destination ports in an
+	access-list command. Importer should recognize when such group
+	is used to match source ports and create mirrored group with
+	potentially mirrored service objects. This should work when group
+	includes other groups.
+
 	* FWWindow_editor.cpp (openOptEditor): fixes #2307 "GUI switches
 	to another file after editor panel is closed"
 
