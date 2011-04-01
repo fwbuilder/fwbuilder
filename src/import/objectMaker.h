@@ -82,7 +82,7 @@ public:
     
     void registerError(const QString &msg);
     bool hasErrors() { return error_status; }
-    QStringList getErrors() { errors.removeDuplicates(); return errors; }
+    QStringList getErrors() { return errors; }
 };
 
 

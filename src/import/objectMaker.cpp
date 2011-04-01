@@ -74,7 +74,7 @@ QMap<QString, QPair<int,int> >  ObjectSignature::icmp_names;
 
 void ObjectMakerErrorTracker::registerError(const QString &msg)
 {
-    errors.append(msg);
+    if ( ! errors.contains(msg)) errors.append(msg);
     error_status = true;
 }
 
