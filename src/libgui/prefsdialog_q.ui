@@ -574,7 +574,7 @@ own library of templates and use it in addition to the one we provide</string>
            <item row="0" column="1">
             <widget class="QLabel" name="label_18">
              <property name="text">
-              <string>When an interface object is created as a child object of another interface, fwbuilder can verify that the name and type of the child and the parent objects match and form valid configuration. FWbuilder can also automatically guess some inetrface types and their parameters using their names. For example, it can automatically set interface type to &quot;vlan&quot; and assign vlan ID if object name looks like a valid vlan interface for the given OS. However in some situations desired configuration might be more complex than our checks allow so this may need to be turned off.</string>
+              <string>When an interface object is created as a child object of another interface, fwbuilder can verify that the name and type of the child and the parent objects match and form valid configuration. FWbuilder can also automatically guess some interface types and their parameters using their names. For example, it can automatically set interface type to &quot;vlan&quot; and assign vlan ID if object name looks like a valid vlan interface for the given OS. However in some situations desired configuration might be more complex than our checks allow so this may need to be turned off.</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
