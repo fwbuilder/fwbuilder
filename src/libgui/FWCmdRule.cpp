@@ -48,7 +48,8 @@ using namespace libfwbuilder;
  * FWCmdRule
  ********************************************************/
 
-FWCmdRule::FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QUndoCommand* macro) : FWCmdBasic(project, macro)
+FWCmdRule::FWCmdRule(ProjectPanel *project, RuleSet* ruleset,
+                     QUndoCommand* macro) : FWCmdBasic(project, macro)
 {
     this->ruleset = ruleset;
 }
@@ -152,7 +153,8 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
  * FWCmdRuleDelete
  ********************************************************/
 
-FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset, QList<Rule*> &rulesToDelete, QUndoCommand* macro):
+FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset,
+                                 QList<Rule*> &rulesToDelete, QUndoCommand* macro) :
         FWCmdRule(project, ruleset, macro)
 {
     copyRules(rulesToDelete);
@@ -238,9 +240,10 @@ void FWCmdRuleDelete::undoOnModel(RuleSetModel *md)
  * FWCmdRuleDeleteFromGroup
  ********************************************************/
 
-FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(ProjectPanel *project, RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete,
-                                                   QUndoCommand* macro):
-        FWCmdRuleDelete(project, ruleset, rulesToDelete, macro)
+FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(
+    ProjectPanel *project,
+    RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete,
+    QUndoCommand* macro) : FWCmdRuleDelete(project, ruleset, rulesToDelete, macro)
 {
     setText(QObject::tr("delete rules from group"));
 }
@@ -254,8 +257,10 @@ void FWCmdRuleDeleteFromGroup::undoOnModel(RuleSetModel *md)
  * FWCmdRuleColor
  ********************************************************/
 
-FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, RuleSet* ruleset, QList<Rule*> &rules,const QString &newColor):
-        FWCmdRule(project, ruleset),newColor(newColor)
+FWCmdRuleColor::FWCmdRuleColor(
+    ProjectPanel *project,
+    RuleSet* ruleset, QList<Rule*> &rules,
+    const QString &newColor) : FWCmdRule(project, ruleset), newColor(newColor)
 {
     foreach(Rule* rule, rules)
     {
@@ -307,8 +312,10 @@ void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
  * FWCmdRuleMove
  ********************************************************/
 
-FWCmdRuleMove::FWCmdRuleMove(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int firstId, int lastId, bool direction):
-        FWCmdRule(project, ruleset), firstId(firstId), lastId(lastId), direction(direction)
+FWCmdRuleMove::FWCmdRuleMove(ProjectPanel *project, RuleSet* ruleset,
+                             int firstId, int lastId, bool direction) :
+    FWCmdRule(project, ruleset),
+    firstId(firstId), lastId(lastId), direction(direction)
 {
     setText((direction)?QObject::tr("move rule up"):QObject::tr("move rule down"));
 }
@@ -355,8 +362,9 @@ void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
  * FWCmdRuleRenameGroup
  ********************************************************/
 
-FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, RuleSet* ruleset, QString oldName, QString newName):
-        FWCmdRule(project, ruleset), oldName(oldName), newName(newName)
+FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(
+    ProjectPanel *project, RuleSet* ruleset, QString oldName, QString newName) :
+    FWCmdRule(project, ruleset), oldName(oldName), newName(newName)
 {
     setText(QObject::tr("negate rule element"));
 }
@@ -378,8 +386,11 @@ void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
  * FWCmdRuleRemoveFromGroup
  ********************************************************/
 
-FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName, QUndoCommand* macro):
-        FWCmdRule(project, ruleset, macro), firstRule(firstRule), lastRule(lastRule), groupName(groupName)
+FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(
+    ProjectPanel* project, RuleSet* ruleset,
+    Rule* firstRule, Rule* lastRule, const QString groupName, QUndoCommand* macro) :
+    FWCmdRule(project, ruleset, macro),
+    firstRule(firstRule), lastRule(lastRule), groupName(groupName)
 {
     setText(QObject::tr("remove object(s) from group ")+groupName);
 }
@@ -420,8 +431,10 @@ void FWCmdRuleRemoveFromGroup::undoOnModel(RuleSetModel *md)
  * FWCmdRuleNewGroup
  ********************************************************/
 
-FWCmdRuleNewGroup::FWCmdRuleNewGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName):
-        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule)
+FWCmdRuleNewGroup::FWCmdRuleNewGroup(
+    ProjectPanel* project, RuleSet* ruleset,
+    Rule* firstRule, Rule* lastRule, const QString groupName) :
+    FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule)
 {
     this->groupName = getRuleSetModel()->findUniqueNameForGroup(groupName);
 
@@ -451,8 +464,11 @@ void FWCmdRuleNewGroup::undoOnModel(RuleSetModel *md)
  * FWCmdRuleAddToGroup
  ********************************************************/
 
-FWCmdRuleAddToGroup::FWCmdRuleAddToGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, bool isAbove):
-        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule), isAbove(isAbove)
+FWCmdRuleAddToGroup::FWCmdRuleAddToGroup(
+    ProjectPanel* project, RuleSet* ruleset,
+    Rule* firstRule, Rule* lastRule, bool isAbove) :
+    FWCmdRule(project, ruleset),
+    firstRule(firstRule), lastRule(lastRule), isAbove(isAbove)
 {
     setText((isAbove)?QObject::tr("add to group above"):QObject::tr("add to group below"));
 }
@@ -480,6 +496,13 @@ void FWCmdRuleAddToGroup::undoOnModel(RuleSetModel *md)
 /********************************************************
  * FWCmdRuleChange
  ********************************************************/
+
+FWCmdRuleChange::FWCmdRuleChange(
+    ProjectPanel *project, RuleSet* ruleset,
+    FWObject *obj, QString text, QUndoCommand* macro) :
+    FWCmdChange(project, obj, text, false, macro), ruleset(ruleset)
+{
+}
 
 void FWCmdRuleChange::selectAffectedRule()
 {
@@ -541,8 +564,11 @@ libfwbuilder::Rule* FWCmdRuleChange::getRule()
  *
  ********************************************************/
 
-FWCmdRuleChangeAction::FWCmdRuleChangeAction(ProjectPanel *project, libfwbuilder::FWObject *obj):
-        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Action")) {};
+FWCmdRuleChangeAction::FWCmdRuleChangeAction(
+    ProjectPanel *project, FWObject *obj) :
+    FWCmdRuleChange(project, RuleSet::cast(obj->getParent()),
+                    obj, QObject::tr("Edit Rule Action"))
+{};
 
 void FWCmdRuleChangeAction::notify()
 {
@@ -561,8 +587,12 @@ void FWCmdRuleChangeAction::notify()
  * FWCmdRuleChangeComment
  ********************************************************/
 
-FWCmdRuleChangeComment::FWCmdRuleChangeComment(ProjectPanel *project, libfwbuilder::FWObject *obj):
-        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Comment")) {};
+FWCmdRuleChangeComment::FWCmdRuleChangeComment(
+    ProjectPanel *project, FWObject *obj) :
+    FWCmdRuleChange(project, RuleSet::cast(obj->getParent()),
+                    obj, QObject::tr("Edit Rule Comment"))
+{
+}
 
 void FWCmdRuleChangeComment::notify()
 {
@@ -570,8 +600,10 @@ void FWCmdRuleChangeComment::notify()
 
     if (mw->isEditorVisible())
     {
-        QCoreApplication::postEvent(mw, new openOptObjectInEditorEvent(project->getFileName(),
-                                                                       getRule()->getId(), ObjectEditor::optComment));
+        QCoreApplication::postEvent(
+            mw, new openOptObjectInEditorEvent(
+                project->getFileName(),
+                getRule()->getId(), ObjectEditor::optComment));
     }
 }
 
@@ -579,8 +611,12 @@ void FWCmdRuleChangeComment::notify()
  * FWCmdRuleChangeOptions
  ********************************************************/
 
-FWCmdRuleChangeOptions::FWCmdRuleChangeOptions(ProjectPanel *project, libfwbuilder::FWObject *obj):
-        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Options")) {};
+FWCmdRuleChangeOptions::FWCmdRuleChangeOptions(
+    ProjectPanel *project, FWObject *obj) :
+    FWCmdRuleChange(project,
+                    RuleSet::cast(obj->getParent()),
+                    obj, QObject::tr("Edit Rule Options"))
+{};
 
 void FWCmdRuleChangeOptions::notify()
 {
@@ -588,7 +624,9 @@ void FWCmdRuleChangeOptions::notify()
 
     if (mw->isEditorVisible())
     {
-        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(project->getFileName(), getRule()->getId()));
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(
+                project->getFileName(), getRule()->getId()));
 
     }
 }
@@ -597,9 +635,11 @@ void FWCmdRuleChangeOptions::notify()
  * FWCmdRuleChangeRe
  ********************************************************/
 
-FWCmdRuleChangeRe::FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                  libfwbuilder::FWObject *obj, int position, int column, int number, QString text, QUndoCommand* macro):
-        FWCmdRuleChange(project, ruleset, obj, text, macro)
+FWCmdRuleChangeRe::FWCmdRuleChangeRe(
+    ProjectPanel *project, RuleSet* ruleset,
+    FWObject *obj, int position,
+    int column, int number, QString text, QUndoCommand* macro) :
+    FWCmdRuleChange(project, ruleset, obj, text, macro)
 {
     this->column = column;
     this->number = number;
@@ -622,8 +662,9 @@ void FWCmdRuleChangeRe::notify()
  * FWCmdRuleNegateRE
  ********************************************************/
 
-FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project,
-                                     RuleSet* ruleset, RuleElement* ruleElement):
+FWCmdRuleNegateRE::FWCmdRuleNegateRE(
+    ProjectPanel *project,
+    RuleSet* ruleset, RuleElement* ruleElement) :
     FWCmdRuleChangeRe(project, ruleset, ruleElement, 0, 0, 0, QObject::tr("Negate"))
 {
 }

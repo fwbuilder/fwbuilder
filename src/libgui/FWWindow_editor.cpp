@@ -186,6 +186,9 @@ void FWWindow::openEditor(FWObject *obj)
 
 void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
 {
+    attachEditorToProjectPanel(activeProject());
+
+
     if (fwbdebug)
         qDebug() << "FWWindow::openOptEditor "
                  << " obj: "

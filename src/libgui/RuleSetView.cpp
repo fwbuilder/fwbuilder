@@ -901,9 +901,8 @@ void RuleSetView::editSelected()
 
 bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 {
-//    qDebug() << "RuleSetView::switchObjectInEditor";
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return false;
+    if (!isTreeReadWrite(this,md->getRuleSet())) return false;
 
     if ( index.column()<=0 || index.row()==-1 ) return false;
 
@@ -985,6 +984,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
             qDebug("RuleSetView::switchObjectInEditor  same object is already opened in the editor");
         return true;
     }
+
 
     if (object == NULL)
     {

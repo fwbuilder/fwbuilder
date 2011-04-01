@@ -250,8 +250,8 @@ protected:
 
 public:
     FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                    libfwbuilder::FWObject *obj, QString text=QString(), QUndoCommand* macro = 0):
-            FWCmdChange(project, obj, text, false, macro), ruleset(ruleset) {}
+                    libfwbuilder::FWObject *obj,
+                    QString text=QString(), QUndoCommand* macro = 0);
 
     virtual void redo();
     virtual void undo();
