@@ -41,8 +41,9 @@
 #include <QString>
 
 
-struct GlobalPool
+class GlobalPool
 {
+public:
     int num;
     std::string str_num;
     std::string interface;
