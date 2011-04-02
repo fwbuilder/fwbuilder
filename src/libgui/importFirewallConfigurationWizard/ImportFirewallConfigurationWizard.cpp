@@ -108,16 +108,19 @@ void ImportFirewallConfigurationWizard::accept()
         dynamic_cast<IC_NetworkZonesPage*>(
             page(Page_NetworkZones))->setNetworkZones();
 
-    if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
-                           << "merging object trees";
+    int fw_id = -1;
+    int policy_id = -1;
+    if (fw)
+    {
+        fw_id = fw->getId();
+        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
+        policy_id = (first_policy) ? first_policy->getId() : -1;
+    }
 
     // merge dbcopy into db
 
     CompareObjectsDialog cod(this);
     db_orig->merge(db_copy, &cod);
-
-    if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
-                           << "merge done";
 
     ProjectPanel *pp = mw->activeProject();
     QString filename = pp->getFileName();
@@ -125,23 +128,22 @@ void ImportFirewallConfigurationWizard::accept()
     QCoreApplication::postEvent(
         mw, new reloadObjectTreeImmediatelyEvent(filename));
 
-    if (fw)
+    if (fw_id > 0)
     {
         QCoreApplication::postEvent(
-            pp, new showObjectInTreeEvent(filename, fw->getId()));
+            pp, new showObjectInTreeEvent(filename, fw_id));
 
         QCoreApplication::postEvent(
             pp, new expandObjectInTreeEvent(
-                mw->activeProject()->getFileName(), fw->getId()));
+                mw->activeProject()->getFileName(), fw_id));
 
         QCoreApplication::postEvent(
-            mw, new openObjectInEditorEvent(filename, fw->getId()));
+            mw, new openObjectInEditorEvent(filename, fw_id));
 
         // Open first created Policy ruleset object
-        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
-        if (first_policy)
+        if (policy_id > 0)
             QCoreApplication::postEvent(
-                pp, new openRulesetEvent(filename, first_policy->getId()));
+                pp, new openRulesetEvent(filename, policy_id));
     }
 
     QWizard::accept();

@@ -1055,11 +1055,11 @@ void RuleSetView::removeRule()
             RuleNode* node = md->nodeFromIndex(index);
             if (node->type == RuleNode::Rule)
                 rulesToDelete << node->rule;
-
-
         }
 
-        //Special case - all rows are inside one group (excluding the first item of the group)
+        //Special case - all rows are inside one group (excluding the
+        //first item of the group)
+
         if (itemsInGroups.size() == 1 &&
             itemsInGroups[itemsInGroups.keys().first()].size() == rulesToDelete.size())
         {
@@ -1075,7 +1075,9 @@ void RuleSetView::removeRule()
 
             if (!containsFirstRow)
             {
-                FWCmdRuleDeleteFromGroup* cmd = new FWCmdRuleDeleteFromGroup(project, md->getRuleSet(), rulesToDelete);
+                FWCmdRuleDeleteFromGroup* cmd =
+                    new FWCmdRuleDeleteFromGroup(project,
+                                                 md->getRuleSet(), rulesToDelete);
                 project->undoStack->push(cmd);
                 return;
             }
