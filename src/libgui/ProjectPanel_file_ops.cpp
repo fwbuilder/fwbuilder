@@ -204,6 +204,8 @@ bool ProjectPanel::fileNew()
         save();
         setupAutoSave();
 
+        loadFirstNonStandardLib();
+
         QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
     }
 

@@ -321,6 +321,7 @@ public:
 
     void saveLastOpenedLib();
     void loadLastOpenedLib();
+    void loadFirstNonStandardLib();
     
     bool checkin(bool unlock);
     libfwbuilder::FWObject* loadLibrary(const std::string &libfpath);

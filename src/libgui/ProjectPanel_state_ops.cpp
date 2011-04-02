@@ -309,7 +309,11 @@ void ProjectPanel::loadLastOpenedLib()
             return;
         }
     }
+    loadFirstNonStandardLib();
+}
 
+void ProjectPanel::loadFirstNonStandardLib()
+{
     list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
     FWObject *first_non_system_lib = NULL;
     for (list<FWObject*>::iterator i=all_libs.begin(); i!=all_libs.end(); ++i)
