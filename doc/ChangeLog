@@ -1,5 +1,12 @@
 2011-04-01  vadim  <vadim@netcitadel.com>
 
+	* FWObject.cpp (insert_before): see #2171 "Undoing delete of rule
+	ends up with rules being created with duplicate rule
+	numbers". Also see #2172 "Crash when deleting rule - related to
+	#2171". When user deleted the last rule in a rule set, then used
+	Undo to restore it, the program lost track of rules in the rule
+	set and became unstable.
+
 	* FWObject.cpp (shallowDuplicate): see #2286 "Crash when closing
 	file". The GUI crashed if user imported iptables or pix
 	configuration, then deleted a rule and tried to close project

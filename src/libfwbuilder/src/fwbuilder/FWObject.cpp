@@ -854,11 +854,17 @@ void FWObject::insert_before(FWObject *o1, FWObject *obj)
 {
     checkReadOnly();
 
-    if(!obj) 
+    if (obj == NULL) return;
+    if (o1 == NULL)
+    {
+        insert(begin(), obj);
+        _adopt(obj);
+        setDirty(true);
         return;
-    
-    list<FWObject*>::iterator m=find(begin(),end(),o1);
-    if(m!=end())
+    }
+
+    list<FWObject*>::iterator m = find(begin(), end(), o1);
+    if (m != end())
     {
         insert(m, obj);
         _adopt(obj);
@@ -870,13 +876,12 @@ void FWObject::insert_after(FWObject *o1, FWObject *obj)
 {
     checkReadOnly();
 
-    if(!obj) 
-        return;
+    if (obj == NULL) return;
 
-    list<FWObject*>::iterator m=find(begin(),end(),o1);
-    if(m!=end())
+    list<FWObject*>::iterator m = find(begin(), end(), o1);
+    if (m != end())
     {
-        insert(++m,obj);
+        insert(++m, obj);
         _adopt(obj);
         setDirty(true);
     }

@@ -1059,7 +1059,14 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 {
     FWObject *p=rule;
     while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
-    assert(p!=NULL);
+    if (p==NULL)
+    {
+        qDebug() << "FWObjectPropertiesFactory::getRuleActionPropertiesRich(): "
+                 << "Can not locate parent firewall for the rule:";
+        rule->dump(false, true);
+        return "";
+    }
+
     string platform=p->getStr("platform"); 
     QString act = getActionNameForPlatform(Firewall::cast(p), rule);
     QString par = getRuleActionProperties(rule);

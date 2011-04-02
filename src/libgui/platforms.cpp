@@ -187,17 +187,23 @@ bool isUsingNetZone(Firewall *fw)
 
 bool isDefaultPolicyRuleOptions(FWOptions *opt)
 {
-    bool res=true;
+    bool res = true;
     FWObject *p;
     PolicyRule *rule = NULL;
 
-    p=opt;
+    p = opt;
     do {
-        p=p->getParent();
+        p = p->getParent();
         if (PolicyRule::cast(p)!=NULL) rule = PolicyRule::cast(p);
     } while ( p!=NULL && Firewall::cast(p)==NULL );
 
-    assert(p!=NULL);
+    if (p==NULL)
+    {
+        qDebug() << "isDefaultPolicyRuleOptions()"
+                 << "Can not locate parent Firewall object for the options object";
+        opt->dump(false, true);
+        return true;
+    }
 
     QString platform = p->getStr("platform").c_str();
 

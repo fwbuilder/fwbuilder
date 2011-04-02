@@ -631,7 +631,9 @@ void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
     {
         Rule* rule = rules.first();
         pivotRule = ruleset->getRuleByNum(0);
+
         ruleset->insert_before(pivotRule, rule);
+
         pivotIndex = index(pivotRule, 0);
 
         if (topLevel && pivotIndex.parent().isValid())
