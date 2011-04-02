@@ -440,11 +440,10 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
 
     setReadOnly(false);
 
-    //if (getBool("ro")) setReadOnly(false);
     if (!preserve_id)
     {
-        ref_counter = 0           ;
-        xml_name    = x->xml_name ;
+//        ref_counter = 0           ;
+        xml_name = x->xml_name;
     } else
     {
         // some objects do not have ID per DTD (e.g. Src, Dst, etc.)

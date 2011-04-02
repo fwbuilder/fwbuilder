@@ -1,5 +1,10 @@
 2011-04-01  vadim  <vadim@netcitadel.com>
 
+	* FWObject.cpp (shallowDuplicate): see #2286 "Crash when closing
+	file". The GUI crashed if user imported iptables or pix
+	configuration, then deleted a rule and tried to close project
+	window.
+
 	* PIXImporter.cpp (mirrorServiceObjectRecursively): see #2291 The
 	same service object-group that matches some tcp or udp ports can
 	be used to match both source and destination ports in an
