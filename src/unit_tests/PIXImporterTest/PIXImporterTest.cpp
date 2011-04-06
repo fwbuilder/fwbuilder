@@ -55,6 +55,10 @@ using namespace libfwbuilder;
 
 extern string platform;
 
+extern QString findBestVersionMatch(const QString &platform,
+                                    const QString &discovered_version);
+
+
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
@@ -66,10 +70,6 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 
 void PIXImporterTest::setUp()
 {
-    //init();
-
-//    qDebug() << "Running PIXImporterTest::setUp()";
-
     FWBTree *tree = new FWBTree();
 
     /* create database */
@@ -80,18 +80,26 @@ void PIXImporterTest::setUp()
 
     db->setReadOnly( false );
 
-//    qDebug() << Constants::getStandardObjectsFilePath().c_str();
-//    qDebug() << Constants::getDTDDirectory().c_str();
-
     db->load( Constants::getStandardObjectsFilePath(),
               &upgrade_predicate, Constants::getDTDDirectory());
-//    qDebug() << "st";
 
     db->setFileName("");
     lib = Library::cast(tree->createNewLibrary(db));
     lib->setName("User");
 
     logger = new QueueLogger();
+
+    // this makes the test compile and link. There is a problem with
+    // dependencies, the test depends on libimport.a and additionally,
+    // PIXImporter.cpp depends on this function that is implemented in
+    // platforms.cpp in libgui.a; however since libgui.a comes before
+    // libimport.a in linker command line, this function does not get
+    // pulled since it is not used anywhere except by this test module
+    // and so linking fails. Making this call creates dependency and
+    // pulls this function at linking time before libimport.a and its
+    // dependencies are considered
+    QString version = findBestVersionMatch("pix", "7.0");
+
 }
 
 void PIXImporterTest::compareResults(QueueLogger* logger,

@@ -5,4 +5,3 @@ HEADERS += PIXImporterTest.h
 SOURCES += main_PIXImporterTest.cpp \
         PIXImporterTest.cpp
  
-STATIC_LIBS +=  ../../libgui/libgui.a
