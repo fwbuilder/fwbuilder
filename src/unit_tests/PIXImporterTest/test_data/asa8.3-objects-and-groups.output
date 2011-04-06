@@ -27,21 +27,22 @@
 53: Named object (address) external_gw2
 58: Named object (address) my-range-obj
 60: Named object (address) my-inside-net
-61: Parser warning: Import of named objects with "nat" command is not supported at this time
+62: Warning: Import of ASA 8.3 nat command is not supported at this time
+62: Warning: Import of named objects with "nat" command is not supported at this time
 67: Named object (address) ipv6-host-object-1
-68: Parser warning: IPv6 import is not supported. 
+68: Warning: IPv6 import is not supported. 
 70: Named object (address) ipv6-network-object-1
-71: Parser warning: IPv6 import is not supported. 
+71: Warning: IPv6 import is not supported. 
 73: Named object (address) ipv6-host-object-3
-74: Parser warning: IPv6 import is not supported. 
+74: Warning: IPv6 import is not supported. 
 76: Named object (address) ipv6-host-object-3
-77: Parser warning: IPv6 import is not supported. 
+77: Warning: IPv6 import is not supported. 
 81: Named object (address) dummy-address
 84: Named object (address) internal_subnet_5
 88: Named object (address) dummy-address-1
 89: Named object (address) internal_subnet_6
 92: Named object (address) ipv6-host-object-2
-93: Parser warning: IPv6 import is not supported. 
+93: Warning: IPv6 import is not supported. 
 95: Named object (address) host-1
 99: Named object (service) smtp
 101: Named object (service) http
@@ -79,9 +80,9 @@
 177: Named object (service) ip1
 179: Named object (service) ip2
 181: Named object (service) icmp6-1
-182: Parser warning: Import of IPv6 addresses and servcies is not supported at this time
+182: Warning: Import of IPv6 addresses and servcies is not supported at this time
 185: Named object (service) ip3
-186: Parser warning: Unknown service name some_weird_protocol
+186: Warning: Unknown service name some_weird_protocol
 190: Named object (service) ip4
 193: Object Group (network) outside.id178211X29963.osrc.net.0
 196: Object Group (network) outside.id21353X4994.osrc.net.0

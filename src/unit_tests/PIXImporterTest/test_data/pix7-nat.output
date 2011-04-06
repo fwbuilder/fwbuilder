@@ -1,6 +1,6 @@
 3: Version: 7.2
 6: Host name: pix1
-9: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+9: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
 10: Name 1.2.3.4 gw
 11: Name 192.168.3.0 fake_network
 12: Name 192.168.4.1 inside_ip
@@ -13,7 +13,7 @@
 28: Interface parameters: dmz20  
 28: Interface label: dmz20
 30: Interface address: 10.0.0.253/255.255.255.0
-30: Parser warning: failover IP detected. Failover is not supported by import at this time
+30: Warning: failover IP detected. Failover is not supported by import at this time
 33: New interface: Ethernet1
 35: Interface parameters: inside  
 35: Interface label: inside

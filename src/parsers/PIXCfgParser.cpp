@@ -1337,7 +1337,7 @@ void PIXCfgParser::names_section() {
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->addMessageToLog(
-			QString("Parser warning: \"names\" section detected. "
+			QString("Warning: \"names\" section detected. "
 			"Import of configuration that uses \"names\" "
 			"is not supported at this time"));
 			
@@ -1396,7 +1396,7 @@ void PIXCfgParser::name_entry() {
 			if (v6)
 			{
 			importer->addMessageToLog(
-			QString("Parser warning: IPv6 import is not supported. "));
+			QString("Warning: IPv6 import is not supported. "));
 			consumeUntil(NEWLINE);
 			}
 			
@@ -2077,7 +2077,7 @@ void PIXCfgParser::named_object_nat() {
 			
 			*dbg << "Named object with singleton nat command" << std::endl;
 			importer->addMessageToLog(
-			QString("Parser warning: "
+			QString("Warning: "
 			"Import of named objects with \"nat\" command "
 			"is not supported at this time"));
 			consumeUntil(NEWLINE);
@@ -2262,7 +2262,7 @@ void PIXCfgParser::subnet_addr() {
 			if (v6)
 			{
 			importer->addMessageToLog(
-			QString("Parser warning: IPv6 import is not supported. "));
+			QString("Warning: IPv6 import is not supported. "));
 			consumeUntil(NEWLINE);
 			}
 			
@@ -2318,7 +2318,7 @@ void PIXCfgParser::single_addr() {
 			if (v6)
 			{
 			importer->addMessageToLog(
-			QString("Parser warning: IPv6 import is not supported. "));
+			QString("Warning: IPv6 import is not supported. "));
 			consumeUntil(NEWLINE);
 			}
 			
@@ -2476,7 +2476,7 @@ void PIXCfgParser::service_icmp6() {
 			
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->addMessageToLog(
-			QString("Parser warning: "
+			QString("Warning: "
 			"Import of IPv6 addresses and servcies "
 			"is not supported at this time"));
 			*dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
@@ -2657,7 +2657,7 @@ void PIXCfgParser::service_unknown() {
 			importer->setCurrentLineNumber(LT(0)->getLine());
 			importer->protocol = "ip";
 			importer->commitNamedIPServiceObject();
-			std::string err = "Parser warning: Unknown service name " +
+			std::string err = "Warning: Unknown service name " +
 			LT(0)->getText();
 			importer->setNamedObjectDescription(err);
 			importer->addMessageToLog(err);
@@ -3052,7 +3052,7 @@ void PIXCfgParser::network_object() {
 				if (v6)
 				{
 				importer->addMessageToLog(
-				QString("Parser warning: IPv6 import is not supported. "));
+				QString("Warning: IPv6 import is not supported. "));
 				consumeUntil(NEWLINE);
 				}
 				
@@ -3096,7 +3096,7 @@ void PIXCfgParser::network_object() {
 				if (hv6)
 				{
 				importer->addMessageToLog(
-				QString("Parser warning: IPv6 import is not supported. "));
+				QString("Warning: IPv6 import is not supported. "));
 				consumeUntil(NEWLINE);
 				}
 				
@@ -3275,7 +3275,7 @@ void PIXCfgParser::protocol_object() {
 #line 621 "pix.g"
 				
 				importer->addMessageToLog(
-				QString("Parser warning: IPv6 import is not supported. "));
+				QString("Warning: IPv6 import is not supported. "));
 				consumeUntil(NEWLINE);
 				
 #line 3282 "PIXCfgParser.cpp"
@@ -6430,7 +6430,7 @@ void PIXCfgParser::v7_static_address() {
 			if (s)
 			{
 			importer->addMessageToLog(
-			QString("Parser warning: failover IP detected. "
+			QString("Warning: failover IP detected. "
 			"Failover is not supported by import "
 			"at this time"));
 			}

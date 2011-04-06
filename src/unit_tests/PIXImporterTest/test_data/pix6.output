@@ -4,7 +4,7 @@
 5: Interface parameters: ethernet0 outside security0
 5: Interface parameters: ethernet1 inside security100
 10: Host name: guardian
-33: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+33: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
 34: Object Group (icmp) inside.id12349X2458.srv.icmp.0
 38: Object Group (icmp) outside.id12363X2458.srv.icmp.0
 43: Object Group (service) outside.id12376X2458.srv.udp.0

@@ -211,7 +211,7 @@ names_section : NAMES
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                QString("Parser warning: \"names\" section detected. "
+                QString("Warning: \"names\" section detected. "
                         "Import of configuration that uses \"names\" "
                         "is not supported at this time"));
         }
@@ -229,7 +229,7 @@ name_entry : NAME (a:IPV4 | v6:IPV6) n:WORD
             if (v6)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: IPv6 import is not supported. "));
+                    QString("Warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -282,7 +282,7 @@ named_object_nat : nat_top_level_command
         {
             *dbg << "Named object with singleton nat command" << std::endl;
             importer->addMessageToLog(
-                QString("Parser warning: "
+                QString("Warning: "
                         "Import of named objects with \"nat\" command "
                         "is not supported at this time"));
             consumeUntil(NEWLINE);
@@ -321,7 +321,7 @@ single_addr : (h:IPV4 | v6:IPV6)
             if (v6)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: IPv6 import is not supported. "));
+                    QString("Warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -350,7 +350,7 @@ subnet_addr : (SUBNET ((a:IPV4 nm:IPV4) | v6:IPV6))
             if (v6)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: IPv6 import is not supported. "));
+                    QString("Warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -417,7 +417,7 @@ service_icmp6 : SERVICE ICMP6 (INT_CONST | WORD)
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                QString("Parser warning: "
+                QString("Warning: "
                         "Import of IPv6 addresses and servcies "
                         "is not supported at this time"));
             *dbg << "NAMED OBJECT SERVICE ICMP6 " << LT(0)->getText() << " ";
@@ -470,7 +470,7 @@ service_unknown : SERVICE WORD
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->protocol = "ip";
             importer->commitNamedIPServiceObject();
-            std::string err = "Parser warning: Unknown service name " +
+            std::string err = "Warning: Unknown service name " +
                 LT(0)->getText();
             importer->setNamedObjectDescription(err);
             importer->addMessageToLog(err);
@@ -547,7 +547,7 @@ network_object : NETWORK_OBJECT
             if (v6)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: IPv6 import is not supported. "));
+                    QString("Warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -564,7 +564,7 @@ network_object : NETWORK_OBJECT
             if (hv6)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: IPv6 import is not supported. "));
+                    QString("Warning: IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         }
@@ -620,7 +620,7 @@ protocol_object : PROTOCOL_OBJECT
         ICMP6
         {
             importer->addMessageToLog(
-                QString("Parser warning: IPv6 import is not supported. "));
+                QString("Warning: IPv6 import is not supported. "));
             consumeUntil(NEWLINE);
         }
     |
@@ -1662,7 +1662,7 @@ v7_static_address : a:IPV4 m:IPV4 (s:STANDBY)?
             if (s)
             {
                 importer->addMessageToLog(
-                    QString("Parser warning: failover IP detected. "
+                    QString("Warning: failover IP detected. "
                             "Failover is not supported by import "
                             "at this time"));
             }

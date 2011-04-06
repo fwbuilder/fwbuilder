@@ -1,6 +1,6 @@
 3: Version: 8.0
 5: Host name: pixfirewall
-7: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+7: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
 9: New interface: Ethernet0
 9: Interface parameters: inside  
 9: Interface label: inside
@@ -29,7 +29,7 @@ Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
 83: Object Group (protocol) protocol-1
 87: Object Group (protocol) proto-icmp
 89: Object Group (protocol) proto-icmp6
-90: Parser warning: IPv6 import is not supported. 
+90: Warning: IPv6 import is not supported. 
 91: Object Group (protocol) proto-ip
 93: Object Group (protocol) proto-ipsec
 95: Object Group (protocol) proto-pptp

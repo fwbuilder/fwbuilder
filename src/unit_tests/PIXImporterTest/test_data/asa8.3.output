@@ -1,10 +1,10 @@
 3: Version: 8.3
 5: Host name: asa5505
-8: Parser warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
+8: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
 9: Name 1.2.3.4 gw
 10: Name 192.168.3.0 fake_network
 11: Name 192.168.4.1 inside_ip
-11: Parser warning: IPv6 import is not supported. 
+11: Warning: IPv6 import is not supported. 
 14: New interface: Vlan1
 14: Interface comment: inside interface 
 15: Interface parameters: inside  
