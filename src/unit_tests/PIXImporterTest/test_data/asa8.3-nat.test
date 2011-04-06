@@ -73,6 +73,16 @@ clear config telnet
 clear config object-group
 clear config object
 
+object network internal_subnet_1 
+ subnet 192.168.1.0 255.255.255.192
+ description Internal Subnet 1
+object network internal_subnet_2 
+ subnet 192.168.1.64 255.255.255.192
+ description Internal Subnet 2
+object network Internal_net 
+ subnet 192.168.1.0 255.255.255.0
+object network hostA:eth0 
+ host 192.168.1.10
 
 object service http.0
   service tcp destination eq 80

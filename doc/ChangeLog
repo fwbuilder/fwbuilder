@@ -1,3 +1,9 @@
+2011-04-05  vadim  <vadim@netcitadel.com>
+
+	* pix.g (nat_new_top_level_command): since import of ASA8.3
+	"new" nat commands is not implemented yet, importer should issue
+	a warning when such command is encountered. See #2315
+
 2011-04-01  vadim  <vadim@netcitadel.com>
 
 	* FWObject.cpp (insert_before): see #2171 "Undoing delete of rule

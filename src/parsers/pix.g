@@ -1907,6 +1907,7 @@ nat_top_level_command :
         NAT OPENING_PAREN
         {
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
         }
         ( nat_old_top_level_command | nat_new_top_level_command )
     ;
@@ -1918,7 +1919,6 @@ nat_old_top_level_command :
         }
         CLOSING_PAREN
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
             *dbg << " SNAT rule ";
             importer->rule_type = libfwbuilder::NATRule::SNAT;
@@ -1990,9 +1990,12 @@ nat_new_top_level_command :
         COMMA
         interface_label 
         CLOSING_PAREN
-    {
-        consumeUntil(NEWLINE);
-    }
+        {
+            importer->addMessageToLog(
+                QString("Warning: Import of ASA 8.3 nat command "
+                        "is not supported at this time"));
+            consumeUntil(NEWLINE);
+        }
     ;
 
 global_top_level_command :
@@ -2057,13 +2060,13 @@ static_top_level_command :
         OPENING_PAREN 
         {
             importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
         }
         interface_label { importer->prenat_interface = LT(0)->getText(); }
         COMMA
         interface_label { importer->postnat_interface = LT(0)->getText(); }
         CLOSING_PAREN
         {
-            importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newUnidirRuleSet("nat", libfwbuilder::NAT::TYPENAME );
             *dbg << " DNAT rule ";
             importer->rule_type = libfwbuilder::NATRule::DNAT;
