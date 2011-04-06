@@ -1,5 +1,10 @@
 2011-04-05  vadim  <vadim@netcitadel.com>
 
+	* pix.g (static_command_common_last_parameters): see #2314 "Import
+	of static NAT statements drops netmask value and uses host
+	instead".  "Netmask" parameter of a "static" command applies to
+	the real address.
+
 	* PIXImporterNat.cpp (buildDNATRule): see #2313 "NAT with
 	access-list destination address and original service not set".
 	"Nat" and "static" commands that use access-list should import all

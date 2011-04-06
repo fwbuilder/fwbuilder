@@ -6859,7 +6859,7 @@ void PIXCfgParser::static_starts_with_tcp_udp() {
 		}
 		}
 		if ( inputState->guessing==0 ) {
-#line 2143 "pix.g"
+#line 2147 "pix.g"
 			
 			importer->protocol = LT(0)->getText();
 			*dbg << " SERVICE TCP/UDP " << LT(0)->getText() << " ";
@@ -6869,7 +6869,7 @@ void PIXCfgParser::static_starts_with_tcp_udp() {
 		static_mapped_addr_match();
 		tcp_udp_port_spec();
 		if ( inputState->guessing==0 ) {
-#line 2157 "pix.g"
+#line 2161 "pix.g"
 			
 			importer->mapped_port_spec = importer->tmp_port_spec_2;
 			*dbg << "mapped port " << importer->mapped_port_spec << " ";
@@ -6879,7 +6879,7 @@ void PIXCfgParser::static_starts_with_tcp_udp() {
 		static_real_addr_match();
 		tcp_udp_port_spec();
 		if ( inputState->guessing==0 ) {
-#line 2172 "pix.g"
+#line 2176 "pix.g"
 			
 			importer->real_port_spec = importer->tmp_port_spec_2;
 			*dbg << "real port " << importer->real_port_spec << " ";
@@ -6923,8 +6923,9 @@ void PIXCfgParser::static_mapped_addr_match() {
 				
 				importer->mapped_a = importer->tmp_a;
 				importer->mapped_nm = importer->tmp_nm;
+				*dbg << "mapped: " << importer->mapped_a;
 				
-#line 6928 "PIXCfgParser.cpp"
+#line 6929 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -6932,12 +6933,13 @@ void PIXCfgParser::static_mapped_addr_match() {
 		{
 			match(INTRFACE);
 			if ( inputState->guessing==0 ) {
-#line 2120 "pix.g"
+#line 2121 "pix.g"
 				
 				importer->mapped_a = "interface";
 				importer->mapped_nm = "";
+				*dbg << "mapped: " << importer->mapped_a;
 				
-#line 6941 "PIXCfgParser.cpp"
+#line 6943 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -6969,12 +6971,13 @@ void PIXCfgParser::static_real_addr_match() {
 		{
 			single_addr();
 			if ( inputState->guessing==0 ) {
-#line 2130 "pix.g"
+#line 2132 "pix.g"
 				
 				importer->real_a = importer->tmp_a;
 				importer->real_nm = importer->tmp_nm;
+				*dbg << "real: " << importer->real_a;
 				
-#line 6978 "PIXCfgParser.cpp"
+#line 6981 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -6984,11 +6987,12 @@ void PIXCfgParser::static_real_addr_match() {
 			acl_name = LT(1);
 			match(WORD);
 			if ( inputState->guessing==0 ) {
-#line 2136 "pix.g"
+#line 2139 "pix.g"
 				
 				importer->real_addr_acl = acl_name->getText();
+				*dbg << "real: " << importer->real_addr_acl;
 				
-#line 6992 "PIXCfgParser.cpp"
+#line 6996 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7020,12 +7024,12 @@ void PIXCfgParser::static_command_common_last_parameters() {
 		{
 			match(DNS);
 			if ( inputState->guessing==0 ) {
-#line 2190 "pix.g"
+#line 2194 "pix.g"
 				
 				importer->addMessageToLog(
 				QString("Warning: 'static' command option 'dns' is not supported"));
 				
-#line 7029 "PIXCfgParser.cpp"
+#line 7033 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7033,12 +7037,12 @@ void PIXCfgParser::static_command_common_last_parameters() {
 		{
 			match(NORANDOMSEQ);
 			if ( inputState->guessing==0 ) {
-#line 2196 "pix.g"
+#line 2200 "pix.g"
 				
 				importer->addMessageToLog(
 				QString("Warning: 'static' command option 'norandomseq' is not supported"));
 				
-#line 7042 "PIXCfgParser.cpp"
+#line 7046 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7048,11 +7052,12 @@ void PIXCfgParser::static_command_common_last_parameters() {
 			nm = LT(1);
 			match(IPV4);
 			if ( inputState->guessing==0 ) {
-#line 2202 "pix.g"
+#line 2206 "pix.g"
 				
-				importer->mapped_nm = nm->getText();
+				importer->real_nm = nm->getText();
+				*dbg << "real netmask: " << importer->real_nm;
 				
-#line 7056 "PIXCfgParser.cpp"
+#line 7061 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7097,13 +7102,13 @@ void PIXCfgParser::static_command_common_last_parameters() {
 			
 			}
 			if ( inputState->guessing==0 ) {
-#line 2208 "pix.g"
+#line 2213 "pix.g"
 				
 				importer->static_max_conn = max_conn->getText();
 				if (max_emb_conn)
 				importer->static_max_emb_conn = max_emb_conn->getText();
 				
-#line 7107 "PIXCfgParser.cpp"
+#line 7112 "PIXCfgParser.cpp"
 			}
 			break;
 		}

@@ -2114,12 +2114,14 @@ static_mapped_addr_match :
             {
                 importer->mapped_a = importer->tmp_a;
                 importer->mapped_nm = importer->tmp_nm;
+                *dbg << "mapped: " << importer->mapped_a;
             }
         |
             INTRFACE
             {
                 importer->mapped_a = "interface";
                 importer->mapped_nm = "";
+                *dbg << "mapped: " << importer->mapped_a;
             }
         )
     ;
@@ -2130,11 +2132,13 @@ static_real_addr_match :
             {
                 importer->real_a = importer->tmp_a;
                 importer->real_nm = importer->tmp_nm;
+                *dbg << "real: " << importer->real_a;
             }
         |
             ACCESS_LIST acl_name:WORD
             {
                 importer->real_addr_acl = acl_name->getText();
+                *dbg << "real: " << importer->real_addr_acl;
             }
         )
     ;
@@ -2200,7 +2204,8 @@ static_command_common_last_parameters :
     |
         NETMASK nm:IPV4
         {
-            importer->mapped_nm = nm->getText();
+            importer->real_nm = nm->getText();
+            *dbg << "real netmask: " << importer->real_nm;
         }
     |
         (TCP | UDP)?
