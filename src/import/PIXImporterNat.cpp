@@ -167,20 +167,34 @@ void PIXImporter::buildDNATRule()
         UnidirectionalRuleSet *rs = all_rulesets[real_addr_acl];
         if (rs)
         {
-            RuleElement* tdst = rule->getTDst();
-            assert(tdst!=NULL);
-
             PolicyRule *policy_rule = PolicyRule::cast(
                 rs->ruleset->getFirstByType(PolicyRule::TYPENAME));
             
             if (policy_rule)
             {
-                RuleElement *src = policy_rule->getSrc();
-                for (FWObject::iterator it=src->begin(); it!=src->end(); ++it)
-                {
-                    FWObject *o = FWReference::getObject(*it);
-                    tdst->addRef(o);
-                }
+
+                RuleElement* osrc = rule->getOSrc();
+                RuleElement* osrv = rule->getOSrv();
+                RuleElement* tdst = rule->getTDst();
+
+                /* copy objects from a policy rule into
+                 * rule elements of a nat rule
+                 *
+                 * Src --> TDst
+                 * Dst --> OSrc
+                 * Srv --> OSrv
+                 */
+                RuleElement *re = policy_rule->getSrc();
+                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                    tdst->addRef(FWReference::getObject(*it));
+
+                re = policy_rule->getDst();
+                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                    osrc->addRef(FWReference::getObject(*it));
+
+                re = policy_rule->getSrv();
+                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                    osrv->addRef(FWReference::getObject(*it));
             }
 
             rs->to_be_deleted = true;
@@ -280,20 +294,33 @@ void PIXImporter::buildSNATRule()
             UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
             if (rs)
             {
-                RuleElement* osrc = rule->getOSrc();
-                assert(osrc!=NULL);
-
                 PolicyRule *policy_rule = PolicyRule::cast(
                     rs->ruleset->getFirstByType(PolicyRule::TYPENAME));
             
                 if (policy_rule)
                 {
-                    RuleElement *src = policy_rule->getSrc();
-                    for (FWObject::iterator it=src->begin(); it!=src->end(); ++it)
-                    {
-                        FWObject *o = FWReference::getObject(*it);
-                        osrc->addRef(o);
-                    }
+                    RuleElement* osrc = rule->getOSrc();
+                    RuleElement* odst = rule->getODst();
+                    RuleElement* osrv = rule->getOSrv();
+
+                    /* copy objects from a policy rule into "original"
+                     * rule elements of a nat rule
+                     *
+                     * Src --> OSrc
+                     * Dst --> ODst
+                     * Srv --> OSrv
+                     */
+                    RuleElement *re = policy_rule->getSrc();
+                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                        osrc->addRef(FWReference::getObject(*it));
+
+                    re = policy_rule->getDst();
+                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                        odst->addRef(FWReference::getObject(*it));
+
+                    re = policy_rule->getSrv();
+                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
+                        osrv->addRef(FWReference::getObject(*it));
                 }
 
                 rs->to_be_deleted = true;

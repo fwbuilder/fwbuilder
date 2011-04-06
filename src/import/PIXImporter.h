@@ -70,7 +70,7 @@ class PIXImporter : public IOSImporter
 {
     libfwbuilder::FWObject* getMirroredServiceObject(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* mirrorServiceObjectRecursively(libfwbuilder::FWObject *obj);
-
+    
 public:
 
     QString named_object_name;

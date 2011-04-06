@@ -1,5 +1,11 @@
 2011-04-05  vadim  <vadim@netcitadel.com>
 
+	* PIXImporterNat.cpp (buildDNATRule): see #2313 "NAT with
+	access-list destination address and original service not set".
+	"Nat" and "static" commands that use access-list should import all
+	components of the access-list command (source, destination and
+	service/protocol).
+
 	* PIXImporterNat.cpp (buildSNATRule): see #2310 "Imported global /
 	nat rule has wrong interface defined". Importer mixed up inbound
 	and outbound interfaces in NAT commands created from combination
