@@ -59,15 +59,15 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
     // Now I should build new signature because actual object type has
     // only been determined in createAddress()
 
+    ObjectSignature new_sig(error_tracker);
+
     if ( ! sig.object_name.isEmpty())
     {
         obj->setName(sig.object_name.toUtf8().constData());
-        ObjectSignature new_sig(error_tracker);
         obj->dispatch(&new_sig, (void*)(NULL));
         registerNamedObject(new_sig, obj);
     } else
     {
-        ObjectSignature new_sig(error_tracker);
         obj->dispatch(&new_sig, (void*)(NULL));
         registerAnonymousObject(new_sig, obj);
     }

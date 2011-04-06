@@ -265,6 +265,7 @@ void PIXImporter::buildSNATRule()
 
         if ( ! nat_a.empty())
         {
+            // makeSrcObj() uses these variables
             src_a = nat_a;
             src_nm = nat_nm;
 
@@ -318,7 +319,7 @@ void PIXImporter::buildSNATRule()
                 sig.setAddressRangeStart(pool.start.c_str());
                 sig.setAddressRangeEnd(pool.end.c_str());
             }
-            addr = address_maker->createObject(sig);
+            addr = commitObject(address_maker->createObject(sig));
         }
 
         RuleElement* tsrc = rule->getTSrc();

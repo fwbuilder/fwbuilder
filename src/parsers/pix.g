@@ -306,6 +306,9 @@ named_object_description : DESCRIPTION
     ;
 
 host_addr : HOST single_addr
+        {
+            importer->commitNamedAddressObject();
+        }
     ;
 
 single_addr : (h:IPV4 | v6:IPV6)
@@ -315,8 +318,7 @@ single_addr : (h:IPV4 | v6:IPV6)
             {
                 importer->tmp_a = h->getText();
                 importer->tmp_nm = "255.255.255.255";
-                importer->commitNamedAddressObject();
-                *dbg << h->getText() << "/255.255.255.255";
+                *dbg << importer->tmp_a << " ";
             }
             if (v6)
             {
@@ -2022,17 +2024,25 @@ global_top_level_command :
 
         // WORD Enter IP address or a range of IP addresses <start_ip>[-<end_ip>]
         // interface  Specifies PAT using the IP address at the interface
-        (INTRFACE | single_addr)
-        {
-            importer->tmp_global_pool.start = LT(0)->getText();
-            importer->tmp_global_pool.end = LT(0)->getText();
-        }
+        (
+            INTRFACE
+            {
+                importer->tmp_global_pool.start = LT(0)->getText();
+                importer->tmp_global_pool.end = LT(0)->getText();
+            }
+        |
+            single_addr
+            {
+                importer->tmp_global_pool.start = importer->tmp_a;
+                importer->tmp_global_pool.end = importer->tmp_a;
+            }
+        )
 
         (
             MINUS
             single_addr
             {
-                importer->tmp_global_pool.end = LT(0)->getText();
+                importer->tmp_global_pool.end = importer->tmp_a;
             }
         )?
 
