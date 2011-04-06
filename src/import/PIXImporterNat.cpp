@@ -327,11 +327,11 @@ void PIXImporter::buildSNATRule()
 
         RuleElement *itf_i_re = rule->getItfInb();
         assert(itf_i_re!=NULL);
-        itf_i_re->addRef(post_intf);
+        itf_i_re->addRef(pre_intf);
 
         RuleElement *itf_o_re = rule->getItfOutb();
         assert(itf_o_re!=NULL);
-        itf_o_re->addRef(pre_intf);
+        itf_o_re->addRef(post_intf);
 
         // add it to the current ruleset
         current_ruleset->ruleset->add(rule);

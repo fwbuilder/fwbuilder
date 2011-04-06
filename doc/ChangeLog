@@ -1,5 +1,10 @@
 2011-04-05  vadim  <vadim@netcitadel.com>
 
+	* PIXImporterNat.cpp (buildSNATRule): see #2310 "Imported global /
+	nat rule has wrong interface defined". Importer mixed up inbound
+	and outbound interfaces in NAT commands created from combination
+	of "global" and "nat" PIX/ASA commands.
+
 	* pix.g (nat_new_top_level_command): since import of ASA8.3
 	"new" nat commands is not implemented yet, importer should issue
 	a warning when such command is encountered. See #2315
