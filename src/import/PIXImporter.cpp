@@ -409,7 +409,10 @@ void PIXImporter::pushPolicyRule()
     assert(current_rule!=NULL);
     // populate all elements of the rule
 
-    addMessageToLog(QString("access list rule, action %1").arg(action.c_str()));
+    addMessageToLog(
+        QString("filtering rule: access list %1, action %2")
+        .arg(QString::fromUtf8(current_ruleset->ruleset->getName().c_str()))
+        .arg(action.c_str()));
     
     PolicyRule *rule = PolicyRule::cast(current_rule);
 

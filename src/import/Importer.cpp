@@ -803,8 +803,7 @@ void Importer::reportError(const std::string &comment)
 void Importer::reportError(const QString &comment)
 {
     error_counter++;
-    QString err = QObject::tr("Parser error: Line %1: %2\n")
-        .arg(getCurrentLineNumber()).arg(comment);    
+    QString err = QObject::tr("Error: %1").arg(comment);
     addMessageToLog(err);
     error_tracker->registerError(err);
 }

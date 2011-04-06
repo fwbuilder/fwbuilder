@@ -33,24 +33,24 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 79: Object Group (network) outside.id12051X6282.src.net.2
 83: Object Group (network) network-zone-inside
 85: Object Group (network) network-zone-dmz20
-89: access list rule, action deny
-90: access list rule, action deny
-91: access list rule, action deny
-92: access list rule, action deny
-93: access list rule, action permit
-94: access list rule, action permit
-95: access list rule, action permit
-96: access list rule, action permit
-97: access list rule, action deny
-98: access list rule, action deny
-99: access list rule, action deny
-100: access list rule, action deny
-101: access list rule, action permit
-102: access list rule, action deny
-104: access list rule, action permit
-106: access list rule, action permit
-109: access list rule, action permit
-111: access list rule, action permit
+89: filtering rule: access list outside_in, action deny
+90: filtering rule: access list outside_in, action deny
+91: filtering rule: access list outside_in, action deny
+92: filtering rule: access list outside_in, action deny
+93: filtering rule: access list inside_out, action permit
+94: filtering rule: access list inside_out, action permit
+95: filtering rule: access list inside_out, action permit
+96: filtering rule: access list inside_out, action permit
+97: filtering rule: access list inside_out, action deny
+98: filtering rule: access list inside_in, action deny
+99: filtering rule: access list inside_in, action deny
+100: filtering rule: access list inside_in, action deny
+101: filtering rule: access list inside_in, action permit
+102: filtering rule: access list inside_in, action deny
+104: filtering rule: access list id12251X6282.0, action permit
+106: filtering rule: access list id12594X2458.0, action permit
+109: filtering rule: access list WEB, action permit
+111: filtering rule: access list NET1, action permit
 138: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
 139: Source translation rule ("nat" command)
 141: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
@@ -73,8 +73,8 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 165: Interface Ethernet1 ruleset inside_in direction 'in'
 166: Interface Ethernet1 ruleset inside_out direction 'out'
 207: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-207: access list rule, action permit
+207: filtering rule: access list ssh_commands_inside, action permit
 208: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-208: access list rule, action permit
+208: filtering rule: access list ssh_commands_inside, action permit
 209: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
-209: access list rule, action permit
+209: filtering rule: access list ssh_commands_outside, action permit

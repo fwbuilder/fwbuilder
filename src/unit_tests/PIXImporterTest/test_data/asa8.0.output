@@ -37,36 +37,36 @@ Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
 99: Object Group (protocol) proto-tcp
 101: Object Group (protocol) proto-udp
 108: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-108: access list rule, action permit
+108: filtering rule: access list icmp_commands_outside, action permit
 109: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-109: access list rule, action permit
+109: filtering rule: access list icmp_commands_outside, action permit
 110: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-110: access list rule, action permit
+110: filtering rule: access list icmp_commands_outside, action permit
 111: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-111: access list rule, action permit
+111: filtering rule: access list icmp_commands_outside, action permit
 112: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-112: access list rule, action permit
+112: filtering rule: access list icmp_commands_outside, action permit
 113: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-113: access list rule, action permit
+113: filtering rule: access list icmp_commands_outside, action permit
 114: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-114: access list rule, action permit
+114: filtering rule: access list icmp_commands_inside, action permit
 115: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-115: access list rule, action permit
+115: filtering rule: access list icmp_commands_inside, action permit
 116: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-116: access list rule, action permit
+116: filtering rule: access list icmp_commands_inside, action permit
 117: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-117: access list rule, action permit
+117: filtering rule: access list icmp_commands_inside, action permit
 118: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-118: access list rule, action permit
+118: filtering rule: access list icmp_commands_inside, action permit
 119: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-119: access list rule, action permit
+119: filtering rule: access list icmp_commands_inside, action permit
 120: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-120: access list rule, action permit
+120: filtering rule: access list icmp_commands_inside, action permit
 121: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-121: access list rule, action permit
+121: filtering rule: access list icmp_commands_inside, action permit
 122: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-122: access list rule, action permit
+122: filtering rule: access list icmp_commands_inside, action permit
 135: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
-135: access list rule, action permit
+135: filtering rule: access list telnet_commands_inside, action permit
 137: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
-137: access list rule, action permit
+137: filtering rule: access list ssh_commands_inside, action permit

@@ -55,8 +55,8 @@ DEPENDPATH = ../../common \
 
 STATIC_LIBS += \
     ../main/libtest_main.a \
-    ../../import/libimport.a \
     ../../libgui/libgui.a \
+    ../../import/libimport.a \
     ../../common/libcommon.a \
     ../../iptlib/libiptlib.a \
     ../../pflib/libfwbpf.a \

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1300949604" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302063030" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -3051,7 +3051,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1612" disabled="False" group="" log="False" position="48" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.&#10;Created during import of  line 206">
+          <PolicyRule id="id1612" disabled="False" group="" log="False" position="48" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 206&#10;Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3074,7 +3074,7 @@
               <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id1624" disabled="False" group="" log="False" position="49" action="Branch" direction="Both" comment="Chain user_chain. &#10;Original rule combines match of tcp/udp/icmp &#10;protocols with two or more module matches, such as &#10;module 'mark', 'recent' or 'length'. Use additional &#10;branches to implement this complex match.&#10;Created during import of  line 207">
+          <PolicyRule id="id1624" disabled="False" group="" log="False" position="49" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 207&#10;Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3755,7 +3755,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id2003" name="Mangle" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2005" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Warning: Line 220: Can not reproduce default action in table 'mangle' chain 'FORWARD'.&#10;(Generated rule may not generate equivalent iptables command when compiled)">
+          <PolicyRule id="id2005" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="Warning: Line 220: Can not reproduce default action in table 'mangle' chain 'FORWARD'. (Generated rule may not generate equivalent iptables command when compiled)">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3776,7 +3776,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2017" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Warning: Line 219: Can not reproduce default action in table 'mangle' chain 'INPUT'.&#10;(Generated rule may not generate equivalent iptables command when compiled)">
+          <PolicyRule id="id2017" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Warning: Line 219: Can not reproduce default action in table 'mangle' chain 'INPUT'. (Generated rule may not generate equivalent iptables command when compiled)">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

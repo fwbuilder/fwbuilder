@@ -20,36 +20,36 @@
 104: Object Group (protocol) pg1
 110: Object Group (network) src-network-group-1
 114: Object Group (network) dst-network-group-1
-122: access list rule, action permit
-125: access list rule, action permit
-127: access list rule, action permit
-129: access list rule, action permit
-131: access list rule, action permit
-133: access list rule, action permit
-138: access list rule, action permit
-143: access list rule, action permit
-145: access list rule, action permit
-147: access list rule, action permit
-149: access list rule, action permit
-155: access list rule, action permit
+122: filtering rule: access list inside_in, action permit
+125: filtering rule: access list inside_in, action permit
+127: filtering rule: access list inside_in, action permit
+129: filtering rule: access list inside_in, action permit
+131: filtering rule: access list inside_in, action permit
+133: filtering rule: access list inside_in, action permit
+138: filtering rule: access list inside_in, action permit
+143: filtering rule: access list inside_in, action permit
+145: filtering rule: access list inside_in, action permit
+147: filtering rule: access list inside_in, action permit
+149: filtering rule: access list inside_in, action permit
+155: filtering rule: access list inside_in, action permit
 155: Object Group (service) srv-group-1-mirror
-162: access list rule, action permit
-164: access list rule, action permit
-166: access list rule, action permit
-168: access list rule, action permit
-170: access list rule, action permit
-175: access list rule, action permit
-177: access list rule, action permit
-179: access list rule, action permit
-181: access list rule, action permit
-188: access list rule, action permit
+162: filtering rule: access list inside_in, action permit
+164: filtering rule: access list inside_in, action permit
+166: filtering rule: access list inside_in, action permit
+168: filtering rule: access list inside_in, action permit
+170: filtering rule: access list inside_in, action permit
+175: filtering rule: access list inside_in, action permit
+177: filtering rule: access list inside_in, action permit
+179: filtering rule: access list inside_in, action permit
+181: filtering rule: access list inside_in, action permit
+188: filtering rule: access list inside_in, action permit
 188: Object Group (service) srv-group-1-mirror
-190: access list rule, action permit
+190: filtering rule: access list inside_in, action permit
 190: Object Group (service) srv-group-1-mirror
-192: access list rule, action permit
+192: filtering rule: access list inside_in, action permit
 192: Object Group (service) srv-group-1-mirror
-194: access list rule, action permit
+194: filtering rule: access list inside_in, action permit
 194: Object Group (service) srv-group-1-mirror
-196: access list rule, action permit
+196: filtering rule: access list inside_in, action permit
 196: Object Group (service) srv-group-1-mirror
 199: Interface Vlan1 ruleset inside_in direction 'in'

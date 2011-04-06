@@ -249,6 +249,21 @@ void IOSImporter::ignoreCurrentInterface()
 
 
 
+void IOSImporter::pushRule()
+{
+    assert(current_ruleset!=NULL);
+    assert(current_rule!=NULL);
+    // populate all elements of the rule
+
+    addMessageToLog(
+        QString("access list rule: access list %1, action %2")
+        .arg(QString::fromUtf8(current_ruleset->ruleset->getName().c_str()))
+        .arg(action.c_str()));
+    
+    Importer::pushRule();
+}
+
+
 void IOSImporter::MergeRules::move(FWObject* r)
 {
     PolicyRule *rule = PolicyRule::cast(r);
