@@ -788,11 +788,15 @@ void FirewallInstaller::replaceMacrosInCommand(Configlet *conf)
         qDebug() << "  cnf->script=" << cnf->script;
         qDebug() << "  cnf->remote_script=" << cnf->remote_script;
         qDebug() << "  $fwscript=" << fwbscript;
+        qDebug() << "  $firewall_name=" << QString::fromUtf8(
+            cnf->fwobj->getName().c_str());
     }
 
     conf->setVariable("fwbprompt", fwb_prompt);
     conf->setVariable("fwdir", cnf->fwdir);
     conf->setVariable("fwscript", fwbscript);
+    conf->setVariable("firewall_name",
+                      QString::fromUtf8(cnf->fwobj->getName().c_str()));
 }
 
 

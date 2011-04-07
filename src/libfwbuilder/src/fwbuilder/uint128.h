@@ -463,9 +463,9 @@ public:
     {
         char buf[33];
         if (hi)
-            sprintf(buf,"%llX%08llX",hi,lo);
+            sprintf(buf,"%llX%08llX",(unsigned long long)hi,(unsigned long long)lo);
         else
-            sprintf(buf,"%llX",lo);
+            sprintf(buf,"%llX",(unsigned long long)lo);
         return buf;
     }
 
