@@ -107,7 +107,9 @@
 248: filtering rule: access list outside_in, action permit
 249: filtering rule: access list outside_in, action permit
 250: filtering rule: access list outside_in, action permit
-268: Interface Vlan1 ruleset inside_in direction 'in'
-269: Interface Vlan1 ruleset inside_out direction 'out'
-270: Interface Vlan2 ruleset outside_in direction 'in'
-271: Interface Vlan2 ruleset outside_out direction 'out'
+253: filtering rule: access list outside_in, action permit
+253: Error: Rule matches tcp or udp ports using "neq" port operator in both source and destination. This configuration is not supported by import at this time, please fix manually
+270: Interface Vlan1 ruleset inside_in direction 'in'
+271: Interface Vlan1 ruleset inside_out direction 'out'
+272: Interface Vlan2 ruleset outside_in direction 'in'
+273: Interface Vlan2 ruleset outside_out direction 'out'

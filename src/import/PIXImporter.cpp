@@ -437,6 +437,18 @@ void PIXImporter::pushPolicyRule()
     // ports but used to match source ports in the access-list command.
     fixServiceObjectUsedForSrcPorts();
 
+    // special exception for rules with "neq" port operator in both
+    // source and destination. #2297. We have decided to just issue a
+    // warning at this time and let user fix the rule manually. We
+    // should handle this case properly some day.
+    if (src_port_op == "neq" && dst_port_op == "neq")
+    {
+        error_tracker->registerError(
+            QObject::tr("Rule matches tcp or udp ports using \"neq\" port operator in "
+                        "both source and destination. This configuration is "
+                        "not supported by import at this time, please fix manually"));
+    }
+
     addSrc();
     addDst();
     addSrv();

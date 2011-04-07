@@ -249,6 +249,8 @@ access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any 
 access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-3
 access-list outside_in  permit tcp object-group dst-network-group-1 gt 1024 any object-group test-service-4
 
+! unsupported configuration: neq in bouth source and destination
+access-list outside_in permit tcp any neq www any neq www
 
 ! however named object can not be used to match source ports in ASA
 ! 8.3 so the following rules are invalid

@@ -1,5 +1,11 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* PIXImporter.cpp (pushPolicyRule): see #2297 Added warning when
+	importer enounters access-list command that matches tcp or udp
+	ports with "neq" port operators in both source and
+	destination. This configuration is not supported by import at this
+	time.
+
 	* PIXImporterNat.cpp (buildSNATRule): see #2319 "Imported nat
 	rules with multi-line access-lists have only the first entry"
 
