@@ -50,6 +50,7 @@ namespace fwcompiler {
    
 protected:
         std::string system_configuration_script;
+        std::string named_objects_and_groups;
         std::string nat_script;
         std::string policy_script;
         std::string routing_script;

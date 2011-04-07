@@ -35,6 +35,8 @@
 {{$system_configuration_script}}
 {{endif}}
 
+{{$named_objects_and_object_groups}}
+
 {{$policy_script}}
 
 {{$nat_script}}

@@ -148,7 +148,13 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
     script_skeleton.setVariable("not_short_script", ! options->getBool("short_script"));
 
     script_skeleton.setVariable("system_configuration_script", 
-                                QString::fromUtf8(system_configuration_script.c_str()));
+                                QString::fromUtf8(
+                                    system_configuration_script.c_str()));
+
+    script_skeleton.setVariable("named_objects_and_object_groups",
+                                QString::fromUtf8(
+                                    named_objects_and_groups.c_str()));
+
     script_skeleton.setVariable("policy_script",
                                 QString::fromUtf8(policy_script.c_str()));
     script_skeleton.setVariable("nat_script",
@@ -380,7 +386,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         string clear_commands;
         bool have_named_objects = false;
         bool have_object_groups = false;
-        string object_groups_definitions;
 
 /* create compilers and run the whole thing */
         string version = fw->getStr("version");
@@ -503,8 +508,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         nat_script = n->getCompiledScript();
         routing_script = r->getCompiledScript();
 
-        object_groups_definitions =
-            named_objects_manager.getNamedObjectsDefinitions();
+        named_objects_and_groups = named_objects_manager.getNamedObjectsDefinitions();
 
         if (c->haveErrorsAndWarnings())
             all_errors.push_back(c->getErrors("C ").c_str());
@@ -517,7 +521,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         {
             return formSingleRuleCompileOutput(
                 QString::fromUtf8(
-                    (object_groups_definitions +
+                    (named_objects_and_groups +
                      policy_script + nat_script + routing_script).c_str()));
         }
 
@@ -527,7 +531,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
         system_configuration_script += clear_commands;
         system_configuration_script += "\n";
-        system_configuration_script += object_groups_definitions;
 
         script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());
