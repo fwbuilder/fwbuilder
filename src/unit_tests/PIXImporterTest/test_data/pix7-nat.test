@@ -108,7 +108,11 @@ access-list id12594X2458.0 permit tcp host 10.1.1.43 eq www any
 ! example from cisco docs, see also nat command below
 access-list WEB permit tcp 10.1.1.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
 
+access-list WEB2 permit tcp 192.168.2.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
+access-list WEB2 permit tcp 192.168.3.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
+
 access-list NET1 permit ip host 10.1.1.20 host 4.2.2.1
+
 
 pager lines 24
 logging enable
@@ -142,11 +146,17 @@ global (outside) 2 192.0.2.10
 global (outside) 2 192.0.2.11-192.0.2.15
 global (outside) 2 192.0.2.128 netmask 255.255.255.240
 global (dmz20) 2 10.0.0.128 netmask 255.255.255.240
+global (outside) 3 192.0.2.20
+global (outside) 3 192.0.2.30-192.0.2.31
 
 nat (inside) 2 10.1.1.1 255.255.255.255
 nat (inside) 2 10.1.1.32 255.255.255.240
 
 nat (inside) 1 access-list WEB
+nat (inside) 1 access-list WEB2
+
+! multiple address blocks in pool 3 and multiple lines in access list WEB2
+nat (inside) 3 access-list WEB2
   
 static (inside,dmz20) 10.0.0.16 10.1.1.16 netmask 255.255.255.240
 static (inside,dmz20) 10.0.0.100 10.1.1.100 netmask 255.255.255.255
@@ -159,6 +169,9 @@ static (inside,outside) tcp interface 80 access-list id12594X2458.0 0 0
 static (inside,outside) interface access-list id12594X2458.0 0 0 
 
 static (inside,outside) 192.0.2.15 access-list NET1
+
+! acl WEB2 has multiple lines. Does this even make sense ?
+static (inside,outside) 192.0.2.15 access-list WEB2
 
 
 access-group outside_in in interface outside

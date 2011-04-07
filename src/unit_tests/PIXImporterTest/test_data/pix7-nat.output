@@ -46,31 +46,38 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 104: filtering rule: access list id12251X6282.0, action permit
 106: filtering rule: access list id12594X2458.0, action permit
 109: filtering rule: access list WEB, action permit
-111: filtering rule: access list NET1, action permit
-138: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
-139: Source translation rule ("nat" command)
-141: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
-142: Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
-143: Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
-144: Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
-146: Source translation rule ("nat" command)
-147: Source translation rule ("nat" command)
-149: Source translation rule ("nat" command)
-151: Destination translation rule ("static" command)
-152: Destination translation rule ("static" command)
-153: Destination translation rule ("static" command)
-154: Destination translation rule ("static" command)
-155: Destination translation rule ("static" command)
-157: Destination translation rule ("static" command)
-158: Destination translation rule ("static" command)
-159: Destination translation rule ("static" command)
+111: filtering rule: access list WEB2, action permit
+112: filtering rule: access list WEB2, action permit
+114: filtering rule: access list NET1, action permit
+142: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+143: Source translation rule ("nat" command)
+145: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
+146: Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
+147: Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
+148: Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
+149: Global address pool: number 3, interface outside, address range 192.0.2.20-192.0.2.20, netmask 255.255.255.255 
+150: Global address pool: number 3, interface outside, address range 192.0.2.30-192.0.2.31, netmask 255.255.255.255 
+152: Source translation rule ("nat" command)
+153: Source translation rule ("nat" command)
+155: Source translation rule ("nat" command)
+156: Source translation rule ("nat" command)
+159: Source translation rule ("nat" command)
 161: Destination translation rule ("static" command)
-164: Interface Ethernet0.101 ruleset outside_in direction 'in'
-165: Interface Ethernet1 ruleset inside_in direction 'in'
-166: Interface Ethernet1 ruleset inside_out direction 'out'
-207: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-207: filtering rule: access list ssh_commands_inside, action permit
-208: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-208: filtering rule: access list ssh_commands_inside, action permit
-209: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
-209: filtering rule: access list ssh_commands_outside, action permit
+162: Destination translation rule ("static" command)
+163: Destination translation rule ("static" command)
+164: Destination translation rule ("static" command)
+165: Destination translation rule ("static" command)
+167: Destination translation rule ("static" command)
+168: Destination translation rule ("static" command)
+169: Destination translation rule ("static" command)
+171: Destination translation rule ("static" command)
+174: Destination translation rule ("static" command)
+177: Interface Ethernet0.101 ruleset outside_in direction 'in'
+178: Interface Ethernet1 ruleset inside_in direction 'in'
+179: Interface Ethernet1 ruleset inside_out direction 'out'
+220: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+220: filtering rule: access list ssh_commands_inside, action permit
+221: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+221: filtering rule: access list ssh_commands_inside, action permit
+222: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+222: filtering rule: access list ssh_commands_outside, action permit

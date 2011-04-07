@@ -162,45 +162,6 @@ void PIXImporter::buildDNATRule()
         if (s) tdst->addRef( s );
     }
 
-    if ( ! real_addr_acl.empty())
-    {
-        UnidirectionalRuleSet *rs = all_rulesets[real_addr_acl];
-        if (rs)
-        {
-            PolicyRule *policy_rule = PolicyRule::cast(
-                rs->ruleset->getFirstByType(PolicyRule::TYPENAME));
-            
-            if (policy_rule)
-            {
-
-                RuleElement* osrc = rule->getOSrc();
-                RuleElement* osrv = rule->getOSrv();
-                RuleElement* tdst = rule->getTDst();
-
-                /* copy objects from a policy rule into
-                 * rule elements of a nat rule
-                 *
-                 * Src --> TDst
-                 * Dst --> OSrc
-                 * Srv --> OSrv
-                 */
-                RuleElement *re = policy_rule->getSrc();
-                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                    tdst->addRef(FWReference::getObject(*it));
-
-                re = policy_rule->getDst();
-                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                    osrc->addRef(FWReference::getObject(*it));
-
-                re = policy_rule->getSrv();
-                for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                    osrv->addRef(FWReference::getObject(*it));
-            }
-
-            rs->to_be_deleted = true;
-        }
-    }
-
     if ( ! mapped_port_spec.empty())
     {
         src_port_spec = "";
@@ -235,9 +196,62 @@ void PIXImporter::buildDNATRule()
     assert(itf_o_re!=NULL);
     itf_o_re->addRef(pre_intf);
 
-    // add it to the current ruleset
-    current_ruleset->ruleset->add(rule);
-    addStandardImportComment(rule, QString::fromUtf8(rule_comment.c_str()));
+    if ( ! real_addr_acl.empty())
+    {
+        UnidirectionalRuleSet *rs = all_rulesets[real_addr_acl];
+        if (rs)
+        {
+            for(FWObject::iterator rs_it=rs->ruleset->begin();
+                rs_it!=rs->ruleset->end(); ++rs_it)
+            {
+                PolicyRule *policy_rule = PolicyRule::cast(*rs_it);
+            
+                if (policy_rule)
+                {
+                    FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+                    NATRule *nat_rule = NATRule::cast(
+                        dbroot->create(NATRule::TYPENAME));
+                    nat_rule->duplicate(rule);
+
+                    RuleElement* osrc = nat_rule->getOSrc();
+                    RuleElement* osrv = nat_rule->getOSrv();
+                    RuleElement* tdst = nat_rule->getTDst();
+
+                    /* copy objects from a policy rule into
+                     * rule elements of a nat rule
+                     *
+                     * Src --> TDst
+                     * Dst --> OSrc
+                     * Srv --> OSrv
+                     */
+                    RuleElement *re = policy_rule->getSrc();
+                    FWObject::iterator it;
+                    for (it=re->begin(); it!=re->end(); ++it)
+                        tdst->addRef(FWReference::getObject(*it));
+
+                    re = policy_rule->getDst();
+                    for (it=re->begin(); it!=re->end(); ++it)
+                        osrc->addRef(FWReference::getObject(*it));
+
+                    re = policy_rule->getSrv();
+                    for (it=re->begin(); it!=re->end(); ++it)
+                        osrv->addRef(FWReference::getObject(*it));
+
+                    current_ruleset->ruleset->add(nat_rule);
+                    addStandardImportComment(
+                        nat_rule, QString::fromUtf8(rule_comment.c_str()));
+                }
+            }
+
+            rs->to_be_deleted = true;
+        }
+    } else
+    {
+        // add it to the current ruleset
+        current_ruleset->ruleset->add(rule);
+        addStandardImportComment(rule, QString::fromUtf8(rule_comment.c_str()));
+    }
+
 }
 
 /*
@@ -289,44 +303,6 @@ void PIXImporter::buildSNATRule()
             if (s) osrc->addRef( s );
         }
 
-        if ( ! nat_acl.empty())
-        {
-            UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
-            if (rs)
-            {
-                PolicyRule *policy_rule = PolicyRule::cast(
-                    rs->ruleset->getFirstByType(PolicyRule::TYPENAME));
-            
-                if (policy_rule)
-                {
-                    RuleElement* osrc = rule->getOSrc();
-                    RuleElement* odst = rule->getODst();
-                    RuleElement* osrv = rule->getOSrv();
-
-                    /* copy objects from a policy rule into "original"
-                     * rule elements of a nat rule
-                     *
-                     * Src --> OSrc
-                     * Dst --> ODst
-                     * Srv --> OSrv
-                     */
-                    RuleElement *re = policy_rule->getSrc();
-                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                        osrc->addRef(FWReference::getObject(*it));
-
-                    re = policy_rule->getDst();
-                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                        odst->addRef(FWReference::getObject(*it));
-
-                    re = policy_rule->getSrv();
-                    for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
-                        osrv->addRef(FWReference::getObject(*it));
-                }
-
-                rs->to_be_deleted = true;
-            }
-        }
-
         ObjectSignature sig(error_tracker);
         FWObject *addr = NULL;
 
@@ -361,9 +337,62 @@ void PIXImporter::buildSNATRule()
         assert(itf_o_re!=NULL);
         itf_o_re->addRef(post_intf);
 
-        // add it to the current ruleset
-        current_ruleset->ruleset->add(rule);
-        addStandardImportComment(rule, QString::fromUtf8(rule_comment.c_str()));
+        if ( ! nat_acl.empty())
+        {
+            UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
+            if (rs)
+            {
+                for(FWObject::iterator rs_it=rs->ruleset->begin();
+                    rs_it!=rs->ruleset->end(); ++rs_it)
+                {
+                    PolicyRule *policy_rule = PolicyRule::cast(*rs_it);
+            
+                    if (policy_rule)
+                    {
+                        FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+                        NATRule *nat_rule = NATRule::cast(
+                            dbroot->create(NATRule::TYPENAME));
+                        nat_rule->duplicate(rule);
+
+                        RuleElement* osrc = nat_rule->getOSrc();
+                        RuleElement* odst = nat_rule->getODst();
+                        RuleElement* osrv = nat_rule->getOSrv();
+
+                        /* copy objects from a policy rule into "original"
+                         * rule elements of a nat rule
+                         *
+                         * Src --> OSrc
+                         * Dst --> ODst
+                         * Srv --> OSrv
+                         */
+                        RuleElement *re = policy_rule->getSrc();
+                        FWObject::iterator it;
+                        for (it=re->begin(); it!=re->end(); ++it)
+                            osrc->addRef(FWReference::getObject(*it));
+
+                        re = policy_rule->getDst();
+                        for (it=re->begin(); it!=re->end(); ++it)
+                            odst->addRef(FWReference::getObject(*it));
+
+                        re = policy_rule->getSrv();
+                        for (it=re->begin(); it!=re->end(); ++it)
+                            osrv->addRef(FWReference::getObject(*it));
+
+                        current_ruleset->ruleset->add(nat_rule);
+                        addStandardImportComment(
+                            nat_rule, QString::fromUtf8(rule_comment.c_str()));
+                    }
+                }
+
+                rs->to_be_deleted = true;
+            }
+        } else
+        {
+            // add it to the current ruleset
+            current_ruleset->ruleset->add(rule);
+            addStandardImportComment(rule,
+                                     QString::fromUtf8(rule_comment.c_str()));
+        }
     }
 
 }

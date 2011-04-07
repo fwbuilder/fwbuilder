@@ -1,5 +1,8 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* PIXImporterNat.cpp (buildSNATRule): see #2319 "Imported nat
+	rules with multi-line access-lists have only the first entry"
+
 	* PIXImporterRun.cpp (run): see #2167 Implemented import of
 	"names" and "name" commands in PIX/ASA configs.
 
