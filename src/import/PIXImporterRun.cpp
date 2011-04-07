@@ -29,6 +29,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QtDebug>
 
 #include <ios>
 #include <iostream>
@@ -41,6 +42,8 @@
 
 extern int fwbdebug;
 
+using namespace std;
+
 
 /*
  * Only this module depends on PIXCfgLexer and PIXCfgParser,
@@ -49,20 +52,60 @@ extern int fwbdebug;
 
 void PIXImporter::run()
 {
-// it is probably safer to create an empty firewall if we do not have
-// ANTLR on the system rather than try to #ifdef out chunks of code
-// here and there in this module
-//
-// Obviously we should disable GUI elements that activate this importer
-// if ANTLR runtime is not available.
-//
-
     QStringList err;
     QString parser_err = QObject::tr("Parser error:");
     QString gen_err = QObject::tr("Error:");
     std::ostringstream parser_debug;
 
-    PIXCfgLexer lexer(input);
+/* Do a bit of preprocessing of the input to simplify crazy grammar. 
+ *
+ * Do the following (will add more stuff here in the future):
+ *
+ * - process "names" section: isolate "name" commands and build
+ *   dictionary of names and addresses, then scan input file and
+ *   replace names with addresses everywhere.
+ */
+
+    QMap<QString, QString> named_addresses;
+    QStringList whole_input;
+
+    input.seekg (0, ios::beg);
+    char buf[8192];
+    while (!input.eof())
+    {
+        input.getline(buf, sizeof(buf)-1);
+        whole_input.append(QString(buf));
+    }
+
+    foreach(QString str, whole_input)
+    {
+        if (str.startsWith("name "))
+        {
+            QStringList items = str.split(" ");
+            named_addresses[items[2]] = items[1];
+        }
+    }
+
+    QStringList normalized_input_buffer;
+
+    foreach(QString str, whole_input)
+    {
+        if ( ! str.startsWith("name "))
+        {
+            QMap<QString, QString>::iterator it;
+            for (it=named_addresses.begin(); it!=named_addresses.end(); ++it)
+            {
+                str.replace(it.key(), it.value());
+            }
+        }
+
+        normalized_input_buffer.append(str);
+    }
+
+    istringstream  normalized_input(
+        normalized_input_buffer.join("\n").toStdString());
+
+    PIXCfgLexer lexer(normalized_input);
     PIXCfgParser parser(lexer);
     parser.importer = this;
     if (fwbdebug)   parser.dbg = &std::cerr;

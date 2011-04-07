@@ -1,9 +1,5 @@
 3: Version: 7.2
 6: Host name: pix1
-9: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
-10: Name 1.2.3.4 gw
-11: Name 192.168.3.0 fake_network
-12: Name 192.168.4.1 inside_ip
 16: New interface: Ethernet0
 21: New interface: Ethernet0.101
 22: Interface parameters: outside  

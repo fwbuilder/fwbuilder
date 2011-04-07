@@ -1,6 +1,5 @@
 3: Version: 8.0
 5: Host name: pixfirewall
-7: Warning: "names" section detected. Import of configuration that uses "names" is not supported at this time
 9: New interface: Ethernet0
 9: Interface parameters: inside  
 9: Interface label: inside

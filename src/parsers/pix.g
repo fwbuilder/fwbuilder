@@ -207,34 +207,18 @@ timeout_command : TIMEOUT
     ;
 
 //****************************************************************
+// just skip this line since we pre-process names in PIXImporterRun.cpp
 names_section : NAMES
-        {
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: \"names\" section detected. "
-                        "Import of configuration that uses \"names\" "
-                        "is not supported at this time"));
-        }
     ;
 
-name_entry : NAME (a:IPV4 | v6:IPV6) n:WORD
-        {
-            if (a)
-            {
-                importer->setCurrentLineNumber(LT(0)->getLine());
-                importer->addMessageToLog(
-                    "Name " + a->getText() + " " + n->getText());
-                *dbg << "Name " << a->getText() << " " << n->getText() << std::endl;
-            }
-            if (v6)
-            {
-                importer->addMessageToLog(
-                    QString("Warning: IPv6 import is not supported. "));
-                consumeUntil(NEWLINE);
-            }
-        }
+name_entry : NAME ( name_entry_ipv4 | name_entry_ipv6 )
     ;
 
+name_entry_ipv4 : IPV4 WORD
+    ;
+
+name_entry_ipv6 : IPV6 WORD
+    ;
 //****************************************************************
 
 //
@@ -2261,7 +2245,6 @@ tokens
     VLAN = "vlan";
     SWITCHPORT = "switchport";
     ACCESS = "access";
-    NAMEIF = "nameif";
     SEC_LEVEL = "security-level";
 
     ACCESS_LIST = "access-list";
@@ -2345,9 +2328,6 @@ tokens
     VERSION_WORD_LOW = "version" ;
 
     CRYPTO = "crypto";
-
-    NAMES = "names";
-    NAME = "name";
 
 //    OBJECT = "object";
 //    OBJECT_GROUP = "object-group";
@@ -2458,6 +2438,15 @@ OBJECT :;
 protected
 OBJECT_GROUP :;
 
+protected
+NAME :;
+
+protected
+NAMES :;
+
+protected
+NAMEIF :;
+
 
 NUMBER_ADDRESS_OR_WORD :
 		(
@@ -2485,8 +2474,20 @@ NUMBER_ADDRESS_OR_WORD :
                 "object"
                 (
                     ("-gr" "oup") { _ttype = OBJECT_GROUP; }
-                    |
+                |
                     "" { _ttype = OBJECT; }
+                )
+            )
+        |
+            ("nam" "e") =>
+            (
+                "name"
+                (
+                    "s" { _ttype = NAMES; }
+                |
+                    "if" { _ttype = NAMEIF; }
+                |
+                    " " { _ttype = NAME; }
                 )
             )
         |

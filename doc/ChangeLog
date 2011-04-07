@@ -1,5 +1,8 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* PIXImporterRun.cpp (run): see #2167 Implemented import of
+	"names" and "name" commands in PIX/ASA configs.
+
 	* CompilerDriver_pix_run.cpp (pixNetworkZoneChecks): see SF bug
 	3213019 "FWSM Network zone and IPv6". Currently we do not support
 	ipv6 with PIX/ASA and FWSM. If user creates a group to be used as

@@ -60,6 +60,9 @@ public:
 	protected: void mHEXDIGIT(bool _createToken);
 	protected: void mOBJECT(bool _createToken);
 	protected: void mOBJECT_GROUP(bool _createToken);
+	protected: void mNAME(bool _createToken);
+	protected: void mNAMES(bool _createToken);
+	protected: void mNAMEIF(bool _createToken);
 	public: void mNUMBER_ADDRESS_OR_WORD(bool _createToken);
 	public: void mDOT(bool _createToken);
 	public: void mSTRING(bool _createToken);

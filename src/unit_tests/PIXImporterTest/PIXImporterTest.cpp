@@ -347,3 +347,20 @@ void PIXImporterTest::ACLTest()
     compareFwbFiles("test_data/asa8.3-acl.fwb", "asa8.3-acl.fwb");
 }
 
+void PIXImporterTest::NamesTest()
+{
+    platform = "pix";
+
+    std::istringstream instream(openTestFile("test_data/asa8.0-names.test"));
+
+    Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("asa8.0-names.fwb");
+
+    compareResults(logger, "test_data/asa8.0-names.output", "asa8.0-names.output");
+    compareFwbFiles("test_data/asa8.0-names.fwb", "asa8.0-names.fwb");
+}
+

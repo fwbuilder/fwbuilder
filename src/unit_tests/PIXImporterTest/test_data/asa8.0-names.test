@@ -1,0 +1,98 @@
+: Saved
+:
+PIX Version 8.0(3) 
+!
+hostname pixfirewall
+enable password XXXXXXXXXXXXXXXX encrypted
+names
+name 192.168.2.0 inside_network
+name 192.168.2.221 inside_ip
+!
+interface Ethernet0
+ nameif inside
+ security-level 100
+ ip address inside_ip 255.255.255.0 
+!
+interface Ethernet1
+ nameif outside
+ security-level 0
+ ip address 192.0.2.221 255.255.255.0 
+!
+interface Ethernet2
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet3
+ shutdown     
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+passwd YYYYYYYYYYYYYYYY encrypted
+ftp mode passive
+object-group network net-1
+ description single network object-group
+ network-object inside_network 255.255.255.0
+object-group network net-2
+ description multiple network-object objects
+ network-object 192.168.1.0 255.255.255.0
+ network-object inside_network 255.255.255.0
+ network-object 192.168.3.0 255.255.255.0
+
+access-list inside_in extended permit ip inside_network 255.255.255.0 any 
+access-list inside_in extended deny ip any any log warnings 
+
+access-group inside_in in interface inside
+
+pager lines 24
+mtu inside 1500
+mtu outside 1500
+icmp unreachable rate-limit 1 burst-size 1
+icmp permit any echo outside
+icmp permit any 111 outside
+icmp permit any time-exceeded outside
+icmp permit any echo-reply outside
+icmp permit any unreachable outside
+icmp permit any outside
+icmp permit host 10.1.1.202 time-exceeded inside
+icmp permit host 10.1.1.202 echo-reply inside
+icmp permit host 10.1.1.202 unreachable inside
+icmp permit any echo inside
+icmp permit any time-exceeded inside
+icmp permit any echo-reply inside
+icmp permit any unreachable inside
+icmp permit any inside
+icmp permit 10.1.1.0 255.255.255.0 inside
+
+no asdm history enable
+arp timeout 14400
+timeout xlate 3:00:00
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout uauth 0:05:00 absolute
+dynamic-access-policy-record DfltAccessPolicy
+no snmp-server location
+no snmp-server contact
+snmp-server enable traps snmp authentication linkup linkdown coldstart
+telnet inside_network 255.255.255.0 inside
+telnet timeout 5
+ssh inside_network 255.255.255.0 inside
+ssh timeout 5
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+username cisco password ZZZZZZZZZZZZZZZZ encrypted
+!
+!
+prompt hostname context 
+Cryptochecksum:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+: end

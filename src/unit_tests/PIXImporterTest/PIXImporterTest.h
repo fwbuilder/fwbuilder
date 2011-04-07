@@ -66,6 +66,7 @@ public:
     void ObjectsAndGroupsTest();
     void ACLObjectsAndGroupsTest();
     void ACLTest();
+    void NamesTest();
 
     CPPUNIT_TEST_SUITE(PIXImporterTest);
     CPPUNIT_TEST(PIX_6_Test);
@@ -76,6 +77,7 @@ public:
     CPPUNIT_TEST(ObjectsAndGroupsTest);
     CPPUNIT_TEST(ACLObjectsAndGroupsTest);
     CPPUNIT_TEST(ACLTest);
+    CPPUNIT_TEST(NamesTest);
     
     CPPUNIT_TEST_SUITE_END();
 

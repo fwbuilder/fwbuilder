@@ -124,6 +124,8 @@ public:
 	public: void dns_command();
 	public: void service_top_level_command();
 	public: void unknown_command();
+	public: void name_entry_ipv4();
+	public: void name_entry_ipv6();
 	public: void ip_protocol_names();
 	public: void named_object_nat();
 	public: void named_object_description();
