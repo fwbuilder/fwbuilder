@@ -601,8 +601,6 @@ void FirewallInstaller::executeExternalInstallScript(const QString &command,
     QStringList args;
     //args.push_back(command.trimmed());
 
-    args += script_args.trimmed().split(" ", QString::SkipEmptyParts);
-
     args.push_back("-f");
     args.push_back(db->getFileName().c_str());
 
@@ -611,6 +609,9 @@ void FirewallInstaller::executeExternalInstallScript(const QString &command,
         args.push_back("-d");
         args.push_back(wdir);
     }
+
+    args += script_args.trimmed().split(" ", QString::SkipEmptyParts);
+
     args.push_back(cnf->fwobj->getName().c_str());
 
     if (cnf->verbose) inst_dlg->displayCommand(args);

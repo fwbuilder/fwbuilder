@@ -1,5 +1,10 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* FirewallInstaller.cpp (executeExternalInstallScript): see SF bug
+	3212988 "external script makes getopt difficult". User-defined
+	parameters for the external script moved to the end of the command
+	line.
+
 	* res/os/fwsm_os.xml: updated filesystem path on FWSM where
 	fwbuilder built-in installer should place generated configuration
 	when it is installed using scp. Currently using path "flash:".
