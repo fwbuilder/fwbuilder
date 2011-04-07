@@ -1,55 +1,59 @@
 3: Version: 8.0
 5: Host name: pixfirewall
-11: New interface: Ethernet0
-11: Interface parameters: inside  
-11: Interface label: inside
-13: Interface address: 192.168.2.221/255.255.255.0
-16: New interface: Ethernet1
-16: Interface parameters: outside  
-16: Interface label: outside
-18: Interface address: 192.0.2.221/255.255.255.0
-21: New interface: Ethernet2
+12: New interface: Ethernet0
+12: Interface parameters: inside  
+12: Interface label: inside
+14: Interface address: 192.168.2.221/255.255.255.0
+17: New interface: Ethernet1
+17: Interface parameters: outside  
+17: Interface label: outside
+19: Interface address: 192.0.2.221/255.255.255.0
+22: New interface: Ethernet2
 Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
-27: New interface: Ethernet3
+28: New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
-33: New interface: Ethernet4
+34: New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-41: Object Group (network) net-1
-44: Object Group (network) net-2
-50: filtering rule: access list inside_in, action permit
-51: filtering rule: access list inside_in, action deny
-53: Interface Ethernet0 ruleset inside_in direction 'in'
-59: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-59: filtering rule: access list icmp_commands_outside, action permit
-60: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-60: filtering rule: access list icmp_commands_outside, action permit
-61: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-61: filtering rule: access list icmp_commands_outside, action permit
-62: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-62: filtering rule: access list icmp_commands_outside, action permit
-63: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-63: filtering rule: access list icmp_commands_outside, action permit
-64: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-64: filtering rule: access list icmp_commands_outside, action permit
-65: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-65: filtering rule: access list icmp_commands_inside, action permit
-66: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-66: filtering rule: access list icmp_commands_inside, action permit
-67: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-67: filtering rule: access list icmp_commands_inside, action permit
-68: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-68: filtering rule: access list icmp_commands_inside, action permit
-69: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-69: filtering rule: access list icmp_commands_inside, action permit
-70: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-70: filtering rule: access list icmp_commands_inside, action permit
-71: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-71: filtering rule: access list icmp_commands_inside, action permit
-72: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-72: filtering rule: access list icmp_commands_inside, action permit
-73: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-73: filtering rule: access list icmp_commands_inside, action permit
-86: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
-86: filtering rule: access list telnet_commands_inside, action permit
-88: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
-88: filtering rule: access list ssh_commands_inside, action permit
+42: Object Group (network) net_1_group
+45: Object Group (network) another_group_net_1
+48: Object Group (network) host_net_1
+51: Object Group (network) host_net_2
+54: Object Group (network) net-1
+57: Object Group (network) net-2
+63: filtering rule: access list inside_in, action permit
+64: filtering rule: access list inside_in, action deny
+66: Interface Ethernet0 ruleset inside_in direction 'in'
+72: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+72: filtering rule: access list icmp_commands_outside, action permit
+73: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+73: filtering rule: access list icmp_commands_outside, action permit
+74: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+74: filtering rule: access list icmp_commands_outside, action permit
+75: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+75: filtering rule: access list icmp_commands_outside, action permit
+76: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+76: filtering rule: access list icmp_commands_outside, action permit
+77: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+77: filtering rule: access list icmp_commands_outside, action permit
+78: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+78: filtering rule: access list icmp_commands_inside, action permit
+79: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+79: filtering rule: access list icmp_commands_inside, action permit
+80: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+80: filtering rule: access list icmp_commands_inside, action permit
+81: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+81: filtering rule: access list icmp_commands_inside, action permit
+82: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+82: filtering rule: access list icmp_commands_inside, action permit
+83: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+83: filtering rule: access list icmp_commands_inside, action permit
+84: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+84: filtering rule: access list icmp_commands_inside, action permit
+85: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+85: filtering rule: access list icmp_commands_inside, action permit
+86: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+86: filtering rule: access list icmp_commands_inside, action permit
+99: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
+99: filtering rule: access list telnet_commands_inside, action permit
+101: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
+101: filtering rule: access list ssh_commands_inside, action permit

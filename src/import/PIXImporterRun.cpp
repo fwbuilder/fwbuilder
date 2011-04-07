@@ -29,6 +29,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QRegExp>
 #include <QtDebug>
 
 #include <ios>
@@ -95,7 +96,8 @@ void PIXImporter::run()
             QMap<QString, QString>::iterator it;
             for (it=named_addresses.begin(); it!=named_addresses.end(); ++it)
             {
-                str.replace(it.key(), it.value());
+                QString re("\\b%1\\b");
+                str.replace(QRegExp(re.arg(it.key())), it.value());
             }
         }
 

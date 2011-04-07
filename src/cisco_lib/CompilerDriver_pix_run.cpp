@@ -131,21 +131,33 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
 
     string vers = fw->getStr("version");
     string platform = fw->getStr("platform");
-    bool outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+
-        "/pix_outbound_acl_supported");
+
+    bool outbound_acl_supported =
+        Resources::platform_res[platform]->getResourceBool(
+            string("/FWBuilderResources/Target/options/")+
+            "version_"+vers+
+            "/pix_outbound_acl_supported");
+
     bool afpa = options->getBool("pix_assume_fw_part_of_any");
     bool emulate_outb_acls = options->getBool("pix_emulate_out_acl");
     bool generate_outb_acls = options->getBool("pix_generate_out_acl");
 
-    top_comment.setVariable("outbound_acl_supported", QString((outbound_acl_supported)?"supported":"not supported"));
-    top_comment.setVariable("emulate_outb_acls", QString((emulate_outb_acls)?"yes":"no"));
-    top_comment.setVariable("generate_outb_acls", QString((generate_outb_acls)?"yes":"no"));
+    top_comment.setVariable(
+        "outbound_acl_supported",
+        QString((outbound_acl_supported) ? "supported" : "not supported"));
+
+    top_comment.setVariable("emulate_outb_acls",
+                            QString((emulate_outb_acls)?"yes":"no"));
+
+    top_comment.setVariable("generate_outb_acls",
+                            QString((generate_outb_acls)?"yes":"no"));
+
     top_comment.setVariable("afpa", QString((afpa)?"yes":"no"));
 
     script_skeleton.setVariable("short_script", options->getBool("short_script"));
-    script_skeleton.setVariable("not_short_script", ! options->getBool("short_script"));
+
+    script_skeleton.setVariable("not_short_script",
+                                ! options->getBool("short_script"));
 
     script_skeleton.setVariable("system_configuration_script", 
                                 QString::fromUtf8(
@@ -164,6 +176,7 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
 
     assembleFwScriptInternal(cluster, fw, cluster_member, oscnf,
                              &script_skeleton, &top_comment, "!", true);
+
     return script_skeleton.expand();
 }
 

@@ -7,6 +7,7 @@ enable password XXXXXXXXXXXXXXXX encrypted
 names
 name 192.168.2.0 inside_network
 name 192.168.2.221 inside_ip
+name 192.168.2.240 net_1
 !
 interface Ethernet0
  nameif inside
@@ -38,6 +39,18 @@ interface Ethernet4
 !
 passwd YYYYYYYYYYYYYYYY encrypted
 ftp mode passive
+object-group network net_1_group
+ network-object net_1 255.255.255.240
+ network-object 192.168.2.0 255.255.255.0
+object-group network another_group_net_1
+ network-object net_1 255.255.255.240
+ network-object 192.168.3.0 255.255.255.0
+object-group network host_net_1
+ network-object host net_1
+! whitespace after net_1
+object-group network host_net_2
+ network-object host net_1 
+
 object-group network net-1
  description single network object-group
  network-object inside_network 255.255.255.0
