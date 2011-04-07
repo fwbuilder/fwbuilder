@@ -389,6 +389,12 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
                                     const QString &remote_name, 
                                     QStringList &args)
 {
+    if (fwbdebug)
+        qDebug() << "packSCPArgs"
+                 << "local_name=" << local_name
+                 << "remote_name=" << remote_name;
+
+
     QString file_with_path = getFullPath(local_name);
     QString scp = st->getSCPPath();
 
@@ -500,6 +506,9 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
             .arg(fwcompiler::CompilerDriver::escapeFileName(remote_name));
 
     args.push_back(target);
+
+    if (fwbdebug)
+        qDebug() << "args=" << args;
 }
 
 /*
