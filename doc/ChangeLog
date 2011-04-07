@@ -14,7 +14,7 @@
 
 	* res/os/fwsm_os.xml: updated filesystem path on FWSM where
 	fwbuilder built-in installer should place generated configuration
-	when it is installed using scp. Currently using path "flash:".
+	when it is installed using scp. Currently using path "disk:".
 
 2011-04-05  vadim  <vadim@netcitadel.com>
 

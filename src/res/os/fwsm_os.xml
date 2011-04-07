@@ -13,8 +13,8 @@
         </default>
 
         <activation>
-          <fwdir>flash:</fwdir>
-          <fwdir_test>flash:</fwdir_test>
+          <fwdir>disk:</fwdir>
+          <fwdir_test>disk:</fwdir_test>
         </activation>
 
       </options>
