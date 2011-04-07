@@ -1,5 +1,12 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* CompilerDriver_pix_run.cpp (pixNetworkZoneChecks): see SF bug
+	3213019 "FWSM Network zone and IPv6". Currently we do not support
+	ipv6 with PIX/ASA and FWSM. If user creates a group to be used as
+	network zone object and places ipv6 address in it, this address
+	should be ignored while compiling the policy but this should not
+	be an error.
+
 	* FirewallInstaller.cpp (executeExternalInstallScript): see SF bug
 	3212988 "external script makes getopt difficult". User-defined
 	parameters for the external script moved to the end of the command

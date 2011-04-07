@@ -743,6 +743,21 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                 throw FatalErrorInSingleRuleCompileMode();
             }
 
+/*
+  Commented out for SF bug 3213019
+
+  currently we do not support ipv6 with PIX/ASA and FWSM. If user
+  creates a group to be used as network zone object and places ipv6
+  address in it, this address should be ignored while compiling the
+  policy but this should not be an error. Compiler uses network zone
+  group to do various address matching operations when it tries to
+  determine an interface for a rule where user did not specify
+  one. Since we never (should) have ipv6 in policy and nat rules,
+  compiler is not going to have anything to compare to ipv6 address in
+  the network zone even if there is one and this ipv6 address is going
+  to be ignored.
+
+
             if (addr->getAddressPtr()->isV6())
             {
                 QString err("Network zone of interface '%1' uses object '%2' "
@@ -752,7 +767,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                       .arg((*j)->getName().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
-
+*/
             netzone_objects.insert(
                 pair<string,FWObject*>(iface->getLabel(),*j));
             nz->addRef(*j);

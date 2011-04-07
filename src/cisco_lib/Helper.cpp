@@ -211,8 +211,8 @@ int  Helper::findInterfaceByNetzone(Address *obj)
  * that object 'obj' belongs to.  Returns interface ID
  *
  */
-int  Helper::findInterfaceByNetzone(
-    const InetAddr *addr, const libfwbuilder::InetAddr *nm) throw(FWException)
+int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
+    throw(FWException)
 {
 #if DEBUG_NETZONE_OPS
     cerr << "Helper::findInterfaceByNetzone";
@@ -253,12 +253,14 @@ int  Helper::findInterfaceByNetzone(
 
             for (list<FWObject*>::iterator j=nz.begin(); j!=nz.end(); ++j)
             {
-                if (Address::cast(*j) == NULL) continue;
+                Address *netzone_addr = Address::cast(*j);
+                
+                if (netzone_addr == NULL) continue;
 
 #if DEBUG_NETZONE_OPS
                 cerr << "Helper::findInterfaceByNetzone";
-                cerr << "    " << (*j)->getName()
-                     << "  " << Address::cast(*j)->getAddressPtr()->toString()
+                cerr << "    " << netzone_addr->getName()
+                     << "  " << netzone_addr->getAddressPtr()->toString()
                      << endl;
 #endif
 
@@ -266,12 +268,17 @@ int  Helper::findInterfaceByNetzone(
                 // net_zone=="any"
                 if (addr==NULL)
                 {
-                    if ((*j)->getId()==FWObjectDatabase::ANY_ADDRESS_ID)
+                    if (netzone_addr->getId()==FWObjectDatabase::ANY_ADDRESS_ID)
                         return iface->getId(); // id of the interface
                 } else
                 {
-                    const InetAddr *nz_addr = Address::cast(*j)->getAddressPtr();
-                    const InetAddr *nz_netm = Address::cast(*j)->getNetmaskPtr();
+                    // see SF bug 3213019
+                    // skip ipv6 addresses in network zone group
+                    if (netzone_addr->getAddressPtr()->addressFamily() !=
+                        addr->addressFamily()) continue;
+
+                    const InetAddr *nz_addr = netzone_addr->getAddressPtr();
+                    const InetAddr *nz_netm = netzone_addr->getNetmaskPtr();
                     if (nm != NULL && nz_netm != NULL)
                     {
                         InetAddrMask nz_subnet(*nz_addr, *nz_netm);
@@ -298,7 +305,7 @@ int  Helper::findInterfaceByNetzone(
                         // to either.
                         if (ovr.front() == other_subnet)
                         {
-                            zones[iface->getId()] = *j;
+                            zones[iface->getId()] = netzone_addr;
 #if DEBUG_NETZONE_OPS
                             cerr << "Helper::findInterfaceByNetzone";
                             cerr << "    match" << endl;
@@ -306,9 +313,9 @@ int  Helper::findInterfaceByNetzone(
                         }
                     } else
                     {
-                        if (Address::cast(*j)->belongs(*addr))
+                        if (netzone_addr->belongs(*addr))
                         {
-                            zones[iface->getId()] = *j;
+                            zones[iface->getId()] = netzone_addr;
 
 #if DEBUG_NETZONE_OPS
                             cerr << "Helper::findInterfaceByNetzone";
