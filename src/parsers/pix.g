@@ -254,8 +254,6 @@ ip_protocol_names : (
 
 //****************************************************************
 
-//****************************************************************
-
 named_object_network : OBJECT NETWORK name:WORD NEWLINE
         {
             importer->clear();
@@ -1200,9 +1198,9 @@ tcp_udp_port_names :
         ECHO |
         HOSTNAME |
         PPTP |
-        RIP |
         SSH |
-        TELNET
+        TELNET |
+        HTTP
     )
     ;
 
@@ -2186,9 +2184,33 @@ static_starts_with_tcp_udp : ( TCP | UDP )
         // Hostname or A.B.C.D  Real IP address of the host or hosts
         // access-list          Configure access-list name after this keyword
 
-        static_real_addr_match
+        (   
+            single_addr   // real
+            {
+                importer->real_a = importer->tmp_a;
+                importer->real_nm = importer->tmp_nm;
+                *dbg << "real: " << importer->real_a;
+            }
 
-        // <0-65535>    The maximum number of simultaneous tcp connections the local IP
+            // <0-65535>        Enter port number (0 - 65535)
+            // aol              
+            // bgp              
+            // chargen          
+            tcp_udp_port_spec
+            {
+                importer->real_port_spec = importer->tmp_port_spec_2;
+                *dbg << "real port " << importer->real_port_spec << " ";
+            }
+
+        |
+            ACCESS_LIST acl_name:WORD
+            {
+                importer->real_addr_acl = acl_name->getText();
+                *dbg << "real: " << importer->real_addr_acl;
+            }
+        )
+
+        // <0-65535>    The maximum number of simultaneous tcp connections the loc
         //               hosts are to allow, default is 0 which means unlimited
         //               connections. Idle connections are closed after the time
         //               specified by the timeout conn command
@@ -2199,6 +2221,7 @@ static_starts_with_tcp_udp : ( TCP | UDP )
         //  udp          Configure UDP specific parameters
 
         ( static_command_common_last_parameters )*
+
     ;
 
 static_command_common_last_parameters :

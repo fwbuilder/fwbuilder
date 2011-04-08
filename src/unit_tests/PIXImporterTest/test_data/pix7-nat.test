@@ -164,6 +164,61 @@ static (inside,dmz20) interface 10.1.1.111
 static (inside,outside) tcp 10.5.80.16 80 10.1.1.16 8080  netmask 255.255.255.240 0 0
 static (inside,outside) tcp 10.5.80.200 80 10.10.1.200 8080  netmask 255.255.255.255 0 0
 
+static (inside,outside) tcp 10.5.80.16 aol 10.1.1.16 aol
+static (inside,outside) tcp 10.5.80.16 bgp 10.1.1.16 bgp
+static (inside,outside) tcp 10.5.80.16 chargen 10.1.1.16 chargen
+static (inside,outside) tcp 10.5.80.16 cifs 10.1.1.16 cifs
+static (inside,outside) tcp 10.5.80.16 citrix-ica 10.1.1.16 citrix-ica
+static (inside,outside) tcp 10.5.80.16 cmd 10.1.1.16 cmd
+static (inside,outside) tcp 10.5.80.16 ctiqbe 10.1.1.16 ctiqbe
+static (inside,outside) tcp 10.5.80.16 daytime 10.1.1.16 daytime
+static (inside,outside) tcp 10.5.80.16 discard 10.1.1.16 discard
+static (inside,outside) tcp 10.5.80.16 domain 10.1.1.16 domain
+static (inside,outside) tcp 10.5.80.16 echo 10.1.1.16 echo
+static (inside,outside) tcp 10.5.80.16 exec 10.1.1.16 exec
+static (inside,outside) tcp 10.5.80.16 finger 10.1.1.16 finger
+static (inside,outside) tcp 10.5.80.16 ftp 10.1.1.16 ftp
+static (inside,outside) tcp 10.5.80.16 ftp-data 10.1.1.16 ftp-data
+static (inside,outside) tcp 10.5.80.16 gopher 10.1.1.16 gopher
+static (inside,outside) tcp 10.5.80.16 h323 10.1.1.16 h323
+static (inside,outside) tcp 10.5.80.16 hostname 10.1.1.16 hostname
+static (inside,outside) tcp 10.5.80.16 http 10.1.1.16 http
+static (inside,outside) tcp 10.5.80.16 https 10.1.1.16 https
+static (inside,outside) tcp 10.5.80.16 ident 10.1.1.16 ident
+static (inside,outside) tcp 10.5.80.16 imap4 10.1.1.16 imap4
+static (inside,outside) tcp 10.5.80.16 irc 10.1.1.16 irc
+static (inside,outside) tcp 10.5.80.16 kerberos 10.1.1.16 kerberos
+static (inside,outside) tcp 10.5.80.16 klogin 10.1.1.16 klogin
+static (inside,outside) tcp 10.5.80.16 kshell 10.1.1.16 kshell
+static (inside,outside) tcp 10.5.80.16 ldap 10.1.1.16 ldap
+static (inside,outside) tcp 10.5.80.16 ldaps 10.1.1.16 ldaps
+static (inside,outside) tcp 10.5.80.16 login 10.1.1.16 login
+static (inside,outside) tcp 10.5.80.16 lotusnotes 10.1.1.16 lotusnotes
+static (inside,outside) tcp 10.5.80.16 lpd 10.1.1.16 lpd
+static (inside,outside) tcp 10.5.80.16 netbios-ssn 10.1.1.16 netbios-ssn
+static (inside,outside) tcp 10.5.80.16 nntp 10.1.1.16 nntp
+static (inside,outside) tcp 10.5.80.16 pcanywhere-data 10.1.1.16 pcanywhere-data
+static (inside,outside) tcp 10.5.80.16 pim-auto-rp 10.1.1.16 pim-auto-rp
+static (inside,outside) tcp 10.5.80.16 pop2 10.1.1.16 pop2
+static (inside,outside) tcp 10.5.80.16 pop3 10.1.1.16 pop3
+static (inside,outside) tcp 10.5.80.16 pptp 10.1.1.16 pptp
+static (inside,outside) tcp 10.5.80.16 rsh 10.1.1.16 rsh
+static (inside,outside) tcp 10.5.80.16 rtsp 10.1.1.16 rtsp
+static (inside,outside) tcp 10.5.80.16 sip 10.1.1.16 sip
+static (inside,outside) tcp 10.5.80.16 smtp 10.1.1.16 smtp
+static (inside,outside) tcp 10.5.80.16 sqlnet 10.1.1.16 sqlnet
+static (inside,outside) tcp 10.5.80.16 ssh 10.1.1.16 ssh
+static (inside,outside) tcp 10.5.80.16 sunrpc 10.1.1.16 sunrpc
+static (inside,outside) tcp 10.5.80.16 tacacs 10.1.1.16 tacacs
+static (inside,outside) tcp 10.5.80.16 talk 10.1.1.16 talk
+static (inside,outside) tcp 10.5.80.16 telnet 10.1.1.16 telnet
+static (inside,outside) tcp 10.5.80.16 uucp 10.1.1.16 uucp
+static (inside,outside) tcp 10.5.80.16 whois 10.1.1.16 whois
+static (inside,outside) tcp 10.5.80.16 www 10.1.1.16 www
+
+
+
+
 static (inside,outside) tcp interface www access-list id12594X2458.0 0 0 
 static (inside,outside) tcp interface 80 access-list id12594X2458.0 0 0 
 static (inside,outside) interface access-list id12594X2458.0 0 0 
