@@ -47,6 +47,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/ObjectMirror.h"
+#include "fwbuilder/TCPUDPService.h"
 
 #include "../libgui/platforms.h"
 // TODO: FWBTree needs to be refactored into an independent module
@@ -187,7 +188,6 @@ FWObject* PIXImporter::makeDstObj()
 
 FWObject* PIXImporter::makeSrvObj()
 {
-
     if (protocol=="tcp" || protocol=="udp")
     {
         if (!src_port_spec.empty() &&
@@ -229,6 +229,115 @@ void PIXImporter::fixServiceObjectUsedForSrcPorts()
         FWObject *new_obj = mirrorServiceObjectRecursively(obj);
         src_port_spec = new_obj->getName();
     }
+}
+
+/*
+ * see #2265 and 2290. If access-list command uses object groups
+ * and/or in-line port matches for both source and destination
+ * ports, we need to create several new TCPService or UDPService
+ * objects to match all combinations of ports. However this is only
+ * necessary when at least one of them (source or destination port match)
+ * uses object-group or named object because configuration with two in-line
+ * port matches is taken care in IOSImporter::createTCPService()
+ * and IOSImporter::createUDPService()
+ */
+void PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
+{
+    if (protocol=="tcp" || protocol=="udp")
+    {
+        // empty port_spec means no corresponding port match (either inline or
+        // named object/object group)
+        if (src_port_spec.empty() || dst_port_spec.empty()) return;
+
+        FWObject *src_port_obj = NULL;
+        FWObject *dst_port_obj = NULL;
+        
+        if (!src_port_spec.empty() &&
+            named_objects_registry.count(src_port_spec.c_str()) > 0)
+            src_port_obj = named_objects_registry[src_port_spec.c_str()];
+
+        if (!dst_port_spec.empty() &&
+            named_objects_registry.count(dst_port_spec.c_str()) > 0)
+            dst_port_obj =  named_objects_registry[dst_port_spec.c_str()];
+
+        // if both src_port_obj and dst_port_obj are NULL, this means
+        // both port operations are in-line port matches that will be
+        // taken are of in the base class functions
+        if (src_port_obj == NULL && dst_port_obj == NULL) return;
+
+        // If only one of the two is NULL, use base class functions to
+        // fill it in from its port_op and port_spec variables
+        if (dst_port_obj == NULL)
+        {
+            src_port_spec = "";
+            src_port_op = "";
+            
+            if (protocol=="tcp") dst_port_obj = createTCPService();
+            else dst_port_obj = createUDPService();
+        }
+
+        if (src_port_obj == NULL)
+        {
+            dst_port_spec = "";
+            dst_port_op = "";
+            
+            if (protocol=="tcp") src_port_obj = createTCPService();
+            else src_port_obj = createUDPService();
+        }
+
+        // now we have service objects or groups of service objects for
+        // both source and destination port match
+
+        string group_name =
+            QString("%1 port match line %2").arg(protocol.c_str())
+            .arg(getCurrentLineNumber()).toStdString();
+
+        newObjectGroupService(group_name);
+
+        mixServiceObjects(src_port_obj, dst_port_obj, current_object_group);
+
+        src_port_spec = "";
+        dst_port_spec = group_name;
+    }
+}
+
+void PIXImporter::mixServiceObjects(FWObject *src_ports,
+                                    FWObject *dst_ports,
+                                    FWObject *service_group)
+{
+    if (Group::cast(src_ports)!=NULL)
+    {
+        for (FWObject::iterator i1=src_ports->begin(); i1!=src_ports->end(); ++i1)
+        {
+            FWObject *o1 = FWReference::getObject(*i1);
+            mixServiceObjects(o1, dst_ports, service_group);
+        }
+        return;
+    }
+
+    if (Group::cast(dst_ports)!=NULL)
+    {
+        for (FWObject::iterator i1=dst_ports->begin(); i1!=dst_ports->end(); ++i1)
+        {
+            FWObject *o1 = FWReference::getObject(*i1);
+            mixServiceObjects(src_ports, o1, service_group);
+        }
+        return;
+    }
+
+    assert(src_ports->getTypeName() == dst_ports->getTypeName());
+
+    ObjectSignature sig(error_tracker);
+    sig.type_name = src_ports->getTypeName().c_str();
+    sig.port_range_inclusive = false;
+
+    sig.src_port_range_start = TCPUDPService::cast(src_ports)->getSrcRangeStart();
+    sig.src_port_range_end = TCPUDPService::cast(src_ports)->getSrcRangeEnd();
+
+    sig.dst_port_range_start = TCPUDPService::cast(dst_ports)->getDstRangeStart();
+    sig.dst_port_range_end = TCPUDPService::cast(dst_ports)->getDstRangeEnd();
+
+    service_group->addRef(commitObject(service_maker->createObject(sig)));
 }
 
 FWObject* PIXImporter::mirrorServiceObjectRecursively(FWObject *obj)
@@ -436,6 +545,8 @@ void PIXImporter::pushPolicyRule()
     // named service object or a group can be defined to match dstination
     // ports but used to match source ports in the access-list command.
     fixServiceObjectUsedForSrcPorts();
+
+    fixServiceObjectUsedForBothSrcAndDstPorts();
 
     // special exception for rules with "neq" port operator in both
     // source and destination. #2297. We have decided to just issue a

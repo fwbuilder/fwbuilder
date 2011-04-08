@@ -104,12 +104,34 @@
 243: Object Group (service) test-service-4-mirror
 243: Object Group (service) test-service-1-mirror
 247: filtering rule: access list outside_in, action permit
+247: Object Group (service) tcp port match line 247
 248: filtering rule: access list outside_in, action permit
+248: Object Group (service) tcp port match line 248
 249: filtering rule: access list outside_in, action permit
+249: Object Group (service) tcp port match line 249
 250: filtering rule: access list outside_in, action permit
+250: Object Group (service) tcp port match line 250
 253: filtering rule: access list outside_in, action permit
 253: Error: Rule matches tcp or udp ports using "neq" port operator in both source and destination. This configuration is not supported by import at this time, please fix manually
-270: Interface Vlan1 ruleset inside_in direction 'in'
-271: Interface Vlan1 ruleset inside_out direction 'out'
-272: Interface Vlan2 ruleset outside_in direction 'in'
-273: Interface Vlan2 ruleset outside_out direction 'out'
+264: filtering rule: access list inside_in, action permit
+264: Object Group (service) test-service-1-mirror
+264: Object Group (service) tcp port match line 264
+265: filtering rule: access list inside_in, action permit
+265: Object Group (service) test-service-2-mirror
+265: Object Group (service) tcp port match line 265
+266: filtering rule: access list inside_in, action permit
+266: Object Group (service) test-service-1-mirror
+266: Object Group (service) tcp port match line 266
+267: filtering rule: access list inside_in, action permit
+267: Object Group (service) test-service-3-mirror
+267: Object Group (service) test-service-1-mirror
+267: Object Group (service) tcp port match line 267
+268: filtering rule: access list inside_in, action permit
+268: Object Group (service) test-service-1-mirror
+268: Object Group (service) tcp port match line 268
+269: filtering rule: access list inside_in, action permit
+269: Object Group (service) tcp port match line 269
+276: Interface Vlan1 ruleset inside_in direction 'in'
+277: Interface Vlan1 ruleset inside_out direction 'out'
+278: Interface Vlan2 ruleset outside_in direction 'in'
+279: Interface Vlan2 ruleset outside_out direction 'out'

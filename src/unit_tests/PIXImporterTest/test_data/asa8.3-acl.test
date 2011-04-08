@@ -260,7 +260,13 @@ access-list outside_in permit tcp any neq www any neq www
 
 
 ! tests for access lists using object groups for both source service and destination address
-
+!
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 object-group test-service-1 host 4.2.2.1 object-group test-service-2
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 object-group test-service-2 host 4.2.2.1 object-group test-service-1
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 object-group test-service-1 host 4.2.2.1 object-group test-service-3
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 object-group test-service-3 host 4.2.2.1 object-group test-service-1
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 object-group test-service-1 host 4.2.2.1 gt 1024
+access-list inside_in permit tcp 192.168.1.0 255.255.255.0 gt 1024 host 4.2.2.1 object-group test-service-1
 
 
 

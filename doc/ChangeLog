@@ -1,5 +1,17 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* PIXImporter.cpp (fixServiceObjectUsedForBothSrcAndDstPorts):
+	see #2265 "ASA 8.3 acl import: access-list commands using two
+	named objects or object-groups", see #2290 "Access lists that
+	include mix of service objects and inline service definitions are
+	not properly imported". To import access-list command that matches
+	both source and destination tcp/udp ports and uses object-group in
+	either match I should create a new service group with a collection
+	of TCP or UDP service objects matching all combinations of source
+	and destination port ranges defined by the rule. This should work
+	when one or both matches use object-group in combination with
+	inline port match.
+
 	* PIXImporter.cpp (pushPolicyRule): see #2297 Added warning when
 	importer enounters access-list command that matches tcp or udp
 	ports with "neq" port operators in both source and

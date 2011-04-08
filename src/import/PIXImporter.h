@@ -70,6 +70,9 @@ class PIXImporter : public IOSImporter
 {
     libfwbuilder::FWObject* getMirroredServiceObject(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* mirrorServiceObjectRecursively(libfwbuilder::FWObject *obj);
+    void mixServiceObjects(libfwbuilder::FWObject *src_ports,
+                           libfwbuilder::FWObject *dst_ports,
+                           libfwbuilder::FWObject *service_group);
     
 public:
 
@@ -138,6 +141,7 @@ public:
     virtual void addLogging();
 
     void fixServiceObjectUsedForSrcPorts();
+    void fixServiceObjectUsedForBothSrcAndDstPorts();
     
     /*
      * the difference is that in PIX, we get interface label instead

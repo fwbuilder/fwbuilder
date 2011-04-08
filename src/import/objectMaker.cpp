@@ -371,14 +371,14 @@ void ObjectSignature::setIcmpCode(const QString &s)
         {
             // could not convert
             icmp_code = -1;
-//            throw ObjectMakerException(
             error_tracker->registerError(
                 QString("ICMP code '%1' is unusable").arg(s));
         }
     }
 }
 
-int ObjectSignature::portFromString(const QString &port_spec, const QString &proto,
+int ObjectSignature::portFromString(const QString &port_spec,
+                                    const QString &proto,
                                     int default_port)
 {
     QString ps = port_spec.trimmed();
@@ -388,7 +388,6 @@ int ObjectSignature::portFromString(const QString &port_spec, const QString &pro
     int port = GetServByName::getPortByName(ps, proto);
     if (port == -1)
     {
-//        throw ObjectMakerException(
         error_tracker->registerError(
             QString("%1 port name '%2' is unknown").arg(proto).arg(ps));
         port = 0;
