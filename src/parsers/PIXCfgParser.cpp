@@ -7116,15 +7116,6 @@ void PIXCfgParser::static_starts_with_tcp_udp() {
 #line 7117 "PIXCfgParser.cpp"
 		}
 		static_real_addr_match();
-		tcp_udp_port_spec();
-		if ( inputState->guessing==0 ) {
-#line 2196 "pix.g"
-			
-			importer->real_port_spec = importer->tmp_port_spec_2;
-			*dbg << "real port " << importer->real_port_spec << " ";
-			
-#line 7127 "PIXCfgParser.cpp"
-		}
 		{ // ( ... )*
 		for (;;) {
 			if ((_tokenSet_40.member(LA(1)))) {
@@ -7165,7 +7156,7 @@ void PIXCfgParser::static_mapped_addr_match() {
 				importer->mapped_nm = importer->tmp_nm;
 				*dbg << "mapped: " << importer->mapped_a;
 				
-#line 7169 "PIXCfgParser.cpp"
+#line 7160 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7179,7 +7170,7 @@ void PIXCfgParser::static_mapped_addr_match() {
 				importer->mapped_nm = "";
 				*dbg << "mapped: " << importer->mapped_a;
 				
-#line 7183 "PIXCfgParser.cpp"
+#line 7174 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7218,7 +7209,7 @@ void PIXCfgParser::static_real_addr_match() {
 				importer->real_nm = importer->tmp_nm;
 				*dbg << "real: " << importer->real_a;
 				
-#line 7222 "PIXCfgParser.cpp"
+#line 7213 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7233,7 +7224,7 @@ void PIXCfgParser::static_real_addr_match() {
 				importer->real_addr_acl = acl_name->getText();
 				*dbg << "real: " << importer->real_addr_acl;
 				
-#line 7237 "PIXCfgParser.cpp"
+#line 7228 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7271,7 +7262,7 @@ void PIXCfgParser::static_command_common_last_parameters() {
 				importer->addMessageToLog(
 				QString("Warning: 'static' command option 'dns' is not supported"));
 				
-#line 7275 "PIXCfgParser.cpp"
+#line 7266 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7284,7 +7275,7 @@ void PIXCfgParser::static_command_common_last_parameters() {
 				importer->addMessageToLog(
 				QString("Warning: 'static' command option 'norandomseq' is not supported"));
 				
-#line 7288 "PIXCfgParser.cpp"
+#line 7279 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7299,7 +7290,7 @@ void PIXCfgParser::static_command_common_last_parameters() {
 				importer->real_nm = nm->getText();
 				*dbg << "real netmask: " << importer->real_nm;
 				
-#line 7303 "PIXCfgParser.cpp"
+#line 7294 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7332,11 +7323,11 @@ void PIXCfgParser::static_command_common_last_parameters() {
 			max_conn = LT(1);
 			match(INT_CONST);
 			{
-			if ((LA(1) == INT_CONST) && (_tokenSet_43.member(LA(2)))) {
+			if ((LA(1) == INT_CONST) && (_tokenSet_42.member(LA(2)))) {
 				max_emb_conn = LT(1);
 				match(INT_CONST);
 			}
-			else if ((_tokenSet_43.member(LA(1))) && (_tokenSet_44.member(LA(2)))) {
+			else if ((_tokenSet_42.member(LA(1))) && (_tokenSet_43.member(LA(2)))) {
 			}
 			else {
 				throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
@@ -7350,7 +7341,7 @@ void PIXCfgParser::static_command_common_last_parameters() {
 				if (max_emb_conn)
 				importer->static_max_emb_conn = max_emb_conn->getText();
 				
-#line 7354 "PIXCfgParser.cpp"
+#line 7345 "PIXCfgParser.cpp"
 			}
 			break;
 		}
@@ -7363,7 +7354,7 @@ void PIXCfgParser::static_command_common_last_parameters() {
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		if( inputState->guessing == 0 ) {
 			reportError(ex);
-			recover(ex,_tokenSet_43);
+			recover(ex,_tokenSet_42);
 		} else {
 			throw;
 		}
@@ -7731,12 +7722,12 @@ const unsigned long PIXCfgParser::_tokenSet_31_data_[] = { 671113232UL, 8369UL, 
 // "hostname" "eq" "gt" "lt" "neq" "echo" "rip" "established" "log" "log-input" 
 // "fragments" "time-range" "outside" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_31(_tokenSet_31_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_32_data_[] = { 2818629648UL, 16791217UL, 1040704UL, 6292416UL, 0UL, 10UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_32_data_[] = { 2818629648UL, 12465UL, 1040704UL, 6292416UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE IPV4 WORD IPV6 "pptp" "object" "host" "range" "ssh" "telnet" 
-// INT_CONST "tcp" "udp" "destination" "object-group" "dns" "hostname" 
-// "access-list" "eq" "gt" "lt" "neq" "echo" "rip" "established" "interface" 
-// "any" "log" "log-input" "fragments" "time-range" "netmask" "norandomseq" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_32(_tokenSet_32_data_,12);
+// INT_CONST "destination" "object-group" "hostname" "access-list" "eq" 
+// "gt" "lt" "neq" "echo" "rip" "established" "interface" "any" "log" "log-input" 
+// "fragments" "time-range" 
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_32(_tokenSet_32_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_33_data_[] = { 2684387186UL, 2172657917UL, 4294697295UL, 132121599UL, 3993042946UL, 4UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "pim" "network" "names" "name" IPV4 
 // WORD "object" "host" "range" "service" "http" "ssh" "telnet" "icmp" 
@@ -7784,20 +7775,16 @@ const unsigned long PIXCfgParser::_tokenSet_41_data_[] = { 134275072UL, 176UL, 3
 // IPV4 WORD IPV6 "pptp" "ssh" "telnet" INT_CONST "hostname" "access-list" 
 // "echo" "rip" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_41(_tokenSet_41_data_,8);
-const unsigned long PIXCfgParser::_tokenSet_42_data_[] = { 134234128UL, 16778928UL, 393280UL, 0UL, 0UL, 10UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE WORD "pptp" "ssh" "telnet" INT_CONST "tcp" "udp" "dns" "hostname" 
-// "echo" "rip" "netmask" "norandomseq" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_42(_tokenSet_42_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_43_data_[] = { 16UL, 16778880UL, 0UL, 0UL, 0UL, 10UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PIXCfgParser::_tokenSet_42_data_[] = { 16UL, 16778880UL, 0UL, 0UL, 0UL, 10UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE INT_CONST "tcp" "udp" "dns" "netmask" "norandomseq" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_43(_tokenSet_43_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_44_data_[] = { 536903538UL, 2172659452UL, 335UL, 109051968UL, 2382364674UL, 14UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_42(_tokenSet_42_data_,12);
+const unsigned long PIXCfgParser::_tokenSet_43_data_[] = { 536903538UL, 2172659452UL, 335UL, 109051968UL, 2382364674UL, 14UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE "quit" "ip" "timeout" "pim" "network" "names" "name" IPV4 
 // WORD "object" "service" "http" "ssh" "telnet" "icmp" INT_CONST "tcp" 
 // "udp" "object-group" "crypto" "dns" "no" "certificate" "PIX" "ASA" "FWSM" 
 // "hostname" "access-list" "interface" "controller" LINE_COMMENT "exit" 
 // "nameif" "access-group" COLON_COMMENT "nat" "global" "netmask" "static" 
 // "norandomseq" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_44(_tokenSet_44_data_,12);
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_43(_tokenSet_43_data_,12);
 
 

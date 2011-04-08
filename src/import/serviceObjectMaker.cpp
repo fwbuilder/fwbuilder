@@ -28,9 +28,14 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/IPService.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/ObjectMirror.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
+
+// TODO: FWBTree needs to be refactored into an independent module
+#include "../libgui/FWBTree.h"
 
 #include "QStringListOperators.h"
 
@@ -255,5 +260,47 @@ FWObject* ServiceObjectMaker::getTagService(const QString &tagcode)
     s->setCode(tagcode.toStdString());
 
     return s;
+}
+
+FWObject* ServiceObjectMaker::getMirroredServiceObject(FWObject *obj)
+{
+    string new_name = obj->getName() + "-mirror";
+    QString qs_new_name = QString::fromUtf8(new_name.c_str());
+    FWObject *new_obj = NULL;
+    if (TCPService::isA(obj) || UDPService::isA(obj))
+    {
+        ObjectMirror mirror;
+        new_obj = mirror.getMirroredService(Service::cast(obj));
+        if (new_obj!=NULL)
+        {
+            if (TCPService::isA(new_obj))
+                TCPService::cast(new_obj)->setEstablished(false);
+
+            ObjectSignature sig(error_tracker);
+            new_obj->dispatch(&sig, (void*)(NULL));
+            sig.object_name = "";
+
+            FWObject *matching_obj = findMatchingObject(sig);
+            if (matching_obj)
+            {
+                delete new_obj;
+                return matching_obj;
+            }
+
+            new_obj->setName(new_name);
+
+            // obj may belong to the standard objects library if it was
+            // deduplicated before
+            FWObject *parent = obj->getParent();
+            if (parent->isReadOnly())
+            {
+                FWBTree tree ;
+                FWObject *slot = tree.getStandardSlotForObject(
+                    library, new_obj->getTypeName().c_str());
+                slot->add(new_obj);
+            } else parent->add(new_obj);
+        }
+    }
+    return new_obj;
 }
 

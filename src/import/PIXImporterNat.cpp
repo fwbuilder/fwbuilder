@@ -216,13 +216,19 @@ void PIXImporter::buildDNATRule()
                     RuleElement* osrc = nat_rule->getOSrc();
                     RuleElement* osrv = nat_rule->getOSrv();
                     RuleElement* tdst = nat_rule->getTDst();
+                    RuleElement* tsrv = nat_rule->getTSrv();
 
                     /* copy objects from a policy rule into
                      * rule elements of a nat rule
                      *
                      * Src --> TDst
                      * Dst --> OSrc
-                     * Srv --> OSrv
+                     *
+                     * If Srv matches destination ports, it should be mirrored and
+                     * placed in OSrv
+                     *
+                     * If it matches source ports, it goes to TSrv, mirrored
+                     *
                      */
                     RuleElement *re = policy_rule->getSrc();
                     FWObject::iterator it;
@@ -235,7 +241,19 @@ void PIXImporter::buildDNATRule()
 
                     re = policy_rule->getSrv();
                     for (it=re->begin(); it!=re->end(); ++it)
-                        osrv->addRef(FWReference::getObject(*it));
+                    {
+                        FWObject *old_obj = FWReference::getObject(*it);
+                        TCPUDPService *tcpudp = TCPUDPService::cast(
+                            mirrorServiceObjectRecursively(old_obj));
+                        if (tcpudp == NULL) tsrv->addRef(old_obj);
+                        else
+                        {
+                            if (tcpudp->getSrcRangeEnd() > 0)
+                                osrv->addRef(tcpudp);
+                            if (tcpudp->getDstRangeEnd() > 0)
+                                tsrv->addRef(tcpudp);
+                        }
+                    }
 
                     current_ruleset->ruleset->add(nat_rule);
                     addStandardImportComment(

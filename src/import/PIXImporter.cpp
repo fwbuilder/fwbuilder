@@ -46,12 +46,9 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Library.h"
-#include "fwbuilder/ObjectMirror.h"
 #include "fwbuilder/TCPUDPService.h"
 
 #include "../libgui/platforms.h"
-// TODO: FWBTree needs to be refactored into an independent module
-#include "../libgui/FWBTree.h"
 
 #include <QString>
 #include <QtDebug>
@@ -347,9 +344,9 @@ FWObject* PIXImporter::mirrorServiceObjectRecursively(FWObject *obj)
 
     if (Service::cast(obj) != NULL)
     {
-        FWObject *new_obj = getMirroredServiceObject(obj);
-
-        named_objects_registry[QString::fromUtf8(new_name.c_str())] = new_obj;
+        FWObject *new_obj = service_maker->getMirroredServiceObject(obj);
+        if (new_obj)
+            named_objects_registry[QString::fromUtf8(new_name.c_str())] = new_obj;
         res = new_obj;
     } else
     {
@@ -376,37 +373,6 @@ FWObject* PIXImporter::mirrorServiceObjectRecursively(FWObject *obj)
     }
 
     return res;
-}
-
-FWObject* PIXImporter::getMirroredServiceObject(FWObject *obj)
-{
-    string new_name = obj->getName() + "-mirror";
-    QString qs_new_name = QString::fromUtf8(new_name.c_str());
-    if (named_objects_registry.count(qs_new_name) > 0)
-        return named_objects_registry[qs_new_name];
-
-    Service *new_obj = NULL;
-    if (TCPService::isA(obj) || UDPService::isA(obj))
-    {
-        ObjectMirror mirror;
-        new_obj = mirror.getMirroredService(Service::cast(obj));
-        if (new_obj!=NULL)
-        {
-            new_obj->setName(new_name);
-
-            // obj may belong to the standard objects library if it was
-            // deduplicated before
-            FWObject *parent = obj->getParent();
-            if (parent->isReadOnly())
-            {
-                FWBTree tree ;
-                FWObject *slot = tree.getStandardSlotForObject(
-                    library, new_obj->getTypeName().c_str());
-                slot->add(new_obj);
-            } else parent->add(new_obj);
-        }
-    }
-    return new_obj;
 }
 
 void PIXImporter::setInterfaceAndDirectionForRuleSet(

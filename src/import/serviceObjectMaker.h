@@ -43,6 +43,8 @@ public:
 
     virtual libfwbuilder::FWObject* createObject(ObjectSignature &sig);
         
+    libfwbuilder::FWObject* getMirroredServiceObject(libfwbuilder::FWObject *obj);
+
 protected:
     virtual libfwbuilder::FWObject* getCustomService(const QString &platform,
                                                      const QString &code,
@@ -58,7 +60,6 @@ protected:
                                                   int drs, int dre);
 
     virtual libfwbuilder::FWObject* getTagService(const QString &tagcode);
-
 
 
 };

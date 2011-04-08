@@ -2188,15 +2188,15 @@ static_starts_with_tcp_udp : ( TCP | UDP )
 
         static_real_addr_match
 
-        // <0-65535>        Enter port number (0 - 65535)
-        // aol              
-        // bgp              
-        // chargen          
-        tcp_udp_port_spec
-        {
-            importer->real_port_spec = importer->tmp_port_spec_2;
-            *dbg << "real port " << importer->real_port_spec << " ";
-        }
+        // <0-65535>    The maximum number of simultaneous tcp connections the local IP
+        //               hosts are to allow, default is 0 which means unlimited
+        //               connections. Idle connections are closed after the time
+        //               specified by the timeout conn command
+        //  dns          Use the created xlate to rewrite DNS address record
+        //  netmask      Configure Netmask to apply to IP addresses
+        //  norandomseq  Disable TCP sequence number randomization
+        //  tcp          Configure TCP specific parameters
+        //  udp          Configure UDP specific parameters
 
         ( static_command_common_last_parameters )*
     ;

@@ -1,5 +1,9 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* PIXImporterNat.cpp (buildDNATRule): resolved several problems
+	with import of "static" commands that use access list that matches
+	source or destination tcp/udp ports. See #2326, #2327
+
 	* pix.g (network_top_level_command): see #2295 fixes in the grammar
 	to support import of FWSM configs
 
