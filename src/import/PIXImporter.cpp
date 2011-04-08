@@ -322,7 +322,17 @@ void PIXImporter::mixServiceObjects(FWObject *src_ports,
         return;
     }
 
-    assert(src_ports->getTypeName() == dst_ports->getTypeName());
+    if (src_ports->getTypeName() != dst_ports->getTypeName())
+    {
+        // this should not happen since ASA would not have allowed
+        // access list rule with different source and destination
+        // protocols but it does not hurt to check
+        reportError(
+            QString("Source and destination protocols do not match: '%1', '%2'")
+            .arg(src_ports->getTypeName().c_str())
+            .arg(dst_ports->getTypeName().c_str()));
+        return;
+    }
 
     ObjectSignature sig(error_tracker);
     sig.type_name = src_ports->getTypeName().c_str();
