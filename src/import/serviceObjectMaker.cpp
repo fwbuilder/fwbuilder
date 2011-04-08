@@ -287,6 +287,8 @@ FWObject* ServiceObjectMaker::getMirroredServiceObject(FWObject *obj)
                 return matching_obj;
             }
 
+            registerAnonymousObject(sig, new_obj);
+
             new_obj->setName(new_name);
 
             // obj may belong to the standard objects library if it was
