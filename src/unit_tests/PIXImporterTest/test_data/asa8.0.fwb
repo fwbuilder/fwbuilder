@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1301451903" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302225452" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -444,7 +444,7 @@
         <ObjectGroup id="id11" name="net-1" comment="single network object-group &#10;Created during import of  line 40" ro="False">
           <ObjectRef ref="id29"/>
         </ObjectGroup>
-        <ObjectGroup id="id13" name="net-2" comment="multiple network-object object s &#10;Created during import of  line 43" ro="False">
+        <ObjectGroup id="id13" name="net-2" comment="multiple network-object objects &#10;Created during import of  line 43" ro="False">
           <ObjectRef ref="id30"/>
           <ObjectRef ref="id29"/>
           <ObjectRef ref="id31"/>
@@ -452,7 +452,7 @@
         <ObjectGroup id="id17" name="host-1" comment="Created during import of  line 47" ro="False">
           <ObjectRef ref="id3"/>
         </ObjectGroup>
-        <ObjectGroup id="id19" name="mixed-1" comment="mix of object s network-objects host object s &#10;Created during import of  line 50" ro="False">
+        <ObjectGroup id="id19" name="mixed-1" comment="mix of objects network-objects host objects &#10;Created during import of  line 50" ro="False">
           <ObjectRef ref="id3"/>
           <ObjectRef ref="id32"/>
           <ObjectRef ref="id4"/>
@@ -479,7 +479,7 @@
         <ServiceGroup id="id38" name="tcp-1" comment="Created during import of  line 58" ro="False">
           <ServiceRef ref="id99"/>
         </ServiceGroup>
-        <ServiceGroup id="id40" name="mixed-service-1" comment="mix of service tcp &amp; udp object s &#10;Created during import of  line 61" ro="False">
+        <ServiceGroup id="id40" name="mixed-service-1" comment="mix of service tcp &amp; udp objects &#10;Created during import of  line 61" ro="False">
           <ServiceRef ref="id100"/>
           <ServiceRef ref="id108"/>
           <ServiceRef ref="id101"/>

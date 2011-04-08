@@ -24,7 +24,7 @@ PCP="pcp"=24
 PIM="pim"=25
 PPTP="pptp"=26
 SNP="snp"=27
-OBJECT=28
+OBJECT="object"=28
 NETWORK="network"=29
 DESCRIPTION="description"=30
 HOST="host"=31
@@ -41,7 +41,7 @@ TCP="tcp"=41
 UDP="udp"=42
 SOURCE="source"=43
 DESTINATION="destination"=44
-OBJECT_GROUP=45
+OBJECT_GROUP="object-group"=45
 GROUP_OBJECT="group-object"=46
 NETWORK_OBJECT="network-object"=47
 PROTOCOL="protocol"=48

@@ -2400,6 +2400,9 @@ tokens
     NAME = "name";
     NAMES = "names";
     NAMEIF = "nameif";
+
+    OBJECT = "object";
+    OBJECT_GROUP = "object-group";
 }
 
 LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;
@@ -2436,11 +2439,6 @@ DIGIT : '0'..'9'  ;
 protected
 HEXDIGIT : 'a'..'f' ;
 
-protected
-OBJECT :;
-
-protected
-OBJECT_GROUP :;
 
 
 
@@ -2464,16 +2462,6 @@ NUMBER_ADDRESS_OR_WORD :
                     ( COLON ( 'a'..'f' | '0'..'9' )* )+ )
                     { _ttype = IPV6; }
                 )
-        |
-            ("obj" "ect") =>
-            (
-                "object"
-                (
-                    ("-gr" "oup") { _ttype = OBJECT_GROUP; }
-                |
-                    "" { _ttype = OBJECT; }
-                )
-            )
         |
 // making sure ',' '(' ')' are not part of WORD
             ( 'a'..'z' | 'A'..'Z' | '$' )

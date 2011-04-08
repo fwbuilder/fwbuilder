@@ -9,6 +9,7 @@ name 192.168.2.0 inside_network
 name 192.168.2.221 inside_ip
 name 192.168.2.240 net_1
 name 1.1.1.1 named-host-1
+name 1.2.3.4 object-1234
 !
 interface Ethernet0
  nameif inside

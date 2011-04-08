@@ -7155,7 +7155,7 @@ const char* PIXCfgParser::tokenNames[] = {
 	"\"pim\"",
 	"\"pptp\"",
 	"\"snp\"",
-	"OBJECT",
+	"\"object\"",
 	"\"network\"",
 	"\"description\"",
 	"\"host\"",
@@ -7172,7 +7172,7 @@ const char* PIXCfgParser::tokenNames[] = {
 	"\"udp\"",
 	"\"source\"",
 	"\"destination\"",
-	"OBJECT_GROUP",
+	"\"object-group\"",
 	"\"group-object\"",
 	"\"network-object\"",
 	"\"protocol\"",
@@ -7329,8 +7329,8 @@ const unsigned long PIXCfgParser::_tokenSet_0_data_[] = { 2UL, 0UL, 0UL, 0UL, 0U
 // EOF 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_0(_tokenSet_0_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_1_data_[] = { 268441458UL, 2172657788UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "service" 
-// "http" "ssh" "telnet" "icmp" OBJECT_GROUP "crypto" "dns" "no" "certificate" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "service" 
+// "http" "ssh" "telnet" "icmp" "object-group" "crypto" "dns" "no" "certificate" 
 // "PIX" "ASA" "hostname" "access-list" "interface" "controller" LINE_COMMENT 
 // "exit" "nameif" "access-group" COLON_COMMENT "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_1(_tokenSet_1_data_,12);
@@ -7339,17 +7339,17 @@ const unsigned long PIXCfgParser::_tokenSet_2_data_[] = { 0UL, 128UL, 0UL, 46976
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_2(_tokenSet_2_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_3_data_[] = { 536854592UL, 10048UL, 512UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // "ip" "ah" "eigrp" "esp" "gre" "igmp" "igrp" "ipinip" "ipsec" "nos" "ospf" 
-// "pcp" "pim" "pptp" "snp" OBJECT "icmp" "icmp6" "tcp" "udp" OBJECT_GROUP 
+// "pcp" "pim" "pptp" "snp" "object" "icmp" "icmp6" "tcp" "udp" "object-group" 
 // "permit" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_3(_tokenSet_3_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_4_data_[] = { 536854592UL, 10048UL, 1024UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // "ip" "ah" "eigrp" "esp" "gre" "igmp" "igrp" "ipinip" "ipsec" "nos" "ospf" 
-// "pcp" "pim" "pptp" "snp" OBJECT "icmp" "icmp6" "tcp" "udp" OBJECT_GROUP 
+// "pcp" "pim" "pptp" "snp" "object" "icmp" "icmp6" "tcp" "udp" "object-group" 
 // "deny" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_4(_tokenSet_4_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_5_data_[] = { 3489666930UL, 2172657791UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "host" "range" "subnet" "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "host" "range" "subnet" "service" "http" "ssh" "telnet" "icmp" "object-group" 
 // "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "interface" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
 // COLON_COMMENT "nat" "global" "static" 
@@ -7362,7 +7362,7 @@ const unsigned long PIXCfgParser::_tokenSet_7_data_[] = { 1073741824UL, 6307840U
 // "description" "group-object" "service-object" "port-object" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_7(_tokenSet_7_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_8_data_[] = { 2415921168UL, 8192UL, 0UL, 96UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 OBJECT "host" OBJECT_GROUP "interface" "any" 
+// NEWLINE IPV4 "object" "host" "object-group" "interface" "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_8(_tokenSet_8_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_9_data_[] = { 16UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE 
@@ -7376,11 +7376,11 @@ const unsigned long PIXCfgParser::_tokenSet_11_data_[] = { 268419136UL, 128UL, 0
 // "pcp" "pim" "pptp" "snp" INT_CONST 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_11(_tokenSet_11_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_12_data_[] = { 1342183282UL, 2172657788UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP "crypto" "dns" "no" 
-// "certificate" "PIX" "ASA" "hostname" "access-list" "interface" "controller" 
-// LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT "nat" "global" 
-// "static" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "service" "http" "ssh" "telnet" "icmp" "object-group" "crypto" "dns" 
+// "no" "certificate" "PIX" "ASA" "hostname" "access-list" "interface" 
+// "controller" LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
+// "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_12(_tokenSet_12_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_13_data_[] = { 16UL, 0UL, 0UL, 3146112UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" "time-range" 
@@ -7389,40 +7389,40 @@ const unsigned long PIXCfgParser::_tokenSet_14_data_[] = { 16UL, 4097UL, 61440UL
 // NEWLINE "range" "destination" "eq" "gt" "lt" "neq" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_14(_tokenSet_14_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_15_data_[] = { 2415921168UL, 12289UL, 323584UL, 3146208UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 OBJECT "host" "range" "destination" OBJECT_GROUP "eq" "gt" 
-// "lt" "neq" "established" "interface" "any" "log" "log-input" "fragments" 
+// NEWLINE IPV4 "object" "host" "range" "destination" "object-group" "eq" 
+// "gt" "lt" "neq" "established" "interface" "any" "log" "log-input" "fragments" 
 // "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_15(_tokenSet_15_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_16_data_[] = { 1342183282UL, 2172706940UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP "group-object" "network-object" 
-// "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
-// "interface" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
-// COLON_COMMENT "nat" "global" "static" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_16(_tokenSet_16_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_17_data_[] = { 1342183282UL, 2172805244UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP "group-object" "protocol-object" 
-// "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
-// "interface" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
-// COLON_COMMENT "nat" "global" "static" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_17(_tokenSet_17_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_18_data_[] = { 1342183282UL, 2172936316UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP "group-object" "icmp-object" 
-// "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
-// "interface" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
-// COLON_COMMENT "nat" "global" "static" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_18(_tokenSet_18_data_,12);
-const unsigned long PIXCfgParser::_tokenSet_19_data_[] = { 1342183282UL, 2178965628UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
-// "service" "http" "ssh" "telnet" "icmp" OBJECT_GROUP "group-object" "service-object" 
-// "port-object" "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "service" "http" "ssh" "telnet" "icmp" "object-group" "group-object" 
+// "network-object" "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" 
 // "access-list" "interface" "controller" LINE_COMMENT "exit" "nameif" 
 // "access-group" COLON_COMMENT "nat" "global" "static" 
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_16(_tokenSet_16_data_,12);
+const unsigned long PIXCfgParser::_tokenSet_17_data_[] = { 1342183282UL, 2172805244UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "service" "http" "ssh" "telnet" "icmp" "object-group" "group-object" 
+// "protocol-object" "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" 
+// "access-list" "interface" "controller" LINE_COMMENT "exit" "nameif" 
+// "access-group" COLON_COMMENT "nat" "global" "static" 
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_17(_tokenSet_17_data_,12);
+const unsigned long PIXCfgParser::_tokenSet_18_data_[] = { 1342183282UL, 2172936316UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "service" "http" "ssh" "telnet" "icmp" "object-group" "group-object" 
+// "icmp-object" "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" 
+// "access-list" "interface" "controller" LINE_COMMENT "exit" "nameif" 
+// "access-group" COLON_COMMENT "nat" "global" "static" 
+const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_18(_tokenSet_18_data_,12);
+const unsigned long PIXCfgParser::_tokenSet_19_data_[] = { 1342183282UL, 2178965628UL, 167UL, 54525984UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
+// "service" "http" "ssh" "telnet" "icmp" "object-group" "group-object" 
+// "service-object" "port-object" "crypto" "dns" "no" "certificate" "PIX" 
+// "ASA" "hostname" "access-list" "interface" "controller" LINE_COMMENT 
+// "exit" "nameif" "access-group" COLON_COMMENT "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_19(_tokenSet_19_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_20_data_[] = { 2415925264UL, 8321UL, 4294832128UL, 11534847UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 WORD OBJECT "host" "range" INT_CONST OBJECT_GROUP "eq" 
+// NEWLINE IPV4 WORD "object" "host" "range" INT_CONST "object-group" "eq" 
 // "gt" "lt" "neq" "echo" "established" "alternate-address" "conversion-error" 
 // "echo-reply" "information-reply" "information-request" "mask-reply" 
 // "mask-request" "mobile-redirect" "parameter-problem" "redirect" "router-advertisement" 
@@ -7431,7 +7431,7 @@ const unsigned long PIXCfgParser::_tokenSet_20_data_[] = { 2415925264UL, 8321UL,
 // "log-input" "fragments" "time-range" "outside" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_20(_tokenSet_20_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_21_data_[] = { 2415921152UL, 8192UL, 0UL, 96UL, 0UL, 0UL, 0UL, 0UL };
-// IPV4 OBJECT "host" OBJECT_GROUP "interface" "any" 
+// IPV4 "object" "host" "object-group" "interface" "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_21(_tokenSet_21_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_22_data_[] = { 16UL, 0UL, 0UL, 1048960UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "log" "log-input" "fragments" 
@@ -7440,8 +7440,8 @@ const unsigned long PIXCfgParser::_tokenSet_23_data_[] = { 16UL, 0UL, 0UL, 384UL
 // NEWLINE "log" "log-input" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_23(_tokenSet_23_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_24_data_[] = { 268441616UL, 8193UL, 323584UL, 11534720UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 WORD OBJECT "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "established" 
-// "log" "log-input" "fragments" "time-range" "outside" 
+// NEWLINE IPV4 WORD "object" "range" "object-group" "eq" "gt" "lt" "neq" 
+// "established" "log" "log-input" "fragments" "time-range" "outside" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_24(_tokenSet_24_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_25_data_[] = { 0UL, 1UL, 61440UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // "range" "eq" "gt" "lt" "neq" 
@@ -7450,12 +7450,12 @@ const unsigned long PIXCfgParser::_tokenSet_26_data_[] = { 67112960UL, 176UL, 19
 // WORD "pptp" "ssh" "telnet" INT_CONST "hostname" "echo" "rip" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_26(_tokenSet_26_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_27_data_[] = { 268435472UL, 8193UL, 323584UL, 3146112UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE OBJECT "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "established" 
+// NEWLINE "object" "range" "object-group" "eq" "gt" "lt" "neq" "established" 
 // "log" "log-input" "fragments" "time-range" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_27(_tokenSet_27_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_28_data_[] = { 335550322UL, 2172657917UL, 520359UL, 58720160UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" OBJECT 
-// "range" "service" "http" "ssh" "telnet" "icmp" INT_CONST OBJECT_GROUP 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" "object" 
+// "range" "service" "http" "ssh" "telnet" "icmp" INT_CONST "object-group" 
 // "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "eq" "gt" "lt" "neq" "echo" "rip" "established" "interface" "log" "log-input" 
 // "alerts" "critical" "debugging" "emergencies" "errors" "informational" 
@@ -7464,8 +7464,8 @@ const unsigned long PIXCfgParser::_tokenSet_28_data_[] = { 335550322UL, 21726579
 // COLON_COMMENT "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_28(_tokenSet_28_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_29_data_[] = { 335550322UL, 2172657916UL, 196775UL, 58720160UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" OBJECT 
-// "service" "http" "ssh" "telnet" "icmp" INT_CONST OBJECT_GROUP "crypto" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "pptp" "object" 
+// "service" "http" "ssh" "telnet" "icmp" INT_CONST "object-group" "crypto" 
 // "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" "echo" 
 // "rip" "interface" "log" "log-input" "alerts" "critical" "debugging" 
 // "emergencies" "errors" "informational" "notifications" "warnings" "disable" 
@@ -7473,23 +7473,23 @@ const unsigned long PIXCfgParser::_tokenSet_29_data_[] = { 335550322UL, 21726579
 // "exit" "nameif" "access-group" COLON_COMMENT "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_29(_tokenSet_29_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_30_data_[] = { 2415921152UL, 8193UL, 61440UL, 96UL, 0UL, 0UL, 0UL, 0UL };
-// IPV4 OBJECT "host" "range" OBJECT_GROUP "eq" "gt" "lt" "neq" "interface" 
+// IPV4 "object" "host" "range" "object-group" "eq" "gt" "lt" "neq" "interface" 
 // "any" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_30(_tokenSet_30_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_31_data_[] = { 335550480UL, 8369UL, 520224UL, 11534720UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 WORD "pptp" OBJECT "range" "ssh" "telnet" INT_CONST OBJECT_GROUP 
+// NEWLINE IPV4 WORD "pptp" "object" "range" "ssh" "telnet" INT_CONST "object-group" 
 // "hostname" "eq" "gt" "lt" "neq" "echo" "rip" "established" "log" "log-input" 
 // "fragments" "time-range" "outside" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_31(_tokenSet_31_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_32_data_[] = { 2483042320UL, 16791217UL, 520352UL, 3146208UL, 0UL, 5UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE IPV4 WORD IPV6 "pptp" OBJECT "host" "range" "ssh" "telnet" INT_CONST 
-// "tcp" "udp" "destination" OBJECT_GROUP "dns" "hostname" "access-list" 
-// "eq" "gt" "lt" "neq" "echo" "rip" "established" "interface" "any" "log" 
-// "log-input" "fragments" "time-range" "netmask" "norandomseq" 
+// NEWLINE IPV4 WORD IPV6 "pptp" "object" "host" "range" "ssh" "telnet" 
+// INT_CONST "tcp" "udp" "destination" "object-group" "dns" "hostname" 
+// "access-list" "eq" "gt" "lt" "neq" "echo" "rip" "established" "interface" 
+// "any" "log" "log-input" "fragments" "time-range" "netmask" "norandomseq" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_32(_tokenSet_32_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_33_data_[] = { 2415927154UL, 2172657917UL, 4294832295UL, 66060799UL, 1996488705UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD OBJECT "host" 
-// "range" "service" "http" "ssh" "telnet" "icmp" INT_CONST OBJECT_GROUP 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD "object" 
+// "host" "range" "service" "http" "ssh" "telnet" "icmp" INT_CONST "object-group" 
 // "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
 // "eq" "gt" "lt" "neq" "echo" "established" "alternate-address" "conversion-error" 
 // "echo-reply" "information-reply" "information-request" "mask-reply" 
@@ -7520,9 +7520,9 @@ const unsigned long PIXCfgParser::_tokenSet_38_data_[] = { 16UL, 16778880UL, 0UL
 // NEWLINE INT_CONST "tcp" "udp" "dns" "outside" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_38(_tokenSet_38_data_,8);
 const unsigned long PIXCfgParser::_tokenSet_39_data_[] = { 3489666930UL, 2172659455UL, 167UL, 62914592UL, 1191182337UL, 2UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD OBJECT "description" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" WORD "object" "description" 
 // "host" "range" "subnet" "service" "http" "ssh" "telnet" "icmp" INT_CONST 
-// "tcp" "udp" OBJECT_GROUP "crypto" "dns" "no" "certificate" "PIX" "ASA" 
+// "tcp" "udp" "object-group" "crypto" "dns" "no" "certificate" "PIX" "ASA" 
 // "hostname" "access-list" "interface" "controller" "outside" LINE_COMMENT 
 // "exit" "nameif" "access-group" COLON_COMMENT "nat" "global" "static" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_39(_tokenSet_39_data_,12);
@@ -7541,11 +7541,11 @@ const unsigned long PIXCfgParser::_tokenSet_43_data_[] = { 16UL, 16778880UL, 0UL
 // NEWLINE INT_CONST "tcp" "udp" "dns" "netmask" "norandomseq" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_43(_tokenSet_43_data_,12);
 const unsigned long PIXCfgParser::_tokenSet_44_data_[] = { 268443506UL, 2172659452UL, 167UL, 54525984UL, 1191182337UL, 7UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD OBJECT "service" 
-// "http" "ssh" "telnet" "icmp" INT_CONST "tcp" "udp" OBJECT_GROUP "crypto" 
-// "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" "interface" 
-// "controller" LINE_COMMENT "exit" "nameif" "access-group" COLON_COMMENT 
-// "nat" "global" "netmask" "static" "norandomseq" 
+// EOF NEWLINE "quit" "ip" "timeout" "names" "name" IPV4 WORD "object" 
+// "service" "http" "ssh" "telnet" "icmp" INT_CONST "tcp" "udp" "object-group" 
+// "crypto" "dns" "no" "certificate" "PIX" "ASA" "hostname" "access-list" 
+// "interface" "controller" LINE_COMMENT "exit" "nameif" "access-group" 
+// COLON_COMMENT "nat" "global" "netmask" "static" "norandomseq" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PIXCfgParser::_tokenSet_44(_tokenSet_44_data_,12);
 
 
