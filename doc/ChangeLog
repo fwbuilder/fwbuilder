@@ -1,5 +1,8 @@
 2011-04-07  vadim  <vadim@netcitadel.com>
 
+	* pix.g (network_top_level_command): see #2295 fixes in the grammar
+	to support import of FWSM configs
+
 	* PIXImporter.cpp (fixServiceObjectUsedForBothSrcAndDstPorts):
 	see #2265 "ASA 8.3 acl import: access-list commands using two
 	named objects or object-groups", see #2290 "Access lists that

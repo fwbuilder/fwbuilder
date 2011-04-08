@@ -240,6 +240,12 @@ void Importer::setDiscoveredVersion(const std::string &v)
     addMessageToLog("Version: " + v);
 }
 
+void Importer::setDiscoveredPlatform(const std::string &v)
+{
+    discovered_platform = v;
+    addMessageToLog("Platform: " + v);
+}
+
 void Importer::newInterface(const std::string &name)
 {
     if (all_interfaces.count(name)>0) return;

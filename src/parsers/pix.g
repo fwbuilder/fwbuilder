@@ -125,6 +125,8 @@ cfgfile :
         |
             nameif_top_level
         |
+            intf_address
+        |
             controller
         |
             access_list_commands
@@ -179,6 +181,10 @@ cfgfile :
         |
             service_top_level_command
         |
+            pim_top_level_command
+        |
+            network_top_level_command
+        |
             unknown_command
         |
             NEWLINE
@@ -201,6 +207,22 @@ community_list_command : IP COMMUNITY_LIST
 
 //****************************************************************
 timeout_command : TIMEOUT
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+// need this because we have token PIM used in a different context
+pim_top_level_command : PIM
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+// need this because we have token NETWORK used in a different context
+network_top_level_command : NETWORK
         {
             consumeUntil(NEWLINE);
         }
@@ -851,9 +873,17 @@ certificate : CERTIFICATE WORD
     ;
 
 //****************************************************************
-version : (PIX_WORD | ASA_WORD) VERSION_WORD_CAP NUMBER
+version { std::string platform; } :
+        (
+            PIX_WORD | ASA_WORD | FWSM_WORD
+        )
+        {
+            platform = LT(0)->getText();
+        }
+        VERSION_WORD_CAP NUMBER
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->setDiscoveredPlatform(platform);
             importer->setDiscoveredVersion(LT(0)->getText());
             *dbg << "VERSION " << LT(0)->getText() << std::endl;
             consumeUntil(NEWLINE);
@@ -865,9 +895,7 @@ hostname : HOSTNAME ( STRING | WORD )
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->setHostName( LT(0)->getText() );
-            *dbg << "HOSTNAME "
-                << "LT0=" << LT(0)->getText()
-                << std::endl;
+            *dbg << "HOSTNAME " << "LT0=" << LT(0)->getText() << std::endl;
         }
     ;
 
@@ -1595,25 +1623,33 @@ intf_address : IP ADDRESS (v6_ip_address | v7_ip_address) ;
 
 v6_ip_address : v6_dhcp_address | v6_static_address;
 
-v6_dhcp_address : lbl:WORD dhcp:DHCP
+v6_dhcp_address { std::string lbl; } : 
+        interface_label 
         {
-            std::string label = lbl->getText();
+            lbl = LT(0)->getText();
+        }
+        dhcp:DHCP
+        {
             std::string addr = dhcp->getText();
-            importer->addInterfaceAddress(label, addr, "");
+            importer->addInterfaceAddress(lbl, addr, "");
             *dbg << LT(1)->getLine() << ":"
                  << " INTRFACE ADDRESS: " << addr << std::endl;
-// there can be some other parameters after "dhcp", such as "setroute", "retry" etc.
-// which we do not support
+// there can be some other parameters after "dhcp", such as
+// "setroute", "retry" etc.  which we do not support
             consumeUntil(NEWLINE);
         }
     ;
 
-v6_static_address : lbl:WORD a:IPV4 m:IPV4
+v6_static_address  { std::string lbl; } : 
+        interface_label 
         {
-            std::string label = lbl->getText();
+            lbl = LT(0)->getText();
+        }
+        a:IPV4 m:IPV4
+        {
             std::string addr = a->getText();
             std::string netm = m->getText();
-            importer->addInterfaceAddress(label, addr, netm);
+            importer->addInterfaceAddress(lbl, addr, netm);
             *dbg << LT(1)->getLine() << ":"
                  << " INTRFACE ADDRESS: " << addr << "/" << netm << std::endl;
 // in case there are some other parameters after address and netmask
@@ -2324,6 +2360,8 @@ tokens
 
     PIX_WORD = "PIX" ;
     ASA_WORD = "ASA" ;
+    FWSM_WORD = "FWSM" ;
+
     VERSION_WORD_CAP = "Version" ;
     VERSION_WORD_LOW = "version" ;
 

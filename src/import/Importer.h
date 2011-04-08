@@ -120,6 +120,7 @@ protected:
     
     std::string platform;
 
+    std::string discovered_platform;
     std::string discovered_version;
     
     libfwbuilder::Interface* current_interface;
@@ -283,6 +284,7 @@ public:
     
     int errorCounter() { return error_counter; }
 
+    virtual void setDiscoveredPlatform(const std::string &v);
     virtual void setDiscoveredVersion(const std::string &v);
     virtual void setHostName(const std::string &hn);
     virtual void newInterface(const std::string &interface_name);

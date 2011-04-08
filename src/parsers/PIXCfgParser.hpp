@@ -96,6 +96,7 @@ public:
 	public: void unknown_ip_command();
 	public: void intrface();
 	public: void nameif_top_level();
+	public: void intf_address();
 	public: void controller();
 	public: void access_list_commands();
 	public: void ssh_command();
@@ -123,6 +124,8 @@ public:
 	public: void timeout_command();
 	public: void dns_command();
 	public: void service_top_level_command();
+	public: void pim_top_level_command();
+	public: void network_top_level_command();
 	public: void unknown_command();
 	public: void name_entry_ipv4();
 	public: void name_entry_ipv6();
@@ -186,7 +189,6 @@ public:
 	public: void interface_command_7();
 	public: void pix6_interface_hw_speed();
 	public: void interface_parameters();
-	public: void intf_address();
 	public: void vlan_interface();
 	public: void sec_level();
 	public: void nameif();
@@ -222,10 +224,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 195;
+	static const int NUM_TOKENS = 196;
 #else
 	enum {
-		NUM_TOKENS = 195
+		NUM_TOKENS = 196
 	};
 #endif
 	

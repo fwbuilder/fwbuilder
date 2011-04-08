@@ -1,3 +1,4 @@
+3: Platform: PIX
 3: Version: 6.3
 4: New interface: ethernet0
 5: New interface: ethernet1
@@ -104,3 +105,20 @@
 158: filtering rule: access list ssh_commands_inside, action permit
 159: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
 159: filtering rule: access list ssh_commands_inside, action permit
+159: Interface address: dhcp/
+159: Interface address: 10.1.1.202/255.255.255.0
+170: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+171: Source translation rule ("nat" command)
+172: Destination translation rule ("static" command)
+173: Destination translation rule ("static" command)
+174: Destination translation rule ("static" command)
+175: Destination translation rule ("static" command)
+176: Destination translation rule ("static" command)
+177: Destination translation rule ("static" command)
+178: Destination translation rule ("static" command)
+179: Destination translation rule ("static" command)
+180: Destination translation rule ("static" command)
+202: Interface ethernet1 ruleset http_commands_inside direction 'in'
+202: filtering rule: access list http_commands_inside, action permit
+203: Interface ethernet1 ruleset http_commands_inside direction 'in'
+203: filtering rule: access list http_commands_inside, action permit

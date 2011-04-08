@@ -652,11 +652,24 @@ Firewall* PIXImporter::finalize()
     if (haveFirewallObject())
     {
         Firewall *fw = Firewall::cast(getFirewallObject());
-        fw->setStr("host_OS", "pix_os");
-        Resources::setDefaultTargetOptions("pix_os" , fw);
+
+        QString pl = QString(discovered_platform.c_str()).toLower();
+        if (pl == "asa") pl = "pix";
+
+        string host_os;
+
+        if (pl == "pix") host_os = "pix_os";
+        if (pl == "fwsm") host_os = "fwsm_os";
+
+        if (! host_os.empty())
+        {
+            fw->setStr("host_OS", host_os);
+            Resources::setDefaultTargetOptions(host_os , fw);
+        }
 
         string version = findBestVersionMatch(
-            "pix", discovered_version.c_str()).toStdString();
+            pl, discovered_version.c_str()).toStdString();
+
         if ( ! version.empty())
             fw->setStr("version", version);
 
