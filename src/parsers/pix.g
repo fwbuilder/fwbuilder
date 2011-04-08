@@ -2396,6 +2396,10 @@ tokens
     HTTP = "http";
     AUTHENTICATION_CERTIFICATE = "authentication-certificate";
     SERVER = "server";
+
+    NAME = "name";
+    NAMES = "names";
+    NAMEIF = "nameif";
 }
 
 LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;
@@ -2438,14 +2442,6 @@ OBJECT :;
 protected
 OBJECT_GROUP :;
 
-protected
-NAME :;
-
-protected
-NAMES :;
-
-protected
-NAMEIF :;
 
 
 NUMBER_ADDRESS_OR_WORD :
@@ -2476,18 +2472,6 @@ NUMBER_ADDRESS_OR_WORD :
                     ("-gr" "oup") { _ttype = OBJECT_GROUP; }
                 |
                     "" { _ttype = OBJECT; }
-                )
-            )
-        |
-            ("nam" "e") =>
-            (
-                "name"
-                (
-                    "s" { _ttype = NAMES; }
-                |
-                    "if" { _ttype = NAMEIF; }
-                |
-                    " " { _ttype = NAME; }
                 )
             )
         |

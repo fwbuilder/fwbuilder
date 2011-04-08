@@ -1,30 +1,28 @@
 3: Version: 8.0
 5: Host name: pixfirewall
-12: New interface: Ethernet0
-12: Interface parameters: inside  
-12: Interface label: inside
-14: Interface address: 192.168.2.221/255.255.255.0
-17: New interface: Ethernet1
-17: Interface parameters: outside  
-17: Interface label: outside
-19: Interface address: 192.0.2.221/255.255.255.0
-22: New interface: Ethernet2
+13: New interface: Ethernet0
+13: Interface parameters: inside  
+13: Interface label: inside
+15: Interface address: 192.168.2.221/255.255.255.0
+18: New interface: Ethernet1
+18: Interface parameters: outside  
+18: Interface label: outside
+20: Interface address: 192.0.2.221/255.255.255.0
+23: New interface: Ethernet2
 Warning: interface Ethernet2 was not imported because it is in "shutdown" mode
-28: New interface: Ethernet3
+29: New interface: Ethernet3
 Warning: interface Ethernet3 was not imported because it is in "shutdown" mode
-34: New interface: Ethernet4
+35: New interface: Ethernet4
 Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
-42: Object Group (network) net_1_group
-45: Object Group (network) another_group_net_1
-48: Object Group (network) host_net_1
-51: Object Group (network) host_net_2
-54: Object Group (network) net-1
-57: Object Group (network) net-2
-63: filtering rule: access list inside_in, action permit
-64: filtering rule: access list inside_in, action deny
-66: Interface Ethernet0 ruleset inside_in direction 'in'
-72: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
-72: filtering rule: access list icmp_commands_outside, action permit
+43: Object Group (network) net_1_group
+46: Object Group (network) another_group_net_1
+49: Object Group (network) host_net_1
+52: Object Group (network) host_net_2
+55: Object Group (network) net-1
+58: Object Group (network) net-2
+64: filtering rule: access list inside_in, action permit
+65: filtering rule: access list inside_in, action deny
+67: Interface Ethernet0 ruleset inside_in direction 'in'
 73: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
 73: filtering rule: access list icmp_commands_outside, action permit
 74: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
@@ -35,8 +33,8 @@ Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
 76: filtering rule: access list icmp_commands_outside, action permit
 77: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
 77: filtering rule: access list icmp_commands_outside, action permit
-78: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
-78: filtering rule: access list icmp_commands_inside, action permit
+78: Interface Ethernet1 ruleset icmp_commands_outside direction 'in'
+78: filtering rule: access list icmp_commands_outside, action permit
 79: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
 79: filtering rule: access list icmp_commands_inside, action permit
 80: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
@@ -53,7 +51,9 @@ Warning: interface Ethernet4 was not imported because it is in "shutdown" mode
 85: filtering rule: access list icmp_commands_inside, action permit
 86: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
 86: filtering rule: access list icmp_commands_inside, action permit
-99: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
-99: filtering rule: access list telnet_commands_inside, action permit
-101: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
-101: filtering rule: access list ssh_commands_inside, action permit
+87: Interface Ethernet0 ruleset icmp_commands_inside direction 'in'
+87: filtering rule: access list icmp_commands_inside, action permit
+100: Interface Ethernet0 ruleset telnet_commands_inside direction 'in'
+100: filtering rule: access list telnet_commands_inside, action permit
+102: Interface Ethernet0 ruleset ssh_commands_inside direction 'in'
+102: filtering rule: access list ssh_commands_inside, action permit

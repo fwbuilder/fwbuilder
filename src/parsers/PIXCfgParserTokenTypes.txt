@@ -5,8 +5,8 @@ QUIT="quit"=5
 IP="ip"=6
 COMMUNITY_LIST="community-list"=7
 TIMEOUT="timeout"=8
-NAMES=9
-NAME=10
+NAMES="names"=9
+NAME="name"=10
 IPV4=11
 WORD=12
 IPV6=13
@@ -124,7 +124,7 @@ BNC="bnc"=124
 FULL="full"=125
 BASET="baseT"=126
 BASETX="baseTX"=127
-NAMEIF=128
+NAMEIF="nameif"=128
 VLAN="vlan"=129
 SPEED="speed"=130
 DUPLEX="duplex"=131
