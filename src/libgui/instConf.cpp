@@ -88,5 +88,6 @@ void instConf::clear()
     sshArgs = "";
     scpArgs = "";
     putty_session = "";
+    fwscript = "";
 }
 

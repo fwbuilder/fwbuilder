@@ -25,6 +25,7 @@ test/ipt/secuwall-1
 Makefile
 !test/*/Makefile
 install*
+!src/res/configlets/*/install*
 ltmain.sh
 configure
 config.h

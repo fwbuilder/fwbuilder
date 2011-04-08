@@ -28,15 +28,16 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
-#include "instDialog.h"
-#include "FirewallInstallerCisco.h"
-#include "FirewallInstallerUnx.h"
-#include "FirewallInstallerProcurve.h"
+#include "CompilerDriver.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
-#include "instOptionsDialog.h"
-#include "instBatchOptionsDialog.h"
+#include "FirewallInstallerCisco.h"
+#include "FirewallInstallerProcurve.h"
+#include "FirewallInstallerUnx.h"
 #include "events.h"
+#include "instBatchOptionsDialog.h"
+#include "instDialog.h"
+#include "instOptionsDialog.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -61,6 +62,18 @@ bool instDialog::runInstaller(Firewall *fw, bool cancelAllVisible)
 {
     cnf.fwobj = fw;
     cnf.maddr = "";
+
+    // TODO: there must be a better place to fill cnd.fwscript than
+    // this.  All I need to do is fill it before calling summary() and
+    // before launching installer that uses it in
+    // FirewallInstaller::replaceMacrosInCommand()
+
+    QString fwscript = fwcompiler::CompilerDriver::escapeFileName(
+        QFileInfo(cnf.remote_script).fileName());
+
+    if (fwscript.indexOf(":")!=-1) fwscript = fwscript.section(':', 1, 1);
+
+    cnf.fwscript = fwscript;
 
     if (fwbdebug)
         qDebug() << "instDialog::runInstaller: built-in installer"

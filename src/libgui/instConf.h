@@ -64,6 +64,7 @@ class instConf {
     QString   sshArgs;
     QString   scpArgs;
     QString   fwdir;
+    QString   fwscript;
     
     libfwbuilder::Firewall  *fwobj;
 

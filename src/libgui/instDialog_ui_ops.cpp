@@ -497,10 +497,6 @@ void instDialog::summary()
     else
         str.append(QObject::tr("* Management address : %1").arg(cnf.maddr));
 
-
-    if (!cnf.putty_session.isEmpty())
-        str.append(QObject::tr("* Using putty session : %1")
-                   .arg(cnf.putty_session));
     str.append(QObject::tr("* Platform : %1")
               .arg(cnf.fwobj->getStr("platform").c_str()));
     str.append(QObject::tr("* Host OS : %1")
@@ -514,6 +510,15 @@ void instDialog::summary()
 
     if (cnf.dry_run)
         str.append(QObject::tr("* Commands will not be executed on the firewall"));
+
+    if (fwbdebug)
+    {
+        str.append(QObject::tr("--------------------------------"));
+        str.append(QObject::tr("* Variables:"));
+        str.append(QObject::tr("* fwdir= %1") .arg(cnf.fwdir));
+        str.append(QObject::tr("* fwscript= %1") .arg(cnf.fwscript));
+        str.append(QObject::tr("* remote_script= %1") .arg(cnf.remote_script));
+    }
 
     str.append("");
 

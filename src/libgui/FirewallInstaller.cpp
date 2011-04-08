@@ -776,25 +776,20 @@ void FirewallInstaller::replaceMacrosInCommand(Configlet *conf)
  * Unix.
  */
 
-    QString fwbscript = fwcompiler::CompilerDriver::escapeFileName(
-        QFileInfo(cnf->remote_script).fileName());
-
-    if (fwbscript.indexOf(":")!=-1) fwbscript = fwbscript.section(':', 1, 1);
-
     if (fwbdebug)
     {
         qDebug() << "Macro substitutions:";
         qDebug() << "  $fwdir=" << cnf->fwdir;
         qDebug() << "  cnf->script=" << cnf->script;
         qDebug() << "  cnf->remote_script=" << cnf->remote_script;
-        qDebug() << "  $fwscript=" << fwbscript;
+        qDebug() << "  $fwscript=" << cnf->fwscript;
         qDebug() << "  $firewall_name=" << QString::fromUtf8(
             cnf->fwobj->getName().c_str());
     }
 
     conf->setVariable("fwbprompt", fwb_prompt);
     conf->setVariable("fwdir", cnf->fwdir);
-    conf->setVariable("fwscript", fwbscript);
+    conf->setVariable("fwscript", cnf->fwscript);
     conf->setVariable("firewall_name",
                       QString::fromUtf8(cnf->fwobj->getName().c_str()));
 }
