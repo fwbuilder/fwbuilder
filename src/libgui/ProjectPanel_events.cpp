@@ -440,6 +440,8 @@ bool ProjectPanel::event(QEvent *event)
         return false;
     }
 
+    //if (fwbdebug) qDebug() << this << "event:" << event;
+    
     return QWidget::event(event);
 }
 

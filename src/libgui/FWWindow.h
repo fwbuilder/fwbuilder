@@ -147,7 +147,7 @@ public:
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
     void subWindowActivated(QMdiSubWindow*);
-
+    
     void editorPanelTabChanged(int);
     
     void minimize();

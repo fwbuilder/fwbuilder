@@ -256,6 +256,9 @@ void NetworkDialog::applyChanges()
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {
+        if (fwbdebug)
+            qDebug() << "Pushing FWCmdChange to undo stack";
+
         if (obj->isReadOnly()) return;
         m_project->undoStack->push(cmd.release());
     }

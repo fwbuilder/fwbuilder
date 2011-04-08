@@ -801,8 +801,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                                      bool &newMenuItem,
                                      bool &inDeletedObjects)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::getMenuState");
-
     inDeletedObjects = false;
 
     if (m_project->db() == NULL)
@@ -826,11 +824,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     FWObject *del_obj_library =
         m_project->db()->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID);
 
-    if (fwbdebug) qDebug() << "ObjectManipulator::getMenuState del_obj_library=" << del_obj_library;
-
     FWObject *current_library = getCurrentLib();
-
-    if (fwbdebug) qDebug() << "ObjectManipulator::getMenuState current_library=" << current_library;
 
     if (getCurrentObjectTree()==NULL) return;
 
@@ -843,12 +837,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
         FWObject *obj= *i;
-
-        if (fwbdebug)
-            qDebug() << "ObjectManipulator::getMenuState"
-                     << "obj=" << obj
-                     << "root=" << obj->getRoot()
-                     << "current_library root=" << current_library->getRoot();
 
         QString object_path = obj->getPath(true).c_str();
 
@@ -942,7 +930,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             newMenuItem = false;
 
     }
-    if (fwbdebug) qDebug("ObjectManipulator::getMenuState done");
 }
 
 bool ObjectManipulator::isCurrentObjectLockable()
@@ -1365,11 +1352,6 @@ FWObject* ObjectManipulator::getCurrentLib()
     if (idx == -1 ) return NULL;
 
     FWObject *lib = libs_model->getLibrary(idx);
-
-    if (fwbdebug)
-    {
-        qDebug("ObjectManipulator::getCurrentLib(): idx=%d  lib=%p", idx, lib);
-    }
 
     return lib;
 }

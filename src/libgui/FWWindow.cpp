@@ -452,6 +452,8 @@ void FWWindow::showSub(ProjectPanel *pp)
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_mainWindow->m_space->addSubWindow(sub);
 
+    connect( sub, SIGNAL(aboutToActivate()), pp, SLOT(aboutToActivate()));
+
     if (fwbdebug)
         qDebug() << "Show subwindow maximized: " << windows_maximized;
 
@@ -1111,8 +1113,8 @@ QStringList FWWindow::getListOfOpenedFiles()
 
 void FWWindow::activatePreviousSubWindow()
 {
+    if (fwbdebug) qDebug() << "FWWindow::activatePreviousSubWindow()";
     m_mainWindow->m_space->setActiveSubWindow(previous_subwindow);
-    //previous_subwindow->raise();
 }
 
 
@@ -1129,27 +1131,16 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (subwindow==NULL) return;
 
     if (fwbdebug)
-        qDebug() << "FWWindow::subWindowActivated subwindow=" << subwindow
+        qDebug() << "FWWindow::subWindowActivated"
+                 << "subwindow=" << subwindow
+                 << "(" << subwindow->windowTitle() << ")"
                  << "previous_subwindow=" << previous_subwindow
-                 << " "
-                 << subwindow->windowTitle()
+                 << "("
+                 << QString((previous_subwindow) ? previous_subwindow->windowTitle() : "")
+                 << ")"
                  << "isMaximized()=" << subwindow->isMaximized();
 
     if (previous_subwindow == subwindow) return;
-
-    // if (isEditorVisible() && !oe->validateAndSave())
-    // {
-    //     // editor has unsaved data and user clicked "Continue editing"
-    //     // Roll back switch of subwindows
-
-    //     if (fwbdebug)
-    //         qDebug() << "Activating previous subwindow "
-    //                  << previous_subwindow
-    //                  << " "
-    //                  << previous_subwindow->windowTitle();
-    //     QTimer::singleShot(0, this, SLOT(activatePreviousSubWindow()));
-    //     return;
-    // }
 
     previous_subwindow = subwindow;
 
@@ -1157,11 +1148,6 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (pp)
     {
         QCoreApplication::postEvent(mw, new updateGUIStateEvent());
-
-        //prepareFileMenu();
-        //prepareRulesMenu();
-        //updateGlobalToolbar();
-
         pp->setActive();
         if (isEditorVisible()) openEditor(pp->getSelectedObject());
     }
@@ -1371,6 +1357,9 @@ bool FWWindow::event(QEvent *event)
         event->accept();
         return true;
     }
+
+    //if (fwbdebug) qDebug() << this << "event:" << event;
+
     return QMainWindow::event(event);
 }
 
@@ -1379,8 +1368,11 @@ void FWWindow::selectActiveSubWindow(/*const QString & text*/)
     QObject * sender_ = sender ();
     QAction * act = (QAction*) sender_ ;
     QString text = act->text();
-    if (text=="[Noname]")
-        text="";
+    if (text=="[Noname]") text="";
+
+    if (fwbdebug) qDebug() << "FWWindow::selectActiveSubWindow()"
+                           << "text=" << text;
+
     for (int i = 0 ; i < windowsTitles.size();i++)
     {
         if (windowsTitles[i]==text)

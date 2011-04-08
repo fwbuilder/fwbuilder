@@ -77,20 +77,12 @@ bool ListOfLibrariesModel::insertRows(int row, int count, const QModelIndex & pa
 
 bool ListOfLibrariesModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    if (fwbdebug)
-        qDebug() << "ListOfLibrariesModel::removeRows"
-                 << "row=" << row
-                 << "count=" << count;
-
     int c = count;
     while (c > 0)
     {
         items.removeAt(row);
         c--;
     }
-
-    if (fwbdebug)
-        qDebug() << "ListOfLibrariesModel::removeRows 2";
 
     return QStringListModel::removeRows(row, count, parent);
 }
@@ -142,10 +134,6 @@ void ListOfLibrariesModel::sort(int column, Qt::SortOrder order)
 
 QModelIndex ListOfLibrariesModel::getIdxForLib(FWObject* lib)
 {
-    if (fwbdebug)
-        qDebug() << "ListOfLibrariesModel::getIdxForLib"
-                 << "lib=" << lib->getName().c_str();
-
     for (int i=0; i<rowCount(); ++i)
     {
         QModelIndex idx = index(i, 0);
@@ -154,7 +142,6 @@ QModelIndex ListOfLibrariesModel::getIdxForLib(FWObject* lib)
             FWObject *l = getLibrary(idx);
             if (l && l->getId() == lib->getId())
             {
-                if (fwbdebug) qDebug() << "Index=" << i;
                 return idx;
             }
         }
@@ -170,7 +157,6 @@ FWObject* ListOfLibrariesModel::getLibrary(QModelIndex idx)
 
 FWObject* ListOfLibrariesModel::getLibrary(int row)
 {
-    if (fwbdebug) qDebug() << "ListOfLibrariesModel::getLibrary row=" << row;
     if (row < 0 || row >= items.size()) return NULL;
     return items[row].lib;
 }
@@ -182,7 +168,6 @@ ObjectTreeView* ListOfLibrariesModel::getTreeWidget(QModelIndex idx)
 
 ObjectTreeView* ListOfLibrariesModel::getTreeWidget(int row)
 {
-    if (fwbdebug) qDebug() << "ListOfLibrariesModel::getTreeWidget row=" << row;
     if (row < 0 || row >= items.size()) return NULL;
     return items[row].tree;
 }

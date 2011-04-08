@@ -158,6 +158,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
     connect(m_panel->topSplitter, SIGNAL(splitterMoved(int,int)),
             this, SLOT(splitterPositionChanged(int,int)));
+
 }
 
 ProjectPanel::~ProjectPanel()
@@ -1022,6 +1023,11 @@ void ProjectPanel::redrawRuleSets()
 {
     ruleSetRedrawPending = false;
     reopenFirewall();
+}
+
+void ProjectPanel::aboutToActivate()
+{
+    if (fwbdebug) qDebug() << "ProjectPanel::aboutToActivate " << this;
 }
 
 void ProjectPanel::showEvent(QShowEvent *ev)

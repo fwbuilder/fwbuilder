@@ -1,3 +1,10 @@
+2011-04-08  vadim  <vadim@netcitadel.com>
+
+	* ObjectEditor.cpp (changed): see #2335 "GUI switches between data
+	files upon closing editor panel". If user opened two data files in
+	the GUI and was in the process of editing objects in one of them,
+	the GUI would flip to the other file under certin circumstances.
+
 2011-04-07  vadim  <vadim@netcitadel.com>
 
 	* PIXImporterNat.cpp (buildDNATRule): resolved several problems

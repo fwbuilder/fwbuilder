@@ -294,6 +294,8 @@ public:
     void updateObjectInTree();
     void reloadTree();
 
+    void aboutToActivate();
+    
 #if QT_VERSION < 0x040500
     void setTreeDockPosition();
 #endif

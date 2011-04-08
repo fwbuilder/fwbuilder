@@ -94,6 +94,8 @@ FWCmdChange::~FWCmdChange()
 
 void FWCmdChange::undo()
 {
+    if (fwbdebug) qDebug() << "FWCmdChange::undo()";
+
     FWObject* obj = getObject();
     try
     {
@@ -108,6 +110,8 @@ void FWCmdChange::undo()
 
 void FWCmdChange::redo()
 {
+    if (fwbdebug) qDebug() << "FWCmdChange::redo()";
+
     FWObject* obj = getObject();
     try
     {

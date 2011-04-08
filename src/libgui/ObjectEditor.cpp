@@ -358,7 +358,8 @@ void ObjectEditor::changed()
 {
     QWidget *s = dynamic_cast<QWidget*>(sender());
     if (fwbdebug)
-        qDebug() << "ObjectEditor::changed()  from " << s;
+        qDebug() << "ObjectEditor::changed()  from " << s
+                 << "isVisible()=" << s->isVisible();
 
     if (!validate())
     {
@@ -368,11 +369,34 @@ void ObjectEditor::changed()
     }
 
     emit applyChanges_sign();
+
+    if (!s->isVisible())
+    {
+        /*
+         * Pass focus to the ProjectPanel that is active at the moment
+         * to avoid switch described in #2335. Do this only if editor
+         * panel is invisible because we get changed() signal in other
+         * cases too, such as when user uses Tab to switch between
+         * input fields or clicks outside the editor.
+         */
+
+        ProjectPanel *pp = mw->activeProject();
+
+        if (fwbdebug)
+            qDebug() << "ObjectEditor::changed() pass focus to active ProjectPanel"
+                     << "pp=" << pp;
+
+        if (pp) pp->setFocus(Qt::OtherFocusReason);
+    }
+
+    if (fwbdebug) qDebug() << "ObjectEditor::changed() done ";
 }
 
 bool ObjectEditor::validate()
 {
-    if (fwbdebug) qDebug() << "ObjectEditor::validate()";
+    if (fwbdebug)
+        qDebug() << "ObjectEditor::validate()"
+                 << "isVisible()=" << getCurrentObjectDialog()->isVisible();
     bool isgood = true;
     emit validate_sign( &isgood );
     return isgood;

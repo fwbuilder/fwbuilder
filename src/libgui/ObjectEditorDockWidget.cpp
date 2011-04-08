@@ -65,6 +65,8 @@ void ObjectEditorDockWidget::closeEvent(QCloseEvent *event)
     }
 
     event->accept();
+
+    if (fwbdebug) qDebug() << "ObjectEditorDockWidget::closeEvent() done";
 }
 
 void ObjectEditorDockWidget::topLevelChanged(bool topLevel)
