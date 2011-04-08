@@ -776,6 +776,20 @@ void FirewallInstaller::replaceMacrosInCommand(Configlet *conf)
  * Unix.
  */
 
+/*
+ * TODO: there must be a better place to fill cnd.fwscript than
+ * this.  All I need to do is fill it before calling summary() and
+ * before launching installer that uses it in
+ * FirewallInstaller::replaceMacrosInCommand()
+ */
+
+    QString fwscript = fwcompiler::CompilerDriver::escapeFileName(
+        QFileInfo(cnf->remote_script).fileName());
+
+    if (fwscript.indexOf(":")!=-1) fwscript = fwscript.section(':', 1, 1);
+
+    cnf->fwscript = fwscript;
+
     if (fwbdebug)
     {
         qDebug() << "Macro substitutions:";
