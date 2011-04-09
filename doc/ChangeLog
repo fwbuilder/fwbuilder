@@ -1,5 +1,9 @@
 2011-04-08  vadim  <vadim@netcitadel.com>
 
+	* clusterMembersDialog.cpp (createMember): see SF bug 3211769
+	"Member interfaces not sorted". Sorting interfaces by name in the
+	dialog where user adds them to the cluster member group.
+
 	* os/ios.xml: see #2330 "Crash when creating a cluster of IOS
 	router firewalls". Added support for basic IOS router clusters.
 	No failover protocol support at this time, but the cluster can be

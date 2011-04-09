@@ -317,6 +317,8 @@ clusterMembersDialog::createMember(Firewall *fw,
     }
 
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+    interfaces.sort(FWObjectNameCmpPredicate());
+
     list<FWObject*>::iterator iface_i;
     for (iface_i=interfaces.begin(); iface_i != interfaces.end(); ++iface_i)
     {
