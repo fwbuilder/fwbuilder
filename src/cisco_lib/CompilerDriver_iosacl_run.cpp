@@ -141,6 +141,27 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
                                  QStringList(""), QStringList("fw"),
                                  QStringList(""));
 
+        /* Now that all checks are done, we can drop copies of cluster
+         * interfaces that were added to the firewall by
+         * CompilerDriver::populateClusterElements()
+         */
+        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*> copies_of_cluster_interfaces;
+        for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+
+            if (iface->getOptionsObject()->getBool("cluster_interface"))
+                copies_of_cluster_interfaces.push_back(iface);
+        }
+        while (copies_of_cluster_interfaces.size())
+        {
+            fw->remove(copies_of_cluster_interfaces.front());
+            copies_of_cluster_interfaces.pop_front();
+        }
+
+
         FWOptions* options = fw->getOptionsObject();
 
         string fwvers = fw->getStr("version");
