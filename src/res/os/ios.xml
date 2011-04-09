@@ -6,6 +6,7 @@
       <compiler>fwb_iosacl</compiler>
       <family>ios</family>
       <dialog>ios</dialog>
+      <cluster_dialog>basic</cluster_dialog>
 
       <options>
         <user_can_change_install_dir>true</user_can_change_install_dir>
