@@ -1933,7 +1933,7 @@
             <item>
              <widget class="QSpinBox" name="pix_log_interval">
               <property name="maximum">
-               <number>10000</number>
+               <number>600</number>
               </property>
              </widget>
             </item>
