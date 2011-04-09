@@ -418,10 +418,12 @@ the firewall in the &quot;advanced&quot; settings dialog of the firewall object.
   <tabstop>uname</tabstop>
   <tabstop>pwd</tabstop>
   <tabstop>epwd</tabstop>
+  <tabstop>rememberPass</tabstop>
   <tabstop>backupConfigFile</tabstop>
   <tabstop>saveDiff</tabstop>
   <tabstop>saveStandby</tabstop>
   <tabstop>altAddress</tabstop>
+  <tabstop>test</tabstop>
   <tabstop>quiet</tabstop>
   <tabstop>verbose</tabstop>
   <tabstop>stripComments</tabstop>
@@ -429,6 +431,7 @@ the firewall in the &quot;advanced&quot; settings dialog of the firewall object.
   <tabstop>copyFWB</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
+  <tabstop>cancelAllButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
