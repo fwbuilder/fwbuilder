@@ -23,7 +23,24 @@
         <supports_metric>True</supports_metric>
         <supports_routing_itf>True</supports_routing_itf>
         <supports_advanced_interface_options>False</supports_advanced_interface_options>
+        <supports_cluster>True</supports_cluster>
       </capabilities>
+
+      <protocols>
+        <failover>
+          <string>none,None</string>
+        </failover>
+        <state_sync>
+          <string>none,None</string>
+        </state_sync>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+          <dialog></dialog>
+        </none>
+      </protocols>
 
       <interfaces>
         <cluster>

@@ -1,5 +1,11 @@
 2011-04-08  vadim  <vadim@netcitadel.com>
 
+	* os/ios.xml: see #2330 "Crash when creating a cluster of IOS
+	router firewalls". Added support for basic IOS router clusters.
+	No failover protocol support at this time, but the cluster can be
+	configured with protocol "None" and fwbuilder will do address
+	substitutions at compile time.
+
 	* PolicyCompiler_cisco.cpp (processNext): see #2308 "ASA rules
 	with service set to "http" and destination set to asa firewall
 	object should generate different command syntax". Policy rules
