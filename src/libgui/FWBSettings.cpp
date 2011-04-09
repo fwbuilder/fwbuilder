@@ -291,7 +291,7 @@ void FWBSettings::init(bool force_first_time_run)
     ok = contains(startupActionSetpath);
     if (!ok) setStartupAction(2);
 
-    ok = getShowDirectionText();
+    ok = contains(showDirectionText);
     if (!ok) setShowDirectionText(true);
 
 #ifdef _WIN32

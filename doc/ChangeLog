@@ -1,5 +1,8 @@
 2011-04-08  vadim  <vadim@netcitadel.com>
 
+	* FWBSettings.cpp (init): fixed bug (no #): "Show text
+	description in rule columns" does not persist across sessions
+
 	* clusterMembersDialog.cpp (createMember): see SF bug 3211769
 	"Member interfaces not sorted". Sorting interfaces by name in the
 	dialog where user adds them to the cluster member group.
