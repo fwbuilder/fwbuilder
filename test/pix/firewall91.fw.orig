@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:21 2011 PDT by vadim
+!  Generated Fri Apr  8 18:05:59 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -131,7 +131,6 @@ exit
 object network outside_range.0
   range 22.22.22.21 22.22.22.25
 exit
-
 
 !################
 ! 

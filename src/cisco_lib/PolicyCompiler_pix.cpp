@@ -544,7 +544,10 @@ void PolicyCompiler_pix::compile()
 
     add( new telnetToFirewall(
              "separate rules controlling telnet to firewall"));
-    add( new sshToFirewall("separate rules controlling ssh to firewall" ));
+    add( new sshToFirewall(
+             "separate rules controlling ssh to firewall" ));
+    add( new httpToFirewall(
+             "separate rules controlling http to firewall"));
 
     add( new separateSrcPort("split rules matching source ports"));
     add( new separateCustom("split rules matching custom services"));

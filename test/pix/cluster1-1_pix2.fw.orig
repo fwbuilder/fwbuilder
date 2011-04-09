@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:25 2011 PDT by vadim
+!  Generated Fri Apr  8 18:06:03 2011 PDT by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -147,7 +147,6 @@ object-group network id56627X61097.src.net.0
   network-object host 192.0.2.253 
 exit
 
-
 !################
 ! 
 ! Rule  0 (Ethernet0.101)
@@ -160,10 +159,10 @@ access-list outside_in deny   ip 10.3.14.0 255.255.255.0 any log 3 interval 300
 ! Rule  1 (global)
 ! SSH Access to firewall is permitted
 ! only from internal network
-ssh    10.3.14.0 255.255.255.0 inside
+ssh 10.3.14.0 255.255.255.0 inside
 ! 
 ! Rule  2 (global)
-ssh    10.3.14.0 255.255.255.0 inside
+ssh 10.3.14.0 255.255.255.0 inside
 ! 
 ! Rule  3 (global)
 ! Firewall uses one of the machines

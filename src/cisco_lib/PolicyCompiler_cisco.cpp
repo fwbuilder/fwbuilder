@@ -31,6 +31,7 @@
 #include "NamedObjectsManager.h"
 
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/IPService.h"
@@ -493,16 +494,22 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::processNext()
  */
 bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_cisco *cisco_comp=dynamic_cast<PolicyCompiler_cisco*>(compiler);
-//    RuleElementSrc *src=rule->getSrc();
-//    RuleElementDst *dst=rule->getDst();
-    RuleElementSrv *srv=rule->getSrv();
-    Address  *a=compiler->getFirstDst(rule);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyCompiler_cisco *cisco_comp =
+        dynamic_cast<PolicyCompiler_cisco*>(compiler);
+
+    RuleElementSrv *srv = rule->getSrv();
+    Address *a = compiler->getFirstDst(rule);
     assert(a!=NULL);
 
-    if (rule->getAction()==PolicyRule::Accept && 
-        compiler->complexMatch(a,cisco_comp->fw)) 
+    if (rule->getAction()==PolicyRule::Accept
+        &&
+        (
+            (Cluster::cast(a) != NULL && Cluster::cast(a)->hasMember(compiler->fw))
+            ||
+            a->getId() == compiler->fw->getId()
+        )
+    )
     {
         std::list<FWObject*> cl;
         for (list<FWObject*>::iterator i1=srv->begin(); i1!=srv->end(); ++i1) 
@@ -515,6 +522,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
                 TCPUDPService::cast(s)->getDstRangeStart()==port && 
                 TCPUDPService::cast(s)->getDstRangeEnd()==port) cl.push_back(obj);
         }
+
         if (!cl.empty()) 
         {
             PolicyRule  *r = compiler->dbcopy->createPolicyRule();
@@ -527,7 +535,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
             RuleElementSrv *nsrv = r->getSrv();
             nsrv->clearChildren();
             nsrv->addRef( cl.front() );
-            r->setBool("ssh_telnet_cmd",true);
+            r->setBool("tcp_service_to_fw", true);
             tmp_queue.push_back(r);
 
             for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  

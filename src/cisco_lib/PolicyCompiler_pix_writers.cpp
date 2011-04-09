@@ -308,8 +308,6 @@ string PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
     RuleElementSrc *rel = rule->getSrc();
     Service *srv = compiler->getFirstSrv(rule);
 
-//    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-
     RuleElementItf *intf_re = rule->getItf();
     Interface *rule_iface = Interface::cast(
         FWObjectReference::getObject(intf_re->front()));
@@ -319,54 +317,43 @@ string PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
 
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); ++i)
     {
-        FWObject *o = *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-//        Address *a;
+        FWObject *o = FWReference::getObject(*i);
 
         if (dynamic_cast<PIXObjectGroup*>(o)!=NULL)
         {
             for (FWObject::iterator j=o->begin(); j!=o->end(); ++j)
             {
-                FWObject *o1 = *j;
-                if (FWReference::cast(o1)!=NULL) 
-                    o1=FWReference::cast(o1)->getPointer();
-                Address *a=Address::cast(o1);
+                Address *a = Address::cast(FWReference::getObject(*j));
                 assert(a!=NULL);
-                str << _printSingleSSHTelnetCommand(
-                    port, a, rule_iface->getLabel());
+                str << _printSingleSSHTelnetCommand(port, a, rule_iface->getLabel());
             }
         } else
         {
-            Address *a=Address::cast(o);
+            Address *a = Address::cast(o);
             assert(a!=NULL);
-            str << _printSingleSSHTelnetCommand(
-                port, a, rule_iface->getLabel());
+            str << _printSingleSSHTelnetCommand(port, a, rule_iface->getLabel());
         }
     }
 
     return str.str();
 }
 
-string PolicyCompiler_pix::PrintRule::_printSingleSSHTelnetCommand(int port,
-                                                Address *a,
-                                                const string &interfaceLabel)
+string PolicyCompiler_pix::PrintRule::_printSingleSSHTelnetCommand(
+    int port, Address *a, const string &interfaceLabel)
 {
     string res;
 
-    if (port==23) 
+    if (port==22) res = "ssh ";
+    if (port==23) res = "telnet ";
+    if (port==80) res = "http ";
+
+    if (!res.empty())
     {
-        res += "telnet ";
         res += a->getAddressPtr()->toString() + " " 
             + a->getNetmaskPtr()->toString() + " "
             + interfaceLabel     + "\n";
     }
-    if (port==22) 
-    {
-        res += "ssh    ";
-        res += a->getAddressPtr()->toString() + " " 
-            + a->getNetmaskPtr()->toString() + " "
-            + interfaceLabel     + "\n";
-    }
+
     return res;
 }
 
@@ -398,7 +385,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 //        return true;
     } 
 
-    if (rule->getBool("ssh_telnet_cmd"))
+    if (rule->getBool("tcp_service_to_fw"))
     {
         compiler->output << _printSSHTelnetCommand(rule);
         return true;

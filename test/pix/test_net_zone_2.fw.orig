@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 11:00:37 2011 PDT by vadim
+!  Generated Fri Apr  8 18:06:03 2011 PDT by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -60,6 +60,8 @@ no sysopt nodnsalias inbound
 no sysopt nodnsalias outbound
 no sysopt route dnat
 floodguard disable
+
+
 
 
 !################

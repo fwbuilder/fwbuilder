@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:16 2011 PDT by vadim
+!  Generated Fri Apr  8 18:05:54 2011 PDT by vadim
 !
 ! Compiled for pix 6.2
 ! Outbound ACLs: not supported
@@ -78,14 +78,16 @@ clear icmp
 clear telnet
 
 
+
+
 !################
 ! 
 ! Rule  0 (eth0)
-ssh    0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 inside
 access-list inside_acl_in permit tcp any any eq 22 
 ! 
 ! Rule  1 (eth0)
-ssh    0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 inside
 ! 
 ! Rule  2 (eth0)
 icmp permit any 3  inside
@@ -96,11 +98,11 @@ access-list inside_acl_in permit icmp any any 3
 access-list inside_acl_in permit icmp any host 192.168.1.1 3 
 ! 
 ! Rule  4 (eth1)
-ssh    0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 outside
 access-list outside_acl_in permit tcp any any eq 22 
 ! 
 ! Rule  5 (eth1)
-ssh    0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 outside
 ! 
 ! Rule  6 (eth1)
 icmp permit any 3  outside
@@ -125,17 +127,17 @@ access-list outside_acl_in permit icmp any host 22.22.22.22 3
 access-list dmz_acl_in permit icmp any host 192.168.2.1 3 
 ! 
 ! Rule  10 (global)
-ssh    0.0.0.0 0.0.0.0 inside
-ssh    0.0.0.0 0.0.0.0 outside
-ssh    0.0.0.0 0.0.0.0 dmz
+ssh 0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 dmz
 access-list inside_acl_in permit tcp any any eq 22 
 access-list outside_acl_in permit tcp any any eq 22 
 access-list dmz_acl_in permit tcp any any eq 22 
 ! 
 ! Rule  11 (global)
-ssh    0.0.0.0 0.0.0.0 inside
-ssh    0.0.0.0 0.0.0.0 outside
-ssh    0.0.0.0 0.0.0.0 dmz
+ssh 0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 dmz
 ! 
 ! Rule  12 (global)
 telnet 0.0.0.0 0.0.0.0 inside

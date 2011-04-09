@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:19 2011 PDT by vadim
+!  Generated Fri Apr  8 18:05:57 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -105,7 +105,6 @@ object network hostA:eth0.0
   host 192.168.1.10
 exit
 
-
 !################
 ! 
 ! Rule  0 (global)
@@ -133,8 +132,8 @@ access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80
 ! test rule using translated address in dst
 ! firewall81:Policy:3: warning: Object firewall81:FastEthernet1:ip that represents translated address in a NAT rule 0 (NAT) is used in a policy rule of ASA v8.3 firewall. Starting with v8.3, ASA requires using real IP addresses in the firewall policy rules. 
 
-access-list inside_acl_in permit tcp any host 192.168.1.1 eq 80 
-access-list outside_acl_in permit tcp any host 22.22.22.22 eq 80 
+http 0.0.0.0 0.0.0.0 inside
+http 0.0.0.0 0.0.0.0 outside
 ! 
 ! Rule  4 (global)
 ! for #1942

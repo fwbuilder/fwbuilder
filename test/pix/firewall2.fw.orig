@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:14 2011 PDT by vadim
+!  Generated Fri Apr  8 18:05:53 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -73,7 +73,6 @@ clear telnet
 clear object-group
 
 
-
 object-group service id3D6EF08C.srv.tcp.0 tcp
   port-object eq 80
   port-object eq 119
@@ -83,7 +82,6 @@ object-group network id3D8FCCDE.src.net.0
   network-object host 192.168.1.10 
   network-object host 192.168.1.20 
 exit
-
 
 !################
 ! 

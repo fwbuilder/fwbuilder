@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:15 2011 PDT by vadim
+!  Generated Fri Apr  8 18:05:54 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -83,6 +83,8 @@ floodguard enable
 
 
 fixup protocol ftp 21
+
+
 
 
 !################

@@ -1,5 +1,13 @@
 2011-04-08  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_cisco.cpp (processNext): see #2308 "ASA rules
+	with service set to "http" and destination set to asa firewall
+	object should generate different command syntax". Policy rules
+	that have firewall object in Destination and http object in
+	Service now generate "http" commands. This is similar to how
+	fwbuilder generates "ssh", "telnet" and "icmp" commands to permit
+	corresponding services to the firewall itself.
+
 	* pix.g (static_starts_with_tcp_udp): more fixes for import of
 	PIX/ASA "static" command in different variations. See #2334
 

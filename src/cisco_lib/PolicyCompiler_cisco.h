@@ -291,7 +291,7 @@ protected:
         class telnetToFirewall : public tcpServiceToFW
         {
             public:
-            telnetToFirewall(const std::string &n):tcpServiceToFW(23,n) {}
+            telnetToFirewall(const std::string &n):tcpServiceToFW(23, n) {}
         };
         friend  class telnetToFirewall;
 
@@ -301,9 +301,19 @@ protected:
         class sshToFirewall : public tcpServiceToFW
         {
             public:
-            sshToFirewall(const std::string &n):tcpServiceToFW(22,n) {}
+            sshToFirewall(const std::string &n):tcpServiceToFW(22, n) {}
         };
         friend  class sshToFirewall;
+
+        /**
+         * this processor splits rules if it finds telnet to firewall
+         */
+        class httpToFirewall : public tcpServiceToFW
+        {
+            public:
+            httpToFirewall(const std::string &n):tcpServiceToFW(80, n) {}
+        };
+        friend  class httpToFirewall;
 
         /**
          * replace fw with one of its interfaces in SRC in interface

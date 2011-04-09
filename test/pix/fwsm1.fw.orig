@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:22 2011 PDT by vadim
+!  Generated Fri Apr  8 18:06:01 2011 PDT by vadim
 !
 ! Compiled for fwsm 2.3
 ! Outbound ACLs: supported
@@ -105,7 +105,6 @@ clear access-list outside_acl_in
 clear icmp
 clear telnet
 clear object-group
-
 
 
 object-group network id444A03DE9567.dst.net.0
@@ -220,7 +219,6 @@ object-group service id444A04819567.srv.tcp.0 tcp
   port-object eq 7100
 exit
 
-
 !################
 access-list mode auto
 
@@ -244,7 +242,7 @@ access-list outside_acl_in permit icmp any any 3
 access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 0 interval 300
 ! 
 ! Rule  4 (ethernet0)
-ssh    192.168.1.0 255.255.255.0 inside
+ssh 192.168.1.0 255.255.255.0 inside
 ! 
 ! Rule  5 (ethernet0)
 access-list inside_acl_in permit tcp any object-group id444A03DE9567.dst.net.0 object-group id444A03DE9567.srv.tcp.0 
@@ -303,9 +301,9 @@ access-list inside_acl_in permit tcp any object-group id444A044E9567.dst.net.0 e
 access-list dmz_acl_in permit tcp any object-group id444A044E9567.dst.net.0 eq 3128 
 ! 
 ! Rule  15 (global)
-ssh    0.0.0.0 0.0.0.0 outside
-ssh    0.0.0.0 0.0.0.0 inside
-ssh    0.0.0.0 0.0.0.0 dmz
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 dmz
 access-list outside_acl_in permit icmp any host 22.22.22.22 3 
 access-list inside_acl_in permit icmp any host 192.168.1.1 3 
 access-list dmz_acl_in permit icmp any host 192.168.2.1 3 

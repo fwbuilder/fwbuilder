@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3519
+!  Firewall Builder  fwb_pix v4.2.0.3522
 !
-!  Generated Thu Apr  7 10:50:23 2011 PDT by vadim
+!  Generated Fri Apr  8 18:06:02 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -95,6 +95,8 @@ clear icmp
 clear telnet
 
 
+
+
 !################
 ! 
 ! Rule  0 (global)
@@ -102,7 +104,7 @@ access-list inside_acl_in  remark 0 (global)
 access-list inside_acl_in permit ip 10.3.14.0 255.255.255.0 any 
 ! 
 ! Rule  1 (global)
-ssh    10.3.14.0 255.255.255.0 inside
+ssh 10.3.14.0 255.255.255.0 inside
 ! 
 ! Rule  2 (global)
 icmp permit any 0  outside

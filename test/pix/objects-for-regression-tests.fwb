@@ -1414,7 +1414,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1295222056" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1302311125" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2077,7 +2077,7 @@
           </PolicyRule>
           <PolicyRule id="id3D50CD96" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
-              <ObjectRef ref="sysid0"/>
+              <ObjectRef ref="net-Internal_net"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="fw-firewall2"/>
@@ -18124,14 +18124,14 @@ no sysopt nodnsalias outbound
         </Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1295466889" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id18865X29796" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1302310919" platform="pix" version="8.2" name="firewall80" comment="testing rules with broadcasts" ro="False">
         <NAT id="id18933X29796" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id70310X19497" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
             <ODst neg="False">
-              <ObjectRef ref="id86637X27607"/>
+              <ObjectRef ref="id21478X13826"/>
             </ODst>
             <OSrv neg="False">
               <ServiceRef ref="id21571X21575"/>

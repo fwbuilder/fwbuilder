@@ -75,7 +75,7 @@ bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
     tmp_queue.push_back(rule);
 
     bool icmp_cmd = rule->getBool("icmp_cmd");
-    bool ssh_telnet_cmd = rule->getBool("ssh_telnet_cmd");
+    bool tcp_service_to_fw = rule->getBool("tcp_service_to_fw");
 
 //    int interface_id = rule->getInterfaceId();
     RuleElementItf *intf_re = rule->getItf();
@@ -86,7 +86,7 @@ bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
     if (intf_re->isAny() && rule->getDirection()==PolicyRule::Both)
         return true;
 
-    if (intf_re->isAny() && !icmp_cmd && !ssh_telnet_cmd && (
+    if (intf_re->isAny() && !icmp_cmd && !tcp_service_to_fw && (
             rule->getDirection()==PolicyRule::Inbound ||
             rule->getDirection()==PolicyRule::Outbound)
     ) compiler->abort(rule, "Direction set without interface");
