@@ -29,6 +29,7 @@
 ##
 ## Conditional statements use the following variables:
 ##
+## bridging_firewall          the firewall is a bridge
 ## ipforw                     should generate rules in FORWARD chain
 ## accept_established         should add rules to match --state ESTABLISHED,RELATED
 ## mgmt_access                should add rules for management ssh access
@@ -89,6 +90,12 @@
 {{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
 {{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
 {{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{if bridging_firewall}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{endif}}
 {{endif}}
 
 {{if drop_invalid}}

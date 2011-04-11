@@ -1,5 +1,11 @@
 2011-04-10  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_PrintRule.cpp (_printOptionalGlobalRules): SF bug
+	3178186 "Add ND/NS allow rules for the FORWARD chain". Rules that are
+	added automatically to ipv6 Linux firewall to permit neighbor discovery
+	packets should be also added to the FORWARD chain if the firewall is
+	a bridge.
+
 	* ObjectManipulator_create_new.cpp (actuallyCreateObject): see #2229
 	"Multiple new objects with the same name". The GUI should automatically
 	choose unique object names for new objects.

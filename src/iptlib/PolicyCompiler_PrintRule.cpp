@@ -1695,6 +1695,9 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
         "drop_new_tcp_with_no_syn",
         ! compiler->getCachedFwOpt()->getBool("accept_new_tcp_with_no_syn")); 
 
+    configlet.setVariable(
+        "bridging_firewall",
+        compiler->getCachedFwOpt()->getBool("bridging_fw"));
 
     configlet.setVariable(
         "add_rules_for_ipv6_neighbor_discovery",
