@@ -380,7 +380,10 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     assert(nobj!=NULL);
     if (copyFrom!=NULL) nobj->duplicate(copyFrom, true);
     if (nobj->isReadOnly()) nobj->setReadOnly(false);
-    nobj->setName( string(objName.toUtf8().constData()) );
+
+    QString new_name = makeNameUnique(parent, objName, objType);
+
+    nobj->setName( string(new_name.toUtf8().constData()) );
 
     if (objType == DNSName::TYPENAME)
     {

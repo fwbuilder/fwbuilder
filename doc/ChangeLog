@@ -1,5 +1,9 @@
 2011-04-10  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator_create_new.cpp (actuallyCreateObject): see #2229
+	"Multiple new objects with the same name". The GUI should automatically
+	choose unique object names for new objects.
+
 	* platforms.cpp (setInterfaceTypes): see #2224 "FreeBSD - Bridge
 	interfaces with the name vlan<xx> don't show as Bridge Port
 	Interfaces". This actually applies to all OS where we support vlan
