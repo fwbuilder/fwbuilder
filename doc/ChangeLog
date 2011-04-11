@@ -1,5 +1,10 @@
 2011-04-10  vadim  <vadim@netcitadel.com>
 
+	* utils.cpp (expand_interface_with_phys_address): see #2324 "NAT +
+	MAC-matching rules not generated properly". Iptables NAT rules
+	matching a group of host objects with both IP and MAC addresses each
+	in "Original Source" were not generated properly.
+
 	* PolicyCompiler_PrintRule.cpp (_printOptionalGlobalRules): SF bug
 	3178186 "Add ND/NS allow rules for the FORWARD chain". Rules that are
 	added automatically to ipv6 Linux firewall to permit neighbor discovery

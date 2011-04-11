@@ -29,32 +29,33 @@
 #include "OSConfigurator_linux24.h"
 #include "utils.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/ICMP6Service.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
-#include "fwbuilder/TagService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/Interface.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/physAddress.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Cluster.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/DNSName.h"
-#include "fwbuilder/UserService.h"
-#include "fwbuilder/FailoverClusterGroup.h"
-#include "fwbuilder/StateSyncClusterGroup.h"
-#include "fwbuilder/XMLTools.h"
 #include "fwbuilder/ObjectMatcher.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/physAddress.h"
 
 #include "combinedAddress.h"
 
@@ -302,91 +303,16 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
 
 void PolicyCompiler_ipt::_expand_interface(Rule *rule,
                                            Interface *iface,
-                                           std::list<FWObject*> &ol,
+                                           std::list<FWObject*> &list_result,
                                            bool expand_cluster_interfaces_fully)
 {
     std::list<FWObject*> ol1;
-    std::list<FWObject*> lipaddr;
-    std::list<FWObject*> lother;
-    physAddress *pa = NULL;
 
-    Compiler::_expand_interface(rule, iface, ol1, expand_cluster_interfaces_fully);
+    Compiler::_expand_interface(
+        rule, iface, ol1, expand_cluster_interfaces_fully);
 
-    for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
-    {
-        if ((*j)->getTypeName() == IPv4::TYPENAME)
-        {
-            lipaddr.push_back(*j);
-            continue;
-        }
-        if (physAddress::cast(*j)!=NULL)
-        {
-            pa = physAddress::cast(*j);
-            continue;
-        }
-        lother.push_back(*j);
-    }
-
-/* 
- * if pa==NULL then this is trivial case: there is no physical address
- */
-    if (pa==NULL)
-    {
-        ol.insert(ol.end(),ol1.begin(),ol1.end());
-        return;
-    }
-
-/* At this point we have physAddress object and have to deal with it
- *
- * Compiler::_expand_interface picks all IPv4 objects and physAddress
- * object under Interface; it can also add interface object(s) to
- * the list.
- *
- * We have two possibilities now: there could be IPv4 objects or
- * not. In either case list ol1 may contain also interface object(s).
- * If there are IPv4 objects, we replace them with combinedAddress
- * objects which store information about IPv4 address and physAddress pa.
- * If there were no IPv4 objects, then we pass physAddress along.
- * We always copy interface  objects to the output list.
- * 
- *
- *
- * we use physAddress only if Host option "use_mac_addr_filter" of the
- * parent Host object is true
- */
-    FWObject  *p;
-    FWOptions *hopt;
-    p=iface->getParent();
-    bool use_mac= (Host::cast(p)!=NULL && 
-                   (hopt=Host::cast(p)->getOptionsObject())!=NULL &&
-                   hopt->getBool("use_mac_addr_filter") ); 
-
-
-
-    if (lipaddr.empty())    ol.push_back(pa);
-    else
-    {
-        std::list<FWObject*>::iterator j=lipaddr.begin();
-        for ( ; j!=lipaddr.end(); j++)
-        {
-            //const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
-            const InetAddr *ip_addr = Address::cast(*j)->getAddressPtr();
-            const InetAddr *ip_netm = Address::cast(*j)->getNetmaskPtr();
-            if (use_mac)
-            {
-                combinedAddress *ca = new combinedAddress();
-                persistent_objects->add(ca);
-                ca->setName( "CA("+iface->getName()+")" );
-                ca->setAddress( *ip_addr );
-                ca->setNetmask( *ip_netm );
-                ca->setPhysAddress( pa->getPhysAddress() );
-
-                ol.push_back(ca);
-            } else
-                ol.push_back(*j);
-        }
-    }
-    ol.insert(ol.end(),lother.begin(),lother.end());
+    // see utils.cpp
+    expand_interface_with_phys_address(this, rule, iface, ol1, list_result);
 }
 
 string PolicyCompiler_ipt::getActionOnReject(PolicyRule *rule)

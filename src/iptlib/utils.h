@@ -21,12 +21,24 @@
 
 */
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Library.h"
 
 #include <QMap>
 #include <QString>
+
+namespace libfwbuilder
+{
+    class FWObject;
+    class FWObjectDatabase;
+    class Firewall;
+    class Interface;
+    class Library;
+    class Rule;
+};
+
+namespace fwcompiler
+{
+    class Compiler;
+};
 
 
 extern void build_interface_groups(
@@ -34,3 +46,11 @@ extern void build_interface_groups(
     libfwbuilder::Library *persistent_objects,
     libfwbuilder::Firewall *fw, bool ipv6,
     QMap<QString, libfwbuilder::FWObject*> &regular_interfaces);
+
+
+extern void expand_interface_with_phys_address(
+    fwcompiler::Compiler *compiler,
+    libfwbuilder::Rule *rule,
+    libfwbuilder::Interface *iface,
+    std::list<libfwbuilder::FWObject*> &list_temp,
+    std::list<libfwbuilder::FWObject*> &list_result);

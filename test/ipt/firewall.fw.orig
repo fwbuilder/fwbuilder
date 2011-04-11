@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.2.0.3523
 #
-#  Generated Sun Apr 10 17:51:36 2011 PDT by vadim
+#  Generated Sun Apr 10 18:47:47 2011 PDT by vadim
 #
 # files: * firewall.fw /etc/fw/firewall.fw
 #
@@ -20,6 +20,13 @@
 # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
 # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
 # firewall:NAT:11: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
+# firewall:NAT:16: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
+# firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
+# firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
+# firewall:NAT:: warning: Empty inet address in object id3E0BD74A
+# firewall:NAT:: warning: Empty inet address in object id3E0BD74A
+# firewall:NAT:: warning: Empty inet address in object id3DB0B351-pa
+# firewall:NAT:: warning: Empty inet address in object id3DB0B351-pa
 # firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
 # firewall:NAT:: warning: Empty inet address in object id3BF1B3E8-pa
 
@@ -448,16 +455,22 @@ script_body() {
     echo "Rule 14 (NAT)"
     # 
     # hsould match mac and ip addresses
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:71  -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:71  -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:70  -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:70  -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:6f -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:6f -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
     # 
     # Rule 15 (NAT)
     # 
     echo "Rule 15 (NAT)"
     # 
     # ensure generated rules match different mac addresses
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:6f -s 192.168.1.10   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
+    $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source 00:10:4b:de:e9:6f -s 192.168.1.10   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -m mac --mac-source aa:bb:cc:dd:ee:ff -s 192.168.1.15   -d 222.222.222.222  --dport 80 -j DNAT --to-destination 192.168.1.10
     # 
@@ -466,6 +479,8 @@ script_body() {
     echo "Rule 16 (NAT)"
     # 
     # should match mac and ip addresses
+    # firewall:NAT:16: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
+
     $IPTABLES -t nat -N Cid445F52DE31658.0
     $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid445F52DE31658.0
     $IPTABLES -t nat -A Cid445F52DE31658.0  -d 61.150.47.112  -j RETURN
@@ -1361,7 +1376,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Apr 10 17:51:36 2011 by vadim"
+        log "Activating firewall script generated Sun Apr 10 18:47:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

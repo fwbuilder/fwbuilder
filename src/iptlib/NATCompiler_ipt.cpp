@@ -31,27 +31,28 @@
 
 #include "fwcompiler/OSConfigurator.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/RuleElement.h"
-#include "fwbuilder/NAT.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/CustomService.h"
-#include "fwbuilder/TagService.h"
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Cluster.h"
-#include "fwbuilder/Host.h"
+#include "fwbuilder/CustomService.h"
+#include "fwbuilder/DNSName.h"
 #include "fwbuilder/FailoverClusterGroup.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/Interface.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/DNSName.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Network.h"
 #include "fwbuilder/ObjectMatcher.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
 
 #include "config.h"
 
@@ -230,53 +231,16 @@ int NATCompiler_ipt::prolog()
 
 void NATCompiler_ipt::_expand_interface(Rule *rule,
                                         Interface *iface,
-                                        std::list<FWObject*> &ol,
+                                        std::list<FWObject*> &list_result,
                                         bool expand_cluster_interfaces_fully)
 {
-    std::list<FWObject*> nol;
+    std::list<FWObject*> ol1;
 
-    Compiler::_expand_interface(rule, iface, ol, expand_cluster_interfaces_fully);
+    Compiler::_expand_interface(
+        rule, iface, ol1, expand_cluster_interfaces_fully);
 
-    physAddress *pa=iface->getPhysicalAddress();
-/*
- * we use physAddress only if Host option "use_mac_addr_filter" of the
- * parent Host object is true
- */
-    FWObject  *p;
-    FWOptions *hopt;
-    p=iface->getParent();
-    bool use_mac= (Host::cast(p)!=NULL && 
-                   (hopt=Host::cast(p)->getOptionsObject())!=NULL &&
-                   hopt->getBool("use_mac_addr_filter") ); 
-
-/*
- * Compiler::_expandInterface picks all IPv4 objects under Interface;
- * it can also put interface itself into the list ol.
- */
-    for (std::list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); j++)
-    {
-        if (physAddress::cast(*j)!=NULL) continue;
-
-        //const InetAddrMask *ipv4 = Address::cast(*j)->getAddressObjectInetAddrMask();
-        const InetAddr *ip_addr = Address::cast(*j)->getAddressPtr();
-        const InetAddr *ip_netm = Address::cast(*j)->getNetmaskPtr();
-
-
-        if (ip_addr!=NULL && use_mac && pa!=NULL)
-        {
-            combinedAddress *ca = new combinedAddress();
-            persistent_objects->add(ca);
-            dbcopy->addToIndex(ca);
-            ca->setName( "CA("+iface->getName()+")" );
-            ca->setAddress( *ip_addr );
-            ca->setNetmask( *ip_netm );
-            ca->setPhysAddress( pa->getPhysAddress() );
-            nol.push_back(ca);
-        } else
-            nol.push_back(*j); // if this is not IPv4, or we do not need to deal with MAC address
-    }
-    ol.clear();
-    ol=nol;
+    // see utils.cpp
+    expand_interface_with_phys_address(this, rule, iface, ol1, list_result);
 }
 
 bool compare_addresses_ptr(const InetAddr* a1, const InetAddr* a2)
