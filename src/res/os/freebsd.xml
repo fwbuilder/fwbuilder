@@ -76,6 +76,7 @@
         </ethernet>
         <bridge>
           <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
           <string>unknown,Unknown</string>
         </bridge>
       </subinterfaces>

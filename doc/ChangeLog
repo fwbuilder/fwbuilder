@@ -1,3 +1,20 @@
+2011-04-10  vadim  <vadim@netcitadel.com>
+
+	* platforms.cpp (setInterfaceTypes): see #2224 "FreeBSD - Bridge
+	interfaces with the name vlan<xx> don't show as Bridge Port
+	Interfaces". This actually applies to all OS where we support vlan
+	and bridge interfaces. Fwbuilder GUI should allow the user to set
+	subinterface type to both "ethernet" and "vlan" when its parent
+	interface has type "bridge". Setting subinterface type to
+	"ethernet" makes it bridge port, while setting the type to "vlan"
+	signals policy compiler that it should generate code to configure
+	real vlan interface. If the name of the subinterface does not
+	include the name of the parent, such as "vlan101", or when the
+	name does not match vlan ID, such as "vlan8101", global
+	preferences option "Verify interface names and autoconfigure their
+	parameters..." should turned off. The option is located in the
+	Preferences dialog, tab "Objects".
+
 2011-04-08  vadim  <vadim@netcitadel.com>
 
 	* FWBSettings.cpp (init): fixed bug (no #): "Show text

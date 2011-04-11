@@ -565,44 +565,47 @@ void setInterfaceTypes(QComboBox *iface_type,
         getSubInterfaceTypes(Interface::cast(iface->getParent()), mapping);
     else getInterfaceTypes(iface, mapping);
 
-    // #335 : if interface name matches naming convention for vlan
-    // interfaces and vlan type is in the list that came from the
-    // resource file, then leave only vlan in the list we return.
-    // Note that if resource file says this subint can not be vlan, we
-    // dan't return vlan type on the list even if its name looks like
-    // it could be one.
-    FWObject *p = iface->getParentHost();
-    assert(p!=NULL);
-    QString host_os = p->getStr("host_OS").c_str();
-    QString obj_name = iface->getName().c_str();
-
-    Resources* os_res = Resources::os_res[p->getStr("host_OS")];
-    string os_family = p->getStr("host_OS");
-    if (os_res!=NULL)
-        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-    std::auto_ptr<interfaceProperties> int_prop(
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            os_family));
-    if (int_prop->looksLikeVlanInterface(obj_name))
+    if (st->getBool("Objects/Interface/autoconfigureInterfaces"))
     {
-        QString parent_name = iface->getParent()->getName().c_str();
-        QString err;
-        if (int_prop->isValidVlanInterfaceName(obj_name, parent_name, err))
+        // #335 : if interface name matches naming convention for vlan
+        // interfaces and vlan type is in the list that came from the
+        // resource file, then leave only vlan in the list we return.
+        // Note that if resource file says this subint can not be vlan, we
+        // dan't return vlan type on the list even if its name looks like
+        // it could be one.
+        FWObject *p = iface->getParentHost();
+        assert(p!=NULL);
+        QString host_os = p->getStr("host_OS").c_str();
+        QString obj_name = iface->getName().c_str();
+
+        Resources* os_res = Resources::os_res[p->getStr("host_OS")];
+        string os_family = p->getStr("host_OS");
+        if (os_res!=NULL)
+            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                os_family));
+        if (int_prop->looksLikeVlanInterface(obj_name))
         {
-            // iface can be valid vlan interface. Leave only vlan type
-            // in the list if it was there to begin with. 
-            for (list<QStringPair>::iterator it=mapping.begin();
-                 it!=mapping.end(); ++it)
+            QString parent_name = iface->getParent()->getName().c_str();
+            QString err;
+            if (int_prop->isValidVlanInterfaceName(obj_name, parent_name, err))
             {
-                QString itype = it->first;
-                QString rtype = it->second;
-                if (itype == "8021q")
+                // iface can be valid vlan interface. Leave only vlan type
+                // in the list if it was there to begin with. 
+                for (list<QStringPair>::iterator it=mapping.begin();
+                     it!=mapping.end(); ++it)
                 {
-                    mapping.clear();
-                    mapping.push_back(QStringPair(itype, rtype));
-                    mapping.push_back(QStringPair("unknown", "Unknown"));
-                    break;
+                    QString itype = it->first;
+                    QString rtype = it->second;
+                    if (itype == "8021q")
+                    {
+                        mapping.clear();
+                        mapping.push_back(QStringPair(itype, rtype));
+                        mapping.push_back(QStringPair("unknown", "Unknown"));
+                        break;
+                    }
                 }
             }
         }
