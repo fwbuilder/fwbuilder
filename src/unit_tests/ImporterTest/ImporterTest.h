@@ -6,8 +6,6 @@
 
   Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -57,10 +55,15 @@ public:
     void setUp();
     void IOSImporterTest();
     void IPTImporterTest();
-
+    void IPTImporterNoNatTest();
+    void IPTImporterParseVersionsTest();
+    
     CPPUNIT_TEST_SUITE(ImporterTest);
     CPPUNIT_TEST(IOSImporterTest);
     CPPUNIT_TEST(IPTImporterTest);
+    CPPUNIT_TEST(IPTImporterNoNatTest);
+    CPPUNIT_TEST(IPTImporterParseVersionsTest);
+    
     CPPUNIT_TEST_SUITE_END();
 
 };

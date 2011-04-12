@@ -28,6 +28,11 @@
 #include "ImporterTest.h"
 #include "fwbuilder/Resources.h"
 
+#include "FWWindow.h"
+#include "FWBSettings.h"
+#include "FWBApplication.h"
+#include "UserWorkflow.h"
+
 #include <QApplication>
 #include <QString>
 #include <string>
@@ -36,6 +41,11 @@
 
 int fwbdebug = 0;
 //QString user_name;
+FWWindow *mw = NULL; 
+FWBSettings *st = NULL; 
+FWBApplication *app = NULL; 
+UserWorkflow *wfl; 
+int sig = FWB_SIG; 
 std::string platform;
 
 int main(int argc, char** argv)

@@ -1,3 +1,9 @@
+2011-04-11  vadim  <vadim@netcitadel.com>
+
+	* iptables.g (comment): see #2336 Importer for iptables recognizes
+	version stored in the top comment by iptables-save and sets
+	version in the firewall object it creates.
+
 2011-04-10  vadim  <vadim@netcitadel.com>
 
 	* utils.cpp (expand_interface_with_phys_address): see #2324 "NAT +

@@ -58,6 +58,13 @@ extern int fwbdebug;
 using namespace std;
 using namespace libfwbuilder;
 
+// TODO: this should move to some common library, together with
+// getVersionsForPlatform() it uses. Currently these functions are
+// defined in libgui/platforms.cpp
+
+extern QString findBestVersionMatch(const QString &platform,
+                                    const QString &discovered_version);
+
 
 IPTImporter::IPTImporter(FWObject *lib,
                          std::istringstream &input,
@@ -1445,6 +1452,13 @@ Firewall* IPTImporter::finalize()
         fw->setStr("host_OS", "linux24");
         Resources::setDefaultTargetOptions("linux24" , fw);
         fw->setStr("version", "");  // default version "any"
+
+        string version = findBestVersionMatch(
+            "iptables", discovered_version.c_str()).toStdString();
+
+        if ( ! version.empty())
+            fw->setStr("version", version);
+
         fw->getManagementObject(); // creates management obj
 
         FWOptions  *fwopt = fw->getOptionsObject();

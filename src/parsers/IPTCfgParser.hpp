@@ -46,18 +46,21 @@ class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publ
     virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
     {
         importer->addMessageToLog("Parser error: " + ex.toString());
+        std::cerr << ex.toString() << std::endl;
     }
 
     /// Parser error-reporting function can be overridden in subclass
     virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser error: " + s);
+        std::cerr << s << std::endl;
     }
 
     /// Parser warning-reporting function can be overridden in subclass
     virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser warning: " + s);
+        std::cerr << s << std::endl;
     }
 
 #line 38 "IPTCfgParser.hpp"
@@ -159,10 +162,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 144;
+	static const int NUM_TOKENS = 145;
 #else
 	enum {
-		NUM_TOKENS = 144
+		NUM_TOKENS = 145
 	};
 #endif
 	

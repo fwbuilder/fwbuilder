@@ -825,7 +825,8 @@ int Importer::countRules()
         // This string is created in IPTImporter::getUnidirRuleSet()
         string rs_index = it->first;
         UnidirectionalRuleSet* rs = it->second;
-        n += rs->ruleset->getRuleSetSize();
+        if (rs->ruleset)
+            n += rs->ruleset->getRuleSetSize();
     }
     return n;
 }

@@ -1,0 +1,14 @@
+1: Version: 1.1.1
+3: New ruleset: filter / INPUT
+3: Default action: Accept
+4: New ruleset: filter / FORWARD
+4: Default action: Accept
+5: New ruleset: filter / OUTPUT
+5: Default action: Accept
+6: New ruleset: filter / CHAIN-1-INPUT
+6: Default action: Deny
+Could not find enough information in the data file to create firewall interface objects.
+
+9: Warning: Line 4: Added rule to reproduce default policy ACCEPT in filter/FORWARD
+9: Warning: Line 3: Added rule to reproduce default policy ACCEPT in filter/INPUT
+9: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT

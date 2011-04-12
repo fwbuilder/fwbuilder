@@ -1,0 +1,14 @@
+1: Version: 1.3.5
+3: New ruleset: filter / INPUT
+3: Default action: Accept
+4: New ruleset: filter / FORWARD
+4: Default action: Accept
+5: New ruleset: filter / OUTPUT
+5: Default action: Accept
+6: New ruleset: filter / RH-Firewall-1-INPUT
+6: Default action: Deny
+9: New interface: lo
+16: Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
+18: Warning: Line 4: Added rule to reproduce default policy ACCEPT in filter/FORWARD
+18: Warning: Line 3: Added rule to reproduce default policy ACCEPT in filter/INPUT
+18: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT

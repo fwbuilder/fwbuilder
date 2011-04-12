@@ -47,10 +47,11 @@ public:
 	IPTCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib);
 	IPTCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state);
 	ANTLR_USE_NAMESPACE(antlr)RefToken nextToken();
-	public: void mLINE_COMMENT(bool _createToken);
-	public: void mNEWLINE(bool _createToken);
+	public: void mIPTABLES_SAVE_HEADER(bool _createToken);
 	public: void mWhitespace(bool _createToken);
+	public: void mNEWLINE(bool _createToken);
 	protected: void mIPV4(bool _createToken);
+	protected: void mTHREE_COMPONENT_VERSION(bool _createToken);
 	protected: void mIPV6(bool _createToken);
 	protected: void mMAC_ADDRESS(bool _createToken);
 	protected: void mINT_CONST(bool _createToken);
@@ -164,8 +165,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_2;
 	static const unsigned long _tokenSet_3_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_3;
-	static const unsigned long _tokenSet_4_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
 };
 
 #endif /*INC_IPTCfgLexer_hpp_*/
