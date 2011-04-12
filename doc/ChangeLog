@@ -1,5 +1,11 @@
 2011-04-11  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_PrintRule.cpp (_printTarget): see #2235 "Modified
+	rule action for Continue". Rules with action "Continue" should
+	translate into iptables commands without "-j TARGET" parameter. If
+	such rule also has logging enabled, it should use target "-j LOG"
+	instead of generating additional chain.
+
 	* IPTImporter.cpp (pushPolicyRule): see #2206 Iptables commands with
 	no "-j TARGET" parameter should be imported using action "Continue".
 

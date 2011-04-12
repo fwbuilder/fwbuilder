@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3523
+#  Firewall Builder  fwb_ipt v4.2.0.3524
 #
-#  Generated Sun Apr 10 18:48:58 2011 PDT by vadim
+#  Generated Mon Apr 11 19:28:56 2011 PDT by vadim
 #
 # files: * firewall50.fw /etc/fw/firewall50.fw
 #
@@ -308,6 +308,17 @@ script_body() {
     $IPTABLES -A rule2_branch_0_3  -j DROP
     # ================ Table 'filter', rule set Policy
     # 
+    # Rule 0 (global)
+    # 
+    echo "Rule 0 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 192.168.1.0/24
+    $IPTABLES -A INPUT  -s 192.168.2.0/24
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24
+    $IPTABLES -A OUTPUT  -s 192.168.2.0/24
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24
+    $IPTABLES -A FORWARD  -s 192.168.2.0/24
+    # 
     # Rule 1 (global)
     # 
     echo "Rule 1 (global)"
@@ -407,7 +418,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Apr 10 18:48:58 2011 by vadim"
+        log "Activating firewall script generated Mon Apr 11 19:28:56 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

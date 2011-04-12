@@ -101,8 +101,11 @@ const std::list<std::string>& PolicyCompiler_ipt::getStandardChains()
         standard_chains.push_back("CONNMARK");
         standard_chains.push_back("QUEUE");
         standard_chains.push_back("CLASSIFY");
-        standard_chains.push_back("CUSTOM");
         standard_chains.push_back("ROUTE");
+
+        // pseudo-targets
+        standard_chains.push_back(".CUSTOM");
+        standard_chains.push_back(".CONTINUE");
     }
     return standard_chains;
 }
@@ -482,7 +485,7 @@ bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     if ( ! rule->getStr("ipt_target").empty() &&
-         rule->getStr("ipt_target") == "CONTINUE" &&
+         rule->getStr("ipt_target") == ".CONTINUE" &&
          ! rule->getLogging()) return true;  // skip this rule
 
     tmp_queue.push_back(rule);
@@ -770,7 +773,21 @@ bool PolicyCompiler_ipt::Logging2::processNext()
 
     if (rule->getLogging()) 
     {
-/*chain could have been assigned if we split this rule before */
+/*
+ * see #2235 Rules with action Continue translate into iptables
+ * commands without "-j TARGET" parameter, so we dont need to create new chain
+ * for logging.
+ */
+        if (rule->getAction() == PolicyRule::Continue)
+        {
+            rule->setStr("ipt_target", "LOG");
+            tmp_queue.push_back(rule);
+            return true;
+        }
+
+/* 
+ * chain could have been assigned if we split this rule before
+ */
         string this_chain = rule->getStr("ipt_chain");
 	string new_chain  = ipt_comp->getNewChainName(rule, NULL); //rule_iface);
 
@@ -792,6 +809,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         {
             need_new_chain = false;
         }
+
 /*
  * add copy of original rule, but turn off logging and set target
  * chain to new_chain.
@@ -3269,17 +3287,20 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
 
     if ( ! rule->getStr("ipt_target").empty() ) return true; // already defined
 
+    // note that we use pseudo-target for action Continue
     switch (rule->getAction()) {
-    case PolicyRule::Accept:   rule->setStr("ipt_target","ACCEPT");    break;
-    case PolicyRule::Deny:     rule->setStr("ipt_target","DROP");      break;
-    case PolicyRule::Reject:   rule->setStr("ipt_target","REJECT");    break;
-    case PolicyRule::Return:   rule->setStr("ipt_target","RETURN");    break;
-    case PolicyRule::Tag:      rule->setStr("ipt_target","MARK");      break;
-    case PolicyRule::Pipe:     rule->setStr("ipt_target","QUEUE");     break;
-    case PolicyRule::Classify: rule->setStr("ipt_target","CLASSIFY");  break;
-    case PolicyRule::Continue: rule->setStr("ipt_target","CONTINUE");  break;
-    case PolicyRule::Custom:   rule->setStr("ipt_target","CUSTOM");    break;
-    case PolicyRule::Route:    rule->setStr("ipt_target","ROUTE");     break;
+    case PolicyRule::Accept:   rule->setStr("ipt_target", "ACCEPT");    break;
+    case PolicyRule::Deny:     rule->setStr("ipt_target", "DROP");      break;
+    case PolicyRule::Reject:   rule->setStr("ipt_target", "REJECT");    break;
+    case PolicyRule::Return:   rule->setStr("ipt_target", "RETURN");    break;
+    case PolicyRule::Tag:      rule->setStr("ipt_target", "MARK");      break;
+    case PolicyRule::Pipe:     rule->setStr("ipt_target", "QUEUE");     break;
+    case PolicyRule::Classify: rule->setStr("ipt_target", "CLASSIFY");  break;
+    case PolicyRule::Route:    rule->setStr("ipt_target", "ROUTE");     break;
+
+    case PolicyRule::Continue: rule->setStr("ipt_target", ".CONTINUE"); break;
+    case PolicyRule::Custom:   rule->setStr("ipt_target", ".CUSTOM");   break;
+
     case PolicyRule::Branch:
     {
         RuleSet *ruleset = rule->getBranch();
@@ -4379,8 +4400,11 @@ void PolicyCompiler_ipt::compile()
     add( new ConvertToAtomicForIntervals(
              "convert to atomic rules by interval element") );
 
-    add( new SkipActionContinueWithNoLogging(
-             "drop rules with action Continue") );
+    // see #2235. ACtion Continue should generate iptables command
+    // w/o "-j TARGET" parameter
+    //
+    // add( new SkipActionContinueWithNoLogging(
+    //          "drop rules with action Continue") );
 
     add( new optimize3("optimization 3") );
 

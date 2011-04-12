@@ -378,7 +378,7 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (target=="CUSTOM")
+    if (target==".CUSTOM")
     {
         ostr << " " << ruleopt->getStr("custom_str");
         return ostr.str();
@@ -387,6 +387,9 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
     // there is no ULOG for ip6tables yet
     if (!ipt_comp->ipv6 && compiler->getCachedFwOpt()->getBool("use_ULOG") &&
          target=="LOG") target="ULOG";
+
+    if (target==".CONTINUE") // not a real target !
+        return ostr.str();
 
     ostr << " -j " << target << " ";
 
@@ -1468,7 +1471,10 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
 
         compiler->output << _printRuleLabel(rule);
         compiler->output << _createChain(rule->getStr("ipt_chain"));
-        compiler->output << _createChain(rule->getStr("ipt_target"));
+
+        string target = rule->getStr("ipt_target");
+        if (target[0] != '.') compiler->output << _createChain(target);
+
         compiler->output 
             << dynamic_cast<OSConfigurator_linux24*>(
                 compiler->osconfigurator)->printRunTimeWrappers(

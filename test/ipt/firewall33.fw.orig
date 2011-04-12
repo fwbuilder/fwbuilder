@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3523
+#  Firewall Builder  fwb_ipt v4.2.0.3524
 #
-#  Generated Sun Apr 10 18:48:34 2011 PDT by vadim
+#  Generated Mon Apr 11 19:28:32 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -443,11 +443,11 @@ script_body() {
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.80   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.81   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.82   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.83   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.84   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
@@ -572,7 +572,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Apr 10 18:48:34 2011 by vadim"
+        log "Activating firewall script generated Mon Apr 11 19:28:32 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
