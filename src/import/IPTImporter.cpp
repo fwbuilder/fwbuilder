@@ -817,12 +817,13 @@ void IPTImporter::pushPolicyRule()
         ropt->setBool("ipt_tee",      !action_params["route_tee"].empty());
     }
 
-    if (target=="RETURN")
+    if (target=="RETURN" || target.empty())
     {
         action = PolicyRule::Continue;
     }
 
-    if (target=="TCPMSS" && action_params["clamp-mss-to-pmtu"]=="--clamp-mss-to-pmtu")
+    if (target=="TCPMSS" &&
+        action_params["clamp-mss-to-pmtu"] == "--clamp-mss-to-pmtu")
     {
         fwopt->setBool("clamp_mss_to_mtu", true);
         skip_rule = true;

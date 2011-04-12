@@ -1,5 +1,8 @@
 2011-04-11  vadim  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (pushPolicyRule): see #2206 Iptables commands with
+	no "-j TARGET" parameter should be imported using action "Continue".
+
 	* iptables.g (comment): see #2336 Importer for iptables recognizes
 	version stored in the top comment by iptables-save and sets
 	version in the firewall object it creates.
