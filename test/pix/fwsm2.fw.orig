@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3522
+!  Firewall Builder  fwb_pix v4.2.0.3525
 !
-!  Generated Fri Apr  8 18:06:01 2011 PDT by vadim
+!  Generated Wed Apr 13 15:34:20 2011 PDT by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -31,11 +31,20 @@
 
 hostname fwsm2
 
-nameif ethernet1 outside security0
+interface ethernet1
+  nameif outside
+  security-level 0
+exit
 
-nameif ethernet0 inside security100
+interface ethernet0
+  nameif inside
+  security-level 100
+exit
 
-nameif ethernet2 dmz security50
+interface ethernet2
+  nameif dmz
+  security-level 50
+exit
 
 
 
@@ -61,17 +70,17 @@ timeout uauth 2:0:0 absolute
 
 telnet timeout 5
 
-clear ssh
+clear config ssh
 aaa authentication ssh console LOCAL
 ssh timeout 5
 
-clear snmp-server
+clear config snmp-server
 snmp-server community public
 snmp-server enable traps
 snmp-server host inside 192.168.1.20 poll  
 snmp-server host inside 192.168.1.22 trap  
 
-clear ntp
+clear config ntp
 ntp server 192.168.1.20 source inside prefer 
 
 
