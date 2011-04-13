@@ -1,0 +1,37 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/pix_os/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## 
+## http://www.cisco.com/en/US/docs/security/pix/pix63/configuration/guide/failover.html
+##
+## failover ip address outside 209.165.201.2
+## failover ip address inside 192.168.2.2
+## failover ip address failover 192.168.254.2
+## failover ip address state 192.168.253.2
+## failover link state
+## failover lan unit primary
+## failover lan interface failover
+## failover lan key 12345678
+## failover lan enable
+## failover
+##
+##
+##  "failover ip address" commands are added bu the failover_interface_6 configlet
+
+failover link {{$state_sync_interface_label}}
+failober lan unit {{$primary_or_secondary}}
+failover lan interface {{$failover_interface_label}}
+failover key {{$failover_key}}
+failover lan enable
+failover
+

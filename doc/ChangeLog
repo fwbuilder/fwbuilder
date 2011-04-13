@@ -1,5 +1,9 @@
 2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
 
+	* OSConfigurator_pix_os.cpp (_printInterfaceConfiguration): see #2343
+	"Interface nameif error when installing generated config for FWSM".
+	Use correct  "nameif" command sytax  in FWSM 2.x and 4.x.
+
 	* OSConfigurator_pix_os.cpp (_printSSHConfiguration): see #2344
 	"FWSM install errors for clear commands". Using correct syntax for
 	"clear" commands for FWSM v4.x

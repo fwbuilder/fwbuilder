@@ -194,9 +194,9 @@ void OSConfigurator_pix_os::_getAddressConfigurationForInterface(
 string OSConfigurator_pix_os::_printInterfaceConfiguration()
 {
     ostringstream res;
+    string host_os = fw->getStr("host_OS");
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    //string::size_type n;
 
     bool configure_address = fw->getOptionsObject()->getBool("pix_ip_address");
     bool configure_standby_address =
@@ -231,8 +231,18 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
 
         if (configlet_name.isEmpty())  configlet_name = "regular_interface_";
 
-        if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
-        if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+        if (host_os == "pix_os")
+        {
+            if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
+            if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+        }
+
+        if (host_os == "fwsm_os")
+        {
+            if (XMLTools::version_compare(version, "4.0") < 0)  configlet_name += "2";
+            if (XMLTools::version_compare(version, "4.0") >= 0) configlet_name += "4";
+        }
+
         cnf = new Configlet(fw, "pix_os", configlet_name);
 
         cnf->removeComments();
@@ -293,13 +303,23 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
 string OSConfigurator_pix_os::_printFailoverConfiguration()
 {
     ostringstream res;
+    string host_os = fw->getStr("host_OS");
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    //string::size_type n;
 
     QString configlet_name = "failover_commands_";
-    if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
-    if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+
+    if (host_os == "pix_os")
+    {
+        if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
+        if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+    }
+
+    if (host_os == "fwsm_os")
+    {
+        if (XMLTools::version_compare(version, "4.0") < 0)  configlet_name += "2";
+        if (XMLTools::version_compare(version, "4.0") >= 0) configlet_name += "4";
+    }
 
     Configlet cnf(fw, "pix_os", configlet_name);
     cnf.removeComments();

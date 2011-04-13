@@ -1,0 +1,42 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/pix_os/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+{{if static_address}}
+
+interface {{$interface_name}}
+  vlan {{$vlan_id}}
+  nameif {{$interface_label}}
+{{if configure_interface_address}}
+  ip address {{$address}} {{$netmask}} {{if configure_standby_address}} standby {{$standby_address}} {{endif}}
+{{endif}}
+  security-level {{$security_level}}
+exit
+
+{{endif}}
+
+
+
+{{if dhcp_address}}
+ 
+interface {{$interface_name}}
+  vlan {{$vlan_id}}
+  nameif {{$interface_label}}
+{{if configure_interface_address}}
+  ip address dhcp setroute
+{{endif}}
+  security-level {{$security_level}}
+exit
+
+{{endif}}
+
