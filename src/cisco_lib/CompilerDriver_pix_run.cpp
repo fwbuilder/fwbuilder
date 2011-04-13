@@ -121,8 +121,8 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
                                              bool cluster_member,
                                              OSConfigurator *oscnf)
 {
-    Configlet script_skeleton(fw, "cisco", "script_skeleton");
-    Configlet top_comment(fw, "cisco", "top_comment");
+    Configlet script_skeleton(fw, "pix_os", "script_skeleton");
+    Configlet top_comment(fw, "pix_os", "top_comment");
 
     FWOptions* options = fw->getOptionsObject();
     options->setStr("prolog_script", options->getStr("pix_prolog_script"));

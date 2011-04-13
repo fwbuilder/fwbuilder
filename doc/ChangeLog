@@ -1,3 +1,9 @@
+2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
+
+	* OSConfigurator_pix_os.cpp (_printSSHConfiguration): see #2344
+	"FWSM install errors for clear commands". Using correct syntax for
+	"clear" commands for FWSM v4.x
+
 2011-04-11  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_PrintRule.cpp (_printTarget): see #2235 "Modified

@@ -517,13 +517,20 @@ string OSConfigurator_pix_os::_printSNMP()
 {
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
+
+    // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+    // for fwsm
+    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
 
     Configlet cnf(fw, "pix_os", "snmp");
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
+
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
+    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
+    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
 
     bool set_communities = fw->getOptionsObject()->getBool(
         "pix_set_communities_from_object_data");
@@ -591,13 +598,19 @@ string OSConfigurator_pix_os::_printNTP()
 {
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
+
+    // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+    // for fwsm
+    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
 
     Configlet cnf(fw, "pix_os", "ntp");
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
+    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
+    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
 
     string ntp_server_1=fw->getOptionsObject()->getStr("pix_ntp1");
     bool   ntp1_pref=fw->getOptionsObject()->getBool("pix_ntp1_pref");
@@ -772,13 +785,18 @@ string OSConfigurator_pix_os::_printSSHConfiguration()
     string platform = fw->getStr("platform");
     string version = fw->getStr("version");
 
+    // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+    // for fwsm
+    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
 
     Configlet cnf(fw, "pix_os", "ssh");
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
+    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
+    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
 
     cnf.setVariable("clear", 1);
     cnf.setVariable("use_scp", fw->getOptionsObject()->getBool("use_scp"));

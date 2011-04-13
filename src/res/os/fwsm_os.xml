@@ -4,7 +4,7 @@
       <description>Cisco FWSM</description>
       <status>active</status>
       <compiler>fwb_pix</compiler>
-      <family>pix_os</family>
+      <family>fwsm_os</family>
       <dialog>pix_os</dialog>
 
       <options>
