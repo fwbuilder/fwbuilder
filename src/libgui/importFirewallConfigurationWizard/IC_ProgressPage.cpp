@@ -188,14 +188,6 @@ void IC_ProgressPage::importerFinished()
 
     if (fw) // fw can be NULL if import was uncussessful
     {
-        // importer does not correctly detect fwsm platform and sets platform
-        // to "pix"
-        if (platform == "fwsm")
-        {
-            fw->setStr("platform", "fwsm");
-            fw->setStr("hostOS", "fwsm_os");
-        }
-
         QString fwName = field("firewallName").toString();
         fw->setName(fwName.toUtf8().constData());
 
