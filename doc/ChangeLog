@@ -1,5 +1,8 @@
 2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
 
+	* OSConfigurator_pix_os.cpp (_printSysopt): see #2345 More fixes for
+	FWSM 4.x: "service resetoutbound", "timeout xlate", "timeout sunrpc"
+
 	* OSConfigurator_pix_os.cpp (_printInterfaceConfiguration): see #2343
 	"Interface nameif error when installing generated config for FWSM".
 	Use correct  "nameif" command sytax  in FWSM 2.x and 4.x.

@@ -48,6 +48,7 @@
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
           <pix_object_groups_supported>true</pix_object_groups_supported>
+          <pix_resetoutside_supported>true</pix_resetoutside_supported>
 
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
@@ -116,7 +117,7 @@ nameif %in %il security%sl
           </timeouts>
         
           <fixups>
-            <list>dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
+            <list>dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
 
             <use_fixup_commands>true</use_fixup_commands>
             <use_mpf_policy_map>false</use_mpf_policy_map>
@@ -133,7 +134,7 @@ nameif %in %il security%sl
           <pix_use_acl_remarks>true</pix_use_acl_remarks>
           <pix_add_clear_statements>true</pix_add_clear_statements>
           <pix_assume_fw_part_of_any>true</pix_assume_fw_part_of_any>
-          <pix_floodguard_supported>true</pix_floodguard_supported>
+          <pix_floodguard_supported>false</pix_floodguard_supported>
           <pix_floodguard>true</pix_floodguard>
           <pix_default_loglevel>info</pix_default_loglevel>
           <pix_default_logint>300</pix_default_logint>
@@ -143,8 +144,9 @@ nameif %in %il security%sl
           <pix_security_fragguard_supported>false</pix_security_fragguard_supported>
           <pix_route_dnat_supported>false</pix_route_dnat_supported>
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
-          <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+          <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
           <pix_object_groups_supported>true</pix_object_groups_supported>
+          <pix_resetoutside_supported>false</pix_resetoutside_supported>
 
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
@@ -214,7 +216,7 @@ nameif %in %il security%sl
           </timeouts>
         
           <fixups>
-            <list>dns_fixup,espike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
+            <list>dns_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup</list>
 
             <use_fixup_commands>false</use_fixup_commands>
             <use_mpf_policy_map>true</use_mpf_policy_map>

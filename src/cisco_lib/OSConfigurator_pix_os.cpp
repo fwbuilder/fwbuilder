@@ -658,23 +658,25 @@ string OSConfigurator_pix_os::_printSysopt()
     FWOptions *options=fw->getOptionsObject();
     assert(options!=NULL);
 
-
-
-    bool tcpmss=    fw->getOptionsObject()->getBool("pix_tcpmss");
-    int  tcpmss_val=fw->getOptionsObject()->getInt("pix_tcpmss_value");
+    bool tcpmss = fw->getOptionsObject()->getBool("pix_tcpmss");
+    int  tcpmss_val = fw->getOptionsObject()->getInt("pix_tcpmss_value");
 
     res << endl;
-
 
     if (fw->getOptionsObject()->getBool("pix_resetinbound"))
         res << "service resetinbound" << endl;
     else
         res << "no service resetinbound" << endl;
 
-    if (fw->getOptionsObject()->getBool("pix_resetoutside"))
-        res << "service resetoutside" << endl;
-    else
-        res << "no service resetoutside" << endl;
+    if (Resources::platform_res[platform]->getResourceBool(
+            "/FWBuilderResources/Target/options/version_" + version +
+            "/pix_resetoutside_supported"))
+    {
+        if (fw->getOptionsObject()->getBool("pix_resetoutside"))
+            res << "service resetoutside" << endl;
+        else
+            res << "no service resetoutside" << endl;
+    }
 
     if (tcpmss)
         res << "sysopt connection tcpmss " << tcpmss_val << endl;
@@ -688,7 +690,7 @@ string OSConfigurator_pix_os::_printSysopt()
     }
 
     if (Resources::platform_res[platform]->getResourceBool(
-            "/FWBuilderResources/Target/options/version_"+version+
+            "/FWBuilderResources/Target/options/version_" + version +
             "/pix_security_fragguard_supported") )
     {
         if ( fw->getOptionsObject()->getBool("pix_fragguard") ) 
@@ -732,40 +734,57 @@ string OSConfigurator_pix_os::_printSysopt()
     return res.str();
 }
 
-string OSConfigurator_pix_os::_printServiceTimeout(
-    const std::string &pix_service)
+string OSConfigurator_pix_os::_printServiceTimeout(const string &pix_service)
 {
-    ostringstream  res;
-    string hh,mm,ss;
+    QStringList  res;
+
+    QString hh, mm, ss;
+
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
     bool use_sunrpc = Resources::platform_res[platform]->getResourceBool(
-        "/FWBuilderResources/Target/options/version_"+version+
+        "/FWBuilderResources/Target/options/version_" + version +
         "/pix_timeout_rpc_is_sunrpc");
 
-    hh=fw->getOptionsObject()->getStr(pix_service+"_hh");
-    mm=fw->getOptionsObject()->getStr(pix_service+"_mm");
-    ss=fw->getOptionsObject()->getStr(pix_service+"_ss");
+    hh = fw->getOptionsObject()->getStr(pix_service+"_hh").c_str();
+    mm = fw->getOptionsObject()->getStr(pix_service+"_mm").c_str();
+    ss = fw->getOptionsObject()->getStr(pix_service+"_ss").c_str();
 
-    if (hh!="" && mm!="" && ss!="")
+    if ( ! hh.isEmpty() && ! mm.isEmpty() && ! ss.isEmpty())
     {
-        string service_name = pix_service;
-        if (pix_service=="rpc" && use_sunrpc)
-            service_name = "sunrpc";
+        QString service_name = pix_service.c_str();
 
-        res << "timeout " << service_name
-            << " " << hh << ":" << mm << ":" << ss << " ";
+        if (pix_service == "rpc" && use_sunrpc) service_name = "sunrpc";
 
-        if (pix_service=="uauth")
+        bool ok1, ok2, ok3;
+        int hh_int = hh.toInt(&ok1); if (!ok1) hh_int = 0;
+        int mm_int = mm.toInt(&ok2); if (!ok2) mm_int = 0;
+        int ss_int = ss.toInt(&ok3); if (!ok3) ss_int = 0;
+
+        if (!ok1 || !ok2 || !ok3)
+            qDebug() << QString("Invalid timeout spec '%1:%2:%3'")
+                .arg(hh).arg(mm).arg(ss);
+
+        if (pix_service == "xlate" && hh_int == 0 && mm_int == 0 && ss_int == 0)
         {
-            bool abs=fw->getOptionsObject()->getBool("uauth_abs");
-            bool inact=fw->getOptionsObject()->getBool("uauth_inact");
+            ss_int = 30;
+        }
+
+        res << QString("timeout %1 %2:%3:%4")
+            .arg(service_name).arg(hh_int).arg(mm_int).arg(ss_int);
+
+        if (pix_service == "uauth")
+        {
+            bool abs = fw->getOptionsObject()->getBool("uauth_abs");
+            bool inact = fw->getOptionsObject()->getBool("uauth_inact");
             if (abs)   res << "absolute";
             if (inact) res << "inactivity";
         }
-        res  << endl;
+
+        res << "\n";
     }
-    return res.str();
+
+    return res.join(" ").toStdString();
 }
 
 string OSConfigurator_pix_os::_printTimeouts()
