@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3525
 !
-!  Generated Wed Apr 13 15:34:20 2011 PDT by vadim
+!  Generated Wed Apr 13 17:10:49 2011 PDT by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -61,12 +61,12 @@ logging on
 timeout xlate 3:0:0 
 timeout conn 1:0:0 
 timeout udp 0:2:0 
-timeout rpc 0:10:0 
+timeout sunrpc 0:10:0 
 timeout h323 0:5:0 
 timeout sip 0:30:0 
 timeout sip_media 0:0:0 
 timeout half-closed 0:0:0 
-timeout uauth 2:0:0 absolute
+timeout uauth 2:0:0 absolute 
 
 telnet timeout 5
 
@@ -85,19 +85,13 @@ ntp server 192.168.1.20 source inside prefer
 
 
 no service resetinbound
-no service resetoutside
 sysopt connection tcpmss 1380
 sysopt nodnsalias inbound
 sysopt nodnsalias outbound
-floodguard disable
 
 
 class-map inspection_default
   match default-inspection-traffic
-
-class-map custom_espike_inspection
-  match port  
-
 
 policy-map global_policy
   class inspection_default

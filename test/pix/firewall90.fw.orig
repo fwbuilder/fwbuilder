@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3525
 !
-!  Generated Wed Apr 13 15:34:17 2011 PDT by vadim
+!  Generated Wed Apr 13 17:10:46 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -57,7 +57,7 @@ timeout h323 0:5:0
 timeout sip 0:30:0 
 timeout sip_media 0:0:0 
 timeout half-closed 0:0:0 
-timeout uauth 2:0:0 absolute
+timeout uauth 2:0:0 absolute 
 
 
 clear config ssh
