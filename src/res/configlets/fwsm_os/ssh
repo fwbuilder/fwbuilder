@@ -13,10 +13,10 @@
 ##
 
 {{if clear}}
-{{if fwsm_version_lt_40}}
+{{if fwsm_version_lt_32}}
 clear ssh
 {{endif}}
-{{if fwsm_version_ge_40}}
+{{if fwsm_version_ge_32}}
 clear config ssh
 {{endif}}
 {{endif}}

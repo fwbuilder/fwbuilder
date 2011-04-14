@@ -179,14 +179,16 @@ string NamedObjectsManager::getClearCommands()
 BaseObjectGroup* NamedObjectsManager::createObjectGroup()
 {
     BaseObjectGroup *grp = NULL;
-    if (platform == "pix" || platform == "fwsm")
+    if (platform == "pix")
     {
         if (XMLTools::version_compare(version, "8.0")<0)
             grp = new PIXObjectGroup();
         else
             grp = new ASA8ObjectGroup();
-
     }
+
+    if (platform == "fwsm") grp = new PIXObjectGroup();
+
     if (platform == "iosacl") grp = new IOSObjectGroup();
 
     assert(grp!=NULL);

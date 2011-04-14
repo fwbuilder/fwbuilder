@@ -1,5 +1,8 @@
 2011-04-14  vadim  <vadim@netcitadel.com>
 
+	* platform/fwsm.xml: see #2295 Added FWSM version "3.2". According to
+	Cisco documentation, FWSM version 3.2 matches PIX 7.
+
 	* platform/pix.xml: see #2348: "Accounting action is not valid for
 	FWSM platform". Actions "Accounting" and "Reject" should not
 	appear in the drop-down list of actions in the GUI if platform is

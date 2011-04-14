@@ -3,9 +3,9 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 16:05:49 2011 PDT by vadim
+!  Generated Thu Apr 14 16:32:42 2011 PDT by vadim
 !
-! Compiled for fwsm 4.x
+! Compiled for fwsm 3.2
 ! Outbound ACLs: supported
 ! Emulate outbound ACLs: yes
 ! Generating outbound ACLs: no
@@ -13,9 +13,10 @@
 !
 !# files: * fwsm3.fw
 !
-! using manual commit mode
 
-
+! C fwsm3:Policy:18: error: Rule '18 (global)' shadows rule '20 (global)'  below it
+! C fwsm3:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+! C fwsm3:Policy:13: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
 
 !
 ! Prolog script:
@@ -110,13 +111,11 @@ service-policy global_policy global
 
 
 !################
-access-list mode manual
+access-list mode auto
 
 clear config access-list tmp_acl
-access-list commit
 access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
 access-list tmp_acl deny ip any any 
-access-list commit
 
 access-group tmp_acl in interface outside
 access-group tmp_acl in interface inside
@@ -131,37 +130,246 @@ clear config access-list inside_acl_in
 clear config access-list outside_acl_in
 clear config icmp
 clear config telnet
-access-list commit
 clear config object-group
 
 
-object-group network id59803X13930.src.net.0
-  network-object 10.0.0.0 255.255.255.0 
-  network-object 10.1.0.0 255.255.255.0 
-  network-object 172.16.0.1 255.255.255.255 
-  network-object 172.16.0.2 255.255.255.255 
+object-group network id37010X447.dst.net.0
+  network-object host 211.11.11.11 
+  network-object host 211.22.22.22 
+exit
+
+object-group service id37010X447.srv.tcp.0 tcp
+  port-object eq 113
+  port-object eq 80
+  port-object eq 443
+  port-object eq 143
+  port-object eq 25
+  port-object eq 22
+  port-object eq 540
+exit
+
+object-group icmp-type id37094X447.srv.icmp.0
+  icmp-object 3
+  icmp-object 0
+  icmp-object 11
+exit
+
+object-group service id37122X447.srv.tcp.0 tcp
+  port-object eq 70
+  port-object eq 6667
+  port-object eq 3128
+  port-object eq 23
+exit
+
+object-group service id37122X447.srv.udp.0 udp
+  port-object eq 53
+  port-object eq 161
+exit
+
+object-group network id37207X447.dst.net.0
+  network-object host 192.168.1.10 
+  network-object host 192.168.1.20 
+exit
+
+object-group network id37237X447.dst.net.0
+  network-object 192.168.1.250 255.255.255.254 
+  network-object 192.168.1.252 255.255.255.252 
+exit
+
+object-group network id37265X447.dst.net.0
+  network-object 192.168.1.250 255.255.255.254 
+  network-object 192.168.1.252 255.255.255.252 
+exit
+
+object-group network id37322X447.dst.net.0
+  network-object host 192.168.1.11 
+  network-object host 192.168.1.12 
+  network-object host 192.168.1.13 
+  network-object host 192.168.1.14 
+  network-object host 192.168.1.15 
+exit
+
+object-group service id37322X447.srv.tcp.0 tcp
+  port-object eq 113
+  port-object eq 80
+  port-object eq 443
+  port-object eq 143
+  port-object eq 25
+  port-object eq 3128
+  port-object eq 22
+  port-object eq 540
+exit
+
+object-group network id37351X447.dst.net.0
+  network-object 192.168.1.11 255.255.255.255 
+  network-object 192.168.1.12 255.255.255.252 
+exit
+
+object-group service id37380X447.srv.tcp.0 tcp
+  port-object eq 113
+  port-object eq 13
+  port-object eq 53
+  port-object eq 2105
+  port-object eq 21
+  port-object eq 70
+  port-object eq 80
+  port-object eq 443
+  port-object eq 143
+  port-object eq 993
+  port-object eq 6667
+  port-object eq 6667
+  port-object eq 543
+  port-object eq 544
+  port-object eq 389
+  port-object eq 98
+  port-object eq 3306
+  port-object eq 2049
+  port-object eq 119
+  port-object eq 110
+  port-object eq 5432
+  port-object eq 515
+  port-object eq 26000
+  port-object eq 512
+  port-object eq 513
+  port-object eq 514
+  port-object eq 4321
+  port-object eq 25
+  port-object eq 465
+  port-object eq 1080
+  port-object eq 3128
+  port-object eq 22
+  port-object eq 111
+  port-object eq 23
+  port-object range 10000 11000
+  port-object eq 540
+  port-object eq 7100
 exit
 
 ! 
-! Rule  1 (ethernet1)
-! need this rule to generate at least one object group
-icmp permit 10.0.0.0 255.255.255.0 3  outside
-access-list outside_acl_in permit icmp 10.0.0.0 255.255.255.0 host 22.22.22.22 3 
-icmp permit 10.1.0.0 255.255.255.0 3  outside
-access-list outside_acl_in permit icmp 10.1.0.0 255.255.255.0 host 22.22.22.22 3 
-icmp permit host 172.16.0.1 3  outside
-access-list outside_acl_in permit icmp host 172.16.0.1 host 22.22.22.22 3 
-icmp permit host 172.16.0.2 3  outside
-access-list outside_acl_in permit icmp host 172.16.0.2 host 22.22.22.22 3 
-access-list outside_acl_in permit icmp object-group id59803X13930.src.net.0 any 3 
+! Rule  2 (ethernet1)
+icmp permit any 3  outside
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+access-list outside_acl_in permit icmp any any 3 
 ! 
-! Rule  2 (global)
+! Rule  3 (ethernet1)
+! anti-spoofing rule
+! fwsm3:Policy:3: warning: Rule with direction 'Outbound' was suppressed because generation of outbound access lists is turned off in firewall object settings
+
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any log 0 interval 300
+! 
+! Rule  4 (ethernet0)
+ssh 192.168.1.0 255.255.255.0 inside
+! 
+! Rule  5 (ethernet0)
+access-list inside_acl_in permit tcp any object-group id37010X447.dst.net.0 object-group id37010X447.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id37010X447.dst.net.0 object-group id37010X447.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id37010X447.dst.net.0 object-group id37010X447.srv.tcp.0 
+! 
+! Rule  6 (ethernet0)
+access-list inside_acl_in deny   ip any host 192.168.1.255 
+! 
+! Rule  8 (global)
+access-list outside_acl_in permit icmp any host 192.168.1.10 object-group id37094X447.srv.icmp.0 
+access-list inside_acl_in permit icmp any host 192.168.1.10 object-group id37094X447.srv.icmp.0 
+access-list dmz_acl_in permit icmp any host 192.168.1.10 object-group id37094X447.srv.icmp.0 
+! 
+! Rule  9 (global)
+access-list outside_acl_in permit icmp any host 192.168.1.10 
+access-list inside_acl_in permit icmp any host 192.168.1.10 
+access-list dmz_acl_in permit icmp any host 192.168.1.10 
+access-list outside_acl_in permit tcp any host 192.168.1.10 object-group id37122X447.srv.tcp.0 
+access-list inside_acl_in permit tcp any host 192.168.1.10 object-group id37122X447.srv.tcp.0 
+access-list dmz_acl_in permit tcp any host 192.168.1.10 object-group id37122X447.srv.tcp.0 
+access-list outside_acl_in permit udp any host 192.168.1.10 object-group id37122X447.srv.udp.0 
+access-list inside_acl_in permit udp any host 192.168.1.10 object-group id37122X447.srv.udp.0 
+access-list dmz_acl_in permit udp any host 192.168.1.10 object-group id37122X447.srv.udp.0 
+access-list outside_acl_in permit 47 any host 192.168.1.10 
+access-list inside_acl_in permit 47 any host 192.168.1.10 
+access-list dmz_acl_in permit 47 any host 192.168.1.10 
+! 
+! Rule  10 (global)
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 log 0 interval 300
+icmp permit any 3  inside
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 log 0 interval 300
+icmp permit any 3  dmz
+access-list dmz_acl_in permit icmp any host 192.168.2.1 3 log 0 interval 300
+access-list outside_acl_in permit icmp any any 3 log 0 interval 300
+access-list inside_acl_in permit icmp any any 3 log 0 interval 300
+access-list dmz_acl_in permit icmp any any 3 log 0 interval 300
+access-list outside_acl_in permit 47 any any log 0 interval 300
+access-list inside_acl_in permit 47 any any log 0 interval 300
+access-list dmz_acl_in permit 47 any any log 0 interval 300
+access-list outside_acl_in permit 50 any any log 0 interval 300
+access-list inside_acl_in permit 50 any any log 0 interval 300
+access-list dmz_acl_in permit 50 any any log 0 interval 300
+! 
+! Rule  12 (global)
+access-list outside_acl_in permit ip object-group id37010X447.dst.net.0 object-group id37207X447.dst.net.0 
+! 
+! Rule  13 (global)
+! fwsm3:Policy:13: warning: MAC address matching is not supported. One or several MAC addresses removed from source in the rule
+
+access-list inside_acl_in permit tcp host 192.168.1.10 object-group id37237X447.dst.net.0 eq 3128 
+! 
+! Rule  14 (global)
+access-list outside_acl_in permit tcp any object-group id37265X447.dst.net.0 eq 3128 
+access-list inside_acl_in permit tcp any object-group id37265X447.dst.net.0 eq 3128 
+access-list dmz_acl_in permit tcp any object-group id37265X447.dst.net.0 eq 3128 
+! 
+! Rule  15 (global)
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 inside
+ssh 0.0.0.0 0.0.0.0 dmz
+access-list outside_acl_in permit icmp any host 22.22.22.22 3 
+access-list inside_acl_in permit icmp any host 192.168.1.1 3 
+access-list dmz_acl_in permit icmp any host 192.168.2.1 3 
+! 
+! Rule  16 (global)
+access-list outside_acl_in permit tcp any object-group id37322X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id37322X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id37322X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+! 
+! Rule  17 (global)
+access-list outside_acl_in permit tcp any object-group id37351X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+access-list inside_acl_in permit tcp any object-group id37351X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+access-list dmz_acl_in permit tcp any object-group id37351X447.dst.net.0 object-group id37322X447.srv.tcp.0 
+! 
+! Rule  18 (global)
+! fwsm3:Policy:18: error: Rule '18 (global)' shadows rule '20 (global)'  below it
+
+access-list outside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id37380X447.srv.tcp.0 
+access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id37380X447.srv.tcp.0 
+access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 object-group id37380X447.srv.tcp.0 
+! 
+! Rule  19 (global)
+! objects hostA and hostB are
+! redundant and should be removed by
+!  removeRedundantAddressesFromDst
+access-list outside_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494 
+access-list inside_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494 
+access-list dmz_acl_in permit tcp any 192.168.1.0 255.255.255.0 eq 1494 
+! 
+! Rule  20 (global)
+access-list outside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list inside_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+access-list dmz_acl_in permit tcp any gt 1023 host 192.168.1.10 eq 80 
+! 
+! Rule  23 (global)
+access-list outside_acl_in permit ip host 22.22.22.22 host 22.22.22.22 log 0 interval 300
+access-list inside_acl_in permit ip host 192.168.1.1 host 192.168.1.1 log 0 interval 300
+access-list dmz_acl_in permit ip host 192.168.2.1 host 192.168.2.1 log 0 interval 300
+! 
+! Rule  24 (global)
+access-list outside_acl_in permit ip host 22.22.22.22 any 
+access-list inside_acl_in permit ip host 192.168.1.1 any 
+access-list dmz_acl_in permit ip host 192.168.2.1 any 
+access-list inside_acl_in permit ip 192.168.1.0 255.255.255.0 any 
+! 
+! Rule  25 (global)
 access-list outside_acl_in deny   ip any any log 0 interval 300
 access-list inside_acl_in deny   ip any any log 0 interval 300
 access-list dmz_acl_in deny   ip any any log 0 interval 300
 
-
-access-list commit
 
 access-group dmz_acl_in in interface dmz
 access-group inside_acl_in in interface inside
@@ -172,7 +380,56 @@ access-group outside_acl_in in interface outside
 global (outside) 1 interface
 nat (inside) 1 192.168.1.0 255.255.255.0 0 0
 global (dmz) 1 interface
-!
+! 
+! 
+! Rule  1 (NAT)
+nat (dmz) 1 0.0.0.0 0.0.0.0 0 0
+! 
+! Rule  2 (NAT)
+nat (inside) 1 0.0.0.0 0.0.0.0 0 0
+! 
+! 
+! Rule  3 (NAT)
+global (outside) 1 22.22.22.0 netmask 255.255.255.0
+! 
+! 
+! Rule  4 (NAT)
+global (outside) 1 22.22.22.21-22.22.22.25 netmask 255.255.255.0
+! 
+! 
+! Rule  5 (NAT)
+static (inside,outside) tcp interface 25 192.168.1.10 25  0 0
+! 
+! Rule  6 (NAT)
+global (inside) 8 interface
+nat (dmz) 8 192.168.2.0 255.255.255.0 outside
+! 
+! Rule  7 (NAT)
+
+clear config access-list nat0.inside
+access-list nat0.inside permit ip 192.168.1.0 255.255.255.0 192.168.2.0 255.255.255.0
+nat (inside) 0 access-list nat0.inside
+! 
+! Rule  8 (NAT)
+
+access-list nat0.inside permit ip host 192.168.1.11  192.168.2.0 255.255.255.0
+
+access-list nat0.inside permit ip host 192.168.1.12  192.168.2.0 255.255.255.0
+
+access-list nat0.inside permit ip host 192.168.1.13  192.168.2.0 255.255.255.0
+
+access-list nat0.inside permit ip host 192.168.1.14  192.168.2.0 255.255.255.0
+
+access-list nat0.inside permit ip host 192.168.1.15  192.168.2.0 255.255.255.0
+! 
+! Rule  9 (NAT)
+nat (dmz) 0 0 0
+! 
+! Rule  10 (NAT)
+static (inside,dmz) 192.168.1.0 192.168.1.0 netmask 255.255.255.0
+! 
+! Rule  11 (NAT)
+static (inside,dmz) 192.168.1.10 192.168.1.10 netmask 255.255.255.255
 
 
 

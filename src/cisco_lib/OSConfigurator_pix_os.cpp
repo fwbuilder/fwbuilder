@@ -233,14 +233,18 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
 
         if (host_os == "pix_os")
         {
-            if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
-            if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+            if (XMLTools::version_compare(version, "7.0") < 0)
+                configlet_name += "6";
+            if (XMLTools::version_compare(version, "7.0") >= 0)
+                configlet_name += "7";
         }
 
         if (host_os == "fwsm_os")
         {
-            if (XMLTools::version_compare(version, "4.0") < 0)  configlet_name += "2";
-            if (XMLTools::version_compare(version, "4.0") >= 0) configlet_name += "4";
+            if (XMLTools::version_compare(version, "3.2") < 0)
+                configlet_name += "2";
+            if (XMLTools::version_compare(version, "3.2") >= 0)
+                configlet_name += "3_2";
         }
 
         cnf = new Configlet(fw, "pix_os", configlet_name);
@@ -317,8 +321,8 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
 
     if (host_os == "fwsm_os")
     {
-        if (XMLTools::version_compare(version, "4.0") < 0)  configlet_name += "2";
-        if (XMLTools::version_compare(version, "4.0") >= 0) configlet_name += "4";
+        if (XMLTools::version_compare(version, "3.2") < 0)  configlet_name += "2";
+        if (XMLTools::version_compare(version, "3.2") >= 0) configlet_name += "3_2";
     }
 
     Configlet cnf(fw, "pix_os", configlet_name);
@@ -541,7 +545,7 @@ string OSConfigurator_pix_os::_printSNMP()
     // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
     // for fwsm
-    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
+    bool version_ge_32 = XMLTools::version_compare(version, "3.2") >= 0;
 
     Configlet cnf(fw, "pix_os", "snmp");
     cnf.removeComments();
@@ -549,8 +553,8 @@ string OSConfigurator_pix_os::_printSNMP()
 
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
-    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
-    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
+    cnf.setVariable("fwsm_version_lt_32", ! version_ge_32);
+    cnf.setVariable("fwsm_version_ge_32",   version_ge_32);
 
     bool set_communities = fw->getOptionsObject()->getBool(
         "pix_set_communities_from_object_data");
@@ -622,15 +626,15 @@ string OSConfigurator_pix_os::_printNTP()
     // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
     // for fwsm
-    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
+    bool version_ge_32 = XMLTools::version_compare(version, "3.2") >= 0;
 
     Configlet cnf(fw, "pix_os", "ntp");
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
-    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
-    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
+    cnf.setVariable("fwsm_version_lt_32", ! version_ge_32);
+    cnf.setVariable("fwsm_version_ge_32",   version_ge_32);
 
     string ntp_server_1=fw->getOptionsObject()->getStr("pix_ntp1");
     bool   ntp1_pref=fw->getOptionsObject()->getBool("pix_ntp1_pref");
@@ -827,15 +831,15 @@ string OSConfigurator_pix_os::_printSSHConfiguration()
     // for pix
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
     // for fwsm
-    bool version_ge_40 = XMLTools::version_compare(version, "4.0") >= 0;
+    bool version_ge_32 = XMLTools::version_compare(version, "3.2") >= 0;
 
     Configlet cnf(fw, "pix_os", "ssh");
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
-    cnf.setVariable("fwsm_version_lt_40", ! version_ge_40);
-    cnf.setVariable("fwsm_version_ge_40",   version_ge_40);
+    cnf.setVariable("fwsm_version_lt_32", ! version_ge_32);
+    cnf.setVariable("fwsm_version_ge_32",   version_ge_32);
 
     cnf.setVariable("clear", 1);
     cnf.setVariable("use_scp", fw->getOptionsObject()->getBool("use_scp"));
