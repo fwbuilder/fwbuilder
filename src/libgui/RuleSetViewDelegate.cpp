@@ -480,10 +480,10 @@ QSize RuleSetViewDelegate::calculateCellSizeForComment(const QModelIndex & index
 {
     QString text = index.data(Qt::DisplayRole).value<QString>();
     if (text.isNull() && text.isEmpty()) return QSize(0,0);
-    QSize res = getTextSize(text,0);
+    QSize res = getTextSize(text, 0);
     if (st->getClipComment())
         res.setHeight(0);
-    return res;
+    return res + QSize(10, 0);
 }
 
 QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index) const
