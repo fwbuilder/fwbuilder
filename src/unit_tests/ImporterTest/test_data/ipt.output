@@ -47,9 +47,25 @@
 221: Default action: Accept
 222: New ruleset: mangle / POSTROUTING
 222: Default action: Accept
+225: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+225: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+228: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+228: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+229: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+229: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
 235: Warning: Skipping command with '-j CONNMARK --restore-mark' This rule is generated automatically.
+238: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+238: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
 239: Warning: Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
+242: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+242: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
 243: New interface: eth2
+243: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+243: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+247: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+247: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+248: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+248: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
 253: New ruleset: nat / PREROUTING
 253: Default action: Accept
 254: New ruleset: nat / POSTROUTING
