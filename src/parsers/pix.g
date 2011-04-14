@@ -892,7 +892,8 @@ version { std::string platform; } :
 hostname : HOSTNAME ( STRING | WORD )
         {
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->setHostName( LT(0)->getText() );
+            // we get host name in the import wizard
+            //importer->setHostName( LT(0)->getText() );
             *dbg << "HOSTNAME " << "LT0=" << LT(0)->getText() << std::endl;
         }
     ;

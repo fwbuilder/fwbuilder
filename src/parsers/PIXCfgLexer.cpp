@@ -541,7 +541,7 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 2483 "pix.g"
+#line 2484 "pix.g"
 		newline();
 #line 547 "PIXCfgLexer.cpp"
 	}
@@ -665,7 +665,7 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 2478 "pix.g"
+#line 2479 "pix.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 671 "PIXCfgLexer.cpp"
 	}
@@ -907,7 +907,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 2524 "pix.g"
+#line 2525 "pix.g"
 			_ttype = IPV6;
 #line 913 "PIXCfgLexer.cpp"
 		}
@@ -1054,7 +1054,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}  // ( ... )+
 				}
 				if ( inputState->guessing==0 ) {
-#line 2512 "pix.g"
+#line 2513 "pix.g"
 					_ttype = IPV4;
 #line 1060 "PIXCfgLexer.cpp"
 				}
@@ -1137,7 +1137,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}  // ( ... )+
 					}
 					if ( inputState->guessing==0 ) {
-#line 2515 "pix.g"
+#line 2516 "pix.g"
 						_ttype = NUMBER;
 #line 1143 "PIXCfgLexer.cpp"
 					}
@@ -1158,7 +1158,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop336:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 2517 "pix.g"
+#line 2518 "pix.g"
 						_ttype = INT_CONST;
 #line 1164 "PIXCfgLexer.cpp"
 					}
@@ -1420,7 +1420,7 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			_loop351:;
 			} // ( ... )*
 			if ( inputState->guessing==0 ) {
-#line 2532 "pix.g"
+#line 2533 "pix.g"
 				_ttype = WORD;
 #line 1426 "PIXCfgLexer.cpp"
 			}
