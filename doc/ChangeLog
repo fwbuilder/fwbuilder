@@ -1,3 +1,9 @@
+2011-04-14  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pix.cpp (printClearCommands): see #2322 If this
+	is FWSM and if manual commit mode is used, need to commit after
+	clearing ACLs before we clear object groups.
+
 2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
 
 	* IPTImporter.cpp (pushPolicyRule): see #2338 "Empty Mangle Policy

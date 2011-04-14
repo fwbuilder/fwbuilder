@@ -1,0 +1,183 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3526
+!
+!  Generated Thu Apr 14 11:46:21 2011 PDT by vadim
+!
+! Compiled for fwsm 4.x
+! Outbound ACLs: supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: yes
+!
+!# files: * fwsm3.fw
+!
+! using manual commit mode
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+
+
+hostname fwsm3
+
+interface ethernet1
+  nameif outside
+  security-level 0
+exit
+
+interface ethernet0
+  nameif inside
+  security-level 100
+exit
+
+interface ethernet2
+  nameif dmz
+  security-level 50
+exit
+
+
+
+logging host inside 192.168.1.30
+logging queue 512
+logging facility 16
+logging trap 0
+no logging buffered
+no logging console
+no logging timestamp
+logging on
+
+
+timeout xlate 3:0:0 
+timeout conn 1:0:0 
+timeout udp 0:2:0 
+timeout sunrpc 0:10:0 
+timeout h323 0:5:0 
+timeout sip 0:30:0 
+timeout sip_media 0:0:0 
+timeout half-closed 0:0:0 
+timeout uauth 2:0:0 absolute 
+
+telnet timeout 5
+
+clear config ssh
+aaa authentication ssh console LOCAL
+ssh timeout 5
+
+clear config snmp-server
+snmp-server community public
+snmp-server enable traps
+snmp-server host inside 192.168.1.20 poll  
+snmp-server host inside 192.168.1.22 trap  
+
+
+
+
+no service resetinbound
+sysopt connection tcpmss 1380
+sysopt nodnsalias inbound
+sysopt nodnsalias outbound
+
+
+class-map inspection_default
+  match default-inspection-traffic
+
+policy-map global_policy
+  class inspection_default
+    inspect ftp
+    inspect h323 h225
+    inspect h323 ras
+    inspect http
+    inspect ils
+    inspect rsh
+    inspect rtsp
+    inspect sip
+    inspect skinny
+    inspect esmtp
+    inspect sqlnet
+
+service-policy global_policy global
+
+
+
+clear xlate
+clear config static
+clear config global
+clear config nat
+clear config access-list dmz_acl_in
+clear config access-list inside_acl_in
+clear config access-list outside_acl_in
+clear config icmp
+clear config telnet
+access-list commit
+clear config object-group
+
+
+object-group network id59803X13930.src.net.0
+  network-object 10.0.0.0 255.255.255.0 
+  network-object 10.1.0.0 255.255.255.0 
+  network-object 172.16.0.1 255.255.255.255 
+  network-object 172.16.0.2 255.255.255.255 
+exit
+
+!################
+access-list mode manual
+
+clear config access-list tmp_acl
+access-list commit
+access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
+access-list tmp_acl deny ip any any 
+access-list commit
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
+
+! 
+! Rule  1 (ethernet1)
+! need this rule to generate at least one object group
+icmp permit 10.0.0.0 255.255.255.0 3  outside
+access-list outside_acl_in permit icmp 10.0.0.0 255.255.255.0 host 22.22.22.22 3 
+icmp permit 10.1.0.0 255.255.255.0 3  outside
+access-list outside_acl_in permit icmp 10.1.0.0 255.255.255.0 host 22.22.22.22 3 
+icmp permit host 172.16.0.1 3  outside
+access-list outside_acl_in permit icmp host 172.16.0.1 host 22.22.22.22 3 
+icmp permit host 172.16.0.2 3  outside
+access-list outside_acl_in permit icmp host 172.16.0.2 host 22.22.22.22 3 
+access-list outside_acl_in permit icmp object-group id59803X13930.src.net.0 any 3 
+! 
+! Rule  2 (global)
+access-list outside_acl_in deny   ip any any log 0 interval 300
+access-list inside_acl_in deny   ip any any log 0 interval 300
+access-list dmz_acl_in deny   ip any any log 0 interval 300
+
+
+access-list commit
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+! 
+! Rule  0 (NAT)
+global (outside) 1 interface
+nat (inside) 1 192.168.1.0 255.255.255.0 0 0
+global (dmz) 1 interface
+!
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!

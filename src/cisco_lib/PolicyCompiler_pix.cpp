@@ -157,6 +157,13 @@ int PolicyCompiler_pix::prolog()
             output << endl;
 
             output << clearACLcmd << " " << temp_acl << endl;
+
+            if (fw->getStr("platform")=="fwsm" && 
+                fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+            {
+                output << "access-list commit" << endl;
+            }
+
             output << "access-list " << temp_acl
                    << " permit ip "
                    << addr << " " << netmask
@@ -733,15 +740,19 @@ string PolicyCompiler_pix::printClearCommands()
 
     string vers = fw->getStr("version");
     string platform = fw->getStr("platform");
+
     string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/") +
         "version_" + vers + "/pix_commands/clear_acl");
+
     // string clearOGcmd = Resources::platform_res[platform]->getResourceStr(
     //     string("/FWBuilderResources/Target/options/") +
     //     "version_" + vers + "/pix_commands/clear_og");
+
     string clearICMPcmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/") +
         "version_" + vers + "/pix_commands/clear_icmp");
+
     string clearTelnetcmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/") +
         "version_" + vers + "/pix_commands/clear_telnet");
@@ -768,6 +779,16 @@ string PolicyCompiler_pix::printClearCommands()
         output << clearICMPcmd    << endl;
         output << clearTelnetcmd  << endl;
     }
+
+    // see #2322 If this is FWSM and if manual commit mode is used, we
+    // need to commit after clearing ACLs before we clear object groups
+
+    if (fw->getStr("platform")=="fwsm" && 
+        fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+    {
+        output << "access-list commit" << endl;
+    }
+
 
     return output.str();
 }
