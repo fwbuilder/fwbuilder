@@ -1,5 +1,12 @@
 2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (pushPolicyRule): see #2338 "Empty Mangle Policy
+	object created on import". Iptables rules in the table 'mangle'
+	will be imported in the dedicated Policy rule set with name
+	"Mangle". Rules that use chains FORWARD and POSTROUTING in table
+	'mangle' can not be reproduced and will be marked as "bad" (color
+	red and corresponding comment).
+
 	* configlets/fwsm_os/ntp: see #2344 fwbuilder should not generate
 	any "ntp" commands for FWSM because NTP can not be configured on FWSM.
 

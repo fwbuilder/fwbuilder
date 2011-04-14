@@ -1055,22 +1055,42 @@ void IPTImporter::pushPolicyRule()
                 rule_comment += "Does SRC match one of the firewall's addresses?";
         }
 
+        if (current_table == "mangle")
+        {
+            if (current_chain == "POSTROUTING" || current_chain == "FORWARD")
+            {
+                QString err = QObject::tr(
+                    "Fwbuilder can not reproduce iptables rule in "
+                    "the table 'mangle', chain %1")
+                    .arg(current_chain.c_str());
+                reportError(err);
+                markCurrentRuleBad();
+            }
+        }
+
         //  add rule to the right ruleset
         RuleSet *ruleset = NULL;
         std::string ruleset_name = "";
-        if (isStandardChain(current_chain))
-        {
-            ruleset = RuleSet::cast(
-                getFirewallObject()->getFirstByType(Policy::TYPENAME));
-            assert(ruleset!=NULL);
-            ruleset->add(current_rule);
-        } else
-        {
-            UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain, Policy::TYPENAME);
-            assert(rs!=NULL);
-            rs->ruleset->add(current_rule);
-            ruleset = rs->ruleset;
-        }
+
+        // if (isStandardChain(current_chain))
+        // {
+        //     ruleset = RuleSet::cast(
+        //         getFirewallObject()->getFirstByType(Policy::TYPENAME));
+        //     assert(ruleset!=NULL);
+        // } else
+        // {
+        //     UnidirectionalRuleSet *rs = getUnidirRuleSet(
+        //         current_chain, Policy::TYPENAME);
+        //     assert(rs!=NULL);
+        //     ruleset = rs->ruleset;
+        // }
+
+        UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain,
+                                                     Policy::TYPENAME);
+        assert(rs!=NULL);
+        ruleset = rs->ruleset;
+
+        ruleset->add(current_rule);
 
         // renumber to clean-up rule positions
         ruleset->renumberRules();
@@ -1118,7 +1138,8 @@ void IPTImporter::pushPolicyRule()
             re =rule->getItf();
             re->addRef(intf);
 
-            QString interfaces = QString("-i %1 -o %2").arg(i_intf.c_str()).arg(o_intf.c_str());
+            QString interfaces =
+                QString("-i %1 -o %2").arg(i_intf.c_str()).arg(o_intf.c_str());
 
             rule_comment += QString(
                 " Both inbound and outbound interfaces "
@@ -1128,6 +1149,7 @@ void IPTImporter::pushPolicyRule()
                 QString("Warning: Creating branch ruleset '%1' to "
                         "match inbound and outbound interfaces %2")
                 .arg(branch_ruleset_name.c_str()).arg(interfaces));
+
         } else
         {
             if ( !i_intf.empty())
@@ -1151,7 +1173,8 @@ void IPTImporter::pushPolicyRule()
 
         processModuleMatches();
 
-        addStandardImportComment(current_rule, QString::fromUtf8(rule_comment.c_str()));
+        addStandardImportComment(
+            current_rule, QString::fromUtf8(rule_comment.c_str()));
     }
 
     if (error_tracker->hasErrors())
@@ -1616,7 +1639,8 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
                     getFirewallObject()->getFirstByType(NAT::TYPENAME));
             else
             {
-                list<FWObject*> policies = getFirewallObject()->getByType(Policy::TYPENAME);
+                list<FWObject*> policies =
+                    getFirewallObject()->getByType(Policy::TYPENAME);
 
                 if (current_table == "mangle")
                 {
