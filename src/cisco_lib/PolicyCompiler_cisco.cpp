@@ -800,6 +800,15 @@ string PolicyCompiler_cisco::printClearCommands()
     return "";
 }
 
+/*
+ * This includes commands that should be added first, such as commit mode
+ * for FWSM, setting up temporary access list etc.
+ */
+string PolicyCompiler_cisco::printPreambleCommands()
+{
+    return "";
+}
+
 void PolicyCompiler_cisco::setNamedObjectsManager(NamedObjectsManager *mgr)
 {
     named_objects_manager = mgr;

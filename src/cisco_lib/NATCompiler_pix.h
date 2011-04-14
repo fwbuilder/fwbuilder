@@ -505,6 +505,7 @@ namespace fwcompiler
         void regroup();
 
         virtual std::string printClearCommands();
+        virtual std::string printPreambleCommands();
 
         /**
          * scans all rules in source_ruleset and finds rules (if

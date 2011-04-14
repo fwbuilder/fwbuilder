@@ -322,6 +322,7 @@ namespace fwcompiler {
 	virtual void epilog();
 
         virtual std::string printClearCommands();
+        virtual std::string printPreambleCommands();
     };
 
 

@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:13 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:15 2011 PDT by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -100,9 +100,11 @@ policy-map global_policy
 service-policy global_policy global
 
 
-
-
 !################
+
+
+
+
 ! 
 ! Rule  0 (global)
 access-list outside_acl_in permit ip any host 192.168.1.10 

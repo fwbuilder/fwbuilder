@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:20 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:23 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -102,7 +102,7 @@ object network inside-range-1.0
   range 10.0.0.1 10.0.0.5
 exit
 
-!################
+
 
 ! 
 ! Rule  0 (NAT)

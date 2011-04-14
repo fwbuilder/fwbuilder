@@ -78,114 +78,10 @@ PolicyCompiler_pix::PolicyCompiler_pix(FWObjectDatabase *_db,
 
 int PolicyCompiler_pix::prolog()
 {
-    string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    string host_os = fw->getStr("host_OS");
 
     if (platform!="pix" && platform!="fwsm") 
 	abort("Unsupported platform " + platform );
-
-    if (!inSingleRuleCompileMode())
-    {
-        output << "!################"  << endl;
-
-        if (platform=="fwsm")
-        {
-            if (fw->getOptionsObject()->getBool("pix_use_manual_commit") )
-                output << "access-list mode manual" << endl;
-            else
-                output << "access-list mode auto" << endl;
-        }
-
-        if ( fw->getOptionsObject()->getBool("pix_acl_substitution") )
-        {
-            /* Generate short temporary ACL and assign it to all
-             * interfaces. This ACL permits IPSEC (IP proto 50 and UDP port 500)
-             as well as ssh from given subnet to any.
-            */
-
-            string temp_acl = "tmp_acl";
-            string temp_acl_addr = fw->getOptionsObject()->getStr("pix_acl_temp_addr");
-            if (temp_acl_addr.empty())
-            {
-                abort(
-                    "Missing address for management host or subnet for "
-                    "temporary ACL. Enter it in the tab 'Script "
-                    "options' in 'Firewall Settings' dialog");
-            }
-
-            string::size_type slash_idx = temp_acl_addr.find('/');
-            string addr = temp_acl_addr;
-            string netmask = "255.255.255.255";
-
-            if (slash_idx!=string::npos)
-            {
-                addr = temp_acl_addr.substr(0,slash_idx);
-                netmask = temp_acl_addr.substr(slash_idx+1);
-                try
-                {
-                    if (netmask.find(".")!=string::npos)
-                    {
-                        InetAddr nm(netmask);
-                        nm.isAny(); // to avoid warning abt unused var
-                    } else
-                    {
-                        int nm_length;
-                        istringstream  str(netmask);
-                        str >> nm_length;
-                        InetAddr nm(nm_length);
-                        netmask = nm.toString();
-                    }
-                } catch(FWException &ex)
-                {
-                    abort("Invalid netmask for management subnet: '"+netmask+"'");
-                }
-            }
-
-            try
-            {
-                InetAddr(addr);
-            } catch(FWException &ex)
-            {
-                abort("Invalid address for management subnet: '"+addr+"'");
-            }
-
-            string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-                string("/FWBuilderResources/Target/options/")+
-                "version_"+version+"/pix_commands/clear_acl");
-
-            output << endl;
-
-            output << clearACLcmd << " " << temp_acl << endl;
-
-            if (fw->getStr("platform")=="fwsm" && 
-                fw->getOptionsObject()->getBool("pix_use_manual_commit") )
-            {
-                output << "access-list commit" << endl;
-            }
-
-            output << "access-list " << temp_acl
-                   << " permit ip "
-                   << addr << " " << netmask
-                   << " any "
-                   << endl;
-            output << "access-list " << temp_acl
-                   << " deny ip any any "
-                   << endl;
-            if (platform=="fwsm" &&
-                fw->getOptionsObject()->getBool("pix_use_manual_commit") )
-                output << "access-list commit" << endl;
-
-            output << endl;
-
-            output << "access-group " << temp_acl
-                   << " in interface outside" << endl;
-            output << "access-group " << temp_acl
-                   << " in interface inside" << endl;
-
-            output << endl;
-        }
-    }
 
     return PolicyCompiler::prolog();
 }
@@ -793,4 +689,116 @@ string PolicyCompiler_pix::printClearCommands()
     return output.str();
 }
 
+/*
+ * This includes commands that should be added first, such as commit mode
+ * for FWSM, setting up temporary access list etc.
+ */
+string PolicyCompiler_pix::printPreambleCommands()
+{
+    string version = fw->getStr("version");
+    string platform = fw->getStr("platform");
+
+    ostringstream output;
+
+    output << "!################"  << endl;
+
+    if (platform=="fwsm")
+    {
+        if (fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+            output << "access-list mode manual" << endl;
+        else
+            output << "access-list mode auto" << endl;
+    }
+
+    if ( fw->getOptionsObject()->getBool("pix_acl_substitution") )
+    {
+        /* Generate short temporary ACL and assign it to all
+         * interfaces. This ACL permits IPSEC (IP proto 50 and UDP port 500)
+         as well as ssh from given subnet to any.
+        */
+
+        string temp_acl = "tmp_acl";
+        string temp_acl_addr = fw->getOptionsObject()->getStr("pix_acl_temp_addr");
+        if (temp_acl_addr.empty())
+        {
+            abort(
+                "Missing address for management host or subnet for "
+                "temporary ACL. Enter it in the tab 'Script "
+                "options' in 'Firewall Settings' dialog");
+        }
+
+        string::size_type slash_idx = temp_acl_addr.find('/');
+        string addr = temp_acl_addr;
+        string netmask = "255.255.255.255";
+
+        if (slash_idx!=string::npos)
+        {
+            addr = temp_acl_addr.substr(0,slash_idx);
+            netmask = temp_acl_addr.substr(slash_idx+1);
+            try
+            {
+                if (netmask.find(".")!=string::npos)
+                {
+                    InetAddr nm(netmask);
+                    nm.isAny(); // to avoid warning abt unused var
+                } else
+                {
+                    int nm_length;
+                    istringstream  str(netmask);
+                    str >> nm_length;
+                    InetAddr nm(nm_length);
+                    netmask = nm.toString();
+                }
+            } catch(FWException &ex)
+            {
+                abort("Invalid netmask for management subnet: '"+netmask+"'");
+            }
+        }
+
+        try
+        {
+            InetAddr(addr);
+        } catch(FWException &ex)
+        {
+            abort("Invalid address for management subnet: '"+addr+"'");
+        }
+
+        string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/")+
+            "version_"+version+"/pix_commands/clear_acl");
+
+        output << endl;
+
+        output << clearACLcmd << " " << temp_acl << endl;
+
+        if (fw->getStr("platform")=="fwsm" && 
+            fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+        {
+            output << "access-list commit" << endl;
+        }
+
+        output << "access-list " << temp_acl
+               << " permit ip "
+               << addr << " " << netmask
+               << " any "
+               << endl;
+        output << "access-list " << temp_acl
+               << " deny ip any any "
+               << endl;
+        if (platform=="fwsm" &&
+            fw->getOptionsObject()->getBool("pix_use_manual_commit") )
+            output << "access-list commit" << endl;
+
+        output << endl;
+
+        output << "access-group " << temp_acl
+               << " in interface outside" << endl;
+        output << "access-group " << temp_acl
+               << " in interface inside" << endl;
+
+        output << endl;
+    }
+
+    return output.str();
+}
 

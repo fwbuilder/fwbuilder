@@ -1405,6 +1405,15 @@ string NATCompiler_pix::printClearCommands()
     return output.str();
 }
 
+/*
+ * This includes commands that should be added first, such as commit mode
+ * for FWSM, setting up temporary access list etc.
+ */
+string NATCompiler_pix::printPreambleCommands()
+{
+    return "";
+}
+
 class MergeConflictRes : public FWObjectDatabase::ConflictResolutionPredicate
 {
     public:

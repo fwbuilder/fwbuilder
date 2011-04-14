@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:13 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:15 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -68,8 +68,11 @@ floodguard enable
 
 
 
-
 !################
+
+
+
+
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in permit ip 10.1.2.0 255.255.255.0 any 

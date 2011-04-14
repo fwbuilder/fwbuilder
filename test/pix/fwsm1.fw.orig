@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:21 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:23 2011 PDT by vadim
 !
 ! Compiled for fwsm 2.3
 ! Outbound ACLs: supported
@@ -93,6 +93,16 @@ fixup protocol sip 5060
 fixup protocol skinny 2000
 fixup protocol smtp 25
 fixup protocol sqlnet 1521
+
+!################
+access-list mode auto
+
+clear access-list tmp_acl
+access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
+access-list tmp_acl deny ip any any 
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
 
 clear xlate
 clear static
@@ -217,16 +227,6 @@ object-group service id444A04819567.srv.tcp.0 tcp
   port-object eq 540
   port-object eq 7100
 exit
-
-!################
-access-list mode auto
-
-clear access-list tmp_acl
-access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
-access-list tmp_acl deny ip any any 
-
-access-group tmp_acl in interface outside
-access-group tmp_acl in interface inside
 
 ! 
 ! Rule  2 (ethernet1)

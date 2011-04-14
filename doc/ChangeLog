@@ -1,5 +1,12 @@
 2011-04-14  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (printPreambleCommands): see #2347 "FWSM
+	move up the "access-list mode auto-commit" command". Command that
+	configures access list commit mode should be issued before any
+	commands that clear and configure access lists. Also in this
+	change moving commands that set up temporary access list to the
+	top of the script.
+
 	* PolicyCompiler_pix.cpp (printClearCommands): see #2322 If this
 	is FWSM and if manual commit mode is used, need to commit after
 	clearing ACLs before we clear object groups.

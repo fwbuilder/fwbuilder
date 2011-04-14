@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:22 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:25 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -86,6 +86,7 @@ fixup protocol ftp 21
 fixup protocol http 80
 fixup protocol icmp error 
 
+!################
 clear xlate
 clear static
 clear global
@@ -97,7 +98,6 @@ clear telnet
 
 
 
-!################
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in  remark 0 (global)

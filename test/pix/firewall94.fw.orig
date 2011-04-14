@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:20 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:23 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -74,6 +74,7 @@ service-policy global_policy global
 
 
 
+!################
 clear config access-list
 clear config icmp
 clear config telnet
@@ -94,7 +95,6 @@ object-group network id26782X14355.src.net.0
   network-object object inside-range-2.0
 exit
 
-!################
 ! 
 ! Rule  0 (global)
 access-list inside_acl_in  remark 0 (global)

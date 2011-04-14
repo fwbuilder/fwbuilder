@@ -397,6 +397,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         oscnf->processFirewallOptions();
 
         string clear_commands;
+        string preamble_commands;
         bool have_named_objects = false;
         bool have_object_groups = false;
 
@@ -432,6 +433,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 n->compile();
                 n->epilog();
 
+                preamble_commands += n->printPreambleCommands();
                 clear_commands += n->printClearCommands();
                 have_named_objects = (have_named_objects ||
                                       named_objects_manager.haveNamedObjects());
@@ -467,6 +469,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 c->compile();
                 c->epilog();
 
+                preamble_commands += c->printPreambleCommands();
                 clear_commands += c->printClearCommands();
                 have_named_objects = (have_named_objects ||
                                       named_objects_manager.haveNamedObjects());
@@ -542,6 +545,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
         clear_commands += named_objects_manager.getClearCommands() + "\n";
 
+        system_configuration_script += preamble_commands;
         system_configuration_script += clear_commands;
         system_configuration_script += "\n";
 

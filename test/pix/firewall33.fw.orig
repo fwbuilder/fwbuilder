@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:15 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:18 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -72,6 +72,7 @@ floodguard disable
 
 
 
+!################
 clear object-group
 
 
@@ -98,7 +99,6 @@ object-group network id438728A918346.dst.net.0
   network-object host 157.166.255.19 
 exit
 
-!################
 ! 
 ! Rule  0 (eth0.100)
 access-list outside_acl_in deny   ip 192.168.1.0 255.255.255.0 any 

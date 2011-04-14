@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:16 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:19 2011 PDT by vadim
 !
 ! Compiled for pix 7.0
 ! Outbound ACLs: supported
@@ -113,6 +113,15 @@ policy-map global_policy
 
 service-policy global_policy global
 
+
+!################
+
+clear config access-list tmp_acl
+access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
+access-list tmp_acl deny ip any any 
+
+access-group tmp_acl in interface outside
+access-group tmp_acl in interface inside
 
 clear xlate
 clear config static
@@ -238,15 +247,6 @@ object-group service id4514304928543.srv.tcp.0 tcp
   port-object eq 540
   port-object eq 7100
 exit
-
-!################
-
-clear config access-list tmp_acl
-access-list tmp_acl permit ip 192.168.1.0 255.255.255.0 any 
-access-list tmp_acl deny ip any any 
-
-access-group tmp_acl in interface outside
-access-group tmp_acl in interface inside
 
 ! 
 ! Rule  2 (ethernet1)

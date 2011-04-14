@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3526
 !
-!  Generated Thu Apr 14 11:41:10 2011 PDT by vadim
+!  Generated Thu Apr 14 12:07:13 2011 PDT by vadim
 !
 ! Compiled for pix 6.1
 ! Outbound ACLs: not supported
@@ -70,8 +70,11 @@ floodguard disable
 
 
 
-
 !################
+
+
+
+
 ! 
 ! Rule  2 (eth1)
 ! Anti-spoofing rule

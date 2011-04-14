@@ -519,7 +519,8 @@ public:
 	virtual void epilog();
 
         virtual std::string printClearCommands();
-        
+        virtual std::string printPreambleCommands();
+       
         /**
          * sort commands ('icmp', 'telnet', 'ssh') and access lists
          * in some kind of 'natural' order. Useful for both IOS and PIX
