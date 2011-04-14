@@ -70,17 +70,32 @@ pixosAdvancedDialog::pixosAdvancedDialog(QWidget *parent,FWObject *o)
     assert(mgmt!=NULL);
 
 /* Page "General" */
-    data.registerOption( m_dialog->pix_set_host_name  , fwoptions,  "pix_set_host_name" );
-    data.registerOption( m_dialog->pix_ip_address  ,    fwoptions,  "pix_ip_address"    );
+    data.registerOption(
+        m_dialog->pix_set_host_name, fwoptions, "pix_set_host_name");
+    data.registerOption(
+        m_dialog->pix_ip_address, fwoptions, "pix_ip_address");
 
 /* Page NTP */
 
-    data.registerOption( m_dialog->ntp1,       fwoptions,  "pix_ntp1"        );
-    data.registerOption( m_dialog->ntp1_pref,  fwoptions,  "pix_ntp1_pref"   );
-    data.registerOption( m_dialog->ntp2,       fwoptions,  "pix_ntp2"        );
-    data.registerOption( m_dialog->ntp2_pref,  fwoptions,  "pix_ntp2_pref"   );
-    data.registerOption( m_dialog->ntp3,       fwoptions,  "pix_ntp3"        );
-    data.registerOption( m_dialog->ntp3_pref,  fwoptions,  "pix_ntp3_pref"   );
+    string host_os = o->getStr("host_OS");
+
+    if (host_os == "pix_os")
+    {
+        m_dialog->fwsm_ntp_warning->hide();
+        m_dialog->ntp_servers_group->show();
+        data.registerOption( m_dialog->ntp1,       fwoptions,  "pix_ntp1"        );
+        data.registerOption( m_dialog->ntp1_pref,  fwoptions,  "pix_ntp1_pref"   );
+        data.registerOption( m_dialog->ntp2,       fwoptions,  "pix_ntp2"        );
+        data.registerOption( m_dialog->ntp2_pref,  fwoptions,  "pix_ntp2_pref"   );
+        data.registerOption( m_dialog->ntp3,       fwoptions,  "pix_ntp3"        );
+        data.registerOption( m_dialog->ntp3_pref,  fwoptions,  "pix_ntp3_pref"   );
+    }
+
+    if (host_os == "fwsm_os")
+    {
+        m_dialog->fwsm_ntp_warning->show();
+        m_dialog->ntp_servers_group->hide();
+    }
 
 /* Page SNMP */
 

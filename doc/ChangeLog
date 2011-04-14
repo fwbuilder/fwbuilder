@@ -1,5 +1,8 @@
 2011-04-13  Vadim Kurland  <vadim@netcitadel.com>
 
+	* configlets/fwsm_os/ntp: see #2344 fwbuilder should not generate
+	any "ntp" commands for FWSM because NTP can not be configured on FWSM.
+
 	* OSConfigurator_pix_os.cpp (_printSysopt): see #2345 More fixes for
 	FWSM 4.x: "service resetoutbound", "timeout xlate", "timeout sunrpc"
 

@@ -3,7 +3,7 @@
 !
 !  Firewall Builder  fwb_pix v4.2.0.3525
 !
-!  Generated Wed Apr 13 17:10:49 2011 PDT by vadim
+!  Generated Wed Apr 13 17:15:47 2011 PDT by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -80,8 +80,7 @@ snmp-server enable traps
 snmp-server host inside 192.168.1.20 poll  
 snmp-server host inside 192.168.1.22 trap  
 
-clear config ntp
-ntp server 192.168.1.20 source inside prefer 
+
 
 
 no service resetinbound
