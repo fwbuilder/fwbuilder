@@ -791,10 +791,21 @@ string PolicyCompiler_pix::printPreambleCommands()
 
         output << endl;
 
-        output << "access-group " << temp_acl
-               << " in interface outside" << endl;
-        output << "access-group " << temp_acl
-               << " in interface inside" << endl;
+        // see #2347  attach temporary acl to all interfaces
+
+        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*>::iterator i;
+        for (i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+
+            output << "access-group "
+                   << temp_acl
+                   << " in interface "
+                   << iface->getLabel()
+                   << endl;
+        }
 
         output << endl;
     }
