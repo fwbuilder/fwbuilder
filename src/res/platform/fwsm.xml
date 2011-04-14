@@ -259,12 +259,12 @@ nameif %in %il security%sl
                 <dialog_page>None</dialog_page>
             </Deny>
             <Reject>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Reject</description>
                 <dialog_page>Reject</dialog_page>
             </Reject>
             <Accounting>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Accounting</description>
                 <dialog_page>None</dialog_page>
             </Accounting>

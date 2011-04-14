@@ -1,5 +1,10 @@
 2011-04-14  vadim  <vadim@netcitadel.com>
 
+	* platform/pix.xml: see #2348: "Accounting action is not valid for
+	FWSM platform". Actions "Accounting" and "Reject" should not
+	appear in the drop-down list of actions in the GUI if platform is
+	pix or fwsm.
+
 	* PolicyCompiler_pix.cpp (printPreambleCommands): see #2347 "FWSM
 	move up the "access-list mode auto-commit" command". Command that
 	configures access list commit mode should be issued before any
