@@ -1,0 +1,64 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v4.2.0.3527
+!
+!  Generated Fri Apr 15 12:47:54 2011 PDT by vadim
+!
+! Compiled for pix 6.3
+! Outbound ACLs: not supported
+! Emulate outbound ACLs: yes
+! Generating outbound ACLs: no
+! Assume firewall is part of any: no
+!
+!# files: * firewall101.fw
+!
+! this firewall generates "short" config (only acls and nat rules, no interface configuration, timeouts and inspectors)
+
+
+
+!
+! Prolog script:
+!
+
+!
+! End of prolog script:
+!
+
+
+! This script was generated with option "Generate only access-list, access-group,
+! nat, static, global" commands turned on in the "Script" tab of the firewall
+! object advanced settings dialog. Skipping system configuration commands.
+
+
+
+
+object-group network id63559X5474.src.net.0
+  network-object 192.168.10.0 255.255.255.0 
+  network-object 192.168.20.0 255.255.255.0 
+exit
+
+! 
+! Rule  0 (global)
+access-list inside_acl_in permit ip object-group id63559X5474.src.net.0 host 192.168.1.20 
+! 
+! Rule  1 (global)
+access-list outside_acl_in deny   ip any any 
+access-list dmz_acl_in deny   ip any any 
+access-list inside_acl_in deny   ip any any 
+
+
+access-group dmz_acl_in in interface dmz
+access-group inside_acl_in in interface inside
+access-group outside_acl_in in interface outside
+
+
+
+
+
+!
+! Epilog script:
+!
+
+! End of epilog script:
+!
