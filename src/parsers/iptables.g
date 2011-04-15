@@ -23,6 +23,17 @@
 
 */
 
+
+/*
+Note about negation:
+
+this grammar parses only extrapositioned negation "! -s address" for
+all recognized options that can have it. Intrapositioned negation ("-s ! address")
+should be converted to extrapositioned in IPTImporter class before running
+the parser.
+
+*/
+
 header "pre_include_hpp"
 {
     // gets inserted before antlr generated includes in the header
@@ -243,6 +254,8 @@ add_rule : ADD_RULE chain_def
 //****************************************************************
 ipt_option :
         (
+            negation
+        |
             module
         |
             match_mark
@@ -283,6 +296,13 @@ ipt_option :
         |
             unknown_option
         )
+    ;
+
+//****************************************************************
+negation : EXCLAMATION
+            {
+                importer->tmp_neg = true;
+            }
     ;
 
 //****************************************************************
@@ -357,16 +377,12 @@ module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  
     ;
 
 //****************************************************************
-src      : OPT_SRC
+src : OPT_SRC
         {
             *dbg << " SRC=";
+            importer->src_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
         }
-        (
-            EXCLAMATION
-            {
-                importer->src_neg = true;
-            }
-        )?
         ( (WORD | IPV4)
             {
                 importer->src_a = LT(0)->getText();
@@ -384,13 +400,9 @@ src      : OPT_SRC
 dst      : OPT_DST
         {
             *dbg << " DST=";
+            importer->dst_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
         }
-        (
-            EXCLAMATION
-            {
-                importer->dst_neg = true;
-            }
-        )?
         ( (WORD | IPV4)
             {
                 importer->dst_a = LT(0)->getText();
@@ -406,31 +418,27 @@ dst      : OPT_DST
                              
 //****************************************************************
 i_intf  : OPT_IN_INTF
-        (
-            EXCLAMATION
-            {
-                importer->intf_neg = true;
-            }
-        )?
-        i:WORD
+        {
+            importer->intf_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
+        WORD
         {
             importer->i_intf = LT(0)->getText();
-            *dbg << " I_INTF=" << i->getText();
+            *dbg << " I_INTF=" << LT(0)->getText();
         }
     ;
                             
 //****************************************************************
 o_intf : OPT_OUT_INTF
-        (
-            EXCLAMATION
-            {
-                importer->intf_neg = true;
-            }
-        )?
-        i:WORD
+        {
+            importer->intf_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
+        WORD
         {
             importer->o_intf = LT(0)->getText();
-            *dbg << " O_INTF=" << i->getText();
+            *dbg << " O_INTF=" << LT(0)->getText();
         }
     ;
                             
@@ -439,12 +447,10 @@ protocol_word : (TCP | UDP | ICMP | WORD | INT_CONST )
     ;
 
 proto    : OPT_PROTO
-        (
-            EXCLAMATION
-            {
-                importer->srv_neg = true;
-            }
-        )? 
+        {
+            importer->srv_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
         protocol_word
         {
             std::string tmp_s = LT(0)->getText();
@@ -718,6 +724,7 @@ match_mark : OPT_MODULE m_mark
             ( EXCLAMATION {importer->neg_match_mark = true;} )?
             MATCH_MARK (INT_CONST | HEX_CONST)
             {
+                importer->tmp_neg = false;
                 importer->match_mark = LT(0)->getText();
                 *dbg << " MATCH MARK " << LT(0)->getText();
             }
@@ -1043,24 +1050,20 @@ nat_port_def_with_range :
 //****************************************************************
 basic_tcp_udp_port_spec :
         (MATCH_SRC_PORT | MATCH_SRC_PORT_SHORT)
-        (
-            EXCLAMATION
-            {
-                importer->srv_neg = true;
-            }
-        )?
+        {
+            importer->srv_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
         (port_def_with_range | port_def_with_incomplete_range)
         {
             importer->pushTmpPortSpecToSrcPortList();
         }
     |
         (MATCH_DST_PORT | MATCH_DST_PORT_SHORT)
-        (
-            EXCLAMATION
-            {
-                importer->srv_neg = true;
-            }
-        )?
+        {
+            importer->srv_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
         (port_def_with_range | port_def_with_incomplete_range)
         {
             importer->pushTmpPortSpecToDstPortList();
@@ -1091,8 +1094,11 @@ m_tcp : TCP
 // at least in the older versions of iptables
 
 tcp_options : 
-    ( EXCLAMATION { importer->srv_neg = true; } )?
-    ( syn | tcp_flags | tcp_option)
+        ( syn | tcp_flags | tcp_option)
+        {
+            importer->srv_neg = importer->tmp_neg;
+            importer->tmp_neg = false;
+        }
     ;
 
 syn :   MATCH_SYN
@@ -1165,7 +1171,7 @@ tcp_flags : MATCH_TCP_FLAGS
     ;
 
 // --tcp-option is not supported in fwbuilder at this time
-tcp_option : MATCH_TCP_OPTION (INT_CONST | EXCLAMATION INT_CONST)
+tcp_option : MATCH_TCP_OPTION INT_CONST
     ;
 
 //****************************************************************

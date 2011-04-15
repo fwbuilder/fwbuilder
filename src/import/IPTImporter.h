@@ -115,7 +115,8 @@ class IPTImporter : public Importer
     bool dst_neg;
     bool srv_neg;
     bool intf_neg;
-
+    bool tmp_neg;
+    
     std::string limit_val;
     std::string limit_suffix;
     std::string limit_burst;

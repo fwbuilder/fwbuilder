@@ -1,7 +1,7 @@
 #ifndef INC_IPTCfgParser_hpp_
 #define INC_IPTCfgParser_hpp_
 
-#line 27 "iptables.g"
+#line 38 "iptables.g"
 
     // gets inserted before antlr generated includes in the header
     // file
@@ -15,7 +15,7 @@
 #include "IPTCfgParserTokenTypes.hpp"
 #include <antlr/LLkParser.hpp>
 
-#line 34 "iptables.g"
+#line 45 "iptables.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -25,7 +25,7 @@
 class IPTImporter;
 
 #line 28 "IPTCfgParser.hpp"
-#line 63 "iptables.g"
+#line 74 "iptables.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
@@ -33,7 +33,7 @@ class IPTImporter;
 #line 34 "IPTCfgParser.hpp"
 class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public IPTCfgParserTokenTypes
 {
-#line 80 "iptables.g"
+#line 91 "iptables.g"
 
 // additional methods and members
 
@@ -96,6 +96,7 @@ public:
 	public: void commit();
 	public: void chain_def();
 	public: void ipt_option();
+	public: void negation();
 	public: void module();
 	public: void match_mark();
 	public: void match_recent();

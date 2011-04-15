@@ -121,7 +121,7 @@ void IPTImporter::clear()
     target = "";
     tmp_port_range_start = "";
     tmp_port_range_end = "";
-    src_neg = dst_neg = srv_neg = intf_neg = false;
+    src_neg = dst_neg = srv_neg = intf_neg = tmp_neg = false;
     match_mark = "";
     neg_match_mark = false;
     recent_match = "";

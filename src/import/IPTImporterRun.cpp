@@ -29,6 +29,8 @@
 
 #include <QString>
 #include <QStringList>
+#include <QRegExp>
+#include <QtDebug>
 
 #include <ios>
 #include <iostream>
@@ -82,6 +84,9 @@ void IPTImporter::run()
     string normalized_input_buffer;
     normalized_input_buffer.reserve(input_size);
 
+    QRegExp old_negation_short("(-[^- ])\\s!");
+    QRegExp old_negation_long("(--[^- ]+)\\s!");
+
     input.seekg (0, ios::beg);
     char buf[8192];
     while (!input.eof())
@@ -96,6 +101,39 @@ void IPTImporter::run()
             str.replace("--dports", "--destination-ports");
             str.replace("--dport", "--destination-ports");
         }
+
+        // negation: "-s ! something" format is deprecated and is replaced with
+        // "! -s something", but our parser understands only old format.
+        int pos = 0;
+        while (true)
+        {
+            QString option;
+            int match_length = 0;
+            int old_pos = 0;
+
+            old_pos = old_negation_short.indexIn(str, pos);
+            if (old_pos != -1)
+            {
+                option = old_negation_short.cap(1);
+                match_length = old_negation_short.matchedLength();
+            } else
+            {
+                old_pos = old_negation_long.indexIn(str, pos);
+                if (old_pos != -1)
+                {
+                    option = old_negation_long.cap(1);
+                    match_length = old_negation_long.matchedLength();
+                }
+            }
+
+            if (old_pos == -1) break;
+
+            QString new_format = QString("! %1").arg(option);
+            str.replace(old_pos, match_length, new_format);
+            pos = old_pos + match_length;
+        }
+
+        cerr << str.toStdString() << endl;
 
         normalized_input_buffer.append(str.toStdString());
         normalized_input_buffer.append("\n");

@@ -144,6 +144,8 @@
 -A scan_checks_chain -i eth0 -p tcp -m tcp --tcp-flags SYN,RST SYN,RST -j DROP 
 -A scan_checks_chain -i eth0 -p tcp -m tcp --tcp-flags FIN,SYN FIN,SYN -j DROP 
 -A scan_checks_chain -i eth0 -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP 
+-A scan_checks_chain -i eth0 -p tcp -m tcp --syn  -j ACCEPT
+-A scan_checks_chain -i eth0 -p tcp -m tcp ! --syn  -j ACCEPT
 
 
 # was: bad port spec

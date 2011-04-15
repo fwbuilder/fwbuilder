@@ -1,5 +1,9 @@
 2011-04-14  vadim  <vadim@netcitadel.com>
 
+	* IPTImporterRun.cpp (run): see #2275 Importer for iptables now
+	correctly handles both "intrapositioned" ("-s ! address") and
+	"extrapositioned" ("! -s address") negation.
+
 	* platform/fwsm.xml: see #2295 Added FWSM version "3.2". According to
 	Cisco documentation, FWSM version 3.2 matches PIX 7.
 
