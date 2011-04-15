@@ -1,3 +1,9 @@
+2011-04-15  vadim  <vadim@netcitadel.com>
+
+	* iptables.g (multiport_tcp_udp_port_spec): see #2245 fixed bug in
+	parser for iptables that prevented correct import of iptables rules
+	using module "multiport" with port range matches.
+
 2011-04-14  vadim  <vadim@netcitadel.com>
 
 	* CompilerDriver_pix_run.cpp (pixSecurityLevelChecks): see #2351

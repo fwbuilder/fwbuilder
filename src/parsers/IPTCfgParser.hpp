@@ -144,8 +144,8 @@ public:
 	public: void recent_args_param();
 	public: void length_spec();
 	public: void pkt_type_spec();
-	public: void port_def_no_range();
 	public: void port_def_with_range();
+	public: void port_def_no_range();
 	public: void port_def_with_incomplete_range();
 	public: void syn();
 	public: void tcp_flags();

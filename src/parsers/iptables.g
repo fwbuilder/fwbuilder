@@ -895,11 +895,11 @@ multiport_tcp_udp_port_spec :
                     importer->startSrcMultiPort();
                     *dbg << " SRC MULTIPORT=";
                 }
-                port_def_no_range
+                port_def_with_range
                 {
                     importer->pushTmpPortSpecToSrcPortList();
                 }
-                ( COMMA port_def_no_range
+                ( COMMA port_def_with_range
                     {
                         importer->pushTmpPortSpecToSrcPortList();
                     }
@@ -911,11 +911,11 @@ multiport_tcp_udp_port_spec :
                     importer->startDstMultiPort();
                     *dbg << " DST MULTIPORT=";
                 }
-                port_def_no_range
+                port_def_with_range
                 {
                     importer->pushTmpPortSpecToDstPortList();
                 }
-                ( COMMA port_def_no_range
+                ( COMMA port_def_with_range
                     {
                         importer->pushTmpPortSpecToDstPortList();
                     }
@@ -927,11 +927,11 @@ multiport_tcp_udp_port_spec :
                     importer->startBothMultiPort();
                     *dbg << " MULTIPORT PORTS=";
                 }
-                port_def_no_range
+                port_def_with_range
                 {
                     importer->pushTmpPortSpecToBothPortList();
                 }
-                ( COMMA port_def_no_range
+                ( COMMA port_def_with_range
                     {
                         importer->pushTmpPortSpecToBothPortList();
                     }
