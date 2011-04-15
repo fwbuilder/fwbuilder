@@ -133,8 +133,6 @@ void IPTImporter::run()
             pos = old_pos + match_length;
         }
 
-        cerr << str.toStdString() << endl;
-
         normalized_input_buffer.append(str.toStdString());
         normalized_input_buffer.append("\n");
     }
