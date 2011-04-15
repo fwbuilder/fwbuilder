@@ -1,0 +1,26 @@
+3: Platform: FWSM
+3: Version: 4.1
+11: New interface: Vlan350
+11: Interface comment: management 
+12: Interface parameters: vlan0350  
+12: Interface label: vlan0350
+14: Interface address: 192.0.2.1/255.255.255.0
+14: Parser error: line 16:2: unexpected token: management-only
+18: New interface: Vlan351
+18: Interface parameters: vlan0351  
+18: Interface label: vlan0351
+23: New interface: Vlan352
+23: Interface parameters: vlan0352  
+23: Interface label: vlan0352
+28: New interface: Vlan353
+28: Interface parameters: vlan0353  
+28: Interface label: vlan0353
+33: New interface: Vlan354
+33: Interface parameters: vlan0354  
+33: Interface label: vlan0354
+47: Interface Vlan350 ruleset icmp_commands_vlan0350 direction 'in'
+47: filtering rule: access list icmp_commands_vlan0350, action permit
+63: Interface Vlan350 ruleset http_commands_vlan0350 direction 'in'
+63: filtering rule: access list http_commands_vlan0350, action permit
+67: Interface Vlan350 ruleset ssh_commands_vlan0350 direction 'in'
+67: filtering rule: access list ssh_commands_vlan0350, action permit

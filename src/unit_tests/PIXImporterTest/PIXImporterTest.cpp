@@ -364,3 +364,18 @@ void PIXImporterTest::NamesTest()
     compareFwbFiles("test_data/asa8.0-names.fwb", "asa8.0-names.fwb");
 }
 
+void PIXImporterTest::FWSM_4_1_Test()
+{
+    std::istringstream instream(openTestFile("test_data/fwsm1.test"));
+
+    Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("fwsm1.fwb");
+
+    compareResults(logger, "test_data/fwsm1.output", "fwsm1.output");
+    compareFwbFiles("test_data/fwsm1.fwb", "fwsm1.fwb");
+}
+

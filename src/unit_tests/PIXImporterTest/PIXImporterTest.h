@@ -63,6 +63,7 @@ public:
     void PIX_7_NAT_Test();
     void ASA_8_0_Test();
     void ASA_8_3_Test();
+    void FWSM_4_1_Test();
     void ObjectsAndGroupsTest();
     void ACLObjectsAndGroupsTest();
     void ACLTest();
@@ -78,6 +79,7 @@ public:
     CPPUNIT_TEST(ACLObjectsAndGroupsTest);
     CPPUNIT_TEST(ACLTest);
     CPPUNIT_TEST(NamesTest);
+    CPPUNIT_TEST(FWSM_4_1_Test);
     
     CPPUNIT_TEST_SUITE_END();
 

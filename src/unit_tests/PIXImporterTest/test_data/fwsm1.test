@@ -1,0 +1,94 @@
+: Saved
+:
+FWSM Version 4.1(4) <context>
+!
+hostname fwb
+domain-name default.domain.invalid
+enable password xxxxxxxxxxxxxxx encrypted
+names
+dns-guard
+!
+interface Vlan350
+ description management
+ nameif vlan0350
+ security-level 100
+ ip address 192.0.2.1 255.255.255.0 
+ management-only
+!
+interface Vlan351
+ nameif vlan0351
+ security-level 0
+ no ip address
+!
+interface Vlan352
+ nameif vlan0352
+ security-level 0
+ no ip address
+!
+interface Vlan353
+ nameif vlan0353
+ security-level 0
+ no ip address
+!
+interface Vlan354
+ nameif vlan0354
+ security-level 0
+ no ip address
+!
+passwd yyyyyyyyyyyyyyyy encrypted
+pager lines 24
+logging enable
+logging asdm informational
+mtu vlan0350 1500
+mtu vlan0351 1500
+mtu vlan0352 1500
+mtu vlan0353 1500
+mtu vlan0354 1500
+icmp permit any vlan0350
+no asdm history enable
+arp timeout 14400
+timeout xlate 3:00:00
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 1:00:00 h225 1:00:00 mgcp 0:05:00
+timeout mgcp-pat 0:05:00 sip 0:30:00 sip_media 0:02:00
+timeout sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout pptp-gre 0:02:00
+timeout uauth 0:05:00 absolute
+username netcitadel password MMMMMMMMMMMMMMMM encrypted privilege 15
+aaa authentication enable console LOCAL 
+aaa authentication http console LOCAL 
+aaa authentication ssh console LOCAL 
+aaa authorization command LOCAL 
+http server enable
+http 192.0.2.0 255.255.255.0 vlan0350
+no snmp-server location
+no snmp-server contact
+telnet timeout 5
+ssh 192.0.2.0 255.255.255.0 vlan0350
+ssh timeout 5
+ssh version 2
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!             
+policy-map global_policy
+ class inspection_default
+  inspect dns maximum-length 512 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect netbios 
+  inspect rsh 
+  inspect skinny 
+  inspect smtp 
+  inspect sqlnet 
+  inspect sunrpc 
+  inspect tftp 
+  inspect sip 
+  inspect xdmcp 
+!
+service-policy global_policy global
+Cryptochecksum:34b2ef08671bc98ed1d598733ed72e73
+: end
+
