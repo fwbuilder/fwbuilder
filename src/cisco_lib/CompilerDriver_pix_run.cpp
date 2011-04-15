@@ -638,20 +638,21 @@ void CompilerDriver_pix::pixSecurityLevelChecks(Firewall *fw,
                 iface2->getOptionsObject()->getBool("cluster_interface"))
                 continue;
 
-            if (iface->getSecurityLevel()==iface2->getSecurityLevel())
-            {
-                QString err(
-                    "Security level of each interface should be unique, "
-                    "however interfaces %1 (%2) and %3 (%4)"
-                    " have the same security level."
-                );
-                abort(fw, NULL, NULL,
-                      err.arg(iface->getName().c_str())
-                      .arg(iface->getLabel().c_str())
-                      .arg(iface2->getName().c_str())
-                      .arg(iface2->getLabel().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompileMode();
-            }
+            // see #2351. Security levels do not have to be unique
+            // if (iface->getSecurityLevel()==iface2->getSecurityLevel())
+            // {
+            //     QString err(
+            //         "Security level of each interface should be unique, "
+            //         "however interfaces %1 (%2) and %3 (%4)"
+            //         " have the same security level."
+            //     );
+            //     abort(fw, NULL, NULL,
+            //           err.arg(iface->getName().c_str())
+            //           .arg(iface->getLabel().c_str())
+            //           .arg(iface2->getName().c_str())
+            //           .arg(iface2->getLabel().c_str()).toStdString());
+            //     throw FatalErrorInSingleRuleCompileMode();
+            // }
 
             if (iface->getLabel()==iface2->getLabel())
             {

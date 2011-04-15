@@ -1,5 +1,9 @@
 2011-04-14  vadim  <vadim@netcitadel.com>
 
+	* CompilerDriver_pix_run.cpp (pixSecurityLevelChecks): see #2351
+	Security levels of ASA and FWSM interfaces do not have to be
+	unique. Removed check that enforced this.
+
 	* IPTImporterRun.cpp (run): see #2275 Importer for iptables now
 	correctly handles both "intrapositioned" ("-s ! address") and
 	"extrapositioned" ("! -s address") negation.
