@@ -703,7 +703,7 @@ m_state : M_STATE MATCH_STATE
             {
                 importer->current_state += std::string(",") + LT(0)->getText();
             }
-        )?
+        )*
         {
             *dbg << " STATE MATCH=" << importer->current_state;
         }
