@@ -265,7 +265,13 @@ int main( int argc, char *argv[] )
     // setup single shot timer to call startupLoad()
     QTimer::singleShot(500, mw, SLOT(startupLoad()));
 
-    app->exec();
+    try
+    {
+        app->exec();
+    } catch (const FWException &ex)
+    {
+        qDebug() << "Caught FWException: " << ex.toString().c_str();
+    }
 
     mw->hide();  // must do this before settings object is destroyed
 

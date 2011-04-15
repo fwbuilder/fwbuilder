@@ -629,25 +629,30 @@ Firewall* PIXImporter::finalize()
     {
         Firewall *fw = Firewall::cast(getFirewallObject());
 
-        QString pl = QString(discovered_platform.c_str()).toLower();
-        if (pl == "asa") pl = "pix";
-
-        string host_os;
-
-        if (pl == "pix") host_os = "pix_os";
-        if (pl == "fwsm") host_os = "fwsm_os";
-
-        if (! host_os.empty())
+        if (! discovered_platform.empty())
         {
-            fw->setStr("host_OS", host_os);
-            Resources::setDefaultTargetOptions(host_os , fw);
+            QString pl = QString(discovered_platform.c_str()).toLower();
+
+            fw->setStr("platform", pl.toStdString());
+
+            if (pl == "asa") pl = "pix";
+
+            string host_os;
+
+            if (pl == "pix") host_os = "pix_os";
+            if (pl == "fwsm") host_os = "fwsm_os";
+
+            if (! host_os.empty())
+            {
+                fw->setStr("host_OS", host_os);
+                Resources::setDefaultTargetOptions(host_os , fw);
+            }
+
+            string version = findBestVersionMatch(
+                pl, discovered_version.c_str()).toStdString();
+
+            if ( ! version.empty()) fw->setStr("version", version);
         }
-
-        string version = findBestVersionMatch(
-            pl, discovered_version.c_str()).toStdString();
-
-        if ( ! version.empty())
-            fw->setStr("version", version);
 
         rearrangeVlanInterfaces();
 

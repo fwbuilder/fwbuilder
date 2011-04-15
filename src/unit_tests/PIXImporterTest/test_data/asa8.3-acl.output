@@ -1,6 +1,5 @@
 3: Platform: ASA
 3: Version: 8.3
-5: Host name: asa5505
 8: New interface: Vlan1
 8: Interface parameters: inside  
 8: Interface label: inside

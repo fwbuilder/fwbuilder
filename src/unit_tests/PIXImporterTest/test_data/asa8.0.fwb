@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302235771" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302832095" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -576,7 +576,7 @@
       <ServiceGroup id="id117" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id118" name="Firewalls" comment="" ro="False">
-      <Firewall id="id119" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="8.0" name="pixfirewall" comment="Created during import of  line 5" ro="False">
+      <Firewall id="id119" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="8.0" name="test_fw" comment="Created during import of  line 9" ro="False">
         <NAT id="id327" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -927,11 +927,11 @@
           <RuleSetOptions/>
         </Routing>
         <Interface id="id331" dedicated_failover="False" dyn="False" label="inside" security_level="100" unnum="False" unprotected="False" name="Ethernet0" comment="Created during import of  line 9" ro="False">
-          <IPv4 id="id332" name="pixfirewall:Ethernet0:ip" comment="Created during import of  line 11" ro="False" address="192.168.2.221" netmask="255.255.255.0"/>
+          <IPv4 id="id332" name="test_fw:Ethernet0:ip" comment="Created during import of  line 11" ro="False" address="192.168.2.221" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id334" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="Ethernet1" comment="Created during import of  line 14" ro="False">
-          <IPv4 id="id335" name="pixfirewall:Ethernet1:ip" comment="Created during import of  line 16" ro="False" address="192.0.2.221" netmask="255.255.255.0"/>
+          <IPv4 id="id335" name="test_fw:Ethernet1:ip" comment="Created during import of  line 16" ro="False" address="192.0.2.221" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <FirewallOptions>
@@ -944,6 +944,7 @@
           <Option name="pix_floodguard">true</Option>
           <Option name="pix_generate_out_acl">true</Option>
           <Option name="pix_include_comments">true</Option>
+          <Option name="pix_resetoutside_supported">true</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>

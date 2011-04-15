@@ -1,6 +1,5 @@
 3: Platform: PIX
 3: Version: 7.2
-6: Host name: pix1
 16: New interface: Ethernet0
 21: New interface: Ethernet0.101
 22: Interface parameters: outside  

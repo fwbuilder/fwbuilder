@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302306262" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302832095" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -565,7 +565,7 @@
       <ServiceGroup id="id120" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id121" name="Firewalls" comment="" ro="False">
-      <Firewall id="id122" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="7.0" name="pix1" comment="Created during import of  line 6" ro="False">
+      <Firewall id="id122" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="7.0" name="test_fw" comment="Created during import of  line 16" ro="False">
         <NAT id="id330" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id333" disabled="False" group="" position="0" action="Translate" comment="Created during import of  line 143">
             <OSrc neg="False">
@@ -3036,14 +3036,14 @@
         <Interface id="id1739" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Ethernet0" comment="Created during import of  line 16" ro="False">
           <InterfaceOptions/>
           <Interface id="id1741" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="Created during import of  line 21" ro="False">
-            <IPv4 id="id1743" name="pix1:Ethernet0.101:ip" comment="Created during import of  line 24" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
+            <IPv4 id="id1743" name="test_fw:Ethernet0.101:ip" comment="Created during import of  line 24" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">101</Option>
             </InterfaceOptions>
           </Interface>
           <Interface id="id1744" dedicated_failover="False" dyn="False" label="dmz20" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="Created during import of  line 27" ro="False">
-            <IPv4 id="id1746" name="pix1:Ethernet0.102:ip" comment="Created during import of  line 30" ro="False" address="10.0.0.253" netmask="255.255.255.0"/>
+            <IPv4 id="id1746" name="test_fw:Ethernet0.102:ip" comment="Created during import of  line 30" ro="False" address="10.0.0.253" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">102</Option>
@@ -3051,7 +3051,7 @@
           </Interface>
         </Interface>
         <Interface id="id1747" dedicated_failover="False" dyn="False" label="inside" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="Created during import of  line 33" ro="False">
-          <IPv4 id="id1748" name="pix1:Ethernet1:ip" comment="Created during import of  line 37" ro="False" address="10.1.1.206" netmask="255.255.255.0"/>
+          <IPv4 id="id1748" name="test_fw:Ethernet1:ip" comment="Created during import of  line 37" ro="False" address="10.1.1.206" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <FirewallOptions>
@@ -3064,6 +3064,7 @@
           <Option name="pix_floodguard">true</Option>
           <Option name="pix_generate_out_acl">true</Option>
           <Option name="pix_include_comments">true</Option>
+          <Option name="pix_resetoutside_supported">true</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>

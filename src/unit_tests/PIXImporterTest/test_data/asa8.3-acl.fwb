@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302235772" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302831986" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -675,7 +675,7 @@
       <ServiceGroup id="id195" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id196" name="Firewalls" comment="" ro="False">
-      <Firewall id="id197" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="8.3" name="asa5505" comment="Created during import of  line 5" ro="False">
+      <Firewall id="id197" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="asa" version="8.3" name="test_fw" comment="Created during import of  line 8" ro="False">
         <NAT id="id1125" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2235,7 +2235,7 @@
           <RuleSetOptions/>
         </Routing>
         <Interface id="id1129" dedicated_failover="False" dyn="False" label="inside" security_level="100" unnum="False" unprotected="False" name="Vlan1" comment="Created during import of  line 8" ro="False">
-          <IPv4 id="id1130" name="asa5505:Vlan1:ip" comment="Created during import of  line 10" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <IPv4 id="id1130" name="test_fw:Vlan1:ip" comment="Created during import of  line 10" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id1132" dedicated_failover="False" dyn="True" label="outside" security_level="0" unnum="False" unprotected="False" name="Vlan2" comment="Created during import of  line 14" ro="False">
@@ -2254,6 +2254,7 @@
           <Option name="pix_floodguard">true</Option>
           <Option name="pix_generate_out_acl">true</Option>
           <Option name="pix_include_comments">true</Option>
+          <Option name="pix_resetoutside_supported">true</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
