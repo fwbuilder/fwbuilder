@@ -5,7 +5,6 @@
 12: Interface parameters: vlan0350  
 12: Interface label: vlan0350
 14: Interface address: 192.0.2.1/255.255.255.0
-14: Parser error: line 16:2: unexpected token: management-only
 18: New interface: Vlan351
 18: Interface parameters: vlan0351  
 18: Interface label: vlan0351

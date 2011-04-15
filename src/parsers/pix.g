@@ -1517,6 +1517,8 @@ unsupported_interface_commands :
         |
             IPV6_C
         |
+            MANAGEMENT_ONLY
+        |
             MAC_ADDRESS
         |
             MULTICAST
@@ -2295,6 +2297,8 @@ tokens
     HOLD_TIME = "hold-time";
     IPV6_C = "ipv6";
     MAC_ADDRESS = "mac-address";
+    MANAGEMENT_ONLY = "management-only";
+
     MULTICAST = "multicast";
     NETMASK = "netmask";
 
