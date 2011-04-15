@@ -6,6 +6,7 @@ TEMPLATE = lib
 #
 
 SOURCES = QStringListOperators.cpp \
+	      PreImport.cpp \
           objectMaker.cpp \
           addressObjectMaker.cpp \
           serviceObjectMaker.cpp \
@@ -21,6 +22,7 @@ SOURCES = QStringListOperators.cpp \
           PIXImporterRun.cpp \
 
 HEADERS	 = QStringListOperators.h \
+	       PreImport.h \
            objectMaker.h \
            addressObjectMaker.h \
            serviceObjectMaker.h \

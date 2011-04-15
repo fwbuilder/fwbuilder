@@ -268,7 +268,7 @@ int main( int argc, char *argv[] )
     try
     {
         app->exec();
-    } catch (const FWException &ex)
+    } catch (const libfwbuilder::FWException &ex)
     {
         qDebug() << "Caught FWException: " << ex.toString().c_str();
     }

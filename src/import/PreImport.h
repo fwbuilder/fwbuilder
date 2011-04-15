@@ -1,4 +1,4 @@
-/*
+/* 
 
                           Firewall Builder
 
@@ -15,35 +15,46 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
+ 
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-#ifndef IC_PLATFORMWARNINGPAGE_H
-#define IC_PLATFORMWARNINGPAGE_H
 
-#include "ui_ic_platformwarningpage_q.h"
+#ifndef _PRE_IMPORTER_H_
+#define _PRE_IMPORTER_H_
 
-#include "PreImport.h"
 
-class IC_PlatformWarningPage : public QWizardPage
+#include <QString>
+#include <QStringList>
+
+
+/*
+ * This class scans firewall configuration and tries to guess platform
+ * and some other parameters
+ */
+
+
+class PreImport
 {
-    Q_OBJECT;
+    const QStringList *buffer;
 
-    Ui::IC_PlatformWarningPage_q *m_dialog;
-    bool platformOk;
-    
 public:
-    IC_PlatformWarningPage(QWidget *parent);
-    virtual ~IC_PlatformWarningPage() {}
 
-    virtual void initializePage();
-    virtual bool isComplete() const;
+    enum Platforms { UNKNOWN, IPTABLES, IPTABLES_WITH_COUNTERS,
+                     PF, IOSACL, PIX, FWSM } ;
+
+private:    
+
+    enum Platforms platform;
+
+public:
     
-public slots:
-    void voteForFeature();
+    PreImport(const QStringList *buf) { buffer = buf; platform = UNKNOWN; }
+    void scan();
+    enum Platforms getPlatform() { return platform; }
+    QString getPlatformAsString();
 };
 
-#endif // IC_PLATFORMWARNINGPAGE_H
+#endif

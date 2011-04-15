@@ -633,9 +633,9 @@ Firewall* PIXImporter::finalize()
         {
             QString pl = QString(discovered_platform.c_str()).toLower();
 
-            fw->setStr("platform", pl.toStdString());
-
             if (pl == "asa") pl = "pix";
+
+            fw->setStr("platform", pl.toStdString());
 
             string host_os;
 

@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -226,6 +224,14 @@ void usage()
         "           Default is '1'.\n"
         "           Objects from the file2.fwb are merged with objects in file1\n"
         "           and combined object tree saved in file1.fwb\n";
+
+    cout <<
+        "   import -f file1.fwb -i firewall_config.txt -l library_name -n firewall_name\n"
+        "\n"
+        "          -f file1.fwb: data file #1\n"
+        "          -i firewall_config.txt: firewall configuration file that should be imported #2\n"
+        "          -l library: the name of the object library where firewall object should be created\n"
+        "           -n firewall_name: the name of the new firewall object\n";
 
     cout << endl;
 
