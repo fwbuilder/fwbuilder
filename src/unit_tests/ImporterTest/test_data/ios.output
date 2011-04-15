@@ -57,23 +57,23 @@
 234: access list rule: access list outside, action permit
 236: access list rule: access list outside, action permit
 237: access list rule: access list outside, action deny
-240: access list rule: access list tmp_acl, action permit
-241: access list rule: access list tmp_acl, action deny
-243: access list rule: access list acl_133, action permit
-244: access list rule: access list acl_133, action permit
-245: access list rule: access list acl_133, action deny
-246: access list rule: access list acl_144, action permit
-247: access list rule: access list acl_144, action permit
+242: access list rule: access list tmp_acl, action permit
+243: access list rule: access list tmp_acl, action deny
+245: access list rule: access list acl_133, action permit
+246: access list rule: access list acl_133, action permit
+247: access list rule: access list acl_133, action deny
 248: access list rule: access list acl_144, action permit
 249: access list rule: access list acl_144, action permit
 250: access list rule: access list acl_144, action permit
 251: access list rule: access list acl_144, action permit
 252: access list rule: access list acl_144, action permit
 253: access list rule: access list acl_144, action permit
-254: access list rule: access list acl_199, action permit
-255: access list rule: access list acl_199, action permit
-257: Rule comment: Standard access lists are 1 to 99 and 1300 to 1999 
-258: access list rule: access list acl_1300, action permit
-259: access list rule: access list acl_1300, action permit
+254: access list rule: access list acl_144, action permit
+255: access list rule: access list acl_144, action permit
+256: access list rule: access list acl_199, action permit
+257: access list rule: access list acl_199, action permit
+259: Rule comment: Standard access lists are 1 to 99 and 1300 to 1999 
 260: access list rule: access list acl_1300, action permit
 261: access list rule: access list acl_1300, action permit
+262: access list rule: access list acl_1300, action permit
+263: access list rule: access list acl_1300, action permit

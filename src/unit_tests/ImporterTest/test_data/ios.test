@@ -236,6 +236,8 @@ ip access-list extended outside
  permit tcp 10.10.10.0 0.0.0.255 eq 80 host 10.3.14.40 established time-range evening
  deny   ip any any log
 !################################################################
+! empty access list declaration
+ip access-list extended foo
 ip access-list extended tmp_acl
  permit ip 10.3.14.0 0.0.0.255 any
  deny   ip any any
