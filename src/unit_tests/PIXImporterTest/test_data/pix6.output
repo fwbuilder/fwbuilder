@@ -14,10 +14,13 @@
 54: filtering rule: access list outside_acl_in, action deny
 55: Rule comment: 3 ( global ) 
 56: filtering rule: access list outside_acl_in, action permit
+57: filtering rule: access list outside_acl_in, action permit
 58: Rule comment: 4 ( global ) 
 59: Rule comment: fw uses DHCP 
 60: Rule comment: plus many DHCP requests 
 61: Rule comment: from cable modem 
+62: filtering rule: access list outside_acl_in, action permit
+63: filtering rule: access list outside_acl_in, action permit
 64: Rule comment: 6 ( global ) 
 65: filtering rule: access list outside_acl_in, action deny
 66: Rule comment: 7 ( global ) 
@@ -28,9 +31,11 @@
 71: Rule comment: need to limit 
 72: filtering rule: access list outside_acl_in, action permit
 73: filtering rule: access list outside_acl_in, action permit
+74: filtering rule: access list outside_acl_in, action permit
 75: Rule comment: 11 ( global ) 
 76: filtering rule: access list outside_acl_in, action permit
 77: filtering rule: access list outside_acl_in, action permit
+78: filtering rule: access list outside_acl_in, action permit
 79: Rule comment: 17 ( global ) 
 80: filtering rule: access list outside_acl_in, action permit
 81: filtering rule: access list outside_acl_in, action permit
@@ -40,12 +45,24 @@
 85: Rule comment: 1 ( global ) 
 86: filtering rule: access list inside_acl_in, action permit
 87: filtering rule: access list inside_acl_in, action permit
+88: Rule comment: 2 ( global ) 
+89: filtering rule: access list inside_acl_in, action permit
+90: filtering rule: access list inside_acl_in, action permit
+91: Rule comment: 3 ( global ) 
+92: filtering rule: access list inside_acl_in, action permit
 93: Rule comment: 5 ( global ) 
 94: filtering rule: access list inside_acl_in, action permit
 95: Rule comment: 6 ( global ) 
 96: filtering rule: access list inside_acl_in, action deny
 97: Rule comment: 7 ( global ) 
 98: filtering rule: access list inside_acl_in, action permit
+99: Rule comment: 10 ( global ) 
+100: Rule comment: using swatch to automatically 
+101: Rule comment: block probing ssh connections , so no 
+102: Rule comment: need to limit 
+103: filtering rule: access list inside_acl_in, action permit
+104: Rule comment: 11 ( global ) 
+105: filtering rule: access list inside_acl_in, action permit
 106: Rule comment: 17 ( global ) 
 107: filtering rule: access list inside_acl_in, action permit
 108: filtering rule: access list inside_acl_in, action permit
@@ -66,20 +83,26 @@
 123: filtering rule: access list id12670X2458.0, action permit
 124: filtering rule: access list id12684X2458.0, action permit
 125: filtering rule: access list id12743X2458.0, action permit
-127: Interface ethernet0 ruleset outside_acl_in direction 'in'
-128: Interface ethernet1 ruleset inside_acl_in direction 'in'
+136: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+136: filtering rule: access list icmp_commands_outside, action permit
+137: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+137: filtering rule: access list icmp_commands_outside, action permit
+138: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+138: filtering rule: access list icmp_commands_outside, action permit
+139: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
+139: filtering rule: access list icmp_commands_outside, action permit
 140: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
 140: filtering rule: access list icmp_commands_outside, action permit
 141: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
 141: filtering rule: access list icmp_commands_outside, action permit
-142: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
-142: filtering rule: access list icmp_commands_outside, action permit
-143: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
-143: filtering rule: access list icmp_commands_outside, action permit
-144: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
-144: filtering rule: access list icmp_commands_outside, action permit
-145: Interface ethernet0 ruleset icmp_commands_outside direction 'in'
-145: filtering rule: access list icmp_commands_outside, action permit
+142: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+142: filtering rule: access list icmp_commands_inside, action permit
+143: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+143: filtering rule: access list icmp_commands_inside, action permit
+144: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+144: filtering rule: access list icmp_commands_inside, action permit
+145: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
+145: filtering rule: access list icmp_commands_inside, action permit
 146: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
 146: filtering rule: access list icmp_commands_inside, action permit
 147: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
@@ -90,34 +113,28 @@
 149: filtering rule: access list icmp_commands_inside, action permit
 150: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
 150: filtering rule: access list icmp_commands_inside, action permit
-151: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
-151: filtering rule: access list icmp_commands_inside, action permit
-152: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
-152: filtering rule: access list icmp_commands_inside, action permit
-153: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
-153: filtering rule: access list icmp_commands_inside, action permit
-154: Interface ethernet1 ruleset icmp_commands_inside direction 'in'
-154: filtering rule: access list icmp_commands_inside, action permit
-156: Interface ethernet1 ruleset telnet_commands_inside direction 'in'
-156: filtering rule: access list telnet_commands_inside, action permit
-158: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
-158: filtering rule: access list ssh_commands_inside, action permit
-159: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
-159: filtering rule: access list ssh_commands_inside, action permit
-159: Interface address: dhcp/
-159: Interface address: 10.1.1.202/255.255.255.0
-170: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
-171: Source translation rule ("nat" command)
+152: Interface ethernet1 ruleset telnet_commands_inside direction 'in'
+152: filtering rule: access list telnet_commands_inside, action permit
+154: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
+154: filtering rule: access list ssh_commands_inside, action permit
+155: Interface ethernet1 ruleset ssh_commands_inside direction 'in'
+155: filtering rule: access list ssh_commands_inside, action permit
+155: Interface address: dhcp/
+155: Interface address: 10.1.1.202/255.255.255.0
+166: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+167: Source translation rule ("nat" command)
+168: Destination translation rule ("static" command)
+169: Destination translation rule ("static" command)
+170: Destination translation rule ("static" command)
+171: Destination translation rule ("static" command)
 172: Destination translation rule ("static" command)
 173: Destination translation rule ("static" command)
 174: Destination translation rule ("static" command)
 175: Destination translation rule ("static" command)
 176: Destination translation rule ("static" command)
-177: Destination translation rule ("static" command)
-178: Destination translation rule ("static" command)
-179: Destination translation rule ("static" command)
-180: Destination translation rule ("static" command)
-202: Interface ethernet1 ruleset http_commands_inside direction 'in'
-202: filtering rule: access list http_commands_inside, action permit
-203: Interface ethernet1 ruleset http_commands_inside direction 'in'
-203: filtering rule: access list http_commands_inside, action permit
+177: Interface ethernet0 ruleset outside_acl_in direction 'in'
+178: Interface ethernet1 ruleset inside_acl_in direction 'in'
+196: Interface ethernet1 ruleset http_commands_inside direction 'in'
+196: filtering rule: access list http_commands_inside, action permit
+197: Interface ethernet1 ruleset http_commands_inside direction 'in'
+197: filtering rule: access list http_commands_inside, action permit

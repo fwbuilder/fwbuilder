@@ -194,11 +194,17 @@ FWObject* PIXImporter::makeSrvObj()
         if (!dst_port_spec.empty() &&
             named_objects_registry.count(dst_port_spec.c_str()) > 0)
             return named_objects_registry[dst_port_spec.c_str()];
-    } else
-    {
-        if (named_objects_registry.count(protocol.c_str()) > 0)
-            return named_objects_registry[protocol.c_str()];
     }
+
+    if (protocol == "icmp")
+    {
+        if (!icmp_spec.empty() &&
+            named_objects_registry.count(icmp_spec.c_str()) > 0)
+            return named_objects_registry[icmp_spec.c_str()];
+    }
+
+    if (named_objects_registry.count(protocol.c_str()) > 0)
+        return named_objects_registry[protocol.c_str()];
 
     return Importer::makeSrvObj();
 }

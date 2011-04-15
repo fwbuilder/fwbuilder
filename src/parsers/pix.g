@@ -1016,7 +1016,30 @@ rule_extended :
             }
             hostaddr_expr { importer->SaveTmpAddrToSrc(); *dbg << "(src) "; }
             hostaddr_expr { importer->SaveTmpAddrToDst(); *dbg << "(dst) "; }
-            (icmp_spec)?
+
+            // at this point:
+         
+            // configure mode commands/options:
+            //   <0-255>               Enter ICMP type number (0 - 255)
+            //   alternate-address     
+            //   conversion-error      
+            //   echo                  
+            //   echo-reply            
+            //   inactive              Keyword for disabling an ACL element
+            //       . . . . more icmp service names
+            //  object-group          ICMP object-group for destination port
+            //       . . . . more icmp service names
+            //  <cr>
+            (
+                OBJECT_GROUP grp_name:WORD
+                {
+                    importer->icmp_spec = grp_name->getText();
+                    *dbg << "service gorup: "
+                     << grp_name->getText() << std::endl;
+                }
+            |
+                icmp_spec
+            )?
             (time_range)?
             (fragments)?
             (log)?

@@ -54,13 +54,13 @@ access-list outside_acl_in deny ip host 10.1.1.202 any log 5
 access-list outside_acl_in deny ip 10.1.1.0 255.255.255.0 any log 5 
 access-list outside_acl_in remark 3 (global)
 access-list outside_acl_in permit icmp any interface outside echo
-! access-list outside_acl_in permit icmp any interface outside object-group outside.id12363X2458.srv.icmp.0 
+access-list outside_acl_in permit icmp any interface outside object-group outside.id12363X2458.srv.icmp.0 
 access-list outside_acl_in remark 4 (global)
 access-list outside_acl_in remark fw uses DHCP
 access-list outside_acl_in remark plus many DHCP requests
 access-list outside_acl_in remark from cable modem
-! access-list outside_acl_in permit udp any interface outside object-group outside.id12376X2458.srv.udp.0 
-! access-list outside_acl_in permit udp any host 255.255.255.255 object-group outside.id12376X2458.srv.udp.0 
+access-list outside_acl_in permit udp any interface outside object-group outside.id12376X2458.srv.udp.0 
+access-list outside_acl_in permit udp any host 255.255.255.255 object-group outside.id12376X2458.srv.udp.0 
 access-list outside_acl_in remark 6 (global)
 access-list outside_acl_in deny tcp any interface outside eq ident 
 access-list outside_acl_in remark 7 (global)
@@ -71,11 +71,11 @@ access-list outside_acl_in remark block probing ssh connections, so no
 access-list outside_acl_in remark need to limit
 access-list outside_acl_in permit tcp any interface outside eq ssh 
 access-list outside_acl_in permit tcp any interface outside eq www 
-! access-list outside_acl_in permit tcp any host 10.1.1.43 object-group outside.id12438X2458.srv.tcp.0 
+access-list outside_acl_in permit tcp any host 10.1.1.43 object-group outside.id12438X2458.srv.tcp.0 
 access-list outside_acl_in remark 11 (global)
 access-list outside_acl_in permit tcp any interface outside eq 8765 
 access-list outside_acl_in permit tcp any interface outside eq 2222 
-! access-list outside_acl_in permit tcp any host 10.1.1.46 object-group outside.id12466X2458.srv.tcp.0 
+access-list outside_acl_in permit tcp any host 10.1.1.46 object-group outside.id12466X2458.srv.tcp.0 
 access-list outside_acl_in remark 17 (global)
 access-list outside_acl_in permit icmp any interface outside 
 access-list outside_acl_in permit icmp any any 
@@ -85,24 +85,24 @@ access-list outside_acl_in deny ip any any log 5
 access-list inside_acl_in remark 1 (global)
 access-list inside_acl_in permit tcp 10.1.1.0 255.255.255.0 host 10.1.1.202 eq www 
 access-list inside_acl_in permit udp 10.1.1.0 255.255.255.0 host 10.1.1.202 eq snmp 
-! access-list inside_acl_in remark 2 (global)
-! access-list inside_acl_in permit icmp host 10.1.1.202 host 10.1.1.202 object-group inside.id12349X2458.srv.icmp.0 
-! access-list inside_acl_in permit icmp host 10.1.1.202 any object-group inside.id12349X2458.srv.icmp.0 
-! access-list inside_acl_in remark 3 (global)
-! access-list inside_acl_in permit icmp any host 10.1.1.202 object-group outside.id12363X2458.srv.icmp.0 
+access-list inside_acl_in remark 2 (global)
+access-list inside_acl_in permit icmp host 10.1.1.202 host 10.1.1.202 object-group inside.id12349X2458.srv.icmp.0 
+access-list inside_acl_in permit icmp host 10.1.1.202 any object-group inside.id12349X2458.srv.icmp.0 
+access-list inside_acl_in remark 3 (global)
+access-list inside_acl_in permit icmp any host 10.1.1.202 object-group outside.id12363X2458.srv.icmp.0 
 access-list inside_acl_in remark 5 (global)
 access-list inside_acl_in permit ip host 10.1.1.202 any 
 access-list inside_acl_in remark 6 (global)
 access-list inside_acl_in deny tcp any host 10.1.1.202 eq ident 
 access-list inside_acl_in remark 7 (global)
 access-list inside_acl_in permit tcp any host 10.1.1.10 eq smtp 
-! access-list inside_acl_in remark 10 (global)
-! access-list inside_acl_in remark using swatch to automatically
-! access-list inside_acl_in remark block probing ssh connections, so no
-! access-list inside_acl_in remark need to limit
-! access-list inside_acl_in permit tcp any host 10.1.1.43 object-group outside.id12438X2458.srv.tcp.0 
-! access-list inside_acl_in remark 11 (global)
-! access-list inside_acl_in permit tcp any host 10.1.1.46 object-group outside.id12466X2458.srv.tcp.0 
+access-list inside_acl_in remark 10 (global)
+access-list inside_acl_in remark using swatch to automatically
+access-list inside_acl_in remark block probing ssh connections, so no
+access-list inside_acl_in remark need to limit
+access-list inside_acl_in permit tcp any host 10.1.1.43 object-group outside.id12438X2458.srv.tcp.0 
+access-list inside_acl_in remark 11 (global)
+access-list inside_acl_in permit tcp any host 10.1.1.46 object-group outside.id12466X2458.srv.tcp.0 
 access-list inside_acl_in remark 17 (global)
 access-list inside_acl_in permit icmp any host 10.1.1.202 
 access-list inside_acl_in permit icmp any any 
@@ -123,10 +123,6 @@ access-list id12656X2458.0 permit tcp host 10.1.1.46 eq 8765 any
 access-list id12670X2458.0 permit tcp host 10.1.1.32 eq 5900 any 
 access-list id12684X2458.0 permit tcp host 10.1.1.102 eq 5901 any 
 access-list id12743X2458.0 permit ip 10.1.1.0 255.255.255.0 any 
-
-access-group outside_acl_in in interface outside
-access-group inside_acl_in in interface inside
-
 no pager
 logging on
 logging timestamp
@@ -178,10 +174,8 @@ static (inside,outside) tcp interface 2222 access-list id12642X2458.0 0 0
 static (inside,outside) tcp interface 8765 access-list id12656X2458.0 0 0 
 static (inside,outside) tcp interface 5900 access-list id12670X2458.0 0 0 
 static (inside,outside) tcp interface 5901 access-list id12684X2458.0 0 0 
-
-! access-group outside_acl_in in interface outside
-! access-group inside_acl_in in interface inside
-
+access-group outside_acl_in in interface outside
+access-group inside_acl_in in interface inside
 timeout xlate 3:00:00
 timeout conn 1:00:00 half-closed 0:00:00 udp 0:02:00 rpc 0:10:00 h225 1:00:00
 timeout h323 0:05:00 mgcp 0:05:00 sip 0:30:00 sip_media 0:00:00
