@@ -102,6 +102,7 @@ public:
 	public: void ip_access_list_ext();
 	public: void interface_known_ip_commands();
 	public: void community_list_command();
+	public: void ip_unused_command();
 	public: void permit_std();
 	public: void deny_std();
 	public: void permit_ext();
@@ -135,10 +136,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 79;
+	static const int NUM_TOKENS = 80;
 #else
 	enum {
-		NUM_TOKENS = 79
+		NUM_TOKENS = 80
 	};
 #endif
 	

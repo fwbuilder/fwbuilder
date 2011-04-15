@@ -1,79 +1,84 @@
 10: Host name: "c3620"
-104: New interface: FastEthernet0/0
-105: Interface address: 192.168.100.100/255.255.255.0
-106: Interface address: 10.3.14.201/255.255.255.0
-107: Interface FastEthernet0/0 ruleset fe0_0_acl_in direction 'in'
-108: Interface FastEthernet0/0 ruleset fe0_0_acl_out direction 'out'
-113: New interface: Ethernet1/0
-114: Interface comment: Test [ test ] { test } ( and one more test) / weird:characters#$%^&*/ 
-115: Interface address: 192.168.171.2/255.255.255.0
-116: Interface Ethernet1/0 ruleset e1_0_acl_in direction 'in'
-117: Interface Ethernet1/0 ruleset e1_0_acl_out direction 'out'
-123: New interface: Serial1/0
-129: New interface: Ethernet1/1
-130: Interface address: 10.10.10.10/255.255.255.0
-134: Interface Ethernet1/1 ruleset acl_133 direction 'in'
-135: Interface Ethernet1/1 ruleset acl_133 direction 'out'
-139: New interface: Ethernet1/2
-140: Interface address: 10.10.20.20/255.255.255.0
-145: Interface Ethernet1/2 ruleset acl_133 direction 'in'
-146: Interface Ethernet1/2 ruleset acl_133 direction 'out'
-175: access list rule: access list e1_0_acl_in, action deny
-176: access list rule: access list e1_0_acl_in, action permit
-177: access list rule: access list e1_0_acl_in, action permit
-178: access list rule: access list e1_0_acl_in, action permit
-179: access list rule: access list e1_0_acl_in, action deny
-182: access list rule: access list e1_0_acl_out, action permit
-183: access list rule: access list e1_0_acl_out, action deny
-186: access list rule: access list fe0_0_acl_in, action permit
-187: access list rule: access list fe0_0_acl_in, action permit
-188: access list rule: access list fe0_0_acl_in, action permit
-189: access list rule: access list fe0_0_acl_in, action deny
-192: access list rule: access list fe0_0_acl_out, action permit
-193: access list rule: access list fe0_0_acl_out, action deny
-196: Rule comment: / / path1/path2/path3 
-197: Rule comment: access list comment 
-199: access list rule: access list outside, action permit
-201: access list rule: access list outside, action permit
-203: access list rule: access list outside, action permit
-205: access list rule: access list outside, action permit
-206: access list rule: access list outside, action deny
-208: access list rule: access list outside, action permit
-210: access list rule: access list outside, action permit
-211: access list rule: access list outside, action permit
-214: access list rule: access list outside, action deny
-215: access list rule: access list outside, action deny
-216: access list rule: access list outside, action deny
-217: access list rule: access list outside, action deny
-219: access list rule: access list outside, action permit
+106: New interface: FastEthernet0/0
+107: Interface address: 192.168.100.100/255.255.255.0
+108: Interface address: 10.3.14.201/255.255.255.0
+109: Interface FastEthernet0/0 ruleset fe0_0_acl_in direction 'in'
+110: Interface FastEthernet0/0 ruleset fe0_0_acl_out direction 'out'
+115: New interface: Ethernet1/0
+116: Interface comment: Test [ test ] { test } ( and one more test) / weird:characters#$%^&*/ 
+117: Interface address: 192.168.171.2/255.255.255.0
+118: Interface Ethernet1/0 ruleset e1_0_acl_in direction 'in'
+119: Interface Ethernet1/0 ruleset e1_0_acl_out direction 'out'
+125: New interface: Serial1/0
+131: New interface: Ethernet1/1
+132: Interface address: 10.10.10.10/255.255.255.0
+136: Interface Ethernet1/1 ruleset acl_133 direction 'in'
+137: Interface Ethernet1/1 ruleset acl_133 direction 'out'
+141: New interface: Ethernet1/2
+142: Interface address: 10.10.20.20/255.255.255.0
+147: Interface Ethernet1/2 ruleset acl_133 direction 'in'
+148: Interface Ethernet1/2 ruleset acl_133 direction 'out'
+152: New interface: ATM0
+161: New interface: ATM0.1
+161: Warning: point-to-point interfaces are not supported
+162: Interface comment: $FW_OUTSIDE$$ES_WAN$ 
+165: Interface address: 10.0.0.1/255.255.255.252
+194: access list rule: access list e1_0_acl_in, action deny
+195: access list rule: access list e1_0_acl_in, action permit
+196: access list rule: access list e1_0_acl_in, action permit
+197: access list rule: access list e1_0_acl_in, action permit
+198: access list rule: access list e1_0_acl_in, action deny
+201: access list rule: access list e1_0_acl_out, action permit
+202: access list rule: access list e1_0_acl_out, action deny
+205: access list rule: access list fe0_0_acl_in, action permit
+206: access list rule: access list fe0_0_acl_in, action permit
+207: access list rule: access list fe0_0_acl_in, action permit
+208: access list rule: access list fe0_0_acl_in, action deny
+211: access list rule: access list fe0_0_acl_out, action permit
+212: access list rule: access list fe0_0_acl_out, action deny
+215: Rule comment: / / path1/path2/path3 
+216: Rule comment: access list comment 
+218: access list rule: access list outside, action permit
 220: access list rule: access list outside, action permit
 222: access list rule: access list outside, action permit
 224: access list rule: access list outside, action permit
-226: access list rule: access list outside, action permit
+225: access list rule: access list outside, action deny
 227: access list rule: access list outside, action permit
-228: access list rule: access list outside, action permit
-232: access list rule: access list outside, action permit
-233: access list rule: access list outside, action permit
-234: access list rule: access list outside, action permit
-236: access list rule: access list outside, action permit
-237: access list rule: access list outside, action deny
-242: access list rule: access list tmp_acl, action permit
-243: access list rule: access list tmp_acl, action deny
-245: access list rule: access list acl_133, action permit
-246: access list rule: access list acl_133, action permit
-247: access list rule: access list acl_133, action deny
-248: access list rule: access list acl_144, action permit
-249: access list rule: access list acl_144, action permit
-250: access list rule: access list acl_144, action permit
-251: access list rule: access list acl_144, action permit
-252: access list rule: access list acl_144, action permit
-253: access list rule: access list acl_144, action permit
-254: access list rule: access list acl_144, action permit
-255: access list rule: access list acl_144, action permit
-256: access list rule: access list acl_199, action permit
-257: access list rule: access list acl_199, action permit
-259: Rule comment: Standard access lists are 1 to 99 and 1300 to 1999 
-260: access list rule: access list acl_1300, action permit
-261: access list rule: access list acl_1300, action permit
-262: access list rule: access list acl_1300, action permit
-263: access list rule: access list acl_1300, action permit
+229: access list rule: access list outside, action permit
+230: access list rule: access list outside, action permit
+233: access list rule: access list outside, action deny
+234: access list rule: access list outside, action deny
+235: access list rule: access list outside, action deny
+236: access list rule: access list outside, action deny
+238: access list rule: access list outside, action permit
+239: access list rule: access list outside, action permit
+241: access list rule: access list outside, action permit
+243: access list rule: access list outside, action permit
+245: access list rule: access list outside, action permit
+246: access list rule: access list outside, action permit
+247: access list rule: access list outside, action permit
+251: access list rule: access list outside, action permit
+252: access list rule: access list outside, action permit
+253: access list rule: access list outside, action permit
+255: access list rule: access list outside, action permit
+256: access list rule: access list outside, action deny
+261: access list rule: access list tmp_acl, action permit
+262: access list rule: access list tmp_acl, action deny
+264: access list rule: access list acl_133, action permit
+265: access list rule: access list acl_133, action permit
+266: access list rule: access list acl_133, action deny
+267: access list rule: access list acl_144, action permit
+268: access list rule: access list acl_144, action permit
+269: access list rule: access list acl_144, action permit
+270: access list rule: access list acl_144, action permit
+271: access list rule: access list acl_144, action permit
+272: access list rule: access list acl_144, action permit
+273: access list rule: access list acl_144, action permit
+274: access list rule: access list acl_144, action permit
+275: access list rule: access list acl_199, action permit
+276: access list rule: access list acl_199, action permit
+278: Rule comment: Standard access lists are 1 to 99 and 1300 to 1999 
+279: access list rule: access list acl_1300, action permit
+280: access list rule: access list acl_1300, action permit
+281: access list rule: access list acl_1300, action permit
+282: access list rule: access list acl_1300, action permit

@@ -25,6 +25,8 @@ clock timezone PST -7
 ip subnet-zero
 !
 !
+ip tcp synwait-time 10
+ip cef
 ip domain-name fwbuilder.org
 ip name-server 10.1.1.10
 !
@@ -146,6 +148,23 @@ interface Ethernet1/2
  ip access-group 133 out
  no shutdown
  half-duplex
+!
+interface ATM0
+ no ip address
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ ip route-cache flow
+ no atm ilmi-keepalive
+ dsl operating-mode auto
+!
+interface ATM0.1 point-to-point
+ description $FW_OUTSIDE$$ES_WAN$
+ no snmp trap link-status
+ pvc 0/38
+ ip address 10.0.0.1 255.255.255.252
+ encapsulation aal5mux ppp dialer
+ dialer pool-member 1
 !
 router ospf 1
  network 10.3.14.0 0.0.0.255 area 0

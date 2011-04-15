@@ -134,11 +134,33 @@ cfgfile :
 
 //****************************************************************
 
-ip_commands : IP ( ip_access_list_ext | interface_known_ip_commands | community_list_command | unknown_command )
+ip_commands : IP
+        ( 
+            ip_access_list_ext
+        |
+            interface_known_ip_commands
+        |
+            community_list_command
+        |
+            ip_unused_command
+        |
+            unknown_command
+        )
     ;
 
 //****************************************************************
 quit : QUIT
+        {
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+// these are "ip ..." top level commands that we do not use but parser
+// should not abort on. Unlike unknown_command, these have known token as
+// a second word so they dont match unknown_command which expects WORD.
+
+ip_unused_command : ICMP | TCP | HOST
         {
             consumeUntil(NEWLINE);
         }
@@ -508,6 +530,14 @@ intrface  : INTRFACE in:WORD
             *dbg << in->getLine() << ":"
                 << " INTRFACE: " << in->getText() << std::endl;
         }
+        (
+            POINT_TO_POINT
+            {
+                importer->addMessageToLog(
+                    QString("Warning: point-to-point interfaces "
+                            "are not supported"));
+            }
+        )?
         NEWLINE
     ;
 
@@ -717,6 +747,7 @@ tokens
     EXTENDED = "extended" ;
     STANDARD = "standard" ;
 
+    POINT_TO_POINT = "point-to-point" ;
 }
 
 LINE_COMMENT : "!" (~('\r' | '\n'))* ; // NEWLINE ;
