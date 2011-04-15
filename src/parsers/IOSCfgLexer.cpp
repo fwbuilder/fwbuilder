@@ -400,40 +400,6 @@ void IOSCfgLexer::mLINE_COMMENT(bool _createToken) {
 	}
 	_loop83:;
 	} // ( ... )*
-	mNEWLINE(false);
-	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
-	   _token = makeToken(_ttype);
-	   _token->setText(text.substr(_begin, text.length()-_begin));
-	}
-	_returnToken = _token;
-	_saveIndex=0;
-}
-
-void IOSCfgLexer::mNEWLINE(bool _createToken) {
-	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
-	_ttype = NEWLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
-	
-	{
-	if ((LA(1) == 0xd /* '\r' */ ) && (LA(2) == 0xa /* '\n' */ )) {
-		match("\r\n");
-	}
-	else if ((LA(1) == 0xd /* '\r' */ ) && (true)) {
-		match('\r' /* charlit */ );
-	}
-	else if ((LA(1) == 0xa /* '\n' */ )) {
-		match('\n' /* charlit */ );
-	}
-	else {
-		throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());
-	}
-	
-	}
-	if ( inputState->guessing==0 ) {
-#line 729 "iosacl.g"
-		newline();
-#line 436 "IOSCfgLexer.cpp"
-	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
@@ -511,9 +477,42 @@ void IOSCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 724 "iosacl.g"
+#line 725 "iosacl.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 517 "IOSCfgLexer.cpp"
+#line 483 "IOSCfgLexer.cpp"
+	}
+	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
+	   _token = makeToken(_ttype);
+	   _token->setText(text.substr(_begin, text.length()-_begin));
+	}
+	_returnToken = _token;
+	_saveIndex=0;
+}
+
+void IOSCfgLexer::mNEWLINE(bool _createToken) {
+	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
+	_ttype = NEWLINE;
+	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	
+	{
+	if ((LA(1) == 0xd /* '\r' */ ) && (LA(2) == 0xa /* '\n' */ )) {
+		match("\r\n");
+	}
+	else if ((LA(1) == 0xd /* '\r' */ ) && (true)) {
+		match('\r' /* charlit */ );
+	}
+	else if ((LA(1) == 0xa /* '\n' */ )) {
+		match('\n' /* charlit */ );
+	}
+	else {
+		throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());
+	}
+	
+	}
+	if ( inputState->guessing==0 ) {
+#line 730 "iosacl.g"
+		newline();
+#line 516 "IOSCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -747,9 +746,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 		}  // ( ... )+
 		}
 		if ( inputState->guessing==0 ) {
-#line 749 "iosacl.g"
+#line 750 "iosacl.g"
 			_ttype = IPV4;
-#line 753 "IOSCfgLexer.cpp"
+#line 752 "IOSCfgLexer.cpp"
 		}
 	}
 	else {
@@ -850,9 +849,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 755 "iosacl.g"
+#line 756 "iosacl.g"
 				_ttype = HEX_CONST;
-#line 856 "IOSCfgLexer.cpp"
+#line 855 "IOSCfgLexer.cpp"
 			}
 		}
 		else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true) && (true)) {
@@ -871,9 +870,9 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 			_loop124:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 753 "iosacl.g"
+#line 754 "iosacl.g"
 				_ttype = INT_CONST;
-#line 877 "IOSCfgLexer.cpp"
+#line 876 "IOSCfgLexer.cpp"
 			}
 		}
 	else {

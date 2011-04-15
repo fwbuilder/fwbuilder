@@ -48,8 +48,8 @@ public:
 	IOSCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state);
 	ANTLR_USE_NAMESPACE(antlr)RefToken nextToken();
 	public: void mLINE_COMMENT(bool _createToken);
-	public: void mNEWLINE(bool _createToken);
 	public: void mWhitespace(bool _createToken);
+	public: void mNEWLINE(bool _createToken);
 	protected: void mINT_CONST(bool _createToken);
 	protected: void mHEX_CONST(bool _createToken);
 	protected: void mNEG_INT_CONST(bool _createToken);

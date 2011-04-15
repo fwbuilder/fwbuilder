@@ -228,8 +228,8 @@ ip_access_list_ext : ACCESS_LIST EXTENDED name:WORD
         |
             remark
         |
-            NEWLINE
-        )+
+            NEWLINE  // to match end of each line and also empty lines
+        )*
         {
             *dbg << LT(0)->getLine() << ":"
                 << " ACL end" << std::endl << std::endl;
@@ -244,7 +244,7 @@ permit_ext: PERMIT
             importer->action = "permit";
             *dbg << LT(1)->getLine() << ":" << " permit ";
         }
-        rule_ext NEWLINE
+        rule_ext // NEWLINE
         {
             importer->pushRule();
         }
@@ -271,7 +271,7 @@ permit_std: PERMIT
             importer->action = "permit";
             *dbg << LT(1)->getLine() << ":" << " permit ";
         }
-        rule_std NEWLINE
+        rule_std // NEWLINE
         {
             importer->pushRule();
         }
@@ -546,6 +546,7 @@ remark : REMARK
             *dbg << " REMARK " << rem << std::endl;
             //consumeUntil(NEWLINE);
         }
+        // NEWLINE
     ;
 
 shutdown : SHUTDOWN
@@ -718,7 +719,7 @@ tokens
 
 }
 
-LINE_COMMENT : "!" (~('\r' | '\n'))* NEWLINE ;
+LINE_COMMENT : "!" (~('\r' | '\n'))* ; // NEWLINE ;
 
 Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'..'\377' | ' ' )
         { _ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;  } ;
