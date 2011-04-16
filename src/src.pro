@@ -16,7 +16,6 @@ SUBDIRS  =  libfwbuilder \
             import \
 			common \
 			compiler_lib \
-			fwbedit \
 			fwtransfer \
 			iptlib \
 			pflib \
@@ -30,5 +29,6 @@ SUBDIRS  =  libfwbuilder \
 			iosacl \
 			pix \
 			procurve_acl \
-			transfer_agents
+			transfer_agents \
+			fwbedit
 
