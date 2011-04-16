@@ -1,5 +1,10 @@
 2011-04-15  vadim  <vadim@netcitadel.com>
 
+	* fwbedit.cpp (main): see #2328 "Add ability to run firewall import
+	from the command line". This has been implemented as a new function
+	"import" in fwbedit. See man page fwbedit(1) and "fwbuilder -h" for
+	more details.
+
 	* iptables.g (multiport_tcp_udp_port_spec): see #2245 fixed bug in
 	parser for iptables that prevented correct import of iptables rules
 	using module "multiport" with port range matches.

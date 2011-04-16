@@ -5,11 +5,15 @@ include(../../qmake.inc)
 #
 
 TEMPLATE = app
+QT += network
 
-SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp merge.cpp
+SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp merge.cpp import.cpp
 HEADERS	 = ../../config.h fwbedit.h upgradePredicate.h
 
-INCLUDEPATH += ../libfwbuilder/src
+INCLUDEPATH += ../libfwbuilder/src ../import ../compiler_lib/ ../libgui
+
+win32:INCLUDEPATH += ../libgui/ui
+!win32:INCLUDEPATH += ../libgui/.ui
 
 TARGET = fwbedit
 
@@ -20,7 +24,12 @@ DEPENDPATH = ../common \
              ../libfwbuilder/src/fwcompiler
 
 !win32:LIBS = ../common/libcommon.a \
+    ../import/libimport.a \
+    ../parsers/libfwbparser.a \
+    ../compiler_lib/libcompilerdriver.a \
 	../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+    ../libgui/libgui.a \
+    $$ANTLR_LIBS \
     $$LIBS
 
 !win32:PRE_TARGETDEPS = ../common/libcommon.a \
@@ -29,7 +38,13 @@ DEPENDPATH = ../common \
 win32:CONFIG += console
 
 win32:LIBS += ../common/release/common.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib
+    ../import/release/import.lib \
+    ../parsers/release/fwbparser.lib \
+    ../compiler_lib/release/compilerdriver.lib \
+	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
+    ../libgui/release/gui.lib \
+    $$ANTLR_LIBS \
+    $$LIBS
 
 win32:PRE_TARGETDEPS = ../common/release/common.lib \
 	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib

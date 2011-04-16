@@ -101,8 +101,23 @@ extern int errno;
 #include "fwbedit.h"
 #include "upgradePredicate.h"
 
+#include "FWWindow.h"
+#include "FWBSettings.h"
+#include "FWBApplication.h"
+#include "UserWorkflow.h"
+
+#include <QStringList>
+
+
 using namespace libfwbuilder;
 using namespace std;
+
+
+FWWindow *mw = NULL; 
+FWBSettings *st = NULL; 
+FWBApplication *app = NULL; 
+UserWorkflow *wfl; 
+int sig = FWB_SIG; 
 
 string cmd_str = "";
 command cmd = NONE;
@@ -118,123 +133,9 @@ FWObjectDatabase *objdb = NULL;
 
 int fwbdebug = 0;
 
-void usage()
+
+void list_attributes()
 {
-    cout << "Firewall Builder:  general purpose object tree editing tool"
-         << endl;
-    cout << "Version " << VERSION << endl;
-    cout << endl;
-    cout << "Usage: fwbedit command [options]" << endl;
-    cout << endl;
-
-    cout << "Command is one of:" << endl;
-    cout << "      new         create new object" << endl;
-    cout << "      delete      delete object" << endl;
-    cout << "      modify      modify object" << endl;
-    cout << "      list        print object" << endl;
-    cout << "      add         add object to a group" << endl;
-    cout << "      remove      remove object from a group" << endl;
-    cout << "      upgrade     upgrade data file" << endl;
-    cout << "      checktree   check object tree and repair if necessary" << endl;
-    cout << "      merge       merge one data file into another" << endl;
-    cout << endl;
-
-    cout << "Options:" << endl;
-    cout << endl;
-    cout <<
-        "       new -f file.fwb -t objtype -n name -c comment "
-        "-p parent [-a attrs]\n"
-        "\n"
-        "           -f file.fwb: data file\n"
-        "           -t objtype: create a new object of this type\n"
-        "           -n name: the name of the new object\n"
-        "           -c txt:  specify comment for the new object\n"
-        "           -a attribute1[,attribute2...]  :  specify attributes that\n"
-        "              define parameters of the new object (see below)\n";
-    cout << endl;
-
-    cout <<
-        "    delete -f file.fwb -o object\n"
-        "\n"
-        "           -f file.fwb: data file\n"
-        "           -o object: object to be deleted, full path or ID\n";
-    cout << endl;
-
-    cout <<
-        "    modify -f file.fwb -o object -c comment [-a attrs]\n"
-        "\n"
-        "           -f file.fwb: data file\n"
-        "           -o object: object to be modified, full path or ID\n"
-        "           -c txt:  specify comment for the new object\n"
-        "           -a attribute1[,attribute2...]  :  specify attributes that\n"
-        "              define parameters of the new object (see below)\n";
-    cout << endl;
-
-    cout <<
-        "      list -f file.fwb -o object [-r|-c] [-d|-Fformat]\n"
-        "\n"
-        "           -f file.fwb: data file\n"
-        "           -o object: object to print, full path or ID\n"
-        "           -r print given object and all object below it in the tree\n"
-        "           -c print all children of given object but not the object\n"
-        "              itself\n"
-        "           -d print full dump of all object's attributes including\n"
-        "              internal debugging information if available\n"
-        "           -F format_string print according to the format; see\n"
-        "              man fwbedit(1) for the list of macros and examples\n";
-    cout << endl;
-
-    cout <<
-        "       add -f file.fwb -g group -o object\n"
-        "\n"
-        "           -f file.fwb: data file\n"
-        "           -g group: group the object should be added to, \n"
-        "              full path or ID\n"
-        "           -o object: object to be added, full path or ID\n";
-    cout << endl;
-
-    cout <<
-        "   remove -f file.fwb -g group -o object\n"
-        "\n"
-        "          -f file.fwb: data file\n"
-        "          -g group: group the object should be removed from,\n"
-        "             full path or ID\n"
-        "          -o object: object to be removed, full path or ID\n";
-    cout << endl;
-
-    cout <<
-        "   upgrade -f file.fwb\n"
-        "\n"
-        "          -f file.fwb: data file\n";
-    cout << endl;
-
-    cout <<
-        "   checktree -f file.fwb\n"
-        "\n"
-        "          -f file.fwb: data file\n";
-    cout << endl;
-
-    cout <<
-        "   merge -f file1.fwb -i file2.fwb -c[1|2]\n"
-        "\n"
-        "          -f file1.fwb: data file #1\n"
-        "          -i file2.fwb: data file #2\n"
-        "          -cN in case of conflict (the same object is found in both files),\n"
-        "           keep the object from the file N (can be '1' or '2').\n"
-        "           Default is '1'.\n"
-        "           Objects from the file2.fwb are merged with objects in file1\n"
-        "           and combined object tree saved in file1.fwb\n";
-
-    cout <<
-        "   import -f file1.fwb -i firewall_config.txt -l library_name -n firewall_name\n"
-        "\n"
-        "          -f file1.fwb: data file #1\n"
-        "          -i firewall_config.txt: firewall configuration file that should be imported #2\n"
-        "          -l library: the name of the object library where firewall object should be created\n"
-        "           -n firewall_name: the name of the new firewall object\n";
-
-    cout << endl;
-
     cout << "Attributes for the new objects, by type:" << endl;
     cout << endl;
     cout << "      "
@@ -290,6 +191,164 @@ void usage()
          << " -t " <<IPService::TYPENAME
          << " -a protocol "
         "number,lsrr/ssrr/rr/ts/fragm/short_fragm" << endl;
+}
+
+
+void usage()
+{
+    cout << "Firewall Builder:  general purpose object tree editing tool"
+         << endl;
+    cout << "Version " << VERSION << endl;
+    cout << endl;
+    cout << "Usage: fwbedit command [options]" << endl;
+    cout << endl;
+
+    cout << "Command is one of:" << endl;
+    cout << "      new         create new object" << endl;
+    cout << "      delete      delete object" << endl;
+    cout << "      modify      modify object" << endl;
+    cout << "      list        print object" << endl;
+    cout << "      add         add object to a group" << endl;
+    cout << "      remove      remove object from a group" << endl;
+    cout << "      upgrade     upgrade data file" << endl;
+    cout << "      checktree   check object tree and repair if necessary" << endl;
+    cout << "      merge       merge one data file into another" << endl;
+    cout << "      import      import firewall configuration (iptables, CIsco IOS," << endl;
+    cout << "                  Cisco PIX, ASA and FWSM)" << endl;
+    cout << endl;
+    cout << "Type   'fwbedit command' to get summary of options for the command"
+         << endl;
+    cout << endl;
+}
+
+void usage_new()
+{
+    cout << "Options:" << endl;
+    cout << endl;
+    cout <<
+        "       new -f file.fwb -t objtype -n name -c comment "
+        "-p parent [-a attrs]\n"
+        "\n"
+        "           -f file.fwb: data file\n"
+        "           -t objtype: create a new object of this type\n"
+        "           -n name: the name of the new object\n"
+        "           -c txt:  specify comment for the new object\n"
+        "           -a attribute1[,attribute2...]  :  specify attributes that\n"
+        "              define parameters of the new object (see below)\n";
+    cout << endl;
+
+    list_attributes();
+}
+
+void usage_delete()
+{
+    cout <<
+        "    delete -f file.fwb -o object\n"
+        "\n"
+        "           -f file.fwb: data file\n"
+        "           -o object: object to be deleted, full path or ID\n";
+    cout << endl;
+}
+
+void usage_modify()
+{
+    cout <<
+        "    modify -f file.fwb -o object -c comment [-a attrs]\n"
+        "\n"
+        "           -f file.fwb: data file\n"
+        "           -o object: object to be modified, full path or ID\n"
+        "           -c txt:  specify comment for the new object\n"
+        "           -a attribute1[,attribute2...]  :  specify attributes that\n"
+        "              define parameters of the new object (see below)\n";
+    cout << endl;
+}
+
+void usage_list()
+{
+    cout <<
+        "      list -f file.fwb -o object [-r|-c] [-d|-Fformat]\n"
+        "\n"
+        "           -f file.fwb: data file\n"
+        "           -o object: object to print, full path or ID\n"
+        "           -r print given object and all object below it in the tree\n"
+        "           -c print all children of given object but not the object\n"
+        "              itself\n"
+        "           -d print full dump of all object's attributes including\n"
+        "              internal debugging information if available\n"
+        "           -F format_string print according to the format; see\n"
+        "              man fwbedit(1) for the list of macros and examples\n";
+    cout << endl;
+}
+
+void usage_add()
+{
+    cout <<
+        "       add -f file.fwb -g group -o object\n"
+        "\n"
+        "           -f file.fwb: data file\n"
+        "           -g group: group the object should be added to, \n"
+        "              full path or ID\n"
+        "           -o object: object to be added, full path or ID\n";
+    cout << endl;
+}
+
+void usage_remove()
+{
+    cout <<
+        "   remove -f file.fwb -g group -o object\n"
+        "\n"
+        "          -f file.fwb: data file\n"
+        "          -g group: group the object should be removed from,\n"
+        "             full path or ID\n"
+        "          -o object: object to be removed, full path or ID\n";
+    cout << endl;
+}
+
+void usage_upgrade()
+{
+    cout <<
+        "   upgrade -f file.fwb\n"
+        "\n"
+        "          -f file.fwb: data file\n";
+    cout << endl;
+}
+
+void usage_checktree()
+{
+    cout <<
+        "   checktree -f file.fwb\n"
+        "\n"
+        "          -f file.fwb: data file\n";
+    cout << endl;
+}
+
+void usage_merge()
+{
+    cout <<
+        "   merge -f file1.fwb -i file2.fwb -c[1|2]\n"
+        "\n"
+        "          -f file1.fwb: data file #1\n"
+        "          -i file2.fwb: data file #2\n"
+        "          -cN in case of conflict (the same object is found in both files),\n"
+        "           keep the object from the file N (can be '1' or '2').\n"
+        "           Default is '1'.\n"
+        "           Objects from the file2.fwb are merged with objects in file1\n"
+        "           and combined object tree saved in file1.fwb\n";
+    cout << endl;
+}
+
+void usage_import()
+{
+    cout <<
+        "   import -f file1.fwb -i firewall_config.txt -o firewall_object_path\n"
+        "\n"
+        "          -f file1.fwb: data file #1\n"
+        "          -i firewall_config.txt: firewall configuration file that\n"
+        "             should be imported #2\n"
+        "          -o firewall_object_path: a full path to the firewall object\n"
+        "             to be created, e.g. '/User/Firewalls/my_new_firewall'\n"
+        "             Note that path must start with the library name\n";
+    cout << endl;
 }
 
 
@@ -392,8 +451,9 @@ int main(int argc, char * const *argv)
     bool recursive = false;
     string list_format = "%path%";
     bool full_dump = false;
+    string import_config;
 
-    if (argc<=2)
+    if (argc<=1)
     {
         usage();
         exit(1);
@@ -417,6 +477,7 @@ int main(int argc, char * const *argv)
     if (cmd_str=="upgrade") cmd = UPGRADE;
     if (cmd_str=="checktree") cmd = STRUCT;
     if (cmd_str=="merge") cmd = MERGE;
+    if (cmd_str=="import") cmd = IMPORT;
 
     char * const *args = argv;
     args++;
@@ -448,6 +509,13 @@ int main(int argc, char * const *argv)
                 break;
             }
         }
+
+        if (filename=="")
+        {
+            usage_new();
+            exit(1);
+        }
+
         break;
     }
 
@@ -462,6 +530,13 @@ int main(int argc, char * const *argv)
             case 'o': object = optarg; break;
             }
         }
+
+        if (filename.empty() || object.empty())
+        {
+            usage_delete();
+            exit(1);
+        }
+
         break;
 
     case MODOBJECT:
@@ -484,6 +559,13 @@ int main(int argc, char * const *argv)
                 break;
             }
         }
+
+        if (filename.empty() || object.empty())
+        {
+            usage_modify();
+            exit(1);
+        }
+
         break;
     }
 
@@ -501,6 +583,14 @@ int main(int argc, char * const *argv)
             case 'o': object = optarg; break;
             }
         }
+
+        if (filename.empty() || group.empty() || object.empty())
+        {
+            if (cmd == ADDGRP) usage_add();
+            if (cmd == REMGRP) usage_remove();
+            exit(1);
+        }
+
         break;
 
     case LIST:
@@ -518,6 +608,13 @@ int main(int argc, char * const *argv)
             case 'd': full_dump = true; break;
             }
         }
+
+        if (filename.empty() || object.empty())
+        {
+            usage_list();
+            exit(1);
+        }
+
         break;
 
     case UPGRADE:
@@ -530,6 +627,13 @@ int main(int argc, char * const *argv)
             case 'f': filename = optarg; break;
             }
         }
+
+        if (filename.empty())
+        {
+            usage_upgrade();
+            exit(1);
+        }
+
         break;
 
     case STRUCT:
@@ -541,6 +645,13 @@ int main(int argc, char * const *argv)
             case 'f': filename = optarg; break;
             }
         }
+
+        if (filename.empty())
+        {
+            usage_checktree();
+            exit(1);
+        }
+
         break;
     
     case MERGE:
@@ -554,6 +665,33 @@ int main(int argc, char * const *argv)
             case 'c': conflict_res = atoi(optarg); break;
             }
         }
+
+        if (filename.empty() || filemerge.empty())
+        {
+            usage_merge();
+            exit(1);
+        }
+
+        break;
+
+    case IMPORT:
+        // -f file.fwb -i config.txt -o /User/Firewalls/new_firewall
+        while( (opt=getopt(argc, args, "f:i:o:")) != EOF )
+        {
+            switch(opt)
+            {
+            case 'f': filename = optarg; break;
+            case 'i': import_config = optarg; break;
+            case 'o': object = optarg; break;
+            }
+        }
+
+        if (filename.empty() || import_config.empty() || object.empty())
+        {
+            usage_import();
+            exit(1);
+        }
+
         break;
 
     case NONE:
@@ -584,10 +722,59 @@ int main(int argc, char * const *argv)
         {
             if (filemerge.empty())
             {
-                usage();
+                cerr << "The name of the file that should be merged is missing"
+                     << endl;
+                usage_merge();
                 exit(1);
             }
             mergeTree(objdb, filemerge, conflict_res);
+        }
+        else if (cmd == IMPORT)
+        {
+            if (import_config.empty() || object.empty())
+            {
+                cerr << "Configuration file name and path to the new firewall "
+                    "object are mandatory options for import" << endl;
+                usage_import();
+                exit(1);
+            }
+
+            QStringList components = QString::fromUtf8(object.c_str())
+                .split("/", QString::SkipEmptyParts);
+            string fw_name = components.last().toUtf8().constData();
+            
+            Library *library = NULL;
+            while (library == NULL)
+            {
+                components.pop_back();
+                string library_path = components.join("/").toUtf8().constData();
+
+                list<FWObject*> objects;
+                findObjects(library_path, objdb, objects);
+
+                if (objects.size() == 0)
+                {
+                    cerr << "Library or folder '"
+                         << library_path << "' not found" << endl;
+                    usage_import();
+                    exit(1);
+                }
+
+                library = Library::cast(objects.front());
+            }
+
+            cout << "Import firewall configuration from file "
+                 << import_config
+                 << endl;
+
+            cout << "New firewall object '"
+                 << fw_name
+                 << "' will be created in library '"
+                 << library->getName()
+                 << "'"
+                 << endl;
+
+            importConfig(objdb, import_config, library, fw_name);
         }
         else if (cmd == STRUCT)
         {
