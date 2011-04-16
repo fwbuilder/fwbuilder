@@ -27,59 +27,59 @@
 45: New interface: eth0
 45: Warning: Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
 106: Warning: Rule matches states 'RELATED,ESTABLISHED'. Consider using automatic rule controlled by the checkbox in the firewall settings dialog. Automatic rule matches in all standard chains which may be different from the original imported configuration. This requires manual checking.
-215: Created branch user_chain_54_mod_match
-219: Created branch user_chain_55_mod_match
-220: Created branch user_chain_56_mod_match
-221: Created branch user_chain_57_mod_match
+218: Created branch user_chain_55_mod_match
+222: Created branch user_chain_56_mod_match
+223: Created branch user_chain_57_mod_match
 224: Created branch user_chain_58_mod_match
 227: Created branch user_chain_59_mod_match
 230: Created branch user_chain_60_mod_match
-230: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
-230: Error: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
-231: Created branch user_chain_61_mod_match
-231: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
-231: Error: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
-242: New ruleset: mangle / PREROUTING
-242: Default action: Accept
-243: New ruleset: mangle / INPUT
-243: Default action: Accept
-244: New ruleset: mangle / FORWARD
-244: Default action: Accept
-245: New ruleset: mangle / OUTPUT
+233: Created branch user_chain_61_mod_match
+233: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
+233: Error: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
+234: Created branch user_chain_62_mod_match
+234: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
+234: Error: Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.
+245: New ruleset: mangle / PREROUTING
 245: Default action: Accept
-246: New ruleset: mangle / POSTROUTING
+246: New ruleset: mangle / INPUT
 246: Default action: Accept
-249: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
-249: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+247: New ruleset: mangle / FORWARD
+247: Default action: Accept
+248: New ruleset: mangle / OUTPUT
+248: Default action: Accept
+249: New ruleset: mangle / POSTROUTING
+249: Default action: Accept
 252: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
 252: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
-253: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
-253: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
-259: Warning: Skipping command with '-j CONNMARK --restore-mark' This rule is generated automatically.
-262: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-262: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-263: Warning: Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
-266: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-266: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-267: New interface: eth2
-267: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-267: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-271: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-271: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-272: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-272: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-277: New ruleset: nat / PREROUTING
-277: Default action: Accept
-278: New ruleset: nat / POSTROUTING
-278: Default action: Accept
-279: New ruleset: nat / OUTPUT
-279: Default action: Accept
-283: New interface: eth+
-312: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT
-312: Warning: Line 244: Can not reproduce default action in table 'mangle' chain 'FORWARD'. (Generated rule may not generate equivalent iptables command when compiled)
-312: Warning: Line 244: Added rule to reproduce default policy ACCEPT in mangle/FORWARD
-312: Warning: Line 243: Can not reproduce default action in table 'mangle' chain 'INPUT'. (Generated rule may not generate equivalent iptables command when compiled)
-312: Warning: Line 243: Added rule to reproduce default policy ACCEPT in mangle/INPUT
-312: Warning: Line 245: Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
-312: Warning: Line 246: Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
-312: Warning: Line 242: Added rule to reproduce default policy ACCEPT in mangle/PREROUTING
+255: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+255: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+256: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+256: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD
+262: Warning: Skipping command with '-j CONNMARK --restore-mark' This rule is generated automatically.
+265: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+265: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+266: Warning: Turned option on in previous rule with action Mark for '-j CONNMARK --save-mark' 
+269: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+269: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+270: New interface: eth2
+270: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+270: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+274: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+274: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+275: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+275: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
+280: New ruleset: nat / PREROUTING
+280: Default action: Accept
+281: New ruleset: nat / POSTROUTING
+281: Default action: Accept
+282: New ruleset: nat / OUTPUT
+282: Default action: Accept
+286: New interface: eth+
+315: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT
+315: Warning: Line 247: Can not reproduce default action in table 'mangle' chain 'FORWARD'. (Generated rule may not generate equivalent iptables command when compiled)
+315: Warning: Line 247: Added rule to reproduce default policy ACCEPT in mangle/FORWARD
+315: Warning: Line 246: Can not reproduce default action in table 'mangle' chain 'INPUT'. (Generated rule may not generate equivalent iptables command when compiled)
+315: Warning: Line 246: Added rule to reproduce default policy ACCEPT in mangle/INPUT
+315: Warning: Line 248: Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
+315: Warning: Line 249: Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
+315: Warning: Line 245: Added rule to reproduce default policy ACCEPT in mangle/PREROUTING

@@ -200,6 +200,9 @@
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 548,201:206,311:315 -j ACCEPT
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 201:206,311:315,548 -j ACCEPT
 
+# now with negation
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp ! --dports 548,201,202,204,206 -j ACCEPT
+
 
 # icmp
 -A user_chain -p icmp -s 128.143.0.0/16 --icmp-type any  -j ACCEPT

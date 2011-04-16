@@ -713,7 +713,7 @@ void IPTCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1237 "iptables.g"
+#line 1243 "iptables.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 719 "IPTCfgLexer.cpp"
 	}
@@ -746,7 +746,7 @@ void IPTCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1239 "iptables.g"
+#line 1245 "iptables.g"
 		newline(); resetText();
 #line 752 "IPTCfgLexer.cpp"
 	}
@@ -1026,7 +1026,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 		match('.' /* charlit */ );
 		mNUM_3DIGIT(false);
 		if ( inputState->guessing==0 ) {
-#line 1306 "iptables.g"
+#line 1312 "iptables.g"
 			_ttype = IPV4;
 #line 1032 "IPTCfgLexer.cpp"
 		}
@@ -1060,7 +1060,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			match('.' /* charlit */ );
 			mNUM_3DIGIT(false);
 			if ( inputState->guessing==0 ) {
-#line 1310 "iptables.g"
+#line 1316 "iptables.g"
 				_ttype = THREE_COMPONENT_VERSION;
 #line 1066 "IPTCfgLexer.cpp"
 			}
@@ -1086,7 +1086,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1314 "iptables.g"
+#line 1320 "iptables.g"
 				_ttype = HEX_CONST;
 #line 1092 "IPTCfgLexer.cpp"
 			}
@@ -1107,7 +1107,7 @@ void IPTCfgLexer::mNUMBER(bool _createToken) {
 			_loop195:;
 			}  // ( ... )+
 			if ( inputState->guessing==0 ) {
-#line 1316 "iptables.g"
+#line 1322 "iptables.g"
 				_ttype = INT_CONST;
 #line 1113 "IPTCfgLexer.cpp"
 			}
@@ -1423,7 +1423,7 @@ void IPTCfgLexer::mRSOURCE(bool _createToken) {
 	
 	match("--rsource");
 	if ( inputState->guessing==0 ) {
-#line 1340 "iptables.g"
+#line 1346 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 1429 "IPTCfgLexer.cpp"
 	}
@@ -2086,7 +2086,7 @@ void IPTCfgLexer::mULOG_QTHR(bool _createToken) {
 	
 	match("--ulog-qthreshold");
 	if ( inputState->guessing==0 ) {
-#line 1407 "iptables.g"
+#line 1413 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2092 "IPTCfgLexer.cpp"
 	}
@@ -2105,7 +2105,7 @@ void IPTCfgLexer::mULOG_NLG(bool _createToken) {
 	
 	match("--ulog-nlgroup");
 	if ( inputState->guessing==0 ) {
-#line 1408 "iptables.g"
+#line 1414 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2111 "IPTCfgLexer.cpp"
 	}
@@ -2124,7 +2124,7 @@ void IPTCfgLexer::mULOG_CPR(bool _createToken) {
 	
 	match("--ulog-cprange");
 	if ( inputState->guessing==0 ) {
-#line 1409 "iptables.g"
+#line 1415 "iptables.g"
 		_ttype = UNSUPPORTED_OPTION;
 #line 2130 "IPTCfgLexer.cpp"
 	}

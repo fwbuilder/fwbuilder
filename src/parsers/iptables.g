@@ -892,6 +892,8 @@ multiport_tcp_udp_port_spec :
         (
             ( MATCH_SRC_MULTIPORT
                 {
+                    importer->srv_neg = importer->tmp_neg;
+                    importer->tmp_neg = false;
                     importer->startSrcMultiPort();
                     *dbg << " SRC MULTIPORT=";
                 }
@@ -908,6 +910,8 @@ multiport_tcp_udp_port_spec :
         |
             ( MATCH_DST_MULTIPORT
                 {
+                    importer->srv_neg = importer->tmp_neg;
+                    importer->tmp_neg = false;
                     importer->startDstMultiPort();
                     *dbg << " DST MULTIPORT=";
                 }
@@ -924,6 +928,8 @@ multiport_tcp_udp_port_spec :
         |
             ( MATCH_BOTH_MULTIPORT
                 {
+                    importer->srv_neg = importer->tmp_neg;
+                    importer->tmp_neg = false;
                     importer->startBothMultiPort();
                     *dbg << " MULTIPORT PORTS=";
                 }
