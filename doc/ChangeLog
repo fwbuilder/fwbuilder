@@ -8,7 +8,7 @@
 
 	* fwbedit.cpp (main): see #2328 "Add ability to run firewall import
 	from the command line". This has been implemented as a new function
-	"import" in fwbedit. See man page fwbedit(1) and "fwbuilder -h" for
+	"import" in fwbedit. See man page fwbedit(1) and "fwbedit -h" for
 	more details.
 
 	* iptables.g (multiport_tcp_udp_port_spec): see #2245 fixed bug in
@@ -406,14 +406,6 @@
 	objects. They get the name matching the name in corresponding pix
 	config line and are deduplicated using both relevant attributes
 	and the name.
-
-	* IPTImporter.cpp (pushPolicyRule): change in the importer
-	behavior: configuration import is aborted with an appropriate
-	error message in the log when program enounters protocol or
-	service name that it does not recognize and can not convert to
-	protocol or port number. We used to replace port number with some
-	placeholder (usually 0) and mark rule as "bad" by coloring it red
-	and adding comment.
 
 2011-03-17  vadim  <vadim@netcitadel.com>
 
