@@ -72,10 +72,10 @@ extern void checkAndRepairTree(libfwbuilder::FWObjectDatabase *objdb);
 extern void mergeTree(libfwbuilder::FWObjectDatabase *objdb,
                       const std::string &mergefile, int conflict_res);
 
-extern void importConfig(libfwbuilder::FWObjectDatabase *objdb,
-                         const std::string &import_config,
+extern void importConfig(const std::string &import_config,
                          libfwbuilder::FWObject *library,
-                         const std::string &fw_name);
+                         const std::string &fw_name,
+                         bool deduplicate);
 
 extern int splitStr(char ch,std::string s, operands * ops);
 extern std::string getNextOpt(operands &ops);

@@ -1,3 +1,9 @@
+2011-04-17  vadim  <vadim@netcitadel.com>
+
+	* fwbedit.cpp (main): added command line switch "-d" to function
+	"import" in fwbedit. This switch activates object deduplication
+	on import.
+
 2011-04-15  vadim  <vadim@netcitadel.com>
 
 	* fwbedit.cpp (main): see #2328 "Add ability to run firewall import

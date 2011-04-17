@@ -340,14 +340,16 @@ void usage_merge()
 void usage_import()
 {
     cout <<
-        "   import -f file1.fwb -i firewall_config.txt -o firewall_object_path\n"
+        "   import -f file1.fwb -i firewall_config.txt -o firewall_object_path [-d]\n"
         "\n"
         "          -f file1.fwb: data file #1\n"
         "          -i firewall_config.txt: firewall configuration file that\n"
         "             should be imported #2\n"
         "          -o firewall_object_path: a full path to the firewall object\n"
         "             to be created, e.g. '/User/Firewalls/my_new_firewall'\n"
-        "             Note that path must start with the library name\n";
+        "             Note that path must start with the library name\n"
+        "          -d reuse address and service objects created in the process\n"
+        "             of import\n";
     cout << endl;
 }
 
@@ -452,6 +454,7 @@ int main(int argc, char * const *argv)
     string list_format = "%path%";
     bool full_dump = false;
     string import_config;
+    bool deduplicate = false;
 
     if (argc<=1)
     {
@@ -676,13 +679,14 @@ int main(int argc, char * const *argv)
 
     case IMPORT:
         // -f file.fwb -i config.txt -o /User/Firewalls/new_firewall
-        while( (opt=getopt(argc, args, "f:i:o:")) != EOF )
+        while( (opt=getopt(argc, args, "f:i:o:d")) != EOF )
         {
             switch(opt)
             {
             case 'f': filename = optarg; break;
             case 'i': import_config = optarg; break;
             case 'o': object = optarg; break;
+            case 'd': deduplicate = true; break;
             }
         }
 
@@ -729,6 +733,7 @@ int main(int argc, char * const *argv)
             }
             mergeTree(objdb, filemerge, conflict_res);
         }
+
         else if (cmd == IMPORT)
         {
             if (import_config.empty() || object.empty())
@@ -774,35 +779,42 @@ int main(int argc, char * const *argv)
                  << "'"
                  << endl;
 
-            importConfig(objdb, import_config, library, fw_name);
+            importConfig(import_config, library, fw_name, deduplicate);
         }
+
         else if (cmd == STRUCT)
         {
             checkAndRepairTree(objdb);
         }
+
         else if (cmd == LIST)
         {
             listObject(objdb, object, list_children, recursive,
                        list_format, full_dump);
             return(0);
         }
+
         else if (cmd == UPGRADE)
         {
             cout << "File upgraded; current data format version: "
                  << libfwbuilder::Constants::getDataFormatVersion() << endl;
         }
+
         else  if (cmd == NEWOBJECT)
         {
             newObject(objdb, objtype, name, comment_txt, parent, ops);
         }
+
         else  if (cmd == DELOBJECT)
         {
             delObject(objdb, object);
         }
+
         else  if (cmd == MODOBJECT)
         {
             modObject(objdb, object, comment_txt, ops);
         }
+
         else
         {
 

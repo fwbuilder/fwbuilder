@@ -42,10 +42,16 @@ using namespace libfwbuilder;
 using namespace std;
 
 
-void importConfig(FWObjectDatabase *objdb,
-                  const string &import_config,
+Logger& operator<<(Logger &logger, const QString &str)
+{
+    logger << str.toUtf8().constData();
+    return logger;
+}
+
+void importConfig(const string &import_config,
                   FWObject *library,
-                  const string &fw_name)
+                  const string &fw_name,
+                  bool deduplicate)
 {
     QFile f(QString::fromUtf8(import_config.c_str()));
     f.open(QFile::ReadOnly);
@@ -90,10 +96,21 @@ void importConfig(FWObjectDatabase *objdb,
              << endl;
         exit(1);
     }
-    
-    imp->run();
-    imp->finalize();
 
+    if (deduplicate) imp->prepareForDeduplication();
+    
+    try
+    {
+        imp->run();
+    } catch(ImporterException &e)
+    {
+        *logger << e.toString() << "\n";
+    } catch(ObjectMakerException &e)
+    {
+        *logger << e.toString() << "\n";
+    }
+
+    imp->finalize();
 
 }
 

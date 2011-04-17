@@ -31,29 +31,29 @@ below).
 
 Creates new object.
 
-         -f file.fwb: data file
-         -t objtype: create new object of this type
-         -p parent: create new object as a child of this object.
-            This parameter is mandatory. If you are adding an address
-            to an interface, corresponding interface onkect must be
-            specified as the parent. Similarly if you need to add an
-            interface to a host or a firewall, corresponding host or
-            firewall object is the parent. If you are adding an
-            object to one of the standard folders, the parent is the
-            library you want to add the object to or correct full
-            path to the folder in the tree.
-         -n name: the name of the new object
-         -c txt:  specify comment for the new object
-         -a attribute1[,attribute2...]  :  specify attributes that
-            define parameters of the new object (see below)
+    -f file.fwb      data file
+    -t objtype       create new object of this type
+    -p parent        create new object as a child of this object.
+                     This parameter is mandatory. If you are adding an address
+                     to an interface, corresponding interface onkect must be
+                     specified as the parent. Similarly if you need to add an
+                     interface to a host or a firewall, corresponding host or
+                     firewall object is the parent. If you are adding an
+                     object to one of the standard folders, the parent is the
+                     library you want to add the object to or correct full
+                     path to the folder in the tree.
+    -n name          the name of the new object
+    -c txt           specify comment for the new object
+    -a attribute1[,attribute2...]  :  specify attributes that
+                     define parameters of the new object (see below)
 
 
 .B delete -f file.fwb -o object
 
 Deletes object specified by its full path in the tree or object ID.
 
-         -f file.fwb: data file
-         -o object: object to be deleted, full path or ID
+    -f file.fwb      data file
+    -o object        object to be deleted, full path or ID
 
 
 
@@ -62,11 +62,11 @@ Deletes object specified by its full path in the tree or object ID.
 Modifies object specified by its full path in the tree or object ID. 
 Object can not be renamed using this operation.
 
-         -f file.fwb: data file
-         -o object: object to be deleted, full path or ID
-         -c txt:  specify comment for the new object
-         -a attribute1[,attribute2...]  :  specify attributes that
-              define parameters of the new object (see below)
+    -f file.fwb      data file
+    -o object        object to be deleted, full path or ID
+    -c txt           specify comment for the new object
+    -a attribute1[,attribute2...]  :  specify attributes that
+                     define parameters of the new object (see below)
 
 
 
@@ -74,25 +74,25 @@ Object can not be renamed using this operation.
 
 Prints name and ID of an object.
 
-        -f file.fwb: data file
-        -o object: object to print, full path or ID
-        -r  print specified object and all objects under it in the tree
-        -c  print only children objects of the given object but do not
-            print the object itself.
-        -d  print full dump of all object's attributes including internal
-            debugging information if available, this can be very
-            verbose.
-        -Fformat_string Program recognizes macros in the format string
-            and replaces them with values of corresponding object's
-            attributes. Macro is the name of the attribute surrounded
-            with '%', such as '%name%' or '%address%'. Here is the
-            list of some attribute names: "id", "name", "path",
-            "comment", "type", "address", "netmask", "dnsname". TCP
-            and UDP service objects provide attributes
-            "src_range_start", "src_range_end", "dst_range_start",
-            "dst_range_end" for the source and destination port
-            ranges. ICMP and ICMP6 service objects have attributes
-            "icmp_type" and "icmp_code".
+    -f file.fwb       data file
+    -o object         object to print, full path or ID
+    -r                print specified object and all objects under it in the tree
+    -c                print only children objects of the given object but do not
+                      print the object itself.
+    -d                print full dump of all object's attributes including internal
+                      debugging information if available, this can be very
+                      verbose.
+    -Fformat_string   Program recognizes macros in the format string
+                      and replaces them with values of corresponding object's
+                      attributes. Macro is the name of the attribute surrounded
+                      with '%', such as '%name%' or '%address%'. Here is the
+                      list of some attribute names: "id", "name", "path",
+                      "comment", "type", "address", "netmask", "dnsname". TCP
+                      and UDP service objects provide attributes
+                      "src_range_start", "src_range_end", "dst_range_start",
+                      "dst_range_end" for the source and destination port
+                      ranges. ICMP and ICMP6 service objects have attributes
+                      "icmp_type" and "icmp_code".
 
 
 
@@ -101,10 +101,10 @@ Prints name and ID of an object.
 Adds object specified by path or ID to a group, also specified by its
 path or ID.
 
-         -f file.fwb: data file
-         -g group: group the object should be added to, 
-              full path or ID
-         -o object: object to be deleted, full path or ID
+    -f file.fwb      data file
+    -g group         group the object should be added to, 
+                     full path or ID
+    -o object        object to be deleted, full path or ID
 
 
 
@@ -112,17 +112,17 @@ path or ID.
 
 Removes object from a group.
 
-         -f file.fwb: data file
-         -g group: group the object should be removed from,
-            full path or ID
-         -o object: object to be deleted, full path or ID
+    -f file.fwb      data file
+    -g group         group the object should be removed from,
+                     full path or ID
+    -o object        object to be deleted, full path or ID
 
 
 .B upgrade -f file.fwb
 
 Upgrades data file to the latest data format version.
 
-          -f file.fwb: data file
+    -f file.fwb     data file
 
 
 .B checktree -f file.fwb
@@ -130,7 +130,7 @@ Upgrades data file to the latest data format version.
 Checks consistency and correctness of the object tree in the given
 data file and repairs it if necessary.
  
-          -f file.fwb: data file
+    -f file.fwb     data file
 
 
 .B merge -f file1.fwb -i file2.fwb
@@ -138,21 +138,24 @@ data file and repairs it if necessary.
 Objects from the file2.fwb are merged with objects in file1 and
 combined object tree saved in file1.fwb
 
-          -f file.fwb: data file #1
-          -i file.fwb: data file #2
+    -f file.fwb     data file #1
+    -i file.fwb     data file #2
 
 
-.B import -f file1.fwb -i firewall_config.txt -o path_to_firewall_object
+.B import -f file1.fwb -i firewall_config.txt -o path_to_firewall_object [-d]
 
 Firewall configuration from file firewall_config.txt is parsed and
 imported into data file file1.fwb. The program creates new firewall
 object located in the library and with the name defined by its path
-path_to_firewall_object.  This has to be full path, beginning with the
-library name, such as "/User/Firewalls/my_new_firewall"
+path_to_firewall_object.
 
-          -f file.fwb: data file #1
-          -i config.txt: firewall configuration file
-          -o object_path
+    -f file.fwb     data file #1
+    -i config.txt   firewall configuration file
+    -o object_path  full path to the firewall object that will be
+                    created. This has to be full path, beginning
+                    with the library name, such as
+                    "/User/Firewalls/my_new_firewall"
+    -d              avoid creating duplicate objects on import
 
 currently (as of v4.2.0) fwbuilder supports import of iptables
 configuration saved with iptables-save command, as well as import of
