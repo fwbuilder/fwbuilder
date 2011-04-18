@@ -1538,8 +1538,6 @@ void FWWindow::showReleaseNotes()
 
     QString file_name = QString("release_notes_%1.html").arg(version_no_build);
 
-    qDebug() << "Release notes file: " << file_name;
-
     // Show "release notes" dialog only if corresponding file
     // exists.
     QString contents;
