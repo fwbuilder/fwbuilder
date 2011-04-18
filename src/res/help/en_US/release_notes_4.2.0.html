@@ -20,8 +20,8 @@
 
 <p>
   This version is the first one to merge libfwbuilder and fwbuilder
-  packages. Libfwbuilder is now in the src/libfwbuilder subtree inside
-  fwbuilder code tree.
+  packages. The libfwbuilder library is now in the src/libfwbuilder 
+  subtree inside fwbuilder code tree.
 </p>
 
 <p>
@@ -48,10 +48,10 @@
 
 <p>
   This release adds interfaces to the NAT rule model. There are two
-  inetrfaces per NAT rule: "inbound interface" and "outbound
+  interfaces per NAT rule: "inbound interface" and "outbound
   interface". DTD version changes to "18", old data files need to be
   upgraded.  Inbound and outbound interfaces in NAT rules are
-  supported for iptables, ASA(FWSM) and PF, but in the case of PF GUI
+  supported for iptables, ASA/PIX/FWSM and PF, but in the case of PF GUI
   exposes only one interface to the user since PF commands can not
   match two interfaces simultaneously.
 </p>
@@ -68,7 +68,7 @@
 </p>
 
 <p>
-  This release implements import of PIX,ASA and FWSM
+  This release implements import of PIX, ASA and FWSM
   configurations. Host name, version, interface configuration, object
   groups, named objects, access lists as well as commands "global",
   "nat" and "static" can be imported. There is no support for import
@@ -82,15 +82,15 @@
   This release adds ability to generate initialization script in
   rc.conf fromat for FreeBSD. Only FreeBSD is currently supported (not
   OpenBSD). Generated script includes variables to configure
-  interfaces and their ipv4 and ipv6 addresses, vlans, CARP and pfsync
+  interfaces and their IPv4 and IPv6 addresses, vlans, CARP and pfsync
   interfaces, as well as variables that initialize PF.
 </p>
 
 <p>
-  This release adds ability to automatically detects firewall platform
-  from the format of the config file when user tries to import
-  existing iptables, Cisco IOS or Cisco ASA/FWSM configuration. The
-  program guesses firewall platform, version and host name (if
+  This release adds ability to automatically detect firewall platform
+  from the format of the imported configuration file. Import is 
+  supported for iptables, Cisco IOS or Cisco ASA/PIX/FWSM. The
+  program detects firewall platform, version and host name (if
   possible) from the contents of the configuration and shows
   platform-specific warning to explain what parts of the config can
   and can not be imported. Importer wizard has been reimplemented
@@ -115,7 +115,7 @@
   <ul>
     <li>
       <p>
-        ASA/FWSM configuration import:
+        ASA/PIX/FWSM configuration import:
       </p>
 
       <p>
@@ -126,23 +126,23 @@
         object-group, access-list, filter or nat commands are
         condidered "anonymous" objects. These get automatically
         generated names and are deduplicated using only their relevant
-        attributes but not names.  Objects created from pix named
+        attributes but not names.  Objects created from PIX named
         object ("object network foo", "object service bar") statements
         are considered "named" objects. They get the name matching the
-        name in corresponding pix config line and are deduplicated
+        name in corresponding PIX config line and are deduplicated
         using both relevant attributes and the name.
       </p>
     </li>
 
     <li>
       <p>
-        Iptables:
+        iptables:
       </p>
 
       <p>
         Fwbuilder can only import iptables configuration saved with
         "iptables-save" command. This format does not support
-        variables or named objects, therefor all obejcts created from
+        variables or named objects, therefor all objects created from
         address and port specifications are "anonymous" and get
         automatically generated names. They are deduplicated using
         their address, netmask, port numbers and other relevant
@@ -157,7 +157,7 @@
   assume port ranges are inclusive, that is, range boundaries are
   included in the match. This is the behavior of port range matches in
   iptables and PF, however policy compilers for Cisco IOS ACL and PIX
-  used to convert these objects into ios and pix access list
+  used to convert these objects into ios and PIX access list
   configurations that excluded port range boundaries from the
   match. This behavior made TCP and UDP service objects with port
   ranges incompatible between firewall platforms, that is, the same
@@ -223,7 +223,7 @@
   <li>
     <p>
       see #1980 "Objects from Deleted Objects should not be allowed to
-      be used in rules". Added checks to not allow drag&drop of an
+      be used in rules". Added checks to not allow drag-and-drop of an
       object from Deleted Objects library into rules and groups.
     </p>
   </li>
@@ -395,7 +395,7 @@
       GUI. Checkbox is located in the global Preferences dialog, tab
       Objects, subtab Interface. For backwards compatibility, the
       checkbox is turned on by default. When it is off, the GUI does
-      not validate the name of inetrfaces and subinterfaces and turns
+      not validate the name of interfaces and subinterfaces and turns
       off checks that enforced interface name patterns for VLAN,
       bridge and bodning interfaces.  It also turns off check for the
       validity of vlan ID derived from vlan interface name and turns
@@ -451,7 +451,7 @@
   <li>
     <p>
       fixes #2139 "Provide "Cancel" button if Address Table file is
-      read-only". IF the file configured with Address Table object is
+      read-only". If the file configured with Address Table object is
       read-only, the GUI shows warning when user clicks "Edit" button
       and offers a choice: open it for viewing read-only or cancel.
     </p>
@@ -462,7 +462,7 @@
       see #2140 "Attempting to create new Address Table file results
       in read-only error". Implemented support for the workflow when
       user wants to create the file used to feed addresses to the
-      AddressTable object.
+      Address Table object.
     </p>
   </li>
 
@@ -501,7 +501,7 @@
       format moved to its own wizard; using QWizard and QWizardPage
       classes with correct implementation of page sequencing and
       validation; old discovery druid has been disabled. SNMP
-      discovery and ios/pix/iptables configuration import will move to
+      discovery and ios/PIX/iptables configuration import will move to
       their own wizards later.
     </p>
   </li>
@@ -545,7 +545,7 @@
   <li>
     <p>
       see #2286 "Crash when closing file". The GUI crashed if user
-      imported iptables or pix configuration, then deleted a rule and
+      imported iptables or PIX configuration, then deleted a rule and
       tried to close project window.
     </p>
   </li>
@@ -579,7 +579,7 @@
 
   <li>
     <p>
-      fixed bug (no #): "Show text description in rule columns" does
+      fixed #2287 "Show text description in rule columns" does
       not persist across sessions
     </p>
   </li>
@@ -758,7 +758,7 @@
 
   <li>
     <p>
-      see #2206 Iptables commands with no "-j TARGET" parameter should
+      see #2206 iptables commands with no "-j TARGET" parameter should
       be imported using action "Continue".
     </p>
   </li>
@@ -766,7 +766,7 @@
   <li>
     <p>
       see #2338 "Empty Mangle Policy object created on
-      import". Iptables rules in the table 'mangle' will be imported
+      import". iptables rules in the table 'mangle' will be imported
       in the dedicated Policy rule set with name "Mangle". Rules that
       use chains FORWARD and POSTROUTING in table 'mangle' can not be
       reproduced and will be marked as "bad" (color red and
@@ -843,7 +843,7 @@
 
   <li>
     <p>
-      see #2268 updated list of named tcp and udp ports recognized by
+      see #2268 updated list of named TCP and UDP ports recognized by
       the importer for Cisco ASA.
     </p>
   </li>
@@ -861,7 +861,7 @@
   <li>
     <p>
       see #2164 fixed import of "ssh" commands and added import of
-      "http" commands for ASA/FWSM
+      "http" commands for ASA/PIX/FWSM
     </p>
   </li>
 
@@ -981,7 +981,7 @@
 <ul>
   <li>
     <p>
-      see #1972 Seaprated object creation and initialization. Some
+      see #1972 Separated object creation and initialization. Some
       complex objects need to create a set of standard child
       objects. Previously this was done in a special type of
       constructor which required pointer to the object tree root
@@ -1070,7 +1070,7 @@
   <li>
     <p>
       see #133 Added interfaces to the NAT rule model. There will be
-      two inetrfaces per NAT rule: "inbound interface" and "outbound
+      two interfaces per NAT rule: "inbound interface" and "outbound
       interface". DTD version changes to "18", old data files need to
       be upgraded.
     </p>
@@ -1124,7 +1124,7 @@
     <p>
       fixes #1920 "Setting host interface to unnumbered after it has
       been assigned IP address doesn't have desired effect". Compiler
-      still used ip addresses that belonged to the interface even if
+      still used IP addresses that belonged to the interface even if
       it switchd to "unnumbered".  These children address objects
       should be ignored.
     </p>
@@ -1265,7 +1265,7 @@
   <li>
     <p>
       SF bug 3178186 "Add ND/NS allow rules for the FORWARD
-      chain". Rules that are added automatically to ipv6 Linux
+      chain". Rules that are added automatically to IPv6 Linux
       firewall to permit neighbor discovery packets should be also
       added to the FORWARD chain if the firewall is a bridge.
     </p>
@@ -1274,7 +1274,7 @@
   <li>
     <p>
       see #2324 "NAT + MAC-matching rules not generated
-      properly". Iptables NAT rules matching a group of host objects
+      properly". iptables NAT rules matching a group of host objects
       with both IP and MAC addresses each in "Original Source" were
       not generated properly.
     </p>
@@ -1306,7 +1306,7 @@
       and routing via interface (routing to directly reachable
       subnets) are not supported. Generated script preserves static
       routing entries that existed before and attempts to recover in
-      case of error. Needs testing.
+      case of error.
     </p>
   </li>
 
@@ -1316,7 +1316,7 @@
       systems". Added ability to generate initialization script in
       rc.conf fromat for FreeBSD. Only FreeBSD is currently supported
       (not OpenBSD). Generated script includes variables to configure
-      interfaces and their ipv4 and ipv6 addresses, vlans, CARP and
+      interfaces and their IPv4 and IPv6 addresses, vlans, CARP and
       pfsync interfaces, as well as variables that initialize PF.
     </p>
   </li>
@@ -1412,7 +1412,7 @@
   <li>
     <p>
       fixes #2058 "Ability to configure mtu and metric of regular
-      inetrfaces".  "Advanced settings" dialog of the interface object
+      interfaces".  "Advanced settings" dialog of the interface object
       provides controls to configure MTU and possibly add any
       additional ifconfig parameters. This is available for OpenBSD
       and FreeBSD.
@@ -1460,7 +1460,7 @@
 
   <li>
     <p>
-      fixes #2091 "ethernet intrface options a used twice if the
+      fixes #2091 "ethernet interface options a used twice if the
       interface is a bridge port". When an interface appeared twice in
       the firewall configuration, such as when it is used as a bridge
       port and vlan parent interface, options configured for it in its
@@ -1484,7 +1484,7 @@
   <li>
     <p>
       see #1807, #2104: arrange interface configuration commands in
-      the generated scritpt in such order that bridge and carp
+      the generated script in such order that bridge and carp
       interfaces are configured after all other interfaces are done.
     </p>
   </li>
@@ -1541,7 +1541,7 @@
       fixes #2116 "When CARP interface IP address can't be assigned
       error or warning should appear". The problem actually affects
       any type of interface.  Generated script should abort with an
-      error termination code when ifconfig fails to assign ip address
+      error termination code when ifconfig fails to assign IP address
       to an interface.
     </p>
   </li>
@@ -1592,7 +1592,7 @@
 
 <ul>
   <li>
-    <p>There are no changes in the support for HP ProCurve in this release
+    <p>There are no changes in the support for ipfilter in this release
     </p>
   </li>
 
@@ -1606,7 +1606,7 @@
 
 <ul>
   <li>
-    <p>There are no changes in the support for HP ProCurve in this release
+    <p>There are no changes in the support for ipfw in this release
     </p>
   </li>
 
@@ -1633,7 +1633,7 @@
       assume port ranges are inclusive, that is, range boundaries are
       included in the match. This is the behavior of port range
       matches in iptables and PF, however policy compilers for Cisco
-      IOS ACL and PIX used to convert these objects into ios and pix
+      IOS ACL and PIX used to convert these objects into ios and PIX
       access list configurations that excluded port range boundaries
       from the match. This behavior made TCP and UDP service objects
       with port ranges incompatible between firewall platforms, that
@@ -1662,7 +1662,7 @@
 
 
 <!-- ######################################################################### -->
-<a name="pix"></a>
+<a name="PIX"></a>
 <h2>Changes in support for for Cisco ASA and FWSM</h2>
 
 <ul>
@@ -1675,7 +1675,7 @@
 
   <li>
     <p>
-      refs #1893 fixes #1883 "inspect ip options in pix8". Added
+      refs #1893 fixes #1883 "inspect IP options in PIX8". Added
       support for "policy-map type inspect ip-options" command in PIX
       v8.2 and later.  At this time, of all possible types of
       "policy-map type inspect" command only "ip-options" is
@@ -1686,8 +1686,8 @@
 
   <li>
     <p>
-      refs #1882 "Mixed service groups in PIX8". Added pix versions
-      8.0 and 8.3; added support for mixed servcie groups in pix 8.0
+      refs #1882 "Mixed service groups in PIX8". Added PIX versions
+      8.0 and 8.3; added support for mixed servcie groups in PIX 8.0
       and later.
     </p>
   </li>
@@ -1715,14 +1715,14 @@
 
   <li>
     <p>
-      fixes #1901 "add destructor to NATCompiler_pix and
-      NATCompiler_asa8". This eliminates memory leak.
+      fixes #1901 "add destructor to NATCompiler_PIX and
+      NATCompiler_ASA8". This eliminates memory leak.
     </p>
   </li>
 
   <li>
     <p>
-      refs #1885 "named network and service objects in pix8". So far,
+      refs #1885 "named network and service objects in PIX8". So far,
       these objects are only used for nat configuration.
     </p>
   </li>
@@ -1735,15 +1735,15 @@
 
   <li>
     <p>
-      refs #1886 "new nat configuration in pix 8.3". Initial support
+      refs #1886 "new nat configuration in PIX 8.3". Initial support
       for new style nat configuation.
     </p>
   </li>
 
   <li>
     <p>
-      fixed #1862 "fwb_pix crash".  Compiler fwb_pix crashed when
-      DNSName run-time object was used in a rule, but worked fine and
+      fixed #1862 "fwb_PIX crash".  Compiler fwb_PIX crashed when
+      DNS Name run-time object was used in a rule, but worked fine and
       issued an error when used in single-rule compile mode.
     </p>
   </li>
@@ -1755,7 +1755,7 @@
       interface". The problem should have affected both "old" (PIX 6
       and 7) and "new" (ASA 8.3) configuration. When an Address object
       was used in Original Source of a NAT rule, compiler used wrong
-      interface in the (interfac1,interface2) pair in "nat" command.
+      interface in the (interface1,interface2) pair in "nat" command.
     </p>
   </li>
 
@@ -1778,12 +1778,12 @@
       with (inside,outside)".  Added NAT rule option to make source
       nat rules "static". The option is presented to the user as three
       radio buttons in the NAT rule options dialog which is only
-      enabled when platform is "pix" and version >= 8.3. Policy
+      enabled when platform is "PIX" and version >= 8.3. Policy
       compiler generates "twice nat" rules with keyword "static" in
       the following cases: when TSrc is "original", so the rule
       translates destination and not source or when numbers of ip
       addresses represented by OSrc and TSrc are equal. If TSrc is not
-      "original" and represents different number of ip addresses than
+      "original" and represents different number of IP addresses than
       OSrc, compiler looks at the new rule option. User can use or
       override automatic algorithm using radio buttons in the NAT rule
       options dialog.
@@ -1809,7 +1809,7 @@
     <p>
       fixed #1913 "ASA/PIX rules with logging enabled don't have log
       set unless user modifies Firewall Settings". Added default log
-      level setting to the resource xml file for platform "pix", set
+      level setting to the resource xml file for platform "PIX", set
       to "informational". ACL lines now get "log " keyword followed by
       the log level taken from the rule options, or if that was not
       configured, from the firewall object settings, or if that is not
@@ -1845,16 +1845,8 @@
 
   <li>
     <p>
-      refs #1885 Compiler uses named objects and objects groups to
-      build configurations that use address ranges in TSrc in NAT
-      rules. (only ASA 8.3 and later)
-    </p>
-  </li>
-
-  <li>
-    <p>
       fixes #1934 "libfwbuilder::getOverlap() incorrectly calculates
-      overlap between ipv4 networks". This should also fix SF bug
+      overlap between IPv4 networks". This should also fix SF bug
       3156376 "Can not find interface with network zone that includes
       address range".
     </p>
@@ -1872,13 +1864,13 @@
   <li>
     <p>
       Added support for CustomService objects in policy and nat rules
-      for asa 8.3 using named objects and object-groups.
+      for ASA 8.3 using named objects and object-groups.
       -- see #1942 "ASA NAT - if custom service is included in service
       group incorrect config generated"
       -- see #1929 "move map named_objects inside class NamedObjectManager"
       -- see #1946 "restrict generation of the named objects by
-      PolicyCompiler_pix to ASA 8"
-      -- see #1885 "named network and service objects in pix8"
+      PolicyCompiler_PIX to ASA 8"
+      -- see #1885 "named network and service objects in PIX8"
       Note: this has been rolled back. There is no support for
       CustomService objects in NAT rules.
     </p>
@@ -1894,7 +1886,7 @@
 
   <li>
     <p>
-      see #1940 "ASA NAT - fwbuilder host objects interface ip is
+      see #1940 "ASA NAT - fwbuilder host objects interface IP is
       reserved keyword". Added list of reserved words used in IOS and
       ASA software to make sure generated named objects do not
       conflict. Will maintain single super-set of reserved words
@@ -1939,9 +1931,9 @@
     <p>
       fixes #1948 "incorrect configuration created when a
       CustomService object is used in a policy rule for PIX/ASA
-      v<8.3". Since we do not support custom service objects in policy
-      and nat rules for versions older than 8.3, added check to
-      generate fatal error when such object is used.
+      versions prior to 8.3". Since we do not support custom service 
+      objects in policy and nat rules for versions older than 8.3, added 
+      check to generate fatal error when such object is used.
     </p>
   </li>
 
@@ -1995,14 +1987,6 @@
   <li>
     <p>
       see #1953 "ASA NAT - two host objects in the same rule result in
-      incorrect config". We now register and keep track of all named
-      objects to make sure their names are unique.
-    </p>
-  </li>
-
-  <li>
-    <p>
-      see #1953 "ASA NAT - two host objects in the same rule result in
       incorrect config". Objects that represent addresses of
       interfaces of a host object created using template will be
       automatically renamed to follow standard naming convention
@@ -2025,9 +2009,9 @@
       See #1959 "ASA Policy - ranges are broken into composite network
       instead of using range command."  Added support for address
       ranges using named network object with parameter "range" for ASA
-      8.3 and later. NOTE: if a network or ip address object is used
+      8.3 and later. NOTE: if a network or IP address object is used
       in a nat rule for ASA 8.3, a named object has to be created for
-      it since ASA 8.3 does not accept ip addresses or subnets in
+      it since ASA 8.3 does not accept IP addresses or subnets in
       "nat" commands. In the situation like this, if the same address
       or network object is used in any Policy rule, the same named
       object will be used in the generated access-lists command.
@@ -2080,22 +2064,7 @@
       object-groups, I need to clear access-lists and nat commands
       that might be using them first. So, all clear commands are now
       grouped at the beginning of the generated configuration. This
-      affects pix/asa, iosacl and procurve_acl platforms.
-    </p>
-  </li>
-
-  <li>
-    <p>
-      See #1959 "ASA Policy - ranges are broken into composite network
-      instead of using range command". I have to create named objects
-      for address ranges and put them into an object-group, which I
-      can then use in access-list commands.
-    </p>
-  </li>
-
-  <li>
-    <p>
-
+      affects PIX/ASA, iosacl and procurve_acl platforms.
     </p>
   </li>
 
@@ -2138,7 +2107,7 @@
   <li>
     <p>
       See #1958 "consistently use "exit" to get out of nested context
-      in pix config". Using "exit" to exit from nested context while
+      in PIX config". Using "exit" to exit from nested context while
       adding network or service object in generated PIX/ASA
       configuraton.
     </p>
@@ -2147,8 +2116,8 @@
   <li>
     <p>
       see #1970 "ASA Policy - single IPv6 icmp object allowed in
-      rules". Since we do not support ipv6 for PIX/ASA at this time,
-      policy compiler should drop the rule if ipv6 address or icmpv6
+      rules". Since we do not support IPv6 for PIX/ASA at this time,
+      policy compiler should drop the rule if IPv6 address or icmpv6
       service is used and issue a warning.
     </p>
   </li>
@@ -2164,8 +2133,8 @@
     <p>
       fixes #1986 "Cisco ASA remarks should be truncated to 100
       characters or less". Trimming all lines used for access list
-      remarks to <100 characters. Remarks can only be less than 101
-      characters on PIX/ASA and less than 100 characters on IOS.
+      remarks to than 100 characters. Remarks can only be less than 
+      101 characters on PIX/ASA and less than 100 characters on IOS.
     </p>
   </li>
 
@@ -2181,7 +2150,7 @@
   <li>
     <p>
       fixes #2060 "Existing configuration objects are not cleared in
-      PIX 6.3".  Commands used to clear object groups and objects have
+      PIX 6.3". Commands used to clear object groups and objects have
       different syntax in PIX 6.3 and PIX 7 and later.
     </p>
   </li>
@@ -2223,7 +2192,7 @@
       assume port ranges are inclusive, that is, range boundaries are
       included in the match. This is the behavior of port range
       matches in iptables and PF, however policy compilers for Cisco
-      IOS ACL and PIX used to convert these objects into ios and pix
+      IOS ACL and PIX used to convert these objects into ios and PIX
       access list configurations that excluded port range boundaries
       from the match. This behavior made TCP and UDP service objects
       with port ranges incompatible between firewall platforms, that
@@ -2273,8 +2242,8 @@
   <li>
     <p>
       see SF bug 3213019 "FWSM Network zone and IPv6". Currently we do
-      not support ipv6 with PIX/ASA and FWSM. If user creates a group
-      to be used as network zone object and places ipv6 address in it,
+      not support IPv6 with PIX/ASA and FWSM. If user creates a group
+      to be used as network zone object and places IPv6 address in it,
       this address should be ignored while compiling the policy but
       this should not be an error.
     </p>
@@ -2283,7 +2252,7 @@
   <li>
     <p>
       see #2308 "ASA rules with service set to "http" and destination
-      set to asa firewall object should generate different command
+      set to ASA firewall object should generate different command
       syntax". Policy rules that have firewall object in Destination
       and http object in Service now generate "http" commands. This is
       similar to how fwbuilder generates "ssh", "telnet" and "icmp"
@@ -2343,7 +2312,7 @@
     <p>
       see #2348: "Accounting action is not valid for FWSM
       platform". Actions "Accounting" and "Reject" should not appear
-      in the drop-down list of actions in the GUI if platform is pix
+      in the drop-down list of actions in the GUI if platform is PIX
       or fwsm.
     </p>
   </li>
@@ -2363,9 +2332,6 @@
   </li>
 
 </ul>
-
-
-
 
 <!-- ######################################################################### -->
 <a name="procurve"></a>
