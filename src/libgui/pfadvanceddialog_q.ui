@@ -832,7 +832,7 @@ with this address:</string>
              <string>Optimization:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignCenter</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -913,19 +913,6 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
           </item>
          </layout>
         </widget>
-       </item>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>194</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="1" column="1">
         <spacer name="verticalSpacer_2">
