@@ -159,18 +159,6 @@ void FindWhereUsedWidget::find(FWObject *obj)
     find();
 }
 
-/*
- * TODO: use more sophisticated comparison, taking into account object
- * types and attributes. For example, if @a and @b are rules, compare rule
- * numbers. If one is RuleElement, get corresponding parent rule and use its
- * number. If both are RuleElement, sort by type name.
- */
-bool sort_by_second_in_pair(
-    pair<FWObject*, FWObject*> &a, pair<FWObject*, FWObject*> &b)
-{
-    return a.second < b.second;
-}
-
 void FindWhereUsedWidget::_find(FWObject *obj)
 {
     object = obj;
@@ -192,7 +180,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     UsageResolver().findAllReferenceHolders(obj, db, reference_holders);
 
     // rearrange reference holder object we just found to be able to sort them
-    list<pair<FWObject*, FWObject*> > containers;
+    QMap<QString, QTreeWidgetItem*> widget_items;
 
     map<int, set<FWObject*> >::iterator it;
     for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
@@ -203,17 +191,21 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
         foreach(FWObject *container, it->second)
         {
-            containers.push_back(pair<FWObject*,FWObject*>(c_obj, container));
+            QTreeWidgetItem *item = createQTWidgetItem(c_obj, container);
+            if (item==NULL) continue;
+            QStringList item_str;
+            item_str << item->text(0) << item->text(1) << item->text(2);
+            widget_items[item_str.join("/")] = item;
         }
     }
 
-    containers.sort(sort_by_second_in_pair);
-
-    list<pair<FWObject*,FWObject*> >::iterator it2;
-    for (it2=containers.begin(); it2!=containers.end(); ++it2)
+    // TODO: This is not ideal because lines are sorted alphabetically.
+    // Rules should be sorted by their numbers numerically.
+    QStringList keys = widget_items.keys();
+    qSort(keys);
+    foreach(QString k, keys)
     {
-        QTreeWidgetItem *item = createQTWidgetItem(it2->first, it2->second);
-        if (item==NULL) continue;
+        QTreeWidgetItem *item = widget_items[k];
         m_widget->resListView->addTopLevelItem(item);
     }
 
@@ -284,7 +276,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     }
 }
 
-QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
+QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject *o,
                                                          FWObject *container)
 {
     if (fwbdebug)
