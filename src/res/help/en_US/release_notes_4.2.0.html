@@ -1715,8 +1715,8 @@
 
   <li>
     <p>
-      fixes #1901 "add destructor to NATCompiler_PIX and
-      NATCompiler_ASA8". This eliminates memory leak.
+      fixes #1901 "add destructor to NATCompiler_pix and
+      NATCompiler_fwsm8". This eliminates memory leak.
     </p>
   </li>
 
@@ -1742,7 +1742,7 @@
 
   <li>
     <p>
-      fixed #1862 "fwb_PIX crash".  Compiler fwb_PIX crashed when
+      fixed #1862 "fwb_pix crash".  Compiler fwb_pix crashed when
       DNS Name run-time object was used in a rule, but worked fine and
       issued an error when used in single-rule compile mode.
     </p>
@@ -1869,7 +1869,7 @@
       group incorrect config generated"
       -- see #1929 "move map named_objects inside class NamedObjectManager"
       -- see #1946 "restrict generation of the named objects by
-      PolicyCompiler_PIX to ASA 8"
+      PolicyCompiler_pix to ASA 8"
       -- see #1885 "named network and service objects in PIX8"
       Note: this has been rolled back. There is no support for
       CustomService objects in NAT rules.
