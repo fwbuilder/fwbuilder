@@ -159,6 +159,18 @@ void FindWhereUsedWidget::find(FWObject *obj)
     find();
 }
 
+/*
+ * TODO: use more sophisticated comparison, taking into account object
+ * types and attributes. For example, if @a and @b are rules, compare rule
+ * numbers. If one is RuleElement, get corresponding parent rule and use its
+ * number. If both are RuleElement, sort by type name.
+ */
+bool sort_by_second_in_pair(
+    pair<FWObject*, FWObject*> &a, pair<FWObject*, FWObject*> &b)
+{
+    return a.second < b.second;
+}
+
 void FindWhereUsedWidget::_find(FWObject *obj)
 {
     object = obj;
@@ -175,23 +187,34 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
     if (project_panel==NULL) return;
 
+    FWObjectDatabase *db = obj->getRoot();
     map<int, set<FWObject*> > reference_holders;
-    UsageResolver().findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
+    UsageResolver().findAllReferenceHolders(obj, db, reference_holders);
+
+    // rearrange reference holder object we just found to be able to sort them
+    list<pair<FWObject*, FWObject*> > containers;
 
     map<int, set<FWObject*> >::iterator it;
     for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
     {
-        FWObject *c_obj = project_panel->db()->findInIndex(it->first);
+        FWObject *c_obj = db->findInIndex(it->first);
 
         if (!m_widget->includeChildren->isChecked() && c_obj != obj) continue;
 
         foreach(FWObject *container, it->second)
         {
-            QTreeWidgetItem *item;
-            item = createQTWidgetItem(c_obj, container);
-            if (item==NULL) continue;
-            m_widget->resListView->addTopLevelItem(item);
+            containers.push_back(pair<FWObject*,FWObject*>(c_obj, container));
         }
+    }
+
+    containers.sort(sort_by_second_in_pair);
+
+    list<pair<FWObject*,FWObject*> >::iterator it2;
+    for (it2=containers.begin(); it2!=containers.end(); ++it2)
+    {
+        QTreeWidgetItem *item = createQTWidgetItem(it2->first, it2->second);
+        if (item==NULL) continue;
+        m_widget->resListView->addTopLevelItem(item);
     }
 
     m_widget->resListView->resizeColumnToContents(0);
