@@ -17,7 +17,9 @@ win32:INCLUDEPATH += ../libgui/ui
 
 TARGET = fwbedit
 
-QMAKE_COPY    = ../../install.sh -m 0755 -s
+!win32 {
+	QMAKE_COPY    = ../../install.sh -m 0755 -s
+}
 
 DEPENDPATH = ../common \
              ../libfwbuilder/src/fwbuilder \
