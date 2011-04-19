@@ -107,6 +107,7 @@ extern int errno;
 #include "UserWorkflow.h"
 
 #include <QStringList>
+#include <QFile>
 
 
 using namespace libfwbuilder;
@@ -864,13 +865,20 @@ int main(int argc, char * const *argv)
             }
         }
 
-        string bakfile = filename+".bak";
-        if (rename(filename.c_str(),bakfile.c_str()) == 0)
+        QString filename_qstr = QString::fromUtf8(filename.c_str());
+        QString bakfile = filename_qstr + ".bak";
+
+        QFile bakf(bakfile);
+        if (bakf.exists()) bakf.remove();
+
+        QFile dataf(filename_qstr);
+        if (dataf.rename(bakfile))
+        {
             objdb->saveFile(filename);
-        else
+        } else
         {
             cout << "Could not rename data file, abroting operation" << endl;
-            cout << strerror(errno) << endl;
+            cout << dataf.errorString().toStdString() << endl;
             exit(-1);
         }
 
