@@ -427,7 +427,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
             routing_compiler->setSingleRuleCompileMode(single_rule_id);
             routing_compiler->setDebugLevel( dl );
-            if (rule_debug_on) routing_compiler->setDebugRule(drp);
+            if (rule_debug_on) routing_compiler->setDebugRule(drr);
             routing_compiler->setVerbose( verbose );
             if (inTestMode()) routing_compiler->setTestMode();
             if (inEmbeddedMode()) routing_compiler->setEmbeddedMode();

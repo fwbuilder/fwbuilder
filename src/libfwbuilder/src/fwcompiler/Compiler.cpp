@@ -1403,6 +1403,10 @@ bool Compiler::dropRuleWithEmptyRE::isREEmpty(Rule *rule,
     return re->size()==0;
 }
 
+/*
+ * TODO: why rule elements Service, Interface and Time are not checked
+ * for policy rules?
+ */
 bool Compiler::dropRuleWithEmptyRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
@@ -1427,6 +1431,15 @@ bool Compiler::dropRuleWithEmptyRE::processNext()
         return true;
     }
 
+    if (RoutingRule::cast(rule) &&
+        (isREEmpty(rule, RuleElementRDst::TYPENAME) ||
+         isREEmpty(rule, RuleElementRGtw::TYPENAME) ||
+         isREEmpty(rule, RuleElementRItf::TYPENAME)))
+    {
+        if (!warning_str.empty()) compiler->warning(rule, warning_str);
+        return true;
+    }
+
     tmp_queue.push_back(rule);
     return true;
 }
@@ -1443,6 +1456,16 @@ void Compiler::DropByServiceTypeInRE(RuleElement *rel, bool drop_ipv6)
         if (o->getId() == FWObjectDatabase::ANY_SERVICE_ID) continue;
 
         Service *svc = Service::cast(o);
+
+        if (svc == NULL)
+        {
+            cerr << endl;
+            cerr << "Rule " << Rule::cast(rel->getParent())->getLabel()
+                 << "  Rule element " << rel->getTypeName()
+                 << endl;
+            o->dump(true, false);
+        }
+
         assert(svc);
 
         // Note that all service objects except for ICMPService and
@@ -1658,3 +1681,44 @@ Address* Compiler::correctForCluster(Address *addr)
     return addr;
 }
 
+/* keep only rules that have ipv4 addresses in src and dst
+ * 
+ * This rule processor assumes all groups and multi-address objects
+ * have already been expanded.
+ *
+ * TODO: figure out what to do with rules that have mix of ipv4 and ipv6
+ * addresses in different rule elements (such as ipv4 address in odst
+ * and ipv6 address in tdst or similar)
+ */
+bool Compiler::DropRulesByAddressFamilyAndServiceType::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
+    for(FWObject::iterator it=rule->begin(); it!=rule->end(); ++it)
+    {
+        RuleElement *re = RuleElement::cast(*it);
+        if (re == NULL) continue;  // probably RuleOptions object
+
+        bool orig_any = re->isAny();
+        if (orig_any) continue;
+
+        FWObject *first_object = FWReference::getObject(re->front());
+        if (Address::cast(first_object) != NULL)
+            compiler->DropAddressFamilyInRE(re, drop_ipv6);
+
+        if (Service::cast(first_object) != NULL)
+            compiler->DropByServiceTypeInRE(re, drop_ipv6);
+
+        if (!orig_any && re->isAny())
+        {
+            // removing all ipv6 addresses from rule element makes it 'any', drop
+            // this rule
+            if (!warning_str.empty()) compiler->warning(rule, warning_str);
+            return true;
+        }
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}

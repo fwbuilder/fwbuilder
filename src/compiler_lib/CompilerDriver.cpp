@@ -81,12 +81,13 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     filename = "";
     wdir = "";
     fwobjectname = "";
-    dl = 0;
-    drp = -1;
-    rule_debug_on = false;
     single_rule_compile_on = false;
     prepend_cluster_name_to_output_file = false;
+    dl = 0;
+    rule_debug_on = false;
+    drp = -1;
     drn = -1;
+    drr = -1;
     verbose = 0;
     have_dynamic_interfaces = false;
     ipv4_run = true;
@@ -252,6 +253,16 @@ bool CompilerDriver::configure(const QStringList &args)
             idx++;
             bool ok = false;
             drn = args.at(idx).toInt(&ok);
+            if (!ok) return false;
+            rule_debug_on = true;
+            continue;
+        }
+
+        if (arg == "-xr")
+        {
+            idx++;
+            bool ok = false;
+            drr = args.at(idx).toInt(&ok);
             if (!ok) return false;
             rule_debug_on = true;
             continue;

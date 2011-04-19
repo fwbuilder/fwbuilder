@@ -885,30 +885,6 @@ bool NATCompiler::splitODstForSNAT::processNext()
     return true;
 }
 
-bool NATCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
-{
-    NATRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElementOSrc *osrc = rule->getOSrc();
-    RuleElementODst *odst = rule->getODst();
-    RuleElementOSrv *osrv = rule->getOSrv();
-
-    RuleElementTSrc *tsrc = rule->getTSrc();
-    RuleElementTDst *tdst = rule->getTDst();
-    RuleElementTSrv *tsrv = rule->getTSrv();
-
-    compiler->DropAddressFamilyInRE(osrc, drop_ipv6);
-    compiler->DropAddressFamilyInRE(odst, drop_ipv6);
-    compiler->DropByServiceTypeInRE(osrv, drop_ipv6);
-
-    compiler->DropAddressFamilyInRE(tsrc, drop_ipv6);
-    compiler->DropAddressFamilyInRE(tdst, drop_ipv6);
-    compiler->DropByServiceTypeInRE(tsrv, drop_ipv6);
-
-    tmp_queue.push_back(rule);
-
-    return true;
-}
-
 string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
 {
     NATRule *rule = NATRule::cast(r);

@@ -1021,56 +1021,6 @@ bool PolicyCompiler::MACFiltering::processNext()
     return true;
 }
 
-
-/* keep only rules that have ipv4 addresses in src and dst
- * 
- * TODO: figure out what to do with rules that have mix of ipv4 and ipv6
- * addresses in different rule elements (such as ipv4 address in odst
- * and ipv6 address in tdst or similar)
- */
-bool PolicyCompiler::DropRulesByAddressFamilyAndServiceType::processNext()
-{
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElement *src = rule->getSrc();
-    RuleElement *dst = rule->getDst();
-    RuleElement *srv = rule->getSrv();
-
-    bool orig_src_any = src->isAny();
-    bool orig_dst_any = dst->isAny();
-    bool orig_srv_any = srv->isAny();
-    compiler->DropAddressFamilyInRE(src, drop_ipv6);
-    compiler->DropAddressFamilyInRE(dst, drop_ipv6);
-    compiler->DropByServiceTypeInRE(srv, drop_ipv6);
-
-    if (!orig_src_any && src->isAny())
-    {
-        // removing all ipv6 addresses from source makes it 'any', drop
-        // this rule
-        if (!warning_str.empty()) compiler->warning(rule, warning_str);
-        return true;
-    }
-
-    if (!orig_dst_any && dst->isAny())
-    {
-        // removing all ipv6 addresses from destination makes it 'any', drop
-        // this rule
-        if (!warning_str.empty()) compiler->warning(rule, warning_str);
-        return true;
-    }
-
-    if (!orig_srv_any && srv->isAny())
-    {
-        // removing all ipv6 addresses from service makes it 'any', drop
-        // this rule
-        if (!warning_str.empty()) compiler->warning(rule, warning_str);
-        return true;
-    }
-
-    tmp_queue.push_back(rule);
-
-    return true;
-}
-
 string PolicyCompiler::debugPrintRule(Rule *r)
 {
     PolicyRule *rule=PolicyRule::cast(r);

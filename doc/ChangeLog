@@ -1,3 +1,13 @@
+2011-04-19  Vadim Kurland  <vadim@netcitadel.com>
+
+	* RoutingCompiler_ipt.cpp (compile): see #2359 "Crash when
+	compiling single rule with IPv6 destination and IPv4 gateway or
+	interface". Routing compiler for iptables does not support ipv6 at
+	this time and will issue a warning when user tries to place ipv6
+	address or network in a routing rule. The warning does not appear
+	when ipv6 address is a member of a group used in the rule. Also
+	see #1575.
+
 2011-04-17  vadim  <vadim@netcitadel.com>
 
 	* fwbedit.cpp (main): added command line switch "-d" to function

@@ -4307,12 +4307,6 @@ void PolicyCompiler_ipt::compile()
     // empty rule element.
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-    if (ipv6)
-        add( new DropIPv4Rules("drop ipv4 rules"));
-    else
-        add( new DropIPv6Rules("drop ipv6 rules"));
-    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-
 // trying process rules with multiple interfaces as late as possible
     add( new InterfacePolicyRulesWithOptimization(
              "process interface policy rules and store interface ids") );
@@ -4352,6 +4346,12 @@ void PolicyCompiler_ipt::compile()
 
     add( new ExpandMultipleAddresses("expand multiple addresses"  ) );
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+    if (ipv6)
+        add( new DropIPv4Rules("drop ipv4 rules"));
+    else
+        add( new DropIPv6Rules("drop ipv6 rules"));
+    //add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
     add( new checkForUnnumbered("check for unnumbered interfaces" ) );
     add( new checkForDynamicInterfacesOfOtherObjects(

@@ -42,6 +42,13 @@
 </p>
 
 <p>
+  This release brings significant improvement in compile time on large
+  object trees. The speed-up is especially noticeable in single rule
+  compile where the time before generated firewall configuration
+  appears in the GUI shrank by up to a factor of 10.
+</p>
+
+<p>
   This release adds interfaces to the NAT rule model. There are two
   interfaces per NAT rule: "inbound interface" and "outbound
   interface". DTD version changes to "18", old data files need to be
@@ -602,6 +609,13 @@
       details.
     </p>
   </li>
+
+  <li>
+    <p>
+      Starting with v4.2.0, fwbedit.exe is now part of the Windows package
+    </p>
+  </li>
+
 </ul>
 
 
@@ -1282,6 +1296,17 @@
       TARGET" parameter. If such rule also has logging enabled, it
       should use target "-j LOG" instead of generating additional
       chain.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2359 "Crash when compiling single rule with IPv6
+      destination and IPv4 gateway or interface". Routing compiler for
+      iptables does not support ipv6 at this time and will issue a
+      warning when user tries to place ipv6 address or network in a
+      routing rule. The warning does not appear when ipv6 address is a
+      member of a group used in the rule. Also see #1575.
     </p>
   </li>
 

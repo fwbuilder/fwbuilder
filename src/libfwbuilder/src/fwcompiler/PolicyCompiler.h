@@ -257,60 +257,6 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(ConvertToAtomic);
 
         /**
-         * drop rules that have ipv4 or ipv6 addresses  (depending
-         * on the argument ipv6 passed to the constructor)
-         */
-        class DropRulesByAddressFamilyAndServiceType : public PolicyRuleProcessor
-        {
-            std::string warning_str;
-            bool drop_ipv6;
-            public:
-            DropRulesByAddressFamilyAndServiceType(
-                const std::string &n, bool ipv6) : PolicyRuleProcessor(n)
-            { drop_ipv6 = ipv6; warning_str = ""; }
-            virtual bool processNext();
-            protected:
-            DropRulesByAddressFamilyAndServiceType(
-                const std::string &n,
-                const std::string &w,
-                bool ipv6) : PolicyRuleProcessor(n)
-            { drop_ipv6 = ipv6; warning_str = w; }
-        };
-
-        /**
-         * Drop rule if any address object in source or destination is
-         * ipv4 address.
-         */
-        class DropIPv4Rules : public DropRulesByAddressFamilyAndServiceType
-        {
-            public:
-            DropIPv4Rules(const std::string &n) :
-              DropRulesByAddressFamilyAndServiceType(n, false) {};
-        };
-
-        /**
-         * Drop rule if any address object in source or destination is
-         * ipv6 address.
-         */
-        class DropIPv6Rules : public DropRulesByAddressFamilyAndServiceType
-        {
-            public:
-            DropIPv6Rules(const std::string &n) :
-              DropRulesByAddressFamilyAndServiceType(n, true) {};
-        };
-
-        /**
-         * Drop rule if any address object in source or destination is
-         * ipv6 address and issue warning
-         */
-        class DropIPv6RulesWithWarning : public DropRulesByAddressFamilyAndServiceType
-        {
-            public:
-            DropIPv6RulesWithWarning(const std::string &n, const std::string &w) :
-                DropRulesByAddressFamilyAndServiceType(n, w, true) {};
-        };
-
-        /**
          *  deals with recursive groups in Src. See description for
          *  Compiler::recursiveGroupsInRE
          */

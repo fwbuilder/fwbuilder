@@ -15,8 +15,9 @@ HAVE_CPPUNIT = @HAVE_CPPUNIT@
 CPPUNIT_CFLAGS = @CPPUNIT_CFLAGS@
 CPPUNIT_LIBS = @CPPUNIT_LIBS@
 
-CONFIG -= nostrip
-CONFIG += release
+# CONFIG -= nostrip
+# CONFIG += release
+CONFIG += debug
 
 unix {
     PREFIX = @PREFIX@

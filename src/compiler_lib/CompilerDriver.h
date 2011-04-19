@@ -114,11 +114,12 @@ protected:
 
         int dl;
         int drp;
+        int drn;
+        int drr;
         bool rule_debug_on;
         bool single_rule_compile_on;
         bool prepend_cluster_name_to_output_file;
         std::string single_rule_id;
-        int drn;
         int verbose;
         bool have_dynamic_interfaces;
         bool ipv4_run;

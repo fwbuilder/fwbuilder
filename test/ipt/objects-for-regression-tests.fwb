@@ -26010,7 +26010,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1272404443" lastInstalled="1142003872" lastModified="1236314795" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;&#10;routing ruleset installs ECMP default" ro="False">
+      <Firewall id="id43A2BF7416451" host_OS="linux24" inactive="False" lastCompiled="1272404443" lastInstalled="1142003872" lastModified="1303247848" platform="iptables" version="" name="firewall36" comment="&#10;testing routing rules - both actually routing  and ROUTE target&#10;&#10;routing ruleset installs ECMP default" ro="False">
         <NAT id="id43A2C00E16451" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -26308,6 +26308,30 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </RDst>
             <RGtw neg="False">
               <ObjectRef ref="id40860X98946"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id43A2C03E16451"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id99395X15242" disabled="False" group="" metric="0" position="4" comment="should drop ipv6 routing rule and issue warning">
+            <RDst neg="False">
+              <ObjectRef ref="id40508X82687"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id43A2C03E16451"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id164976X15242" disabled="False" group="" metric="0" position="5" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id3BBC0EFC"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="sysid0"/>
             </RGtw>
             <RItf neg="False">
               <ObjectRef ref="id43A2C03E16451"/>

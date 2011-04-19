@@ -212,15 +212,38 @@ void RoutingCompiler_ipt::compile()
     add(new singleAdressInRGtw(
             "Check if RGtw object has exactly one IP adress"));
     add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
+
+    // unfortunately ExpandGroups also filters out objects that do not
+    // match address family but does not issue a warning when that
+    // happens. Since I need to show a warning when user places ipv6
+    // object in a routing rule, I call DropIPv6RulesWithWarning()
+    // before expanding groups. This has limited effect though: user
+    // gets a warning when a single ipv6 address or network object
+    // appears in the rule but gets no warning when it appears as a
+    // member of a group.
+    add(new DropIPv6RulesWithWarning(
+            "drop ipv6 rules",
+            "Rule has been suppressed because it contains IPv6 "
+            "objects and Firewall Builder does not support IPv6 "
+            "routing rules at this time"));
+
+    add(new ExpandGroups("Expand groups in DST"));
+    add(new ExpandMultipleAddresses(
+            "Expand objects with multiple addresses in DST"));
+    add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
+    add(new DropIPv6RulesWithWarning(
+            "drop ipv6 rules",
+            "Rule has been suppressed because it contains IPv6 "
+            "objects and Firewall Builder does not support IPv6 "
+            "routing rules at this time"));
+
+
     add(new validateNetwork("Validate network addresses"));
     add(new reachableAddressInRGtw(
             "Check if RGtw is reachable via local networks"));
     add(new contradictionRGtwAndRItf(
             "Check if RGtw is in a network of RItf"));
-
-    add(new ExpandGroups("Expand groups in DST"));
-    add(new ExpandMultipleAddresses(
-            "Expand objects with multiple addresses in DST"));
 
     add(new addressRangesInDst("process address ranges"));
 
