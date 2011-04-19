@@ -684,7 +684,7 @@ bool NATCompiler_ipt::VerifyRules3::processNext()
         // iptables does not allow "-o" in PREROUTING chain
         compiler->abort(
             rule,
-            "Can not use inbound interface specification with "
+            "Can not use outbound interface specification with "
             "rules that translate destination because iptables does not "
             "allow \"-o\" in PREROUTING chain");
         return true;
