@@ -9,37 +9,30 @@
 </p>
 
 <p>
+  <ul>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#gui">GUI Updates</a></li>
+    <li><a href="#fwbedit">Changes in command line tool fwbedit</a></li>
+    <li><a href="#import">Changes in policy importer for all supported platforms</a></li>
+    <li><a href="#install">Changes in the built-in  policy installer</a></li>
+    <li><a href="#libfwbuilder">Changes and improvements in the API library libfwbuilder</a></li>
+    <li><a href="#std_lib">Changes and improvements in the library of standard objects</a></li>
+    <li><a href="#compilers">common changes that affect policy compilers for all platforms</a></li>
+    <li><a href="#iptables">Changes in support for iptables</a></li>
+    <li><a href="#pf">Changes in support for PF (FreeBSD, OpenBSD)</a></li>
+    <li><a href="#ipfilter">Changes in support for ipfilter</a></li>
+    <li><a href="#ipfw">Changes in support for ipfw</a></li>
+    <li><a href="#ios">Changes in support for for Cisco IOS ACL</a></li>
+    <li><a href="#PIX">Changes in support for for Cisco ASA and FWSM</a></li>
+    <li><a href="#procurve">Changes in support for HP ProCurve</a></li>
+    <li><a href="#packaging">Changes in packaging</a></li>
+  </ul>
 </p>
 
 <!-- Highlights for this release -->
 
-<p>
-  This version is the first one to merge libfwbuilder and fwbuilder
-  packages. The libfwbuilder library is now in the src/libfwbuilder 
-  subtree inside fwbuilder code tree.
-</p>
-
-<p>
-  RPM .spec files and DEB .control files are now located in the
-  directory "packaging" inside fwbuilder code tree.
-</p>
-
-<p>
-  Changes in the versioning format: build number is going to be used
-  as part of the long version number, composing complete version as
-  "4.2.0.3425". The "-n" suffix in rpm and deb package names will be
-  used for package release number and most of the time will be
-  "-1". This suffix should reflect minor differences in the package
-  that do not affect the code.
-</p>
-
-<p>
-  We have stopped making builds on Ubuntu Hardy. Old Qt (4.4.1) means
-  more and more parts of the code do not compile and require
-  workarounds, sometimes with loss of functionality in the GUI. v4.1.3
-  will be the last officially released version of fwbuilder to work on
-  Hardy.
-</p>
+<a name="summary"></a>
+<h2>Summary</h2>
 
 <p>
   This release brings significant improvement in compile time on large
@@ -1316,7 +1309,7 @@
 
 <!-- ######################################################################### -->
 <a name="pf"></a>
-<h2>Support for PF (FreeBSD, OpenBSD)</h2>
+<h2>Changes in support for PF (FreeBSD, OpenBSD)</h2>
 
 <ul>
   <li>
@@ -1608,7 +1601,7 @@
 
 <!-- ######################################################################### -->
 <a name="ipfilter"></a>
-<h2>Support for ipfilter</h2>
+<h2>Changes in support for ipfilter</h2>
 
 <ul>
   <li>
@@ -1622,7 +1615,7 @@
 
 <!-- ######################################################################### -->
 <a name="ipfw"></a>
-<h2>Support for ipfw</h2>
+<h2>Changes in support for ipfw</h2>
 
 <ul>
   <li>
@@ -2355,7 +2348,7 @@
 
 <!-- ######################################################################### -->
 <a name="procurve"></a>
-<h2>Support for HP ProCurve</h2>
+<h2>Changes in support for HP ProCurve</h2>
 
 <ul>
   <li>
@@ -2367,6 +2360,46 @@
 </ul>
 
 
+<!-- ######################################################################### -->
+<a name="packaging"></a>
+<h2>Changes in packaging</h2>
 
+<ul>
+  <li>
+    <p>
+      This version is the first one to merge libfwbuilder and fwbuilder
+      packages. The libfwbuilder library is now in the src/libfwbuilder 
+      subtree inside fwbuilder code tree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      RPM .spec files and DEB .control files are now located in the
+      directory "packaging" inside fwbuilder code tree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Changes in the versioning format: build number is going to be used
+      as part of the long version number, composing complete version as
+      "4.2.0.3425". The "-n" suffix in rpm and deb package names will be
+      used for package release number and most of the time will be
+      "-1". This suffix should reflect minor differences in the package
+      that do not affect the code.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      We have stopped making builds on Ubuntu Hardy. Old Qt (4.4.1) means
+      more and more parts of the code do not compile and require
+      workarounds, sometimes with loss of functionality in the GUI. v4.1.3
+      will be the last officially released version of fwbuilder to work on
+      Hardy.
+    </p>
+  </li>
+</ul>
 
 
