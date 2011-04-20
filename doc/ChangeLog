@@ -1,3 +1,11 @@
+2011-04-20  vadim  <vadim@netcitadel.com>
+
+	* configlets/pix_os/script_skeleton: fixed bug (no #): "clear"
+	commands were not added when option "generate only access-list,
+	access-group, nat, static..." was in effect; also making sure
+	"clear" commands for object-groups and ssh are not added when
+	option "do not add clear commands" is on. This affects PIX/ASA/FWSM.
+
 2011-04-19  Vadim Kurland  <vadim@netcitadel.com>
 
 	* RoutingCompiler_ipt.cpp (compile): see #2359 "Crash when
