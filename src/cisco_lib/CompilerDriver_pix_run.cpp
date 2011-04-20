@@ -159,6 +159,14 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
     script_skeleton.setVariable("not_short_script",
                                 ! options->getBool("short_script"));
 
+    script_skeleton.setVariable("preamble_commands", 
+                                QString::fromUtf8(
+                                    preamble_commands.c_str()));
+
+    script_skeleton.setVariable("clear_commands", 
+                                QString::fromUtf8(
+                                    clear_commands.c_str()));
+
     script_skeleton.setVariable("system_configuration_script", 
                                 QString::fromUtf8(
                                     system_configuration_script.c_str()));
@@ -396,8 +404,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         oscnf->prolog();
         oscnf->processFirewallOptions();
 
-        string clear_commands;
-        string preamble_commands;
         bool have_named_objects = false;
         bool have_object_groups = false;
 
@@ -542,12 +548,13 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         }
 
         system_configuration_script = oscnf->getCompiledScript();
+        system_configuration_script += "\n";
 
         clear_commands += named_objects_manager.getClearCommands() + "\n";
 
-        system_configuration_script += preamble_commands;
-        system_configuration_script += clear_commands;
-        system_configuration_script += "\n";
+        // system_configuration_script += preamble_commands;
+        // system_configuration_script += clear_commands;
+
 
         script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());

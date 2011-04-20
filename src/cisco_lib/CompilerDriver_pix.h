@@ -44,11 +44,15 @@ namespace libfwbuilder {
 };
 
 
-namespace fwcompiler {
+namespace fwcompiler
+{
     
-    class CompilerDriver_pix : public CompilerDriver {
+    class CompilerDriver_pix : public CompilerDriver
+    {
    
 protected:
+        std::string clear_commands;
+        std::string preamble_commands;
         std::string system_configuration_script;
         std::string named_objects_and_groups;
         std::string nat_script;

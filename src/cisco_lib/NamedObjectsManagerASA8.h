@@ -37,7 +37,7 @@ namespace fwcompiler
 
 public:
         NamedObjectsManagerASA8(libfwbuilder::Library *persistent_objects,
-                                const libfwbuilder::Firewall *fw) :
+                                libfwbuilder::Firewall *fw) :
         NamedObjectsManagerPIX(persistent_objects, fw) {}
         virtual ~NamedObjectsManagerASA8() {};
     };

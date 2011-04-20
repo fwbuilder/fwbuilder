@@ -13,6 +13,17 @@
 ##
 ## Double '##' comments are removed when configlet is processed.
 ## Single '#' comments stay.
+##
+## {{$system_configuration_script}}   -- commands to configure
+##                                       interfaces, snmp, syslog, ntp etc.
+## {{$preamble_commands}}             -- commands to configure temporary
+##                                       access list in "safety net install"
+##                                       mode and to set up FWSM commit mode.
+## {{$clear_commands}}                -- clear commands for access lists, global,
+##                                       static, nat, icmp, telnet, ssh, http,
+##                                       object-group
+##
+##
 {{$top_comment}}
 
 {{$errors_and_warnings}}
@@ -34,6 +45,10 @@
 {{if not_short_script}}
 {{$system_configuration_script}}
 {{endif}}
+
+{{$preamble_commands}}
+
+{{$clear_commands}}
 
 {{$named_objects_and_object_groups}}
 

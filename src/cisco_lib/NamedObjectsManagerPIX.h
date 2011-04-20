@@ -43,7 +43,7 @@ namespace fwcompiler
 
 public:
         NamedObjectsManagerPIX(libfwbuilder::Library *persistent_objects,
-                               const libfwbuilder::Firewall *_fw);
+                               libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectsManagerPIX();
 
         virtual std::string getClearCommands();

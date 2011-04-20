@@ -39,7 +39,7 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectsManagerPIX::NamedObjectsManagerPIX(Library *po, const Firewall *fw) :
+NamedObjectsManagerPIX::NamedObjectsManagerPIX(Library *po, Firewall *fw) :
     NamedObjectsManager(po, fw)
 {
 }
@@ -59,8 +59,11 @@ string NamedObjectsManagerPIX::getClearCommands()
         string("/FWBuilderResources/Target/options/") +
         "version_" + version + "/pix_commands/clear_obj");
 
-    if (haveObjectGroups()) output << clear_obj_group << endl;
-    if (haveNamedObjects()) output << clear_object << endl;
+    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") )
+    {
+        if (haveObjectGroups()) output << clear_obj_group << endl;
+        if (haveNamedObjects()) output << clear_object << endl;
+    }
 
     return output.str();
 }

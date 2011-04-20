@@ -841,7 +841,9 @@ string OSConfigurator_pix_os::_printSSHConfiguration()
     cnf.setVariable("fwsm_version_lt_32", ! version_ge_32);
     cnf.setVariable("fwsm_version_ge_32",   version_ge_32);
 
-    cnf.setVariable("clear", 1);
+    cnf.setVariable("clear", 
+                    ! fw->getOptionsObject()->getBool("pix_acl_no_clear") );
+
     cnf.setVariable("use_scp", fw->getOptionsObject()->getBool("use_scp"));
 
     int to = fw->getOptionsObject()->getInt("pix_ssh_timeout");

@@ -39,7 +39,7 @@ using namespace fwcompiler;
 using namespace std;
 
 
-NamedObjectsManagerIOS::NamedObjectsManagerIOS(Library *po, const Firewall *fw) :
+NamedObjectsManagerIOS::NamedObjectsManagerIOS(Library *po, Firewall *fw) :
     NamedObjectsManager(po, fw)
 {
 }

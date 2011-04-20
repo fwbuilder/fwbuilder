@@ -86,8 +86,9 @@ FWObject* create_ASA8ObjectGroup(int id)
 }
 
 NamedObjectsManager::NamedObjectsManager(Library *persistent_objects,
-                                         const Firewall *fw)
+                                         Firewall *_fw)
 {
+    fw = _fw;
     version = fw->getStr("version");
     platform = fw->getStr("platform");
 

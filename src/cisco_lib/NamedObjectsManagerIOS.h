@@ -44,7 +44,7 @@ namespace fwcompiler
 
 public:
         NamedObjectsManagerIOS(libfwbuilder::Library *persistent_objects,
-                               const libfwbuilder::Firewall *_fw);
+                               libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectsManagerIOS();
 
         virtual std::string getClearCommands();

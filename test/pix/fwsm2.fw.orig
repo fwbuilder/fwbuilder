@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3526
+!  Firewall Builder  fwb_pix v4.2.0.3530
 !
-!  Generated Thu Apr 14 18:58:24 2011 PDT by vadim
+!  Generated Wed Apr 20 10:40:46 2011 PDT by vadim
 !
 ! Compiled for fwsm 4.x
 ! Outbound ACLs: supported
@@ -109,7 +109,6 @@ policy-map global_policy
 service-policy global_policy global
 
 
-
 !################
 access-list mode auto
 
@@ -131,7 +130,6 @@ clear config access-list outside_acl_in
 clear config icmp
 clear config telnet
 clear config object-group
-
 
 object-group network id17298X54624.dst.net.0
   network-object host 211.11.11.11 

@@ -685,7 +685,6 @@ string PolicyCompiler_pix::printClearCommands()
         output << "access-list commit" << endl;
     }
 
-
     return output.str();
 }
 

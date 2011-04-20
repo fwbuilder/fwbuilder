@@ -41,6 +41,7 @@ namespace fwcompiler
     class NamedObjectsManager
     {
 protected:
+        libfwbuilder::Firewall *fw;
         std::string platform;
         std::string version;
         // storage for object groups created to be used with PIX
@@ -54,7 +55,7 @@ public:
         std::map<int, NamedObject*> named_objects;
         
         NamedObjectsManager(libfwbuilder::Library *persistent_objects,
-                            const libfwbuilder::Firewall *_fw);
+                            libfwbuilder::Firewall *_fw);
         virtual ~NamedObjectsManager();
         void addNamedObject(const libfwbuilder::FWObject *obj);
         NamedObject* getNamedObject(const libfwbuilder::FWObject *obj);
