@@ -1,5 +1,12 @@
 2011-04-25  Vadim Kurland  <vadim@netcitadel.com>
 
+	* instDialog_ui_ops.cpp (readInstallerOptionsFromDialog):
+	tentative fix for SF bug 3169045 "Batch installer lists IPv4
+	address as management address". Built-in installer wanted to use
+	management interface address in batch mode even when alternative
+	address or putty session name was provided. This happens only in
+	batch mode install.
+
 	* VERSION (GENERATION): version 4.2.0 released; started 4.2.1
 
 2011-04-20  vadim  <vadim@netcitadel.com>

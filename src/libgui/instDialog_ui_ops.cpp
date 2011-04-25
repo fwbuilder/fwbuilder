@@ -1278,7 +1278,6 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
 {
     if (fwbdebug) qDebug("instDialog::readInstallerOptionsFromDialog");
 
-    cnf.fwobj = fw;
     QString adm_user;
 
     FWOptions *fwopt = NULL;
