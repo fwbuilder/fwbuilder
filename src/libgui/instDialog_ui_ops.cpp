@@ -1056,6 +1056,12 @@ bool instDialog::tableHasCheckedItems()
  */
 bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
 {
+    if (fwbdebug)
+        qDebug() << "instDialog::getInstOptions() begin"
+                 << "cnf.user=" << cnf.user
+                 << "cnf.maddr=" << cnf.maddr
+                 << "fw=" << fw;
+
     cnf.fwobj = fw;
 
     readInstallerOptionsFromSettings();
@@ -1093,6 +1099,11 @@ bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
         inst_opt_dlg->deleteLater();
     }
 
+    if (fwbdebug)
+        qDebug() << "instDialog::getInstOptions() end"
+                 << "cnf.user=" << cnf.user
+                 << "cnf.maddr=" << cnf.maddr;
+
     return verifyManagementAddress();
 }
 
@@ -1101,6 +1112,12 @@ bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
  */
 bool instDialog::getBatchInstOptions(Firewall *first_fw)
 {
+    if (fwbdebug)
+        qDebug() << "instDialog::getBatchInstOptions() begin"
+                 << "cnf.user=" << cnf.user
+                 << "cnf.maddr=" << cnf.maddr
+                 << "first_fw=" << first_fw;
+
     cnf.fwobj = first_fw;   // NULL;
 
     readInstallerOptionsFromSettings();
@@ -1124,7 +1141,9 @@ bool instDialog::getBatchInstOptions(Firewall *first_fw)
     readInstallerOptionsFromDialog(NULL, batch_inst_opt_dlg);
 
     if (fwbdebug)
-        qDebug() << "instDialog::getBatchInstOptions():  cnf.user=" << cnf.user;
+        qDebug() << "instDialog::getBatchInstOptions() end"
+                 << "cnf.user=" << cnf.user
+                 << "cnf.maddr=" << cnf.maddr;
 
     return verifyManagementAddress();
 }
@@ -1149,6 +1168,11 @@ void instDialog::readInstallerOptionsFromSettings()
 
 void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 {
+    if (fwbdebug)
+        qDebug() << "instDialog::readInstallerOptionsFromFirewallObject"
+                 << "fw=" << fw
+                 << QString( (fw) ? QString::fromUtf8(fw->getName().c_str()) : "");
+
     FWOptions *fwopt = NULL;
     if (fw)
     {
@@ -1170,6 +1194,12 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
             standard_management_addr = "";
 
         QString aaddr = fwopt->getStr("altAddress").c_str();
+
+        if (fwbdebug)
+            qDebug() << "    standard_management_addr=" 
+                     << standard_management_addr
+                     << "aaddr=" << aaddr;
+
         if (!aaddr.isEmpty()) cnf.maddr = aaddr;
         else cnf.maddr = standard_management_addr;
 
@@ -1211,6 +1241,8 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         if (sessions.contains(aaddr))
         {
+            if (fwbdebug)
+                qDebug() << "Found matching putty session" << aaddr;
             cnf.maddr = standard_management_addr;
             cnf.putty_session = aaddr;
         }
@@ -1276,7 +1308,9 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
                                                 instOptionsDialog *dlg)
 {
-    if (fwbdebug) qDebug("instDialog::readInstallerOptionsFromDialog");
+    if (fwbdebug)
+        qDebug() << "instDialog::readInstallerOptionsFromDialog"
+                 << "fw=" << fw;
 
     QString adm_user;
 
@@ -1309,7 +1343,7 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
  */
         cnf.maddr = aaddr;
         if (fwbdebug)
-            qDebug("alternative addr %s", aaddr.toAscii().constData());
+            qDebug() << "alternative addr:" << aaddr;
     }
 
     // user name set in the dialog overrides that set in the fw object
@@ -1336,7 +1370,7 @@ bool instDialog::verifyManagementAddress()
 /* check for a common error when none or multiple interfaces are marked as
  * 'management'
  */
-    if (cnf.maddr.isEmpty() && cnf.fwobj)
+    if (cnf.maddr.isEmpty() && cnf.putty_session.isEmpty() && cnf.fwobj)
     {
         int nmi = 0;
         list<FWObject*> ll = cnf.fwobj->getByTypeDeep(Interface::TYPENAME);
