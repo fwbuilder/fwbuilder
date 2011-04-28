@@ -1315,7 +1315,7 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
                             list.append(this->index(rule, column));
 //                            qDebug() << "Branch column:" << column;
                         }
-                    } else if (pr->getAction() == PolicyRule::Tag)
+                    } else if (pr->getTagging())
                     {
                         if (pr->getTagObject() == object)
                         {

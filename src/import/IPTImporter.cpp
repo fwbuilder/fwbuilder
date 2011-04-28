@@ -726,7 +726,11 @@ void IPTImporter::pushPolicyRule()
 
     if (target=="QUEUE")    action = PolicyRule::Pipe;
 
-    if (target=="CLASSIFY") action = PolicyRule::Classify;
+    if (target=="CLASSIFY")   // #2367
+    {
+        action = PolicyRule::Continue;
+        rule->setClassification(true);
+    }
 
     if (target=="LOG")
     {
@@ -782,6 +786,7 @@ void IPTImporter::pushPolicyRule()
     {
         action = PolicyRule::Continue;
         rule->setLogging(true);
+
         fwopt->setBool("use_ULOG", true);
         QString log_prefix = action_params["log_prefix"].c_str();
         log_prefix.replace("\"", "");
@@ -790,7 +795,9 @@ void IPTImporter::pushPolicyRule()
 
     if (target=="MARK")
     {
-        action = PolicyRule::Tag;
+        action = PolicyRule::Continue;
+        rule->setTagging(true);
+
         last_mark_rule = rule;
         
         ObjectSignature sig(error_tracker);
@@ -803,7 +810,8 @@ void IPTImporter::pushPolicyRule()
 
     if (target=="ROUTE")
     {
-        action = PolicyRule::Route;
+        action = PolicyRule::Continue;
+        rule->setRouting(true);
 
         if (!action_params["route_iif"].empty())
             newInterface(action_params["route_iif"]);

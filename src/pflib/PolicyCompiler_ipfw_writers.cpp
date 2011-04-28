@@ -224,24 +224,6 @@ void PolicyCompiler_ipfw::PrintRule::_printAction(PolicyRule *rule)
         }
 	break;
 
-    case PolicyRule::Classify:
-    {
-        int portNum = ruleopt->getInt("ipfw_pipe_queue_num");
-        switch (ruleopt->getInt("ipfw_classify_method"))
-        {
-        case DUMMYNETPIPE:
-            compiler->output << "pipe "   << portNum << " ";
-            break;
-        case DUMMYNETQUEUE:
-            compiler->output << "queue "  << portNum << " ";
-            break;
-        default:
-            compiler->output << "divert " << portNum << " ";
-            break;
-        }
-    }
-    break;
-
     case PolicyRule::Pipe:
         compiler->output << "divert " << ruleopt->getInt("ipfw_pipe_port_num") << " ";
         break;
@@ -257,6 +239,23 @@ void PolicyCompiler_ipfw::PrintRule::_printAction(PolicyRule *rule)
                 string("Unknown action ") + rule->getActionAsString());
 
 //   compiler->output << rule->getActionAsString() << " ";
+    }
+
+    if (rule->getClassification())
+    {
+        int portNum = ruleopt->getInt("ipfw_pipe_queue_num");
+        switch (ruleopt->getInt("ipfw_classify_method"))
+        {
+        case DUMMYNETPIPE:
+            compiler->output << "pipe "   << portNum << " ";
+            break;
+        case DUMMYNETQUEUE:
+            compiler->output << "queue "  << portNum << " ";
+            break;
+        default:
+            compiler->output << "divert " << portNum << " ";
+            break;
+        }
     }
 }
 

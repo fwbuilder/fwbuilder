@@ -70,7 +70,7 @@
                 <dialog_page>PipeArgsIPFW</dialog_page>
             </Pipe>
             <Classify>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Classify</description>
                 <dialog_page>ClassifyArgsIPFW</dialog_page>
             </Classify>

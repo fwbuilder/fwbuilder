@@ -196,19 +196,7 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
     PolicyRule *rule = PolicyRule::cast(p);
     if (rule)
     {
-        switch (rule->getAction())
-        {
-        case PolicyRule::Tag:
-        {
-            FWObject *tagobj = rule->getTagObject();
-            if (o==tagobj)
-            {
-                resset.insert(p);
-                res = true;
-            }
-            break;
-        }
-        case PolicyRule::Branch:
+        if (rule->getAction() == PolicyRule::Branch)
         {
             FWObject *ruleset = rule->getBranch();
             if (o==ruleset)
@@ -216,9 +204,16 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
                 resset.insert(p);
                 res = true;
             }
-            break;
         }
-        default: ;
+
+        if (rule->getTagging())
+        {
+            FWObject *tagobj = rule->getTagObject();
+            if (o==tagobj)
+            {
+                resset.insert(p);
+                res = true;
+            }
         }
     }
 

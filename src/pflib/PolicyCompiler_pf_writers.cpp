@@ -76,21 +76,10 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 
     switch (rule->getAction())
     {
-    case PolicyRule::Tag:
-    {
-        if (XMLTools::version_compare(version, "4.6")>=0)
-        {
-            compiler->output << "match ";
-        }else
-        {
-            compiler->output << "pass ";
-        }
-        break;
-    }
+ // case PolicyRule::Classify:  #2367
+ // case PolicyRule::Route:     #2367
     case PolicyRule::Accept:  
-    case PolicyRule::Classify:
     case PolicyRule::Accounting:
-    case PolicyRule::Route:
         compiler->output << "pass ";
         break;
 
@@ -161,13 +150,27 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
                 rule, 
                 string("Unknown action ") + rule->getActionAsString());
     }
+
+    // #2367
+    //
+    // if (rule->getTagging())
+    // {
+    //     if (XMLTools::version_compare(version, "4.6")>=0)
+    //     {
+    //         compiler->output << "match ";
+    //     }else
+    //     {
+    //         compiler->output << "pass ";
+    //     }
+    //     break;
+    // }
 }
 
 void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (rule->getAction() == PolicyRule::Route)
+    if (rule->getRouting())
     {
 	string prefix = "pf";
 	if (compiler->myPlatformName()=="ipf") prefix="ipf";
@@ -336,7 +339,7 @@ void PolicyCompiler_pf::PrintRule::_printQueue(PolicyRule *rule)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
         compiler->output << "queue " << ruleopt->getStr("classify_str") << " ";
 }
 
@@ -379,9 +382,8 @@ void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
 
 void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 {
-    if (rule->getAction() == PolicyRule::Tag)
+    if (rule->getTagging())
         compiler->output << "tag " << rule->getTagValue() << " ";
-//        compiler->output << "tag " << ruleopt->getStr("tagvalue") << " ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printDirection(PolicyRule *rule)

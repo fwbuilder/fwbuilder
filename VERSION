@@ -7,13 +7,13 @@ FWB_MICRO_VERSION=1
 # build number is like "nano" version number. I am incrementing build
 # number during development cycle
 #
-BUILD_NUM="3532"
+BUILD_NUM="ma_1"
 
 VERSION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION.$BUILD_NUM"
 
 GENERATION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION"
 
 # Data format version
-FWBUILDER_XML_VERSION=18
+FWBUILDER_XML_VERSION=19
 
 

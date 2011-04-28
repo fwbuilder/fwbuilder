@@ -426,8 +426,7 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getDirection()==PolicyRule::Both &&
-        rule->getAction()==PolicyRule::Route)
+    if (rule->getDirection()==PolicyRule::Both && rule->getRouting())
     {
 	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
@@ -509,12 +508,6 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
 
     FWOptions *ropt = rule->getOptionsObject();
 
-    // as of 4.2.0 build 3477 we provide checkboxes to make Tag and
-    // Classify actions (PF) terminating or non-terminating on
-    // per-rule basis. Old behavior: Tag was non-terminating and
-    // Classify was terminating. Set options accordingly if they are
-    // not set.
-
     switch (rule->getAction())
     {
     case PolicyRule::Scrub:
@@ -522,27 +515,34 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
     case PolicyRule::Branch:
         break;
 
-    case PolicyRule::Tag:
+    default:
+        rule->setBool("quick", true);
+        break;
+    }
+
+    // as of 4.2.0 build 3477 we provide checkboxes to make Tag and
+    // Classify actions (PF) terminating or non-terminating on
+    // per-rule basis. Old behavior: Tag was non-terminating and
+    // Classify was terminating. Set options accordingly if they are
+    // not set.
+    // 
+    // TODO #2367: now instead of checkboxes, user should use actions Accept
+    // or Continue
+
+    if (rule->getTagging())
     {
         string pf_tag_terminating = ropt->getStr("pf_tag_terminating");
         if (pf_tag_terminating.empty())
             ropt->setBool("pf_tag_terminating", false);
         if (ropt->getBool("pf_tag_terminating")) rule->setBool("quick", true);
-        break;
     }
 
-    case PolicyRule::Classify:
+    if (rule->getClassification())
     {
         string pf_classify_terminating = ropt->getStr("pf_classify_terminating");
         if (pf_classify_terminating.empty())
             ropt->setBool("pf_classify_terminating", true);
         if (ropt->getBool("pf_classify_terminating")) rule->setBool("quick", true);
-        break;
-    }
-
-    default:
-        rule->setBool("quick", true);
-        break;
     }
 
     return true;

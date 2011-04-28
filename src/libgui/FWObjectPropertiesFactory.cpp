@@ -945,6 +945,10 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
             case PolicyRule::Reject:
                 par = ropt->getStr("action_on_reject").c_str();
                 break;
+
+/*
+ * TODO #2367   This should move to getPolicyRuleOptions()
+ * 
             case PolicyRule::Tag:
             {
                 FWObject *tag_object = PolicyRule::cast(rule)->getTagObject();
@@ -954,6 +958,8 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                     par = QString::fromUtf8(PolicyRule::cast(rule)->getTagValue().c_str());
                 break;
             }
+*/
+
             case PolicyRule::Accounting :
                 par = ropt->getStr("rule_name_accounting").c_str();
                 break;
@@ -968,6 +974,10 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                 // ropt->getStr("branch_name").c_str();
                 break;
             }
+
+/*
+ * TODO #2367   This should move to getPolicyRuleOptions()
+ * 
             case PolicyRule::Classify:
                 if (platform=="ipfw")
                 {
@@ -986,6 +996,8 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                         par = ropt->getStr("classify_str").c_str();
                 }
                 break;
+*/
+
             case PolicyRule::Pipe :
                 if (platform=="ipfw")
                 {
@@ -993,6 +1005,10 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                         ropt->getStr("ipfw_pipe_port_num").c_str();
                 }
                 break;
+
+/*
+ * TODO #2367   This should move to getPolicyRuleOptions()
+ * 
             case PolicyRule::Route :
                 if (platform=="iptables")
                 {
@@ -1030,7 +1046,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                     if (!a.empty()) par = par + " "+ a.c_str();
                 }
                 break;
-
+*/
 
             default : {}
             }

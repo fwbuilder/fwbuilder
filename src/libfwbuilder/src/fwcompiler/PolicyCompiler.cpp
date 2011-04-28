@@ -170,6 +170,14 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
     if (dstrel2->getNeg()) return false;
     if (srvrel2->getNeg()) return false;
 
+    /*
+     * TODO: actually, route rule may shadow other rules if it
+     * translates into "final" target, that is stops processing. This
+     * may or may not be so, depending on the platform and combination
+     * of rule options.
+     */
+    if (r1.getRouting() || r2.getRouting()) return false;
+
     PolicyRule::Action r1_action = r1.getAction();
     PolicyRule::Action r2_action = r2.getAction();
 
@@ -185,15 +193,6 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
      */
     if (r1_action==PolicyRule::Return  ||
         r2_action==PolicyRule::Return ) return false;
-
-    /*
-     * TODO: actually, route rule may shadow other rules if it
-     * translates into "final" target, that is stops processing. This
-     * may or may not be so, depending on the platform and combination
-     * of rule options.
-     */
-    if (r1_action==PolicyRule::Route  ||
-        r2_action==PolicyRule::Route ) return false;
 
     /*
      * the problem with branching rules is that it is combination of

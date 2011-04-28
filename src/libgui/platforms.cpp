@@ -310,8 +310,9 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 
         if (rule!=NULL)
         {
-            PolicyRule::Action act=rule->getAction();
-            if (act==PolicyRule::Accept || act==PolicyRule::Tag || act==PolicyRule::Route)
+            PolicyRule::Action act = rule->getAction();
+
+            if (act==PolicyRule::Accept)
             {
                 // by default, these actions are not stateless
                 res = res && (!opt->getBool("stateless"));
@@ -320,6 +321,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                 // other actions are stateless by default
                 res = res && opt->getBool("stateless");
             }
+
         }
 
         // all rules are stateless for IOS ACL
@@ -762,9 +764,7 @@ QString getActionNameForPlatform(Firewall *fw, const std::string &action)
 bool getStatelessFlagForAction(PolicyRule *rule)
 {
     PolicyRule::Action act = rule->getAction();
-    if (act==PolicyRule::Accept ||
-        act==PolicyRule::Tag    ||
-        act==PolicyRule::Route) return false;
+    if (act==PolicyRule::Accept) return false;
     else
         return true;
 }

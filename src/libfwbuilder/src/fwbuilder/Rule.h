@@ -6,9 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -116,7 +113,7 @@ class Rule : public Group
 
     virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
     
-    virtual FWOptions* getOptionsObject();
+    virtual FWOptions* getOptionsObject() const;
 
     // find branch ruleset for policy rules with action Branch
     // We may support some kind of  branching in NAT in the future, so
@@ -176,11 +173,8 @@ class PolicyRule : public Rule
                    Accounting,
                    Modify,
                    Pipe,
-                   Tag,
-                   Classify,
                    Custom,
-                   Branch,
-		   Route} Action;
+                   Branch} Action;
 
     typedef enum { Undefined, 
                    Inbound, 
@@ -221,7 +215,7 @@ public:
 
     DECLARE_DISPATCH_METHODS(PolicyRule);
     
-    virtual FWOptions* getOptionsObject();
+    virtual FWOptions* getOptionsObject() const;
 
     virtual RuleSet* getBranch();
     virtual void setBranch(RuleSet *ruleset);
@@ -265,14 +259,27 @@ public:
     std::string getDirectionAsString() const;
     void   setDirection(const std::string& dir);
 
-    bool   getLogging() const;
-    void   setLogging(bool flag);
+    bool getLogging() const;
+    void setLogging(bool flag);
 
-    // find TagService object for rules with action Tag
+    // return true if rule does tagging
+    bool getTagging() const;
+    void setTagging(bool f);
+
+    // return true if rule does routing
+    bool getRouting() const;
+    void setRouting(bool f);
+    
+    // return true if rule does classification
+    bool getClassification() const;
+    void setClassification(bool f);
+    
+    // find TagService object for rules that do tagging
     FWObject* getTagObject();
     std::string getTagValue();
     void setTagObject(FWObject *tag_object);
 };
+
 
 class NATRule : public Rule 
 {
@@ -363,7 +370,7 @@ public:
 
     DECLARE_DISPATCH_METHODS(NATRule);
     
-    virtual FWOptions* getOptionsObject();
+    virtual FWOptions* getOptionsObject() const;
 
     virtual RuleSet* getBranch();
     virtual void setBranch(RuleSet *ruleset);
@@ -439,7 +446,7 @@ class RoutingRule : public Rule
 
     DECLARE_DISPATCH_METHODS(RoutingRule);
     
-    virtual FWOptions* getOptionsObject();
+    virtual FWOptions* getOptionsObject() const;
     virtual RuleSet* getBranch();
     virtual bool isEmpty() const;
     

@@ -384,39 +384,27 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
         return ostr.str();
     }
 
-    // there is no ULOG for ip6tables yet
-    if (!ipt_comp->ipv6 && compiler->getCachedFwOpt()->getBool("use_ULOG") &&
-         target=="LOG") target="ULOG";
-
     if (target==".CONTINUE") // not a real target !
         return ostr.str();
 
-    ostr << " -j " << target << " ";
-
-    if (target=="REJECT")
-      ostr << _printActionOnReject(rule);
-
-    if (target=="LOG" || target=="ULOG")    
-        ostr << _printLogParameters(rule);
-    
-    if (target=="MARK")
+    if (rule->getTagging())
     {
-//        ostr << " --set-mark " << ruleopt->getStr("tagvalue");
+        ostr << " -j MARK";
         ostr << " --set-mark " << rule->getTagValue();
+        return ostr.str();
     }
 
-    if (target=="CONNMARK")
+    if (rule->getClassification())
     {
-        ostr << ruleopt->getStr("CONNMARK_arg");
-    }
-
-    if (target=="CLASSIFY")
-    {
+        ostr << " -j CLASSIFY";
         ostr << " --set-class " << ruleopt->getStr("classify_str");
+        return ostr.str();
     }
 
-    if (target=="ROUTE")
+    if (rule->getRouting())
     {
+        ostr << " -j ROUTE";
+
         string a;
         a = ruleopt->getStr("ipt_iif");
         if (!a.empty()) ostr << " --iif " << a;
@@ -432,6 +420,26 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 
         c = ruleopt->getBool("ipt_tee");
         if (c) ostr << " --tee";
+
+        return ostr.str();
+    }
+
+
+    // there is no ULOG for ip6tables yet
+    if (!ipt_comp->ipv6 && compiler->getCachedFwOpt()->getBool("use_ULOG") &&
+         target=="LOG") target="ULOG";
+
+    ostr << " -j " << target << " ";
+
+    if (target=="REJECT")
+      ostr << _printActionOnReject(rule);
+
+    if (target=="LOG" || target=="ULOG")    
+        ostr << _printLogParameters(rule);
+    
+    if (target=="CONNMARK")
+    {
+        ostr << ruleopt->getStr("CONNMARK_arg");
     }
 
     return ostr.str();

@@ -600,6 +600,10 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                                          action_name,
                                          this, SLOT( changeActionToPipe() ));
                     }
+
+/*
+ * #2367
+
                     if (Resources::isTargetActionSupported(platform,"Tag"))
                     {
                         action_name = getActionNameForPlatform(
@@ -616,6 +620,17 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                                          action_name,
                                          this, SLOT( changeActionToClassify() ));
                     }
+                    if (Resources::isTargetActionSupported(platform,"Route"))
+                    {
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Route));
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Route/icon")),
+                                         action_name,
+                                         this, SLOT( changeActionToRoute() ));
+                    }
+*/
+
+
                     if (Resources::isTargetActionSupported(platform,"Custom"))
                     {
                         action_name = getActionNameForPlatform(
@@ -631,14 +646,6 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Branch/icon")),
                                          action_name,
                                          this, SLOT( changeActionToBranch() ));
-                    }
-                    if (Resources::isTargetActionSupported(platform,"Route"))
-                    {
-                        action_name = getActionNameForPlatform(
-                            f, PolicyRule::getActionAsString(PolicyRule::Route));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Route/icon")),
-                                         action_name,
-                                         this, SLOT( changeActionToRoute() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Continue"))
                     {
@@ -1911,24 +1918,9 @@ void RuleSetView::changeActionToPipe()
     changeAction( PolicyRule::Pipe );
 }
 
-void RuleSetView::changeActionToTag()
-{
-    changeAction( PolicyRule::Tag );
-}
-
-void RuleSetView::changeActionToClassify()
-{
-    changeAction( PolicyRule::Classify );
-}
-
 void RuleSetView::changeActionToCustom()
 {
     changeAction( PolicyRule::Custom );
-}
-
-void RuleSetView::changeActionToRoute()
-{
-    changeAction( PolicyRule::Route );
 }
 
 void RuleSetView::changeActionToContinue()

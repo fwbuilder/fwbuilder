@@ -176,11 +176,8 @@ public slots:
     void changeActionToReject();
     void changeActionToAccounting();
     void changeActionToPipe();
-    void changeActionToTag();
-    void changeActionToClassify();
     void changeActionToCustom();
     void changeActionToBranch();
-    void changeActionToRoute();
     void changeActionToContinue();
     void changeActionToTranslate();
     void changeActionToNATBranch();
