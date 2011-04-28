@@ -462,9 +462,8 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
 
   if (!iface->isDyn())
   {
-  char errstr[256];
-  sprintf(errstr,
-  _("Wildcard interface '%s' must be dynamic."),
+  QString errstr;
+  errstr.sprintf(_("Wildcard interface '%s' must be dynamic."),
   iface->getName().c_str() );
   throw FWException(errstr);
   }

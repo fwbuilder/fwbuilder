@@ -84,9 +84,8 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
     int tip_no = 1;
     while (true)
     {
-        char buf[64];
-        sprintf(buf, "tip%02d.html", tip_no);
-        QString tip_file = QString(buf);
+        QString tip_file;
+        tip_file.sprintf("tip%02d.html", tip_no);
         QString contents;
         if (fwbdebug)
             qDebug("Trying tip file %s", tip_file.toAscii().constData());
