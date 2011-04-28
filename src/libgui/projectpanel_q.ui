@@ -26,10 +26,13 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
      <widget class="QFrame" name="treeDockWidgetParentFrame">
       <property name="minimumSize">
        <size>
-        <width>20</width>
+        <width>150</width>
         <height>0</height>
        </size>
       </property>
@@ -116,14 +119,6 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <item row="1" column="0">
-        <widget class="QStackedWidget" name="ruleSets">
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <widget class="WorkflowIcons" name="icons"/>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QWidget" name="toolbar" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -306,6 +301,14 @@
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QStackedWidget" name="ruleSets">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="WorkflowIcons" name="icons"/>
         </widget>
        </item>
       </layout>
