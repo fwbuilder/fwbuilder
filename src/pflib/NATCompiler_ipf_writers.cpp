@@ -41,19 +41,6 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/DNSName.h"
 
-
-#include <iostream>
-#if __GNUC__ > 3 || \
-    (__GNUC__ == 3 && (__GNUC_MINOR__ > 2 || (__GNUC_MINOR__ == 2 ) ) ) || \
-    _MSC_VER
-#  include <streambuf>
-#else
-#  include <streambuf.h>
-#endif
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-
 #include <assert.h>
 
 using namespace libfwbuilder;
