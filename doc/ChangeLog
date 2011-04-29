@@ -1,3 +1,9 @@
+2011-04-29  vadim  <vadim@netcitadel.com>
+
+	* snmpNetworkDiscoveryWizard/ND_ProgressPage.h: fixes #2370, #2371
+	"broken signals in network discovery wizard". Network discovery
+	wizard was not correctly initializased and did not work.
+
 2011-04-25  Vadim Kurland  <vadim@netcitadel.com>
 
 	* instDialog_ui_ops.cpp (readInstallerOptionsFromDialog):
