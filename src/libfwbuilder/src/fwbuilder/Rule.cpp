@@ -483,6 +483,7 @@ void PolicyRule::setTagObject(FWObject *tag_object)
     string tag_id =
         (tag_object) ? FWObjectDatabase::getStringId(tag_object->getId()) : "";
     getOptionsObject()->setStr("tagobject_id", tag_id);
+    setTagging(tag_object && ! tag_id.empty());
 }
 
 FWObject* PolicyRule::getTagObject()

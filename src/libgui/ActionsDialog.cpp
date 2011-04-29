@@ -74,38 +74,16 @@ ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
     //m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
     //m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->iptBranchDropArea->setHelperText("Drop rule set object here");
-    connect (m_dialog->iptBranchDropArea,
-             SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (m_dialog->iptBranchDropArea,
-             SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->pfBranchDropArea->addAcceptedTypes("Policy");
     //m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
     //m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->pfBranchDropArea->setHelperText("Drop rule set object here");
-    connect (m_dialog->pfBranchDropArea,
-             SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (m_dialog->pfBranchDropArea,
-             SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->natBranchDropArea->addAcceptedTypes("NAT");
     m_dialog->natBranchDropArea->setHelperText("Drop NAT rule set object here");
-    connect (m_dialog->natBranchDropArea,
-             SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (m_dialog->natBranchDropArea,
-             SIGNAL(objectInserted()),this,SLOT(changed()));
 
-    m_dialog->pfTagDropArea->addAcceptedTypes("TagService");
-    connect (m_dialog->pfTagDropArea,
-             SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (m_dialog->pfTagDropArea,
-             SIGNAL(objectInserted()),this,SLOT(changed()));
-
-    m_dialog->iptTagDropArea->addAcceptedTypes("TagService");
-    connect (m_dialog->iptTagDropArea,
-             SIGNAL(objectDeleted()),this,SLOT(changed()));
-    connect (m_dialog->iptTagDropArea,
-             SIGNAL(objectInserted()),this,SLOT(changed()));
+    connectSignalsOfAllWidgetsToSlotChange();
 };
 
 ActionsDialog::~ActionsDialog() 
@@ -183,21 +161,6 @@ void ActionsDialog::applyChanges()
     data.saveAll(new_rule_options);
 
     Rule *rule = Rule::cast(new_state);
-    PolicyRule *policy_rule = PolicyRule::cast(new_state);
-
-    if (editor=="TagIptables")
-    {
-        FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
-        // if tag_object==NULL, setTagObject clears setting in the rule
-        policy_rule->setTagObject(tag_object);
-    }
-
-    if (editor=="TagPF")
-    {
-        FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
-        // if tag_object==NULL, setTagObject clears setting in the rule
-        policy_rule->setTagObject(tag_object);
-    }
 
     if (editor=="BranchChain")
     {
@@ -220,38 +183,20 @@ void ActionsDialog::applyChanges()
         rule->setBranch(ruleset);
     }
 
-    if (m_dialog->useDummyNetPipe->isChecked())
-        new_rule_options->setInt("ipfw_classify_method", DUMMYNETPIPE);
-    else
-        new_rule_options->setInt("ipfw_classify_method", DUMMYNETQUEUE);
-
     if (!cmd->getOldState()->cmp(new_state, true))
         m_project->undoStack->push(cmd.release());
 }
 
 void ActionsDialog::tagvalueChanged(int)
 {
-    QString buf;
+//    QString buf;
 //!!!    buf.setNum(m_dialog->tagvalue_int->value());
 //!!!    m_dialog->tagvalue_str->setText(buf);
-}
-
-void ActionsDialog::iptRouteContinueToggled()
-{
-    if (m_dialog->ipt_continue->isChecked())
-    {
-        m_dialog->ipt_iif->setCurrentIndex(0);
-        m_dialog->ipt_tee->setChecked(false);
-    }
-    m_dialog->ipt_iif->setEnabled( ! m_dialog->ipt_continue->isChecked() );
-    m_dialog->ipt_tee->setEnabled( ! m_dialog->ipt_continue->isChecked() );
 }
 
 void ActionsDialog::setRule(Rule *r)
 {
     rule = r;
-
-    PolicyRule *policy_rule = PolicyRule::cast(r);
 
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
@@ -266,11 +211,6 @@ void ActionsDialog::setRule(Rule *r)
     if (firewall)
     {
         // firewall can be NULL if rule set is in Deleted Objects library
-        fillInterfaces(m_dialog->ipt_iif);
-        fillInterfaces(m_dialog->ipt_oif);
-        fillInterfaces(m_dialog->ipf_route_opt_if);
-        fillInterfaces(m_dialog->pf_route_opt_if);
-
         platform = firewall->getStr("platform");
         help_name = string(platform + "_" + act).c_str();
         editor = DialogFactory::getActionDialogPageName(firewall, r);
@@ -287,102 +227,13 @@ void ActionsDialog::setRule(Rule *r)
 
     branchNameInput = NULL;
 
-    if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)
-    {
-        m_dialog->useDummyNetPipe->setChecked(1);
-    } else {
-        m_dialog->useDummyNetQueue->setChecked(1);
-    }
-
-    // as of 4.2.0 build 3477 we provide checkboxes to make Tag and
-    // Classify actions (PF) terminating or non-terminating on
-    // per-rule basis. Old behavior: Tag was non-terminating and
-    // Classify was terminating. Set options accordingly if they are
-    // not set.
-    if (platform=="pf")
-    {
-        string pf_tag_terminating = ropt->getStr("pf_tag_terminating");
-        if (pf_tag_terminating.empty())
-            ropt->setBool("pf_tag_terminating", false);
-        string pf_classify_terminating = ropt->getStr("pf_classify_terminating");
-        if (pf_classify_terminating.empty())
-            ropt->setBool("pf_classify_terminating", true);
-    }
-
-    if (platform=="iptables")
-    {
-        m_dialog->classify_terminating->show();
-        m_dialog->tag_terminating->show();
-
-        // Keep both variants of this text separate to simplify localization
-        QString emu_state;
-        if (firewall->getOptionsObject()->getBool("classify_mark_terminating"))
-        {
-            emu_state = 
-                tr("Emulation of terminating behavior for MARK and CLASSIFY "
-                   "targets is currently ON, rule will be terminating");
-        } else
-        {
-            emu_state = 
-                tr("Emulation of terminating behavior for MARK and CLASSIFY "
-                   "targets is currently OFF, rule will not be terminating");
-        }
-        m_dialog->classify_terminating->setText(emu_state);
-        m_dialog->tag_terminating->setText(emu_state);
-
-    } else
-    {
-        m_dialog->classify_terminating->hide();
-        m_dialog->tag_terminating->hide();
-    }
-
     data.clear();
 
-    data.registerOption(m_dialog->ipt_mark_connections, ropt,
-                        "ipt_mark_connections");
-
-    data.registerOption(m_dialog->pf_tag_terminating, ropt, "pf_tag_terminating");
-
-//    data.registerOption(ipt_mark_prerouting, ropt, "ipt_mark_prerouting");
     data.registerOption(m_dialog->accountingvalue_str, ropt,
                         "rule_name_accounting");
-    data.registerOption(m_dialog->usePortNum, ropt, "ipfw_pipe_queue_num");
     data.registerOption(m_dialog->divertPortNum, ropt, "ipfw_pipe_port_num");
-    data.registerOption(m_dialog->classify_str, ropt, "classify_str");
     data.registerOption(m_dialog->custom_str, ropt, "custom_str");
 
-    data.registerOption(m_dialog->pf_classify_str, ropt, "pf_classify_str");
-    data.registerOption(m_dialog->pf_classify_terminating, ropt,
-                        "pf_classify_terminating");
-
-    // ROUTE action:
-
-    // build a map for combobox so visible combobox items can be localized
-    QStringList route_options = getRouteOptions_pf_ipf(platform.c_str() );
-    QStringList route_load_options = getRouteLoadOptions_pf(platform.c_str() );
-
-    // iptables
-    data.registerOption(m_dialog->ipt_iif, ropt, "ipt_iif" );
-    data.registerOption(m_dialog->ipt_oif, ropt, "ipt_oif" );
-    data.registerOption(m_dialog->ipt_gw, ropt, "ipt_gw" );
-    data.registerOption(m_dialog->ipt_continue, ropt, "ipt_continue" );
-    data.registerOption(m_dialog->ipt_tee, ropt, "ipt_tee");
-
-    // ipfilter
-    data.registerOption(m_dialog->ipf_route_option, ropt, "ipf_route_option",
-                          route_options);
-    data.registerOption(m_dialog->ipf_route_opt_if, ropt, "ipf_route_opt_if");
-    data.registerOption(m_dialog->ipf_route_opt_addr, ropt,
-                        "ipf_route_opt_addr");
-
-    // pf
-    data.registerOption(m_dialog->pf_fastroute, ropt, "pf_fastroute"     );
-    data.registerOption(m_dialog->pf_route_load_option, ropt,
-                        "pf_route_load_option", route_load_options );
-    data.registerOption(m_dialog->pf_route_option, ropt, "pf_route_option",
-                          route_options);
-    data.registerOption(m_dialog->pf_route_opt_if, ropt, "pf_route_opt_if"  );
-    data.registerOption(m_dialog->pf_route_opt_addr, ropt, "pf_route_opt_addr");
 
     // REJECT action:
     data.registerOption(m_dialog->rejectvalue, ropt, "action_on_reject");
@@ -392,39 +243,13 @@ void ActionsDialog::setRule(Rule *r)
     {
         w=m_dialog->RejectPage;
     }
-    else if (editor=="TagIptables")
-    {
-        w = m_dialog->TagIptables;
-        FWObject *o = policy_rule->getTagObject();
-        m_dialog->iptTagDropArea->setObject(o);
-        m_dialog->iptTagDropArea->update();
-    }
-    else if (editor=="TagPF")
-    {
-        w = m_dialog->TagPF;
-        FWObject *o = policy_rule->getTagObject();
-        m_dialog->pfTagDropArea->setObject(o);
-        m_dialog->pfTagDropArea->update();
-    }
     else if (editor=="AccountingStr")
     {
         w = m_dialog->AccountingStrPage;
     }
-    else if (editor=="ClassifyArgsIPFW")
-    {
-        w = m_dialog->ClassifyArgsIPFW;
-    }
     else if (editor=="PipeArgsIPFW")
     {
         w = m_dialog->PipeArgsIPFW;
-    }
-    else if (editor=="ClassifyIptables")
-    {
-        w = m_dialog->ClassifyIptables;
-    }
-    else if (editor=="ClassifyPF")
-    {
-        w = m_dialog->ClassifyPF;
     }
     else if (editor=="CustomStr")
     {
@@ -451,41 +276,10 @@ void ActionsDialog::setRule(Rule *r)
         RuleSet *ruleset = r->getBranch();
         m_dialog->natBranchDropArea->setObject(ruleset);
     }
-    else if (editor=="RouteIPT")
-    {
-        w=m_dialog->RouteIPTPage;
-    }
-    else if (editor=="RouteIPF")
-    {
-        w=m_dialog->RouteIPFPage;
-    }
-    else if (editor=="RoutePF")
-    {
-        w=m_dialog->RoutePFPage;
-    }
 
     m_dialog->widgetStack->setCurrentWidget(w);
 
-    //rejectvalue->setCurrentText(ropt->getStr("action_on_reject") );
     data.loadAll();
 
-    iptRouteContinueToggled();
 }
-
-void ActionsDialog::fillInterfaces(QComboBox* cb)
-{
-    cb->clear();
-    cb->addItem("");
-
-    list<FWObject*> interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
-    for (list<FWObject*>::iterator i=interfaces.begin(); i!=interfaces.end(); ++i)
-    {
-        Interface *iface = Interface::cast(*i);
-        assert(iface);
-
-        cb->addItem(iface->getName().c_str());
-    }
-
-}
-
 

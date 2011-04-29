@@ -45,15 +45,19 @@ class RuleOptionsDialog : public BaseObjectDialog
 
     DialogData              data;
     QString                 platform;
+   
     RuleSetView            *rsv;
     Ui::RuleOptionsDialog_q*m_dialog;
+    libfwbuilder::FWObject *firewall;
     
     QString help_name;
 
 public:
     RuleOptionsDialog(QWidget *parent);
     ~RuleOptionsDialog();
-    
+
+    void fillInterfaces(QComboBox *); // #2367
+
 public slots:
     virtual void changed();
     virtual void applyChanges();
@@ -63,6 +67,7 @@ public slots:
     virtual void getHelpName(QString*);
     virtual void connlimitAboveLabelChange();
     virtual void limitLabelChange();
+    virtual void iptRouteContinueToggled();  // #2367
 };
 
 #endif // __RULEOPTIONSDIALOG_H

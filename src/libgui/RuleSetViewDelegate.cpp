@@ -257,6 +257,9 @@ void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionView
         {
             if (icons[i].contains("Log")) text.push_back(tr("log"));
             if (icons[i].contains("Options")) text.push_back(tr("(options)"));
+            if (icons[i].contains("Tag")) text.push_back(icons[i]);
+            if (icons[i].contains("Class")) text.push_back(icons[i]);
+            if (icons[i].contains("Routing")) text.push_back(icons[i]);
         }
         drawIconAndText(painter, ctx.drawRect, "", text.join(", "), false);
     }

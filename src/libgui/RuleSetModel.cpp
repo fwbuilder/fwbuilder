@@ -24,6 +24,7 @@
 */
 
 #include "../../config.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 
@@ -1433,8 +1434,52 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
 {
     QStringList res;
     PolicyRule  *policyRule  = PolicyRule::cast( r );
+    FWOptions *ropt = policyRule->getOptionsObject();
+
     if (policyRule->getLogging()) res << "Log";
-    if (!isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
+
+    if ( ! isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
+
+    FWObject *firewall = r;
+    // use Firewall::cast to match both Firewall and Cluster
+    while (!Firewall::cast(firewall)) firewall = firewall->getParent();
+    string platform = firewall->getStr("platform");
+
+    if (policyRule->getTagging())
+    {
+        res << tr("Tag %1").arg(
+            QString::fromUtf8(
+                PolicyRule::cast(policyRule)->getTagValue().c_str()));
+    }
+
+    if (policyRule->getClassification())
+    {
+        QString par;
+
+        if (platform=="iptables")
+            par = ropt->getStr("classify_str").c_str();
+
+        if (platform=="pf")
+            par = ropt->getStr("pf_classify_str").c_str();
+
+        if (platform=="ipfw")
+        {
+            if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)
+            {
+                par = "pipe";
+            } else {
+                par = "queue";
+            }
+            par = par + " " + ropt->getStr("ipfw_pipe_queue_num").c_str();
+        }
+
+        if (!par.isEmpty()) res << tr("Classify %1").arg(par);
+    }
+
+    if (policyRule->getRouting())
+    {
+        res << "Route";
+    }
 
     return res;
 }

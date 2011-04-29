@@ -73,13 +73,10 @@ private:
     ActionsDialog(QWidget *parent);
     ~ActionsDialog();
 
-    void fillInterfaces(QComboBox *);
-
 
 public slots:
     virtual void applyChanges();
     virtual void tagvalueChanged(int);
-    virtual void iptRouteContinueToggled();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void getHelpName(QString*);

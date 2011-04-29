@@ -227,6 +227,7 @@ SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
     ProjectPanel_state_ops.cpp \
+    BaseObjectDialog.cpp \
     FWWindow.cpp \
     FWWindow_editor.cpp \
     FWWindow_single_rule_compile.cpp \
