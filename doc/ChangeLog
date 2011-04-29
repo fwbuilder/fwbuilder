@@ -1,5 +1,9 @@
 2011-04-29  vadim  <vadim@netcitadel.com>
 
+	* iosaclAdvancedDialog.cpp (accept): fixes #2368 and SF bug
+	3294457 "External install script". External install script name
+	and arguments weren't saved for IOS firewall objects.
+
 	* snmpNetworkDiscoveryWizard/ND_ProgressPage.h: fixes #2370, #2371
 	"broken signals in network discovery wizard". Network discovery
 	wizard was not correctly initializased and did not work.

@@ -327,7 +327,7 @@ void iosaclAdvancedDialog::accept()
     FWOptions* options = Firewall::cast(new_state)->getOptionsObject();
     assert(options!=NULL);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
+    Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=NULL);
 
     data.saveAll(options);
