@@ -231,13 +231,15 @@ void ObjectManipulator::pasteObj()
             continue;
 
         // Check if we have already copied the same object before
-        char s[64];
-        sprintf(s, ".copy_of_%p", co->getRoot());
-        string dedup_attribute = s;
+        QString buff;
+        buff.sprintf(".copy_of_%p", co->getRoot());
+        string dedup_attribute = buff.toAscii().constData();
 
-        sprintf(s, "%d", co->getId());
+        buff.sprintf("%d", co->getId());
+        QByteArray bytes = buff.toAscii();
         FWObject *n_obj =
-            target_object->getRoot()->findObjectByAttribute(dedup_attribute, s);
+            target_object->getRoot()->findObjectByAttribute(dedup_attribute,
+                                                            bytes.constData());
         if (n_obj) continue;
 
         last_object = actuallyPasteTo(target_object, co, map_ids);

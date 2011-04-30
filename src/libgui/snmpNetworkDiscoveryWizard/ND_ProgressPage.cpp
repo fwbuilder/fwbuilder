@@ -58,6 +58,10 @@ ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
 
 #ifdef HAVE_LIBSNMP
     crawler = NULL;
+
+    connect(m_dialog->discoveryStopButton, SIGNAL(clicked()), this, SLOT(stop()));
+    connect(m_dialog->logSaveButton, SIGNAL(clicked()), this, SLOT(saveLog()));
+
 #endif
 
     QTextCursor cursor(m_dialog->discoveryLog->textCursor());

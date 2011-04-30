@@ -48,6 +48,9 @@
 using namespace std;
 using namespace libfwbuilder;
 
+#ifdef _WIN32
+#define snprintf sprintf_s
+#endif
 
 class FWObjectTreeScanner {
 
@@ -492,7 +495,7 @@ FWObject* FWObjectDatabase::recursivelyCopySubtree(FWObject *target,
                                                    std::map<int,int> &id_map)
 {
     char s[64];
-    sprintf(s, ".copy_of_%p", source->getRoot());
+    snprintf(s, sizeof(s), ".copy_of_%p", source->getRoot());
     string dedup_attribute = s;
 
     FWObject *nobj = _recursively_copy_subtree(target, source, id_map,
@@ -599,7 +602,7 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
 
             // Check if we have already copied the same object before
             char s[64];
-            sprintf(s, "%d", old_ptr_obj->getId());
+            snprintf(s, sizeof(s), "%d", old_ptr_obj->getId());
             n_ptr_obj = findObjectByAttribute(dedup_attribute, s);
             if (n_ptr_obj)
             {

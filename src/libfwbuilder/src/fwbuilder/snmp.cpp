@@ -60,6 +60,10 @@
 #include <sstream>
 #include <iterator>
 
+#ifdef _WIN32
+#define snprintf sprintf_s
+#endif
+
 /**
  * Define this if you need extra debug output.
  */
@@ -69,18 +73,19 @@ using namespace std;
 using namespace libfwbuilder;
 
 /* Compiled OIDs */
-const char *SNMPQuery::SNMP_INTERFACE_ASTATUS= ".1.3.6.1.2.1.2.2.1.7";
-const char *SNMPQuery::SNMP_INTERFACE_OSTATUS= ".1.3.6.1.2.1.2.2.1.8";
-const char *SNMPQuery::SNMP_INTERFACE_INDEX  = ".1.3.6.1.2.1.2.2.1.1";
-const char *SNMPQuery::SNMP_INTERFACES_DESCR = ".1.3.6.1.2.1.2.2.1.2";
-const char *SNMPQuery::SNMP_INTERFACES_PHYSA = ".1.3.6.1.2.1.2.2.1.6";
-const char *SNMPQuery::SNMP_INTERFACES_TYPE  = ".1.3.6.1.2.1.2.2.1.3";
-const char *SNMPQuery::SNMP_ADDR_INDEX_TABLE = ".1.3.6.1.2.1.4.20.1.2";
-const char *SNMPQuery::SNMP_NMASK_TABLE      = ".1.3.6.1.2.1.4.20.1.3";
-const char *SNMPQuery::SNMP_ADDR_TABLE       = ".1.3.6.1.2.1.4.20.1.1";
-const char *SNMPQuery::SNMP_BCAST_TABLE      = ".1.3.6.1.2.1.4.20.1.4";
-const char *SNMPQuery::SNMP_AT_TABLE_NET     = ".1.3.6.1.2.1.3.1.1.3";
-const char *SNMPQuery::SNMP_AT_TABLE_PHYS    = ".1.3.6.1.2.1.3.1.1.2";
+/* We use #define so the compiler can do string concatenation for snprintf */
+#define SNMP_INTERFACE_ASTATUS ".1.3.6.1.2.1.2.2.1.7"
+#define SNMP_INTERFACE_OSTATUS ".1.3.6.1.2.1.2.2.1.8"
+#define SNMP_INTERFACE_INDEX   ".1.3.6.1.2.1.2.2.1.1"
+#define SNMP_INTERFACES_DESCR  ".1.3.6.1.2.1.2.2.1.2"
+#define SNMP_INTERFACES_PHYSA  ".1.3.6.1.2.1.2.2.1.6"
+#define SNMP_INTERFACES_TYPE   ".1.3.6.1.2.1.2.2.1.3"
+#define SNMP_ADDR_INDEX_TABLE  ".1.3.6.1.2.1.4.20.1.2"
+#define SNMP_NMASK_TABLE       ".1.3.6.1.2.1.4.20.1.3"
+#define SNMP_ADDR_TABLE        ".1.3.6.1.2.1.4.20.1.1"
+#define SNMP_BCAST_TABLE       ".1.3.6.1.2.1.4.20.1.4"
+#define SNMP_AT_TABLE_NET      ".1.3.6.1.2.1.3.1.1.3"
+#define SNMP_AT_TABLE_PHYS     ".1.3.6.1.2.1.3.1.1.2"
 
 const char *SNMPQuery::SNMP_SYSNAME          = ".1.3.6.1.2.1.1.5.0";
 const char *SNMPQuery::SNMP_SYSDESCR         = ".1.3.6.1.2.1.1.1.0";
@@ -648,7 +653,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
             char oid[1024];
 
             // Get admin status
-            sprintf(oid, "%s.%ld", SNMP_INTERFACE_ASTATUS , ifindex);
+            snprintf(oid, sizeof(oid), SNMP_INTERFACE_ASTATUS ".%ld", ifindex);
             v=c->get(oid);
             if(v.size()!=1)
                 throw FWException(
@@ -667,7 +672,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
             }
             
             // Get operational status
-            sprintf(oid, "%s.%ld", SNMP_INTERFACE_OSTATUS , ifindex);
+            snprintf(oid, sizeof(oid), SNMP_INTERFACE_OSTATUS ".%ld", ifindex);
             v=c->get(oid);
             if(v.size()!=1)
                 throw FWException(
@@ -679,7 +684,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
 /* gather all information for interface ifindex and create Interface object */
 
             // Get desriptions
-            sprintf(oid,"%s.%ld", SNMP_INTERFACES_DESCR , ifindex);
+            snprintf(oid, sizeof(oid), SNMP_INTERFACES_DESCR ".%ld", ifindex);
             v=c->get(oid);
             string descr = SNMPVariable::varList2String(v);
             SNMPVariable::freeVarList(v);
@@ -687,7 +692,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
             list<string> &addlist = addr[ifindex];
 
             // Get physical address
-            sprintf(oid, "%s.%ld", SNMP_INTERFACES_PHYSA , ifindex);
+            snprintf(oid, sizeof(oid), SNMP_INTERFACES_PHYSA ".%ld", ifindex);
             v=c->get(oid);
             if(v.size()!=1)
                 throw FWException(string("Unexpected response length for OID: ")+oid);
@@ -697,7 +702,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
             SNMPVariable::freeVarList(v);
 
             // Get type
-            sprintf(oid,"%s.%ld", SNMP_INTERFACES_TYPE , ifindex);
+            snprintf(oid, sizeof(oid), SNMP_INTERFACES_TYPE ".%ld", ifindex);
             v=c->get(oid);
             if(v.size()!=1)
                 throw FWException(string("Unexpected response length for OID: ")+oid);                
@@ -1124,7 +1129,7 @@ SNMPVariable *SNMPVariable::create(struct variable_list *vars) throw(FWException
         return new SNMPVariable_IPaddr(vars->val.string, vars->val_len);
     default: 
         char x[32];
-        sprintf(x, "%d", (int)vars->type);
+        snprintf(x, sizeof(x), "%d", (int)vars->type);
         throw FWException(string("Unknown SNMP variable type: ") + x);
     }
 }
@@ -1132,7 +1137,7 @@ SNMPVariable *SNMPVariable::create(struct variable_list *vars) throw(FWException
 string SNMPVariable_Int::toString()
 {
     char x[32];
-    sprintf(x, "%ld", value);
+    snprintf(x, sizeof(x), "%ld", value);
     return x;
 }
 
@@ -1143,10 +1148,10 @@ string SNMPVariable_Bits::toString()
     {
         res += ".";
 
-        char x[8];
+        char x[12];
         //TODO: now we print it in hex
         // we should print it in binary.
-        sprintf(x, "%d", (uint32_t)value[i]);
+        snprintf(x, sizeof(x), "%d", (uint32_t)value[i]);
         //i += 4;
         res += x;
     }
@@ -1160,8 +1165,8 @@ string SNMPVariable_IPaddr::toString()
     {
         if(i) 
             res+=".";
-        char x[8];
-        sprintf(x,"%d", (unsigned int)value[i]);
+        char x[12];
+        snprintf(x, sizeof(x), "%d", (unsigned int)value[i]);
         res+=x;
     }
     res+="]";
@@ -1205,7 +1210,7 @@ const string SNMPVariable_String::toHexString()
             res+=':';
         u_char c=value[i];
         char buf[16];
-        sprintf(buf,"%02X",(unsigned int)c);
+        snprintf(buf, sizeof(buf), "%02X", (unsigned int)c);
         res+=buf;
     }
     return res;
@@ -1214,14 +1219,14 @@ const string SNMPVariable_String::toHexString()
 string SNMPVariable_Counter64::toString()
 {
     char x[70];
-    sprintf(x,"[%ld:%ld]", (long)low, (long)high);
+    snprintf(x, sizeof(x), "[%ld:%ld]", (long)low, (long)high);
     return x;
 }
 
 string SNMPVariable_OID::toString()
 {
     char x[32];
-    sprintf(x,"%ld", (long)value);
+    snprintf(x, sizeof(x), "%ld", (long)value);
     return x;
 }
 

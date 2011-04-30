@@ -24,6 +24,9 @@
 #ifndef __ND_PROGRESSPAGE_H_
 #define __ND_PROGRESSPAGE_H_
 
+// for HAVE_LIBSNMP
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include "ui_nd_progresspage_q.h"
 
 #include <QTextCharFormat>

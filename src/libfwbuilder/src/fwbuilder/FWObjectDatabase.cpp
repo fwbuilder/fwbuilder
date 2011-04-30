@@ -99,6 +99,7 @@ using namespace libfwbuilder;
 int id_seed = 1000;
 #ifdef _WIN32
 static int cached_pid = _getpid();
+#define snprintf sprintf_s
 #else
 static int cached_pid = getpid();
 #endif
@@ -211,7 +212,7 @@ string FWObjectDatabase::getStringId(int i_id)
 
     // TODO: Use proper GUID algorithm here
     char id_buf[64];
-    sprintf(id_buf, "id%dX%d", i_id, cached_pid);
+    snprintf(id_buf, sizeof(id_buf), "id%dX%d", i_id, cached_pid);
     id_dict[i_id] = string(id_buf);
     id_dict_reverse[string(id_buf)] = i_id;
     return id_dict[i_id];

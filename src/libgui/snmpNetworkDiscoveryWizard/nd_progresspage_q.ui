@@ -70,40 +70,7 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>discoveryStopButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ND_ProgressPage_q</receiver>
-   <slot>stop()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>47</x>
-     <y>513</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>304</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logSaveButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ND_ProgressPage_q</receiver>
-   <slot>saveLog()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>160</x>
-     <y>513</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>304</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>stop()</slot>
   <slot>saveLog()</slot>

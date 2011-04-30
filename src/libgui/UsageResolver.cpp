@@ -36,6 +36,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Management.h"
+#include "fwbuilder/RuleSet.h"
+
 
 #include <algorithm>
 
@@ -124,7 +126,8 @@ void UsageResolver::findWhereUsedRecursively(
     }
 }
 
-list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatabase *db)
+list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
+                                                      FWObjectDatabase *db)
 {
     if (fwbdebug)
         qDebug("UsageResolver::findFirewallsForObject");
@@ -156,7 +159,17 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
         }
     }
 
-    set<FWObject *>::iterator i = resset.begin();
+    // whenever we find that a rule has been modified by the change in
+    // the object @o, we record rule set it belongs to. We should scan
+    // other rule sets to see if some rule somewhere might be using
+    // one of the rule sets that changed as a branch. However in a
+    // common situation where many rules of the same rule set are
+    // affected, it won't make sense to search for the dependencies on
+    // the same rule set many times.
+
+    set<RuleSet*> modified_rule_sets;
+
+    set<FWObject*>::iterator i = resset.begin();
     for ( ;i!=resset.end(); ++i)
     {
         FWObject *obj = *i;
@@ -169,9 +182,6 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
         {
             obj = ref->getParent();
         }
-        
-//         else
-//             continue;
 
         Rule *r = Rule::cast(obj);
         if (r == NULL) r = Rule::cast(obj->getParent());
@@ -185,27 +195,42 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
                 fws.push_back(Firewall::cast(f));
             }
 
-            // check if some rule somewhere may use ruleset r belongs to as a branch
-            FWObject *ruleset = r->getParent();
-            list<Firewall*> other_fws =
-                UsageResolver::findFirewallsForObject(ruleset, db);
-            for (list<Firewall*>::iterator fit = other_fws.begin(); fit != other_fws.end(); ++fit)
-            {
-                if (std::find(fws.begin(), fws.end(), *fit) == fws.end())
-                    fws.push_back(*fit);
-            }
+            // check if some rule somewhere may use @ruleset as a
+            // branch
+
+            RuleSet *ruleset = RuleSet::cast(r->getParent());
+            assert(ruleset != NULL);
+            modified_rule_sets.insert(ruleset);
         }
     }
 
+    set<RuleSet*>::iterator i1 = modified_rule_sets.begin();
+    for ( ;i1!=modified_rule_sets.end(); ++i1)
+    {
+        RuleSet *ruleset = *i1;
+
+        list<Firewall*> other_fws =
+            UsageResolver::findFirewallsForObject(ruleset, db);
+
+        for (list<Firewall*>::iterator fit = other_fws.begin();
+             fit != other_fws.end(); ++fit)
+        {
+            if (std::find(fws.begin(), fws.end(), *fit) == fws.end())
+                fws.push_back(*fit);
+        }
+    }
+
+
     if (fwbdebug)
     {
-        qDebug() << QString("Program spent %1 ms searching for firewalls.") .arg(tt.elapsed());
+        qDebug() << QString("Program spent %1 ms searching for firewalls.")
+            .arg(tt.elapsed());
         qDebug() << "UsageResolver::findFirewallsForObject returns";
+
         for (list<Firewall*>::iterator i = fws.begin(); i!=fws.end(); ++i)
         {
             qDebug() << "    " << (*i)->getName().c_str();
         }
-
     }
 
     return fws;

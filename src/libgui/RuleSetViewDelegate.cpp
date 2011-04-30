@@ -381,7 +381,8 @@ QPixmap RuleSetViewDelegate::getPixmap(QString name, PixmapAttr pmattr) const
     return pm;
 }
 
-QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
+QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option,
+                                    const QModelIndex & index) const
 {
     QStyleOptionViewItem newOpt = option;
     QFont font = st->getRulesFont();

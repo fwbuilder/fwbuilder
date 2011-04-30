@@ -33,6 +33,10 @@
 using namespace libfwbuilder;
 using namespace std;
 
+#ifdef _WIN32
+#define snprintf sprintf_s
+#endif
+
 const char *TCPUDPService::TYPENAME={"TCPUDPService"};
 
 TCPUDPService::TCPUDPService()  
@@ -93,14 +97,14 @@ xmlNodePtr TCPUDPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 
     char str[128];
 
-    sprintf(str,"%d",src_range_start);
+    snprintf(str, sizeof(str), "%d", src_range_start);
     xmlNewProp(me, TOXMLCAST("src_range_start"), TOXMLCAST(str));
-    sprintf(str,"%d",src_range_end);
+    snprintf(str, sizeof(str), "%d", src_range_end);
     xmlNewProp(me, TOXMLCAST("src_range_end"), TOXMLCAST(str));
 
-    sprintf(str,"%d",dst_range_start);
+    snprintf(str, sizeof(str), "%d", dst_range_start);
     xmlNewProp(me, TOXMLCAST("dst_range_start"), TOXMLCAST(str));
-    sprintf(str,"%d",dst_range_end);
+    snprintf(str, sizeof(str), "%d", dst_range_end);
     xmlNewProp(me, TOXMLCAST("dst_range_end"), TOXMLCAST(str));
    
     return me;

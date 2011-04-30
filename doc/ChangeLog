@@ -1,3 +1,29 @@
+2011-04-30  vadim  <vadim@netcitadel.com>
+
+	* RuleSetModel.cpp (objectChanged): see #2373 "GUI becomes
+	unresponsive for a long time when an object that is used in a
+	large number of rules is modified". The program spent too much
+	time resizing rule set view columns.
+
+2011-04-29  vadim  <vadim@netcitadel.com>
+
+	* UsageResolver.cpp (findFirewallsForObject): see #2373 "GUI
+	becomes unresponsive for a long time when an object that is used
+	in a large number of rules is modified". This bug only affected
+	configurations with very large rule sets (1500 rules) where lots
+	of rules used the same object. The change in UsageResolver
+	eliminates unnecessary scanning of all rule sets to check if the
+	affected rule set might be used as a branch. The program used to
+	scan the same objects many times.
+
+	* iosaclAdvancedDialog.cpp (accept): fixes #2368 and SF bug
+	3294457 "External install script". External install script name
+	and arguments weren't saved for IOS firewall objects.
+
+	* snmpNetworkDiscoveryWizard/ND_ProgressPage.h: fixes #2370, #2371
+	"broken signals in network discovery wizard". Network discovery
+	wizard was not correctly initializased and did not work.
+
 2011-04-25  Vadim Kurland  <vadim@netcitadel.com>
 
 	* instDialog_ui_ops.cpp (readInstallerOptionsFromDialog):
