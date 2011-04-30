@@ -1245,6 +1245,14 @@ int RuleSetModel::getRulePosition(QModelIndex index)
 
 void RuleSetModel::objectChanged(FWObject* object)
 {
+/*
+ * See #2373
+ *
+ * Signal dataChanged() is connected to the slot
+ * RuleSetView::updateAllColumnsSize() that just calls resizeColumns()
+ * and does not do anything different depending on the model
+ * index. Can just call it once using different signal.
+
     QModelIndexList relatedIndexes = findObject(object);
 
     if (fwbdebug)
@@ -1255,14 +1263,13 @@ void RuleSetModel::objectChanged(FWObject* object)
     foreach(QModelIndex index, relatedIndexes)
     {
         emit dataChanged(index, index);
-        break;  // temporary for #2373
     }
+*/
+    emit layoutChanged();
 }
 
-QModelIndexList RuleSetModel::findObject (FWObject* object)
+QModelIndexList RuleSetModel::findObject(FWObject* object)
 {
-//    qDebug() << "RuleSetModel::findObject (FWObject* object)";
-//    qDebug() << "object:" << ((object)?QString::fromUtf8(object->getName().c_str()):"null");
     QModelIndexList list;
 
     RuleSetModelIterator it = begin();
@@ -1275,13 +1282,11 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
 
         if (node->type == RuleNode::Group)
         {
-//            qDebug() << "Group: " << node->name;
             ++it;
             continue;
         }
 
         Rule* rule = node->rule;
-//        qDebug() << "Rule " << rule->getPosition();
 
         // iterate through columns
         int column = 0;
@@ -1292,7 +1297,8 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
             if (colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time)
             {
                 // try to find the object
-                RuleElement* re = getRuleElementByRole(rule, colDesc.origin.toStdString());
+                RuleElement* re = getRuleElementByRole(
+                    rule, colDesc.origin.toStdString());
                 if (re->isAny()) continue;
 
                 for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
@@ -1319,14 +1325,12 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
                         if (pr->getBranch() == object)
                         {
                             list.append(this->index(rule, column));
-//                            qDebug() << "Branch column:" << column;
                         }
                     } else if (pr->getAction() == PolicyRule::Tag)
                     {
                         if (pr->getTagObject() == object)
                         {
                             list.append(this->index(rule, column));
-//                            qDebug() << "Tag column:" << column;
                         }
                     }
                 }

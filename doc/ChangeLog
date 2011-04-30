@@ -1,3 +1,10 @@
+2011-04-30  vadim  <vadim@netcitadel.com>
+
+	* RuleSetModel.cpp (objectChanged): see #2373 "GUI becomes
+	unresponsive for a long time when an object that is used in a
+	large number of rules is modified". The program spent too much
+	time resizing rule set view columns.
+
 2011-04-29  vadim  <vadim@netcitadel.com>
 
 	* UsageResolver.cpp (findFirewallsForObject): see #2373 "GUI
