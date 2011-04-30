@@ -1247,9 +1247,15 @@ void RuleSetModel::objectChanged(FWObject* object)
 {
     QModelIndexList relatedIndexes = findObject(object);
 
+    if (fwbdebug)
+        qDebug() << "RuleSetModel::objectChanged"
+                 << "object=" << object->getName().c_str()
+                 << "relatedIndexes.size()=" << relatedIndexes.size();
+
     foreach(QModelIndex index, relatedIndexes)
     {
         emit dataChanged(index, index);
+        break;  // temporary for #2373
     }
 }
 
