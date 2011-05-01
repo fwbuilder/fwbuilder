@@ -83,6 +83,7 @@ private:
     QSize calculateCellSizeForObject(const QModelIndex & index) const;
     QSize calculateCellSizeForComment(const QModelIndex & index) const;    
     QSize calculateCellSizeForIconAndText(const QModelIndex & index) const;
+    QSize calculateCellSizeForOptions(const QModelIndex & index) const;
 
 
     QSize drawIconInRule(QPainter *p, int x, int y, QString name, bool neg) const;
