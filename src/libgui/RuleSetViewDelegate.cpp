@@ -440,11 +440,13 @@ QSize RuleSetViewDelegate::getTextSize(QString s, int flag)
     return fontMetrics.size(flag,s);
 }
 
-QSize RuleSetViewDelegate::calculateCellSizeForRule(const QStyleOptionViewItem & option, const QModelIndex & index, RuleNode * node ) const
+QSize RuleSetViewDelegate::calculateCellSizeForRule(
+    const QStyleOptionViewItem & option,
+    const QModelIndex & index,
+    RuleNode * node ) const
 {
     Q_UNUSED(option);
     Q_UNUSED(node);
-    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::calculateCellSizeForRule";
 
     QSize iconSize = getIconSize();
     int itemHeight = getItemHeight();
@@ -470,6 +472,9 @@ QSize RuleSetViewDelegate::calculateCellSizeForRule(const QStyleOptionViewItem &
             calculated = calculateCellSizeForIconAndText(index);
             break;
         case ColDesc::Direction :
+            calculated = calculateCellSizeForIconAndText(index);
+            break;
+        case ColDesc::Options :
             calculated = calculateCellSizeForIconAndText(index);
             break;
         default :
@@ -543,7 +548,8 @@ QString RuleSetViewDelegate::constructActionText(ActionDesc &actionDesc) const
     return text;
 }
 
-QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(const QModelIndex & index) const
+QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(
+    const QModelIndex & index) const
 {
     QVariant v = index.data(Qt::DisplayRole);
     ActionDesc actionDesc = v.value<ActionDesc>();
