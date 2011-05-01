@@ -513,6 +513,7 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
     case PolicyRule::Scrub:
     case PolicyRule::Accounting:
     case PolicyRule::Branch:
+    case PolicyRule::Continue:
         break;
 
     default:
@@ -528,22 +529,6 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
     // 
     // TODO #2367: now instead of checkboxes, user should use actions Accept
     // or Continue
-
-    if (rule->getTagging())
-    {
-        string pf_tag_terminating = ropt->getStr("pf_tag_terminating");
-        if (pf_tag_terminating.empty())
-            ropt->setBool("pf_tag_terminating", false);
-        if (ropt->getBool("pf_tag_terminating")) rule->setBool("quick", true);
-    }
-
-    if (rule->getClassification())
-    {
-        string pf_classify_terminating = ropt->getStr("pf_classify_terminating");
-        if (pf_classify_terminating.empty())
-            ropt->setBool("pf_classify_terminating", true);
-        if (ropt->getBool("pf_classify_terminating")) rule->setBool("quick", true);
-    }
 
     return true;
 }
