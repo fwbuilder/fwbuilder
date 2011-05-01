@@ -224,7 +224,7 @@ void RuleSetViewDelegate::paintDirection(
     QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintDirection";
-    DrawingContext ctx = initContext(option.rect);
+    DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     QString dir = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = (st->getShowDirectionText())?dir:"";
@@ -235,7 +235,7 @@ void RuleSetViewDelegate::paintAction(
     QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintAction";
-    DrawingContext ctx = initContext(option.rect);
+    DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = constructActionText(actionDesc);
