@@ -153,7 +153,11 @@ void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
 
     if (!text.isEmpty())
     {
-        painter->drawText( x, y , rect.width() - iconWidth - ICON_TEXT_GAP, rect.height(), Qt::AlignLeft|Qt::AlignVCenter, text );
+        painter->drawText(x, y,
+                          rect.width() - iconWidth - ICON_TEXT_GAP,
+                          rect.height(),
+                          Qt::AlignLeft|Qt::AlignVCenter,
+                          text );
     }
 }
 
@@ -228,7 +232,8 @@ void RuleSetViewDelegate::paintDirection(
     QString dir = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = (st->getShowDirectionText())?dir:"";
-    drawIconAndText(painter, ctx.drawRect, dir,text);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
+    drawIconAndText(painter, ctx.drawRect, dir, text);
 }
 
 void RuleSetViewDelegate::paintAction(
@@ -239,6 +244,7 @@ void RuleSetViewDelegate::paintAction(
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = constructActionText(actionDesc);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, actionDesc.name, text);
 }
 
@@ -297,6 +303,7 @@ void RuleSetViewDelegate::paintMetric(
     DrawingContext ctx = initContext(option.rect, true);
     QString metric = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, QString(), metric);
 }
 
