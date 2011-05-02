@@ -1457,9 +1457,9 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
 
     if (policyRule->getTagging())
     {
+        FWObject *tobj = PolicyRule::cast(policyRule)->getTagObject();
         res << tr("Tag %1").arg(
-            QString::fromUtf8(
-                PolicyRule::cast(policyRule)->getTagValue().c_str()));
+            QString::fromUtf8(tobj->getName().c_str()));
     }
 
     if (policyRule->getClassification())
