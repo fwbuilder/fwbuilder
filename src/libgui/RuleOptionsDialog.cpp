@@ -103,6 +103,7 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     // build a map for combobox so visible combobox items can be localized
     QStringList route_options = getRouteOptions_pf_ipf(platform);
     QStringList route_load_options = getRouteLoadOptions_pf(platform);
+    QStringList classify_options_ipfw = getClassifyOptions_ipfw(platform);
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
@@ -241,9 +242,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipf_keep_frags, ropt,  "ipf_keep_frags");
 
         // Route
-        data.registerOption(m_dialog->ipf_route_option, ropt, "ipf_route_option",
-                            route_options);
-        data.registerOption(m_dialog->ipf_route_opt_if, ropt, "ipf_route_opt_if");
+        data.registerOption(m_dialog->ipf_route_option, ropt,
+                            "ipf_route_option", route_options);
+        data.registerOption(m_dialog->ipf_route_opt_if, ropt,
+                            "ipf_route_opt_if");
         data.registerOption(m_dialog->ipf_route_opt_addr, ropt,
                             "ipf_route_opt_addr");
     }
@@ -292,6 +294,12 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->pf_synproxy, ropt,
                             "pf_synproxy");
 
+        // Tag
+        FWObject *o = policy_rule->getTagObject();
+        m_dialog->pfTagDropArea->setObject(o);
+        m_dialog->pfTagDropArea->update();
+
+        // Classify
         data.registerOption(m_dialog->pf_classify_str, ropt, "pf_classify_str");
 
         // Route
@@ -302,27 +310,17 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
                             route_options);
         data.registerOption(m_dialog->pf_route_opt_if, ropt, "pf_route_opt_if");
         data.registerOption(m_dialog->pf_route_opt_addr, ropt, "pf_route_opt_addr");
-
-        FWObject *o = policy_rule->getTagObject();
-        m_dialog->pfTagDropArea->setObject(o);
-        m_dialog->pfTagDropArea->update();
     }
 
     if (platform=="ipfw")
     {
-        data.registerOption(m_dialog->ipfw_stateless, ropt,"stateless");
-        data.registerOption(m_dialog->usePortNum, ropt, "ipfw_pipe_queue_num");
+        data.registerOption(m_dialog->ipfw_stateless, ropt, "stateless");
 
 /* #2367 */
-
-        data.registerOption(m_dialog->ipfw_classify, ropt, "classification");
-
-        if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)
-        {
-            m_dialog->useDummyNetPipe->setChecked(1);
-        } else {
-            m_dialog->useDummyNetQueue->setChecked(1);
-        }
+        // Classify
+        data.registerOption(m_dialog->ipfw_classify_method, ropt,
+                            "ipfw_classify_method", classify_options_ipfw);
+        data.registerOption(m_dialog->usePortNum, ropt, "ipfw_pipe_queue_num");
     }
 
     if (platform=="iosacl" || platform=="procurve_acl")
@@ -446,29 +444,24 @@ void RuleOptionsDialog::applyChanges()
             policy_rule->setTagObject(tag_object);
 
             policy_rule->setClassification(
-                ! ropt->getStr("pf_classify_str").empty());
+                ! new_rule_options->getStr("pf_classify_str").empty());
 
             policy_rule->setRouting(
-                ! ropt->getStr("pf_route_option").empty() &&
-                ropt->getStr("pf_route_option") != "none");
+                ! new_rule_options->getStr("pf_route_option").empty() &&
+                new_rule_options->getStr("pf_route_option") != "none");
         }
 
         if (platform=="ipf")
         {
             policy_rule->setRouting(
-                ! ropt->getStr("ipf_route_option").empty() &&
-                ropt->getStr("ipf_route_option") != "none");
+                ! new_rule_options->getStr("ipf_route_option").empty() &&
+                new_rule_options->getStr("ipf_route_option") != "none");
         }
 
         if (platform=="ipfw")
         {
-            // rule option "classification" is set via checkbox and was
-            // set by the call to data.saveAll() above
-
-            if (m_dialog->useDummyNetPipe->isChecked())
-                new_rule_options->setInt("ipfw_classify_method", DUMMYNETPIPE);
-            else
-                new_rule_options->setInt("ipfw_classify_method", DUMMYNETQUEUE);
+            policy_rule->setClassification(
+                new_rule_options->getInt("ipfw_classify_method") > -1);
         }
     }
 

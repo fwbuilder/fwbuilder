@@ -63,6 +63,7 @@ QStringList actionsOnReject;
 QStringList routeOptions_pf_ipf;
 QStringList routeLoadOptions_pf;
 QStringList limitSuffixes;
+QStringList classifyOptions_ipfw;
 
 void init_platforms()
 {
@@ -165,6 +166,13 @@ void init_platforms()
     routeLoadOptions_pf.push_back("source_hash");
     routeLoadOptions_pf.push_back(QObject::tr("Round Robin"));
     routeLoadOptions_pf.push_back("round_robin");
+
+    classifyOptions_ipfw.push_back(QObject::tr("None"));
+    classifyOptions_ipfw.push_back("-1");
+    classifyOptions_ipfw.push_back(QObject::tr("dummynet(4) 'pipe'"));
+    classifyOptions_ipfw.push_back("1");
+    classifyOptions_ipfw.push_back(QObject::tr("dummynet(4) 'queue'"));
+    classifyOptions_ipfw.push_back("2");
 
     limitSuffixes.push_back("");
     limitSuffixes.push_back("");
@@ -671,6 +679,11 @@ const QStringList& getRouteOptions_pf_ipf(const QString&)
 const QStringList& getRouteLoadOptions_pf(const QString&)
 {
     return routeLoadOptions_pf;
+}
+
+const QStringList& getClassifyOptions_ipfw(const QString&)
+{
+    return classifyOptions_ipfw;
 }
 
 const QStringList& getLimitSuffixes(const QString&)
