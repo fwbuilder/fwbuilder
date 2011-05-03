@@ -1185,6 +1185,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	nsrc=r->getSrc();  nsrc->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1210,6 +1213,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
  	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1309,6 +1315,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	ndst=r->getDst();  ndst->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1334,6 +1343,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1436,6 +1448,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	nsrv=r->getSrv();  nsrv->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1460,6 +1475,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1549,6 +1567,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	if ( (nint=r->getWhen())!=NULL )  nint->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1574,6 +1595,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -4004,14 +4028,14 @@ bool PolicyCompiler_ipt::accounting::processNext()
             ipt_comp->registerChain(new_chain);
             ipt_comp->insertUpstreamChain(this_chain, new_chain);
 
-            r->setStr("ipt_target","RETURN");
+            r->setStr("ipt_target", "RETURN");
             r->setLogging(false);
             r->setAction(PolicyRule::Continue);
             tmp_queue.push_back(r);
 
             rule->setStr("ipt_target", new_chain);
             rule->setLogging(false);
-            ruleopt =rule->getOptionsObject();
+            ruleopt = rule->getOptionsObject();
             ruleopt->setInt("limit_value",-1);
             ruleopt->setInt("connlimit_value",-1);
             ruleopt->setInt("hashlimit_value",-1);
