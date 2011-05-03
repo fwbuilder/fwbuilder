@@ -232,6 +232,9 @@ public:
     QString getPageTitle(bool file_path=false);
 
     void setActive();
+
+ private:
+    void adjustDockWidths(bool makeZeroWidth);
     
  public slots:
     void newObject();

@@ -1037,8 +1037,8 @@ void ProjectPanel::showEvent(QShowEvent *ev)
 
     connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChangedForTreePanel(bool)));
-    // connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-    //         this, SLOT(visibilityChangedForTreePanel(bool)));
+    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(visibilityChangedForTreePanel(bool)));
 
     m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
@@ -1070,8 +1070,8 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
     disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
                this, SLOT(topLevelChangedForTreePanel(bool)));
-    // disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-    //            this, SLOT(visibilityChangedForTreePanel(bool)));
+    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+               this, SLOT(visibilityChangedForTreePanel(bool)));
 
     saveState();
     fileClose();
@@ -1274,6 +1274,31 @@ void ProjectPanel::toggleViewTree(bool f)
     else m_panel->treeDockWidget->hide();
 }
 
+
+/* Make the objectTree dock zero width if the objectTree is floating,
+   or if it's not visible.  Then the rules editor will take up the
+   full width */
+void ProjectPanel::adjustDockWidths(bool makeZeroWidth)
+{
+    /* These can be static since they are the same for every window
+       (they come from the .ui file) */
+    static int dockMinSize = 0;
+    static int dockMaxSize = 0;
+    if (dockMinSize == 0 && dockMaxSize == 0) {
+        dockMinSize = m_panel->treeDockWidgetParentFrame->minimumWidth();
+        dockMaxSize = m_panel->treeDockWidgetParentFrame->maximumWidth();
+    }
+
+    if (makeZeroWidth) {
+        m_panel->treeDockWidgetParentFrame->setMinimumWidth(0);
+        m_panel->treeDockWidgetParentFrame->setMaximumWidth(0);
+    } else {
+        m_panel->treeDockWidgetParentFrame->setMinimumWidth(dockMinSize);
+        m_panel->treeDockWidgetParentFrame->setMaximumWidth(dockMaxSize);
+    }
+}
+
+
 /*
  * Signal QDockWidget::topLevelChanged is called after dock widget
  * is made floating or docked.
@@ -1293,6 +1318,8 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
      * back and stick it into the layout of the ProjectPanel when it
      * is docked.
      */
+
+    adjustDockWidths(f);
 
     m_panel->treeDockWidget->blockSignals(true);
 
@@ -1356,6 +1383,9 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
                  << "isWindow()=" << m_panel->treeDockWidget->isWindow()
                  << "mdiWindow->isMaximized()=" << mdiWindow->isMaximized();
 
+    adjustDockWidths(!f || m_panel->treeDockWidget->isFloating());
+
+#if 0
     if (m_panel->treeDockWidget->isVisible() &&
         ! m_panel->treeDockWidget->isWindow())  // visible and not floating
     {
@@ -1366,7 +1396,7 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }
-
+#endif
 }
 
 void ProjectPanel::setActive()
