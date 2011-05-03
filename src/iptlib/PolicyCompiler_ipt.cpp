@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2002-2011 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -556,6 +554,7 @@ bool  PolicyCompiler_ipt::splitTagClassifyOrRouteIfAction::processNext()
             r->setRouting(false);
             r->setTagging(false);
             r->setLogging(false);
+            r->setAction(PolicyRule::Continue);
             tmp_queue.push_back(r);
         }
 
@@ -589,8 +588,6 @@ bool  PolicyCompiler_ipt::splitTagClassifyOrRouteIfAction::processNext()
         r2->setLogging(false);
         r2->setAction( rule->getAction());
 
-        // r2->setAction(PolicyRule::Accept);
-        // r2->setStr("ipt_target", "ACCEPT");
         ruleopt = r2->getOptionsObject();
         ruleopt->setBool("stateless", true);
         tmp_queue.push_back(r2);
@@ -610,7 +607,7 @@ bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
     PolicyRule *r;
 
     if (ipt_comp->my_table=="mangle" &&
-        rule->getTagging() || rule->getClassification() || rule->getRouting())
+        (rule->getTagging() || rule->getClassification() || rule->getRouting()))
     {
         if (rule->getTagging())
         {
@@ -794,6 +791,36 @@ bool PolicyCompiler_ipt::checkActionInMangleTable::processNext()
     return true;
 }
 
+/*
+ * Rules with action Tag can only be in PREROUTING or OUTPUT chains,
+ * rules with action Classify always go into POSTROUTING. This means
+ * they can't conflict. But option Route can yield rules in PREROUTING
+ * or POSTROUTING and can conflict. We'll flag combinations of Tag +
+ * Route and Classify + Route if action is not Continue.
+ */
+bool PolicyCompiler_ipt::checkForUnsupportedCombinationsInMangle::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (ipt_comp->my_table=="mangle" &&
+        rule->getAction() != PolicyRule::Continue &&
+        rule->getRouting() &&
+        (rule->getTagging() || rule->getClassification()))
+    {
+        QString err("Can not process option Route in combination with "
+                    "options Tag or Classify and action %1");
+	compiler->abort(
+            rule,  err.arg(rule->getActionAsString().c_str()).toStdString());
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 bool PolicyCompiler_ipt::Logging1::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
@@ -811,6 +838,11 @@ bool PolicyCompiler_ipt::storeAction::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     rule->setStr("stored_action", rule->getActionAsString() );
+
+    rule->setBool("originated_from_a_rule_with_tagging", rule->getTagging());
+    rule->setBool("originated_from_a_rule_with_classification",
+                  rule->getClassification());
+    rule->setBool("originated_from_a_rule_with_routing", rule->getRouting());
 
     tmp_queue.push_back(rule);
     return true;
@@ -1686,7 +1718,7 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
      */
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
-    if ( rule->getTagging() && 
+    if ( (rule->getTagging() || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Inbound) &&
@@ -1696,7 +1728,6 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
     }
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -1707,16 +1738,14 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
-    if ( rule->getTagging() &&
+    if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Outbound) &&
          itf_re->isAny())
-//         rule->getInterfaceId()==-1 )
         ipt_comp->setChain(rule, "POSTROUTING");
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -1726,7 +1755,7 @@ bool PolicyCompiler_ipt::checkForRestoreMarkInOutput::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
 
-    if ( rule->getTagging() &&
+    if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
          ruleopt->getBool("ipt_mark_connections") &&
          rule->getStr("ipt_chain")=="OUTPUT")
         ipt_comp->have_connmark_in_output = true;
@@ -1766,25 +1795,35 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
     return true;
 }
 
-/*
- * couple of special cases for rules with action Tag
- *
- * option 'ipt_mark_connections' means we need to generate two rules:
- * one with target MARK and another with target CONNMARK. We place
- * these two new rules in a separate chain.
- *
- * if global option 'classify_mark_terminating' is also on, we place third rule in
- * the same chain, this time with action ACCEPT.
- *
- * Note that if option 'ipt_mark_connections' is off, we do not process
- * classify_mark_terminating option here. It will be processed later in 
- * splitTagClassifyOrRouteIfAction
- */
 bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 {
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     FWOptions *ruleopt = rule->getOptionsObject();
+
+    if (rule->getTagging() && ruleopt->getBool("ipt_mark_connections"))
+    {
+	tmp_queue.push_back(rule);
+
+	PolicyRule *r1 = compiler->dbcopy->createPolicyRule();
+	compiler->temp_ruleset->add(r1);
+	r1->duplicate(rule);
+	r1->setStr("ipt_target", "CONNMARK");
+        r1->setAction(PolicyRule::Continue);    // ###
+        r1->setClassification(false);
+        r1->setRouting(false);
+        r1->setTagging(false);
+        r1->setLogging(false);
+        ruleopt = r1->getOptionsObject();
+        ruleopt->setStr("CONNMARK_arg", "--save-mark");
+
+	tmp_queue.push_back(r1);
+
+        ipt_comp->have_connmark = true;
+    } else
+	tmp_queue.push_back(rule);
+
+#if 0
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
     RuleElementSrc *nsrc;
@@ -1851,6 +1890,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
     } else
 	tmp_queue.push_back(rule);
+#endif
 
     return true;
 }
@@ -3927,9 +3967,6 @@ bool PolicyCompiler_ipt::accounting::processNext()
     Interface *rule_iface = 
         Interface::cast(FWObjectReference::getObject(itf_re->front()));
 
-//    Interface  *rule_iface = Interface::cast(
-//        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if (rule->getAction()==PolicyRule::Accounting &&
@@ -3943,7 +3980,7 @@ bool PolicyCompiler_ipt::accounting::processNext()
 
         if (new_chain==this_chain)
         {
-            rule->setStr("ipt_target","RETURN");
+            rule->setStr("ipt_target", "RETURN");
             rule->setAction(PolicyRule::Continue);
         } else
         {
@@ -4205,6 +4242,9 @@ void PolicyCompiler_ipt::compile()
 
     add( new singleRuleFilter());
 
+    add( new checkForUnsupportedCombinationsInMangle(
+             "Check for unsupported Tag+Route and Classify+Route combinations"));
+
     add( new splitIfTagClassifyOrRoute(
              "Split rule if it uses tagging, classification or routing options"));
 
@@ -4308,7 +4348,6 @@ void PolicyCompiler_ipt::compile()
     add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
     add( new splitIfDstAny("split rule if dst is any") );
     add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
-
 
 
 
@@ -4432,17 +4471,22 @@ void PolicyCompiler_ipt::compile()
     add( new separatePortRanges("separate port ranges"));
     add( new separateUserServices("separate user services"));
     add( new separateSrcPort("split on TCP and UDP with source ports"));
-    add( new checkForStatefulICMP6Rules("Make sure rules that match icmpv6 are stateless"));
+    add( new checkForStatefulICMP6Rules(
+             "Make sure rules that match icmpv6 are stateless"));
 
-    add( new optimize2(        "optimization 2"                        ) );
-    add( new accounting(       "Accounting"                            ) );
-    add( new prepareForMultiport("prepare for multiport"               ) );
+    add( new optimize2("optimization 2") );
+
+    // add( new accounting("Accounting") );
+    // add( new prepareForMultiport("prepare for multiport") );
 
     add( new splitTagClassifyOrRouteIfAction(
              "split rules with options Tag, Classify or Route when action "
              "is not Continue" ) );
 
     add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+
+    add( new accounting("Accounting") );
+    add( new prepareForMultiport("prepare for multiport") );
 
     add( new ConvertToAtomicForAddresses(
              "convert to atomic rules by address elements") );

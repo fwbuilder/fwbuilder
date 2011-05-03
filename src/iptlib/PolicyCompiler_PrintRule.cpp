@@ -371,12 +371,6 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (target==".CUSTOM")
-    {
-        ostr << " " << ruleopt->getStr("custom_str");
-        return ostr.str();
-    }
-
     if (rule->getTagging())
     {
         ostr << " -j MARK";
@@ -411,6 +405,12 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
         c = ruleopt->getBool("ipt_tee");
         if (c) ostr << " --tee";
 
+        return ostr.str();
+    }
+
+    if (target==".CUSTOM")
+    {
+        ostr << " " << ruleopt->getStr("custom_str");
         return ostr.str();
     }
 

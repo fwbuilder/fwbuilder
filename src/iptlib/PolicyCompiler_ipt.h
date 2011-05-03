@@ -162,6 +162,22 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(checkActionInMangleTable);
 
         /**
+         * Rule with options "Tag", "Classify" and "Route" may need to
+         * placed in the same chain (PREROUTING or POSTROUTING since
+         * ROUTE can go into both), but we can't process it if it also
+         * has action Accept (or any other action that is not
+         * "Continue"). This is because we have to split the rule
+         * before the chain is determined and so we end up with two
+         * user defined chains, one for CLASSIFY or MARK and another
+         * for ROUTE, each of them ending with ACCEPT. This means one
+         * of the chains accepts the packet and the other never sees
+         * it.  We may eventually optimize this and find a way to
+         * generate code for rules like this in one chain, but since
+         * this is rarely used case, we'll abort for now.
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(checkForUnsupportedCombinationsInMangle);
+
+        /**
          * adds few predefined (or "builtin") rules on top of the policy
          */
         class addPredefinedRules : public PolicyRuleProcessor
@@ -177,7 +193,11 @@ protected:
 	/**
 	 * need to duplicate original action of this rule. We use this
 	 * information later to decide whether we need to use "-m
-	 * state --state new"
+	 * state --state new". Also this rule processor stores a copy
+	 * of flags getRouting(), getTagging() and getClassification()
+	 * which we use in setChainPreroutingForTag() and
+         * setChainPostroutingForTag() to place rules that do tagging in
+         * chain PREROUTING and similar purposes.
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(storeAction);
 

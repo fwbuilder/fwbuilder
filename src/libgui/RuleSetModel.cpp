@@ -1458,8 +1458,15 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
     if (policyRule->getTagging())
     {
         FWObject *tobj = PolicyRule::cast(policyRule)->getTagObject();
-        res << tr("Tag %1").arg(
-            QString::fromUtf8(tobj->getName().c_str()));
+        if (platform=="iptables")
+        {
+            res << tr("Tag %1%2")
+                .arg(QString::fromUtf8(tobj->getName().c_str()))
+                .arg(
+                    QString((ropt->getBool("ipt_mark_connections"))?" (conn)":""));
+        } else
+            res << tr("Tag %1").arg(
+                QString::fromUtf8(tobj->getName().c_str()));
     }
 
     if (policyRule->getClassification())

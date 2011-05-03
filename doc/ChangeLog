@@ -1,3 +1,19 @@
+2011-05-03  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipt.cpp (processNext): see #2367 "Multiple
+	actions per policy rule". Options "Tag", "Classify" and "Route"
+	work with iptables in a combination with any action. This
+	implementation has one restriction: option Route can not be used
+	in combination with options Tag or Classify and any action that is
+	not Continue. This is because option Route can yield rules in
+	PREROUTING or POSTROUTING chains that are also used by options Tag
+	and Classify. For this combination we create two user-defined
+	chains that perform routing and tagging (or classification). In
+	case of a terminating action both chains end with it. This means
+	if one matches the packet, the other is never going to see it.
+	Non-terminating action "Continue" does not create this problem.
+	This limitation may be removed in future versions of fwbuilder.
+
 2011-04-30  vadim  <vadim@netcitadel.com>
 
 	* RuleSetModel.cpp (objectChanged): see #2373 "GUI becomes
