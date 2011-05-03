@@ -1,3 +1,12 @@
+2011-05-03  vadim  <vadim@netcitadel.com>
+
+	* newFirewallDialog.cpp (finishClicked): see #2380 "Firewall
+	object is created in the middle of the "new firewall" wizard and
+	clicking Back creates two firewall objects". If user chose to
+	create new firewall object from a template and clicked Back after
+	choosing the template, the program actually created two firewall
+	objects but only one was visible in the tree.
+
 2011-04-30  vadim  <vadim@netcitadel.com>
 
 	* RuleSetModel.cpp (objectChanged): see #2373 "GUI becomes

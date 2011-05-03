@@ -85,7 +85,7 @@ void newFirewallDialog::createFirewallFromTemplate()
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
 
     map<int, int> map_ids;
-    FWObject *no = db->recursivelyCopySubtree(parent, template_fw, map_ids);
+    FWObject *no = db_copy->recursivelyCopySubtree(parent, template_fw, map_ids);
 
     no->setName( string( m_dialog->obj_name->text().toUtf8().constData() ) );
 
@@ -267,7 +267,7 @@ Address* newFirewallDialog::replaceInterfaceAddressData(Firewall *fw,
         if (addr_obj) oa = addr_obj;
         else
         {
-            oa = IPv4::cast(db->create(IPv4::TYPENAME));
+            oa = IPv4::cast(db_copy->create(IPv4::TYPENAME));
             intf->add(oa);
         }
         name = QString("%1:%2:ipv4")
@@ -285,7 +285,7 @@ Address* newFirewallDialog::replaceInterfaceAddressData(Firewall *fw,
         if (addr_obj) oa = addr_obj;
         else
         {
-            oa = IPv6::cast(db->create(IPv6::TYPENAME));
+            oa = IPv6::cast(db_copy->create(IPv6::TYPENAME));
             intf->add(oa);
         }
         name = QString("%1:%2:ipv6")
@@ -329,7 +329,7 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
         FWObject *parent = 
             FWBTree().getStandardSlotForObject(
                 current_lib, net_type.c_str());
-        Address *new_net_obj = Address::cast(db->create(net_type));
+        Address *new_net_obj = Address::cast(db_copy->create(net_type));
         parent->add(new_net_obj);
         QString new_net_name =
             QString("%1:%2:net").arg(fw->getName().c_str()).arg(intf->getName().c_str());
@@ -357,6 +357,6 @@ void newFirewallDialog::replaceReferencesToObject(Firewall*,
 {
     map<int, int> map_ids;
     map_ids[old_obj->getId()] = new_obj->getId();
-    db->fixReferences(db, map_ids);
+    db_copy->fixReferences(db_copy, map_ids);
 }
 
