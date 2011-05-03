@@ -210,6 +210,11 @@ protected:
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(Logging2);
 
+	/**
+	 * splits rule if it has more than option Tag, Classify or Route
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(splitIfTagClassifyOrRoute);
+
 
 	/**
 	 * this processor checks if the rule is associated with an
@@ -657,11 +662,10 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(decideOnChainForClassify);
 
         /**
-         * find non-terminating targets (such as MARK and
-         * CLASSIFY). Put such rule in a separate chain and pass
-         * control to it using "-g"
+         * Split rules with options Tag, Classiyfy and Route if action
+         * is not Continue
          */
-        DECLARE_POLICY_RULE_PROCESSOR(splitNonTerminatingTargets);
+        DECLARE_POLICY_RULE_PROCESSOR(splitTagClassifyOrRouteIfAction);
 
         /**
          * drop rules with terminating targets. Used as part of the

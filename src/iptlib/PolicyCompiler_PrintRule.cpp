@@ -377,9 +377,6 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
         return ostr.str();
     }
 
-    if (target==".CONTINUE") // not a real target !
-        return ostr.str();
-
     if (rule->getTagging())
     {
         ostr << " -j MARK";
@@ -416,6 +413,9 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 
         return ostr.str();
     }
+
+    if (target==".CONTINUE") // not a real target !
+        return ostr.str();
 
 
     // there is no ULOG for ip6tables yet
