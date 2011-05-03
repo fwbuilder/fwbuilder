@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2003-2011 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
-
-  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -39,6 +37,7 @@
 #include "FWBApplication.h"
 #include "QDesktopWidget"
 #include "networkZoneManager.h"
+#include "ObjConflictResolutionDialog.h"
 
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
@@ -96,7 +95,9 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     QDialog(parentw)
 {
     parent = _p;
-    db = parent->getRoot();
+    db_orig = parent->getRoot();
+    db_copy = new FWObjectDatabase();
+    db_copy->duplicate(db_orig, false);
 
     m_dialog = new Ui::newFirewallDialog_q;
     m_dialog->setupUi(this);
@@ -250,6 +251,7 @@ newFirewallDialog::~newFirewallDialog()
 #ifdef HAVE_LIBSNMP
     if (q!=NULL) delete q;
 #endif
+    delete db_copy;
 }
 
 void newFirewallDialog::changed()
@@ -647,7 +649,8 @@ void newFirewallDialog::showPage(const int page)
         // Show firewall templates
         setFinishEnabled( CHOOSE_FW_TEMPLATE, false );
         setNextEnabled( CHOOSE_FW_TEMPLATE, true );
-/* load templates if not loaded */
+
+        // load templates if not loaded
         if (tmpldb==NULL)
         {
 
@@ -669,6 +672,17 @@ void newFirewallDialog::showPage(const int page)
                     tr("&Continue"), QString::null,QString::null,
                     0, 1 );
             }
+        }
+
+        // nfw != NULL if user clicked Back on one of the subsequent
+        // pages because we create firewall object when they click
+        // Next on the page where they choose template ( see case
+        // CONFIGURE_TEMPLATE_INTERFACES_MANUALLY below)
+        if (nfw)
+        {
+            parent->remove(nfw, false);
+            delete nfw;
+            nfw = NULL;
         }
 
         list<FWObject*> fl;
@@ -734,14 +748,7 @@ void newFirewallDialog::showPage(const int page)
         // Edit interfaces of the template object
         createFirewallFromTemplate();
         setFinishEnabled( CONFIGURE_TEMPLATE_INTERFACES_MANUALLY, true );
-/*
-        this->m_dialog->interfaceEditor2->setExplanation(
-            tr("Here you can change IP address of the template interface "
-               "to match addresses used on your network. "
-               "Interface can have several IPv4 and "
-               "IPv6 addresses.")
-        );
-*/
+
         this->m_dialog->interfaceEditor2->clear();
         this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
@@ -872,7 +879,7 @@ void newFirewallDialog::fillInterfaceNZList()
     m_dialog->iface_nz_list->setHorizontalHeaderLabels(labels);
 
     NetworkZoneManager netzone_manager;
-    netzone_manager.load(db);
+    netzone_manager.load(db_copy);
 
     int row = 0;
     foreach(EditedInterfaceData iface,
@@ -1122,7 +1129,7 @@ void newFirewallDialog::finishClicked()
             return;
 
         FWObject *o;
-        o = db->create(Firewall::TYPENAME);
+        o = db_copy->create(Firewall::TYPENAME);
 
         if (o==NULL)
         {
@@ -1189,7 +1196,7 @@ void newFirewallDialog::finishClicked()
                     network_zone_str_id = "";
             }
 
-            Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
+            Interface *oi = Interface::cast(db_copy->create(Interface::TYPENAME));
             assert(oi!=NULL);
 
             nfw->add(oi);
@@ -1227,7 +1234,7 @@ void newFirewallDialog::finishClicked()
                     if (address.ipv4)
                     {
                         string addrname = string( QString("%1:%2:ip").arg(QString(m_dialog->obj_name->text())).arg(name).toUtf8().constData() );
-                        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                        IPv4 *oa = IPv4::cast(db_copy->create(IPv4::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname);
                         oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
@@ -1245,7 +1252,7 @@ void newFirewallDialog::finishClicked()
                     else
                     {
                         string addrname = string ( QString("%1:%2:ip6").arg(QString(m_dialog->obj_name->text())).arg(name).toUtf8().constData() );
-                        IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                        IPv6 *oa = IPv6::cast(db_copy->create(IPv6::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname);
                         oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
@@ -1264,6 +1271,12 @@ void newFirewallDialog::finishClicked()
             }
         }
     }
+
+    // merge dbcopy into db
+
+    CompareObjectsDialog cod(this);
+    db_orig->merge(db_copy, &cod);
+
 
     if (tmpldb!=NULL)
     {

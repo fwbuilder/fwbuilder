@@ -63,8 +63,9 @@ class newFirewallDialog : public QDialog, public FakeWizard
     libfwbuilder::Logger *logger;
     libfwbuilder::SNMPQuery *q;
     QTimer *timer;
-    libfwbuilder::FWObjectDatabase *db;
+    libfwbuilder::FWObjectDatabase *db_orig;
     libfwbuilder::FWObjectDatabase *tmpldb;
+    libfwbuilder::FWObjectDatabase *db_copy;
     libfwbuilder::FWObject *parent;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool unloadTemplatesLib;
