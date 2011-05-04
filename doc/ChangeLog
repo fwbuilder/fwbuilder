@@ -1,3 +1,14 @@
+2011-05-04  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_18.xslt: XSLT transformation to upgrade data
+	files from DTD v18 to DTD v19. This transformation finds
+	"PolicyRule" elements with missing "Itf" child elements and fixes
+	them by adding such element with a reference pointint to "any".
+	Fixes #2383
+
+	* fwbuilder.dtd.in: Element "Itf" (an interface) of "PolicyRule"
+	should be required. DTD version increment.
+
 2011-05-03  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_ipt.cpp (processNext): see #2367 "Multiple

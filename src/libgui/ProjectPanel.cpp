@@ -1383,7 +1383,8 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
                  << "isWindow()=" << m_panel->treeDockWidget->isWindow()
                  << "mdiWindow->isMaximized()=" << mdiWindow->isMaximized();
 
-    adjustDockWidths(!f || m_panel->treeDockWidget->isFloating());
+    adjustDockWidths(!m_panel->treeDockWidget->isVisible() ||
+                     m_panel->treeDockWidget->isFloating());
 
 #if 0
     if (m_panel->treeDockWidget->isVisible() &&

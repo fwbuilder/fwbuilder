@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1297891427" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1297891427" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -8609,7 +8609,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id43EC5DE22355" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id43EC5DE32355" disabled="False" group="" log="False" position="0" action="Tag" direction="Inbound" comment="">
+          <PolicyRule id="id43EC5DE32355" disabled="False" group="" log="False" position="0" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -8627,11 +8627,14 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipfw_pipe_method">0</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id43F4556A28869</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8800,7 +8803,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id43F4407F28542" disabled="False" group="" log="False" position="10" action="Classify" direction="Both" comment="">
+          <PolicyRule id="id43F4407F28542" disabled="False" group="" log="False" position="10" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -8818,12 +8821,15 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">True</Option>
               <Option name="classify_str">mail</Option>
               <Option name="custom_str"></Option>
               <Option name="ipfw_pipe_method">0</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
               <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9440,7 +9446,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id445DB34832739" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id445DB34932739" disabled="False" group="" log="False" position="0" action="Tag" direction="Inbound" comment="">
+          <PolicyRule id="id445DB34932739" disabled="False" group="" log="False" position="0" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -9458,11 +9464,14 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipfw_pipe_method">0</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id43F4556A28869</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9621,7 +9630,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id445DB3B732739" disabled="False" group="" log="False" position="9" action="Classify" direction="Both" comment="">
+          <PolicyRule id="id445DB3B732739" disabled="False" group="" log="False" position="9" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -9639,12 +9648,15 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">True</Option>
               <Option name="classify_str">mail</Option>
               <Option name="custom_str"></Option>
               <Option name="ipfw_pipe_method">0</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
               <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10035,7 +10047,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id449490212976" disabled="False" group="" log="False" position="2" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id449490212976" disabled="False" group="" log="False" position="2" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -10056,6 +10068,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipf_route_opt_addr"></Option>
@@ -10074,11 +10087,13 @@
               <Option name="pf_route_opt_addr">192.0.2.10</Option>
               <Option name="pf_route_opt_if">le1</Option>
               <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4494AF342976" disabled="False" group="" log="False" position="3" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id4494AF342976" disabled="False" group="" log="False" position="3" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -10098,6 +10113,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipf_route_opt_addr"></Option>
@@ -10116,8 +10132,10 @@
               <Option name="pf_route_opt_addr">192.0.3.10</Option>
               <Option name="pf_route_opt_if">le2</Option>
               <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id44958DBE3539" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="">
@@ -12494,7 +12512,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id476458B09697" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id47646C979697" disabled="False" group="" log="False" position="0" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id47646C979697" disabled="False" group="" log="False" position="0" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12514,6 +12532,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -12549,11 +12568,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id47646C869697" disabled="False" group="" log="False" position="1" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id47646C869697" disabled="False" group="" log="False" position="1" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12573,6 +12594,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -12608,11 +12630,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id47646C759697" disabled="False" group="" log="False" position="2" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id47646C759697" disabled="False" group="" log="False" position="2" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12632,6 +12656,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -12667,11 +12692,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476480059697" disabled="False" group="" log="False" position="3" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id476480059697" disabled="False" group="" log="False" position="3" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12691,6 +12718,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#7694C0</Option>
               <Option name="custom_str"></Option>
@@ -12726,11 +12754,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476480169697" disabled="False" group="" log="False" position="4" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id476480169697" disabled="False" group="" log="False" position="4" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12750,6 +12780,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#7694C0</Option>
               <Option name="custom_str"></Option>
@@ -12785,11 +12816,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476480279697" disabled="False" group="" log="False" position="5" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id476480279697" disabled="False" group="" log="False" position="5" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12809,6 +12842,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#7694C0</Option>
               <Option name="custom_str"></Option>
@@ -12844,11 +12878,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476458C99697" disabled="False" group="" log="False" position="6" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id476458C99697" disabled="False" group="" log="False" position="6" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12868,6 +12904,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C0BA44</Option>
               <Option name="custom_str"></Option>
@@ -12903,11 +12940,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476458D69697" disabled="False" group="" log="False" position="7" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id476458D69697" disabled="False" group="" log="False" position="7" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12927,6 +12966,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C0BA44</Option>
               <Option name="custom_str"></Option>
@@ -12962,11 +13002,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4764592B9697" disabled="False" group="" log="False" position="8" action="Route" direction="Inbound" comment="">
+          <PolicyRule id="id4764592B9697" disabled="False" group="" log="False" position="8" action="Continue" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -12986,6 +13028,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C0BA44</Option>
               <Option name="custom_str"></Option>
@@ -13021,11 +13064,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4764BABB9697" disabled="False" group="" log="False" position="9" action="Route" direction="Inbound" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;Run compiler with&#10;command line argument -xt&#10;to convert errors to warnings&#10;and make it generate .conf &#10;file anyway">
+          <PolicyRule id="id4764BABB9697" disabled="False" group="" log="False" position="9" action="Continue" direction="Inbound" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;Run compiler with&#10;command line argument -xt&#10;to convert errors to warnings&#10;and make it generate .conf &#10;file anyway">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13045,6 +13090,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="custom_str"></Option>
@@ -13080,11 +13126,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4764BACC9697" disabled="False" group="" log="False" position="10" action="Route" direction="Inbound" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;">
+          <PolicyRule id="id4764BACC9697" disabled="False" group="" log="False" position="10" action="Continue" direction="Inbound" comment="this should fail because&#10;it has one address for the next&#10;hop and it is /32.&#10;">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13104,6 +13152,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="custom_str"></Option>
@@ -13139,11 +13188,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id476509419697" disabled="False" group="" log="False" position="11" action="Route" direction="Inbound" comment="this should fail because&#10;it ip address in next hop&#10;is illegal">
+          <PolicyRule id="id476509419697" disabled="False" group="" log="False" position="11" action="Continue" direction="Inbound" comment="this should fail because&#10;it ip address in next hop&#10;is illegal">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13163,6 +13214,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="custom_str"></Option>
@@ -13198,14 +13250,16 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
         <Policy id="id16074X72625" name="routes" comment="testing different options for the route-to action" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id16087X72625" disabled="False" group="" log="False" position="0" action="Route" direction="Inbound" comment="route_through, load balancing random">
+          <PolicyRule id="id16087X72625" disabled="False" group="" log="False" position="0" action="Continue" direction="Inbound" comment="route_through, load balancing random">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13225,6 +13279,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13260,11 +13315,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id16104X72625" disabled="False" group="" log="False" position="1" action="Route" direction="Inbound" comment="error: interface is required">
+          <PolicyRule id="id16104X72625" disabled="False" group="" log="False" position="1" action="Continue" direction="Inbound" comment="error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13284,6 +13341,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13319,11 +13377,13 @@
               <Option name="pf_route_option">route_reply_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id16121X72625" disabled="False" group="" log="False" position="2" action="Route" direction="Inbound" comment="error: interface is required">
+          <PolicyRule id="id16121X72625" disabled="False" group="" log="False" position="2" action="Continue" direction="Inbound" comment="error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13343,6 +13403,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13378,11 +13439,13 @@
               <Option name="pf_route_option">route_copy_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id16138X72625" disabled="False" group="" log="False" position="3" action="Route" direction="Inbound" comment="fastroute">
+          <PolicyRule id="id16138X72625" disabled="False" group="" log="False" position="3" action="Continue" direction="Inbound" comment="fastroute">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13402,6 +13465,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13437,11 +13501,13 @@
               <Option name="pf_route_option">none</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id16155X72625" disabled="False" group="" log="False" position="4" action="Route" direction="Inbound" comment="fastroute">
+          <PolicyRule id="id16155X72625" disabled="False" group="" log="False" position="4" action="Continue" direction="Inbound" comment="fastroute">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13461,6 +13527,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13496,11 +13563,13 @@
               <Option name="pf_route_option">none</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id16172X72625" disabled="False" group="" log="False" position="5" action="Route" direction="Inbound" comment="fastroute">
+          <PolicyRule id="id16172X72625" disabled="False" group="" log="False" position="5" action="Continue" direction="Inbound" comment="fastroute">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13520,6 +13589,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13555,11 +13625,13 @@
               <Option name="pf_route_option">none</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id22949X72625" disabled="False" group="" log="False" position="6" action="Route" direction="Inbound" comment="route_through, load balancing none&#10;error: interface is required">
+          <PolicyRule id="id22949X72625" disabled="False" group="" log="False" position="6" action="Continue" direction="Inbound" comment="route_through, load balancing none&#10;error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13579,6 +13651,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13614,11 +13687,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id22966X72625" disabled="False" group="" log="False" position="7" action="Route" direction="Inbound" comment="route_through, load balancing bitmask&#10;error: interface is required">
+          <PolicyRule id="id22966X72625" disabled="False" group="" log="False" position="7" action="Continue" direction="Inbound" comment="route_through, load balancing bitmask&#10;error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13638,6 +13713,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13673,11 +13749,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id29767X72625" disabled="False" group="" log="False" position="8" action="Route" direction="Inbound" comment="route_through, load balancing random&#10;error: interface is required">
+          <PolicyRule id="id29767X72625" disabled="False" group="" log="False" position="8" action="Continue" direction="Inbound" comment="route_through, load balancing random&#10;error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13697,6 +13775,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13732,11 +13811,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id29784X72625" disabled="False" group="" log="False" position="9" action="Route" direction="Inbound" comment="route_through, load balancing source hash&#10;error: interface is required">
+          <PolicyRule id="id29784X72625" disabled="False" group="" log="False" position="9" action="Continue" direction="Inbound" comment="route_through, load balancing source hash&#10;error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13756,6 +13837,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13791,11 +13873,13 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id29801X72625" disabled="False" group="" log="False" position="10" action="Route" direction="Inbound" comment="route_through, load balancing round robin&#10;error: interface is required">
+          <PolicyRule id="id29801X72625" disabled="False" group="" log="False" position="10" action="Continue" direction="Inbound" comment="route_through, load balancing round robin&#10;error: interface is required">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </Src>
@@ -13815,6 +13899,7 @@
               <Option name="action_on_reject"></Option>
               <Option name="branch_anchor_name"></Option>
               <Option name="branch_chain_name"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#8BC065</Option>
               <Option name="custom_str"></Option>
@@ -13850,8 +13935,10 @@
               <Option name="pf_route_option">route_through</Option>
               <Option name="pf_rule_max_state">0</Option>
               <Option name="pf_source_tracking">False</Option>
+              <Option name="routing">True</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16075X72625" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="">
@@ -20753,7 +20840,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id22238X59856" disabled="False" group="" log="False" position="2" action="Tag" direction="Both" comment="">
+          <PolicyRule id="id22238X59856" disabled="False" group="" log="False" position="2" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -20771,6 +20858,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipf_route_opt_addr"></Option>
@@ -20790,8 +20878,10 @@
               <Option name="pf_route_opt_addr"></Option>
               <Option name="pf_route_opt_if"></Option>
               <Option name="pf_route_option">none</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id43F4556A28869</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23338,12 +23428,12 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id164588X20402" host_OS="freebsd" inactive="False" lastCompiled="1297645524" lastInstalled="0" lastModified="1297648836" platform="pf" version="" name="firewall110" comment="testing shadowing of rules with tag action " ro="False">
+      <Firewall id="id164588X20402" host_OS="freebsd" inactive="False" lastCompiled="1297645524" lastInstalled="0" lastModified="1304552385" platform="pf" version="" name="firewall110" comment="testing shadowing of rules with tag action " ro="False">
         <NAT id="id164956X20402" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
         <Policy id="id164614X20402" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id345014X20402" disabled="False" group="" log="False" position="0" action="Tag" direction="Both" comment="see #1867  this rule is non-terminating and should not shadow next&#10;">
+          <PolicyRule id="id345014X20402" disabled="False" group="" log="False" position="0" action="Continue" direction="Both" comment="see #1867  this rule is non-terminating and should not shadow next&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -23361,6 +23451,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="color">#C0BA44</Option>
               <Option name="custom_str"></Option>
@@ -23398,12 +23489,14 @@
               <Option name="pf_sloppy_tracker">False</Option>
               <Option name="pf_source_tracking">False</Option>
               <Option name="pf_synproxy">False</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id1391120443</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id344958X20402" disabled="False" group="" log="False" position="1" action="Classify" direction="Both" comment="">
+          <PolicyRule id="id344958X20402" disabled="False" group="" log="False" position="1" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -23421,6 +23514,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str">ssh_q</Option>
               <Option name="color">#C0BA44</Option>
               <Option name="custom_str"></Option>
@@ -23437,6 +23531,7 @@
               <Option name="ipt_oif"></Option>
               <Option name="ipt_tee">False</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="pf_fastroute">False</Option>
               <Option name="pf_keep_state">False</Option>
               <Option name="pf_max_src_conn">0</Option>
@@ -23458,11 +23553,14 @@
               <Option name="pf_sloppy_tracker">False</Option>
               <Option name="pf_source_tracking">False</Option>
               <Option name="pf_synproxy">False</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id164616X20402" disabled="False" group="" log="False" position="2" action="Tag" direction="Both" comment="">
+          <PolicyRule id="id164616X20402" disabled="False" group="" log="False" position="2" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -23480,11 +23578,14 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipfw_pipe_method">0</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id43F4556A28869</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -25207,7 +25308,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id3AF5A2BC" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id48472A0C23126" disabled="False" group="" log="False" position="0" action="Tag" direction="Both" comment="">
+          <PolicyRule id="id48472A0C23126" disabled="False" group="" log="False" position="0" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -25225,6 +25326,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
+              <Option name="classification">False</Option>
               <Option name="classify_str"></Option>
               <Option name="custom_str"></Option>
               <Option name="ipf_route_opt_addr"></Option>
@@ -25244,8 +25346,10 @@
               <Option name="pf_route_opt_addr"></Option>
               <Option name="pf_route_opt_if"></Option>
               <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">False</Option>
               <Option name="rule_name_accounting"></Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id4847247323126</Option>
             </PolicyRuleOptions>
           </PolicyRule>
