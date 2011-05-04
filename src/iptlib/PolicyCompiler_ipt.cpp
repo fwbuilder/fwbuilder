@@ -275,12 +275,13 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
         str << iface_name.substr(0,n) << "_";
     }
 
-    switch (rule->getDirection()) {
+    switch (rule->getDirection())
+    {
     case PolicyRule::Inbound:   str << "In_";  break;
     case PolicyRule::Outbound:  str << "Out_"; break;
     default: ;
     }
-    int pos=rule->getPosition();
+    int pos = rule->getPosition();
 
     string ruleset_name = getRuleSetName();
 
@@ -294,7 +295,7 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
     else // special case: position == -1
         str << "000";
 
-    string suffix=rule->getStr("subrule_suffix");
+    string suffix = rule->getStr("subrule_suffix");
     if (!suffix.empty()) str << "_" << suffix;
 
     chain_no++;
@@ -4275,8 +4276,6 @@ void PolicyCompiler_ipt::compile()
     add( new Route("process route rules"));
     add( new storeAction("store original action of this rule"));
 
-    //add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
-
     add( new Logging1("check global logging override option"));
 
     add( new expandGroupsInItf("expand groups in Interface" ));
@@ -4363,6 +4362,14 @@ void PolicyCompiler_ipt::compile()
     add( new swapMultiAddressObjectsInDst(
              " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
+    // #2367
+    add( new splitTagClassifyOrRouteIfAction(
+             "split rules with options Tag, Classify or Route when action "
+             "is not Continue" ) );
+    add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+    add( new accounting("Accounting") );
+
+
     add( new splitIfSrcAny("split rule if src is any") );
 
     if (my_table == "mangle")
@@ -4372,8 +4379,6 @@ void PolicyCompiler_ipt::compile()
     add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
     add( new splitIfDstAny("split rule if dst is any") );
     add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
-
-
 
 
     add( new processMultiAddressObjectsInSrc(
@@ -4487,6 +4492,8 @@ void PolicyCompiler_ipt::compile()
     add( new optimize1("optimization 1, pass 2"));
     add( new optimize1("optimization 1, pass 3"));
 
+
+
     add( new groupServicesByProtocol("split on services"));
     add( new separateTCPWithFlags("split on TCP services with flags"));
     add( new verifyCustomServices("verify custom services"));
@@ -4500,16 +4507,14 @@ void PolicyCompiler_ipt::compile()
 
     add( new optimize2("optimization 2") );
 
+    // add( new splitTagClassifyOrRouteIfAction(
+    //          "split rules with options Tag, Classify or Route when action "
+    //          "is not Continue" ) );
+    // add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+
     // add( new accounting("Accounting") );
-    // add( new prepareForMultiport("prepare for multiport") );
 
-    add( new splitTagClassifyOrRouteIfAction(
-             "split rules with options Tag, Classify or Route when action "
-             "is not Continue" ) );
 
-    add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
-
-    add( new accounting("Accounting") );
     add( new prepareForMultiport("prepare for multiport") );
 
     add( new ConvertToAtomicForAddresses(

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3529
+#  Firewall Builder  fwb_ipt v4.2.1.ma_1
 #
-#  Generated Tue Apr 19 14:12:04 2011 PDT by vadim
+#  Generated Tue May  3 20:28:13 2011 PDT by vadim
 #
 # files: * firewall37.fw /etc/fw/firewall37.fw
 #
@@ -14,11 +14,11 @@
 
 # normal script mode (not using  iptables-restore)
 
-# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 # firewall37:mangle_rules:7: warning: Empty group or address table object 'empty Ogroup'
 # firewall37:mangle_rules:7: warning: After removal of all empty groups and address table objects rule element Src becomes 'any' in the rule mangle_rules 7 (global)
 # Dropping rule mangle_rules 7 (global) because option 'Ignore rules with empty groups' is in effect
+# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
+# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 # firewall37:mangle_rules:13: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
 
@@ -334,14 +334,14 @@ script_body() {
     $IPTABLES -N mymark -t mangle
     $IPTABLES -N Cid29866X28575.0 -t mangle
     $IPTABLES -t mangle -A mymark  -d 192.168.2.0/24   -m state --state NEW  -j Cid29866X28575.0
-    $IPTABLES -t mangle -A Cid29866X28575.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A Cid29866X28575.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid29866X28575.0  -j ACCEPT
     # 
     # Rule mymark 1 (global)
     # 
     echo "Rule mymark 1 (global)"
     # 
-    $IPTABLES -t mangle -A mymark  -j MARK  --set-mark 2
+    $IPTABLES -t mangle -A mymark  -j MARK --set-mark 2
     $IPTABLES -t mangle -A mymark  -j ACCEPT
     # ================ Table 'mangle', rule set Policy
     # 
@@ -351,20 +351,11 @@ script_body() {
     # 
     $IPTABLES -N Cid43BBA6A09745.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -p 50  -m state --state NEW  -j Cid43BBA6A09745.0
-    $IPTABLES -t mangle -A Cid43BBA6A09745.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j Cid43BBA6A09745.0
+    $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j Cid43BBA6A09745.0
+    $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j Cid43BBA6A09745.0
+    $IPTABLES -t mangle -A Cid43BBA6A09745.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid43BBA6A09745.0  -j ACCEPT
-    $IPTABLES -N Cid43BBA6A09745.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j Cid43BBA6A09745.1
-    $IPTABLES -t mangle -A Cid43BBA6A09745.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43BBA6A09745.1  -j ACCEPT
-    $IPTABLES -N Cid43BBA6A09745.2 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j Cid43BBA6A09745.2
-    $IPTABLES -t mangle -A Cid43BBA6A09745.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43BBA6A09745.2  -j ACCEPT
-    $IPTABLES -N Cid43BBA6A09745.3 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j Cid43BBA6A09745.3
-    $IPTABLES -t mangle -A Cid43BBA6A09745.3  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43BBA6A09745.3  -j ACCEPT
     # 
     # Rule 1 (global)
     # 
@@ -375,8 +366,8 @@ script_body() {
     $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j RULE_1
     $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j RULE_1
     $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j RULE_1
-    $IPTABLES -t mangle -A RULE_1  -j LOG  --log-level info --log-prefix "RULE 1 -- TAG "
-    $IPTABLES -t mangle -A RULE_1  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A RULE_1  -j LOG  --log-level info --log-prefix "RULE 1 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_1  -j MARK --set-mark 16
     $IPTABLES -t mangle -A RULE_1  -j ACCEPT
     # 
     # Rule 2 (global)
@@ -385,12 +376,9 @@ script_body() {
     # 
     $IPTABLES -N Cid483502D710047.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -p 50  -m state --state NEW  -j Cid483502D710047.0
-    $IPTABLES -t mangle -A Cid483502D710047.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j Cid483502D710047.0
+    $IPTABLES -t mangle -A Cid483502D710047.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid483502D710047.0  -j ACCEPT
-    $IPTABLES -N Cid483502D710047.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j Cid483502D710047.1
-    $IPTABLES -t mangle -A Cid483502D710047.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid483502D710047.1  -j ACCEPT
     # 
     # Rule 3 (eth1)
     # 
@@ -398,12 +386,9 @@ script_body() {
     # 
     $IPTABLES -N Cid30009X2275.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid30009X2275.0
-    $IPTABLES -t mangle -A Cid30009X2275.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid30009X2275.0
+    $IPTABLES -t mangle -A Cid30009X2275.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid30009X2275.0  -j ACCEPT
-    $IPTABLES -N Cid30009X2275.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid30009X2275.1
-    $IPTABLES -t mangle -A Cid30009X2275.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid30009X2275.1  -j ACCEPT
     # 
     # Rule 4 (global)
     # 
@@ -412,39 +397,33 @@ script_body() {
     $IPTABLES -N RULE_4 -t mangle
     $IPTABLES -t mangle -A OUTPUT -p 50  -m state --state NEW  -j RULE_4
     $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j RULE_4
-    $IPTABLES -t mangle -A RULE_4  -j LOG  --log-level info --log-prefix "RULE 4 -- TAG "
-    $IPTABLES -t mangle -A RULE_4  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A RULE_4  -j LOG  --log-level info --log-prefix "RULE 4 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_4  -j MARK --set-mark 16
     $IPTABLES -t mangle -A RULE_4  -j ACCEPT
     # 
     # Rule 5 (eth1)
     # 
     echo "Rule 5 (eth1)"
     # 
-    $IPTABLES -N Cid43501X5007.0 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -m state --state NEW  -j Cid43501X5007.0
     $IPTABLES -N Cid43501X5007.1 -t mangle
-    $IPTABLES -t mangle -A Cid43501X5007.0 -p 50  -j Cid43501X5007.1
-    $IPTABLES -t mangle -A Cid43501X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43501X5007.1  -j ACCEPT
-    $IPTABLES -N Cid43501X5007.2 -t mangle
-    $IPTABLES -t mangle -A Cid43501X5007.0 -p ah  -j Cid43501X5007.2
-    $IPTABLES -t mangle -A Cid43501X5007.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43501X5007.2  -j ACCEPT
+    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -m state --state NEW  -j Cid43501X5007.1
+    $IPTABLES -N Cid43501X5007.0 -t mangle
+    $IPTABLES -t mangle -A Cid43501X5007.1 -p 50  -j Cid43501X5007.0
+    $IPTABLES -t mangle -A Cid43501X5007.1 -p ah  -j Cid43501X5007.0
+    $IPTABLES -t mangle -A Cid43501X5007.0  -j MARK --set-mark 16
+    $IPTABLES -t mangle -A Cid43501X5007.0  -j ACCEPT
     # 
     # Rule 6 (eth1)
     # 
     echo "Rule 6 (eth1)"
     # 
-    $IPTABLES -N Cid43518X5007.0 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -m state --state NEW  -j Cid43518X5007.0
     $IPTABLES -N Cid43518X5007.1 -t mangle
-    $IPTABLES -t mangle -A Cid43518X5007.0 -p 50  -j Cid43518X5007.1
-    $IPTABLES -t mangle -A Cid43518X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43518X5007.1  -j ACCEPT
-    $IPTABLES -N Cid43518X5007.2 -t mangle
-    $IPTABLES -t mangle -A Cid43518X5007.0 -p ah  -j Cid43518X5007.2
-    $IPTABLES -t mangle -A Cid43518X5007.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43518X5007.2  -j ACCEPT
+    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -m state --state NEW  -j Cid43518X5007.1
+    $IPTABLES -N Cid43518X5007.0 -t mangle
+    $IPTABLES -t mangle -A Cid43518X5007.1 -p 50  -j Cid43518X5007.0
+    $IPTABLES -t mangle -A Cid43518X5007.1 -p ah  -j Cid43518X5007.0
+    $IPTABLES -t mangle -A Cid43518X5007.0  -j MARK --set-mark 16
+    $IPTABLES -t mangle -A Cid43518X5007.0  -j ACCEPT
     # 
     # Rule 7 (eth1)
     # 
@@ -452,42 +431,33 @@ script_body() {
     # 
     $IPTABLES -N Cid43535X5007.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid43535X5007.0
-    $IPTABLES -t mangle -A Cid43535X5007.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid43535X5007.0
+    $IPTABLES -t mangle -A Cid43535X5007.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid43535X5007.0  -j ACCEPT
-    $IPTABLES -N Cid43535X5007.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid43535X5007.1
-    $IPTABLES -t mangle -A Cid43535X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43535X5007.1  -j ACCEPT
     # 
     # Rule 8 (eth1)
     # 
     echo "Rule 8 (eth1)"
     # 
-    $IPTABLES -N Cid43554X5007.0 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -j Cid43554X5007.0
     $IPTABLES -N Cid43554X5007.1 -t mangle
-    $IPTABLES -t mangle -A Cid43554X5007.0 -p 50  -j Cid43554X5007.1
-    $IPTABLES -t mangle -A Cid43554X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43554X5007.1  -j ACCEPT
-    $IPTABLES -N Cid43554X5007.2 -t mangle
-    $IPTABLES -t mangle -A Cid43554X5007.0 -p ah  -j Cid43554X5007.2
-    $IPTABLES -t mangle -A Cid43554X5007.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43554X5007.2  -j ACCEPT
+    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -j Cid43554X5007.1
+    $IPTABLES -N Cid43554X5007.0 -t mangle
+    $IPTABLES -t mangle -A Cid43554X5007.1 -p 50  -j Cid43554X5007.0
+    $IPTABLES -t mangle -A Cid43554X5007.1 -p ah  -j Cid43554X5007.0
+    $IPTABLES -t mangle -A Cid43554X5007.0  -j MARK --set-mark 16
+    $IPTABLES -t mangle -A Cid43554X5007.0  -j ACCEPT
     # 
     # Rule 9 (eth1)
     # 
     echo "Rule 9 (eth1)"
     # 
-    $IPTABLES -N Cid43571X5007.0 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -j Cid43571X5007.0
     $IPTABLES -N Cid43571X5007.1 -t mangle
-    $IPTABLES -t mangle -A Cid43571X5007.0 -p 50  -j Cid43571X5007.1
-    $IPTABLES -t mangle -A Cid43571X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43571X5007.1  -j ACCEPT
-    $IPTABLES -N Cid43571X5007.2 -t mangle
-    $IPTABLES -t mangle -A Cid43571X5007.0 -p ah  -j Cid43571X5007.2
-    $IPTABLES -t mangle -A Cid43571X5007.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43571X5007.2  -j ACCEPT
+    $IPTABLES -t mangle -A OUTPUT -o eth1   -s 22.22.23.22   -j Cid43571X5007.1
+    $IPTABLES -N Cid43571X5007.0 -t mangle
+    $IPTABLES -t mangle -A Cid43571X5007.1 -p 50  -j Cid43571X5007.0
+    $IPTABLES -t mangle -A Cid43571X5007.1 -p ah  -j Cid43571X5007.0
+    $IPTABLES -t mangle -A Cid43571X5007.0  -j MARK --set-mark 16
+    $IPTABLES -t mangle -A Cid43571X5007.0  -j ACCEPT
     # 
     # Rule 10 (eth1)
     # 
@@ -495,12 +465,9 @@ script_body() {
     # 
     $IPTABLES -N Cid43588X5007.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -j Cid43588X5007.0
-    $IPTABLES -t mangle -A Cid43588X5007.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -j Cid43588X5007.0
+    $IPTABLES -t mangle -A Cid43588X5007.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid43588X5007.0  -j ACCEPT
-    $IPTABLES -N Cid43588X5007.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -j Cid43588X5007.1
-    $IPTABLES -t mangle -A Cid43588X5007.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43588X5007.1  -j ACCEPT
     # 
     # Rule 11 (global)
     # 
@@ -515,8 +482,8 @@ script_body() {
     $IPTABLES -t mangle -A Cid43BBCC139745.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -N RULE_11_3 -t mangle
     $IPTABLES -t mangle -A Cid43BBCC139745.0  -j RULE_11_3
-    $IPTABLES -t mangle -A RULE_11_3  -j LOG  --log-level info --log-prefix "RULE 11 -- TAG "
-    $IPTABLES -t mangle -A RULE_11_3  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A RULE_11_3  -j LOG  --log-level info --log-prefix "RULE 11 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_11_3  -j MARK --set-mark 16
     $IPTABLES -t mangle -A RULE_11_3  -j ACCEPT
     # 
     # Rule 12 (eth1)
@@ -525,28 +492,16 @@ script_body() {
     # 
     $IPTABLES -N Cid4665E24F7765.0 -t mangle
     $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -m state --state NEW  -j Cid4665E24F7765.0
-    $IPTABLES -t mangle -A Cid4665E24F7765.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.0
+    $IPTABLES -t mangle -A Cid4665E24F7765.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid4665E24F7765.0  -j ACCEPT
     $IPTABLES -N Cid4665E24F7765.1 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.1
-    $IPTABLES -t mangle -A Cid4665E24F7765.1  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid4665E24F7765.1
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.1
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Cid4665E24F7765.1
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.1
+    $IPTABLES -t mangle -A Cid4665E24F7765.1  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid4665E24F7765.1  -j ACCEPT
-    $IPTABLES -N Cid4665E24F7765.2 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid4665E24F7765.2
-    $IPTABLES -t mangle -A Cid4665E24F7765.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid4665E24F7765.2  -j ACCEPT
-    $IPTABLES -N Cid4665E24F7765.3 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.3
-    $IPTABLES -t mangle -A Cid4665E24F7765.3  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid4665E24F7765.3  -j ACCEPT
-    $IPTABLES -N Cid4665E24F7765.4 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Cid4665E24F7765.4
-    $IPTABLES -t mangle -A Cid4665E24F7765.4  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid4665E24F7765.4  -j ACCEPT
-    $IPTABLES -N Cid4665E24F7765.5 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Cid4665E24F7765.5
-    $IPTABLES -t mangle -A Cid4665E24F7765.5  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid4665E24F7765.5  -j ACCEPT
     # 
     # Rule 13 (eth1)
     # 
@@ -554,12 +509,9 @@ script_body() {
     # 
     $IPTABLES -N Cid43BBCC3D9745.0 -t mangle
     $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -m state --state NEW  -j Cid43BBCC3D9745.0
-    $IPTABLES -t mangle -A Cid43BBCC3D9745.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j Cid43BBCC3D9745.0
+    $IPTABLES -t mangle -A Cid43BBCC3D9745.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid43BBCC3D9745.0  -j ACCEPT
-    $IPTABLES -N Cid43BBCC3D9745.1 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j Cid43BBCC3D9745.1
-    $IPTABLES -t mangle -A Cid43BBCC3D9745.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid43BBCC3D9745.1  -j ACCEPT
     # 
     # Rule 14 (eth1)
     # 
@@ -567,34 +519,25 @@ script_body() {
     # 
     $IPTABLES -N Cid459E471C10946.0 -t mangle
     $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid459E471C10946.0
-    $IPTABLES -t mangle -A Cid459E471C10946.0  -j MARK  --set-mark 16
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid459E471C10946.0
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Cid459E471C10946.0
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Cid459E471C10946.0
+    $IPTABLES -t mangle -A Cid459E471C10946.0  -j MARK --set-mark 16
     $IPTABLES -t mangle -A Cid459E471C10946.0  -j ACCEPT
-    $IPTABLES -N Cid459E471C10946.1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid459E471C10946.1
-    $IPTABLES -t mangle -A Cid459E471C10946.1  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid459E471C10946.1  -j ACCEPT
-    $IPTABLES -N Cid459E471C10946.2 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Cid459E471C10946.2
-    $IPTABLES -t mangle -A Cid459E471C10946.2  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid459E471C10946.2  -j ACCEPT
-    $IPTABLES -N Cid459E471C10946.3 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Cid459E471C10946.3
-    $IPTABLES -t mangle -A Cid459E471C10946.3  -j MARK  --set-mark 16
-    $IPTABLES -t mangle -A Cid459E471C10946.3  -j ACCEPT
     # 
     # Rule 15 (global)
     # 
     echo "Rule 15 (global)"
     # 
     # using CONNMARK
-    $IPTABLES -N RULE_15 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -p 50  -m state --state NEW  -j RULE_15
-    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j RULE_15
-    $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j RULE_15
-    $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j RULE_15
-    $IPTABLES -t mangle -A RULE_15  -j MARK  --set-mark 10
-    $IPTABLES -t mangle -A RULE_15  -j CONNMARK --save-mark
-    $IPTABLES -t mangle -A RULE_15  -j ACCEPT
+    $IPTABLES -N Cid4483A4BD1810.0 -t mangle
+    $IPTABLES -t mangle -A OUTPUT -p 50  -m state --state NEW  -j Cid4483A4BD1810.0
+    $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j Cid4483A4BD1810.0
+    $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j Cid4483A4BD1810.0
+    $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j Cid4483A4BD1810.0
+    $IPTABLES -t mangle -A Cid4483A4BD1810.0  -j MARK --set-mark 10
+    $IPTABLES -t mangle -A Cid4483A4BD1810.0  -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A Cid4483A4BD1810.0  -j ACCEPT
     # 
     # Rule 16 (global)
     # 
@@ -606,8 +549,8 @@ script_body() {
     $IPTABLES -t mangle -A OUTPUT -p ah  -m state --state NEW  -j RULE_16
     $IPTABLES -t mangle -A PREROUTING -p 50  -m state --state NEW  -j RULE_16
     $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j RULE_16
-    $IPTABLES -t mangle -A RULE_16  -j LOG  --log-level info --log-prefix "RULE 16 -- TAG "
-    $IPTABLES -t mangle -A RULE_16  -j MARK  --set-mark 10
+    $IPTABLES -t mangle -A RULE_16  -j LOG  --log-level info --log-prefix "RULE 16 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_16  -j MARK --set-mark 10
     $IPTABLES -t mangle -A RULE_16  -j CONNMARK --save-mark
     $IPTABLES -t mangle -A RULE_16  -j ACCEPT
     # 
@@ -623,38 +566,38 @@ script_body() {
     $IPTABLES -t mangle -A PREROUTING -p ah  -m state --state NEW  -j Cid4483A4DF1810.0
     $IPTABLES -t mangle -A Cid4483A4DF1810.0  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid4483A4DF1810.0  -s 192.168.2.0/24   -j RETURN
-    $IPTABLES -N RULE_17 -t mangle
-    $IPTABLES -t mangle -A Cid4483A4DF1810.0  -j RULE_17
-    $IPTABLES -t mangle -A RULE_17  -j LOG  --log-level info --log-prefix "RULE 17 -- TAG "
-    $IPTABLES -t mangle -A RULE_17  -j MARK  --set-mark 10
-    $IPTABLES -t mangle -A RULE_17  -j CONNMARK --save-mark
-    $IPTABLES -t mangle -A RULE_17  -j ACCEPT
+    $IPTABLES -N RULE_17_3 -t mangle
+    $IPTABLES -t mangle -A Cid4483A4DF1810.0  -j RULE_17_3
+    $IPTABLES -t mangle -A RULE_17_3  -j LOG  --log-level info --log-prefix "RULE 17 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_17_3  -j MARK --set-mark 10
+    $IPTABLES -t mangle -A RULE_17_3  -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A RULE_17_3  -j ACCEPT
     # 
     # Rule 18 (eth1)
     # 
     echo "Rule 18 (eth1)"
     # 
     # using CONNMARK
-    $IPTABLES -N In_RULE_18 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -m state --state NEW  -j In_RULE_18
-    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j In_RULE_18
-    $IPTABLES -t mangle -A In_RULE_18 -i eth1   -j MARK  --set-mark 10
-    $IPTABLES -t mangle -A In_RULE_18 -i eth1   -j CONNMARK --save-mark
-    $IPTABLES -t mangle -A In_RULE_18 -i eth1   -j ACCEPT
+    $IPTABLES -N Cid4483A4F01810.0 -t mangle
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -m state --state NEW  -j Cid4483A4F01810.0
+    $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -m state --state NEW  -j Cid4483A4F01810.0
+    $IPTABLES -t mangle -A Cid4483A4F01810.0  -j MARK --set-mark 10
+    $IPTABLES -t mangle -A Cid4483A4F01810.0  -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A Cid4483A4F01810.0  -j ACCEPT
     # 
     # Rule 19 (eth1)
     # 
     echo "Rule 19 (eth1)"
     # 
     # using CONNMARK
-    $IPTABLES -N Out_RULE_19 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Out_RULE_19
-    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Out_RULE_19
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Out_RULE_19
-    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Out_RULE_19
-    $IPTABLES -t mangle -A Out_RULE_19 -o eth1   -j MARK  --set-mark 10
-    $IPTABLES -t mangle -A Out_RULE_19 -o eth1   -j CONNMARK --save-mark
-    $IPTABLES -t mangle -A Out_RULE_19 -o eth1   -j ACCEPT
+    $IPTABLES -N Cid459E472D10946.0 -t mangle
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p 50  -m state --state NEW  -j Cid459E472D10946.0
+    $IPTABLES -t mangle -A OUTPUT -o eth1  -p ah  -m state --state NEW  -j Cid459E472D10946.0
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p 50  -m state --state NEW  -j Cid459E472D10946.0
+    $IPTABLES -t mangle -A POSTROUTING -o eth1  -p ah  -m state --state NEW  -j Cid459E472D10946.0
+    $IPTABLES -t mangle -A Cid459E472D10946.0  -j MARK --set-mark 10
+    $IPTABLES -t mangle -A Cid459E472D10946.0  -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A Cid459E472D10946.0  -j ACCEPT
     # 
     # Rule 22 (global)
     # 
@@ -662,7 +605,7 @@ script_body() {
     # 
     $IPTABLES -N Cid43BB81879745.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING  -s 192.168.1.0/24   -j Cid43BB81879745.0
-    $IPTABLES -t mangle -A Cid43BB81879745.0  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Cid43BB81879745.0  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Cid43BB81879745.0  -j ACCEPT
     # 
     # Rule 23 (global)
@@ -671,8 +614,8 @@ script_body() {
     # 
     $IPTABLES -N RULE_23 -t mangle
     $IPTABLES -t mangle -A POSTROUTING  -s 192.168.1.0/24   -j RULE_23
-    $IPTABLES -t mangle -A RULE_23  -j LOG  --log-level info --log-prefix "RULE 23 -- CLASSIFY "
-    $IPTABLES -t mangle -A RULE_23  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A RULE_23  -j LOG  --log-level info --log-prefix "RULE 23 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_23  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A RULE_23  -j ACCEPT
     # 
     # Rule 24 (global)
@@ -683,7 +626,7 @@ script_body() {
     $IPTABLES -t mangle -A POSTROUTING  -j Cid451E56936383.0
     $IPTABLES -t mangle -A Cid451E56936383.0  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid451E56936383.0  -s 192.168.2.0/24   -j RETURN
-    $IPTABLES -t mangle -A Cid451E56936383.0  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Cid451E56936383.0  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Cid451E56936383.0  -j ACCEPT
     # 
     # Rule 25 (global)
@@ -696,8 +639,8 @@ script_body() {
     $IPTABLES -t mangle -A Cid451E56A46383.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -N RULE_25_3 -t mangle
     $IPTABLES -t mangle -A Cid451E56A46383.0  -j RULE_25_3
-    $IPTABLES -t mangle -A RULE_25_3  -j LOG  --log-level info --log-prefix "RULE 25 -- CLASSIFY "
-    $IPTABLES -t mangle -A RULE_25_3  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A RULE_25_3  -j LOG  --log-level info --log-prefix "RULE 25 -- ACCEPT "
+    $IPTABLES -t mangle -A RULE_25_3  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A RULE_25_3  -j ACCEPT
     # 
     # Rule 26 (eth1)
@@ -706,7 +649,7 @@ script_body() {
     # 
     $IPTABLES -N Cid451EAD596383.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o eth1   -s 192.168.1.0/24   -j Cid451EAD596383.0
-    $IPTABLES -t mangle -A Cid451EAD596383.0  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Cid451EAD596383.0  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Cid451EAD596383.0  -j ACCEPT
     # 
     # Rule 27 (eth1)
@@ -715,8 +658,8 @@ script_body() {
     # 
     $IPTABLES -N Out_RULE_27 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o eth1   -s 192.168.1.0/24   -j Out_RULE_27
-    $IPTABLES -t mangle -A Out_RULE_27  -j LOG  --log-level info --log-prefix "RULE 27 -- CLASSIFY "
-    $IPTABLES -t mangle -A Out_RULE_27  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Out_RULE_27  -j LOG  --log-level info --log-prefix "RULE 27 -- ACCEPT "
+    $IPTABLES -t mangle -A Out_RULE_27  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Out_RULE_27  -j ACCEPT
     # 
     # Rule 28 (eth1)
@@ -725,7 +668,7 @@ script_body() {
     # 
     $IPTABLES -N Cid451ED8E76383.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o ! eth1   -s 192.168.1.0/24   -j Cid451ED8E76383.0
-    $IPTABLES -t mangle -A Cid451ED8E76383.0  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Cid451ED8E76383.0  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Cid451ED8E76383.0  -j ACCEPT
     # 
     # Rule 29 (eth1)
@@ -734,8 +677,8 @@ script_body() {
     # 
     $IPTABLES -N Out_RULE_29 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o ! eth1   -s 192.168.1.0/24   -j Out_RULE_29
-    $IPTABLES -t mangle -A Out_RULE_29  -j LOG  --log-level info --log-prefix "RULE 29 -- CLASSIFY "
-    $IPTABLES -t mangle -A Out_RULE_29  -j CLASSIFY  --set-class 1:2
+    $IPTABLES -t mangle -A Out_RULE_29  -j LOG  --log-level info --log-prefix "RULE 29 -- ACCEPT "
+    $IPTABLES -t mangle -A Out_RULE_29  -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Out_RULE_29  -j ACCEPT
     # 
     # Rule 30 (global)
@@ -747,7 +690,7 @@ script_body() {
     # in this firewall object
     $IPTABLES -N Cid4599A9DC19324.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -p icmp  -m icmp  --icmp-type 3  -j Cid4599A9DC19324.0
-    $IPTABLES -t mangle -A Cid4599A9DC19324.0  -j CLASSIFY  --set-class 1:10
+    $IPTABLES -t mangle -A Cid4599A9DC19324.0  -j CLASSIFY --set-class 1:10
     $IPTABLES -t mangle -A Cid4599A9DC19324.0  -j ACCEPT
     # 
     # Rule 31 (eth0)
@@ -757,7 +700,7 @@ script_body() {
     # second rule for bug #1618381
     $IPTABLES -N Cid4599A9E919324.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o eth0   -j Cid4599A9E919324.0
-    $IPTABLES -t mangle -A Cid4599A9E919324.0  -j CLASSIFY  --set-class 1:11
+    $IPTABLES -t mangle -A Cid4599A9E919324.0  -j CLASSIFY --set-class 1:11
     $IPTABLES -t mangle -A Cid4599A9E919324.0  -j ACCEPT
     # 
     # Rule 32 (global)
@@ -769,7 +712,7 @@ script_body() {
     $IPTABLES -t mangle -A POSTROUTING -p icmp  -m icmp  --icmp-type 3  -j Cid459A026219324.0
     $IPTABLES -t mangle -A Cid459A026219324.0  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid459A026219324.0  -s 192.168.2.0/24   -j RETURN
-    $IPTABLES -t mangle -A Cid459A026219324.0  -j CLASSIFY  --set-class 1:10
+    $IPTABLES -t mangle -A Cid459A026219324.0  -j CLASSIFY --set-class 1:10
     $IPTABLES -t mangle -A Cid459A026219324.0  -j ACCEPT
     # 
     # Rule 33 (global)
@@ -782,7 +725,7 @@ script_body() {
     $IPTABLES -t mangle -A POSTROUTING -p tcp -m tcp  --dport 80  -j Cid459A5AFB19324.0
     $IPTABLES -t mangle -A Cid459A5AFB19324.0  -s 192.168.1.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid459A5AFB19324.0  -s 192.168.2.0/24   -j RETURN
-    $IPTABLES -t mangle -A Cid459A5AFB19324.0  -j CLASSIFY  --set-class 1:10
+    $IPTABLES -t mangle -A Cid459A5AFB19324.0  -j CLASSIFY --set-class 1:10
     $IPTABLES -t mangle -A Cid459A5AFB19324.0  -j ACCEPT
     # 
     # Rule 34 (eth0)
@@ -795,16 +738,10 @@ script_body() {
     # of that
     $IPTABLES -N Cid459A875F19324.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  --dport 10000:11000  -j Cid459A875F19324.0
-    $IPTABLES -t mangle -A Cid459A875F19324.0  -j CLASSIFY  --set-class 1:11
+    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j Cid459A875F19324.0
+    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p udp -m udp  -m multiport  --dports 53,161  -j Cid459A875F19324.0
+    $IPTABLES -t mangle -A Cid459A875F19324.0  -j CLASSIFY --set-class 1:11
     $IPTABLES -t mangle -A Cid459A875F19324.0  -j ACCEPT
-    $IPTABLES -N Cid459A875F19324.1 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j Cid459A875F19324.1
-    $IPTABLES -t mangle -A Cid459A875F19324.1  -j CLASSIFY  --set-class 1:11
-    $IPTABLES -t mangle -A Cid459A875F19324.1  -j ACCEPT
-    $IPTABLES -N Cid459A875F19324.2 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -o eth0  -p udp -m udp  -m multiport  --dports 53,161  -j Cid459A875F19324.2
-    $IPTABLES -t mangle -A Cid459A875F19324.2  -j CLASSIFY  --set-class 1:11
-    $IPTABLES -t mangle -A Cid459A875F19324.2  -j ACCEPT
     # 
     # Rule 36 (global)
     # 
@@ -830,12 +767,12 @@ script_body() {
     # 
     echo "Rule mangle_rules 1 (global)"
     # 
-    $IPTABLES -N mangle_rules_1 -t mangle
-    $IPTABLES -t mangle -A OUTPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j mangle_rules_1
-    $IPTABLES -t mangle -A PREROUTING -p tcp -m tcp  --dport 80  -m state --state NEW  -j mangle_rules_1
-    $IPTABLES -t mangle -A mangle_rules_1  -j MARK  --set-mark 1
-    $IPTABLES -t mangle -A mangle_rules_1  -j CONNMARK --save-mark
-    $IPTABLES -t mangle -A mangle_rules_1  -j ACCEPT
+    $IPTABLES -N Cid56804X29169.0 -t mangle
+    $IPTABLES -t mangle -A OUTPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid56804X29169.0
+    $IPTABLES -t mangle -A PREROUTING -p tcp -m tcp  --dport 80  -m state --state NEW  -j Cid56804X29169.0
+    $IPTABLES -t mangle -A Cid56804X29169.0  -j MARK --set-mark 1
+    $IPTABLES -t mangle -A Cid56804X29169.0  -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A Cid56804X29169.0  -j ACCEPT
     # 
     # Rule mangle_rules 2 (global)
     # 
@@ -843,7 +780,7 @@ script_body() {
     # 
     $IPTABLES -N Cid56817X29169.0 -t mangle
     $IPTABLES -t mangle -A POSTROUTING -m mark --mark 1  -j Cid56817X29169.0
-    $IPTABLES -t mangle -A Cid56817X29169.0  -j CLASSIFY  --set-class 1:12
+    $IPTABLES -t mangle -A Cid56817X29169.0  -j CLASSIFY --set-class 1:12
     $IPTABLES -t mangle -A Cid56817X29169.0  -j ACCEPT
     # 
     # Rule mangle_rules 4 (global)
@@ -1050,7 +987,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Apr 19 14:12:04 2011 by vadim"
+        log "Activating firewall script generated Tue May  3 20:28:13 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
