@@ -1,7 +1,7 @@
 <!--
-   FWObjectDatabase_19.xslt 2011-05-03
+   FWObjectDatabase_20.xslt 2011-05-03
    Author:       Vadim Kurland
-   Description:  translates fwbuilder object database from v19 to 20
+   Description:  translates fwbuilder object database from v20 to 21
                  
                  
 -->
@@ -235,7 +235,7 @@
 
 <xsl:template match="*[attribute::id='root']">
   <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/">
-    <xsl:attribute name="version">20</xsl:attribute>
+    <xsl:attribute name="version">21</xsl:attribute>
     <xsl:attribute name="lastModified"><xsl:value-of select="@lastModified"/></xsl:attribute>
     <xsl:attribute name="id">root</xsl:attribute>
     <xsl:apply-templates select="*" mode="copy"/>

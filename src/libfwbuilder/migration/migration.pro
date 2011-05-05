@@ -94,5 +94,6 @@ target.files  = FWObjectDatabase_0.8.7.xslt \
                 FWObjectDatabase_17.xslt \
                 FWObjectDatabase_18.xslt \
                 FWObjectDatabase_19.xslt \
+                FWObjectDatabase_20.xslt \
 
 
