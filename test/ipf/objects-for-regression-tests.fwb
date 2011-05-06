@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1257363322" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1257363322" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1266,9 +1266,13 @@
             <Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth1"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="Automatically generated rule blocking short fragments">
             <Src neg="False">
@@ -1288,7 +1292,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-1" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Automatically generated anti-spoofing rule">
             <Src neg="False">
@@ -1309,7 +1316,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3EDC2CC7" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="комментарий по-русски">
             <Src neg="False">
@@ -1327,7 +1337,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B92DFC5" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1342,7 +1355,11 @@
             <Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
-            <PolicyRuleOptions/>
+            
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3C4E4C38" disabled="False" log="True" position="5" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -1357,9 +1374,13 @@
             <Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B58E39D" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -1385,7 +1406,10 @@
               <Option name="log_limit_suffix"/>
               <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B6659FC" disabled="False" log="True" position="7" action="Reject" direction="Both" comment="">
             <Src neg="False">
@@ -1411,7 +1435,10 @@
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">True</Option>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CE74D81" disabled="False" log="False" position="8" action="Reject" direction="Both" comment="">
             <Src neg="False">
@@ -1431,7 +1458,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3BF1B45E" disabled="True" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1454,7 +1484,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3BF1B44E" disabled="True" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1477,7 +1510,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-3" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1503,7 +1539,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1526,7 +1565,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1550,7 +1592,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CD8770E" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1574,7 +1619,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D98E652" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1598,7 +1646,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CD87B1E" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1622,7 +1673,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B58E180" disabled="False" log="True" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1640,7 +1694,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3EE262C2" disabled="True" log="False" position="18" action="Accept" direction="Both" comment="illegal rule - firewall8 has dynamic interface">
             <Src neg="False">
@@ -1660,7 +1717,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3EE261FB" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1682,7 +1742,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-5" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="Automatically generated 'masquerading' rule">
             <Src neg="False">
@@ -1706,7 +1769,10 @@
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
@@ -1735,7 +1801,10 @@
               <Option name="log_limit_suffix"/>
               <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2174,9 +2243,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3AF5AA96"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CD34BEF" disabled="False" log="False" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2196,7 +2269,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5AAB4" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
@@ -2212,9 +2288,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3AF5AA99"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5AAAB" disabled="False" log="True" position="3" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
@@ -2229,9 +2309,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3AF5AA99"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CDDF2FA" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2249,7 +2333,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CCA26E4" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2269,7 +2356,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B9AB902" disabled="True" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2289,7 +2379,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFC0F90" disabled="False" log="True" position="7" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
@@ -2307,7 +2400,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B021E10" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
@@ -2332,7 +2428,10 @@
               <Option name="limit_value">10</Option>
               <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0B4A13" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
             <Src neg="True">
@@ -2353,7 +2452,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B5535B7" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="">
             <Src neg="True">
@@ -2374,7 +2476,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B11F63D" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2396,7 +2501,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CDDF0AA" disabled="False" log="False" position="12" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2416,7 +2524,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B021E6F" disabled="True" log="True" position="13" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
@@ -2438,7 +2549,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CCA2CF4" disabled="True" log="True" position="14" action="Accept" direction="Both" comment="testing negation in service field">
             <Src neg="False">
@@ -2458,7 +2572,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B45739A" disabled="False" log="True" position="15" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2478,7 +2595,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5AAC8" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
@@ -2496,7 +2616,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5AAE3" disabled="False" log="True" position="17" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -2516,7 +2639,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3238,13 +3364,17 @@
             <Itf neg="False">
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="action_on_reject"/>
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB6710" disabled="False" log="True" position="1" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
@@ -3260,13 +3390,17 @@
             <Itf neg="False">
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="action_on_reject"/>
               <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB66E5" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="block fragments">
             <Src neg="False">
@@ -3287,7 +3421,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C6FD2" disabled="False" log="True" position="3" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
             <Src neg="False">
@@ -3313,7 +3450,10 @@
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D333A66" disabled="False" log="True" position="4" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
             <Src neg="False">
@@ -3339,7 +3479,10 @@
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D8FF63F" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3358,7 +3501,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D8FF660" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3377,7 +3523,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB66EF" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
@@ -3397,7 +3546,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="id"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3C447B8D" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
             <Src neg="False">
@@ -3415,7 +3567,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3C447BCB" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3433,7 +3588,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB66F9" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -3454,7 +3612,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3875,9 +4036,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="1" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
@@ -3893,9 +4058,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B54C977" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -3910,9 +4079,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B54F071" disabled="False" log="True" position="3" action="Deny" direction="Both" comment="">
             <Src neg="True">
@@ -3927,9 +4100,13 @@
             <Itf neg="False">
               <ObjectRef ref="id3B0C63E1"/>
             </Itf>
+            
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C639F" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
@@ -3949,7 +4126,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="id"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
@@ -3971,7 +4151,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="True">
@@ -3993,7 +4176,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="7" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
@@ -4016,7 +4202,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
@@ -4036,7 +4225,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="id"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D85069A" disabled="True" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4055,7 +4247,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -4076,7 +4271,10 @@
             <PolicyRuleOptions>
               <Option name="id"/>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4206,7 +4404,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3CF5B373" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -4226,7 +4427,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3C69BF13" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4244,7 +4448,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4352,7 +4559,11 @@
             <Itf neg="False">
               <ObjectRef ref="id3AF5A2CB"/>
             </Itf>
-            <PolicyRuleOptions/>
+            
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB70C7" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="allow everything on loopback">
             <Src neg="False">
@@ -4367,7 +4578,11 @@
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AFB70CF" disabled="False" log="False" position="2" action="Accept" direction="Outbound" comment="allow everything on loopback">
             <Src neg="False">
@@ -4382,7 +4597,11 @@
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3BD8ECC6" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4397,7 +4616,11 @@
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5A74B" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="block fragments">
             <Src neg="False">
@@ -4417,7 +4640,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5A73A" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4440,7 +4666,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5A757" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="allow all outgoing connections">
             <Src neg="False">
@@ -4458,7 +4687,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3AF5A762" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -4478,7 +4710,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4791,7 +5026,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D5822B5" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4809,7 +5047,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D582294" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4827,7 +5068,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D58228A" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4845,7 +5089,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3D5822A0" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -4865,7 +5112,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5185,7 +5435,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3DF3E09E" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5204,7 +5457,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3DF3D16E" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="True">
@@ -5223,7 +5479,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3E5F1BBD" disabled="False" log="False" position="3" action="Accounting" direction="Both" comment="">
             <Src neg="False">
@@ -5243,7 +5502,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3E5F1BB3" disabled="False" log="True" position="4" action="Accounting" direction="Both" comment="">
             <Src neg="False">
@@ -5263,7 +5525,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3DF3D12E" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5281,7 +5546,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3DF3D563" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5299,7 +5567,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3DF3D156" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5319,7 +5590,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5397,7 +5671,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCA520D" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="True">
@@ -5425,7 +5702,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCC3AD6" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5444,7 +5724,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCA5217" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5474,7 +5757,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCC1E1A" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5500,7 +5786,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCC1E4F" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5527,7 +5816,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCC1EC3" disabled="False" log="False" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5554,7 +5846,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FCA5221" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5574,7 +5869,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5681,7 +5979,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FF5DC56" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5699,7 +6000,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3FF5DC61" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5717,7 +6021,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6019,7 +6326,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id424A96DA" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6037,7 +6347,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id424A637E" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6055,7 +6368,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id424A6388" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6073,7 +6389,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id424A6392" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6091,7 +6410,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id424A639C" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6111,7 +6433,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6301,7 +6626,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43869E9018346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6319,7 +6647,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43869E9E18346" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6337,7 +6668,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43869EAA18346" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6355,7 +6689,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4386E38318346" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6375,7 +6712,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4386E37718346" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6395,7 +6735,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43867C3018346" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6413,7 +6756,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4386C10D18346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6431,7 +6777,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id438728A918346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6450,7 +6799,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id438728BA18346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6469,7 +6821,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id438728CD18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6488,7 +6843,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43867C3C18346" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6508,7 +6866,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6685,7 +7046,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4388CFEA674" disabled="True" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6705,7 +7069,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4390C25825682" disabled="True" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6725,7 +7092,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4389EDC118346" disabled="True" log="False" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6746,7 +7116,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4388CFF8674" disabled="True" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6766,7 +7139,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4388C36F674" disabled="True" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6787,7 +7163,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4388F5A9674" disabled="True" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="True">
@@ -6806,7 +7185,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4389EEA118346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6824,7 +7206,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4389EDCD18346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6842,7 +7227,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4389EE3C18346" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6862,7 +7250,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -7241,7 +7632,10 @@
               <Option name="rule_name_accounting"/>
               <Option name="stateless">True</Option>
               <Option name="tagvalue"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43F7D90631168" disabled="False" log="False" position="1" action="Custom" direction="Inbound" comment="">
             <Src neg="True">
@@ -7269,7 +7663,10 @@
               <Option name="rule_name_accounting"/>
               <Option name="stateless">True</Option>
               <Option name="tagvalue"/>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43F7D91731168" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7287,7 +7684,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id43F7C98E31168" disabled="False" log="True" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -7307,7 +7707,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

@@ -763,6 +763,8 @@
           </When>
             <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
           </PolicyRule>
         <PolicyRule id="id2781X94039" disabled="False" group="" log="True" position="1" action="Deny" direction="Inbound" comment="anti spoofing rule">
@@ -895,6 +897,8 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
           </PolicyRule>
         <PolicyRule id="id2842X94039" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
@@ -951,6 +955,8 @@
           </When>
             <PolicyRuleOptions>
             <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
           </PolicyRule>
         <RuleSetOptions/>
@@ -1931,7 +1937,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id5954X26920" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1951,7 +1960,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id7136X39764" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1971,7 +1983,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id7162X39764" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1991,7 +2006,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id7149X39764" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2011,7 +2029,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id39043X28773" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2031,7 +2052,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id5942X26920" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2051,7 +2075,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2130,7 +2157,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2206,7 +2236,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id56069X50958" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2226,7 +2259,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id4808X69263" disabled="False" group="test for interface group" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2248,7 +2284,10 @@
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id24679X69263" disabled="False" group="test for interface group" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2269,7 +2308,10 @@
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id72694X50958" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2289,7 +2331,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id89654X50958" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2310,7 +2355,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id106892X50958" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2332,7 +2380,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id124525X50958" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2352,7 +2403,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id124478X50958" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2373,7 +2427,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id124667X50958" disabled="False" group="" log="False" position="9" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -2393,7 +2450,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id124620X50958" disabled="False" group="" log="False" position="10" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -2414,7 +2474,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id181105X50958" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2434,7 +2497,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id181058X50958" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2455,7 +2521,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2535,7 +2604,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

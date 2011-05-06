@@ -211,7 +211,8 @@ bool ProjectPanel::fileNew()
 
     if (fwbdebug)
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
-               rcs, rcs->getFileName().toAscii().constData());
+               rcs, rcs == 0 ? "<null>" :
+               rcs->getFileName().toAscii().constData());
 
     return (rcs!=NULL);
 }
