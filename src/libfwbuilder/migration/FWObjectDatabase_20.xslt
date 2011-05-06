@@ -2,7 +2,7 @@
    FWObjectDatabase_20.xslt 2011-05-03
    Author:       Vadim Kurland
    Description:  translates fwbuilder object database from v20 to 21
-                 
+                 convert actions Tag, Classify and Route to options
                  
 -->
 
@@ -103,8 +103,22 @@
   <xsl:variable name="ipt_make_terminating"
     select="../../fwb:FirewallOptions/fwb:Option[attribute::name='classify_mark_terminating']"/>
 
-  <xsl:variable name="pf_make_terminating"
-    select="fwb:PolicyRuleOptions/fwb:Option[attribute::name='pf_classify_terminating']"/>
+  <!--
+    Option "pf_class_terminating" can be blank, "True" or
+    "False". Blank (the option is missing entirely) or "True" means
+    the rule must be terminating. "False" means the opposite.
+  -->
+
+  <xsl:variable name="pf_make_terminating">
+    <xsl:choose>
+      <xsl:when test="fwb:PolicyRuleOptions/fwb:Option[attribute::name='pf_classify_terminating']">
+        <xsl:value-of 
+            select="fwb:PolicyRuleOptions/fwb:Option[attribute::name='pf_classify_terminating']"/>
+      </xsl:when>
+      <xsl:otherwise>True</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
 
   <xsl:element name="PolicyRule" namespace="http://www.fwbuilder.org/1.0/">
     <xsl:copy-of select="@id"/>

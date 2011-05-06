@@ -9266,7 +9266,7 @@
           </PolicyRuleOptions>
   
           </PolicyRule>
-          <PolicyRule id="id43F4407F28542" disabled="False" position="10" direction="Both" action="Continue" log="False" comment="" group="">
+          <PolicyRule id="id43F4407F28542" disabled="False" position="10" direction="Both" action="Accept" log="False" comment="" group="">
           <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -10128,7 +10128,7 @@
           </PolicyRuleOptions>
   
           </PolicyRule>
-          <PolicyRule id="id445DB3B732739" disabled="False" position="9" direction="Both" action="Continue" log="False" comment="" group="">
+          <PolicyRule id="id445DB3B732739" disabled="False" position="9" direction="Both" action="Accept" log="False" comment="" group="">
           <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -24539,7 +24539,7 @@
             <Option name="routing">False</Option>
           </PolicyRuleOptions>
         </PolicyRule>
-          <PolicyRule id="id344958X20402" disabled="False" position="1" direction="Both" action="Continue" log="False" comment="" group="">
+          <PolicyRule id="id344958X20402" disabled="False" position="1" direction="Both" action="Accept" log="False" comment="" group="">
           <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.1.3538
+#  Firewall Builder  fwb_pf v4.2.1.ma_1
 #
-#  Generated Thu May  5 18:34:18 2011 PDT by vadim
+#  Generated Fri May  6 15:05:37 2011 PDT by vadim
 #
 # files: * pf_cluster_4_rc.conf.local /etc/pf_cluster_4_rc.conf.local
 # files:   pf_cluster_4_pf.conf /etc/pf_cluster_4_pf.conf
