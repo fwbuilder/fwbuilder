@@ -206,9 +206,9 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
 
     /*
      * rules with action continue do not make final decision and
-     * therefore can not shadow other rules or be shadowed
+     * therefore can not shadow other rules (but can be shadowed)
      */
-    if (r1_action==PolicyRule::Continue  ||
+    if (/* r1_action==PolicyRule::Continue  || */
         r2_action==PolicyRule::Continue ) return false;
 
     Address  *src1;
