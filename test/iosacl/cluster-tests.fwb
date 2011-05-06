@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1253911075" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1253911075" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -652,105 +652,120 @@
       </NAT>
       <Policy id="id3639X95766" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id5954X26920" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id7136X39764" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id7162X39764" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id7149X39764" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id5942X26920" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Routing id="id3641X95766" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -1348,25 +1363,28 @@
       </NAT>
       <Policy id="id3816X36775" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id4355X56095" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Routing id="id3818X36775" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -1592,133 +1610,151 @@
       </NAT>
       <Policy id="id3465X13311" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id3466X13311" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3054X14356"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3068X14356"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id3478X13311" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="anti spoofing rule">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
             <ObjectRef ref="id3433X13311"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id3491X13311" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id3503X13311" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3433X13311"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id3515X13311" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id3527X13311" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3433X13311"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3F530CC8"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4369X67939" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="branch rule set is different in members linux-1 and linux-2">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3433X13311"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="action_on_reject"/>
             <Option name="branch_id">id6187X76214</Option>
             <Option name="classify_str"/>
@@ -1765,25 +1801,28 @@
             <Option name="rule_name_accounting"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id3539X13311" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3433X13311"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="connlimit_masklen">0</Option>
             <Option name="connlimit_value">0</Option>
             <Option name="firewall_is_part_of_any_and_networks">False</Option>
@@ -1807,64 +1846,76 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id3551X13311" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id3563X13311" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions>
-            <Option name="stateless">True</Option>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
+        <PolicyRule id="id3563X13311" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
+        <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+            <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Policy id="id6187X76214" name="to_fw" comment="this is a placeholder ruleset used in branching rule in Policy&#10;Member firewalls linux-1 and linux-2 have their own copy&#10;of the rule set with the same name which is used." ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
@@ -1959,133 +2010,151 @@
       </NAT>
       <Policy id="id4434X28690" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id4435X28690" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3054X14356"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3068X14356"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id4447X28690" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="anti spoofing rule">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
             <ObjectRef ref="id4400X28690"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4460X28690" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4472X28690" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id4400X28690"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4484X28690" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4496X28690" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id4400X28690"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3F530CC8"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id4508X28690" disabled="False" group="" log="False" position="6" action="Deny" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id4400X28690"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="connlimit_masklen">0</Option>
             <Option name="connlimit_value">0</Option>
             <Option name="firewall_is_part_of_any_and_networks">False</Option>
@@ -2109,25 +2178,28 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id4520X28690" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id4400X28690"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="connlimit_masklen">0</Option>
             <Option name="connlimit_value">0</Option>
             <Option name="firewall_is_part_of_any_and_networks">False</Option>
@@ -2151,64 +2223,76 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id4532X28690" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id4544X28690" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id4556X28690" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions>
-            <Option name="stateless">True</Option>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
+        <PolicyRule id="id4544X28690" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
+        <PolicyRule id="id4556X28690" disabled="False" group="" log="True" position="10" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+            <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Routing id="id4583X28690" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -2312,133 +2396,151 @@
       </NAT>
       <Policy id="id2780X94039" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id3055X14356" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3054X14356"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3068X14356"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id2781X94039" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="anti spoofing rule">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
             <ObjectRef ref="id2772X94039"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id2794X94039" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id2806X94039" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id2772X94039"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id3725X2234" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id2818X94039" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id2772X94039"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3F530CC8"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id2830X94039" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id2772X94039"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="connlimit_masklen">0</Option>
             <Option name="connlimit_value">0</Option>
             <Option name="firewall_is_part_of_any_and_networks">False</Option>
@@ -2462,64 +2564,76 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id2842X94039" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id2854X94039" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id3087X2234" disabled="False" group="" log="True" position="9" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions>
-            <Option name="stateless">True</Option>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
+        <PolicyRule id="id2854X94039" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
+        <PolicyRule id="id3087X2234" disabled="False" group="" log="True" position="9" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+            <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Routing id="id2881X94039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -2612,133 +2726,151 @@
       </NAT>
       <Policy id="id3940X13563" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
         <PolicyRule id="id5257X25627" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3054X14356"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3068X14356"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="stateless">False</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id5239X25627" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="anti spoofing rule">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
             <ObjectRef ref="id3937X13563"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id5222X25627" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id5205X25627" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3937X13563"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id5188X25627" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="tcp-SSH"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id5171X25627" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3937X13563"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="id3F530CC8"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <PolicyRule id="id5154X25627" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="sysid0"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="id3937X13563"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions>
+            <PolicyRuleOptions>
             <Option name="connlimit_masklen">0</Option>
             <Option name="connlimit_value">0</Option>
             <Option name="firewall_is_part_of_any_and_networks">False</Option>
@@ -2762,64 +2894,76 @@
             <Option name="log_prefix"/>
             <Option name="stateless">True</Option>
             <Option name="ulog_nlgroup">1</Option>
+          
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
         <PolicyRule id="id5137X25627" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
-          <Src neg="False">
+            <Src neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </Src>
-          <Dst neg="False">
+            <Dst neg="False">
             <ObjectRef ref="sysid0"/>
           </Dst>
-          <Srv neg="False">
+            <Srv neg="False">
             <ServiceRef ref="sysid1"/>
           </Srv>
-          <Itf neg="False">
+            <Itf neg="False">
             <ObjectRef ref="sysid0"/>
           </Itf>
-          <When neg="False">
+            <When neg="False">
             <IntervalRef ref="sysid2"/>
           </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id5120X25627" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions/>
-        </PolicyRule>
-        <PolicyRule id="id5103X25627" disabled="False" group="" log="True" position="9" action="Deny" direction="Both" comment="">
-          <Src neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Src>
-          <Dst neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Dst>
-          <Srv neg="False">
-            <ServiceRef ref="sysid1"/>
-          </Srv>
-          <Itf neg="False">
-            <ObjectRef ref="sysid0"/>
-          </Itf>
-          <When neg="False">
-            <IntervalRef ref="sysid2"/>
-          </When>
-          <PolicyRuleOptions>
-            <Option name="stateless">True</Option>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
           </PolicyRuleOptions>
-        </PolicyRule>
+  
+          </PolicyRule>
+        <PolicyRule id="id5120X25627" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
+        <PolicyRule id="id5103X25627" disabled="False" group="" log="True" position="9" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+            <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+            <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+            <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+            <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+            <PolicyRuleOptions>
+            <Option name="stateless">True</Option>
+          
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
+          </PolicyRule>
         <RuleSetOptions/>
       </Policy>
       <Routing id="id3942X13563" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
@@ -3062,7 +3206,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2896X78273" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3080,7 +3227,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2879X78273" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
@@ -3098,7 +3248,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2862X78273" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
@@ -3116,7 +3269,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2845X78273" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
@@ -3134,7 +3290,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2828X78273" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3152,7 +3311,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id2811X78273" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -3170,7 +3332,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3292,7 +3457,10 @@
               <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3478,7 +3646,10 @@
               <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

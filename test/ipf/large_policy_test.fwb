@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="17" lastModified="" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -56,7 +56,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9AF2C0" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -78,7 +81,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9A1BF6" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -96,7 +102,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9A1BEC" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -114,7 +123,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9A1C2E" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -132,7 +144,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9A1C96" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -150,7 +165,10 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <PolicyRule id="id3F9A1C3A" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -170,7 +188,10 @@
             </When>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
+            
+          <Option name="pf_classify_str"/>
+          </PolicyRuleOptions>
+  
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

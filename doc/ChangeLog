@@ -1,3 +1,24 @@
+2011-05-05  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_19.xslt: see #2385 "PF action Classify uses
+	wrong parameter". This change fixes a bug introduced in 4.2.0
+	that affects rules with action Classify in PF firewalls.
+
+	The bug causes the following problems:
+
+	For users who built their rules before v4.2.0:
+	  - rules compile normally, both in the single rule compile and
+	    when the whole firewall is compiled
+	  - if they opened the action of one of such rules in the action
+	    editor, the classification string would look empty
+	  - if they entered new classification string in the editor,
+	    compiler kept using the old one (which they can not see or
+	    change in the editor)
+
+	For users who tried to build rules with action Classify with v4.2.0:
+	  - no matter what classification string they enter in the action
+	    dialog, generated code does not use it
+
 2011-05-04  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FWObjectDatabase_18.xslt: XSLT transformation to upgrade data
