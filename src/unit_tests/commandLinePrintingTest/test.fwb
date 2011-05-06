@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1280235390" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1280235390" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -510,6 +510,7 @@
               <Option name="limit_value_not">False</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -530,7 +531,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3638X14880" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
@@ -548,7 +551,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3666X14880" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
@@ -566,7 +571,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3694X14880" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
@@ -608,6 +615,7 @@
               <Option name="limit_value_not">False</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -628,7 +636,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3750X14880" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -670,6 +680,7 @@
               <Option name="limit_value_not">False</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
