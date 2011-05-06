@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1269897518" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1269897518" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -51,9 +51,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -69,9 +69,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -100,17 +100,17 @@
     </ObjectGroup>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"/>
+        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"/>
+        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"/>
+        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"/>
+        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
@@ -365,54 +365,54 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13" name="Custom" comment="" ro="False">
         <CustomService id="id3B64EEA8" name="rpc" comment="works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m record_rpc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id3B64EF4E" name="irc-conn" comment="IRC connection tracker, supports DCC.&#10;Works on iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/&#10;" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m irc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id3B64EF50" name="psd" comment="Port scan detector, works only on iptables and  requires patch-o-matic &#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m psd --psd-weight-threshold 5 --psd-delay-threshold 10000</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id3B64EF52" name="string" comment="Matches a string in a whole packet, works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id3B64EF54" name="talk" comment="Talk protocol support. Works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices" comment="" ro="False"/>
@@ -594,34 +594,34 @@
       <ServiceGroup id="id4511637123682" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="id4511637223682" name="Custom" comment="" ro="False">
         <CustomService id="id4226X64279" name="dscp af11" comment="" ro="False" protocol="tcp" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id8888X64279" name="esp dscp af12" comment="" ro="False" protocol="50" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af12</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id26068X65694" name="esp dscp af11 ipv6" comment="" ro="False" protocol="50" address_family="ipv6">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="id4511637323682" name="TagServices" comment="" ro="False"/>
@@ -650,11 +650,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641623D29061" disabled="False" group="" log="True" position="1" action="Deny" direction="Both" comment="комментарий по-русски">
             <Src neg="False">
@@ -673,11 +671,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46412C3326611" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -697,11 +693,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46415A0129061" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -722,11 +716,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id25349X82668" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -746,11 +738,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641356226611" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -770,11 +760,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641359926611" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -794,11 +782,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46412F0326611" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -818,11 +804,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641357426611" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -842,11 +826,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641358626611" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -866,11 +848,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641456D29061" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -890,11 +870,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641457E29061" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -914,11 +892,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641458F29061" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -938,11 +914,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464147C929061" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0">
             <Src neg="False">
@@ -962,11 +936,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46414A3E29061" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -986,11 +958,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46414A4F29061" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1010,11 +980,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46414A6029061" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1034,11 +1002,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46414CEB29061" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1058,11 +1024,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641521829061" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1082,11 +1046,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46415F6729061" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1106,11 +1068,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5377X64279" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1130,11 +1090,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#7694C0</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8889X64279" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1154,11 +1112,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#7694C0</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46412C2726611" disabled="False" group="" log="True" position="22" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -1177,11 +1133,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -1209,10 +1163,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="filesystem">/etc</Option>
@@ -1241,8 +1195,8 @@
           <Option name="iosacl_logging_trap_level">3</Option>
           <Option name="iosacl_prolog_script">! This is prolog</Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -1257,7 +1211,7 @@
           <Option name="mgmt_addr">1.1.1.100</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1278,9 +1232,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -1309,11 +1263,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464131F726611" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1333,11 +1285,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464137AA26611" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1357,11 +1307,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641379926611" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1381,11 +1329,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641378826611" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1405,11 +1351,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641377726611" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1429,11 +1373,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id152F20845" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1452,11 +1394,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id152220845" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1475,11 +1415,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id153D20845" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1498,11 +1436,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id154B20845" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1522,11 +1458,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7427X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1548,11 +1482,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7456X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1571,11 +1503,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id85935X7744" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1595,11 +1525,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id85953X7744" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1620,11 +1548,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id85970X7744" disabled="False" group="" log="False" position="14" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1644,11 +1570,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7439X44763" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1667,11 +1591,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4641320326611" disabled="False" group="" log="True" position="16" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -1690,11 +1612,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -1718,10 +1638,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1734,21 +1654,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1758,10 +1678,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1783,7 +1703,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -1810,11 +1730,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464264DF12807" disabled="False" group="" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -1833,11 +1751,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464264EB12807" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1857,11 +1773,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464264F712807" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1882,11 +1796,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642650412807" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1906,11 +1818,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642651012807" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1930,11 +1840,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642651C12807" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1954,11 +1862,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642652812807" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1978,11 +1884,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642653412807" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2002,11 +1906,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642654012807" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2026,11 +1928,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642654C12807" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2050,11 +1950,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642655812807" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2074,11 +1972,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642656412807" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2098,11 +1994,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642657012807" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2122,11 +2016,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642657C12807" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2146,11 +2038,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642658812807" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2170,11 +2060,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4642659412807" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2194,11 +2082,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464265A012807" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2218,11 +2104,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464265AC12807" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2242,11 +2126,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464265B812807" disabled="False" group="" log="True" position="19" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2265,11 +2147,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2317,8 +2197,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -2336,7 +2216,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -2345,10 +2225,10 @@
           <Option name="iosacl_logging_console_level">3</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">3</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -2363,7 +2243,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -2384,9 +2264,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -2414,11 +2294,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464C8AAD10931" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2437,11 +2315,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id464C8AA110931" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2460,11 +2336,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46435A1C16989" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2483,11 +2357,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4643662716989" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -2506,11 +2378,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4643664116989" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2529,11 +2399,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4643663516989" disabled="False" group="" log="False" position="6" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -2552,11 +2420,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4254X38343" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2575,11 +2441,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4341X97727" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2600,11 +2464,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4268X38343" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2623,11 +2485,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5500X42946" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2646,11 +2506,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id46435A1016989" disabled="True" group="" log="True" position="11" action="Deny" direction="Both" comment="disable this rule to make&#10;sure no outbound rules are&#10;generated for eth 1/1">
             <Src neg="False">
@@ -2669,11 +2527,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2757,8 +2613,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -2771,10 +2627,10 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">True</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">True</Option>
@@ -2783,10 +2639,10 @@
           <Option name="iosacl_logging_console_level">6</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">3</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">True</Option>
           <Option name="iosacl_use_object_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -2802,7 +2658,7 @@
           <Option name="mgmt_addr">10.3.14.41</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -2823,9 +2679,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -2853,11 +2709,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id28332X65694" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2877,11 +2731,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2903,11 +2755,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19137X65694" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2926,11 +2776,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19165X65694" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2949,11 +2797,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19194X65694" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2972,11 +2818,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19226X65694" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2995,11 +2839,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19260X65694" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3018,11 +2860,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19288X65694" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3041,11 +2881,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19316X65694" disabled="False" group="" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -3064,11 +2902,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19344X65694" disabled="False" group="" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3087,11 +2923,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19372X65694" disabled="False" group="" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3110,11 +2944,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19400X65694" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3133,11 +2965,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id24941X65694" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3157,11 +2987,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7994X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3180,11 +3008,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id9240X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3207,11 +3033,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3231,34 +3055,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3267,7 +3091,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3276,13 +3100,13 @@
           <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">0</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3297,18 +3121,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3327,7 +3151,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3379,12 +3203,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3416,11 +3240,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10526X97727" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3440,11 +3262,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3466,11 +3286,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10552X97727" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3489,11 +3307,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10564X97727" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3512,11 +3328,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10576X97727" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3535,11 +3349,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10588X97727" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3558,11 +3370,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10600X97727" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3581,11 +3391,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10612X97727" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3604,11 +3412,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10624X97727" disabled="False" group="" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -3627,11 +3433,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10636X97727" disabled="False" group="" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3650,11 +3454,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10648X97727" disabled="False" group="" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3673,11 +3475,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10660X97727" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3696,11 +3496,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10672X97727" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3720,11 +3518,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10685X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3743,11 +3539,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10697X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3770,11 +3564,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -3794,34 +3586,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3830,7 +3622,7 @@
           <Option name="iosacl_acl_temp_addr">1.1.1.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3839,13 +3631,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3864,14 +3656,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3890,7 +3682,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3942,12 +3734,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3979,11 +3771,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4900X21941" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4005,11 +3795,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id15139X21941" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4029,11 +3817,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4055,11 +3841,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4926X21941" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4078,11 +3862,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4938X21941" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4101,11 +3883,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4950X21941" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4124,11 +3904,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4962X21941" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4147,11 +3925,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4974X21941" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4170,11 +3946,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4986X21941" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4193,11 +3967,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4998X21941" disabled="False" group="" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -4216,11 +3988,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5010X21941" disabled="False" group="" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4239,11 +4009,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5022X21941" disabled="False" group="" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4262,11 +4030,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5034X21941" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4285,11 +4051,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5046X21941" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4309,11 +4073,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5059X21941" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4332,11 +4094,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5071X21941" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4359,11 +4119,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4387,34 +4145,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -4423,7 +4181,7 @@
           <Option name="iosacl_acl_temp_addr">10.1.1.0</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -4432,13 +4190,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -4457,14 +4215,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -4483,7 +4241,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -4535,12 +4293,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -4572,11 +4330,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id12152X53662" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4596,11 +4352,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4622,11 +4376,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id12202X53662" disabled="False" group="" log="True" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4645,11 +4397,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4672,11 +4422,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -4696,34 +4444,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -4732,7 +4480,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb/64</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -4741,13 +4489,13 @@
           <Option name="iosacl_logging_console_level">1</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">1</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -4762,18 +4510,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -4792,7 +4540,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -4844,12 +4592,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -4882,11 +4630,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66552X44763" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4906,11 +4652,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66564X44763" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4930,11 +4674,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66576X44763" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -4954,11 +4696,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66588X44763" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -4978,11 +4718,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66600X44763" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5002,11 +4740,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66612X44763" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5025,11 +4761,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66624X44763" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5048,11 +4782,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66636X44763" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5071,11 +4803,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66648X44763" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5095,11 +4825,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66661X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5121,11 +4849,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66676X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5144,11 +4870,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66688X44763" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5167,11 +4891,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id66700X44763" disabled="False" group="" log="True" position="13" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5190,11 +4912,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5218,10 +4938,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -5234,21 +4954,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -5258,10 +4978,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -5283,7 +5003,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -5310,11 +5030,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6652X9455" disabled="False" group="" log="True" position="1" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5333,11 +5051,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6289X9455" disabled="False" group="" log="True" position="2" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5357,11 +5073,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id77882X9455" disabled="False" group="" log="True" position="3" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5380,11 +5094,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6518X9455" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5403,11 +5115,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5431,8 +5141,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -5450,7 +5160,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -5459,10 +5169,10 @@
           <Option name="iosacl_logging_console_level">3</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">3</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -5477,7 +5187,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -5498,9 +5208,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -5529,11 +5239,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">False</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47192X84238" disabled="False" group="" log="True" position="1" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5552,11 +5260,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47204X84238" disabled="False" group="" log="True" position="2" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5576,11 +5282,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47217X84238" disabled="False" group="" log="True" position="3" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -5599,11 +5303,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47229X84238" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5622,11 +5324,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -5650,8 +5350,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -5669,7 +5369,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -5678,10 +5378,10 @@
           <Option name="iosacl_logging_console_level">4</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">4</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -5697,7 +5397,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -5718,9 +5418,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -5748,11 +5448,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id29216X37699" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="object-groups can not be used for ipv6">
             <Src neg="False">
@@ -5774,11 +5472,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18740X37673" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5800,11 +5496,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18781X37673" disabled="False" group="" log="True" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5825,11 +5519,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18811X37673" disabled="False" group="" log="True" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5850,11 +5542,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18842X37673" disabled="False" group="" log="True" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5875,11 +5565,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18872X37673" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5901,11 +5589,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18903X37673" disabled="False" group="" log="True" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5927,11 +5613,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18934X37673" disabled="False" group="" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5952,11 +5636,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18964X37673" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5975,11 +5657,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18992X37673" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5999,11 +5679,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19021X37673" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6022,11 +5700,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19049X37673" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6045,11 +5721,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6068,18 +5742,18 @@
         </Management>
         <FirewallOptions>
           <Option name="admUser">vadim</Option>
-          <Option name="altAddress"/>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="filesystem"/>
-          <Option name="firewall_dir"/>
+          <Option name="filesystem"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -6088,18 +5762,18 @@
           <Option name="iosacl_logging_console_level">4</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">4</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="mgmt_addr">10.3.14.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
-          <Option name="output_file"/>
-          <Option name="scpArgs"/>
-          <Option name="sshArgs"/>
+          <Option name="output_file"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="use_scp">True</Option>
         </FirewallOptions>
       </Firewall>
@@ -6128,11 +5802,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37596X78571" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -6154,11 +5826,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37546X78571" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6180,11 +5850,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37496X78571" disabled="False" group="" log="False" position="3" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -6206,11 +5874,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37446X78571" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6232,11 +5898,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id23007X79820" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -6258,11 +5922,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7118X77171" disabled="False" group="" log="False" position="6" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6284,11 +5946,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id97562X78571" disabled="False" group="" log="False" position="7" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6310,11 +5970,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id97670X78571" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6336,11 +5994,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id97620X78571" disabled="False" group="" log="False" position="9" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6364,11 +6020,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8137X79856" disabled="False" group="" log="False" position="10" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6392,11 +6046,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8203X79856" disabled="False" group="" log="False" position="11" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6418,11 +6070,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id97720X78571" disabled="False" group="" log="False" position="12" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6445,11 +6095,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id25166X82392" disabled="False" group="" log="False" position="13" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6471,11 +6119,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6499,8 +6145,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -6518,7 +6164,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -6527,10 +6173,10 @@
           <Option name="iosacl_logging_console_level">7</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">7</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -6546,7 +6192,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -6567,9 +6213,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -6600,11 +6246,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116013X79820" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -6626,11 +6270,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116027X79820" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6652,11 +6294,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116041X79820" disabled="False" group="" log="False" position="3" action="Deny" direction="Outbound" comment="">
             <Src neg="False">
@@ -6678,11 +6318,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116055X79820" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6704,11 +6342,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116069X79820" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -6730,11 +6366,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116083X79820" disabled="False" group="" log="False" position="6" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6756,11 +6390,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116097X79820" disabled="False" group="" log="False" position="7" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6782,11 +6414,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116111X79820" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6808,11 +6438,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116125X79820" disabled="False" group="" log="False" position="9" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6837,11 +6465,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id91496X81725" disabled="False" group="" log="False" position="10" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6866,11 +6492,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id91445X81725" disabled="False" group="" log="False" position="11" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6893,11 +6517,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id116141X79820" disabled="False" group="" log="False" position="12" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -6919,11 +6541,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -6947,8 +6567,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -6966,7 +6586,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -6975,10 +6595,10 @@
           <Option name="iosacl_logging_console_level">6</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">6</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -6994,7 +6614,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -7015,9 +6635,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -7045,11 +6665,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8341X83276" disabled="False" group="" log="True" position="1" action="Deny" direction="Both" comment="комментарий по-русски">
             <Src neg="False">
@@ -7068,11 +6686,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8353X83276" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7092,11 +6708,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8365X83276" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7117,11 +6731,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8378X83276" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7141,11 +6753,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8390X83276" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7165,11 +6775,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8402X83276" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7189,11 +6797,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8414X83276" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7213,11 +6819,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8426X83276" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7237,11 +6841,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8438X83276" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7261,11 +6863,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8450X83276" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7285,11 +6885,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8462X83276" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7309,11 +6907,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8474X83276" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7333,11 +6929,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8486X83276" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0">
             <Src neg="False">
@@ -7357,11 +6951,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8498X83276" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7381,11 +6973,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8510X83276" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7405,11 +6995,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8522X83276" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7429,11 +7017,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8534X83276" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7453,11 +7039,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8546X83276" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7477,11 +7061,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8558X83276" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7501,11 +7083,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8570X83276" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7525,11 +7105,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#7694C0</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8582X83276" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7549,11 +7127,9 @@
             </When>
             <PolicyRuleOptions>
               <Option name="color">#7694C0</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id8594X83276" disabled="False" group="" log="True" position="22" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -7572,11 +7148,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -7615,10 +7189,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="filesystem">/etc</Option>
@@ -7647,8 +7221,8 @@
           <Option name="iosacl_logging_trap_level">4</Option>
           <Option name="iosacl_prolog_script">! This is prolog</Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -7664,7 +7238,7 @@
           <Option name="mgmt_addr">1.1.1.100</Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -7685,9 +7259,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -7715,11 +7289,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10193X32054" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7738,11 +7310,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10221X32054" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7761,11 +7331,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10250X32054" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7784,11 +7352,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10279X32054" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7807,11 +7373,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -7833,11 +7397,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10340X32054" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7856,11 +7418,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10368X32054" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7879,11 +7439,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10397X32054" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7902,11 +7460,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id10426X32054" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7925,11 +7481,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -7960,8 +7514,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -7977,7 +7531,7 @@
           <Option name="iosacl_acl_temp_addr">192.168.1.1</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -7986,10 +7540,10 @@
           <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">0</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="iosacl_use_object_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
@@ -8002,10 +7556,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -8026,9 +7580,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
