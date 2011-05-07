@@ -512,6 +512,10 @@ bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
  * MARK to terminating targets (equivalent) by splitting the rule and
  * adding one more rule with target ACCEPT.
  *
+ * Note that target ROUTE is terminating unless parameter "--continue"
+ * is present. We add "--continue" if action is Continue, otherwise 
+ * the rule does not need to be split and we carry action Accept further.
+ *
  * Call this rule processor at the very end of the chain when all
  * splits are done and target is set via "ipt_target"
  */
@@ -523,7 +527,7 @@ bool  PolicyCompiler_ipt::splitTagClassifyOrRouteIfAction::processNext()
     FWOptions *ruleopt = rule->getOptionsObject();
     
     if (ipt_comp->my_table=="mangle" && 
-        (rule->getTagging() || rule->getClassification() || rule->getRouting()) &&
+        (rule->getTagging() || rule->getClassification()) &&
         rule->getAction() != PolicyRule::Continue)
     {
         RuleElementSrc *nsrc;

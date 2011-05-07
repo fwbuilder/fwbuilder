@@ -100,6 +100,8 @@
 
 <xsl:template match="//fwb:PolicyRule[attribute::action='Classify']" mode="copy">
 
+  <xsl:variable name="platform" select="../../../fwb:Firewall/@platform"/>
+
   <xsl:variable name="ipt_make_terminating"
     select="../../fwb:FirewallOptions/fwb:Option[attribute::name='classify_mark_terminating']"/>
 
@@ -121,16 +123,17 @@
 
 
   <xsl:element name="PolicyRule" namespace="http://www.fwbuilder.org/1.0/">
+
     <xsl:copy-of select="@id"/>
     <xsl:copy-of select="@disabled"/>
     <xsl:copy-of select="@position"/>
     <xsl:copy-of select="@direction"/>
     
     <xsl:choose>
-      <xsl:when test="$ipt_make_terminating = 'True'">
+      <xsl:when test="($ipt_make_terminating = 'True') and ($platform = 'iptables')">
         <xsl:attribute name="action">Accept</xsl:attribute>
       </xsl:when>
-      <xsl:when test="$pf_make_terminating = 'True'">
+      <xsl:when test="($pf_make_terminating = 'True') and ($platform = 'pf')">
         <xsl:attribute name="action">Accept</xsl:attribute>
       </xsl:when>
       <xsl:otherwise>
@@ -188,14 +191,38 @@
 </xsl:template>
 
 
+
+
+
 <xsl:template match="//fwb:PolicyRule[attribute::action='Route']" mode="copy">
+
+  <xsl:variable name="platform" select="../../../fwb:Firewall/@platform"/>
+
+  <!-- Fwbuilder action Route for iptables was terminating by default
+       but non-terminating if option "ipt_continue" was present and
+       had value True
+  -->
+
+  <xsl:variable name="ipt_non_terminating"
+    select="fwb:PolicyRuleOptions/fwb:Option[attribute::name='ipt_continue']"/>
+
+  <!-- Fwbuilder action Route was always terminating for PF -->
 
   <xsl:element name="PolicyRule" namespace="http://www.fwbuilder.org/1.0/">
     <xsl:copy-of select="@id"/>
     <xsl:copy-of select="@disabled"/>
     <xsl:copy-of select="@position"/>
     <xsl:copy-of select="@direction"/>
-    <xsl:attribute name="action">Continue</xsl:attribute>
+
+    <xsl:choose>
+      <xsl:when test="($platform = 'iptables') and ($ipt_non_terminating = 'True')">
+        <xsl:attribute name="action">Continue</xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="action">Accept</xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
+
     <xsl:copy-of select="@log"/>
     <xsl:copy-of select="@comment"/>
     <xsl:copy-of select="@group"/>
