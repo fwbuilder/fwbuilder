@@ -1,3 +1,9 @@
+2011-05-06  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pf_writers.cpp (_printQueue): see #2390 Classify
+	does not generate "queue" string for rules created in V4.2.1.3538
+	This completes the fix for the bug #2385.
+
 2011-05-05  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FWObjectDatabase_19.xslt: see #2385 "PF action Classify uses

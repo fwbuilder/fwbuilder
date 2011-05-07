@@ -337,7 +337,7 @@ void PolicyCompiler_pf::PrintRule::_printQueue(PolicyRule *rule)
     FWOptions *ruleopt =rule->getOptionsObject();
 
     if (rule->getAction() == PolicyRule::Classify)
-        compiler->output << "queue " << ruleopt->getStr("classify_str") << " ";
+        compiler->output << "queue " << ruleopt->getStr("pf_classify_str") << " ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
