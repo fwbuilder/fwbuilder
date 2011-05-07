@@ -136,6 +136,9 @@
       <xsl:when test="($pf_make_terminating = 'True') and ($platform = 'pf')">
         <xsl:attribute name="action">Accept</xsl:attribute>
       </xsl:when>
+      <xsl:when test="$platform = 'ipfw'">
+        <xsl:attribute name="action">Accept</xsl:attribute>
+      </xsl:when>
       <xsl:otherwise>
         <xsl:attribute name="action">Continue</xsl:attribute>
       </xsl:otherwise>
