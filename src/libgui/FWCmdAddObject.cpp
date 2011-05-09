@@ -283,7 +283,9 @@ void FWCmdAddLibrary::redo()
     // changes when editor opens
 
     //if (mw->isEditorVisible())
-    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, lib->getId()));
-    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, lib->getId()));
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, lib->getId()));
+    QCoreApplication::postEvent(
+        mw, new openObjectInEditorEvent(filename, lib->getId()));
 }
 
