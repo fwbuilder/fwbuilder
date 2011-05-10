@@ -1,3 +1,12 @@
+2011-05-10  Vadim Kurland  <vadim@netcitadel.com>
+
+	* fwbuilder 4.2.1.3540 released; started v4.3.0
+
+	* merged from branch multiple_actions to add changes that
+	implement conversion of actions Tag, Classify and Route to
+	options. Now one policy rule can have any combination of these
+	options. See #2367.
+
 2011-05-09  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FWCmdAddObject.cpp (redo): fixes #2391 "selecting 'new library'
