@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1261881957" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1261881957" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="id6821X7237" color="#FFFFFF" name="new_cluster_test" comment="" ro="False">
     <ObjectGroup id="id6822X7237" name="Objects" comment="" ro="False">
@@ -69,6 +69,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -260,7 +261,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6937X7237" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -278,7 +281,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6949X7237" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
             <Src neg="False">
@@ -297,7 +302,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6989X7237" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="DHCP replies">
             <Src neg="False">
@@ -315,7 +322,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7001X7237" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
             <Src neg="False">
@@ -333,7 +342,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7013X7237" disabled="False" group="" log="True" position="5" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
@@ -351,7 +362,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7025X7237" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="">
             <Src neg="False">
@@ -387,6 +400,7 @@
               <Option name="ipt_mark_connections">False</Option>
               <Option name="ipt_oif"></Option>
               <Option name="ipt_tee">False</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="pf_fastroute">False</Option>
               <Option name="pf_route_load_option">none</Option>
               <Option name="pf_route_opt_addr"></Option>
@@ -413,6 +427,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -457,6 +472,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
