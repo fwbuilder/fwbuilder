@@ -1,0 +1,140 @@
+
+
+#
+# Scrub rules
+#
+scrub in all fragment reassemble
+
+# Policy compiler errors and warnings:
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '6 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '7 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '8 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '9 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '18 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '19 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '20 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '21 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '30 (global)'  below it
+# 
+# Rule  0 (global)
+pass inet  from any  to any tag tag2 no state 
+# 
+# Rule  1 (global)
+pass inet  from any  to any tag tag2 
+# 
+# Rule  2 (global)
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '18 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '19 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '20 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '21 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '30 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '6 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '7 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '8 (global)'  below it
+# firewall111:Policy:2: error: Rule '2 (global)' shadows rule '9 (global)'  below it
+
+pass  quick inet  from any  to any tag tag2 
+# 
+# Rule  3 (global)
+pass  quick inet  from any  to any tag tag2 no state 
+# 
+# Rule  4 (global)
+pass inet  from any  to any tag tag2 no state 
+# 
+# Rule  5 (global)
+anchor "Policy_1" inet  from any  to any tag tag2 no state 
+# 
+# Rule  6 (global)
+pass inet  from any  to any no state queue ssh_q 
+# 
+# Rule  7 (global)
+pass inet  from any  to any queue ssh_q 
+# 
+# Rule  8 (global)
+pass  quick inet  from any  to any queue ssh_q 
+# 
+# Rule  9 (global)
+pass  quick inet  from any  to any no state queue ssh_q 
+# 
+# Rule  10 (global)
+pass inet  from any  to any no state queue ssh_q 
+# 
+# Rule  11 (global)
+anchor "Policy_1" inet  from any  to any no state queue ssh_q 
+# 
+# Rule  12 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+# 
+# Rule  13 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any 
+# 
+# Rule  14 (global)
+pass in   quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any 
+pass out  quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any 
+# 
+# Rule  15 (global)
+pass in   quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+pass out  quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+# 
+# Rule  16 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+# 
+# Rule  17 (global)
+anchor "Policy_1" in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+anchor "Policy_1" out route-to { ( le0 192.168.1.100 ) } inet  from any  to any no state 
+# 
+# Rule  18 (global)
+pass inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  19 (global)
+pass inet  from any  to any tag tag2 queue ssh_q 
+# 
+# Rule  20 (global)
+pass  quick inet  from any  to any tag tag2 queue ssh_q 
+# 
+# Rule  21 (global)
+pass  quick inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  22 (global)
+pass inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  23 (global)
+anchor "Policy_1" inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  24 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  25 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 queue ssh_q 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 queue ssh_q 
+# 
+# Rule  26 (global)
+pass in   quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 queue ssh_q 
+pass out  quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 queue ssh_q 
+# 
+# Rule  27 (global)
+pass in   quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+pass out  quick route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  28 (global)
+pass in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+pass out route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  29 (global)
+anchor "Policy_1" in  route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+anchor "Policy_1" out route-to { ( le0 192.168.1.100 ) } inet  from any  to any tag tag2 no state queue ssh_q 
+# 
+# Rule  30 (global)
+block  quick inet  from any  to any no state 
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state 
+
+load anchor Policy_1 from "/etc/fw/firewall111-Policy_1.conf"

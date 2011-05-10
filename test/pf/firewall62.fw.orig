@@ -2,14 +2,14 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3499
+#  Firewall Builder  fwb_pf v4.3.0.1
 #
-#  Generated Sat Mar 12 19:45:23 2011 PST by vadim
+#  Generated Tue May 10 14:53:29 2011 PDT by vadim
 #
 # files: * firewall62.fw /etc/firewall62.fw
 # files:   firewall62.conf /etc/firewall62.conf
 #
-# Compiled for pf 4.x
+# Compiled for pf 4.0
 #
 # testing rules using UserService object
 # Note that iptables does not allow entering
@@ -191,7 +191,7 @@ configure_interfaces() {
     update_addresses_of_interface "en1 222.222.222.222/0xffffff00" ""
 }
 
-log "Activating firewall script generated Sat Mar 12 19:45:23 2011 by vadim"
+log "Activating firewall script generated Tue May 10 14:53:29 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
