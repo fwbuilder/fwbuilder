@@ -100,7 +100,7 @@
 
 <xsl:template match="//fwb:PolicyRule[attribute::action='Classify']" mode="copy">
 
-  <xsl:variable name="platform" select="../../../fwb:Firewall/@platform"/>
+  <xsl:variable name="platform" select="../../@platform"/>
 
   <xsl:variable name="ipt_make_terminating"
     select="../../fwb:FirewallOptions/fwb:Option[attribute::name='classify_mark_terminating']"/>
@@ -187,6 +187,35 @@
         <xsl:attribute name="name">routing</xsl:attribute>False</xsl:element>
       <xsl:text>
           </xsl:text>
+
+
+      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
+        <xsl:attribute name="name">platform</xsl:attribute>
+        <xsl:value-of select="$platform"/>
+      </xsl:element>
+      <xsl:text>
+          </xsl:text>
+
+
+      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
+        <xsl:attribute name="name">ipt_make_terminating</xsl:attribute>
+        <xsl:value-of select="$ipt_make_terminating"/>
+      </xsl:element>
+      <xsl:text>
+          </xsl:text>
+
+
+      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
+        <xsl:attribute name="name">pf_make_terminating</xsl:attribute>
+        <xsl:value-of select="$pf_make_terminating"/>
+      </xsl:element>
+      <xsl:text>
+          </xsl:text>
+
+
+
+
+
     </xsl:element>
     <xsl:text>
         </xsl:text>
@@ -199,7 +228,7 @@
 
 <xsl:template match="//fwb:PolicyRule[attribute::action='Route']" mode="copy">
 
-  <xsl:variable name="platform" select="../../../fwb:Firewall/@platform"/>
+  <xsl:variable name="platform" select="../../@platform"/>
 
   <!-- Fwbuilder action Route for iptables was terminating by default
        but non-terminating if option "ipt_continue" was present and
