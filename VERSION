@@ -1,13 +1,13 @@
 #-*- mode: shell-script; tab-width: 4; -*-
 
 FWB_MAJOR_VERSION=4
-FWB_MINOR_VERSION=2
-FWB_MICRO_VERSION=1
+FWB_MINOR_VERSION=3
+FWB_MICRO_VERSION=0
 
 # build number is like "nano" version number. I am incrementing build
 # number during development cycle
 #
-BUILD_NUM="ma_1"
+BUILD_NUM="1"
 
 VERSION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION.$BUILD_NUM"
 

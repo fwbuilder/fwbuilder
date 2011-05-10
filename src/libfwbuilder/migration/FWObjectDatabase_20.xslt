@@ -188,34 +188,6 @@
       <xsl:text>
           </xsl:text>
 
-
-      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
-        <xsl:attribute name="name">platform</xsl:attribute>
-        <xsl:value-of select="$platform"/>
-      </xsl:element>
-      <xsl:text>
-          </xsl:text>
-
-
-      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
-        <xsl:attribute name="name">ipt_make_terminating</xsl:attribute>
-        <xsl:value-of select="$ipt_make_terminating"/>
-      </xsl:element>
-      <xsl:text>
-          </xsl:text>
-
-
-      <xsl:element name="Option" namespace="http://www.fwbuilder.org/1.0/">
-        <xsl:attribute name="name">pf_make_terminating</xsl:attribute>
-        <xsl:value-of select="$pf_make_terminating"/>
-      </xsl:element>
-      <xsl:text>
-          </xsl:text>
-
-
-
-
-
     </xsl:element>
     <xsl:text>
         </xsl:text>
