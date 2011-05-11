@@ -13,6 +13,7 @@ LIBS += $$CPPUNIT_LIBS
 SOURCES += main.cpp AddressTableTest.cpp
 HEADERS += AddressTableTest.h
 INCLUDEPATH += ../../libfwbuilder/src
+DEPENDPATH  += ../../libfwbuilder/src
 LIBS += ../../libfwbuilder/src/fwbuilder/libfwbuilder.a
 run_tests.commands = echo "Running tests..." && ./${TARGET}
 run_tests.depends = all

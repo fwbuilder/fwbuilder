@@ -12,9 +12,8 @@ HEADERS	 = ../../config.h
 
 win32:CONFIG += console
 
-INCLUDEPATH += ../common ../pflib ../compiler_lib ../libfwbuilder/src/
-
-DEPENDPATH   = ../pflib
+INCLUDEPATH += ../pflib ../compiler_lib ../libfwbuilder/src
+DEPENDPATH  += ../pflib ../compiler_lib ../libfwbuilder/src
 
 win32:LIBS  += ../common/release/common.lib \
     ../pflib/release/fwbpf.lib \

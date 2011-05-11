@@ -568,26 +568,23 @@ FORMS = FWBMainWindow_q.ui \
 HEADERS += transferDialog.h
 SOURCES += transferDialog.cpp
 FORMS += transferdialog_q.ui
-INCLUDEPATH += $$ANTLR_INCLUDEPATH
-DEFINES += $$ANTLR_DEFINES
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
-INCLUDEPATH += ../common \
+
+INCLUDEPATH += \
     ../import \
     ../iptlib \
     ../pflib \
-    ../cisco_lib/ \
-    ../compiler_lib/ \
+    ../cisco_lib \
+    ../compiler_lib \
 	../libfwbuilder/src
-
-DEPENDPATH = ../common \
+DEPENDPATH += \
     ../import \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib \
-	../libfwbuilder/src/fwbuilder \
-	../libfwbuilder/src/fwcompiler
+	../libfwbuilder/src
 
 RESOURCES += MainRes.qrc
 

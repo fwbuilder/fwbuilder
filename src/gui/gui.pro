@@ -39,29 +39,19 @@ contains( HAVE_QTDBUS, 1 ):unix {
 }
 
 # !macx:STATIC_LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
+
 INCLUDEPATH +=  \
-	../common \
-    ../import \
-    ../iptlib \
-    ../pflib \
-    ../cisco_lib/ \
-    ../compiler_lib/ \
 	../libgui \
+	../compiler_lib \
 	../libfwbuilder/src
 
 win32:INCLUDEPATH += ../libgui/ui
 !win32:INCLUDEPATH += ../libgui/.ui
 
-DEPENDPATH =  \
-	../common \
-    ../import \
-    ../iptlib \
-    ../pflib \
-    ../cisco_lib/ \
-    ../compiler_lib \
+DEPENDPATH +=  \
 	../libgui \
-	../libfwbuilder/src/fwbuilder \
-	../libfwbuilder/src/fwcompiler
+	../compiler_lib \
+	../libfwbuilder/src
 
 win32:STATIC_LIBS += \
 	../common/release/common.lib \

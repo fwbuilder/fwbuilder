@@ -10,13 +10,21 @@ QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 CONFIG -= release
 CONFIG += debug
 
-INCLUDEPATH += ../../..
-INCLUDEPATH += ../..
-INCLUDEPATH += ../../libfwbuilder/src
-INCLUDEPATH += ../../libgui
-INCLUDEPATH += ../../libgui/.ui
-INCLUDEPATH += ../../compiler_lib
-INCLUDEPATH += ../../common
+INCLUDEPATH += ../../.. \
+	../.. \
+	../../libfwbuilder/src \
+	../../libgui \
+	../../libgui/.ui \
+	../../compiler_lib \
+	../../common
+
+DEPENDPATH += ../../.. \
+	../.. \
+	../../libfwbuilder/src \
+	../../libgui \
+	../../libgui/.ui \
+	../../compiler_lib \
+	../../common
 
 QT += testlib network gui
 

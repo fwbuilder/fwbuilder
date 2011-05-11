@@ -10,7 +10,8 @@ QT += network
 SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp merge.cpp import.cpp
 HEADERS	 = ../../config.h fwbedit.h upgradePredicate.h
 
-INCLUDEPATH += ../libfwbuilder/src ../import ../compiler_lib/ ../libgui
+INCLUDEPATH += ../libfwbuilder/src ../import ../compiler_lib ../libgui
+DEPENDPATH +=  ../libfwbuilder/src ../import ../compiler_lib ../libgui
 
 win32:INCLUDEPATH += ../libgui/ui
 !win32:INCLUDEPATH += ../libgui/.ui
@@ -20,10 +21,6 @@ TARGET = fwbedit
 !win32 {
 	QMAKE_COPY    = ../../install.sh -m 0755 -s
 }
-
-DEPENDPATH = ../common \
-             ../libfwbuilder/src/fwbuilder \
-             ../libfwbuilder/src/fwcompiler
 
 !win32:LIBS = ../common/libcommon.a \
     ../import/libimport.a \

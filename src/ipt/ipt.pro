@@ -12,9 +12,8 @@ HEADERS	 = ../../config.h
 
 win32: CONFIG += console
 
-INCLUDEPATH += ../common ../iptlib ../compiler_lib/ ../libfwbuilder/src
-
-DEPENDPATH   = ../common ../iptlib ../compiler_lib
+INCLUDEPATH += ../iptlib ../compiler_lib ../libfwbuilder/src
+DEPENDPATH  += ../iptlib ../compiler_lib ../libfwbuilder/src
 
 win32:LIBS  += ../common/release/common.lib \
       ../iptlib/release/iptlib.lib \

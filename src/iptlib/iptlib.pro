@@ -48,9 +48,8 @@ HEADERS	 = ../../config.h \
 
 CONFIG += staticlib
 
-INCLUDEPATH += ../compiler_lib/ ../libfwbuilder/src
-
-DEPENDPATH   = ../compiler_lib
+INCLUDEPATH += ../compiler_lib ../libfwbuilder/src
+DEPENDPATH  += ../compiler_lib ../libfwbuilder/src
 
 win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib \
 	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \

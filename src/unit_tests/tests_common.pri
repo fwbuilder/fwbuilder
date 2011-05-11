@@ -15,12 +15,25 @@ INCLUDEPATH += ../../.. \
                ../../common \
                ../../parsers \
                ../../import \
-               ../../compiler_lib/ \
+               ../../compiler_lib \
                ../../libgui \
                ../../libgui/.ui \
                ../../iptlib \
                ../../pflib \
-               ../../cisco_lib/ \
+               ../../cisco_lib \
+               ../../libfwbuilder/src
+
+DEPENDPATH  += ../../.. \
+               ../.. \
+               ../../common \
+               ../../parsers \
+               ../../import \
+               ../../compiler_lib \
+               ../../libgui \
+               ../../libgui/.ui \
+               ../../iptlib \
+               ../../pflib \
+               ../../cisco_lib \
                ../../libfwbuilder/src
 
 run_tests.commands = echo "Running tests..."; ./${TARGET}
@@ -30,6 +43,7 @@ clean_tests.depends = clean
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
+DEPENDPATH  += $$ANTLR_INCLUDEPATH
 DEFINES += $$ANTLR_DEFINES
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below

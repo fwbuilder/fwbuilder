@@ -8,6 +8,7 @@ SOURCES = transfer_secuwall.cpp
 HEADERS = ../../../config.h
 
 INCLUDEPATH += ../../libfwbuilder/src
+DEPENDPATH  += ../../libfwbuilder/src
 
 contains( HAVE_QTDBUS, 1 ):unix {
 	!macx: QT += network dbus

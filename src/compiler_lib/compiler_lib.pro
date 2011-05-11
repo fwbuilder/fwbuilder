@@ -36,6 +36,7 @@ HEADERS	 = ../../config.h \
 			AutomaticRules.h
 
 INCLUDEPATH += ../libfwbuilder/src
+DEPENDPATH  += ../libfwbuilder/src
 
 CONFIG += staticlib
 

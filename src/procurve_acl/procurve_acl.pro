@@ -18,7 +18,8 @@ HEADERS	 = ../../config.h
 
 win32:CONFIG += console
 
-INCLUDEPATH += ../common ../cisco_lib/ ../compiler_lib ../libfwbuilder/src/
+INCLUDEPATH += ../cisco_lib ../compiler_lib ../libfwbuilder/src
+DEPENDPATH  += ../cisco_lib ../compiler_lib ../libfwbuilder/src
 
 win32:LIBS  += ../common/release/common.lib \
     ../cisco_lib/release/fwbcisco.lib  \

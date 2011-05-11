@@ -14,9 +14,8 @@ win32:CONFIG += console
 
 # unix { !macx: CONFIG -= qt }
 
-INCLUDEPATH += ../common ../pflib ../compiler_lib ../libfwbuilder/src
-
-DEPENDPATH   = ../pflib
+INCLUDEPATH += ../pflib ../compiler_lib ../libfwbuilder/src
+DEPENDPATH  += ../pflib ../compiler_lib ../libfwbuilder/src
 
 win32:LIBS  += ../common/release/common.lib \
       ../pflib/release/fwbpf.lib \
