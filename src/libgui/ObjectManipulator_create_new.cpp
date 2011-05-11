@@ -504,6 +504,7 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, NULL, QObject::tr("Create new Firewall"), macro);
         FWObject *new_state = cmd->getNewState();
+
         parent->remove(nfw, false);
         new_state->add(nfw);
     }
