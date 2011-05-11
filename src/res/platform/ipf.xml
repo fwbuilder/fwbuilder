@@ -87,7 +87,7 @@
                 <dialog_page>None</dialog_page>
             </Branch>
             <Route>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Route</description>
                 <dialog_page>RouteIPF</dialog_page>
             </Route>

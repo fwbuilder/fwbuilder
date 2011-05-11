@@ -945,15 +945,6 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
             case PolicyRule::Reject:
                 par = ropt->getStr("action_on_reject").c_str();
                 break;
-            case PolicyRule::Tag:
-            {
-                FWObject *tag_object = PolicyRule::cast(rule)->getTagObject();
-                if (tag_object)
-                    par = QString::fromUtf8(tag_object->getName().c_str());
-                else
-                    par = QString::fromUtf8(PolicyRule::cast(rule)->getTagValue().c_str());
-                break;
-            }
             case PolicyRule::Accounting :
                 par = ropt->getStr("rule_name_accounting").c_str();
                 break;
@@ -968,24 +959,6 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                 // ropt->getStr("branch_name").c_str();
                 break;
             }
-            case PolicyRule::Classify:
-                if (platform=="ipfw")
-                {
-                    if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)
-                    {
-                        par = "pipe";
-                    } else {
-                        par = "queue";
-                    }
-                    par = par + " " + ropt->getStr("ipfw_pipe_queue_num").c_str();
-                } else
-                {
-                    if (platform=="pf")
-                        par = ropt->getStr("pf_classify_str").c_str();
-                    else
-                        par = ropt->getStr("classify_str").c_str();
-                }
-                break;
             case PolicyRule::Pipe :
                 if (platform=="ipfw")
                 {
@@ -993,44 +966,6 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
                         ropt->getStr("ipfw_pipe_port_num").c_str();
                 }
                 break;
-            case PolicyRule::Route :
-                if (platform=="iptables")
-                {
-                    string a;
-                    a = ropt->getStr("ipt_gw");
-                    if (!a.empty()) par = par + " gw: " + a.c_str();
-                    a = ropt->getStr("ipt_iif");
-                    if (!a.empty()) par = par + " iif: " + a.c_str();
-                    a = ropt->getStr("ipt_oif");
-                    if (!a.empty()) par = par + " oif: " + a.c_str();
-                }
-                if (platform=="ipf")
-                {
-                    string a;
-                    a = ropt->getStr("ipf_route_option");
-                    if (!a.empty())
-                    {
-                        par = par + " "+ 
-                            getScreenName(a.c_str(),
-                                          getRouteOptions_pf_ipf( platform.c_str() ));
-                    }
-                    a = ropt->getStr("ipf_route_opt_if");
-                    if (!a.empty()) par = par + " "+ a.c_str();
-                    a = ropt->getStr("ipf_route_opt_addr");
-                    if (!a.empty()) par = par + " "+ a.c_str();
-                }
-                if (platform=="pf")
-                {
-                    string a;
-                    a = ropt->getStr("pf_route_option");
-                    if (!a.empty()) par = par + " "+ a.c_str();
-                    a = ropt->getStr("pf_route_opt_if");
-                    if (!a.empty()) par = par + " "+ a.c_str();
-                    a = ropt->getStr("pf_route_opt_addr");
-                    if (!a.empty()) par = par + " "+ a.c_str();
-                }
-                break;
-
 
             default : {}
             }

@@ -48,22 +48,6 @@ string MangleTableCompiler_ipt::myPlatformName() { return "iptables"; }
 int MangleTableCompiler_ipt::prolog()
 {
     return PolicyCompiler_ipt::prolog();
-
-    int n = 0;
-
-    for(FWObject::iterator i=source_ruleset->begin();
-        i!=source_ruleset->end(); i++)
-    {
-	PolicyRule *r = PolicyRule::cast( *i );
-        if (r == NULL) continue; // skip RuleSetOptions object
-        FWOptions *ruleopt = r->getOptionsObject();
-	if (r->isDisabled()) continue;
-        if (r->getAction() == PolicyRule::Tag ||
-            r->getAction() == PolicyRule::Classify) n++;
-        if (r->getAction() == PolicyRule::Branch &&
-            ruleopt->getBool("ipt_branch_in_mangle")) n++;
-    }
-    return n;
 }
 
 bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
@@ -140,9 +124,9 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
             return true;
         }
 
-        if (rule->getAction() == PolicyRule::Tag ||
-            rule->getAction() == PolicyRule::Route ||
-            rule->getAction() == PolicyRule::Classify ||
+        if (rule->getTagging() ||
+            rule->getRouting() ||
+            rule->getClassification() ||
             ruleopt->getBool("put_in_mangle_table")) tmp_queue.push_back(rule);
     }
 

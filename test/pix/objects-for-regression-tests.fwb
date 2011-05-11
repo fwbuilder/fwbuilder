@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="1302896751" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1302896751" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1791,6 +1791,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1811,6 +1812,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1830,7 +1832,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-1" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -1849,7 +1853,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B92DFC5" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -1864,7 +1870,9 @@
             <Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3C4E4C38" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1880,7 +1888,9 @@
             <Itf neg="False">
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D1168B6" disabled="False" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -1899,6 +1909,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1925,6 +1936,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1944,7 +1956,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-2" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1967,6 +1981,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CE59C76" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -1991,6 +2006,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2011,6 +2027,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2037,6 +2054,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3E155E82" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -2055,7 +2073,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D0F8031" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2073,7 +2093,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D50CD96" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2092,7 +2114,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD87B1E" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2116,6 +2140,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD8770E" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -2140,6 +2165,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-4" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -2164,6 +2190,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id431BE7A0" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -2190,6 +2217,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id431BD5EF" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -2208,7 +2236,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CE597E3" disabled="True" group="" log="False" position="21" action="Accept" direction="Both" comment="rules 12 and 13 can be&#10;used to test shading">
             <Src neg="False">
@@ -2231,6 +2261,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CE591F6" disabled="True" group="" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -2254,6 +2285,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B58E180" disabled="False" group="" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -2272,7 +2304,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-5" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2296,6 +2330,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-7" disabled="False" group="" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -2320,6 +2355,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2857,6 +2893,7 @@
               <ObjectRef ref="id3AF5AA96"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2877,6 +2914,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2895,6 +2933,7 @@
               <ObjectRef ref="id3AF5AA99"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2914,7 +2953,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D50B022" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2934,7 +2975,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D50B012" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2954,7 +2997,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id434C064921195" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -2975,7 +3020,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CCA26E4" disabled="True" group="" log="True" position="7" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -2994,6 +3041,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3014,6 +3062,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3034,7 +3083,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8FADA8" disabled="True" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3055,7 +3106,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AFC0F90" disabled="False" group="" log="True" position="11" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
@@ -3073,7 +3126,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B021E10" disabled="True" group="" log="True" position="12" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
@@ -3097,6 +3152,7 @@
               <Option name="limit_suffix">/minute</Option>
               <Option name="limit_value">10</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3118,6 +3174,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3139,6 +3196,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3161,6 +3219,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3183,6 +3242,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3204,7 +3264,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B45739A" disabled="True" group="" log="True" position="18" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -3223,6 +3285,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3242,7 +3305,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AF5AAE3" disabled="False" group="" log="True" position="20" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -3261,6 +3326,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3799,6 +3865,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3816,6 +3883,7 @@
               <ObjectRef ref="id3DB0FA5B"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3835,7 +3903,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA7A" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -3854,7 +3924,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA88" disabled="True" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -3869,7 +3941,9 @@
             <Itf neg="False">
               <ObjectRef ref="id3DB0FA85"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA90" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3885,7 +3959,9 @@
             <Itf neg="False">
               <ObjectRef ref="id3DB0FA85"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA99" disabled="True" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -3904,6 +3980,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3923,7 +4000,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0F9BD" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -3946,6 +4025,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0F9DB" disabled="False" group="" log="True" position="9" action="Accept" direction="Both" comment="">
@@ -3970,6 +4050,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3990,6 +4071,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -4016,6 +4098,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB10695" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
@@ -4034,7 +4117,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0F9F2" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4052,7 +4137,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0F9FC" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4076,6 +4163,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA07" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
@@ -4100,6 +4188,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA12" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
@@ -4124,6 +4213,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA1D" disabled="True" group="" log="False" position="17" action="Accept" direction="Both" comment="rules 8 and 9 can be&#10;used to test shading">
@@ -4147,6 +4237,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA27" disabled="True" group="" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -4170,6 +4261,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA31" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
@@ -4189,7 +4281,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA3C" disabled="False" group="" log="True" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4207,7 +4301,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA46" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4231,6 +4327,7 @@
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA51" disabled="False" group="" log="True" position="22" action="Deny" direction="Both" comment="">
@@ -4255,6 +4352,7 @@
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -4642,7 +4740,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3E9E32DA" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4660,7 +4760,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3E9E32E4" disabled="False" group="" log="False" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -4679,6 +4781,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -4698,7 +4801,9 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DF458D2" disabled="False" group="" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -4717,6 +4822,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -4973,7 +5079,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8F95B9" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -4991,7 +5099,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8F95C3" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -5009,7 +5119,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8F95CD" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="this comment&#10;consists of&#10;3 lines of text">
             <Src neg="False">
@@ -5030,7 +5142,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id616417X27607" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -5049,6 +5163,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -5069,6 +5184,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -5092,6 +5208,7 @@ no sysopt nodnsalias outbound
               <Option name="disable_logging_for_this_rule">False</Option>
               <Option name="log_interval">120</Option>
               <Option name="log_level">notice</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -5509,7 +5626,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3FA349F8" disabled="False" group="" log="False" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5528,6 +5647,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -5776,7 +5896,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3FA74F18" disabled="False" group="" log="False" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -5795,6 +5917,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -6834,6 +6957,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -6856,6 +6980,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -6876,7 +7001,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D8FCCDE" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6895,7 +7022,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D8FCCFF" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -6914,7 +7043,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D8ACF6A" disabled="True" group="" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -6933,6 +7064,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -6953,6 +7085,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -7108,7 +7241,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD819" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7126,7 +7261,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6ADAC0" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7144,7 +7281,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6ADB5D" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7162,7 +7301,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD743" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7180,7 +7321,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD7B8" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7198,7 +7341,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD8CF" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7216,7 +7361,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD8DA" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -7234,7 +7381,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6A95A4" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7252,7 +7401,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD9E6" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7270,7 +7421,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6A9D32" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7288,7 +7441,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD615" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7306,7 +7461,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AA594" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7324,7 +7481,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD622" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7342,7 +7501,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D6AD62C" disabled="False" group="" log="False" position="14" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -7361,6 +7522,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -7635,6 +7797,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D79A1C2" disabled="False" group="" log="True" position="1" action="Accept" direction="Both" comment="">
@@ -7656,6 +7819,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D79A1E4" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="">
@@ -7677,6 +7841,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63CB" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="'masquerading' rule">
@@ -7697,6 +7862,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63D5" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="'catch all' rule">
@@ -7717,6 +7883,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="id"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -7969,6 +8136,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id3C69901D"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -7989,6 +8157,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8193,7 +8362,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D91662E" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -8211,7 +8382,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DAD0EAE" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -8229,7 +8402,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DAD0EA4" disabled="False" group="" log="False" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -8248,6 +8423,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8564,7 +8740,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB10B57" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -8582,7 +8760,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB10B4C" disabled="False" group="" log="False" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -8601,6 +8781,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8962,7 +9143,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id3AF5A2CB"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AFB70C7" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="allow everything on loopback">
             <Src neg="False">
@@ -8977,7 +9160,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AFB70CF" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="allow everything on loopback">
             <Src neg="False">
@@ -8992,7 +9177,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3BD8ECC6" disabled="True" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -9007,7 +9194,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AF5A74B" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="block fragments">
             <Src neg="False">
@@ -9026,6 +9215,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9050,7 +9240,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AF5A757" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="allow all outgoing connections">
             <Src neg="False">
@@ -9068,7 +9260,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3AF5A762" disabled="False" group="" log="True" position="7" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
@@ -9087,6 +9281,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9227,7 +9422,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8F92B1" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -9245,7 +9442,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D385F90" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -9263,7 +9462,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3F8F940C" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -9281,7 +9482,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D385E0F" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -9303,6 +9506,7 @@ no sysopt nodnsalias outbound
               <Option name="disable_logging_for_this_rule">False</Option>
               <Option name="log_interval">120</Option>
               <Option name="log_level">notice</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9539,6 +9743,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10119,6 +10324,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10136,6 +10342,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id444A05A19567"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10155,7 +10362,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A03C79567" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -10174,7 +10383,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A03D49567" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -10189,7 +10400,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id444A05A49567"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A03DE9567" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10205,7 +10418,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id444A05A49567"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A03E99567" disabled="False" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -10224,6 +10439,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10250,6 +10466,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10269,7 +10486,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A040F9567" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10292,6 +10511,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A041B9567" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -10316,6 +10536,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10336,6 +10557,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10362,6 +10584,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04429567" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -10380,7 +10603,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A044E9567" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10398,7 +10623,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A045A9567" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10417,7 +10644,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04679567" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10441,6 +10670,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04749567" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -10465,6 +10695,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04819567" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -10489,6 +10720,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A048E9567" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -10514,6 +10746,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A049C9567" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -10532,7 +10765,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04A89567" disabled="True" group="" log="False" position="21" action="Accept" direction="Both" comment="rules 12 and 13 can be&#10;used to test shading">
             <Src neg="False">
@@ -10555,6 +10790,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04B49567" disabled="True" group="" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -10578,6 +10814,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04C09567" disabled="False" group="" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -10596,7 +10833,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04CC9567" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -10620,6 +10859,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04D99567" disabled="False" group="" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -10644,6 +10884,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11040,6 +11281,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11059,7 +11301,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43869E9018346" disabled="True" group="" log="False" position="2" action="Accept" direction="Both" comment="run time objects are not supported">
             <Src neg="False">
@@ -11077,7 +11321,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43869E9E18346" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11095,7 +11341,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43869EAA18346" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11113,7 +11361,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4386E38318346" disabled="False" group="" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -11132,6 +11382,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11152,6 +11403,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11171,7 +11423,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4386C10D18346" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11189,7 +11443,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id438728A918346" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11208,7 +11464,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id438728BA18346" disabled="True" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11227,7 +11485,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43867C3C18346" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -11246,6 +11506,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11426,7 +11687,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4389EDB518346" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11444,7 +11707,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4390C25825682" disabled="False" group="" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -11463,6 +11728,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11484,6 +11750,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11505,6 +11772,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11525,6 +11793,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11546,6 +11815,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11566,7 +11836,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id21263X16880" disabled="False" group="" log="False" position="8" action="Deny" direction="Both" comment="for #1917&#10;">
             <Src neg="False">
@@ -11587,6 +11859,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11607,7 +11880,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4389EEA118346" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11625,7 +11900,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4389EDCD18346" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -11643,7 +11920,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4389EE3C18346" disabled="False" group="" log="True" position="12" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -11662,6 +11941,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12225,6 +12505,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12242,6 +12523,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id4514316928543"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12261,7 +12543,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142F8F28543" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -12280,7 +12564,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142F9C28543" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -12295,7 +12581,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id4514316C28543"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FA628543" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12311,7 +12599,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id4514316C28543"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FB128543" disabled="False" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -12330,6 +12620,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12356,6 +12647,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12375,7 +12667,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id452039FA6873" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12394,7 +12688,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FCB28543" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12412,7 +12708,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FD728543" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12435,6 +12733,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FE328543" disabled="False" group="" log="True" position="12" action="Accept" direction="Both" comment="">
@@ -12459,6 +12758,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12479,6 +12779,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12505,6 +12806,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514300A28543" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
@@ -12523,7 +12825,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514301628543" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12541,7 +12845,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514302228543" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12560,7 +12866,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514302F28543" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12584,6 +12892,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514303C28543" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
@@ -12608,6 +12917,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514304928543" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -12632,6 +12942,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514305628543" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -12657,6 +12968,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514306428543" disabled="False" group="" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -12677,7 +12989,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514307028543" disabled="True" group="" log="False" position="23" action="Accept" direction="Both" comment="rules 12 and 13 can be&#10;used to test shading">
             <Src neg="False">
@@ -12700,6 +13014,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514307C28543" disabled="True" group="" log="False" position="24" action="Accept" direction="Both" comment="">
@@ -12723,6 +13038,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514308828543" disabled="False" group="" log="True" position="25" action="Accept" direction="Both" comment="">
@@ -12741,7 +13057,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id453F3A0010039" disabled="False" group="" log="False" position="26" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -12759,7 +13077,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514309428543" disabled="False" group="" log="False" position="27" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -12783,6 +13103,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16752X44786" disabled="False" group="" log="True" position="28" action="Deny" direction="Both" comment="">
@@ -12802,6 +13123,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -12828,6 +13150,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -13224,7 +13547,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528A50620039" disabled="False" group="" log="False" position="1" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -13242,7 +13567,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528A59120039" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
@@ -13260,7 +13587,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528A5B020039" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
             <Src neg="False">
@@ -13278,7 +13607,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528A5A020039" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
             <Src neg="False">
@@ -13296,7 +13627,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528BB8A20039" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="dmz -&gt; intnet">
             <Src neg="False">
@@ -13315,7 +13648,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id452912BE20039" disabled="False" group="" log="True" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -13336,6 +13671,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -13358,7 +13694,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4528A51220039" disabled="False" group="" log="False" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -13377,6 +13715,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -13722,6 +14061,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id452955F920039" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
@@ -13742,6 +14082,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529560A20039" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="">
@@ -13762,6 +14103,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id452955E820039" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
@@ -13782,6 +14124,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293E8E20039" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
@@ -13802,6 +14145,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529561B20039" disabled="False" group="" log="False" position="5" action="Accept" direction="Outbound" comment="">
@@ -13822,6 +14166,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293E9A20039" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
@@ -13842,6 +14187,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45296CFA20039" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
@@ -13862,6 +14208,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45296D0B20039" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
@@ -13882,6 +14229,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529840220039" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
@@ -13902,6 +14250,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529841320039" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
@@ -13922,6 +14271,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529842420039" disabled="False" group="" log="False" position="11" action="Accept" direction="Outbound" comment="">
@@ -13942,6 +14292,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45299B4220039" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -13962,6 +14313,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293EA620039" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -13982,6 +14334,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45299B5320039" disabled="False" group="" log="False" position="14" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -14002,6 +14355,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45299B7520039" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -14022,6 +14376,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293EB220039" disabled="False" group="" log="False" position="16" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -14042,6 +14397,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45299B6420039" disabled="False" group="" log="False" position="17" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -14062,6 +14418,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293EBE20039" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -14083,6 +14440,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293ECB20039" disabled="False" group="" log="True" position="19" action="Deny" direction="Inbound" comment="">
@@ -14104,6 +14462,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -14126,7 +14485,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45293EE820039" disabled="False" group="" log="False" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -14145,6 +14506,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -14490,6 +14852,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E35216799" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
@@ -14510,6 +14873,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E35E16799" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="">
@@ -14530,6 +14894,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E36A16799" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
@@ -14550,6 +14915,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E37616799" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
@@ -14570,6 +14936,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E38216799" disabled="False" group="" log="False" position="5" action="Accept" direction="Outbound" comment="">
@@ -14590,6 +14957,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E38E16799" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
@@ -14610,6 +14978,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E39A16799" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
@@ -14630,6 +14999,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3A616799" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
@@ -14650,6 +15020,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3B216799" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
@@ -14670,6 +15041,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3BE16799" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
@@ -14690,6 +15062,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3CA16799" disabled="False" group="" log="False" position="11" action="Accept" direction="Outbound" comment="">
@@ -14710,6 +15083,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3D616799" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -14730,6 +15104,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3E216799" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -14750,6 +15125,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3EE16799" disabled="False" group="" log="False" position="14" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -14770,6 +15146,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E3FA16799" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -14790,6 +15167,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E40616799" disabled="False" group="" log="False" position="16" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -14810,6 +15188,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E41216799" disabled="False" group="" log="False" position="17" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -14830,6 +15209,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E41E16799" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -14851,6 +15231,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E42B16799" disabled="False" group="" log="True" position="19" action="Deny" direction="Inbound" comment="">
@@ -14872,6 +15253,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -14894,7 +15276,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529E44816799" disabled="False" group="" log="False" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -14913,6 +15297,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -15260,6 +15645,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD5D16799" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="">
@@ -15280,6 +15666,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD6916799" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="">
@@ -15300,6 +15687,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD7516799" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
@@ -15320,6 +15708,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD8116799" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
@@ -15340,6 +15729,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD8D16799" disabled="False" group="" log="False" position="5" action="Accept" direction="Outbound" comment="">
@@ -15360,6 +15750,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FD9916799" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
@@ -15380,6 +15771,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDA516799" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
@@ -15400,6 +15792,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDB116799" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
@@ -15420,6 +15813,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDBD16799" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
@@ -15440,6 +15834,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDC916799" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
@@ -15460,6 +15855,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDD516799" disabled="False" group="" log="False" position="11" action="Accept" direction="Outbound" comment="">
@@ -15480,6 +15876,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDE116799" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -15500,6 +15897,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDED16799" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -15520,6 +15918,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FDF916799" disabled="False" group="" log="False" position="14" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -15540,6 +15939,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE0516799" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -15560,6 +15960,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE1116799" disabled="False" group="" log="False" position="16" action="Accept" direction="Inbound" comment="dmz -&gt; intnet">
@@ -15580,6 +15981,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE1D16799" disabled="False" group="" log="False" position="17" action="Accept" direction="Outbound" comment="dmz -&gt; intnet">
@@ -15600,6 +16002,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE2916799" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="dmz -&gt; intnet">
@@ -15621,6 +16024,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE3616799" disabled="False" group="" log="True" position="19" action="Deny" direction="Inbound" comment="">
@@ -15642,6 +16046,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -15664,7 +16069,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4529FE5316799" disabled="False" group="" log="False" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -15683,6 +16090,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -15946,7 +16354,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47B93E1C21818" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -15965,6 +16375,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -15987,6 +16398,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16006,7 +16418,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47B7A6FB21818" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16024,7 +16438,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id47B7A70721818" disabled="False" group="" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -16042,7 +16458,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -16604,6 +17022,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16621,6 +17040,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id17225X54624"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16640,7 +17060,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17275X54624" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -16659,7 +17081,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17288X54624" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -16674,7 +17098,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id17230X54624"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17298X54624" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16690,7 +17116,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id17230X54624"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17309X54624" disabled="False" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -16709,6 +17137,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16735,6 +17164,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16754,7 +17184,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17347X54624" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16777,6 +17209,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17359X54624" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -16801,6 +17234,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16821,6 +17255,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -16847,6 +17282,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17398X54624" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -16865,7 +17301,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17410X54624" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16883,7 +17321,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17422X54624" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16902,7 +17342,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17435X54624" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -16926,6 +17368,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17448X54624" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -16950,6 +17393,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17461X54624" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -16974,6 +17418,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17474X54624" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -16999,6 +17444,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17488X54624" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -17017,7 +17463,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17500X54624" disabled="True" group="" log="False" position="21" action="Accept" direction="Both" comment="rules 12 and 13 can be&#10;used to test shading">
             <Src neg="False">
@@ -17040,6 +17488,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17512X54624" disabled="True" group="" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -17063,6 +17512,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17524X54624" disabled="False" group="" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -17081,7 +17531,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17536X54624" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -17105,6 +17557,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id17549X54624" disabled="False" group="" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -17129,6 +17582,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -17415,6 +17869,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -17668,6 +18123,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -17921,6 +18377,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18173,6 +18630,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18192,7 +18650,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18908X29796" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -18210,7 +18670,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id18896X29796" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -18228,7 +18690,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id19186X29796" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -18254,6 +18718,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18275,6 +18740,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18296,6 +18762,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18317,6 +18784,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18340,6 +18808,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18361,6 +18830,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18383,6 +18853,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18403,6 +18874,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18633,6 +19105,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18653,6 +19126,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18673,6 +19147,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18693,6 +19168,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18714,6 +19190,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18736,6 +19213,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18756,6 +19234,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -18986,6 +19465,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19006,6 +19486,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19026,6 +19507,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19046,6 +19528,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19066,6 +19549,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19296,6 +19780,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19316,6 +19801,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19336,6 +19822,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19356,6 +19843,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -19376,6 +19864,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -20372,6 +20861,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -20393,6 +20883,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -20415,6 +20906,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions>
               <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -20435,6 +20927,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -21114,6 +21607,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -21453,6 +21947,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -21830,6 +22325,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -22317,6 +22813,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -22336,7 +22833,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id60455X13930" disabled="False" group="" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
@@ -22360,6 +22859,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -22985,6 +23485,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23002,6 +23503,7 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id36858X447"/>
             </Itf>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23021,7 +23523,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id36956X447" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="anti-spoofing rule">
             <Src neg="False">
@@ -23040,7 +23544,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id36985X447" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -23055,7 +23561,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id36863X447"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37010X447" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23071,7 +23579,9 @@ no sysopt nodnsalias outbound
             <Itf neg="False">
               <ObjectRef ref="id36863X447"/>
             </Itf>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37036X447" disabled="False" group="" log="False" position="6" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
@@ -23090,6 +23600,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23116,6 +23627,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23135,7 +23647,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37122X447" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23158,6 +23672,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37150X447" disabled="False" group="" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -23182,6 +23697,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23202,6 +23718,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23228,6 +23745,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37237X447" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -23246,7 +23764,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37265X447" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23264,7 +23784,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37293X447" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23283,7 +23805,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37322X447" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23307,6 +23831,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37351X447" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -23331,6 +23856,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37380X447" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -23355,6 +23881,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37409X447" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -23380,6 +23907,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37439X447" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -23398,7 +23926,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37467X447" disabled="True" group="" log="False" position="21" action="Accept" direction="Both" comment="rules 12 and 13 can be&#10;used to test shading">
             <Src neg="False">
@@ -23421,6 +23951,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37495X447" disabled="True" group="" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -23444,6 +23975,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37523X447" disabled="False" group="" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -23462,7 +23994,9 @@ no sysopt nodnsalias outbound
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37551X447" disabled="False" group="" log="False" position="24" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -23486,6 +24020,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id37580X447" disabled="False" group="" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -23510,6 +24045,7 @@ no sysopt nodnsalias outbound
               <Option name="limit_value">0</Option>
               <Option name="log_limit_suffix"></Option>
               <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23768,6 +24304,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -23788,6 +24325,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.0.3529
+#  Firewall Builder  fwb_ipt v4.2.1.ma_1
 #
-#  Generated Tue Apr 19 14:12:13 2011 PDT by vadim
+#  Generated Tue May  3 19:33:00 2011 PDT by vadim
 #
 # files: * firewall40.fw /etc/firewall40.fw
 #
@@ -324,31 +324,27 @@ script_body() {
     # 
     echo "Rule 0 (eth0)"
     # 
-    $IPTABLES -N In_RULE_0 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -i eth0   -m state --state NEW  -j In_RULE_0
-    $IPTABLES -t mangle -A In_RULE_0 -i eth0   -j MARK  --set-mark 1
-    $IPTABLES -t mangle -A In_RULE_0 -i eth0   -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A PREROUTING -i eth0   -m state --state NEW  -j MARK --set-mark 1
+    $IPTABLES -t mangle -A PREROUTING -i eth0   -m state --state NEW  -j CONNMARK --save-mark
     # 
     # Rule 1 (eth2)
     # 
     echo "Rule 1 (eth2)"
     # 
-    $IPTABLES -N In_RULE_1 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -i eth2   -m state --state NEW  -j In_RULE_1
-    $IPTABLES -t mangle -A In_RULE_1 -i eth2   -j MARK  --set-mark 2
-    $IPTABLES -t mangle -A In_RULE_1 -i eth2   -j CONNMARK --save-mark
+    $IPTABLES -t mangle -A PREROUTING -i eth2   -m state --state NEW  -j MARK --set-mark 2
+    $IPTABLES -t mangle -A PREROUTING -i eth2   -m state --state NEW  -j CONNMARK --save-mark
     # 
     # Rule 3 (global)
     # 
     echo "Rule 3 (global)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 1  -j ROUTE  --oif eth0 --continue
+    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 1  -j ROUTE --oif eth0 --continue
     # 
     # Rule 4 (global)
     # 
     echo "Rule 4 (global)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 2  -j ROUTE  --oif eth2 --continue
+    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 2  -j ROUTE --oif eth2 --continue
     # 
     # Rule 6 (global)
     # 
@@ -359,8 +355,8 @@ script_body() {
     $IPTABLES -N RULE_6 -t mangle
     $IPTABLES -t mangle -A Cid37084X26841.0  -d 22.22.22.0/24   -j RULE_6
     $IPTABLES -t mangle -A Cid37084X26841.0  -d 33.33.33.0/24   -j RULE_6
-    $IPTABLES -t mangle -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- TAG "
-    $IPTABLES -t mangle -A RULE_6  -j MARK  --set-mark 8
+    $IPTABLES -t mangle -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
+    $IPTABLES -t mangle -A RULE_6  -j MARK --set-mark 8
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -439,7 +435,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Apr 19 14:12:13 2011 by vadim"
+        log "Activating firewall script generated Tue May  3 19:33:00 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

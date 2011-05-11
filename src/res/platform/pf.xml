@@ -65,7 +65,7 @@
                 <dialog_page>None</dialog_page>
             </Accounting>
             <Tag>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Tag</description>
                 <dialog_page>TagPF</dialog_page>
             </Tag>
@@ -75,7 +75,7 @@
                 <dialog_page>None</dialog_page>
             </Pipe>
             <Classify>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Classify</description>
                 <dialog_page>ClassifyPF</dialog_page>
             </Classify>
@@ -90,10 +90,15 @@
                 <dialog_page>BranchAnchor</dialog_page>
             </Branch>
             <Route>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Route</description>
                 <dialog_page>RoutePF</dialog_page>
             </Route>
+            <Continue>
+                <supported>True</supported>
+                <description>Continue</description>
+                <dialog_page>None</dialog_page>
+            </Continue>
             <Translate>
                 <supported>True</supported>
                 <description>Translate</description>

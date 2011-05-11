@@ -1,3 +1,44 @@
+2011-05-10  Vadim Kurland  <vadim@netcitadel.com>
+
+	* fwbuilder 4.2.1.3540 released; started v4.3.0
+
+	* merged from branch multiple_actions to add changes that
+	implement conversion of actions Tag, Classify and Route to
+	options. Now one policy rule can have any combination of these
+	options. See #2367.
+
+2011-05-09  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWCmdAddObject.cpp (redo): fixes #2391 "selecting 'new library'
+	when editor panel not on 'editor' tab causes crash"
+
+2011-05-06  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pf_writers.cpp (_printQueue): see #2390 Classify
+	does not generate "queue" string for rules created in V4.2.1.3538
+	This completes the fix for the bug #2385.
+
+2011-05-05  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_19.xslt: see #2385 "PF action Classify uses
+	wrong parameter". This change fixes a bug introduced in 4.2.0
+	that affects rules with action Classify in PF firewalls.
+
+	The bug causes the following problems:
+
+	For users who built their rules before v4.2.0:
+	  - rules compile normally, both in the single rule compile and
+	    when the whole firewall is compiled
+	  - if they opened the action of one of such rules in the action
+	    editor, the classification string would look empty
+	  - if they entered new classification string in the editor,
+	    compiler kept using the old one (which they can not see or
+	    change in the editor)
+
+	For users who tried to build rules with action Classify with v4.2.0:
+	  - no matter what classification string they enter in the action
+	    dialog, generated code does not use it
+
 2011-05-04  Vadim Kurland  <vadim@netcitadel.com>
 
 	* FWObjectDatabase_18.xslt: XSLT transformation to upgrade data
@@ -8,6 +49,22 @@
 
 	* fwbuilder.dtd.in: Element "Itf" (an interface) of "PolicyRule"
 	should be required. DTD version increment.
+
+2011-05-03  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipt.cpp (processNext): see #2367 "Multiple
+	actions per policy rule". Options "Tag", "Classify" and "Route"
+	work with iptables in a combination with any action. This
+	implementation has one restriction: option Route can not be used
+	in combination with options Tag or Classify and any action that is
+	not Continue. This is because option Route can yield rules in
+	PREROUTING or POSTROUTING chains that are also used by options Tag
+	and Classify. For this combination we create two user-defined
+	chains that perform routing and tagging (or classification). In
+	case of a terminating action both chains end with it. This means
+	if one matches the packet, the other is never going to see it.
+	Non-terminating action "Continue" does not create this problem.
+	This limitation may be removed in future versions of fwbuilder.
 
 2011-05-03  vadim  <vadim@netcitadel.com>
 

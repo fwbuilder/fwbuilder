@@ -71,7 +71,7 @@
                 <dialog_page>AccountingStr</dialog_page>
             </Accounting>
             <Tag>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Tag</description>
                 <dialog_page>TagIptables</dialog_page>
             </Tag>
@@ -81,7 +81,7 @@
                 <dialog_page>None</dialog_page>
             </Pipe>
             <Classify>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Classify</description>
                 <dialog_page>ClassifyIptables</dialog_page>
             </Classify>
@@ -96,7 +96,7 @@
                 <dialog_page>BranchChain</dialog_page>
             </Branch>
             <Route>
-                <supported>True</supported>
+                <supported>False</supported>
                 <description>Routing</description>
                 <dialog_page>RouteIPT</dialog_page>
             </Route>

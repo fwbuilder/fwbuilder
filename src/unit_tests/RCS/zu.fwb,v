@@ -1,10 +1,15 @@
-head	1.8;
+head	1.9;
 access;
 symbols;
 locks; strict;
 comment	@# @;
 expand	@b@;
 
+
+1.9
+date	2011.05.06.05.06.32;	author vadim;	state Exp;
+branches;
+next	1.8;
 
 1.8
 date	2011.02.23.00.03.49;	author vadim;	state Exp;
@@ -63,13 +68,52 @@ desc
 @
 
 
+1.9
+log
+@upgraded to the latest dtd version
+@
+text
+@<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" id="root">
+  <Library id="id40CCB499" color="#d2ffd0" name="User" comment="" ro="False">
+    <ObjectGroup id="id40CCB49A_clusters" name="Clusters" comment="" ro="False"/>
+    <ObjectGroup id="id40CCB49A" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id40CCB49A_og_ats_1" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id40CCB49B" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id40CCB49C" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id40CCB49D" name="Hosts" comment="" ro="False"/>
+      <ObjectGroup id="id40CCB49E" name="Networks" comment="" ro="False"/>
+      <ObjectGroup id="id40CCB49F" name="Address Ranges" comment="" ro="False"/>
+      <ObjectGroup id="id44BDA99120157" name="DNS Names" comment="" ro="False">
+        <DNSName id="id44BDAF4720160" dnsrec="www.cnn.com" dnsrectype="A" run_time="False" name="www.cnn.com" comment="" ro="False"/>
+        <DNSName id="id44BDB67B20160" dnsrec="www.bbc.co.uk" dnsrectype="A" run_time="False" name="www.bbc.co.uk" comment="" ro="False"/>
+      </ObjectGroup>
+    </ObjectGroup>
+    <ServiceGroup id="id40CCB4A0" name="Services" comment="" ro="False">
+      <ServiceGroup id="id40CCB4A0_userservices" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A0_og_tag_1" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A1" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A2" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A3" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A4" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A5" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id40CCB4A6" name="Custom" comment="" ro="False"/>
+    </ServiceGroup>
+    <ObjectGroup id="id40CCB4A7" name="Firewalls" comment="" ro="False"/>
+    <IntervalGroup id="id40CCB4A8" name="Time" comment="" ro="False"/>
+  </Library>
+</FWObjectDatabase>
+@
+
+
 1.8
 log
 @upgrade to dtd 18
 @
 text
-@<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
+@d3 13
+a15 16
 <FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="18" lastModified="" id="root">
   <Library color="#d2ffd0" id="id40CCB499" name="User" ro="False">
     <ObjectGroup name="Clusters" id="id40CCB49A_clusters">
@@ -86,7 +130,8 @@ text
 
 
 
-      </ObjectGroup>
+d17 13
+a29 34
       </ObjectGroup>
     <ServiceGroup id="id40CCB4A0" name="Services">
       <ServiceGroup id="id40CCB4A0_userservices" name="Users"/>
@@ -121,8 +166,6 @@ text
       </ServiceGroup>
     <ObjectGroup id="id40CCB4A7" name="Firewalls"/>
     <IntervalGroup id="id40CCB4A8" name="Time"/>
-  </Library>
-</FWObjectDatabase>
 @
 
 

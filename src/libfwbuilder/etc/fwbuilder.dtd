@@ -52,7 +52,7 @@
  *
 -->
 
-<!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Tag|Pipe|Classify|Custom|Branch|Route)">
+<!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Pipe|Custom|Branch)">
 <!ENTITY % NAT_ACTION "(Translate|NATBranch)">
 <!ENTITY % DIRECTION "(Inbound|Outbound|Both)">
 <!ENTITY % IPADDRESS "CDATA">
@@ -79,7 +79,7 @@
 <!ELEMENT FWObjectDatabase (Library*)>
 <!ATTLIST FWObjectDatabase
  xmlns        CDATA     #FIXED "http://www.fwbuilder.org/1.0/"
- version      %STRING;  #FIXED "19"
+ version      %STRING;  #FIXED "21"
  lastModified %NUMBER;  #IMPLIED
  id           ID        #REQUIRED
 >

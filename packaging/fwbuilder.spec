@@ -1,6 +1,6 @@
 
 %define name    fwbuilder
-%define version 4.2.1.3537
+%define version 4.3.0.3541
 %define release 1
 
 %if "%_vendor" == "MandrakeSoft"

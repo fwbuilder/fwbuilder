@@ -6,9 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -60,14 +57,14 @@ void Rule::init(FWObjectDatabase*)
 {
 }
 
-FWOptions* Rule::getOptionsObject()  {    return NULL;              }
-RuleSet*   Rule::getBranch()         {    return NULL;              }
-void       Rule::setPosition(int n)  {    setInt("position",n);     }
-int        Rule::getPosition() const {    return getInt("position");}
-void       Rule::disable()           {    setBool("disabled",true); }
-void       Rule::enable()            {    setBool("disabled",false);}
-bool       Rule::isDisabled() const  {    return( getBool("disabled") );}
-bool       Rule::isEmpty()           {    return false;             }
+FWOptions* Rule::getOptionsObject() const { return NULL; }
+RuleSet* Rule::getBranch() { return NULL; }
+void Rule::setPosition(int n)  { setInt("position", n); }
+int Rule::getPosition() const { return getInt("position"); }
+void Rule::disable() { setBool("disabled",true); }
+void Rule::enable() { setBool("disabled",false); }
+bool Rule::isDisabled() const  { return( getBool("disabled")); }
+bool Rule::isEmpty() { return false; }
 
 void Rule::setBranch(RuleSet*) {};
 
@@ -250,12 +247,9 @@ string PolicyRule::getActionAsString(int act)
     case Continue:   return "Continue";
     case Accounting: return "Accounting";
     case Modify:     return "Modify";
-    case Tag:        return "Tag";
     case Pipe:       return "Pipe";
-    case Classify:   return "Classify";
     case Custom:     return "Custom";
     case Branch:     return "Branch";
-    case Route:      return "Route";
     default:         return "Unknown";
     }
     return "Deny";
@@ -272,12 +266,9 @@ void PolicyRule::setAction(const string& act)
     if (act=="Continue")   { setAction(Continue); return; }
     if (act=="Accounting") { setAction(Accounting); return; }
     if (act=="Modify")     { setAction(Modify); return; }
-    if (act=="Tag")        { setAction(Tag); return; }
     if (act=="Pipe")       { setAction(Pipe); return; }
-    if (act=="Classify")   { setAction(Classify); return; }
     if (act=="Custom")     { setAction(Custom); return; }
     if (act=="Branch")     { setAction(Branch); return; }
-    if (act=="Route")      { setAction(Route); return; }
     setAction(Deny);
 }
 
@@ -402,7 +393,7 @@ xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-FWOptions* PolicyRule::getOptionsObject()
+FWOptions* PolicyRule::getOptionsObject() const
 {
     return FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
 }
@@ -413,25 +404,17 @@ FWOptions* PolicyRule::getOptionsObject()
  */
 void PolicyRule::updateNonStandardObjectReferences()
 {
-    switch (getAction())
-    {
-    case PolicyRule::Branch:
+    if (getAction() == PolicyRule::Branch)
     {
         RuleSet *branch_ruleset = getBranch();
         setBranch(branch_ruleset);
-        setTagObject(NULL);
-        break;
     }
-    case PolicyRule::Tag:
+
+    if (getTagging())
     {
         FWObject *tag_object = getTagObject();
         setTagObject(tag_object);
-        setBranch(NULL);
-        break;
     }
-    default:
-        break;
-    }            
 }
 
 RuleSet* PolicyRule::getBranch()
@@ -464,16 +447,48 @@ void PolicyRule::setBranch(RuleSet* ruleset)
     getOptionsObject()->setStr("branch_id", branch_id);
 }
 
+bool PolicyRule::getRouting() const
+{
+    return getOptionsObject()->getBool("routing");
+}
+
+void PolicyRule::setRouting(bool f)
+{
+    getOptionsObject()->setBool("routing", f);
+}
+
+bool PolicyRule::getClassification() const
+{
+    return getOptionsObject()->getBool("classification");
+}
+
+void PolicyRule::setClassification(bool f)
+{
+    getOptionsObject()->setBool("classification", f);
+}
+
+
+bool PolicyRule::getTagging() const
+{
+    return getOptionsObject()->getBool("tagging");
+}
+
+void PolicyRule::setTagging(bool f)
+{
+    getOptionsObject()->setBool("tagging", f);
+}
+
 void PolicyRule::setTagObject(FWObject *tag_object)
 {
     string tag_id =
         (tag_object) ? FWObjectDatabase::getStringId(tag_object->getId()) : "";
     getOptionsObject()->setStr("tagobject_id", tag_id);
+    setTagging(tag_object && ! tag_id.empty());
 }
 
 FWObject* PolicyRule::getTagObject()
 {
-    if (getAction() == Tag)
+    if (getTagging())
     {
         string tagobj_id = getOptionsObject()->getStr("tagobject_id");
         if (!tagobj_id.empty())
@@ -487,7 +502,7 @@ FWObject* PolicyRule::getTagObject()
 
 string PolicyRule::getTagValue()
 {
-    if (getAction() == Tag)
+    if (getTagging())
     {
         TagService *tagobj = TagService::cast(getTagObject());
         if (tagobj)  return tagobj->getCode();
@@ -829,7 +844,7 @@ xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-FWOptions* NATRule::getOptionsObject()
+FWOptions* NATRule::getOptionsObject() const
 {
     return FWOptions::cast( getFirstByType(NATRuleOptions::TYPENAME) );
 }
@@ -1052,7 +1067,7 @@ xmlNodePtr RoutingRule::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-FWOptions* RoutingRule::getOptionsObject()
+FWOptions* RoutingRule::getOptionsObject() const
 {
     return FWOptions::cast( getFirstByType(RoutingRuleOptions::TYPENAME) );
 }

@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2002-2011 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -277,12 +275,13 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
         str << iface_name.substr(0,n) << "_";
     }
 
-    switch (rule->getDirection()) {
+    switch (rule->getDirection())
+    {
     case PolicyRule::Inbound:   str << "In_";  break;
     case PolicyRule::Outbound:  str << "Out_"; break;
     default: ;
     }
-    int pos=rule->getPosition();
+    int pos = rule->getPosition();
 
     string ruleset_name = getRuleSetName();
 
@@ -296,7 +295,7 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
     else // special case: position == -1
         str << "000";
 
-    string suffix=rule->getStr("subrule_suffix");
+    string suffix = rule->getStr("subrule_suffix");
     if (!suffix.empty()) str << "_" << suffix;
 
     chain_no++;
@@ -486,7 +485,10 @@ bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
 
     if ( ! rule->getStr("ipt_target").empty() &&
          rule->getStr("ipt_target") == ".CONTINUE" &&
-         ! rule->getLogging()) return true;  // skip this rule
+         ! rule->getLogging() &&
+         ! rule->getTagging() &&
+         ! rule->getClassification() &&
+         ! rule->getRouting()) return true;  // skip this rule
 
     tmp_queue.push_back(rule);
     return true;
@@ -510,19 +512,23 @@ bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
  * MARK to terminating targets (equivalent) by splitting the rule and
  * adding one more rule with target ACCEPT.
  *
+ * Note that target ROUTE is terminating unless parameter "--continue"
+ * is present. We add "--continue" if action is Continue, otherwise 
+ * the rule does not need to be split and we carry action Accept further.
+ *
  * Call this rule processor at the very end of the chain when all
  * splits are done and target is set via "ipt_target"
  */
-bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
+bool  PolicyCompiler_ipt::splitTagClassifyOrRouteIfAction::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     string tgt = rule->getStr("ipt_target");
     FWOptions *ruleopt = rule->getOptionsObject();
     
-    if (compiler->fw->getOptionsObject()->getBool("classify_mark_terminating") &&
-        !ruleopt->getBool("already_terminating_target") &&
-        (tgt=="CLASSIFY" || tgt=="MARK"))
+    if (ipt_comp->my_table=="mangle" && 
+        (rule->getTagging() || rule->getClassification()) &&
+        rule->getAction() != PolicyRule::Continue)
     {
         RuleElementSrc *nsrc;
         RuleElementDst *ndst;
@@ -544,22 +550,26 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
             !nitfre->isAny())
         {
             new_chain = ipt_comp->getNewTmpChainName(rule);
-            r= compiler->dbcopy->createPolicyRule();
+            r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
-            r->setStr("subrule_suffix","ntt");
-            r->setStr("ipt_target",new_chain);
+            r->setStr("subrule_suffix", "ntt");
+            r->setStr("ipt_target", new_chain);
+            r->setClassification(false);
+            r->setRouting(false);
+            r->setTagging(false);
+            r->setLogging(false);
+            r->setAction(PolicyRule::Continue);
             tmp_queue.push_back(r);
         }
 
-        r= compiler->dbcopy->createPolicyRule();
+        r = compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         nsrc = r->getSrc();   nsrc->reset();
         ndst = r->getDst();   ndst->reset();
         nsrv = r->getSrv();   nsrv->reset();
         nitfre = r->getItf(); nitfre->reset();
-        //r->setInterfaceId(-1);
         ruleopt = r->getOptionsObject();
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("limit_value",-1);
@@ -567,19 +577,24 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
         ruleopt->setInt("hashlimit_value",-1);
         ruleopt->setBool("stateless",true);
         r->setLogging(false);
-	r->setStr("ipt_chain",new_chain);
-        r->setStr("upstream_rule_chain",this_chain);
+	r->setStr("ipt_chain", new_chain);
+        r->setStr("upstream_rule_chain", this_chain);
+        r->setAction(PolicyRule::Continue);
         ipt_comp->registerChain(new_chain);
         ipt_comp->insertUpstreamChain(this_chain, new_chain);
         tmp_queue.push_back(r);
 
-        r2= compiler->dbcopy->createPolicyRule();
+        r2 = compiler->dbcopy->createPolicyRule();
         compiler->temp_ruleset->add(r2);
         r2->duplicate(r);
-        r2->setAction(PolicyRule::Accept);
-        r2->setStr("ipt_target","ACCEPT");
+        r2->setClassification(false);
+        r2->setRouting(false);
+        r2->setTagging(false);
+        r2->setLogging(false);
+        r2->setAction( rule->getAction());
+
         ruleopt = r2->getOptionsObject();
-        ruleopt->setBool("stateless",true);
+        ruleopt->setBool("stateless", true);
         tmp_queue.push_back(r2);
 
         return true;
@@ -589,10 +604,59 @@ bool  PolicyCompiler_ipt::splitNonTerminatingTargets::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    FWOptions *ruleopt = rule->getOptionsObject();
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *r;
+
+    if (ipt_comp->my_table=="mangle" &&
+        (rule->getTagging() || rule->getClassification() || rule->getRouting()))
+    {
+        if (rule->getTagging())
+        {
+            r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setClassification(false);
+            r->setRouting(false);
+            rule->setTagging(false);
+            tmp_queue.push_back(r);
+        }
+
+        if (rule->getClassification())
+        {
+            r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            rule->setClassification(false);
+            r->setRouting(false);
+            r->setTagging(false);
+            tmp_queue.push_back(r);
+        }
+
+        if (rule->getRouting())
+        {
+            r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setClassification(false);
+            rule->setRouting(false);
+            r->setTagging(false);
+            tmp_queue.push_back(r);
+        }
+
+    } else
+        tmp_queue.push_back(rule);
+
+    return true;
+}
+
 // this version just splits rule so that each elementary rule is associated
 // with one interface.
 
-bool  PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
+bool PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
 {
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
@@ -628,7 +692,7 @@ bool PolicyCompiler_ipt::Route::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions *ruleopt =rule->getOptionsObject();
     
-    if (rule->getAction() == PolicyRule::Route)
+    if (rule->getRouting())
     {
         string iif,oif,gw;
         iif = ruleopt->getStr("ipt_iif");
@@ -689,9 +753,9 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
     FWOptions *rulesetopts = ipt_comp->getSourceRuleSet()->getOptionsObject();
     if (rulesetopts->getBool("mangle_only_rule_set")) return true;
 
-    if (rule->getAction() == PolicyRule::Tag ||
-        rule->getAction() == PolicyRule::Route ||
-        rule->getAction() == PolicyRule::Classify) return true;
+    if (rule->getTagging() ||
+        rule->getRouting() ||
+        rule->getClassification()) return true;
 
     // Another special case (while working on #1415, although not
     // related directly): branching rule that has "branch in mangle table"
@@ -732,6 +796,36 @@ bool PolicyCompiler_ipt::checkActionInMangleTable::processNext()
     return true;
 }
 
+/*
+ * Rules with action Tag can only be in PREROUTING or OUTPUT chains,
+ * rules with action Classify always go into POSTROUTING. This means
+ * they can't conflict. But option Route can yield rules in PREROUTING
+ * or POSTROUTING and can conflict. We'll flag combinations of Tag +
+ * Route and Classify + Route if action is not Continue.
+ */
+bool PolicyCompiler_ipt::checkForUnsupportedCombinationsInMangle::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (ipt_comp->my_table=="mangle" &&
+        rule->getAction() != PolicyRule::Continue &&
+        rule->getRouting() &&
+        (rule->getTagging() || rule->getClassification()))
+    {
+        QString err("Can not process option Route in combination with "
+                    "options Tag or Classify and action %1");
+	compiler->abort(
+            rule,  err.arg(rule->getActionAsString().c_str()).toStdString());
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 bool PolicyCompiler_ipt::Logging1::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
@@ -749,6 +843,11 @@ bool PolicyCompiler_ipt::storeAction::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
     rule->setStr("stored_action", rule->getActionAsString() );
+
+    rule->setBool("originated_from_a_rule_with_tagging", rule->getTagging());
+    rule->setBool("originated_from_a_rule_with_classification",
+                  rule->getClassification());
+    rule->setBool("originated_from_a_rule_with_routing", rule->getRouting());
 
     tmp_queue.push_back(rule);
     return true;
@@ -778,7 +877,10 @@ bool PolicyCompiler_ipt::Logging2::processNext()
  * commands without "-j TARGET" parameter, so we dont need to create new chain
  * for logging.
  */
-        if (rule->getAction() == PolicyRule::Continue)
+        if (rule->getAction() == PolicyRule::Continue &&
+            ( ! rule->getTagging() &&
+              ! rule->getClassification() &&
+              ! rule->getRouting()))
         {
             rule->setStr("ipt_target", "LOG");
             tmp_queue.push_back(rule);
@@ -821,6 +923,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
             r->duplicate(rule);
             ruleopt =r->getOptionsObject();
             r->setStr("ipt_target",new_chain);
+            r->setClassification(false);
+            r->setRouting(false);
+            r->setTagging(false);
             r->setLogging(false);
             r->setAction(PolicyRule::Continue);    // ###
 //        ruleopt->setInt("limit_value",-1);
@@ -856,6 +961,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         r->setAction(PolicyRule::Continue);    // ###
 	r->setDirection( PolicyRule::Both );
 	r->setLogging(false);
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
         ruleopt->setBool("stateless",true);
         r->setBool("force_state_check",false);
         ruleopt->setInt("limit_value",-1);
@@ -1082,6 +1190,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	nsrc=r->getSrc();  nsrc->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1107,6 +1218,9 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
  	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1206,6 +1320,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	ndst=r->getDst();  ndst->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1231,6 +1348,9 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1333,6 +1453,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	nsrv=r->getSrv();  nsrv->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1357,6 +1480,9 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1446,6 +1572,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
 	if ( (nint=r->getWhen())!=NULL )  nint->reset();
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_target",new_chain);
         ruleopt =r->getOptionsObject();
@@ -1471,6 +1600,9 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         }
 
 	r->setAction( PolicyRule::Return );
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
 	r->setStr("ipt_chain",new_chain);
 	r->setStr("ipt_target","");
@@ -1615,17 +1747,16 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
      */
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
-    if ( (rule->getAction() == PolicyRule::Tag ||
-          rule->getStr("stored_action")=="Tag") && 
+    if ( (rule->getTagging() || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Inbound) &&
          itf_re->isAny())
-//         rule->getInterfaceId()==-1 )
+    {
         ipt_comp->setChain(rule, "PREROUTING");
+    }
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -1636,17 +1767,14 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
-    if ( (rule->getAction() == PolicyRule::Tag ||
-          rule->getStr("stored_action")=="Tag") && 
+    if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
          (rule->getDirection()==PolicyRule::Both ||
           rule->getDirection()==PolicyRule::Outbound) &&
          itf_re->isAny())
-//         rule->getInterfaceId()==-1 )
         ipt_comp->setChain(rule, "POSTROUTING");
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
@@ -1656,8 +1784,7 @@ bool PolicyCompiler_ipt::checkForRestoreMarkInOutput::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
 
-    if ( (rule->getAction() == PolicyRule::Tag ||
-          rule->getStr("stored_action")=="Tag") && 
+    if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
          ruleopt->getBool("ipt_mark_connections") &&
          rule->getStr("ipt_chain")=="OUTPUT")
         ipt_comp->have_connmark_in_output = true;
@@ -1697,56 +1824,60 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
     return true;
 }
 
-/*
- * couple of special cases for rules with action Tag
- *
- * option 'ipt_mark_connections' means we need to generate two rules:
- * one with target MARK and another with target CONNMARK. We place
- * these two new rules in a separate chain.
- *
- * if global option 'classify_mark_terminating' is also on, we place third rule in
- * the same chain, this time with action ACCEPT.
- *
- * Note that if option 'ipt_mark_connections' is off, we do not process
- * classify_mark_terminating option here. It will be processed later in 
- * splitNonTerminatingTargets
- */
 bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 {
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     FWOptions *ruleopt = rule->getOptionsObject();
+
+    if (rule->getTagging() && ruleopt->getBool("ipt_mark_connections"))
+    {
+	tmp_queue.push_back(rule);
+
+	PolicyRule *r1 = compiler->dbcopy->createPolicyRule();
+	compiler->temp_ruleset->add(r1);
+	r1->duplicate(rule);
+	r1->setStr("ipt_target", "CONNMARK");
+        r1->setAction(PolicyRule::Continue);    // ###
+        r1->setClassification(false);
+        r1->setRouting(false);
+        r1->setTagging(false);
+        r1->setLogging(false);
+        ruleopt = r1->getOptionsObject();
+        ruleopt->setStr("CONNMARK_arg", "--save-mark");
+
+	tmp_queue.push_back(r1);
+
+        ipt_comp->have_connmark = true;
+    } else
+	tmp_queue.push_back(rule);
+
+#if 0
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
 
     RuleElementSrc *nsrc;
     RuleElementDst *ndst;
     RuleElementSrv *nsrv;
     RuleElementInterval *nint;
-    bool make_terminating =
-        compiler->fw->getOptionsObject()->getBool("classify_mark_terminating");
 
-    if (rule->getAction() == PolicyRule::Tag &&
-        ruleopt->getBool("ipt_mark_connections"))
+    if (rule->getTagging() && ruleopt->getBool("ipt_mark_connections"))
     {
 	PolicyRule *r, *r1;
 
-        if (make_terminating)
-            ruleopt->setBool("already_terminating_target", true);
-
         string this_chain = rule->getStr("ipt_chain");
-	string new_chain = ipt_comp->getNewChainName(rule, NULL); // rule_iface);
+	string new_chain = ipt_comp->getNewChainName(rule, NULL);
 
-	r= compiler->dbcopy->createPolicyRule();
+	r = compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
-	r->setStr("ipt_target",new_chain);
+	r->setStr("ipt_target", new_chain);
+        r->setClassification(false);
+        r->setRouting(false);
+        r->setTagging(false);
 	r->setLogging(false);
         r->setAction(PolicyRule::Continue);
 	r->setLogging(false);
-        ruleopt =r->getOptionsObject();
-        if (make_terminating)
-            ruleopt->setBool("already_terminating_target",true);
-
+        ruleopt = r->getOptionsObject();
 	tmp_queue.push_back(r);
 
 	r= compiler->dbcopy->createPolicyRule();
@@ -1757,7 +1888,6 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
         ipt_comp->registerChain(new_chain);
         ipt_comp->insertUpstreamChain(this_chain, new_chain);
 
-//	r->setDirection( PolicyRule::Both );
         ruleopt =r->getOptionsObject();
         ruleopt->setBool("stateless",true);
         r->setBool("force_state_check",false);
@@ -1768,39 +1898,28 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 	ndst=r->getDst();   ndst->reset();
 	nsrv=r->getSrv();   nsrv->reset();
 	if ( (nint=r->getWhen())!=NULL )  nint->reset();
-        if (make_terminating)
-            ruleopt->setBool("already_terminating_target",true);
 
 	tmp_queue.push_back(r);
 
 	r1= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r1);
 	r1->duplicate(r);
-	r1->setStr("ipt_target","CONNMARK");
+	r1->setStr("ipt_target", "CONNMARK");
         r1->setAction(PolicyRule::Continue);    // ###
+        r1->setClassification(false);
+        r1->setRouting(false);
+        r1->setTagging(false);
         r1->setLogging(false);
         ruleopt =r1->getOptionsObject();
-        ruleopt->setStr("CONNMARK_arg","--save-mark");
-        if (make_terminating)
-            ruleopt->setBool("already_terminating_target",true);
+        ruleopt->setStr("CONNMARK_arg", "--save-mark");
 
 	tmp_queue.push_back(r1);
-
-        if (make_terminating)
-        {
-            r1 = compiler->dbcopy->createPolicyRule();
-            compiler->temp_ruleset->add(r1);
-            r1->duplicate(r);
-            r1->setStr("ipt_target","ACCEPT");
-            r1->setAction(PolicyRule::Accept);
-            r1->setLogging(false);
-            tmp_queue.push_back(r1);
-        }
 
         ipt_comp->have_connmark = true;
 
     } else
 	tmp_queue.push_back(rule);
+#endif
 
     return true;
 }
@@ -2182,7 +2301,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
         // work with mangle table can only go into POSTROUTING chain
         // such as CLASSIFY
         if (ipt_comp->my_table=="mangle" &&
-            rule->getAction()==PolicyRule::Classify)
+            rule->getClassification())
         {
             r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -2248,7 +2367,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
         // POSTROUTING chain as well because some targets that
         // work with mangle table can only go into POSTROUTING chain
         // such as CLASSIFY
-        if (ipt_comp->my_table=="mangle" && rule->getAction()==PolicyRule::Classify)
+        if (ipt_comp->my_table=="mangle" && rule->getClassification())
         {
             r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -2269,7 +2388,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2302,7 +2421,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2336,7 +2455,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2409,7 +2528,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2527,7 +2646,7 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() == PolicyRule::Classify)
+    if (rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -2889,8 +3008,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if ( ! rule->getStr("ipt_chain").empty() ||
-         rule->getAction() == PolicyRule::Classify)
+    if ( ! rule->getStr("ipt_chain").empty() || rule->getClassification())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -2987,8 +3105,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if ( ! rule->getStr("ipt_chain").empty() || 
-         rule->getAction() == PolicyRule::Classify)
+    if ( ! rule->getStr("ipt_chain").empty() || rule->getClassification())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -3153,7 +3270,7 @@ bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getAction() != PolicyRule::Classify)
+    if ( ! rule->getClassification())
     {
 	tmp_queue.push_back(rule);
 	return true;
@@ -3288,15 +3405,16 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
     if ( ! rule->getStr("ipt_target").empty() ) return true; // already defined
 
     // note that we use pseudo-target for action Continue
-    switch (rule->getAction()) {
+    switch (rule->getAction())
+    {
     case PolicyRule::Accept:   rule->setStr("ipt_target", "ACCEPT");    break;
     case PolicyRule::Deny:     rule->setStr("ipt_target", "DROP");      break;
     case PolicyRule::Reject:   rule->setStr("ipt_target", "REJECT");    break;
     case PolicyRule::Return:   rule->setStr("ipt_target", "RETURN");    break;
-    case PolicyRule::Tag:      rule->setStr("ipt_target", "MARK");      break;
+//    case PolicyRule::Tag:      rule->setStr("ipt_target", "MARK");      break;
     case PolicyRule::Pipe:     rule->setStr("ipt_target", "QUEUE");     break;
-    case PolicyRule::Classify: rule->setStr("ipt_target", "CLASSIFY");  break;
-    case PolicyRule::Route:    rule->setStr("ipt_target", "ROUTE");     break;
+//    case PolicyRule::Classify: rule->setStr("ipt_target", "CLASSIFY");  break;
+//    case PolicyRule::Route:    rule->setStr("ipt_target", "ROUTE");     break;
 
     case PolicyRule::Continue: rule->setStr("ipt_target", ".CONTINUE"); break;
     case PolicyRule::Custom:   rule->setStr("ipt_target", ".CUSTOM");   break;
@@ -3878,9 +3996,6 @@ bool PolicyCompiler_ipt::accounting::processNext()
     Interface *rule_iface = 
         Interface::cast(FWObjectReference::getObject(itf_re->front()));
 
-//    Interface  *rule_iface = Interface::cast(
-//        compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if (rule->getAction()==PolicyRule::Accounting &&
@@ -3894,7 +4009,7 @@ bool PolicyCompiler_ipt::accounting::processNext()
 
         if (new_chain==this_chain)
         {
-            rule->setStr("ipt_target","RETURN");
+            rule->setStr("ipt_target", "RETURN");
             rule->setAction(PolicyRule::Continue);
         } else
         {
@@ -3918,14 +4033,14 @@ bool PolicyCompiler_ipt::accounting::processNext()
             ipt_comp->registerChain(new_chain);
             ipt_comp->insertUpstreamChain(this_chain, new_chain);
 
-            r->setStr("ipt_target","RETURN");
+            r->setStr("ipt_target", "RETURN");
             r->setLogging(false);
             r->setAction(PolicyRule::Continue);
             tmp_queue.push_back(r);
 
             rule->setStr("ipt_target", new_chain);
             rule->setLogging(false);
-            ruleopt =rule->getOptionsObject();
+            ruleopt = rule->getOptionsObject();
             ruleopt->setInt("limit_value",-1);
             ruleopt->setInt("connlimit_value",-1);
             ruleopt->setInt("hashlimit_value",-1);
@@ -4125,16 +4240,19 @@ void PolicyCompiler_ipt::compile()
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
 
-        if (my_table=="mangle" &&
-            !fw->getOptionsObject()->getBool("classify_mark_terminating")
-        )
-        {
-            add( new dropTerminatingTargets(
-                     "Drop rules with terminating targets") );
-            add( new DetectShadowingForNonTerminatingRules(
-                     "Detect shadowing for non-terminating rules" ) );
-        } else
-            add( new DetectShadowing("Detect shadowing" ) );
+        // #2367
+
+        // if (my_table=="mangle" &&
+        //     !fw->getOptionsObject()->getBool("classify_mark_terminating")
+        // )
+        // {
+        //     add( new dropTerminatingTargets(
+        //              "Drop rules with terminating targets") );
+        //     add( new DetectShadowingForNonTerminatingRules(
+        //              "Detect shadowing for non-terminating rules" ) );
+        // } else
+
+        add( new DetectShadowing("Detect shadowing" ) );
 
         add( new simplePrintProgress() );
 
@@ -4153,11 +4271,14 @@ void PolicyCompiler_ipt::compile()
 
     add( new singleRuleFilter());
 
+    add( new checkForUnsupportedCombinationsInMangle(
+             "Check for unsupported Tag+Route and Classify+Route combinations"));
+
+    add( new splitIfTagClassifyOrRoute(
+             "Split rule if it uses tagging, classification or routing options"));
+
     add( new Route("process route rules"));
     add( new storeAction("store original action of this rule"));
-
-    add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
-    //add( new setChainForMangle("set chain for other rules in mangle"));
 
     add( new Logging1("check global logging override option"));
 
@@ -4245,6 +4366,14 @@ void PolicyCompiler_ipt::compile()
     add( new swapMultiAddressObjectsInDst(
              " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
+    // #2367
+    add( new splitTagClassifyOrRouteIfAction(
+             "split rules with options Tag, Classify or Route when action "
+             "is not Continue" ) );
+    add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+    add( new accounting("Accounting") );
+
+
     add( new splitIfSrcAny("split rule if src is any") );
 
     if (my_table == "mangle")
@@ -4254,9 +4383,6 @@ void PolicyCompiler_ipt::compile()
     add( new setChainPreroutingForTag("chain PREROUTING for Tag"));
     add( new splitIfDstAny("split rule if dst is any") );
     add( new setChainPostroutingForTag("chain POSTROUTING for Tag"));
-
-
-
 
 
     add( new processMultiAddressObjectsInSrc(
@@ -4370,6 +4496,8 @@ void PolicyCompiler_ipt::compile()
     add( new optimize1("optimization 1, pass 2"));
     add( new optimize1("optimization 1, pass 3"));
 
+
+
     add( new groupServicesByProtocol("split on services"));
     add( new separateTCPWithFlags("split on TCP services with flags"));
     add( new verifyCustomServices("verify custom services"));
@@ -4378,16 +4506,20 @@ void PolicyCompiler_ipt::compile()
     add( new separatePortRanges("separate port ranges"));
     add( new separateUserServices("separate user services"));
     add( new separateSrcPort("split on TCP and UDP with source ports"));
-    add( new checkForStatefulICMP6Rules("Make sure rules that match icmpv6 are stateless"));
+    add( new checkForStatefulICMP6Rules(
+             "Make sure rules that match icmpv6 are stateless"));
 
-//        add( new optimize1(        "optimization 1, pass 1"              ) );
-//        add( new optimize1(        "optimization 1, pass 2"              ) );
-    add( new optimize2(        "optimization 2"                        ) );
-    add( new accounting(       "Accounting"                            ) );
-    add( new prepareForMultiport("prepare for multiport"               ) );
+    add( new optimize2("optimization 2") );
 
-    add( new splitNonTerminatingTargets(
-             "split rules using non-terminating targets" ) );
+    // add( new splitTagClassifyOrRouteIfAction(
+    //          "split rules with options Tag, Classify or Route when action "
+    //          "is not Continue" ) );
+    // add( new splitIfTagAndConnmark("Tag+CONNMARK combo"));
+
+    // add( new accounting("Accounting") );
+
+
+    add( new prepareForMultiport("prepare for multiport") );
 
     add( new ConvertToAtomicForAddresses(
              "convert to atomic rules by address elements") );
@@ -4545,7 +4677,12 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
 
     str << " t=" << rule->getStr("ipt_target");
 
-    str << " .iface=" << rule->getStr(".iface");
+    if ( ! rule->getStr(".iface").empty())
+        str << " .iface=" << rule->getStr(".iface");
+
+    if (rule->getTagging()) str << " (tag)";
+    if (rule->getClassification()) str << " (class)";
+    if (rule->getRouting()) str << " (route)";
 
     if (rule->getAction()==PolicyRule::Reject)
         str << " " + ruleopt->getStr("action_on_reject");

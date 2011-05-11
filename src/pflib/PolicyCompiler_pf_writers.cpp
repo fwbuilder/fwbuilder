@@ -76,8 +76,18 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 
     switch (rule->getAction())
     {
-    case PolicyRule::Tag:
-    {
+ // case PolicyRule::Classify:  #2367
+ // case PolicyRule::Route:     #2367
+    case PolicyRule::Accept:  
+    case PolicyRule::Accounting:
+        compiler->output << "pass ";
+        break;
+
+    case PolicyRule::Deny:
+        compiler->output << "block ";
+        break;
+
+    case PolicyRule::Continue:
         if (XMLTools::version_compare(version, "4.6")>=0)
         {
             compiler->output << "match ";
@@ -85,17 +95,6 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         {
             compiler->output << "pass ";
         }
-        break;
-    }
-    case PolicyRule::Accept:  
-    case PolicyRule::Classify:
-    case PolicyRule::Accounting:
-    case PolicyRule::Route:
-        compiler->output << "pass ";
-        break;
-
-    case PolicyRule::Deny:
-        compiler->output << "block ";
         break;
 
     case PolicyRule::Reject: 
@@ -121,10 +120,10 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 		}
 	    } else
 		code="return-icmp   ";
-
 	    compiler->output << "block " << code;
 	}
 	break;
+
     case PolicyRule::Scrub:
     {
         string version = compiler->fw->getStr("version");
@@ -137,9 +136,11 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         }
         break;
     }
+
     case PolicyRule::Custom:
         compiler->output << ruleopt->getStr("custom_str") << " ";
         break;
+
     case PolicyRule::Branch:
     {
         RuleSet *ruleset = rule->getBranch();
@@ -156,31 +157,44 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         }
         break;
     }
+
     default:
         compiler->abort(
-                rule, 
-                string("Unknown action ") + rule->getActionAsString());
+                rule, string("Unknown action ") + rule->getActionAsString());
     }
+
+    // #2367
+    //
+    // if (rule->getTagging())
+    // {
+    //     if (XMLTools::version_compare(version, "4.6")>=0)
+    //     {
+    //         compiler->output << "match ";
+    //     }else
+    //     {
+    //         compiler->output << "pass ";
+    //     }
+    //     break;
+    // }
 }
 
 void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (rule->getAction() == PolicyRule::Route)
+    if (rule->getRouting())
     {
 	string prefix = "pf";
-	if (compiler->myPlatformName()=="ipf") prefix="ipf";
+	if (compiler->myPlatformName()=="ipf") prefix = "ipf";
 
 	string ro = ruleopt->getStr(prefix+"_route_option");
         if (ruleopt->getBool("pf_fastroute") && ro != "none")
 	{
             compiler->abort(
-                
-                    rule, 
-                    "Cannot use fastroute and route methods in "
-                    "the same rule because they are mutually "
-                    "exclusive.");
+                rule, 
+                "Cannot use fastroute and route methods in "
+                "the same rule because they are mutually "
+                "exclusive.");
 	} else if (ruleopt->getBool("pf_fastroute") && ro == "none")
         {
             compiler->output << "fastroute ";
@@ -193,10 +207,9 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
             {
                 if (roif.empty())
                     compiler->abort(
-                        
-                            rule, 
-                            "Interface specification is required "
-                            "for action Route.");
+                        rule, 
+                        "Interface specification is required "
+                        "for action Route.");
 
                 if (ro == "route_through")
                     compiler->output << "route-to ";
@@ -206,10 +219,9 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                     compiler->output << "dup-to ";
                 else
                     compiler->abort(
-                        
-                            rule, 
-                            "Unknown option for rule action Route: '" + 
-                            ro + "'");
+                        rule, 
+                        "Unknown option for rule action Route: '" + 
+                        ro + "'");
             		
                 compiler->output << "{ ";
 
@@ -240,9 +252,7 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-                                    
-                                        rule, 
-                                        "Illegal IP address for next hop");
+                                    rule, "Illegal IP address for next hop");
                             }
                             try
                             {
@@ -268,9 +278,7 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-                                    
-                                        rule, 
-                                        "Illegal netmask for next hop");
+                                    rule, "Illegal netmask for next hop");
                             }
                         } else
                         {
@@ -281,9 +289,7 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-                                    
-                                        rule, 
-                                        "Illegal IP address for next hop");
+                                    rule, "Illegal IP address for next hop");
                             }
                             route_member++;
                         }
@@ -292,26 +298,22 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                 if (route_member < 1)
                 {
                     compiler->abort(
-                        
-                            rule, 
-                            "No router specified rule action Route: '"+ 
-                            ro + "'");
+                        rule, 
+                        "No router specified rule action Route: '" +  ro + "'");
                 }
                 if (route_member >= 2 && (roload.empty() || roload == "none"))
                 {
                     compiler->abort(
-                        
-                            rule, 
-                            "More than one router specified without load balancing for rule action Route: '" + 
-                            ro + "'");
+                        rule, 
+                        "More than one router specified without load "
+                        "balancing for rule action Route: '" + ro + "'");
                 }
                 if (route_member == 1 && ((!roload.empty()) && roload != "none"))
                 {
                     compiler->abort(
-                        
-                            rule, 
-                            "Only one router specified with load balancing for rule action Route: '" + 
-                            ro + "'");
+                        rule, 
+                        "Only one router specified with load balancing "
+                        "for rule action Route: '" + ro + "'");
                 }
 
                 compiler->output << "} ";
@@ -336,8 +338,11 @@ void PolicyCompiler_pf::PrintRule::_printQueue(PolicyRule *rule)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
 
-    if (rule->getAction() == PolicyRule::Classify)
-        compiler->output << "queue " << ruleopt->getStr("classify_str") << " ";
+    if (rule->getClassification())
+    {
+        compiler->output << "queue ";
+        compiler->output << ruleopt->getStr("pf_classify_str") << " ";
+    }
 }
 
 void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
@@ -379,9 +384,8 @@ void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
 
 void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 {
-    if (rule->getAction() == PolicyRule::Tag)
+    if (rule->getTagging())
         compiler->output << "tag " << rule->getTagValue() << " ";
-//        compiler->output << "tag " << ruleopt->getStr("tagvalue") << " ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printDirection(PolicyRule *rule)

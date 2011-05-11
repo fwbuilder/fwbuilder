@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.2.0.3499
+#  Firewall Builder  fwb_pf v4.3.0.1
 #
-#  Generated Sat Mar 12 19:45:17 2011 PST by vadim
+#  Generated Tue May 10 14:53:21 2011 PDT by vadim
 #
 # files: * firewall20.fw /etc/fw/firewall20.fw
 # files:   firewall20.conf /etc/fw/firewall20.conf
@@ -73,7 +73,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Sat Mar 12 19:45:17 2011 by vadim"
+log "Activating firewall script generated Tue May 10 14:53:21 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

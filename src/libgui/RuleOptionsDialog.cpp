@@ -25,6 +25,7 @@
 
 
 #include "../../config.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
@@ -33,6 +34,7 @@
 #include "RuleSetView.h"
 #include "FWWindow.h"
 #include "FWCmdRule.h"
+#include "FWObjectDropArea.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
@@ -44,14 +46,16 @@
 #include <memory>
 
 #include <qstackedwidget.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
 #include <qpushbutton.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 #include <qlabel.h>
+
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QObject>
 
 #include <iostream>
 
@@ -70,6 +74,12 @@ RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
 
+    m_dialog->pfTagDropArea->addAcceptedTypes("TagService");
+    m_dialog->iptTagDropArea->addAcceptedTypes("TagService");
+
+    connectSignalsOfAllWidgetsToSlotChange();
+
+    firewall = NULL;
     init=false;
 }
 
@@ -81,23 +91,23 @@ void RuleOptionsDialog::getHelpName(QString *str)
 
 void RuleOptionsDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
-//    rsv=rv;
-
-    FWObject *p=obj;
+    obj = o;
+    firewall = o;
     // use Firewall::cast to match both Firewall and Cluster
-    while (!Firewall::cast(p)) p = p->getParent();
-    platform=p->getStr("platform").c_str();
+    while (!Firewall::cast(firewall)) firewall = firewall->getParent();
+    platform = firewall->getStr("platform").c_str();
+    string version = firewall->getStr("version");
 
     help_name = platform + "_rule_options";
 
+    // build a map for combobox so visible combobox items can be localized
+    QStringList route_options = getRouteOptions_pf_ipf(platform);
+    QStringList route_load_options = getRouteLoadOptions_pf(platform);
+    QStringList classify_options_ipfw = getClassifyOptions_ipfw(platform);
+
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
-
-    // m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
-    //         .arg(QString::fromUtf8(p->getName().c_str()))
-    //         .arg(rule->getTypeName().c_str())
-    //         .arg(rule->getPosition()));
+    PolicyRule *policy_rule = PolicyRule::cast(rule);
 
     int wid=0;
     if (platform=="iptables") wid=0;
@@ -127,6 +137,12 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     m_dialog->ipt_hashlimit_suffix->clear();
     m_dialog->ipt_hashlimit_suffix->addItems(getScreenNames(limitSuffixes));
+
+    fillInterfaces(m_dialog->ipt_iif);
+    fillInterfaces(m_dialog->ipt_oif);
+    fillInterfaces(m_dialog->ipf_route_opt_if);
+    fillInterfaces(m_dialog->pf_route_opt_if);
+
 
     data.clear();
 
@@ -192,8 +208,25 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         threeStateMapping.push_back("0");
 
         data.registerOption(m_dialog->ipt_assume_fw_is_part_of_any, ropt,
-                            "firewall_is_part_of_any_and_networks", threeStateMapping);
+                            "firewall_is_part_of_any_and_networks",
+                            threeStateMapping);
         data.registerOption(m_dialog->ipt_stateless, ropt,  "stateless");
+
+        data.registerOption(m_dialog->ipt_mark_connections, ropt,
+                            "ipt_mark_connections");
+
+        data.registerOption(m_dialog->classify_str, ropt, "classify_str");
+
+        // Route
+        data.registerOption(m_dialog->ipt_iif, ropt, "ipt_iif" );
+        data.registerOption(m_dialog->ipt_oif, ropt, "ipt_oif" );
+        data.registerOption(m_dialog->ipt_gw, ropt, "ipt_gw" );
+        data.registerOption(m_dialog->ipt_continue, ropt, "ipt_continue" );
+        data.registerOption(m_dialog->ipt_tee, ropt, "ipt_tee");
+
+        FWObject *o = policy_rule->getTagObject();
+        m_dialog->iptTagDropArea->setObject(o);
+        m_dialog->iptTagDropArea->update();
     }
 
 
@@ -207,12 +240,18 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
                             "ipf_return_icmp_as_dest");
         data.registerOption(m_dialog->ipf_stateless, ropt,  "stateless");
         data.registerOption(m_dialog->ipf_keep_frags, ropt,  "ipf_keep_frags");
+
+        // Route
+        data.registerOption(m_dialog->ipf_route_option, ropt,
+                            "ipf_route_option", route_options);
+        data.registerOption(m_dialog->ipf_route_opt_if, ropt,
+                            "ipf_route_opt_if");
+        data.registerOption(m_dialog->ipf_route_opt_addr, ropt,
+                            "ipf_route_opt_addr");
     }
 
     if (platform=="pf")
     {
-        string version = p->getStr("version");
-
         bool ge_4_5 = XMLTools::version_compare(version, "4.5")>=0;
 
         m_dialog->pf_no_sync->setEnabled(ge_4_5);
@@ -254,11 +293,34 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
                             "pf_modulate_state");
         data.registerOption(m_dialog->pf_synproxy, ropt,
                             "pf_synproxy");
+
+        // Tag
+        FWObject *o = policy_rule->getTagObject();
+        m_dialog->pfTagDropArea->setObject(o);
+        m_dialog->pfTagDropArea->update();
+
+        // Classify
+        data.registerOption(m_dialog->pf_classify_str, ropt, "pf_classify_str");
+
+        // Route
+        data.registerOption(m_dialog->pf_fastroute, ropt, "pf_fastroute");
+        data.registerOption(m_dialog->pf_route_load_option, ropt,
+                            "pf_route_load_option", route_load_options);
+        data.registerOption(m_dialog->pf_route_option, ropt, "pf_route_option",
+                            route_options);
+        data.registerOption(m_dialog->pf_route_opt_if, ropt, "pf_route_opt_if");
+        data.registerOption(m_dialog->pf_route_opt_addr, ropt, "pf_route_opt_addr");
     }
 
     if (platform=="ipfw")
     {
-        data.registerOption(m_dialog->ipfw_stateless, ropt,"stateless");
+        data.registerOption(m_dialog->ipfw_stateless, ropt, "stateless");
+
+/* #2367 */
+        // Classify
+        data.registerOption(m_dialog->ipfw_classify_method, ropt,
+                            "ipfw_classify_method", classify_options_ipfw);
+        data.registerOption(m_dialog->usePortNum, ropt, "ipfw_pipe_queue_num");
     }
 
     if (platform=="iosacl" || platform=="procurve_acl")
@@ -269,9 +331,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="pix" || platform=="fwsm")
     {
-        string vers="version_"+p->getStr("version");
+        string vers = "version_" + version;
         if (Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
-              "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
+              "/FWBuilderResources/Target/options/" +
+              vers + "/pix_rule_syslog_settings"))
         {
             m_dialog->pix_disable_rule_log->setEnabled(true);
             m_dialog->pix_logLevel->setEnabled(true);
@@ -292,13 +355,16 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     }
 
-    init=true;
+
+
+    init = true;
     data.loadAll();
 
     m_dialog->pf_max_src_nodes->setEnabled(
         m_dialog->pf_source_tracking->isChecked());
     m_dialog->pf_max_src_states->setEnabled(
         m_dialog->pf_source_tracking->isChecked());
+
 
     connlimitAboveLabelChange();
     limitLabelChange();
@@ -326,6 +392,8 @@ void RuleOptionsDialog::changed()
     m_dialog->pf_flush->setEnabled(enable_overload_options);
     m_dialog->pf_global->setEnabled(enable_overload_options);
 
+    iptRouteContinueToggled(); // #2367
+
     BaseObjectDialog::changed();
 }
 
@@ -342,9 +410,60 @@ void RuleOptionsDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
 
-    init=true;
+    init = true;
     data.saveAll(new_rule_options);
-    init=false;
+    init = false;
+
+/*  #2367 */
+
+    PolicyRule *policy_rule = PolicyRule::cast(new_state);
+    if (policy_rule)
+    {
+        FWOptions *ropt = policy_rule->getOptionsObject();
+
+        if (platform=="iptables")
+        {
+            FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
+            // if tag_object==NULL, setTagObject clears setting in the rule
+            policy_rule->setTagging(tag_object != NULL);
+            policy_rule->setTagObject(tag_object);
+
+            policy_rule->setClassification(
+                ! ropt->getStr("classify_str").empty());
+
+            policy_rule->setRouting( ! ropt->getStr("ipt_iif").empty() ||
+                                     ! ropt->getStr("ipt_oif").empty() ||
+                                     ! ropt->getStr("ipt_gw").empty());
+        }
+    
+        if (platform=="pf")
+        {
+            FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
+            // if tag_object==NULL, setTagObject clears setting in the rule
+            policy_rule->setTagging(tag_object != NULL);
+            policy_rule->setTagObject(tag_object);
+
+            policy_rule->setClassification(
+                ! new_rule_options->getStr("pf_classify_str").empty());
+
+            policy_rule->setRouting(
+                ! new_rule_options->getStr("pf_route_option").empty() &&
+                new_rule_options->getStr("pf_route_option") != "none");
+        }
+
+        if (platform=="ipf")
+        {
+            policy_rule->setRouting(
+                ! new_rule_options->getStr("ipf_route_option").empty() &&
+                new_rule_options->getStr("ipf_route_option") != "none");
+        }
+
+        if (platform=="ipfw")
+        {
+            policy_rule->setClassification(
+                new_rule_options->getInt("ipfw_classify_method") > -1);
+        }
+    }
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {
@@ -387,4 +506,32 @@ void RuleOptionsDialog::limitLabelChange()
 
     changed();
 }
+
+void RuleOptionsDialog::iptRouteContinueToggled()
+{
+    if (m_dialog->ipt_continue->isChecked())
+    {
+        m_dialog->ipt_iif->setCurrentIndex(0);
+        m_dialog->ipt_tee->setChecked(false);
+    }
+    m_dialog->ipt_iif->setEnabled( ! m_dialog->ipt_continue->isChecked() );
+    m_dialog->ipt_tee->setEnabled( ! m_dialog->ipt_continue->isChecked() );
+}
+
+void RuleOptionsDialog::fillInterfaces(QComboBox* cb)
+{
+    cb->clear();
+    cb->addItem("");
+
+    list<FWObject*> interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=interfaces.begin(); i!=interfaces.end(); ++i)
+    {
+        Interface *iface = Interface::cast(*i);
+        assert(iface);
+
+        cb->addItem(iface->getName().c_str());
+    }
+
+}
+
 

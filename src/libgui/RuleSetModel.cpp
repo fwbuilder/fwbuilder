@@ -24,6 +24,7 @@
 */
 
 #include "../../config.h"
+#include "../../definitions.h"
 #include "global.h"
 #include "utils.h"
 
@@ -1326,7 +1327,7 @@ QModelIndexList RuleSetModel::findObject(FWObject* object)
                         {
                             list.append(this->index(rule, column));
                         }
-                    } else if (pr->getAction() == PolicyRule::Tag)
+                    } else if (pr->getTagging())
                     {
                         if (pr->getTagObject() == object)
                         {
@@ -1443,8 +1444,63 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
 {
     QStringList res;
     PolicyRule  *policyRule  = PolicyRule::cast( r );
+    FWOptions *ropt = policyRule->getOptionsObject();
+
     if (policyRule->getLogging()) res << "Log";
-    if (!isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
+
+    if ( ! isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
+
+    FWObject *firewall = r;
+    // use Firewall::cast to match both Firewall and Cluster
+    while (!Firewall::cast(firewall)) firewall = firewall->getParent();
+    string platform = firewall->getStr("platform");
+
+    if (policyRule->getTagging())
+    {
+        FWObject *tobj = PolicyRule::cast(policyRule)->getTagObject();
+        if (tobj)
+        {
+            if (platform=="iptables")
+            {
+                res << tr("Tag %1%2")
+                    .arg(QString::fromUtf8(tobj->getName().c_str()))
+                    .arg(
+                        QString(
+                            (ropt->getBool("ipt_mark_connections"))?" (conn)":""));
+            } else
+                res << tr("Tag %1").arg(
+                    QString::fromUtf8(tobj->getName().c_str()));
+        }
+    }
+
+    if (policyRule->getClassification())
+    {
+        QString par;
+
+        if (platform=="iptables")
+            par = ropt->getStr("classify_str").c_str();
+
+        if (platform=="pf")
+            par = ropt->getStr("pf_classify_str").c_str();
+
+        if (platform=="ipfw")
+        {
+            if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)
+            {
+                par = "pipe";
+            } else {
+                par = "queue";
+            }
+            par = par + " " + ropt->getStr("ipfw_pipe_queue_num").c_str();
+        }
+
+        if (!par.isEmpty()) res << tr("Classify %1").arg(par);
+    }
+
+    if (policyRule->getRouting())
+    {
+        res << "Route";
+    }
 
     return res;
 }

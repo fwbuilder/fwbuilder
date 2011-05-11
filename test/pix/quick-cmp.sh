@@ -9,5 +9,5 @@ do
     V="$f   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     echo "echo \"$V\" | cut -c1-72"
     new_f=$(echo $f | sed 's/.orig//')
-    echo "$SDIFFCMD $f $new_f"
+    echo "$DIFFCMD $f $new_f"
 done

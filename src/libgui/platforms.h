@@ -139,6 +139,8 @@ const QStringList& getRouteOptions_pf_ipf(const QString &platform);
 
 const QStringList& getRouteLoadOptions_pf(const QString &platform);
 
+const QStringList& getClassifyOptions_ipfw(const QString &platform);
+
 /**
  * returns a list of Limit Suffixes (mapping list)
  */

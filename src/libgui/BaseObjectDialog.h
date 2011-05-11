@@ -46,17 +46,7 @@ protected:
 
 public slots:
 
-    virtual void changed()
-    {
-        QWidget *s = dynamic_cast<QWidget*>(sender());
-        if (fwbdebug)
-            qDebug() << "BaseObjectDialog::changed()  from " << s;
-
-        if (!init)
-        {
-            emit changed_sign();
-        }
-    }
+    virtual void changed();
 
 public:
     BaseObjectDialog(QWidget *parent) : QWidget(parent)
@@ -70,6 +60,8 @@ public:
     void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
     ProjectPanel* getAssociatedProjectWindow() { return m_project; }
 
+    void connectSignalsOfAllWidgetsToSlotChange();
+    
 signals:
     void changed_sign();
 

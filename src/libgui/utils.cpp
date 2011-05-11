@@ -485,7 +485,10 @@ QPixmap LoadPixmap(const QString &path)
 
 QString calculateIconName(const QString &_icn, bool negation)
 {
-    QString icn = ":/Icons/" + _icn + "/icon";
+    // if _icn has white space, use only the first word
+    QStringList icnl = _icn.split(" ");
+
+    QString icn = ":/Icons/" + icnl[0] + "/icon";
 
     if (negation)
     {

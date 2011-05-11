@@ -153,11 +153,16 @@ void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
 
     if (!text.isEmpty())
     {
-        painter->drawText( x, y , rect.width() - iconWidth - ICON_TEXT_GAP, rect.height(), Qt::AlignLeft|Qt::AlignVCenter, text );
+        painter->drawText(x, y,
+                          rect.width() - iconWidth - ICON_TEXT_GAP,
+                          rect.height(),
+                          Qt::AlignLeft|Qt::AlignVCenter,
+                          text );
     }
 }
 
-void RuleSetViewDelegate::drawSelectedFocus(QPainter *painter, const QStyleOptionViewItem &option,QRect &rect) const
+void RuleSetViewDelegate::drawSelectedFocus(
+    QPainter *painter, const QStyleOptionViewItem &option,QRect &rect) const
 {
     if (option.state & QStyle::State_HasFocus)
     {
@@ -219,51 +224,70 @@ void RuleSetViewDelegate::paintRule(QPainter *painter,
     painter->drawRect(option.rect);
 }
 
-void RuleSetViewDelegate::paintDirection(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintDirection(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintDirection";
-    DrawingContext ctx = initContext(option.rect);
+    DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     QString dir = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = (st->getShowDirectionText())?dir:"";
-    drawIconAndText(painter, ctx.drawRect, dir,text);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
+    drawIconAndText(painter, ctx.drawRect, dir, text);
 }
 
-void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintAction(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintAction";
-    DrawingContext ctx = initContext(option.rect);
+    DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = constructActionText(actionDesc);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, actionDesc.name, text);
 }
 
-void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintOptions(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintOptions";
-    DrawingContext ctx = initContext(option.rect);
-    drawSelectedFocus(painter, option, ctx.objectRect);
-    QStringList icons;
-    icons = v.value<QStringList>();
-    QStringList text;
+    DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
 
-    if (st->getShowIconsInRules())
+    if (fwbdebug)
+        qDebug() << "RuleSetViewDelegate::paintOptions"
+                 << "option.rect=" << option.rect
+                 << "ctx.objectRect=" << ctx.objectRect;
+
+    drawSelectedFocus(painter, option, ctx.objectRect);
+    QStringList icons = v.value<QStringList>();
+
+    // draw option icons vertically instead of horizontally  #2367
+    // for options "Tag", "Classify" and "Route" the "icon name" actually
+    // consists of the name of the icon, plus space and parameter
+
+    int y = ctx.objectRect.top();
+    foreach(QString icon, icons)
     {
-        drawIcons(painter, ctx.drawRect, icons);
-    } else
-    {
-        for (int i=0; i<icons.size(); i++)
-        {
-            if (icons[i].contains("Log")) text.push_back(tr("log"));
-            if (icons[i].contains("Options")) text.push_back(tr("(options)"));
-        }
-        drawIconAndText(painter, ctx.drawRect, "", text.join(", "), false);
+        QRect itemRect = QRect(ctx.objectRect.left(), y,
+                               ctx.objectRect.width(), ctx.itemHeight);
+
+        QString parameter = icon.section(" ", 1);
+        if (icon.contains("Log")) parameter = tr("log");
+        if (icon.contains("Options")) parameter = tr("(options)");
+
+        drawIconAndText(painter,
+                        itemRect.adjusted(
+                            HORIZONTAL_MARGIN, VERTICAL_MARGIN,
+                            -HORIZONTAL_MARGIN, -VERTICAL_MARGIN),
+                        icon, parameter, false);
+
+        y += ctx.itemHeight;
+
     }
 }
 
-
-void RuleSetViewDelegate::paintComment(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintComment(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintComment";
     DrawingContext ctx = initContext(option.rect, true);
@@ -272,16 +296,19 @@ void RuleSetViewDelegate::paintComment(QPainter *painter, const QStyleOptionView
     painter->drawText( ctx.drawRect, Qt::AlignLeft|Qt::AlignTop, comment);
 }
 
-void RuleSetViewDelegate::paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintMetric(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintMetric";
     DrawingContext ctx = initContext(option.rect, true);
     QString metric = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
+    ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, QString(), metric);
 }
 
-void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+void RuleSetViewDelegate::paintObject(
+    QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintObject";
     RuleElement *re = (RuleElement *)v.value<void *>();
@@ -294,11 +321,8 @@ void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewI
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
-        FWObject *o1= *i;
-        if (FWReference::cast(o1)!=NULL)
-            o1=FWReference::cast(o1)->getPointer();
-        if (o1==NULL)
-            continue ;
+        FWObject *o1 = FWReference::getObject(*i);
+        if (o1==NULL) continue ;
 
         QRect itemRect = QRect(ctx.objectRect.left(), y, ctx.objectRect.width(), ctx.itemHeight);
 
@@ -329,7 +353,8 @@ void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewI
     }
 }
 
-QSize RuleSetViewDelegate::drawIconInRule(QPainter *p, int x, int y, QString name, bool neg) const
+QSize RuleSetViewDelegate::drawIconInRule(
+    QPainter *p, int x, int y, QString name, bool neg) const
 {
     if (!st->getShowIconsInRules()) return QSize();
 
@@ -472,7 +497,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForRule(
             calculated = calculateCellSizeForIconAndText(index);
             break;
         case ColDesc::Options :
-            calculated = calculateCellSizeForIconAndText(index);
+            calculated = calculateCellSizeForOptions(index);
             break;
         default :
             calculated = QSize(0,0);
@@ -563,6 +588,30 @@ QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(
     return QSize(w, h);
 }
 
+QSize RuleSetViewDelegate::calculateCellSizeForOptions(
+    const QModelIndex & index) const
+{
+    QVariant v = index.data(Qt::DisplayRole);
+    QStringList icons = v.value<QStringList>();
+
+    // for options "Tag", "Classify" and "Route" the "icon name" actually
+    // consists of the name of the icon, plus space and parameter
+
+    int itemHeight = getItemHeight();
+    QSize iconSize = getIconSize();
+
+    int h = 0;
+    int w = 0;
+
+    foreach(QString icon, icons)
+    {
+        QString parameter = icon.section(" ", 1);
+        QSize size = getTextSize(parameter, Qt::TextSingleLine);
+        h += itemHeight;
+        w = qMax(w, iconSize.width() + size.width() + ICON_TEXT_GAP);
+    }
+    return QSize(w+HORIZONTAL_MARGIN*2, h);
+}
 
 QString RuleSetViewDelegate::objectText(RuleElement *re,FWObject *obj) const
 {
@@ -591,14 +640,21 @@ QString RuleSetViewDelegate::objectText(RuleElement *re,FWObject *obj) const
     else return QString::fromUtf8(obj->getName().c_str());
 }
 
-DrawingContext RuleSetViewDelegate::initContext(QRect rect, bool useEnireSpace) const
+DrawingContext RuleSetViewDelegate::initContext(
+    QRect rect, bool useEnireSpace) const
 {
     DrawingContext ctx;
 
     ctx.iconSize = getIconSize();
     ctx.itemHeight = getItemHeight();
-    ctx.objectRect = QRect(rect.left()+1, rect.top()+1, rect.width()-1, useEnireSpace?rect.height()-1:ctx.itemHeight);
-    ctx.drawRect = ctx.objectRect.adjusted(HORIZONTAL_MARGIN, VERTICAL_MARGIN, -HORIZONTAL_MARGIN, -VERTICAL_MARGIN);
+
+    ctx.objectRect =
+        QRect(rect.left()+1, rect.top()+1,
+              rect.width()-1, useEnireSpace?rect.height()-1:ctx.itemHeight);
+
+    ctx.drawRect =
+        ctx.objectRect.adjusted(HORIZONTAL_MARGIN, VERTICAL_MARGIN,
+                                -HORIZONTAL_MARGIN, -VERTICAL_MARGIN);
 
     return ctx;
 }

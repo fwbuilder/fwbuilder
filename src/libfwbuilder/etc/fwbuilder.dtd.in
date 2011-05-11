@@ -52,7 +52,7 @@
  *
 -->
 
-<!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Tag|Pipe|Classify|Custom|Branch|Route)">
+<!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Pipe|Custom|Branch)">
 <!ENTITY % NAT_ACTION "(Translate|NATBranch)">
 <!ENTITY % DIRECTION "(Inbound|Outbound|Both)">
 <!ENTITY % IPADDRESS "CDATA">
