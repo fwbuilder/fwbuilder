@@ -1,3 +1,17 @@
+2011-05-11  vadim  <vadim@netcitadel.com>
+
+	* newFirewallDialog.cpp (finishClicked): fixes #2395 "Crash when
+	setting installer directory location" and fixes #2396 "Crash when
+	changing firewall name". These two bug reports where the
+	manifestation of the same problem that was introduced by the fix
+	for #2380. When user hits OK in the newFirewallDialog and it
+	merges temporary object tree into the main object tree, it should
+	call fixTree() to fix all pointers to the root of the tree.
+
+2011-05-10  vadim  <vadim@netcitadel.com>
+
+	* v4.2.1 released
+
 2011-05-10  Vadim Kurland  <vadim@netcitadel.com>
 
 	* fwbuilder 4.2.1.3540 released; started v4.3.0
