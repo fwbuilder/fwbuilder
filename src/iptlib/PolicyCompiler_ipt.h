@@ -75,6 +75,7 @@ protected:
         std::string                    my_table;
 
         std::map<std::string, int>     tmp_chain_no;
+        std::map<std::string, int>     rule_chain_no;
         std::map<std::string, int>     chain_usage_counter;
         std::map<std::string, std::string> ipset_tables;
 

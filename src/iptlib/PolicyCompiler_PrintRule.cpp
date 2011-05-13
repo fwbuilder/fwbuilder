@@ -616,9 +616,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
 {
     FWObject *ruleset = rule->getParent();
 
-    char action[64];
-    strncpy(action,rule->getStr("stored_action").c_str(),sizeof(action));
-    for (char *cptr=action; *cptr; cptr++)  *cptr=toupper(*cptr);
+    QString action = QString(rule->getStr("stored_action").c_str()).toUpper();
 
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
     FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
@@ -637,7 +635,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
     s1 << pos;
 
     return _printLogPrefix(s1.str(),
-                           action,
+                           action.toStdString(),
                            rule_iface_name,
                            rule->getStr("ipt_chain"),
                            ruleset->getName(),
