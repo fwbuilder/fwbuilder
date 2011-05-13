@@ -1,5 +1,14 @@
 2011-05-13  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_ipt.cpp (processNext): see #2401 "Deprecating
+	Route option for iptables".  This target is not included in any of
+	the popular Linux distributions (checked in Ubuntu, Fedora and
+	CentOS). The GUI dialog and all support in the compiler will be
+	removed in future version of fwbuilder. Beginning with 4.3.0,
+	compiler aborts with an error when it encounters a rule using this
+	option. In older versions of fwbuilder (4.2.x and before) this
+	option was presented as an action "Route".
+
 	* CompilerDriver_ipt_run.cpp (run): see #2400 'Mixing Actions
 	"Accept" and "Classify" results in incorrect rules', see #2399
 	'Mixing Actions "Accept" and "Tag" results in incorrect ruleset'.
@@ -19,6 +28,8 @@
 	performs tagging, classification or routing.
 
 2011-05-11  vadim  <vadim@netcitadel.com>
+
+	* v4.2.2 released
 
 	* newFirewallDialog.cpp (finishClicked): fixes #2395 "Crash when
 	setting installer directory location" and fixes #2396 "Crash when

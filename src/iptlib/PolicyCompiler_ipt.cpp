@@ -519,7 +519,7 @@ bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
     return true;
 }
 
-bool PolicyCompiler_ipt::clearTagClassifyOrRouteIfFilter::processNext()
+bool PolicyCompiler_ipt::clearTagClassifyInFilter::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
@@ -555,7 +555,7 @@ bool PolicyCompiler_ipt::clearActionInTagClassifyIfMangle::processNext()
  * However if the rule belongs to mangle-only rule set, we should log
  * in mangle.
  */
-bool PolicyCompiler_ipt::clearLogInTagClassifyOrRouteIfMangle::processNext()
+bool PolicyCompiler_ipt::clearLogInMangle::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
@@ -714,6 +714,9 @@ bool PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
     return true;
 }
 
+/**
+ * Deprecated beginning with 4.3.0. To be removed in future versions.
+ */
 bool PolicyCompiler_ipt::Route::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -838,10 +841,26 @@ bool PolicyCompiler_ipt::checkForUnsupportedCombinationsInMangle::processNext()
     }
 
     tmp_queue.push_back(rule);
-
     return true;
 }
 
+bool PolicyCompiler_ipt::deprecateOptionRoute::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    if (rule->getRouting())
+    {
+	compiler->abort(
+            rule, 
+            "Option Route is deprecated. You can use Custom Action "
+            "to geenrate iptables command using '-j ROUTE' target "
+            "if it is supported by your firewall OS");
+        return true;
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
 
 bool PolicyCompiler_ipt::Logging1::processNext()
 {
@@ -4222,13 +4241,14 @@ void PolicyCompiler_ipt::compile()
 
     add( new singleRuleFilter());
 
+    add( new deprecateOptionRoute("Deprecate option Route"));
+
     add( new checkForUnsupportedCombinationsInMangle(
              "Check for unsupported Tag+Route and Classify+Route combinations"));
 
-    add( new clearTagClassifyOrRouteIfFilter(
-             "Clear Tag, Classify and Route options in filter table"));
-    add( new clearLogInTagClassifyOrRouteIfMangle(
-             "clear logging in rules with Tag, Classify or Route options in mangle"));
+    add( new clearTagClassifyInFilter(
+             "Clear Tag and Classify options in filter table"));
+    add( new clearLogInMangle("clear logging in rules in mangle table"));
     add( new clearActionInTagClassifyIfMangle(
              "clear action in rules with Tag and Classify in mangle"));
 

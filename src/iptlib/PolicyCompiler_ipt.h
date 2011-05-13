@@ -179,6 +179,13 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(checkForUnsupportedCombinationsInMangle);
 
         /**
+         * See #2401 Option "Route" (used to be action "Route") is
+         * deprecated.  Iptables target ROUTE is not included in major
+         * distributions (Debian, Ubuntu, Fedora, CentOS).
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(deprecateOptionRoute);
+
+        /**
          * adds few predefined (or "builtin") rules on top of the policy
          */
         class addPredefinedRules : public PolicyRuleProcessor
@@ -217,6 +224,7 @@ protected:
 
 	/**
 	 * set target and chain in case of route rules
+         * Deprecated beginning with 4.3.0. To be removed in future versions.
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(Route);
 
@@ -237,15 +245,15 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(splitIfTagClassifyOrRoute);
 
 	/**
-	 * clears options Tag, Classify and Route in filter table
+	 * clears options Tag and Classify in filter table
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(clearTagClassifyOrRouteIfFilter);
+        DECLARE_POLICY_RULE_PROCESSOR(clearTagClassifyInFilter);
 
 	/**
 	 * turns off logging in rules with options Tag, Classify or
          * Route in table mangle
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(clearLogInTagClassifyOrRouteIfMangle);
+        DECLARE_POLICY_RULE_PROCESSOR(clearLogInMangle);
 
 	/**
 	 * switches action to Continue in rules with options Tag,

@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Fri May 13 12:35:34 2011 PDT by vadim
+#  Generated Fri May 13 16:11:15 2011 PDT by vadim
 #
 # files: * firewall40-1.fw /etc/firewall40-1.fw
 #
@@ -12,7 +12,8 @@
 #
 # more complex and realistic combination of Tag and Route rules that are in the separate Policy rule set
 
-
+# firewall40-1:Policy_1:3: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
+# firewall40-1:Policy_1:4: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
 
 
 FWBDEBUG=""
@@ -335,18 +336,6 @@ script_body() {
     $IPTABLES -t mangle -A Policy_1 -i eth2   -m state --state NEW  -j MARK --set-mark 2
     $IPTABLES -t mangle -A Policy_1 -i eth2   -m state --state NEW  -j CONNMARK --save-mark
     # 
-    # Rule Policy_1 3 (global)
-    # 
-    echo "Rule Policy_1 3 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 1  -j ROUTE --oif eth0 --continue
-    # 
-    # Rule Policy_1 4 (global)
-    # 
-    echo "Rule Policy_1 4 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 2  -j ROUTE --oif eth2 --continue
-    # 
     # Rule Policy_1 6 (global)
     # 
     echo "Rule Policy_1 6 (global)"
@@ -452,7 +441,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri May 13 12:35:34 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 16:11:15 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
