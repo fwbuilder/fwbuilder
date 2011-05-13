@@ -91,46 +91,6 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
 
 }
 
-void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
-                                                   list<FWObject*> &all_policies)
-{
-    // special but common case: if we only have one policy, there is
-    // no need to check if we have to do branching in mangle table
-    // since we do not have any branching rules in that case.
-    if (all_policies.size() > 1)
-    {
-        for (list<FWObject*>::iterator i=all_policies.begin();
-             i!=all_policies.end(); ++i)
-        {
-            for (list<FWObject*>::iterator r=(*i)->begin();
-                 r!=(*i)->end(); ++r)
-            {
-                PolicyRule *rule = PolicyRule::cast(*r);
-                if (rule == NULL) continue; // skip RuleSetOptions object
-                FWOptions *ruleopt = rule->getOptionsObject();
-                if (rule->getAction() == PolicyRule::Branch &&
-                    ruleopt->getBool("ipt_branch_in_mangle"))
-                {
-                    RuleSet *ruleset = rule->getBranch();
-                    if (ruleset == NULL)
-                    {
-                        abort(fw, *i, rule,
-                              "Action branch does not point to any rule set");
-                    }
-
-                    for (list<FWObject*>::iterator br=ruleset->begin();
-                         br!=ruleset->end(); ++br)
-                    {
-                        Rule *b_rule = Rule::cast(*br);
-                        if (b_rule == NULL) continue; // skip RuleSetOptions object
-                        ruleopt = b_rule->getOptionsObject();
-                        ruleopt->setBool("put_in_mangle_table", true);
-                    }
-                }
-            }
-        }
-    }
-}
 
 /*
  * TODO: use configlet to define structure of generated script. Need 2
@@ -151,6 +111,10 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
                                       const string& filter_script,
                                       bool ipv6_policy)
 {
+
+    // cerr << "nat script" << endl;
+    // cerr << "\"" << nat_script << "\"" << endl;
+
     ostringstream res;
     ostringstream script;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
@@ -169,10 +133,13 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
         {
             conf = new Configlet(fw, "linux24", "script_body_iptables_restore");
         } else
-            conf = new Configlet(fw, "linux24", "script_body_single_rule");
+            conf = new Configlet(fw, "linux24", "script_body_iptables_shell");
     }
 
     conf->setVariable("auto", have_auto);
+
+    conf->setVariable("iptables_restore_format",
+                      fw->getOptionsObject()->getBool("use_iptables_restore"));
 
     conf->setVariable("filter", !filter_script.empty());
     conf->setVariable("filter_or_auto", have_auto || !filter_script.empty());

@@ -14,19 +14,12 @@
 ## this template is used for single rule compile, both
 ## iptables-restore and regular, as well as for the regular
 ## (not iptables-restore) script
+{{if auto}}{{$filter_auto_script}}
+{{$mangle_auto_script}}{{endif}}
 
-{{if filter}}
-{{if iptables_restore_format}}echo '*filter' {{endif}}
-{{$filter_script}}
-{{endif}}
+{{if nat}}{{$nat_script}}{{endif}}
 
-{{if mangle}}
-{{if iptables_restore_format}}echo '*mangle' {{endif}}
-{{$mangle_script}}
-{{endif}}
+{{if mangle}}{{$mangle_script}}{{endif}}
 
-{{if nat}}
-{{if iptables_restore_format}}echo '*nat' {{endif}}
-{{$nat_script}}
-{{endif}}
+{{if filter}}{{$filter_script}}{{endif}}
 

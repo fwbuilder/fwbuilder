@@ -236,6 +236,24 @@ protected:
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(splitIfTagClassifyOrRoute);
 
+	/**
+	 * clears options Tag, Classify and Route in filter table
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearTagClassifyOrRouteIfFilter);
+
+	/**
+	 * turns off logging in rules with options Tag, Classify or
+         * Route in table mangle
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearLogInTagClassifyOrRouteIfMangle);
+
+	/**
+	 * switches action to Continue in rules with options Tag,
+         * Classify in mangle table. We deal with other actions in
+         * table filter.
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearActionInTagClassifyIfMangle);
+
 
 	/**
 	 * this processor checks if the rule is associated with an
@@ -681,12 +699,6 @@ protected:
          * define chain for rules with action Classify
          */
         DECLARE_POLICY_RULE_PROCESSOR(decideOnChainForClassify);
-
-        /**
-         * Split rules with options Tag, Classiyfy and Route if action
-         * is not Continue
-         */
-        DECLARE_POLICY_RULE_PROCESSOR(splitTagClassifyOrRouteIfAction);
 
         /**
          * drop rules with terminating targets. Used as part of the

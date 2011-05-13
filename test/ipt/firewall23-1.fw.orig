@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:28:48 2011 PDT by vadim
+#  Generated Fri May 13 12:34:53 2011 PDT by vadim
 #
 # files: * firewall23-1.fw /etc/fw/firewall23-1.fw
 #
@@ -299,22 +299,19 @@ script_body() {
     # 
     echo "Rule 13 (eth2)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 1:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
     # 
     # Rule 14 (eth3)
     # 
     echo "Rule 14 (eth3)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY  --set-class 2:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 2:12
     # 
     # Rule 15 (eth2)
     # 
     echo "Rule 15 (eth2)"
     # 
-    $IPTABLES -N Out_RULE_15 -t mangle
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j Out_RULE_15
-    $IPTABLES -t mangle -A Out_RULE_15  -j LOG  --log-level debug
-    $IPTABLES -t mangle -A Out_RULE_15  -j CLASSIFY  --set-class 1:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -424,6 +421,12 @@ script_body() {
     echo "Rule 12 (eth3)"
     # 
     $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 15 (eth2)
+    # 
+    echo "Rule 15 (eth2)"
+    # 
+    $IPTABLES -A FORWARD -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j LOG  --log-level debug
     # 
     # Rule 16 (global)
     # 
@@ -561,7 +564,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:28:48 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 12:34:53 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

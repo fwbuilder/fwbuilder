@@ -123,6 +123,11 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
         }
     }
     r->setStr("ipt_target",new_chain);
+
+    r->setClassification(false);
+    r->setRouting(false);
+    r->setTagging(false);
+
     tmp_queue.push_back(r);
 
     FWOptions *ruleopt=rule->getOptionsObject();

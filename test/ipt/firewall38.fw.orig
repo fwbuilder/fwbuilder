@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.ma_1
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Tue May  3 19:32:56 2011 PDT by vadim
+#  Generated Fri May 13 12:35:28 2011 PDT by vadim
 #
 # files: * firewall38.fw /etc/fw/firewall38.fw
 #
@@ -313,6 +313,36 @@ script_body() {
     echo "-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT "
     # ================ Table 'filter', rule set Policy
     # 
+    # Rule  1 (global)
+    echo "-A OUTPUT -p 50  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    echo "-A OUTPUT -p ah  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    echo "-A INPUT -p 50  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    echo "-A INPUT -p ah  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    echo "-A FORWARD -p 50  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    echo "-A FORWARD -p ah  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
+    # 
+    # Rule  2 (global)
+    echo ":Cid43BBF1AD9745.0 - [0:0]"
+    echo "-A OUTPUT  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.0 "
+    echo "-A Cid43BBF1AD9745.0 -p 50  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo "-A Cid43BBF1AD9745.0 -p ah  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo ":Cid43BBF1AD9745.1 - [0:0]"
+    echo "-A INPUT  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.1 "
+    echo "-A Cid43BBF1AD9745.1 -p 50  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo "-A Cid43BBF1AD9745.1 -p ah  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo ":Cid43BBF1AD9745.2 - [0:0]"
+    echo "-A OUTPUT  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.2 "
+    echo "-A Cid43BBF1AD9745.2 -p 50  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo "-A Cid43BBF1AD9745.2 -p ah  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo ":Cid43BBF1AD9745.3 - [0:0]"
+    echo "-A FORWARD  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.3 "
+    echo "-A Cid43BBF1AD9745.3 -p 50  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    echo "-A Cid43BBF1AD9745.3 -p ah  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
+    # 
+    # Rule  5 (global)
+    echo "-A INPUT -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 5 -- CONTINUE \""
+    echo "-A OUTPUT -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j LOG  --log-level info --log-prefix \"RULE 5 -- CONTINUE \""
+    # 
     # Rule  9 (global)
     echo "-A OUTPUT -m mark --mark 16  -m state --state NEW  -j ACCEPT "
     echo "-A INPUT -m mark --mark 16  -m state --state NEW  -j ACCEPT "
@@ -372,26 +402,20 @@ script_body() {
     echo "-A PREROUTING -p ah  -m state --state NEW  -j MARK --set-mark 16"
     # 
     # Rule  1 (global)
-    echo ":RULE_1 - [0:0]"
-    echo "-A OUTPUT -p 50  -m state --state NEW  -j RULE_1 "
-    echo "-A OUTPUT -p ah  -m state --state NEW  -j RULE_1 "
-    echo "-A PREROUTING -p 50  -m state --state NEW  -j RULE_1 "
-    echo "-A PREROUTING -p ah  -m state --state NEW  -j RULE_1 "
-    echo "-A RULE_1  -j LOG  --log-level info --log-prefix \"RULE 1 -- CONTINUE \""
-    echo "-A RULE_1  -j MARK --set-mark 16"
+    echo "-A OUTPUT -p 50  -m state --state NEW  -j MARK --set-mark 16"
+    echo "-A OUTPUT -p ah  -m state --state NEW  -j MARK --set-mark 16"
+    echo "-A PREROUTING -p 50  -m state --state NEW  -j MARK --set-mark 16"
+    echo "-A PREROUTING -p ah  -m state --state NEW  -j MARK --set-mark 16"
     # 
     # Rule  2 (global)
     echo ":Cid43BBF1AD9745.0 - [0:0]"
     echo "-A OUTPUT  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.0 "
-    echo ":RULE_2 - [0:0]"
-    echo "-A Cid43BBF1AD9745.0 -p 50  -j RULE_2 "
-    echo "-A Cid43BBF1AD9745.0 -p ah  -j RULE_2 "
+    echo "-A Cid43BBF1AD9745.0 -p 50  -j MARK --set-mark 16"
+    echo "-A Cid43BBF1AD9745.0 -p ah  -j MARK --set-mark 16"
     echo ":Cid43BBF1AD9745.1 - [0:0]"
     echo "-A PREROUTING  -s ! 192.168.1.0/24   -m state --state NEW  -j Cid43BBF1AD9745.1 "
-    echo "-A Cid43BBF1AD9745.1 -p 50  -j RULE_2 "
-    echo "-A Cid43BBF1AD9745.1 -p ah  -j RULE_2 "
-    echo "-A RULE_2  -j LOG  --log-level info --log-prefix \"RULE 2 -- CONTINUE \""
-    echo "-A RULE_2  -j MARK --set-mark 16"
+    echo "-A Cid43BBF1AD9745.1 -p 50  -j MARK --set-mark 16"
+    echo "-A Cid43BBF1AD9745.1 -p ah  -j MARK --set-mark 16"
     # 
     # Rule  3 (eth1)
     echo "-A PREROUTING -i eth1  -p 50  -m state --state NEW  -j MARK --set-mark 16"
@@ -402,10 +426,7 @@ script_body() {
     echo "-A OUTPUT -p tcp -m tcp  --dport 80  -m state --state NEW  -j MARK --set-mark 2"
     # 
     # Rule  5 (global)
-    echo ":RULE_5 - [0:0]"
-    echo "-A OUTPUT -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j RULE_5 "
-    echo "-A RULE_5  -j LOG  --log-level info --log-prefix \"RULE 5 -- CONTINUE \""
-    echo "-A RULE_5  -j MARK --set-mark 2"
+    echo "-A OUTPUT -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK --set-mark 2"
     # 
     # Rule  6 (eth1)
     echo "-A OUTPUT -o eth1  -p tcp -m tcp  -s 22.22.23.22   --dport 80  -m state --state NEW  -j MARK --set-mark 2"
@@ -498,7 +519,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue May  3 19:32:56 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 12:35:28 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

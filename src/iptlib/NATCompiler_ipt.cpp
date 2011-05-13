@@ -2608,13 +2608,14 @@ void NATCompiler_ipt::compile()
     add( new simplePrintProgress() );
 
     runRuleProcessors();
-
 }
 
 
 void NATCompiler_ipt::epilog()
 {
-    if (fwopt->getBool("use_iptables_restore"))
+    if (fwopt->getBool("use_iptables_restore") &&
+        getCompiledScriptLength()>0 &&
+        ! inSingleRuleCompileMode())
     {
         output << "#" << endl;
     }

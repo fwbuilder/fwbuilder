@@ -57,6 +57,7 @@
 
 #include <QStringList>
 #include <QRegExp>
+#include <QtDebug>
 
 #include <iostream>
 #include <iomanip>

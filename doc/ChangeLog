@@ -1,3 +1,23 @@
+2011-05-13  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_ipt_run.cpp (run): see #2400 'Mixing Actions
+	"Accept" and "Classify" results in incorrect rules', see #2399
+	'Mixing Actions "Accept" and "Tag" results in incorrect ruleset'.
+	After we made Tag, Classify and Route rule options instead of
+	actions, rules that mix these options with actions "Accept" and
+	others, except for "Continue", should be treated differently. The
+	action are now implemented using iptables rules in the table
+	"filter" and additional rules in table "mangle" is used to
+	implement only tagging, classification or routing. Generated
+	script does not change default action in table "mangle" and
+	assumes it is "ACCEPT" so adding rules with target ACCEPT in
+	mangle table should not be necessary. Another change because of
+	this affects branching rules that use option "create branch in
+	mangle table in addition to the filter table". These rules used to
+	duplicate the same action and logging rules in mangle.  Now they
+	dont do this and only create rules in mangle if branch rule set
+	performs tagging, classification or routing.
+
 2011-05-11  vadim  <vadim@netcitadel.com>
 
 	* newFirewallDialog.cpp (finishClicked): fixes #2395 "Crash when

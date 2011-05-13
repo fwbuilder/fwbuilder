@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:28:52 2011 PDT by vadim
+#  Generated Fri May 13 12:34:58 2011 PDT by vadim
 #
 # files: * firewall25.fw /etc/fw/firewall25.fw
 #
@@ -506,6 +506,15 @@ script_body() {
     echo "-A Cid417C6878.1  -s 192.168.1.0/24   -j ACCEPT "
     echo "-A Cid417C6878.1  -s 192.168.2.0/24   -j ACCEPT "
     # 
+    # Rule  17 (global)
+    # this rule should go to mangle table,
+    # since we also have default rule that goes to mangle (TCPMSS)
+    # and pure mangle ruleset, making sure all rules for 
+    # mangle table end up with one COMMIT
+    echo "-A OUTPUT  -m state --state NEW  -j LOG "
+    echo "-A INPUT  -m state --state NEW  -j LOG "
+    echo "-A FORWARD  -m state --state NEW  -j LOG "
+    # 
     # Rule  18 (global)
     echo "-A OUTPUT  -j policy_2 "
     echo "-A INPUT  -j policy_2 "
@@ -530,18 +539,6 @@ script_body() {
     echo '*mangle'
     # ================ Table 'mangle', automatic rules
     echo "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-    # ================ Table 'mangle', rule set policy_2
-    # 
-    # Rule  policy_2 0 (eth2)
-    echo ":policy_2 - [0:0]"
-    echo "-A policy_2 -o eth2   -m state --state NEW  -j ACCEPT "
-    # 
-    # Rule  policy_2 1 (global)
-    echo ":policy_2_1 - [0:0]"
-    echo "-A policy_2  -j policy_2_1 "
-    echo "-A policy_2_1  -j LOG "
-    echo "-A policy_2_1  -j DROP "
-    #
     # ================ Table 'mangle', rule set policy_2_mangle
     # 
     # Rule  policy_2_mangle 0 (eth2)
@@ -570,13 +567,11 @@ script_body() {
     # since we also have default rule that goes to mangle (TCPMSS)
     # and pure mangle ruleset, making sure all rules for 
     # mangle table end up with one COMMIT
-    echo ":RULE_17 - [0:0]"
-    echo "-A OUTPUT  -m state --state NEW  -j RULE_17 "
-    echo "-A PREROUTING  -m state --state NEW  -j RULE_17 "
-    echo "-A RULE_17  -j LOG "
-    echo "-A RULE_17  -j MARK  --set-mark 10"
+    echo "-A OUTPUT  -m state --state NEW  -j MARK --set-mark 10"
+    echo "-A PREROUTING  -m state --state NEW  -j MARK --set-mark 10"
     # 
     # Rule  18 (global)
+    echo ":policy_2 - [0:0]"
     echo "-A PREROUTING  -j policy_2 "
     echo "-A POSTROUTING  -j policy_2 "
     echo "-A FORWARD  -j policy_2 "
@@ -689,7 +684,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:28:52 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 12:34:58 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -231,7 +231,6 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         vector<int> ipv4_6_runs;
 
         findImportedRuleSets(fw, all_policies);
-        findBranchesInMangleTable(fw, all_policies);
         findImportedRuleSets(fw, all_nat);
 
         try

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.ma_1
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Tue May  3 19:33:00 2011 PDT by vadim
+#  Generated Fri May 13 12:35:32 2011 PDT by vadim
 #
 # files: * firewall40.fw /etc/firewall40.fw
 #
@@ -352,11 +352,8 @@ script_body() {
     # 
     $IPTABLES -N Cid37084X26841.0 -t mangle
     $IPTABLES -t mangle -A PREROUTING  -s 192.168.1.0/24   -m state --state NEW  -j Cid37084X26841.0
-    $IPTABLES -N RULE_6 -t mangle
-    $IPTABLES -t mangle -A Cid37084X26841.0  -d 22.22.22.0/24   -j RULE_6
-    $IPTABLES -t mangle -A Cid37084X26841.0  -d 33.33.33.0/24   -j RULE_6
-    $IPTABLES -t mangle -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
-    $IPTABLES -t mangle -A RULE_6  -j MARK --set-mark 8
+    $IPTABLES -t mangle -A Cid37084X26841.0  -d 22.22.22.0/24   -j MARK --set-mark 8
+    $IPTABLES -t mangle -A Cid37084X26841.0  -d 33.33.33.0/24   -j MARK --set-mark 8
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -380,6 +377,19 @@ script_body() {
     $IPTABLES -A FORWARD  -j RULE_5
     $IPTABLES -A RULE_5  -j LOG  --log-level info --log-prefix "RULE 5 -- DENY "
     $IPTABLES -A RULE_5  -j DROP
+    # 
+    # Rule 6 (global)
+    # 
+    echo "Rule 6 (global)"
+    # 
+    $IPTABLES -N Cid37084X26841.0
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j Cid37084X26841.0
+    $IPTABLES -A Cid37084X26841.0  -d 22.22.22.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
+    $IPTABLES -A Cid37084X26841.0  -d 33.33.33.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
+    $IPTABLES -N Cid37084X26841.1
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j Cid37084X26841.1
+    $IPTABLES -A Cid37084X26841.1  -d 22.22.22.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
+    $IPTABLES -A Cid37084X26841.1  -d 33.33.33.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
 }
 
 ip_forward() {
@@ -435,7 +445,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue May  3 19:33:00 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 12:35:32 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

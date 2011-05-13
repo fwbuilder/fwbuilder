@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:30:39 2011 PDT by vadim
+#  Generated Fri May 13 12:36:41 2011 PDT by vadim
 #
 # files: * firewall-ipv6-ipt-reset-prolog-top.fw /etc/firewall-ipv6-ipt-reset-prolog-top.fw
 #
@@ -378,14 +378,6 @@ script_body() {
 
 
 
-    echo '*nat'
-    # ================ Table 'nat',  rule set NAT
-    echo :PREROUTING ACCEPT [0:0]
-    echo :POSTROUTING ACCEPT [0:0]
-    echo :OUTPUT ACCEPT [0:0]
-    #
-    echo COMMIT
-
 
 
     ) | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?
@@ -450,7 +442,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:30:39 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 12:36:41 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
