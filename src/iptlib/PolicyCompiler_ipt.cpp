@@ -3233,7 +3233,9 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
 }
 
 /**
- * target CLASSIFY is only valid in mangle table, chain POSTROUTING
+ * target CLASSIFY is only valid in mangle table, chain POSTROUTING.
+ * However if the same rule also has tagging option, it should be
+ * split because we want to tag in PREROUTING
  */
 bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
 {
@@ -3247,7 +3249,22 @@ bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
     }
 
     if (rule->getStr("ipt_chain").empty())
-        ipt_comp->setChain(rule,"POSTROUTING");
+    {
+        if (rule->getTagging())
+        {
+            PolicyRule *r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setClassification(false);
+            r->setRouting(false);
+            r->setAction(PolicyRule::Continue);
+            tmp_queue.push_back(r);
+
+            rule->setTagging(false);
+        }
+
+        ipt_comp->setChain(rule, "POSTROUTING");
+    }
 
     tmp_queue.push_back(rule);
     return true;

@@ -1,5 +1,11 @@
 2011-05-13  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_ipt.cpp (processNext): see #2402 "Tag action
+	should be done in PREROUTING so it can be acted on later". If a
+	rule has both tagging and classification options, the rule should
+	be split so that iptables command doing tagging goes in PREROUTING
+	and rule doing classification goes into POSTROUTING chain.
+
 	* PolicyCompiler_ipt.cpp (processNext): see #2401 "Deprecating
 	Route option for iptables".  This target is not included in any of
 	the popular Linux distributions (checked in Ubuntu, Fedora and

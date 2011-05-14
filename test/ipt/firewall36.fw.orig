@@ -4,25 +4,16 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Fri May 13 16:11:04 2011 PDT by vadim
+#  Generated Fri May 13 17:55:47 2011 PDT by vadim
 #
 # files: * firewall36.fw /etc/firewall36.fw
 #
 # Compiled for iptables (any version)
 #
-# testing routing rules - both actually routing  and ROUTE target
-
+# testing routing rules
 # routing ruleset installs ECMP default
 
-# firewall36:Policy:1: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:2: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:3: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:4: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:5: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-
-# firewall36:Policy:1: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:4: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall36:Policy:5: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
+# ROUTE target is deprecated in 4.3.0
 
 # firewall36:Routing:4: warning: Rule has been suppressed because it contains IPv6 objects and Firewall Builder does not support IPv6 routing rules at this time
 
@@ -322,28 +313,7 @@ script_body() {
 
 
 
-    # ================ Table 'filter', rule set Policy
-    # 
-    # Rule 0 (global)
-    # 
-    echo "Rule 0 (global)"
-    # 
-    # This permits access from internal net
-    # to the Internet and DMZ
-    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 6 (global)
-    # 
-    echo "Rule 6 (global)"
-    # 
-    $IPTABLES -N RULE_6
-    $IPTABLES -A OUTPUT  -j RULE_6
-    $IPTABLES -A INPUT  -j RULE_6
-    $IPTABLES -A FORWARD  -j RULE_6
-    $IPTABLES -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- DENY "
-    $IPTABLES -A RULE_6  -j DROP
+
 
 
 
@@ -527,7 +497,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri May 13 16:11:04 2011 by vadim"
+        log "Activating firewall script generated Fri May 13 17:55:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
