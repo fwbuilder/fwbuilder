@@ -1,5 +1,15 @@
 2011-05-14  vadim  <vadim@netcitadel.com>
 
+	* CompilerDriver_ipt.cpp (findBranchesInMangleTable): see #2405
+	"Tag and classify actions dont work properly with branches".
+	When branching rule points to a rule set that has rules with Tag
+	and Classify options, branching should occur in mangle table even
+	when checkbox "create branch in mangle table" is not checked. The
+	fix in this change is tentative as it creates branch in chains
+	PREROUTING, POSTROUTING and OUTPUT. Since target CLASSIFY is only
+	allowed in POSTROUTING, this may create conflict. Need to test
+	more.
+
 	* AttachedNetworks.cpp (AttachedNetworks): see #1580 New object
 	type: network object that automatically matches subnets an
 	interface is attached to. The object can be a child of an

@@ -88,9 +88,48 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
 // ???
 //        rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
     }
-
 }
 
+void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
+                                                   list<FWObject*> &all_policies)
+{
+    // special but common case: if we only have one policy, there is
+    // no need to check if we have to do branching in mangle table
+    // since we do not have any branching rules in that case.
+    if (all_policies.size() > 1)
+    {
+        for (list<FWObject*>::iterator i=all_policies.begin();
+             i!=all_policies.end(); ++i)
+        {
+            for (list<FWObject*>::iterator r=(*i)->begin();
+                 r!=(*i)->end(); ++r)
+            {
+                PolicyRule *rule = PolicyRule::cast(*r);
+                if (rule == NULL) continue; // skip RuleSetOptions object
+                FWOptions *ruleopt = rule->getOptionsObject();
+                if (rule->getAction() == PolicyRule::Branch &&
+                    ! ruleopt->getBool("ipt_branch_in_mangle"))
+                {
+                    RuleSet *ruleset = rule->getBranch();
+                    if (ruleset == NULL)
+                    {
+                        abort(fw, *i, rule,
+                              "Action branch does not point to any rule set");
+                    }
+
+                    for (list<FWObject*>::iterator br=ruleset->begin();
+                         br!=ruleset->end(); ++br)
+                    {
+                        PolicyRule *b_rule = PolicyRule::cast(*br);
+                        if (b_rule == NULL) continue;
+                        if (b_rule->getTagging() || b_rule->getClassification())
+                            ruleopt->setBool("ipt_branch_in_mangle", true);
+                    }
+                }
+            }
+        }
+    }
+}
 
 /*
  * TODO: use configlet to define structure of generated script. Need 2

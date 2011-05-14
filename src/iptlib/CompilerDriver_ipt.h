@@ -93,6 +93,8 @@ public:
                             const std::string &single_rule_id);
 
         void assignRuleSetChain(libfwbuilder::RuleSet *ruleset);
+        void findBranchesInMangleTable(libfwbuilder::Firewall*,
+                                       std::list<libfwbuilder::FWObject*> &all_policies);
 
         std::string dumpScript(libfwbuilder::Firewall *fw,
                                const std::string& automatic_rules_script,
