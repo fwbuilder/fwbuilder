@@ -1062,7 +1062,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         }
 
         mw->showStatusBarMessage(tr("Merging with system objects...") );
-        
+
         MergeConflictRes mcr(mainW);
         objdb->merge(ndb, &mcr);
 

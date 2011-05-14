@@ -96,7 +96,7 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
-    ref_counter = 0;
+    // ref_counter = 0;
     FWObjectDatabase *dbr = getRoot();
 
     for (xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
@@ -108,6 +108,7 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
             {
                 /* Add w/o validation. Trust XML to do that */
 		add(o, false);
+
                 try
                 {
                     o->fromXML(cur);
@@ -408,6 +409,7 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
     if(!o1)
         throw FWException(string("Error creating object with type: ")+
                           x->getTypeName());
+
     // This adds with validation
     add(o1);
 

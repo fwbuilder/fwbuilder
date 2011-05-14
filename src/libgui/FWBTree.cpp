@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -53,6 +51,7 @@
 #include "fwbuilder/IntervalGroup.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/NAT.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
@@ -606,6 +605,7 @@ QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
     if (type_name == Cluster::TYPENAME) return QObject::tr("Cluster");
     if (type_name == Host::TYPENAME) return QObject::tr("Host");
     if (type_name == Interface::TYPENAME) return QObject::tr("Interface");
+    if (type_name == AttachedNetworks::TYPENAME) return QObject::tr("Attached Networks");
     if (type_name == Network::TYPENAME) return QObject::tr("Network");
     if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("Network IPv6");
     if (type_name == IPv4::TYPENAME) return QObject::tr("Address");
@@ -643,6 +643,7 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == Cluster::TYPENAME) return QObject::tr("New Cluster");
     if (type_name == Host::TYPENAME) return QObject::tr("New Host");
     if (type_name == Interface::TYPENAME) return QObject::tr("New Interface");
+    if (type_name == AttachedNetworks::TYPENAME) return QObject::tr("New Attached Networks Object");
     if (type_name == Network::TYPENAME) return QObject::tr("New Network");
     if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("New Network IPv6");
     if (type_name == IPv4::TYPENAME) return QObject::tr("New Address");

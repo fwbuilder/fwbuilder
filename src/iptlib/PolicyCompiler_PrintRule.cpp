@@ -38,6 +38,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AttachedNetworks.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -1246,6 +1247,14 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         {
             return atrt->getSourceName();
         }
+
+        if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
+        {
+            ostr << "$i_" << atrt->getSourceName() << "_network";
+            return ostr.str();
+        }
+
+
         // at this time we only support two types of MultiAddress
         // objects: AddressTable and DNSName. Both should be converted
         // to MultiAddressRunTime at this point. If we get some other

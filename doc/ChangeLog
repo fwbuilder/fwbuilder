@@ -1,3 +1,24 @@
+2011-05-14  vadim  <vadim@netcitadel.com>
+
+	* AttachedNetworks.cpp (AttachedNetworks): see #1580 New object
+	type: network object that automatically matches subnets an
+	interface is attached to. The object can be a child of an
+	interface. The object is optional and is not created automatically
+	for all interfaces; user can add it using context menu associated
+	with an interface. Dialog for this object allows editing of the
+	name and comment. List of network addresses represented by this
+	object is always generated automatically. Compiler for PF
+	translates this object to "en0:network" construct that is
+	supported by PF. Compiler for iptables expands it to the list of
+	ipv4 and ipv6 networks defined by the addresses of the parent
+	interface if interface has static addresses. If interface is
+	confgiured as "dynamic" and has no address in fwbuilder, then
+	compiler treats AttachedNetworks object as run-time and uses shell
+	function to determine network addresses during activation of the
+	firewall script. Compilers for other firewall platforms always
+	treat this object as compile-time and abort if it is used with
+	dynamic interface.
+
 2011-05-13  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_ipt.cpp (processNext): see #2402 "Tag action

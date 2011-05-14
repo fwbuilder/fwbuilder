@@ -54,8 +54,14 @@ class MultiAddress : public ObjectGroup
     virtual void setSourceName(const std::string& source_name);
     virtual void loadFromSource(bool ipv6, bool test_mode=false) throw(FWException);
 
-    bool isCompileTime() const;
-    bool isRunTime() const;
+    /*
+     * functions isCompileTime() and isRunTime() are virtual because
+     * some multi-address objects allow the user to set these flags,
+     * while other object types behave as run-time or compile-time
+     * depending on attributes of other objects (e.g. AttachedNetworks)
+     */
+    virtual bool isCompileTime() const;
+    virtual bool isRunTime() const;
     void setCompileTime(const bool b);
     void setRunTime(const bool b); 
 

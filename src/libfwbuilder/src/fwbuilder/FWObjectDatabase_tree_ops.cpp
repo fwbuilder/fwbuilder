@@ -222,9 +222,10 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
             }
         }
     }
+
 }
 
-//#define DEBUG_MERGE 1
+// #define DEBUG_MERGE 1
 
 void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 {
@@ -293,7 +294,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
         if (dobj==NULL)
         {
             sobj = *i;
-            FWObject *o1=treeRoot->create( sobj->getTypeName());
+            FWObject *o1 = treeRoot->create( sobj->getTypeName());
 
             FWObject *pdst = dstMap[ src->getId() ];
             assert(pdst!=NULL);
@@ -312,6 +313,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 #endif
 
             o1->duplicate( sobj, false); // copy IDs as well
+
 
 #ifdef DEBUG_MERGE
             cerr << "duplicate #1 done" << endl;

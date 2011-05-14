@@ -17,6 +17,10 @@
       <description>Host</description>
     </Host>
 
+    <AttachedNetworks>
+      <description>Attached Networks</description>
+    </AttachedNetworks>
+
     <Network>
       <description>Network</description>
     </Network>

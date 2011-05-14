@@ -4588,6 +4588,8 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
             src << o->getName();
             if (Group::cast(o)!=NULL)
                 src << "[" << o->size() << "]";
+            if ( MultiAddress::cast(o)!=NULL)
+                src << string((MultiAddress::cast(o)->isRunTime()) ? "(r)" : "(c)");
         }
 
         if (i2!=dstrel->end())
@@ -4596,6 +4598,8 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
             dst << o->getName();
             if (Group::cast(o)!=NULL)
                 dst << "[" << o->size() << "]";
+            if ( MultiAddress::cast(o)!=NULL)
+                dst << string((MultiAddress::cast(o)->isRunTime()) ? "(r)" : "(c)");
         }
 
         if (i3!=srvrel->end())

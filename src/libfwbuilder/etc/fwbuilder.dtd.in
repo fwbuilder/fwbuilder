@@ -85,7 +85,7 @@
 >
 
 <!ELEMENT Library
-((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService)*)>
+((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|AttachedNetworks|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -355,7 +355,7 @@ Interface can have the following attributes:
    - label          human-readable label of this interface
 
 -->
-<!ELEMENT Interface (IPv4*, IPv6*, physAddress?, InterfaceOptions?, Interface*, FailoverClusterGroup?)>
+<!ELEMENT Interface (IPv4*, IPv6*, physAddress?, InterfaceOptions?, Interface*, FailoverClusterGroup?, AttachedNetworks?)>
 <!ATTLIST Interface
  %STD_ATTRIBUTES;
  dyn            %BOOLEAN;   #REQUIRED
@@ -368,7 +368,6 @@ Interface can have the following attributes:
  dedicated_failover %BOOLEAN; #IMPLIED
  label          %STRING;    #IMPLIED
 >
-
 
 <!-- Remote management information for Firewall, Host, Gateway  -->
 <!ELEMENT Management (SNMPManagement? , FWBDManagement?, PolicyInstallScript?)>
@@ -429,6 +428,11 @@ Interface can have the following attributes:
  %STD_ATTRIBUTES;
  address %IPADDRESS; #REQUIRED
  netmask %NETMASK;   #REQUIRED
+>
+
+<!ELEMENT AttachedNetworks EMPTY>
+<!ATTLIST AttachedNetworks
+ %STD_ATTRIBUTES;
 >
 
 <!ELEMENT AddressRange EMPTY>

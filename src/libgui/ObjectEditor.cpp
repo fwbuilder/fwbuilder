@@ -63,6 +63,7 @@
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Host.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
@@ -140,6 +141,7 @@ ObjectEditor::ObjectEditor( QWidget *parent):
     registerObjectDialog(editorStack, StateSyncClusterGroup::TYPENAME,
                          "w_StateSyncClusterGroupDialog");
     registerObjectDialog(editorStack, Host::TYPENAME, "w_HostDialog");
+    registerObjectDialog(editorStack, AttachedNetworks::TYPENAME, "w_AttachedNetworksDialog");
     registerObjectDialog(editorStack, Network::TYPENAME, "w_NetworkDialog");
     registerObjectDialog(editorStack, NetworkIPv6::TYPENAME, "w_NetworkDialogIPv6");
     registerObjectDialog(editorStack, CustomService::TYPENAME, "w_CustomServiceDialog");

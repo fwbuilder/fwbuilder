@@ -6,9 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -34,6 +31,7 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
+#include <fwbuilder/AttachedNetworks.h>
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/Resources.h>
 
@@ -116,6 +114,28 @@ FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
     }
 
     return *this;
+}
+
+void Interface::duplicateWithIdMapping(const FWObject *src,
+                                       map<int,int> &id_mapping, bool preserve_id)
+{
+    assert(src->getTypeName() == Interface::TYPENAME);
+
+    checkReadOnly();
+
+    shallowDuplicate(src, preserve_id);
+
+    destroyChildren();
+
+    for(list<FWObject*>::const_iterator m=src->begin(); m!=src->end(); ++m) 
+    {
+        FWObject *src_obj = *m;
+        FWObject *dst_obj_copy = addCopyOf(src_obj, preserve_id);
+        if (src_obj!=NULL && dst_obj_copy!=NULL)
+            id_mapping[src_obj->getId()] = dst_obj_copy->getId();
+    }
+
+    setDirty(true);
 }
 
 bool Interface::cmp(const FWObject *obj, bool recursive) throw(FWException)
@@ -247,6 +267,9 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
     o = getFirstByType(FailoverClusterGroup::TYPENAME);
     if (o) o->toXML(me);
 
+    o = getFirstByType(AttachedNetworks::TYPENAME);
+    if (o) o->toXML(me);
+
     return me;
 }
 
@@ -341,7 +364,8 @@ bool  Interface::validateChild(FWObject *o)
             otype==IPv6::TYPENAME ||
             otype==physAddress::TYPENAME ||
             otype==InterfaceOptions::TYPENAME ||
-            otype==FailoverClusterGroup::TYPENAME);
+            otype==FailoverClusterGroup::TYPENAME ||
+            otype==AttachedNetworks::TYPENAME);
 }
 
 /*

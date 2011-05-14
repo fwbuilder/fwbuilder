@@ -40,6 +40,7 @@
 #include <fwbuilder/FWObject.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
+#include <fwbuilder/AttachedNetworks.h>
 #include <fwbuilder/Library.h>
 #include <fwbuilder/Interval.h>
 #include <fwbuilder/ICMPService.h>

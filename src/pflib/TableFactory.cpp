@@ -4,9 +4,7 @@
 
                  Copyright (C) 2002 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -35,6 +33,7 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/AttachedNetworks.h"
 
 #include <algorithm>
 #include <functional>
@@ -202,6 +201,10 @@ string TableFactory::PrintTables()
                 if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
                 {
                     output <<  atrt->getSourceName() << " ";
+                }
+                if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
+                {
+                    output << atrt->getSourceName() << ":network";
                 }
             } else
             {

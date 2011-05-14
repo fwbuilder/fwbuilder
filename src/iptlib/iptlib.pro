@@ -27,6 +27,7 @@ SOURCES	 =  CompilerDriver_ipt.cpp \
 			PolicyCompiler_secuwall.cpp \
 			RoutingCompiler_ipt.cpp \
 			RoutingCompiler_ipt_writers.cpp \
+			Preprocessor_ipt.cpp \
 			combinedAddress.cpp \
 			AutomaticRules_ipt.cpp \
 			utils.cpp
@@ -42,6 +43,7 @@ HEADERS	 = ../../config.h \
 			PolicyCompiler_ipt.h \
 			PolicyCompiler_secuwall.h \
 			RoutingCompiler_ipt.h \
+			Preprocessor_ipt.h \
 			combinedAddress.h \
 			AutomaticRules_ipt.h \
 			utils.h

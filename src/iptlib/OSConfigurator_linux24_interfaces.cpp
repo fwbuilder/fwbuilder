@@ -502,15 +502,26 @@ string OSConfigurator_linux24::printDynamicAddressesConfigurationCommands()
             if (iface->getName().find("*")==string::npos)
             {
                 out << "getaddr "
-                       << iface->getName()
-                       << "  "
-                       << getInterfaceVarName(iface, false)
-                       << endl;
+                    << iface->getName()
+                    << "  "
+                    << getInterfaceVarName(iface, false)
+                    << endl;
                 out << "getaddr6 "
-                       << iface->getName()
-                       << "  "
-                       << getInterfaceVarName(iface, true)
-                       << endl;
+                    << iface->getName()
+                    << "  "
+                    << getInterfaceVarName(iface, true)
+                    << endl;
+
+                out << "getnet "
+                    << iface->getName()
+                    << "  "
+                    << getInterfaceVarName(iface, false) << "_network"
+                    << endl;
+                out << "getnet6 "
+                    << iface->getName()
+                    << "  "
+                    << getInterfaceVarName(iface, true) << "_network"
+                    << endl;
             }
         }
     }

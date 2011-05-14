@@ -78,6 +78,7 @@ HEADERS += ../../config.h \
     IPv4Dialog.h \
     IPv6Dialog.h \
     PhysicalAddressDialog.h \
+	AttachedNetworksDialog.h \
     NetworkDialog.h \
     NetworkDialogIPv6.h \
     UserDialog.h \
@@ -287,6 +288,7 @@ SOURCES += ProjectPanel.cpp \
     IPv4Dialog.cpp \
     IPv6Dialog.cpp \
     PhysicalAddressDialog.cpp \
+	AttachedNetworksDialog.cpp \
     NetworkDialog.cpp \
     NetworkDialogIPv6.cpp \
     UserDialog.cpp \
@@ -450,6 +452,7 @@ FORMS = FWBMainWindow_q.ui \
     rulesetdialog_q.ui \
     addressrangedialog_q.ui \
     addresstabledialog_q.ui \
+	attachednetworksdialog_q.ui \
     networkdialog_q.ui \
     networkdialogipv6_q.ui \
     userdialog_q.ui \

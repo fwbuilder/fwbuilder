@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2006 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -22,9 +22,9 @@
 */
 
 
-#include "Preprocessor_pf.h"
+#include "Preprocessor_ipt.h"
 
-#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/AttachedNetworks.h"
 
 
@@ -33,13 +33,18 @@ using namespace fwcompiler;
 using namespace std;
 
 
-void Preprocessor_pf::convertObject(FWObject *obj)
+void Preprocessor_ipt::convertObject(FWObject *obj)
 {
-    // do not convert attachedNetworks object, compiler for PF always
-    // treats it as run-time object
     if ( AttachedNetworks::isA(obj))
-        AttachedNetworks::cast(obj)->setRunTime(true);
-    else
+    {
+        AttachedNetworks *att = AttachedNetworks::cast(obj);
+        Interface *intf = Interface::cast(att->getParent());
+        if (intf->isRegular())
+        {
+            att->setCompileTime(true);
+            att->loadFromSource(ipv6, inTestMode());
+        } else att->setRunTime(true);
+    } else
         Preprocessor::convertObject(obj);
 }
 

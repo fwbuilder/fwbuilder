@@ -99,6 +99,7 @@
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Host.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
@@ -304,6 +305,9 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
          for (FWObjectTypedChildIterator it = obj->findByType(physAddress::TYPENAME);
               it != it.end(); ++it) insertSubtree( nitm, *it );
          for (FWObjectTypedChildIterator it = obj->findByType(FailoverClusterGroup::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         for (FWObjectTypedChildIterator it = obj->findByType(AttachedNetworks::TYPENAME);
               it != it.end(); ++it) insertSubtree( nitm, *it );
 
          return;
