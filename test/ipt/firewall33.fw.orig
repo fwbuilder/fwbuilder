@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Fri May 13 17:55:41 2011 PDT by vadim
+#  Generated Sat May 14 15:40:29 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -61,12 +61,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -278,6 +299,8 @@ configure_interfaces() {
     update_addresses_of_interface "eth1 192.168.1.100/24" ""
     getaddr eth0.100  i_eth0_100
     getaddr6 eth0.100  i_eth0_100_v6
+    getnet eth0.100  i_eth0_100_network
+    getnet6 eth0.100  i_eth0_100_v6_network
 }
 
 script_body() {
@@ -443,11 +466,12 @@ script_body() {
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.99   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.103   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.104   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.105   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.106   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.153.147   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
@@ -572,7 +596,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri May 13 17:55:41 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:40:29 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

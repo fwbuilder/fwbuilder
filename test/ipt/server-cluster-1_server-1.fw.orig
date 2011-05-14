@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Fri May 13 17:57:35 2011 PDT by vadim
+#  Generated Sat May 14 15:42:19 2011 PDT by vadim
 #
 # files: * server-cluster-1_server-1.fw /etc/fw/server-cluster-1_server-1.fw
 #
@@ -59,12 +59,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -400,7 +421,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri May 13 17:57:35 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:42:19 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

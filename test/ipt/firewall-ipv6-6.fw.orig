@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Fri May 13 17:57:09 2011 PDT by vadim
+#  Generated Sat May 14 15:41:53 2011 PDT by vadim
 #
 # files: * firewall-ipv6-6.fw /etc/firewall-ipv6-6.fw
 #
@@ -57,12 +57,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -292,6 +313,8 @@ configure_interfaces() {
     update_addresses_of_interface "eth0 fe80::21d:9ff:fe8b:8e94/64 1.1.1.1/24" ""
     getaddr eth1  i_eth1
     getaddr6 eth1  i_eth1_v6
+    getnet eth1  i_eth1_network
+    getnet6 eth1  i_eth1_v6_network
 }
 
 script_body() {
@@ -399,7 +422,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri May 13 17:57:09 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:41:53 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
