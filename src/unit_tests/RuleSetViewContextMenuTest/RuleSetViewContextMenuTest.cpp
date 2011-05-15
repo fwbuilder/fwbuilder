@@ -243,7 +243,7 @@ void RuleSetViewContextMenuTest::verifyMenu(int column)
               << "Disable Rule"
               << "Compile rule";
     }
-    if (column > 0 && column < 5 || column == 7)
+    if (column > 0 && (column < 5 || column == 7))
     {
         names << "Edit" << "Copy" << "Cut" << "Paste"
               << "Delete"<< "Where used"
@@ -264,11 +264,8 @@ void RuleSetViewContextMenuTest::verifyMenu(int column)
         possibleItems["Reject"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Reject));
         possibleItems["Accounting"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Accounting));
         possibleItems["Pipe"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Pipe));
-        possibleItems["Tag"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Tag));
-        possibleItems["Classify"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Classify));
         possibleItems["Custom"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Custom));
         possibleItems["Branch"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Branch));
-        possibleItems["Route"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Route));
         possibleItems["Continue"] = getActionNameForPlatform(firewall, PolicyRule::getActionAsString(PolicyRule::Continue));
         string currentPlatform = firewall->getStr("platform");
         foreach(QString item, order)

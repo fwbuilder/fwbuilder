@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1304658161" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1305436510" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1310,7 +1310,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id1787</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id263" disabled="False" group="" log="False" position="5" action="Branch" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 23">
@@ -1332,7 +1331,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id1801</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id275" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="Chain OUTPUT. &#10;Created during import of  line 28">
@@ -1354,7 +1352,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id1815</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id287" disabled="False" group="" log="False" position="7" action="Branch" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 31">
@@ -1376,7 +1373,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id1829</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id299" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="Chain INPUT. &#10;Created during import of  line 40">
@@ -1418,7 +1414,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id999</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id323" disabled="False" group="" log="False" position="10" action="Branch" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 42">
@@ -1440,7 +1435,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id1846</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id335" disabled="False" group="" log="False" position="11" action="Branch" direction="Inbound" comment="Chain FORWARD.  Both inbound and outbound interfaces in original iptables command: -i eth0 -o eth1&#10;Created during import of  line 45">
@@ -1462,7 +1456,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2040</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id347" disabled="False" group="" log="False" position="12" action="Reject" direction="Both" comment="Chain INPUT. &#10;Created during import of  line 48">
@@ -1841,7 +1834,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id999</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id563" disabled="False" group="" log="False" position="30" action="Accept" direction="Both" comment="Chain FORWARD. &#10;Created during import of  line 83">
@@ -3104,7 +3096,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2056</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1679" disabled="False" group="" log="False" position="56" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 222">
@@ -3126,7 +3117,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2070</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1691" disabled="False" group="" log="False" position="57" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 223">
@@ -3148,7 +3138,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2084</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1703" disabled="False" group="" log="False" position="58" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 224">
@@ -3170,7 +3159,6 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2098</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1715" disabled="False" group="" log="False" position="59" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 227">
@@ -3192,7 +3180,8 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2112</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
+              <Option name="tagging">True</Option>
+              <Option name="tagobject_id">id191</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1727" disabled="False" group="" log="False" position="60" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 230">
@@ -3214,7 +3203,8 @@
             <PolicyRuleOptions>
               <Option name="branch_id">id2126</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
+              <Option name="tagging">True</Option>
+              <Option name="tagobject_id">id191</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1739" disabled="False" group="" log="False" position="61" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 233&#10;Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.">
@@ -3237,7 +3227,6 @@
               <Option name="branch_id">id2140</Option>
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1751" disabled="False" group="" log="False" position="62" action="Branch" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 234&#10;Error: Original rule combines match of tcp/udp/icmp protocols with two or more module matches, such as module 'mark', 'recent' or 'length'. Use additional branches to implement this complex match.">
@@ -3260,7 +3249,6 @@
               <Option name="branch_id">id2154</Option>
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
-              <Option name="tagobject_id"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id1763" disabled="False" group="" log="False" position="63" action="Deny" direction="Both" comment="Chain user_chain. &#10;Created during import of  line 237">
@@ -3888,7 +3876,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id2112" name="user_chain_59_mod_match" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id2114" disabled="False" group="" log="False" position="0" action="Tag" direction="Both" comment="Called from ruleset user_chain, rule 59">
+          <PolicyRule id="id2114" disabled="False" group="" log="False" position="0" action="Continue" direction="Both" comment="Called from ruleset user_chain, rule 59">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3905,15 +3893,15 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id191</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
         <Policy id="id2126" name="user_chain_60_mod_match" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id2128" disabled="False" group="" log="False" position="0" action="Tag" direction="Both" comment="Called from ruleset user_chain, rule 60">
+          <PolicyRule id="id2128" disabled="False" group="" log="False" position="0" action="Continue" direction="Both" comment="Called from ruleset user_chain, rule 60">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3930,8 +3918,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id191</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3984,7 +3972,7 @@
           <RuleSetOptions/>
         </Policy>
         <Policy id="id2168" name="Mangle" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id2170" disabled="False" group="" log="False" position="0" action="Tag" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 252&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
+          <PolicyRule id="id2170" disabled="False" group="" log="False" position="0" action="Continue" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 252&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4001,13 +3989,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id193</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2182" disabled="False" group="" log="False" position="1" action="Tag" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 255&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
+          <PolicyRule id="id2182" disabled="False" group="" log="False" position="1" action="Continue" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 255&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4024,13 +4012,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id194</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2194" disabled="False" group="" log="False" position="2" action="Tag" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 256&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
+          <PolicyRule id="id2194" disabled="False" group="" log="False" position="2" action="Continue" direction="Inbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD&#10;Chain FORWARD. &#10;Created during import of  line 256&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain FORWARD">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4047,13 +4035,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id195</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2206" disabled="False" group="" log="False" position="3" action="Tag" direction="Inbound" comment="Chain PREROUTING. &#10;Created during import of  line 259">
+          <PolicyRule id="id2206" disabled="False" group="" log="False" position="3" action="Continue" direction="Inbound" comment="Chain PREROUTING. &#10;Created during import of  line 259">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4070,12 +4058,12 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id193</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2218" disabled="False" group="" log="False" position="4" action="Tag" direction="Outbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 265&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
+          <PolicyRule id="id2218" disabled="False" group="" log="False" position="4" action="Continue" direction="Outbound" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 265&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4092,14 +4080,14 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="branch_id"></Option>
               <Option name="color">#C86E6E</Option>
               <Option name="ipt_mark_connections">True</Option>
               <Option name="stateless">True</Option>
+              <Option name="tagging">True</Option>
               <Option name="tagobject_id">id193</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2230" disabled="False" group="" log="False" position="5" action="Route" direction="Both" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 269&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
+          <PolicyRule id="id2230" disabled="False" group="" log="False" position="5" action="Continue" direction="Both" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 269&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4122,10 +4110,11 @@
               <Option name="ipt_iif"></Option>
               <Option name="ipt_oif">eth0</Option>
               <Option name="ipt_tee">False</Option>
+              <Option name="routing">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id2242" disabled="False" group="" log="False" position="6" action="Route" direction="Both" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 270&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
+          <PolicyRule id="id2242" disabled="False" group="" log="False" position="6" action="Continue" direction="Both" comment="Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING&#10;Chain POSTROUTING. &#10;Created during import of  line 270&#10;Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4148,6 +4137,7 @@
               <Option name="ipt_iif"></Option>
               <Option name="ipt_oif">eth2</Option>
               <Option name="ipt_tee">False</Option>
+              <Option name="routing">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>

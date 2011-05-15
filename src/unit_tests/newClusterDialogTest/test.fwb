@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="1261881957" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1261881957" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="id6821X7237" color="#FFFFFF" name="new_cluster_test" comment="" ro="False">
     <ObjectGroup id="id6822X7237" name="Objects" comment="" ro="False">
@@ -410,7 +410,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id7037X7237" disabled="False" group="" log="True" position="7" action="Tag" direction="Both" comment="">
+          <PolicyRule id="id7037X7237" disabled="False" group="" log="True" position="7" action="Continue" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -427,8 +427,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="classification">False</Option>
               <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
               <Option name="stateless">False</Option>
+              <Option name="tagging">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
