@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Sat May 14 15:41:56 2011 PDT by vadim
+#  Generated Sun May 15 12:01:42 2011 PDT by vadim
 #
 # files: * firewall-ipv6-8.fw /etc/firewall-ipv6-8.fw
 #
@@ -320,6 +320,31 @@ configure_interfaces() {
 }
 
 script_body() {
+    # ================ IPv4
+
+
+
+    (
+
+    echo '*filter'
+
+    # ================ Table 'filter', rule set Policy_OSPF
+    # 
+    # Rule  Policy_OSPF 2 (global)
+    echo ":Policy_OSPF - [0:0]"
+    echo "-A Policy_OSPF  -j DROP "
+    #
+    echo COMMIT
+
+
+
+
+    ) | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?
+    test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+
+
+
+
     # ================ IPv6
 
 
@@ -363,6 +388,9 @@ script_body() {
     # Rule  Policy_OSPF 1 (global)
     echo "-A Policy_OSPF  -s fe80::/10   -d ff00::/8   -j ACCEPT "
     echo "-A Policy_OSPF  -s fe80::/10   -d fe80::/10   -j ACCEPT "
+    # 
+    # Rule  Policy_OSPF 2 (global)
+    echo "-A Policy_OSPF  -j DROP "
     #
     # ================ Table 'filter', rule set Policy_v6
     # 
@@ -461,7 +489,8 @@ echo 1 > /proc/sys/net/ipv6/conf/all/forwarding
 
 reset_all() {
     :
-    reset_iptables_v6
+    reset_iptables_v4
+  reset_iptables_v6
 }
 
 block_action() {
@@ -470,6 +499,9 @@ block_action() {
 
 stop_action() {
     reset_all
+    $IPTABLES -P OUTPUT  ACCEPT
+    $IPTABLES -P INPUT   ACCEPT
+    $IPTABLES -P FORWARD ACCEPT
     $IP6TABLES -P OUTPUT  ACCEPT
     $IP6TABLES -P INPUT   ACCEPT
     $IP6TABLES -P FORWARD ACCEPT
@@ -507,7 +539,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sat May 14 15:41:56 2011 by vadim"
+        log "Activating firewall script generated Sun May 15 12:01:42 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

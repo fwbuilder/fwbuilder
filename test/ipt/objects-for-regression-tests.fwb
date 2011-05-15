@@ -57768,7 +57768,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id654160X7324" host_OS="linux24" inactive="False" lastCompiled="1280426747" lastInstalled="0" lastModified="1276815782" platform="iptables" version="1.4.0" name="firewall-ipv6-8" comment="matching multicast with different directions" ro="False">
+      <Firewall id="id654160X7324" host_OS="linux24" inactive="False" lastCompiled="1280426747" lastInstalled="0" lastModified="1305486097" platform="iptables" version="1.4.0" name="firewall-ipv6-8" comment="matching multicast with different directions" ro="False">
         <NAT id="id654194X7324" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -58516,7 +58516,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             <Option name="mangle_only_rule_set">False</Option>
           </RuleSetOptions>
         </Policy>
-        <Policy id="id1825785X7324" name="Policy_OSPF" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="False">
+        <Policy id="id1825785X7324" name="Policy_OSPF" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="False">
           <PolicyRule id="id2502746X7324" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id2383X75851"/>
@@ -58609,6 +58609,26 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id100679X23217" disabled="False" group="" log="False" position="2" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions>
