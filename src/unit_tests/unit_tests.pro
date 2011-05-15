@@ -3,14 +3,11 @@ DOLLAR = $
 libgui.target = ../libgui/libgui.a
 libgui.commands = cd ../libgui && qmake -spec $$QMAKESPEC && make && cd -
 
-build_tests.commands = echo "Building tests..."; \
-               ./unit_tests.sh make build_tests
+build_tests.commands = ./unit_tests.sh make build_tests
 
-run_tests.commands = echo "Running tests..."; \
-               ./unit_tests.sh make run_tests
+run_tests.commands = ./unit_tests.sh make run_tests
 
-clean_tests.commands = echo "Cleaning tests..."; \
-                 ./unit_tests.sh make clean
+clean_tests.commands = ./unit_tests.sh make clean
 
 build_tests.depends = libgui
 run_tests.depends = libgui

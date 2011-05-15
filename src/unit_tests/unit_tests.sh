@@ -1,24 +1,27 @@
-#!/bin/bash
+#!/bin/sh
 
-set +x
+QMAKE="${QMAKE:-qmake}"
+QMAKEPARAMS="${QMAKESPEC:+ -spec $QMAKESPEC}"
 
-commands=$@
+set -e
 
 build() {
-    directory=$1
-    shift
-    commands=$@
-    cd $directory
-    [ ! -e Makefile ] && qmake -spec $QMAKESPEC
-    $commands || exit 1
-    cd -
+	local _d="$1"
+	shift
+	(
+	    cd "$_d" &&
+	    ([ -f Makefile ] || $QMAKE $QMAKEPARAMS) &&
+	    "$@"
+	)
 }
 
-build main $commands
+build main "$@"
 
-for directory in `find . -maxdepth 1 -type d -regex '\./[A-Za-z0-9\-\_]*'`
+find . -maxdepth 1 -type d |
+    egrep -- '^\./[A-Za-z0-9_-]*$' |
+    while read _d
 do
-    echo "======================= $directory"
-    build $directory $commands
+	echo "======================= $_d"
+	build "$_d" "$@"
 done
 
