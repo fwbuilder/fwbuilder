@@ -865,6 +865,17 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             }
         }
 
+        if (AttachedNetworks::isA(obj))
+        {
+            dupMenuItem = false;
+            moveMenuItem = false;
+            copyMenuItem = false;
+            pasteMenuItem = false;
+            delMenuItem = false;
+            newMenuItem = false;
+            continue;
+        }
+
         copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);
         pasteMenuItem = pasteMenuItem &&
             FWBTree().getPasteMenuState(object_path) &&

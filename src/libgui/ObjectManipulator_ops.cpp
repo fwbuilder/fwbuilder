@@ -48,6 +48,7 @@
 #include "ProjectPanel.h"
 #include "ConfirmDeleteObjectDialog.h"
 
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/IPv6.h"
@@ -213,6 +214,12 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
 FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
+
+    // we disable copy/cut/paste/duplicate menu items for objects that
+    // can't be copied or duplicated in
+    // ObjectManipulator::getMenuState() but will check here just in
+    // case
+    if (AttachedNetworks::isA(obj)) return NULL;
 
     openLib(targetLib);
     FWObject *new_parent = FWBTree().getStandardSlotForObject(
