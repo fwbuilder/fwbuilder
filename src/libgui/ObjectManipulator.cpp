@@ -871,7 +871,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             moveMenuItem = false;
             copyMenuItem = false;
             pasteMenuItem = false;
-            delMenuItem = false;
             newMenuItem = false;
             continue;
         }

@@ -302,6 +302,12 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
 
     if (!isObjectAllowed(ta, obj)) return NULL;
 
+    // we disable copy/cut/paste/duplicate menu items for objects that
+    // can't be copied or duplicated in
+    // ObjectManipulator::getMenuState() but will check here just in
+    // case
+    if (AttachedNetworks::isA(obj)) return NULL;
+
     if (fwbdebug)
         qDebug() << "ObjectManipulator::actuallyPasteTo"
                  << "target=" << target->getPath().c_str()
