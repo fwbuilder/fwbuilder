@@ -853,7 +853,7 @@ bool PolicyCompiler_ipt::deprecateOptionRoute::processNext()
 	compiler->abort(
             rule, 
             "Option Route is deprecated. You can use Custom Action "
-            "to geenrate iptables command using '-j ROUTE' target "
+            "to generate iptables command using '-j ROUTE' target "
             "if it is supported by your firewall OS");
         return true;
     }
