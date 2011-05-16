@@ -68,18 +68,18 @@
 274: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
 275: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
 275: Error: Error: Fwbuilder can not reproduce iptables rule in the table 'mangle', chain POSTROUTING
-280: New ruleset: nat / PREROUTING
-280: Default action: Accept
-281: New ruleset: nat / POSTROUTING
-281: Default action: Accept
-282: New ruleset: nat / OUTPUT
-282: Default action: Accept
-286: New interface: eth+
-315: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT
-315: Warning: Line 247: Can not reproduce default action in table 'mangle' chain 'FORWARD'. (Generated rule may not generate equivalent iptables command when compiled)
-315: Warning: Line 247: Added rule to reproduce default policy ACCEPT in mangle/FORWARD
-315: Warning: Line 246: Can not reproduce default action in table 'mangle' chain 'INPUT'. (Generated rule may not generate equivalent iptables command when compiled)
-315: Warning: Line 246: Added rule to reproduce default policy ACCEPT in mangle/INPUT
-315: Warning: Line 248: Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
-315: Warning: Line 249: Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
-315: Warning: Line 245: Added rule to reproduce default policy ACCEPT in mangle/PREROUTING
+283: New ruleset: nat / PREROUTING
+283: Default action: Accept
+284: New ruleset: nat / POSTROUTING
+284: Default action: Accept
+285: New ruleset: nat / OUTPUT
+285: Default action: Accept
+289: New interface: eth+
+318: Warning: Line 5: Added rule to reproduce default policy ACCEPT in filter/OUTPUT
+318: Warning: Line 247: Can not reproduce default action in table 'mangle' chain 'FORWARD'. (Generated rule may not generate equivalent iptables command when compiled)
+318: Warning: Line 247: Added rule to reproduce default policy ACCEPT in mangle/FORWARD
+318: Warning: Line 246: Can not reproduce default action in table 'mangle' chain 'INPUT'. (Generated rule may not generate equivalent iptables command when compiled)
+318: Warning: Line 246: Added rule to reproduce default policy ACCEPT in mangle/INPUT
+318: Warning: Line 248: Added rule to reproduce default policy ACCEPT in mangle/OUTPUT
+318: Warning: Line 249: Added rule to reproduce default policy ACCEPT in mangle/POSTROUTING
+318: Warning: Line 245: Added rule to reproduce default policy ACCEPT in mangle/PREROUTING

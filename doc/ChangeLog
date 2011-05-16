@@ -1,3 +1,8 @@
+2011-05-15  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushPolicyRule): see #2411 Implemented import
+	of iptables rules with target CLASSIFY.
+
 2011-05-14  vadim  <vadim@netcitadel.com>
 
 	* CompilerDriver_ipt.cpp (findBranchesInMangleTable): see #2405

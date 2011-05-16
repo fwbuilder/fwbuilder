@@ -730,6 +730,7 @@ void IPTImporter::pushPolicyRule()
     {
         action = PolicyRule::Continue;
         rule->setClassification(true);
+        ropt->setStr("classify_str", action_params["set_class"]);
     }
 
     if (target=="LOG")
@@ -1065,7 +1066,8 @@ void IPTImporter::pushPolicyRule()
 
         if (current_table == "mangle")
         {
-            if (current_chain == "POSTROUTING" || current_chain == "FORWARD")
+            if ( ! rule->getClassification() &&
+                 (current_chain == "POSTROUTING" || current_chain == "FORWARD"))
             {
                 QString err = QObject::tr(
                     "Fwbuilder can not reproduce iptables rule in "

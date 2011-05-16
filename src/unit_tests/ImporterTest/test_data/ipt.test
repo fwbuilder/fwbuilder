@@ -274,6 +274,9 @@ COMMIT
 -A POSTROUTING -d 192.168.1.1 -j TOS --set-tos Minimize-Delay
 -A POSTROUTING -d 192.168.1.1 -j TOS --set-tos 0x10
 
+-A POSTROUTING -s 192.168.1.0/24 -j CLASSIFY --set-class 0001:0010 
+-A POSTROUTING -s 192.168.2.0/24 -j CLASSIFY --set-class 1:10
+
 COMMIT
 
 *nat

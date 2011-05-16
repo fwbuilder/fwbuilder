@@ -97,6 +97,7 @@ public:
 	public: void mMATCH_COMMENT(bool _createToken);
 	public: void mMATCH_PKT_TYPE(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);
+	public: void mSET_CLASS(bool _createToken);
 	public: void mSET_MARK(bool _createToken);
 	public: void mSAVE_MARK(bool _createToken);
 	public: void mRESTORE_MARK(bool _createToken);
