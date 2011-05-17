@@ -707,7 +707,8 @@ FWObject& FWObjectDatabase::duplicate(const FWObject *obj,
                                       bool preserve_id) throw(FWException)
 {
     setIgnoreReadOnlyFlag(true);
-    FWObject::duplicate(obj, preserve_id);
+    FWObject &o = FWObject::duplicate(obj, preserve_id);
     setIgnoreReadOnlyFlag(false);
+    return o;
 }
 
