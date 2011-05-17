@@ -1346,8 +1346,8 @@ bool FWObject::isReadOnly()
 
 void FWObject::checkReadOnly() throw(FWException)
 {
-    if (isReadOnly()) throw FWException(
-        string("Attempt to modify read-only object ")+getName());
+    if (isReadOnly() && ! getRoot()->getIgnoreReadOnlyFlag())
+        throw FWException(string("Attempt to modify read-only object ")+getName());
 }
 
 FWObjectTypedChildIterator::FWObjectTypedChildIterator(
