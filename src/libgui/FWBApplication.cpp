@@ -30,8 +30,13 @@
 #include "FWBApplication.h"
 #include "FWWindow.h"
 
+#include "fwbuilder/FWException.h"
+
 #include <QtDebug>
 #include <QTimer>
+
+using namespace libfwbuilder;
+using namespace std;
 
 
 void FWBApplication::quit()
@@ -63,3 +68,25 @@ void FWBApplication::delayedQuit()
     QApplication::quit();
 }
 
+bool FWBApplication::notify(QObject *receiver, QEvent *event)
+{
+    try
+    {
+        return QApplication::notify(receiver, event);
+    } catch (const libfwbuilder::FWException &ex)
+    {
+        cerr << "Caught FWException: " << ex.toString() << std::endl;
+        QCoreApplication::exit(1);
+    } catch (const std::string &s) {
+	cerr << s << std::endl;
+        QCoreApplication::exit(1);
+    } catch (const std::exception &ex) {
+	cerr << ex.what() << std::endl;
+        QCoreApplication::exit(1);
+    }
+    catch (...) {
+	cerr << "Caught unsupported exception" << std::endl;
+        QCoreApplication::exit(1);
+    }
+    return false;
+}
