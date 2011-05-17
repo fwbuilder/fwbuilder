@@ -363,6 +363,10 @@ public:
 
     void addMessageToLog(const std::string &msg);
     void addMessageToLog(const QString &msg);
+
+    
+    void rearrangeVlanInterfaces();
+
 };
 
 #endif

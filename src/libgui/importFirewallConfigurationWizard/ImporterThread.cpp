@@ -30,6 +30,7 @@
 #include "IOSImporter.h"
 #include "IPTImporter.h"
 #include "PIXImporter.h"
+#include "PFImporter.h"
 #include "objectMaker.h"
 
 #include <QWidget>
@@ -90,6 +91,9 @@ void ImporterThread::run()
         lib, instream, logger, firewallName.toUtf8().constData());
 
     if (platform == "pix" || platform == "fwsm") importer = new PIXImporter(
+        lib, instream, logger, firewallName.toUtf8().constData());
+
+    if (platform == "pf") importer = new PFImporter(
         lib, instream, logger, firewallName.toUtf8().constData());
 
     if (importer)

@@ -180,12 +180,10 @@ void IC_PlatformWarningPage::initializePage()
         case PreImport::PF:
             m_dialog->platform->setText(tr("pf"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Firewall Builder does not support import of PF "
-                   "configurations at this time. Click the button below to "
-                   "vote to have this feature added in a future release."
+                tr("Firewall Builder will support import PF "
+                   "configuration from a pf.conf file."
                    ));
-            platformOk = false;
-            m_dialog->voteForFeatureButton->show();
+            platformOk = true;
             break;
         }
 

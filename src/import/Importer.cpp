@@ -34,6 +34,10 @@
 #include <ios>
 #include <iostream>
 #include <algorithm>
+#include <memory>
+
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
@@ -931,5 +935,63 @@ FWObject* Importer::commitObject(FWObject *obj)
     if (obj->isReadOnly()) return obj;
     if (obj) addStandardImportComment(obj, "");
     return obj;
+}
+
+/*
+ * Rearrange vlan interfaces. Importer creates all interfaces as
+ * children of the firewall. Vlan interfaces should become
+ * subinterfaces of the corresponding physical interfaces.
+ */
+void Importer::rearrangeVlanInterfaces()
+{
+    std::auto_ptr<interfaceProperties> int_prop(
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            getFirewallObject()));
+
+    list<FWObject*> all_interface_objects =
+        getFirewallObject()->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*> vlans;
+    list<FWObject*>::iterator it;
+    for (it=all_interface_objects.begin(); it!=all_interface_objects.end(); ++it)
+    {
+        Interface *intf = Interface::cast(*it);
+        FWOptions *ifopt = intf->getOptionsObject();
+        
+        if (int_prop->looksLikeVlanInterface(intf->getName().c_str()) &&
+            ifopt->getStr("type")=="8021q")
+        {
+            qDebug() << "Found vlan interface" << intf->getName().c_str();
+            vlans.push_back(intf);
+        }
+    }
+
+    for (it=vlans.begin(); it!=vlans.end(); ++it)
+    {
+        Interface *vlan_intf = Interface::cast(*it);
+
+        qDebug() << "VLAN " << vlan_intf->getName().c_str();
+
+        QString base_name;
+        int vlan_id;
+        int_prop->parseVlan(vlan_intf->getName().c_str(), &base_name, &vlan_id);
+
+        qDebug() << "base name" << base_name;
+
+        if ( ! base_name.isEmpty())
+        {
+            getFirewallObject()->remove(vlan_intf, false); // do not delete
+
+            list<FWObject*>::iterator it2;
+            for (it2=all_interface_objects.begin(); it2!=all_interface_objects.end(); ++it2)
+            {
+                if (base_name == (*it2)->getName().c_str())
+                {
+                    (*it2)->add(vlan_intf, false);
+                    break;
+                }
+            }
+        }
+    }
+
 }
 
