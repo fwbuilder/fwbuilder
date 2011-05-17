@@ -581,6 +581,7 @@ INCLUDEPATH += \
     ../pflib \
     ../cisco_lib \
     ../compiler_lib \
+    ../fwtransfer \
 	../libfwbuilder/src
 DEPENDPATH += \
     ../import \
