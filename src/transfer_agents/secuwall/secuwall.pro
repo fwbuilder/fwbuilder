@@ -26,9 +26,9 @@ contains( HAVE_QTDBUS, 1 ):unix {
 
 win32 {
     CONFIG += console
-    LIBS  += ../../fwtransfer/release/fwtransfer.lib  \  # -lQtDBus
-        ../../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
-        ../../libfwbuilder/src/fwbuilder/release/fwbuilder.lib
+    LIBS  += ../../fwtransfer/release/libfwtransfer.a  \  # -lQtDBus
+        ../../libfwbuilder/src/fwcompiler/release/libfwcompiler.a \
+        ../../libfwbuilder/src/fwbuilder/release/libfwbuilder.a
 }
 
 TARGET = transfer_secuwall

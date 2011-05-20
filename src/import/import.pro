@@ -35,7 +35,8 @@ HEADERS	 = QStringListOperators.h \
 
 CONFIG += staticlib
 
-INCLUDEPATH += $$ANTLR_INCLUDEPATH ../libfwbuilder/src ../compiler_lib
+# need to add "." for g++ on mingw
+INCLUDEPATH += $$ANTLR_INCLUDEPATH ../libfwbuilder/src ../compiler_lib .
 DEPENDPATH  += $$ANTLR_INCLUDEPATH ../libfwbuilder/src ../compiler_lib
 
 LIBS += $$ANTLR_LIBS

@@ -48,9 +48,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#ifdef _WIN32
-#define snprintf sprintf_s
-#endif
 
 class FWObjectTreeScanner {
 

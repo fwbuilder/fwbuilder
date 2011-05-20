@@ -53,9 +53,9 @@ CONFIG += staticlib
 INCLUDEPATH += ../compiler_lib ../libfwbuilder/src
 DEPENDPATH  += ../compiler_lib ../libfwbuilder/src
 
-win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib \
-	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib
+win32:PRE_TARGETDEPS  = ../compiler_lib/release/libcompilerdriver.a \
+	../libfwbuilder/src/fwcompiler/release/libfwcompiler.a \
+	../libfwbuilder/src/fwbuilder/release/libfwbuilder.a
 
 !win32:PRE_TARGETDEPS = ../compiler_lib/libcompilerdriver.a \
 	../libfwbuilder/src/fwcompiler/libfwcompiler.a \

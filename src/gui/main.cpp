@@ -109,6 +109,8 @@ void usage()
 
 int main( int argc, char *argv[] )
 {
+    cout << "Firewall Builder GUI " VERSION << endl << flush;
+
     filename = "";
     print_output_file_name = "";
     fwbdebug = 0;

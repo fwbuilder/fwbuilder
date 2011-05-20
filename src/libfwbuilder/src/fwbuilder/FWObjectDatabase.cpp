@@ -100,7 +100,9 @@ using namespace libfwbuilder;
 int id_seed = 1000;
 #ifdef _WIN32
 static int cached_pid = _getpid();
+#  ifndef __GNUC__
 #define snprintf sprintf_s
+#  endif
 #else
 static int cached_pid = getpid();
 #endif

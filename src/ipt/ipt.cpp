@@ -43,6 +43,8 @@
 #include <QApplication>
 #include <QStringList>
 #include <QTextCodec>
+#include <QTime>
+
 
 #include "../common/init.cpp"
 
@@ -75,6 +77,9 @@ void usage(const char *name)
 int main(int argc, char **argv)
 {   
     QApplication app(argc, argv, false);
+
+    QTime total_time_timer;
+    total_time_timer.start();
 
     // compilers always write file names into manifest in Utf8
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
@@ -152,6 +157,10 @@ int main(int argc, char **argv)
         }
         driver->compile();
         int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+
+	QTime time_spent = QTime().addMSecs(total_time_timer.elapsed());
+	cerr << "Compile time: "
+	     << time_spent.toString("hh:mm:ss").toStdString() << endl;
 
         delete driver;
         delete objdb;
