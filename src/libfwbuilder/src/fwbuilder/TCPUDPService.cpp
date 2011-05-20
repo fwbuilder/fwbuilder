@@ -33,9 +33,6 @@
 using namespace libfwbuilder;
 using namespace std;
 
-#ifdef _WIN32
-#define snprintf sprintf_s
-#endif
 
 const char *TCPUDPService::TYPENAME={"TCPUDPService"};
 

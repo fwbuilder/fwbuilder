@@ -11,23 +11,16 @@ SOURCES += main.cpp
 
 # Arrange static libraries before dynamic ones in the linker command
 # line.  libgui goes first
-win32 {
-    IMPORT_LIB = ../import/release/import.lib
-    FWBPARSER_LIB = ../parsers/release/fwbparser.lib
-    FWTRANSFER_LIB = ../fwtransfer/release/fwtransfer.lib
-    STATIC_LIBS += ../libgui/release/gui.lib
-}
 
-!win32 {
-    IMPORT_LIB = ../import/libimport.a
-    FWBPARSER_LIB = ../parsers/libfwbparser.a
-    FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
-    STATIC_LIBS += ../libgui/libgui.a
-}
+IMPORT_LIB = ../import/$$BINARY_SUBDIR/libimport.a
+FWBPARSER_LIB = ../parsers/$$BINARY_SUBDIR/libfwbparser.a
+FWTRANSFER_LIB = ../fwtransfer/$$BINARY_SUBDIR/libfwtransfer.a
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-STATIC_LIBS += $$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
 DEFINES += $$ANTLR_DEFINES
+
+STATIC_LIBS += ../libgui/$$BINARY_SUBDIR/libgui.a \
+				$$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 STATIC_LIBS += $$FWTRANSFER_LIB
@@ -53,47 +46,17 @@ DEPENDPATH +=  \
 	../compiler_lib \
 	../libfwbuilder/src
 
-win32:STATIC_LIBS += \
-	../common/release/common.lib \
-    ../iptlib/release/iptlib.lib \
-    ../pflib/release/fwbpf.lib \
-    ../cisco_lib/release/fwbcisco.lib \
-    ../compiler_lib/release/compilerdriver.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
-	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
+OTHER_LIBS  = ../common/$$BINARY_SUBDIR/libcommon.a \
+      ../iptlib/$$BINARY_SUBDIR/libiptlib.a \
+      ../pflib/$$BINARY_SUBDIR/libfwbpf.a \
+      ../cisco_lib/$$BINARY_SUBDIR/libfwbcisco.a \
+      ../compiler_lib/$$BINARY_SUBDIR/libcompilerdriver.a \
+      ../libfwbuilder/src/fwcompiler/$$BINARY_SUBDIR/libfwcompiler.a \
+      ../libfwbuilder/src/fwbuilder/$$BINARY_SUBDIR/libfwbuilder.a
 
-!win32:STATIC_LIBS +=  \
-	../common/libcommon.a \
-    ../iptlib/libiptlib.a \
-    ../pflib/libfwbpf.a \
-    ../cisco_lib/libfwbcisco.a \
-    ../compiler_lib/libcompilerdriver.a \
-	../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-	../libfwbuilder/src/fwbuilder/libfwbuilder.a \
+PRE_TARGETDEPS  = $$OTHER_LIBS $$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
 
-win32:PRE_TARGETDEPS = \
-	../libgui/release/gui.lib \
-	../common/release/common.lib \
-    ../iptlib/release/iptlib.lib \
-    ../pflib/release/fwbpf.lib \
-    ../cisco_lib/release/fwbcisco.lib \
-    ../compiler_lib/release/compilerdriver.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
-	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
-    $$FWBPARSER_LIB \
-    $$IMPORT_LIB
-
-!win32:PRE_TARGETDEPS = \
-    ../libgui/libgui.a \
-    ../common/libcommon.a \
-    ../iptlib/libiptlib.a \
-    ../pflib/libfwbpf.a \
-    ../cisco_lib/libfwbcisco.a \
-    ../compiler_lib/libcompilerdriver.a \
-    ../libfwbuilder/src/fwbuilder/libfwbuilder.a \
-    ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-    $$FWBPARSER_LIB \
-    $$IMPORT_LIB
+STATIC_LIBS += $$OTHER_LIBS
 
 macx:STATIC_LIBS += -framework \
     Carbon

@@ -1,3 +1,13 @@
+2011-05-17  vadim  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_tree_ops.cpp (merge): see #2420 "Crash when
+	selecting New Firewall and existing firewall has interface that is
+	locked". Fixed GUI crash that happened on some operations if an
+	object in the tree was locked. For example, if the user locked an
+	interface of one of the firewall objects that then proceeded to
+	create new firewall object, the GUI would crash. The problem was
+	not limited to locking specifically interface objects.
+
 2011-05-15  vadim  <vadim@netcitadel.com>
 
 	* IPTImporter.cpp (pushPolicyRule): see #2411 Implemented import

@@ -22,28 +22,16 @@ TARGET = fwbedit
 	QMAKE_COPY    = ../../install.sh -m 0755 -s
 }
 
-!win32:LIBS = ../common/libcommon.a \
-    ../import/libimport.a \
-    ../parsers/libfwbparser.a \
-    ../compiler_lib/libcompilerdriver.a \
-	../libfwbuilder/src/fwbuilder/libfwbuilder.a \
-    ../libgui/libgui.a \
-    $$ANTLR_LIBS \
-    $$LIBS
+PRE_TARGETDEPS  = ../common/$$BINARY_SUBDIR/libcommon.a \
+      ../import/$$BINARY_SUBDIR/libimport.a \
+      ../parsers/$$BINARY_SUBDIR/libfwbparser.a \
+      ../compiler_lib/$$BINARY_SUBDIR/libcompilerdriver.a \
+      ../libgui/$$BINARY_SUBDIR/libgui.a \
+      ../libfwbuilder/src/fwcompiler/$$BINARY_SUBDIR/libfwcompiler.a \
+      ../libfwbuilder/src/fwbuilder/$$BINARY_SUBDIR/libfwbuilder.a \
 
-!win32:PRE_TARGETDEPS = ../common/libcommon.a \
-	../libfwbuilder/src/fwbuilder/libfwbuilder.a
+LIBS  += $$PRE_TARGETDEPS $$ANTLR_LIBS $$LIBS
 
 win32:CONFIG += console
 
-win32:LIBS += ../common/release/common.lib \
-    ../import/release/import.lib \
-    ../parsers/release/fwbparser.lib \
-    ../compiler_lib/release/compilerdriver.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
-    ../libgui/release/gui.lib \
-    $$ANTLR_LIBS \
-    $$LIBS
 
-win32:PRE_TARGETDEPS = ../common/release/common.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib

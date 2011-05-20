@@ -100,7 +100,9 @@ using namespace libfwbuilder;
 int id_seed = 1000;
 #ifdef _WIN32
 static int cached_pid = _getpid();
+#  ifndef __GNUC__
 #define snprintf sprintf_s
+#  endif
 #else
 static int cached_pid = getpid();
 #endif
@@ -123,6 +125,7 @@ FWObjectDatabase::FWObjectDatabase() : FWObject(false), data_file(), obj_index()
     index_hits = index_misses = 0;
     init_id_dict();
     predictable_id_tracker = 0;
+    ignore_read_only = false;
 
     searchId =0;
     lastModified = 0;
@@ -142,6 +145,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
     index_hits = index_misses = 0;
     init_id_dict();
     predictable_id_tracker = 0;
+    ignore_read_only = false;
 
     data_file = d.data_file;
 

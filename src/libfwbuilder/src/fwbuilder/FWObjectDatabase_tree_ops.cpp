@@ -48,9 +48,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#ifdef _WIN32
-#define snprintf sprintf_s
-#endif
 
 class FWObjectTreeScanner {
 
@@ -479,10 +476,12 @@ void FWObjectDatabase::merge( FWObjectDatabase *ndb,
                               ConflictResolutionPredicate *crp)
 {
     busy = true;
+    setIgnoreReadOnlyFlag(true);
 
     FWObjectTreeScanner scanner(this, crp);
     scanner.merge(NULL, ndb);
 
+    setIgnoreReadOnlyFlag(false);
     busy = false;
 }
 
@@ -699,5 +698,14 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
         target = nobj;
     }
     return target;
+}
+
+FWObject& FWObjectDatabase::duplicate(const FWObject *obj,
+                                      bool preserve_id) throw(FWException)
+{
+    setIgnoreReadOnlyFlag(true);
+    FWObject &o = FWObject::duplicate(obj, preserve_id);
+    setIgnoreReadOnlyFlag(false);
+    return o;
 }
 

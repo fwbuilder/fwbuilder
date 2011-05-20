@@ -29,7 +29,8 @@
 #include <QApplication>
 
 
-class FWBApplication : public QApplication {
+class FWBApplication : public QApplication
+{
 
     Q_OBJECT;
     int timeout;
@@ -37,6 +38,8 @@ class FWBApplication : public QApplication {
 public:
     FWBApplication(int &argc, char **argv) : QApplication(argc, argv) {}
 
+    virtual bool notify(QObject *receiver, QEvent *event);
+    
 public slots:
 
     void quit();

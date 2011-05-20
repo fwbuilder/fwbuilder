@@ -36,11 +36,6 @@
 #include <fwbuilder/ServiceGroup.h>
 #include <fwbuilder/IntervalGroup.h>
 
-#ifdef _WIN32
-// disable "warning C4250: 'libfwbuilder::RuleElementTDst' : inherits 'libfwbuilder::RuleElement::addRef' via dominance"
-#  pragma warning(disable:4250)
-#endif
-
 namespace libfwbuilder
 {
 

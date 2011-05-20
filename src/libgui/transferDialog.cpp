@@ -27,7 +27,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Cluster.h"
 
-#include "fwtransfer/TransferDevice.h"
+#include "TransferDevice.h"
 
 #include "FWWindow.h"
 #include "FWBSettings.h"
