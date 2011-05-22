@@ -65,44 +65,50 @@ void PFImporter::run()
  */
 
     QMap<QString, QString> named_addresses;
-    QStringList whole_input;
+    QStringList whole_input_tmp;
 
     input.seekg (0, ios::beg);
     char buf[8192];
     while (!input.eof())
     {
         input.getline(buf, sizeof(buf)-1);
-        whole_input.append(QString(buf));
+        whole_input_tmp.append(QString(buf));
     }
 
-    foreach(QString str, whole_input)
+    QString whole_input = whole_input_tmp.join("\n");
+    QRegExp line_continuation("\\\\\\s*\n");
+    whole_input.replace(line_continuation, "");
+
+    QRegExp macro_definition("^\\s*(\\S+)\\s*=\\s*\"(.*)\"$");
+    QMap<QString, QString> macros;
+
+    foreach(QString str, whole_input.split("\n"))
     {
-        if (str.startsWith("name "))
+        if (macro_definition.indexIn(str) != -1)
         {
-            QStringList items = str.split(" ");
-            named_addresses[items[2]] = items[1];
+            macros[macro_definition.cap(1)] = macro_definition.cap(2);
         }
     }
 
-    QStringList normalized_input_buffer;
+    if (fwbdebug)
+        qDebug() << "Macros defined in this file: " << macros;
 
-    foreach(QString str, whole_input)
+    QMapIterator<QString, QString> it(macros);
+    while (it.hasNext())
     {
-        if ( ! str.startsWith("name "))
-        {
-            QMap<QString, QString>::iterator it;
-            for (it=named_addresses.begin(); it!=named_addresses.end(); ++it)
-            {
-                QString re("\\b%1\\b");
-                str.replace(QRegExp(re.arg(it.key())), it.value());
-            }
-        }
-
-        normalized_input_buffer.append(str);
+        it.next();
+        QString macro_name = it.key();
+        QString macro_value = it.value();
+        whole_input.replace( "$" + macro_name, macro_value);
     }
 
-    istringstream  normalized_input(
-        normalized_input_buffer.join("\n").toStdString());
+    if (fwbdebug)
+    {
+        qDebug() << "pf.conf file after line unfolding and macro substitution:";
+        qDebug() << whole_input;
+    }
+
+    istringstream  normalized_input(whole_input.toStdString());
 
     PFCfgLexer lexer(normalized_input);
     PFCfgParser parser(lexer);
