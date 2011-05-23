@@ -46,6 +46,30 @@ class PFImporter : public Importer
     
 public:
 
+    std::string direction;
+    std::string iface;
+    std::string address_family;
+    bool quick;
+    bool src_neg;
+    bool dst_neg;
+    bool tmp_neg;
+    
+    std::list<std::string> proto_list;
+    std::list<std::pair<std::string, std::string> > src_group;
+    std::list<std::pair<std::string, std::string> > dst_group;
+    std::list<std::pair<std::string, std::string> > tmp_group;
+
+    // each item in the list is a vector of 2 or 3 strings
+    // Unary operations are represented by 2 strings, binary operations
+    // use 3 strings
+    std::string tmp_port_def;
+    std::list< std::vector<std::string> > src_port_group;
+    std::list< std::vector<std::string> > dst_port_group;
+    std::list< std::vector<std::string> > tmp_port_group;
+    
+    std::string queue;
+    std::string state_op;
+    
     libfwbuilder::NATRule::NATRuleTypes rule_type;
     
     PFImporter(libfwbuilder::FWObject *lib,

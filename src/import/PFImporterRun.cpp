@@ -79,27 +79,48 @@ void PFImporter::run()
     QRegExp line_continuation("\\\\\\s*\n");
     whole_input.replace(line_continuation, "");
 
-    QRegExp macro_definition("^\\s*(\\S+)\\s*=\\s*\"(.*)\"$");
+    QRegExp macro_definition_1("^\\s*(\\S+)\\s*=\\s*\"(.*)\"$");
+    QRegExp macro_definition_2("^\\s*(\\S+)\\s*=\\s*([^\"]*)$"); // no quotes
     QMap<QString, QString> macros;
 
     foreach(QString str, whole_input.split("\n"))
     {
-        if (macro_definition.indexIn(str) != -1)
+        if (macro_definition_1.indexIn(str) != -1)
         {
-            macros[macro_definition.cap(1)] = macro_definition.cap(2);
+            macros[macro_definition_1.cap(1)] = macro_definition_1.cap(2);
+        }
+        if (macro_definition_2.indexIn(str) != -1)
+        {
+            macros[macro_definition_2.cap(1)] = macro_definition_2.cap(2);
         }
     }
 
     if (fwbdebug)
         qDebug() << "Macros defined in this file: " << macros;
 
-    QMapIterator<QString, QString> it(macros);
-    while (it.hasNext())
+    // make several passes: sometimes macros can use other macros
+    int pass = 0;
+    while (1)
     {
-        it.next();
-        QString macro_name = it.key();
-        QString macro_value = it.value();
-        whole_input.replace( "$" + macro_name, macro_value);
+        bool has_macros = false;
+        QMapIterator<QString, QString> it(macros);
+        while (it.hasNext())
+        {
+            it.next();
+            QString macro_name = it.key();
+            QString macro_value = it.value();
+            if (whole_input.contains("$" + macro_name))
+            {
+                has_macros = true;
+                whole_input.replace( "$" + macro_name, macro_value);
+                if (fwbdebug)
+                    qDebug() << "Pass " << pass
+                             << "Macro substitution: "
+                             << macro_name << ":" << macro_value;
+            }
+        }
+        if (! has_macros) break;
+        pass++;
     }
 
     if (fwbdebug)

@@ -83,6 +83,27 @@ PFImporter::~PFImporter()
 void PFImporter::clear()
 {
     rule_type = NATRule::Unknown;
+    quick = false;
+
+    direction = "";
+    iface = "";
+    address_family = "";
+
+    proto_list.clear();
+    src_group.clear();
+    dst_group.clear();
+
+    src_neg = false;
+    dst_neg = false;
+    tmp_neg = false;
+
+    tmp_port_def = "";
+    src_port_group.clear();
+    dst_port_group.clear();
+    tmp_port_group.clear();
+
+    queue = "";
+    state_op = "";
 
     Importer::clear();
 }
@@ -211,7 +232,11 @@ void PFImporter::pushRule()
 
 void PFImporter::pushPolicyRule()
 {
-    assert(current_ruleset!=NULL);
+    if (current_ruleset == NULL)
+    {
+        newUnidirRuleSet("filter", libfwbuilder::Policy::TYPENAME );
+    }
+
     assert(current_rule!=NULL);
     // populate all elements of the rule
 
@@ -237,6 +262,13 @@ void PFImporter::pushPolicyRule()
     }
 
     rule->setDirection(PolicyRule::Both);
+
+    /*
+     * Protocols are in proto_list
+     * Source addresses are in src_group
+     * Destination addresses are in dst_group
+     */
+
 
     addSrc();
     addDst();
