@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -92,6 +92,7 @@ public:
 	public: void comment();
 	public: void macro_definition();
 	public: void altq_command();
+	public: void antispoof_command();
 	public: void queue_command();
 	public: void set_command();
 	public: void scrub_command();
@@ -140,10 +141,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 123;
+	static const int NUM_TOKENS = 127;
 #else
 	enum {
-		NUM_TOKENS = 123
+		NUM_TOKENS = 127
 	};
 #endif
 	
@@ -195,6 +196,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_22;
 	static const unsigned long _tokenSet_23_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_23;
+	static const unsigned long _tokenSet_24_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_24;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

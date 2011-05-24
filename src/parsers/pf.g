@@ -117,6 +117,8 @@ cfgfile :
         |
             altq_command
         |
+            antispoof_command
+        |
             queue_command
         |
             set_command
@@ -149,6 +151,17 @@ macro_definition : WORD EQUAL
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
+antispoof_command : ANTISPOOF
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addMessageToLog(
+                QString("Warning: import of 'antispoof' commands has not been implemented yet."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -612,7 +625,7 @@ binary_op :
     ;
 
 port_def :
-        ( WORD | INT_CONST )
+        ( WORD | INT_CONST | PORT_RANGE )
         {
             importer->tmp_port_def = LT(0)->getText();
         }
@@ -717,6 +730,8 @@ tokens
     TIMEOUT = "timeout";
 
     ALTQ = "altq";
+    ANTISPOOF = "antispoof";
+
     SET = "set";
     SCRUB = "scrub";
     NAT = "nat";
@@ -742,7 +757,7 @@ tokens
 LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
 
 Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'..'\377' | ' ' )
-        { _ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;  } ;
+        { $setType(ANTLR_USE_NAMESPACE(antlr)Token::SKIP);  } ;
 
 
 //COMMENT_START : '!' ;
@@ -762,44 +777,72 @@ protected
 NEG_INT_CONST:;
 
 protected
+COLON : ;
+
+protected
+HEX_DIGIT : '0'..'9' 'a'..'f' ;
+
+protected
 DIGIT : '0'..'9'  ;
 
 protected
-HEXDIGIT : 'a'..'f' ;
+NUM_3DIGIT: ('1'..'9') (('0'..'9') ('0'..'9')?)? ;
+
+protected
+NUM_HEX_4DIGIT: HEX_DIGIT ((HEX_DIGIT) ((HEX_DIGIT) (HEX_DIGIT)?)?)? ;
 
 
+NUMBER_ADDRESS_OR_WORD 
+options {
+    testLiterals = true;
+}
+    :
+        ( NUM_3DIGIT '.' NUM_3DIGIT '.' ) =>
+            (NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT)
+            { $setType(IPV4); }
+    |
+        ( (DIGIT)+ '.' (DIGIT)+ )=> ( (DIGIT)+ '.' (DIGIT)+ )
+        { $setType(NUMBER); }
+    |
+        ( (DIGIT)+ ':' (DIGIT)+ )=> ( (DIGIT)+ ':' (DIGIT)+ )
+        { $setType(PORT_RANGE); }
+    |
+        ( DIGIT )+ { $setType(INT_CONST); }
 
+    // IPv6 RULE
+    |   (NUM_HEX_4DIGIT ':')=>
+        (
+            ((NUM_HEX_4DIGIT ':')+ ':')=>
+            (
+                (NUM_HEX_4DIGIT ':')+ ':'
+                (NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*)?
+            )   { $setType(IPV6); }
 
-NUMBER_ADDRESS_OR_WORD :
-		(
-            ( DIGIT ) =>
-                (
-                    ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ ) =>
-                        ( (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ DOT (DIGIT)+ )
-                        { _ttype = IPV4; }
-                |
-                    ( (DIGIT)+ DOT (DIGIT)+ )=> ( (DIGIT)+ DOT (DIGIT)+ )
-                    { _ttype = NUMBER; }
-                |
-                    ( DIGIT )+ { _ttype = INT_CONST; }
-                )
-        |
-            ( ( 'a'..'f' | '0'..'9' )+ COLON ) =>
-                (
-                    (
-                        ( 'a'..'f' | '0'..'9' )+
-                        ( COLON ( 'a'..'f' | '0'..'9' )* )+
-                    )
-                    { _ttype = IPV6; }
-                )
-        |
-// making sure ',' '(' ')' '=' '<' '>' '-' '+' are not part of WORD
-// do not start WORD with '$' since we expand macros in PFImporterRun using regex.
-            ( 'a'..'z' | 'A'..'Z' )
-            ( '$' | '%' | '&' | '0'..'9' | ';' |
-              '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
-            { _ttype = WORD; }
-        )
+            |   NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)+
+                { $setType(IPV6); }
+
+        )   { $setType(IPV6); }
+
+    |   (':' ':' NUM_HEX_4DIGIT)=>
+        ':' ':' NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*
+        { $setType(IPV6); }
+
+    |   ':' ':'
+        { $setType(IPV6); }
+
+    |   ':'
+        { $setType(COLON); }
+
+    |
+
+// making sure ',' '(' ')' '=' '<' '>' '-' '+' are not part of WORD do
+// not start WORD with '$' since we expand macros in PFImporterRun
+// using regex.
+
+        ( 'a'..'z' | 'A'..'Z' )
+        ( '$' | '%' | '&' | '0'..'9' | ';' |
+          '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
+        { $setType(WORD); }
     ;
 
 STRING : '"' (~'"')* '"';
@@ -817,7 +860,7 @@ MINUS : '-' ;
 DOT : '.' ;
 SLASH : '/' ;
 
-COLON : ':' ;
+// COLON : ':' ;
 SEMICOLON : ';' ;
 EQUAL : '=' ;
 

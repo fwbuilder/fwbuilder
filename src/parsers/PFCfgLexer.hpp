@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgLexer.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>
@@ -54,11 +54,12 @@ public:
 	protected: void mHEX_CONST(bool _createToken);
 	protected: void mNUMBER(bool _createToken);
 	protected: void mNEG_INT_CONST(bool _createToken);
+	protected: void mCOLON(bool _createToken);
+	protected: void mHEX_DIGIT(bool _createToken);
 	protected: void mDIGIT(bool _createToken);
-	protected: void mHEXDIGIT(bool _createToken);
+	protected: void mNUM_3DIGIT(bool _createToken);
+	protected: void mNUM_HEX_4DIGIT(bool _createToken);
 	public: void mNUMBER_ADDRESS_OR_WORD(bool _createToken);
-	public: void mDOT(bool _createToken);
-	public: void mCOLON(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	public: void mPIPE_CHAR(bool _createToken);
 	public: void mNUMBER_SIGN(bool _createToken);
@@ -69,6 +70,7 @@ public:
 	public: void mPLUS(bool _createToken);
 	public: void mCOMMA(bool _createToken);
 	public: void mMINUS(bool _createToken);
+	public: void mDOT(bool _createToken);
 	public: void mSLASH(bool _createToken);
 	public: void mSEMICOLON(bool _createToken);
 	public: void mEQUAL(bool _createToken);
@@ -98,10 +100,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_3;
 	static const unsigned long _tokenSet_4_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
-	static const unsigned long _tokenSet_5_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_5;
-	static const unsigned long _tokenSet_6_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
 };
 
 #endif /*INC_PFCfgLexer_hpp_*/
