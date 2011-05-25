@@ -6,7 +6,7 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 #
-SOURCES  = 	InetAddr.cpp \
+SOURCES	 =	InetAddr.cpp \
 			InetAddrMask.cpp \
 			Inet6AddrMask.cpp \
 			IPRoute.cpp \
@@ -52,8 +52,8 @@ SOURCES  = 	InetAddr.cpp \
 			NetworkIPv6.cpp \
 			ObjectGroup.cpp \
 			physAddress.cpp \
-            DNSName.cpp\
-            AddressTable.cpp\
+			DNSName.cpp\
+			AddressTable.cpp\
 			Policy.cpp \
 			Resources.cpp \
 			Routing.cpp \
@@ -70,7 +70,7 @@ SOURCES  = 	InetAddr.cpp \
 			TCPUDPService.cpp \
 			UDPService.cpp \
 			UserService.cpp \
-            TagService.cpp \
+			TagService.cpp \
 			XMLTools.cpp \
 			ObjectMatcher.cpp \
 			ObjectMirror.cpp \
@@ -78,7 +78,7 @@ SOURCES  = 	InetAddr.cpp \
 			inet_net_pton.c \
 			uint128.cpp
 
-HEADERS  = 	inet_net.h \
+HEADERS	 =	inet_net.h \
 			uint128.h \
 			InetAddr.h \
 			InetAddrMask.h \
@@ -126,8 +126,8 @@ HEADERS  = 	inet_net.h \
 			NetworkIPv6.h \
 			ObjectGroup.h \
 			physAddress.h \
-            DNSName.h\
-            AddressTable.h\
+			DNSName.h\
+			AddressTable.h\
 			Policy.h \
 			Pool.h \
 			Resources.h \
@@ -146,7 +146,7 @@ HEADERS  = 	inet_net.h \
 			TCPUDPService.h \
 			UDPService.h \
 			UserService.h \
-            TagService.h \
+			TagService.h \
 			ObjectMatcher.h \
 			ObjectMirror.h \
 			XMLTools.h
