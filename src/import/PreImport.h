@@ -30,12 +30,16 @@
 #include <QStringList>
 
 
+class matchPFDirection
+{
+public:
+    virtual bool operator()(const QString&) {return false;}
+};
+
 /*
  * This class scans firewall configuration and tries to guess platform
  * and some other parameters
  */
-
-
 class PreImport
 {
     const QStringList *buffer;
@@ -43,7 +47,7 @@ class PreImport
 public:
 
     enum Platforms { UNKNOWN, IPTABLES, IPTABLES_WITH_COUNTERS,
-                     PF, IOSACL, PIX, FWSM } ;
+                     PF, PF_REVERSE, IOSACL, PIX, FWSM } ;
 
 private:    
 
@@ -55,6 +59,7 @@ public:
     void scan();
     enum Platforms getPlatform() { return platform; }
     QString getPlatformAsString();
+    bool isReversePFConfigurationStyle(matchPFDirection &dir_op);
 };
 
 #endif

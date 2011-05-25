@@ -180,10 +180,31 @@ void IC_PlatformWarningPage::initializePage()
         case PreImport::PF:
             m_dialog->platform->setText(tr("pf"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Firewall Builder will support import PF "
-                   "configuration from a pf.conf file."
+                tr("Firewall Builder supports import PF "
+                   "configuration from a pf.conf file. Tables will be imported "
+                   "as object groups and their names will be preserved. "
+                   "Macros are expanded in place and not imported as "
+                   "objects. Import of anchors is not supported at this time."
                    ));
             platformOk = true;
+            break;
+
+        case PreImport::PF_REVERSE:
+            m_dialog->platform->setText(tr("pf"));
+            m_dialog->platformSpecificWarning->setText(
+                tr(
+                    "<html><p>This appears to be PF configuration designed "
+                    "without use of the <b>\"quick\"</b> keyword, where "
+                    "the packet is evaluated by all filtering rules in "
+                    "sequential order and the last matching rule decides "
+                    "what action is to be taken. Firewall Builder uses "
+                    "different rule model, where the first matching rule "
+                    "is always final and makes the decision on the action. "
+                    "This means Firewall Builder can only import PF "
+                    "configuration written using <b>\"quick\"</b> "
+                    "keywords.</p></html>"
+                   ));
+            platformOk = false;
             break;
         }
 

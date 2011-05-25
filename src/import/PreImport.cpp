@@ -25,6 +25,38 @@
 
 #include <QRegExp>
 
+#include <functional>
+
+using namespace std;
+
+
+class matchPFDirectionIn : public matchPFDirection
+{
+public:
+    virtual bool operator()(const QString &str)
+    {
+        return str.contains(" in ");
+    }
+};
+
+class matchPFDirectionOut : public matchPFDirection
+{
+public:
+    virtual bool operator()(const QString &str)
+    {
+        return str.contains(" out ");
+    }
+};
+
+class matchPFDirectionBoth : public matchPFDirection
+{
+public:
+    virtual bool operator()(const QString &str)
+    {
+        return ! str.contains(" in ") && ! str.contains(" out ");
+    }
+};
+
 
 void PreImport::scan()
 {
@@ -131,6 +163,105 @@ void PreImport::scan()
             }
         }
     }
+
+    /*
+     * fwbuilder generates PF configuration that always uses "quick"
+     * keyword to make the first matching rule stop processing. A lot
+     * of existing pf.conf files use the other model where PF commands
+     * do not use this keyword, so that all rules inspect the packet
+     * and the last matching rule makes the decision. Fwbuilder can
+     * not generate PF configuration in this style and can not import
+     * it. We look for "block" command without "quick" parameter to
+     * determine if the configuration offered for import is written in
+     * this style.
+
+     * We refuse to import policies that have "block" line with no
+     * "quick" word, unless there are other command(s) with "quick"
+     * after it. We should do this comparison keeping direction in
+     * mind because it is possible to have "block in all" and then
+     * "pass out quick something". It looks like a style with "block
+     * all" at the top used to set up default policy is quite
+     * popular. Configuration written in this style has "block all
+     * log" at the top (or in the middle), followed by a bunch of
+     * specific "pass quick" rules. We can import this if "block all
+     * log" is the last rule, but not if it is followed by some pass
+     * rules with no "quick".
+     */
+
+    if (platform == PF)
+    {
+        matchPFDirectionIn   dir_in;
+        matchPFDirectionOut  dir_out;
+        matchPFDirectionBoth dir_both;
+
+        if (isReversePFConfigurationStyle(dir_in)  ||
+            isReversePFConfigurationStyle(dir_out) ||
+            isReversePFConfigurationStyle(dir_both))
+        {
+            platform = PF_REVERSE;
+        }
+    }
+}
+
+bool PreImport::isReversePFConfigurationStyle(matchPFDirection &dir_op)
+{
+    bool has_block_no_quick = false;
+    bool has_command_with_quick_after_block = false;
+    bool has_command_with_no_quick_after_block = false;
+    QRegExp cont("\\\\\\s*\n");
+    QString line;
+    QStringListIterator it(*buffer);
+    while (it.hasNext())
+    {
+        // first, unfold lines ending with "\"
+        line = it.next();
+        int cont_idx;
+        while ( (cont_idx = cont.indexIn(line)) > -1 && it.hasNext())
+        {
+            line.insert(cont_idx, it.next());
+        }
+
+        line = line.trimmed();
+
+        if (line.startsWith("#")) continue;
+        if (line.isEmpty()) continue;
+
+        if ( ! dir_op(line)) continue;
+
+        if (line.contains(" quick"))
+        {
+            // check if after the line with "block" and no "quick"
+            // comes a line with action "pass" and "quick" word.
+            // This is a mixed-style policy and we can try to
+            // import it.
+
+            if (has_block_no_quick &&
+                (line.startsWith("pass ") || line.startsWith("block ")))
+            {
+                has_command_with_quick_after_block = true;
+                continue;
+            }
+
+        } else
+        {
+            // check if this is a line with action "block" and no
+            // "quick" word
+            if (line.startsWith("block "))
+            {
+                has_block_no_quick = true;
+                continue;
+            }
+
+            if (has_block_no_quick)
+            {
+                has_command_with_no_quick_after_block = true;
+                break;
+            }
+        }
+    }
+
+    return (has_block_no_quick && has_command_with_no_quick_after_block &&
+            ! has_command_with_quick_after_block);
 }
 
 QString PreImport::getPlatformAsString()
@@ -161,6 +292,7 @@ QString PreImport::getPlatformAsString()
         break;
 
     case PreImport::PF:
+    case PreImport::PF_REVERSE:
         platform_string = "pf";
         break;
     }
