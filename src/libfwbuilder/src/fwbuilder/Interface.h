@@ -195,13 +195,15 @@ public:
 
 
         virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                           bool preserve_id = true)
-            throw(FWException);
+                                           bool preserve_id = true) throw(FWException);
         virtual FWObject& duplicate(const FWObject *obj,
-                                    bool preserve_id = true)
-            throw(FWException);
+                                    bool preserve_id = true) throw(FWException);
+
         virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
+        void duplicateWithIdMapping(const FWObject *src,
+                                    std::map<int,int> &id_mapping, bool preserve_id);
+        
         const std::string &getLabel() const;
         void setLabel(const std::string& n);
 

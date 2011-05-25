@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:29:25 2011 PDT by vadim
+#  Generated Sat May 14 15:40:43 2011 PDT by vadim
 #
 # files: * firewall39.fw /etc/fw/firewall39.fw
 #
@@ -60,12 +60,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -319,101 +340,6 @@ script_body() {
     $IPTABLES -t nat -A POSTROUTING  -s 192.168.1.0/24  -j ACCEPT
     $IPTABLES -t nat -A PREROUTING  -s 192.168.1.0/24  -j ACCEPT
 
-    # ================ Table 'mangle', rule set rule0_branch
-    # 
-    # Rule rule0_branch 0 (global)
-    # 
-    echo "Rule rule0_branch 0 (global)"
-    # 
-    $IPTABLES -N rule0_branch -t mangle
-    $IPTABLES -N rule0_branch_0 -t mangle
-    $IPTABLES -t mangle -A rule0_branch  -m state --state NEW  -j rule0_branch_0
-    $IPTABLES -t mangle -A rule0_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- ACCEPT "
-    $IPTABLES -t mangle -A rule0_branch_0  -j ACCEPT
-    # ================ Table 'mangle', rule set rule1_branch
-    # 
-    # Rule rule1_branch 0 (global)
-    # 
-    echo "Rule rule1_branch 0 (global)"
-    # 
-    $IPTABLES -N rule1_branch -t mangle
-    $IPTABLES -N rule1_branch_0 -t mangle
-    $IPTABLES -t mangle -A rule1_branch  -d 192.168.2.10   -j rule1_branch_0
-    $IPTABLES -t mangle -A rule1_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
-    $IPTABLES -t mangle -A rule1_branch_0  -j DROP
-    # 
-    # Rule rule1_branch 1 (global)
-    # 
-    echo "Rule rule1_branch 1 (global)"
-    # 
-    $IPTABLES -t mangle -A rule1_branch  -m state --state NEW  -j ACCEPT
-    # ================ Table 'mangle', rule set rule2_branch
-    # 
-    # Rule rule2_branch 0 (global)
-    # 
-    echo "Rule rule2_branch 0 (global)"
-    # 
-    $IPTABLES -N rule2_branch -t mangle
-    $IPTABLES -N rule2_branch_0 -t mangle
-    $IPTABLES -t mangle -A rule2_branch  -d ! 192.168.2.10   -j rule2_branch_0
-    $IPTABLES -t mangle -A rule2_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
-    $IPTABLES -t mangle -A rule2_branch_0  -j DROP
-    # 
-    # Rule rule2_branch 1 (global)
-    # 
-    echo "Rule rule2_branch 1 (global)"
-    # 
-    $IPTABLES -t mangle -A rule2_branch  -s 222.222.222.0/24   -d 192.168.2.10   -m state --state NEW  -j ACCEPT
-    # 
-    # Rule rule2_branch 2 (global)
-    # 
-    echo "Rule rule2_branch 2 (global)"
-    # 
-    $IPTABLES -N rule2_branch_2 -t mangle
-    $IPTABLES -t mangle -A rule2_branch  -j rule2_branch_2
-    $IPTABLES -t mangle -A rule2_branch_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
-    $IPTABLES -t mangle -A rule2_branch_2  -j DROP
-    # ================ Table 'mangle', rule set rule3_branch
-    # 
-    # Rule rule3_branch 0 (eth1)
-    # 
-    echo "Rule rule3_branch 0 (eth1)"
-    # 
-    $IPTABLES -N rule3_branch -t mangle
-    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 22.22.23.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 192.168.1.22   -m state --state NEW  -j ACCEPT
-    $IPTABLES -t mangle -A rule3_branch -i eth1   -d 192.168.2.1   -m state --state NEW  -j ACCEPT
-    # 
-    # Rule rule3_branch 1 (global)
-    # 
-    echo "Rule rule3_branch 1 (global)"
-    # 
-    $IPTABLES -N rule3_branch_1 -t mangle
-    $IPTABLES -t mangle -A rule3_branch  -j rule3_branch_1
-    $IPTABLES -t mangle -A rule3_branch_1  -j LOG  --log-level info --log-prefix "RULE 1 -- DENY "
-    $IPTABLES -t mangle -A rule3_branch_1  -j DROP
-    # ================ Table 'mangle', rule set rule4_branch
-    # 
-    # Rule rule4_branch 0 (eth1)
-    # 
-    echo "Rule rule4_branch 0 (eth1)"
-    # 
-    $IPTABLES -N rule4_branch -t mangle
-    $IPTABLES -N In_rule4_branch_0 -t mangle
-    $IPTABLES -t mangle -A rule4_branch -i eth1   -j In_rule4_branch_0
-    $IPTABLES -t mangle -A In_rule4_branch_0  -j LOG  --log-level info --log-prefix "RULE 0 -- BRANCH "
-    $IPTABLES -N rule_4_0_branch -t mangle
-    $IPTABLES -t mangle -A In_rule4_branch_0  -j rule_4_0_branch
-    # 
-    # Rule rule4_branch 1 (eth0)
-    # 
-    echo "Rule rule4_branch 1 (eth0)"
-    # 
-    $IPTABLES -N In_rule4_branch_1 -t mangle
-    $IPTABLES -t mangle -A rule4_branch -i eth0   -j In_rule4_branch_1
-    $IPTABLES -t mangle -A In_rule4_branch_1  -j LOG  --log-level info --log-prefix "RULE 1 -- BRANCH "
-    $IPTABLES -N rule_4_1_branch -t mangle
-    $IPTABLES -t mangle -A In_rule4_branch_1  -j rule_4_1_branch
     # ================ Table 'mangle', rule set Policy
     # 
     # Rule 7 (global)
@@ -422,6 +348,7 @@ script_body() {
     # 
     # green rules branch 
     # also in mangle table
+    $IPTABLES -N rule0_branch -t mangle
     $IPTABLES -t mangle -A PREROUTING -p 50  -j rule0_branch
     $IPTABLES -t mangle -A PREROUTING -p ah  -j rule0_branch
     $IPTABLES -t mangle -A POSTROUTING -p 50  -j rule0_branch
@@ -433,15 +360,13 @@ script_body() {
     # 
     echo "Rule 8 (global)"
     # 
-    $IPTABLES -N RULE_8 -t mangle
-    $IPTABLES -t mangle -A PREROUTING -p 50  -j RULE_8
-    $IPTABLES -t mangle -A PREROUTING -p ah  -j RULE_8
-    $IPTABLES -t mangle -A RULE_8  -j LOG  --log-level info --log-prefix "RULE 8 -- BRANCH "
-    $IPTABLES -t mangle -A RULE_8  -j rule1_branch
-    $IPTABLES -t mangle -A POSTROUTING -p 50  -j RULE_8
-    $IPTABLES -t mangle -A POSTROUTING -p ah  -j RULE_8
-    $IPTABLES -t mangle -A FORWARD -p 50  -j RULE_8
-    $IPTABLES -t mangle -A FORWARD -p ah  -j RULE_8
+    $IPTABLES -N rule1_branch -t mangle
+    $IPTABLES -t mangle -A PREROUTING -p 50  -j rule1_branch
+    $IPTABLES -t mangle -A PREROUTING -p ah  -j rule1_branch
+    $IPTABLES -t mangle -A POSTROUTING -p 50  -j rule1_branch
+    $IPTABLES -t mangle -A POSTROUTING -p ah  -j rule1_branch
+    $IPTABLES -t mangle -A FORWARD -p 50  -j rule1_branch
+    $IPTABLES -t mangle -A FORWARD -p ah  -j rule1_branch
     # 
     # Rule 9 (global)
     # 
@@ -449,24 +374,23 @@ script_body() {
     # 
     $IPTABLES -N Cid464C29BB3999.0 -t mangle
     $IPTABLES -t mangle -A PREROUTING  -s ! 192.168.1.0/24   -j Cid464C29BB3999.0
-    $IPTABLES -N RULE_9 -t mangle
-    $IPTABLES -t mangle -A Cid464C29BB3999.0 -p 50  -j RULE_9
-    $IPTABLES -t mangle -A Cid464C29BB3999.0 -p ah  -j RULE_9
-    $IPTABLES -t mangle -A RULE_9  -j LOG  --log-level info --log-prefix "RULE 9 -- BRANCH "
-    $IPTABLES -t mangle -A RULE_9  -j rule2_branch
+    $IPTABLES -N rule2_branch -t mangle
+    $IPTABLES -t mangle -A Cid464C29BB3999.0 -p 50  -j rule2_branch
+    $IPTABLES -t mangle -A Cid464C29BB3999.0 -p ah  -j rule2_branch
     $IPTABLES -N Cid464C29BB3999.1 -t mangle
     $IPTABLES -t mangle -A POSTROUTING  -s ! 192.168.1.0/24   -j Cid464C29BB3999.1
-    $IPTABLES -t mangle -A Cid464C29BB3999.1 -p 50  -j RULE_9
-    $IPTABLES -t mangle -A Cid464C29BB3999.1 -p ah  -j RULE_9
+    $IPTABLES -t mangle -A Cid464C29BB3999.1 -p 50  -j rule2_branch
+    $IPTABLES -t mangle -A Cid464C29BB3999.1 -p ah  -j rule2_branch
     $IPTABLES -N Cid464C29BB3999.2 -t mangle
     $IPTABLES -t mangle -A FORWARD  -s ! 192.168.1.0/24   -j Cid464C29BB3999.2
-    $IPTABLES -t mangle -A Cid464C29BB3999.2 -p 50  -j RULE_9
-    $IPTABLES -t mangle -A Cid464C29BB3999.2 -p ah  -j RULE_9
+    $IPTABLES -t mangle -A Cid464C29BB3999.2 -p 50  -j rule2_branch
+    $IPTABLES -t mangle -A Cid464C29BB3999.2 -p ah  -j rule2_branch
     # 
     # Rule 10 (eth1)
     # 
     echo "Rule 10 (eth1)"
     # 
+    $IPTABLES -N rule3_branch -t mangle
     $IPTABLES -t mangle -A PREROUTING -i eth1  -p 50  -j rule3_branch
     $IPTABLES -t mangle -A PREROUTING -i eth1  -p ah  -j rule3_branch
     $IPTABLES -t mangle -A FORWARD -i eth1  -p 50  -j rule3_branch
@@ -485,6 +409,7 @@ script_body() {
     # 
     echo "Rule 12 (global)"
     # 
+    $IPTABLES -N rule4_branch -t mangle
     $IPTABLES -t mangle -A PREROUTING -p tcp -m tcp  -d 192.168.2.10   --dport 80  -j rule4_branch
     $IPTABLES -t mangle -A POSTROUTING -p tcp -m tcp  -d 192.168.2.10   --dport 80  -j rule4_branch
     $IPTABLES -t mangle -A FORWARD -p tcp -m tcp  -d 192.168.2.10   --dport 80  -j rule4_branch
@@ -895,7 +820,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:29:25 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:40:43 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

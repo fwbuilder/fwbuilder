@@ -1,0 +1,2528 @@
+<h1>Firewall Builder 4.2.2 Release Notes</h1>
+
+<p>
+</p>
+
+<p>
+  v4.2.2 is a minor bug-fix release
+</p>
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets for V4</a>
+</p>
+
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixes #2395 "Crash when setting installer directory location"
+      and fixes #2396 "Crash when changing firewall name". These two
+      bug reports where the manifestation of the same problem that was
+      introduced by the fix for #2380. When user hitsOK in the
+      newFirewallDialog and new firewall object was added to the
+      object tree, any editing of the parameters of this new object
+      would cause GUI to crash.
+    </p>
+  </li>
+</ul>
+
+
+<h1>Firewall Builder 4.2.1 Release Notes</h1>
+
+<p>
+</p>
+
+<p>
+  v4.2.1 is a minor bug-fix release
+</p>
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets for V4</a>
+</p>
+
+
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Fix for SF bug 3169045 "Batch installer lists IPv4 address as
+      management address". Built-in installer wanted to use management
+      interface address in batch mode even when alternative address or
+      putty session name was provided. This happens only in batch mode
+      install.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2370, #2371 "broken signals in network discovery
+      wizard". Network discovery wizard was not correctly
+      initializased and did not work.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2368 and SF bug 3294457 "External install
+      script". External install script name and arguments weren't
+      saved for IOS firewall objects.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2360 "Sometimes fwbuilder opens with object tree scroll
+      bar centered so folders are not visible"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2385 "PF action Classify uses wrong parameter". This
+      change fixes a bug introduced in 4.2.0 that affects rules with
+      action Classify in PF firewalls.  The bug causes the following
+      problems:
+    </p>
+
+    <p>
+      For users who built their rules before v4.2.0:
+    </p>
+
+    <p>
+      <ul>
+	<li>rules compile normally, both in the single rule compile and
+	  when the whole firewall is compiled</li>
+	<li>if they opened the action of one of such rules in the action
+	  editor, the classification string would look empty</li>
+	<li>if they entered new classification string in the editor,
+	    compiler kept using the old one (which they can not see or
+	  change in the editor)</li>
+      </ul>
+    </p>
+
+    <p>
+      For users who tried to build rules with action Classify with v4.2.0:
+    </p>
+
+    <p>
+      <ul>
+        <li>no matter what classification string they enter in the action
+	  dialog, generated code does not use it</li>
+      </ul>
+    </p>
+  </li>
+</ul>
+
+
+
+
+<h1>Firewall Builder 4.2.0 Release Notes</h1>
+
+<p>
+</p>
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets for V4</a>
+</p>
+
+<p>
+  <ul>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#gui">GUI Updates</a></li>
+    <li><a href="#fwbedit">Changes in command line tool fwbedit</a></li>
+    <li><a href="#import">Changes in policy importer for all supported platforms</a></li>
+    <li><a href="#install">Changes in the built-in  policy installer</a></li>
+    <li><a href="#libfwbuilder">Changes and improvements in the API library libfwbuilder</a></li>
+    <li><a href="#std_lib">Changes and improvements in the library of standard objects</a></li>
+    <li><a href="#compilers">common changes that affect policy compilers for all platforms</a></li>
+    <li><a href="#iptables">Changes in support for iptables</a></li>
+    <li><a href="#pf">Changes in support for PF (FreeBSD, OpenBSD)</a></li>
+    <li><a href="#ipfilter">Changes in support for ipfilter</a></li>
+    <li><a href="#ipfw">Changes in support for ipfw</a></li>
+    <li><a href="#ios">Changes in support for for Cisco IOS ACL</a></li>
+    <li><a href="#PIX">Changes in support for for Cisco ASA and FWSM</a></li>
+    <li><a href="#procurve">Changes in support for HP ProCurve</a></li>
+    <li><a href="#packaging">Changes in packaging</a></li>
+  </ul>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  This release brings significant improvement in compile time on large
+  object trees. The speed-up is especially noticeable in single rule
+  compile where the time before generated firewall configuration
+  appears in the GUI shrank by up to a factor of 10.
+</p>
+
+<p>
+  This release adds interfaces to the NAT rule model. There are two
+  interfaces per NAT rule: "inbound interface" and "outbound
+  interface". DTD version changes to "18", old data files need to be
+  upgraded.  Inbound and outbound interfaces in NAT rules are
+  supported for iptables, ASA/PIX/FWSM and PF, but in the case of PF GUI
+  exposes only one interface to the user since PF commands can not
+  match two interfaces simultaneously.
+</p>
+
+<p>
+  This release adds support for ASA 8.0 - 8.3 configuration
+  generation, including named objects and "new" style nat commands in
+  ASA 8.3
+</p>
+
+<p>
+  This release comes with numerous improvemends in support for FWSM
+  2.x, 3.x and 4.x configuration generation.
+</p>
+
+<p>
+  This release implements import of PIX, ASA and FWSM
+  configurations. Host name, version, interface configuration, object
+  groups, named objects, access lists as well as commands "global",
+  "nat" and "static" can be imported. There is no support for import
+  of the "new" ASA 8.3 "nat" commands just yet. Also there is no
+  support for import of standby configuration, which means PIX
+  clusters can not be created automatically by importing existing
+  configuration.
+</p>
+
+<p>
+  This release adds ability to generate initialization script in
+  rc.conf fromat for FreeBSD. Only FreeBSD is currently supported (not
+  OpenBSD). Generated script includes variables to configure
+  interfaces and their IPv4 and IPv6 addresses, vlans, CARP and pfsync
+  interfaces, as well as variables that initialize PF.
+</p>
+
+<p>
+  This release adds ability to automatically detect firewall platform
+  from the format of the imported configuration file. Import is 
+  supported for iptables, Cisco IOS or Cisco ASA/PIX/FWSM. The
+  program detects firewall platform, version and host name (if
+  possible) from the contents of the configuration and shows
+  platform-specific warning to explain what parts of the config can
+  and can not be imported. Importer wizard has been reimplemented
+  using QWizard and QWizardPage classes and its workflow significantly
+  improved.
+</p>
+
+<p>
+  Starting with this release the program can optionally re-use
+  existing objects from both Standard Objects and user-defined
+  libraries when it imports existing firewall configuration. This
+  works for any firewall platform for which we support policy
+  import. Objects are matched by attributes such as address, netmask,
+  port etc. Object name and comment are not taken into
+  account. Importing the same configuration file twice creates two
+  firewall objects with the same interfaces and rules but re-uses
+  address and service objects created on the first import.
+</p>
+
+<p>
+  Deduplication algorithm is as follows:
+  <ul>
+    <li>
+      <p>
+        ASA/PIX/FWSM configuration import:
+      </p>
+
+      <p>
+        ASA configuration language supports named objects and object
+        groups.  On import, fwbuilder creates objects and groups with
+        the same names and uses them in rules.  Objects created from
+        in-line address/netmask and port specifications found inside
+        object-group, access-list, filter or nat commands are
+        condidered "anonymous" objects. These get automatically
+        generated names and are deduplicated using only their relevant
+        attributes but not names.  Objects created from PIX named
+        object ("object network foo", "object service bar") statements
+        are considered "named" objects. They get the name matching the
+        name in corresponding PIX config line and are deduplicated
+        using both relevant attributes and the name.
+      </p>
+    </li>
+
+    <li>
+      <p>
+        iptables:
+      </p>
+
+      <p>
+        Fwbuilder can only import iptables configuration saved with
+        "iptables-save" command. This format does not support
+        variables or named objects, therefor all objects created from
+        address and port specifications are "anonymous" and get
+        automatically generated names. They are deduplicated using
+        their address, netmask, port numbers and other relevant
+        attributes but not their names.
+      </p>
+    </li>
+  </ul>
+</p>
+
+<p>
+  TCP and UDP service objects in fwbuilder that define port ranges
+  assume port ranges are inclusive, that is, range boundaries are
+  included in the match. This is the behavior of port range matches in
+  iptables and PF, however policy compilers for Cisco IOS ACL and PIX
+  used to convert these objects into ios and PIX access list
+  configurations that excluded port range boundaries from the
+  match. This behavior made TCP and UDP service objects with port
+  ranges incompatible between firewall platforms, that is, the same
+  object could not be used in rules of firewall objects of different
+  platforms because generated configurations would behave
+  differently. This change makes port ranges inclusive in generated
+  IOS and PIX configurations. Users should verify their configurations
+  and adjust port range boundaries in TCP and UDP service objects if
+  necessary.
+</p>
+
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixed #1872: "vlan interface does not appear in the list of
+      interfaces for route-to action for PF".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      context menu item that opens object in the editor should be
+      named "Inspect" when the object is read-only because the editor
+      would not allow the user to change it.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1926 "Crash when moving object in Standard
+      library". Context menu item "Move" should be disabled when the
+      object is located in the read-only library.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1976 "Crash when deleting firewall object from rule after
+      export / import library" Crash occurred as the result of the
+      following sequence of actions in the GUI: 1) use context menu
+      item "Cut" to delete an object in the tree, 2) open object group
+      or rule and use context menu item "Paste" to add it, 3) export
+      library to an external file, 4) import this library into
+      different data file, 5) save the data file. Saved data file is
+      invalid XML since it has unsatisfied reference and some
+      operations on it cause crash. The problem is that since it is a
+      reference to the object that is being added in case of both
+      groups and rules, we end up with a group or rule with a
+      reference to an object that is located in Deleted Objects
+      library. Deleted Objects library is not included when a library
+      file is merged into data file and this leads to a dangling
+      reference. The fix is to not allow Paste if object in the
+      clipboard has been deleted.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1980 "Objects from Deleted Objects should not be allowed to
+      be used in rules". Added checks to not allow drag-and-drop of an
+      object from Deleted Objects library into rules and groups.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1994 "Crash when compiling a firewall in an imported
+      Library". To prevent crash, added check to make sure firewall
+      object is not read-only before an attempt to update its "last
+      compiled" or "last installed" timestamp.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1993 "V4.2 on Windows - export Library shows the file
+      type as Firewall Builder 2"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1992 " V4.2 on Windows - installer error can't find
+      Secure Shell utility"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1989 "variables respath and librespath are redundant and
+      copy Constants::getTemplateDirectory()". Got rid of global
+      variables sysfname, tempfname, librespath, respath and
+      localepath; will now use class Constants to keep this
+      information.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1998 "Crash after running find-and-replace then closing
+      file". Specific sequence of actions and only on Mac OSX caused
+      GUI to crash. To fix, I clear editor panel when user closes
+      project window using MDI window title menu item "Close" or
+      "Close" button.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1996 "Crash when finding and replacing a large number of
+      objects". When "find and replace" function was used to replace
+      large number of objects in a rule set, it generated stream of
+      calls to updateLastModifiedTimestampForAllFirewalls() which
+      caused corresponding stream of events to update various parts of
+      the GUI, both in the tree and rule set views. This caused weird
+      corruption and crash on Windows. Trying to resolve the issue by
+      optimizing the part that updated "last modified" timestamp on
+      the firewall since all parts of the rule set updated in one call
+      to "find and replace" function belong to the same firewall.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2000 "New dialog window in New Firewall wizard for ASA /
+      PIX - Network Zone explanation". Added page to the new firewall
+      wizard to let the user configure network zones of interfaces
+      when chosen firewall platform supports network zones (only
+      PIX/ASA right now).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1983 "ASA multiple interfaces have the same security
+      level". Using table widget with spin-boxes to let the user edit
+      security levels of interfaces conveniently.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2006 "Crash when closing editor panel with
+      find-and-replace". The GUI crashed if user tried to close editor
+      panel at the bottom after closing objects+rules panel and while
+      some object was still displayed in the editor.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #2015 "Add support for setting names of generated .fw and
+      .conf files separately for PF". Added second input field in the
+      "advanced settings" dialog, tab "Compiler" for the firewall
+      platform "PF".  Now user can set the name for both the generated
+      .fw initialization script and .conf PF configuration file, as
+      well as names for both files on the firewall. Support for this
+      is generic and the same functions work for other platforms if
+      corresponding input field in the dialog exists. The name of the
+      initialization script is set as follows: 1) if user provided -o
+      command line switch to the compiler, its argument is used. 2) if
+      -o switch was not present but the name was configured in the
+      firewall settings dialog, it is used. 3) if none of them were
+      present, the name is constructed from the name of the firewall
+      object with suffix .fw.  The name of the .conf PF configuration
+      file is taken from the settings dialog, but if it is blank, then
+      it is constructed from the name of the initialization script but
+      with suffix .conf.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1914 "Address table object file name is not created
+      properly if user clicks outside Editor panel"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1915 "tooltip shown when mouse is over rule number should
+      be added to the list of suppressed tooltips when 'Advanced user
+      mode' is in effect"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2064 "CARP interfaces are not properly installed on
+      FreeBSD cluster".  I need to populate failover group objects
+      with some reasonable defaults when they are created.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2067 "Add way to show interface label in object
+      tree". The tree now shows interface name and label if the label
+      is not empty.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1979 "New firewall created with Cisco c36xx template
+      results in network object in interface column in Policy"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1895 "Add context menu option to expand all child nodes
+      in object tree". Added menu item "Expand" to the context menu
+      associated with all objects in the object tree. This item
+      recursively expands all tree nodes under the given object and
+      automatically changes to "Collapse" if the item is
+      expanded. Also changed behavior of the double click on the
+      object in tree: before, double click opened object in the editor
+      and expanded or collapsed subtree. Now it only opens object in
+      the editor but does not expand/collapse subtree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2103 "complex vlan/bridge configurations are not supported
+      by the interface validation code". Added checkbox to let the
+      user turn off interface name validation functions in the
+      GUI. Checkbox is located in the global Preferences dialog, tab
+      Objects, subtab Interface. For backwards compatibility, the
+      checkbox is turned on by default. When it is off, the GUI does
+      not validate the name of interfaces and subinterfaces and turns
+      off checks that enforced interface name patterns for VLAN,
+      bridge and bodning interfaces.  It also turns off check for the
+      validity of vlan ID derived from vlan interface name and turns
+      off automatic configuration of interface type and vlan ID. These
+      checks sometimes were in the way of building complex
+      configurations that involved multiple vlan interfaces with names
+      not matching their IDs. This also fixes SF bug #3066714 "please
+      dont stop me from creating a new interface" where user wanted to
+      create interface "veth201.0" on Linux but the GUI blocked this
+      operation because the name seemed to match vlan interface
+      pattern.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2099 "Object list scrolls up to the last edited
+      object". Object tree used to scroll spontaneously when user
+      started dragging an object from it to a rule.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1971 "Address range can be created with end address lower
+      than start address".  Address Range object dialog should not let
+      the user enter range end address which is lower than range start
+      address. Dialog behavior is now similar to the behavior of the
+      tcp and udp service dialog where user can not enter port range
+      end number lower than port range start number.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1678 "When creating a firewall from template it appears
+      that a default template is selected". When user arrives at the
+      page where they choose template to create new firewall object
+      from, the first template should be automatically selected.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2135 "Editing table objects".  Dialog of the AddressTable
+      object now offers button "Edit" that lets the user edit address
+      table file. This only works if the file is located on the same
+      machine where the GUI is running, so it is probably most useful
+      for compile time objects.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2139 "Provide "Cancel" button if Address Table file is
+      read-only". If the file configured with Address Table object is
+      read-only, the GUI shows warning when user clicks "Edit" button
+      and offers a choice: open it for viewing read-only or cancel.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2140 "Attempting to create new Address Table file results
+      in read-only error". Implemented support for the workflow when
+      user wants to create the file used to feed addresses to the
+      Address Table object.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2047 "Inspect generated files button shows different
+      path information". Do not pass full path to the output file
+      as an argument of the "-o" option when the GUI launches
+      policy compiler. Since the "-d" option passes directory path
+      where files sould be saved, actual file names do not need to
+      be absolute path, except if the user entered absolute path
+      for the output file name in the firewall settings dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2153 "Add Network Zone explanation and selection dialog to
+      ASA/PIX import". Wizard shows additional page when user imports
+      PIX/ASA config. This page explains concept of network zones and
+      offers UI to let them choose network objects or groups as a
+      network zone of each interface.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2156 "After import the firewall should be opened in
+      object tree".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2163 code that imports addresses from a file in /etc/hosts
+      format moved to its own wizard; using QWizard and QWizardPage
+      classes with correct implementation of page sequencing and
+      validation; old discovery druid has been disabled. SNMP
+      discovery and ios/PIX/iptables configuration import will move to
+      their own wizards later.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2203 "Crash when attempting to add an object to a locked
+      group".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2201 "Some fields of locked object are editable". Some
+      input fields of the Custom Service object dialog were editable
+      even when object was locked read-only.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug 3238026: build failure on systems without net-snmp
+      development libraries.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2226 fixed GUI crash that happened when user tried to
+      delete or cut an object from locked library.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2307 "GUI switches to another file after editor panel is
+      closed"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2286 "Crash when closing file". The GUI crashed if user
+      imported iptables or PIX configuration, then deleted a rule and
+      tried to close project window.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2171 "Undoing delete of rule ends up with rules being
+      created with duplicate rule numbers". Also see #2172 "Crash when
+      deleting rule - related to #2171". When user deleted the last
+      rule in a rule set, then used Undo to restore it, the program
+      lost track of rules in the rule set and became unstable.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2335 "GUI switches between data files upon closing editor
+      panel". If user opened two data files in the GUI and was in the
+      process of editing objects in one of them, the GUI would flip to
+      the other file under certin circumstances.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see SF bug 3211769 "Member interfaces not sorted". Sorting
+      interfaces by name in the dialog where user adds them to the
+      cluster member group.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #2287 "Show text description in rule columns" does
+      not persist across sessions
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2229 "Multiple new objects with the same name". The GUI
+      should automatically choose unique object names for new objects.
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="fwbedit"></a>
+<h2>Changes in command line tool fwbedit</h2>
+
+<ul>
+  <li>
+    <p>
+      see #2328 "Add ability to run firewall import from the command
+      line". This has been implemented as a new function "import" in
+      fwbedit. See man page fwbedit(1) and "fwbedit -h" for more
+      details.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Starting with v4.2.0, fwbedit.exe is now part of the Windows package
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="import"></a>
+<h2>Changes in policy importer for all supported platforms</h2>
+
+<h3>Changes that affect import for all platforms</h3>
+<ul>
+  <li>
+    <p>
+      see #1931 "Update failed import behavior". Added meaningful
+      error messages for when policy importer fails to create firewall
+      object or does not create interface objects or any rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2161 "import workflow and automatic detection of firewall
+      platform from the config file". When user imports existing
+      firewall configuration, the GUI automatically detects firewall
+      platform from the format of the config file and shows
+      platform-specific warning to explain what parts of the config
+      can and can not be imported. It also detects firewall host name
+      where possible (currently Cisco IOS and ASA/PIX). Importer
+      wizard has been reimplemented using QWizard and QWizardPage
+      classes and its workflow significantly improved.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2162 menu item "File / Import Policy" renamed to "File /
+      Import Firewall". This menu item launches wizard that imports
+      existing iptables, Cisco router IOS or Cisco PIX/ASA config.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2183 "count errors and warnings generated by the importer
+      and show the numbers in the progress page of the
+      wizard". Configuration import wizard now shows counters of
+      warnings and errors generated by the importer.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2189 Policy importer warnings and errors now include line
+      numbers to help find relevant lines in the original
+      configuration file.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2189 Program adds the file name and the line number to
+      comments of policy and nat rules it creates during import.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1548 "Object de-duplication during import process". Also
+      SourceForge 3030072 "remove duplicates during any import". Now
+      the program can optionally re-use existing objects from both
+      Standard Objects and user-defined libraries when it imports
+      existing firewall configuration. This works for any firewall
+      platform for which we support policy import. Objects are matched
+      by attributes such as address, netmask, port etc. Object name
+      and comment are not taken into account. Importing the same
+      configuration file twice creates two firewall objects with the
+      same interfaces and rules but re-uses address and service
+      objects created on the first import.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2253 "importer should not creates objects while still in
+      the middle of the wizard". Importer wizard creates new objects
+      in the object tree only when user clicks Finish and abandons
+      results if they click Cancel.
+    </p>
+  </li>
+
+
+</ul>
+
+<h3>Fixes and improvements in import of iptables configurations</h3>
+<ul>
+  <li>
+    <p>
+      see #2190 "support for import of branches in NAT rules for
+      iptables". Implemented import of NAT rules in user-defined
+      chains for iptables, these translate into branching NAT rules in
+      fwbuilder.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2196 "iptables nat rules with target REDIRECT not
+      imported". Iptables NAT rules with target REDIRECT where not
+      imported correctly.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2195 "incorrect iptables import of nat rule with NETMAP
+      target"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2194 "iptables import problem with SNAT rule translating to
+      an address range". NAT rules translating into address range with
+      "-j SNAT --to-source 192.168.1.1-192.168.1.10" did not import
+      correctly
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2197 "iptables nat rules in chain OUTPUT not imported
+      correctly"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2202 importer for iptables creates Custom Service object to
+      match combination of states it does not recognize. This includes
+      "NEW,ESTABLISHED".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2336 Importer for iptables recognizes version stored in the
+      top comment by iptables-save and sets version in the firewall
+      object it creates.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2206 iptables commands with no "-j TARGET" parameter should
+      be imported using action "Continue".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2338 "Empty Mangle Policy object created on
+      import". iptables rules in the table 'mangle' will be imported
+      in the dedicated Policy rule set with name "Mangle". Rules that
+      use chains FORWARD and POSTROUTING in table 'mangle' can not be
+      reproduced and will be marked as "bad" (color red and
+      corresponding comment).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2275 Importer for iptables now correctly handles both
+      "intrapositioned" ("-s ! address") and "extrapositioned" ("! -s
+      address") negation.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2245 fixed bug in parser for iptables that prevented
+      correct import of iptables rules using module "multiport" with
+      port range matches.
+    </p>
+  </li>
+
+
+</ul>
+
+
+<h3>Fixes and improvements in import of Cisco IOS configurations</h3>
+<ul>
+  <li>
+    <p>
+      see #2248 implemented import of Cisco IOS and PIX/ASA service
+      configurations using port operation "neq". Since object model in
+      fwbuilder does not provide direct support for "port not equal
+      to" expression, this configuration is conveted into two tcp or
+      udp service objects with port range extending below and above
+      specified port and these two service objects are then placed in
+      a group.
+    </p>
+  </li>
+
+
+</ul>
+
+
+<h3>Fixes and improvements in import of Cisco ASA/FWSM configurations</h3>
+<ul>
+  <li>
+    <p>
+      see #2161 policy import wizard shows the page where user can set
+      up network zones of interfaces if firewall platform was
+      determined to be PIX.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2152 "ASA Import - shutdown interfaces". Importer
+      recognizes and skips ASA interfaces in "shutdown" mode.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2248 implemented import of Cisco IOS and PIX/ASA service
+      configurations using port operation "neq". Since object model in
+      fwbuilder does not provide direct support for "port not equal
+      to" expression, this configuration is conveted into two tcp or
+      udp service objects with port range extending below and above
+      specified port and these two service objects are then placed in
+      a group.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2268 updated list of named TCP and UDP ports recognized by
+      the importer for Cisco ASA.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2277 "Create policy objects for ASA access-lists that are
+      not applied in an access-group". Policy rule set will be created
+      and populated with rules found in the corresponding access-list
+      even if this access-list is not applied to an interface with
+      access-group command.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2164 fixed import of "ssh" commands and added import of
+      "http" commands for ASA/PIX/FWSM
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="install"></a>
+<h2>Changes in the built-in  policy installer</h2>
+
+<ul>
+  <li>
+    <p>
+      see #2039 "Installer reports success even if pfctl can't load
+      config file". Added more pfctl error messages to the list to
+      make code more robust.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2049 "Installer reports success even if there was an
+      error while creating static routes". Added our own error message
+      generated when command used to add static route fails to the
+      list of error messages recognized by the installer.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2037 "If there is an error when compiling firewall then
+      installer should be aborted". Compile/install wizard should
+      disable "Next" button after compile phase is done if all
+      firewalls failed to compile with no errors.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2061 "Installer shows success for failed installed on
+      FreeBSD due to corrupt script file". Added bunch of common shell
+      error messages to make sure installer recognizes them and mark
+      install as a failure even if ssh fails to pass termination code.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug 3169045: "Batch installer lists IPv4 address as
+      management address". The "summary" display in the installer
+      progress log output will now show putty session name if it is
+      used instead of the management address.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2073 "Add additional information or workflow when no
+      management inferface configured". The error message shown to the
+      user when no interfaces has been marked as "management" is now
+      more verbose and provides instructions how to do this. Also, if
+      user provided alternative address to be used to communicate with
+      the firewall, the check for the management interface is not
+      performed since it is not needed.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2088 "Installer caches putty session".  Need to initialize
+      putty_session properly and clear it in clear().
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2129 'deprecate "test install" function'. We have decided
+      to deprecate test install because it is rather heavy-handed on
+      Linux and PIX where it reboots the firewall and plain does not
+      work on *BSD.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2239 Added variable "firewall_name" to configlets that
+      define commands installer runs on the firewall to activate new
+      policy (all platforms).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      updated filesystem path on FWSM where fwbuilder built-in
+      installer should place generated configuration when it is
+      installed using scp. Currently using path "disk:".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see SF bug 3212988 "external script makes getopt
+      difficult". User-defined parameters for the external script
+      moved to the end of the command line.
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="libfwbuilder"></a>
+<h2>Changes and improvements in the API library libfwbuilder</h2>
+
+<ul>
+  <li>
+    <p>
+      see #1972 Separated object creation and initialization. Some
+      complex objects need to create a set of standard child
+      objects. Previously this was done in a special type of
+      constructor which required pointer to the object tree root
+      (FWObjectDatabase*). This created problems with implementation
+      of the method to register functions that create objects of new
+      types outside of the API. Now all objects have just a basic set
+      of constructors, plus method init() that can initialize them.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1972 implemented mechanism that allows me to register new
+      object types created and used outside of libfwbuilder API. This
+      means FWObjectDatabase can then copy and manipulate object trees
+      that use these new object types.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1937 "RES_DIR macro is defined twice". Got rid of
+      duplicate definition of this macro.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1985 added virtual function
+      updateNonStandardObjectReferences() that is supposed to update
+      any references to objects stored as attributes.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1997 "add removeRef and addRef methods to class
+      NATRule". Now undo and redo correctly remove and restore
+      references to NAT rule sets in NAT rules with action Branch.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1991 "Undo does not restore object as a parameter of
+      policy rule action Branch or Tag after it was deleted
+      deleted". Now Undo restores references to rule sets and tag
+      services as arguments of corresponding policy rules, as well as
+      references to objects configured as interface network zones.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1987 "Deleting object that is used as Network Zone for
+      ASA/PIX interface results in inconsistent behavior". When an
+      object that is used as a network zone of an interface is
+      deleted, it should be removed from the interface configuration
+      as well.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1995 "Crash when compiling a cluster with identical
+      firewalls". Method Cluster::init() must call base class method
+      Firewall::init() to get child Policy, NAT and Routing objects
+      created.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #2084 "snmp discovery takes forever on devices with large
+      routing tables". This takes very long time on decides with large
+      routing tables. This code was implemented long time ago and
+      apparently routing data was intended to be used to discover
+      "external" interfaces, but it is unclear if this is still
+      done. The concept of external/internal currently exists only for
+      platforms that support security levels (PIX) and there we guess
+      levels by matching addresses against RFC1918 and let the user
+      user adjust levels manually anyway.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #133 Added interfaces to the NAT rule model. There will be
+      two interfaces per NAT rule: "inbound interface" and "outbound
+      interface". DTD version changes to "18", old data files need to
+      be upgraded.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2126 Using snmp sysDescr OID to guess version of the new
+      firewall when it is created using snmp polling.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2209 "do not allow the same object to be child of
+      different objects in the tree". Method FWObject::add() enforces
+      this. Subsequent clean-up and fixes in many places to follow
+      this logic. This makes code much cleaner, better organized and
+      more reliable.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="std_lib"></a>
+<h2>Changes and improvements in the library of standard objects</h2>
+
+<ul>
+
+  <li>
+    <p>
+      #2083 Added new services to the Standard Objects Library: rtmp,
+      xmpp-client, xmpp-server, nrpe
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="compilers"></a>
+<h2>common changes that affect policy compilers for all platforms</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixes #1920 "Setting host interface to unnumbered after it has
+      been assigned IP address doesn't have desired effect". Compiler
+      still used IP addresses that belonged to the interface even if
+      it switchd to "unnumbered".  These children address objects
+      should be ignored.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2124 "some error messages get multiplied when compiler
+      splits rules". Under certain circumstances error messages could
+      appear multiple times in the generated script.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2204 "Shadowing detected for rule with action
+      Continue". Policy rules with action "Continue" should not shadow
+      other rules and can not be shadowed.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2207 fixed memory leak in policy compilers. The impact of
+      this leak was especially severe on Windows with very large
+      object databases.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2212 "Performance improvement in compilers". This change
+      brings significant improvement in compile time on large object
+      trees. The speed-up is especially noticeable in single rule
+      compile where the time before generated firewall configuration
+      appears in the GUI shrank by up to a factor of 10.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      sorting objects in rule element after cluster interfaces have
+      been replaced, this helps ensure stable ordering of objects in
+      generated configuration.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      sorting objects in the rule element by name after group is
+      expanded, this helps ensure stable ordering of objects in
+      generated configuration.
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+  <li>
+    <p>
+      fixed #1879 "gui crash". Both GUI and fwb_ipt crashed trying to
+      compile a rule with action Branch that was not configured to
+      point to any rule set.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug #3102044 "Colon in (runtime) Address Table
+      name". Variable used to process addresses in the run-time
+      address table should not use character ":" even if it appears in
+      the Address Table object name.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1999 "log() does not work" Using built-in utitlity
+      "command" to verify that all the tools generated script needs to
+      function properly are available and can be accessed either via
+      direct full path or are in the PATH variable. This includes the
+      check for the logger tool that is used to make log record when
+      firewall is activated.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2097 #133 "support for inbound and outbound interface
+      columns in iptables NAT rules". This also addresses SF feature
+      requests 1954286 "DNAT with interface as condition not possible"
+      and 621023 "manipulating interface in NAT rule".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2008 "option "--physdev-out" is not allowed in OUTPUT
+      chain". After this change, compiler avoids INPUT/OUTPUT chain if
+      interface in the rule column "Interface" is a bridge port and
+      firewall is bridging firewall (which means we are going to use
+      --physdev-in or --physdev-out option for this rule).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2170 "Compiler should generate error for invalid iptables
+      NAT configs". Now that we allow the user to specify inbound and
+      outbound interfaces in iptables NAT rules, compiler should
+      verify that combination of requested "-i" and "-o" interfaces is
+      in fact valid. For example iptables does not allow "-o"
+      interface spec with rules that go into PREROUTING chain (DNAT
+      rules) or "-i" interface spec with rules in POSTROUTING chain
+      (SNAT rules).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2181 "Update iptables importer to detect inbound & outbound
+      interfaces in NAT rules".  Importer can now import nat rules
+      with "-i" or "-o" interface spec.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2230 the GUI should allow limit-burst values of up to 10000
+    </p>
+  </li>
+
+  <li>
+    <p>
+      SF bug 3178186 "Add ND/NS allow rules for the FORWARD
+      chain". Rules that are added automatically to IPv6 Linux
+      firewall to permit neighbor discovery packets should be also
+      added to the FORWARD chain if the firewall is a bridge.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2324 "NAT + MAC-matching rules not generated
+      properly". iptables NAT rules matching a group of host objects
+      with both IP and MAC addresses each in "Original Source" were
+      not generated properly.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2235 "Modified rule action for Continue". Rules with action
+      "Continue" should translate into iptables commands without "-j
+      TARGET" parameter. If such rule also has logging enabled, it
+      should use target "-j LOG" instead of generating additional
+      chain.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2359 "Crash when compiling single rule with IPv6
+      destination and IPv4 gateway or interface". Routing compiler for
+      iptables does not support ipv6 at this time and will issue a
+      warning when user tries to place ipv6 address or network in a
+      routing rule. The warning does not appear when ipv6 address is a
+      member of a group used in the rule. Also see #1575.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="pf"></a>
+<h2>Changes in support for PF (FreeBSD, OpenBSD)</h2>
+
+<ul>
+  <li>
+    <p>
+      see #1890 "Add support for configuring static routes on
+      BSD". Implemented support for simple static routing rules. ECMP
+      and routing via interface (routing to directly reachable
+      subnets) are not supported. Generated script preserves static
+      routing entries that existed before and attempts to recover in
+      case of error.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1888 "Add option to generate rc.conf.local file for BSD
+      systems". Added ability to generate initialization script in
+      rc.conf fromat for FreeBSD. Only FreeBSD is currently supported
+      (not OpenBSD). Generated script includes variables to configure
+      interfaces and their IPv4 and IPv6 addresses, vlans, CARP and
+      pfsync interfaces, as well as variables that initialize PF.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2026 Compiler can now generate static routing
+      configuration in rc.conf format for FreeBSD.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2032 "support for DHCP interfaces in rc.conf
+      mode". Include dynamic interfaces inin the list of interfaces
+      generated script manages when the script is in rc.conf
+      format. This addds lines similar to 'ifconfig_em0="DHCP"'.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2038 "pfctl error when firewall settings include scrub
+      option for reassembly".  Command "scrub all reassemble tcp" does
+      not allow direction.  Tested and verified on OpenBSD 4.2 and
+      FreeBSD 8.1
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      see #1889, #2043 Added support for bridge interface
+      configuration in BSD.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2054 "Add support for load anchor PF command". Instead of
+      loading anchors using "pfctl -a anchor -f file" command in the
+      .fw initialization script, now generated PF configuration uses
+      "load anchor" commands in the pf.conf file. This way, we can
+      load anchors correctly when PF configuration is activated from
+      the generated rc.conf.local file where only one pf.conf file can
+      be referenced.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2042 "add configlet and shell functions to manage bridge
+      interfaces via shell script on OpenBSD and FreeBSD". Bridge
+      interfaces are managed incrementally, that is, the script
+      creates and destroys them as needed, then adds or removes bridge
+      ports, to bring bridge configuration in sync with what is
+      defined in fwbuilder GUI.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2065 "activation commands on FreeBSD and OpenBSD lose
+      script exit status". Sequence of commands ran by the built-in
+      installer on *BSD firewalls were losing exit status of the
+      script which meant installer always declared installation a
+      "success" even when there were errors.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2066 "Existing VLAN interfaces are not properly removed
+      from FreeBSD and install script fails"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2069 "PF: allow multiple objects in ODst of redirecting
+      nat rule". This fixes SF bug 3162862 "NAT - more than one object
+      in original destination"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2071 "vlandev missing in the vlan definition (when using
+      rc.conf.local )"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2058 "Ability to configure mtu and metric of regular
+      interfaces".  "Advanced settings" dialog of the interface object
+      provides controls to configure MTU and possibly add any
+      additional ifconfig parameters. This is available for OpenBSD
+      and FreeBSD.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2078 added verbose error message in a situation when
+      "ifconfig carp0 create" command fails to create CARP interface.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1867 "PF: rule with non-terminating action Tag shadows
+      other rules below it". Since action Tag is non-terminating,
+      rules with this action should not shadow other rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2074 On FreeBSD ifconfig does not understand parameter
+      carpdev
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1866 "support for pf option set state-policy", #1868
+      "support for pf option set block-policy", #1869 "support for pf
+      option set debug".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2092 option "stp" should be optional in the ifconfig
+      command that builds bridge interface for FreeBSD. The dialog
+      provides checkbox "Enable STP", parameter "stp" will be added to
+      the ifconfig command only when the checkbox is turned on.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2091 "ethernet interface options a used twice if the
+      interface is a bridge port". When an interface appeared twice in
+      the firewall configuration, such as when it is used as a bridge
+      port and vlan parent interface, options configured for it in its
+      settings dialog were added twice to the generated configuration.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1871 "PF Actions Tag and Classify can be terminating or
+      non-terminating". Added checkbox to the action properties dialog
+      for actions Tag and Classify for PF that lets the user choose if
+      these actions should be terminating or not. Old behavior (Tag
+      was non-terminating and Classify was terminating) is reflected
+      in default settings of the checkboxes.  Terminating rules
+      generate "pass quick" commands, while non-terminating rules
+      generate "pass" commands (no "quick" option).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1807, #2104: arrange interface configuration commands in
+      the generated script in such order that bridge and carp
+      interfaces are configured after all other interfaces are done.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2105: generated script now supports vlan interfaces with
+      names that do not match vlan IDs (OpenBSD, FreeBSD, shell script
+      format).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Making sure we print "ifconfig" commands for mtu and other
+      parameters for all interfaces, including those with no ip
+      addresses and bridge ports (unnumbered interfaces used to be
+      skipped before)
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2100 carp password should be optional parameter
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2096 added support for negation in Interface column for
+      PF NAT rules. Sets of interfaces are converted to complementary
+      sets using complete list of interfaces of the firewall.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2095 added support for groups and multiple objects in
+      column "Interface" for PF NAT rules. These translate into { em0
+      em1 em2 } groups in generated pf.conf lines.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2101 "CARP interfaces are set with same advskew". When
+      new PF cluster is created, master advskew paramerer will be set
+      to 10 and backup to 20 to make it deterministic.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2116 "When CARP interface IP address can't be assigned
+      error or warning should appear". The problem actually affects
+      any type of interface.  Generated script should abort with an
+      error termination code when ifconfig fails to assign IP address
+      to an interface.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2117 "CARP interfaces in cluster that use VLAN interaces
+      have no interface set to MASTER". When PF cluster configuration
+      was built using vlan interfaces of member firewalls, CARP
+      interfaces were not properly configured with master/slave choice
+      user makes on the first page of the new cluster wizard.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2143 "installer should run /etc/rc.d/pf script to reload PF
+      rules on FreeBSD when generated script is in rc.conf format"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2224 "FreeBSD - Bridge interfaces with the name vlan<xx>
+      don't show as Bridge Port Interfaces". This actually applies to
+      all OS where we support vlan and bridge interfaces. Fwbuilder
+      GUI should allow the user to set subinterface type to both
+      "ethernet" and "vlan" when its parent interface has type
+      "bridge". Setting subinterface type to "ethernet" makes it
+      bridge port, while setting the type to "vlan" signals policy
+      compiler that it should generate code to configure real vlan
+      interface. If the name of the subinterface does not include the
+      name of the parent, such as "vlan101", or when the name does not
+      match vlan ID, such as "vlan8101", global preferences option
+      "Verify interface names and autoconfigure their parameters..."
+      should turned off. The option is located in the Preferences
+      dialog, tab "Objects".
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="ipfilter"></a>
+<h2>Changes in support for ipfilter</h2>
+
+<ul>
+  <li>
+    <p>There are no changes in the support for ipfilter in this release
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="ipfw"></a>
+<h2>Changes in support for ipfw</h2>
+
+<ul>
+  <li>
+    <p>There are no changes in the support for ipfw in this release
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="ios"></a>
+<h2>Changes in support for for Cisco IOS ACL</h2>
+
+<ul>
+  <li>
+    <p>
+      fixes #1966 "IOSACL: object-group can get name that consists of
+      only suffix".  Compiler generated object-group statements with
+      names such as ".src.net.0" in some cases.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2252 TCP and UDP service objects that define port ranges
+      assume port ranges are inclusive, that is, range boundaries are
+      included in the match. This is the behavior of port range
+      matches in iptables and PF, however policy compilers for Cisco
+      IOS ACL and PIX used to convert these objects into ios and PIX
+      access list configurations that excluded port range boundaries
+      from the match. This behavior made TCP and UDP service objects
+      with port ranges incompatible between firewall platforms, that
+      is, the same object could not be used in rules of firewall
+      objects of different platforms because generated configurations
+      would behave differently. This change makes port ranges
+      inclusive in generated IOS and PIX configurations. Users should
+      verify their configurations and adjust port range boundaries in
+      TCP and UDP service objects if necessary.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2330 "Crash when creating a cluster of IOS router
+      firewalls". Added support for basic IOS router clusters.  No
+      failover protocol support at this time, but the cluster can be
+      configured with protocol "None" and fwbuilder will do address
+      substitutions at compile time.
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+<!-- ######################################################################### -->
+<a name="PIX"></a>
+<h2>Changes in support for for Cisco ASA and FWSM</h2>
+
+<ul>
+  <li>
+    <p>
+      FWSM v4.x does not have "fixup" command, instead, we should use
+      policy-map and class commands.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1893 fixes #1883 "inspect IP options in PIX8". Added
+      support for "policy-map type inspect ip-options" command in PIX
+      v8.2 and later.  At this time, of all possible types of
+      "policy-map type inspect" command only "ip-options" is
+      implemented.
+
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1882 "Mixed service groups in PIX8". Added PIX versions
+      8.0 and 8.3; added support for mixed servcie groups in PIX 8.0
+      and later.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1892 "move rule processor class separateServiceObject to
+      PolicyCompiler".  This rule processor used to be implemented
+      only in the compiler for PF, but since it has very general
+      meaning, the same function was duplicated in other compilers as
+      well. Moved the class to libfwbuilder and reimplemented several
+      other rule processors to inherit from this class to avoid
+      further duplication for code.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1891 "problems with TCP and UDP services with source
+      ports". Policy compiler for PIX did not generate correct PIX ACL
+      lines when one Policy rule tried to match several TCP and/or UDP
+      objects matching source ports.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1901 "add destructor to NATCompiler_pix and
+      NATCompiler_asa8". This eliminates memory leak.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1885 "named network and service objects in PIX8". So far,
+      these objects are only used for nat configuration.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1903 "correct order of clear commands for ASA 8.3"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1886 "new nat configuration in PIX 8.3". Initial support
+      for new style nat configuation.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1862 "fwb_pix crash".  Compiler fwb_pix crashed when
+      DNS Name run-time object was used in a rule, but worked fine and
+      issued an error when used in single-rule compile mode.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1906 "ASA NAT - Address objects are not properly
+      identified by network zone and have the wrong real
+      interface". The problem should have affected both "old" (PIX 6
+      and 7) and "new" (ASA 8.3) configuration. When an Address object
+      was used in Original Source of a NAT rule, compiler used wrong
+      interface in the (interface1,interface2) pair in "nat" command.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1905 "fwbuilder crash when compiling a rule with hosts
+      folder as destination". Compiler issues a warning when an empty
+      group object is used in a rule, but GUI crashed when user tried
+      to compile this rule using single-rule compile function. The
+      change actually affects all policy compilers and makes sure the
+      GUI catches exception and does not crash, and prints any errors
+      generated by the compiler in the compiler output panel when
+      single-rule compile function is used.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1908 "ASA NAT - cannot configure static NAT translations
+      with (inside,outside)".  Added NAT rule option to make source
+      nat rules "static". The option is presented to the user as three
+      radio buttons in the NAT rule options dialog which is only
+      enabled when platform is "PIX" and version >= 8.3. Policy
+      compiler generates "twice nat" rules with keyword "static" in
+      the following cases: when TSrc is "original", so the rule
+      translates destination and not source or when numbers of ip
+      addresses represented by OSrc and TSrc are equal. If TSrc is not
+      "original" and represents different number of IP addresses than
+      OSrc, compiler looks at the new rule option. User can use or
+      override automatic algorithm using radio buttons in the NAT rule
+      options dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1902 "Add NAT rule option "translate dns" for PIX". The
+      option is only available for ASA 8.3 or later.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1909 "ASA NAT - static nat port translation where service
+      is the same for original service and translated service not
+      generated correctly"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1913 "ASA/PIX rules with logging enabled don't have log
+      set unless user modifies Firewall Settings". Added default log
+      level setting to the resource xml file for platform "PIX", set
+      to "informational". ACL lines now get "log " keyword followed by
+      the log level taken from the rule options, or if that was not
+      configured, from the firewall object settings, or if that is not
+      configured, the default.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1907 "ASA NAT - fwbuilder doesn't support multiple
+      translated sources in a single NAT rule". Compiler uses
+      object-group to translate NAT rules that have multiple objects
+      in Translated Source.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      refs #1885 Compiler uses named objects and objects groups to
+      build configurations that use address ranges in TSrc in NAT
+      rules. (only ASA 8.3 and later)
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1917 "Duplicate objects are not detected". Compiler
+      should detect duplicate objects that may be created in a rule
+      element when user combines Address Table object with other
+      address or network objects there.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1934 "libfwbuilder::getOverlap() incorrectly calculates
+      overlap between IPv4 networks". This should also fix SF bug
+      3156376 "Can not find interface with network zone that includes
+      address range".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1932 "Add description field to generated NAT rules for
+      ASA". NAT rules generated for ASA 8.3 and later will have
+      "description" keyword added, with rule label as an
+      argument. Rule label includes word "NAT" and rule number.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added support for CustomService objects in policy and nat rules
+      for ASA 8.3 using named objects and object-groups.
+      -- see #1942 "ASA NAT - if custom service is included in service
+      group incorrect config generated"
+      -- see #1929 "move map named_objects inside class NamedObjectManager"
+      -- see #1946 "restrict generation of the named objects by
+      PolicyCompiler_pix to ASA 8"
+      -- see #1885 "named network and service objects in PIX8"
+      Note: this has been rolled back. There is no support for
+      CustomService objects in NAT rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1941 "ASA NAT - compiler complains about range in original
+      destination". NAT rules translating destination allow Address
+      Range objects in ODst or TDst for ASA 8.3
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1940 "ASA NAT - fwbuilder host objects interface IP is
+      reserved keyword". Added list of reserved words used in IOS and
+      ASA software to make sure generated named objects do not
+      conflict. Will maintain single super-set of reserved words
+      instead of separate set for each version of IOS and ASA.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1938 "icmp" commands were not generated for ASA 8.x
+      policy rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #1927. Added check for NAT rules that request translation of
+      destination address but have ODst "any". This only applies to
+      ASA 8.3; these rules are prohibited.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1916 "nat rule must be "static" when subnet is present in
+      TSrc"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1942 improved support for CustomService objects for ASA
+      8.3. Generate separate named object and object-group for these
+      objects, then split policy and nat rules so that only one custom
+      service object is left in each rule and then use object-group to
+      match it. Note: this has been rolled back. There is no support
+      for CustomService objects in NAT rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1948 "incorrect configuration created when a
+      CustomService object is used in a policy rule for PIX/ASA
+      versions prior to 8.3". Since we do not support custom service 
+      objects in policy and nat rules for versions older than 8.3, added 
+      check to generate fatal error when such object is used.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1945 "object-group names include ever-growing
+      suffix". Object-groups created by the compiler for PIX/ASA had
+      numerical suffix that was constantly increasing when user used
+      single-rule compile function in the GUI.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed #1944 "ASA Policy - duplicate network object groups
+      created for mixed service group with TCP dst and TCP src port
+      range objects". Need to convert address range objects to subnets
+      early, before the rule is split for any reason, to make sure
+      object groups created later match and are reused.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #1943 "ASA Policy - mixed service group with TCP destination
+      port range and standard TCP object generates invalid
+      config". Protocol word "tcp" was missing after "deny" in the
+      generated rule.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1949 "ASA NAT - split objects if OSrc contains objects that
+      are in more than one network zone".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      ASA 8.3 see #1942, #1943 fixed generation of the "object-group"
+      statements by adding protocol keyword at the end so that the
+      group can be used in access-list commands. It looks like mixed
+      service groups that have no protocol keyword at the end of the
+      line that defines them cause error "specified object group <foo>
+      has wrong type; expecting service type". I am going to avoid
+      using mixed service groups because of this.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1953 "ASA NAT - two host objects in the same rule result in
+      incorrect config". Objects that represent addresses of
+      interfaces of a host object created using template will be
+      automatically renamed to follow standard naming convention
+      "host_name:interface_name:ip" to avoid creating duplicate names.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1960 add support for CustomService for PIX policy
+      rules. Note that CustomService objects are only supported in
+      Policy rules since nat commands in ASA 8.3 require use of named
+      objects and it is difficult to implement correct named objects
+      and object-groups with protocol parameter and custom services.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #1959 "ASA Policy - ranges are broken into composite network
+      instead of using range command."  Added support for address
+      ranges using named network object with parameter "range" for ASA
+      8.3 and later. NOTE: if a network or IP address object is used
+      in a nat rule for ASA 8.3, a named object has to be created for
+      it since ASA 8.3 does not accept IP addresses or subnets in
+      "nat" commands. In the situation like this, if the same address
+      or network object is used in any Policy rule, the same named
+      object will be used in the generated access-lists command.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1959 Moved generation of the code that defines named
+      objects to class NamedObjectManager. This allows me to put all
+      named object commands on top of the generated policy, nat and
+      routing configurations and make sure each object is defined only
+      once.  Still need to do #1963 - move code that generates
+      commands to define object-groups to class NamedObjectManager.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1954 "ASA NAT - generate warning if nat rule is split and
+      one of the resulting nat rules have the same real interface and
+      mapped interface". Compiler issues warning when objects used in
+      OSrc and TSrc of a NAT rule make it use the same interface as
+      both real and mapped interface in the generated nat
+      command. This check is only done for ASA 8.3 NAT rules.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1963 "move printing of object-group definitions to
+      NamedObjectManager::getNamedObjectsDefinitions()". Consolidated
+      code that works with named objects and object groups in the
+      class NamedObjectManager. This class manages all the objects and
+      in the end generates commands.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Refactored parts that generate "clear" commands to make sure
+      they are printed in the right order at the top of the generated
+      configuration. Previously compiler placed "clear global", "clear
+      static" and "clear nat" commands above the NAT section but below
+      policy section. Since ASA8.3 nat commands can use named objects
+      and object groups, and since I have added support for object
+      groups in ASA 8.3 policy rules, I now need to clear objects and
+      object groups at the very beginning of the generated
+      config. However in order to be able to clear objects and
+      object-groups, I need to clear access-lists and nat commands
+      that might be using them first. So, all clear commands are now
+      grouped at the beginning of the generated configuration. This
+      affects PIX/ASA, iosacl and procurve_acl platforms.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #1965 "ASA Policy - PIX 6.1 configurations use object
+      groups". Policy compiler for PIX is now aware that object-group
+      statement was introduced in PIX v6.2 and avoids using
+      object-groups when firewall object version is set to 6.1
+    </p>
+  </li>
+
+  <li>
+    <p>
+      made names automatically assigned to object-groups in generated
+      PIX configuration shorter by removing interface label prefix.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1968, #1972 Class NamedObjectsManager maintains its own
+      copy of object tree that holds object group objects it creates
+      during compiler passes. This allows me to maitain one common set
+      of object groups for both policy and nat compilers and avoid
+      creating duplicate and redundant object-group statements.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1968, #1972 class NamedObjectsManager (and derived classes
+      for IOS and PIX) generate "clear" commands. This way, I can
+      generate correct set of "clear" commands that take into account
+      any named objects and object-groups that could be created during
+      both policy and nat compiler passes.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      See #1958 "consistently use "exit" to get out of nested context
+      in PIX config". Using "exit" to exit from nested context while
+      adding network or service object in generated PIX/ASA
+      configuraton.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1970 "ASA Policy - single IPv6 icmp object allowed in
+      rules". Since we do not support IPv6 for PIX/ASA at this time,
+      policy compiler should drop the rule if IPv6 address or icmpv6
+      service is used and issue a warning.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1981 "ASA / FWSM Policy - Generate warning message if rule
+      will not generate config data"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1986 "Cisco ASA remarks should be truncated to 100
+      characters or less". Trimming all lines used for access list
+      remarks to than 100 characters. Remarks can only be less than 
+      101 characters on PIX/ASA and less than 100 characters on IOS.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #1994 "Crash when compiling a firewall in an imported
+      Library". Compilers should reset any read-only flags in the copy
+      of object tree they work with before they make any
+      modifications.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2060 "Existing configuration objects are not cleared in
+      PIX 6.3". Commands used to clear object groups and objects have
+      different syntax in PIX 6.3 and PIX 7 and later.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2098 Added support for user-configurable inbound and
+      outbound interfaces in Cisco PIX/ASA NAT rules. Two new columns
+      appear in the rule set view: "Inbound Interface" and "Outbound
+      Interface". If user leaves one or both columns blank, the GUI
+      shows "Auto" in there and policy compiler picks corresponding
+      interface automatically. Leaving both columns blank ("Auto")
+      triggers backwards-compatible automatic behavior where both
+      interfaces are picked automatically. Multiple interface objects
+      and groups of interfaces are allowed in these columns.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2113 "ASA/PIX SNMP discovery - assign default labels
+      based on interface description".  Added pattern to match Cisco
+      ASA interface description which is different from Cisco PIX
+      interface descriptions as returned via snmp.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #1990 "Change default value for Cisco ASA/PIX 7+ to generate
+      outbound ACLs". Newly created PIX/ASA firewall objects will now
+      have "generate outbound acl" option turned on by default.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2252 TCP and UDP service objects that define port ranges
+      assume port ranges are inclusive, that is, range boundaries are
+      included in the match. This is the behavior of port range
+      matches in iptables and PF, however policy compilers for Cisco
+      IOS ACL and PIX used to convert these objects into ios and PIX
+      access list configurations that excluded port range boundaries
+      from the match. This behavior made TCP and UDP service objects
+      with port ranges incompatible between firewall platforms, that
+      is, the same object could not be used in rules of firewall
+      objects of different platforms because generated configurations
+      would behave differently. This change makes port ranges
+      inclusive in generated IOS and PIX configurations. Users should
+      verify their configurations and adjust port range boundaries in
+      TCP and UDP service objects if necessary.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2263 looks like "object-group service" that includes named
+      objects defined as "service-object" can not be used in
+      access-list commands and therefore is useless. Unless I
+      misunderstood and there is a way to use it, I should not
+      generate ASA configuration like this:
+    </p>
+
+    <pre>
+        object-group service id5102X14531.srv.tcp.0 tcp
+          service-object object http.0
+          service-object object https.0
+    </pre>
+
+    <p>
+      Object-group with "tcp" or "udp" type-suffix in the end does not
+      allow "service-object" statements at all, so this configuration
+      is incorrect anyway. However even without "tcp" in the end to
+      make "service-object" references acceptable, the group can be built
+      but can not be used in access-list statements.
+    </p>
+
+    <p>
+	Instead, the group should use port-object statements:
+    </p>
+
+    <pre>
+	object-group service id5102X14531.srv.tcp.0 tcp
+	  port-object eq 80
+	  port-object eq 443
+    </pre>
+  </li>
+
+  <li>
+    <p>
+      see SF bug 3213019 "FWSM Network zone and IPv6". Currently we do
+      not support IPv6 with PIX/ASA and FWSM. If user creates a group
+      to be used as network zone object and places IPv6 address in it,
+      this address should be ignored while compiling the policy but
+      this should not be an error.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2308 "ASA rules with service set to "http" and destination
+      set to ASA firewall object should generate different command
+      syntax". Policy rules that have firewall object in Destination
+      and http object in Service now generate "http" commands. This is
+      similar to how fwbuilder generates "ssh", "telnet" and "icmp"
+      commands to permit corresponding services to the firewall
+      itself.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2344 "FWSM install errors for clear commands". Using
+      correct syntax for "clear" commands for FWSM v4.x
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2343 "Interface nameif error when installing generated
+      config for FWSM".  Use correct "nameif" command sytax in FWSM
+      2.x and 4.x.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2345 More fixes for FWSM 4.x: "service resetoutbound",
+      "timeout xlate", "timeout sunrpc"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2344 fwbuilder should not generate any "ntp" commands for
+      FWSM because NTP can not be configured on FWSM.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2322 If this is FWSM and if manual commit mode is used,
+      need to commit after clearing ACLs before we clear object
+      groups.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2347 "FWSM move up the "access-list mode auto-commit"
+      command". Command that configures access list commit mode should
+      be issued before any commands that clear and configure access
+      lists. Also in this change moving commands that set up temporary
+      access list to the top of the script.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2348: "Accounting action is not valid for FWSM
+      platform". Actions "Accounting" and "Reject" should not appear
+      in the drop-down list of actions in the GUI if platform is PIX
+      or fwsm.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2295 Added FWSM version "3.2". According to Cisco
+      documentation, FWSM version 3.2 matches PIX 7.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2351 Security levels of ASA and FWSM interfaces do not have
+      to be unique. Removed check that enforced this.
+    </p>
+  </li>
+
+</ul>
+
+<!-- ######################################################################### -->
+<a name="procurve"></a>
+<h2>Changes in support for HP ProCurve</h2>
+
+<ul>
+  <li>
+    <p>There are no changes in the support for HP ProCurve in this release
+    </p>
+  </li>
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="packaging"></a>
+<h2>Changes in packaging</h2>
+
+<ul>
+  <li>
+    <p>
+      This version is the first one to merge libfwbuilder and fwbuilder
+      packages. The libfwbuilder library is now in the src/libfwbuilder 
+      subtree inside fwbuilder code tree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      RPM .spec files and DEB .control files are now located in the
+      directory "packaging" inside fwbuilder code tree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Changes in the versioning format: build number is going to be used
+      as part of the long version number, composing complete version as
+      "4.2.0.3425". The "-n" suffix in rpm and deb package names will be
+      used for package release number and most of the time will be
+      "-1". This suffix should reflect minor differences in the package
+      that do not affect the code.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      We have stopped making builds on Ubuntu Hardy. Old Qt (4.4.1) means
+      more and more parts of the code do not compile and require
+      workarounds, sometimes with loss of functionality in the GUI. v4.1.3
+      will be the last officially released version of fwbuilder to work on
+      Hardy.
+    </p>
+  </li>
+</ul>
+
+

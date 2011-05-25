@@ -126,8 +126,6 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
                         "ignore_empty_groups");
     data.registerOption(m_dialog->localNAT, fwoptions, "local_nat");
     data.registerOption(m_dialog->clampMSStoMTU, fwoptions, "clamp_mss_to_mtu");
-    data.registerOption(m_dialog->makeTagClassifyTerminating,
-                        fwoptions, "classify_mark_terminating");
     data.registerOption(m_dialog->ipv6NeighborDiscovery,
                         fwoptions, "add_rules_for_ipv6_neighbor_discovery");
 

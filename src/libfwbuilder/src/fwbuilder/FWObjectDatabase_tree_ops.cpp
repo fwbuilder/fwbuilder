@@ -48,9 +48,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#ifdef _WIN32
-#define snprintf sprintf_s
-#endif
 
 class FWObjectTreeScanner {
 
@@ -222,9 +219,10 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
             }
         }
     }
+
 }
 
-//#define DEBUG_MERGE 1
+// #define DEBUG_MERGE 1
 
 void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 {
@@ -293,7 +291,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
         if (dobj==NULL)
         {
             sobj = *i;
-            FWObject *o1=treeRoot->create( sobj->getTypeName());
+            FWObject *o1 = treeRoot->create( sobj->getTypeName());
 
             FWObject *pdst = dstMap[ src->getId() ];
             assert(pdst!=NULL);
@@ -312,6 +310,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 #endif
 
             o1->duplicate( sobj, false); // copy IDs as well
+
 
 #ifdef DEBUG_MERGE
             cerr << "duplicate #1 done" << endl;
@@ -477,10 +476,12 @@ void FWObjectDatabase::merge( FWObjectDatabase *ndb,
                               ConflictResolutionPredicate *crp)
 {
     busy = true;
+    setIgnoreReadOnlyFlag(true);
 
     FWObjectTreeScanner scanner(this, crp);
     scanner.merge(NULL, ndb);
 
+    setIgnoreReadOnlyFlag(false);
     busy = false;
 }
 
@@ -697,5 +698,14 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
         target = nobj;
     }
     return target;
+}
+
+FWObject& FWObjectDatabase::duplicate(const FWObject *obj,
+                                      bool preserve_id) throw(FWException)
+{
+    setIgnoreReadOnlyFlag(true);
+    FWObject &o = FWObject::duplicate(obj, preserve_id);
+    setIgnoreReadOnlyFlag(false);
+    return o;
 }
 

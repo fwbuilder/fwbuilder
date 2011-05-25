@@ -1276,6 +1276,9 @@ void newFirewallDialog::finishClicked()
 
     CompareObjectsDialog cod(this);
     db_orig->merge(db_copy, &cod);
+    db_orig->fixTree();
+
+    nfw = Firewall::cast(db_orig->findInIndex(nfw->getId()));
 
 
     if (tmpldb!=NULL)

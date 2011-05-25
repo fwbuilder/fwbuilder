@@ -52,6 +52,7 @@
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
@@ -524,6 +525,20 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, physAddress::TYPENAME));
 
+            /*
+             * Add menu item to let user add AttachedNetworks object
+             * to an interface, but only if this object does not exist yet.
+             *
+             * Actions added to AddObjectActions are
+             * enabled and disabled all together based on the decision
+             * made in getMenuState() (argument newMenuItem). But we
+             * should always allow the user to add AttachedNetworks
+             * object to an interface.
+             */
+            FWObject *att = currentObj->getFirstByType(AttachedNetworks::TYPENAME);
+            if (att == NULL)
+                addNewObjectMenuItem(popup_menu, AttachedNetworks::TYPENAME);
+
 
             // Check if we should add menu item that creates failover
             // group. if parent is a cluster, allow one vrrp type
@@ -848,6 +863,16 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                 delMenuItem = false;
                 copyMenuItem = false;
             }
+        }
+
+        if (AttachedNetworks::isA(obj))
+        {
+            dupMenuItem = false;
+            moveMenuItem = false;
+            copyMenuItem = false;
+            pasteMenuItem = false;
+            newMenuItem = false;
+            continue;
         }
 
         copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);
@@ -1224,8 +1249,12 @@ void ObjectManipulator::openLibForObject(FWObject *obj)
         m_objectManipulator->libs->setCurrentIndex(
             libs_model->getIdxForLib(obj->getLibrary()).row());
     else
+    {
+        FWObject *parent = obj->getParent();
+        FWObject *lib = parent->getLibrary();
         m_objectManipulator->libs->setCurrentIndex(
-            libs_model->getIdxForLib(obj->getParent()->getLibrary()).row());
+            libs_model->getIdxForLib(lib).row());
+    }
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)

@@ -44,6 +44,7 @@
 #include "PolicyCompiler_ipt.h"
 #include "NATCompiler_ipt.h"
 #include "RoutingCompiler_ipt.h"
+#include "Preprocessor_ipt.h"
 #include "OSConfigurator_linux24.h"
 #include "OSConfigurator_secuwall.h"
 #include "OSConfigurator_ipcop.h"
@@ -52,7 +53,6 @@
 
 #include "Configlet.h"
 
-#include "fwcompiler/Preprocessor.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWException.h"
@@ -310,7 +310,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
             if (nat_count || policy_count)
             {
-                Preprocessor* prep = new Preprocessor(
+                Preprocessor_ipt* prep = new Preprocessor_ipt(
                     objdb , fw, ipv6_policy);
                 prep->setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) prep->setTestMode();

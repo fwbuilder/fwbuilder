@@ -45,6 +45,7 @@
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
@@ -212,6 +213,7 @@ void ObjectManipulator::createNewObject()
     if (type_name ==  Policy::TYPENAME) new_obj = newPolicyRuleSet(macro);
     if (type_name ==  NAT::TYPENAME) new_obj = newNATRuleSet(macro);
     //if (type_name ==  Routing::TYPENAME) new_obj = newRoutingRuleSet();
+    if (type_name ==  AttachedNetworks::TYPENAME) new_obj = newAttachedNetworks(macro);
 
     if (new_obj == NULL) new_obj = createObject(type_name, descr, NULL, macro);
 
@@ -504,6 +506,7 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, NULL, QObject::tr("Create new Firewall"), macro);
         FWObject *new_state = cmd->getNewState();
+
         parent->remove(nfw, false);
         new_state->add(nfw);
     }
@@ -649,6 +652,30 @@ FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
                      tr("Failover group"), NULL, macro);
     o->setStr("type", group_type.toStdString());
     return o;
+}
+
+/*
+ * Creates new AttachedNetworks object; this method is called by
+ * context menu item associated with Interface object
+ */
+FWObject* ObjectManipulator::newAttachedNetworks(QUndoCommand* macro)
+{
+    FWObject *currentObj = getSelectedObject();
+    if ( currentObj->isReadOnly() ) return NULL;
+
+    if (Interface::isA(currentObj))
+    {
+        FWObject *no = createObject(currentObj, AttachedNetworks::TYPENAME,
+                                    tr("Attached Networks"), NULL, macro);
+        string name = Interface::cast(currentObj)->getParentHost()->getName() +
+            ":" + currentObj->getName() + ":attached";
+        no->setName(name);
+        return no;
+    } else
+    {
+        qWarning("newAttachedNetworks: invalid currentObj");
+        return NULL;
+    }
 }
 
 FWObject* ObjectManipulator::newHost(QUndoCommand* macro)

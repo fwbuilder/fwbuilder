@@ -12,7 +12,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>674</width>
+    <width>762</width>
     <height>665</height>
    </rect>
   </property>
@@ -340,14 +340,7 @@ in host settings dialog.
          </property>
         </widget>
        </item>
-       <item row="13" column="1" colspan="4">
-        <widget class="QCheckBox" name="makeTagClassifyTerminating">
-         <property name="text">
-          <string>Make Tag and Classify actions terminating</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1">
+       <item row="13" column="1">
         <widget class="QLabel" name="textLabel9">
          <property name="text">
           <string>Default action on 'Reject':</string>
@@ -357,10 +350,10 @@ in host settings dialog.
          </property>
         </widget>
        </item>
-       <item row="14" column="2" colspan="2">
+       <item row="13" column="2" colspan="2">
         <widget class="QComboBox" name="actionOnReject"/>
        </item>
-       <item row="14" column="4">
+       <item row="13" column="4">
         <spacer>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -376,7 +369,7 @@ in host settings dialog.
          </property>
         </spacer>
        </item>
-       <item row="15" column="0" colspan="5">
+       <item row="14" column="0" colspan="5">
         <widget class="Line" name="line4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -389,7 +382,7 @@ in host settings dialog.
          </property>
         </widget>
        </item>
-       <item row="16" column="0" rowspan="2">
+       <item row="15" column="0" rowspan="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -405,14 +398,14 @@ in host settings dialog.
          </property>
         </spacer>
        </item>
-       <item row="16" column="1" colspan="4">
+       <item row="15" column="1" colspan="4">
         <widget class="QCheckBox" name="mgmt_ssh">
          <property name="text">
           <string>Always permit ssh access from the management workstation with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="17" column="1" colspan="4">
+       <item row="16" column="1" colspan="4">
         <widget class="QLineEdit" name="mgmt_addr">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -428,7 +421,7 @@ in host settings dialog.
          </property>
         </widget>
        </item>
-       <item row="18" column="1" colspan="4">
+       <item row="17" column="1" colspan="4">
         <widget class="QCheckBox" name="add_mgmt_ssh_rule_when_stoped">
          <property name="text">
           <string>Install the rule for ssh access from the management workstation when the firewall 
@@ -436,7 +429,7 @@ is stopped</string>
          </property>
         </widget>
        </item>
-       <item row="19" column="1">
+       <item row="18" column="1">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -1340,7 +1333,6 @@ is stopped</string>
   <tabstop>emptyGroups</tabstop>
   <tabstop>localNAT</tabstop>
   <tabstop>clampMSStoMTU</tabstop>
-  <tabstop>makeTagClassifyTerminating</tabstop>
   <tabstop>actionOnReject</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>

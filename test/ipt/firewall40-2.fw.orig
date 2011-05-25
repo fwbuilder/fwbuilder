@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.ma_1
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Tue May  3 19:33:02 2011 PDT by vadim
+#  Generated Sat May 14 15:40:47 2011 PDT by vadim
 #
 # files: * firewall40-2.fw /etc/firewall40-2.fw
 #
@@ -12,7 +12,8 @@
 #
 # more complex and realistic combination of Tag and Route rules that are in the separate Policy rule set. Here the top Policy rule set is empty
 
-
+# firewall40-2:Policy_1:3: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
+# firewall40-2:Policy_1:4: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
 
 
 FWBDEBUG=""
@@ -57,12 +58,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -335,29 +357,14 @@ script_body() {
     $IPTABLES -t mangle -A Policy_1 -i eth2   -m state --state NEW  -j MARK --set-mark 2
     $IPTABLES -t mangle -A Policy_1 -i eth2   -m state --state NEW  -j CONNMARK --save-mark
     # 
-    # Rule Policy_1 3 (global)
-    # 
-    echo "Rule Policy_1 3 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 1  -j ROUTE --oif eth0 --continue
-    # 
-    # Rule Policy_1 4 (global)
-    # 
-    echo "Rule Policy_1 4 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -m mark --mark 2  -j ROUTE --oif eth2 --continue
-    # 
     # Rule Policy_1 6 (global)
     # 
     echo "Rule Policy_1 6 (global)"
     # 
     $IPTABLES -N Cid55227X22068.0 -t mangle
     $IPTABLES -t mangle -A Policy_1  -s 192.168.1.0/24   -m state --state NEW  -j Cid55227X22068.0
-    $IPTABLES -N Policy_1_6 -t mangle
-    $IPTABLES -t mangle -A Cid55227X22068.0  -d 22.22.22.0/24   -j Policy_1_6
-    $IPTABLES -t mangle -A Cid55227X22068.0  -d 33.33.33.0/24   -j Policy_1_6
-    $IPTABLES -t mangle -A Policy_1_6  -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
-    $IPTABLES -t mangle -A Policy_1_6  -j MARK --set-mark 8
+    $IPTABLES -t mangle -A Cid55227X22068.0  -d 22.22.22.0/24   -j MARK --set-mark 8
+    $IPTABLES -t mangle -A Cid55227X22068.0  -d 33.33.33.0/24   -j MARK --set-mark 8
 
     # ================ Table 'filter', rule set Policy_1
     # 
@@ -378,6 +385,15 @@ script_body() {
     $IPTABLES -A Policy_1  -j Policy_1_5
     $IPTABLES -A Policy_1_5  -j LOG  --log-level info --log-prefix "RULE 5 -- DENY "
     $IPTABLES -A Policy_1_5  -j DROP
+    # 
+    # Rule Policy_1 6 (global)
+    # 
+    echo "Rule Policy_1 6 (global)"
+    # 
+    $IPTABLES -N Cid55227X22068.0
+    $IPTABLES -A Policy_1  -s 192.168.1.0/24   -m state --state NEW  -j Cid55227X22068.0
+    $IPTABLES -A Cid55227X22068.0  -d 22.22.22.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
+    $IPTABLES -A Cid55227X22068.0  -d 33.33.33.0/24   -j LOG  --log-level info --log-prefix "RULE 6 -- CONTINUE "
 }
 
 ip_forward() {
@@ -433,7 +449,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue May  3 19:33:02 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:40:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

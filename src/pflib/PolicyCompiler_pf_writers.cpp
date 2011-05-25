@@ -4,9 +4,7 @@
 
                  Copyright (C) 2002 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -45,6 +43,7 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/XMLTools.h"
+#include "fwbuilder/AttachedNetworks.h"
 
 #include <iostream>
 #include <iomanip>
@@ -774,6 +773,12 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool )
             compiler->output << "<" << o->getName() << "> ";
             return;
         }
+        if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
+        {
+            compiler->output << atrt->getSourceName() << ":network";
+            return ;
+        }
+
         assert(atrt==NULL);
     }
 

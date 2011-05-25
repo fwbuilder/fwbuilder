@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-action=$@
+QMAKE="${QMAKE:-qmake}"
+QMAKEPARAMS="${QMAKESPEC:+ -spec $QMAKESPEC}"
 
-for directory in $(find . -name unit_tests)
+set -e
+find . -mindepth 1 -type d -name unit_tests | while read directory
 do
-   home=`pwd`
-   cd $directory
-   [ -z $QMAKESPEC ] && { qmake || exit 1; } || { qmake -spec $QMAKESPEC || exit 1; }
-   $action || exit 1
-   cd $home
+	echo "===> Running tests in $directory"
+	(cd $directory && $QMAKE $QMAKEPARAMS && "$@")
 done

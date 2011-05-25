@@ -2,17 +2,18 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:29:17 2011 PDT by vadim
+#  Generated Sat May 14 15:40:33 2011 PDT by vadim
 #
 # files: * firewall36.fw /etc/firewall36.fw
 #
 # Compiled for iptables (any version)
 #
-# testing routing rules - both actually routing  and ROUTE target
-
+# testing routing rules
 # routing ruleset installs ECMP default
+
+# ROUTE target is deprecated in 4.3.0
 
 # firewall36:Routing:4: warning: Rule has been suppressed because it contains IPv6 objects and Firewall Builder does not support IPv6 routing rules at this time
 
@@ -59,12 +60,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -310,61 +332,9 @@ script_body() {
 
 
 
-    # ================ Table 'mangle', rule set Policy
-    # 
-    # Rule 1 (global)
-    # 
-    echo "Rule 1 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -p icmp  -m icmp  --icmp-type any  -j ROUTE  --oif eth1
-    # 
-    # Rule 2 (global)
-    # 
-    echo "Rule 2 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -p tcp -m tcp  --dport 80  -j ROUTE  --oif eth1 --continue
-    # 
-    # Rule 3 (global)
-    # 
-    echo "Rule 3 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -p tcp -m tcp  --dport 22  -j ROUTE  --gw 1.2.3.4 --continue
-    # 
-    # Rule 4 (global)
-    # 
-    echo "Rule 4 (global)"
-    # 
-    $IPTABLES -t mangle -A PREROUTING -p icmp  -m icmp  --icmp-type any  -j ROUTE  --iif eth1
-    # 
-    # Rule 5 (global)
-    # 
-    echo "Rule 5 (global)"
-    # 
-    $IPTABLES -t mangle -A POSTROUTING -p tcp -m tcp  --dport 13  -j ROUTE  --gw 1.2.3.4 --tee
-    $IPTABLES -t mangle -A PREROUTING -p tcp -m tcp  --dport 13  -j ROUTE  --gw 1.2.3.4 --tee
 
-    # ================ Table 'filter', rule set Policy
-    # 
-    # Rule 0 (global)
-    # 
-    echo "Rule 0 (global)"
-    # 
-    # This permits access from internal net
-    # to the Internet and DMZ
-    $IPTABLES -A INPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 6 (global)
-    # 
-    echo "Rule 6 (global)"
-    # 
-    $IPTABLES -N RULE_6
-    $IPTABLES -A OUTPUT  -j RULE_6
-    $IPTABLES -A INPUT  -j RULE_6
-    $IPTABLES -A FORWARD  -j RULE_6
-    $IPTABLES -A RULE_6  -j LOG  --log-level info --log-prefix "RULE 6 -- DENY "
-    $IPTABLES -A RULE_6  -j DROP
+
+
 
 
 
@@ -548,7 +518,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:29:17 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:40:33 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

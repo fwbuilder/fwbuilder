@@ -75,6 +75,7 @@ protected:
         std::string                    my_table;
 
         std::map<std::string, int>     tmp_chain_no;
+        std::map<std::string, int>     rule_chain_no;
         std::map<std::string, int>     chain_usage_counter;
         std::map<std::string, std::string> ipset_tables;
 
@@ -178,6 +179,13 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(checkForUnsupportedCombinationsInMangle);
 
         /**
+         * See #2401 Option "Route" (used to be action "Route") is
+         * deprecated.  Iptables target ROUTE is not included in major
+         * distributions (Debian, Ubuntu, Fedora, CentOS).
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(deprecateOptionRoute);
+
+        /**
          * adds few predefined (or "builtin") rules on top of the policy
          */
         class addPredefinedRules : public PolicyRuleProcessor
@@ -216,6 +224,7 @@ protected:
 
 	/**
 	 * set target and chain in case of route rules
+         * Deprecated beginning with 4.3.0. To be removed in future versions.
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(Route);
 
@@ -234,6 +243,24 @@ protected:
 	 * splits rule if it has more than option Tag, Classify or Route
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(splitIfTagClassifyOrRoute);
+
+	/**
+	 * clears options Tag and Classify in filter table
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearTagClassifyInFilter);
+
+	/**
+	 * turns off logging in rules with options Tag, Classify or
+         * Route in table mangle
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearLogInMangle);
+
+	/**
+	 * switches action to Continue in rules with options Tag,
+         * Classify in mangle table. We deal with other actions in
+         * table filter.
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(clearActionInTagClassifyIfMangle);
 
 
 	/**
@@ -680,12 +707,6 @@ protected:
          * define chain for rules with action Classify
          */
         DECLARE_POLICY_RULE_PROCESSOR(decideOnChainForClassify);
-
-        /**
-         * Split rules with options Tag, Classiyfy and Route if action
-         * is not Continue
-         */
-        DECLARE_POLICY_RULE_PROCESSOR(splitTagClassifyOrRouteIfAction);
 
         /**
          * drop rules with terminating targets. Used as part of the

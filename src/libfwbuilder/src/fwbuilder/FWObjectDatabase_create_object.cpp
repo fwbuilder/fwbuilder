@@ -54,6 +54,7 @@
 #include <fwbuilder/StateSyncClusterGroup.h>
 #include <fwbuilder/FailoverClusterGroup.h>
 
+#include <fwbuilder/AttachedNetworks.h>
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Host.h>
 #include <fwbuilder/ICMP6Service.h>
@@ -127,6 +128,8 @@ void FWObjectDatabase::init_create_methods_table()
 
         registerObjectType("AddressTable",
                            &create_AddressTable);
+        registerObjectType("AttachedNetworks",
+                           &create_AttachedNetworks);
         registerObjectType("Cluster",
                            &create_Cluster);
         registerObjectType("StateSyncClusterGroup",
@@ -302,6 +305,7 @@ FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
     }
 
     FWObject *nobj = (*fn)(id);
+
     addToIndex(nobj);
     if (init) nobj->init(this);
     return nobj;
@@ -331,6 +335,7 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 
 CREATE_OBJ_METHOD(AddressRange);
 CREATE_OBJ_METHOD(AddressTable);
+CREATE_OBJ_METHOD(AttachedNetworks);
 CREATE_OBJ_METHOD(Cluster);
 CREATE_OBJ_METHOD(StateSyncClusterGroup);
 CREATE_OBJ_METHOD(FailoverClusterGroup);

@@ -366,7 +366,7 @@ FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(
     ProjectPanel *project, RuleSet* ruleset, QString oldName, QString newName) :
     FWCmdRule(project, ruleset), oldName(oldName), newName(newName)
 {
-    setText(QObject::tr("negate rule element"));
+    setText(QObject::tr("Rename group of rules"));
 }
 
 void FWCmdRuleRenameGroup::redoOnModel(RuleSetModel *md)
@@ -519,7 +519,6 @@ void FWCmdRuleChange::redo()
     prepareRuleSetView();
     FWCmdChange::redo();
     selectAffectedRule();
-
 }
 
 void FWCmdRuleChange::undo()
@@ -682,6 +681,7 @@ void FWCmdRuleNegateRE::redo()
     md->rowChanged(md->index(getRule(), 0));
 
     selectAffectedRule();
+    notify();
 }
 
 void FWCmdRuleNegateRE::undo()
@@ -695,5 +695,6 @@ void FWCmdRuleNegateRE::undo()
     md->rowChanged(md->index(getRule(), 0));
 
     selectAffectedRule();
+    notify();
 }
 

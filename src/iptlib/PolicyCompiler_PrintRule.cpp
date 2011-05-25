@@ -38,6 +38,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AttachedNetworks.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -57,6 +58,7 @@
 
 #include <QStringList>
 #include <QRegExp>
+#include <QtDebug>
 
 #include <iostream>
 #include <iomanip>
@@ -616,9 +618,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
 {
     FWObject *ruleset = rule->getParent();
 
-    char action[64];
-    strncpy(action,rule->getStr("stored_action").c_str(),sizeof(action));
-    for (char *cptr=action; *cptr; cptr++)  *cptr=toupper(*cptr);
+    QString action = QString(rule->getStr("stored_action").c_str()).toUpper();
 
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
     FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
@@ -637,7 +637,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(PolicyRule *rule,
     s1 << pos;
 
     return _printLogPrefix(s1.str(),
-                           action,
+                           action.toStdString(),
                            rule_iface_name,
                            rule->getStr("ipt_chain"),
                            ruleset->getName(),
@@ -1247,6 +1247,14 @@ string PolicyCompiler_ipt::PrintRule::_printAddr(Address  *o)
         {
             return atrt->getSourceName();
         }
+
+        if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
+        {
+            ostr << "$i_" << atrt->getSourceName() << "_network";
+            return ostr.str();
+        }
+
+
         // at this time we only support two types of MultiAddress
         // objects: AddressTable and DNSName. Both should be converted
         // to MultiAddressRunTime at this point. If we get some other

@@ -40,6 +40,7 @@
 #include "PhysicalAddressDialog.h"
 #include "DNSNameDialog.h"
 #include "AddressTableDialog.h"
+#include "AttachedNetworksDialog.h"
 #include "NetworkDialog.h"
 #include "NetworkDialogIPv6.h"
 #include "UserDialog.h"
@@ -98,6 +99,7 @@
 #include "openaisOptionsDialog.h"
 #include "pfsyncOptionsDialog.h"
 
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Cluster.h"
@@ -171,6 +173,8 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
     if (objType==Host::TYPENAME)          return new HostDialog(parent);
 
     if (objType==Interface::TYPENAME)     return new InterfaceDialog(parent);
+
+    if (objType==AttachedNetworks::TYPENAME) return new AttachedNetworksDialog(parent);
 
     if (objType==Network::TYPENAME)       return new NetworkDialog(parent);
 

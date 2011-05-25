@@ -15,30 +15,13 @@ win32: CONFIG += console
 INCLUDEPATH += ../iptlib ../compiler_lib ../libfwbuilder/src
 DEPENDPATH  += ../iptlib ../compiler_lib ../libfwbuilder/src
 
-win32:LIBS  += ../common/release/common.lib \
-      ../iptlib/release/iptlib.lib \
-      ../compiler_lib/release/compilerdriver.lib  \
-      ../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
-      ../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
+PRE_TARGETDEPS  = ../common/$$BINARY_SUBDIR/libcommon.a \
+      ../iptlib/$$BINARY_SUBDIR/libiptlib.a \
+      ../compiler_lib/$$BINARY_SUBDIR/libcompilerdriver.a \
+      ../libfwbuilder/src/fwcompiler/$$BINARY_SUBDIR/libfwcompiler.a \
+      ../libfwbuilder/src/fwbuilder/$$BINARY_SUBDIR/libfwbuilder.a \
 
-!win32:LIBS = ../common/libcommon.a \
-      ../iptlib/libiptlib.a \
-      ../compiler_lib/libcompilerdriver.a \
-      ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-      ../libfwbuilder/src/fwbuilder/libfwbuilder.a \
-      $$LIBS
-
-win32:PRE_TARGETDEPS  = ../common/release/common.lib \
-      ../iptlib/release/iptlib.lib \
-      ../compiler_lib/release/compilerdriver.lib \
-      ../libfwbuilder/src/fwbuilder/release/fwbuilder.lib \
-      ../libfwbuilder/src/fwcompiler/release/fwcompiler.lib
-
-!win32:PRE_TARGETDEPS = ../common/libcommon.a \
-      ../iptlib/libiptlib.a \
-      ../compiler_lib/libcompilerdriver.a \
-      ../libfwbuilder/src/fwcompiler/libfwcompiler.a \
-      ../libfwbuilder/src/fwbuilder/libfwbuilder.a
+LIBS  += $$PRE_TARGETDEPS $$LIBS
 
 TARGET = fwb_ipt
 

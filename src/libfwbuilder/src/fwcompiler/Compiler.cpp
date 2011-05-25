@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -1117,6 +1115,7 @@ bool Compiler::emptyGroupsInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
+ 
         if ( MultiAddress::cast(o)!=NULL && MultiAddress::cast(o)->isRunTime())
             continue;
 

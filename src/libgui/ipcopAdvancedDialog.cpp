@@ -129,8 +129,6 @@ ipcopAdvancedDialog::ipcopAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->emptyGroups, fwoptions,
                         "ignore_empty_groups");
     data.registerOption(m_dialog->localNAT, fwoptions, "local_nat");
-    data.registerOption(m_dialog->makeTagClassifyTerminating,
-                        fwoptions, "classify_mark_terminating");
     slm=getActionsOnReject( platform.c_str());
     m_dialog->actionOnReject->clear();
     m_dialog->actionOnReject->addItems(getScreenNames(slm));

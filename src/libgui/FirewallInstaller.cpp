@@ -28,15 +28,15 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
-#include "compiler_lib/CompilerDriver.h"
-#include "FirewallInstaller.h"
-#include "instDialog.h"
+#include "CompilerDriver.h"
+#include "Configlet.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
+#include "FirewallInstaller.h"
 #include "SSHSession.h"
 #include "SSHUnx.h"
-#include "Configlet.h"
 #include "UserWorkflow.h"
+#include "instDialog.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -193,7 +193,6 @@ not root.
 
 */
 
-#include "CompilerDriver.h"
 
 bool FirewallInstaller::readManifest(const QString &script, 
                                      QMap<QString, QString> *all_files)

@@ -56,6 +56,7 @@ namespace libfwbuilder
     // forward declarations for specialized create() methods
     class AddressRange;
     class AddressTable;
+    class AttachedNetworks;
     class Cluster;
     class StateSyncClusterGroup;
     class FailoverClusterGroup;
@@ -123,6 +124,7 @@ namespace libfwbuilder
     
     DECLARE_CREATE_OBJ_METHOD(AddressRange);
     DECLARE_CREATE_OBJ_METHOD(AddressTable);
+    DECLARE_CREATE_OBJ_METHOD(AttachedNetworks);
     DECLARE_CREATE_OBJ_METHOD(Cluster);
     DECLARE_CREATE_OBJ_METHOD(StateSyncClusterGroup);
     DECLARE_CREATE_OBJ_METHOD(FailoverClusterGroup);
@@ -249,7 +251,8 @@ protected:
         std::map<int, FWObject*> obj_index;
         int searchId;
         int predictable_id_tracker;
-
+        bool ignore_read_only;
+        
         void init_create_methods_table();
         void init_id_dict();
 
@@ -330,6 +333,13 @@ public:
          */
         void getIndexStats(int &index_size, int &hit_counter, int &miss_counter);
 
+        /**
+         * Some operations, such as object tree merging, should ignore
+         * read-only flag on individual objects.
+         */
+        bool getIgnoreReadOnlyFlag() { return ignore_read_only; }
+        void setIgnoreReadOnlyFlag(bool f) { ignore_read_only = f; }
+
         // --- XML import/export ---
     
         virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
@@ -378,7 +388,15 @@ public:
         void findObjectsInGroup(
             libfwbuilder::Group *g,
             std::set<libfwbuilder::FWObject *> &resset);
-    
+
+        /**
+         * We ignore read-only flag on individual objects when whole object
+         * tree is duplicated
+         */
+        virtual FWObject& duplicate(const FWObject *obj,
+                                    bool preserve_id = true) throw(FWException);
+
+        
         void recursivelyRemoveObjFromTree(FWObject* obj, bool remove_ref=false);
 
         /**
@@ -398,7 +416,6 @@ public:
          * This means returned object can be a parent for the copy of <source>.
          */
         FWObject* reproduceRelativePath(FWObject *lib, const FWObject *source);
-
     
         /**
          * fix references in children of obj according to the map_ids which
@@ -474,6 +491,7 @@ public:
 
     DECLARE_CREATE_OBJ_CLASS_METHOD(AddressRange);
     DECLARE_CREATE_OBJ_CLASS_METHOD(AddressTable);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(AttachedNetworks);
     DECLARE_CREATE_OBJ_CLASS_METHOD(Cluster);
     DECLARE_CREATE_OBJ_CLASS_METHOD(StateSyncClusterGroup);
     DECLARE_CREATE_OBJ_CLASS_METHOD(FailoverClusterGroup);

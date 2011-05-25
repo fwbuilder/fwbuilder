@@ -227,52 +227,16 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
     for (FWObjectTypedChildIterator m = source->findByType(Interface::TYPENAME);
          m!=m.end(); ++m ) 
     {
-        FWObject *src_interface   = *m;
-        FWObject *dst_interface_copy = target->addCopyOf(src_interface, preserve_id);
+        FWObject *src_interface = *m;
+        FWObject *dst_interface_copy =
+            target->addCopyOf(src_interface, preserve_id);
 
         id_mapping[src_interface->getId()] = dst_interface_copy->getId();
-        dst_interface_copy->destroyChildren();
 
-        for (FWObjectTypedChildIterator k=src_interface->findByType(IPv4::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *src_obj = *k;
-            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
+        Interface::cast(dst_interface_copy)->duplicateWithIdMapping(
+            src_interface, id_mapping, preserve_id);
 
-            if (src_obj!=NULL && dst_obj_copy!=NULL)
-                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
-        }
-
-        for (FWObjectTypedChildIterator k=src_interface->findByType(IPv6::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *src_obj = *k;
-            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
-
-            if (src_obj!=NULL && dst_obj_copy!=NULL)
-                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
-        }
-
-        for (FWObjectTypedChildIterator k = src_interface->findByType(physAddress::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *src_obj = *k;
-            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
-
-            if (src_obj!=NULL && dst_obj_copy!=NULL)
-                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
-        }
-
-        for (FWObjectTypedChildIterator k = src_interface->findByType(InterfaceOptions::TYPENAME);
-             k!=k.end(); ++k )
-        {
-            FWObject *src_obj = *k;
-            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
-
-            if (src_obj!=NULL && dst_obj_copy!=NULL)
-                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
-        }
-
+#if 0
         if (Firewall::cast(target))
         {
             /*
@@ -288,7 +252,8 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
                  k!=k.end(); ++k )
             {
                 FWObject *src_subinterface  = *k;
-                FWObject *dst_subinterface_copy = dst_interface_copy->addCopyOf(src_subinterface, preserve_id);
+                FWObject *dst_subinterface_copy =
+                    dst_interface_copy->addCopyOf(src_subinterface, preserve_id);
 
                 if (src_subinterface!=NULL && dst_subinterface_copy!=NULL)
                     id_mapping[src_subinterface->getId()] = dst_subinterface_copy->getId();
@@ -297,6 +262,8 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
             duplicateInterfaces(dst_interface_copy, src_interface,
                                 id_mapping, preserve_id);
         }
+#endif
+
     }
 }
 

@@ -28,6 +28,12 @@
     <file alias="Icons/AddressTable/icon-neg-tree" >Icons/addresstable-neg_16.png</file>
     <file alias="Icons/AddressTable/icon-ref" >Icons/addresstable-ref_25.png</file>
     <file alias="Icons/AddressTable/icon-tree" >Icons/addresstable_16.png</file>
+    <file alias="Icons/AttachedNetworks/icon" >Icons/network_25.png</file>
+    <file alias="Icons/AttachedNetworks/icon-big" >Icons/network_64.png</file>
+    <file alias="Icons/AttachedNetworks/icon-neg" >Icons/network-neg_25.png</file>
+    <file alias="Icons/AttachedNetworks/icon-neg-tree" >Icons/network-neg_16.png</file>
+    <file alias="Icons/AttachedNetworks/icon-ref" >Icons/network-ref_25.png</file>
+    <file alias="Icons/AttachedNetworks/icon-tree" >Icons/network_16.png</file>
     <file alias="Icons/Blank/icon" >Icons/blank.png</file>
     <file alias="Icons/Blank/icon-big" >Icons/blank.png</file>
     <file alias="Icons/Both/icon" >Icons/both_25.png</file>

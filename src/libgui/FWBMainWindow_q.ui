@@ -683,6 +683,13 @@
                 </item>
                </layout>
               </widget>
+              <widget class="QWidget" name="page_38">
+               <layout class="QGridLayout" name="gridLayout_45">
+                <item row="0" column="0">
+                 <widget class="AttachedNetworksDialog" name="w_AttachedNetworksDialog" native="true"/>
+                </item>
+               </layout>
+              </widget>
               <widget class="QWidget" name="page_37">
                <layout class="QGridLayout" name="gridLayout_42">
                 <property name="margin">
@@ -1589,6 +1596,12 @@
    <class>BlankDialog</class>
    <extends>QWidget</extends>
    <header>BlankDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AttachedNetworksDialog</class>
+   <extends>QWidget</extends>
+   <header>AttachedNetworksDialog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -78,35 +78,6 @@ string NATCompiler_ipt::PrintRuleIptRst::_printRuleLabel(NATRule *rule)
         Resources::os_res[compiler->fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
 
     return compiler->printComment(rule, current_rule_label, "#", nocomm);
-
-#if 0
-    ostringstream res;
-
-    string rl=rule->getLabel();
-    if (rl!=current_rule_label)
-    {
-        if (!compiler->inSingleRuleCompileMode() && !nocomm)
-        {
-            res << "# " << endl;
-            res << "# Rule " << rl << endl;
-            res << "# " << endl;
-        }
-
-/* do not put comment in the script if it is intended for linksys */
-        if (!nocomm || compiler->inSingleRuleCompileMode())
-        {
-            QStringList comm = QString(rule->getComment().c_str()).split("\n");
-            foreach(QString line, comm)
-            {
-                res << "# " << line.toStdString() << endl;
-            }
-            //res << "# " << endl;
-        }
-        current_rule_label=rl;
-    }
-
-    return res.str();
-#endif
 }
 
 bool  NATCompiler_ipt::PrintRuleIptRst::processNext()

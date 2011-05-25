@@ -40,8 +40,7 @@
 #  include <arpa/nameser.h>
 #  include <unistd.h>
 #else
-#  include <winsock2.h>
-#  pragma warning(disable:4101)
+#  include <windows.h>
 #endif
 
 #include <pthread.h>

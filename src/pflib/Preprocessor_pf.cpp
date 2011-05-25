@@ -4,9 +4,7 @@
 
                  Copyright (C) 2006 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@vk.crocodile.org
-
-  $Id$
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -27,6 +25,8 @@
 #include "Preprocessor_pf.h"
 
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -35,6 +35,11 @@ using namespace std;
 
 void Preprocessor_pf::convertObject(FWObject *obj)
 {
-    Preprocessor::convertObject(obj);
+    // do not convert attachedNetworks object, compiler for PF always
+    // treats it as run-time object
+    if ( AttachedNetworks::isA(obj))
+        AttachedNetworks::cast(obj)->setRunTime(true);
+    else
+        Preprocessor::convertObject(obj);
 }
 

@@ -88,7 +88,6 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
 // ???
 //        rule->setUniqueId( FWObjectDatabase::getStringId(rule->getId()) );
     }
-
 }
 
 void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
@@ -109,7 +108,7 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
                 if (rule == NULL) continue; // skip RuleSetOptions object
                 FWOptions *ruleopt = rule->getOptionsObject();
                 if (rule->getAction() == PolicyRule::Branch &&
-                    ruleopt->getBool("ipt_branch_in_mangle"))
+                    ! ruleopt->getBool("ipt_branch_in_mangle"))
                 {
                     RuleSet *ruleset = rule->getBranch();
                     if (ruleset == NULL)
@@ -121,10 +120,10 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
                     for (list<FWObject*>::iterator br=ruleset->begin();
                          br!=ruleset->end(); ++br)
                     {
-                        Rule *b_rule = Rule::cast(*br);
-                        if (b_rule == NULL) continue; // skip RuleSetOptions object
-                        ruleopt = b_rule->getOptionsObject();
-                        ruleopt->setBool("put_in_mangle_table", true);
+                        PolicyRule *b_rule = PolicyRule::cast(*br);
+                        if (b_rule == NULL) continue;
+                        if (b_rule->getTagging() || b_rule->getClassification())
+                            ruleopt->setBool("ipt_branch_in_mangle", true);
                     }
                 }
             }
@@ -151,6 +150,10 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
                                       const string& filter_script,
                                       bool ipv6_policy)
 {
+
+    // cerr << "nat script" << endl;
+    // cerr << "\"" << nat_script << "\"" << endl;
+
     ostringstream res;
     ostringstream script;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
@@ -169,10 +172,13 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
         {
             conf = new Configlet(fw, "linux24", "script_body_iptables_restore");
         } else
-            conf = new Configlet(fw, "linux24", "script_body_single_rule");
+            conf = new Configlet(fw, "linux24", "script_body_iptables_shell");
     }
 
     conf->setVariable("auto", have_auto);
+
+    conf->setVariable("iptables_restore_format",
+                      fw->getOptionsObject()->getBool("use_iptables_restore"));
 
     conf->setVariable("filter", !filter_script.empty());
     conf->setVariable("filter_or_auto", have_auto || !filter_script.empty());

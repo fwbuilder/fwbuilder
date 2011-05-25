@@ -36,6 +36,9 @@
 
 #include <stdio.h>
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>   // for sprintf formats for "long long"
+
 // convinience macro
 #define U128_C(s) uint128(#s)
 
@@ -463,9 +466,9 @@ public:
     {
         char buf[33];
         if (hi)
-            sprintf(buf,"%llX%08llX",(unsigned long long)hi,(unsigned long long)lo);
+            sprintf(buf, "%"PRIX64"%08"PRIX64, (unsigned long long)hi,(unsigned long long)lo);
         else
-            sprintf(buf,"%llX",(unsigned long long)lo);
+            sprintf(buf,"%"PRIX64,(unsigned long long)lo);
         return buf;
     }
 

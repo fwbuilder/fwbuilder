@@ -27,6 +27,7 @@ SOURCES	 =  CompilerDriver_ipt.cpp \
 			PolicyCompiler_secuwall.cpp \
 			RoutingCompiler_ipt.cpp \
 			RoutingCompiler_ipt_writers.cpp \
+			Preprocessor_ipt.cpp \
 			combinedAddress.cpp \
 			AutomaticRules_ipt.cpp \
 			utils.cpp
@@ -42,6 +43,7 @@ HEADERS	 = ../../config.h \
 			PolicyCompiler_ipt.h \
 			PolicyCompiler_secuwall.h \
 			RoutingCompiler_ipt.h \
+			Preprocessor_ipt.h \
 			combinedAddress.h \
 			AutomaticRules_ipt.h \
 			utils.h
@@ -51,9 +53,9 @@ CONFIG += staticlib
 INCLUDEPATH += ../compiler_lib ../libfwbuilder/src
 DEPENDPATH  += ../compiler_lib ../libfwbuilder/src
 
-win32:PRE_TARGETDEPS  = ../compiler_lib/release/compilerdriver.lib \
-	../libfwbuilder/src/fwcompiler/release/fwcompiler.lib \
-	../libfwbuilder/src/fwbuilder/release/fwbuilder.lib
+win32:PRE_TARGETDEPS  = ../compiler_lib/release/libcompilerdriver.a \
+	../libfwbuilder/src/fwcompiler/release/libfwcompiler.a \
+	../libfwbuilder/src/fwbuilder/release/libfwbuilder.a
 
 !win32:PRE_TARGETDEPS = ../compiler_lib/libcompilerdriver.a \
 	../libfwbuilder/src/fwcompiler/libfwcompiler.a \

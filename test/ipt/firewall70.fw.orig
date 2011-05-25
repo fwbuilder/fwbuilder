@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.2.1.3538
+#  Firewall Builder  fwb_ipt v4.3.0.3542
 #
-#  Generated Thu May  5 20:29:48 2011 PDT by vadim
+#  Generated Sat May 14 15:41:07 2011 PDT by vadim
 #
 # files: * firewall70.fw iptables.sh
 #
@@ -69,12 +69,33 @@ getaddr_internal() {
     eval "${name}_list=\"$L\"" 
 }
 
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
 getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
 getaddr6() {
     getaddr_internal $1 $2 "-6"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -412,7 +433,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May  5 20:29:48 2011 by vadim"
+        log "Activating firewall script generated Sat May 14 15:41:07 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

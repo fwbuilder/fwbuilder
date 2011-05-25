@@ -18,17 +18,17 @@ SUBDIRS  =  libfwbuilder \
 			compiler_lib \
 			fwtransfer \
 			iptlib \
-			pflib \
-			cisco_lib \
-			libgui \
-			gui \
 			ipt \
+			pflib \
 			pf \
 			ipf \
 			ipfw \
+			cisco_lib \
 			iosacl \
 			pix \
 			procurve_acl \
 			transfer_agents \
-			fwbedit
+			libgui \
+			fwbedit \
+			gui \
 

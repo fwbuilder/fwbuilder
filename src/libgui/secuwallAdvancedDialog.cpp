@@ -109,8 +109,6 @@ secuwallAdvancedDialog::secuwallAdvancedDialog(QWidget *parent, FWObject *o)
                         "ignore_empty_groups");
     data.registerOption(m_dialog->localNAT, fwoptions, "local_nat");
     data.registerOption(m_dialog->clampMSStoMTU, fwoptions, "clamp_mss_to_mtu");
-    data.registerOption(m_dialog->makeTagClassifyTerminating,
-                        fwoptions, "classify_mark_terminating");
 
     slm = getActionsOnReject(obj->getStr("platform").c_str());
     m_dialog->actionOnReject->clear();

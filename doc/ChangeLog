@@ -1,3 +1,100 @@
+2011-05-17  vadim  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_tree_ops.cpp (merge): see #2420 "Crash when
+	selecting New Firewall and existing firewall has interface that is
+	locked". Fixed GUI crash that happened on some operations if an
+	object in the tree was locked. For example, if the user locked an
+	interface of one of the firewall objects that then proceeded to
+	create new firewall object, the GUI would crash. The problem was
+	not limited to locking specifically interface objects.
+
+2011-05-15  vadim  <vadim@netcitadel.com>
+
+	* IPTImporter.cpp (pushPolicyRule): see #2411 Implemented import
+	of iptables rules with target CLASSIFY.
+
+2011-05-14  vadim  <vadim@netcitadel.com>
+
+	* CompilerDriver_ipt.cpp (findBranchesInMangleTable): see #2405
+	"Tag and classify actions dont work properly with branches".
+	When branching rule points to a rule set that has rules with Tag
+	and Classify options, branching should occur in mangle table even
+	when checkbox "create branch in mangle table" is not checked. The
+	fix in this change is tentative as it creates branch in chains
+	PREROUTING, POSTROUTING and OUTPUT. Since target CLASSIFY is only
+	allowed in POSTROUTING, this may create conflict. Need to test
+	more.
+
+	* AttachedNetworks.cpp (AttachedNetworks): see #1580 New object
+	type: network object that automatically matches subnets an
+	interface is attached to. The object can be a child of an
+	interface. The object is optional and is not created automatically
+	for all interfaces; user can add it using context menu associated
+	with an interface. Dialog for this object allows editing of the
+	name and comment. List of network addresses represented by this
+	object is always generated automatically. Compiler for PF
+	translates this object to "en0:network" construct that is
+	supported by PF. Compiler for iptables expands it to the list of
+	ipv4 and ipv6 networks defined by the addresses of the parent
+	interface if interface has static addresses. If interface is
+	confgiured as "dynamic" and has no address in fwbuilder, then
+	compiler treats AttachedNetworks object as run-time and uses shell
+	function to determine network addresses during activation of the
+	firewall script. Compilers for other firewall platforms always
+	treat this object as compile-time and abort if it is used with
+	dynamic interface.
+
+2011-05-13  vadim  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipt.cpp (processNext): see #2402 "Tag action
+	should be done in PREROUTING so it can be acted on later". If a
+	rule has both tagging and classification options, the rule should
+	be split so that iptables command doing tagging goes in PREROUTING
+	and rule doing classification goes into POSTROUTING chain.
+
+	* PolicyCompiler_ipt.cpp (processNext): see #2401 "Deprecating
+	Route option for iptables".  This target is not included in any of
+	the popular Linux distributions (checked in Ubuntu, Fedora and
+	CentOS). The GUI dialog and all support in the compiler will be
+	removed in future version of fwbuilder. Beginning with 4.3.0,
+	compiler aborts with an error when it encounters a rule using this
+	option. In older versions of fwbuilder (4.2.x and before) this
+	option was presented as an action "Route".
+
+	* CompilerDriver_ipt_run.cpp (run): see #2400 'Mixing Actions
+	"Accept" and "Classify" results in incorrect rules', see #2399
+	'Mixing Actions "Accept" and "Tag" results in incorrect ruleset'.
+	After we made Tag, Classify and Route rule options instead of
+	actions, rules that mix these options with actions "Accept" and
+	others, except for "Continue", should be treated differently. The
+	action are now implemented using iptables rules in the table
+	"filter" and additional rules in table "mangle" is used to
+	implement only tagging, classification or routing. Generated
+	script does not change default action in table "mangle" and
+	assumes it is "ACCEPT" so adding rules with target ACCEPT in
+	mangle table should not be necessary. Another change because of
+	this affects branching rules that use option "create branch in
+	mangle table in addition to the filter table". These rules used to
+	duplicate the same action and logging rules in mangle.  Now they
+	dont do this and only create rules in mangle if branch rule set
+	performs tagging, classification or routing.
+
+2011-05-11  vadim  <vadim@netcitadel.com>
+
+	* v4.2.2 released
+
+	* newFirewallDialog.cpp (finishClicked): fixes #2395 "Crash when
+	setting installer directory location" and fixes #2396 "Crash when
+	changing firewall name". These two bug reports where the
+	manifestation of the same problem that was introduced by the fix
+	for #2380. When user hits OK in the newFirewallDialog and it
+	merges temporary object tree into the main object tree, it should
+	call fixTree() to fix all pointers to the root of the tree.
+
+2011-05-10  vadim  <vadim@netcitadel.com>
+
+	* v4.2.1 released
+
 2011-05-10  Vadim Kurland  <vadim@netcitadel.com>
 
 	* fwbuilder 4.2.1.3540 released; started v4.3.0

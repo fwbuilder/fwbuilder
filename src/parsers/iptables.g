@@ -517,6 +517,13 @@ target_options :
                 *dbg << " LOG LEVEL=" << LT(0)->getText();
             }
         |
+            SET_CLASS major:INT_CONST COLON minor:INT_CONST
+            {
+                importer->action_params["set_class"] =
+                    major->getText() + ":" + minor->getText();
+                *dbg << " SET CLASS=" << major->getText() + ":" + minor->getText();
+            }
+        |
             SET_MARK (INT_CONST | HEX_CONST)
             {
                 importer->action_params["set_mark"] = LT(0)->getText();
@@ -1393,6 +1400,7 @@ MATCH_PKT_TYPE : "--pkt-type" ;
 // ----------------------------------------------------------------
 //  target options
 REJECT_WITH : "--reject-with" ;
+SET_CLASS : "--set-class" ;
 SET_MARK : "--set-mark" ;
 SAVE_MARK : "--save-mark" ;
 RESTORE_MARK : "--restore-mark" ;
