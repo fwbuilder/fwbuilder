@@ -50,7 +50,7 @@ SOURCES  = 	InetAddr.cpp \
 			NAT.cpp \
 			Network.cpp \
 			NetworkIPv6.cpp \
-			AttachbedNetworks.cpp \
+			AttachedNetworks.cpp \
 			ObjectGroup.cpp \
 			physAddress.cpp \
             DNSName.cpp\
