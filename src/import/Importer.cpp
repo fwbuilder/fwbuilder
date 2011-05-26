@@ -586,48 +586,38 @@ void Importer::setDstSelf()
     dst_a = "self";
 }    
 
-FWObject* Importer::makeSrcObj()
+FWObject* Importer::makeAddressObj(const std::string addr, const std::string netm)
 {
-    if (src_a == "self")
+    if (addr == "self")
     {
         return getFirewallObject();
     }
 
-    if ( (src_a=="" && src_nm=="") || 
-         (src_a==InetAddr::getAny().toString() &&
-          src_nm==InetAddr::getAny().toString()))
+    if ( (addr=="" && netm=="") || 
+         (addr==InetAddr::getAny().toString() &&
+          netm==InetAddr::getAny().toString()))
         return NULL;  // this is 'any'
-
-    if (src_nm=="") src_nm = InetAddr::getAllOnes().toString();
 
     ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
-    sig.setAddress(src_a.c_str());
-    sig.setNetmask(src_nm.c_str(), address_maker->getInvertedNetmasks());
+    sig.setAddress(addr.c_str());
+    if (netm=="") 
+        sig.setNetmask(InetAddr::getAllOnes().toString().c_str(),
+                       address_maker->getInvertedNetmasks());
+    else
+        sig.setNetmask(netm.c_str(), address_maker->getInvertedNetmasks());
 
     return commitObject(address_maker->createObject(sig));
 }
 
+FWObject* Importer::makeSrcObj()
+{
+    return makeAddressObj(src_a, src_nm);
+}
+
 FWObject* Importer::makeDstObj()
 {
-    if (dst_a == "self")
-    {
-        return getFirewallObject();
-    }
-
-    if ( (dst_a=="" && dst_nm=="") || 
-         (dst_a==InetAddr::getAny().toString() &&
-          dst_nm==InetAddr::getAny().toString()))
-        return NULL;  // this is 'any'
-
-    if (dst_nm=="") dst_nm=InetAddr::getAllOnes().toString();
-
-    ObjectSignature sig(error_tracker);
-    sig.type_name = Address::TYPENAME;
-    sig.setAddress(dst_a.c_str());
-    sig.setNetmask(dst_nm.c_str(), address_maker->getInvertedNetmasks());
-
-    return commitObject(address_maker->createObject(sig));
+    return makeAddressObj(dst_a, dst_nm);
 }
 
 FWObject* Importer::makeSrvObj()

@@ -213,13 +213,62 @@ scrub_command : SCRUB
     ;
 
 //****************************************************************
-table_command : TABLE
+table_command :
+        TABLE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'table' commands has not been implemented yet."));
-            consumeUntil(NEWLINE);
+        }
+        LESS_THAN
+        name:WORD
+        GREATER_THAN 
+        ( PERSIST ) ?
+        ( CONST ) ?
+        ( COUNTERS )?
+        (
+            FILE file:STRING
+            {
+                importer->newAddressTableObject(name->getText(), file->getText());
+            }
+        |
+            OPENING_BRACE
+            tableaddr_spec
+            (
+                ( COMMA )?
+                tableaddr_spec
+            )*
+            CLOSING_BRACE
+            {
+                importer->newAddressTableObject(name->getText(), importer->tmp_group);
+            }
+        )
+    ;
+
+tableaddr_spec { AddressSpec as; } :
+        ( EXLAMATION { as.neg = true; } )?
+        (
+            WORD { as.at = AddressSpec::INTERFACE_NAME; as.address = LT(0)->getText(); }
+        |
+            SELF { as.at = AddressSpec::SPECIAL_ADDRESS; as.address = "self"; }
+        |
+            IPV4
+            {
+                as.at = AddressSpec::HOST_ADDRESS;
+                as.address = LT(0)->getText();
+            }
+            (
+                SLASH 
+                {
+                    as.at = AddressSpec::NETWORK_ADDRESS;
+                }
+                ( IPV4 | INT_CONST )
+                {
+                    as.netmask = LT(0)->getText(); 
+                }
+            )?
+        )
+        {
+            importer->tmp_group.push_back(as);
         }
     ;
 
@@ -425,9 +474,9 @@ hosts :
         ALL
         {
             importer->src_group.push_back(
-                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+                AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
             importer->dst_group.push_back(
-                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+                AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
         }
     |
         ( hosts_from )?  ( hosts_to )?
@@ -448,7 +497,7 @@ src_hosts_part :
             URPF_FAILED
             {
                 importer->tmp_group.push_back(
-                    AddressSpec(AddressSpec::SPECIAL_ADDRESS,
+                    AddressSpec(AddressSpec::SPECIAL_ADDRESS, false,
                                 "urpf-failed", ""));
             }
         )
@@ -472,19 +521,19 @@ common_hosts_part :
         ANY
         {
             importer->tmp_group.push_back(
-                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+                AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
         }
     |
         SELF
         {   
             importer->tmp_group.push_back(
-                AddressSpec(AddressSpec::SPECIAL_ADDRESS, "self", ""));
+                AddressSpec(AddressSpec::SPECIAL_ADDRESS, false, "self", ""));
         }
     |
         NO_ROUTE
         {
             importer->tmp_group.push_back(
-                AddressSpec(AddressSpec::SPECIAL_ADDRESS, "no-route", ""));
+                AddressSpec(AddressSpec::SPECIAL_ADDRESS, false, "no-route", ""));
         }
     |
         host
@@ -514,7 +563,7 @@ host :
                     if (h) addr = h->getText();
                     if (nm) netm = nm->getText();
                     importer->tmp_group.push_back(
-                        AddressSpec(AddressSpec::NETWORK_ADDRESS,
+                        AddressSpec(AddressSpec::NETWORK_ADDRESS, false,
                                     addr, netm));
                 }
             }
@@ -523,14 +572,14 @@ host :
             {
                 // This should be an interface name
                 importer->tmp_group.push_back(
-                    AddressSpec(AddressSpec::INTERFACE_NAME,
+                    AddressSpec(AddressSpec::INTERFACE_NAME, false,
                                 LT(0)->getText(), ""));
             }
         |
             LESS_THAN tn:WORD GREATER_THAN
             {
                 importer->tmp_group.push_back(
-                    AddressSpec(AddressSpec::TABLE, tn->getText(), ""));
+                    AddressSpec(AddressSpec::TABLE, false, tn->getText(), ""));
             }
         )
     ;
@@ -923,6 +972,9 @@ tokens
     RDR = "rdr";
     BINAT = "binat";
     TABLE = "table";
+    CONST = "const";
+    PERSIST = "persist";
+    FILE = "file";
 
     QUEUE = "queue";
 

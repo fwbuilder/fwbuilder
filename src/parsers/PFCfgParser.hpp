@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -104,6 +104,7 @@ public:
 	public: void block_command();
 	public: void timeout_command();
 	public: void unknown_command();
+	public: void tableaddr_spec();
 	public: void rule_extended();
 	public: void direction();
 	public: void logging();
@@ -162,10 +163,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 133;
+	static const int NUM_TOKENS = 137;
 #else
 	enum {
-		NUM_TOKENS = 133
+		NUM_TOKENS = 137
 	};
 #endif
 	
@@ -231,6 +232,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_29;
 	static const unsigned long _tokenSet_30_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_30;
+	static const unsigned long _tokenSet_31_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_31;
+	static const unsigned long _tokenSet_32_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_32;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

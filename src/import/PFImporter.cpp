@@ -35,6 +35,7 @@
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
@@ -90,6 +91,7 @@ void PFImporter::clear()
 
     iface_group.clear();
     proto_list.clear();
+    tmp_group.clear();
     src_group.clear();
     dst_group.clear();
 
@@ -124,35 +126,81 @@ void PFImporter::clearTempVars()
     Importer::clear();
 }
 
-FWObject* PFImporter::makeSrcObj()
+void PFImporter::addSrc()
 {
-    if (src_nm == "interface")
-    {
-        Interface *intf = getInterfaceByName(src_a);
-        if (intf) return intf;
-        reportError(
-            QString("Cannot find interface with label '%1'").arg(src_a.c_str()));
-    }
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+    RuleElement *re = rule->getSrc();
 
-    return Importer::makeSrcObj();
+    list<AddressSpec>::iterator it;
+    for (it=src_group.begin(); it!=src_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
 }
 
-FWObject* PFImporter::makeDstObj()
+void PFImporter::addDst()
 {
-    if (dst_nm == "interface")
-    {
-        Interface *intf = getInterfaceByName(dst_a);
-        if (intf) return intf;
-        reportError(
-            QString("Cannot find interface with label '%1'").arg(dst_a.c_str()));
-    }
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+    RuleElement *re = rule->getDst();
 
-    return Importer::makeDstObj();
+    list<AddressSpec>::iterator it;
+    for (it=dst_group.begin(); it!=dst_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
 }
 
-FWObject* PFImporter::makeSrvObj()
+void PFImporter::addSrv()
 {
-    return Importer::makeSrvObj();
+    PolicyRule *rule = PolicyRule::cast(current_rule);
+    RuleElement *re = rule->getSrv();
+
+    // list<AddressSpec>::iterator it;
+    // for (it=dst_group.begin(); it!=dst_group.end(); ++it)
+    // {
+    //     FWObject *obj = makeAddressObj(*it);
+    //     if (obj) re->addRef(obj);
+    // }
+}
+
+FWObject* PFImporter::makeAddressObj(AddressSpec &as)
+{
+    if (as.at == AddressSpec::ANY) return NULL;
+
+    if (as.at == AddressSpec::INTERFACE_NAME)
+    {
+        Interface *intf = getInterfaceByName(as.address);
+        assert(intf!=NULL);
+        return intf;
+    }
+
+    if (as.at == AddressSpec::HOST_ADDRESS)
+    {
+        return Importer::makeAddressObj(as.address, "");
+    }
+
+    if (as.at == AddressSpec::NETWORK_ADDRESS)
+    {
+        return Importer::makeAddressObj(as.address, as.netmask);
+    }
+
+    if (as.at == AddressSpec::SPECIAL_ADDRESS)
+    {
+        if (as.address == "self") return getFirewallObject();
+        {
+            addMessageToLog(
+                QObject::tr("Warning: matching '%1' is not supported")
+                .arg(as.address.c_str()));
+            return NULL;
+        }
+    }
+
+    if (as.at == AddressSpec::TABLE)
+    {
+        return address_table_registry[as.address.c_str()];
+    }
 }
 
 void PFImporter::addLogging()
@@ -260,10 +308,8 @@ void PFImporter::pushPolicyRule()
     // importer->setInterfaceAndDirectionForRuleSet(
     //    "", importer->iface, importer->direction);
 
-
-    addMessageToLog(
-        QString("filtering rule: action %1")
-        .arg(action.c_str()));
+    QString message_str = 
+        QString("filtering rule: action %1; interfaces: %2");
     
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
@@ -272,7 +318,10 @@ void PFImporter::pushPolicyRule()
 
     if (action=="pass")
     {
-        rule->setAction(PolicyRule::Accept);
+        if (quick)
+            rule->setAction(PolicyRule::Accept);
+        else
+            rule->setAction(PolicyRule::Continue);
         ropt->setBool("stateless", false);
     }
 
@@ -282,7 +331,35 @@ void PFImporter::pushPolicyRule()
         ropt->setBool("stateless", true);
     }
 
-    rule->setDirection(PolicyRule::Both);
+    if (direction == "in") rule->setDirection(PolicyRule::Inbound);
+    if (direction == "out") rule->setDirection(PolicyRule::Outbound);
+    if (direction == "") rule->setDirection(PolicyRule::Both);
+
+    QStringList interfaces;
+    list<InterfaceSpec>::iterator it;
+    for (it=iface_group.begin(); it!=iface_group.end(); ++it)
+    {
+        Interface *intf = getInterfaceByName(it->name);
+        assert(intf!=NULL);
+        RuleElement *re =rule->getItf();
+        re->addRef(intf);
+        interfaces << it->name.c_str();
+    }
+
+    /*
+     * Set state-related rule options using variable state_op
+     */
+
+
+    /*
+     * Set tagging rule option using variable tag
+     */
+
+    /*
+     * Set queueing rule option using variable queue
+     */
+
+
 
     /*
      * Protocols are in proto_list
@@ -290,17 +367,23 @@ void PFImporter::pushPolicyRule()
      * Destination addresses are in dst_group
      */
 
-
     addSrc();
     addDst();
     addSrv();
 
+    /*
+     * Set logging options using variables logging and logopts
+     */
     addLogging();
 
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
     addStandardImportComment(
         current_rule, QString::fromUtf8(rule_comment.c_str()));
+
+    addMessageToLog(message_str.arg(action.c_str()).arg(interfaces.join(",")));
+
+
 }
  
 Firewall* PFImporter::finalize()
@@ -364,3 +447,34 @@ Interface* PFImporter::getInterfaceByName(const string &name)
     return NULL;
 }
     
+void PFImporter::newAddressTableObject(const string &name, const string &file)
+{
+    ObjectMaker maker(Library::cast(library), error_tracker);
+    AddressTable *at =  AddressTable::cast(
+        commitObject(maker.createObject(AddressTable::TYPENAME, name.c_str())));
+    assert(at!=NULL);
+    at->setRunTime(true);
+    at->setSourceName(file);
+    address_table_registry[name.c_str()] = at;
+
+    addMessageToLog(QString("Address Table: <%1> file %2")
+                    .arg(name.c_str()).arg(file.c_str()));
+}
+
+void PFImporter::newAddressTableObject(const string &name,
+                                       list<AddressSpec> &addresses)
+{
+    ObjectMaker maker(Library::cast(library), error_tracker);
+    FWObject *og =  
+        commitObject(maker.createObject(ObjectGroup::TYPENAME, name.c_str()));
+    assert(og!=NULL);
+    address_table_registry[name.c_str()] = og;
+
+    list<AddressSpec>::iterator it;
+    for (it=addresses.begin(); it!=addresses.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) og->addRef(obj);
+    }
+}
+

@@ -70,28 +70,31 @@ public:
     typedef enum {
         UNKNOWN,
         ANY,
+        HOST_NAME,
         HOST_ADDRESS,
         NETWORK_ADDRESS,
         SPECIAL_ADDRESS,
         INTERFACE_NAME,
         TABLE } address_type;
-    
+
     address_type at;
+    bool neg;
     std::string address;
     std::string netmask;
 
     AddressSpec()
-    { at = UNKNOWN; address = ""; netmask = ""; }
+    { at = UNKNOWN; neg = false;  address = ""; netmask = ""; }
 
     AddressSpec(const AddressSpec &other)
     {
         at = other.at;
+        neg = other.neg;
         address = other.address;
         netmask = other.netmask;
     }
     
-    AddressSpec(address_type _at, const std::string _addr, const std::string _nm)
-    { at = _at; address = _addr; netmask = _nm; }
+    AddressSpec(address_type _at, bool _neg, const std::string _addr, const std::string _nm)
+    { at = _at; neg= _neg; address = _addr; netmask = _nm; }
 };
 
 
@@ -154,6 +157,8 @@ public:
         REPLY_TO,
         DUP_TO} route_op_type;
     
+    QMap<QString,libfwbuilder::FWObject*> address_table_registry;
+
     std::string direction;
     std::string address_family;
     bool quick;
@@ -211,13 +216,19 @@ public:
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
-    virtual libfwbuilder::FWObject* makeSrcObj();
-    virtual libfwbuilder::FWObject* makeDstObj();
-    virtual libfwbuilder::FWObject* makeSrvObj();
+    virtual libfwbuilder::FWObject* makeAddressObj(AddressSpec &as);
+    
+    virtual void addSrc();
+    virtual void addDst();
+    virtual void addSrv();
 
     virtual void addLogging();
 
     libfwbuilder::Interface* getInterfaceByName(const std::string &name);
+
+    void newAddressTableObject(const std::string &name, const std::string &file);
+    void newAddressTableObject(const std::string &name,
+                               std::list<AddressSpec> &addresses);
 };
 
 #endif

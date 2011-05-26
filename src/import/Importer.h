@@ -182,6 +182,9 @@ protected:
     virtual libfwbuilder::FWObject* createGroupOfInterfaces(
         const std::string &ruleset_name, std::list<std::string> &interfaces);
 
+    virtual libfwbuilder::FWObject* makeAddressObj(const std::string addr,
+                                                   const std::string netm);
+    
     virtual libfwbuilder::FWObject* makeSrcObj();
     virtual libfwbuilder::FWObject* makeDstObj();
     virtual libfwbuilder::FWObject* makeSrvObj();
