@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3542
+#  Firewall Builder  fwb_ipt v4.3.0.3546
 #
-#  Generated Sat May 14 15:40:45 2011 PDT by vadim
+#  Generated Thu May 26 14:16:17 2011 PDT by vadim
 #
 # files: * firewall40.fw /etc/firewall40.fw
 #
@@ -12,8 +12,8 @@
 #
 # more complex and realistic combination of Tag and Route rules
 
-# firewall40:Policy:3: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
-# firewall40:Policy:4: error: Option Route is deprecated. You can use Custom Action to geenrate iptables command using '-j ROUTE' target if it is supported by your firewall OS
+# firewall40:Policy:3: error: Option Route is deprecated. You can use Custom Action to generate iptables command using '-j ROUTE' target if it is supported by your firewall OS
+# firewall40:Policy:4: error: Option Route is deprecated. You can use Custom Action to generate iptables command using '-j ROUTE' target if it is supported by your firewall OS
 
 
 FWBDEBUG=""
@@ -455,7 +455,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sat May 14 15:40:45 2011 by vadim"
+        log "Activating firewall script generated Thu May 26 14:16:17 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

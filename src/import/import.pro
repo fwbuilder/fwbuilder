@@ -20,18 +20,21 @@ SOURCES = QStringListOperators.cpp \
           PIXImporter.cpp \
           PIXImporterNat.cpp \
           PIXImporterRun.cpp \
+		  PFImporter.cpp \
+          PFImporterRun.cpp \
 
-HEADERS	 = QStringListOperators.h \
-	       PreImport.h \
-           objectMaker.h \
-           addressObjectMaker.h \
-           serviceObjectMaker.h \
-           getProtoByName.h \
-           getServByName.h \
-           Importer.h \
-           IOSImporter.h \
-           IPTImporter.h \
-           PIXImporter.h \
+HEADERS = QStringListOperators.h \
+	      PreImport.h \
+          objectMaker.h \
+          addressObjectMaker.h \
+          serviceObjectMaker.h \
+          getProtoByName.h \
+          getServByName.h \
+          Importer.h \
+          IOSImporter.h \
+          IPTImporter.h \
+          PIXImporter.h \
+		  PFImporter.h \
 
 CONFIG += staticlib
 

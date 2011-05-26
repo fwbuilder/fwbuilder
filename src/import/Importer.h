@@ -43,6 +43,9 @@
 
 #include <QString>
 
+typedef std::pair<std::string,std::string> str_tuple;
+typedef std::vector<std::string> str_vector;
+
 
 class Importer;
 
@@ -179,6 +182,9 @@ protected:
     virtual libfwbuilder::FWObject* createGroupOfInterfaces(
         const std::string &ruleset_name, std::list<std::string> &interfaces);
 
+    virtual libfwbuilder::FWObject* makeAddressObj(const std::string addr,
+                                                   const std::string netm);
+    
     virtual libfwbuilder::FWObject* makeSrcObj();
     virtual libfwbuilder::FWObject* makeDstObj();
     virtual libfwbuilder::FWObject* makeSrvObj();
@@ -363,6 +369,10 @@ public:
 
     void addMessageToLog(const std::string &msg);
     void addMessageToLog(const QString &msg);
+
+    
+    void rearrangeVlanInterfaces();
+
 };
 
 #endif

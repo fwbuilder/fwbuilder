@@ -92,7 +92,7 @@ bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
         int cluster_id = obj2->getInt("parent_cluster_id");
         if (obj1->getId() == cluster_id) return true;
     }
-    
+
     void* res = obj1->dispatch(this, obj2);
     return (res != NULL);
 }
@@ -411,8 +411,18 @@ void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
     return NULL;
 }
 
-void* ObjectMatcher::dispatch(MultiAddressRunTime*, void*)
+/*
+ * Special case: run-time DNSName object with source name "self"
+ * matches firewall.
+ */
+void* ObjectMatcher::dispatch(MultiAddressRunTime *obj1, void *_obj2)
 {
+    FWObject *obj2 = (FWObject*)(_obj2);
+   
+    if (obj1->getSubstitutionTypeName() == DNSName::TYPENAME &&
+        obj1->getSourceName() == "self" && Firewall::isA(obj2))
+        return obj1;
+
     return NULL;  // never matches in this implementation
 }
 
@@ -433,13 +443,26 @@ void* ObjectMatcher::dispatch(Firewall *obj1, void *_obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);
     if (obj1->getId() == obj2->getId()) return obj1;
+
+/*
+ * Special case: run-time DNSName object with source name "self"
+ * matches firewall.
+ */
+    MultiAddressRunTime *mart = MultiAddressRunTime::cast(obj2);
+    if (mart)
+    {
+        if (mart->getSubstitutionTypeName() == DNSName::TYPENAME &&
+            mart->getSourceName() == "self")
+            return obj1;
+    }
+
 /*
  *  match only if all interfaces of obj1 match obj2
  */
     bool res = true;
     list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
-        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
+        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);    
     return res ? obj1 : NULL;
 }
 
