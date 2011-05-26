@@ -2,8 +2,7 @@
 
 
 
-# Tables: (3)
-table <tbl.r0.d> { ppp0 , 33.33.33.33 , 192.168.1.1 } 
+# Tables: (2)
 table <tbl.r0.s> { 192.168.1.10 , 192.168.1.20 } 
 table <tbl.r2.s> { 192.168.1.0/24 , 192.168.2.0/24 } 
 
@@ -14,12 +13,12 @@ table <tbl.r2.s> { 192.168.1.0/24 , 192.168.2.0/24 }
 # Rule  0 (global)
 # firewall11:Policy:0: warning: Changing rule direction due to self reference
 
-pass in   quick inet proto tcp  from <tbl.r0.s>  to <tbl.r0.d> port 22 flags S/SA keep state 
+pass in   quick inet proto tcp  from <tbl.r0.s>  to self port 22 flags S/SA keep state 
 # 
 # Rule  1 (global)
 # firewall11:Policy:1: warning: Changing rule direction due to self reference
 
-block in   quick inet  from any  to <tbl.r0.d> 
+block in   quick inet  from any  to self 
 # 
 # Rule  2 (global)
 pass  quick inet  from <tbl.r2.s>  to any keep state 

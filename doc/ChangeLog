@@ -1,3 +1,15 @@
+2011-05-26  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_pf.cpp (compile): see #2434 "PF compiler should
+	use 'self' keyword where appropriate". Compiler for PF now uses
+	keyword 'self' in rules where firewall object is used in Source
+	or Destination.
+
+	* fwcompiler/Compiler.cpp (processNext): added rule processor to
+	replace firewall object with special run-time object "self" in
+	Source and Destination rule elements. This rule processor can
+	be used in policy compilers for any platform.
+
 2011-05-17  vadim  <vadim@netcitadel.com>
 
 	* FWObjectDatabase_tree_ops.cpp (merge): see #2420 "Crash when

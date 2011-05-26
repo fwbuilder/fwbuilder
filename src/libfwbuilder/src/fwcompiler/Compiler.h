@@ -828,9 +828,20 @@ public:
             virtual bool processNext();
         };
 
-
-
-
+        /**
+         * This rule processor replaces firewall object with
+         * DNSName object "self" configured as run-time with source
+         * name "self".
+         */
+        class ReplaceFirewallObjectWithSelfInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+                ReplaceFirewallObjectWithSelfInRE(const std::string &n,
+                                      std::string _type) :
+                BasicRuleProcessor(n) { re_type=_type; }
+            virtual bool processNext();
+        };
         
         /**
          * prints rule in some universal format (close to that visible

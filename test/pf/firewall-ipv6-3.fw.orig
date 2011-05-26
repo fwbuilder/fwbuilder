@@ -1,9 +1,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v4.3.0.1
+#  Firewall Builder  fwb_pf v4.3.0.3546
 #
-#  Generated Tue May 10 14:53:34 2011 PDT by vadim
+#  Generated Thu May 26 14:09:43 2011 PDT by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
 # files:   firewall-ipv6-3.conf /etc/firewall-ipv6-3.conf

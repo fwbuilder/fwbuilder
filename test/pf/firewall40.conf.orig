@@ -1,10 +1,6 @@
 
 
 
-
-# Tables: (1)
-table <tbl.r4.s> { 192.0.2.1 , 192.0.3.1 , 192.168.1.1 } 
-
 # 
 # Rule  0 (NAT)
 # Translate source address
@@ -30,7 +26,7 @@ pass in   quick on fxp0 route-to { ( le1 192.0.2.10 ) } inet proto tcp  from 192
 pass in   quick on fxp0 route-to { ( le2 192.0.3.10 ) } inet proto tcp  from 192.168.1.0/24  to any port 22  label "RULE 3 -- ACCEPT "  
 # 
 # Rule  4 (global)
-pass out  quick inet  from <tbl.r4.s>  to any keep state  label "RULE 4 -- ACCEPT "  
+pass out  quick inet  from self  to any keep state  label "RULE 4 -- ACCEPT "  
 # 
 # Rule  5 (global)
 block  log  quick inet  from any  to any  label "RULE 5 -- DROP "  

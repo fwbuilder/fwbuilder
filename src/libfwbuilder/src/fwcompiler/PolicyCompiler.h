@@ -187,6 +187,27 @@ namespace fwcompiler {
                 expandMultipleAddressesInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
+
+
+
+        class ReplaceFirewallObjectWithSelfInSrc : public Compiler::ReplaceFirewallObjectWithSelfInRE
+        {
+            public:
+            ReplaceFirewallObjectWithSelfInSrc(const std::string &n) :
+                ReplaceFirewallObjectWithSelfInRE(
+                    n, libfwbuilder::RuleElementSrc::TYPENAME) {}
+        };
+
+        class ReplaceFirewallObjectWithSelfInDst : public Compiler::ReplaceFirewallObjectWithSelfInRE
+        {
+            public:
+            ReplaceFirewallObjectWithSelfInDst(const std::string &n) :
+                ReplaceFirewallObjectWithSelfInRE(
+                    n, libfwbuilder::RuleElementDst::TYPENAME) {}
+        };
+
+
+        
 	/**
 	 * processes rules with negation in Itf
 	 */

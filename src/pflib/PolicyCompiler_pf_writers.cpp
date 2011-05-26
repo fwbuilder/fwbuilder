@@ -758,7 +758,7 @@ string PolicyCompiler_pf::PrintRule::_printTCPFlags(libfwbuilder::TCPService *sr
     return str;
 }
 
-void PolicyCompiler_pf::PrintRule::_printAddr(Address  *o,bool )
+void PolicyCompiler_pf::PrintRule::_printAddr(Address *o, bool )
 {
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL)
@@ -880,7 +880,7 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElement  *rel)
     FWReference *oref = FWReference::cast(o);
     if (o && oref!=NULL) o=oref->getPointer();
 
-    Address *dst= Address::cast(o);
+    Address *dst = Address::cast(o);
 
     _printNegation(rel);
 

@@ -2281,7 +2281,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1263586319" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1306442913" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3002,7 +3002,9 @@
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
           <Option name="conf_file_name_on_firewall">/etc/pf.conf</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_carp_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_pfsync_interfaces">False</Option>
@@ -3014,6 +3016,8 @@
           <Option name="firewall_dir">/etc/firewall</Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="generate_rc_conf_file">False</Option>
+          <Option name="generate_shell_script">True</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="inst_cmdline"></Option>
@@ -3050,6 +3054,7 @@
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">12000</Option>
           <Option name="pf_adaptive_start">6000</Option>
+          <Option name="pf_block_policy"></Option>
           <Option name="pf_do_limit_frags">True</Option>
           <Option name="pf_do_limit_src_nodes">True</Option>
           <Option name="pf_do_limit_states">True</Option>
@@ -3078,9 +3083,11 @@
           <Option name="pf_scrub_no_df">False</Option>
           <Option name="pf_scrub_random_id">False</Option>
           <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_reassemble_tcp">False</Option>
           <Option name="pf_scrub_use_maxmss">False</Option>
           <Option name="pf_scrub_use_minttl">False</Option>
           <Option name="pf_set_adaptive">True</Option>
+          <Option name="pf_set_debug"></Option>
           <Option name="pf_set_icmp_error">True</Option>
           <Option name="pf_set_icmp_first">True</Option>
           <Option name="pf_set_other_first">True</Option>
@@ -3095,6 +3102,7 @@
           <Option name="pf_set_udp_first">True</Option>
           <Option name="pf_set_udp_multiple">True</Option>
           <Option name="pf_set_udp_single">True</Option>
+          <Option name="pf_state_policy"></Option>
           <Option name="pf_tcp_closed">30</Option>
           <Option name="pf_tcp_closing">60</Option>
           <Option name="pf_tcp_established">86400</Option>

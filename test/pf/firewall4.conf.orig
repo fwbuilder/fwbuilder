@@ -5,7 +5,7 @@ set optimization high-latency
 
 # Tables: (3)
 table <tbl.r2> { eth1 , 192.168.1.1 , 192.168.2.1 , 222.222.222.222 } 
-table <tbl.r4.s> { eth1 , 192.168.1.0/24 , 192.168.1.1 , 192.168.2.1 , 222.222.222.222 } 
+table <tbl.r4.s> { self  , 192.168.1.0/24 } 
 table <tbl.r6.s> { 192.168.1.10 , 192.168.1.20 } 
 
 
@@ -59,7 +59,7 @@ block  log  quick on eth1 inet proto icmp  from ! 192.168.2.0/24  to any icmp-ty
 # 
 # Rule  3 (eth1)
 # Anti-spoofing rule
-block in   log  quick on eth1 inet  from <tbl.r2>  to any 
+block in   log  quick on eth1 inet  from self  to any 
 block in   log  quick on eth1 inet  from 192.168.1.0/24  to any 
 # 
 # Rule  4 (eth1)
@@ -73,7 +73,7 @@ pass  log  quick inet proto icmp  from any  to 192.168.1.1 icmp-type 8 code 0  k
 # Rule  6 (global)
 # firewall4:Policy:6: warning: Changing rule direction due to self reference
 
-block in   log  quick inet proto icmp  from ! <tbl.r6.s>  to <tbl.r2> icmp-type 3  
+block in   log  quick inet proto icmp  from ! <tbl.r6.s>  to self icmp-type 3  
 # 
 # Rule  7 (global)
 # testing negation in the policy rule

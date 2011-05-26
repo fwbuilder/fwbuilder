@@ -29,6 +29,7 @@
 #include "NATCompiler_pf.h"
 
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/DNSName.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
@@ -655,6 +656,8 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
         for (FWObject::iterator j=dst->begin(); j!=dst->end(); j++) 
         {
             FWObject *o2 = FWReference::getObject(*j);
+            if (o2->getName() == "self" && DNSName::isA(o2)) continue;
+
             Address *a = Address::cast( o2 );
             assert(a);
 
@@ -937,7 +940,20 @@ void PolicyCompiler_pf::compile()
     //    "process interface policy rules and store interface ids"));
 
     add(new splitIfFirewallInSrc("split rule if firewall is in Src"));
+    add(new ReplaceFirewallObjectWithSelfInSrc(
+            "Replace firewall object with 'self' in Src"));
+
     add(new splitIfFirewallInDst("split rule if firewall is in Dst"));
+    add(new ReplaceFirewallObjectWithSelfInDst(
+            "Replace firewall object with 'self' in Dst"));
+
+    // call these again since "self" is a MultiAddress object
+    add( new swapMultiAddressObjectsInSrc(
+             " swap MultiAddress -> MultiAddressRunTime in Src"));
+    add( new swapMultiAddressObjectsInDst(
+             " swap MultiAddress -> MultiAddressRunTime in Dst"));
+
+
     add(new fillDirection("determine directions"));
 
 // commented out for bug #2828602
@@ -949,6 +965,7 @@ void PolicyCompiler_pf::compile()
             "add loopback to rules that permit redirected services"));
     add(new ExpandMultipleAddresses(
             "expand objects with multiple addresses"));
+
     add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
     add(new checkForDynamicInterfacesOfOtherObjects(
             "check for dynamic interfaces of other hosts and firewalls"));

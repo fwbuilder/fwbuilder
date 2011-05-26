@@ -519,8 +519,16 @@ void Compiler::_expand_interface(Rule *rule,
     }
 }
 
-bool compare_addresses(Address *a1, Address *a2)
+bool compare_addresses(FWObject *o1, FWObject *o2)
 {
+    Address *a1 = Address::cast(o1);
+    Address *a2 = Address::cast(o2);
+    if (a1 == NULL || a2 == NULL)
+    {
+        // one or both could be MultiAddress objects (e.g. DNSName)
+        return o1->getName() < o2->getName();
+    }
+
     const InetAddr *addr1 = a1->getAddressPtr();
     const InetAddr *addr2 = a2->getAddressPtr();
     if (addr1 == NULL) return true;
@@ -541,18 +549,18 @@ void Compiler::_expand_addr(Rule *rule, FWObject *s,
     list<FWObject*> cl;
     _expand_addr_recursive(rule, s, cl, expand_cluster_interfaces_fully);
     
-    list<Address*> expanded_addresses;
+    list<FWObject*> expanded_addresses;
     for (FWObject::iterator i=cl.begin(); i!=cl.end(); ++i) 
     {
-        expanded_addresses.push_back(Address::cast(*i));
+        expanded_addresses.push_back(*i);
     }
 
     expanded_addresses.sort(compare_addresses);
 
     s->clearChildren();
 
-    for (list<Address*>::iterator i1=expanded_addresses.begin();
-         i1!=expanded_addresses.end(); ++i1) 
+    for (list<FWObject*>::iterator i1=expanded_addresses.begin();
+         i1!=expanded_addresses.end(); ++i1)
     {
         s->addRef( *i1 );
     }
@@ -860,6 +868,48 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
     return true;
 }
 
+/*
+ * This rule processor replaces firewall object in given rule element
+ * with run-time DNSName object with name "self" and source name (A
+ * record) set to "self". This is a trick in that when compliers see
+ * objects like that in a rule, they just put source name in the
+ * generated code verbatim. This is useful for firewall platforms that
+ * support keyword "self" (e.g. PF).
+ *
+ * Always call this RE after splitIfFirewallInSrc or splitIfFirewallInDst
+ */
+bool Compiler::ReplaceFirewallObjectWithSelfInRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule();
+    if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+
+    for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1)
+    {
+        FWObject *obj = FWReference::getObject(*i1);
+        if (obj == compiler->fw)
+        {
+            DNSName *self = DNSName::cast(
+                compiler->persistent_objects->findObjectByName(
+                    DNSName::TYPENAME, "self"));
+            if (self == NULL)
+            {
+                self = compiler->dbcopy->createDNSName();
+                self->setName("self");
+                self->setRunTime(true);
+                self->setSourceName("self");
+                compiler->persistent_objects->add(self, false);
+            }
+
+            re->addRef(self);
+            re->removeRef(compiler->fw);
+            break;
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
 
 bool Compiler::equalObj::operator()(FWObject *o)
 {

@@ -50,10 +50,10 @@ rdr proto tcp from any to any port 80 -> 127.0.0.1 port 3128
 # 
 # Rule  backup ssh access rule
 #    backup ssh access rule 
-pass in   quick inet proto tcp  from 192.168.1.100  to <tbl.r2> port 22 flags S/SA modulate state  label "RULE -1 - ACCEPT"  
+pass in   quick inet proto tcp  from 192.168.1.100  to self port 22 flags S/SA modulate state  label "RULE -1 - ACCEPT"  
 # 
 # Rule  0 (eth1)
-block in   log  quick on eth1 inet  from any  to <tbl.r2>  fragment  label "RULE 0 - DROP"  
+block in   log  quick on eth1 inet  from any  to self  fragment  label "RULE 0 - DROP"  
 # 
 # Rule  1 (eth1)
 # Automatically generated rule blocking short fragments
@@ -61,14 +61,14 @@ block in   log  quick on eth1 inet  from any  to any  fragment  label "RULE 1 - 
 # 
 # Rule  2 (eth1)
 # Automatically generated anti-spoofing rule
-block in   log  quick on eth1 inet  from <tbl.r2>  to any  label "RULE 2 - DROP"  
+block in   log  quick on eth1 inet  from self  to any  label "RULE 2 - DROP"  
 block in   log  quick on eth1 inet  from 192.168.1.0/24  to any  label "RULE 2 - DROP"  
 # 
 # Rule  3 (eth0)
 # комментарий по-русски, Проверяем конвертацию в Utf-8
 # firewall:Policy:3: warning: Changing rule direction due to self reference
 
-pass in   quick on eth0 inet proto udp  from 192.168.1.0/24  to <tbl.r2> port 53 keep state  label "RULE 3 - ACCEPT"  
+pass in   quick on eth0 inet proto udp  from 192.168.1.0/24  to self port 53 keep state  label "RULE 3 - ACCEPT"  
 # 
 # Rule  4 (eth0)
 # code should go into INPUT chain with 
@@ -109,7 +109,7 @@ pass  quick inet  from any  to 192.168.1.10 keep state  label "RULE 16 - ACCEPT"
 # firewall:Policy:18: error: Rule '18 (global)' shadows rule '21 (global)'  below it
 # firewall:Policy:18: warning: Changing rule direction due to self reference
 
-pass out  quick inet  from <tbl.r2>  to any keep state  label "RULE 18 - ACCEPT"  
+pass out  quick inet  from self  to any keep state  label "RULE 18 - ACCEPT"  
 pass  quick inet  from 192.168.1.0/24  to any keep state  label "RULE 18 - ACCEPT"  
 # 
 # Rule  19 (global)
