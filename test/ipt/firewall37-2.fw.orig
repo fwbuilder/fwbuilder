@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3542
+#  Firewall Builder  fwb_ipt v4.3.0.3546
 #
-#  Generated Sat May 14 15:40:39 2011 PDT by vadim
+#  Generated Thu May 26 14:16:09 2011 PDT by vadim
 #
 # files: * firewall37-2.fw /etc/fw/firewall37-2.fw
 #
@@ -328,6 +328,14 @@ script_body() {
 
 
 
+    # ================ Table 'mangle', rule set classify_2
+    # 
+    # Rule classify_2 0 (global)
+    # 
+    echo "Rule classify_2 0 (global)"
+    # 
+    $IPTABLES -N classify_2 -t mangle
+    $IPTABLES -t mangle -A classify_2  -s 192.168.1.0/24   -j CLASSIFY --set-class 1:12
     # ================ Table 'mangle', rule set Policy
     # 
     # Rule 0 (eth0)
@@ -497,6 +505,38 @@ script_body() {
     $IPTABLES -t mangle -A POSTROUTING -i eth0   -s 192.168.1.0/24   -j Cid994761X26049.1
     $IPTABLES -t mangle -A Cid994761X26049.1 -p icmp  -m icmp  --icmp-type 8/0   -j CLASSIFY --set-class 1:2
     $IPTABLES -t mangle -A Cid994761X26049.1 -p tcp -m tcp  --dport 80  -j CLASSIFY --set-class 1:2
+    # 
+    # Rule 16 (global)
+    # 
+    echo "Rule 16 (global)"
+    # 
+    # test for #2405
+    # branching in mangle; branch rule set
+    # uses CLASSIFY that is ivalid in PREROUTING
+    # "Assume fw is part of any" is off for this rule
+    $IPTABLES -t mangle -A PREROUTING  -j classify_2
+    $IPTABLES -t mangle -A POSTROUTING  -j classify_2
+    $IPTABLES -t mangle -A FORWARD  -j classify_2
+    # 
+    # Rule 17 (global)
+    # 
+    echo "Rule 17 (global)"
+    # 
+    # test for #2405
+    # branching in mangle; branch rule set
+    # uses CLASSIFY that is ivalid in PREROUTING
+    # "Assume fw is part of any" is off for this rule
+    # Should create branch in OUTPUT instead of 
+    # enumerating all ip addresses of the fw in PREROUTING
+    $IPTABLES -t mangle -A PREROUTING  -s 22.22.23.22   -j classify_2
+    $IPTABLES -t mangle -A PREROUTING  -s 192.168.1.22   -j classify_2
+    $IPTABLES -t mangle -A PREROUTING  -s 192.168.2.1   -j classify_2
+    $IPTABLES -t mangle -A POSTROUTING  -s 22.22.23.22   -j classify_2
+    $IPTABLES -t mangle -A POSTROUTING  -s 192.168.1.22   -j classify_2
+    $IPTABLES -t mangle -A POSTROUTING  -s 192.168.2.1   -j classify_2
+    $IPTABLES -t mangle -A FORWARD  -s 22.22.23.22   -j classify_2
+    $IPTABLES -t mangle -A FORWARD  -s 192.168.1.22   -j classify_2
+    $IPTABLES -t mangle -A FORWARD  -s 192.168.2.1   -j classify_2
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -580,12 +620,35 @@ script_body() {
     # 
     echo "Rule 16 (global)"
     # 
-    $IPTABLES -N RULE_16
-    $IPTABLES -A OUTPUT  -j RULE_16
-    $IPTABLES -A INPUT  -j RULE_16
-    $IPTABLES -A FORWARD  -j RULE_16
-    $IPTABLES -A RULE_16  -j LOG  --log-level info --log-prefix "RULE 16 -- DENY "
-    $IPTABLES -A RULE_16  -j DROP
+    # test for #2405
+    # branching in mangle; branch rule set
+    # uses CLASSIFY that is ivalid in PREROUTING
+    # "Assume fw is part of any" is off for this rule
+    $IPTABLES -N classify_2
+    $IPTABLES -A FORWARD  -j classify_2
+    # 
+    # Rule 17 (global)
+    # 
+    echo "Rule 17 (global)"
+    # 
+    # test for #2405
+    # branching in mangle; branch rule set
+    # uses CLASSIFY that is ivalid in PREROUTING
+    # "Assume fw is part of any" is off for this rule
+    # Should create branch in OUTPUT instead of 
+    # enumerating all ip addresses of the fw in PREROUTING
+    $IPTABLES -A OUTPUT  -j classify_2
+    # 
+    # Rule 18 (global)
+    # 
+    echo "Rule 18 (global)"
+    # 
+    $IPTABLES -N RULE_18
+    $IPTABLES -A OUTPUT  -j RULE_18
+    $IPTABLES -A INPUT  -j RULE_18
+    $IPTABLES -A FORWARD  -j RULE_18
+    $IPTABLES -A RULE_18  -j LOG  --log-level info --log-prefix "RULE 18 -- DENY "
+    $IPTABLES -A RULE_18  -j DROP
 }
 
 ip_forward() {
@@ -641,7 +704,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sat May 14 15:40:39 2011 by vadim"
+        log "Activating firewall script generated Thu May 26 14:16:09 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

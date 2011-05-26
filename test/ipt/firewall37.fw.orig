@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3542
+#  Firewall Builder  fwb_ipt v4.3.0.3546
 #
-#  Generated Sat May 14 15:40:41 2011 PDT by vadim
+#  Generated Thu May 26 14:16:05 2011 PDT by vadim
 #
 # files: * firewall37.fw /etc/fw/firewall37.fw
 #
@@ -618,21 +618,29 @@ script_body() {
     # 
     echo "Rule 30 (global)"
     # 
+    $IPTABLES -t mangle -A POSTROUTING  -s 22.22.23.22   -j CLASSIFY --set-class 1:2
+    $IPTABLES -t mangle -A POSTROUTING  -s 192.168.1.22   -j CLASSIFY --set-class 1:2
+    $IPTABLES -t mangle -A POSTROUTING  -s 192.168.2.1   -j CLASSIFY --set-class 1:2
+    # 
+    # Rule 31 (global)
+    # 
+    echo "Rule 31 (global)"
+    # 
     # testing for bug #1618381
     # classify action is non-terminating
     # in this firewall object
     $IPTABLES -t mangle -A POSTROUTING -p icmp  -m icmp  --icmp-type 3  -j CLASSIFY --set-class 1:10
     # 
-    # Rule 31 (eth0)
+    # Rule 32 (eth0)
     # 
-    echo "Rule 31 (eth0)"
+    echo "Rule 32 (eth0)"
     # 
     # second rule for bug #1618381
     $IPTABLES -t mangle -A POSTROUTING -o eth0   -j CLASSIFY --set-class 1:11
     # 
-    # Rule 32 (global)
+    # Rule 33 (global)
     # 
-    echo "Rule 32 (global)"
+    echo "Rule 33 (global)"
     # 
     # testing for bug #1618381
     $IPTABLES -N Cid459A026219324.0 -t mangle
@@ -641,9 +649,9 @@ script_body() {
     $IPTABLES -t mangle -A Cid459A026219324.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid459A026219324.0  -j CLASSIFY --set-class 1:10
     # 
-    # Rule 33 (global)
+    # Rule 34 (global)
     # 
-    echo "Rule 33 (global)"
+    echo "Rule 34 (global)"
     # 
     # testing for bug #1618381
     $IPTABLES -N Cid459A5AFB19324.0 -t mangle
@@ -653,9 +661,9 @@ script_body() {
     $IPTABLES -t mangle -A Cid459A5AFB19324.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -t mangle -A Cid459A5AFB19324.0  -j CLASSIFY --set-class 1:10
     # 
-    # Rule 34 (eth0)
+    # Rule 35 (eth0)
     # 
-    echo "Rule 34 (eth0)"
+    echo "Rule 35 (eth0)"
     # 
     # bug #1618381
     # this rule uses multiport
@@ -665,9 +673,9 @@ script_body() {
     $IPTABLES -t mangle -A POSTROUTING -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j CLASSIFY --set-class 1:11
     $IPTABLES -t mangle -A POSTROUTING -o eth0  -p udp -m udp  -m multiport  --dports 53,161  -j CLASSIFY --set-class 1:11
     # 
-    # Rule 36 (global)
+    # Rule 37 (global)
     # 
-    echo "Rule 36 (global)"
+    echo "Rule 37 (global)"
     # 
     $IPTABLES -t mangle -A PREROUTING  -j mymark
     $IPTABLES -t mangle -A POSTROUTING  -j mymark
@@ -1150,9 +1158,9 @@ script_body() {
     $IPTABLES -A Out_RULE_29  -j LOG  --log-level info --log-prefix "RULE 29 -- ACCEPT "
     $IPTABLES -A Out_RULE_29  -j ACCEPT
     # 
-    # Rule 30 (global)
+    # Rule 31 (global)
     # 
-    echo "Rule 30 (global)"
+    echo "Rule 31 (global)"
     # 
     # testing for bug #1618381
     # classify action is non-terminating
@@ -1161,9 +1169,9 @@ script_body() {
     $IPTABLES -A INPUT -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
     $IPTABLES -A FORWARD -p icmp  -m icmp  --icmp-type 3  -j ACCEPT
     # 
-    # Rule 31 (eth0)
+    # Rule 32 (eth0)
     # 
-    echo "Rule 31 (eth0)"
+    echo "Rule 32 (eth0)"
     # 
     # second rule for bug #1618381
     $IPTABLES -A INPUT -i eth0   -j ACCEPT
@@ -1171,9 +1179,9 @@ script_body() {
     $IPTABLES -A OUTPUT -o eth0   -j ACCEPT
     $IPTABLES -A FORWARD -o eth0   -j ACCEPT
     # 
-    # Rule 32 (global)
+    # Rule 33 (global)
     # 
-    echo "Rule 32 (global)"
+    echo "Rule 33 (global)"
     # 
     # testing for bug #1618381
     $IPTABLES -N Cid459A026219324.0
@@ -1184,9 +1192,9 @@ script_body() {
     $IPTABLES -A Cid459A026219324.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -A Cid459A026219324.0  -j ACCEPT
     # 
-    # Rule 33 (global)
+    # Rule 34 (global)
     # 
-    echo "Rule 33 (global)"
+    echo "Rule 34 (global)"
     # 
     # testing for bug #1618381
     $IPTABLES -N Cid459A5AFB19324.0
@@ -1200,9 +1208,9 @@ script_body() {
     $IPTABLES -A Cid459A5AFB19324.0  -s 192.168.2.0/24   -j RETURN
     $IPTABLES -A Cid459A5AFB19324.0  -j ACCEPT
     # 
-    # Rule 34 (eth0)
+    # Rule 35 (eth0)
     # 
-    echo "Rule 34 (eth0)"
+    echo "Rule 35 (eth0)"
     # 
     # bug #1618381
     # this rule uses multiport
@@ -1221,24 +1229,13 @@ script_body() {
     $IPTABLES -A FORWARD -o eth0  -p tcp -m tcp  -m multiport  --dports 113,13,53,2105,21,70,80,443,6667,119,25,3128,22,23,540  -j ACCEPT
     $IPTABLES -A FORWARD -o eth0  -p udp -m udp  -m multiport  --dports 53,161  -j ACCEPT
     # 
-    # Rule 35 (global)
-    # 
-    echo "Rule 35 (global)"
-    # 
-    $IPTABLES -A INPUT  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
-    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
-    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
-    # 
     # Rule 36 (global)
     # 
     echo "Rule 36 (global)"
     # 
-    $IPTABLES -N RULE_36
-    $IPTABLES -A OUTPUT  -j RULE_36
-    $IPTABLES -A INPUT  -j RULE_36
-    $IPTABLES -A FORWARD  -j RULE_36
-    $IPTABLES -A RULE_36  -j LOG  --log-level info --log-prefix "RULE 36 -- BRANCH "
-    $IPTABLES -A RULE_36  -j mymark
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
+    $IPTABLES -A OUTPUT  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
+    $IPTABLES -A FORWARD  -s 192.168.1.0/24   -j TCPMSS --set-mss 1400
     # 
     # Rule 37 (global)
     # 
@@ -1248,8 +1245,19 @@ script_body() {
     $IPTABLES -A OUTPUT  -j RULE_37
     $IPTABLES -A INPUT  -j RULE_37
     $IPTABLES -A FORWARD  -j RULE_37
-    $IPTABLES -A RULE_37  -j LOG  --log-level info --log-prefix "RULE 37 -- DENY "
-    $IPTABLES -A RULE_37  -j DROP
+    $IPTABLES -A RULE_37  -j LOG  --log-level info --log-prefix "RULE 37 -- BRANCH "
+    $IPTABLES -A RULE_37  -j mymark
+    # 
+    # Rule 38 (global)
+    # 
+    echo "Rule 38 (global)"
+    # 
+    $IPTABLES -N RULE_38
+    $IPTABLES -A OUTPUT  -j RULE_38
+    $IPTABLES -A INPUT  -j RULE_38
+    $IPTABLES -A FORWARD  -j RULE_38
+    $IPTABLES -A RULE_38  -j LOG  --log-level info --log-prefix "RULE 38 -- DENY "
+    $IPTABLES -A RULE_38  -j DROP
 }
 
 ip_forward() {
@@ -1305,7 +1313,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sat May 14 15:40:41 2011 by vadim"
+        log "Activating firewall script generated Thu May 26 14:16:05 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
