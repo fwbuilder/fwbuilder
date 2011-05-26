@@ -41,34 +41,151 @@
 #include <QString>
 
 
+class InterfaceSpec
+{
+public:
+
+    bool neg;
+    std::string name;
+
+    InterfaceSpec()
+    { neg = false; name = ""; }
+
+    InterfaceSpec(const InterfaceSpec &other)
+    {
+        neg = other.neg;
+        name = other.name;
+    }
+    
+    InterfaceSpec(bool _neg, const std::string _name)
+    { neg = _neg; name = _name; }
+};
+
+
+
+class AddressSpec
+{
+public:
+    
+    typedef enum {
+        UNKNOWN,
+        ANY,
+        HOST_ADDRESS,
+        NETWORK_ADDRESS,
+        SPECIAL_ADDRESS,
+        INTERFACE_NAME,
+        TABLE } address_type;
+    
+    address_type at;
+    std::string address;
+    std::string netmask;
+
+    AddressSpec()
+    { at = UNKNOWN; address = ""; netmask = ""; }
+
+    AddressSpec(const AddressSpec &other)
+    {
+        at = other.at;
+        address = other.address;
+        netmask = other.netmask;
+    }
+    
+    AddressSpec(address_type _at, const std::string _addr, const std::string _nm)
+    { at = _at; address = _addr; netmask = _nm; }
+};
+
+
+class PortSpec
+{
+public:
+    std::string port1;
+    std::string port2;
+    std::string port_op;
+
+    PortSpec()
+    { port1 = ""; port2 = ""; port_op = ""; }
+
+    PortSpec(const PortSpec &other)
+    {
+        port1 = other.port1;
+        port2 = other.port2;
+        port_op = other.port_op;
+    }
+    
+    PortSpec(const std::string s1, const std::string s2, const std::string s3)
+    { port1 = s1; port2 = s2; port_op = s3; }
+};
+
+
+class RouteSpec
+{
+public:
+    
+    std::string iface;
+    std::string address;
+    std::string netmask;
+
+    RouteSpec()
+    { iface = ""; address = ""; netmask = ""; }
+
+    RouteSpec(const RouteSpec &other)
+    {
+        iface = other.iface;
+        address = other.address;
+        netmask = other.netmask;
+    }
+    
+    RouteSpec(const std::string _iface,
+              const std::string _addr, const std::string _nm)
+    { iface = _iface; address = _addr; netmask = _nm; }
+};
+
+
+
+
 class PFImporter : public Importer
 {
     
 public:
 
+    typedef enum {
+        UNKNOWN,
+        ROUTE_TO,
+        REPLY_TO,
+        DUP_TO} route_op_type;
+    
     std::string direction;
-    std::string iface;
     std::string address_family;
     bool quick;
     bool src_neg;
     bool dst_neg;
     bool tmp_neg;
+
+    std::list<InterfaceSpec> iface_group;
     
     std::list<std::string> proto_list;
-    std::list<std::pair<std::string, std::string> > src_group;
-    std::list<std::pair<std::string, std::string> > dst_group;
-    std::list<std::pair<std::string, std::string> > tmp_group;
+    std::list< AddressSpec > src_group;
+    std::list< AddressSpec > dst_group;
+    std::list< AddressSpec > tmp_group;
 
-    // each item in the list is a vector of 2 or 3 strings
-    // Unary operations are represented by 2 strings, binary operations
-    // use 3 strings
+    std::string tmp_port_op;
     std::string tmp_port_def;
-    std::list< std::vector<std::string> > src_port_group;
-    std::list< std::vector<std::string> > dst_port_group;
-    std::list< std::vector<std::string> > tmp_port_group;
+    std::list< PortSpec > src_port_group;
+    std::list< PortSpec > dst_port_group;
+    std::list< PortSpec > tmp_port_group;
+
+    std::list<str_tuple>  icmp_type_code_group;
+
+    route_op_type route_type;
+    std::list<RouteSpec> route_group;
     
     std::string queue;
     std::string state_op;
+    std::string logopts;
+    std::string flags_check;
+    std::string flags_mask;
+    std::string tag;
+    std::string tagged;
     
     libfwbuilder::NATRule::NATRuleTypes rule_type;
     

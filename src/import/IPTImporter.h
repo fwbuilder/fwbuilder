@@ -43,8 +43,6 @@
 #include <QMap>
 
 
-typedef std::pair<std::string,std::string> str_tuple;
-
 class IPTImporter : public Importer
 {
 

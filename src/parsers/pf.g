@@ -125,6 +125,8 @@ cfgfile :
         |
             scrub_command
         |
+            table_command
+        |
             nat_command
         |
             rdr_command
@@ -172,7 +174,7 @@ altq_command : ALTQ
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                QString("Warning: import of 'altq' commands is not supported."));
+                QString("Error: import of 'altq' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -183,7 +185,7 @@ queue_command : QUEUE
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                QString("Warning: import of 'queue' commands is not supported."));
+                QString("Error: import of 'queue' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -211,6 +213,17 @@ scrub_command : SCRUB
     ;
 
 //****************************************************************
+table_command : TABLE
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addMessageToLog(
+                QString("Warning: import of 'table' commands has not been implemented yet."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+//****************************************************************
 nat_command : NAT
         {
             importer->clear();
@@ -227,7 +240,7 @@ binat_command : BINAT
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->addMessageToLog(
-                QString("Warning: import of 'binat' commands is not supported."));
+                QString("Error: import of 'binat' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -267,7 +280,7 @@ unknown_command : WORD
 
 //****************************************************************
 
-pass_command: PASS
+pass_command : PASS
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -277,13 +290,11 @@ pass_command: PASS
         }
         rule_extended NEWLINE
         {
-            importer->setInterfaceAndDirectionForRuleSet(
-                "", importer->iface, importer->direction);
             importer->pushRule();
         }
     ;
 
-block_command: BLOCK
+block_command : BLOCK
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -293,68 +304,91 @@ block_command: BLOCK
         }
         rule_extended NEWLINE
         {
-            importer->setInterfaceAndDirectionForRuleSet(
-                "", importer->iface, importer->direction);
             importer->pushRule();
         }
     ;
 
-rule_extended:
-        direction
-        (logging)?
-        (quick)?
-        (intrface)?
-        (
-            (address_family)?
-            (protospec)?
-            hosts
-            filteropts
-        )?
+rule_extended :
+        ( direction )?
+        ( logging )?
+        ( quick )?
+        ( intrface )?
+        ( route )?
+        ( address_family )?
+        ( protospec )?
+        ( hosts )?
+        ( filteropts )?
     ;
 
-direction: (IN | OUT)
+direction : ( IN | OUT )
         {
             importer->direction = LT(0)->getText();
         }
     ;
 
-logging: LOG logopts
+logging : 
+        LOG (logopts)?
         {
             importer->logging = true;
         }
     ;
 
-logopts:
+logopts :
+        OPENING_PAREN
         logopt
         (
-            COMMA
+            COMMA    { importer->logopts += ","; }
             logopt
         )*
+        CLOSING_PAREN
     ;
 
-logopt: ALL | USER | TO WORD
+logopt : ALL | USER | TO WORD
+        {
+            importer->logopts += LT(0)->getText();
+        }
     ;
 
-quick: QUICK
+quick : QUICK
         {
             importer->quick = true;
         }
     ;
 
-intrface: ON WORD
+intrface : ON ( ifspec | interface_list )
+    ;
+
+ifspec { InterfaceSpec is; } :
+        ( EXLAMATION { is.neg = true; } )?
+        WORD
         {
-            importer->iface = LT(0)->getText();
-            importer->newInterface(importer->iface);
+            is.name = LT(0)->getText();
+            importer->iface_group.push_back(is);
+            importer->newInterface(is.name);
         }
     ;
 
-address_family: INET | INET6
+interface_list :
+        OPENING_BRACE
+        ifspec
+        (
+            ( COMMA )?
+            ifspec
+        )*
+        CLOSING_BRACE
+    ;
+
+
+address_family : INET | INET6
         {
             importer->address_family = LT(0)->getText();
         }
     ;
 
-protospec: PROTO
+protospec : PROTO proto_def
+    ;
+
+proto_def :
         (
             proto_name
         |
@@ -364,63 +398,59 @@ protospec: PROTO
         )
     ;
 
-proto_name: (IP | ICMP | IGMP | TCP | UDP | RDP | RSVP | GRE | ESP | AH |
+proto_name : (IP | ICMP | IGMP | TCP | UDP | RDP | RSVP | GRE | ESP | AH |
              EIGRP | OSPF | IPIP | VRRP | L2TP | ISIS )
         {
             importer->proto_list.push_back(LT(0)->getText());
         }
     ;
 
-proto_number: INT_CONST
+proto_number : INT_CONST
         {
             importer->proto_list.push_back(LT(0)->getText());
         }
     ;
 
-proto_list: 
+proto_list : 
         OPENING_BRACE
-        protospec
+        proto_def
         (
-            COMMA
-            protospec
+            ( COMMA )?
+            proto_def
         )*
         CLOSING_BRACE
     ;
 
-hosts:
+hosts :
         ALL
+        {
+            importer->src_group.push_back(
+                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+            importer->dst_group.push_back(
+                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+        }
     |
-        (
-            (
-                FROM
-                ( src_hosts_part )?
-                ( src_port_part )?
-            )?
-            (
-                TO
-                ( dst_hosts_part )?
-                ( dst_port_part )?
-            )
-        )
+        ( hosts_from )?  ( hosts_to )?
     ;
 
-src_hosts_part:
+hosts_from :
+        FROM ( src_hosts_part )? ( src_port_part )?
+    ;
+
+hosts_to :
+        TO ( dst_hosts_part )? ( dst_port_part )?
+    ;
+
+src_hosts_part :
         (
-            ANY
+            common_hosts_part
+        |
+            URPF_FAILED
             {
                 importer->tmp_group.push_back(
-                    std::pair<std::string, std::string>("0.0.0.0", "0.0.0.0"));
+                    AddressSpec(AddressSpec::SPECIAL_ADDRESS,
+                                "urpf-failed", ""));
             }
-        |
-            SELF
-            {   
-                importer->tmp_group.push_back(
-                    std::pair<std::string, std::string>("self", "255.255.255.255"));
-            }
-        |
-            host
-        |
-            host_list
         )
         {
             importer->src_neg = importer->tmp_neg;
@@ -429,35 +459,42 @@ src_hosts_part:
         }
     ;
 
-dst_hosts_part:
-        (
-            ANY
-            {
-                importer->tmp_group.push_back(
-                    std::pair<std::string, std::string>("0.0.0.0", "0.0.0.0"));
-            }
-        |
-            SELF
-            {   
-                importer->tmp_group.push_back(
-                    std::pair<std::string, std::string>("self", "255.255.255.255"));
-            }
-        |
-            host
-        |
-            host_list
-        )
+dst_hosts_part :
+        common_hosts_part
         {
             importer->dst_neg = importer->tmp_neg;
-            importer->dst_group.splice(importer->src_group.begin(),
+            importer->dst_group.splice(importer->dst_group.begin(),
                                        importer->tmp_group);
         }
+    ;
 
+common_hosts_part :
+        ANY
+        {
+            importer->tmp_group.push_back(
+                AddressSpec(AddressSpec::ANY, "0.0.0.0", "0.0.0.0"));
+        }
+    |
+        SELF
+        {   
+            importer->tmp_group.push_back(
+                AddressSpec(AddressSpec::SPECIAL_ADDRESS, "self", ""));
+        }
+    |
+        NO_ROUTE
+        {
+            importer->tmp_group.push_back(
+                AddressSpec(AddressSpec::SPECIAL_ADDRESS, "no-route", ""));
+        }
+    |
+        host
+    |
+        host_list
     ;
 
 host :
         (
-            EXCLAMATION
+            EXLAMATION
             {
                 importer->tmp_neg = true;
             }
@@ -468,7 +505,7 @@ host :
                 if (v6)
                 {
                     importer->addMessageToLog(
-                        QString("Warning: IPv6 import is not supported. "));
+                        QString("Error: IPv6 import is not supported. "));
                     consumeUntil(NEWLINE);
                 } else
                 {
@@ -477,7 +514,8 @@ host :
                     if (h) addr = h->getText();
                     if (nm) netm = nm->getText();
                     importer->tmp_group.push_back(
-                        std::pair<std::string, std::string>(addr, netm));
+                        AddressSpec(AddressSpec::NETWORK_ADDRESS,
+                                    addr, netm));
                 }
             }
         |
@@ -485,10 +523,15 @@ host :
             {
                 // This should be an interface name
                 importer->tmp_group.push_back(
-                    std::pair<std::string, std::string>(
-                        LT(0)->getText(), "255.255.255.255"));
+                    AddressSpec(AddressSpec::INTERFACE_NAME,
+                                LT(0)->getText(), ""));
             }
-        // Add table matching here
+        |
+            LESS_THAN tn:WORD GREATER_THAN
+            {
+                importer->tmp_group.push_back(
+                    AddressSpec(AddressSpec::TABLE, tn->getText(), ""));
+            }
         )
     ;
 
@@ -502,20 +545,160 @@ host_list :
         CLOSING_BRACE
     ;
 
-filteropts:
+// ************************************************************************
+route :
+        route_to | reply_to
+    ;
+
+route_to :
+        ROUTE_TO ( routehost | routehost_list )
+        {
+            importer->route_type = PFImporter::ROUTE_TO;
+        }
+    ;
+
+reply_to :
+        REPLY_TO ( routehost | routehost_list )
+        {
+            importer->route_type = PFImporter::REPLY_TO;
+        }
+    ;
+
+routehost { RouteSpec rs; } :
+        OPENING_PAREN
+        WORD { rs.iface = LT(0)->getText(); }
+        (h:IPV4 | v6:IPV6) (SLASH (nm:IPV4 | nm6:INT_CONST))?
+        {
+            if (v6)
+            {
+                importer->addMessageToLog(
+                    QString("Error: IPv6 import is not supported. "));
+                consumeUntil(NEWLINE);
+            } else
+            {
+                if (h) rs.address = h->getText();
+                if (nm) rs.netmask = nm->getText();
+                importer->route_group.push_back(rs);
+            }
+        }
+        CLOSING_PAREN
+    ;
+
+routehost_list :
+        OPENING_BRACE
+        routehost
+        (
+            ( COMMA )?
+            routehost
+        )*
+        CLOSING_BRACE
+    ;
+
+// ************************************************************************
+filteropts :
         filteropt
         (
-            COMMA
+            ( COMMA )?
             filteropt
         )*
     ;
 
-filteropt:
-        (state)?
-        (queue)?
+filteropt :
+        tcp_flags
+    |
+        icmp_type
+    |
+        icmp6_type
+    |
+        tagged
+    |
+        tag_clause
+    |
+        state
+    |
+        queue
+    |
+        label
     ;
 
-state:
+tcp_flags :
+    FLAGS
+    (
+        ANY
+        {
+            importer->flags_check = "any";
+            importer->flags_mask = "all";
+        }
+    |
+        ( check:WORD )? SLASH ( mask:WORD )?
+        {
+            if (check)
+                importer->flags_check = check->getText();
+            else
+                importer->flags_check = "any";
+            if (mask)
+                importer->flags_mask = mask->getText();
+            else
+                importer->flags_mask = "all";
+        }
+    )
+    ;
+
+icmp_type :
+        ICMP_TYPE
+        (
+            icmp_type_code
+        |
+            icmp_list
+        )
+    ;
+
+icmp_type_code { std::string icmp_type, icmp_code; } :
+        ( WORD | INT_CONST ) { icmp_type = LT(0)->getText(); }
+        (
+            ICMP_CODE ( WORD | INT_CONST ) { icmp_code = LT(0)->getText(); }
+        )?
+        {
+            importer->icmp_type_code_group.push_back(
+                str_tuple(icmp_type, icmp_code));
+        }
+    ;
+
+icmp_list :
+    OPENING_BRACE
+    icmp_type_code
+    (
+        ( COMMA )?
+        icmp_type_code
+    )*
+    CLOSING_BRACE
+    ;
+
+
+icmp6_type :
+        ICMP6_TYPE
+        {
+            importer->addMessageToLog(
+                QString("Error: ICMP6 import is not supported. "));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+tagged :
+        TAGGED WORD
+        {
+            importer->tagged = LT(0)->getText();
+        }
+    ;
+
+tag_clause :
+        TAG WORD
+        {
+            importer->tag = LT(0)->getText();
+        }
+    ;
+
+state :
         (
             NO
         |
@@ -531,25 +714,29 @@ state:
         STATE
     ;
 
-queue:
+queue :
         QUEUE
         (
             WORD { importer->queue += LT(0)->getText(); }
         |
-            OPENING_PAREN { importer->queue += "("; }
+            OPENING_PAREN
             WORD          { importer->queue += LT(0)->getText(); }
             (
                 COMMA     { importer->queue += ","; }
                 WORD      { importer->queue += LT(0)->getText(); }
             )*
-            CLOSING_PAREN { importer->queue += ")"; }
+            CLOSING_PAREN
         )
+    ;
+
+label :
+        LABEL STRING
     ;
 
 //****************************************************************
 
 src_port_part :
-        PORT ( unary_op | binary_op | op_list )
+        PORT ( port_op | port_op_list )
         {
             importer->src_port_group.splice(importer->src_port_group.begin(),
                                             importer->tmp_port_group);
@@ -557,86 +744,77 @@ src_port_part :
     ;
 
 dst_port_part :
-        PORT ( unary_op | binary_op | op_list )
+        PORT ( port_op | port_op_list )
         {
             importer->dst_port_group.splice(importer->dst_port_group.begin(),
                                             importer->tmp_port_group);
         }
     ;
 
-unary_op :
-        {
-            std::string op = "=";
-        }
+unary_port_op :
         (
-            (
-                EQUAL
-            |
-                NOT_EQUAL
-            |
-                LESS_THAN
-            |
-                LESS_OR_EQUAL_THAN
-            |
-                GREATER_THAN
-            |
-                GREATER_OR_EQUAL_THAN
-            )
-            {
-                op = LT(0)->getText();
-            }
-        )?
-        port_def
-        {
-            std::vector<std::string> tuple;
-            tuple.push_back(op);
-            tuple.push_back(importer->tmp_port_def);
-            importer->tmp_port_group.push_back(tuple);
-        }
+            EQUAL              { importer->tmp_port_op = "="; }
+        |
+            EXLAMATION EQUAL   { importer->tmp_port_op = "!="; }
+        |
+            LESS_THAN          { importer->tmp_port_op = "<"; }
+        |
+            LESS_THAN EQUAL    { importer->tmp_port_op = "<="; }
+        |
+            GREATER_THAN       { importer->tmp_port_op = ">"; }
+        |
+            GREATER_THAN EQUAL { importer->tmp_port_op = ">="; }
+        )
     ;
 
-binary_op :
-        {
-            std::string op;
-            std::string arg1;
-            std::vector<std::string> tuple;
-        }
-        port_def
-        {
-            arg1 = importer->tmp_port_def;
-        }
+binary_port_op :
         (
-            EXCEPT_RANGE
+            LESS_THAN GREATER_THAN { importer->tmp_port_op = "<>"; }
         |
-            INSIDE_RANGE
+            GREATER_THAN LESS_THAN { importer->tmp_port_op = "><"; }
         |
-            COLON
+            COLON                  { importer->tmp_port_op = ":"; }
+        )
+    ;
+
+port_op { PortSpec ps; } :
+        (
+            unary_port_op { ps.port_op = importer->tmp_port_op; }
+            port_def
+            {
+                ps.port1 = importer->tmp_port_def;
+                ps.port2 = importer->tmp_port_def;
+            }
+        |
+            port_def
+            {
+                ps.port1 = importer->tmp_port_def;
+                ps.port2 = ps.port1;
+                ps.port_op = "=";
+            }
+            (
+                binary_port_op { ps.port_op = importer->tmp_port_op; }
+                port_def       { ps.port2 = LT(0)->getText(); }
+            )?
         )
         {
-            op = LT(0)->getText();
-        }
-        port_def
-        {
-            tuple.push_back(op);
-            tuple.push_back(arg1);
-            tuple.push_back(importer->tmp_port_def);
-            importer->tmp_port_group.push_back(tuple);
+            importer->tmp_port_group.push_back(ps);
         }
     ;
 
 port_def :
-        ( WORD | INT_CONST | PORT_RANGE )
+        WORD | INT_CONST
         {
             importer->tmp_port_def = LT(0)->getText();
         }
     ;
 
-op_list :
+port_op_list :
         OPENING_BRACE
-        ( unary_op | binary_op )
+        port_op
         (
-            COMMA
-            ( unary_op | binary_op )
+            ( COMMA )?
+            port_op
         )*
         CLOSING_BRACE
     ;
@@ -709,12 +887,19 @@ tokens
     ISIS = "isis";
 
     HOST = "host";
-    ANY  = "any";
+    ANY = "any";
+    ALL = "all";
+    USER = "user";
+
     PORT = "port";
 
     RANGE = "range";
 
     LOG = "log";
+
+    NO_ROUTE = "no-route";
+    SELF = "self";
+    URPF_FAILED = "urpf-failed";
 
     LOG_LEVEL_ALERTS = "alerts";
     LOG_LEVEL_CRITICAL = "critical";
@@ -737,14 +922,17 @@ tokens
     NAT = "nat";
     RDR = "rdr";
     BINAT = "binat";
+    TABLE = "table";
 
     QUEUE = "queue";
 
-    NOT_EQUAL = "!=" ;
-    LESS_OR_EQUAL_THAN = "<=" ;
-    GREATER_OR_EQUAL_THAN = ">=" ;
-    EXCEPT_RANGE = "<>";
-    INSIDE_RANGE = "><";
+    LABEL = "label";
+
+    ROUTE_TO = "route-to";
+    REPLY_TO = "reply-to";
+
+    TAG = "tag";
+    TAGGED = "tagged";
 
     TRANSLATE_TO = "->";
 
@@ -752,6 +940,11 @@ tokens
     KEEP = "keep";
     MODULATE = "modulate";
     SYNPROXY = "synproxy";
+
+    FLAGS = "flags";
+    ICMP_TYPE = "icmp-type";
+    ICMP6_TYPE = "icmp6-type";
+    ICMP_CODE = "code";
 }
 
 LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
@@ -786,7 +979,7 @@ protected
 DIGIT : '0'..'9'  ;
 
 protected
-NUM_3DIGIT: ('1'..'9') (('0'..'9') ('0'..'9')?)? ;
+NUM_3DIGIT: ('0'..'9') (('0'..'9') ('0'..'9')?)? ;
 
 protected
 NUM_HEX_4DIGIT: HEX_DIGIT ((HEX_DIGIT) ((HEX_DIGIT) (HEX_DIGIT)?)?)? ;
@@ -803,9 +996,9 @@ options {
     |
         ( (DIGIT)+ '.' (DIGIT)+ )=> ( (DIGIT)+ '.' (DIGIT)+ )
         { $setType(NUMBER); }
-    |
-        ( (DIGIT)+ ':' (DIGIT)+ )=> ( (DIGIT)+ ':' (DIGIT)+ )
-        { $setType(PORT_RANGE); }
+//    |
+//        ( (DIGIT)+ ':' (DIGIT)+ )=> ( (DIGIT)+ ':' (DIGIT)+ )
+//        { $setType(PORT_RANGE); }
     |
         ( DIGIT )+ { $setType(INT_CONST); }
 
@@ -835,12 +1028,13 @@ options {
 
     |
 
-// making sure ',' '(' ')' '=' '<' '>' '-' '+' are not part of WORD do
+// making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD do
 // not start WORD with '$' since we expand macros in PFImporterRun
 // using regex.
+// double quote " should be included, without it STRING does not match
 
         ( 'a'..'z' | 'A'..'Z' )
-        ( '$' | '%' | '&' | '0'..'9' | ';' |
+        ( '"' | '$' | '%' | '&' | '-' | '0'..'9' | ';' |
           '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
         { $setType(WORD); }
     ;
@@ -860,9 +1054,10 @@ MINUS : '-' ;
 DOT : '.' ;
 SLASH : '/' ;
 
-// COLON : ':' ;
+//COLON : ':' ;
 SEMICOLON : ';' ;
-EQUAL : '=' ;
+
+EQUAL : '=';
 
 QUESTION : '?' ;
 COMMERCIAL_AT : '@' ;
@@ -885,3 +1080,5 @@ EXLAMATION : '!';
 
 LESS_THAN : '<' ;
 GREATER_THAN : '>' ;
+
+DOUBLE_QUOTE : '"';

@@ -43,6 +43,9 @@
 
 #include <QString>
 
+typedef std::pair<std::string,std::string> str_tuple;
+typedef std::vector<std::string> str_vector;
+
 
 class Importer;
 

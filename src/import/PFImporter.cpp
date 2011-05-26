@@ -86,9 +86,9 @@ void PFImporter::clear()
     quick = false;
 
     direction = "";
-    iface = "";
     address_family = "";
 
+    iface_group.clear();
     proto_list.clear();
     src_group.clear();
     dst_group.clear();
@@ -98,12 +98,23 @@ void PFImporter::clear()
     tmp_neg = false;
 
     tmp_port_def = "";
+    tmp_port_op = "";
     src_port_group.clear();
     dst_port_group.clear();
     tmp_port_group.clear();
 
+    icmp_type_code_group.clear();
+
     queue = "";
     state_op = "";
+    logopts = "";
+    flags_check = "";
+    flags_mask = "";
+    tag = "";
+    tagged = "";
+
+    route_type = UNKNOWN;
+    route_group.clear();
 
     Importer::clear();
 }
@@ -239,6 +250,16 @@ void PFImporter::pushPolicyRule()
 
     assert(current_rule!=NULL);
     // populate all elements of the rule
+
+    // Note that standard function
+    // setInterfaceAndDirectionForRuleSet() assumes there is only one
+    // interface, but here we can have a group.  Information about
+    // interfaces (even if there is only one) is stored in the list
+    // iface_group
+    // 
+    // importer->setInterfaceAndDirectionForRuleSet(
+    //    "", importer->iface, importer->direction);
+
 
     addMessageToLog(
         QString("filtering rule: action %1")

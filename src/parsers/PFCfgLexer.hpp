@@ -88,6 +88,7 @@ public:
 	public: void mEXLAMATION(bool _createToken);
 	public: void mLESS_THAN(bool _createToken);
 	public: void mGREATER_THAN(bool _createToken);
+	public: void mDOUBLE_QUOTE(bool _createToken);
 private:
 	
 	static const unsigned long _tokenSet_0_data_[];
