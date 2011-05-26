@@ -291,10 +291,8 @@ void PFImporter::pushRule()
 
 void PFImporter::pushPolicyRule()
 {
-    if (current_ruleset == NULL)
-    {
-        newUnidirRuleSet("filter", libfwbuilder::Policy::TYPENAME );
-    }
+    RuleSet *ruleset = RuleSet::cast(
+        getFirewallObject()->getFirstByType(Policy::TYPENAME));
 
     assert(current_rule!=NULL);
     // populate all elements of the rule
@@ -377,7 +375,8 @@ void PFImporter::pushPolicyRule()
     addLogging();
 
     // then add it to the current ruleset
-    current_ruleset->ruleset->add(current_rule);
+    ruleset->add(current_rule);
+
     addStandardImportComment(
         current_rule, QString::fromUtf8(rule_comment.c_str()));
 
@@ -386,6 +385,14 @@ void PFImporter::pushPolicyRule()
 
 }
  
+void PFImporter::pushNATRule()
+{
+    RuleSet *ruleset = RuleSet::cast(
+        getFirewallObject()->getFirstByType(NAT::TYPENAME));
+
+    assert(current_rule!=NULL);
+}
+
 Firewall* PFImporter::finalize()
 {
     // scan all UnidirectionalRuleSet objects, set interface and
@@ -399,27 +406,39 @@ Firewall* PFImporter::finalize()
     {
         Firewall *fw = Firewall::cast(getFirewallObject());
 
-        if (! discovered_platform.empty())
-        {
-            QString pl = QString(discovered_platform.c_str()).toLower();
+        // We can not "discover" host OS just by reading pf.conf file.
+        // Assume FreeBSD
 
-            fw->setStr("platform", pl.toStdString());
+        fw->setStr("platform", "pf");
 
-            string host_os = "openbsd";
+        string host_os = "freebsd";
 
-            if (! host_os.empty())
-            {
-                fw->setStr("host_OS", host_os);
-                Resources::setDefaultTargetOptions(host_os , fw);
-            }
+        fw->setStr("host_OS", host_os);
+        Resources::setDefaultTargetOptions(host_os , fw);
 
-            string version = findBestVersionMatch(
-                pl, discovered_version.c_str()).toStdString();
+        // We may be able to infer at least something about the version
+        // from the pf.conf file in the future.
+        string version = findBestVersionMatch(
+            "pf", discovered_version.c_str()).toStdString();
 
-            if ( ! version.empty()) fw->setStr("version", version);
-        }
+        if ( ! version.empty()) fw->setStr("version", version);
 
         rearrangeVlanInterfaces();
+
+        list<FWObject*> l1 = fw->getByType(Policy::TYPENAME);
+        for (list<FWObject*>::iterator i=l1.begin(); i!=l1.end(); ++i)
+        {
+            RuleSet *rs = RuleSet::cast(*i);
+            rs->renumberRules();
+        }
+
+        // Deal with NAT ruleset
+        list<FWObject*> l2 = fw->getByType(NAT::TYPENAME);
+        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+            RuleSet *rs = RuleSet::cast(*i);
+            rs->renumberRules();
+        }
 
         return fw;
     }
@@ -427,10 +446,6 @@ Firewall* PFImporter::finalize()
     {
         return NULL;
     }
-}
-
-void PFImporter::pushNATRule()
-{
 }
 
 Interface* PFImporter::getInterfaceByName(const string &name)

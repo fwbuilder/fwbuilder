@@ -228,7 +228,8 @@ table_command :
         (
             FILE file:STRING
             {
-                importer->newAddressTableObject(name->getText(), file->getText());
+                importer->newAddressTableObject(
+                    name->getText(), file->getText());
             }
         |
             OPENING_BRACE
@@ -239,7 +240,8 @@ table_command :
             )*
             CLOSING_BRACE
             {
-                importer->newAddressTableObject(name->getText(), importer->tmp_group);
+                importer->newAddressTableObject(
+                    name->getText(), importer->tmp_group);
             }
         )
     ;
@@ -247,9 +249,17 @@ table_command :
 tableaddr_spec { AddressSpec as; } :
         ( EXLAMATION { as.neg = true; } )?
         (
-            WORD { as.at = AddressSpec::INTERFACE_NAME; as.address = LT(0)->getText(); }
+            WORD
+            {
+                as.at = AddressSpec::INTERFACE_NAME;
+                as.address = LT(0)->getText();
+            }
         |
-            SELF { as.at = AddressSpec::SPECIAL_ADDRESS; as.address = "self"; }
+            SELF
+            {
+                as.at = AddressSpec::SPECIAL_ADDRESS;
+                as.address = "self";
+            }
         |
             IPV4
             {
@@ -524,12 +534,6 @@ common_hosts_part :
                 AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
         }
     |
-        SELF
-        {   
-            importer->tmp_group.push_back(
-                AddressSpec(AddressSpec::SPECIAL_ADDRESS, false, "self", ""));
-        }
-    |
         NO_ROUTE
         {
             importer->tmp_group.push_back(
@@ -541,47 +545,54 @@ common_hosts_part :
         host_list
     ;
 
-host :
+host { AddressSpec as; } :
+        ( EXLAMATION { as.neg = true; } )?
         (
-            EXLAMATION
-            {
-                importer->tmp_neg = true;
-            }
-        )?
-        (
-            (h:IPV4 | v6:IPV6) (SLASH (nm:IPV4 | nm6:INT_CONST))?
-            {
-                if (v6)
-                {
-                    importer->addMessageToLog(
-                        QString("Error: IPv6 import is not supported. "));
-                    consumeUntil(NEWLINE);
-                } else
-                {
-                    std::string addr = "0.0.0.0";
-                    std::string netm = "255.255.255.255";
-                    if (h) addr = h->getText();
-                    if (nm) netm = nm->getText();
-                    importer->tmp_group.push_back(
-                        AddressSpec(AddressSpec::NETWORK_ADDRESS, false,
-                                    addr, netm));
-                }
-            }
-        |
             WORD
             {
-                // This should be an interface name
-                importer->tmp_group.push_back(
-                    AddressSpec(AddressSpec::INTERFACE_NAME, false,
-                                LT(0)->getText(), ""));
+                // interface name or domain/host name
+                as.at = AddressSpec::INTERFACE_NAME;
+                as.address = LT(0)->getText();
             }
+        |
+            SELF
+            {   
+                as.at = AddressSpec::SPECIAL_ADDRESS;
+                as.address = "self";
+            }
+        |
+            IPV6
+            {
+                importer->addMessageToLog(
+                    QString("Error: IPv6 import is not supported. "));
+                consumeUntil(NEWLINE);
+            }
+        |
+            IPV4
+            {
+                as.at = AddressSpec::HOST_ADDRESS;
+                as.address = LT(0)->getText();
+            }
+            (
+                SLASH 
+                {
+                    as.at = AddressSpec::NETWORK_ADDRESS;
+                }
+                ( IPV4 | INT_CONST )
+                {
+                    as.netmask = LT(0)->getText(); 
+                }
+            )?
         |
             LESS_THAN tn:WORD GREATER_THAN
             {
-                importer->tmp_group.push_back(
-                    AddressSpec(AddressSpec::TABLE, false, tn->getText(), ""));
+                as.at = AddressSpec::TABLE;
+                as.address = tn->getText();
             }
         )
+        {
+            importer->tmp_group.push_back(as);
+        }
     ;
 
 host_list :
