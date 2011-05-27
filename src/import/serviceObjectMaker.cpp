@@ -173,12 +173,12 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
 
     nl << QString("tcp %1:%2 / %3:%4").arg(srs).arg(sre).arg(drs).arg(dre);
     if (established) nl << "est";
-    if (!flags_mask.isEmpty() && !flags_comp.isEmpty())
+    if (!flags_mask.isEmpty() || !flags_comp.isEmpty())
     {
         QStringList f;
-        foreach(int x, flags_mask) f << tcp_flag_names[x];
-        f << "/";
         foreach(int x, flags_comp) f << tcp_flag_names[x];
+        f << "/";
+        foreach(int x, flags_mask) f << tcp_flag_names[x];
         nl << f.join("");
     }
 
@@ -190,7 +190,7 @@ FWObject* ServiceObjectMaker::getTCPService(int srs, int sre,
     s->setDstRangeEnd(dre);
 
 
-    if (!flags_mask.isEmpty() && !flags_comp.isEmpty())
+    if (!flags_mask.isEmpty() || !flags_comp.isEmpty())
     {
         // TCP flags
         foreach(int x, flags_mask)

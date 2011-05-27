@@ -206,12 +206,17 @@ void PFImporter::addSrv()
             if (src_port_group.size() == 0 && dst_port_group.size() == 0)
             {
                 // protocol has been defined but not ports to match
+
                 ObjectSignature sig(error_tracker);
 
-                if (protocol == "tcp")
-                    sig.type_name = TCPService::TYPENAME;
-                else
-                    sig.type_name = UDPService::TYPENAME;
+                buildTCPUDPObjectSingature(
+                    &sig,
+                    "",
+                    "",
+                    false,  // dest.
+                    protocol.c_str(),
+                    flags_check.c_str(),
+                    flags_mask.c_str());
 
                 re->addRef(commitObject(service_maker->createObject(sig)));
 
@@ -237,8 +242,7 @@ void PFImporter::addSrv()
                         flags_check.c_str(),
                         flags_mask.c_str());
             
-                    re->addRef(
-                        commitObject(service_maker->createObject(sig)));
+                    re->addRef(commitObject(service_maker->createObject(sig)));
 
                     if (ps.port_op == "!=") re->setNeg(true);
                 }
@@ -261,8 +265,7 @@ void PFImporter::addSrv()
                         flags_check.c_str(),
                         flags_mask.c_str());
             
-                    re->addRef(
-                        commitObject(service_maker->createObject(sig)));
+                    re->addRef(commitObject(service_maker->createObject(sig)));
 
                     if (ps.port_op == "!=") re->setNeg(true);
                 }
