@@ -1,0 +1,4 @@
+*.fwb
+!test_data/*.fwb
+!*.conf
+
