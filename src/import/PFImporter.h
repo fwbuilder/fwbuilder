@@ -119,6 +119,40 @@ public:
     { port1 = s1; port2 = s2; port_op = s3; }
 };
 
+class IcmpSpec
+{
+public:
+    std::string icmp_type_name;
+    std::string icmp_type_int;
+    std::string icmp_code_name;
+    std::string icmp_code_int;
+
+    IcmpSpec()
+    {
+        icmp_type_name = "";
+        icmp_type_int = "";
+        icmp_code_name = "";
+        icmp_code_int = "";
+    }
+
+    IcmpSpec(const IcmpSpec &other)
+    {
+        icmp_type_name = other.icmp_type_name;
+        icmp_type_int = other.icmp_type_int;
+        icmp_code_name = other.icmp_code_name;
+        icmp_code_int = other.icmp_code_int;
+    }
+    
+    IcmpSpec(const std::string s1, const std::string s2,
+             const std::string s3, const std::string s4)
+    {
+        icmp_type_name = s1;
+        icmp_type_int = s2;
+        icmp_code_name = s3;
+        icmp_code_int = s4;
+    }
+};
+
 
 class RouteSpec
 {
@@ -179,7 +213,7 @@ public:
     std::list< PortSpec > dst_port_group;
     std::list< PortSpec > tmp_port_group;
 
-    std::list<str_tuple>  icmp_type_code_group;
+    std::list< IcmpSpec >  icmp_type_code_group;
 
     route_op_type route_type;
     std::list<RouteSpec> route_group;
@@ -189,7 +223,10 @@ public:
     std::string logopts;
     std::string flags_check;
     std::string flags_mask;
+    
     std::string tag;
+
+    bool tagged_neg;
     std::string tagged;
     
     libfwbuilder::NATRule::NATRuleTypes rule_type;
@@ -229,6 +266,17 @@ public:
     void newAddressTableObject(const std::string &name, const std::string &file);
     void newAddressTableObject(const std::string &name,
                                std::list<AddressSpec> &addresses);
+
+
+    bool buildTCPUDPObjectSingature(ObjectSignature *sig,
+                                    const QString &port_op,
+                                    const QString &port_spec,
+                                    bool source,
+                                    const QString &protocol,
+                                    const QString &flags_check,
+                                    const QString &flags_mask);
+    
+    void convertTcpFlags(QList<int> &flags_list, const QString &flags_str);
 };
 
 #endif

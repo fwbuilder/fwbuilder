@@ -89,6 +89,7 @@ public:
 class ObjectSignature : public libfwbuilder::Dispatch
 {
     static QMap<QString, QPair<int,int> > icmp_names;
+    static QMap<QString, int > icmp_code_names;
 
 public:
     ObjectSignature(ObjectMakerErrorTracker *error_tracker);
@@ -155,8 +156,14 @@ public:
     void setAddressRangeStart(const QString &s);
     void setAddressRangeEnd(const QString &s);
     void setProtocol(const QString &s);
+
+    // set icmp type from string
     void setIcmpFromName(const QString &s);
+    // set icmp code from string
+    void setIcmpCodeFromName(const QString &s);
+    // set icmp type from string that reads a number
     void setIcmpType(const QString &s);
+    // set icmp code from string that reads a number
     void setIcmpCode(const QString &s);
 
     int portFromString(const QString &port_spec, const QString &proto,

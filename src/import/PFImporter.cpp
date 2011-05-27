@@ -33,21 +33,22 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/Address.h"
-#include "fwbuilder/InetAddr.h"
-#include "fwbuilder/IPService.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ICMPService.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Library.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/TCPService.h"
 #include "fwbuilder/TCPUDPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
 
 #include "../libgui/platforms.h"
 
@@ -114,6 +115,7 @@ void PFImporter::clear()
     flags_mask = "";
     tag = "";
     tagged = "";
+    tagged_neg = false;
 
     route_type = UNKNOWN;
     route_group.clear();
@@ -157,12 +159,215 @@ void PFImporter::addSrv()
     PolicyRule *rule = PolicyRule::cast(current_rule);
     RuleElement *re = rule->getSrv();
 
-    // list<AddressSpec>::iterator it;
-    // for (it=dst_group.begin(); it!=dst_group.end(); ++it)
-    // {
-    //     FWObject *obj = makeAddressObj(*it);
-    //     if (obj) re->addRef(obj);
-    // }
+    list<string>::iterator it;
+    for (it=proto_list.begin(); it!=proto_list.end(); ++it)
+    {
+        // TODO: need better interface to Importer::makeSrvObj()
+        // function and other functions that it uses.
+        protocol = *it;
+        if (protocol == "icmp")
+        {
+            list<IcmpSpec>::iterator i1;
+            for (i1=icmp_type_code_group.begin();
+                 i1!=icmp_type_code_group.end(); ++i1)
+            {
+                IcmpSpec is = *i1;
+                ObjectSignature sig(error_tracker);
+                sig.type_name = ICMPService::TYPENAME;
+
+                if ( ! is.icmp_type_name.empty())
+                {
+                    sig.setIcmpFromName(is.icmp_type_name.c_str());
+                } else
+                {
+                    sig.setIcmpType(is.icmp_type_int.c_str());
+                }
+
+                if ( ! is.icmp_code_name.empty())
+                {
+                    sig.setIcmpCodeFromName(is.icmp_code_name.c_str());
+                } else
+                {
+                    sig.setIcmpCode(is.icmp_code_int.c_str());
+                }
+
+                FWObject *s = service_maker->createObject(sig);
+                if (s) re->addRef(s);
+            }
+        }
+
+        if (protocol == "tcp" || protocol == "udp")
+        {
+            // TODO: deal with cases where both source and destination
+            // ports are matched.
+            // See PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
+
+            if (src_port_group.size() == 0 && dst_port_group.size() == 0)
+            {
+                // protocol has been defined but not ports to match
+                ObjectSignature sig(error_tracker);
+
+                if (protocol == "tcp")
+                    sig.type_name = TCPService::TYPENAME;
+                else
+                    sig.type_name = UDPService::TYPENAME;
+
+                re->addRef(commitObject(service_maker->createObject(sig)));
+
+            } else
+            {
+                list<PortSpec>::iterator psi;
+
+                for (psi=src_port_group.begin();
+                     psi!=src_port_group.end(); ++psi)
+                {
+                    PortSpec ps = *psi;
+                    ObjectSignature sig(error_tracker);
+                    QString port_spec = 
+                        QString("%1 %2")
+                        .arg(ps.port1.c_str()).arg(ps.port2.c_str());
+
+                    buildTCPUDPObjectSingature(
+                        &sig,
+                        ps.port_op.c_str(),
+                        port_spec,
+                        true,
+                        protocol.c_str(),
+                        flags_check.c_str(),
+                        flags_mask.c_str());
+            
+                    re->addRef(
+                        commitObject(service_maker->createObject(sig)));
+                }
+
+                for (psi=dst_port_group.begin();
+                     psi!=dst_port_group.end(); ++psi)
+                {
+                    PortSpec ps = *psi;
+                    ObjectSignature sig(error_tracker);
+                    QString port_spec = 
+                        QString("%1 %2")
+                        .arg(ps.port1.c_str()).arg(ps.port2.c_str());
+
+                    buildTCPUDPObjectSingature(
+                        &sig,
+                        ps.port_op.c_str(),
+                        port_spec,
+                        false,
+                        protocol.c_str(),
+                        flags_check.c_str(),
+                        flags_mask.c_str());
+            
+                    re->addRef(
+                        commitObject(service_maker->createObject(sig)));
+                }
+            }
+        }
+    }
+
+    if (! tagged.empty())
+    {
+        ObjectSignature sig(error_tracker);
+        sig.type_name = TagService::TYPENAME;
+        sig.tag = tagged.c_str();
+        re->addRef( commitObject(service_maker->createObject(sig)) );
+        if (tagged_neg) re->setNeg(true);
+        tagged = "";
+    }
+
+}
+
+bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
+                                            const QString &port_op,
+                                            const QString &port_spec,
+                                            bool source,
+                                            const QString &protocol,
+                                            const QString &flags_check,
+                                            const QString &flags_mask)
+{
+    if (protocol == "tcp")
+        sig->type_name = TCPService::TYPENAME;
+    else
+        sig->type_name = UDPService::TYPENAME;
+
+    bool range_inclusive = false;
+    QString port_op_cisco_style;
+
+    // map port operations from PF to Cisco-like
+
+    if (port_op == "=")  port_op_cisco_style = "eq";
+    if (port_op == "<=") port_op_cisco_style = "lt";
+    if (port_op == ">=") port_op_cisco_style = "gt";
+
+    if (port_op == "<")
+    {
+        range_inclusive = false;
+        port_op_cisco_style = "lt";
+    }
+
+    if (port_op == ">")
+    {
+        range_inclusive = false;
+        port_op_cisco_style = "gt";
+    }
+
+    if (port_op == "><")
+    {
+        range_inclusive = false;
+        port_op_cisco_style = "range";
+    }
+
+    if (port_op == ":")
+    {
+        range_inclusive = true;
+        port_op_cisco_style = "range";
+    }
+
+    if (port_op == "<>")
+    {
+        addMessageToLog(
+            QObject::tr("Error: 'except ranges' ('<>') for port numbers "
+                        "are not supported yet."));
+        return false;
+    }
+
+    sig->port_range_inclusive = range_inclusive;
+    if (source)
+        sig->setSrcPortRangeFromPortOp(port_op_cisco_style,
+                                       port_spec, protocol);
+    else
+        sig->setDstPortRangeFromPortOp(port_op_cisco_style,
+                                       port_spec, protocol);
+
+    if (protocol == "tcp")
+    {
+        convertTcpFlags(sig->flags_comp, flags_check);
+        convertTcpFlags(sig->flags_mask, flags_mask);
+    }
+
+    return true;
+}
+
+void PFImporter::convertTcpFlags(QList<int> &flags_list,
+                                 const QString &flags_str)
+{
+    for (int i=0; i<flags_str.size(); ++i)
+    {
+        switch (flags_str.at(i).toAscii())
+        {
+        case 'U': flags_list << TCPService::URG; break;
+        case 'A': flags_list << TCPService::ACK; break;
+        case 'P': flags_list << TCPService::PSH; break;
+        case 'R': flags_list << TCPService::RST; break;
+        case 'S': flags_list << TCPService::SYN; break;
+        case 'F': flags_list << TCPService::FIN; break;
+        case 'W': 
+        case 'E': 
+            addMessageToLog(
+                QObject::tr("Error: TCP flag matches 'E' and 'W' "
+                            "are not supported."));
+        }
+    }
 }
 
 FWObject* PFImporter::makeAddressObj(AddressSpec &as)
@@ -201,6 +406,8 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
     {
         return address_table_registry[as.address.c_str()];
     }
+
+    return NULL;
 }
 
 void PFImporter::addLogging()
@@ -347,17 +554,29 @@ void PFImporter::pushPolicyRule()
     /*
      * Set state-related rule options using variable state_op
      */
+    if (state_op == "no") ropt->setBool("stateless", true);
+    if (state_op == "modulate") ropt->setBool("pf_modulate_state", true);
+    if (state_op == "keep") ropt->setBool("stateless", false);
+    if (state_op == "synproxy") ropt->setBool("pf_synproxy", false);
 
 
     /*
      * Set tagging rule option using variable tag
      */
+    if ( ! tag.empty()) 
+    {
+        ObjectSignature sig(error_tracker);
+        sig.type_name = TagService::TYPENAME;
+        sig.tag = tag.c_str();
+        FWObject *tobj = commitObject(service_maker->createObject(sig));
+        rule->setTagging(tobj != NULL);
+        rule->setTagObject(tobj);
+    }
 
     /*
      * Set queueing rule option using variable queue
      */
-
-
+    if (! queue.empty()) ropt->setStr("pf_classify_str", queue);
 
     /*
      * Protocols are in proto_list

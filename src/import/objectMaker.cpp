@@ -70,6 +70,7 @@ using namespace std;
 
 
 QMap<QString, QPair<int,int> >  ObjectSignature::icmp_names;
+QMap<QString, int>  ObjectSignature::icmp_code_names;
 
 
 void ObjectMakerErrorTracker::registerError(const QString &msg)
@@ -252,6 +253,75 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
         icmp_names["address-mask-reply"] = QPair<int,int>(18,0);
 
     }
+
+/*
+  ICMP codes defined in "man 4 icmp". These are used by PF
+
+    Num  Abbrev.         Type       Description
+    0    net-unr         unreach    Network unreachable
+    1    host-unr        unreach    Host unreachable
+    2    proto-unr       unreach    Protocol unreachable
+    3    port-unr        unreach    Port unreachable
+    4    needfrag        unreach    Fragmentation needed but DF bit set
+    5    srcfail         unreach    Source routing failed
+    6    net-unk         unreach    Network unknown
+    7    host-unk        unreach    Host unknown
+    8    isolate         unreach    Host isolated
+    9    net-prohib      unreach    Network administratively prohibited
+    10   host-prohib     unreach    Host administratively prohibited
+    11   net-tos         unreach    Invalid TOS for network
+    12   host-tos        unreach    Invalid TOS for host
+    13   filter-prohib   unreach    Prohibited access
+    14   host-preced     unreach    Precedence violation
+    15   cutoff-preced   unreac     Precedence cutoff
+    0    redir-net       redir      Shorter route for network
+    1    redir-host      redir      Shorter route for host
+    2    redir-tos-net   redir      Shorter route for TOS and network
+    3    redir-tos-host  redir      Shorter route for TOS and host
+    0    normal-adv      routeradv  Normal advertisement
+    16   common-adv      routeradv  Selective advertisement
+    0    transit         timex      Time exceeded in transit
+    1    reassemb        timex      Time exceeded in reassembly
+    0    badhead         paramprob  Invalid option pointer
+    1    optmiss         paramprob  Missing option
+    2    badlen          paramprob  Invalid length
+    1    unknown-ind     photuris   Unknown security index
+    2    auth-fail       photuris   Authentication failed
+    3    decrypt-fail    photuris   Decryption failed
+*/
+    if (icmp_code_names.size() == 0)
+    {
+        icmp_code_names["net-unr"] = 0;
+        icmp_code_names["host-unr"] = 1;
+        icmp_code_names["proto-unr"] = 2;
+        icmp_code_names["port-unr"] = 3;
+        icmp_code_names["needfrag"] = 4;
+        icmp_code_names["srcfail"] = 5;
+        icmp_code_names["net-unk"] = 6;
+        icmp_code_names["host-unk"] = 7;
+        icmp_code_names["isolate"] = 8;
+        icmp_code_names["net-prohib"] = 9;
+        icmp_code_names["host-prohib"] = 10;
+        icmp_code_names["net-tos"] = 11;
+        icmp_code_names["host-tos"] = 12;
+        icmp_code_names["filter-prohib"] = 13;
+        icmp_code_names["host-preced"] = 14;
+        icmp_code_names["cutoff-preced"] = 15;
+        icmp_code_names["redir-net"] = 0;
+        icmp_code_names["redir-host"] = 1;
+        icmp_code_names["redir-tos-net"] = 2;
+        icmp_code_names["redir-tos-host"] = 3;
+        icmp_code_names["normal-adv"] = 0;
+        icmp_code_names["common-adv"] = 16;
+        icmp_code_names["transit"] = 0;
+        icmp_code_names["reassemb"] = 1;
+        icmp_code_names["badhead"] = 0;
+        icmp_code_names["optmiss"] = 1;
+        icmp_code_names["badlen"] = 2;
+        icmp_code_names["unknown-ind"] = 1;
+        icmp_code_names["auth-fail"] = 2;
+        icmp_code_names["decrypt-fail"] = 3;
+    }
 }
 
 void ObjectSignature::setAddress(const QString &s)
@@ -322,7 +392,6 @@ void ObjectSignature::setProtocol(const QString &s)
         if (protocol == -1)
         {
             protocol = 0;
-//            throw ObjectMakerException(
             error_tracker->registerError(
                 QString("Protocol '%1' is unknown").arg(s));
         }
@@ -337,9 +406,18 @@ void ObjectSignature::setIcmpFromName(const QString &s)
         icmp_type = p.first;
         icmp_code = p.second;
     } else
-//        throw ObjectMakerException(
         error_tracker->registerError(
-            QString("ICMP service name '%1' is unknown").arg(s));
+            QString("ICMP type name '%1' is unknown").arg(s));
+}
+
+void ObjectSignature::setIcmpCodeFromName(const QString &s)
+{
+    if (icmp_code_names.count(s) > 0)
+    {
+        icmp_code = icmp_code_names[s];
+    } else
+        error_tracker->registerError(
+            QString("ICMP code name '%1' is unknown").arg(s));
 }
 
 void ObjectSignature::setIcmpType(const QString &s)
@@ -353,7 +431,6 @@ void ObjectSignature::setIcmpType(const QString &s)
         {
             // could not convert
             icmp_type = -1;
-//            throw ObjectMakerException(
             error_tracker->registerError(
                 QString("ICMP type '%1' is unusable").arg(s));
         }
@@ -465,6 +542,11 @@ void ObjectSignature::setSrcPortRangeFromPortOp(const QString &port_op,
     {
         if (portop == "lt") src_port_range_end--;
         if (portop == "gt") src_port_range_start++;
+        if (portop == "range")
+        {
+            src_port_range_end--;
+            src_port_range_start++;
+        }
     }
 }
 
@@ -510,6 +592,11 @@ void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
     {
         if (portop == "lt") dst_port_range_end--;
         if (portop == "gt") dst_port_range_start++;
+        if (portop == "range")
+        {
+            dst_port_range_end--;
+            dst_port_range_start++;
+        }
     }
 }
 

@@ -236,6 +236,18 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_31;
 	static const unsigned long _tokenSet_32_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_32;
+	static const unsigned long _tokenSet_33_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_33;
+	static const unsigned long _tokenSet_34_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_34;
+	static const unsigned long _tokenSet_35_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_35;
+	static const unsigned long _tokenSet_36_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_36;
+	static const unsigned long _tokenSet_37_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_37;
+	static const unsigned long _tokenSet_38_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_38;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

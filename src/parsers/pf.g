@@ -713,14 +713,22 @@ icmp_type :
         )
     ;
 
-icmp_type_code { std::string icmp_type, icmp_code; } :
-        ( WORD | INT_CONST ) { icmp_type = LT(0)->getText(); }
+icmp_type_code { IcmpSpec is; } :
+        ( 
+            WORD          { is.icmp_type_name = LT(0)->getText(); }
+        |
+            INT_CONST     { is.icmp_type_int = LT(0)->getText();  }
+        )
         (
-            ICMP_CODE ( WORD | INT_CONST ) { icmp_code = LT(0)->getText(); }
+            ICMP_CODE
+            (
+                WORD      { is.icmp_code_name = LT(0)->getText(); }
+            |
+                INT_CONST { is.icmp_code_int = LT(0)->getText();  }
+            )
         )?
         {
-            importer->icmp_type_code_group.push_back(
-                str_tuple(icmp_type, icmp_code));
+            importer->icmp_type_code_group.push_back(is);
         }
     ;
 
@@ -745,6 +753,7 @@ icmp6_type :
     ;
 
 tagged :
+        ( EXLAMATION { importer->tagged_neg = true; } )?
         TAGGED WORD
         {
             importer->tagged = LT(0)->getText();
