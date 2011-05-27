@@ -254,6 +254,34 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
         icmp_names["address-mask-request"] = QPair<int,int>(17,0);
         icmp_names["address-mask-reply"] = QPair<int,int>(18,0);
 
+        // ICMP types defined in "man 4 icmp" on OpenBSD
+
+        icmp_names["echorep"] = QPair<int,int>(0,0);
+        icmp_names["unreach"] = QPair<int,int>(3,0);
+        icmp_names["squench"] = QPair<int,int>(4,0);
+        icmp_names["redir"] = QPair<int,int>(5,0);
+        icmp_names["althost"] = QPair<int,int>(6,0);
+        icmp_names["echoreq"] = QPair<int,int>(8,0);
+        icmp_names["routeradv"] = QPair<int,int>(9,0);
+        icmp_names["routersol"] = QPair<int,int>(10,0);
+        icmp_names["timex"] = QPair<int,int>(11,0);
+        icmp_names["paramprob"] = QPair<int,int>(12,0);
+        icmp_names["timereq"] = QPair<int,int>(13,0);
+        icmp_names["timerep"] = QPair<int,int>(14,0);
+        icmp_names["inforeq"] = QPair<int,int>(15,0);
+        icmp_names["inforep"] = QPair<int,int>(16,0);
+        icmp_names["maskreq"] = QPair<int,int>(17,0);
+        icmp_names["maskrep"] = QPair<int,int>(18,0);
+        icmp_names["trace"] = QPair<int,int>(30,0);
+        icmp_names["dataconv"] = QPair<int,int>(31,0);
+        icmp_names["mobredir"] = QPair<int,int>(32,0);
+        icmp_names["ipv6-where"] = QPair<int,int>(33,0);
+        icmp_names["ipv6-here"] = QPair<int,int>(34,0);
+        icmp_names["mobregreq"] = QPair<int,int>(35,0);
+        icmp_names["mobregrep"] = QPair<int,int>(36,0);
+        icmp_names["skip"] = QPair<int,int>(39,0);
+        icmp_names["photuris"] = QPair<int,int>(40,0);
+
     }
 
 /*

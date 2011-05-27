@@ -173,8 +173,8 @@ altq_command : ALTQ
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Error: import of 'altq' commands is not supported."));
+            importer->error_tracker->registerError(
+                QString("import of 'altq' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -184,8 +184,8 @@ queue_command : QUEUE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Error: import of 'queue' commands is not supported."));
+            importer->error_tracker->registerError(
+                QString("import of 'queue' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -266,6 +266,18 @@ tableaddr_spec { AddressSpec as; } :
                     {
                         as.at = AddressSpec::INTERFACE_BROADCAST;
                     }
+                |
+                    PEER
+                    {
+                        importer->error_tracker->registerError(
+                            QString("import of 'interface:peer' is not supported."));
+                    }
+                |
+                    INT_CONST
+                    {
+                        importer->error_tracker->registerError(
+                            QString("import of 'interface:0' is not supported."));
+                    }
                 )
             )?
         |
@@ -312,8 +324,8 @@ binat_command : BINAT
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Error: import of 'binat' commands is not supported."));
+            importer->error_tracker->registerError(
+                QString("import of 'binat' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -580,6 +592,18 @@ host { AddressSpec as; } :
                     {
                         as.at = AddressSpec::INTERFACE_BROADCAST;
                     }
+                |
+                    PEER
+                    {
+                        importer->error_tracker->registerError(
+                            QString("import of 'interface:peer' is not supported."));
+                    }
+                |
+                    INT_CONST
+                    {
+                        importer->error_tracker->registerError(
+                            QString("import of 'interface:0' is not supported."));
+                    }
                 )
             )?
         |
@@ -591,8 +615,7 @@ host { AddressSpec as; } :
         |
             IPV6
             {
-                importer->addMessageToLog(
-                    QString("Error: IPv6 import is not supported. "));
+                importer->addMessageToLog(QString("IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         |
@@ -659,8 +682,7 @@ routehost { RouteSpec rs; } :
         {
             if (v6)
             {
-                importer->addMessageToLog(
-                    QString("Error: IPv6 import is not supported. "));
+                importer->addMessageToLog(QString("IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             } else
             {
@@ -714,8 +736,8 @@ tcp_flags :
     (
         ANY
         {
-            importer->flags_check = "any";
-            importer->flags_mask = "all";
+            importer->flags_check = "none";
+            importer->flags_mask = "none";
         }
     |
         ( check:WORD )? SLASH ( mask:WORD )?
@@ -752,7 +774,7 @@ icmp_type_code { IcmpSpec is; } :
             (
                 WORD      { is.icmp_code_name = LT(0)->getText(); }
             |
-                INT_CONST { is.icmp_code_int = LT(0)->getText();  }
+            INT_CONST     { is.icmp_code_int = LT(0)->getText();  }
             )
         )?
         {
@@ -774,8 +796,7 @@ icmp_list :
 icmp6_type :
         ICMP6_TYPE
         {
-            importer->addMessageToLog(
-                QString("Error: ICMP6 import is not supported. "));
+            importer->addMessageToLog(QString("ICMP6 import is not supported. "));
             consumeUntil(NEWLINE);
         }
     ;
@@ -1048,6 +1069,7 @@ tokens
     ICMP_TYPE = "icmp-type";
     ICMP6_TYPE = "icmp6-type";
     ICMP_CODE = "code";
+
 }
 
 LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;

@@ -44,96 +44,96 @@ PFCfgLexer::PFCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& st
 
 void PFCfgLexer::initLiterals()
 {
-	literals["vrrp"] = 64;
+	literals["vrrp"] = 65;
 	literals["critical"] = 103;
-	literals["ospf"] = 62;
-	literals["rdp"] = 56;
+	literals["ospf"] = 63;
+	literals["rdp"] = 57;
 	literals["disable"] = 110;
 	literals["scrub"] = 12;
-	literals["ipsec"] = 92;
-	literals["inet"] = 48;
-	literals["pcp"] = 94;
+	literals["ipsec"] = 93;
+	literals["inet"] = 49;
+	literals["pcp"] = 95;
 	literals["emergencies"] = 105;
 	literals["debugging"] = 104;
 	literals["persist"] = 16;
-	literals["snp"] = 98;
-	literals["timeout"] = 35;
-	literals["to"] = 45;
-	literals["flags"] = 74;
-	literals["isis"] = 66;
-	literals["icmp6-type"] = 77;
+	literals["snp"] = 99;
+	literals["timeout"] = 36;
+	literals["to"] = 46;
+	literals["flags"] = 75;
+	literals["isis"] = 67;
+	literals["icmp6-type"] = 78;
 	literals["const"] = 17;
-	literals["pptp"] = 96;
-	literals["pass"] = 36;
-	literals["no"] = 80;
-	literals["from"] = 67;
-	literals["igrp"] = 91;
-	literals["pim"] = 95;
-	literals["tagged"] = 78;
-	literals["rsvp"] = 57;
-	literals["route-to"] = 72;
-	literals["nos"] = 93;
-	literals["quit"] = 88;
+	literals["pptp"] = 97;
+	literals["pass"] = 37;
+	literals["no"] = 81;
+	literals["from"] = 68;
+	literals["igrp"] = 92;
+	literals["pim"] = 96;
+	literals["tagged"] = 79;
+	literals["rsvp"] = 58;
+	literals["route-to"] = 73;
+	literals["nos"] = 94;
+	literals["quit"] = 89;
 	literals["->"] = 112;
-	literals["peer"] = 100;
-	literals["icmp-type"] = 75;
-	literals["exit"] = 87;
-	literals["modulate"] = 82;
-	literals["nat"] = 32;
+	literals["peer"] = 28;
+	literals["icmp-type"] = 76;
+	literals["exit"] = 88;
+	literals["modulate"] = 83;
+	literals["nat"] = 33;
 	literals["range"] = 101;
-	literals["urpf-failed"] = 68;
-	literals["out"] = 39;
+	literals["urpf-failed"] = 69;
+	literals["out"] = 40;
 	literals["queue"] = 10;
-	literals["gre"] = 58;
+	literals["gre"] = 59;
 	literals["set"] = 11;
 	literals["warnings"] = 109;
-	literals["ah"] = 60;
-	literals["host"] = 99;
-	literals["interface"] = 89;
-	literals["rip"] = 97;
-	literals["icmp6"] = 90;
+	literals["ah"] = 61;
+	literals["host"] = 100;
+	literals["interface"] = 90;
+	literals["rip"] = 98;
+	literals["icmp6"] = 91;
 	literals["broadcast"] = 27;
 	literals["notifications"] = 108;
 	literals["file"] = 19;
 	literals["network"] = 26;
-	literals["synproxy"] = 83;
+	literals["synproxy"] = 84;
 	literals["altq"] = 9;
-	literals["any"] = 69;
-	literals["esp"] = 59;
+	literals["any"] = 70;
+	literals["esp"] = 60;
 	literals["alerts"] = 102;
-	literals["all"] = 43;
-	literals["inet6"] = 49;
+	literals["all"] = 44;
+	literals["inet6"] = 50;
 	literals["inactive"] = 111;
-	literals["label"] = 85;
-	literals["no-route"] = 70;
-	literals["udp"] = 55;
-	literals["reply-to"] = 73;
-	literals["tag"] = 79;
-	literals["port"] = 86;
-	literals["code"] = 76;
-	literals["ip"] = 51;
+	literals["label"] = 86;
+	literals["no-route"] = 71;
+	literals["udp"] = 56;
+	literals["reply-to"] = 74;
+	literals["tag"] = 80;
+	literals["port"] = 87;
+	literals["code"] = 77;
+	literals["ip"] = 52;
 	literals["table"] = 13;
-	literals["eigrp"] = 61;
+	literals["eigrp"] = 62;
 	literals["errors"] = 106;
-	literals["ipip"] = 63;
+	literals["ipip"] = 64;
 	literals["antispoof"] = 8;
-	literals["binat"] = 33;
-	literals["igmp"] = 53;
-	literals["on"] = 47;
-	literals["state"] = 84;
-	literals["log"] = 40;
-	literals["proto"] = 50;
-	literals["rdr"] = 34;
+	literals["binat"] = 34;
+	literals["igmp"] = 54;
+	literals["on"] = 48;
+	literals["state"] = 85;
+	literals["log"] = 41;
+	literals["proto"] = 51;
+	literals["rdr"] = 35;
 	literals["informational"] = 107;
-	literals["self"] = 28;
-	literals["in"] = 38;
-	literals["keep"] = 81;
-	literals["block"] = 37;
-	literals["l2tp"] = 65;
-	literals["quick"] = 46;
-	literals["user"] = 44;
-	literals["icmp"] = 52;
-	literals["tcp"] = 54;
+	literals["self"] = 30;
+	literals["in"] = 39;
+	literals["keep"] = 82;
+	literals["block"] = 38;
+	literals["l2tp"] = 66;
+	literals["quick"] = 47;
+	literals["user"] = 45;
+	literals["icmp"] = 53;
+	literals["tcp"] = 55;
 }
 
 ANTLR_USE_NAMESPACE(antlr)RefToken PFCfgLexer::nextToken()
@@ -477,7 +477,7 @@ void PFCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1061 "pf.g"
+#line 1083 "pf.g"
 		newline();
 #line 483 "PFCfgLexer.cpp"
 	}
@@ -558,7 +558,7 @@ void PFCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1056 "pf.g"
+#line 1078 "pf.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 564 "PFCfgLexer.cpp"
 	}
@@ -775,7 +775,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		mNUM_3DIGIT(false);
 		}
 		if ( inputState->guessing==0 ) {
-#line 1098 "pf.g"
+#line 1120 "pf.g"
 			_ttype = IPV4;
 #line 781 "PFCfgLexer.cpp"
 		}
@@ -858,7 +858,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1101 "pf.g"
+#line 1123 "pf.g"
 				_ttype = NUMBER;
 #line 864 "PFCfgLexer.cpp"
 			}
@@ -900,7 +900,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				_loop214:;
 				} // ( ... )*
 				if ( inputState->guessing==0 ) {
-#line 1124 "pf.g"
+#line 1146 "pf.g"
 					_ttype = IPV6;
 #line 906 "PFCfgLexer.cpp"
 				}
@@ -997,7 +997,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}
 						}
 						if ( inputState->guessing==0 ) {
-#line 1115 "pf.g"
+#line 1137 "pf.g"
 							_ttype = IPV6;
 #line 1003 "PFCfgLexer.cpp"
 						}
@@ -1020,7 +1020,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						_loop210:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 1118 "pf.g"
+#line 1140 "pf.g"
 							_ttype = IPV6;
 #line 1026 "PFCfgLexer.cpp"
 						}
@@ -1031,7 +1031,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					
 					}
 					if ( inputState->guessing==0 ) {
-#line 1120 "pf.g"
+#line 1142 "pf.g"
 						_ttype = IPV6;
 #line 1037 "PFCfgLexer.cpp"
 					}
@@ -1040,7 +1040,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					match(':' /* charlit */ );
 					match(':' /* charlit */ );
 					if ( inputState->guessing==0 ) {
-#line 1127 "pf.g"
+#line 1149 "pf.g"
 						_ttype = IPV6;
 #line 1046 "PFCfgLexer.cpp"
 					}
@@ -1061,7 +1061,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop195:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 1106 "pf.g"
+#line 1128 "pf.g"
 						_ttype = INT_CONST;
 #line 1067 "PFCfgLexer.cpp"
 					}
@@ -1069,7 +1069,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				else if ((LA(1) == 0x3a /* ':' */ ) && (true)) {
 					match(':' /* charlit */ );
 					if ( inputState->guessing==0 ) {
-#line 1130 "pf.g"
+#line 1152 "pf.g"
 						_ttype = COLON;
 #line 1075 "PFCfgLexer.cpp"
 					}
@@ -1289,7 +1289,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop217:;
 					} // ( ... )*
 					if ( inputState->guessing==0 ) {
-#line 1142 "pf.g"
+#line 1164 "pf.g"
 						_ttype = WORD;
 #line 1295 "PFCfgLexer.cpp"
 					}

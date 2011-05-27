@@ -239,6 +239,8 @@ void PFImporter::addSrv()
             
                     re->addRef(
                         commitObject(service_maker->createObject(sig)));
+
+                    if (ps.port_op == "!=") re->setNeg(true);
                 }
 
                 for (psi=dst_port_group.begin();
@@ -261,6 +263,8 @@ void PFImporter::addSrv()
             
                     re->addRef(
                         commitObject(service_maker->createObject(sig)));
+
+                    if (ps.port_op == "!=") re->setNeg(true);
                 }
             }
         }
@@ -291,12 +295,13 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
     else
         sig->type_name = UDPService::TYPENAME;
 
-    bool range_inclusive = false;
+    bool range_inclusive = true;
     QString port_op_cisco_style;
 
     // map port operations from PF to Cisco-like
 
     if (port_op == "=")  port_op_cisco_style = "eq";
+    if (port_op == "!=") port_op_cisco_style = "eq";
     if (port_op == "<=") port_op_cisco_style = "lt";
     if (port_op == ">=") port_op_cisco_style = "gt";
 
@@ -326,8 +331,8 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
 
     if (port_op == "<>")
     {
-        addMessageToLog(
-            QObject::tr("Error: 'except ranges' ('<>') for port numbers "
+        error_tracker->registerError(
+            QObject::tr("'except ranges' ('<>') for port numbers "
                         "are not supported yet."));
         return false;
     }
@@ -364,8 +369,8 @@ void PFImporter::convertTcpFlags(QList<int> &flags_list,
         case 'F': flags_list << TCPService::FIN; break;
         case 'W': 
         case 'E': 
-            addMessageToLog(
-                QObject::tr("Error: TCP flag matches 'E' and 'W' "
+            error_tracker->registerError(
+                QObject::tr("TCP flag matches 'E' and 'W' "
                             "are not supported."));
         }
     }
@@ -405,9 +410,8 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
 
     if (as.at == AddressSpec::INTERFACE_BROADCAST)
     {
-        addMessageToLog(
-            QObject::tr("Error: import of '%1:broadcast' is not supported")
-            .arg(as.address.c_str()));
+        error_tracker->registerError(
+            QString("import of 'interface:broadcast' is not supported."));
         return NULL;
     }
 
@@ -425,7 +429,7 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
     {
         if (as.address == "self") return getFirewallObject();
         {
-            addMessageToLog(
+            error_tracker->registerError(
                 QObject::tr("Warning: matching '%1' is not supported")
                 .arg(as.address.c_str()));
             return NULL;

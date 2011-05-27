@@ -106,8 +106,6 @@ class Importer
     
 protected:
 
-    ObjectMakerErrorTracker *error_tracker;
-    
     AddressObjectMaker *address_maker;
     ServiceObjectMaker *service_maker;
 
@@ -205,6 +203,8 @@ protected:
     
 public:
 
+    ObjectMakerErrorTracker *error_tracker;
+    
     // making logger public so I can access it from the code in the grammar
     libfwbuilder::Logger *logger;
     
