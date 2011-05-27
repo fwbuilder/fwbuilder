@@ -1,3 +1,21 @@
+2011-05-27  vadim  <vadim@netcitadel.com>
+
+	* PFImporter.cpp: see #2394 pf.conf import. This version implements
+	import of pf.conf configuration with the following limitations:
+	  - anchors are not imported.  Anchor rules are imported but rules
+	    inside anchors are not.
+	  - only pf.conf configurations designed with the use of keyword
+	    "quick" can be imported.
+	  - Macros are expanded during import and are not recreated as
+	    objects.  Tables are imported as run-time AddressTable obejcts
+	    configured with the file name, or object groups.
+	  - User has to specify host OS and PF version number during import
+	    process because interpretation of rules with default settings
+	    of some parameters is version-dependent.
+	  - Import of IPv6 addresses and ICMPv6 matches in pf.conf is not
+	    supported at this time.
+	  - Import of TCP flag matches for flags 'E' and 'W' is not supported.
+
 2011-05-26  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PolicyCompiler_pf.cpp (compile): see #2434 "PF compiler should
