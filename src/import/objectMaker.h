@@ -37,6 +37,7 @@
 namespace libfwbuilder
 {
     class AddressRange;
+    class AttachedNetworks;
     class Cluster;
     class CustomService;
     class Firewall;
@@ -109,7 +110,8 @@ public:
     QString address_range_end;
     QString dns_name;
     QString address_table_name;
-
+    QString parent_interface_name;
+    
     // for IP service
     int protocol;
     bool fragments;
@@ -204,7 +206,8 @@ public:
     virtual void* dispatch(libfwbuilder::DNSName*, void*);
     virtual void* dispatch(libfwbuilder::ObjectGroup*, void*);
     virtual void* dispatch(libfwbuilder::ServiceGroup*, void*);
-
+    virtual void* dispatch(libfwbuilder::AttachedNetworks*, void*);
+    
 };
 
 class ObjectMaker

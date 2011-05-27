@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -163,10 +163,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 137;
+	static const int NUM_TOKENS = 140;
 #else
 	enum {
-		NUM_TOKENS = 137
+		NUM_TOKENS = 140
 	};
 #endif
 	

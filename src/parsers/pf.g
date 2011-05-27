@@ -254,6 +254,20 @@ tableaddr_spec { AddressSpec as; } :
                 as.at = AddressSpec::INTERFACE_NAME;
                 as.address = LT(0)->getText();
             }
+            (
+                COLON
+                (
+                    NETWORK
+                    {
+                        as.at = AddressSpec::INTERFACE_NETWORK;
+                    }
+                |
+                    BROADCAST
+                    {
+                        as.at = AddressSpec::INTERFACE_BROADCAST;
+                    }
+                )
+            )?
         |
             SELF
             {
@@ -554,6 +568,20 @@ host { AddressSpec as; } :
                 as.at = AddressSpec::INTERFACE_NAME;
                 as.address = LT(0)->getText();
             }
+            (
+                COLON
+                (
+                    NETWORK
+                    {
+                        as.at = AddressSpec::INTERFACE_NETWORK;
+                    }
+                |
+                    BROADCAST
+                    {
+                        as.at = AddressSpec::INTERFACE_BROADCAST;
+                    }
+                )
+            )?
         |
             SELF
             {   
@@ -959,6 +987,9 @@ tokens
     ANY = "any";
     ALL = "all";
     USER = "user";
+    NETWORK = "network";
+    BROADCAST = "broadcast";
+    PEER = "peer";
 
     PORT = "port";
 

@@ -25,6 +25,7 @@
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/FWObject.h"
@@ -121,6 +122,7 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
     address_range_end = other.address_range_end;
     dns_name = other.dns_name;
     address_table_name = other.address_table_name;
+    parent_interface_name = other.parent_interface_name;
     protocol = other.protocol;
     fragments = other.fragments;
     short_fragments = other.short_fragments;
@@ -616,6 +618,9 @@ QString ObjectSignature::toString() const
     if (type_name == AddressRange::TYPENAME)
         sig << address_range_start << address_range_end;
 
+    if (type_name == AttachedNetworks::TYPENAME)
+        sig << parent_interface_name;
+
     if (type_name == DNSName::TYPENAME)
         sig << dns_name;
 
@@ -827,6 +832,14 @@ void* ObjectSignature::dispatch(DNSName *obj, void*)
     object_name = QString::fromUtf8(obj->getName().c_str());
     type_name = obj->getTypeName().c_str();
     dns_name = obj->getSourceName().c_str();
+    return this;
+}
+
+void* ObjectSignature::dispatch(AttachedNetworks *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
+    parent_interface_name = obj->getSourceName().c_str();
     return this;
 }
 

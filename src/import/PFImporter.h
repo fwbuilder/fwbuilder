@@ -75,6 +75,8 @@ public:
         NETWORK_ADDRESS,
         SPECIAL_ADDRESS,
         INTERFACE_NAME,
+        INTERFACE_NETWORK,
+        INTERFACE_BROADCAST,
         TABLE } address_type;
 
     address_type at;

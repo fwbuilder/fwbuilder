@@ -36,6 +36,7 @@
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/IPService.h"
@@ -379,6 +380,35 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
         Interface *intf = getInterfaceByName(as.address);
         assert(intf!=NULL);
         return intf;
+    }
+
+    if (as.at == AddressSpec::INTERFACE_NETWORK)
+    {
+        Interface *intf = getInterfaceByName(as.address);
+        if (intf == NULL)
+        {
+            // this interface was never used in "on <intf>" clause before
+            newInterface(as.address);
+            intf = getInterfaceByName(as.address);
+        }
+
+        string name = intf->getName() + "-net";
+        ObjectMaker maker(Library::cast(library), error_tracker);
+        AttachedNetworks *an =
+            AttachedNetworks::cast(
+                maker.createObject(intf, AttachedNetworks::TYPENAME, name));
+        an->setRunTime(true);
+        an->setSourceName(intf->getName());
+        address_table_registry[name.c_str()] = an;
+        return an;
+    }
+
+    if (as.at == AddressSpec::INTERFACE_BROADCAST)
+    {
+        addMessageToLog(
+            QObject::tr("Error: import of '%1:broadcast' is not supported")
+            .arg(as.address.c_str()));
+        return NULL;
     }
 
     if (as.at == AddressSpec::HOST_ADDRESS)
