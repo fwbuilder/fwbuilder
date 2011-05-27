@@ -373,10 +373,11 @@ pass_command : PASS
             importer->action = "pass";
             *dbg << LT(1)->getLine() << ":" << " pass ";
         }
-        rule_extended NEWLINE
+        rule_extended 
         {
             importer->pushRule();
         }
+        NEWLINE
     ;
 
 block_command : BLOCK
@@ -387,10 +388,11 @@ block_command : BLOCK
             importer->action = "block";
             *dbg << LT(1)->getLine() << ":" << " block   ";
         }
-        rule_extended NEWLINE
+        rule_extended 
         {
             importer->pushRule();
         }
+        NEWLINE
     ;
 
 rule_extended :

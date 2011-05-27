@@ -608,7 +608,7 @@ void PFImporter::pushPolicyRule()
     if (state_op == "no") ropt->setBool("stateless", true);
     if (state_op == "modulate") ropt->setBool("pf_modulate_state", true);
     if (state_op == "keep") ropt->setBool("stateless", false);
-    if (state_op == "synproxy") ropt->setBool("pf_synproxy", false);
+    if (state_op == "synproxy") ropt->setBool("pf_synproxy", true);
 
 
     /*
