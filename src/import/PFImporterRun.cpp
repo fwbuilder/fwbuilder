@@ -75,7 +75,7 @@ void PFImporter::run()
         whole_input_tmp.append(QString(buf));
     }
 
-    QString whole_input = whole_input_tmp.join("\n");
+    QString whole_input = whole_input_tmp.join("\n") + "\n";
     QRegExp line_continuation("\\\\\\s*\n");
     whole_input.replace(line_continuation, "");
 
