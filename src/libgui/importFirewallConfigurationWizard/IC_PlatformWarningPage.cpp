@@ -29,11 +29,17 @@
 
 #include "PreImport.h"
 
+#include "platforms.h"
+
 #include <QString>
 #include <QFile>
 #include <QRegExp>
 #include <QTextStream>
 #include <QDesktopServices>
+
+#include <list>
+
+using namespace std;
 
 
 IC_PlatformWarningPage::IC_PlatformWarningPage(QWidget *parent) : QWizardPage(parent)
@@ -43,19 +49,34 @@ IC_PlatformWarningPage::IC_PlatformWarningPage(QWidget *parent) : QWizardPage(pa
 
     setField("platform", "");
 
-    m_dialog->voteForFeatureButton->hide();
+    // user-chosen host os and version, so far we only show these for PF
+    registerField("hostOS*", m_dialog->hostOS);
+    registerField("version*", m_dialog->version);
+
+    m_dialog->hostOSAndVersionFrame->hide();
 
     platformOk = false;
 }
 
 bool IC_PlatformWarningPage::isComplete() const
 {
-    return platformOk;
+    if (!platformOk) return false;
+
+    if (dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
+        platform == "pf")
+    {
+        QString host_os = m_dialog->hostOS->currentText();
+        QString version = m_dialog->version->currentText();
+        return (! host_os.isEmpty() && ! version.isEmpty());
+    } else
+        return true;
 }
 
 void IC_PlatformWarningPage::initializePage()
 {
     QString fileName = field("fileName").toString();
+
+    ImportFirewallConfigurationWizard* wz = dynamic_cast<ImportFirewallConfigurationWizard*>(wizard());
 
     QFile cf(fileName);
     if (cf.open(QIODevice::ReadOnly ))
@@ -63,9 +84,7 @@ void IC_PlatformWarningPage::initializePage()
         m_dialog->configFileBrowser->clear();
         m_dialog->platform->setText(tr("Unknown"));
 
-        QStringList *buf = 
-            dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-            getBufferPtr();
+        QStringList *buf = &(wz->buffer);
         buf->clear();
 
         QTextStream stream(&cf);
@@ -178,16 +197,49 @@ void IC_PlatformWarningPage::initializePage()
             break;
 
         case PreImport::PF:
+        {
             m_dialog->platform->setText(tr("pf"));
             m_dialog->platformSpecificWarning->setText(
-                tr("Firewall Builder supports import PF "
+                tr("<html><p>Firewall Builder supports import PF "
                    "configuration from a pf.conf file. Tables will be imported "
                    "as object groups and their names will be preserved. "
                    "Macros are expanded in place and not imported as "
                    "objects. Import of anchors is not supported at this time."
+                   "</p>"
+                   "<p>PF version in Firewall Builder corresponds to its "
+                   "versions in OpenBSD. If you run FreeBSD 8.2 or earlier, "
+                   "choose \"3.9\"."
+                   "</p></html>"
                    ));
+
             platformOk = true;
+
+            // populate host OS items using standard function from platforms.cpp
+            // but add an empty item on top and make it current
+            setHostOS(m_dialog->hostOS, "pf", "");
+            m_dialog->hostOS->insertItem(0, "");
+            m_dialog->hostOS->setCurrentIndex(0);
+
+            for (int i=0; i<m_dialog->hostOS->count(); ++i)
+            {
+                wz->host_os_list.append(m_dialog->hostOS->itemText(i));
+            }
+
+            // populate versions using standard function from platforms.cpp
+            // and add empty item on top
+            list<QStringPair> vl;
+            getVersionsForPlatform("pf", vl);
+            vl.push_front(QStringPair("", QObject::tr("")));
+
+            for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++)
+            {
+                m_dialog->version->addItem( i1->second );
+                wz->version_list.append(i1->first);
+            }
+
+            m_dialog->hostOSAndVersionFrame->show();
             break;
+        }
 
         case PreImport::PF_REVERSE:
             m_dialog->platform->setText(tr("pf"));
@@ -208,18 +260,9 @@ void IC_PlatformWarningPage::initializePage()
             break;
         }
 
-        QString platform_string = pi.getPlatformAsString();
-
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-            setPlatform(platform_string);
+        wz->platform = pi.getPlatformAsString();
     }
 
     emit completeChanged();
-}
-
-void IC_PlatformWarningPage::voteForFeature()
-{
-    QString url("http://www.fwbuilder.org/4.0/surveys/pf_import_registration.html");
-    QDesktopServices::openUrl(QUrl(url, QUrl::StrictMode));
 }
 

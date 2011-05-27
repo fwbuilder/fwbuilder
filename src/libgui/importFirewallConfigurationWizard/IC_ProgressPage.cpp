@@ -83,12 +83,10 @@ int IC_ProgressPage::nextId() const
 {
     if (fwbdebug_ic) qDebug() << "IC_ProgressPage::nextId()";
 
-    QString platform = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getPlatform();
+    ImportFirewallConfigurationWizard* wz = dynamic_cast<ImportFirewallConfigurationWizard*>(wizard());
 
-    Firewall *fw = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->getFirewall();
+    QString platform = wz->platform;
+    Firewall *fw = wz->getFirewall();
 
     // Move on to the next page only if firewall object has been created
     // and the next page only makes sense for pix and fwsm
@@ -138,19 +136,16 @@ void IC_ProgressPage::initializePage()
     m_dialog->errors_count_display->setText("0");
     m_dialog->warnings_count_display->setText("0");
 
-    QString platform = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getPlatform();
+    ImportFirewallConfigurationWizard* wz = dynamic_cast<ImportFirewallConfigurationWizard*>(wizard());
+
+    QString platform = wz->platform;
     QString firewallName = field("firewallName").toString();
     bool deduplicate = field("deduplicate").toBool();
 
-    QStringList *buffer = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getBufferPtr();
+    QStringList *buffer = &(wz->buffer);
     QString fileName = field("fileName").toString();
 
-    Library *lib = dynamic_cast<ImportFirewallConfigurationWizard*>(
-        wizard())->currentLib();
+    Library *lib = wz->currentLib();
     importer = new ImporterThread(this,
                                   lib,
                                   *buffer, platform, firewallName, fileName,
@@ -180,16 +175,31 @@ void IC_ProgressPage::importerFinished()
     Firewall *fw = importer->getFirewallObject();
     qApp->processEvents(); // to flush the log
 
-    dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->setFirewall(fw);
+    ImportFirewallConfigurationWizard* wz = dynamic_cast<ImportFirewallConfigurationWizard*>(wizard());
 
-    QString platform = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getPlatform();
+    wz->setFirewall(fw);
+
+    QString platform = wz->platform;
 
     if (fw) // fw can be NULL if import was uncussessful
     {
         QString fwName = field("firewallName").toString();
         fw->setName(fwName.toUtf8().constData());
+
+        // lists host_os_list and version_list are used-chosen host os and version.
+        // We ask user to choose these only for PF, so for other platforms 
+        // these lists are going to be empty.
+        if ( wz->host_os_list.size() > 0 && wz->version_list.size() > 0)
+        {
+            int host_os_idx = field("hostOS").toInt();
+            int version_idx = field("version").toInt();
+
+            QString hostOS = wz->host_os_list.at( host_os_idx );
+            QString version = wz->version_list.at( version_idx );
+
+            if ( ! hostOS.isEmpty()) fw->setStr("hostOS", hostOS.toStdString());
+            if ( ! version.isEmpty()) fw->setStr("version", version.toStdString());
+        }
 
         setFinalPage(false); // this triggers call to nextId()
 

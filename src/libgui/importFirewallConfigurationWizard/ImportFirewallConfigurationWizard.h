@@ -34,11 +34,21 @@ namespace libfwbuilder
     class Library;
 };
 
+class IC_FirewallNamePage;
+class IC_PlatformWarningPage;
+class IC_ProgressPage;
 
 class ImportFirewallConfigurationWizard : public QWizard
 {
+    friend class IC_FirewallNamePage;
+    friend class IC_PlatformWarningPage;
+    friend class IC_ProgressPage;
+    
     Q_OBJECT;
+
     QString platform;
+    QList<QString> host_os_list;
+    QList<QString> version_list;
     QStringList buffer;
     libfwbuilder::Firewall *fw;
     libfwbuilder::FWObjectDatabase *db_orig;
@@ -52,11 +62,6 @@ public:
     ImportFirewallConfigurationWizard(QWidget *parent,
                                       libfwbuilder::FWObjectDatabase *db);
     virtual ~ImportFirewallConfigurationWizard();
-
-    QString getPlatform() { return platform; }
-    void setPlatform(const QString &s) { platform = s; }
-
-    QStringList* getBufferPtr() { return &buffer; }
 
     libfwbuilder::Firewall* getFirewall() { return fw; }
     void setFirewall(libfwbuilder::Firewall* _fw) { fw = _fw; }

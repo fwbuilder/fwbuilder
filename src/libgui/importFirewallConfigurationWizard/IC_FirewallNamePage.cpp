@@ -49,12 +49,10 @@ IC_FirewallNamePage::IC_FirewallNamePage(QWidget *parent) : QWizardPage(parent)
 void IC_FirewallNamePage::initializePage()
 {
     QString platform = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getPlatform();
+        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())-> platform;
 
     QStringList *buf = 
-        dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->
-        getBufferPtr();
+        &(dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->buffer);
 
     qDebug() << "platform=" << platform;
 

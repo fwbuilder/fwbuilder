@@ -42,8 +42,6 @@ public:
     virtual void initializePage();
     virtual bool isComplete() const;
     
-public slots:
-    void voteForFeature();
 };
 
 #endif // IC_PLATFORMWARNINGPAGE_H

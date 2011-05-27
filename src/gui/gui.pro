@@ -54,9 +54,9 @@ OTHER_LIBS  = ../common/$$BINARY_SUBDIR/libcommon.a \
       ../libfwbuilder/src/fwcompiler/$$BINARY_SUBDIR/libfwcompiler.a \
       ../libfwbuilder/src/fwbuilder/$$BINARY_SUBDIR/libfwbuilder.a
 
-PRE_TARGETDEPS  = $$OTHER_LIBS $$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
-
 STATIC_LIBS += $$OTHER_LIBS
+
+PRE_TARGETDEPS  = $$STATIC_LIBS
 
 macx:STATIC_LIBS += -framework \
     Carbon
