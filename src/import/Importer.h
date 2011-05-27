@@ -123,7 +123,10 @@ protected:
 
     std::string discovered_platform;
     std::string discovered_version;
-    
+
+    std::string user_choice_host_os;
+    std::string user_choice_version;
+
     libfwbuilder::Interface* current_interface;
     
     // map :  ruleset name : ruleset
@@ -292,6 +295,10 @@ public:
 
     virtual void setDiscoveredPlatform(const std::string &v);
     virtual void setDiscoveredVersion(const std::string &v);
+
+    void setUserChoiceHostOS(const std::string &s) { user_choice_host_os = s; }
+    void setUserChoiceVersion(const std::string &s) { user_choice_version = s; }
+    
     virtual void setHostName(const std::string &hn);
     virtual void newInterface(const std::string &interface_name);
     virtual void clearCurrentInterface() { current_interface = NULL; }

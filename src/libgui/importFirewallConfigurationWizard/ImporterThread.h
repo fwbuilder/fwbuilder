@@ -54,6 +54,8 @@ class ImporterThread : public QThread
     QWidget *ui;
     libfwbuilder::Firewall *fw;
     bool stopFlag;
+    QString userChoiceHostOS;
+    QString userChoiceVersion;
     
 public:
     ImporterThread(QWidget *ui,
@@ -69,6 +71,9 @@ public:
     void stop();
 
     libfwbuilder::Firewall* getFirewallObject() { return fw; }
+
+    void setUserChoiceHostOS(const QString &s);
+    void setUserChoiceVersion(const QString &s);
     
 signals:
     void finished();

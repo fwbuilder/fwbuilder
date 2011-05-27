@@ -73,6 +73,16 @@ ImporterThread::~ImporterThread()
     if (fwbdebug) qDebug() << "ImporterThread::~ImporterThread()";
 }
 
+void ImporterThread::setUserChoiceHostOS(const QString &s)
+{
+    userChoiceHostOS = s;
+}
+
+void ImporterThread::setUserChoiceVersion(const QString &s)
+{
+    userChoiceVersion = s;
+}
+
 void ImporterThread::run()
 {
     QThreadLogger *logger = new QThreadLogger();
@@ -98,6 +108,11 @@ void ImporterThread::run()
 
     if (importer)
     {
+        if ( ! userChoiceHostOS.isEmpty())
+            importer->setUserChoiceHostOS(userChoiceHostOS.toStdString());
+        
+        if ( ! userChoiceVersion.isEmpty())
+            importer->setUserChoiceVersion(userChoiceVersion.toStdString());
 
         importer->setFileName(fileName.toUtf8().constData());
         if (deduplicate) importer->prepareForDeduplication();

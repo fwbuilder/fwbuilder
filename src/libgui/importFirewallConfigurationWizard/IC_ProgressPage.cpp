@@ -150,6 +150,18 @@ void IC_ProgressPage::initializePage()
                                   lib,
                                   *buffer, platform, firewallName, fileName,
                                   deduplicate);
+
+    // lists host_os_list and version_list are used-chosen host os and version.
+    // We ask user to choose these only for PF, so for other platforms 
+    // these lists are going to be empty.
+    if ( wz->host_os_list.size() > 0 && wz->version_list.size() > 0)
+    {
+        int host_os_idx = field("hostOS").toInt();
+        int version_idx = field("version").toInt();
+
+        importer->setUserChoiceHostOS( wz->host_os_list.at( host_os_idx ));
+        importer->setUserChoiceVersion( wz->version_list.at( version_idx ));
+    }
     
     connect(importer, SIGNAL(destroyed(QObject*)),
             this, SLOT(importerDestroyed(QObject*)));

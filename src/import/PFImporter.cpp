@@ -588,6 +588,23 @@ void PFImporter::pushPolicyRule()
     /*
      * Set state-related rule options using variable state_op
      */
+
+    if (state_op.empty())
+    {
+        // when "state" keyword is absent, behavior depends on the
+        // version because different versions have different
+        // defaults. Versions prior to 4.0 treat missing keyword as
+        // "no state", while versions past 4.0 treat is as "keep
+        // state". See also #2441. Rules with action "block" should
+        // always be stateless by default.
+        if (XMLTools::version_compare(user_choice_version, "4.0") < 0)
+            ropt->setBool("stateless", true);
+        else
+        {
+            if (action == "pass") ropt->setBool("stateless", false);
+        }
+    }
+
     if (state_op == "no") ropt->setBool("stateless", true);
     if (state_op == "modulate") ropt->setBool("pf_modulate_state", true);
     if (state_op == "keep") ropt->setBool("stateless", false);
