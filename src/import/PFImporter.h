@@ -119,6 +119,9 @@ public:
     
     PortSpec(const std::string s1, const std::string s2, const std::string s3)
     { port1 = s1; port2 = s2; port_op = s3; }
+
+    std::string toString()
+    { return std::string("PortSpec: ") + port_op + " " + port1 + " " + port2; }
 };
 
 class IcmpSpec

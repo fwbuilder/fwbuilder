@@ -251,6 +251,7 @@ void PFImporter::addSrv()
                      psi!=dst_port_group.end(); ++psi)
                 {
                     PortSpec ps = *psi;
+
                     ObjectSignature sig(error_tracker);
                     QString port_spec = 
                         QString("%1 %2")
@@ -293,6 +294,7 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
                                             const QString &flags_check,
                                             const QString &flags_mask)
 {
+
     if (protocol == "tcp")
         sig->type_name = TCPService::TYPENAME;
     else

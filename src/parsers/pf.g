@@ -33,6 +33,7 @@ header "post_include_hpp"
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
 
+#include <iostream>
 #include <sstream>
 
 class PFImporter;
@@ -776,7 +777,7 @@ icmp_type_code { IcmpSpec is; } :
             (
                 WORD      { is.icmp_code_name = LT(0)->getText(); }
             |
-            INT_CONST     { is.icmp_code_int = LT(0)->getText();  }
+                INT_CONST { is.icmp_code_int = LT(0)->getText();  }
             )
         )?
         {
@@ -923,7 +924,7 @@ port_op { PortSpec ps; } :
     ;
 
 port_def :
-        WORD | INT_CONST
+        ( WORD | INT_CONST )
         {
             importer->tmp_port_def = LT(0)->getText();
         }
