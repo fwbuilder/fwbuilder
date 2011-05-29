@@ -97,31 +97,36 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         break;
 
     case PolicyRule::Reject: 
-	if (TCPService::isA(srv)) compiler->output << "block return-rst ";
-	else
+    {
+        string aor = ruleopt->getStr("action_on_reject");
+        string code;
+        if ( aor.find("ICMP")!=string::npos )
         {
-	    string aor=ruleopt->getStr("action_on_reject");
-	    string code;
-	    if ( aor.find("ICMP")!=string::npos )
+            code = "return-icmp ";
+            if (aor.find("unreachable")!=string::npos )
             {
-		code="return-icmp ";
-		if (aor.find("unreachable")!=string::npos )
-                {
- 		    if (aor.find("net")!=string::npos)      code=code+"( 0 ) ";
-		    if (aor.find("host")!=string::npos)     code=code+"( 1 ) ";
-		    if (aor.find("protocol")!=string::npos) code=code+"( 2 ) ";
-		    if (aor.find("port")!=string::npos)     code=code+"( 3 ) ";
-		}
-		if (aor.find("prohibited")!=string::npos )
-                {
- 		    if (aor.find("net")!=string::npos)      code=code+"( 9 ) ";
-		    if (aor.find("host")!=string::npos)     code=code+"( 10 ) ";
-		}
-	    } else
-		code="return-icmp   ";
-	    compiler->output << "block " << code;
-	}
+                if (aor.find("net")!=string::npos)      code = code + "( 0 ) ";
+                if (aor.find("host")!=string::npos)     code = code + "( 1 ) ";
+                if (aor.find("protocol")!=string::npos) code = code + "( 2 ) ";
+                if (aor.find("port")!=string::npos)     code = code + "( 3 ) ";
+            }
+            if (aor.find("prohibited")!=string::npos )
+            {
+                if (aor.find("net")!=string::npos)      code = code + "( 9 ) ";
+                if (aor.find("host")!=string::npos)     code = code + "( 10 ) ";
+                if (aor.find("filter")!=string::npos)   code = code + "( 13 ) ";
+                if (aor.find("admin")!=string::npos)    code = code + "( 13 ) ";
+            }
+        } else
+        {
+            if ( aor.find("TCP")!=string::npos ) code = "return-rst   ";
+            else
+                code = "return-icmp   ";
+        }
+
+        compiler->output << "block " << code;
 	break;
+    }
 
     case PolicyRule::Scrub:
     {
