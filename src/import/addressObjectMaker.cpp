@@ -25,6 +25,7 @@
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -54,7 +55,12 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
     if (sig.type_name == AddressRange::TYPENAME)
         obj = createAddressRange(sig);
     else
-        obj = createAddress(sig);
+    {
+        if (sig.type_name == AddressTable::TYPENAME)
+            obj = createAddressTable(sig);
+        else
+            obj = createAddress(sig);
+    }
 
     // Now I should build new signature because actual object type has
     // only been determined in createAddress()
@@ -133,7 +139,6 @@ FWObject* AddressObjectMaker::createAddress(ObjectSignature &sig)
             net->setAddress( InetAddr(sig.address.toStdString()) );
         } catch (FWException &ex)
         {
-//            throw ObjectMakerException(
             error_tracker->registerError(
                 QString("Error converting address '%1'").arg(sig.address));
         }
@@ -163,7 +168,6 @@ FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
         ar->setRangeStart( InetAddr(addr1.toStdString()) );
     } catch (FWException &ex)
     {
-//        throw ObjectMakerException(
         error_tracker->registerError(
             QString("Error converting address '%1'").arg(addr1));
     }
@@ -173,7 +177,6 @@ FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
         ar->setRangeEnd( InetAddr(addr2.toStdString()) );
     } catch (FWException &ex)
     {
-//        throw ObjectMakerException(
         error_tracker->registerError(
             QString("Error converting address '%1'").arg(addr2));
     }
@@ -182,3 +185,16 @@ FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
 }
 
 
+FWObject* AddressObjectMaker::createAddressTable(ObjectSignature &sig)
+{
+    FWObject *obj = findMatchingObject(sig);
+    if (obj) return obj;
+
+    AddressTable *at =  AddressTable::cast(
+        ObjectMaker::createObject(AddressTable::TYPENAME,
+                                  sig.object_name.toUtf8().constData()));
+    assert(at!=NULL);
+    at->setRunTime(true);
+    at->setSourceName(sig.address_table_name.toStdString());
+    return at;
+}

@@ -810,15 +810,16 @@ Interface* PFImporter::getInterfaceByName(const string &name)
 void PFImporter::newAddressTableObject(const string &name, const string &file)
 {
     ObjectMaker maker(Library::cast(library), error_tracker);
-    AddressTable *at =  AddressTable::cast(
-        commitObject(maker.createObject(AddressTable::TYPENAME, name.c_str())));
-    assert(at!=NULL);
-    at->setRunTime(true);
-    at->setSourceName(file);
-    address_table_registry[name.c_str()] = at;
+    ObjectSignature sig(error_tracker);
+    sig.type_name = AddressTable::TYPENAME;
+    sig.object_name = QString::fromUtf8(name.c_str());
+    sig.address_table_name = QString::fromUtf8(file.c_str());
+    FWObject *at = address_maker->createObject(sig);
+
+    address_table_registry[sig.object_name] = at;
 
     addMessageToLog(QString("Address Table: <%1> file %2")
-                    .arg(name.c_str()).arg(file.c_str()));
+                    .arg(sig.object_name).arg(file.c_str()));
 }
 
 void PFImporter::newAddressTableObject(const string &name,

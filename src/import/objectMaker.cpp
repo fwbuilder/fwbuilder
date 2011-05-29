@@ -748,7 +748,7 @@ void* ObjectSignature::dispatch(AddressTable *obj, void*)
 {
     object_name = QString::fromUtf8(obj->getName().c_str());
     type_name = obj->getTypeName().c_str();
-    address_table_name = obj->getSourceName().c_str();
+    address_table_name = QString::fromUtf8(obj->getSourceName().c_str());
     return this;
 }
 
@@ -1038,7 +1038,7 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
         Host::cast(root) ||
         FWOptions::cast(root)) return;
 
-    if (Address::cast(root) || Service::cast(root))
+    if (Address::cast(root) || MultiAddress::cast(root) || Service::cast(root))
     {
         ObjectSignature sig(error_tracker);
 

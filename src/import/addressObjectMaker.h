@@ -51,6 +51,7 @@ public:
 protected:
     virtual libfwbuilder::FWObject* createAddress(ObjectSignature &sig);
     virtual libfwbuilder::FWObject* createAddressRange(ObjectSignature &sig);
+    virtual libfwbuilder::FWObject* createAddressTable(ObjectSignature &sig);
 
 };
 
