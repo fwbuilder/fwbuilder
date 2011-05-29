@@ -205,6 +205,9 @@ public:
     bool dst_neg;
     bool tmp_neg;
 
+    std::map<std::string, std::string> icmp_codes_to_reject_parameters;
+    std::list<std::string> block_action_params;
+    
     std::list<InterfaceSpec> iface_group;
     
     std::list<std::string> proto_list;

@@ -389,11 +389,52 @@ block_command : BLOCK
             importer->action = "block";
             *dbg << LT(1)->getLine() << ":" << " block   ";
         }
+        ( block_return )?
         rule_extended 
         {
             importer->pushRule();
         }
         NEWLINE
+    ;
+
+block_return :
+        (
+            DROP         { importer->block_action_params.push_back("drop"); }
+        |
+            RETURN       { importer->block_action_params.push_back("return"); }
+        |
+            RETURN_RST   { importer->block_action_params.push_back("return-rst"); }
+            (
+                TTL INT_CONST
+                {
+                    importer->error_tracker->registerError(
+                        QString("Import of \"block return-rst ttl number\" is not supported. "));
+                }
+            )?
+        |
+            RETURN_ICMP  { importer->block_action_params.push_back("return-icmp"); }
+            (
+                OPENING_PAREN
+                ( WORD | INT_CONST )
+                { importer->block_action_params.push_back(LT(0)->getText()); }
+                (
+                    COMMA
+                    ( WORD | INT_CONST )
+                    {
+                        importer->error_tracker->registerError(
+                            QString("Import of \"block return-icmp (icmp_code, icmp6_code)\" is not supported"));
+                    }
+                )?
+                CLOSING_PAREN
+            )?
+        |
+            RETURN_ICMP6 
+            {
+                importer->error_tracker->registerError(
+                    QString("Import of \"block return-icmp6\" is not supported"));
+                importer->block_action_params.push_back("return-icmp");
+            }
+        )
     ;
 
 rule_extended :
@@ -1057,6 +1098,11 @@ tokens
 
     ROUTE_TO = "route-to";
     REPLY_TO = "reply-to";
+
+    DROP = "drop";
+    RETURN = "return";
+    RETURN_RST = "return-rst";
+    RETURN_ICMP = "return-icmp";
 
     TAG = "tag";
     TAGGED = "tagged";

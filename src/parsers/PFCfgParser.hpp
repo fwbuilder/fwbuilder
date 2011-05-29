@@ -107,6 +107,7 @@ public:
 	public: void unknown_command();
 	public: void tableaddr_spec();
 	public: void rule_extended();
+	public: void block_return();
 	public: void direction();
 	public: void logging();
 	public: void quick();
@@ -164,10 +165,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 140;
+	static const int NUM_TOKENS = 146;
 #else
 	enum {
-		NUM_TOKENS = 140
+		NUM_TOKENS = 146
 	};
 #endif
 	
@@ -249,6 +250,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_37;
 	static const unsigned long _tokenSet_38_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_38;
+	static const unsigned long _tokenSet_39_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_39;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

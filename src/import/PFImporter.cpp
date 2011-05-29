@@ -77,6 +77,23 @@ PFImporter::PFImporter(FWObject *lib,
 {
     setPlatform("pf");
     address_maker->setInvertedNetmasks(false);
+
+    icmp_codes_to_reject_parameters["net-unr"] = "ICMP net unreachable";
+    icmp_codes_to_reject_parameters["0"] = "ICMP net unreachable";
+    icmp_codes_to_reject_parameters["host-unr"] = "ICMP host unreachable";
+    icmp_codes_to_reject_parameters["1"] = "ICMP host unreachable";
+    icmp_codes_to_reject_parameters["proto-unr"] = "ICMP protocol unreachable";
+    icmp_codes_to_reject_parameters["2"] = "ICMP protocol unreachable";
+    icmp_codes_to_reject_parameters["port-unr"] = "ICMP port unreachable";
+    icmp_codes_to_reject_parameters["3"] = "ICMP port unreachable";
+
+    icmp_codes_to_reject_parameters["net-prohib"] = "ICMP net prohibited";
+    icmp_codes_to_reject_parameters["9"] = "ICMP net prohibited";
+    icmp_codes_to_reject_parameters["host-prohib"] = "ICMP host prohibited";
+    icmp_codes_to_reject_parameters["10"] = "ICMP host prohibited";
+    icmp_codes_to_reject_parameters["filter-prohib"] = "ICMP admin prohibited";
+    icmp_codes_to_reject_parameters["13"] = "ICMP admin prohibited";
+
 }
 
 PFImporter::~PFImporter()
@@ -108,6 +125,8 @@ void PFImporter::clear()
     tmp_port_group.clear();
 
     icmp_type_code_group.clear();
+
+    block_action_params.clear();
 
     queue = "";
     state_op = "";
@@ -569,10 +588,61 @@ void PFImporter::pushPolicyRule()
         ropt->setBool("stateless", false);
     }
 
-    if (action=="drop")
+    if (action=="block")
     {
         rule->setAction(PolicyRule::Deny);
         ropt->setBool("stateless", true);
+
+        if (block_action_params.size() > 0)
+        {
+            string block_return = block_action_params.front();
+            block_action_params.pop_front();
+
+            if (block_return == "drop")
+            {
+                ;  // Action Drop accurately represents "block drop"
+            }
+
+            if (block_return == "return")
+            {
+                rule->setAction(PolicyRule::Reject);
+
+                error_tracker->registerError(
+                    QObject::tr(
+                        "'block return' is not supported in fwbuilder, "
+                        "replacing with 'block return-icmp' "));
+
+                ropt->setStr("action_on_reject", "ICMP admin prohibited");
+            }
+
+            if (block_return == "return-rst")
+            {
+                rule->setAction(PolicyRule::Reject);
+                ropt->setStr("action_on_reject", "TCP RST");
+            }
+
+            if (block_return == "return-icmp")
+            {
+                rule->setAction(PolicyRule::Reject);
+                ropt->setStr("action_on_reject", "ICMP admin prohibited");
+                if (block_action_params.size() > 0)
+                {
+                    string icmp_code = icmp_codes_to_reject_parameters[
+                        block_action_params.front()];
+                    block_action_params.pop_front();
+
+                    if (icmp_code.empty())
+                        error_tracker->registerError(
+                            QObject::tr(
+                                "Unrecognized icmp code parameter for "
+                                "'block return-icmp' action: %1")
+                            .arg(block_action_params.front().c_str()));
+
+                    ropt->setStr("action_on_reject", icmp_code);
+                }
+            }
+
+        }
     }
 
     if (direction == "in") rule->setDirection(PolicyRule::Inbound);
