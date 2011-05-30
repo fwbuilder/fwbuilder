@@ -875,10 +875,10 @@ QString Importer::commonFailureErrorMessage()
         "file you are trying to import is in one of supported "
         "formats. Currently fwbuilder can only import "
         "iptables configuration saved with "
-        "'iptables-restore' command and Cisco routers (IOS) "
-        "configurations saved with 'show run' command. Import "
-        "of cisco ASA (PIX) configuration is not supported "
-        "at this time");
+        "'iptables-restore' command, Cisco routers (IOS), "
+        "Cisco ASA, FWSM and PIX configurations saved with "
+        "'show run' command and PF configuration from a pf.conf file."
+    );
 }
 
 void Importer::addMessageToLog(const std::string &msg)
