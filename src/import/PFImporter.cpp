@@ -319,40 +319,6 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
     else
         sig->type_name = UDPService::TYPENAME;
 
-    bool range_inclusive = true;
-    QString port_op_cisco_style;
-
-    // map port operations from PF to Cisco-like
-
-    if (port_op == "=")  port_op_cisco_style = "eq";
-    if (port_op == "!=") port_op_cisco_style = "eq";
-    if (port_op == "<=") port_op_cisco_style = "lt";
-    if (port_op == ">=") port_op_cisco_style = "gt";
-
-    if (port_op == "<")
-    {
-        range_inclusive = false;
-        port_op_cisco_style = "lt";
-    }
-
-    if (port_op == ">")
-    {
-        range_inclusive = false;
-        port_op_cisco_style = "gt";
-    }
-
-    if (port_op == "><")
-    {
-        range_inclusive = false;
-        port_op_cisco_style = "range";
-    }
-
-    if (port_op == ":")
-    {
-        range_inclusive = true;
-        port_op_cisco_style = "range";
-    }
-
     if (port_op == "<>")
     {
         error_tracker->registerError(
@@ -361,13 +327,12 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
         return false;
     }
 
-    sig->port_range_inclusive = range_inclusive;
+    sig->port_range_inclusive = true;
+
     if (source)
-        sig->setSrcPortRangeFromPortOp(port_op_cisco_style,
-                                       port_spec, protocol);
+        sig->setSrcPortRangeFromPortOpForPF(port_op, port_spec, protocol);
     else
-        sig->setDstPortRangeFromPortOp(port_op_cisco_style,
-                                       port_spec, protocol);
+        sig->setDstPortRangeFromPortOpForPF(port_op, port_spec, protocol);
 
     if (protocol == "tcp")
     {

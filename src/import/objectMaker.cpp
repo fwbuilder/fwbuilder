@@ -530,9 +530,9 @@ void ObjectSignature::setDstPortRange(const QString &range_start_spec,
  *   @port_spec is port number of service name
  *   @proto is protocol name used for GetServByName::GetPortByName()
  */
-void ObjectSignature::setSrcPortRangeFromPortOp(const QString &port_op,
-                                                const QString &port_spec,
-                                                const QString &proto)
+void ObjectSignature::setSrcPortRangeFromPortOpForCisco(const QString &port_op,
+                                                        const QString &port_spec,
+                                                        const QString &proto)
 {
     QString portop = port_op.trimmed();
     QString portspec = port_spec.trimmed();
@@ -572,17 +572,12 @@ void ObjectSignature::setSrcPortRangeFromPortOp(const QString &port_op,
     {
         if (portop == "lt") src_port_range_end--;
         if (portop == "gt") src_port_range_start++;
-        if (portop == "range")
-        {
-            src_port_range_end--;
-            src_port_range_start++;
-        }
     }
 }
 
-void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
-                                                const QString &port_spec,
-                                                const QString &proto)
+void ObjectSignature::setDstPortRangeFromPortOpForCisco(const QString &port_op,
+                                                        const QString &port_spec,
+                                                        const QString &proto)
 {
     QString portop = port_op.trimmed();
     QString portspec = port_spec.trimmed();
@@ -622,11 +617,138 @@ void ObjectSignature::setDstPortRangeFromPortOp(const QString &port_op,
     {
         if (portop == "lt") dst_port_range_end--;
         if (portop == "gt") dst_port_range_start++;
-        if (portop == "range")
-        {
-            dst_port_range_end--;
-            dst_port_range_start++;
-        }
+    }
+}
+
+void ObjectSignature::setSrcPortRangeFromPortOpForPF(const QString &port_op,
+                                                     const QString &port_spec,
+                                                     const QString &proto)
+{
+    QString portop = port_op.trimmed();
+    QString portspec = port_spec.trimmed();
+
+    src_port_range_start = 0;
+    src_port_range_end = 0;
+
+    QString range_start;
+    QString range_end;
+    QStringList sl = portspec.split(" ");
+    if (sl.size() > 1)
+    {
+        range_start = sl[0];
+        range_end = sl[1];
+    } else
+    {
+        range_start = portspec;
+        range_end = portspec;
+    }
+
+    src_port_range_start = portFromString(range_start, proto, 0);
+    src_port_range_end = portFromString(range_end, proto, 65535);
+
+    if (portop == "<")
+    {
+        src_port_range_start = 0;
+        src_port_range_end--;
+    }
+
+    if (portop == "<=")
+    {
+        src_port_range_start = 0;
+    }
+
+    if (portop == ">")
+    {
+        src_port_range_start++;
+        src_port_range_end = 65535;
+    }
+
+    if (portop == ">=")
+    {
+        src_port_range_end = 65535;
+    }
+
+    if (portop == "=")
+    {
+        src_port_range_start = src_port_range_end;
+    }
+
+    if (portop==":")
+    {
+        // range_start and range_end have been set
+        ;
+    }
+
+    if (portop == "><")
+    {
+        src_port_range_end--;
+        src_port_range_start++;
+    }
+}
+
+void ObjectSignature::setDstPortRangeFromPortOpForPF(const QString &port_op,
+                                                     const QString &port_spec,
+                                                     const QString &proto)
+{
+    QString portop = port_op.trimmed();
+    QString portspec = port_spec.trimmed();
+
+    dst_port_range_start = 0;
+    dst_port_range_end = 0;
+
+    QString range_start;
+    QString range_end;
+    QStringList sl = portspec.split(" ");
+    if (sl.size() > 1)
+    {
+        range_start = sl[0];
+        range_end = sl[1];
+    } else
+    {
+        range_start = portspec;
+        range_end = portspec;
+    }
+
+    dst_port_range_start = portFromString(range_start, proto, 0);
+    dst_port_range_end = portFromString(range_end, proto, 65535);
+
+    if (portop == "<")
+    {
+        dst_port_range_start = 0;
+        dst_port_range_end--;
+    }
+
+    if (portop == "<=")
+    {
+        dst_port_range_start = 0;
+    }
+
+    if (portop == ">")
+    {
+        dst_port_range_start++;
+        dst_port_range_end = 65535;
+    }
+
+    if (portop == ">=")
+    {
+        dst_port_range_end = 65535;
+    }
+
+    if (portop == "=")
+    {
+        dst_port_range_start = dst_port_range_end;
+    }
+
+    if (portop==":")
+    {
+        // range_start and range_end have been set
+        ;
+    }
+
+    if (portop == "><")
+    {
+        dst_port_range_end--;
+        dst_port_range_start++;
     }
 }
 

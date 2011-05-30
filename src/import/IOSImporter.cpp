@@ -91,9 +91,9 @@ ObjectSignature IOSImporter::packObjectSignatureTCPService()
     sig.type_name = TCPService::TYPENAME;
     sig.port_range_inclusive = false;
 
-    sig.setSrcPortRangeFromPortOp(
+    sig.setSrcPortRangeFromPortOpForCisco(
         src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
-    sig.setDstPortRangeFromPortOp(
+    sig.setDstPortRangeFromPortOpForCisco(
         dst_port_op.c_str(), dst_port_spec.c_str(), protocol.c_str());
 
     sig.established = established;
@@ -113,9 +113,9 @@ ObjectSignature IOSImporter::packObjectSignatureUDPService()
     sig.type_name = UDPService::TYPENAME;
     sig.port_range_inclusive = false;
 
-    sig.setSrcPortRangeFromPortOp(
+    sig.setSrcPortRangeFromPortOpForCisco(
         src_port_op.c_str(), src_port_spec.c_str(), protocol.c_str());
-    sig.setDstPortRangeFromPortOp(
+    sig.setDstPortRangeFromPortOpForCisco(
         dst_port_op.c_str(), dst_port_spec.c_str(), protocol.c_str());
 
     return sig;
@@ -194,13 +194,13 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
         else
             group_name = QString("%1 src neq %2").arg(proto).arg(src_port_spec.c_str());
 
-        sig.setDstPortRangeFromPortOp(
+        sig.setDstPortRangeFromPortOpForCisco(
             dst_port_op.c_str(), dst_port_spec.c_str(), proto);
 
-        sig.setSrcPortRangeFromPortOp("lt", src_port_spec.c_str(), proto);
+        sig.setSrcPortRangeFromPortOpForCisco("lt", src_port_spec.c_str(), proto);
         srv1 = service_maker->createObject(sig);
 
-        sig.setSrcPortRangeFromPortOp("gt", src_port_spec.c_str(), proto);
+        sig.setSrcPortRangeFromPortOpForCisco("gt", src_port_spec.c_str(), proto);
         srv2 = service_maker->createObject(sig);
     }
 
@@ -212,13 +212,13 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
         else
             group_name = QString("%1 dst neq %2").arg(proto).arg(dst_port_spec.c_str());
 
-        sig.setSrcPortRangeFromPortOp(
+        sig.setSrcPortRangeFromPortOpForCisco(
             src_port_op.c_str(), src_port_spec.c_str(), proto);
 
-        sig.setDstPortRangeFromPortOp("lt", dst_port_spec.c_str(), proto);
+        sig.setDstPortRangeFromPortOpForCisco("lt", dst_port_spec.c_str(), proto);
         srv1 = service_maker->createObject(sig);
 
-        sig.setDstPortRangeFromPortOp("gt", dst_port_spec.c_str(), proto);
+        sig.setDstPortRangeFromPortOpForCisco("gt", dst_port_spec.c_str(), proto);
         srv2 = service_maker->createObject(sig);
     }
 

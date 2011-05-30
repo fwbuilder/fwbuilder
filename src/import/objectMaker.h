@@ -178,12 +178,19 @@ public:
                          const QString &range_end_spec,
                          const QString &proto);
 
-    void setSrcPortRangeFromPortOp(const QString &port_op,
-                                   const QString &port_spec,
-                                   const QString &proto);
-    void setDstPortRangeFromPortOp(const QString &port_op,
-                                   const QString &port_spec,
-                                   const QString &proto);
+    void setSrcPortRangeFromPortOpForCisco(const QString &port_op,
+                                           const QString &port_spec,
+                                           const QString &proto);
+    void setDstPortRangeFromPortOpForCisco(const QString &port_op,
+                                           const QString &port_spec,
+                                           const QString &proto);
+
+    void setSrcPortRangeFromPortOpForPF(const QString &port_op,
+                                        const QString &port_spec,
+                                        const QString &proto);
+    void setDstPortRangeFromPortOpForPF(const QString &port_op,
+                                        const QString &port_spec,
+                                        const QString &proto);
 
     QString toString() const;
 
