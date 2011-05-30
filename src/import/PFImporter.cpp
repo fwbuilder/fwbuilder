@@ -558,6 +558,18 @@ void PFImporter::pushPolicyRule()
 {
     RuleSet *ruleset = RuleSet::cast(
         getFirewallObject()->getFirstByType(Policy::TYPENAME));
+    
+    // this importer does not use UnidirectionalRuleSet objects but
+    // base class uses dictionary all_rulesets to do some checks (e.g.
+    // countRules()) so we'll create one dummy UnidirectionalRuleSet object
+    string ruleset_name = ruleset->getName();
+    if (checkUnidirRuleSet(ruleset_name) == NULL)
+    {
+        UnidirectionalRuleSet *rs = new UnidirectionalRuleSet();
+        rs->name = ruleset_name;
+        rs->ruleset = ruleset;
+        all_rulesets[ruleset_name] = rs;
+    }
 
     assert(current_rule!=NULL);
     // populate all elements of the rule
@@ -734,6 +746,18 @@ void PFImporter::pushNATRule()
 {
     RuleSet *ruleset = RuleSet::cast(
         getFirewallObject()->getFirstByType(NAT::TYPENAME));
+
+    // this importer does not use UnidirectionalRuleSet objects but
+    // base class uses dictionary all_rulesets to do some checks (e.g.
+    // countRules()) so we'll create one dummy UnidirectionalRuleSet object
+    string ruleset_name = ruleset->getName();
+    if (checkUnidirRuleSet(ruleset_name) == NULL)
+    {
+        UnidirectionalRuleSet *rs = new UnidirectionalRuleSet();
+        rs->name = ruleset_name;
+        rs->ruleset = ruleset;
+        all_rulesets[ruleset_name] = rs;
+    }
 
     assert(current_rule!=NULL);
 }

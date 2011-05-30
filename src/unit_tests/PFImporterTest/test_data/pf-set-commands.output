@@ -1,0 +1,14 @@
+2: Warning: import of 'set' commands has not been implemented yet.
+3: Warning: import of 'set' commands has not been implemented yet.
+4: Warning: import of 'set' commands has not been implemented yet.
+5: Warning: import of 'set' commands has not been implemented yet.
+6: Warning: import of 'set' commands has not been implemented yet.
+7: Warning: import of 'set' commands has not been implemented yet.
+8: Warning: import of 'set' commands has not been implemented yet.
+9: Warning: import of 'set' commands has not been implemented yet.
+10: Warning: import of 'set' commands has not been implemented yet.
+Parser error:
+Could not find enough information in the data file to create firewall object.
+
+
+Please check that the file you are trying to import is in one of supported formats. Currently fwbuilder can only import iptables configuration saved with 'iptables-restore' command and Cisco routers (IOS) configurations saved with 'show run' command. Import of cisco ASA (PIX) configuration is not supported at this time

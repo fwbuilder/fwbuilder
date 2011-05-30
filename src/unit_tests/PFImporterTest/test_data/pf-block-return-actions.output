@@ -1,0 +1,33 @@
+5: filtering rule: action block; interfaces: 
+8: filtering rule: action block; interfaces: 
+10: filtering rule: action block; interfaces: 
+10: Error: 'block return' is not supported in fwbuilder, replacing with 'block return-icmp' 
+11: filtering rule: action block; interfaces: 
+11: Error: 'block return' is not supported in fwbuilder, replacing with 'block return-icmp' 
+12: filtering rule: action block; interfaces: 
+12: Error: 'block return' is not supported in fwbuilder, replacing with 'block return-icmp' 
+13: filtering rule: action block; interfaces: 
+13: Error: 'block return' is not supported in fwbuilder, replacing with 'block return-icmp' 
+14: filtering rule: action block; interfaces: 
+14: Error: 'block return' is not supported in fwbuilder, replacing with 'block return-icmp' 
+16: filtering rule: action block; interfaces: 
+18: filtering rule: action block; interfaces: 
+20: filtering rule: action block; interfaces: 
+21: filtering rule: action block; interfaces: 
+22: filtering rule: action block; interfaces: 
+23: filtering rule: action block; interfaces: 
+24: filtering rule: action block; interfaces: 
+26: filtering rule: action block; interfaces: 
+27: filtering rule: action block; interfaces: 
+29: filtering rule: action block; interfaces: 
+30: filtering rule: action block; interfaces: 
+32: filtering rule: action block; interfaces: 
+33: filtering rule: action block; interfaces: 
+35: filtering rule: action block; interfaces: 
+36: filtering rule: action block; interfaces: 
+38: filtering rule: action block; interfaces: 
+39: filtering rule: action block; interfaces: 
+41: filtering rule: action block; interfaces: 
+42: filtering rule: action block; interfaces: 
+Could not find enough information in the data file to create firewall interface objects.
+

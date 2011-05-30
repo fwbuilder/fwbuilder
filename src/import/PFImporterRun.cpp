@@ -154,6 +154,13 @@ void PFImporter::run()
         err << parser_err + " " + e.what();
     }
 
+    if (fwbdebug)
+    {
+        qDebug() << "haveFirewallObject()=" << haveFirewallObject()
+                 << "countInterfaces()=" << countInterfaces()
+                 << "countRules()=" << countRules();
+    }
+
     if (haveFirewallObject())
     {
         if (countInterfaces()==0) err << noInterfacesErrorMessage();
