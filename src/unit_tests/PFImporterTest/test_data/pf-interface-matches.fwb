@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1306818101" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1306871654" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -451,13 +451,13 @@
     </ServiceGroup>
     <ObjectGroup id="id18" name="Firewalls" comment="" ro="False">
       <Firewall id="id19" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pf" name="test_fw" comment="Created during import of  line 4" ro="False">
-        <NAT id="id71" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <NAT id="id95" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
         <Policy id="id21" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id23" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Created during import of  line 4">
             <Src neg="False">
-              <ObjectRef ref="id76"/>
+              <ObjectRef ref="id100"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id19"/>
@@ -498,7 +498,7 @@
           </PolicyRule>
           <PolicyRule id="id47" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="Created during import of  line 6&#10;import of 'interface:peer' is not supported.">
             <Src neg="False">
-              <ObjectRef ref="id75"/>
+              <ObjectRef ref="id99"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id19"/>
@@ -519,7 +519,7 @@
           </PolicyRule>
           <PolicyRule id="id59" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="Created during import of  line 7&#10;import of 'interface:0' is not supported.">
             <Src neg="False">
-              <ObjectRef ref="id75"/>
+              <ObjectRef ref="id99"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id19"/>
@@ -538,14 +538,54 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <PolicyRule id="id71" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="Created during import of  line 9">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id99"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id83" disabled="False" group="" log="False" position="5" action="Accept" direction="Outbound" comment="Created during import of  line 10">
+            <Src neg="False">
+              <ObjectRef ref="id99"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Routing id="id73" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <Routing id="id97" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id75" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="pcn0" comment="Created during import of  line 4" ro="False">
+        <Interface id="id99" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="pcn0" comment="Created during import of  line 4" ro="False">
           <InterfaceOptions/>
-          <AttachedNetworks id="id76" name="pcn0-net" comment="" ro="False"/>
+          <AttachedNetworks id="id100" name="pcn0-net" comment="" ro="False"/>
         </Interface>
         <FirewallOptions>
           <Option name="check_shading">true</Option>
@@ -565,7 +605,7 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id78" name="Clusters" comment="" ro="False"/>
-    <IntervalGroup id="id79" name="Time" comment="" ro="False"/>
+    <ObjectGroup id="id102" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id103" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>

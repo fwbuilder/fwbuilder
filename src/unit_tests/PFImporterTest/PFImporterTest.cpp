@@ -372,3 +372,24 @@ void PFImporterTest::natCommands()
                     "pf-nat-rules.fwb");
 }
 
+void PFImporterTest::rdrCommands()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-rdr-rules.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-rdr-rules.fwb");
+
+    compareResults(logger,
+                   "test_data/pf-rdr-rules.output",
+                   "pf-rdr-rules.output");
+    compareFwbFiles("test_data/pf-rdr-rules.fwb",
+                    "pf-rdr-rules.fwb");
+}
+

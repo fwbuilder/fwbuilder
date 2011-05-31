@@ -212,7 +212,7 @@ public:
     bool src_neg;
     bool dst_neg;
     bool tmp_neg;
-
+    
     std::map<std::string, std::string> icmp_codes_to_reject_parameters;
     std::list<std::string> block_action_params;
     
@@ -286,7 +286,9 @@ public:
 
     virtual void addTSrc();
     virtual void addTDst();
-    virtual void addTSrv();
+
+    void addTSrvSNAT();
+    void addTSrvDNAT();
 
     virtual void addLogging();
 

@@ -128,6 +128,8 @@ cfgfile :
         |
             table_rule
         |
+            no_nat_rule 
+        |
             nat_rule
         |
             rdr_rule
@@ -310,13 +312,34 @@ tableaddr_spec { AddressSpec as; } :
     ;
 
 //****************************************************************
-nat_rule : NAT
+no_nat_rule :
+        NO
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->newNATRule();
-            importer->action = "nat";
-            *dbg << LT(1)->getLine() << ":" << " nat ";
+            importer->action = "nonat";
+            *dbg << LT(1)->getLine() << ":" << " nonat ";
+        }
+        (
+            nat_rule
+        |
+            rdr_rule
+        )
+    ;
+
+//****************************************************************
+nat_rule :
+        NAT
+        {
+            if ( importer->action != "nonat" )
+            {
+                importer->clear();
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newNATRule();
+                importer->action = "nat";
+                *dbg << LT(1)->getLine() << ":" << " nat ";
+            }
         }
         (
             PASS 
@@ -338,20 +361,75 @@ nat_rule : NAT
                     QString("import of 'nat ... tag' commands is not supported."));
             }
         )?
-        MINUS GREATER_THAN
-        ( redirhost | redirhost_list )
+        (
+            MINUS GREATER_THAN
+            ( redirhost | redirhost_list )
+            {
+                importer->nat_group = importer->tmp_group;
+            }
+            (
+                portspec
+                {
+                    importer->nat_port_group = importer->tmp_port_group;
+                }
+            )?
+            ( pooltype )?
+            (
+                STATIC_PORT { importer->nat_rule_opt_2 = "static-port"; }
+            )?
+        )?
         {
-            importer->nat_group = importer->tmp_group;
+            importer->pushRule();
+        }
+        NEWLINE
+    ;
+
+//****************************************************************
+rdr_rule :
+        RDR
+        {
+            if ( importer->action != "nonat" )
+            {
+                importer->clear();
+                importer->setCurrentLineNumber(LT(0)->getLine());
+                importer->newNATRule();
+                importer->action = "rdr";
+                *dbg << LT(1)->getLine() << ":" << " rdr ";
+            }
         }
         (
-            portspec
+            PASS 
             {
-                importer->nat_port_group = importer->tmp_port_group;
+                importer->error_tracker->registerError(
+                    QString("import of 'nat pass' commands is not supported."));
+            }
+            ( logging )?
+        )?
+        ( intrface )?
+        ( address_family )?
+        ( protospec )?
+        hosts
+        ( tagged )?
+        (
+            tag_clause
+            {
+                importer->error_tracker->registerError(
+                    QString("import of 'nat ... tag' commands is not supported."));
             }
         )?
-        ( pooltype )?
         (
-            STATIC_PORT { importer->nat_rule_opt_2 = "static-port"; }
+            MINUS GREATER_THAN
+            ( redirhost | redirhost_list )
+            {
+                importer->nat_group = importer->tmp_group;
+            }
+            (
+                portspec
+                {
+                    importer->nat_port_group = importer->tmp_port_group;
+                }
+            )?
+            ( pooltype )?
         )?
         {
             importer->pushRule();
@@ -486,17 +564,6 @@ binat_rule : BINAT
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->error_tracker->registerError(
                 QString("import of 'binat' commands is not supported."));
-            consumeUntil(NEWLINE);
-        }
-    ;
-
-//****************************************************************
-rdr_rule : RDR
-        {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'rdr' commands has not been implemented yet."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -842,6 +909,12 @@ host { AddressSpec as; } :
             {
                 as.at = AddressSpec::TABLE;
                 as.address = tn->getText();
+            }
+        |
+            OPENING_PAREN in:WORD CLOSING_PAREN
+            {
+                as.at = AddressSpec::INTERFACE_NAME;
+                as.address = in->getText();
             }
         )
         {

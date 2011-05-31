@@ -1,0 +1,6 @@
+3: New interface: em0
+3: nat rule: action rdr; interfaces: em0
+5: nat rule: action rdr; interfaces: em0
+8: nat rule: action rdr; interfaces: em0
+11: nat rule: action nonat; interfaces: em0
+12: nat rule: action rdr; interfaces: em0

@@ -98,6 +98,7 @@ public:
 	public: void set_rule();
 	public: void scrub_rule();
 	public: void table_rule();
+	public: void no_nat_rule();
 	public: void nat_rule();
 	public: void rdr_rule();
 	public: void binat_rule();

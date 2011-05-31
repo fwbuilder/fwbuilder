@@ -222,37 +222,49 @@ void PFImporter::addServiceObjectsToRE(RuleElement *re)
                 FWObject *s = service_maker->createObject(sig);
                 if (s) re->addRef(s);
             }
-        }
-
-        if (protocol == "tcp" || protocol == "udp")
+        } else
         {
-            // TODO: deal with cases where both source and destination
-            // ports are matched.
-            // See PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
-
-            if (src_port_group.size() == 0 && dst_port_group.size() == 0)
+            if (protocol == "tcp" || protocol == "udp")
             {
-                // protocol has been defined but not ports to match
+                // TODO: deal with cases where both source and destination
+                // ports are matched.
+                // See PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
 
-                ObjectSignature sig(error_tracker);
+                if (src_port_group.size() == 0 && dst_port_group.size() == 0)
+                {
+                    // protocol has been defined but not ports to match
 
-                buildTCPUDPObjectSingature(
-                    &sig,
-                    "",
-                    "",
-                    false,  // dest.
-                    protocol.c_str(),
-                    flags_check.c_str(),
-                    flags_mask.c_str());
+                    ObjectSignature sig(error_tracker);
 
-                re->addRef(commitObject(service_maker->createObject(sig)));
+                    buildTCPUDPObjectSingature(
+                        &sig,
+                        "",
+                        "",
+                        false,  // dest.
+                        protocol.c_str(),
+                        flags_check.c_str(),
+                        flags_mask.c_str());
 
+                    re->addRef(commitObject(service_maker->createObject(sig)));
+
+                } else
+                {
+                    addTCPUDPServiceObjectsToRE(re, protocol, src_port_group,
+                                                true, false);
+                    addTCPUDPServiceObjectsToRE(re, protocol, dst_port_group,
+                                                false, false);
+                }
             } else
             {
-                addTCPUDPServiceObjectsToRE(re, protocol, src_port_group, true, false);
-                addTCPUDPServiceObjectsToRE(re, protocol, dst_port_group, false, false);
+                // protocol is not icmp, udp or tcp
+                ObjectSignature sig(error_tracker);
+                sig.type_name = IPService::TYPENAME;
+                sig.setProtocol(protocol.c_str());
+                sig.fragments = fragments;
+                re->addRef(commitObject(service_maker->createObject(sig)));
             }
         }
+
     }
 
     if (! tagged.empty())
@@ -358,10 +370,20 @@ void PFImporter::addTDst()
     }
 }
 
-void PFImporter::addTSrv()
+void PFImporter::addTSrvSNAT()
 {
     NATRule *rule = NATRule::cast(current_rule);
-    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group, true, true);
+    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group,
+                                true,   // source
+                                true);  // for_nat_rhs
+}
+
+void PFImporter::addTSrvDNAT()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group,
+                                false,  // source
+                                true);  // for_nat_rhs
 }
 
 
@@ -796,9 +818,9 @@ void PFImporter::pushNATRule()
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
 
-    if (action=="nat") rule->setRuleType(NATRule::SNAT);
-    if (action=="rdr") rule->setRuleType(NATRule::DNAT);
-
+    if (action=="nat")   rule->setRuleType(NATRule::SNAT);
+    if (action=="rdr")   rule->setRuleType(NATRule::DNAT);
+    if (action=="nonat") rule->setRuleType(NATRule::NONAT);
 
     // remember that even though NATRule has two interface rule elements
     // ("in" and "out"), compiler for PF only uses one, the "outbound" one.
@@ -820,15 +842,25 @@ void PFImporter::pushNATRule()
 
     switch (rule->getRuleType())
     {
-    case NATRule::SNAT: addTSrc(); break;
-    case NATRule::DNAT: addTDst(); break;
+    case NATRule::SNAT:
+        addTSrc();
+        addTSrvSNAT();
+        break;
+
+    case NATRule::DNAT:
+        addTDst();
+        addTSrvDNAT();
+        break;
+
+    case NATRule::NONAT:
+        break;
+
     default:
         error_tracker->registerError(
             QObject::tr("NAT rules \"%1\" "
                         "are not supported yet.").arg(action.c_str()));
     }
 
-    addTSrv();
 
     if (nat_rule_opt_1 == "bitmask") ropt->setBool("pf_bitmask", true);
     if (nat_rule_opt_1 == "random") ropt->setBool("pf_random", true);

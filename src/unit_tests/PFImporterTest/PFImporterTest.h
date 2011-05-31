@@ -66,6 +66,7 @@ public:
     void stateMatchTest();
     void tcpFlagsMatchTest();
     void natCommands();
+    void rdrCommands();
     
     CPPUNIT_TEST_SUITE(PFImporterTest);
 
@@ -77,6 +78,7 @@ public:
     CPPUNIT_TEST(stateMatchTest);
     CPPUNIT_TEST(tcpFlagsMatchTest);
     CPPUNIT_TEST(natCommands);
+    CPPUNIT_TEST(rdrCommands);
     
     CPPUNIT_TEST_SUITE_END();
 

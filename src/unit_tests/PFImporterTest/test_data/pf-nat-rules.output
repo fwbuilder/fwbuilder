@@ -19,3 +19,5 @@
 20: nat rule: action nat; interfaces: em0
 22: nat rule: action nat; interfaces: em0
 23: nat rule: action nat; interfaces: em0
+26: nat rule: action nonat; interfaces: em0
+27: nat rule: action nat; interfaces: em0
