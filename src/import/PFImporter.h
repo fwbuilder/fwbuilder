@@ -32,6 +32,11 @@
 #include <sstream>
 
 #include "IOSImporter.h"
+#include "AddressSpec.h"
+#include "InterfaceSpec.h"
+#include "PortSpec.h"
+#include "IcmpSpec.h"
+#include "RouteSpec.h"
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
@@ -41,146 +46,7 @@
 #include <QString>
 
 
-class InterfaceSpec
-{
-public:
 
-    bool neg;
-    std::string name;
-
-    InterfaceSpec()
-    { neg = false; name = ""; }
-
-    InterfaceSpec(const InterfaceSpec &other)
-    {
-        neg = other.neg;
-        name = other.name;
-    }
-    
-    InterfaceSpec(bool _neg, const std::string _name)
-    { neg = _neg; name = _name; }
-};
-
-
-
-class AddressSpec
-{
-public:
-    
-    typedef enum {
-        UNKNOWN,
-        ANY,
-        HOST_NAME,
-        HOST_ADDRESS,
-        NETWORK_ADDRESS,
-        SPECIAL_ADDRESS,
-        INTERFACE_NAME,
-        INTERFACE_NETWORK,
-        INTERFACE_BROADCAST,
-        TABLE } address_type;
-
-    address_type at;
-    bool neg;
-    std::string address;
-    std::string netmask;
-
-    AddressSpec()
-    { at = UNKNOWN; neg = false;  address = ""; netmask = ""; }
-
-    AddressSpec(const AddressSpec &other)
-    {
-        at = other.at;
-        neg = other.neg;
-        address = other.address;
-        netmask = other.netmask;
-    }
-    
-    AddressSpec(address_type _at, bool _neg, const std::string _addr, const std::string _nm)
-    { at = _at; neg= _neg; address = _addr; netmask = _nm; }
-};
-
-
-class PortSpec
-{
-public:
-    std::string port1;
-    std::string port2;
-    std::string port_op;
-
-    PortSpec()
-    { port1 = ""; port2 = ""; port_op = ""; }
-
-    PortSpec(const PortSpec &other)
-    {
-        port1 = other.port1;
-        port2 = other.port2;
-        port_op = other.port_op;
-    }
-    
-    PortSpec(const std::string s1, const std::string s2, const std::string s3)
-    { port1 = s1; port2 = s2; port_op = s3; }
-
-    std::string toString()
-    { return std::string("PortSpec: ") + port_op + " " + port1 + " " + port2; }
-};
-
-class IcmpSpec
-{
-public:
-    std::string icmp_type_name;
-    std::string icmp_type_int;
-    std::string icmp_code_name;
-    std::string icmp_code_int;
-
-    IcmpSpec()
-    {
-        icmp_type_name = "";
-        icmp_type_int = "";
-        icmp_code_name = "";
-        icmp_code_int = "";
-    }
-
-    IcmpSpec(const IcmpSpec &other)
-    {
-        icmp_type_name = other.icmp_type_name;
-        icmp_type_int = other.icmp_type_int;
-        icmp_code_name = other.icmp_code_name;
-        icmp_code_int = other.icmp_code_int;
-    }
-    
-    IcmpSpec(const std::string s1, const std::string s2,
-             const std::string s3, const std::string s4)
-    {
-        icmp_type_name = s1;
-        icmp_type_int = s2;
-        icmp_code_name = s3;
-        icmp_code_int = s4;
-    }
-};
-
-
-class RouteSpec
-{
-public:
-    
-    std::string iface;
-    std::string address;
-    std::string netmask;
-
-    RouteSpec()
-    { iface = ""; address = ""; netmask = ""; }
-
-    RouteSpec(const RouteSpec &other)
-    {
-        iface = other.iface;
-        address = other.address;
-        netmask = other.netmask;
-    }
-    
-    RouteSpec(const std::string _iface,
-              const std::string _addr, const std::string _nm)
-    { iface = _iface; address = _addr; netmask = _nm; }
-};
 
 
 

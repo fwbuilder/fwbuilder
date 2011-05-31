@@ -4,6 +4,7 @@
 	rules. Known limitations:
 	  - as of v4.2 we can not generate optinal parameters for the
 	    "source-hash" pooltype. "sticky-address" is not supported either.
+	  - Interface group names are not recognized
 
 2011-05-27  vadim  <vadim@netcitadel.com>
 

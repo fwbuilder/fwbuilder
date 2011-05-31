@@ -35,6 +35,12 @@ HEADERS = QStringListOperators.h \
           IPTImporter.h \
           PIXImporter.h \
 		  PFImporter.h \
+		  InterfaceSpec.h \
+		  AddressSpec.h \
+		  PortSpec.h \
+		  IcmpSpec.h \
+		  RouteSpec.h \
+
 
 CONFIG += staticlib
 
