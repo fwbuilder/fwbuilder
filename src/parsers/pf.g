@@ -351,7 +351,7 @@ nat_rule : NAT
         )?
         ( pooltype )?
         (
-            STATIC_PORT { importer->nat_pool_type = "static-port"; }
+            STATIC_PORT { importer->nat_rule_opt_2 = "static-port"; }
         )?
         {
             importer->pushRule();
@@ -453,16 +453,28 @@ portspec { PortSpec ps; } :
 //
 pooltype :
         (
-            BITMASK       { importer->nat_pool_type = "bitmask"; }
+            BITMASK       { importer->nat_rule_opt_1 = "bitmask"; }
         |
-            RANDOM        { importer->nat_pool_type = "random"; }
+            RANDOM        { importer->nat_rule_opt_1 = "random"; }
         |
-            SOURCE_HASH   { importer->nat_pool_type = "source-hash"; }
+            SOURCE_HASH   { importer->nat_rule_opt_1 = "source-hash"; }
             (
-                HEX_KEY | STRING_KEY
+                HEX_KEY
+                {
+                    importer->error_tracker->registerError(
+                        QString("import of 'nat' commands with 'source-hash hex-key' "
+                                "option is not supported"));
+                }
+            |
+                STRING_KEY
+                {
+                    importer->error_tracker->registerError(
+                        QString("import of 'nat' commands with 'source-hash string-key' "
+                                "option is not supported"));
+                }
             )?
         |
-            ROUND_ROBIN   { importer->nat_pool_type = "round-robin"; }
+            ROUND_ROBIN   { importer->nat_rule_opt_1 = "round-robin"; }
         )
         ( STICKY_ADDRESS )?
     ;

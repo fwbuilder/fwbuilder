@@ -488,7 +488,7 @@ void PFCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1285 "pf.g"
+#line 1297 "pf.g"
 		newline();
 #line 494 "PFCfgLexer.cpp"
 	}
@@ -569,7 +569,7 @@ void PFCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1280 "pf.g"
+#line 1292 "pf.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 575 "PFCfgLexer.cpp"
 	}
@@ -786,7 +786,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		mNUM_3DIGIT(false);
 		}
 		if ( inputState->guessing==0 ) {
-#line 1322 "pf.g"
+#line 1334 "pf.g"
 			_ttype = IPV4;
 #line 792 "PFCfgLexer.cpp"
 		}
@@ -869,7 +869,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1325 "pf.g"
+#line 1337 "pf.g"
 				_ttype = NUMBER;
 #line 875 "PFCfgLexer.cpp"
 			}
@@ -911,7 +911,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				_loop246:;
 				} // ( ... )*
 				if ( inputState->guessing==0 ) {
-#line 1348 "pf.g"
+#line 1360 "pf.g"
 					_ttype = IPV6;
 #line 917 "PFCfgLexer.cpp"
 				}
@@ -1008,7 +1008,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}
 						}
 						if ( inputState->guessing==0 ) {
-#line 1339 "pf.g"
+#line 1351 "pf.g"
 							_ttype = IPV6;
 #line 1014 "PFCfgLexer.cpp"
 						}
@@ -1031,7 +1031,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						_loop242:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 1342 "pf.g"
+#line 1354 "pf.g"
 							_ttype = IPV6;
 #line 1037 "PFCfgLexer.cpp"
 						}
@@ -1042,7 +1042,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					
 					}
 					if ( inputState->guessing==0 ) {
-#line 1344 "pf.g"
+#line 1356 "pf.g"
 						_ttype = IPV6;
 #line 1048 "PFCfgLexer.cpp"
 					}
@@ -1051,7 +1051,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					match(':' /* charlit */ );
 					match(':' /* charlit */ );
 					if ( inputState->guessing==0 ) {
-#line 1351 "pf.g"
+#line 1363 "pf.g"
 						_ttype = IPV6;
 #line 1057 "PFCfgLexer.cpp"
 					}
@@ -1072,7 +1072,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop227:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 1330 "pf.g"
+#line 1342 "pf.g"
 						_ttype = INT_CONST;
 #line 1078 "PFCfgLexer.cpp"
 					}
@@ -1080,7 +1080,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				else if ((LA(1) == 0x3a /* ':' */ ) && (true)) {
 					match(':' /* charlit */ );
 					if ( inputState->guessing==0 ) {
-#line 1354 "pf.g"
+#line 1366 "pf.g"
 						_ttype = COLON;
 #line 1086 "PFCfgLexer.cpp"
 					}
@@ -1300,7 +1300,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop249:;
 					} // ( ... )*
 					if ( inputState->guessing==0 ) {
-#line 1366 "pf.g"
+#line 1378 "pf.g"
 						_ttype = WORD;
 #line 1306 "PFCfgLexer.cpp"
 					}

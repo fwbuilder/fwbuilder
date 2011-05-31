@@ -142,7 +142,8 @@ void PFImporter::clear()
     route_type = UNKNOWN;
     route_group.clear();
 
-    nat_pool_type = "";
+    nat_rule_opt_1 = "";
+    nat_rule_opt_2 = "";
 
     Importer::clear();
 }
@@ -829,11 +830,12 @@ void PFImporter::pushNATRule()
 
     addTSrv();
 
-    if (nat_pool_type == "bitmask") ropt->setBool("pf_bitmask", true);
-    if (nat_pool_type == "random") ropt->setBool("pf_random", true);
-    if (nat_pool_type == "source-hash") ropt->setBool("pf_source_hash", true);
-    if (nat_pool_type == "round-robin") ropt->setBool("pf_round_robin", true);
-    if (nat_pool_type == "static-port") ropt->setBool("pf_static_port", true);
+    if (nat_rule_opt_1 == "bitmask") ropt->setBool("pf_bitmask", true);
+    if (nat_rule_opt_1 == "random") ropt->setBool("pf_random", true);
+    if (nat_rule_opt_1 == "source-hash") ropt->setBool("pf_source_hash", true);
+    if (nat_rule_opt_1 == "round-robin") ropt->setBool("pf_round_robin", true);
+
+    if (nat_rule_opt_2 == "static-port") ropt->setBool("pf_static_port", true);
 
     // then add it to the current ruleset
     ruleset->add(current_rule);
