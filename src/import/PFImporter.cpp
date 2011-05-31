@@ -113,6 +113,7 @@ void PFImporter::clear()
     tmp_group.clear();
     src_group.clear();
     dst_group.clear();
+    nat_group.clear();
 
     src_neg = false;
     dst_neg = false;
@@ -122,6 +123,7 @@ void PFImporter::clear()
     tmp_port_op = "";
     src_port_group.clear();
     dst_port_group.clear();
+    nat_port_group.clear();
     tmp_port_group.clear();
 
     icmp_type_code_group.clear();
@@ -139,6 +141,8 @@ void PFImporter::clear()
 
     route_type = UNKNOWN;
     route_group.clear();
+
+    nat_pool_type = "";
 
     Importer::clear();
 }
@@ -177,8 +181,11 @@ void PFImporter::addDst()
 void PFImporter::addSrv()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
-    RuleElement *re = rule->getSrv();
+    addServiceObjectsToRE(rule->getSrv());
+}
 
+void PFImporter::addServiceObjectsToRE(RuleElement *re)
+{
     list<string>::iterator it;
     for (it=proto_list.begin(); it!=proto_list.end(); ++it)
     {
@@ -241,54 +248,8 @@ void PFImporter::addSrv()
 
             } else
             {
-                list<PortSpec>::iterator psi;
-
-                for (psi=src_port_group.begin();
-                     psi!=src_port_group.end(); ++psi)
-                {
-                    PortSpec ps = *psi;
-                    ObjectSignature sig(error_tracker);
-                    QString port_spec = 
-                        QString("%1 %2")
-                        .arg(ps.port1.c_str()).arg(ps.port2.c_str());
-
-                    buildTCPUDPObjectSingature(
-                        &sig,
-                        ps.port_op.c_str(),
-                        port_spec,
-                        true,
-                        protocol.c_str(),
-                        flags_check.c_str(),
-                        flags_mask.c_str());
-            
-                    re->addRef(commitObject(service_maker->createObject(sig)));
-
-                    if (ps.port_op == "!=") re->setNeg(true);
-                }
-
-                for (psi=dst_port_group.begin();
-                     psi!=dst_port_group.end(); ++psi)
-                {
-                    PortSpec ps = *psi;
-
-                    ObjectSignature sig(error_tracker);
-                    QString port_spec = 
-                        QString("%1 %2")
-                        .arg(ps.port1.c_str()).arg(ps.port2.c_str());
-
-                    buildTCPUDPObjectSingature(
-                        &sig,
-                        ps.port_op.c_str(),
-                        port_spec,
-                        false,
-                        protocol.c_str(),
-                        flags_check.c_str(),
-                        flags_mask.c_str());
-            
-                    re->addRef(commitObject(service_maker->createObject(sig)));
-
-                    if (ps.port_op == "!=") re->setNeg(true);
-                }
+                addTCPUDPServiceObjectsToRE(re, protocol, src_port_group, true, false);
+                addTCPUDPServiceObjectsToRE(re, protocol, dst_port_group, false, false);
             }
         }
     }
@@ -304,6 +265,105 @@ void PFImporter::addSrv()
     }
 
 }
+
+void PFImporter::addTCPUDPServiceObjectsToRE(
+    RuleElement *re,
+    const std::string &protocol,
+    list< PortSpec > &port_spec_list,
+    bool source,
+    bool for_nat_rhs)
+{
+    list<PortSpec>::iterator psi;
+
+    for (psi=port_spec_list.begin(); psi!=port_spec_list.end(); ++psi)
+    {
+        PortSpec ps = *psi;
+        ObjectSignature sig(error_tracker);
+        QString port_spec = 
+            QString("%1 %2")
+            .arg(ps.port1.c_str()).arg(ps.port2.c_str());
+
+        buildTCPUDPObjectSingature(
+            &sig,
+            ps.port_op.c_str(),
+            port_spec,
+            source,
+            protocol.c_str(),
+            (for_nat_rhs) ? "" : flags_check.c_str(),
+            (for_nat_rhs) ? "" : flags_mask.c_str());
+            
+        re->addRef(commitObject(service_maker->createObject(sig)));
+
+        if (!for_nat_rhs && ps.port_op == "!=") re->setNeg(true);
+    }
+
+}
+
+void PFImporter::addOSrc()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    RuleElement *re = rule->getOSrc();
+
+    list<AddressSpec>::iterator it;
+    for (it=src_group.begin(); it!=src_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
+}
+
+void PFImporter::addODst()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    RuleElement *re = rule->getODst();
+
+    list<AddressSpec>::iterator it;
+    for (it=dst_group.begin(); it!=dst_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
+}
+
+void PFImporter::addOSrv()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    addServiceObjectsToRE(rule->getOSrv());
+}
+
+void PFImporter::addTSrc()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    RuleElement *re = rule->getTSrc();
+
+    list<AddressSpec>::iterator it;
+    for (it=nat_group.begin(); it!=nat_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
+}
+
+void PFImporter::addTDst()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    RuleElement *re = rule->getTDst();
+
+    list<AddressSpec>::iterator it;
+    for (it=nat_group.begin(); it!=nat_group.end(); ++it)
+    {
+        FWObject *obj = makeAddressObj(*it);
+        if (obj) re->addRef(obj);
+    }
+}
+
+void PFImporter::addTSrv()
+{
+    NATRule *rule = NATRule::cast(current_rule);
+    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group, true, true);
+}
+
+
 
 bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
                                             const QString &port_op,
@@ -498,7 +558,7 @@ void PFImporter::addLogging()
 
 void PFImporter::pushRule()
 {
-    if (rule_type == NATRule::Unknown)
+    if (PolicyRule::isA(current_rule))
         pushPolicyRule();
     else
         pushNATRule();
@@ -634,6 +694,7 @@ void PFImporter::pushPolicyRule()
         assert(intf!=NULL);
         RuleElement *re =rule->getItf();
         re->addRef(intf);
+        if (it->neg) re->setNeg(true);
         interfaces << it->name.c_str();
     }
 
@@ -725,6 +786,62 @@ void PFImporter::pushNATRule()
     }
 
     assert(current_rule!=NULL);
+
+    QString message_str = 
+        QString("nat rule: action %1; interfaces: %2");
+    
+    NATRule *rule = NATRule::cast(current_rule);
+
+    FWOptions  *ropt = current_rule->getOptionsObject();
+    assert(ropt!=NULL);
+
+    if (action=="nat") rule->setRuleType(NATRule::SNAT);
+    if (action=="rdr") rule->setRuleType(NATRule::DNAT);
+
+
+    // remember that even though NATRule has two interface rule elements
+    // ("in" and "out"), compiler for PF only uses one, the "outbound" one.
+    QStringList interfaces;
+    list<InterfaceSpec>::iterator it;
+    for (it=iface_group.begin(); it!=iface_group.end(); ++it)
+    {
+        Interface *intf = getInterfaceByName(it->name);
+        assert(intf!=NULL);
+        RuleElement *re =rule->getItfOutb();
+        re->addRef(intf);
+        if (it->neg) re->setNeg(true);
+        interfaces << it->name.c_str();
+    }
+
+    addOSrc();
+    addODst();
+    addOSrv();
+
+    switch (rule->getRuleType())
+    {
+    case NATRule::SNAT: addTSrc(); break;
+    case NATRule::DNAT: addTDst(); break;
+    default:
+        error_tracker->registerError(
+            QObject::tr("NAT rules \"%1\" "
+                        "are not supported yet.").arg(action.c_str()));
+    }
+
+    addTSrv();
+
+    if (nat_pool_type == "bitmask") ropt->setBool("pf_bitmask", true);
+    if (nat_pool_type == "random") ropt->setBool("pf_random", true);
+    if (nat_pool_type == "source-hash") ropt->setBool("pf_source_hash", true);
+    if (nat_pool_type == "round-robin") ropt->setBool("pf_round_robin", true);
+    if (nat_pool_type == "static-port") ropt->setBool("pf_static_port", true);
+
+    // then add it to the current ruleset
+    ruleset->add(current_rule);
+
+    addStandardImportComment(
+        current_rule, QString::fromUtf8(rule_comment.c_str()));
+
+    addMessageToLog(message_str.arg(action.c_str()).arg(interfaces.join(",")));
 }
 
 Firewall* PFImporter::finalize()
@@ -772,6 +889,16 @@ Firewall* PFImporter::finalize()
         {
             RuleSet *rs = RuleSet::cast(*i);
             rs->renumberRules();
+        }
+
+        // We can not deduce ip addresses of interfaces from just
+        // looking at pf.conf so lets just mark them all "dynamic"
+        list<FWObject*> l3 = fw->getByTypeDeep(Interface::TYPENAME);
+        for (list<FWObject*>::iterator i=l3.begin(); i!=l3.end(); ++i)
+        {
+            Interface *iface = Interface::cast(*i);
+            iface->setUnnumbered(false);
+            iface->setDyn(true);
         }
 
         return fw;

@@ -116,32 +116,32 @@ cfgfile :
         |
             macro_definition
         |
-            altq_command
+            altq_rule
         |
-            antispoof_command
+            antispoof_rule
         |
-            queue_command
+            queue_rule
         |
-            set_command
+            set_rule
         |
-            scrub_command
+            scrub_rule
         |
-            table_command
+            table_rule
         |
-            nat_command
+            nat_rule
         |
-            rdr_command
+            rdr_rule
         |
-            binat_command
+            binat_rule
         |
-            pass_command
+            pass_rule
         |
-            block_command
+            block_rule
         |
-            timeout_command
+            timeout_rule
         |
-            unknown_command
-        |
+//            unknown_rule
+//        |
             NEWLINE
         )*
     ;
@@ -159,7 +159,7 @@ macro_definition : WORD EQUAL
     ;
 
 //****************************************************************
-antispoof_command : ANTISPOOF
+antispoof_rule : ANTISPOOF
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -170,7 +170,7 @@ antispoof_command : ANTISPOOF
     ;
 
 //****************************************************************
-altq_command : ALTQ
+altq_rule : ALTQ
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -181,7 +181,7 @@ altq_command : ALTQ
     ;
 
 //****************************************************************
-queue_command : QUEUE
+queue_rule : QUEUE
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -192,7 +192,7 @@ queue_command : QUEUE
     ;
 
 //****************************************************************
-set_command : SET
+set_rule : SET
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -203,7 +203,7 @@ set_command : SET
     ;
 
 //****************************************************************
-scrub_command : SCRUB
+scrub_rule : SCRUB
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -214,7 +214,7 @@ scrub_command : SCRUB
     ;
 
 //****************************************************************
-table_command :
+table_rule :
         TABLE
         {
             importer->clear();
@@ -310,18 +310,165 @@ tableaddr_spec { AddressSpec as; } :
     ;
 
 //****************************************************************
-nat_command : NAT
+nat_rule : NAT
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'nat' commands has not been implemented yet."));
-            consumeUntil(NEWLINE);
+            importer->newNATRule();
+            importer->action = "nat";
+            *dbg << LT(1)->getLine() << ":" << " nat ";
+        }
+        (
+            PASS 
+            {
+                importer->error_tracker->registerError(
+                    QString("import of 'nat pass' commands is not supported."));
+            }
+            ( logging )?
+        )?
+        ( intrface )?
+        ( address_family )?
+        ( protospec )?
+        hosts
+        ( tagged )?
+        (
+            tag_clause
+            {
+                importer->error_tracker->registerError(
+                    QString("import of 'nat ... tag' commands is not supported."));
+            }
+        )?
+        MINUS GREATER_THAN
+        ( redirhost | redirhost_list )
+        {
+            importer->nat_group = importer->tmp_group;
+        }
+        (
+            portspec
+            {
+                importer->nat_port_group = importer->tmp_port_group;
+            }
+        )?
+        ( pooltype )?
+        (
+            STATIC_PORT { importer->nat_pool_type = "static-port"; }
+        )?
+        {
+            importer->pushRule();
+        }
+        NEWLINE
+    ;
+
+// redirhost = address [ "/" mask-bits ]
+// address  = ( interface-name | interface-group |
+//           "(" ( interface-name | interface-group ) ")" |
+//            hostname | ipv4-dotted-quad | ipv6-coloned-hex )
+//
+redirhost  { AddressSpec as; } :
+        (
+            IPV4
+            {
+                as.at = AddressSpec::HOST_ADDRESS;
+                as.address = LT(0)->getText();
+            }
+            (
+                SLASH
+                {
+                    as.at = AddressSpec::NETWORK_ADDRESS;
+                }
+                ( IPV4 | INT_CONST )
+                {
+                    as.netmask = LT(0)->getText(); 
+                }
+            )?
+        |
+            OPENING_PAREN
+            WORD
+            {
+                // interface name or domain/host name
+                as.at = AddressSpec::INTERFACE_NAME;
+                as.address = LT(0)->getText();
+            }
+            CLOSING_PAREN
+        |
+            WORD
+            {
+                // interface name or domain/host name
+                as.at = AddressSpec::INTERFACE_NAME;
+                as.address = LT(0)->getText();
+            }
+        )
+        {
+            importer->tmp_group.push_back(as);
         }
     ;
 
+redirhost_list : 
+        OPENING_BRACE
+        redirhost
+        (
+            ( COMMA )?
+            redirhost
+        )*
+        CLOSING_BRACE
+    ;
+
+//  portspec = "port" ( number | name ) [ ":" ( "*" | number | name ) ]
+//
+//
+//  rdr   The packet is redirected to another destination and possibly a dif-
+//        ferent port.  rdr rules can optionally specify port ranges instead
+//        of single ports.  rdr ... port 2000:2999 -> ... port 4000 redirects
+//        ports 2000 to 2999 (inclusive) to port 4000.  rdr ... port
+//        2000:2999 -> ... port 4000:* redirects port 2000 to 4000, 2001 to
+//        4001, ..., 2999 to 4999.
+//
+portspec { PortSpec ps; } :
+        PORT
+        port_def 
+        {
+            ps.port1 = importer->tmp_port_def;
+            ps.port2 = ps.port1;
+            ps.port_op = "=";
+        }
+        (
+            COLON        { ps.port_op = ":"; }
+            (
+                STAR     { ps.port2 = "65535"; }
+            |
+                port_def { ps.port2 = importer->tmp_port_def; }
+            )
+        )?
+        {
+            importer->tmp_port_group.push_back(ps);
+        }
+    ;
+
+// pooltype = ( "bitmask" | "random" |
+//              "source-hash" [ ( hex-key | string-key ) ] |
+//              "round-robin" ) [ sticky-address ]
+//
+// Note that as of v4.2 we can not generate optinal parameters for the
+// "source-hash" pooltype. "sticky-address" is not supported either.
+//
+pooltype :
+        (
+            BITMASK       { importer->nat_pool_type = "bitmask"; }
+        |
+            RANDOM        { importer->nat_pool_type = "random"; }
+        |
+            SOURCE_HASH   { importer->nat_pool_type = "source-hash"; }
+            (
+                HEX_KEY | STRING_KEY
+            )?
+        |
+            ROUND_ROBIN   { importer->nat_pool_type = "round-robin"; }
+        )
+        ( STICKY_ADDRESS )?
+    ;
+
 //****************************************************************
-binat_command : BINAT
+binat_rule : BINAT
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -332,7 +479,7 @@ binat_command : BINAT
     ;
 
 //****************************************************************
-rdr_command : RDR
+rdr_rule : RDR
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -343,7 +490,7 @@ rdr_command : RDR
     ;
 
 //****************************************************************
-timeout_command : TIMEOUT
+timeout_rule : TIMEOUT
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -355,18 +502,18 @@ timeout_command : TIMEOUT
 
 
 //****************************************************************
-unknown_command : WORD
-        {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            consumeUntil(NEWLINE);
-        }
-    ;
+//unknown_rule : WORD
+//        {
+//            importer->clear();
+//            importer->setCurrentLineNumber(LT(0)->getLine());
+//            consumeUntil(NEWLINE);
+//        }
+//    ;
 
 
 //****************************************************************
 
-pass_command : PASS
+pass_rule : PASS
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -381,7 +528,7 @@ pass_command : PASS
         NEWLINE
     ;
 
-block_command : BLOCK
+block_rule : BLOCK
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
@@ -563,11 +710,11 @@ hosts :
     ;
 
 hosts_from :
-        FROM ( src_hosts_part )? ( src_port_part )?
+        FROM src_hosts_part ( src_port_part )?
     ;
 
 hosts_to :
-        TO ( dst_hosts_part )? ( dst_port_part )?
+        TO dst_hosts_part ( dst_port_part )?
     ;
 
 src_hosts_part :
@@ -1107,8 +1254,6 @@ tokens
     TAG = "tag";
     TAGGED = "tagged";
 
-    TRANSLATE_TO = "->";
-
     STATE = "state";
     KEEP = "keep";
     MODULATE = "modulate";
@@ -1119,6 +1264,14 @@ tokens
     ICMP6_TYPE = "icmp6-type";
     ICMP_CODE = "code";
 
+    BITMASK = "bitmask";
+    RANDOM = "random";
+    SOURCE_HASH = "source-hash";
+    HEX_KEY = "hex-key";
+    STRING_KEY = "string-key";
+    ROUND_ROBIN = "round-robin";
+    STICKY_ADDRESS = "sticky-address";
+    STATIC_PORT = "static-port";
 }
 
 LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;

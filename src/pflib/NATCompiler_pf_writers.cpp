@@ -153,7 +153,7 @@ bool NATCompiler_pf::PrintRule::processNext()
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr(osrcrel);
-            _printSrcPort(osrv);
+            _printSrcPort(osrv, true);
             compiler->output  << "to ";
             _printREAddr(odstrel);
             _printPort(osrv, true);
@@ -195,14 +195,14 @@ bool NATCompiler_pf::PrintRule::processNext()
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
-            _printSrcPort(osrv);
+            _printSrcPort(osrv, true);
             compiler->output  << "to ";
             _printREAddr( odstrel );
             _printPort( osrv, true );
 
             compiler->output  << "nat-to ";
             _printREAddr( tsrcrel );
-            _printSrcPort(tsrv);
+            _printSrcPort(tsrv, false);
             _printNATRuleOptions(rule);
 
             compiler->output  << endl;
@@ -216,14 +216,14 @@ bool NATCompiler_pf::PrintRule::processNext()
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
-            _printSrcPort(osrv);
+            _printSrcPort(osrv, true);
             compiler->output  << "to ";
             _printREAddr( odstrel );
             _printPort( osrv, true );
 
             compiler->output  << "-> ";
             _printREAddr( tsrcrel );
-            _printSrcPort(tsrv);
+            _printSrcPort(tsrv, false);
             _printNATRuleOptions(rule);
 
             compiler->output  << endl;
@@ -243,7 +243,7 @@ bool NATCompiler_pf::PrintRule::processNext()
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
-            _printSrcPort(osrv);        // this is where it is different from NATRule::Redirect
+            _printSrcPort(osrv, true);        // this is where it is different from NATRule::Redirect
             compiler->output  << "to ";
             _printREAddr( odstrel );
             _printPort(osrv, true);
@@ -261,7 +261,7 @@ bool NATCompiler_pf::PrintRule::processNext()
             _printProtocol(osrv);
             compiler->output  << "from ";
             _printREAddr( osrcrel );
-            _printSrcPort(osrv);        // this is where it is different from NATRule::Redirect
+            _printSrcPort(osrv, true);        // this is where it is different from NATRule::Redirect
             compiler->output  << "to ";
             _printREAddr( odstrel );
             _printPort(osrv, true);
@@ -433,7 +433,7 @@ void NATCompiler_pf::PrintRule::_printPort(Service *srv, bool lhs)
 /*
  * Print port range spec using source ports of the given service object
  */
-void NATCompiler_pf::PrintRule::_printSrcPort(libfwbuilder::Service *srv)
+void NATCompiler_pf::PrintRule::_printSrcPort(Service *srv, bool lhs)
 {
     if (TCPUDPService::cast(srv))
     {
@@ -444,7 +444,10 @@ void NATCompiler_pf::PrintRule::_printSrcPort(libfwbuilder::Service *srv)
             compiler->output << "port " << srs;
             if (sre != 0 && sre != srs)
             {
-                compiler->output << ":" << sre;
+                if (lhs)
+                    compiler->output << ":" << sre;
+                else
+                    compiler->output << ":*";
             }
             compiler->output  << " ";
         }

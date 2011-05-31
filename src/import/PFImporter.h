@@ -187,6 +187,14 @@ public:
 
 class PFImporter : public Importer
 {
+
+    void addServiceObjectsToRE(libfwbuilder::RuleElement *re);
+    void addTCPUDPServiceObjectsToRE(
+        libfwbuilder::RuleElement *re,
+        const std::string &protocol,
+        std::list< PortSpec > &port_spec_list,
+        bool source,
+        bool for_nat_rhs);
     
 public:
 
@@ -213,12 +221,14 @@ public:
     std::list<std::string> proto_list;
     std::list< AddressSpec > src_group;
     std::list< AddressSpec > dst_group;
+    std::list< AddressSpec > nat_group;
     std::list< AddressSpec > tmp_group;
 
     std::string tmp_port_op;
     std::string tmp_port_def;
     std::list< PortSpec > src_port_group;
     std::list< PortSpec > dst_port_group;
+    std::list< PortSpec > nat_port_group;
     std::list< PortSpec > tmp_port_group;
 
     std::list< IcmpSpec >  icmp_type_code_group;
@@ -236,6 +246,8 @@ public:
 
     bool tagged_neg;
     std::string tagged;
+
+    std::string nat_pool_type;
     
     libfwbuilder::NATRule::NATRuleTypes rule_type;
     
@@ -266,6 +278,14 @@ public:
     virtual void addSrc();
     virtual void addDst();
     virtual void addSrv();
+
+    virtual void addOSrc();
+    virtual void addODst();
+    virtual void addOSrv();
+
+    virtual void addTSrc();
+    virtual void addTDst();
+    virtual void addTSrv();
 
     virtual void addLogging();
 

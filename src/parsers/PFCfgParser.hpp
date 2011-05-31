@@ -92,30 +92,36 @@ public:
 	public: void cfgfile();
 	public: void comment();
 	public: void macro_definition();
-	public: void altq_command();
-	public: void antispoof_command();
-	public: void queue_command();
-	public: void set_command();
-	public: void scrub_command();
-	public: void table_command();
-	public: void nat_command();
-	public: void rdr_command();
-	public: void binat_command();
-	public: void pass_command();
-	public: void block_command();
-	public: void timeout_command();
-	public: void unknown_command();
+	public: void altq_rule();
+	public: void antispoof_rule();
+	public: void queue_rule();
+	public: void set_rule();
+	public: void scrub_rule();
+	public: void table_rule();
+	public: void nat_rule();
+	public: void rdr_rule();
+	public: void binat_rule();
+	public: void pass_rule();
+	public: void block_rule();
+	public: void timeout_rule();
 	public: void tableaddr_spec();
-	public: void rule_extended();
-	public: void block_return();
-	public: void direction();
 	public: void logging();
-	public: void quick();
 	public: void intrface();
-	public: void route();
 	public: void address_family();
 	public: void protospec();
 	public: void hosts();
+	public: void tagged();
+	public: void tag_clause();
+	public: void redirhost();
+	public: void redirhost_list();
+	public: void portspec();
+	public: void pooltype();
+	public: void port_def();
+	public: void rule_extended();
+	public: void block_return();
+	public: void direction();
+	public: void quick();
+	public: void route();
 	public: void filteropts();
 	public: void logopts();
 	public: void logopt();
@@ -142,8 +148,6 @@ public:
 	public: void tcp_flags();
 	public: void icmp_type();
 	public: void icmp6_type();
-	public: void tagged();
-	public: void tag_clause();
 	public: void state();
 	public: void queue();
 	public: void label();
@@ -153,7 +157,6 @@ public:
 	public: void port_op_list();
 	public: void unary_port_op();
 	public: void binary_port_op();
-	public: void port_def();
 public:
 	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
 	{
@@ -165,10 +168,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 146;
+	static const int NUM_TOKENS = 153;
 #else
 	enum {
-		NUM_TOKENS = 146
+		NUM_TOKENS = 153
 	};
 #endif
 	
@@ -252,6 +255,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_38;
 	static const unsigned long _tokenSet_39_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_39;
+	static const unsigned long _tokenSet_40_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_40;
+	static const unsigned long _tokenSet_41_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_41;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

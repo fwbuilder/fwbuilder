@@ -1,3 +1,10 @@
+2011-05-30  vadim  <vadim@netcitadel.com>
+
+	* pf.g (nat_rule): see #2449 Implementd import of PF "nat"
+	rules. Known limitations:
+	  - as of v4.2 we can not generate optinal parameters for the
+	    "source-hash" pooltype. "sticky-address" is not supported either.
+
 2011-05-27  vadim  <vadim@netcitadel.com>
 
 	* PFImporter.cpp: see #2394 pf.conf import. This version implements
