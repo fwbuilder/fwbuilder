@@ -351,3 +351,24 @@ void PFImporterTest::tcpFlagsMatchTest()
                     "pf-tcp-flags-matches.fwb");
 }
 
+void PFImporterTest::natCommands()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-nat-rules.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-nat-rules.fwb");
+
+    compareResults(logger,
+                   "test_data/pf-nat-rules.output",
+                   "pf-nat-rules.output");
+    compareFwbFiles("test_data/pf-nat-rules.fwb",
+                    "pf-nat-rules.fwb");
+}
+

@@ -1,0 +1,21 @@
+3: New interface: em0
+3: nat rule: action nat; interfaces: em0
+4: nat rule: action nat; interfaces: em0
+6: nat rule: action nat; interfaces: em0
+7: nat rule: action nat; interfaces: em0
+8: nat rule: action nat; interfaces: em0
+9: nat rule: action nat; interfaces: em0
+10: nat rule: action nat; interfaces: em0
+10: Error: import of 'nat' commands with 'source-hash hex-key' option is not supported
+11: nat rule: action nat; interfaces: em0
+11: Error: import of 'nat' commands with 'source-hash string-key' option is not supported
+12: nat rule: action nat; interfaces: em0
+13: nat rule: action nat; interfaces: em0
+14: nat rule: action nat; interfaces: em0
+16: nat rule: action nat; interfaces: em0
+17: nat rule: action nat; interfaces: em0
+18: nat rule: action nat; interfaces: em0
+19: nat rule: action nat; interfaces: em0
+20: nat rule: action nat; interfaces: em0
+22: nat rule: action nat; interfaces: em0
+23: nat rule: action nat; interfaces: em0

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1306728766" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1306818101" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -543,7 +543,7 @@
         <Routing id="id73" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id75" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="pcn0" comment="Created during import of  line 4" ro="False">
+        <Interface id="id75" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="pcn0" comment="Created during import of  line 4" ro="False">
           <InterfaceOptions/>
           <AttachedNetworks id="id76" name="pcn0-net" comment="" ro="False"/>
         </Interface>
