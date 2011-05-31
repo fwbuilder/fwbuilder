@@ -3,7 +3,7 @@
 #
 #  Firewall Builder  fwb_pf v4.3.0.3546
 #
-#  Generated Thu May 26 14:09:43 2011 PDT by vadim
+#  Generated Mon May 30 21:58:51 2011 PDT by vadim
 #
 # files: * firewall-ipv6-3.fw /etc/firewall-ipv6-3.fw
 # files:   firewall-ipv6-3.conf /etc/firewall-ipv6-3.conf

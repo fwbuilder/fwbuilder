@@ -189,7 +189,7 @@ block  log  quick inet  from any  to any  fragment  label "RULE 6 - DROP **"
 # 
 # Rule  7 (global)
 # sends TCP RST and makes custom record in the log
-block return-rst  log  quick inet proto tcp  from any  to any port 113  label "IDENT"  
+block return-rst    log  quick inet proto tcp  from any  to any port 113  label "IDENT"  
 # 
 # Rule  8 (global)
 pass  quick inet  from <tbl.r1>  to 200.200.200.200 keep state  label "RULE 8 - ACCEPT **"  

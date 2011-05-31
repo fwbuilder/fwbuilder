@@ -39,8 +39,8 @@ nat on en1 proto udp from 192.168.1.0/24 to 192.168.1.10 port 1053 -> 22.22.23.2
 # translate src and dst addresses
 # and src and dst ports
 rdr proto udp from 192.168.1.0/24 port 1024:65535 to any port 53 -> 192.168.1.10 port 1053 
-nat on en0 proto udp from 192.168.1.0/24 to 192.168.1.10 port 1053 -> 22.22.22.22 port 32767:65535 
-nat on en1 proto udp from 192.168.1.0/24 to 192.168.1.10 port 1053 -> 22.22.23.22 port 32767:65535 
+nat on en0 proto udp from 192.168.1.0/24 to 192.168.1.10 port 1053 -> 22.22.22.22 port 32767:* 
+nat on en1 proto udp from 192.168.1.0/24 to 192.168.1.10 port 1053 -> 22.22.23.22 port 32767:* 
 # 
 # Rule  14 (NAT)
 # Matches destination port, translates source port

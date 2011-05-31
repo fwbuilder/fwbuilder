@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.3.0.3546
 #
-#  Generated Thu May 26 14:09:32 2011 PDT by vadim
+#  Generated Mon May 30 21:58:44 2011 PDT by vadim
 #
 # files: * firewall5.fw /etc/fw/firewall5.fw
 # files:   firewall5.conf /etc/fw/firewall5.conf
@@ -77,7 +77,7 @@ configure_interfaces() {
     
 }
 
-log "Activating firewall script generated Thu May 26 14:09:32 2011 by vadim"
+log "Activating firewall script generated Mon May 30 21:58:44 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

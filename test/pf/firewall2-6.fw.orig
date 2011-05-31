@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_pf v4.3.0.3546
 #
-#  Generated Thu May 26 14:09:24 2011 PDT by vadim
+#  Generated Mon May 30 21:58:40 2011 PDT by vadim
 #
 # files: * firewall2-6.fw /etc/firewall2-6.fw
 # files:   firewall2-6.conf /etc/firewall2-6.conf
@@ -170,7 +170,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu May 26 14:09:24 2011 by vadim"
+log "Activating firewall script generated Mon May 30 21:58:40 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
