@@ -39,6 +39,7 @@ public:
 
     bool neg;
     std::string name;
+    std::string label;
     std::list<AddressSpec> as;
     std::string hwaddr;
     std::list<std::string> groups;
@@ -47,12 +48,14 @@ public:
     {
         neg = false;
         name = "";
+        label = "";
     }
 
     InterfaceSpec(const InterfaceSpec &other)
     {
         neg = other.neg;
         name = other.name;
+        label = other.label;
         as = other.as;
         hwaddr = other.hwaddr;
         groups = other.groups;
@@ -69,7 +72,8 @@ public:
     {
         QStringList str;
         str << "InterfaceSpec";
-        str << name.c_str();
+        str << QString("name:%1").arg(name.c_str());
+        str << QString("label:%1").arg(label.c_str());
         str << QString((neg)? "neg:true" : "neg:false");
         str << QString("hwaddr:%1").arg(hwaddr.c_str());
 

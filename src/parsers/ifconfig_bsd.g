@@ -65,7 +65,7 @@ options
 }
 
 
-class IfconfigCfgParser extends Parser;
+class IfconfigBSDCfgParser extends Parser;
 options
 {
     k = 2;
@@ -115,27 +115,15 @@ cfgfile
         (
             comment
         |
-            bsd_interface_line
+            interface_line
         |
-            linux_interface_line
+            hwaddr_line
         |
-            bsd_hwaddr_line
+            inet_address
         |
-            linux_hwaddr_line
-        |
-            bsd_inet_address
-        |
-            linux_inet_address
-        |
-            bsd_inet6_address
-        |
-            linux_inet6_address
+            inet6_address
         |
             groups
-        |
-            linux_interface_flags
-        |
-            linux_interface_statistics
         |
             unknown_line
         |
@@ -166,42 +154,6 @@ unknown_line
         }
     ;
 
-linux_interface_flags
-    :
-        (
-            UP
-        |
-            UPPER_BROADCAST
-        |
-            UPPER_POINTOPOINT
-        |
-            UPPER_LOOPBACK
-        |
-            UPPER_NOARP
-        |
-            UPPER_RUNNING
-        |
-            LOOPBACK
-        )
-        {
-            consumeUntil(NEWLINE);
-        }
-    ;
-
-linux_interface_statistics
-    :
-        (
-            ( COLLISIONS COLON )
-        |
-            RX
-        |
-            TX
-        )
-        {
-            consumeUntil(NEWLINE);
-        }
-    ;
-
 
 //****************************************************************
 //
@@ -210,7 +162,7 @@ linux_interface_statistics
 // vic0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 // enc0: flags=0<> mtu 1536
 //
-bsd_interface_line  { InterfaceSpec is; }
+interface_line  { InterfaceSpec is; }
     :
         in:WORD COLON FLAGS EQUAL INT_CONST
         {
@@ -221,34 +173,11 @@ bsd_interface_line  { InterfaceSpec is; }
         }
     ;
 
-// lo        Link encap:Local Loopback  
-// eth0      Link encap:Ethernet  HWaddr 00:0c:29:5f:12:cb  
-// he-ipv6   Link encap:IPv6-in-IPv4  
-// sit0      Link encap:IPv6-in-IPv4  
-//
-linux_interface_line  { InterfaceSpec is; }
-    :
-        in:WORD LINK ENCAP COLON WORD
-        {
-            // interface name and status
-            is.name = in->getText();
-            importer->newInterface(is);
-        }
-    ;
-
 //****************************************************************
 
-bsd_hwaddr_line
+hwaddr_line
     :
         LLADDR addr:MAC_ADDRESS
-        {
-            importer->HwAddressForCurrentInterface(addr->getText());
-        }
-    ;
-
-linux_hwaddr_line
-    :
-        HWADDR addr:MAC_ADDRESS
         {
             importer->HwAddressForCurrentInterface(addr->getText());
         }
@@ -258,7 +187,7 @@ linux_hwaddr_line
 //
 
 // BSD:        inet 10.3.14.81 netmask 0xffffff00 broadcast 10.3.14.255
-bsd_inet_address  { AddressSpec as; }
+inet_address  { AddressSpec as; }
     :
         INET addr:IPV4 NETMASK netm:HEX_CONST BROADCAST bcast:IPV4
         {
@@ -270,36 +199,10 @@ bsd_inet_address  { AddressSpec as; }
         }
     ;
 
-// Linux:      inet addr:10.10.11.11  Bcast:10.10.11.255  Mask:255.255.255.0
-linux_inet_address  { AddressSpec as; }
-    :
-        INET ADDR COLON
-        addr:IPV4
-        {
-            as.at = AddressSpec::INTERFACE_CONFIGURATION;
-            as.address = addr->getText();
-        }
-        (
-            ( ( BCAST COLON bcast:IPV4 )? MASK COLON netm:IPV4 )
-            {
-                as.netmask = netm->getText();
-                if (bcast) as.broadcast = bcast->getText();
-            }
-        |
-            ( P_T_P COLON IPV4 MASK COLON IPV4 )
-            {
-                    // we do not support p2p interfaces at this time
-            }
-        )
-        {
-            importer->inetConfigurationForCurrentInterface(as);
-        }
-    ;
-
 //****************************************************************
 
 // BSD:        inet6 fe80::20c:29ff:fe3f:ac3c%vic0 prefixlen 64 scopeid 0x1
-bsd_inet6_address  { AddressSpec as; }
+inet6_address  { AddressSpec as; }
     :
         INET6 addr:IPV6 PERCENT WORD PREFIXLEN netm:INT_CONST SCOPEID HEX_CONST 
         {
@@ -309,19 +212,6 @@ bsd_inet6_address  { AddressSpec as; }
             importer->inet6ConfigurationForCurrentInterface(as);
         }
     ;
-
-// Linux:      inet6 addr: fe80::20c:29ff:fe5f:12cb/64 Scope:Link
-linux_inet6_address  { AddressSpec as; }
-    :
-        INET6 ADDR COLON addr:IPV6 SLASH netm:INT_CONST SCOPE COLON (HOST | LINK | GLOBAL | INT_CONST)
-        {
-            as.at = AddressSpec::INTERFACE_CONFIGURATION;
-            as.address = addr->getText();
-            as.netmask = netm->getText();
-            importer->inet6ConfigurationForCurrentInterface(as);
-        }
-    ;
-
 
 //****************************************************************
 groups
@@ -339,7 +229,7 @@ groups_list
 
 //****************************************************************
 
-class IfconfigCfgLexer extends Lexer;
+class IfconfigBSDCfgLexer extends Lexer;
 options
 {
     k = 3;
@@ -389,6 +279,7 @@ tokens
     RX = "RX";
     TX =  "TX";
     COLLISIONS = "collisions";
+    INTERRUPT = "Interrupt";
 
     PRIORITY = "priority";
     MEDIA = "media";

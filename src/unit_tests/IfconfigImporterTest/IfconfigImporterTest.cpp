@@ -119,7 +119,8 @@ void IfconfigImporterTest::linuxIfconfigTest()
     std::istringstream instream(
         openTestFile("test_data/linux_ifconfig.test"));
 
-    IfconfigImporter* imp = new IfconfigImporter(lib, instream, logger, "test_fw");
+    IfconfigImporter* imp = new IfconfigImporter(
+        lib, instream, logger, "linux24", "test_fw");
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -140,7 +141,8 @@ void IfconfigImporterTest::bsdIfconfigTest()
     std::istringstream instream(
         openTestFile("test_data/bsd_ifconfig.test"));
 
-    IfconfigImporter* imp = new IfconfigImporter(lib, instream, logger, "test_fw");
+    IfconfigImporter* imp = new IfconfigImporter(
+        lib, instream, logger, "openbsd", "test_fw");
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 

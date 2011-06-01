@@ -1,21 +1,21 @@
-#ifndef INC_IfconfigCfgLexer_hpp_
-#define INC_IfconfigCfgLexer_hpp_
+#ifndef INC_IfconfigLinuxCfgLexer_hpp_
+#define INC_IfconfigLinuxCfgLexer_hpp_
 
-#line 25 "ifconfig.g"
+#line 25 "ifconfig_linux.g"
 
     // gets inserted before antlr generated includes in the header
     // file
 #include "IfconfigImporter.h"
 
-#line 11 "IfconfigCfgLexer.hpp"
+#line 11 "IfconfigLinuxCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "ifconfig.g" -> "IfconfigCfgLexer.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "ifconfig_linux.g" -> "IfconfigLinuxCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>
-#include "IfconfigCfgParserTokenTypes.hpp"
+#include "IfconfigLinuxCfgParserTokenTypes.hpp"
 #include <antlr/CharScanner.hpp>
-#line 32 "ifconfig.g"
+#line 32 "ifconfig_linux.g"
 
     // gets inserted after antlr generated includes in the header file
     // outside any generated namespace specifications
@@ -25,17 +25,17 @@
 
 class IfconfigImporter;
 
-#line 29 "IfconfigCfgLexer.hpp"
-#line 57 "ifconfig.g"
+#line 29 "IfconfigLinuxCfgLexer.hpp"
+#line 57 "ifconfig_linux.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
 
-#line 35 "IfconfigCfgLexer.hpp"
-class CUSTOM_API IfconfigCfgLexer : public ANTLR_USE_NAMESPACE(antlr)CharScanner, public IfconfigCfgParserTokenTypes
+#line 35 "IfconfigLinuxCfgLexer.hpp"
+class CUSTOM_API IfconfigLinuxCfgLexer : public ANTLR_USE_NAMESPACE(antlr)CharScanner, public IfconfigLinuxCfgParserTokenTypes
 {
-#line 1 "ifconfig.g"
-#line 39 "IfconfigCfgLexer.hpp"
+#line 1 "ifconfig_linux.g"
+#line 39 "IfconfigLinuxCfgLexer.hpp"
 private:
 	void initLiterals();
 public:
@@ -44,9 +44,9 @@ public:
 		return true;
 	}
 public:
-	IfconfigCfgLexer(ANTLR_USE_NAMESPACE(std)istream& in);
-	IfconfigCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib);
-	IfconfigCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state);
+	IfconfigLinuxCfgLexer(ANTLR_USE_NAMESPACE(std)istream& in);
+	IfconfigLinuxCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib);
+	IfconfigLinuxCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state);
 	ANTLR_USE_NAMESPACE(antlr)RefToken nextToken();
 	public: void mLINE_COMMENT(bool _createToken);
 	public: void mNEWLINE(bool _createToken);
@@ -96,4 +96,4 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
 };
 
-#endif /*INC_IfconfigCfgLexer_hpp_*/
+#endif /*INC_IfconfigLinuxCfgLexer_hpp_*/

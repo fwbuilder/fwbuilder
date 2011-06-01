@@ -1,11 +1,11 @@
-/* $ANTLR 2.7.7 (20090306): "ifconfig.g" -> "IfconfigCfgLexer.cpp"$ */
-#line 43 "ifconfig.g"
+/* $ANTLR 2.7.7 (20100319): "ifconfig_bsd.g" -> "IfconfigBSDCfgLexer.cpp"$ */
+#line 43 "ifconfig_bsd.g"
 
     // gets inserted before the antlr generated includes in the cpp
     // file
 
-#line 8 "IfconfigCfgLexer.cpp"
-#include "IfconfigCfgLexer.hpp"
+#line 8 "IfconfigBSDCfgLexer.cpp"
+#include "IfconfigBSDCfgLexer.hpp"
 #include <antlr/CharBuffer.hpp>
 #include <antlr/TokenStreamException.hpp>
 #include <antlr/TokenStreamIOException.hpp>
@@ -14,72 +14,73 @@
 #include <antlr/CharStreamIOException.hpp>
 #include <antlr/NoViableAltForCharException.hpp>
 
-#line 49 "ifconfig.g"
+#line 49 "ifconfig_bsd.g"
 
     // gets inserted after the antlr generated includes in the cpp
     // file
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#line 25 "IfconfigCfgLexer.cpp"
-#line 1 "ifconfig.g"
-#line 27 "IfconfigCfgLexer.cpp"
-IfconfigCfgLexer::IfconfigCfgLexer(ANTLR_USE_NAMESPACE(std)istream& in)
+#line 25 "IfconfigBSDCfgLexer.cpp"
+#line 1 "ifconfig_bsd.g"
+#line 27 "IfconfigBSDCfgLexer.cpp"
+IfconfigBSDCfgLexer::IfconfigBSDCfgLexer(ANTLR_USE_NAMESPACE(std)istream& in)
 	: ANTLR_USE_NAMESPACE(antlr)CharScanner(new ANTLR_USE_NAMESPACE(antlr)CharBuffer(in),true)
 {
 	initLiterals();
 }
 
-IfconfigCfgLexer::IfconfigCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib)
+IfconfigBSDCfgLexer::IfconfigBSDCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib)
 	: ANTLR_USE_NAMESPACE(antlr)CharScanner(ib,true)
 {
 	initLiterals();
 }
 
-IfconfigCfgLexer::IfconfigCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state)
+IfconfigBSDCfgLexer::IfconfigBSDCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state)
 	: ANTLR_USE_NAMESPACE(antlr)CharScanner(state,true)
 {
 	initLiterals();
 }
 
-void IfconfigCfgLexer::initLiterals()
+void IfconfigBSDCfgLexer::initLiterals()
 {
 	literals["priority"] = 7;
-	literals["broadcast"] = 34;
-	literals["Scope"] = 45;
-	literals["scopeid"] = 43;
-	literals["Host"] = 46;
-	literals["UP"] = 11;
-	literals["groups"] = 48;
-	literals["HWaddr"] = 29;
-	literals["encap"] = 26;
-	literals["NOARP"] = 15;
-	literals["Mask"] = 37;
-	literals["RUNNING"] = 16;
-	literals["netmask"] = 32;
-	literals["inet"] = 30;
+	literals["broadcast"] = 21;
+	literals["Scope"] = 35;
+	literals["scopeid"] = 26;
+	literals["Host"] = 30;
+	literals["UP"] = 39;
+	literals["groups"] = 27;
+	literals["HWaddr"] = 49;
+	literals["encap"] = 37;
+	literals["NOARP"] = 43;
+	literals["Mask"] = 34;
+	literals["netmask"] = 19;
+	literals["RUNNING"] = 44;
+	literals["inet"] = 17;
 	literals["media"] = 8;
-	literals["BROADCAST"] = 12;
-	literals["P-t-P"] = 38;
-	literals["prefixlen"] = 42;
-	literals["Loopback"] = 17;
-	literals["Bcast"] = 36;
-	literals["mtu"] = 49;
-	literals["inet6"] = 39;
+	literals["BROADCAST"] = 40;
+	literals["P-t-P"] = 33;
+	literals["prefixlen"] = 25;
+	literals["Loopback"] = 38;
+	literals["Interrupt"] = 48;
+	literals["Bcast"] = 32;
+	literals["mtu"] = 36;
+	literals["inet6"] = 22;
 	literals["status"] = 9;
-	literals["LOOPBACK"] = 14;
-	literals["Link"] = 25;
-	literals["TX"] = 21;
-	literals["RX"] = 20;
-	literals["addr"] = 35;
-	literals["Global"] = 47;
-	literals["POINTOPOINT"] = 13;
-	literals["flags"] = 22;
+	literals["LOOPBACK"] = 42;
+	literals["Link"] = 28;
+	literals["TX"] = 46;
+	literals["addr"] = 31;
+	literals["RX"] = 45;
+	literals["Global"] = 29;
+	literals["POINTOPOINT"] = 41;
+	literals["flags"] = 12;
 	literals["lladdr"] = 50;
-	literals["collisions"] = 18;
+	literals["collisions"] = 47;
 }
 
-ANTLR_USE_NAMESPACE(antlr)RefToken IfconfigCfgLexer::nextToken()
+ANTLR_USE_NAMESPACE(antlr)RefToken IfconfigBSDCfgLexer::nextToken()
 {
 	ANTLR_USE_NAMESPACE(antlr)RefToken theRetToken;
 	for (;;) {
@@ -300,7 +301,7 @@ tryAgain:;
 	}
 }
 
-void IfconfigCfgLexer::mLINE_COMMENT(bool _createToken) {
+void IfconfigBSDCfgLexer::mLINE_COMMENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LINE_COMMENT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -314,11 +315,11 @@ void IfconfigCfgLexer::mLINE_COMMENT(bool _createToken) {
 			}
 		}
 		else {
-			goto _loop32;
+			goto _loop18;
 		}
 		
 	}
-	_loop32:;
+	_loop18:;
 	} // ( ... )*
 	mNEWLINE(false);
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -329,7 +330,7 @@ void IfconfigCfgLexer::mLINE_COMMENT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNEWLINE(bool _createToken) {
+void IfconfigBSDCfgLexer::mNEWLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEWLINE;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -350,9 +351,9 @@ void IfconfigCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 497 "ifconfig.g"
+#line 388 "ifconfig_bsd.g"
 		newline();
-#line 356 "IfconfigCfgLexer.cpp"
+#line 357 "IfconfigBSDCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -362,7 +363,7 @@ void IfconfigCfgLexer::mNEWLINE(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mWhitespace(bool _createToken) {
+void IfconfigBSDCfgLexer::mWhitespace(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = Whitespace;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -431,9 +432,9 @@ void IfconfigCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 403 "ifconfig.g"
+#line 294 "ifconfig_bsd.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
-#line 437 "IfconfigCfgLexer.cpp"
+#line 438 "IfconfigBSDCfgLexer.cpp"
 	}
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
@@ -443,7 +444,7 @@ void IfconfigCfgLexer::mWhitespace(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mINT_CONST(bool _createToken) {
+void IfconfigBSDCfgLexer::mINT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = INT_CONST;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -456,7 +457,7 @@ void IfconfigCfgLexer::mINT_CONST(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mHEX_CONST(bool _createToken) {
+void IfconfigBSDCfgLexer::mHEX_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_CONST;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -469,7 +470,7 @@ void IfconfigCfgLexer::mHEX_CONST(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNUMBER(bool _createToken) {
+void IfconfigBSDCfgLexer::mNUMBER(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -482,7 +483,7 @@ void IfconfigCfgLexer::mNUMBER(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNEG_INT_CONST(bool _createToken) {
+void IfconfigBSDCfgLexer::mNEG_INT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEG_INT_CONST;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -495,7 +496,7 @@ void IfconfigCfgLexer::mNEG_INT_CONST(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mCOLON(bool _createToken) {
+void IfconfigBSDCfgLexer::mCOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COLON;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -508,7 +509,7 @@ void IfconfigCfgLexer::mCOLON(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mHEX_DIGIT(bool _createToken) {
+void IfconfigBSDCfgLexer::mHEX_DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_DIGIT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -563,7 +564,7 @@ void IfconfigCfgLexer::mHEX_DIGIT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mDIGIT(bool _createToken) {
+void IfconfigBSDCfgLexer::mDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DIGIT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -577,7 +578,7 @@ void IfconfigCfgLexer::mDIGIT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNUM_3DIGIT(bool _createToken) {
+void IfconfigBSDCfgLexer::mNUM_3DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUM_3DIGIT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -611,7 +612,7 @@ void IfconfigCfgLexer::mNUM_3DIGIT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNUM_HEX_4DIGIT(bool _createToken) {
+void IfconfigBSDCfgLexer::mNUM_HEX_4DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUM_HEX_4DIGIT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -653,7 +654,7 @@ void IfconfigCfgLexer::mNUM_HEX_4DIGIT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mMAC_ADDRESS(bool _createToken) {
+void IfconfigBSDCfgLexer::mMAC_ADDRESS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = MAC_ADDRESS;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -666,15 +667,15 @@ void IfconfigCfgLexer::mMAC_ADDRESS(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
+void IfconfigBSDCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER_ADDRESS_OR_WORD;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
-	bool synPredMatched57 = false;
+	bool synPredMatched43 = false;
 	if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_3.member(LA(2))) && (_tokenSet_3.member(LA(3))))) {
-		int _m57 = mark();
-		synPredMatched57 = true;
+		int _m43 = mark();
+		synPredMatched43 = true;
 		inputState->guessing++;
 		try {
 			{
@@ -685,12 +686,12 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}
 		}
 		catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-			synPredMatched57 = false;
+			synPredMatched43 = false;
 		}
-		rewind(_m57);
+		rewind(_m43);
 		inputState->guessing--;
 	}
-	if ( synPredMatched57 ) {
+	if ( synPredMatched43 ) {
 		{
 		mNUM_3DIGIT(false);
 		match('.' /* charlit */ );
@@ -701,16 +702,16 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		mNUM_3DIGIT(false);
 		}
 		if ( inputState->guessing==0 ) {
-#line 445 "ifconfig.g"
+#line 336 "ifconfig_bsd.g"
 			_ttype = IPV4;
-#line 707 "IfconfigCfgLexer.cpp"
+#line 708 "IfconfigBSDCfgLexer.cpp"
 		}
 	}
 	else {
-		bool synPredMatched61 = false;
+		bool synPredMatched47 = false;
 		if (((_tokenSet_2.member(LA(1))) && (_tokenSet_4.member(LA(2))) && (_tokenSet_4.member(LA(3))))) {
-			int _m61 = mark();
-			synPredMatched61 = true;
+			int _m47 = mark();
+			synPredMatched47 = true;
 			inputState->guessing++;
 			try {
 				{
@@ -731,12 +732,12 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}
 			}
 			catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-				synPredMatched61 = false;
+				synPredMatched47 = false;
 			}
-			rewind(_m61);
+			rewind(_m47);
 			inputState->guessing--;
 		}
-		if ( synPredMatched61 ) {
+		if ( synPredMatched47 ) {
 			{
 			mNUM_HEX_4DIGIT(false);
 			match(':' /* charlit */ );
@@ -751,16 +752,16 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			mNUM_HEX_4DIGIT(false);
 			}
 			if ( inputState->guessing==0 ) {
-#line 457 "ifconfig.g"
+#line 348 "ifconfig_bsd.g"
 				_ttype = MAC_ADDRESS;
-#line 757 "IfconfigCfgLexer.cpp"
+#line 758 "IfconfigBSDCfgLexer.cpp"
 			}
 		}
 		else {
-			bool synPredMatched64 = false;
+			bool synPredMatched50 = false;
 			if (((_tokenSet_2.member(LA(1))) && (_tokenSet_4.member(LA(2))) && (_tokenSet_4.member(LA(3))))) {
-				int _m64 = mark();
-				synPredMatched64 = true;
+				int _m50 = mark();
+				synPredMatched50 = true;
 				inputState->guessing++;
 				try {
 					{
@@ -769,60 +770,60 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}
 				}
 				catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-					synPredMatched64 = false;
+					synPredMatched50 = false;
 				}
-				rewind(_m64);
+				rewind(_m50);
 				inputState->guessing--;
 			}
-			if ( synPredMatched64 ) {
+			if ( synPredMatched50 ) {
 				{
-				bool synPredMatched69 = false;
+				bool synPredMatched55 = false;
 				if (((_tokenSet_2.member(LA(1))) && (_tokenSet_4.member(LA(2))) && (_tokenSet_4.member(LA(3))))) {
-					int _m69 = mark();
-					synPredMatched69 = true;
+					int _m55 = mark();
+					synPredMatched55 = true;
 					inputState->guessing++;
 					try {
 						{
 						{ // ( ... )+
-						int _cnt68=0;
+						int _cnt54=0;
 						for (;;) {
 							if ((_tokenSet_2.member(LA(1)))) {
 								mNUM_HEX_4DIGIT(false);
 								match(':' /* charlit */ );
 							}
 							else {
-								if ( _cnt68>=1 ) { goto _loop68; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+								if ( _cnt54>=1 ) { goto _loop54; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 							}
 							
-							_cnt68++;
+							_cnt54++;
 						}
-						_loop68:;
+						_loop54:;
 						}  // ( ... )+
 						match(':' /* charlit */ );
 						}
 					}
 					catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-						synPredMatched69 = false;
+						synPredMatched55 = false;
 					}
-					rewind(_m69);
+					rewind(_m55);
 					inputState->guessing--;
 				}
-				if ( synPredMatched69 ) {
+				if ( synPredMatched55 ) {
 					{
 					{ // ( ... )+
-					int _cnt72=0;
+					int _cnt58=0;
 					for (;;) {
 						if ((_tokenSet_2.member(LA(1)))) {
 							mNUM_HEX_4DIGIT(false);
 							match(':' /* charlit */ );
 						}
 						else {
-							if ( _cnt72>=1 ) { goto _loop72; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt58>=1 ) { goto _loop58; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt72++;
+						_cnt58++;
 					}
-					_loop72:;
+					_loop58:;
 					}  // ( ... )+
 					match(':' /* charlit */ );
 					{
@@ -835,11 +836,11 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 								mNUM_HEX_4DIGIT(false);
 							}
 							else {
-								goto _loop75;
+								goto _loop61;
 							}
 							
 						}
-						_loop75:;
+						_loop61:;
 						} // ( ... )*
 					}
 					else {
@@ -848,32 +849,32 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					}
 					}
 					if ( inputState->guessing==0 ) {
-#line 466 "ifconfig.g"
+#line 357 "ifconfig_bsd.g"
 						_ttype = IPV6;
-#line 854 "IfconfigCfgLexer.cpp"
+#line 855 "IfconfigBSDCfgLexer.cpp"
 					}
 				}
 				else if ((_tokenSet_2.member(LA(1))) && (_tokenSet_4.member(LA(2))) && (_tokenSet_4.member(LA(3)))) {
 					mNUM_HEX_4DIGIT(false);
 					{ // ( ... )+
-					int _cnt77=0;
+					int _cnt63=0;
 					for (;;) {
 						if ((LA(1) == 0x3a /* ':' */ )) {
 							match(':' /* charlit */ );
 							mNUM_HEX_4DIGIT(false);
 						}
 						else {
-							if ( _cnt77>=1 ) { goto _loop77; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt63>=1 ) { goto _loop63; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt77++;
+						_cnt63++;
 					}
-					_loop77:;
+					_loop63:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 469 "ifconfig.g"
+#line 360 "ifconfig_bsd.g"
 						_ttype = IPV6;
-#line 877 "IfconfigCfgLexer.cpp"
+#line 878 "IfconfigBSDCfgLexer.cpp"
 					}
 				}
 				else {
@@ -882,16 +883,16 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				
 				}
 				if ( inputState->guessing==0 ) {
-#line 471 "ifconfig.g"
+#line 362 "ifconfig_bsd.g"
 					_ttype = IPV6;
-#line 888 "IfconfigCfgLexer.cpp"
+#line 889 "IfconfigBSDCfgLexer.cpp"
 				}
 			}
 			else {
-				bool synPredMatched79 = false;
+				bool synPredMatched65 = false;
 				if (((LA(1) == 0x3a /* ':' */ ) && (LA(2) == 0x3a /* ':' */ ) && (_tokenSet_2.member(LA(3))))) {
-					int _m79 = mark();
-					synPredMatched79 = true;
+					int _m65 = mark();
+					synPredMatched65 = true;
 					inputState->guessing++;
 					try {
 						{
@@ -901,12 +902,12 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}
 					}
 					catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-						synPredMatched79 = false;
+						synPredMatched65 = false;
 					}
-					rewind(_m79);
+					rewind(_m65);
 					inputState->guessing--;
 				}
-				if ( synPredMatched79 ) {
+				if ( synPredMatched65 ) {
 					match(':' /* charlit */ );
 					match(':' /* charlit */ );
 					mNUM_HEX_4DIGIT(false);
@@ -917,108 +918,108 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 							mNUM_HEX_4DIGIT(false);
 						}
 						else {
-							goto _loop81;
+							goto _loop67;
 						}
 						
 					}
-					_loop81:;
+					_loop67:;
 					} // ( ... )*
 					if ( inputState->guessing==0 ) {
-#line 474 "ifconfig.g"
+#line 365 "ifconfig_bsd.g"
 						_ttype = IPV6;
-#line 930 "IfconfigCfgLexer.cpp"
+#line 931 "IfconfigBSDCfgLexer.cpp"
 					}
 				}
 				else {
-					bool synPredMatched87 = false;
+					bool synPredMatched73 = false;
 					if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_3.member(LA(2))) && (_tokenSet_3.member(LA(3))))) {
-						int _m87 = mark();
-						synPredMatched87 = true;
+						int _m73 = mark();
+						synPredMatched73 = true;
 						inputState->guessing++;
 						try {
 							{
 							{ // ( ... )+
-							int _cnt84=0;
+							int _cnt70=0;
 							for (;;) {
 								if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 									mDIGIT(false);
 								}
 								else {
-									if ( _cnt84>=1 ) { goto _loop84; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+									if ( _cnt70>=1 ) { goto _loop70; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 								}
 								
-								_cnt84++;
+								_cnt70++;
 							}
-							_loop84:;
+							_loop70:;
 							}  // ( ... )+
 							match('.' /* charlit */ );
 							{ // ( ... )+
-							int _cnt86=0;
+							int _cnt72=0;
 							for (;;) {
 								if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 									mDIGIT(false);
 								}
 								else {
-									if ( _cnt86>=1 ) { goto _loop86; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+									if ( _cnt72>=1 ) { goto _loop72; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 								}
 								
-								_cnt86++;
+								_cnt72++;
 							}
-							_loop86:;
+							_loop72:;
 							}  // ( ... )+
 							}
 						}
 						catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-							synPredMatched87 = false;
+							synPredMatched73 = false;
 						}
-						rewind(_m87);
+						rewind(_m73);
 						inputState->guessing--;
 					}
-					if ( synPredMatched87 ) {
+					if ( synPredMatched73 ) {
 						{
 						{ // ( ... )+
-						int _cnt90=0;
+						int _cnt76=0;
 						for (;;) {
 							if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 								mDIGIT(false);
 							}
 							else {
-								if ( _cnt90>=1 ) { goto _loop90; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+								if ( _cnt76>=1 ) { goto _loop76; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 							}
 							
-							_cnt90++;
+							_cnt76++;
 						}
-						_loop90:;
+						_loop76:;
 						}  // ( ... )+
 						match('.' /* charlit */ );
 						{ // ( ... )+
-						int _cnt92=0;
+						int _cnt78=0;
 						for (;;) {
 							if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 								mDIGIT(false);
 							}
 							else {
-								if ( _cnt92>=1 ) { goto _loop92; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+								if ( _cnt78>=1 ) { goto _loop78; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 							}
 							
-							_cnt92++;
+							_cnt78++;
 						}
-						_loop92:;
+						_loop78:;
 						}  // ( ... )+
 						}
 						if ( inputState->guessing==0 ) {
-#line 481 "ifconfig.g"
+#line 372 "ifconfig_bsd.g"
 							_ttype = NUMBER;
-#line 1013 "IfconfigCfgLexer.cpp"
+#line 1014 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 					else if ((LA(1) == 0x3a /* ':' */ ) && (LA(2) == 0x3a /* ':' */ ) && (true)) {
 						match(':' /* charlit */ );
 						match(':' /* charlit */ );
 						if ( inputState->guessing==0 ) {
-#line 476 "ifconfig.g"
+#line 367 "ifconfig_bsd.g"
 							_ttype = IPV6;
-#line 1022 "IfconfigCfgLexer.cpp"
+#line 1023 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 					else if ((LA(1) == 0x30 /* '0' */ ) && (LA(2) == 0x58 /* 'X' */  || LA(2) == 0x78 /* 'x' */ )) {
@@ -1048,45 +1049,45 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 								mHEX_DIGIT(false);
 							}
 							else {
-								goto _loop97;
+								goto _loop83;
 							}
 							
 						}
-						_loop97:;
+						_loop83:;
 						} // ( ... )*
 						if ( inputState->guessing==0 ) {
-#line 485 "ifconfig.g"
+#line 376 "ifconfig_bsd.g"
 							_ttype = HEX_CONST;
-#line 1061 "IfconfigCfgLexer.cpp"
+#line 1062 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 					else if ((LA(1) == 0x3a /* ':' */ ) && (true)) {
 						match(':' /* charlit */ );
 						if ( inputState->guessing==0 ) {
-#line 478 "ifconfig.g"
+#line 369 "ifconfig_bsd.g"
 							_ttype = COLON;
-#line 1069 "IfconfigCfgLexer.cpp"
+#line 1070 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 					else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true)) {
 						{ // ( ... )+
-						int _cnt94=0;
+						int _cnt80=0;
 						for (;;) {
 							if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 								mDIGIT(false);
 							}
 							else {
-								if ( _cnt94>=1 ) { goto _loop94; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+								if ( _cnt80>=1 ) { goto _loop80; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 							}
 							
-							_cnt94++;
+							_cnt80++;
 						}
-						_loop94:;
+						_loop80:;
 						}  // ( ... )+
 						if ( inputState->guessing==0 ) {
-#line 483 "ifconfig.g"
+#line 374 "ifconfig_bsd.g"
 							_ttype = INT_CONST;
-#line 1090 "IfconfigCfgLexer.cpp"
+#line 1091 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 					else if ((_tokenSet_6.member(LA(1))) && (true) && (true)) {
@@ -1297,16 +1298,16 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 							}
 							default:
 							{
-								goto _loop100;
+								goto _loop86;
 							}
 							}
 						}
-						_loop100:;
+						_loop86:;
 						} // ( ... )*
 						if ( inputState->guessing==0 ) {
-#line 493 "ifconfig.g"
+#line 384 "ifconfig_bsd.g"
 							_ttype = WORD;
-#line 1310 "IfconfigCfgLexer.cpp"
+#line 1311 "IfconfigBSDCfgLexer.cpp"
 						}
 					}
 	else {
@@ -1322,7 +1323,7 @@ void IfconfigCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mPERCENT(bool _createToken) {
+void IfconfigBSDCfgLexer::mPERCENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PERCENT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1336,7 +1337,7 @@ void IfconfigCfgLexer::mPERCENT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mAMPERSAND(bool _createToken) {
+void IfconfigBSDCfgLexer::mAMPERSAND(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = AMPERSAND;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1350,7 +1351,7 @@ void IfconfigCfgLexer::mAMPERSAND(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mSTAR(bool _createToken) {
+void IfconfigBSDCfgLexer::mSTAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STAR;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1364,7 +1365,7 @@ void IfconfigCfgLexer::mSTAR(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mMINUS(bool _createToken) {
+void IfconfigBSDCfgLexer::mMINUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = MINUS;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1378,7 +1379,7 @@ void IfconfigCfgLexer::mMINUS(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mDOT(bool _createToken) {
+void IfconfigBSDCfgLexer::mDOT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DOT;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1392,7 +1393,7 @@ void IfconfigCfgLexer::mDOT(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mSLASH(bool _createToken) {
+void IfconfigBSDCfgLexer::mSLASH(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SLASH;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1406,7 +1407,7 @@ void IfconfigCfgLexer::mSLASH(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mEQUAL(bool _createToken) {
+void IfconfigBSDCfgLexer::mEQUAL(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EQUAL;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1420,7 +1421,7 @@ void IfconfigCfgLexer::mEQUAL(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mQUESTION(bool _createToken) {
+void IfconfigBSDCfgLexer::mQUESTION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = QUESTION;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1434,7 +1435,7 @@ void IfconfigCfgLexer::mQUESTION(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mOPENING_PAREN(bool _createToken) {
+void IfconfigBSDCfgLexer::mOPENING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_PAREN;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1448,7 +1449,7 @@ void IfconfigCfgLexer::mOPENING_PAREN(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mCLOSING_PAREN(bool _createToken) {
+void IfconfigBSDCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_PAREN;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1462,7 +1463,7 @@ void IfconfigCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mOPENING_SQUARE(bool _createToken) {
+void IfconfigBSDCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_SQUARE;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1476,7 +1477,7 @@ void IfconfigCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mCLOSING_SQUARE(bool _createToken) {
+void IfconfigBSDCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_SQUARE;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1490,7 +1491,7 @@ void IfconfigCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mOPENING_BRACE(bool _createToken) {
+void IfconfigBSDCfgLexer::mOPENING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_BRACE;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1504,7 +1505,7 @@ void IfconfigCfgLexer::mOPENING_BRACE(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mCLOSING_BRACE(bool _createToken) {
+void IfconfigBSDCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_BRACE;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1518,7 +1519,7 @@ void IfconfigCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mLESS_THAN(bool _createToken) {
+void IfconfigBSDCfgLexer::mLESS_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LESS_THAN;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1532,7 +1533,7 @@ void IfconfigCfgLexer::mLESS_THAN(bool _createToken) {
 	_saveIndex=0;
 }
 
-void IfconfigCfgLexer::mGREATER_THAN(bool _createToken) {
+void IfconfigBSDCfgLexer::mGREATER_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = GREATER_THAN;
 	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
@@ -1547,31 +1548,32 @@ void IfconfigCfgLexer::mGREATER_THAN(bool _createToken) {
 }
 
 
-const unsigned long IfconfigCfgLexer::_tokenSet_0_data_[] = { 4294958072UL, 1UL, 0UL, 2147483648UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_0_data_[] = { 4294958072UL, 1UL, 0UL, 2147483648UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xb 0xc 0xe 0xf 0x10 0x11 0x12 0x13 0x14 
 // 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_0(_tokenSet_0_data_,16);
-const unsigned long IfconfigCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_0(_tokenSet_0_data_,16);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_1_data_[] = { 4294958072UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xb 0xc 0xe 0xf 0x10 0x11 0x12 0x13 0x14 
 // 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   ! \" # $ % 
 // & \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F G 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_1(_tokenSet_1_data_,16);
-const unsigned long IfconfigCfgLexer::_tokenSet_2_data_[] = { 0UL, 67043328UL, 126UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// H 
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_1(_tokenSet_1_data_,16);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_2_data_[] = { 0UL, 67043328UL, 126UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0 1 2 3 4 5 6 7 8 9 A B C D E F 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_2(_tokenSet_2_data_,10);
-const unsigned long IfconfigCfgLexer::_tokenSet_3_data_[] = { 0UL, 67059712UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_2(_tokenSet_2_data_,10);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_3_data_[] = { 0UL, 67059712UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // . 0 1 2 3 4 5 6 7 8 9 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_3(_tokenSet_3_data_,10);
-const unsigned long IfconfigCfgLexer::_tokenSet_4_data_[] = { 0UL, 134152192UL, 126UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_3(_tokenSet_3_data_,10);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_4_data_[] = { 0UL, 134152192UL, 126UL, 126UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0 1 2 3 4 5 6 7 8 9 : A B C D E F 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_4(_tokenSet_4_data_,10);
-const unsigned long IfconfigCfgLexer::_tokenSet_5_data_[] = { 4294967288UL, 4227858431UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_4(_tokenSet_4_data_,10);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_5_data_[] = { 4294967288UL, 4227858431UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 4294967295UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xa 0xb 0xc 0xd 0xe 0xf 0x10 0x11 0x12 0x13 
 // 0x14 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f   ! \" # 
 // $ % & \' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 ; < = > ? @ A B C D E F 
-// G 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_5(_tokenSet_5_data_,16);
-const unsigned long IfconfigCfgLexer::_tokenSet_6_data_[] = { 0UL, 0UL, 134217726UL, 134217726UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// A B C D E F G 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgLexer::_tokenSet_6(_tokenSet_6_data_,10);
+// G H 
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_5(_tokenSet_5_data_,16);
+const unsigned long IfconfigBSDCfgLexer::_tokenSet_6_data_[] = { 0UL, 0UL, 134217726UL, 134217726UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// A B C D E F G H 
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigBSDCfgLexer::_tokenSet_6(_tokenSet_6_data_,10);
 

@@ -1,50 +1,50 @@
-/* $ANTLR 2.7.7 (20090306): "ifconfig.g" -> "IfconfigCfgParser.cpp"$ */
-#line 43 "ifconfig.g"
+/* $ANTLR 2.7.7 (20100319): "ifconfig_linux.g" -> "IfconfigLinuxCfgParser.cpp"$ */
+#line 43 "ifconfig_linux.g"
 
     // gets inserted before the antlr generated includes in the cpp
     // file
 
-#line 8 "IfconfigCfgParser.cpp"
-#include "IfconfigCfgParser.hpp"
+#line 8 "IfconfigLinuxCfgParser.cpp"
+#include "IfconfigLinuxCfgParser.hpp"
 #include <antlr/NoViableAltException.hpp>
 #include <antlr/SemanticException.hpp>
 #include <antlr/ASTFactory.hpp>
-#line 49 "ifconfig.g"
+#line 49 "ifconfig_linux.g"
 
     // gets inserted after the antlr generated includes in the cpp
     // file
 #include <antlr/Token.hpp>
 #include <antlr/TokenBuffer.hpp>
 
-#line 20 "IfconfigCfgParser.cpp"
-#line 1 "ifconfig.g"
-#line 22 "IfconfigCfgParser.cpp"
-IfconfigCfgParser::IfconfigCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf, int k)
+#line 20 "IfconfigLinuxCfgParser.cpp"
+#line 1 "ifconfig_linux.g"
+#line 22 "IfconfigLinuxCfgParser.cpp"
+IfconfigLinuxCfgParser::IfconfigLinuxCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf, int k)
 : ANTLR_USE_NAMESPACE(antlr)LLkParser(tokenBuf,k)
 {
 }
 
-IfconfigCfgParser::IfconfigCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf)
+IfconfigLinuxCfgParser::IfconfigLinuxCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenBuffer& tokenBuf)
 : ANTLR_USE_NAMESPACE(antlr)LLkParser(tokenBuf,2)
 {
 }
 
-IfconfigCfgParser::IfconfigCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer, int k)
+IfconfigLinuxCfgParser::IfconfigLinuxCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer, int k)
 : ANTLR_USE_NAMESPACE(antlr)LLkParser(lexer,k)
 {
 }
 
-IfconfigCfgParser::IfconfigCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer)
+IfconfigLinuxCfgParser::IfconfigLinuxCfgParser(ANTLR_USE_NAMESPACE(antlr)TokenStream& lexer)
 : ANTLR_USE_NAMESPACE(antlr)LLkParser(lexer,2)
 {
 }
 
-IfconfigCfgParser::IfconfigCfgParser(const ANTLR_USE_NAMESPACE(antlr)ParserSharedInputState& state)
+IfconfigLinuxCfgParser::IfconfigLinuxCfgParser(const ANTLR_USE_NAMESPACE(antlr)ParserSharedInputState& state)
 : ANTLR_USE_NAMESPACE(antlr)LLkParser(state,2)
 {
 }
 
-void IfconfigCfgParser::cfgfile() {
+void IfconfigLinuxCfgParser::cfgfile() {
 	Tracer traceInOut(this, "cfgfile");
 	
 	try {      // for error handling
@@ -56,14 +56,19 @@ void IfconfigCfgParser::cfgfile() {
 				comment();
 				break;
 			}
-			case LLADDR:
-			{
-				bsd_hwaddr_line();
-				break;
-			}
 			case HWADDR:
 			{
-				linux_hwaddr_line();
+				hwaddr_line();
+				break;
+			}
+			case INET:
+			{
+				inet_address();
+				break;
+			}
+			case INET6:
+			{
+				inet6_address();
 				break;
 			}
 			case GROUPS:
@@ -79,14 +84,15 @@ void IfconfigCfgParser::cfgfile() {
 			case UPPER_RUNNING:
 			case LOOPBACK:
 			{
-				linux_interface_flags();
+				interface_flags();
 				break;
 			}
+			case INTERRUPT:
 			case COLLISIONS:
 			case RX:
 			case TX:
 			{
-				linux_interface_statistics();
+				interface_statistics();
 				break;
 			}
 			case NEWLINE:
@@ -100,23 +106,8 @@ void IfconfigCfgParser::cfgfile() {
 				break;
 			}
 			default:
-				if ((LA(1) == WORD) && (LA(2) == COLON)) {
-					bsd_interface_line();
-				}
-				else if ((LA(1) == WORD) && (LA(2) == LINK)) {
-					linux_interface_line();
-				}
-				else if ((LA(1) == INET) && (LA(2) == IPV4)) {
-					bsd_inet_address();
-				}
-				else if ((LA(1) == INET) && (LA(2) == ADDR)) {
-					linux_inet_address();
-				}
-				else if ((LA(1) == INET6) && (LA(2) == IPV6)) {
-					bsd_inet6_address();
-				}
-				else if ((LA(1) == INET6) && (LA(2) == ADDR)) {
-					linux_inet6_address();
+				if ((LA(1) == WORD) && (LA(2) == COLON || LA(2) == DOT || LA(2) == LINK)) {
+					interface_line();
 				}
 				else if (((LA(1) >= PRIORITY && LA(1) <= WORD)) && (_tokenSet_0.member(LA(2)))) {
 					unknown_line();
@@ -135,7 +126,7 @@ void IfconfigCfgParser::cfgfile() {
 	}
 }
 
-void IfconfigCfgParser::comment() {
+void IfconfigLinuxCfgParser::comment() {
 	Tracer traceInOut(this, "comment");
 	
 	try {      // for error handling
@@ -147,56 +138,90 @@ void IfconfigCfgParser::comment() {
 	}
 }
 
-void IfconfigCfgParser::bsd_interface_line() {
-	Tracer traceInOut(this, "bsd_interface_line");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  in = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 213 "ifconfig.g"
+void IfconfigLinuxCfgParser::interface_line() {
+	Tracer traceInOut(this, "interface_line");
+	ANTLR_USE_NAMESPACE(antlr)RefToken  in1 = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  in2 = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  lbl1 = ANTLR_USE_NAMESPACE(antlr)nullToken;
+	ANTLR_USE_NAMESPACE(antlr)RefToken  lbl2 = ANTLR_USE_NAMESPACE(antlr)nullToken;
+#line 206 "ifconfig_linux.g"
 	InterfaceSpec is;
-#line 156 "IfconfigCfgParser.cpp"
+#line 150 "IfconfigLinuxCfgParser.cpp"
 	
 	try {      // for error handling
-		in = LT(1);
+		in1 = LT(1);
 		match(WORD);
-		match(COLON);
-		match(FLAGS);
-		match(EQUAL);
-		match(INT_CONST);
-#line 216 "ifconfig.g"
-		
-		// interface name and status
-		is.name = in->getText();
-		importer->newInterface(is);
-		consumeUntil(NEWLINE);
-		
-#line 172 "IfconfigCfgParser.cpp"
-	}
-	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
-		reportError(ex);
-		recover(ex,_tokenSet_0);
-	}
-}
-
-void IfconfigCfgParser::linux_interface_line() {
-	Tracer traceInOut(this, "linux_interface_line");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  in = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 229 "ifconfig.g"
-	InterfaceSpec is;
-#line 185 "IfconfigCfgParser.cpp"
-	
-	try {      // for error handling
-		in = LT(1);
-		match(WORD);
+		{
+		switch ( LA(1)) {
+		case DOT:
+		{
+			match(DOT);
+			in2 = LT(1);
+			match(INT_CONST);
+			break;
+		}
+		case COLON:
+		case LINK:
+		{
+			break;
+		}
+		default:
+		{
+			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
+		{
+		switch ( LA(1)) {
+		case COLON:
+		{
+			match(COLON);
+			{
+			switch ( LA(1)) {
+			case WORD:
+			{
+				lbl1 = LT(1);
+				match(WORD);
+				break;
+			}
+			case INT_CONST:
+			{
+				lbl2 = LT(1);
+				match(INT_CONST);
+				break;
+			}
+			default:
+			{
+				throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
+			break;
+		}
+		case LINK:
+		{
+			break;
+		}
+		default:
+		{
+			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
 		match(LINK);
 		match(ENCAP);
 		match(COLON);
 		match(WORD);
-#line 232 "ifconfig.g"
+#line 212 "ifconfig_linux.g"
 		
 		// interface name and status
-		is.name = in->getText();
+		if (in2) is.name = in1->getText() + "." + in2->getText();
+		else is.name = in1->getText();
+		if (lbl1) is.label = lbl1->getText();
+		if (lbl2) is.label = lbl2->getText();
 		importer->newInterface(is);
 		
-#line 200 "IfconfigCfgParser.cpp"
+#line 225 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -204,39 +229,19 @@ void IfconfigCfgParser::linux_interface_line() {
 	}
 }
 
-void IfconfigCfgParser::bsd_hwaddr_line() {
-	Tracer traceInOut(this, "bsd_hwaddr_line");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	
-	try {      // for error handling
-		match(LLADDR);
-		addr = LT(1);
-		match(MAC_ADDRESS);
-#line 244 "ifconfig.g"
-		
-		importer->HwAddressForCurrentInterface(addr->getText());
-		
-#line 220 "IfconfigCfgParser.cpp"
-	}
-	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
-		reportError(ex);
-		recover(ex,_tokenSet_0);
-	}
-}
-
-void IfconfigCfgParser::linux_hwaddr_line() {
-	Tracer traceInOut(this, "linux_hwaddr_line");
+void IfconfigLinuxCfgParser::hwaddr_line() {
+	Tracer traceInOut(this, "hwaddr_line");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	
 	try {      // for error handling
 		match(HWADDR);
 		addr = LT(1);
 		match(MAC_ADDRESS);
-#line 252 "ifconfig.g"
+#line 227 "ifconfig_linux.g"
 		
 		importer->HwAddressForCurrentInterface(addr->getText());
 		
-#line 240 "IfconfigCfgParser.cpp"
+#line 245 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -244,49 +249,14 @@ void IfconfigCfgParser::linux_hwaddr_line() {
 	}
 }
 
-void IfconfigCfgParser::bsd_inet_address() {
-	Tracer traceInOut(this, "bsd_inet_address");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  netm = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  bcast = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 261 "ifconfig.g"
-	AddressSpec as;
-#line 255 "IfconfigCfgParser.cpp"
-	
-	try {      // for error handling
-		match(INET);
-		addr = LT(1);
-		match(IPV4);
-		match(NETMASK);
-		netm = LT(1);
-		match(HEX_CONST);
-		match(BROADCAST);
-		bcast = LT(1);
-		match(IPV4);
-#line 264 "ifconfig.g"
-		
-		as.at = AddressSpec::INTERFACE_CONFIGURATION;
-		as.address = addr->getText();
-		as.netmask = netm->getText();
-		as.broadcast = bcast->getText();
-		importer->inetConfigurationForCurrentInterface(as);
-		
-#line 275 "IfconfigCfgParser.cpp"
-	}
-	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
-		reportError(ex);
-		recover(ex,_tokenSet_0);
-	}
-}
-
-void IfconfigCfgParser::linux_inet_address() {
-	Tracer traceInOut(this, "linux_inet_address");
+void IfconfigLinuxCfgParser::inet_address() {
+	Tracer traceInOut(this, "inet_address");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  bcast = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  netm = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 274 "ifconfig.g"
+#line 236 "ifconfig_linux.g"
 	AddressSpec as;
-#line 290 "IfconfigCfgParser.cpp"
+#line 260 "IfconfigLinuxCfgParser.cpp"
 	
 	try {      // for error handling
 		match(INET);
@@ -294,12 +264,12 @@ void IfconfigCfgParser::linux_inet_address() {
 		match(COLON);
 		addr = LT(1);
 		match(IPV4);
-#line 278 "ifconfig.g"
+#line 240 "ifconfig_linux.g"
 		
 		as.at = AddressSpec::INTERFACE_CONFIGURATION;
 		as.address = addr->getText();
 		
-#line 303 "IfconfigCfgParser.cpp"
+#line 273 "IfconfigLinuxCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case BCAST:
@@ -331,12 +301,12 @@ void IfconfigCfgParser::linux_inet_address() {
 			netm = LT(1);
 			match(IPV4);
 			}
-#line 284 "ifconfig.g"
+#line 246 "ifconfig_linux.g"
 			
 			as.netmask = netm->getText();
 			if (bcast) as.broadcast = bcast->getText();
 			
-#line 340 "IfconfigCfgParser.cpp"
+#line 310 "IfconfigLinuxCfgParser.cpp"
 			break;
 		}
 		case P_T_P:
@@ -349,11 +319,11 @@ void IfconfigCfgParser::linux_inet_address() {
 			match(COLON);
 			match(IPV4);
 			}
-#line 290 "ifconfig.g"
+#line 252 "ifconfig_linux.g"
 			
 			// we do not support p2p interfaces at this time
 			
-#line 357 "IfconfigCfgParser.cpp"
+#line 327 "IfconfigLinuxCfgParser.cpp"
 			break;
 		}
 		default:
@@ -362,11 +332,11 @@ void IfconfigCfgParser::linux_inet_address() {
 		}
 		}
 		}
-#line 294 "ifconfig.g"
+#line 256 "ifconfig_linux.g"
 		
 		importer->inetConfigurationForCurrentInterface(as);
 		
-#line 370 "IfconfigCfgParser.cpp"
+#line 340 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -374,47 +344,13 @@ void IfconfigCfgParser::linux_inet_address() {
 	}
 }
 
-void IfconfigCfgParser::bsd_inet6_address() {
-	Tracer traceInOut(this, "bsd_inet6_address");
+void IfconfigLinuxCfgParser::inet6_address() {
+	Tracer traceInOut(this, "inet6_address");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  netm = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 302 "ifconfig.g"
+#line 264 "ifconfig_linux.g"
 	AddressSpec as;
-#line 384 "IfconfigCfgParser.cpp"
-	
-	try {      // for error handling
-		match(INET6);
-		addr = LT(1);
-		match(IPV6);
-		match(PERCENT);
-		match(WORD);
-		match(PREFIXLEN);
-		netm = LT(1);
-		match(INT_CONST);
-		match(SCOPEID);
-		match(HEX_CONST);
-#line 305 "ifconfig.g"
-		
-		as.at = AddressSpec::INTERFACE_CONFIGURATION;
-		as.address = addr->getText();
-		as.netmask = netm->getText();
-		importer->inet6ConfigurationForCurrentInterface(as);
-		
-#line 404 "IfconfigCfgParser.cpp"
-	}
-	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
-		reportError(ex);
-		recover(ex,_tokenSet_0);
-	}
-}
-
-void IfconfigCfgParser::linux_inet6_address() {
-	Tracer traceInOut(this, "linux_inet6_address");
-	ANTLR_USE_NAMESPACE(antlr)RefToken  addr = ANTLR_USE_NAMESPACE(antlr)nullToken;
-	ANTLR_USE_NAMESPACE(antlr)RefToken  netm = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 314 "ifconfig.g"
-	AddressSpec as;
-#line 418 "IfconfigCfgParser.cpp"
+#line 354 "IfconfigLinuxCfgParser.cpp"
 	
 	try {      // for error handling
 		match(INET6);
@@ -455,14 +391,14 @@ void IfconfigCfgParser::linux_inet6_address() {
 		}
 		}
 		}
-#line 317 "ifconfig.g"
+#line 267 "ifconfig_linux.g"
 		
 		as.at = AddressSpec::INTERFACE_CONFIGURATION;
 		as.address = addr->getText();
 		as.netmask = netm->getText();
 		importer->inet6ConfigurationForCurrentInterface(as);
 		
-#line 466 "IfconfigCfgParser.cpp"
+#line 402 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -470,7 +406,7 @@ void IfconfigCfgParser::linux_inet6_address() {
 	}
 }
 
-void IfconfigCfgParser::groups() {
+void IfconfigLinuxCfgParser::groups() {
 	Tracer traceInOut(this, "groups");
 	
 	try {      // for error handling
@@ -485,8 +421,8 @@ void IfconfigCfgParser::groups() {
 	}
 }
 
-void IfconfigCfgParser::linux_interface_flags() {
-	Tracer traceInOut(this, "linux_interface_flags");
+void IfconfigLinuxCfgParser::interface_flags() {
+	Tracer traceInOut(this, "interface_flags");
 	
 	try {      // for error handling
 		{
@@ -532,11 +468,11 @@ void IfconfigCfgParser::linux_interface_flags() {
 		}
 		}
 		}
-#line 186 "ifconfig.g"
+#line 178 "ifconfig_linux.g"
 		
 		consumeUntil(NEWLINE);
 		
-#line 540 "IfconfigCfgParser.cpp"
+#line 476 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -544,16 +480,34 @@ void IfconfigCfgParser::linux_interface_flags() {
 	}
 }
 
-void IfconfigCfgParser::linux_interface_statistics() {
-	Tracer traceInOut(this, "linux_interface_statistics");
+void IfconfigLinuxCfgParser::interface_statistics() {
+	Tracer traceInOut(this, "interface_statistics");
 	
 	try {      // for error handling
 		{
 		switch ( LA(1)) {
+		case INTERRUPT:
 		case COLLISIONS:
 		{
 			{
-			match(COLLISIONS);
+			{
+			switch ( LA(1)) {
+			case INTERRUPT:
+			{
+				match(INTERRUPT);
+				break;
+			}
+			case COLLISIONS:
+			{
+				match(COLLISIONS);
+				break;
+			}
+			default:
+			{
+				throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
 			match(COLON);
 			}
 			break;
@@ -574,11 +528,11 @@ void IfconfigCfgParser::linux_interface_statistics() {
 		}
 		}
 		}
-#line 200 "ifconfig.g"
+#line 192 "ifconfig_linux.g"
 		
 		consumeUntil(NEWLINE);
 		
-#line 582 "IfconfigCfgParser.cpp"
+#line 536 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -586,7 +540,7 @@ void IfconfigCfgParser::linux_interface_statistics() {
 	}
 }
 
-void IfconfigCfgParser::unknown_line() {
+void IfconfigLinuxCfgParser::unknown_line() {
 	Tracer traceInOut(this, "unknown_line");
 	
 	try {      // for error handling
@@ -618,11 +572,11 @@ void IfconfigCfgParser::unknown_line() {
 		}
 		}
 		}
-#line 164 "ifconfig.g"
+#line 156 "ifconfig_linux.g"
 		
 		consumeUntil(NEWLINE);
 		
-#line 626 "IfconfigCfgParser.cpp"
+#line 580 "IfconfigLinuxCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -630,21 +584,21 @@ void IfconfigCfgParser::unknown_line() {
 	}
 }
 
-void IfconfigCfgParser::groups_list() {
+void IfconfigLinuxCfgParser::groups_list() {
 	Tracer traceInOut(this, "groups_list");
 	
 	try {      // for error handling
 		match(WORD);
-#line 334 "ifconfig.g"
+#line 284 "ifconfig_linux.g"
 		importer->addGroupToCurrentInterface(LT(0)->getText());
-#line 641 "IfconfigCfgParser.cpp"
+#line 595 "IfconfigLinuxCfgParser.cpp"
 		{ // ( ... )*
 		for (;;) {
 			if ((LA(1) == WORD)) {
 				match(WORD);
-#line 336 "ifconfig.g"
+#line 286 "ifconfig_linux.g"
 				importer->addGroupToCurrentInterface(LT(0)->getText());
-#line 648 "IfconfigCfgParser.cpp"
+#line 602 "IfconfigLinuxCfgParser.cpp"
 			}
 			else {
 				goto _loop28;
@@ -660,10 +614,10 @@ void IfconfigCfgParser::groups_list() {
 	}
 }
 
-void IfconfigCfgParser::initializeASTFactory( ANTLR_USE_NAMESPACE(antlr)ASTFactory& )
+void IfconfigLinuxCfgParser::initializeASTFactory( ANTLR_USE_NAMESPACE(antlr)ASTFactory& )
 {
 }
-const char* IfconfigCfgParser::tokenNames[] = {
+const char* IfconfigLinuxCfgParser::tokenNames[] = {
 	"<0>",
 	"EOF",
 	"<2>",
@@ -682,40 +636,39 @@ const char* IfconfigCfgParser::tokenNames[] = {
 	"\"NOARP\"",
 	"\"RUNNING\"",
 	"\"Loopback\"",
+	"\"Interrupt\"",
 	"\"collisions\"",
 	"COLON",
 	"\"RX\"",
 	"\"TX\"",
-	"\"flags\"",
-	"EQUAL",
+	"DOT",
 	"INT_CONST",
 	"\"Link\"",
 	"\"encap\"",
-	"LLADDR",
-	"MAC_ADDRESS",
 	"\"HWaddr\"",
+	"MAC_ADDRESS",
 	"\"inet\"",
-	"IPV4",
-	"\"netmask\"",
-	"HEX_CONST",
-	"\"broadcast\"",
 	"\"addr\"",
+	"IPV4",
 	"\"Bcast\"",
 	"\"Mask\"",
 	"\"P-t-P\"",
 	"\"inet6\"",
 	"IPV6",
-	"PERCENT",
-	"\"prefixlen\"",
-	"\"scopeid\"",
 	"SLASH",
 	"\"Scope\"",
 	"\"Host\"",
 	"\"Global\"",
 	"\"groups\"",
+	"\"flags\"",
+	"\"broadcast\"",
+	"\"netmask\"",
+	"\"prefixlen\"",
+	"\"scopeid\"",
 	"\"mtu\"",
 	"\"lladdr\"",
 	"Whitespace",
+	"HEX_CONST",
 	"NUMBER",
 	"NEG_INT_CONST",
 	"HEX_DIGIT",
@@ -723,10 +676,11 @@ const char* IfconfigCfgParser::tokenNames[] = {
 	"NUM_3DIGIT",
 	"NUM_HEX_4DIGIT",
 	"NUMBER_ADDRESS_OR_WORD",
+	"PERCENT",
 	"AMPERSAND",
 	"STAR",
 	"MINUS",
-	"DOT",
+	"EQUAL",
 	"QUESTION",
 	"OPENING_PAREN",
 	"CLOSING_PAREN",
@@ -739,16 +693,16 @@ const char* IfconfigCfgParser::tokenNames[] = {
 	0
 };
 
-const unsigned long IfconfigCfgParser::_tokenSet_0_data_[] = { 1748500466UL, 65664UL, 0UL, 0UL };
+const unsigned long IfconfigLinuxCfgParser::_tokenSet_0_data_[] = { 678428658UL, 520UL, 0UL, 0UL };
 // EOF NEWLINE DOUBLE_NEWLINE LINE_COMMENT "priority" "media" "status" 
 // WORD "UP" "BROADCAST" "POINTOPOINT" "LOOPBACK" "NOARP" "RUNNING" "Loopback" 
-// "collisions" "RX" "TX" LLADDR "HWaddr" "inet" "inet6" "groups" 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgParser::_tokenSet_0(_tokenSet_0_data_,4);
-const unsigned long IfconfigCfgParser::_tokenSet_1_data_[] = { 2UL, 0UL, 0UL, 0UL };
+// "Interrupt" "collisions" "RX" "TX" "HWaddr" "inet" "inet6" "groups" 
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigLinuxCfgParser::_tokenSet_0(_tokenSet_0_data_,4);
+const unsigned long IfconfigLinuxCfgParser::_tokenSet_1_data_[] = { 2UL, 0UL, 0UL, 0UL };
 // EOF 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgParser::_tokenSet_1(_tokenSet_1_data_,4);
-const unsigned long IfconfigCfgParser::_tokenSet_2_data_[] = { 16UL, 0UL, 0UL, 0UL };
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigLinuxCfgParser::_tokenSet_1(_tokenSet_1_data_,4);
+const unsigned long IfconfigLinuxCfgParser::_tokenSet_2_data_[] = { 16UL, 0UL, 0UL, 0UL };
 // NEWLINE 
-const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigCfgParser::_tokenSet_2(_tokenSet_2_data_,4);
+const ANTLR_USE_NAMESPACE(antlr)BitSet IfconfigLinuxCfgParser::_tokenSet_2(_tokenSet_2_data_,4);
 
 

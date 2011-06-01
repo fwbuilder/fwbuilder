@@ -46,6 +46,7 @@ public:
     IfconfigImporter(libfwbuilder::FWObject *lib,
                      std::istringstream &input,
                      libfwbuilder::Logger *log,
+                     const std::string &host_os,
                      const std::string &fwname);
     ~IfconfigImporter();
 

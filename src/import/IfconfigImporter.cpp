@@ -25,8 +25,11 @@
 
 #include "IfconfigImporter.h"
 
-#include "../parsers/IfconfigCfgLexer.hpp"
-#include "../parsers/IfconfigCfgParser.hpp"
+#include "../parsers/IfconfigLinuxCfgLexer.hpp"
+#include "../parsers/IfconfigLinuxCfgParser.hpp"
+
+#include "../parsers/IfconfigBSDCfgLexer.hpp"
+#include "../parsers/IfconfigBSDCfgParser.hpp"
 
 
 #include <ios>
@@ -45,8 +48,9 @@ using namespace libfwbuilder;
 IfconfigImporter::IfconfigImporter(FWObject *lib,
                                    std::istringstream &input,
                                    Logger *log,
+                                   const std::string &host_os,
                                    const std::string &fwname) :
-    Importer(lib, "", input, log, fwname)
+    Importer(lib, host_os, input, log, fwname)
 {
 }
 
@@ -95,15 +99,41 @@ void IfconfigImporter::run()
     QString gen_err = QObject::tr("Error:");
     std::ostringstream parser_debug;
 
-    IfconfigCfgLexer lexer(input);
-    IfconfigCfgParser parser(lexer);
-    parser.importer = this;
-    if (fwbdebug)   parser.dbg = &std::cerr;
-    else            parser.dbg = &parser_debug;
+    ANTLR_USE_NAMESPACE(antlr)CharScanner *lexer = NULL;
+    ANTLR_USE_NAMESPACE(antlr)LLkParser *parser = NULL;
+
+//    IfconfigCfgLexer *lexer = NULL;
+//    IfconfigCfgParser *parser = NULL;
+
+    if (platform == "linux24")
+    {
+        lexer = new IfconfigLinuxCfgLexer(input);
+        IfconfigLinuxCfgParser* p = new IfconfigLinuxCfgParser(*lexer);
+        parser = p;
+        p->importer = this;
+        if (fwbdebug)   p->dbg = &std::cerr;
+        else            p->dbg = &parser_debug;
+    }
+
+    if (platform == "openbsd" || platform == "freebsd")
+    {
+        lexer = new IfconfigBSDCfgLexer(input);
+        IfconfigBSDCfgParser *p = new IfconfigBSDCfgParser(*lexer);
+        parser = p;
+        p->importer = this;
+        if (fwbdebug)   p->dbg = &std::cerr;
+        else            p->dbg = &parser_debug;
+    }
+
+    if (lexer == NULL)
+    {
+        *logger << "Have no importer for ifconfig output for " << platform;
+        return;
+    }
 
     try
     {
-        parser.cfgfile();
+        parser->cfgfile();
     } catch(ANTLR_USE_NAMESPACE(antlr)ANTLRException &e)
     {
         err << parser_err + " " + e.toString().c_str();
@@ -120,6 +150,9 @@ void IfconfigImporter::run()
 
     if (!err.isEmpty())
         *logger << err.join("\n").toUtf8().constData();
+
+    delete parser;
+    delete lexer;
 }
 
 
