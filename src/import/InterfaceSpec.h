@@ -29,6 +29,9 @@
 #include <list>
 #include <string>
 
+#include <QStringList>
+
+#include "AddressSpec.h"
 
 class InterfaceSpec
 {
@@ -36,55 +39,47 @@ public:
 
     bool neg;
     std::string name;
-    std::string inet_address;
-    std::string inet_netmask;
-    std::string inet_broadcast;
-    std::string inet6_address;
-    std::string inet6_prefixlen;
-    bool status;   // up / down
+    std::list<AddressSpec> as;
+    std::string hwaddr;
     std::list<std::string> groups;
-    int mtu;
     
     InterfaceSpec()
     {
         neg = false;
         name = "";
-        inet_address = "";
-        inet_netmask = "";
-        inet_broadcast = "";
-        inet6_address = "";
-        inet6_prefixlen = "";
-        status = false;
-        groups.clear();
-        mtu = 0;
     }
 
     InterfaceSpec(const InterfaceSpec &other)
     {
         neg = other.neg;
         name = other.name;
-        inet_address = other.inet_address;
-        inet_netmask = other.inet_netmask;
-        inet_broadcast = other.inet_broadcast;
-        inet6_address = other.inet6_address;
-        inet6_prefixlen = other.inet6_prefixlen;
-        status = other.status;
+        as = other.as;
+        hwaddr = other.hwaddr;
         groups = other.groups;
-        mtu = other.mtu;
     }
     
     InterfaceSpec(bool _neg, const std::string _name)
     {
         neg = _neg;
         name = _name;
-        inet_address = "";
-        inet_netmask = "";
-        inet_broadcast = "";
-        inet6_address = "";
-        inet6_prefixlen = "";
-        status = false;
-        groups.clear();
-        mtu = 0;
+    }
+
+    // This function is mostly used in unit tests
+    QString toString()
+    {
+        QStringList str;
+        str << "InterfaceSpec";
+        str << name.c_str();
+        str << QString((neg)? "neg:true" : "neg:false");
+        str << QString("hwaddr:%1").arg(hwaddr.c_str());
+
+        for (std::list<AddressSpec>::iterator i=as.begin(); i!=as.end(); ++i)
+            str << i->toString();
+        
+        for (std::list<std::string>::iterator i=groups.begin(); i!=groups.end(); ++i)
+            str << QString("group:%1").arg((*i).c_str());
+
+        return str.join("|");
     }
 };
 

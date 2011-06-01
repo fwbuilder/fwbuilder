@@ -1,0 +1,42 @@
+eth0      Link encap:Ethernet  HWaddr 00:0d:61:42:3e:87  
+          inet addr:192.168.1.170  Bcast:192.168.1.175  Mask:255.255.255.248
+          inet6 addr: 2001:db8:1f0f:162::2/64 Scope:Global
+          inet6 addr: fe80::20d:61ff:fe42:3e87/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:289714859 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:364926248 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1900107617 (1.9 GB)  TX bytes:3300213065 (3.3 GB)
+
+he-ipv6   Link encap:IPv6-in-IPv4  
+          inet6 addr: 2001:db8:1f0e:162::2/64 Scope:Global
+          inet6 addr: fe80::4655:afaa/128 Scope:Link
+          UP POINTOPOINT RUNNING NOARP  MTU:1480  Metric:1
+          RX packets:121699 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:153317 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:10257741 (10.2 MB)  TX bytes:186526967 (186.5 MB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:8149 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8149 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:713074 (713.0 KB)  TX bytes:713074 (713.0 KB)
+
+sit0      Link encap:IPv6-in-IPv4  
+          NOARP  MTU:1480  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+ppp0      Link encap:Point-to-Point Protocol
+          inet addr:10.11.11.11  P-t-P:10.12.12.12  Mask:255.255.255.255
+          UP POINTOPOINT RUNNING NOARP MULTICAST  MTU:1500  Metric:1
+          RX packets:416 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:397 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:3
+          RX bytes:253765 (247.8 Kb)  TX bytes:62621 (61.1 Kb)

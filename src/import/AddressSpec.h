@@ -29,6 +29,8 @@
 #include <list>
 #include <string>
 
+#include <QStringList>
+
 
 class AddressSpec
 {
@@ -44,15 +46,23 @@ public:
         INTERFACE_NAME,
         INTERFACE_NETWORK,
         INTERFACE_BROADCAST,
+        INTERFACE_CONFIGURATION,
         TABLE } address_type;
 
     address_type at;
     bool neg;
     std::string address;
     std::string netmask;
-
+    std::string broadcast;
+    
     AddressSpec()
-    { at = UNKNOWN; neg = false;  address = ""; netmask = ""; }
+    {
+        at = UNKNOWN;
+        neg = false;
+        address = "";
+        netmask = "";
+        broadcast = "";
+    }
 
     AddressSpec(const AddressSpec &other)
     {
@@ -60,10 +70,31 @@ public:
         neg = other.neg;
         address = other.address;
         netmask = other.netmask;
+        broadcast = other.broadcast;
     }
     
-    AddressSpec(address_type _at, bool _neg, const std::string _addr, const std::string _nm)
-    { at = _at; neg= _neg; address = _addr; netmask = _nm; }
+    AddressSpec(address_type _at, bool _neg,
+                const std::string _addr, const std::string _nm)
+    {
+        at = _at;
+        neg= _neg;
+        address = _addr;
+        netmask = _nm;
+    }
+
+    // This function is mostly used in unit tests
+    QString toString()
+    {
+        QStringList str;
+        QString address_type_as_string("type:%1");
+        str << "AddressSpec";
+        str << address_type_as_string.arg(at);
+        str << QString((neg)? "neg:true" : "neg:false");
+        str << QString("addr:%1").arg(address.c_str());
+        str << QString("netm:%1").arg(netmask.c_str());
+        str << QString("bcast:%1").arg(broadcast.c_str());
+        return str.join("|");
+    }
 };
 
 

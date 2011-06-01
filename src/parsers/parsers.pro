@@ -12,7 +12,9 @@ SOURCES	 =  IOSCfgLexer.cpp  \
 			PIXCfgLexer.cpp  \
 			PIXCfgParser.cpp \
 			PFCfgLexer.cpp  \
-			PFCfgParser.cpp
+			PFCfgParser.cpp \
+			IfconfigCfgLexer.cpp  \
+			IfconfigCfgParser.cpp
 
 HEADERS	 = ../../config.h    \
 			IOSCfgLexer.hpp  \
@@ -27,6 +29,9 @@ HEADERS	 = ../../config.h    \
 			PFCfgLexer.hpp  \
 			PFCfgParser.hpp \
 			PFCfgParserTokenTypes.hpp \
+			IfconfigCfgLexer.hpp  \
+			IfconfigCfgParser.hpp \
+			IfconfigCfgParserTokenTypes.hpp
 
 CONFIG += staticlib
 
