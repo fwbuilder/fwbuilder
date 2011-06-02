@@ -1,12 +1,5 @@
-2: Warning: import of 'set' commands has not been implemented yet.
-3: Warning: import of 'set' commands has not been implemented yet.
-4: Warning: import of 'set' commands has not been implemented yet.
-5: Warning: import of 'set' commands has not been implemented yet.
-6: Warning: import of 'set' commands has not been implemented yet.
-7: Warning: import of 'set' commands has not been implemented yet.
-8: Warning: import of 'set' commands has not been implemented yet.
-9: Warning: import of 'set' commands has not been implemented yet.
-10: Warning: import of 'set' commands has not been implemented yet.
+3: Parser error: line 3:26: expecting EQUAL, found '
+'
 Parser error:
 Could not find enough information in the data file to create firewall object.
 

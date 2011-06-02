@@ -1,0 +1,5 @@
+12: Parser error: line 12:13: unexpected token: foo
+14: filtering rule: action block; interfaces: 
+Could not find enough information in the data file to create firewall interface objects.
+
+Configuring timeouts:interval=10frag=30tcp.first=60tcp.opening=30tcp.established=3600tcp.closing=30tcp.finwait=2tcp.closed=10udp.first=20udp.single=10udp.multiple=15icmp.first=11icmp.error=6other.first=40other.single=20other.multiple=30adaptive.start=10adaptive.end=5

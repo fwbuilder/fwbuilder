@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -134,6 +134,7 @@ public:
 	public: void port_def();
 	public: void rule_extended();
 	public: void block_return();
+	public: void icmp_code_by_name();
 	public: void direction();
 	public: void quick();
 	public: void route();
@@ -168,6 +169,7 @@ public:
 	public: void label();
 	public: void icmp_type_code();
 	public: void icmp_list();
+	public: void icmp_type_by_name();
 	public: void port_op();
 	public: void port_op_list();
 	public: void unary_port_op();
@@ -183,10 +185,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 184;
+	static const int NUM_TOKENS = 238;
 #else
 	enum {
-		NUM_TOKENS = 184
+		NUM_TOKENS = 238
 	};
 #endif
 	
@@ -278,6 +280,12 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_42;
 	static const unsigned long _tokenSet_43_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_43;
+	static const unsigned long _tokenSet_44_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_44;
+	static const unsigned long _tokenSet_45_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_45;
+	static const unsigned long _tokenSet_46_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_46;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

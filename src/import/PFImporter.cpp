@@ -1013,24 +1013,29 @@ Firewall* PFImporter::finalize()
         timeout_activation_names["frag"] = "pf_do_timeout_frag";
         timeout_activation_names["interval"] = "pf_do_timeout_interval";
 
+        if (timeouts.size() > 0)
+        {
+            setCurrentLineNumber(-1);
+            addMessageToLog(QObject::tr("Configuring timeouts:"));
 
-        list<str_tuple>::iterator it;
-        for (it=timeouts.begin(); it!=timeouts.end(); ++it)
-        {        
-            string name = it->first;
-            bool ok = false;
-            int value = QString(it->second.c_str()).toInt(&ok);
+            list<str_tuple>::iterator it;
+            for (it=timeouts.begin(); it!=timeouts.end(); ++it)
+            {        
+                string name = it->first;
+                bool ok = false;
+                int value = QString(it->second.c_str()).toInt(&ok);
 
-            qDebug() << "Timeout " << name.c_str() << "=" << value;
+                addMessageToLog(QString("%1=%2").arg(name.c_str()).arg(value));
 
-            if (timeout_activation_names.count(name) == 0)
-            {
-                error_tracker->registerError(
-                    QObject::tr("Unknown timeout name %1").arg(name.c_str()));
-            } else
-            {
-                options->setBool(timeout_activation_names[name], true);
-                options->setInt(timeout_option_names[name], value);
+                if (timeout_activation_names.count(name) == 0)
+                {
+                    addMessageToLog(
+                        QObject::tr("Error: Unknown timeout name %1").arg(name.c_str()));
+                } else
+                {
+                    options->setBool(timeout_activation_names[name], true);
+                    options->setInt(timeout_option_names[name], value);
+                }
             }
         }
 

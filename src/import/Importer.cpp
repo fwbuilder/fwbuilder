@@ -888,8 +888,14 @@ void Importer::addMessageToLog(const std::string &msg)
 
 void Importer::addMessageToLog(const QString &msg)
 {
-    QString log_line("%1: %2\n");
-    *logger << log_line.arg(getCurrentLineNumber()).arg(msg).toUtf8().constData();
+    if (getCurrentLineNumber() >= 0)
+    {
+        QString log_line("%1: %2\n");
+        *logger << log_line.arg(getCurrentLineNumber()).arg(msg).toUtf8().constData();
+    } else
+    {
+        *logger << msg.toUtf8().constData();
+    }
 }
 
 void Importer::addStandardImportComment(FWObject *obj,

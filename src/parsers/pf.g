@@ -851,11 +851,11 @@ block_return :
             RETURN_ICMP  { importer->block_action_params.push_back("return-icmp"); }
             (
                 OPENING_PAREN
-                ( WORD | INT_CONST )
+                ( icmp_code_by_name | INT_CONST )
                 { importer->block_action_params.push_back(LT(0)->getText()); }
                 (
                     COMMA
-                    ( WORD | INT_CONST )
+                    ( icmp_code_by_name | INT_CONST )
                     {
                         importer->error_tracker->registerError(
                             QString("Import of \"block return-icmp (icmp_code, icmp6_code)\" is not supported"));
@@ -1253,15 +1253,16 @@ icmp_type :
     ;
 
 icmp_type_code { IcmpSpec is; } :
-        ( 
-            WORD          { is.icmp_type_name = LT(0)->getText(); }
-        |
+        (
+            icmp_type_by_name { is.icmp_type_name = LT(0)->getText(); }
+        |   
             INT_CONST     { is.icmp_type_int = LT(0)->getText();  }
         )
+
         (
             ICMP_CODE
             (
-                WORD      { is.icmp_code_name = LT(0)->getText(); }
+                icmp_code_by_name { is.icmp_code_name = LT(0)->getText(); }
             |
                 INT_CONST { is.icmp_code_int = LT(0)->getText();  }
             )
@@ -1269,6 +1270,126 @@ icmp_type_code { IcmpSpec is; } :
         {
             importer->icmp_type_code_group.push_back(is);
         }
+    ;
+
+icmp_type_by_name
+    :
+        ( 
+            "echorep"
+        |
+            "unreach"
+        |
+            "squench"
+        |
+            "redir"
+        |
+            "althost"
+        |
+            "echoreq"
+        |
+            "routeradv"
+        |
+            "routersol"
+        |
+            "timex"
+        |
+            "paramprob"
+        |
+            "timereq"
+        |
+            "timerep"
+        |
+            "inforeq"
+        |
+            "inforep"
+        |
+            "maskreq"
+        |
+            "maskrep"
+        |
+            "trace"
+        |
+            "dataconv"
+        |
+            "mobredir"
+        |
+            "ipv6-where"
+        |
+            "ipv6-here"
+        |
+            "mobregreq"
+        |
+            "mobregrep"
+        |
+            "skip"
+        |
+            "photuris"
+        )
+    ;
+
+icmp_code_by_name
+    :
+        (
+            "net-unr"
+        |
+            "host-unr"
+        |
+            "proto-unr"
+        |
+            "port-unr"
+        |
+            "needfrag"
+        |
+            "srcfail"
+        |
+            "net-unk"
+        |
+            "host-unk"
+        |
+            "isolate"
+        |
+            "net-prohib"
+        |
+            "host-prohib"
+        |
+            "net-tos"
+        |
+            "host-tos"
+        |
+            "filter-prohib"
+        |
+            "host-preced"
+        |
+            "cutoff-preced"
+        |
+            "redir-net"
+        |
+            "redir-host"
+        |
+            "redir-tos-net"
+        |
+            "redir-tos-host"
+        |
+            "normal-adv"
+        |
+            "common-adv"
+        |
+            "transit"
+        |
+            "reassemb"
+        |
+            "badhead"
+        |
+            "optmiss"
+        |
+            "badlen"
+        |
+            "unknown-ind"
+        |
+            "auth-fail"
+        |
+            "decrypt-fail"
+        )
     ;
 
 icmp_list :

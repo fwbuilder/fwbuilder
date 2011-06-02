@@ -414,3 +414,23 @@ void PFImporterTest::rdrCommands()
                     "pf-rdr-rules.fwb");
 }
 
+void PFImporterTest::setTimeoutCommands()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-timeouts.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+//    db->setPredictableIds();
+//    db->saveFile("pf-timeouts.fwb");
+
+    compareResults(logger, "test_data/pf-timeouts.output", "pf-timeouts.output");
+//    compareFwbFiles("test_data/pf-timeouts.fwb",
+//                    "pf-timeouts.fwb");
+}
+
+
