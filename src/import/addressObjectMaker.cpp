@@ -54,13 +54,15 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
 
     if (sig.type_name == AddressRange::TYPENAME)
         obj = createAddressRange(sig);
-    else
-    {
-        if (sig.type_name == AddressTable::TYPENAME)
-            obj = createAddressTable(sig);
-        else
-            obj = createAddress(sig);
-    }
+
+    if (sig.type_name == AddressTable::TYPENAME)
+        obj = createAddressTable(sig);
+
+    if (sig.type_name == DNSName::TYPENAME)
+        obj = createDNSName(sig);
+
+    if (obj == NULL)
+        obj = createAddress(sig);
 
     // Now I should build new signature because actual object type has
     // only been determined in createAddress()
@@ -197,4 +199,18 @@ FWObject* AddressObjectMaker::createAddressTable(ObjectSignature &sig)
     at->setRunTime(true);
     at->setSourceName(sig.address_table_name.toStdString());
     return at;
+}
+
+FWObject* AddressObjectMaker::createDNSName(ObjectSignature &sig)
+{
+    FWObject *obj = findMatchingObject(sig);
+    if (obj) return obj;
+
+    DNSName *dns_obj =  DNSName::cast(
+        ObjectMaker::createObject(DNSName::TYPENAME,
+                                  sig.object_name.toUtf8().constData()));
+    assert(dns_obj!=NULL);
+    dns_obj->setRunTime(true);
+    dns_obj->setSourceName(sig.dns_name.toStdString());
+    return dns_obj;
 }

@@ -1,0 +1,34 @@
+3: New interface: pcn0
+8: filtering rule: action pass; interfaces: 
+9: filtering rule: action pass; interfaces: 
+9: Error: import of 'interface:broadcast' is not supported.
+10: filtering rule: action pass; interfaces: 
+10: Error: import of 'interface:peer' is not supported.
+11: filtering rule: action pass; interfaces: 
+11: Error: import of 'interface:0' is not supported.
+13: filtering rule: action pass; interfaces: 
+14: filtering rule: action pass; interfaces: 
+15: filtering rule: action pass; interfaces: 
+16: filtering rule: action pass; interfaces: 
+17: filtering rule: action pass; interfaces: 
+18: filtering rule: action pass; interfaces: 
+19: filtering rule: action pass; interfaces: 
+20: filtering rule: action pass; interfaces: 
+21: filtering rule: action pass; interfaces: 
+22: filtering rule: action pass; interfaces: 
+24: filtering rule: action pass; interfaces: 
+24: Error: IPv6 import is not supported. 
+25: filtering rule: action pass; interfaces: 
+27: filtering rule: action pass; interfaces: 
+28: filtering rule: action pass; interfaces: 
+29: filtering rule: action pass; interfaces: 
+30: filtering rule: action pass; interfaces: 
+31: filtering rule: action pass; interfaces: 
+32: filtering rule: action pass; interfaces: 
+33: filtering rule: action pass; interfaces: 
+34: filtering rule: action pass; interfaces: 
+35: filtering rule: action pass; interfaces: 
+36: filtering rule: action pass; interfaces: 
+38: filtering rule: action pass; interfaces: 
+38: Error: IPv6 import is not supported. 
+39: filtering rule: action pass; interfaces: 

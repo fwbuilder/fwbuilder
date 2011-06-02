@@ -42,6 +42,7 @@
 #include <QDebug>
 #include <QObject>
 #include <QStringList>
+#include <QRegExp>
 
 
 using namespace std;
@@ -61,6 +62,18 @@ bool interfaceProperties::looksLikeVlanInterface(InterfaceData *intf)
 bool interfaceProperties::looksLikeVlanInterface(const QString &int_name)
 {
     return parseVlan(int_name, NULL, NULL);
+}
+
+/*
+ * common denominator interface name guess. Something like "eth0",
+ * "foo0", "longname0", "name0.1", "name0:1". This is mostly intended
+ * for Linux and BSD, even though it probably matches some Cisco
+ * interfaces too.
+ */
+bool interfaceProperties::looksLikeInterface(const QString &name)
+{
+    QRegExp basic_interface_name_pattern("^[a-zA-Z]+\\d{1,}(\\.\\d{1,})?(:\\d{1,})?$");
+    return (basic_interface_name_pattern.indexIn(name) != -1);
 }
 
 // simple name validation: does not allow space and "-"

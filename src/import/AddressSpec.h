@@ -47,6 +47,7 @@ public:
         INTERFACE_NETWORK,
         INTERFACE_BROADCAST,
         INTERFACE_CONFIGURATION,
+        INTERFACE_OR_HOST_NAME,
         TABLE } address_type;
 
     address_type at;

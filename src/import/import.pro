@@ -22,7 +22,6 @@ SOURCES = QStringListOperators.cpp \
           PIXImporterRun.cpp \
 		  PFImporter.cpp \
           PFImporterRun.cpp \
-		  IfconfigImporter.cpp
 
 HEADERS = QStringListOperators.h \
 	      PreImport.h \
@@ -36,7 +35,6 @@ HEADERS = QStringListOperators.h \
           IPTImporter.h \
           PIXImporter.h \
 		  PFImporter.h \
-		  IfconfigImporter.h \
 		  InterfaceSpec.h \
 		  AddressSpec.h \
 		  PortSpec.h \

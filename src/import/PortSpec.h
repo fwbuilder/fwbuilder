@@ -50,6 +50,17 @@ public:
     PortSpec(const std::string s1, const std::string s2, const std::string s3)
     { port1 = s1; port2 = s2; port_op = s3; }
 
+    void setFromPortRange(const std::string &port_range)
+    {
+        std::size_t n = port_range.find(':');
+        if ( n != std::string::npos )
+        {
+            port1 = port_range.substr(0, n);
+            port2 = port_range.substr(n+1);
+            port_op = ":";
+        }
+    }
+    
     std::string toString()
     { return std::string("PortSpec: ") + port_op + " " + port1 + " " + port2; }
 };

@@ -102,6 +102,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_3;
 	static const unsigned long _tokenSet_4_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
+	static const unsigned long _tokenSet_5_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_5;
+	static const unsigned long _tokenSet_6_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
 };
 
 #endif /*INC_PFCfgLexer_hpp_*/

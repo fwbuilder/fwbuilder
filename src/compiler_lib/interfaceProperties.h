@@ -76,6 +76,8 @@ public:
         }
     }
 
+    virtual bool looksLikeInterface(const QString&);
+    
     virtual bool parseVlan(const QString&, QString*, int*);
     virtual bool isValidVlanInterfaceName(const QString &,
                                           const QString &,

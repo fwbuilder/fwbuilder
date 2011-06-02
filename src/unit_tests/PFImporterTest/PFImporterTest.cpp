@@ -204,6 +204,27 @@ std::string PFImporterTest::openTestFile(const QString &file_name)
     return buffer;
 }
 
+void PFImporterTest::hostsMatchTest()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-hosts-matches.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-hosts-matches.fwb");
+
+    compareResults(logger,
+                   "test_data/pf-hosts-matches.output",
+                   "pf-hosts-matches.output");
+    compareFwbFiles("test_data/pf-hosts-matches.fwb",
+                    "pf-hosts-matches.fwb");
+}
+
 void PFImporterTest::blockReturnTest()
 {
     platform = "pf";

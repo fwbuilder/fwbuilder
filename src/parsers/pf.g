@@ -254,7 +254,8 @@ tableaddr_spec { AddressSpec as; } :
         (
             WORD
             {
-                as.at = AddressSpec::INTERFACE_NAME;
+                // interface name or domain/host name
+                as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
                 as.address = LT(0)->getText();
             }
             (
@@ -464,7 +465,7 @@ redirhost  { AddressSpec as; } :
             WORD
             {
                 // interface name or domain/host name
-                as.at = AddressSpec::INTERFACE_NAME;
+                as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
                 as.address = LT(0)->getText();
             }
             CLOSING_PAREN
@@ -472,7 +473,7 @@ redirhost  { AddressSpec as; } :
             WORD
             {
                 // interface name or domain/host name
-                as.at = AddressSpec::INTERFACE_NAME;
+                as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
                 as.address = LT(0)->getText();
             }
         )
@@ -503,20 +504,24 @@ redirhost_list :
 //
 portspec { PortSpec ps; } :
         PORT
-        port_def 
-        {
-            ps.port1 = importer->tmp_port_def;
-            ps.port2 = ps.port1;
-            ps.port_op = "=";
-        }
         (
-            COLON        { ps.port_op = ":"; }
+            port_def 
+            {
+                ps.port1 = importer->tmp_port_def;
+                ps.port2 = ps.port1;
+                ps.port_op = "=";
+            }
+        |
+//  lexer matches port range (1000:1010) as IPv6, see rule
+// NUMBER_ADDRESS_OR_WORD. Combination "1000:*" comes as IPV6 STAR
+            IPV6
+            {
+                ps.setFromPortRange(LT(0)->getText());
+            }
             (
                 STAR     { ps.port2 = "65535"; }
-            |
-                port_def { ps.port2 = importer->tmp_port_def; }
-            )
-        )?
+            )?
+        )
         {
             importer->tmp_port_group.push_back(ps);
         }
@@ -847,7 +852,7 @@ host { AddressSpec as; } :
             WORD
             {
                 // interface name or domain/host name
-                as.at = AddressSpec::INTERFACE_NAME;
+                as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
                 as.address = LT(0)->getText();
             }
             (
@@ -885,7 +890,8 @@ host { AddressSpec as; } :
         |
             IPV6
             {
-                importer->addMessageToLog(QString("IPv6 import is not supported. "));
+                importer->error_tracker->registerError(
+                    QString("IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             }
         |
@@ -913,7 +919,8 @@ host { AddressSpec as; } :
         |
             OPENING_PAREN in:WORD CLOSING_PAREN
             {
-                as.at = AddressSpec::INTERFACE_NAME;
+                // interface name or domain/host name
+                as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
                 as.address = in->getText();
             }
         )
@@ -958,7 +965,8 @@ routehost { RouteSpec rs; } :
         {
             if (v6)
             {
-                importer->addMessageToLog(QString("IPv6 import is not supported. "));
+                importer->error_tracker->registerError(
+                    QString("IPv6 import is not supported. "));
                 consumeUntil(NEWLINE);
             } else
             {
@@ -1072,7 +1080,8 @@ icmp_list :
 icmp6_type :
         ICMP6_TYPE
         {
-            importer->addMessageToLog(QString("ICMP6 import is not supported. "));
+            importer->error_tracker->registerError(
+                QString("ICMP6 import is not supported. "));
             consumeUntil(NEWLINE);
         }
     ;
@@ -1129,16 +1138,44 @@ label :
 
 //****************************************************************
 
+//  lexer matches port range (1000:1010) as IPv6, see rule
+// NUMBER_ADDRESS_OR_WORD
 src_port_part :
-        PORT ( port_op | port_op_list )
+        PORT
+        (
+            port_op
+        |
+            port_op_list
+        |
+            IPV6
+            {
+                PortSpec ps;
+                ps.setFromPortRange(LT(0)->getText());
+                importer->tmp_port_group.push_back(ps);
+            }
+        )
         {
             importer->src_port_group.splice(importer->src_port_group.begin(),
                                             importer->tmp_port_group);
         }
     ;
 
+//  lexer matches port range (1000:1010) as IPv6, see rule
+// NUMBER_ADDRESS_OR_WORD
 dst_port_part :
-        PORT ( port_op | port_op_list )
+        PORT
+        (
+            port_op
+        |
+            port_op_list
+        |
+            IPV6
+            {
+                PortSpec ps;
+                ps.setFromPortRange(LT(0)->getText());
+                importer->tmp_port_group.push_back(ps);
+            }
+        )
         {
             importer->dst_port_group.splice(importer->dst_port_group.begin(),
                                             importer->tmp_port_group);
@@ -1385,7 +1422,7 @@ protected
 COLON : ;
 
 protected
-HEX_DIGIT : '0'..'9' 'a'..'f' ;
+HEX_DIGIT : ( '0'..'9' | 'a'..'f' | 'A'..'F') ;
 
 protected
 DIGIT : '0'..'9'  ;
@@ -1396,47 +1433,56 @@ NUM_3DIGIT: ('0'..'9') (('0'..'9') ('0'..'9')?)? ;
 protected
 NUM_HEX_4DIGIT: HEX_DIGIT ((HEX_DIGIT) ((HEX_DIGIT) (HEX_DIGIT)?)?)? ;
 
-
+// IPV6 rule below matches "1000:1010" as IPV6. This is not a valid
+// IPv6 address and it creates problems with port ranges
+//
 NUMBER_ADDRESS_OR_WORD 
 options {
     testLiterals = true;
 }
     :
-        ( NUM_3DIGIT '.' NUM_3DIGIT '.' ) =>
-            (NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT)
-            { $setType(IPV4); }
-    |
-        ( (DIGIT)+ '.' (DIGIT)+ )=> ( (DIGIT)+ '.' (DIGIT)+ )
-        { $setType(NUMBER); }
-//    |
-//        ( (DIGIT)+ ':' (DIGIT)+ )=> ( (DIGIT)+ ':' (DIGIT)+ )
-//        { $setType(PORT_RANGE); }
-    |
-        ( DIGIT )+ { $setType(INT_CONST); }
+    ( ( HEX_DIGIT )+ ':' ) =>
+            (
+                ( ( HEX_DIGIT )+ ( ':' ( HEX_DIGIT )* )+ ) { $setType(IPV6); }
+            )
 
     // IPv6 RULE
     |   (NUM_HEX_4DIGIT ':')=>
         (
             ((NUM_HEX_4DIGIT ':')+ ':')=>
             (
-                (NUM_HEX_4DIGIT ':')+ ':'
-                (NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*)?
+                (NUM_HEX_4DIGIT ':')+ ':' (NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*)?
             )   { $setType(IPV6); }
-
-            |   NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)+
-                { $setType(IPV6); }
-
-        )   { $setType(IPV6); }
+        |
+            ( NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)+ ) { $setType(IPV6);}
+        ) //  { $setType(IPV6); }
 
     |   (':' ':' NUM_HEX_4DIGIT)=>
-        ':' ':' NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*
-        { $setType(IPV6); }
+        ':' ':' NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)* { $setType(IPV6); }
 
-    |   ':' ':'
-        { $setType(IPV6); }
+    |   ':' ':' { $setType(IPV6); }
 
-    |   ':'
-        { $setType(COLON); }
+    |   ':' { $setType(COLON); }
+
+    // | ( ':' ) =>
+    //     (
+    //         (':' ':' ( HEX_DIGIT )+ ) =>
+    //             (':' ':' ( HEX_DIGIT )+ (':' ( HEX_DIGIT )+)*) { $setType(IPV6); }
+    //     |
+    //         (':' ':' ) { $setType(IPV6); }
+
+    //     |   ':' { $setType(COLON); }
+    //     )
+
+    | ( NUM_3DIGIT '.' NUM_3DIGIT '.' ) =>
+            (NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT)
+            { $setType(IPV4); }
+
+    | ( (DIGIT)+ '.' (DIGIT)+ )=> ( (DIGIT)+ '.' (DIGIT)+ )
+        { $setType(NUMBER); }
+
+    | ( DIGIT )+ { $setType(INT_CONST); }
+
 
     |
 
@@ -1446,7 +1492,7 @@ options {
 // double quote " should be included, without it STRING does not match
 
         ( 'a'..'z' | 'A'..'Z' )
-        ( '"' | '$' | '%' | '&' | '-' | '0'..'9' | ';' |
+        ( '"' | '$' | '%' | '&' | '-' | '.' | '0'..'9' | ';' |
           '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
         { $setType(WORD); }
     ;
@@ -1466,7 +1512,7 @@ MINUS : '-' ;
 DOT : '.' ;
 SLASH : '/' ;
 
-//COLON : ':' ;
+// COLON : ':' ;
 SEMICOLON : ';' ;
 
 EQUAL : '=';

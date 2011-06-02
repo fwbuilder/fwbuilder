@@ -37,6 +37,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AttachedNetworks.h"
+#include "fwbuilder/DNSName.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/IPService.h"
@@ -452,11 +453,30 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
 {
     if (as.at == AddressSpec::ANY) return NULL;
 
-    if (as.at == AddressSpec::INTERFACE_NAME)
+    if (as.at == AddressSpec::INTERFACE_OR_HOST_NAME)
     {
-        Interface *intf = getInterfaceByName(as.address);
-        assert(intf!=NULL);
-        return intf;
+        interfaceProperties *int_prop =
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                user_choice_host_os);
+        if (int_prop->looksLikeInterface(as.address.c_str()))
+        {
+            Interface *intf = getInterfaceByName(as.address);
+            if (intf == NULL)
+            {
+                // this interface was never used in "on <intf>" clause before
+                newInterface(as.address);
+                intf = getInterfaceByName(as.address);
+            }
+            return intf;
+        } else
+        {
+            // TODO: create and return DNSName object
+            ObjectSignature sig(error_tracker);
+            sig.type_name = DNSName::TYPENAME;
+            sig.object_name = QString::fromUtf8(as.address.c_str());
+            sig.dns_name = QString::fromUtf8(as.address.c_str());
+            return address_maker->createObject(sig);
+        }
     }
 
     if (as.at == AddressSpec::INTERFACE_NETWORK)
