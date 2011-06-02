@@ -104,7 +104,21 @@ public:
 	public: void binat_rule();
 	public: void pass_rule();
 	public: void block_rule();
-	public: void timeout_rule();
+	public: void set_timeout();
+	public: void set_ruleset_optimization();
+	public: void set_optimization();
+	public: void set_limit();
+	public: void set_loginterface();
+	public: void set_block_policy();
+	public: void set_state_policy();
+	public: void set_state_defaults();
+	public: void set_require_order();
+	public: void set_fingerprints();
+	public: void set_skip();
+	public: void set_debug();
+	public: void set_reassemble();
+	public: void timeout_def();
+	public: void timeout_def_list();
 	public: void tableaddr_spec();
 	public: void logging();
 	public: void intrface();
@@ -169,10 +183,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 153;
+	static const int NUM_TOKENS = 184;
 #else
 	enum {
-		NUM_TOKENS = 153
+		NUM_TOKENS = 184
 	};
 #endif
 	
@@ -260,6 +274,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_40;
 	static const unsigned long _tokenSet_41_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_41;
+	static const unsigned long _tokenSet_42_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_42;
+	static const unsigned long _tokenSet_43_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_43;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

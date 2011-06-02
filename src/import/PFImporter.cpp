@@ -146,6 +146,10 @@ void PFImporter::clear()
     nat_rule_opt_1 = "";
     nat_rule_opt_2 = "";
 
+    // Do not clear list of timeout name-value pairs since it is filled
+    // when we parse "set timeout" commands and then used in finalize()
+    // timeouts.clear();
+
     Importer::clear();
 }
 
@@ -921,6 +925,8 @@ Firewall* PFImporter::finalize()
         fw->setStr("host_OS", host_os);
         Resources::setDefaultTargetOptions(host_os , fw);
 
+        FWOptions* options = fw->getOptionsObject();
+
         // We may be able to infer at least something about the version
         // from the pf.conf file in the future.
         string version = findBestVersionMatch(
@@ -953,6 +959,79 @@ Firewall* PFImporter::finalize()
             Interface *iface = Interface::cast(*i);
             iface->setUnnumbered(false);
             iface->setDyn(true);
+        }
+
+        // configure timeouts
+        
+        // mapping between PF timeout names and our option names
+        map<string, string> timeout_option_names;
+
+        timeout_option_names["tcp.first"] = "pf_tcp_first";
+        timeout_option_names["tcp.opening"] = "pf_tcp_opening";
+        timeout_option_names["tcp.established"] = "pf_tcp_established";
+        timeout_option_names["tcp.closing"] = "pf_tcp_closing";
+        timeout_option_names["tcp.finwait"] = "pf_tcp_finwait";
+        timeout_option_names["tcp.closed"] = "pf_tcp_closed";
+        timeout_option_names["udp.first"] = "pf_udp_first";
+        timeout_option_names["udp.single"] = "pf_udp_single";
+        timeout_option_names["udp.multiple"] = "pf_udp_multiple";
+        timeout_option_names["icmp.first"] = "pf_icmp_first";
+        timeout_option_names["icmp.error"] = "pf_icmp_error";
+        timeout_option_names["other.first"] = "pf_other_first";
+        timeout_option_names["other.single"] = "pf_other_single";
+        timeout_option_names["other.multiple"] = "pf_other_multiple";
+        timeout_option_names["adaptive.start"] = "pf_adaptive_start";
+        timeout_option_names["adaptive.end"] = "pf_adaptive_end";
+
+        timeout_option_names["frag"] = "pf_timeout_frag";
+        timeout_option_names["interval"] = "pf_timeout_interval";
+
+        // looks like we do not support src.track as of 4.3
+        // timeout_option_names["src.track"] = "pf_src_track";
+
+        // mapping between PF timeout names and boolean option names that
+        // activate setting of the corresponding timeout
+        map<string, string> timeout_activation_names;
+
+        timeout_activation_names["tcp.first"] = "pf_set_tcp_first";
+        timeout_activation_names["tcp.opening"] = "pf_set_tcp_opening";
+        timeout_activation_names["tcp.established"] = "pf_set_tcp_established";
+        timeout_activation_names["tcp.closing"] = "pf_set_tcp_closing";
+        timeout_activation_names["tcp.finwait"] = "pf_set_tcp_finwait";
+        timeout_activation_names["tcp.closed"] = "pf_set_tcp_closed";
+        timeout_activation_names["udp.first"] = "pf_set_udp_first";
+        timeout_activation_names["udp.single"] = "pf_set_udp_single";
+        timeout_activation_names["udp.multiple"] = "pf_set_udp_multiple";
+        timeout_activation_names["icmp.first"] = "pf_set_icmp_first";
+        timeout_activation_names["icmp.error"] = "pf_set_icmp_error";
+        timeout_activation_names["other.first"] = "pf_set_other_first";
+        timeout_activation_names["other.single"] = "pf_set_other_single";
+        timeout_activation_names["other.multiple"] = "pf_set_other_multiple";
+        timeout_activation_names["adaptive.start"] = "pf_set_adaptive";
+        timeout_activation_names["adaptive.end"] = "pf_set_adaptive";
+
+        timeout_activation_names["frag"] = "pf_do_timeout_frag";
+        timeout_activation_names["interval"] = "pf_do_timeout_interval";
+
+
+        list<str_tuple>::iterator it;
+        for (it=timeouts.begin(); it!=timeouts.end(); ++it)
+        {        
+            string name = it->first;
+            bool ok = false;
+            int value = QString(it->second.c_str()).toInt(&ok);
+
+            qDebug() << "Timeout " << name.c_str() << "=" << value;
+
+            if (timeout_activation_names.count(name) == 0)
+            {
+                error_tracker->registerError(
+                    QObject::tr("Unknown timeout name %1").arg(name.c_str()));
+            } else
+            {
+                options->setBool(timeout_activation_names[name], true);
+                options->setInt(timeout_option_names[name], value);
+            }
         }
 
         return fw;

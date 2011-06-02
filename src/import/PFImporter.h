@@ -117,6 +117,11 @@ public:
     std::string nat_rule_opt_2;
     
     libfwbuilder::NATRule::NATRuleTypes rule_type;
+
+    std::list<str_tuple> timeouts;
+
+
+
     
     PFImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,

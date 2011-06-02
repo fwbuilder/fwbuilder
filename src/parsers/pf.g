@@ -140,8 +140,6 @@ cfgfile :
         |
             block_rule
         |
-            timeout_rule
-        |
 //            unknown_rule
 //        |
             NEWLINE
@@ -198,11 +196,229 @@ set_rule : SET
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'set' commands has not been implemented yet."));
+        }
+        (
+            set_timeout
+        |
+            set_ruleset_optimization
+        |
+            set_optimization
+        |
+            set_limit
+        |
+            set_loginterface
+        |
+            set_block_policy
+        |
+            set_state_policy
+        |
+            set_state_defaults
+        |
+            set_require_order
+        |
+            set_fingerprints
+        |
+            set_skip
+        |
+            set_debug
+        |
+            set_reassemble
+        )
+    ;
+
+set_timeout
+    :
+        TIMEOUT ( timeout_def | timeout_def_list )
+    ;
+
+set_ruleset_optimization
+    :
+        "ruleset-optimization"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set ruleset-optimization' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
+
+set_optimization
+    :
+        "optimization"
+    ;
+
+set_limit
+    :
+        "limit"
+    ;
+
+set_loginterface
+    :
+        "loginterface"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set loginterface' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_block_policy
+    :
+        "block-policy"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set block-policy' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_state_policy
+    :
+        "state-policy"
+    ;
+
+set_state_defaults
+    :
+        "state-defaults"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set state-defaults' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_require_order
+    :
+        "require-order"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set require-order' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_fingerprints
+    :
+        "fingerprints"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set fingerprints' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_skip
+    :
+        "skip"
+    ;
+
+set_debug
+    :
+        "debug"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set debug' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_reassemble
+    :
+        "reassemble"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->error_tracker->registerError(
+                QString("import of 'set reassemble' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+/*
+timeout = ( "tcp.first" | "tcp.opening" | "tcp.established" |
+            "tcp.closing" | "tcp.finwait" | "tcp.closed" |
+            "udp.first" | "udp.single" | "udp.multiple" |
+            "icmp.first" | "icmp.error" |
+            "other.first" | "other.single" | "other.multiple" |
+            "frag" | "interval" | "src.track" |
+            "adaptive.start" | "adaptive.end" ) number
+*/
+timeout_def { std::string timeout_name, timeout_value; }
+    :
+        (
+            "tcp.first"
+        |
+            "tcp.opening"
+        |
+            "tcp.established"
+        |
+            "tcp.closing"
+        |
+            "tcp.finwait"
+        |
+            "tcp.closed"
+        |
+            "udp.first"
+        |
+            "udp.single"
+        |
+            "udp.multiple"
+        |
+            "icmp.first"
+        |
+            "icmp.error"
+        |
+            "other.first"
+        |
+            "other.single"
+        |
+            "other.multiple"
+        |
+            "frag"
+        |
+            "interval"
+        |
+            "src.track"
+        |
+            "adaptive.start"
+        |
+            "adaptive.end"
+        )
+        {
+            timeout_name = LT(0)->getText();
+        }
+        INT_CONST
+        {
+            timeout_value = LT(0)->getText();
+            importer->timeouts.push_back(
+                std::pair<std::string, std::string>(timeout_name, timeout_value));
+        }
+    ;
+
+timeout_def_list
+    : 
+        OPENING_BRACE
+        timeout_def
+        (
+            ( COMMA )?
+            timeout_def
+        )*
+        CLOSING_BRACE
+    ;
+
 
 //****************************************************************
 scrub_rule : SCRUB
@@ -569,17 +785,6 @@ binat_rule : BINAT
             importer->setCurrentLineNumber(LT(0)->getLine());
             importer->error_tracker->registerError(
                 QString("import of 'binat' commands is not supported."));
-            consumeUntil(NEWLINE);
-        }
-    ;
-
-//****************************************************************
-timeout_rule : TIMEOUT
-        {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'timeout' commands has not been implemented yet."));
             consumeUntil(NEWLINE);
         }
     ;
