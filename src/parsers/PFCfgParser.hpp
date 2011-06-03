@@ -117,8 +117,11 @@ public:
 	public: void set_skip();
 	public: void set_debug();
 	public: void set_reassemble();
+	public: void set_hostid();
 	public: void timeout_def();
 	public: void timeout_def_list();
+	public: void limit_def();
+	public: void limit_def_list();
 	public: void tableaddr_spec();
 	public: void logging();
 	public: void intrface();
@@ -185,10 +188,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 238;
+	static const int NUM_TOKENS = 251;
 #else
 	enum {
-		NUM_TOKENS = 238
+		NUM_TOKENS = 251
 	};
 #endif
 	
@@ -286,6 +289,10 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_45;
 	static const unsigned long _tokenSet_46_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_46;
+	static const unsigned long _tokenSet_47_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_47;
+	static const unsigned long _tokenSet_48_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_48;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

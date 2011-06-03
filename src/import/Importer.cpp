@@ -259,7 +259,7 @@ void Importer::newInterface(const std::string &name)
     current_interface = Interface::cast(nobj);
     current_interface->setUnnumbered(true);
     all_interfaces[name] = current_interface;
-    addMessageToLog("New interface: " + name);
+    addMessageToLog(QObject::tr("New interface: %1").arg(name.c_str()));
 }
 
 /*

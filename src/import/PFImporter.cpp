@@ -146,9 +146,9 @@ void PFImporter::clear()
     nat_rule_opt_1 = "";
     nat_rule_opt_2 = "";
 
-    // Do not clear list of timeout name-value pairs since it is filled
-    // when we parse "set timeout" commands and then used in finalize()
-    // timeouts.clear();
+    // Do not clear name-value pairs lists of timeout and limits since
+    // they is filled when we parse "set timeout", "set limit"
+    // commands and then used in finalize() 
 
     Importer::clear();
 }
@@ -961,6 +961,9 @@ Firewall* PFImporter::finalize()
             iface->setDyn(true);
         }
 
+        // Log lines from now on should not start with original file line numbers 
+        setCurrentLineNumber(-1);
+
         // configure timeouts
         
         // mapping between PF timeout names and our option names
@@ -1015,8 +1018,7 @@ Firewall* PFImporter::finalize()
 
         if (timeouts.size() > 0)
         {
-            setCurrentLineNumber(-1);
-            addMessageToLog(QObject::tr("Configuring timeouts:"));
+            addMessageToLog(QObject::tr("Configuring timeouts:\n"));
 
             list<str_tuple>::iterator it;
             for (it=timeouts.begin(); it!=timeouts.end(); ++it)
@@ -1025,18 +1027,120 @@ Firewall* PFImporter::finalize()
                 bool ok = false;
                 int value = QString(it->second.c_str()).toInt(&ok);
 
-                addMessageToLog(QString("%1=%2").arg(name.c_str()).arg(value));
+                addMessageToLog(QString("set timeout %1 %2\n")
+                                .arg(name.c_str()).arg(value));
 
                 if (timeout_activation_names.count(name) == 0)
                 {
                     addMessageToLog(
-                        QObject::tr("Error: Unknown timeout name %1").arg(name.c_str()));
+                        QObject::tr("Error: Unknown timeout name %1\n")
+                        .arg(name.c_str()));
                 } else
                 {
                     options->setBool(timeout_activation_names[name], true);
                     options->setInt(timeout_option_names[name], value);
                 }
             }
+        }
+
+        // configure limits
+        map<string, string> limit_option_names;
+
+        limit_option_names["frags"] = "pf_limit_frags";
+        limit_option_names["states"] = "pf_limit_states";
+        limit_option_names["src-nodes"] = "pf_limit_src_nodes";
+        limit_option_names["tables"] = "pf_limit_tables";
+        limit_option_names["tables-entries"] = "pf_limit_table_entries";
+
+        // mapping between PF limit names and boolean option names that
+        // activate setting of the corresponding limit
+        map<string, string> limit_activation_names;
+
+        limit_activation_names["frags"] = "pf_do_limit_frags";
+        limit_activation_names["states"] = "pf_do_limit_states";
+        limit_activation_names["src-nodes"] = "pf_do_limit_src_nodes";
+        limit_activation_names["tables"] = "pf_do_limit_tables";
+        limit_activation_names["tables-entries"] = "pf_do_limit_table_entries";
+
+        if (limits.size() > 0)
+        {
+            addMessageToLog(QObject::tr("Configuring limits:\n"));
+
+            list<str_tuple>::iterator it;
+            for (it=limits.begin(); it!=limits.end(); ++it)
+            {        
+                string name = it->first;
+                bool ok = false;
+                int value = QString(it->second.c_str()).toInt(&ok);
+
+                addMessageToLog(QString("set limit %1 %2\n")
+                                .arg(name.c_str()).arg(value));
+
+                if (limit_activation_names.count(name) == 0)
+                {
+                    addMessageToLog(
+                        QObject::tr("Error: Unknown limit name %1\n")
+                        .arg(name.c_str()));
+                } else
+                {
+                    options->setBool(limit_activation_names[name], true);
+                    options->setInt(limit_option_names[name], value);
+                }
+            }
+        }
+
+        // cofigure other "set" commands
+        // addMessageToLog(QObject::tr("Configuring set commands:\n"));
+
+        if ( ! set_optimization.empty())
+        {
+            options->setStr("pf_optimization", set_optimization);
+            addMessageToLog(QString("set optimization %1\n")
+                            .arg(set_optimization.c_str()));
+        }
+
+        if ( ! set_block_policy.empty())
+        {
+            options->setStr("pf_block_policy", set_block_policy);
+            addMessageToLog(QString("set block-policy %1\n")
+                            .arg(set_block_policy.c_str()));
+        }
+
+        if ( ! set_state_policy.empty())
+        {
+            options->setStr("pf_state_policy", set_state_policy);
+            addMessageToLog(QString("set state-policy %1\n")
+                            .arg(set_state_policy.c_str()));
+        }
+
+        if ( ! set_skip_on.empty())
+        {
+            interfaceProperties *int_prop =
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    user_choice_host_os);
+            if (int_prop->looksLikeInterface(set_skip_on.c_str()))
+            {
+                Interface *intf = getInterfaceByName(set_skip_on);
+                if (intf == NULL)
+                {
+                    // this interface was never used in "on <intf>" clause before
+                    newInterface(set_skip_on);
+                    intf = getInterfaceByName(set_skip_on);
+                    intf->setUnprotected(true);
+                    addMessageToLog(QString("set skip on %1\n")
+                                    .arg(intf->getName().c_str()));
+                }
+            } else
+            {
+                addMessageToLog(
+                    QObject::tr("Error: In 'set skip on %1' '%1' does not look like an interface name\n").arg(set_skip_on.c_str()).arg(set_skip_on.c_str()));
+            }
+        }
+
+        if ( ! set_debug.empty())
+        {
+            options->setStr("pf_set_debug", set_debug);
+            addMessageToLog(QString("set debug %1\n").arg(set_debug.c_str()));
         }
 
         return fw;

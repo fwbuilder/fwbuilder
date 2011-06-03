@@ -320,14 +320,14 @@ void PFImporterTest::setCommandsTest()
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
-    db->setPredictableIds();
-    db->saveFile("pf-set-commands.fwb");
+    //db->setPredictableIds();
+    //db->saveFile("pf-set-commands.fwb");
 
     compareResults(logger,
                    "test_data/pf-set-commands.output",
                    "pf-set-commands.output");
-    compareFwbFiles("test_data/pf-set-commands.fwb",
-                    "pf-set-commands.fwb");
+    //compareFwbFiles("test_data/pf-set-commands.fwb",
+    //                "pf-set-commands.fwb");
 }
 
 void PFImporterTest::stateMatchTest()

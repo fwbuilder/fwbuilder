@@ -1,7 +1,21 @@
-3: Parser error: line 3:26: expecting EQUAL, found '
-'
-Parser error:
-Could not find enough information in the data file to create firewall object.
+19: Error: import of 'set fingerprints' commands is not supported.
+20: Error: import of 'set hostid' commands is not supported.
+21: Error: import of 'set loginterface' commands is not supported.
+22: Error: import of 'set reassemble' commands is not supported.
+23: Error: import of 'set require-order' commands is not supported.
+24: Error: import of 'set ruleset-optimization' commands is not supported.
+25: Error: import of 'set state-defaults' commands is not supported.
+27: filtering rule: action block; interfaces: 
+Could not find enough information in the data file to create firewall interface objects.
 
-
-Please check that the file you are trying to import is in one of supported formats. Currently fwbuilder can only import iptables configuration saved with 'iptables-restore' command, Cisco routers (IOS), Cisco ASA, FWSM and PIX configurations saved with 'show run' command and PF configuration from a pf.conf file.
+Configuring limits:
+set limit frags 5000
+set limit states 10000
+set limit src-nodes 100000
+set limit tables 100000
+set limit tables-entries 100000
+set optimization high-latency
+set block-policy return
+set state-policy if-bound
+New interface: lo0set skip on lo0
+set debug crit

@@ -223,6 +223,8 @@ set_rule : SET
             set_debug
         |
             set_reassemble
+        |
+            set_hostid
         )
     ;
 
@@ -237,8 +239,8 @@ set_ruleset_optimization
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set ruleset-optimization' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set ruleset-optimization' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -246,11 +248,22 @@ set_ruleset_optimization
 set_optimization
     :
         "optimization"
+        (
+            "aggressive"
+        |
+            "conservative"
+        |
+            "high-latency"
+        |
+            "normal"
+        |
+            "satellite"
+        ) { importer->set_optimization = LT(0)->getText(); }
     ;
 
 set_limit
     :
-        "limit"
+        "limit" ( limit_def | limit_def_list )
     ;
 
 set_loginterface
@@ -259,8 +272,8 @@ set_loginterface
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set loginterface' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set loginterface' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -268,18 +281,13 @@ set_loginterface
 set_block_policy
     :
         "block-policy"
-        {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set block-policy' commands is not supported."));
-            consumeUntil(NEWLINE);
-        }
+        (DROP | RETURN) { importer->set_block_policy = LT(0)->getText(); }
     ;
 
 set_state_policy
     :
         "state-policy"
+        ("if-bound" | "floating") { importer->set_state_policy = LT(0)->getText(); }
     ;
 
 set_state_defaults
@@ -288,8 +296,8 @@ set_state_defaults
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set state-defaults' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set state-defaults' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -300,8 +308,8 @@ set_require_order
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set require-order' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set require-order' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -312,26 +320,25 @@ set_fingerprints
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set fingerprints' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set fingerprints' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
 
 set_skip
     :
-        "skip"
+        "skip" ON WORD
+        {
+            importer->set_skip_on = LT(0)->getText();
+        }
     ;
 
 set_debug
     :
-        "debug"
+        "debug" WORD
         {
-            importer->clear();
-            importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set debug' commands is not supported."));
-            consumeUntil(NEWLINE);
+            importer->set_debug = LT(0)->getText();
         }
     ;
 
@@ -341,8 +348,20 @@ set_reassemble
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->error_tracker->registerError(
-                QString("import of 'set reassemble' commands is not supported."));
+            importer->addMessageToLog(
+                QString("Error: import of 'set reassemble' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
+
+set_hostid
+    :
+        "hostid"
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addMessageToLog(
+                QString("Error: import of 'set hostid' commands is not supported."));
             consumeUntil(NEWLINE);
         }
     ;
@@ -415,6 +434,41 @@ timeout_def_list
         (
             ( COMMA )?
             timeout_def
+        )*
+        CLOSING_BRACE
+    ;
+
+limit_def { std::string limit_name, limit_value; }
+    :
+        (
+            "frags"
+        |
+            "states"
+        |
+            "src-nodes"
+        |
+            "tables"
+        |
+            "tables-entries"
+        )
+        {
+            limit_name = LT(0)->getText();
+        }
+        INT_CONST
+        {
+            limit_value = LT(0)->getText();
+            importer->limits.push_back(
+                std::pair<std::string, std::string>(limit_name, limit_value));
+        }
+    ;
+
+limit_def_list
+    : 
+        OPENING_BRACE
+        limit_def
+        (
+            ( COMMA )?
+            limit_def
         )*
         CLOSING_BRACE
     ;

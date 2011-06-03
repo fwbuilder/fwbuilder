@@ -2,4 +2,22 @@
 14: filtering rule: action block; interfaces: 
 Could not find enough information in the data file to create firewall interface objects.
 
-Configuring timeouts:interval=10frag=30tcp.first=60tcp.opening=30tcp.established=3600tcp.closing=30tcp.finwait=2tcp.closed=10udp.first=20udp.single=10udp.multiple=15icmp.first=11icmp.error=6other.first=40other.single=20other.multiple=30adaptive.start=10adaptive.end=5
+Configuring timeouts:
+set timeout interval 10
+set timeout frag 30
+set timeout tcp.first 60
+set timeout tcp.opening 30
+set timeout tcp.established 3600
+set timeout tcp.closing 30
+set timeout tcp.finwait 2
+set timeout tcp.closed 10
+set timeout udp.first 20
+set timeout udp.single 10
+set timeout udp.multiple 15
+set timeout icmp.first 11
+set timeout icmp.error 6
+set timeout other.first 40
+set timeout other.single 20
+set timeout other.multiple 30
+set timeout adaptive.start 10
+set timeout adaptive.end 5
