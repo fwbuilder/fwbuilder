@@ -1,9 +1,6 @@
-16: filtering rule: action block; interfaces: 
+14: filtering rule: action block; interfaces: 
 Could not find enough information in the data file to create firewall interface objects.
 
-scrub fragment reassemble
-scrub fragment crop
-scrub fragment drop-ovl
 scrub reassemble tcp
 scrub no-df 
 scrub min-ttl 10
