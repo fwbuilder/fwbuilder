@@ -125,7 +125,10 @@ public:
     std::string set_state_policy;
     std::string set_skip_on;
     std::string set_debug;
-    
+
+    std::list<str_tuple> scrub_options;
+    bool scrub_rule;
+
     PFImporter(libfwbuilder::FWObject *lib,
                 std::istringstream &input,
                 libfwbuilder::Logger *log,

@@ -433,4 +433,37 @@ void PFImporterTest::setTimeoutCommands()
 //                    "pf-timeouts.fwb");
 }
 
+void PFImporterTest::scrubCommandsOld()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-scrub-commands-old.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    compareResults(logger,
+                   "test_data/pf-scrub-commands-old.output",
+                   "pf-scrub-commands-old.output");
+}
+
+void PFImporterTest::scrubCommandsNew()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-scrub-commands-new.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    compareResults(logger,
+                   "test_data/pf-scrub-commands-new.output",
+                   "pf-scrub-commands-new.output");
+}
+
+
 

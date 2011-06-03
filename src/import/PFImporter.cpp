@@ -150,6 +150,8 @@ void PFImporter::clear()
     // they is filled when we parse "set timeout", "set limit"
     // commands and then used in finalize() 
 
+    scrub_rule = false;
+
     Importer::clear();
 }
 
@@ -1141,6 +1143,53 @@ Firewall* PFImporter::finalize()
         {
             options->setStr("pf_set_debug", set_debug);
             addMessageToLog(QString("set debug %1\n").arg(set_debug.c_str()));
+        }
+
+        // Scrub options
+        if (scrub_options.size() > 0)
+        {
+            options->setBool("pf_do_scrub", true);
+
+            list<str_tuple>::iterator it;
+            for (it=scrub_options.begin(); it!=scrub_options.end(); ++it)
+            {        
+                string name = it->first;
+                string arg = it->second;
+
+                addMessageToLog(QString("scrub %1 %2\n")
+                                .arg(name.c_str()).arg(arg.c_str()));
+
+                if (name == "fragment")
+                {
+                    if (arg == "reassemble")
+                        options->setBool("pf_scrub_reassemble", true);
+                    if (arg == "crop")
+                        options->setBool("pf_scrub_fragm_crop", true);
+                    if (arg == "drop-ovl")
+                        options->setBool("pf_scrub_fragm_drop_ovl", true);
+                }
+
+                if (name == "reassemble")
+                    options->setBool("pf_scrub_reassemble_tcp", true);
+
+                if (name == "no-df")
+                    options->setBool("pf_scrub_no_df", true);
+
+                if (name == "min-ttl")
+                {
+                    options->setBool("pf_scrub_use_minttl", true);
+                    options->setStr("pf_scrub_minttl", arg);
+                }
+
+                if (name == "max-mss")
+                {
+                    options->setBool("pf_scrub_use_maxmss", true);
+                    options->setStr("pf_scrub_maxmss", arg);
+                }
+
+                if (name == "random-id")
+                    options->setBool("pf_scrub_random_id", true);
+            }
         }
 
         return fw;

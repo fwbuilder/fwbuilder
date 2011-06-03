@@ -69,6 +69,8 @@ public:
     void natCommands();
     void rdrCommands();
     void setTimeoutCommands();
+    void scrubCommandsOld();
+    void scrubCommandsNew();
     
     CPPUNIT_TEST_SUITE(PFImporterTest);
 
@@ -83,6 +85,8 @@ public:
     CPPUNIT_TEST(natCommands);
     CPPUNIT_TEST(rdrCommands);
     CPPUNIT_TEST(setTimeoutCommands);
+    CPPUNIT_TEST(scrubCommandsOld);
+    CPPUNIT_TEST(scrubCommandsNew);
     
     CPPUNIT_TEST_SUITE_END();
 

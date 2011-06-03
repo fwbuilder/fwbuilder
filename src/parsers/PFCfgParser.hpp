@@ -97,6 +97,7 @@ public:
 	public: void queue_rule();
 	public: void set_rule();
 	public: void scrub_rule();
+	public: void match_rule();
 	public: void table_rule();
 	public: void no_nat_rule();
 	public: void nat_rule();
@@ -122,6 +123,7 @@ public:
 	public: void timeout_def_list();
 	public: void limit_def();
 	public: void limit_def_list();
+	public: void rule_extended();
 	public: void tableaddr_spec();
 	public: void logging();
 	public: void intrface();
@@ -135,7 +137,6 @@ public:
 	public: void portspec();
 	public: void pooltype();
 	public: void port_def();
-	public: void rule_extended();
 	public: void block_return();
 	public: void icmp_code_by_name();
 	public: void direction();
@@ -170,6 +171,10 @@ public:
 	public: void state();
 	public: void queue();
 	public: void label();
+	public: void match_rule_scrub_options();
+	public: void scrub_options();
+	public: void scrub_option();
+	public: void scrub_option_list();
 	public: void icmp_type_code();
 	public: void icmp_list();
 	public: void icmp_type_by_name();
@@ -188,10 +193,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 251;
+	static const int NUM_TOKENS = 259;
 #else
 	enum {
-		NUM_TOKENS = 251
+		NUM_TOKENS = 259
 	};
 #endif
 	
@@ -293,6 +298,16 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_47;
 	static const unsigned long _tokenSet_48_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_48;
+	static const unsigned long _tokenSet_49_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_49;
+	static const unsigned long _tokenSet_50_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_50;
+	static const unsigned long _tokenSet_51_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_51;
+	static const unsigned long _tokenSet_52_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_52;
+	static const unsigned long _tokenSet_53_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_53;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

@@ -126,6 +126,8 @@ cfgfile :
         |
             scrub_rule
         |
+            match_rule
+        |
             table_rule
         |
             no_nat_rule 
@@ -479,10 +481,30 @@ scrub_rule : SCRUB
         {
             importer->clear();
             importer->setCurrentLineNumber(LT(0)->getLine());
-            importer->addMessageToLog(
-                QString("Warning: import of 'scrub' commands has not been implemented yet."));
-            consumeUntil(NEWLINE);
+            importer->newPolicyRule();
+            importer->action = "scrub";
+            *dbg << LT(1)->getLine() << ":" << " scrub ";
         }
+        rule_extended 
+        // do not call pushRule() for scrub rules because we configure
+        // scrub parameters as firewall options
+        NEWLINE
+    ;
+
+//****************************************************************
+match_rule : MATCH
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->newPolicyRule();
+            importer->action = "match";
+            *dbg << LT(1)->getLine() << ":" << " match ";
+        }
+        rule_extended 
+        {
+            if ( ! importer->scrub_rule) importer->pushRule();
+        }
+        NEWLINE
     ;
 
 //****************************************************************
@@ -1272,9 +1294,89 @@ filteropt :
         queue
     |
         label
+    |
+        match_rule_scrub_options
+    |
+        scrub_options
     ;
 
-tcp_flags :
+match_rule_scrub_options
+    :
+        SCRUB scrub_options
+    ;
+
+scrub_options
+    :
+        ( scrub_option | scrub_option_list )
+    ;
+
+scrub_option_list
+    :
+        OPENING_PAREN
+        scrub_option
+        (
+            ( COMMA )?
+            scrub_option
+        )*
+        CLOSING_PAREN
+    ;
+
+scrub_option
+    :
+    (
+        "fragment"
+        (
+            "reassemble"
+        |
+            "crop"
+        |
+            "drop-ovl"
+        )
+        {
+            importer->scrub_options.push_back(
+                str_tuple("fragment", LT(0)->getText()));
+            importer->scrub_rule = true;
+        }
+    |
+        "reassemble" TCP
+        {
+            importer->scrub_options.push_back(
+                str_tuple("reassemble", "tcp"));
+            importer->scrub_rule = true;
+        }
+    |
+        "no-df"
+        {
+            importer->scrub_options.push_back(
+                str_tuple(LT(0)->getText(), ""));
+            importer->scrub_rule = true;
+        }
+    |
+        "min-ttl" INT_CONST
+        {
+            importer->scrub_options.push_back(
+                str_tuple("min-ttl", LT(0)->getText()));
+            importer->scrub_rule = true;
+        }
+    |
+        "max-mss" INT_CONST
+        {
+            importer->scrub_options.push_back(
+                str_tuple("max-mss", LT(0)->getText()));
+            importer->scrub_rule = true;
+        }
+    |
+        "random-id"
+        {
+            importer->scrub_options.push_back(
+                str_tuple(LT(0)->getText(), ""));
+            importer->scrub_rule = true;
+        }
+    )
+    ;
+
+tcp_flags
+    :
     FLAGS
     (
         ANY
@@ -1653,6 +1755,7 @@ tokens
 
     PASS = "pass";
     BLOCK = "block";
+    MATCH = "match";
 
     QUICK = "quick";
 
