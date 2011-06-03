@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20100319): pf.g -> PFCfgParserTokenTypes.txt$
+// $ANTLR 2.7.7 (20090306): pf.g -> PFCfgParserTokenTypes.txt$
 PFCfgParser    // output token vocab name
 NEWLINE=4
 LINE_COMMENT=5

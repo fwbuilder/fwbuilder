@@ -1916,8 +1916,9 @@ NUM_3DIGIT: ('0'..'9') (('0'..'9') ('0'..'9')?)? ;
 protected
 NUM_HEX_4DIGIT: HEX_DIGIT ((HEX_DIGIT) ((HEX_DIGIT) (HEX_DIGIT)?)?)? ;
 
-// IPV6 rule below matches "1000:1010" as IPV6. This is not a valid
-// IPv6 address and it creates problems with port ranges
+// Unfortunately IPV6 rule below matches "1000:1010" or "1024:65535"
+// as IPV6. This is not a valid IPv6 address and it creates problems
+// with port ranges
 //
 NUMBER_ADDRESS_OR_WORD 
 options {
@@ -1929,33 +1930,15 @@ options {
                 ( ( HEX_DIGIT )+ ( ':' ( HEX_DIGIT )* )+ ) { $setType(IPV6); }
             )
 
-    // IPv6 RULE
-    |   (NUM_HEX_4DIGIT ':')=>
+    | ( ':' ) =>
         (
-            ((NUM_HEX_4DIGIT ':')+ ':')=>
-            (
-                (NUM_HEX_4DIGIT ':')+ ':' (NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)*)?
-            )   { $setType(IPV6); }
+            (':' ':' ( HEX_DIGIT )+ ) =>
+                (':' ':' ( HEX_DIGIT )+ (':' ( HEX_DIGIT )+)*) {$setType(IPV6);}
         |
-            ( NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)+ ) { $setType(IPV6);}
-        ) //  { $setType(IPV6); }
+            (':' ':' ) { $setType(IPV6); }
 
-    |   (':' ':' NUM_HEX_4DIGIT)=>
-        ':' ':' NUM_HEX_4DIGIT (':' NUM_HEX_4DIGIT)* { $setType(IPV6); }
-
-    |   ':' ':' { $setType(IPV6); }
-
-    |   ':' { $setType(COLON); }
-
-    // | ( ':' ) =>
-    //     (
-    //         (':' ':' ( HEX_DIGIT )+ ) =>
-    //             (':' ':' ( HEX_DIGIT )+ (':' ( HEX_DIGIT )+)*) { $setType(IPV6); }
-    //     |
-    //         (':' ':' ) { $setType(IPV6); }
-
-    //     |   ':' { $setType(COLON); }
-    //     )
+        |   ':' { $setType(COLON); }
+        )
 
     | ( NUM_3DIGIT '.' NUM_3DIGIT '.' ) =>
             (NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT '.' NUM_3DIGIT)
@@ -1967,17 +1950,15 @@ options {
     | ( DIGIT )+ { $setType(INT_CONST); }
 
 
-    |
-
 // making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD do
 // not start WORD with '$' since we expand macros in PFImporterRun
 // using regex.
 // double quote " should be included, without it STRING does not match
 
-        ( 'a'..'z' | 'A'..'Z' )
-        ( '"' | '$' | '%' | '&' | '-' | '.' | '0'..'9' | ';' |
-          '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
-        { $setType(WORD); }
+    | ( 'a'..'z' | 'A'..'Z' )
+      ( '"' | '$' | '%' | '&' | '-' | '.' | '0'..'9' | ';' |
+        '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
+      { $setType(WORD); }
     ;
 
 STRING : '"' (~'"')* '"';

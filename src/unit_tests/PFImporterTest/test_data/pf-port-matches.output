@@ -10,12 +10,13 @@
 15: filtering rule: action pass; interfaces: 
 15: Error: 'except ranges' ('<>') for port numbers are not supported yet.
 18: filtering rule: action pass; interfaces: 
-19: filtering rule: action pass; interfaces: 
-20: filtering rule: action pass; interfaces: 
 21: filtering rule: action pass; interfaces: 
 22: filtering rule: action pass; interfaces: 
 23: filtering rule: action pass; interfaces: 
 24: filtering rule: action pass; interfaces: 
 25: filtering rule: action pass; interfaces: 
+26: filtering rule: action pass; interfaces: 
+27: filtering rule: action pass; interfaces: 
+28: filtering rule: action pass; interfaces: 
 Could not find enough information in the data file to create firewall interface objects.
 
