@@ -206,10 +206,10 @@ void IC_ProgressPage::importerFinished()
             int host_os_idx = field("hostOS").toInt();
             int version_idx = field("version").toInt();
 
-            QString hostOS = wz->host_os_list.at( host_os_idx );
-            QString version = wz->version_list.at( version_idx );
+            QString hostOS = wz->host_os_list.at( host_os_idx ).toLower();
+            QString version = wz->version_list.at( version_idx ).toLower();
 
-            if ( ! hostOS.isEmpty()) fw->setStr("hostOS", hostOS.toStdString());
+            if ( ! hostOS.isEmpty()) fw->setStr("host_OS", hostOS.toStdString());
             if ( ! version.isEmpty()) fw->setStr("version", version.toStdString());
         }
 
