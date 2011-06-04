@@ -1,11 +1,11 @@
-19: Error: import of 'set fingerprints' commands is not supported.
-20: Error: import of 'set hostid' commands is not supported.
-21: Error: import of 'set loginterface' commands is not supported.
-22: Error: import of 'set reassemble' commands is not supported.
-23: Error: import of 'set require-order' commands is not supported.
-24: Error: import of 'set ruleset-optimization' commands is not supported.
-25: Error: import of 'set state-defaults' commands is not supported.
-27: filtering rule: action block; interfaces: 
+22: Error: import of 'set fingerprints' commands is not supported.
+23: Error: import of 'set hostid' commands is not supported.
+24: Error: import of 'set loginterface' commands is not supported.
+25: Error: import of 'set reassemble' commands is not supported.
+26: Error: import of 'set require-order' commands is not supported.
+27: Error: import of 'set ruleset-optimization' commands is not supported.
+28: Error: import of 'set state-defaults' commands is not supported.
+30: filtering rule: action block; interfaces: 
 Could not find enough information in the data file to create firewall interface objects.
 
 Configuring limits:
@@ -18,4 +18,7 @@ set optimization high-latency
 set block-policy return
 set state-policy if-bound
 New interface: lo0set skip on lo0
+New interface: em0set skip on em0
+New interface: pcn0set skip on pcn0
+New interface: pcn1set skip on pcn1
 set debug crit
