@@ -495,15 +495,21 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
             intf = getInterfaceByName(as.address);
         }
 
-        string name = intf->getName() + "-net";
-        ObjectMaker maker(Library::cast(library), error_tracker);
-        AttachedNetworks *an =
-            AttachedNetworks::cast(
-                maker.createObject(intf, AttachedNetworks::TYPENAME, name));
-        an->setRunTime(true);
-        an->setSourceName(intf->getName());
-        address_table_registry[name.c_str()] = an;
-        return an;
+        FWObject *o = intf->getFirstByType(AttachedNetworks::TYPENAME);
+        if ( o != NULL )
+        {
+            return o;
+        } else {
+            ObjectMaker maker(Library::cast(library), error_tracker);
+            string name = intf->getName() + "-net";
+            AttachedNetworks *an =
+                AttachedNetworks::cast(
+                    maker.createObject(intf, AttachedNetworks::TYPENAME, name));
+            an->setRunTime(true);
+            an->setSourceName(intf->getName());
+            address_table_registry[name.c_str()] = an;
+            return an;
+        }
     }
 
     if (as.at == AddressSpec::INTERFACE_BROADCAST)
