@@ -7,12 +7,12 @@ scrub in all fragment reassemble
 
 # 
 # Rule  0 (NAT)
-nat on  le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
-nat on  enc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.2.1 
+nat on  le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (le0) 
+nat on  enc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (enc1) 
 # 
 # Rule  1 (NAT)
-nat on  le0 from 192.168.1.0/24 to any tagged ipsec_tag -> 192.168.1.1 
-nat on  enc1 from 192.168.1.0/24 to any tagged ipsec_tag -> 192.168.2.1 
+nat on  le0 from 192.168.1.0/24 to any tagged ipsec_tag -> (le0) 
+nat on  enc1 from 192.168.1.0/24 to any tagged ipsec_tag -> (enc1) 
 
 # 
 # Rule  0 (le0)

@@ -11,7 +11,7 @@ match out all scrub (random-id min-ttl  1 max-mss  1460)
 # firewall92:NAT:2: error: No translation rules are not supported for PF 4.7, use negation to implement exclusions
 # 
 # Rule  0 (NAT)
-match out on  em0 proto {tcp udp icmp} from 10.1.1.0/24 to any nat-to 10.3.14.81 
+match out on  em0 proto {tcp udp icmp} from 10.1.1.0/24 to any nat-to (em0) 
 # 
 # Rule  1 (NAT)
 match in on  em0 proto udp from ! 10.3.14.41 to 10.3.14.81 port 161 rdr-to 10.1.1.1 port 161 
@@ -20,7 +20,7 @@ match in on  em0 proto udp from ! 10.3.14.41 to 10.3.14.81 port 161 rdr-to 10.1.
 match in on  em0 proto udp from any to 10.3.14.81 port 161 rdr-to 10.1.1.1 port 161 
 # 
 # Rule  4 (NAT)
-match out on  em1 proto {tcp udp icmp} from 10.1.1.0/24 to any nat-to 10.3.14.81 
+match out on  em1 proto {tcp udp icmp} from 10.1.1.0/24 to any nat-to (em0) 
 # 
 # Rule  5 (NAT)
 match out on ! em0 proto {tcp udp icmp} from 10.1.1.0/24 to any nat-to 10.3.14.201 

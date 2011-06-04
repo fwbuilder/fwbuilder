@@ -87,6 +87,10 @@ namespace fwcompiler
 
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
+	virtual void _expand_addr(libfwbuilder::Rule *rule,
+                                  libfwbuilder::FWObject *s,
+                                  bool expand_cluster_interfaces_fully);
+
         /**
          * analyse given address and decide which interface this NAT
          * rule should be tied to. If interface is found, use

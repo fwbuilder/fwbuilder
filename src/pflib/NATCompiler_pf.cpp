@@ -119,6 +119,39 @@ string NATCompiler_pf::debugPrintRule(libfwbuilder::Rule *r)
         " (type=" + rule->getRuleTypeAsString() + ")";
 }
 
+void NATCompiler_pf::_expand_addr(Rule *rule,
+                                  FWObject *s,
+                                  bool expand_cluster_interfaces_fully)
+{
+    if (RuleElementTSrc::isA(s))
+    {
+        // do not replace interfaces with their ip addresses in TSrc
+        // to be able to generate "nat ... -> (em0)" command later
+        list<FWObject*> interfaces_in_re;
+        for (FWObject::iterator i1=s->begin(); i1!=s->end(); ++i1) 
+        {
+            FWObject *o = FWReference::getObject(*i1);
+            assert(o);
+            if (Interface::isA(o))
+                interfaces_in_re.push_back(o);
+        }
+        if (interfaces_in_re.size() > 1)
+        {
+            for (list<FWObject*>::iterator i=interfaces_in_re.begin();
+                 i!=interfaces_in_re.end(); ++i) s->removeRef(*i);
+
+            NATCompiler::_expand_addr(
+                rule, s, expand_cluster_interfaces_fully);
+
+            for (list<FWObject*>::iterator i=interfaces_in_re.begin();
+                 i!=interfaces_in_re.end(); ++i) s->addRef(*i);
+
+        }
+    } else
+        NATCompiler::_expand_addr(
+            rule, s, expand_cluster_interfaces_fully);
+}
+
 bool NATCompiler_pf::NATRuleType::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;

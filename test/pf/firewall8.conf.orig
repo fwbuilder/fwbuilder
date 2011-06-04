@@ -8,12 +8,12 @@ table <tbl.r4.d> { 33.33.33.33 , 33.33.33.34 }
 
 # 
 # Rule  0 (NAT)
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 33.33.33.33 , 33.33.33.34 } 
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 192.168.1.1 
+nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth1) 
+nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth0) 
 nat on  ppp0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (ppp0) 
 # 
 # Rule  1 (NAT)
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 33.33.33.33 , 33.33.33.34 } 
+nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth1) 
 # 
 # Rule  2 (NAT)
 nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 33.33.33.33 
@@ -34,7 +34,7 @@ rdr on  eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22
 rdr on  eth1 proto tcp from any to 33.33.33.34 port 22 -> 192.168.1.100 port 22 
 # 
 # Rule  8 (NAT)
-rdr proto tcp from 192.168.1.0/24 to any port 80 -> 33.33.33.34 port 80 
+rdr proto tcp from 192.168.1.0/24 to any port 80 -> (eth1) port 80 
 
 # 
 # Rule  0 (global)

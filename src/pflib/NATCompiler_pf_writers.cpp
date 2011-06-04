@@ -521,12 +521,8 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
 
     if (Interface::cast(o)!=NULL)
     {
-        Interface *iface=Interface::cast(o);
-        if (iface->isDyn())
-        {
-            compiler->output << "(" << iface->getName() << ") ";
-            return;
-        }
+        compiler->output << "(" << o->getName() << ") ";
+        return;
     }
 
     Address *a = Address::cast(o);

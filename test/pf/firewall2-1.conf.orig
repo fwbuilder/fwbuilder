@@ -53,7 +53,7 @@ no nat proto tcp from any to 22.22.22.22
 no rdr proto tcp from any to 22.22.22.22 
 # 
 # Rule  11 (NAT)
-rdr proto tcp from any to 22.22.22.22 port 1080 -> { 192.168.1.10 , 192.168.1.20 } port 1080 
+rdr proto tcp from any to (eth1) port 1080 -> { 192.168.1.10 , 192.168.1.20 } port 1080 
 # 
 # Rule  14 (NAT)
 nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/28 
