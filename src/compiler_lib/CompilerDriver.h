@@ -283,6 +283,8 @@ public:
         static QString getConfFileNameFromFwFileName(const QString &file_name,
                                                      const QString &ext);
         
+	void setDebugRule(int dr)  { drp = drn = dr; rule_debug_on = true; }
+
     };
 
 };

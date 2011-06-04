@@ -152,7 +152,11 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
 
     // run in test mode to prevent fatal errors from causing exit
     dr->setTestMode();
-    dr->setEmbeddedMode();
+
+    if (fwbdebug)
+        dr->setDebugRule(rule->getPosition());
+    else
+        dr->setEmbeddedMode();
 
     try
     {

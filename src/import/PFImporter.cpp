@@ -848,6 +848,8 @@ void PFImporter::pushNATRule()
     if (action=="rdr")   rule->setRuleType(NATRule::DNAT);
     if (action=="nonat") rule->setRuleType(NATRule::NONAT);
 
+    rule->setAction(NATRule::Translate);
+
     // remember that even though NATRule has two interface rule elements
     // ("in" and "out"), compiler for PF only uses one, the "outbound" one.
     QStringList interfaces;
@@ -894,6 +896,13 @@ void PFImporter::pushNATRule()
     if (nat_rule_opt_1 == "round-robin") ropt->setBool("pf_round_robin", true);
 
     if (nat_rule_opt_2 == "static-port") ropt->setBool("pf_static_port", true);
+
+    // reset rule type. Rule type is used internally by the compilers
+    // and is not stored in the object permanently. Rule type assigned
+    // by the compiler may actually differ from what we use here
+    // (e.g. some DNAT rules are identified as LB -- load balancing --
+    // rules by compilers)
+    rule->setRuleType(NATRule::Unknown);
 
     // then add it to the current ruleset
     ruleset->add(current_rule);

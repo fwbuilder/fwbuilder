@@ -209,6 +209,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
     Cluster *cluster = NULL;
     Firewall *fw = NULL;
 
+
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
     try
