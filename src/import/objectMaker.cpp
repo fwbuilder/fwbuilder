@@ -814,7 +814,7 @@ QString ObjectSignature::toString() const
         type_name == ObjectGroup::TYPENAME)
         sig << group_children_ids;
 
-    return sig.join("| |");
+    return sig.join("||");
 }
 
 void* ObjectSignature::dispatch(Network *obj, void*)
@@ -935,6 +935,10 @@ void* ObjectSignature::dispatch(TCPService *obj, void*)
 
     flags = obj->getAllTCPFlagMasks();
     for (it=flags.begin(); it!=flags.end(); ++it) flags_mask << *it;
+
+    qSort(flags_comp);
+    qSort(flags_mask);
+
     return this;
 }
 
@@ -1028,18 +1032,18 @@ void ObjectMaker::clear()
 
 FWObject* ObjectMaker::findMatchingObject(const ObjectSignature &sig)
 {
-    QString signature = sig.toString();
+    QString sig_str = sig.toString();
 
     if ( ! sig.object_name.isEmpty())
     {
-        if (named_object_registry.count(signature) > 0)
+        if (named_object_registry.count(sig_str) > 0)
             return library->getRoot()->findInIndex(
-                named_object_registry[signature]);
+                named_object_registry[sig_str]);
         return NULL;
     }
 
-    if (anon_object_registry.count(signature) > 0)
-        return library->getRoot()->findInIndex(anon_object_registry[signature]);
+    if (anon_object_registry.count(sig_str) > 0)
+        return library->getRoot()->findInIndex(anon_object_registry[sig_str]);
 
     return NULL;
 }

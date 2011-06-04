@@ -83,8 +83,7 @@ FWObject* ServiceObjectMaker::createObject(ObjectSignature &sig)
 
     FWObject *obj = findMatchingObject(sig);
 
-    // qDebug() << "Create object " << sig.toString()
-    //          << " obj=" << obj;
+    // qDebug() << "Create object " << sig.toString() << " obj=" << obj;
 
     if (obj) return obj;
 
