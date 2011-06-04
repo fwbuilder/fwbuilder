@@ -870,13 +870,6 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
     
     if (fwosm->selectedObject!=NULL)
     {
-        // #1731 do not open object "any" in the editor and in the tree
-        if ((colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time) &&
-            (fwosm->selectedObject->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-             fwosm->selectedObject->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
-             fwosm->selectedObject->getId() == FWObjectDatabase::ANY_INTERVAL_ID))
-            return;
-
         QCoreApplication::postEvent(
             mw,
             new showObjectInTreeEvent(
@@ -890,13 +883,6 @@ void RuleSetView::editSelected(const QModelIndex& index)
 {
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
     FWObject *obj = fwosm->selectedObject;
-
-    // #1731 do not open object "any" in the editor and in the tree
-    // if ((colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time) &&
-    //     (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-    //      obj->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
-    //      obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID))
-    //     return;
 
     if (!mw->isEditorVisible()) mw->showEditor();
     switchObjectInEditor(index);

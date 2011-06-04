@@ -1,3 +1,12 @@
+2011-06-04  vadim  <vadim@netcitadel.com>
+
+	* RuleSetView.cpp (itemDoubleClicked): as part of the GUI
+	usability improvements, its behavior when user double clicks on
+	"any" in a rule has changed. Now the program opens object "any" in
+	the editor and shows prompt text that explains its behavior.  The
+	editor stays read-only and should appear grayed-out if palette
+	is set up for that. This reverses the change made for #1731. See #2454.
+
 2011-06-03  vadim  <vadim@netcitadel.com>
 
 	* applied patch to provide configure command line option to specify
