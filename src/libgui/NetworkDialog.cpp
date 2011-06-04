@@ -72,42 +72,56 @@ void NetworkDialog::getHelpName(QString *str)
 
 void NetworkDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
+    obj = o;
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=NULL);
     
-    init=true;
-
-    m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
-    m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    init = true;
 
     // See #893 No need to show address and mask 0.0.0.0 to the user
     // if the object is "Any", especially because the same object is
     // used as "any" for both ipv4 and ipv6 rules. It can be confusing
     // if they see address "0.0.0.0" while they want to find object
     // "any" for ipv6.
+    
+    // see also #2454, trying to do even more handholding for users
+    // who do not understand what "any" means in a rule.
+
     if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID)
+    {
         m_dialog->object_attributes->hide();
-    else
+        m_dialog->comment->setText(
+            QObject::tr(
+                "When used in the Source or Destination field of a rule, "
+                "the Any object will match all "
+                "IP addresses. To update your rule to match only specific "
+                "IP addresses, drag-and-drop an object from "
+                "the Object tree into the field in the rule."));
+        m_dialog->comment->setReadOnly(true);
+        setDisabledPalette(m_dialog->comment);
+    } else
+    {
+        m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
+        m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
+        m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
+        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+
         m_dialog->object_attributes->show();
 
+        m_dialog->obj_name->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->obj_name);
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->obj_name);
+        m_dialog->address->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->address);
 
-    m_dialog->address->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->address);
+        m_dialog->netmask->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->netmask);
 
-    m_dialog->netmask->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->netmask);
+        m_dialog->comment->setReadOnly(o->isReadOnly());
+        setDisabledPalette(m_dialog->comment);
+    }
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-
-    init=false;
+    init = false;
 }
 
 void NetworkDialog::validate(bool *result)

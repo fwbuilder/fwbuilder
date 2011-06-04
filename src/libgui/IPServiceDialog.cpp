@@ -90,35 +90,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
     IPService *s = dynamic_cast<IPService*>(obj);
     assert(s!=NULL);
 
-    init=true;
-
-    m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->protocolNum->setValue( s->getProtocolNumber() );
-    m_dialog->any_opt->setChecked( s->getBool("any_opt") );
-    m_dialog->lsrr->setChecked( s->getBool("lsrr") );
-    m_dialog->ssrr->setChecked( s->getBool("ssrr") );
-    m_dialog->rr->setChecked( s->getBool("rr") );
-    m_dialog->timestamp->setChecked( s->getBool("ts") );
-    m_dialog->all_fragments->setChecked( s->getBool("fragm") );
-    m_dialog->short_fragments->setChecked( s->getBool("short_fragm") );
-    m_dialog->router_alert->setChecked( s->getBool("rtralt") );
-
-    string tos = s->getTOSCode();
-    string dscp = s->getDSCPCode();
-
-    if (!dscp.empty())
-    {
-        m_dialog->use_dscp->setChecked(true);  
-        m_dialog->code->setText(dscp.c_str());
-    }
-    else
-    {
-        m_dialog->use_tos->setChecked(true);    
-        m_dialog->code->setText(tos.c_str());
-    }
-    setCodeLabel();
-
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    init = true;
 
     //apply->setEnabled( false );
 
@@ -128,49 +100,89 @@ void IPServiceDialog::loadFWObject(FWObject *o)
         m_dialog->object_attributes_1->hide();
         m_dialog->object_attributes_2->hide();
         m_dialog->object_attributes_3->hide();
+
+        m_dialog->comment->setText(
+            QObject::tr(
+                "When used in the Service field of a rule, "
+                "the Any object will match all "
+                "IP, ICMP, TCP or UDP services. To update your rule to "
+                "match only specific "
+                "service, drag-and-drop an object from "
+                "the Object tree into the field in the rule."));
+
+        m_dialog->comment->setReadOnly(true);
+        setDisabledPalette(m_dialog->comment);
     } else
     {
+        m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
+        m_dialog->protocolNum->setValue( s->getProtocolNumber() );
+        m_dialog->any_opt->setChecked( s->getBool("any_opt") );
+        m_dialog->lsrr->setChecked( s->getBool("lsrr") );
+        m_dialog->ssrr->setChecked( s->getBool("ssrr") );
+        m_dialog->rr->setChecked( s->getBool("rr") );
+        m_dialog->timestamp->setChecked( s->getBool("ts") );
+        m_dialog->all_fragments->setChecked( s->getBool("fragm") );
+        m_dialog->short_fragments->setChecked( s->getBool("short_fragm") );
+        m_dialog->router_alert->setChecked( s->getBool("rtralt") );
+
+        string tos = s->getTOSCode();
+        string dscp = s->getDSCPCode();
+
+        if (!dscp.empty())
+        {
+            m_dialog->use_dscp->setChecked(true);  
+            m_dialog->code->setText(dscp.c_str());
+        }
+        else
+        {
+            m_dialog->use_tos->setChecked(true);    
+            m_dialog->code->setText(tos.c_str());
+        }
+        setCodeLabel();
+
+        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+
         m_dialog->object_attributes_1->show();
         m_dialog->object_attributes_2->show();
         m_dialog->object_attributes_3->show();
+
+        m_dialog->obj_name->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->obj_name);
+
+        m_dialog->protocolNum->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->protocolNum);
+
+        m_dialog->any_opt->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->any_opt);
+
+        m_dialog->lsrr->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->lsrr);
+
+        m_dialog->ssrr->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->ssrr);
+
+        m_dialog->rr->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->rr);
+
+        m_dialog->timestamp->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->timestamp);
+
+        m_dialog->router_alert->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->router_alert);
+
+        m_dialog->all_fragments->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->all_fragments);
+
+        m_dialog->short_fragments->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->short_fragments);
+
+        m_dialog->comment->setReadOnly(o->isReadOnly());
+        setDisabledPalette(m_dialog->comment);
+
+        anyOptionsStateChanged();
     }
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->protocolNum->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->protocolNum);
-
-    m_dialog->any_opt->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->any_opt);
-
-    m_dialog->lsrr->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->lsrr);
-
-    m_dialog->ssrr->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->ssrr);
-
-    m_dialog->rr->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->rr);
-
-    m_dialog->timestamp->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->timestamp);
-
-    m_dialog->router_alert->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->router_alert);
-
-    m_dialog->all_fragments->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->all_fragments);
-
-    m_dialog->short_fragments->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->short_fragments);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-    anyOptionsStateChanged();
-
-    init=false;
+    init = false;
 }
 
 void IPServiceDialog::changed()
