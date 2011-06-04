@@ -638,12 +638,27 @@ AC_SUBST(DATADIR)
 AC_SUBST(MANDIR)
 AC_SUBST(ICONSDIR)
 
-AC_PATH_PROG(CCACHE, ccache, , )
-AC_SUBST(CCACHE)
+AC_ARG_WITH(ccache,[  --with-ccache=yes      Use ccache to speed up repeated compilation])
 
-if test -n "$CCACHE"
-then
+if test -n "$with_ccache"; then
+  if test "x$with_ccache" != "xno"; then
+    AC_PATH_PROG(CCACHE, ccache, , )
+    AC_SUBST(CCACHE)
+    if test -n "$CCACHE"
+    then
+      ccache -s
+    fi
+  else
+    CCACHE=""
+    AC_SUBST(CCACHE)
+  fi
+else
+  AC_PATH_PROG(CCACHE, ccache, , )
+  AC_SUBST(CCACHE)
+  if test -n "$CCACHE"
+  then
         ccache -s
+  fi
 fi
 
 AC_ARG_WITH(distcc,[  --with-distcc=N        Use distcc with N parallel make count])

@@ -1,5 +1,8 @@
 2011-06-03  vadim  <vadim@netcitadel.com>
 
+	* applied patch to provide configure command line option to specify
+	path to ccache. Thanks to user "a. k. huettel " on SourceForge.
+
 	* NATCompiler_pf.cpp (_expand_addr): see #2455 NAT Compiler for PF
 	should use "(interface)" syntax to the right of "->" in NAT rules.
 	This now works for all interfaces, including those that have ip
