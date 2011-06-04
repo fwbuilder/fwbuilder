@@ -123,6 +123,8 @@ public:
 	public: void timeout_def_list();
 	public: void limit_def();
 	public: void limit_def_list();
+	public: void skip_def();
+	public: void skip_list();
 	public: void rule_extended();
 	public: void tableaddr_spec();
 	public: void logging();

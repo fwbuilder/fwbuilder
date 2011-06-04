@@ -342,7 +342,7 @@ void PFCfgParser::scrub_rule() {
 	
 	try {      // for error handling
 		match(SCRUB);
-#line 481 "pf.g"
+#line 497 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -365,7 +365,7 @@ void PFCfgParser::match_rule() {
 	
 	try {      // for error handling
 		match(MATCH);
-#line 496 "pf.g"
+#line 512 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -375,7 +375,7 @@ void PFCfgParser::match_rule() {
 		
 #line 377 "PFCfgParser.cpp"
 		rule_extended();
-#line 504 "pf.g"
+#line 520 "pf.g"
 		
 		if ( ! importer->scrub_rule) importer->pushRule();
 		
@@ -395,7 +395,7 @@ void PFCfgParser::table_rule() {
 	
 	try {      // for error handling
 		match(TABLE);
-#line 513 "pf.g"
+#line 529 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -472,7 +472,7 @@ void PFCfgParser::table_rule() {
 			match(FILE);
 			file = LT(1);
 			match(STRING);
-#line 525 "pf.g"
+#line 541 "pf.g"
 			
 			importer->newAddressTableObject(
 			name->getText(), file->getText());
@@ -512,14 +512,14 @@ void PFCfgParser::table_rule() {
 					tableaddr_spec();
 				}
 				else {
-					goto _loop51;
+					goto _loop57;
 				}
 				
 			}
-			_loop51:;
+			_loop57:;
 			} // ( ... )*
 			match(CLOSING_BRACE);
-#line 537 "pf.g"
+#line 553 "pf.g"
 			
 			importer->newAddressTableObject(
 			name->getText(), importer->tmp_group);
@@ -530,7 +530,7 @@ void PFCfgParser::table_rule() {
 		case NEWLINE:
 		{
 			match(NEWLINE);
-#line 543 "pf.g"
+#line 559 "pf.g"
 			
 			// Special case: table definition without file name or list of addresses.
 			// Create run-time AddressTable object with name but no file spec.
@@ -557,7 +557,7 @@ void PFCfgParser::no_nat_rule() {
 	
 	try {      // for error handling
 		match(NO);
-#line 618 "pf.g"
+#line 634 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -596,7 +596,7 @@ void PFCfgParser::nat_rule() {
 	
 	try {      // for error handling
 		match(NAT);
-#line 635 "pf.g"
+#line 651 "pf.g"
 		
 		if ( importer->action != "nonat" )
 		{
@@ -613,7 +613,7 @@ void PFCfgParser::nat_rule() {
 		case PASS:
 		{
 			match(PASS);
-#line 647 "pf.g"
+#line 663 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat pass' commands is not supported."));
@@ -773,7 +773,7 @@ void PFCfgParser::nat_rule() {
 		case TAG:
 		{
 			tag_clause();
-#line 660 "pf.g"
+#line 676 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat ... tag' commands is not supported."));
@@ -818,7 +818,7 @@ void PFCfgParser::nat_rule() {
 			}
 			}
 			}
-#line 668 "pf.g"
+#line 684 "pf.g"
 			
 			importer->nat_group = importer->tmp_group;
 			
@@ -828,7 +828,7 @@ void PFCfgParser::nat_rule() {
 			case PORT:
 			{
 				portspec();
-#line 673 "pf.g"
+#line 689 "pf.g"
 				
 				importer->nat_port_group = importer->tmp_port_group;
 				
@@ -876,7 +876,7 @@ void PFCfgParser::nat_rule() {
 			case STATIC_PORT:
 			{
 				match(STATIC_PORT);
-#line 679 "pf.g"
+#line 695 "pf.g"
 				importer->nat_rule_opt_2 = "static-port";
 #line 882 "PFCfgParser.cpp"
 				break;
@@ -903,7 +903,7 @@ void PFCfgParser::nat_rule() {
 		}
 		}
 		}
-#line 682 "pf.g"
+#line 698 "pf.g"
 		
 		importer->pushRule();
 		
@@ -921,7 +921,7 @@ void PFCfgParser::rdr_rule() {
 	
 	try {      // for error handling
 		match(RDR);
-#line 691 "pf.g"
+#line 707 "pf.g"
 		
 		if ( importer->action != "nonat" )
 		{
@@ -938,7 +938,7 @@ void PFCfgParser::rdr_rule() {
 		case PASS:
 		{
 			match(PASS);
-#line 703 "pf.g"
+#line 719 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat pass' commands is not supported."));
@@ -1098,7 +1098,7 @@ void PFCfgParser::rdr_rule() {
 		case TAG:
 		{
 			tag_clause();
-#line 716 "pf.g"
+#line 732 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat ... tag' commands is not supported."));
@@ -1143,7 +1143,7 @@ void PFCfgParser::rdr_rule() {
 			}
 			}
 			}
-#line 724 "pf.g"
+#line 740 "pf.g"
 			
 			importer->nat_group = importer->tmp_group;
 			
@@ -1153,7 +1153,7 @@ void PFCfgParser::rdr_rule() {
 			case PORT:
 			{
 				portspec();
-#line 729 "pf.g"
+#line 745 "pf.g"
 				
 				importer->nat_port_group = importer->tmp_port_group;
 				
@@ -1206,7 +1206,7 @@ void PFCfgParser::rdr_rule() {
 		}
 		}
 		}
-#line 735 "pf.g"
+#line 751 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1224,7 +1224,7 @@ void PFCfgParser::binat_rule() {
 	
 	try {      // for error handling
 		match(BINAT);
-#line 867 "pf.g"
+#line 883 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1245,7 +1245,7 @@ void PFCfgParser::pass_rule() {
 	
 	try {      // for error handling
 		match(PASS);
-#line 890 "pf.g"
+#line 906 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1255,7 +1255,7 @@ void PFCfgParser::pass_rule() {
 		
 #line 1257 "PFCfgParser.cpp"
 		rule_extended();
-#line 898 "pf.g"
+#line 914 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1273,7 +1273,7 @@ void PFCfgParser::block_rule() {
 	
 	try {      // for error handling
 		match(BLOCK);
-#line 905 "pf.g"
+#line 921 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1337,7 +1337,7 @@ void PFCfgParser::block_rule() {
 		}
 		}
 		rule_extended();
-#line 914 "pf.g"
+#line 930 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1357,9 +1357,6 @@ void PFCfgParser::set_timeout() {
 		match(TIMEOUT);
 		{
 		switch ( LA(1)) {
-		case 36:
-		case 37:
-		case 38:
 		case 39:
 		case 40:
 		case 41:
@@ -1371,11 +1368,14 @@ void PFCfgParser::set_timeout() {
 		case 47:
 		case 48:
 		case 49:
+		case 50:
+		case 51:
+		case 52:
 		case LITERAL_frag:
 		case LITERAL_interval:
-		case 52:
-		case 53:
-		case 54:
+		case 55:
+		case 56:
+		case 57:
 		{
 			timeout_def();
 			break;
@@ -1657,12 +1657,7 @@ void PFCfgParser::set_skip() {
 	try {      // for error handling
 		match(LITERAL_skip);
 		match(ON);
-		match(WORD);
-#line 334 "pf.g"
-		
-		importer->set_skip_on = LT(0)->getText();
-		
-#line 1666 "PFCfgParser.cpp"
+		skip_def();
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1676,11 +1671,11 @@ void PFCfgParser::set_debug() {
 	try {      // for error handling
 		match(LITERAL_debug);
 		match(WORD);
-#line 342 "pf.g"
+#line 358 "pf.g"
 		
 		importer->set_debug = LT(0)->getText();
 		
-#line 1684 "PFCfgParser.cpp"
+#line 1679 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1693,7 +1688,7 @@ void PFCfgParser::set_reassemble() {
 	
 	try {      // for error handling
 		match(LITERAL_reassemble);
-#line 350 "pf.g"
+#line 366 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1701,7 +1696,7 @@ void PFCfgParser::set_reassemble() {
 		QString("Error: import of 'set reassemble' commands is not supported."));
 		consumeUntil(NEWLINE);
 		
-#line 1705 "PFCfgParser.cpp"
+#line 1700 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1714,7 +1709,7 @@ void PFCfgParser::set_hostid() {
 	
 	try {      // for error handling
 		match(LITERAL_hostid);
-#line 362 "pf.g"
+#line 378 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1722,7 +1717,7 @@ void PFCfgParser::set_hostid() {
 		QString("Error: import of 'set hostid' commands is not supported."));
 		consumeUntil(NEWLINE);
 		
-#line 1726 "PFCfgParser.cpp"
+#line 1721 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1732,28 +1727,13 @@ void PFCfgParser::set_hostid() {
 
 void PFCfgParser::timeout_def() {
 	Tracer traceInOut(this, "timeout_def");
-#line 380 "pf.g"
+#line 396 "pf.g"
 	std::string timeout_name, timeout_value;
-#line 1738 "PFCfgParser.cpp"
+#line 1733 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
 		switch ( LA(1)) {
-		case 36:
-		{
-			match(36);
-			break;
-		}
-		case 37:
-		{
-			match(37);
-			break;
-		}
-		case 38:
-		{
-			match(38);
-			break;
-		}
 		case 39:
 		{
 			match(39);
@@ -1809,6 +1789,21 @@ void PFCfgParser::timeout_def() {
 			match(49);
 			break;
 		}
+		case 50:
+		{
+			match(50);
+			break;
+		}
+		case 51:
+		{
+			match(51);
+			break;
+		}
+		case 52:
+		{
+			match(52);
+			break;
+		}
 		case LITERAL_frag:
 		{
 			match(LITERAL_frag);
@@ -1819,19 +1814,19 @@ void PFCfgParser::timeout_def() {
 			match(LITERAL_interval);
 			break;
 		}
-		case 52:
+		case 55:
 		{
-			match(52);
+			match(55);
 			break;
 		}
-		case 53:
+		case 56:
 		{
-			match(53);
+			match(56);
 			break;
 		}
-		case 54:
+		case 57:
 		{
-			match(54);
+			match(57);
 			break;
 		}
 		default:
@@ -1840,19 +1835,19 @@ void PFCfgParser::timeout_def() {
 		}
 		}
 		}
-#line 421 "pf.g"
+#line 437 "pf.g"
 		
 		timeout_name = LT(0)->getText();
 		
-#line 1848 "PFCfgParser.cpp"
+#line 1843 "PFCfgParser.cpp"
 		match(INT_CONST);
-#line 425 "pf.g"
+#line 441 "pf.g"
 		
 		timeout_value = LT(0)->getText();
 		importer->timeouts.push_back(
 		std::pair<std::string, std::string>(timeout_name, timeout_value));
 		
-#line 1856 "PFCfgParser.cpp"
+#line 1851 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -1876,9 +1871,6 @@ void PFCfgParser::timeout_def_list() {
 					match(COMMA);
 					break;
 				}
-				case 36:
-				case 37:
-				case 38:
 				case 39:
 				case 40:
 				case 41:
@@ -1890,11 +1882,14 @@ void PFCfgParser::timeout_def_list() {
 				case 47:
 				case 48:
 				case 49:
+				case 50:
+				case 51:
+				case 52:
 				case LITERAL_frag:
 				case LITERAL_interval:
-				case 52:
-				case 53:
-				case 54:
+				case 55:
+				case 56:
+				case 57:
 				{
 					break;
 				}
@@ -1907,11 +1902,11 @@ void PFCfgParser::timeout_def_list() {
 				timeout_def();
 			}
 			else {
-				goto _loop35;
+				goto _loop41;
 			}
 			
 		}
-		_loop35:;
+		_loop41:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -1923,9 +1918,9 @@ void PFCfgParser::timeout_def_list() {
 
 void PFCfgParser::limit_def() {
 	Tracer traceInOut(this, "limit_def");
-#line 443 "pf.g"
+#line 459 "pf.g"
 	std::string limit_name, limit_value;
-#line 1929 "PFCfgParser.cpp"
+#line 1924 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -1961,19 +1956,19 @@ void PFCfgParser::limit_def() {
 		}
 		}
 		}
-#line 456 "pf.g"
+#line 472 "pf.g"
 		
 		limit_name = LT(0)->getText();
 		
-#line 1969 "PFCfgParser.cpp"
+#line 1964 "PFCfgParser.cpp"
 		match(INT_CONST);
-#line 460 "pf.g"
+#line 476 "pf.g"
 		
 		limit_value = LT(0)->getText();
 		importer->limits.push_back(
 		std::pair<std::string, std::string>(limit_name, limit_value));
 		
-#line 1977 "PFCfgParser.cpp"
+#line 1972 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2014,11 +2009,85 @@ void PFCfgParser::limit_def_list() {
 				limit_def();
 			}
 			else {
-				goto _loop41;
+				goto _loop47;
 			}
 			
 		}
-		_loop41:;
+		_loop47:;
+		} // ( ... )*
+		match(CLOSING_BRACE);
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		reportError(ex);
+		recover(ex,_tokenSet_1);
+	}
+}
+
+void PFCfgParser::skip_def() {
+	Tracer traceInOut(this, "skip_def");
+	
+	try {      // for error handling
+		switch ( LA(1)) {
+		case WORD:
+		{
+			match(WORD);
+#line 338 "pf.g"
+			importer->set_skip_on.push_back(LT(0)->getText());
+#line 2037 "PFCfgParser.cpp"
+			break;
+		}
+		case OPENING_BRACE:
+		{
+			skip_list();
+			break;
+		}
+		default:
+		{
+			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
+		}
+		}
+	}
+	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
+		reportError(ex);
+		recover(ex,_tokenSet_1);
+	}
+}
+
+void PFCfgParser::skip_list() {
+	Tracer traceInOut(this, "skip_list");
+	
+	try {      // for error handling
+		match(OPENING_BRACE);
+		match(WORD);
+#line 347 "pf.g"
+		importer->set_skip_on.push_back(LT(0)->getText());
+#line 2065 "PFCfgParser.cpp"
+		{ // ( ... )*
+		for (;;) {
+			if ((LA(1) == WORD || LA(1) == COMMA)) {
+				{ // ( ... )*
+				for (;;) {
+					if ((LA(1) == COMMA)) {
+						match(COMMA);
+					}
+					else {
+						goto _loop31;
+					}
+					
+				}
+				_loop31:;
+				} // ( ... )*
+				match(WORD);
+#line 350 "pf.g"
+				importer->set_skip_on.push_back(LT(0)->getText());
+#line 2084 "PFCfgParser.cpp"
+			}
+			else {
+				goto _loop32;
+			}
+			
+		}
+		_loop32:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -2401,9 +2470,9 @@ void PFCfgParser::rule_extended() {
 
 void PFCfgParser::tableaddr_spec() {
 	Tracer traceInOut(this, "tableaddr_spec");
-#line 551 "pf.g"
+#line 567 "pf.g"
 	AddressSpec as;
-#line 2407 "PFCfgParser.cpp"
+#line 2476 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -2411,9 +2480,9 @@ void PFCfgParser::tableaddr_spec() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 552 "pf.g"
+#line 568 "pf.g"
 			as.neg = true;
-#line 2417 "PFCfgParser.cpp"
+#line 2486 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -2435,13 +2504,13 @@ void PFCfgParser::tableaddr_spec() {
 		case WORD:
 		{
 			match(WORD);
-#line 555 "pf.g"
+#line 571 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
 			as.address = LT(0)->getText();
 			
-#line 2445 "PFCfgParser.cpp"
+#line 2514 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case COLON:
@@ -2452,43 +2521,43 @@ void PFCfgParser::tableaddr_spec() {
 				case NETWORK:
 				{
 					match(NETWORK);
-#line 564 "pf.g"
+#line 580 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_NETWORK;
 					
-#line 2460 "PFCfgParser.cpp"
+#line 2529 "PFCfgParser.cpp"
 					break;
 				}
 				case BROADCAST:
 				{
 					match(BROADCAST);
-#line 569 "pf.g"
+#line 585 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_BROADCAST;
 					
-#line 2470 "PFCfgParser.cpp"
+#line 2539 "PFCfgParser.cpp"
 					break;
 				}
 				case PEER:
 				{
 					match(PEER);
-#line 574 "pf.g"
+#line 590 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:peer' is not supported."));
 					
-#line 2481 "PFCfgParser.cpp"
+#line 2550 "PFCfgParser.cpp"
 					break;
 				}
 				case INT_CONST:
 				{
 					match(INT_CONST);
-#line 580 "pf.g"
+#line 596 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:0' is not supported."));
 					
-#line 2492 "PFCfgParser.cpp"
+#line 2561 "PFCfgParser.cpp"
 					break;
 				}
 				default:
@@ -2500,9 +2569,9 @@ void PFCfgParser::tableaddr_spec() {
 				break;
 			}
 			case WORD:
-			case INT_CONST:
 			case COMMA:
 			case CLOSING_BRACE:
+			case INT_CONST:
 			case EXLAMATION:
 			case SELF:
 			case IPV4:
@@ -2521,12 +2590,12 @@ void PFCfgParser::tableaddr_spec() {
 		case SELF:
 		{
 			match(SELF);
-#line 588 "pf.g"
+#line 604 "pf.g"
 			
 			as.at = AddressSpec::SPECIAL_ADDRESS;
 			as.address = "self";
 			
-#line 2530 "PFCfgParser.cpp"
+#line 2599 "PFCfgParser.cpp"
 			break;
 		}
 		case INT_CONST:
@@ -2556,22 +2625,22 @@ void PFCfgParser::tableaddr_spec() {
 			}
 			}
 			}
-#line 595 "pf.g"
+#line 611 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
 			
-#line 2565 "PFCfgParser.cpp"
+#line 2634 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case SLASH:
 			{
 				match(SLASH);
-#line 601 "pf.g"
+#line 617 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
-#line 2575 "PFCfgParser.cpp"
+#line 2644 "PFCfgParser.cpp"
 				{
 				switch ( LA(1)) {
 				case IPV4:
@@ -2590,17 +2659,17 @@ void PFCfgParser::tableaddr_spec() {
 				}
 				}
 				}
-#line 605 "pf.g"
+#line 621 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
-#line 2598 "PFCfgParser.cpp"
+#line 2667 "PFCfgParser.cpp"
 				break;
 			}
 			case WORD:
-			case INT_CONST:
 			case COMMA:
 			case CLOSING_BRACE:
+			case INT_CONST:
 			case EXLAMATION:
 			case SELF:
 			case IPV4:
@@ -2622,11 +2691,11 @@ void PFCfgParser::tableaddr_spec() {
 		}
 		}
 		}
-#line 610 "pf.g"
+#line 626 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
-#line 2630 "PFCfgParser.cpp"
+#line 2699 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2650,11 +2719,11 @@ void PFCfgParser::logging() {
 		}
 		
 		}
-#line 980 "pf.g"
+#line 996 "pf.g"
 		
 		importer->logging = true;
 		
-#line 2658 "PFCfgParser.cpp"
+#line 2727 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2706,11 +2775,11 @@ void PFCfgParser::address_family() {
 		case INET6:
 		{
 			match(INET6);
-#line 1032 "pf.g"
+#line 1048 "pf.g"
 			
 			importer->address_family = LT(0)->getText();
 			
-#line 2714 "PFCfgParser.cpp"
+#line 2783 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -2746,14 +2815,14 @@ void PFCfgParser::hosts() {
 		case ALL:
 		{
 			match(ALL);
-#line 1075 "pf.g"
+#line 1091 "pf.g"
 			
 			importer->src_group.push_back(
 			AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
 			importer->dst_group.push_back(
 			AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
 			
-#line 2757 "PFCfgParser.cpp"
+#line 2826 "PFCfgParser.cpp"
 			break;
 		}
 		case NEWLINE:
@@ -2881,9 +2950,9 @@ void PFCfgParser::tagged() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1580 "pf.g"
+#line 1596 "pf.g"
 			importer->tagged_neg = true;
-#line 2887 "PFCfgParser.cpp"
+#line 2956 "PFCfgParser.cpp"
 			break;
 		}
 		case TAGGED:
@@ -2898,11 +2967,11 @@ void PFCfgParser::tagged() {
 		}
 		match(TAGGED);
 		match(WORD);
-#line 1582 "pf.g"
+#line 1598 "pf.g"
 		
 		importer->tagged = LT(0)->getText();
 		
-#line 2906 "PFCfgParser.cpp"
+#line 2975 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2916,11 +2985,11 @@ void PFCfgParser::tag_clause() {
 	try {      // for error handling
 		match(TAG);
 		match(WORD);
-#line 1589 "pf.g"
+#line 1605 "pf.g"
 		
 		importer->tag = LT(0)->getText();
 		
-#line 2924 "PFCfgParser.cpp"
+#line 2993 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -2930,9 +2999,9 @@ void PFCfgParser::tag_clause() {
 
 void PFCfgParser::redirhost() {
 	Tracer traceInOut(this, "redirhost");
-#line 746 "pf.g"
+#line 762 "pf.g"
 	AddressSpec as;
-#line 2936 "PFCfgParser.cpp"
+#line 3005 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -2940,22 +3009,22 @@ void PFCfgParser::redirhost() {
 		case IPV4:
 		{
 			match(IPV4);
-#line 749 "pf.g"
+#line 765 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
 			
-#line 2949 "PFCfgParser.cpp"
+#line 3018 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case SLASH:
 			{
 				match(SLASH);
-#line 755 "pf.g"
+#line 771 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
-#line 2959 "PFCfgParser.cpp"
+#line 3028 "PFCfgParser.cpp"
 				{
 				switch ( LA(1)) {
 				case IPV4:
@@ -2974,11 +3043,11 @@ void PFCfgParser::redirhost() {
 				}
 				}
 				}
-#line 759 "pf.g"
+#line 775 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
-#line 2982 "PFCfgParser.cpp"
+#line 3051 "PFCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
@@ -3008,26 +3077,26 @@ void PFCfgParser::redirhost() {
 		{
 			match(OPENING_PAREN);
 			match(WORD);
-#line 766 "pf.g"
+#line 782 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
 			as.address = LT(0)->getText();
 			
-#line 3018 "PFCfgParser.cpp"
+#line 3087 "PFCfgParser.cpp"
 			match(CLOSING_PAREN);
 			break;
 		}
 		case WORD:
 		{
 			match(WORD);
-#line 774 "pf.g"
+#line 790 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
 			as.address = LT(0)->getText();
 			
-#line 3031 "PFCfgParser.cpp"
+#line 3100 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -3036,11 +3105,11 @@ void PFCfgParser::redirhost() {
 		}
 		}
 		}
-#line 780 "pf.g"
+#line 796 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
-#line 3044 "PFCfgParser.cpp"
+#line 3113 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -3079,11 +3148,11 @@ void PFCfgParser::redirhost_list() {
 				redirhost();
 			}
 			else {
-				goto _loop94;
+				goto _loop100;
 			}
 			
 		}
-		_loop94:;
+		_loop100:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -3095,9 +3164,9 @@ void PFCfgParser::redirhost_list() {
 
 void PFCfgParser::portspec() {
 	Tracer traceInOut(this, "portspec");
-#line 805 "pf.g"
+#line 821 "pf.g"
 	PortSpec ps;
-#line 3101 "PFCfgParser.cpp"
+#line 3170 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		match(PORT);
@@ -3107,31 +3176,31 @@ void PFCfgParser::portspec() {
 		case INT_CONST:
 		{
 			port_def();
-#line 809 "pf.g"
+#line 825 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = ps.port1;
 			ps.port_op = "=";
 			
-#line 3117 "PFCfgParser.cpp"
+#line 3186 "PFCfgParser.cpp"
 			break;
 		}
 		case IPV6:
 		{
 			match(IPV6);
-#line 818 "pf.g"
+#line 834 "pf.g"
 			
 			ps.setFromPortRange(LT(0)->getText());
 			
-#line 3127 "PFCfgParser.cpp"
+#line 3196 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case STAR:
 			{
 				match(STAR);
-#line 822 "pf.g"
+#line 838 "pf.g"
 				ps.port2 = "65535";
-#line 3135 "PFCfgParser.cpp"
+#line 3204 "PFCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
@@ -3157,11 +3226,11 @@ void PFCfgParser::portspec() {
 		}
 		}
 		}
-#line 825 "pf.g"
+#line 841 "pf.g"
 		
 		importer->tmp_port_group.push_back(ps);
 		
-#line 3165 "PFCfgParser.cpp"
+#line 3234 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -3178,49 +3247,49 @@ void PFCfgParser::pooltype() {
 		case BITMASK:
 		{
 			match(BITMASK);
-#line 839 "pf.g"
+#line 855 "pf.g"
 			importer->nat_rule_opt_1 = "bitmask";
-#line 3184 "PFCfgParser.cpp"
+#line 3253 "PFCfgParser.cpp"
 			break;
 		}
 		case RANDOM:
 		{
 			match(RANDOM);
-#line 841 "pf.g"
+#line 857 "pf.g"
 			importer->nat_rule_opt_1 = "random";
-#line 3192 "PFCfgParser.cpp"
+#line 3261 "PFCfgParser.cpp"
 			break;
 		}
 		case SOURCE_HASH:
 		{
 			match(SOURCE_HASH);
-#line 843 "pf.g"
+#line 859 "pf.g"
 			importer->nat_rule_opt_1 = "source-hash";
-#line 3200 "PFCfgParser.cpp"
+#line 3269 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case HEX_KEY:
 			{
 				match(HEX_KEY);
-#line 846 "pf.g"
+#line 862 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("import of 'nat' commands with 'source-hash hex-key' "
 				"option is not supported"));
 				
-#line 3212 "PFCfgParser.cpp"
+#line 3281 "PFCfgParser.cpp"
 				break;
 			}
 			case STRING_KEY:
 			{
 				match(STRING_KEY);
-#line 853 "pf.g"
+#line 869 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("import of 'nat' commands with 'source-hash string-key' "
 				"option is not supported"));
 				
-#line 3224 "PFCfgParser.cpp"
+#line 3293 "PFCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
@@ -3240,9 +3309,9 @@ void PFCfgParser::pooltype() {
 		case ROUND_ROBIN:
 		{
 			match(ROUND_ROBIN);
-#line 860 "pf.g"
+#line 876 "pf.g"
 			importer->nat_rule_opt_1 = "round-robin";
-#line 3246 "PFCfgParser.cpp"
+#line 3315 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -3298,11 +3367,11 @@ void PFCfgParser::port_def() {
 		}
 		}
 		}
-#line 1728 "pf.g"
+#line 1744 "pf.g"
 		
 		importer->tmp_port_def = LT(0)->getText();
 		
-#line 3306 "PFCfgParser.cpp"
+#line 3375 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -3319,37 +3388,37 @@ void PFCfgParser::block_return() {
 		case DROP:
 		{
 			match(DROP);
-#line 922 "pf.g"
+#line 938 "pf.g"
 			importer->block_action_params.push_back("drop");
-#line 3325 "PFCfgParser.cpp"
+#line 3394 "PFCfgParser.cpp"
 			break;
 		}
 		case RETURN:
 		{
 			match(RETURN);
-#line 924 "pf.g"
+#line 940 "pf.g"
 			importer->block_action_params.push_back("return");
-#line 3333 "PFCfgParser.cpp"
+#line 3402 "PFCfgParser.cpp"
 			break;
 		}
 		case RETURN_RST:
 		{
 			match(RETURN_RST);
-#line 926 "pf.g"
+#line 942 "pf.g"
 			importer->block_action_params.push_back("return-rst");
-#line 3341 "PFCfgParser.cpp"
+#line 3410 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case TTL:
 			{
 				match(TTL);
 				match(INT_CONST);
-#line 929 "pf.g"
+#line 945 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("Import of \"block return-rst ttl number\" is not supported. "));
 				
-#line 3353 "PFCfgParser.cpp"
+#line 3422 "PFCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
@@ -3400,9 +3469,9 @@ void PFCfgParser::block_return() {
 		case RETURN_ICMP:
 		{
 			match(RETURN_ICMP);
-#line 935 "pf.g"
+#line 951 "pf.g"
 			importer->block_action_params.push_back("return-icmp");
-#line 3406 "PFCfgParser.cpp"
+#line 3475 "PFCfgParser.cpp"
 			{
 			if ((LA(1) == OPENING_PAREN) && (_tokenSet_26.member(LA(2)))) {
 				match(OPENING_PAREN);
@@ -3453,9 +3522,9 @@ void PFCfgParser::block_return() {
 				}
 				}
 				}
-#line 939 "pf.g"
+#line 955 "pf.g"
 				importer->block_action_params.push_back(LT(0)->getText());
-#line 3459 "PFCfgParser.cpp"
+#line 3528 "PFCfgParser.cpp"
 				{
 				switch ( LA(1)) {
 				case COMMA:
@@ -3508,12 +3577,12 @@ void PFCfgParser::block_return() {
 					}
 					}
 					}
-#line 943 "pf.g"
+#line 959 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("Import of \"block return-icmp (icmp_code, icmp6_code)\" is not supported"));
 					
-#line 3517 "PFCfgParser.cpp"
+#line 3586 "PFCfgParser.cpp"
 					break;
 				}
 				case CLOSING_PAREN:
@@ -3540,13 +3609,13 @@ void PFCfgParser::block_return() {
 		case RETURN_ICMP6:
 		{
 			match(RETURN_ICMP6);
-#line 952 "pf.g"
+#line 968 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("Import of \"block return-icmp6\" is not supported"));
 			importer->block_action_params.push_back("return-icmp");
 			
-#line 3550 "PFCfgParser.cpp"
+#line 3619 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -3753,11 +3822,11 @@ void PFCfgParser::direction() {
 		}
 		}
 		}
-#line 973 "pf.g"
+#line 989 "pf.g"
 		
 		importer->direction = LT(0)->getText();
 		
-#line 3761 "PFCfgParser.cpp"
+#line 3830 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -3770,11 +3839,11 @@ void PFCfgParser::quick() {
 	
 	try {      // for error handling
 		match(QUICK);
-#line 1002 "pf.g"
+#line 1018 "pf.g"
 		
 		importer->quick = true;
 		
-#line 3778 "PFCfgParser.cpp"
+#line 3847 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -3856,11 +3925,11 @@ void PFCfgParser::filteropts() {
 				filteropt();
 			}
 			else {
-				goto _loop188;
+				goto _loop194;
 			}
 			
 		}
-		_loop188:;
+		_loop194:;
 		} // ( ... )*
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -3879,17 +3948,17 @@ void PFCfgParser::logopts() {
 		for (;;) {
 			if ((LA(1) == COMMA)) {
 				match(COMMA);
-#line 989 "pf.g"
+#line 1005 "pf.g"
 				importer->logopts += ",";
-#line 3885 "PFCfgParser.cpp"
+#line 3954 "PFCfgParser.cpp"
 				logopt();
 			}
 			else {
-				goto _loop129;
+				goto _loop135;
 			}
 			
 		}
-		_loop129:;
+		_loop135:;
 		} // ( ... )*
 		match(CLOSING_PAREN);
 	}
@@ -3918,11 +3987,11 @@ void PFCfgParser::logopt() {
 		{
 			match(TO);
 			match(WORD);
-#line 996 "pf.g"
+#line 1012 "pf.g"
 			
 			importer->logopts += LT(0)->getText();
 			
-#line 3926 "PFCfgParser.cpp"
+#line 3995 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -3939,9 +4008,9 @@ void PFCfgParser::logopt() {
 
 void PFCfgParser::ifspec() {
 	Tracer traceInOut(this, "ifspec");
-#line 1010 "pf.g"
+#line 1026 "pf.g"
 	InterfaceSpec is;
-#line 3945 "PFCfgParser.cpp"
+#line 4014 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -3949,9 +4018,9 @@ void PFCfgParser::ifspec() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1011 "pf.g"
+#line 1027 "pf.g"
 			is.neg = true;
-#line 3955 "PFCfgParser.cpp"
+#line 4024 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -3965,13 +4034,13 @@ void PFCfgParser::ifspec() {
 		}
 		}
 		match(WORD);
-#line 1013 "pf.g"
+#line 1029 "pf.g"
 		
 		is.name = LT(0)->getText();
 		importer->iface_group.push_back(is);
 		importer->newInterface(is.name);
 		
-#line 3975 "PFCfgParser.cpp"
+#line 4044 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4009,11 +4078,11 @@ void PFCfgParser::interface_list() {
 				ifspec();
 			}
 			else {
-				goto _loop139;
+				goto _loop145;
 			}
 			
 		}
-		_loop139:;
+		_loop145:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -4164,11 +4233,11 @@ void PFCfgParser::proto_name() {
 		}
 		}
 		}
-#line 1052 "pf.g"
+#line 1068 "pf.g"
 		
 		importer->proto_list.push_back(LT(0)->getText());
 		
-#line 4172 "PFCfgParser.cpp"
+#line 4241 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4181,11 +4250,11 @@ void PFCfgParser::proto_number() {
 	
 	try {      // for error handling
 		match(INT_CONST);
-#line 1058 "pf.g"
+#line 1074 "pf.g"
 		
 		importer->proto_list.push_back(LT(0)->getText());
 		
-#line 4189 "PFCfgParser.cpp"
+#line 4258 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4209,8 +4278,8 @@ void PFCfgParser::proto_list() {
 					match(COMMA);
 					break;
 				}
-				case INT_CONST:
 				case OPENING_BRACE:
+				case INT_CONST:
 				case IP:
 				case ICMP:
 				case IGMP:
@@ -4239,11 +4308,11 @@ void PFCfgParser::proto_list() {
 				proto_def();
 			}
 			else {
-				goto _loop150;
+				goto _loop156;
 			}
 			
 		}
-		_loop150:;
+		_loop156:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -4379,13 +4448,13 @@ void PFCfgParser::src_hosts_part() {
 		case URPF_FAILED:
 		{
 			match(URPF_FAILED);
-#line 1098 "pf.g"
+#line 1114 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::SPECIAL_ADDRESS, false,
 			"urpf-failed", ""));
 			
-#line 4389 "PFCfgParser.cpp"
+#line 4458 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -4394,13 +4463,13 @@ void PFCfgParser::src_hosts_part() {
 		}
 		}
 		}
-#line 1104 "pf.g"
+#line 1120 "pf.g"
 		
 		importer->src_neg = importer->tmp_neg;
 		importer->src_group.splice(importer->src_group.begin(),
 		importer->tmp_group);
 		
-#line 4404 "PFCfgParser.cpp"
+#line 4473 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4433,13 +4502,13 @@ void PFCfgParser::src_port_part() {
 		case IPV6:
 		{
 			match(IPV6);
-#line 1641 "pf.g"
+#line 1657 "pf.g"
 			
 			PortSpec ps;
 			ps.setFromPortRange(LT(0)->getText());
 			importer->tmp_port_group.push_back(ps);
 			
-#line 4443 "PFCfgParser.cpp"
+#line 4512 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -4448,12 +4517,12 @@ void PFCfgParser::src_port_part() {
 		}
 		}
 		}
-#line 1647 "pf.g"
+#line 1663 "pf.g"
 		
 		importer->src_port_group.splice(importer->src_port_group.begin(),
 		importer->tmp_port_group);
 		
-#line 4457 "PFCfgParser.cpp"
+#line 4526 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4466,13 +4535,13 @@ void PFCfgParser::dst_hosts_part() {
 	
 	try {      // for error handling
 		common_hosts_part();
-#line 1113 "pf.g"
+#line 1129 "pf.g"
 		
 		importer->dst_neg = importer->tmp_neg;
 		importer->dst_group.splice(importer->dst_group.begin(),
 		importer->tmp_group);
 		
-#line 4476 "PFCfgParser.cpp"
+#line 4545 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4505,13 +4574,13 @@ void PFCfgParser::dst_port_part() {
 		case IPV6:
 		{
 			match(IPV6);
-#line 1663 "pf.g"
+#line 1679 "pf.g"
 			
 			PortSpec ps;
 			ps.setFromPortRange(LT(0)->getText());
 			importer->tmp_port_group.push_back(ps);
 			
-#line 4515 "PFCfgParser.cpp"
+#line 4584 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -4520,12 +4589,12 @@ void PFCfgParser::dst_port_part() {
 		}
 		}
 		}
-#line 1669 "pf.g"
+#line 1685 "pf.g"
 		
 		importer->dst_port_group.splice(importer->dst_port_group.begin(),
 		importer->tmp_port_group);
 		
-#line 4529 "PFCfgParser.cpp"
+#line 4598 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4541,23 +4610,23 @@ void PFCfgParser::common_hosts_part() {
 		case ANY:
 		{
 			match(ANY);
-#line 1122 "pf.g"
+#line 1138 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
 			
-#line 4550 "PFCfgParser.cpp"
+#line 4619 "PFCfgParser.cpp"
 			break;
 		}
 		case NO_ROUTE:
 		{
 			match(NO_ROUTE);
-#line 1128 "pf.g"
+#line 1144 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::SPECIAL_ADDRESS, false, "no-route", ""));
 			
-#line 4561 "PFCfgParser.cpp"
+#line 4630 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -4592,9 +4661,9 @@ void PFCfgParser::host() {
 	Tracer traceInOut(this, "host");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  tn = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  in = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 1138 "pf.g"
+#line 1154 "pf.g"
 	AddressSpec as;
-#line 4598 "PFCfgParser.cpp"
+#line 4667 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -4602,9 +4671,9 @@ void PFCfgParser::host() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1139 "pf.g"
+#line 1155 "pf.g"
 			as.neg = true;
-#line 4608 "PFCfgParser.cpp"
+#line 4677 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -4627,13 +4696,13 @@ void PFCfgParser::host() {
 		case WORD:
 		{
 			match(WORD);
-#line 1142 "pf.g"
+#line 1158 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
 			as.address = LT(0)->getText();
 			
-#line 4637 "PFCfgParser.cpp"
+#line 4706 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case COLON:
@@ -4644,43 +4713,43 @@ void PFCfgParser::host() {
 				case NETWORK:
 				{
 					match(NETWORK);
-#line 1151 "pf.g"
+#line 1167 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_NETWORK;
 					
-#line 4652 "PFCfgParser.cpp"
+#line 4721 "PFCfgParser.cpp"
 					break;
 				}
 				case BROADCAST:
 				{
 					match(BROADCAST);
-#line 1156 "pf.g"
+#line 1172 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_BROADCAST;
 					
-#line 4662 "PFCfgParser.cpp"
+#line 4731 "PFCfgParser.cpp"
 					break;
 				}
 				case PEER:
 				{
 					match(PEER);
-#line 1161 "pf.g"
+#line 1177 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:peer' is not supported."));
 					
-#line 4673 "PFCfgParser.cpp"
+#line 4742 "PFCfgParser.cpp"
 					break;
 				}
 				case INT_CONST:
 				{
 					match(INT_CONST);
-#line 1167 "pf.g"
+#line 1183 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:0' is not supported."));
 					
-#line 4684 "PFCfgParser.cpp"
+#line 4753 "PFCfgParser.cpp"
 					break;
 				}
 				default:
@@ -4693,9 +4762,9 @@ void PFCfgParser::host() {
 			}
 			case NEWLINE:
 			case QUEUE:
-			case LITERAL_reassemble:
 			case COMMA:
 			case CLOSING_BRACE:
+			case LITERAL_reassemble:
 			case SCRUB:
 			case EXLAMATION:
 			case NO:
@@ -4731,45 +4800,45 @@ void PFCfgParser::host() {
 		case SELF:
 		{
 			match(SELF);
-#line 1175 "pf.g"
+#line 1191 "pf.g"
 			
 			as.at = AddressSpec::SPECIAL_ADDRESS;
 			as.address = "self";
 			
-#line 4740 "PFCfgParser.cpp"
+#line 4809 "PFCfgParser.cpp"
 			break;
 		}
 		case IPV6:
 		{
 			match(IPV6);
-#line 1181 "pf.g"
+#line 1197 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("IPv6 import is not supported. "));
 			consumeUntil(NEWLINE);
 			
-#line 4752 "PFCfgParser.cpp"
+#line 4821 "PFCfgParser.cpp"
 			break;
 		}
 		case IPV4:
 		{
 			match(IPV4);
-#line 1188 "pf.g"
+#line 1204 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
 			
-#line 4763 "PFCfgParser.cpp"
+#line 4832 "PFCfgParser.cpp"
 			{
 			switch ( LA(1)) {
 			case SLASH:
 			{
 				match(SLASH);
-#line 1194 "pf.g"
+#line 1210 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
-#line 4773 "PFCfgParser.cpp"
+#line 4842 "PFCfgParser.cpp"
 				{
 				switch ( LA(1)) {
 				case IPV4:
@@ -4788,18 +4857,18 @@ void PFCfgParser::host() {
 				}
 				}
 				}
-#line 1198 "pf.g"
+#line 1214 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
-#line 4796 "PFCfgParser.cpp"
+#line 4865 "PFCfgParser.cpp"
 				break;
 			}
 			case NEWLINE:
 			case QUEUE:
-			case LITERAL_reassemble:
 			case COMMA:
 			case CLOSING_BRACE:
+			case LITERAL_reassemble:
 			case SCRUB:
 			case EXLAMATION:
 			case NO:
@@ -4838,12 +4907,12 @@ void PFCfgParser::host() {
 			tn = LT(1);
 			match(WORD);
 			match(GREATER_THAN);
-#line 1204 "pf.g"
+#line 1220 "pf.g"
 			
 			as.at = AddressSpec::TABLE;
 			as.address = tn->getText();
 			
-#line 4847 "PFCfgParser.cpp"
+#line 4916 "PFCfgParser.cpp"
 			break;
 		}
 		case OPENING_PAREN:
@@ -4852,13 +4921,13 @@ void PFCfgParser::host() {
 			in = LT(1);
 			match(WORD);
 			match(CLOSING_PAREN);
-#line 1210 "pf.g"
+#line 1226 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
 			as.address = in->getText();
 			
-#line 4862 "PFCfgParser.cpp"
+#line 4931 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -4867,11 +4936,11 @@ void PFCfgParser::host() {
 		}
 		}
 		}
-#line 1216 "pf.g"
+#line 1232 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
-#line 4875 "PFCfgParser.cpp"
+#line 4944 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4892,11 +4961,11 @@ void PFCfgParser::host_list() {
 				host();
 			}
 			else {
-				goto _loop171;
+				goto _loop177;
 			}
 			
 		}
-		_loop171:;
+		_loop177:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -4929,11 +4998,11 @@ void PFCfgParser::route_to() {
 		}
 		}
 		}
-#line 1238 "pf.g"
+#line 1254 "pf.g"
 		
 		importer->route_type = PFImporter::ROUTE_TO;
 		
-#line 4937 "PFCfgParser.cpp"
+#line 5006 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4964,11 +5033,11 @@ void PFCfgParser::reply_to() {
 		}
 		}
 		}
-#line 1245 "pf.g"
+#line 1261 "pf.g"
 		
 		importer->route_type = PFImporter::REPLY_TO;
 		
-#line 4972 "PFCfgParser.cpp"
+#line 5041 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -4982,16 +5051,16 @@ void PFCfgParser::routehost() {
 	ANTLR_USE_NAMESPACE(antlr)RefToken  v6 = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  nm = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  nm6 = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 1250 "pf.g"
+#line 1266 "pf.g"
 	RouteSpec rs;
-#line 4988 "PFCfgParser.cpp"
+#line 5057 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		match(OPENING_PAREN);
 		match(WORD);
-#line 1252 "pf.g"
+#line 1268 "pf.g"
 		rs.iface = LT(0)->getText();
-#line 4995 "PFCfgParser.cpp"
+#line 5064 "PFCfgParser.cpp"
 		{
 		switch ( LA(1)) {
 		case IPV4:
@@ -5049,7 +5118,7 @@ void PFCfgParser::routehost() {
 		}
 		}
 		}
-#line 1254 "pf.g"
+#line 1270 "pf.g"
 		
 		if (v6)
 		{
@@ -5063,7 +5132,7 @@ void PFCfgParser::routehost() {
 		importer->route_group.push_back(rs);
 		}
 		
-#line 5067 "PFCfgParser.cpp"
+#line 5136 "PFCfgParser.cpp"
 		match(CLOSING_PAREN);
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5101,11 +5170,11 @@ void PFCfgParser::routehost_list() {
 				routehost();
 			}
 			else {
-				goto _loop184;
+				goto _loop190;
 			}
 			
 		}
-		_loop184:;
+		_loop190:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -5204,12 +5273,12 @@ void PFCfgParser::tcp_flags() {
 		case ANY:
 		{
 			match(ANY);
-#line 1391 "pf.g"
+#line 1407 "pf.g"
 			
 			importer->flags_check = "none";
 			importer->flags_mask = "none";
 			
-#line 5213 "PFCfgParser.cpp"
+#line 5282 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
@@ -5244,8 +5313,8 @@ void PFCfgParser::tcp_flags() {
 			}
 			case NEWLINE:
 			case QUEUE:
-			case LITERAL_reassemble:
 			case COMMA:
+			case LITERAL_reassemble:
 			case SCRUB:
 			case EXLAMATION:
 			case NO:
@@ -5273,7 +5342,7 @@ void PFCfgParser::tcp_flags() {
 			}
 			}
 			}
-#line 1397 "pf.g"
+#line 1413 "pf.g"
 			
 			if (check)
 			importer->flags_check = check->getText();
@@ -5284,7 +5353,7 @@ void PFCfgParser::tcp_flags() {
 			else
 			importer->flags_mask = "all";
 			
-#line 5288 "PFCfgParser.cpp"
+#line 5357 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -5360,13 +5429,13 @@ void PFCfgParser::icmp6_type() {
 	
 	try {      // for error handling
 		match(ICMP6_TYPE);
-#line 1572 "pf.g"
+#line 1588 "pf.g"
 		
 		importer->error_tracker->registerError(
 		QString("ICMP6 import is not supported. "));
 		consumeUntil(NEWLINE);
 		
-#line 5370 "PFCfgParser.cpp"
+#line 5439 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -5406,11 +5475,11 @@ void PFCfgParser::state() {
 		}
 		}
 		}
-#line 1604 "pf.g"
+#line 1620 "pf.g"
 		
 		importer->state_op = LT(0)->getText();
 		
-#line 5414 "PFCfgParser.cpp"
+#line 5483 "PFCfgParser.cpp"
 		match(STATE);
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
@@ -5429,36 +5498,36 @@ void PFCfgParser::queue() {
 		case WORD:
 		{
 			match(WORD);
-#line 1613 "pf.g"
+#line 1629 "pf.g"
 			importer->queue += LT(0)->getText();
-#line 5435 "PFCfgParser.cpp"
+#line 5504 "PFCfgParser.cpp"
 			break;
 		}
 		case OPENING_PAREN:
 		{
 			match(OPENING_PAREN);
 			match(WORD);
-#line 1616 "pf.g"
+#line 1632 "pf.g"
 			importer->queue += LT(0)->getText();
-#line 5444 "PFCfgParser.cpp"
+#line 5513 "PFCfgParser.cpp"
 			{ // ( ... )*
 			for (;;) {
 				if ((LA(1) == COMMA)) {
 					match(COMMA);
-#line 1618 "pf.g"
+#line 1634 "pf.g"
 					importer->queue += ",";
-#line 5451 "PFCfgParser.cpp"
+#line 5520 "PFCfgParser.cpp"
 					match(WORD);
-#line 1619 "pf.g"
+#line 1635 "pf.g"
 					importer->queue += LT(0)->getText();
-#line 5455 "PFCfgParser.cpp"
+#line 5524 "PFCfgParser.cpp"
 				}
 				else {
-					goto _loop227;
+					goto _loop233;
 				}
 				
 			}
-			_loop227:;
+			_loop233:;
 			} // ( ... )*
 			match(CLOSING_PAREN);
 			break;
@@ -5568,76 +5637,76 @@ void PFCfgParser::scrub_option() {
 			}
 			}
 			}
-#line 1343 "pf.g"
+#line 1359 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("fragment", LT(0)->getText()));
 			importer->scrub_rule = true;
 			
-#line 5578 "PFCfgParser.cpp"
+#line 5647 "PFCfgParser.cpp"
 			break;
 		}
 		case LITERAL_reassemble:
 		{
 			match(LITERAL_reassemble);
 			match(TCP);
-#line 1350 "pf.g"
+#line 1366 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("reassemble", "tcp"));
 			importer->scrub_rule = true;
 			
-#line 5591 "PFCfgParser.cpp"
+#line 5660 "PFCfgParser.cpp"
 			break;
 		}
 		case 142:
 		{
 			match(142);
-#line 1357 "pf.g"
+#line 1373 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple(LT(0)->getText(), ""));
 			importer->scrub_rule = true;
 			
-#line 5603 "PFCfgParser.cpp"
+#line 5672 "PFCfgParser.cpp"
 			break;
 		}
 		case 143:
 		{
 			match(143);
 			match(INT_CONST);
-#line 1364 "pf.g"
+#line 1380 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("min-ttl", LT(0)->getText()));
 			importer->scrub_rule = true;
 			
-#line 5616 "PFCfgParser.cpp"
+#line 5685 "PFCfgParser.cpp"
 			break;
 		}
 		case 144:
 		{
 			match(144);
 			match(INT_CONST);
-#line 1371 "pf.g"
+#line 1387 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("max-mss", LT(0)->getText()));
 			importer->scrub_rule = true;
 			
-#line 5629 "PFCfgParser.cpp"
+#line 5698 "PFCfgParser.cpp"
 			break;
 		}
 		case 145:
 		{
 			match(145);
-#line 1378 "pf.g"
+#line 1394 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple(LT(0)->getText(), ""));
 			importer->scrub_rule = true;
 			
-#line 5641 "PFCfgParser.cpp"
+#line 5710 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -5687,11 +5756,11 @@ void PFCfgParser::scrub_option_list() {
 				scrub_option();
 			}
 			else {
-				goto _loop196;
+				goto _loop202;
 			}
 			
 		}
-		_loop196:;
+		_loop202:;
 		} // ( ... )*
 		match(CLOSING_PAREN);
 	}
@@ -5703,9 +5772,9 @@ void PFCfgParser::scrub_option_list() {
 
 void PFCfgParser::icmp_type_code() {
 	Tracer traceInOut(this, "icmp_type_code");
-#line 1419 "pf.g"
+#line 1435 "pf.g"
 	IcmpSpec is;
-#line 5709 "PFCfgParser.cpp"
+#line 5778 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -5737,17 +5806,17 @@ void PFCfgParser::icmp_type_code() {
 		case LITERAL_photuris:
 		{
 			icmp_type_by_name();
-#line 1421 "pf.g"
+#line 1437 "pf.g"
 			is.icmp_type_name = LT(0)->getText();
-#line 5743 "PFCfgParser.cpp"
+#line 5812 "PFCfgParser.cpp"
 			break;
 		}
 		case INT_CONST:
 		{
 			match(INT_CONST);
-#line 1423 "pf.g"
+#line 1439 "pf.g"
 			is.icmp_type_int = LT(0)->getText();
-#line 5751 "PFCfgParser.cpp"
+#line 5820 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -5795,17 +5864,17 @@ void PFCfgParser::icmp_type_code() {
 			case 202:
 			{
 				icmp_code_by_name();
-#line 1429 "pf.g"
+#line 1445 "pf.g"
 				is.icmp_code_name = LT(0)->getText();
-#line 5801 "PFCfgParser.cpp"
+#line 5870 "PFCfgParser.cpp"
 				break;
 			}
 			case INT_CONST:
 			{
 				match(INT_CONST);
-#line 1431 "pf.g"
+#line 1447 "pf.g"
 				is.icmp_code_int = LT(0)->getText();
-#line 5809 "PFCfgParser.cpp"
+#line 5878 "PFCfgParser.cpp"
 				break;
 			}
 			default:
@@ -5819,10 +5888,10 @@ void PFCfgParser::icmp_type_code() {
 		case NEWLINE:
 		case QUEUE:
 		case LITERAL_skip:
-		case LITERAL_reassemble:
-		case INT_CONST:
 		case COMMA:
 		case CLOSING_BRACE:
+		case LITERAL_reassemble:
+		case INT_CONST:
 		case SCRUB:
 		case EXLAMATION:
 		case NO:
@@ -5874,11 +5943,11 @@ void PFCfgParser::icmp_type_code() {
 		}
 		}
 		}
-#line 1434 "pf.g"
+#line 1450 "pf.g"
 		
 		importer->icmp_type_code_group.push_back(is);
 		
-#line 5882 "PFCfgParser.cpp"
+#line 5951 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -5940,11 +6009,11 @@ void PFCfgParser::icmp_list() {
 				icmp_type_code();
 			}
 			else {
-				goto _loop217;
+				goto _loop223;
 			}
 			
 		}
-		_loop217:;
+		_loop223:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -6100,9 +6169,9 @@ void PFCfgParser::icmp_type_by_name() {
 
 void PFCfgParser::port_op() {
 	Tracer traceInOut(this, "port_op");
-#line 1701 "pf.g"
+#line 1717 "pf.g"
 	PortSpec ps;
-#line 6106 "PFCfgParser.cpp"
+#line 6175 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		{
@@ -6113,39 +6182,39 @@ void PFCfgParser::port_op() {
 		case EXLAMATION:
 		{
 			unary_port_op();
-#line 1703 "pf.g"
+#line 1719 "pf.g"
 			ps.port_op = importer->tmp_port_op;
-#line 6119 "PFCfgParser.cpp"
+#line 6188 "PFCfgParser.cpp"
 			port_def();
-#line 1705 "pf.g"
+#line 1721 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = importer->tmp_port_def;
 			
-#line 6126 "PFCfgParser.cpp"
+#line 6195 "PFCfgParser.cpp"
 			break;
 		}
 		case WORD:
 		case INT_CONST:
 		{
 			port_def();
-#line 1711 "pf.g"
+#line 1727 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = ps.port1;
 			ps.port_op = "=";
 			
-#line 6139 "PFCfgParser.cpp"
+#line 6208 "PFCfgParser.cpp"
 			{
 			if ((LA(1) == LESS_THAN || LA(1) == GREATER_THAN || LA(1) == COLON) && (_tokenSet_49.member(LA(2)))) {
 				binary_port_op();
-#line 1717 "pf.g"
+#line 1733 "pf.g"
 				ps.port_op = importer->tmp_port_op;
-#line 6145 "PFCfgParser.cpp"
+#line 6214 "PFCfgParser.cpp"
 				port_def();
-#line 1718 "pf.g"
+#line 1734 "pf.g"
 				ps.port2 = LT(0)->getText();
-#line 6149 "PFCfgParser.cpp"
+#line 6218 "PFCfgParser.cpp"
 			}
 			else if ((_tokenSet_50.member(LA(1))) && (_tokenSet_51.member(LA(2)))) {
 			}
@@ -6162,11 +6231,11 @@ void PFCfgParser::port_op() {
 		}
 		}
 		}
-#line 1721 "pf.g"
+#line 1737 "pf.g"
 		
 		importer->tmp_port_group.push_back(ps);
 		
-#line 6170 "PFCfgParser.cpp"
+#line 6239 "PFCfgParser.cpp"
 	}
 	catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex) {
 		reportError(ex);
@@ -6208,11 +6277,11 @@ void PFCfgParser::port_op_list() {
 				port_op();
 			}
 			else {
-				goto _loop245;
+				goto _loop251;
 			}
 			
 		}
-		_loop245:;
+		_loop251:;
 		} // ( ... )*
 		match(CLOSING_BRACE);
 	}
@@ -6231,46 +6300,46 @@ void PFCfgParser::unary_port_op() {
 		case EQUAL:
 		{
 			match(EQUAL);
-#line 1677 "pf.g"
+#line 1693 "pf.g"
 			importer->tmp_port_op = "=";
-#line 6237 "PFCfgParser.cpp"
+#line 6306 "PFCfgParser.cpp"
 			break;
 		}
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
 			match(EQUAL);
-#line 1679 "pf.g"
+#line 1695 "pf.g"
 			importer->tmp_port_op = "!=";
-#line 6246 "PFCfgParser.cpp"
+#line 6315 "PFCfgParser.cpp"
 			break;
 		}
 		default:
 			if ((LA(1) == LESS_THAN) && (LA(2) == WORD || LA(2) == INT_CONST)) {
 				match(LESS_THAN);
-#line 1681 "pf.g"
+#line 1697 "pf.g"
 				importer->tmp_port_op = "<";
-#line 6254 "PFCfgParser.cpp"
+#line 6323 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == LESS_THAN) && (LA(2) == EQUAL)) {
 				match(LESS_THAN);
 				match(EQUAL);
-#line 1683 "pf.g"
+#line 1699 "pf.g"
 				importer->tmp_port_op = "<=";
-#line 6261 "PFCfgParser.cpp"
+#line 6330 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == GREATER_THAN) && (LA(2) == WORD || LA(2) == INT_CONST)) {
 				match(GREATER_THAN);
-#line 1685 "pf.g"
+#line 1701 "pf.g"
 				importer->tmp_port_op = ">";
-#line 6267 "PFCfgParser.cpp"
+#line 6336 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == GREATER_THAN) && (LA(2) == EQUAL)) {
 				match(GREATER_THAN);
 				match(EQUAL);
-#line 1687 "pf.g"
+#line 1703 "pf.g"
 				importer->tmp_port_op = ">=";
-#line 6274 "PFCfgParser.cpp"
+#line 6343 "PFCfgParser.cpp"
 			}
 		else {
 			throw ANTLR_USE_NAMESPACE(antlr)NoViableAltException(LT(1), getFilename());
@@ -6294,26 +6363,26 @@ void PFCfgParser::binary_port_op() {
 		{
 			match(LESS_THAN);
 			match(GREATER_THAN);
-#line 1693 "pf.g"
+#line 1709 "pf.g"
 			importer->tmp_port_op = "<>";
-#line 6300 "PFCfgParser.cpp"
+#line 6369 "PFCfgParser.cpp"
 			break;
 		}
 		case GREATER_THAN:
 		{
 			match(GREATER_THAN);
 			match(LESS_THAN);
-#line 1695 "pf.g"
+#line 1711 "pf.g"
 			importer->tmp_port_op = "><";
-#line 6309 "PFCfgParser.cpp"
+#line 6378 "PFCfgParser.cpp"
 			break;
 		}
 		case COLON:
 		{
 			match(COLON);
-#line 1697 "pf.g"
+#line 1713 "pf.g"
 			importer->tmp_port_op = ":";
-#line 6317 "PFCfgParser.cpp"
+#line 6386 "PFCfgParser.cpp"
 			break;
 		}
 		default:
@@ -6366,6 +6435,9 @@ const char* PFCfgParser::tokenNames[] = {
 	"\"fingerprints\"",
 	"\"skip\"",
 	"\"on\"",
+	"OPENING_BRACE",
+	"COMMA",
+	"CLOSING_BRACE",
 	"\"debug\"",
 	"\"reassemble\"",
 	"\"hostid\"",
@@ -6389,9 +6461,6 @@ const char* PFCfgParser::tokenNames[] = {
 	"\"adaptive.start\"",
 	"\"adaptive.end\"",
 	"INT_CONST",
-	"OPENING_BRACE",
-	"COMMA",
-	"CLOSING_BRACE",
 	"\"frags\"",
 	"\"states\"",
 	"\"src-nodes\"",
@@ -6602,40 +6671,40 @@ const unsigned long PFCfgParser::_tokenSet_1_data_[] = { 3954UL, 0UL, 20447239UL
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "scrub" 
 // "match" "table" "no" "nat" "pass" "rdr" "binat" "block" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_1(_tokenSet_1_data_,10);
-const unsigned long PFCfgParser::_tokenSet_2_data_[] = { 64UL, 41943040UL, 230400UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// WORD INT_CONST COMMA EXLAMATION "self" IPV4 NUMBER 
+const unsigned long PFCfgParser::_tokenSet_2_data_[] = { 64UL, 67108868UL, 230400UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// WORD COMMA INT_CONST EXLAMATION "self" IPV4 NUMBER 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_2(_tokenSet_2_data_,10);
-const unsigned long PFCfgParser::_tokenSet_3_data_[] = { 3954UL, 109051888UL, 20447239UL, 96UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "tcp.first" 
-// "tcp.opening" "tcp.established" "tcp.closing" "tcp.finwait" "tcp.closed" 
-// "udp.first" "udp.single" "udp.multiple" "icmp.first" "icmp.error" "other.first" 
-// "other.single" "other.multiple" "frag" "interval" "src.track" "adaptive.start" 
-// "adaptive.end" COMMA CLOSING_BRACE "scrub" "match" "table" "no" "nat" 
-// "pass" "rdr" "binat" "block" 
+const unsigned long PFCfgParser::_tokenSet_3_data_[] = { 3954UL, 67108748UL, 20447239UL, 96UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" COMMA 
+// CLOSING_BRACE "tcp.first" "tcp.opening" "tcp.established" "tcp.closing" 
+// "tcp.finwait" "tcp.closed" "udp.first" "udp.single" "udp.multiple" "icmp.first" 
+// "icmp.error" "other.first" "other.single" "other.multiple" "frag" "interval" 
+// "src.track" "adaptive.start" "adaptive.end" "scrub" "match" "table" 
+// "no" "nat" "pass" "rdr" "binat" "block" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_3(_tokenSet_3_data_,10);
-const unsigned long PFCfgParser::_tokenSet_4_data_[] = { 0UL, 41943024UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// "tcp.first" "tcp.opening" "tcp.established" "tcp.closing" "tcp.finwait" 
+const unsigned long PFCfgParser::_tokenSet_4_data_[] = { 0UL, 67108740UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// COMMA "tcp.first" "tcp.opening" "tcp.established" "tcp.closing" "tcp.finwait" 
 // "tcp.closed" "udp.first" "udp.single" "udp.multiple" "icmp.first" "icmp.error" 
 // "other.first" "other.single" "other.multiple" "frag" "interval" "src.track" 
-// "adaptive.start" "adaptive.end" COMMA 
+// "adaptive.start" "adaptive.end" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_4(_tokenSet_4_data_,10);
-const unsigned long PFCfgParser::_tokenSet_5_data_[] = { 3954UL, 4261412864UL, 20447239UL, 96UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_5_data_[] = { 3954UL, 4160749580UL, 20447239UL, 96UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" COMMA 
 // CLOSING_BRACE "frags" "states" "src-nodes" "tables" "tables-entries" 
 // "scrub" "match" "table" "no" "nat" "pass" "rdr" "binat" "block" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_5(_tokenSet_5_data_,10);
-const unsigned long PFCfgParser::_tokenSet_6_data_[] = { 0UL, 4194304000UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_6_data_[] = { 0UL, 4160749572UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // COMMA "frags" "states" "src-nodes" "tables" "tables-entries" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_6(_tokenSet_6_data_,10);
-const unsigned long PFCfgParser::_tokenSet_7_data_[] = { 1040UL, 4UL, 34079745UL, 81920UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_7_data_[] = { 1040UL, 32UL, 34079745UL, 81920UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN "all" 
 // "to" "from" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" 
 // "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_7(_tokenSet_7_data_,16);
-const unsigned long PFCfgParser::_tokenSet_8_data_[] = { 2147487602UL, 58720260UL, 322799119UL, 16777312UL, 4293917120UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_8_data_[] = { 2147487602UL, 67108902UL, 322799119UL, 16777312UL, 4293917120UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "skip" 
-// "reassemble" INT_CONST OPENING_BRACE COMMA "scrub" "match" "table" LESS_THAN 
+// OPENING_BRACE COMMA "reassemble" INT_CONST "scrub" "match" "table" LESS_THAN 
 // STRING EXLAMATION "self" IPV4 SLASH "no" "nat" "pass" "rdr" OPENING_PAREN 
 // IPV6 "binat" "block" "tcp" "urpf-failed" "any" "no-route" "fragment" 
 // "crop" "drop-ovl" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
@@ -6645,14 +6714,14 @@ const unsigned long PFCfgParser::_tokenSet_8_data_[] = { 2147487602UL, 58720260U
 // "mobregreq" "mobregrep" "photuris" "icmp6-type" "tagged" "tag" "keep" 
 // "modulate" "synproxy" "state" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_8(_tokenSet_8_data_,16);
-const unsigned long PFCfgParser::_tokenSet_9_data_[] = { 1040UL, 4UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_9_data_[] = { 1040UL, 32UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_9(_tokenSet_9_data_,16);
-const unsigned long PFCfgParser::_tokenSet_10_data_[] = { 2147487602UL, 58720260UL, 54265351UL, 16777312UL, 4293916800UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_10_data_[] = { 2147487602UL, 67108902UL, 54265351UL, 16777312UL, 4293916800UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "skip" 
-// "reassemble" INT_CONST OPENING_BRACE COMMA "scrub" "match" "table" STRING 
+// OPENING_BRACE COMMA "reassemble" INT_CONST "scrub" "match" "table" STRING 
 // EXLAMATION SLASH "no" "nat" "pass" "rdr" OPENING_PAREN "binat" "block" 
 // "tcp" "any" "fragment" "crop" "drop-ovl" "no-df" "min-ttl" "max-mss" 
 // "random-id" "flags" "icmp-type" "echorep" "unreach" "squench" "redir" 
@@ -6664,18 +6733,18 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_10(_tokenSet_10_da
 const unsigned long PFCfgParser::_tokenSet_11_data_[] = { 16UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_11(_tokenSet_11_data_,10);
-const unsigned long PFCfgParser::_tokenSet_12_data_[] = { 64UL, 109051904UL, 230400UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// WORD INT_CONST COMMA CLOSING_BRACE EXLAMATION "self" IPV4 NUMBER 
+const unsigned long PFCfgParser::_tokenSet_12_data_[] = { 64UL, 67108876UL, 230400UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// WORD COMMA CLOSING_BRACE INT_CONST EXLAMATION "self" IPV4 NUMBER 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_12(_tokenSet_12_data_,10);
-const unsigned long PFCfgParser::_tokenSet_13_data_[] = { 1040UL, 5UL, 38274049UL, 2048000UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_13_data_[] = { 1040UL, 33UL, 38274049UL, 2048000UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "on" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "all" "to" "quick" "inet" "inet6" "proto" "from" "route-to" "reply-to" 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_13(_tokenSet_13_data_,16);
-const unsigned long PFCfgParser::_tokenSet_14_data_[] = { 2147487602UL, 58720261UL, 326993439UL, 4294787168UL, 4293918719UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_14_data_[] = { 2147487602UL, 67108903UL, 326993439UL, 4294787168UL, 4293918719UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "skip" 
-// "on" "reassemble" INT_CONST OPENING_BRACE COMMA "scrub" "match" "table" 
+// "on" OPENING_BRACE COMMA "reassemble" INT_CONST "scrub" "match" "table" 
 // LESS_THAN GREATER_THAN STRING EXLAMATION "self" IPV4 SLASH "no" "nat" 
 // "pass" MINUS "rdr" OPENING_PAREN IPV6 "binat" "block" "all" "to" "inet" 
 // "inet6" "proto" "ip" "icmp" "igmp" "tcp" "udp" "rdp" "rsvp" "gre" "esp" 
@@ -6688,39 +6757,39 @@ const unsigned long PFCfgParser::_tokenSet_14_data_[] = { 2147487602UL, 58720261
 // "mobregrep" "photuris" "icmp6-type" "tagged" "tag" "keep" "modulate" 
 // "synproxy" "state" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_14(_tokenSet_14_data_,16);
-const unsigned long PFCfgParser::_tokenSet_15_data_[] = { 1040UL, 4UL, 38274049UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_15_data_[] = { 1040UL, 32UL, 38274049UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "all" "to" "inet" "inet6" "proto" "from" "route-to" "reply-to" "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_15(_tokenSet_15_data_,16);
-const unsigned long PFCfgParser::_tokenSet_16_data_[] = { 1040UL, 4UL, 38274049UL, 1130496UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_16_data_[] = { 1040UL, 32UL, 38274049UL, 1130496UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "all" "to" "proto" "from" "fragment" "no-df" "min-ttl" "max-mss" "random-id" 
 // "flags" "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_16(_tokenSet_16_data_,16);
-const unsigned long PFCfgParser::_tokenSet_17_data_[] = { 1040UL, 4UL, 38274049UL, 81920UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_17_data_[] = { 1040UL, 32UL, 38274049UL, 81920UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "all" "to" "from" "fragment" "no-df" "min-ttl" "max-mss" "random-id" 
 // "flags" "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_17(_tokenSet_17_data_,16);
-const unsigned long PFCfgParser::_tokenSet_18_data_[] = { 1040UL, 4UL, 38274049UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_18_data_[] = { 1040UL, 32UL, 38274049UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_18(_tokenSet_18_data_,16);
-const unsigned long PFCfgParser::_tokenSet_19_data_[] = { 1040UL, 33554436UL, 38274049UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" COMMA "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
+const unsigned long PFCfgParser::_tokenSet_19_data_[] = { 1040UL, 36UL, 38274049UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" COMMA "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_19(_tokenSet_19_data_,16);
-const unsigned long PFCfgParser::_tokenSet_20_data_[] = { 80UL, 100663296UL, 3397451776UL, 9UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_20_data_[] = { 80UL, 12UL, 3397451776UL, 9UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE WORD COMMA CLOSING_BRACE IPV4 "static-port" OPENING_PAREN "port" 
 // "bitmask" "random" "source-hash" "round-robin" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_20(_tokenSet_20_data_,10);
-const unsigned long PFCfgParser::_tokenSet_21_data_[] = { 64UL, 33554432UL, 33619968UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_21_data_[] = { 64UL, 4UL, 33619968UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD COMMA IPV4 OPENING_PAREN 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_21(_tokenSet_21_data_,10);
 const unsigned long PFCfgParser::_tokenSet_22_data_[] = { 16UL, 0UL, 3363831808UL, 9UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
@@ -6732,14 +6801,14 @@ const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_23(_tokenSet_23_da
 const unsigned long PFCfgParser::_tokenSet_24_data_[] = { 16UL, 0UL, 8388608UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "static-port" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_24(_tokenSet_24_data_,10);
-const unsigned long PFCfgParser::_tokenSet_25_data_[] = { 1232UL, 109051908UL, 3267890201UL, 65545UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE WORD EQUAL "queue" "reassemble" INT_CONST COMMA CLOSING_BRACE 
+const unsigned long PFCfgParser::_tokenSet_25_data_[] = { 1232UL, 67108908UL, 3267890201UL, 65545UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE WORD EQUAL "queue" COMMA CLOSING_BRACE "reassemble" INT_CONST 
 // "scrub" LESS_THAN GREATER_THAN EXLAMATION COLON "no" MINUS "static-port" 
 // OPENING_PAREN "bitmask" "random" "source-hash" "round-robin" "to" "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_25(_tokenSet_25_data_,16);
-const unsigned long PFCfgParser::_tokenSet_26_data_[] = { 0UL, 8388608UL, 0UL, 0UL, 0UL, 4294959104UL, 2047UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_26_data_[] = { 0UL, 67108864UL, 0UL, 0UL, 0UL, 4294959104UL, 2047UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // INT_CONST "net-unr" "host-unr" "proto-unr" "port-unr" "needfrag" "srcfail" 
 // "net-unk" "host-unk" "isolate" "net-prohib" "host-prohib" "net-tos" 
 // "host-tos" "filter-prohib" "host-preced" "cutoff-preced" "redir-net" 
@@ -6747,16 +6816,16 @@ const unsigned long PFCfgParser::_tokenSet_26_data_[] = { 0UL, 8388608UL, 0UL, 0
 // "transit" "reassemb" "badhead" "optmiss" "badlen" "unknown-ind" "auth-fail" 
 // "decrypt-fail" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_26(_tokenSet_26_data_,16);
-const unsigned long PFCfgParser::_tokenSet_27_data_[] = { 1040UL, 5UL, 34079745UL, 2062336UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_27_data_[] = { 1040UL, 33UL, 34079745UL, 2062336UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "on" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN 
 // "in" "out" "log" "all" "to" "quick" "inet" "inet6" "proto" "from" "route-to" 
 // "reply-to" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" 
 // "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_27(_tokenSet_27_data_,16);
-const unsigned long PFCfgParser::_tokenSet_28_data_[] = { 2147487602UL, 58720261UL, 322799119UL, 4294926432UL, 4293918719UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_28_data_[] = { 2147487602UL, 67108903UL, 322799119UL, 4294926432UL, 4293918719UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD "antispoof" "altq" "queue" "set" "skip" 
-// "on" "reassemble" INT_CONST OPENING_BRACE COMMA "scrub" "match" "table" 
+// "on" OPENING_BRACE COMMA "reassemble" INT_CONST "scrub" "match" "table" 
 // LESS_THAN STRING EXLAMATION "self" IPV4 SLASH "no" "nat" "pass" "rdr" 
 // OPENING_PAREN IPV6 "binat" "block" "log" "all" "to" "quick" "inet" "inet6" 
 // "proto" "ip" "icmp" "igmp" "tcp" "udp" "rdp" "rsvp" "gre" "esp" "ah" 
@@ -6769,8 +6838,8 @@ const unsigned long PFCfgParser::_tokenSet_28_data_[] = { 2147487602UL, 58720261
 // "photuris" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "state" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_28(_tokenSet_28_data_,16);
-const unsigned long PFCfgParser::_tokenSet_29_data_[] = { 2147484688UL, 109051908UL, 101188609UL, 0UL, 4293904384UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "skip" "reassemble" INT_CONST COMMA CLOSING_BRACE "scrub" 
+const unsigned long PFCfgParser::_tokenSet_29_data_[] = { 2147484688UL, 67108908UL, 101188609UL, 0UL, 4293904384UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" "skip" COMMA CLOSING_BRACE "reassemble" INT_CONST "scrub" 
 // EXLAMATION "no" OPENING_PAREN CLOSING_PAREN "fragment" "no-df" "min-ttl" 
 // "max-mss" "random-id" "flags" "icmp-type" "echorep" "unreach" "squench" 
 // "redir" "althost" "echoreq" "routeradv" "routersol" "timex" "paramprob" 
@@ -6779,95 +6848,95 @@ const unsigned long PFCfgParser::_tokenSet_29_data_[] = { 2147484688UL, 10905190
 // "photuris" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_29(_tokenSet_29_data_,16);
-const unsigned long PFCfgParser::_tokenSet_30_data_[] = { 1040UL, 5UL, 34079745UL, 2056192UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_30_data_[] = { 1040UL, 33UL, 34079745UL, 2056192UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "on" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN 
 // "log" "all" "to" "quick" "inet" "inet6" "proto" "from" "route-to" "reply-to" 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_30(_tokenSet_30_data_,16);
-const unsigned long PFCfgParser::_tokenSet_31_data_[] = { 1040UL, 5UL, 34079745UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_31_data_[] = { 1040UL, 33UL, 34079745UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "on" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN 
 // "all" "to" "inet" "inet6" "proto" "from" "route-to" "reply-to" "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_31(_tokenSet_31_data_,16);
-const unsigned long PFCfgParser::_tokenSet_32_data_[] = { 1040UL, 4UL, 34079745UL, 1916928UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_32_data_[] = { 1040UL, 32UL, 34079745UL, 1916928UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN "all" 
 // "to" "inet" "inet6" "proto" "from" "fragment" "no-df" "min-ttl" "max-mss" 
 // "random-id" "flags" "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" 
 // "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_32(_tokenSet_32_data_,16);
-const unsigned long PFCfgParser::_tokenSet_33_data_[] = { 1024UL, 33554436UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// "queue" "reassemble" COMMA "scrub" EXLAMATION "no" OPENING_PAREN "fragment" 
+const unsigned long PFCfgParser::_tokenSet_33_data_[] = { 1024UL, 36UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// "queue" COMMA "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_33(_tokenSet_33_data_,16);
-const unsigned long PFCfgParser::_tokenSet_34_data_[] = { 0UL, 33554432UL, 67108864UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_34_data_[] = { 0UL, 4UL, 67108864UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // COMMA CLOSING_PAREN 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_34(_tokenSet_34_data_,10);
-const unsigned long PFCfgParser::_tokenSet_35_data_[] = { 1104UL, 100663300UL, 38274049UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE WORD "queue" "reassemble" COMMA CLOSING_BRACE "scrub" EXLAMATION 
+const unsigned long PFCfgParser::_tokenSet_35_data_[] = { 1104UL, 44UL, 38274049UL, 1916928UL, 1035808UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE WORD "queue" COMMA CLOSING_BRACE "reassemble" "scrub" EXLAMATION 
 // "no" MINUS OPENING_PAREN "all" "to" "inet" "inet6" "proto" "from" "route-to" 
 // "reply-to" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" 
 // "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_35(_tokenSet_35_data_,16);
-const unsigned long PFCfgParser::_tokenSet_36_data_[] = { 1040UL, 125829124UL, 38274049UL, 4292952064UL, 1034303UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" INT_CONST OPENING_BRACE COMMA CLOSING_BRACE 
+const unsigned long PFCfgParser::_tokenSet_36_data_[] = { 1040UL, 67108910UL, 38274049UL, 4292952064UL, 1034303UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" OPENING_BRACE COMMA CLOSING_BRACE "reassemble" INT_CONST 
 // "scrub" EXLAMATION "no" MINUS OPENING_PAREN "all" "to" "ip" "icmp" "igmp" 
 // "tcp" "udp" "rdp" "rsvp" "gre" "esp" "ah" "eigrp" "ospf" "ipip" "vrrp" 
 // "l2tp" "isis" "from" "fragment" "no-df" "min-ttl" "max-mss" "random-id" 
 // "flags" "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_36(_tokenSet_36_data_,16);
-const unsigned long PFCfgParser::_tokenSet_37_data_[] = { 0UL, 58720256UL, 0UL, 4292870144UL, 31UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// INT_CONST OPENING_BRACE COMMA "ip" "icmp" "igmp" "tcp" "udp" "rdp" "rsvp" 
+const unsigned long PFCfgParser::_tokenSet_37_data_[] = { 0UL, 67108870UL, 0UL, 4292870144UL, 31UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// OPENING_BRACE COMMA INT_CONST "ip" "icmp" "igmp" "tcp" "udp" "rdp" "rsvp" 
 // "gre" "esp" "ah" "eigrp" "ospf" "ipip" "vrrp" "l2tp" "isis" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_37(_tokenSet_37_data_,12);
-const unsigned long PFCfgParser::_tokenSet_38_data_[] = { 1040UL, 4UL, 38274049UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_38_data_[] = { 1040UL, 32UL, 38274049UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "to" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_38(_tokenSet_38_data_,16);
-const unsigned long PFCfgParser::_tokenSet_39_data_[] = { 1040UL, 4UL, 172491777UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_39_data_[] = { 1040UL, 32UL, 172491777UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "port" "to" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" 
 // "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_39(_tokenSet_39_data_,16);
-const unsigned long PFCfgParser::_tokenSet_40_data_[] = { 1040UL, 4UL, 172491777UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_40_data_[] = { 1040UL, 32UL, 172491777UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // NEWLINE "queue" "reassemble" "scrub" EXLAMATION "no" MINUS OPENING_PAREN 
 // "port" "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_40(_tokenSet_40_data_,16);
-const unsigned long PFCfgParser::_tokenSet_41_data_[] = { 1040UL, 100663300UL, 172491777UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" COMMA CLOSING_BRACE "scrub" EXLAMATION 
+const unsigned long PFCfgParser::_tokenSet_41_data_[] = { 1040UL, 44UL, 172491777UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" COMMA CLOSING_BRACE "reassemble" "scrub" EXLAMATION 
 // "no" MINUS OPENING_PAREN "port" "to" "fragment" "no-df" "min-ttl" "max-mss" 
 // "random-id" "flags" "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" 
 // "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_41(_tokenSet_41_data_,16);
-const unsigned long PFCfgParser::_tokenSet_42_data_[] = { 1040UL, 100663300UL, 34079745UL, 1916928UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" COMMA CLOSING_BRACE "scrub" EXLAMATION 
+const unsigned long PFCfgParser::_tokenSet_42_data_[] = { 1040UL, 44UL, 34079745UL, 1916928UL, 1034272UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" COMMA CLOSING_BRACE "reassemble" "scrub" EXLAMATION 
 // "no" OPENING_PAREN "all" "to" "inet" "inet6" "proto" "from" "fragment" 
 // "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" "icmp6-type" 
 // "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_42(_tokenSet_42_data_,16);
-const unsigned long PFCfgParser::_tokenSet_43_data_[] = { 1040UL, 33554436UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" COMMA "scrub" EXLAMATION "no" OPENING_PAREN 
+const unsigned long PFCfgParser::_tokenSet_43_data_[] = { 1040UL, 36UL, 34079745UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" COMMA "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_43(_tokenSet_43_data_,16);
-const unsigned long PFCfgParser::_tokenSet_44_data_[] = { 1040UL, 33554436UL, 101188609UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "reassemble" COMMA "scrub" EXLAMATION "no" OPENING_PAREN 
+const unsigned long PFCfgParser::_tokenSet_44_data_[] = { 1040UL, 36UL, 101188609UL, 0UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" COMMA "reassemble" "scrub" EXLAMATION "no" OPENING_PAREN 
 // CLOSING_PAREN "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" 
 // "icmp-type" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_44(_tokenSet_44_data_,16);
-const unsigned long PFCfgParser::_tokenSet_45_data_[] = { 0UL, 33554436UL, 0UL, 0UL, 247808UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// "reassemble" COMMA "fragment" "no-df" "min-ttl" "max-mss" "random-id" 
+const unsigned long PFCfgParser::_tokenSet_45_data_[] = { 0UL, 36UL, 0UL, 0UL, 247808UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// COMMA "reassemble" "fragment" "no-df" "min-ttl" "max-mss" "random-id" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_45(_tokenSet_45_data_,12);
-const unsigned long PFCfgParser::_tokenSet_46_data_[] = { 2147484688UL, 109051908UL, 34079745UL, 0UL, 4293904384UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "skip" "reassemble" INT_CONST COMMA CLOSING_BRACE "scrub" 
+const unsigned long PFCfgParser::_tokenSet_46_data_[] = { 2147484688UL, 67108908UL, 34079745UL, 0UL, 4293904384UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" "skip" COMMA CLOSING_BRACE "reassemble" INT_CONST "scrub" 
 // EXLAMATION "no" OPENING_PAREN "fragment" "no-df" "min-ttl" "max-mss" 
 // "random-id" "flags" "icmp-type" "echorep" "unreach" "squench" "redir" 
 // "althost" "echoreq" "routeradv" "routersol" "timex" "paramprob" "timereq" 
@@ -6875,14 +6944,14 @@ const unsigned long PFCfgParser::_tokenSet_46_data_[] = { 2147484688UL, 10905190
 // "mobredir" "ipv6-where" "ipv6-here" "mobregreq" "mobregrep" "photuris" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_46(_tokenSet_46_data_,16);
-const unsigned long PFCfgParser::_tokenSet_47_data_[] = { 2147483648UL, 41943040UL, 0UL, 0UL, 4292870144UL, 8191UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// "skip" INT_CONST COMMA "echorep" "unreach" "squench" "redir" "althost" 
+const unsigned long PFCfgParser::_tokenSet_47_data_[] = { 2147483648UL, 67108868UL, 0UL, 0UL, 4292870144UL, 8191UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// "skip" COMMA INT_CONST "echorep" "unreach" "squench" "redir" "althost" 
 // "echoreq" "routeradv" "routersol" "timex" "paramprob" "timereq" "timerep" 
 // "inforeq" "inforep" "maskreq" "maskrep" "trace" "dataconv" "mobredir" 
 // "ipv6-where" "ipv6-here" "mobregreq" "mobregrep" "photuris" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_47(_tokenSet_47_data_,12);
-const unsigned long PFCfgParser::_tokenSet_48_data_[] = { 2147484688UL, 109051908UL, 34079745UL, 0UL, 4294952960UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE "queue" "skip" "reassemble" INT_CONST COMMA CLOSING_BRACE "scrub" 
+const unsigned long PFCfgParser::_tokenSet_48_data_[] = { 2147484688UL, 67108908UL, 34079745UL, 0UL, 4294952960UL, 8191UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE "queue" "skip" COMMA CLOSING_BRACE "reassemble" INT_CONST "scrub" 
 // EXLAMATION "no" OPENING_PAREN "fragment" "no-df" "min-ttl" "max-mss" 
 // "random-id" "flags" "icmp-type" "code" "echorep" "unreach" "squench" 
 // "redir" "althost" "echoreq" "routeradv" "routersol" "timex" "paramprob" 
@@ -6891,18 +6960,18 @@ const unsigned long PFCfgParser::_tokenSet_48_data_[] = { 2147484688UL, 10905190
 // "photuris" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_48(_tokenSet_48_data_,16);
-const unsigned long PFCfgParser::_tokenSet_49_data_[] = { 64UL, 8388608UL, 24UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_49_data_[] = { 64UL, 67108864UL, 24UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD INT_CONST LESS_THAN GREATER_THAN 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_49(_tokenSet_49_data_,10);
-const unsigned long PFCfgParser::_tokenSet_50_data_[] = { 1232UL, 109051908UL, 38274073UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// NEWLINE WORD EQUAL "queue" "reassemble" INT_CONST COMMA CLOSING_BRACE 
+const unsigned long PFCfgParser::_tokenSet_50_data_[] = { 1232UL, 67108908UL, 38274073UL, 65536UL, 1034240UL, 0UL, 391168UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// NEWLINE WORD EQUAL "queue" COMMA CLOSING_BRACE "reassemble" INT_CONST 
 // "scrub" LESS_THAN GREATER_THAN EXLAMATION "no" MINUS OPENING_PAREN "to" 
 // "fragment" "no-df" "min-ttl" "max-mss" "random-id" "flags" "icmp-type" 
 // "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_50(_tokenSet_50_data_,16);
-const unsigned long PFCfgParser::_tokenSet_51_data_[] = { 2147487730UL, 125829124UL, 326995487UL, 16842848UL, 4293917056UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_51_data_[] = { 2147487730UL, 67108910UL, 326995487UL, 16842848UL, 4293917056UL, 8191UL, 522240UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // EOF NEWLINE LINE_COMMENT WORD EQUAL "antispoof" "altq" "queue" "set" 
-// "skip" "reassemble" INT_CONST OPENING_BRACE COMMA CLOSING_BRACE "scrub" 
+// "skip" OPENING_BRACE COMMA CLOSING_BRACE "reassemble" INT_CONST "scrub" 
 // "match" "table" LESS_THAN GREATER_THAN STRING EXLAMATION COLON "self" 
 // IPV4 SLASH "no" "nat" "pass" MINUS "rdr" OPENING_PAREN IPV6 "binat" 
 // "block" "to" "tcp" "any" "no-route" "fragment" "crop" "drop-ovl" "no-df" 
@@ -6913,10 +6982,10 @@ const unsigned long PFCfgParser::_tokenSet_51_data_[] = { 2147487730UL, 12582912
 // "photuris" "icmp6-type" "tagged" "tag" "keep" "modulate" "synproxy" 
 // "state" "label" 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_51(_tokenSet_51_data_,16);
-const unsigned long PFCfgParser::_tokenSet_52_data_[] = { 192UL, 41943040UL, 1048UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-// WORD EQUAL INT_CONST COMMA LESS_THAN GREATER_THAN EXLAMATION 
+const unsigned long PFCfgParser::_tokenSet_52_data_[] = { 192UL, 67108868UL, 1048UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+// WORD EQUAL COMMA INT_CONST LESS_THAN GREATER_THAN EXLAMATION 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_52(_tokenSet_52_data_,10);
-const unsigned long PFCfgParser::_tokenSet_53_data_[] = { 64UL, 8388608UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
+const unsigned long PFCfgParser::_tokenSet_53_data_[] = { 64UL, 67108864UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
 // WORD INT_CONST 
 const ANTLR_USE_NAMESPACE(antlr)BitSet PFCfgParser::_tokenSet_53(_tokenSet_53_data_,10);
 

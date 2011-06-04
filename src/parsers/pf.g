@@ -330,10 +330,26 @@ set_fingerprints
 
 set_skip
     :
-        "skip" ON WORD
-        {
-            importer->set_skip_on = LT(0)->getText();
-        }
+        "skip" ON skip_def
+    ;
+
+skip_def
+    :
+        WORD { importer->set_skip_on.push_back(LT(0)->getText()); }
+
+    |
+        skip_list
+    ;
+
+skip_list
+    :
+        OPENING_BRACE
+        WORD { importer->set_skip_on.push_back(LT(0)->getText()); }
+        (
+            ( COMMA )*
+            WORD { importer->set_skip_on.push_back(LT(0)->getText()); }
+        )*
+        CLOSING_BRACE
     ;
 
 set_debug

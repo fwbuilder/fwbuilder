@@ -123,8 +123,9 @@ public:
     std::string set_optimization;
     std::string set_block_policy;
     std::string set_state_policy;
-    std::string set_skip_on;
     std::string set_debug;
+
+    std::list<std::string> set_skip_on;
 
     std::list<str_tuple> scrub_options;
     bool scrub_rule;

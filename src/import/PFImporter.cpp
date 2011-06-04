@@ -1131,27 +1131,36 @@ Firewall* PFImporter::finalize()
                             .arg(set_state_policy.c_str()));
         }
 
-        if ( ! set_skip_on.empty())
+        if (set_skip_on.size() != 0)
         {
-            interfaceProperties *int_prop =
-                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    user_choice_host_os);
-            if (int_prop->looksLikeInterface(set_skip_on.c_str()))
+            for (list<string>::iterator it=set_skip_on.begin();
+                 it!=set_skip_on.end(); ++it)
             {
-                Interface *intf = getInterfaceByName(set_skip_on);
-                if (intf == NULL)
+                string skip_interface_name = *it;
+
+                interfaceProperties *int_prop =
+                    interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                        user_choice_host_os);
+                if (int_prop->looksLikeInterface(skip_interface_name.c_str()))
                 {
-                    // this interface was never used in "on <intf>" clause before
-                    newInterface(set_skip_on);
-                    intf = getInterfaceByName(set_skip_on);
-                    intf->setUnprotected(true);
-                    addMessageToLog(QString("set skip on %1\n")
-                                    .arg(intf->getName().c_str()));
+                    Interface *intf = getInterfaceByName(skip_interface_name);
+                    if (intf == NULL)
+                    {
+                        // this interface was never used in "on
+                        // <intf>" clause before
+                        newInterface(skip_interface_name);
+                        intf = getInterfaceByName(skip_interface_name);
+                        intf->setUnprotected(true);
+                        addMessageToLog(QString("set skip on %1\n")
+                                        .arg(intf->getName().c_str()));
+                    }
+                } else
+                {
+                    addMessageToLog(
+                        QObject::tr("Error: In 'set skip on %1' argument "
+                                    "does not look like an interface name\n")
+                        .arg(skip_interface_name.c_str()));
                 }
-            } else
-            {
-                addMessageToLog(
-                    QObject::tr("Error: In 'set skip on %1' '%1' does not look like an interface name\n").arg(set_skip_on.c_str()).arg(set_skip_on.c_str()));
             }
         }
 
