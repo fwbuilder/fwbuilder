@@ -142,12 +142,22 @@ void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
     int y = rect.top();
     int iconWidth = 0;
 
-    if (!icon.isEmpty() && st->getShowIconsInRules())
+    if (st->getShowIconsInRules())
     {
-        QPixmap pm;
-        if (!icon.isEmpty()) LoadPixmap(calculateIconName(icon, negation), pm);
-        painter->drawPixmap(x,y,pm);
-        iconWidth = pm.width();
+        if (!icon.isEmpty())
+        {
+            QPixmap pm;
+            LoadPixmap(calculateIconName(icon, negation), pm);
+            painter->drawPixmap(x,y,pm);
+            iconWidth = pm.width();
+        } else
+        {
+            if (FWBSettings::SIZE25X25 == st->getIconsInRulesSize())
+                iconWidth = 25;
+            else
+                iconWidth = 16;
+        }
+
         x += iconWidth + ICON_TEXT_GAP;
     }
 
