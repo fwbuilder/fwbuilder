@@ -465,5 +465,24 @@ void PFImporterTest::scrubCommandsNew()
                    "pf-scrub-commands-new.output");
 }
 
+void PFImporterTest::tableDefinitions()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-tables.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-tables.fwb");
+
+    compareResults(logger, "test_data/pf-tables.output", "pf-tables.output");
+    compareFwbFiles("test_data/pf-tables.fwb", "pf-tables.fwb");
+}
+
+
 
 

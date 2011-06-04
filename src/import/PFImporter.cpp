@@ -1242,16 +1242,21 @@ void PFImporter::newAddressTableObject(const string &name,
                                        list<AddressSpec> &addresses)
 {
     ObjectMaker maker(Library::cast(library), error_tracker);
-    FWObject *og =  
+    FWObject *og =
         commitObject(maker.createObject(ObjectGroup::TYPENAME, name.c_str()));
     assert(og!=NULL);
     address_table_registry[name.c_str()] = og;
 
+    QStringList addr_list;
     list<AddressSpec>::iterator it;
     for (it=addresses.begin(); it!=addresses.end(); ++it)
     {
+        addr_list << QString("%1/%2").arg(it->address.c_str()).arg(it->netmask.c_str());;
         FWObject *obj = makeAddressObj(*it);
         if (obj) og->addRef(obj);
     }
+
+    addMessageToLog(QString("Address Table: <%1>:  %2")
+                    .arg(name.c_str()).arg(addr_list.join(", ")));
 }
 

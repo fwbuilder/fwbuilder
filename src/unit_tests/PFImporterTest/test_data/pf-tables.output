@@ -1,0 +1,13 @@
+2: Address Table: <mike> file 
+3: Address Table: <BLOCKTEMP> file 
+4: Address Table: <BLOCKPERM> file "./pf_block_permanent"
+5: Address Table: <BLOCK> file "./pf_table"
+6: Address Table: <spamd-white> file 
+7: Address Table: <private>:  10/8, 172.16/12, 192.168/16
+9: Address Table: <dst_addresses_1>:  192.168.1.1/, 192.168.1.2/, 192.168.2.0/24
+10: New interface: pcn0
+10: Address Table: <dst_addresses_2>:  pcn0/, pcn0/
+11: Address Table: <dst_addresses_3>:  pcn0/, pcn0/
+12: Address Table: <dst_addresses_4>:  www.fwbuilder.org/, www.netcitadel.com/
+Could not find enough information in the data file to create any firewall rules.
+

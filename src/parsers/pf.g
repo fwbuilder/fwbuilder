@@ -538,6 +538,13 @@ table_rule :
                 importer->newAddressTableObject(
                     name->getText(), importer->tmp_group);
             }
+        |
+            NEWLINE
+            {
+                // Special case: table definition without file name or list of addresses.
+                // Create run-time AddressTable object with name but no file spec.
+                importer->newAddressTableObject(name->getText(), "");
+            }
         )
     ;
 
@@ -583,7 +590,8 @@ tableaddr_spec { AddressSpec as; } :
                 as.address = "self";
             }
         |
-            IPV4
+            // match NUMBER and INT_CONST to account for 10/8, 172.16/12 cases.
+            ( IPV4 | NUMBER | INT_CONST )
             {
                 as.at = AddressSpec::HOST_ADDRESS;
                 as.address = LT(0)->getText();
@@ -1842,6 +1850,7 @@ tokens
     TABLE = "table";
     CONST = "const";
     PERSIST = "persist";
+    COUNTERS = "counters";
     FILE = "file";
 
     QUEUE = "queue";
