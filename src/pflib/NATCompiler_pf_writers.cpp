@@ -68,7 +68,7 @@ void NATCompiler_pf::PrintRule::_printInterface(NATRule *rule)
     RuleElementItf *intf_re = rule->getItfOutb();
     QStringList rule_interfaces;
 
-    if (!intf_re->isAny())
+    if ( ! intf_re->isAny())
     {
         for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
         {
@@ -81,6 +81,7 @@ void NATCompiler_pf::PrintRule::_printInterface(NATRule *rule)
             rule_interfaces.push_back("}");
         }
         compiler->output << "on "
+                         << string((intf_re->getBool("single_object_negation")) ? "! " : " ")
                          << rule_interfaces.join(" ").toStdString()
                          << " ";
     }

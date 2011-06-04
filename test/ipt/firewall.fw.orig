@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:14:24 2011 PDT by vadim
+#  Generated Fri Jun  3 17:27:07 2011 PDT by vadim
 #
 # files: * firewall.fw /etc/fw/firewall.fw
 #
@@ -379,7 +379,7 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.222
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -j SNAT --to-source 222.222.222.222
     # 
     # Rule 1 (NAT)
     # 
@@ -393,27 +393,27 @@ script_body() {
     # 
     # firewall:NAT:2: warning: Adding of virtual address for address range is not implemented (object r-222.222.222.0)
 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.10/31  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.12/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.16/28  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.32/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.64/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.96/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.100  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.10/31  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.12/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.16/28  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.32/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.64/27  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.96/30  -j SNAT --to-source 222.222.222.10-222.222.222.100
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.100  -j SNAT --to-source 222.222.222.10-222.222.222.100
     # 
     # Rule 4 (NAT)
     # 
     echo "Rule 4 (NAT)"
     # 
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j DNAT --to-destination :3128
-    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp  -s 192.168.1.0/24   --dport 3128 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -p tcp -m tcp  -s 192.168.1.0/24   --dport 3128 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 5 (NAT)
     # 
     echo "Rule 5 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp   -d 22.22.22.23  --dport 4000:4010 -j SNAT --to-source 192.168.1.10
-    $IPTABLES -t nat -A POSTROUTING -o eth+ -p tcp -m tcp   -d 22.22.22.23  --dport 3128 -j SNAT --to-source 192.168.1.10
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -p tcp -m tcp   -d 22.22.22.23  --dport 4000:4010 -j SNAT --to-source 192.168.1.10
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -p tcp -m tcp   -d 22.22.22.23  --dport 3128 -j SNAT --to-source 192.168.1.10
     # 
     # Rule 6 (NAT)
     # 
@@ -447,7 +447,7 @@ script_body() {
     # 
     echo "Rule 10 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10  --sport 1000:1010  -j SNAT --to-source 222.222.222.222:1000-1010
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p tcp -m tcp  -s 192.168.1.10  --sport 1000:1010  -j SNAT --to-source 222.222.222.222:1000-1010
     # 
     # Rule 11 (NAT)
     # 
@@ -455,7 +455,7 @@ script_body() {
     # 
     # firewall:NAT:11: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
 
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 25 -j SNAT --to-source 222.222.222.222
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p tcp -m tcp  -s 192.168.1.10   --dport 25 -j SNAT --to-source 222.222.222.222
     # 
     # Rule 12 (NAT)
     # 
@@ -503,7 +503,7 @@ script_body() {
     # firewall:NAT:16: warning: SNAT rule can not match MAC address. Object CA(host-with-mac-1:1) removed from the rule
 
     $IPTABLES -t nat -N Cid445F52DE31658.0
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid445F52DE31658.0
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p tcp -m tcp  -s 192.168.1.10   --dport 80 -j Cid445F52DE31658.0
     $IPTABLES -t nat -A Cid445F52DE31658.0  -d 61.150.47.112  -j RETURN
     $IPTABLES -t nat -A Cid445F52DE31658.0  -d 223.223.223.223  -j RETURN
     $IPTABLES -t nat -A Cid445F52DE31658.0 -p tcp -m tcp   --dport 80 -j SNAT --to-source 222.222.222.222
@@ -533,7 +533,7 @@ script_body() {
     # 
     echo "Rule 20 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp  -s 192.168.1.10   --dport 4000:4010 -j SNAT --to-source 222.222.222.222
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p tcp -m tcp  -s 192.168.1.10   --dport 4000:4010 -j SNAT --to-source 222.222.222.222
     # 
     # Rule 21 (NAT)
     # 
@@ -1397,7 +1397,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:14:24 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:27:07 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

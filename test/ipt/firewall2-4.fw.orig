@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:15:18 2011 PDT by vadim
+#  Generated Fri Jun  3 17:27:37 2011 PDT by vadim
 #
 # files: * firewall2-4.fw /etc/fw/firewall2-4.fw
 #
@@ -360,8 +360,8 @@ script_body() {
     # 
     echo "Rule 6 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 192.168.1.10
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 192.168.1.20
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.0/24  -j SNAT --to-source 192.168.1.10
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.0/24  -j SNAT --to-source 192.168.1.20
     # 
     # Rule 8 (NAT)
     # 
@@ -373,7 +373,7 @@ script_body() {
     # 
     echo "Rule 11 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -d 192.168.2.0/24  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2   -s 192.168.1.0/24  -d 192.168.2.0/24  -j SNAT --to-source 192.168.2.1
 
 
 
@@ -445,7 +445,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:15:18 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:27:37 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

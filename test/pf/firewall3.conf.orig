@@ -19,10 +19,10 @@ scrub out all random-id
 #
 # 
 # Rule  0 (NAT)
-nat on le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.21 
+nat on  le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.21 
 # 
 # Rule  1 (NAT)
-nat on le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 22.22.22.21 , 22.22.22.22 } bitmask 
+nat on  le0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> { 22.22.22.21 , 22.22.22.22 } bitmask 
 # 
 # Rule  2 (NAT)
 nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/28 source-hash 

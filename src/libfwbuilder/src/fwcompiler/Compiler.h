@@ -363,13 +363,28 @@ public:
             virtual bool processNext();
         };
 
-        class interfaceNegationInRE : public BasicRuleProcessor
+        /**
+         * prepare for negation of single objects in rule elements
+         */
+        class singleObjectNegation : public BasicRuleProcessor
         {
             std::string re_type;
             public:
-                interfaceNegationInRE(const std::string &n,
-                                      std::string _type) :
+            singleObjectNegation(const std::string &n,std::string _type):
                 BasicRuleProcessor(n) { re_type=_type; }
+            virtual bool processNext();
+        };
+
+        /*
+         * replace interfaces in the give RE with a set of all other
+         * interfaces of the firewall.
+         */
+        class fullInterfaceNegationInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+                fullInterfaceNegationInRE(const std::string &n, std::string _type) :
+                    BasicRuleProcessor(n) { re_type=_type; }
             virtual bool processNext();
         };
 

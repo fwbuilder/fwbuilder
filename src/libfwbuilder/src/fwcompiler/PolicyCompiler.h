@@ -207,15 +207,50 @@ namespace fwcompiler {
         };
 
 
+	/**
+         * single object negation in Src
+	 */
+        class singleObjectNegationSrc : public singleObjectNegation
+        {
+            public:
+            singleObjectNegationSrc(const std::string &n):
+                singleObjectNegation(n, libfwbuilder::RuleElementSrc::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in Dst
+	 */
+        class singleObjectNegationDst : public Compiler::singleObjectNegation
+        {
+            public:
+            singleObjectNegationDst(const std::string &n):
+                singleObjectNegation(n, libfwbuilder::RuleElementDst::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in Itf
+	 */
+        class singleObjectNegationItf : public Compiler::singleObjectNegation
+        {
+            public:
+            singleObjectNegationItf(const std::string &n):
+                singleObjectNegation(n, libfwbuilder::RuleElementItf::TYPENAME)
+                {}
+        };
+
         
 	/**
-	 * processes rules with negation in Itf
+	 * processes rules with negation in Itf.
+         * Compiler::fullInterfaceNegationInRE replaces interface object
+         * with a set of "other" interfaces of the firewall.
 	 */
-        class ItfNegation : public Compiler::interfaceNegationInRE
+        class ItfNegation : public Compiler::fullInterfaceNegationInRE
         {
             public:
             ItfNegation(const std::string &name) :
-            interfaceNegationInRE(
+            fullInterfaceNegationInRE(
                 name, libfwbuilder::RuleElementItf::TYPENAME) {}
         };
            

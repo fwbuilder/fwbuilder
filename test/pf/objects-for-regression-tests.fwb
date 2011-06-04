@@ -21096,7 +21096,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id22021X58767" host_OS="openbsd" inactive="False" lastCompiled="1286413975" lastInstalled="1271995582" lastModified="1286413961" platform="pf" version="4.7" name="firewall92" comment="syntax of the nat and rdr rules has changed in 4.7&#10;" ro="False">
+      <Firewall id="id22021X58767" host_OS="openbsd" inactive="False" lastCompiled="1286413975" lastInstalled="1271995582" lastModified="1307148472" platform="pf" version="4.7" name="firewall92" comment="syntax of the nat and rdr rules has changed in 4.7&#10;" ro="False">
         <NAT id="id22025X58767" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id70699X58767" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -21203,6 +21203,60 @@
             </ItfInb>
             <ItfOutb neg="False">
               <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id67083X7140" disabled="False" group="" position="4" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id22061X58767"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id22029X58767"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="id22031X58767"/>
+            </ItfOutb>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id67125X7140" disabled="False" group="" position="5" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id22061X58767"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id79522X23273"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="True">
+              <ObjectRef ref="id22029X58767"/>
             </ItfOutb>
             <NATRuleOptions/>
           </NATRule>

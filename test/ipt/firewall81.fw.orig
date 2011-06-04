@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:17:08 2011 PDT by vadim
+#  Generated Fri Jun  3 17:28:47 2011 PDT by vadim
 #
 # files: * firewall81.fw /etc/fw/firewall81.fw
 #
@@ -355,7 +355,7 @@ script_body() {
     # 
     # SNAT rule
     $IPTABLES -t nat -N NAT_1_POSTROUTING
-    $IPTABLES -t nat -A NAT_1_POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source 192.0.2.1
+    $IPTABLES -t nat -A NAT_1_POSTROUTING -o eth0   -s 192.168.1.0/24  -j SNAT --to-source 192.0.2.1
 
     # ================ Table 'nat',  rule set NAT_1
     # 
@@ -371,7 +371,7 @@ script_body() {
     echo "Rule NAT_1 1 (NAT)"
     # 
     # SNAT rule
-    $IPTABLES -t nat -A NAT_1_POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 192.0.2.1
+    $IPTABLES -t nat -A NAT_1_POSTROUTING -o eth+   -s 192.168.1.0/24  -j SNAT --to-source 192.0.2.1
 
 
 
@@ -441,7 +441,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:17:08 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:28:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

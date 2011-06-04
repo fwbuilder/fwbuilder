@@ -1,3 +1,18 @@
+2011-06-03  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_ipt.cpp (compile): see #2456 Added support for
+	single object negation in "Inbound Interface" and "Outbound
+	Interface" columns in compiler for iptables.
+
+	* NATCompiler_pf.cpp (compile): see #2456 Added support for single
+	object negation in "Interface" rule element of PF NAT rules. Now
+	compiler can produce PF commands such as "nat on ! em0 ... " (for
+	PF <4.7) or "match on ! em0 ..." (for PF >= 4.7)
+
+	* Compiler.cpp (singleObjectNegation::processNext): moved rule
+	processor that processes single object negation in any rule
+	element to the base class Compiler.
+
 2011-06-02  Vadim Kurland  <vadim@netcitadel.com>
 
 	* pf.g (set_rule): see #2464 implemented import of PF "set timeout",

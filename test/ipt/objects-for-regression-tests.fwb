@@ -61461,7 +61461,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id1430997X8221" host_OS="linux24" inactive="False" lastCompiled="1272404353" lastInstalled="1142003872" lastModified="1298252008" platform="iptables" version="" name="firewall2-6" comment="tests for nat rules with inbound and outbound interfaces" ro="False">
+      <Firewall id="id1430997X8221" host_OS="linux24" inactive="False" lastCompiled="1272404353" lastInstalled="1142003872" lastModified="1307144128" platform="iptables" version="" name="firewall2-6" comment="tests for nat rules with inbound and outbound interfaces" ro="False">
         <NAT id="id1431063X8221" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id1431065X8221" disabled="False" group="" position="0" action="Translate" comment="NETMAP and no -o itf">
             <OSrc neg="False">

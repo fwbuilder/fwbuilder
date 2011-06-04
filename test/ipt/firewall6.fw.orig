@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:16:35 2011 PDT by vadim
+#  Generated Fri Jun  3 17:28:27 2011 PDT by vadim
 #
 # files: * firewall6.fw /etc/fw/firewall6.fw
 #
@@ -321,7 +321,7 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 1 (NAT)
     # 
@@ -337,23 +337,23 @@ script_body() {
     # both source and destination
     # this rule should be equivalent to two rules above
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s 192.168.1.0/24   -d 22.22.23.24  --dport 80 -j DNAT --to-destination 192.168.1.20
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.20  --dport 80 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 3 (NAT)
     # 
     echo "Rule 3 (NAT)"
     # 
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.11-192.168.1.12
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 4 (NAT)
     # 
     echo "Rule 4 (NAT)"
     # 
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.22.22  --dport 80 -j DNAT --to-destination 192.168.1.11-192.168.1.12
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 5 (NAT)
     # 
@@ -363,15 +363,15 @@ script_body() {
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 22.22.23.23  --dport 80 -j DNAT --to-destination 192.168.1.11-192.168.1.12
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 80 -j DNAT --to-destination 192.168.1.11-192.168.1.12
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.2.1  --dport 80 -j DNAT --to-destination 192.168.1.11-192.168.1.12
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.11  --dport 80 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp   -d 192.168.1.12  --dport 80 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 6 (NAT)
     # 
     echo "Rule 6 (NAT)"
     # 
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp  -s ! 192.168.1.100   --dport 80 -j DNAT --to-destination 192.168.1.100:3128
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s ! 192.168.1.100   -d 192.168.1.100  --dport 3128 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp  -s ! 192.168.1.100   -d 192.168.1.100  --dport 3128 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 7 (NAT)
     # 
@@ -382,21 +382,21 @@ script_body() {
     $IPTABLES -t nat -A Cid3F9F8382.0  -d 222.222.222.40  -j RETURN
     $IPTABLES -t nat -A Cid3F9F8382.0  -d 222.222.222.41  -j RETURN
     $IPTABLES -t nat -A Cid3F9F8382.0 -p tcp -m tcp   --dport 80 -j DNAT --to-destination 192.168.1.100:3128
-    $IPTABLES -t nat -A POSTROUTING -o eth0 -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.100  --dport 3128 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth0  -p tcp -m tcp  -s 192.168.1.0/24   -d 192.168.1.100  --dport 3128 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 8 (NAT)
     # 
     echo "Rule 8 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -d 192.168.2.0/24  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth2   -s 192.168.1.0/24  -d 192.168.2.0/24  -j SNAT --to-source 192.168.2.1
     # 
     # Rule 9 (NAT)
     # 
     echo "Rule 9 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.22
-    $IPTABLES -t nat -A POSTROUTING -o eth3  -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.23
-    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -j SNAT --to-source 192.168.2.1
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -j SNAT --to-source 22.22.22.22
+    $IPTABLES -t nat -A POSTROUTING -o eth3   -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.23
+    $IPTABLES -t nat -A POSTROUTING -o eth2   -s 192.168.1.0/24  -j SNAT --to-source 192.168.2.1
 
 
 
@@ -534,7 +534,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:16:35 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:28:27 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

@@ -283,12 +283,10 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(convertAnyToNotFWForShadowing);
 
 	/**
-	 * processes rules with negation in Itf if it holds only one object
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(singleItfNegation);
-
-	/**
-	 * processes rules with negation in Src if it holds only one object
+	 * processes rules with negation in Src if it holds only one
+         * object.  Similar to PolicyCompiler::singleObjectNegationSrc
+         * but takes into account AddressTable objects if we compile
+         * with support for ipset module
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(singleSrcNegation);
 

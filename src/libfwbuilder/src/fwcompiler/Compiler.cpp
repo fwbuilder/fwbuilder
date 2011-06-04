@@ -916,6 +916,40 @@ bool Compiler::equalObj::operator()(FWObject *o)
     return o->getId()==obj->getId();
 }
 
+bool Compiler::singleObjectNegation::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
+    RuleElement *rel = RuleElement::cast(rule->getFirstByType(re_type));
+    assert(rel);
+
+    if (rel->getNeg() && rel->size()==1)
+    {
+        if (rel->getTypeName() == RuleElementItfInb::TYPENAME ||
+            rel->getTypeName() == RuleElementItfOutb::TYPENAME ||
+            rel->getTypeName() == RuleElementItf::TYPENAME )
+        {
+            rel->setNeg(false);
+            rel->setBool("single_object_negation", true);
+        } else
+        {
+            FWObject *o = rel->front();
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            Address *reladdr = Address::cast(o);
+            if ( reladdr && reladdr->countInetAddresses(true)==1 &&
+                 !compiler->complexMatch(reladdr, compiler->fw)) 
+            {
+                rel->setNeg(false);
+                rel->setBool("single_object_negation", true);
+            }
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+
 /*
  * Process negation in the "Interface" rule element. Scan objects in
  * this RE, replace cluster interfaces with interfaces of the member,
@@ -927,8 +961,13 @@ bool Compiler::equalObj::operator()(FWObject *o)
  * the RE. However I keep the code that deals with them in place to be
  * able to use this processor without prior call to
  * replaceClusterInterfaceInItf if necessary.
+ *
+ * TODO: make this code assert() if cluster interface appears in RE/
+ *
+ * Note that rule processor singleObjectNegationItf deals with single
+ * object negation in Interface rule elements.
  */
-bool Compiler::interfaceNegationInRE::processNext()
+bool Compiler::fullInterfaceNegationInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *itfre = RuleElement::cast(rule->getFirstByType(re_type));

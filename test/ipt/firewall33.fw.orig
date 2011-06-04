@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:15:51 2011 PDT by vadim
+#  Generated Fri Jun  3 17:27:59 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -333,32 +333,32 @@ script_body() {
     # 
     echo "Rule 1 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.224.25  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.224.26  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.226.25  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.226.26  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.255.18  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d 157.166.255.19  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.224.25  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.224.26  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.226.25  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.226.26  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.255.18  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.255.19  -j MASQUERADE
     # 
     # Rule 2 (NAT)
     # 
     echo "Rule 2 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d www.cnn.com  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d www.cnn.com  -j MASQUERADE
     # 
     # Rule 3 (NAT)
     # 
     echo "Rule 3 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d www.google.com  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -d www.cnn.com  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d www.google.com  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d www.cnn.com  -j MASQUERADE
     # 
     # Rule 4 (NAT)
     # 
     echo "Rule 4 (NAT)"
     # 
     $IPTABLES -t nat -N Cid43876E7B18346.0
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100  -j Cid43876E7B18346.0
+    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -j Cid43876E7B18346.0
     $IPTABLES -t nat -A Cid43876E7B18346.0  -d www.google.com  -j RETURN
     $IPTABLES -t nat -A Cid43876E7B18346.0  -d www.cnn.com  -j RETURN
     $IPTABLES -t nat -A Cid43876E7B18346.0  -j MASQUERADE
@@ -466,11 +466,11 @@ script_body() {
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.112   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.113   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.114   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.115   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.116   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
@@ -595,7 +595,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:15:51 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:27:59 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

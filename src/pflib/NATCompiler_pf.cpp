@@ -1215,6 +1215,8 @@ void NATCompiler_pf::compile()
     add(new replaceClusterInterfaceInItfOutb(
             "replace cluster interfaces with member interfaces in "
             "the Interface rule element"));
+    add(new singleObjectNegationItfOutb(
+            "process single object negation in inbound Itf"));
     add(new ItfOutbNegation("process negation in Itf"));
 
     add( new recursiveGroupsInOSrc("check for recursive groups in OSRC") );

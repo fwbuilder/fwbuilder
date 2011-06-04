@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:18:22 2011 PDT by vadim
+#  Generated Fri Jun  3 17:29:48 2011 PDT by vadim
 #
 # files: * heartbeat_cluster_1_d_linux-2-d.fw firewall.sh
 #
@@ -347,7 +347,7 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -o eth0   -s 192.168.1.0/24  -j MASQUERADE
     # 
     # Rule 1 (NAT)
     # 
@@ -355,7 +355,7 @@ script_body() {
     # 
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source $i_eth0 
+    test -n "$i_eth0" && $IPTABLES -t nat -A POSTROUTING -o eth0   -s 192.168.1.0/24  -j SNAT --to-source $i_eth0 
     done
     # 
     # Rule 2 (NAT)
@@ -364,7 +364,7 @@ script_body() {
     # 
     for i_eth0 in $i_eth0_list
     do
-    test -n "$i_eth0" && $IPTABLES -t nat -A POSTROUTING -o eth0  -s 192.168.1.0/24  -j SNAT --to-source $i_eth0  --random 
+    test -n "$i_eth0" && $IPTABLES -t nat -A POSTROUTING -o eth0   -s 192.168.1.0/24  -j SNAT --to-source $i_eth0  --random 
     done
     # 
     # Rule 3 (NAT)
@@ -751,7 +751,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:18:22 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:29:48 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

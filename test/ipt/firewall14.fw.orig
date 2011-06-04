@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:14:37 2011 PDT by vadim
+#  Generated Fri Jun  3 17:27:14 2011 PDT by vadim
 #
 # files: * firewall14.fw /etc/fw/firewall14.fw
 #
@@ -331,45 +331,45 @@ script_body() {
     # 
     echo "Rule 0 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.160
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -j SNAT --to-source 22.22.23.160
     # 
     # Rule 1 (NAT)
     # 
     echo "Rule 1 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -d ! 22.22.23.128/25  -j SNAT --to-source 22.22.23.160
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -d ! 22.22.23.128/25  -j SNAT --to-source 22.22.23.160
     # 
     # Rule 2 (NAT)
     # 
     echo "Rule 2 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.132
+    $IPTABLES -t nat -A POSTROUTING -o eth2   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.132
     # 
     # Rule 3 (NAT)
     # 
     echo "Rule 3 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth2  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.132
+    $IPTABLES -t nat -A POSTROUTING -o eth2   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.132
     # 
     # Rule 4 (NAT)
     # 
     echo "Rule 4 (NAT)"
     # 
     # I guess this rule does not make much sense
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.22
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.160
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.22
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.160
     # 
     # Rule 5 (NAT)
     # 
     echo "Rule 5 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.22
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.22
     # 
     # Rule 6 (NAT)
     # 
     echo "Rule 6 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.40
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.0/24  -d 22.22.23.128/25  -j SNAT --to-source 22.22.23.40
 }
 
 ip_forward() {
@@ -425,7 +425,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:14:37 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:27:14 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

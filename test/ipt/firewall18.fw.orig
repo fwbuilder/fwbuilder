@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:14:46 2011 PDT by vadim
+#  Generated Fri Jun  3 17:27:19 2011 PDT by vadim
 #
 # files: * firewall18.fw /etc/fw/firewall18.fw
 #
@@ -343,11 +343,11 @@ script_body() {
     # 
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth1  -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
+    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth1   -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
     done
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 1 (NAT)
     # 
@@ -355,23 +355,23 @@ script_body() {
     # 
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth1  -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
+    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth1   -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
     done
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 2 (NAT)
     # 
     echo "Rule 2 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 3 (NAT)
     # 
     echo "Rule 3 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth1  -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth1   -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 4 (NAT)
     # 
@@ -379,32 +379,32 @@ script_body() {
     # 
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth+  -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
+    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o eth+   -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
     done
     for i_ppp0 in $i_ppp0_list
     do
-    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o ppp+  -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
+    test -n "$i_ppp0" && $IPTABLES -t nat -A POSTROUTING -o ppp+   -s $i_ppp0   -j SNAT --to-source 66.66.66.130 
     done
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o ppp+  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o ppp+  -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o ppp+  -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o ppp+   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o ppp+   -s 66.66.66.130  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o ppp+   -s 192.168.1.1  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 5 (NAT)
     # 
     echo "Rule 5 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o ppp+  -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o ppp+   -s 192.168.1.0/24  -j SNAT --to-source 66.66.66.130
     # 
     # Rule 6 (NAT)
     # 
     echo "Rule 6 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
-    $IPTABLES -t nat -A POSTROUTING -o ppp+  -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o eth+   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
+    $IPTABLES -t nat -A POSTROUTING -o ppp+   -s 66.66.66.1  -j SNAT --to-source 66.66.66.130
 
 
 
@@ -527,7 +527,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:14:46 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:27:19 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

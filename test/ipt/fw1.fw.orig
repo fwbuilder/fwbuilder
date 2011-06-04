@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v4.3.0.3546
+#  Firewall Builder  fwb_ipt v5.0.0.3547
 #
-#  Generated Thu May 26 14:18:07 2011 PDT by vadim
+#  Generated Fri Jun  3 17:29:38 2011 PDT by vadim
 #
 # files: * fw1.fw /etc/fw1.fw
 #
@@ -353,7 +353,7 @@ script_body() {
     echo "Rule 1 (NAT)"
     # 
     # source port only
-    $IPTABLES -t nat -A POSTROUTING -o eth+ -p udp -m udp  -s 192.168.1.0/24  --sport 123  -j SNAT --to-source :5050
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -p udp -m udp  -s 192.168.1.0/24  --sport 123  -j SNAT --to-source :5050
     # 
     # Rule 2 (NAT)
     # 
@@ -369,7 +369,7 @@ script_body() {
     # SDNAT 
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.0.2.1  --dport 22 -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -p tcp -m tcp   -d 192.168.1.1  --dport 22 -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p tcp -m tcp   -d 192.168.1.10  --dport 22 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p tcp -m tcp   -d 192.168.1.10  --dport 22 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 4 (NAT)
     # 
@@ -378,7 +378,7 @@ script_body() {
     # SDNAT with source port
     $IPTABLES -t nat -A PREROUTING -p udp -m udp  --sport 123  -d 192.0.2.1  -j DNAT --to-destination 192.168.1.10
     $IPTABLES -t nat -A PREROUTING -p udp -m udp  --sport 123  -d 192.168.1.1  -j DNAT --to-destination 192.168.1.10
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p udp -m udp  --sport 123  -d 192.168.1.10  -j SNAT --to-source 192.168.1.1:5050
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p udp -m udp  --sport 123  -d 192.168.1.10  -j SNAT --to-source 192.168.1.1:5050
     # 
     # Rule 5 (NAT)
     # 
@@ -386,7 +386,7 @@ script_body() {
     # 
     # SDNAT with dest port
     $IPTABLES -t nat -A PREROUTING -p udp -m udp  -s 192.168.1.0/24   --dport 53 -j DNAT --to-destination 192.168.1.10:1053
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p udp -m udp  -s 192.168.1.0/24   -d 192.168.1.10  --dport 1053 -j SNAT --to-source 192.168.1.1
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p udp -m udp  -s 192.168.1.0/24   -d 192.168.1.10  --dport 1053 -j SNAT --to-source 192.168.1.1
     # 
     # Rule 6 (NAT)
     # 
@@ -396,13 +396,13 @@ script_body() {
     # translate src and dst addresses
     # and src and dst ports
     $IPTABLES -t nat -A PREROUTING -p udp -m udp  -s 192.168.1.0/24  --sport 1024:65535  --dport 53 -j DNAT --to-destination 192.168.1.10:1053
-    $IPTABLES -t nat -A POSTROUTING -o eth1 -p udp -m udp  -s 192.168.1.0/24   -d 192.168.1.10  --dport 1053 -j SNAT --to-source 192.168.1.1:32767-65535
+    $IPTABLES -t nat -A POSTROUTING -o eth1  -p udp -m udp  -s 192.168.1.0/24   -d 192.168.1.10  --dport 1053 -j SNAT --to-source 192.168.1.1:32767-65535
     # 
     # Rule 7 (NAT)
     # 
     echo "Rule 7 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth+ -p udp -m udp  -s 192.168.1.0/24   --dport 53 -j SNAT --to-source :5050
+    $IPTABLES -t nat -A POSTROUTING -o eth+  -p udp -m udp  -s 192.168.1.0/24   --dport 53 -j SNAT --to-source :5050
 
 
 
@@ -546,7 +546,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu May 26 14:18:07 2011 by vadim"
+        log "Activating firewall script generated Fri Jun  3 17:29:38 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

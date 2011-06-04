@@ -213,8 +213,17 @@ string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rul
 
     res << rule->getStr("ipt_chain").c_str();
 
-    if ( ! iface_in_name.isEmpty()) res << "-i" << iface_in_name;
-    if ( ! iface_out_name.isEmpty()) res << "-o" << iface_out_name;
+    if ( ! iface_in_name.isEmpty())
+    {
+        res << _printSingleOptionWithNegation(
+            "-i", itf_in_re, iface_in_name.toStdString()).c_str();
+    }
+
+    if ( ! iface_out_name.isEmpty())
+    {
+        res << _printSingleOptionWithNegation(
+            "-o", itf_out_re, iface_out_name.toStdString()).c_str();
+    }
 
     res << "";
 

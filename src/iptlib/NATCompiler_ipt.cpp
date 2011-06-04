@@ -1482,30 +1482,6 @@ bool NATCompiler_ipt::splitMultipleICMP::processNext()
     return true;
 }
 
-bool NATCompiler_ipt::singleObjectNegation::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElement *rel = RuleElement::cast(rule->getFirstByType(re_type));
-    assert(rel);
-
-    if (rel->getNeg() && rel->size()==1)
-    {
-        FWObject *o = rel->front();
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        Address *reladdr = Address::cast(o);
-        if ( reladdr && reladdr->countInetAddresses(true)==1 &&
-             !compiler->complexMatch(reladdr, compiler->fw)) 
-        {
-            rel->setNeg(false);
-            rel->setBool("single_object_negation", true);
-        }
-    }
-
-    tmp_queue.push_back(rule);
-    return true;
-}
-
 bool NATCompiler_ipt::doOSrcNegation::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -2428,12 +2404,14 @@ void NATCompiler_ipt::compile()
     add(new replaceClusterInterfaceInItfInb(
             "replace cluster interfaces with member interfaces in "
             "the inbound Interface rule element"));
+    add(new singleObjectNegationItfInb("process single object negation in inbound Itf"));
     add(new ItfInbNegation("process negation in inbound Itf"));
 
     add(new expandGroupsInItfOutb("expand groups in outbound Interface"));
     add(new replaceClusterInterfaceInItfOutb(
             "replace cluster interfaces with member interfaces in "
             "the outbound Interface rule element"));
+    add(new singleObjectNegationItfOutb("process single object negation in outbound Itf"));
     add(new ItfOutbNegation("process negation in outbound Itf"));
 
     add( new recursiveGroupsInOSrc("check for recursive groups in OSRC"));

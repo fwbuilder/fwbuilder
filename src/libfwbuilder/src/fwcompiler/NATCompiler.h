@@ -187,24 +187,68 @@ namespace fwcompiler {
         DECLARE_NAT_RULE_PROCESSOR(ConvertToAtomic);
 
 	/**
+         * single object negation in OSrc
+	 */
+        class singleObjectNegationOSrc : public singleObjectNegation
+        {
+            public:
+            singleObjectNegationOSrc(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementOSrc::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in ODst
+	 */
+        class singleObjectNegationODst : public Compiler::singleObjectNegation
+        {
+            public:
+            singleObjectNegationODst(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementODst::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in ItfInb
+	 */
+        class singleObjectNegationItfInb : public Compiler::singleObjectNegation
+        {
+            public:
+            singleObjectNegationItfInb(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementItfInb::TYPENAME)
+                {}
+        };
+
+	/**
+         * single object negation in ItfOutb
+	 */
+        class singleObjectNegationItfOutb : public Compiler::singleObjectNegation
+        {
+            public:
+            singleObjectNegationItfOutb(const std::string &n):
+                singleObjectNegation(n,libfwbuilder::RuleElementItfOutb::TYPENAME)
+                {}
+        };
+        
+	/**
 	 * processes rules with negation in ItfOutb
 	 */
-        class ItfOutbNegation : public Compiler::interfaceNegationInRE
+        class ItfOutbNegation : public Compiler::fullInterfaceNegationInRE
         {
             public:
             ItfOutbNegation(const std::string &name) :
-            interfaceNegationInRE(
+            fullInterfaceNegationInRE(
                 name, libfwbuilder::RuleElementItfOutb::TYPENAME) {}
         };
            
 	/**
 	 * processes rules with negation in ItfInb
 	 */
-        class ItfInbNegation : public Compiler::interfaceNegationInRE
+        class ItfInbNegation : public Compiler::fullInterfaceNegationInRE
         {
             public:
             ItfInbNegation(const std::string &name) :
-            interfaceNegationInRE(
+            fullInterfaceNegationInRE(
                 name, libfwbuilder::RuleElementItfInb::TYPENAME) {}
         };
            
