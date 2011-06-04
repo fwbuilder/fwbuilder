@@ -982,6 +982,8 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         }
     }
 
+    if (!mw->isEditorVisible()) mw->showEditor();
+
     if (!mw->requestEditorOwnership(this, object, operation, validate))
         return false;
 
@@ -992,16 +994,23 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         return true;
     }
 
-
     if (object == NULL)
     {
-        mw->blankEditor();
+        QCoreApplication::postEvent(mw, new clearEditorPanelEvent());
+        //mw->blankEditor();
     } else if (operation==ObjectEditor::optNone)
     {
-        mw->openEditor(object);
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(
+                mw->activeProject()->getFileName(), object->getId()));
+        //mw->openEditor(object);
     } else if(Rule::cast(object)!=NULL)
     {
-        mw->openOptEditor(object, operation);
+        QCoreApplication::postEvent(
+            mw, new openOptObjectInEditorEvent(project->getFileName(),
+                                               object->getId(),
+                                               operation));
+        //mw->openOptEditor(object, operation);
     }
 
     return true;
@@ -2753,17 +2762,16 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
  * number in the cell to the left or to the right
  */
 
-        QModelIndex newIndex = md->index(oldIndex.row(), newColumn, oldIndex.parent());
+        QModelIndex newIndex = md->index(oldIndex.row(),
+                                         newColumn,
+                                         oldIndex.parent());
 
         re = getRE(newIndex);
+
         if (re==NULL)
         {
             fwosm->setSelected(NULL, newIndex);
             setCurrentIndex(newIndex);
-            if (mw->isEditorVisible() && !switchObjectInEditor(newIndex))
-            {
-                ev->accept();
-            }
             return;
         }
 
@@ -2771,10 +2779,6 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
         selectObject(newObj, newIndex);
 
-        if (mw->isEditorVisible() && !switchObjectInEditor(newIndex))
-        {
-            ev->accept();
-        }
         return;
     }
 
@@ -2782,14 +2786,15 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         ev->key()==Qt::Key_End || ev->key()==Qt::Key_Home)
     {
         QTreeView::keyPressEvent(ev);
-        QModelIndex newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
+        QModelIndex newIndex = md->index(currentIndex().row(),
+                                         oldIndex.column(),
+                                         currentIndex().parent());
 
         re = getRE(newIndex);
         FWObject *object = NULL;
         if (re != NULL)
         {
-            object=re->front();
-            if (FWReference::cast(object)!=NULL) object=FWReference::cast(object)->getPointer();
+            object = FWReference::getObject(re->front());
             selectObject(object, newIndex);
         }
         else
@@ -2797,7 +2802,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             fwosm->setSelected(NULL, newIndex);
             setCurrentIndex(newIndex);
         }
-        if (mw->isEditorVisible() && !switchObjectInEditor(newIndex)) ev->accept();
+
         return;
     }
 
@@ -2812,13 +2817,19 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         {
             // Non-object column. Just move focus up or down;
             QTreeView::keyPressEvent(ev);
-            newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
+            newIndex = md->index(currentIndex().row(),
+                                 oldIndex.column(),
+                                 currentIndex().parent());
             if (!md->isGroup(newIndex)) 
             {
-                selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
+                selectionModel()->select(
+                    newIndex,
+                    QItemSelectionModel::Rows | QItemSelectionModel::Select);
+
                 setCurrentIndex(newIndex);
+
                 fwosm->setSelected(NULL, newIndex);
-                if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
+
                 ev->accept();
             }
             return;
@@ -2834,11 +2845,12 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 FWObject *prev = NULL;
                 for (i=re->begin(); i!=re->end(); ++i)
                 {
-                    object = *i;
-                    if (FWReference::cast(object) != NULL) object = FWReference::cast(object)->getPointer();
-                    if (ev->key()==Qt::Key_Up   && object==fwosm->selectedObject)   break;
-                    if (ev->key()==Qt::Key_Down && prev==fwosm->selectedObject) break;
-                    prev=object;
+                    object = FWReference::getObject(*i);
+                    if (ev->key()==Qt::Key_Up   && object==fwosm->selectedObject)
+                        break;
+                    if (ev->key()==Qt::Key_Down && prev==fwosm->selectedObject)
+                        break;
+                    prev = object;
                 }
                 if (ev->key()==Qt::Key_Up) object = prev;
                 if (ev->key()==Qt::Key_Down && i == re->end()) object = NULL;
@@ -2848,8 +2860,12 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             {
                 // It needs to move to another row
                 QTreeView::keyPressEvent(ev);
-                newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
-                selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
+                newIndex = md->index(currentIndex().row(),
+                                     oldIndex.column(),
+                                     currentIndex().parent());
+                selectionModel()->select(
+                    newIndex,
+                    QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
                 if (oldIndex.row() == newIndex.row())
                 {
@@ -2871,8 +2887,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                         {
                             i = re->begin();
                         }
-                        object = *i;
-                        if (FWReference::cast(object) != NULL) object = FWReference::cast(object)->getPointer();
+                        object = FWReference::getObject(*i);
                     }
                     else
                     {
@@ -2880,7 +2895,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                         {
                             setCurrentIndex(newIndex);
                             fwosm->setSelected(NULL, newIndex);
-                            if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
+
                             ev->accept();
                             return;
                         }
@@ -2896,7 +2911,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         }
 
         selectObject(object, newIndex);
-        if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
+
         ev->accept();
         return;
     }
@@ -2904,6 +2919,11 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
     if (ev->key()==Qt::Key_Delete)
     {
         deleteSelectedObject();
+    }
+
+    if (ev->key()==Qt::Key_Enter || ev->key()==Qt::Key_Return)
+    {
+        editSelected();
     }
 
     QTreeView::keyPressEvent(ev);
