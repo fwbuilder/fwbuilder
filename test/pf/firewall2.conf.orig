@@ -154,6 +154,12 @@ nat on  eth0 proto tcp from 192.168.1.0/24 to any port 80 -> (eth0)
 # 
 # Rule  35 (NAT)
 nat on  eth4 proto tcp from 192.168.1.0/24 to any port 80 -> (eth4) 
+# 
+# Rule  36 (NAT)
+rdr proto tcp from any to 22.22.22.22 port 119 -> { 192.168.1.10 , 255.255.255.255 } port 119 
+# 
+# Rule  37 (NAT)
+rdr on  eth1 proto tcp from any to (eth1) port 119 -> { 192.168.1.10 , 255.255.255.255 } port 119 round-robin 
 
 # Policy compiler errors and warnings:
 # firewall2:Policy:12: warning: Changing rule direction due to self reference

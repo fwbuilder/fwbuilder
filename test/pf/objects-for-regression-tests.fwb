@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1307149160" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="21" lastModified="1307153244" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1686,6 +1686,7 @@
         <IPv4 id="id518129X21143" name="addr-10.1.1.2" comment="" ro="False" address="10.1.1.2" netmask="0.0.0.0"/>
         <IPv4 id="id134690X19225" name="addr-222.222.222.40" comment="" ro="False" address="222.222.222.40" netmask="0.0.0.0"/>
         <IPv4 id="id135048X19225" name="a-192.168.1.10" comment="" ro="False" address="192.168.1.10" netmask="0.0.0.0"/>
+        <IPv4 id="id41167X11081" name="a-192.168.1.11" comment="" ro="False" address="255.255.255.255" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -4434,7 +4435,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1261961536" lastInstalled="0" lastModified="1307149256" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1261961536" lastInstalled="0" lastModified="1307153321" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -5445,6 +5446,69 @@
               <ObjectRef ref="sysid0"/>
             </ItfOutb>
             <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id41115X11081" disabled="False" group="" position="36" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFC0F70"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id80198X23273"/>
+              <ObjectRef ref="id41167X11081"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfOutb>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id68890X11081" disabled="False" group="" position="37" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3AFB6706"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-NNTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id80198X23273"/>
+              <ObjectRef ref="id41167X11081"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <ItfInb neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ItfInb>
+            <ItfOutb neg="False">
+              <ObjectRef ref="id3AFB6706"/>
+            </ItfOutb>
+            <NATRuleOptions>
+              <Option name="pf_bitmask">False</Option>
+              <Option name="pf_pool_type_none">False</Option>
+              <Option name="pf_random">False</Option>
+              <Option name="pf_round_robin">True</Option>
+              <Option name="pf_source_hash">False</Option>
+              <Option name="pf_static_port">False</Option>
+            </NATRuleOptions>
           </NATRule>
           <RuleSetOptions/>
         </NAT>
