@@ -103,6 +103,9 @@ protected:
     void startDrag(Qt::DropActions supportedActions);
 
     virtual void paintEvent(QPaintEvent *ev);
+
+    void drawRow(QPainter *painter, const QStyleOptionViewItem &option,
+                 const QModelIndex &index ) const;
     
  public:
 

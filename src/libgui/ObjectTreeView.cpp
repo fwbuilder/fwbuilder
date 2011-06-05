@@ -28,41 +28,43 @@
 #include "global.h"
 #include "utils.h"
 
-#include "FWWindow.h"
+#include "FWBSettings.h"
 #include "FWBTree.h"
+#include "FWObjectDrag.h"
+#include "FWObjectPropertiesFactory.h"
+#include "FWWindow.h"
+#include "IconSetter.h"
+#include "ObjectManipulator.h"
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
-#include "ObjectManipulator.h"
-#include "FWObjectDrag.h"
-#include "FWBSettings.h"
-#include "IconSetter.h"
-#include "FWObjectPropertiesFactory.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Firewall.h"
-#include "fwbuilder/Resources.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Resources.h"
 
 #include <QAbstractItemView>
-#include <QHeaderView>
 #include <QBitmap>
-#include <qpainter.h>
-#include <qpixmapcache.h>
-#include <QMimeData>
+#include <QDragEnterEvent>
+#include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QDragLeaveEvent>
 #include <QFocusEvent>
-#include <QPixmap>
-#include <QMouseEvent>
+#include <QHeaderView>
 #include <QKeyEvent>
-#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QMouseEvent>
+#include <QPixmap>
+#include <QStyle>
+#include <QStyleOption>
 #include <QtDebug>
+#include <qpainter.h>
+#include <qpixmapcache.h>
 
 #include <iostream>
 #include <algorithm>
-#include "ProjectPanel.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -165,18 +167,26 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
 void ObjectTreeView::paintEvent(QPaintEvent *ev)
 {
-    // testing for #2475
-    // QPalette pal = palette();
-    // qDebug() << "ObjectTreeView::paintEvent"
-    //          << "color(QPalette::Highlight)="
-    //          << pal.color(QPalette::Highlight);
-
-    QStyleOptionViewItem option = viewOptions();
-    qDebug() << "ObjectTreeView::paintEvent"
-             << "QStyleOptionViewItem.state=" << int(option.state);
-
-
     QTreeWidget::paintEvent(ev);
+}
+
+void ObjectTreeView::drawRow(QPainter *painter, const QStyleOptionViewItem &option,
+                             const QModelIndex &index ) const
+{
+    // qDebug() << "ObjectTreeView::drawRow"
+    //          << "QStyleOptionViewItem.state=" << int(option.state)
+    //          << "hasFocus()=" << hasFocus()
+    //          << "isActiveWindow()=" << isActiveWindow();
+
+    // QWidget *fw = QApplication::focusWidget();
+    // qDebug() << "Currently has focus:" << fw;
+
+    // this is a patch for #2475
+    // Looks like the state remains State_Active even when the tree view widget
+    // loses focus (as long as parent window is active).
+    QStyleOptionViewItem new_opt = option;
+    if ( ! hasFocus()) new_opt.state &= ~QStyle::State_Active;
+    QTreeWidget::drawRow(painter, new_opt, index);
 }
 
 bool ObjectTreeView::event( QEvent *event )
@@ -296,8 +306,6 @@ FWObject* ObjectTreeView::getCurrentObject()
 
 void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 {
-    qDebug() << "ObjectTreeView::focusInEvent";
-
     QTreeWidget::focusInEvent(ev);
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
@@ -305,27 +313,13 @@ void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 
 void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 {
-    qDebug() << "ObjectTreeView::focusOutEvent";
-
     QTreeWidget::focusOutEvent(ev);
-
-    if (fwbdebug)
-    {
-        QStyleOptionViewItem option = viewOptions();
-        qDebug() << "ObjectTreeView::focusOutEvent"
-                 << "QStyleOptionViewItem.state=" << int(option.state)
-                 << "hasFocus()=" << hasFocus()
-                 << "isActiveWindow()=" << isActiveWindow();
-    }
-
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
 }
 
 void ObjectTreeView::updateTreeIcons()
 {
-    if (fwbdebug) qDebug("ObjectTreeView::updateTreeIcons ");
-
     QTreeWidgetItemIterator it(this);
     while ( *it )
     {
