@@ -65,7 +65,8 @@ namespace libfwbuilder
 }
 
 
-class HistoryItem {
+class HistoryItem
+{
     ObjectTreeViewItem *itm;
     int                 objId;
 
@@ -76,10 +77,21 @@ class HistoryItem {
     int id() const { return objId; }
 };
 
-class FindHistoryItemByObjectId {
+
+class FindHistoryItemByObjectId
+{
     int id;
 public:
     FindHistoryItemByObjectId(int i) { id = i; }
+    bool operator()(const HistoryItem &itm);
+};
+
+
+class FindHistoryItemByParentObjectId
+{
+    int id;
+public:
+    FindHistoryItemByParentObjectId(int i) { id = i; }
     bool operator()(const HistoryItem &itm);
 };
 
@@ -317,6 +329,13 @@ public:
 
      void removeObjectFromHistory(libfwbuilder::FWObject *obj);
 
+     /*
+      * searches history trying to find an object that has given
+      * parent. Used to find which rule set of the firewall user
+      * looked at last.
+      */
+     libfwbuilder::FWObject* findInHistoryByParent(libfwbuilder::FWObject* parent);
+         
      void expandObjectInTree(libfwbuilder::FWObject *obj);
      
      libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,

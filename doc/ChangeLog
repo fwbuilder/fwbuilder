@@ -1,5 +1,14 @@
 2011-06-04  vadim  <vadim@netcitadel.com>
 
+	* FWWindow_editor.cpp (openEditor): this change is a part of the
+	GUI usability improvements: when user double clicks on a firewall
+	object to open it in the editor, rule set view panel switches to
+	the rule set of that firewall. To decide which rule set to show,
+	the program scans history of the objects the user opened before in
+	the same GUI session and shows that firewall's rule set they
+	opened last. If user never opened any rule sets of this firewall,
+	then the first Policy object is shown. See #2465.
+
 	* RuleSetView.cpp (itemDoubleClicked): as part of the GUI
 	usability improvements, its behavior when user double clicks on
 	"any" in a rule has changed. Now the program opens object "any" in

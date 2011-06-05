@@ -26,16 +26,20 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "events.h"
 
 #include <ui_FWBMainWindow_q.h>
 
+#include "FWBTree.h"
 #include "FWWindow.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
-#include "FWBTree.h"
+#include "RuleSetModel.h"
+#include "RuleSetView.h"
 #include "platforms.h"
 
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/Library.h"
@@ -167,6 +171,37 @@ void FWWindow::openEditor(FWObject *obj)
     m_mainWindow->editorDockWidget->show(); // editor
     oe->open(obj);
     m_mainWindow->objectEditorStack->resize(old_size);
+
+    // #2465 If the object we are about to open in the editor is a
+    // firewall and if a ruleset visible in RuleSetView belongs to
+    // another firewall, switch ruleset to the ruleset of the new
+    // firewall which we looked at last time.
+    if (Firewall::cast(obj) != NULL)  // this includes Cluster
+    {
+        RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
+        if (rsv)
+        {
+            RuleSet* current_ruleset = NULL;
+            RuleSetModel* md = NULL;
+            if (rsv)
+            {
+                md = (RuleSetModel*)rsv->model();
+                current_ruleset = md->getRuleSet();
+            }
+            if (obj != current_ruleset->getParent())
+            {
+                FWObject *old_rs =
+                    activeProject()->m_panel->om->findInHistoryByParent(obj);
+
+                if (old_rs == NULL)
+                    old_rs = obj->getFirstByType(Policy::TYPENAME);
+
+                QCoreApplication::postEvent(
+                    activeProject(), new openRulesetImmediatelyEvent(
+                        activeProject()->getFileName(), old_rs->getId()));
+            }
+        }
+    }
 
     if (reopen)
     {

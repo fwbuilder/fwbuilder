@@ -351,6 +351,27 @@ bool FindHistoryItemByObjectId::operator()(const HistoryItem &itm)
     return (itm.id() == id);
 }
 
+bool FindHistoryItemByParentObjectId::operator()(const HistoryItem &itm)
+{
+    FWObject *obj = mw->activeProject()->db()->findInIndex(itm.id());
+    FWObject *parent = obj->getParent();
+    return (parent != NULL && parent->getId() == id);
+}
+
+FWObject* ObjectManipulator::findInHistoryByParent(FWObject* parent)
+{
+    FindHistoryItemByParentObjectId pred(parent->getId());
+    list<HistoryItem>::reverse_iterator it =
+        std::find_if(history.rbegin(), history.rend(), pred);
+
+    if (it != history.rend())
+    {
+        return m_project->db()->findInIndex(it->id());
+    }
+
+    return NULL;
+}
+
 void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
 {
     if (fwbdebug)
