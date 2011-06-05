@@ -121,11 +121,11 @@
        </property>
        <item row="0" column="0">
         <widget class="QWidget" name="toolbar" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>6</number>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="margin">
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -174,6 +174,40 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="rulesetname">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+              <kerning>false</kerning>
+             </font>
+            </property>
+            <property name="text">
+             <string>Firewall / ruleset</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
               <height>20</height>
              </size>
             </property>
@@ -263,40 +297,6 @@
               <width>25</width>
               <height>25</height>
              </size>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="rulesetname">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-              <kerning>false</kerning>
-             </font>
-            </property>
-            <property name="text">
-             <string>Firewall / ruleset</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
