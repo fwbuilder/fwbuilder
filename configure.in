@@ -451,31 +451,6 @@ if test "x$prefix" != "xNONE"; then
   PREFIX=$prefix
 fi
 
-# TODO: Probably need to repackage this as Autoconf macro.
-#
-# QT DBus framework is not always available. It is not included in QT
-# for Windows and is missing in QT 4.5.3 Commercial package for Mac OS
-# X 10.6 SnowLeopard (but it is present in QT 4.4.1 Commercial for
-# Mac OS X 10.5 Leopard. Go figure.)
-#
-AC_MSG_CHECKING(QT DBus framework)
-( cd config_tests
-  C=""
-  test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
-  $QMAKE $C qtdbus_test.pro || exit 1
-  test -f Makefile || exit 1
-  make clean >config.log 2>&1
-  make >>config.log 2>&1
-)
-if test $? -eq 0; then
-  HAVE_QTDBUS="1"
-  AC_MSG_RESULT(ok)
-  AC_DEFINE(HAVE_QTDBUS)
-else
-  AC_MSG_RESULT(not available)
-fi
-AC_SUBST(HAVE_QTDBUS)
-
 dnl ********************************************************************
 
 
