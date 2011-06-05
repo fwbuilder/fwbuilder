@@ -83,6 +83,8 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     setSelectionMode(QAbstractItemView::ContiguousSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    setAllColumnsShowFocus(false);
+
     setDragEnabled(true);
     setAcceptDrops(true);
     setDragDropMode(QAbstractItemView::DragDrop);
@@ -148,6 +150,21 @@ RuleSetView::~RuleSetView()
 void RuleSetView::init()
 {
     if (fwbdebug) qDebug("RuleSetView::init");
+
+    /*
+     * #2474 : I want standard Qt classes to paint column 0 and area
+     * to the left of the clumn 0 because that is where [+] and [-]
+     * appear when we have rule groups. However I want to avoid using
+     * the same standard color used to highlight currently selected
+     * object in rules. To do that, I reset QPalette::Highlight color
+     * in the palette used to draw everything in the rules. I am going
+     * to have to reset palette back to the standard color in
+     * RuleSetViewDelegate when I paint individual cells.
+     */
+    QPalette updated_palette = palette();
+    updated_palette.setColor(QPalette::Highlight, QColor("silver"));
+    setPalette(updated_palette);
+
 
     setUpdatesEnabled(false);
     QTime t; t.start();
@@ -3112,9 +3129,9 @@ void RuleSetView::setActionState(QAction *action, bool state)
     action->setVisible(state);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // PolicyView
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent):RuleSetView(project, parent)
 {
@@ -3122,13 +3139,15 @@ PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent):RuleSe
     RuleSetModel* model = new PolicyModel(p,this);
     setModel(model);
     delete sm;
-    setItemDelegate(new RuleSetViewDelegate(this,fwosm));
+    RuleSetViewDelegate *dlgt = new RuleSetViewDelegate(this, fwosm);
+    dlgt->setStandardHighlightColor(palette().color(QPalette::Highlight));
+    setItemDelegate(dlgt);
     init();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // NATView
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent):RuleSetView(project, parent)
 {
@@ -3136,13 +3155,15 @@ NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent):RuleSetView(pro
     RuleSetModel* model = new NatModel(p,this);
     setModel(model);
     delete sm;
-    setItemDelegate(new RuleSetViewDelegate(this,fwosm));
+    RuleSetViewDelegate *dlgt = new RuleSetViewDelegate(this, fwosm);
+    dlgt->setStandardHighlightColor(palette().color(QPalette::Highlight));
+    setItemDelegate(dlgt);
     init();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // RoutingView
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent):RuleSetView(project, parent)
 {
@@ -3150,6 +3171,8 @@ RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent):Rul
     RuleSetModel* model = new RoutingModel(p,this);
     setModel(model);
     delete sm;
-    setItemDelegate(new RuleSetViewDelegate(this,fwosm));
+    RuleSetViewDelegate *dlgt = new RuleSetViewDelegate(this, fwosm);
+    dlgt->setStandardHighlightColor(palette().color(QPalette::Highlight));
+    setItemDelegate(dlgt);
     init();
 }

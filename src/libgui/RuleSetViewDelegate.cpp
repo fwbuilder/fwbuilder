@@ -6,8 +6,6 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -48,19 +46,25 @@
 #include <QtGui>
 #include<QStringList>
 
+
 using namespace libfwbuilder;
 using namespace std;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-// RuleSetViewDelegate
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RuleSetViewDelegate::RuleSetViewDelegate(QObject *parent, FWObjectSelectionModel *selectionModel) : QItemDelegate(parent)
+////////////////////////////////////////////////////////////////////////////
+// RuleSetViewDelegate
+////////////////////////////////////////////////////////////////////////////
+
+RuleSetViewDelegate::RuleSetViewDelegate(QObject *parent,
+                                         FWObjectSelectionModel *selectionModel)
+    : QItemDelegate(parent)
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::RuleSetViewDelegate";
     this->sectionModel = selectionModel;
 }
-void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void RuleSetViewDelegate::paint(QPainter *painter,
+                                const QStyleOptionViewItem &option,
+                                const QModelIndex &index) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paint";
 
@@ -96,7 +100,14 @@ void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     painter->restore();
 }
 
-void RuleSetViewDelegate::paintRowHeader (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
+/*
+ * This paints the leftmost column in the rule set view (where rule
+ * number appears)
+ */
+void RuleSetViewDelegate::paintRowHeader(QPainter *painter,
+                                         const QStyleOptionViewItem &option,
+                                         const QModelIndex &index,
+                                         RuleNode * node) const
 {
     Q_UNUSED(node);
     QStyleOptionViewItem newOpt = option;
@@ -104,9 +115,13 @@ void RuleSetViewDelegate::paintRowHeader (QPainter *painter, const QStyleOptionV
     QItemDelegate::paint(painter, newOpt, index);
     painter->setPen( QColor("lightgray") );
     painter->drawRect(option.rect);
+
 }
 
-void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
+void RuleSetViewDelegate::paintGroup(QPainter *painter,
+                                     const QStyleOptionViewItem &option,
+                                     const QModelIndex &index,
+                                     RuleNode * node) const
 {
     Q_UNUSED(node);
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintGroup";
@@ -114,7 +129,8 @@ void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewIt
     QItemDelegate::paint(painter, option, index);
 }
 
-void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect,
+void RuleSetViewDelegate::drawIcons(QPainter *painter,
+                                    QRect rect,
                                     const QStringList &icons) const
 {
     int x = rect.left();
@@ -171,8 +187,9 @@ void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
     }
 }
 
-void RuleSetViewDelegate::drawSelectedFocus(
-    QPainter *painter, const QStyleOptionViewItem &option,QRect &rect) const
+void RuleSetViewDelegate::drawSelectedFocus(QPainter *painter,
+                                            const QStyleOptionViewItem &option,
+                                            QRect &rect) const
 {
     if (option.state & QStyle::State_HasFocus)
     {
@@ -193,45 +210,56 @@ void RuleSetViewDelegate::paintRule(QPainter *painter,
     QVariant v = index.data(Qt::DisplayRole);
     if (!v.isValid()) return;
 
-    // if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintRule"
-    //                        << v;
-
     if (node != 0)
     {
         FWOptions *ropt = node->rule->getOptionsObject();
         QString color = ropt->getStr("color").c_str();
         if (!color.isEmpty())
-            painter->fillRect(option.rect,QColor(color));
+        {
+            painter->fillRect(option.rect, QColor(color));
+        } else
+        {
+            if (option.state & QStyle::State_Selected)
+            {
+                painter->fillRect(option.rect,
+                                  option.palette.color(QPalette::Highlight));
+            }
+        }
     }
+
+    QStyleOptionViewItem new_opt = option;
+    new_opt.palette.setColor(QPalette::Highlight, standard_highlight);
+
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
     switch (colDesc.type)
     {
         case ColDesc::Object :
-            paintObject(painter, option, v);
+            paintObject(painter, new_opt, v);
             break;
         case ColDesc::Direction :
-            paintDirection(painter, option, v);
+            paintDirection(painter, new_opt, v);
             break;
         case ColDesc::Action :
-            paintAction(painter, option, v);
+            paintAction(painter, new_opt, v);
             break;
         case ColDesc::Time :
-            paintObject(painter, option, v);
+            paintObject(painter, new_opt, v);
             break;
         case ColDesc::Options :
-            paintOptions(painter, option, v);
+            paintOptions(painter, new_opt, v);
             break;
         case ColDesc::Comment :
-            paintComment(painter, option, v);
+            paintComment(painter, new_opt, v);
             break;
         case ColDesc::Metric :
-            paintMetric(painter, option, v);
+            paintMetric(painter, new_opt, v);
             break;
         default:
-            QItemDelegate::paint(painter, option, index);
+            QItemDelegate::paint(painter, new_opt, index);
     }
+
     painter->setPen( QColor("lightgray") );
-    painter->drawRect(option.rect);
+    painter->drawRect(new_opt.rect);
 }
 
 void RuleSetViewDelegate::paintDirection(
@@ -240,7 +268,8 @@ void RuleSetViewDelegate::paintDirection(
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintDirection";
     DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     QString dir = v.value<QString>();
-    drawSelectedFocus(painter, option, ctx.objectRect);
+    if (option.state & QStyle::State_Selected)
+        drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = (st->getShowDirectionText())?dir:"";
     ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, dir, text);
@@ -252,7 +281,8 @@ void RuleSetViewDelegate::paintAction(
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintAction";
     DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
     ActionDesc actionDesc = v.value<ActionDesc>();
-    drawSelectedFocus(painter, option, ctx.objectRect);
+    if (option.state & QStyle::State_Selected)
+        drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = constructActionText(actionDesc);
     ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, actionDesc.name, text);
@@ -268,7 +298,9 @@ void RuleSetViewDelegate::paintOptions(
                  << "option.rect=" << option.rect
                  << "ctx.objectRect=" << ctx.objectRect;
 
-    drawSelectedFocus(painter, option, ctx.objectRect);
+    if (option.state & QStyle::State_Selected)
+        drawSelectedFocus(painter, option, ctx.objectRect);
+
     QStringList icons = v.value<QStringList>();
 
     // draw option icons vertically instead of horizontally  #2367
@@ -302,7 +334,8 @@ void RuleSetViewDelegate::paintComment(
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintComment";
     DrawingContext ctx = initContext(option.rect, true);
     QString comment = v.value<QString>();
-    drawSelectedFocus(painter, option, ctx.objectRect);
+    if (option.state & QStyle::State_Selected)
+        drawSelectedFocus(painter, option, ctx.objectRect);
     painter->drawText( ctx.drawRect, Qt::AlignLeft|Qt::AlignTop, comment);
 }
 
@@ -312,7 +345,8 @@ void RuleSetViewDelegate::paintMetric(
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintMetric";
     DrawingContext ctx = initContext(option.rect, true);
     QString metric = v.value<QString>();
-    drawSelectedFocus(painter, option, ctx.objectRect);
+    if (option.state & QStyle::State_Selected)
+        drawSelectedFocus(painter, option, ctx.objectRect);
     ctx = initContext(option.rect, false); // useEnireSpace=false
     drawIconAndText(painter, ctx.drawRect, QString(), metric);
 }

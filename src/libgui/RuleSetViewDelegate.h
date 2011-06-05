@@ -6,8 +6,6 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -38,9 +36,9 @@ namespace libfwbuilder
     class FWObject;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // RuleSetViewDelegate
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 class DrawingContext
 {
     public:
@@ -49,9 +47,13 @@ class DrawingContext
     int itemHeight;
     QSize iconSize;
 };
+
+
 class RuleSetViewDelegate : public QItemDelegate
 {
-    Q_OBJECT
+    Q_OBJECT;
+
+    QColor standard_highlight;
     
 public:
 
@@ -59,6 +61,8 @@ public:
     void paint (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint (const QStyleOptionViewItem &, const QModelIndex & ) const;
 
+    void setStandardHighlightColor(const QColor &c) { standard_highlight = c; }
+    
     static const int RULE_ITEM_GAP = 4;
 
     static const int VERTICAL_MARGIN = 2;
