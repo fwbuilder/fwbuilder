@@ -985,7 +985,7 @@ rule_extended :
         ( filteropts )?
     ;
 
-direction : ( IN | OUT )
+direction : ( IN_WORD | OUT_WORD )
         {
             importer->direction = LT(0)->getText();
         }
@@ -1783,8 +1783,8 @@ tokens
 
     QUICK = "quick";
 
-    IN = "in";
-    OUT = "out";
+    IN_WORD = "in";
+    OUT_WORD = "out";
 
     ON = "on";
     PROTO = "proto";

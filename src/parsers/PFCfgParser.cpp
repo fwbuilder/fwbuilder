@@ -1301,8 +1301,8 @@ void PFCfgParser::block_rule() {
 		case EXLAMATION:
 		case NO:
 		case OPENING_PAREN:
-		case IN:
-		case OUT:
+		case IN_WORD:
+		case OUT_WORD:
 		case LOG:
 		case ALL:
 		case TO:
@@ -2103,8 +2103,8 @@ void PFCfgParser::rule_extended() {
 	try {      // for error handling
 		{
 		switch ( LA(1)) {
-		case IN:
-		case OUT:
+		case IN_WORD:
+		case OUT_WORD:
 		{
 			direction();
 			break;
@@ -3429,8 +3429,8 @@ void PFCfgParser::block_return() {
 			case EXLAMATION:
 			case NO:
 			case OPENING_PAREN:
-			case IN:
-			case OUT:
+			case IN_WORD:
+			case OUT_WORD:
 			case LOG:
 			case ALL:
 			case TO:
@@ -3806,14 +3806,14 @@ void PFCfgParser::direction() {
 	try {      // for error handling
 		{
 		switch ( LA(1)) {
-		case IN:
+		case IN_WORD:
 		{
-			match(IN);
+			match(IN_WORD);
 			break;
 		}
-		case OUT:
+		case OUT_WORD:
 		{
-			match(OUT);
+			match(OUT_WORD);
 			break;
 		}
 		default:

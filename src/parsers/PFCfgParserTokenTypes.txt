@@ -103,8 +103,8 @@ RETURN_RST="return-rst"=103
 TTL=104
 RETURN_ICMP="return-icmp"=105
 RETURN_ICMP6=106
-IN="in"=107
-OUT="out"=108
+IN_WORD="in"=107
+OUT_WORD="out"=108
 LOG="log"=109
 ALL="all"=110
 USER="user"=111
