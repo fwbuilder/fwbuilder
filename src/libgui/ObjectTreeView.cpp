@@ -151,6 +151,8 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     setDragDropMode( QAbstractItemView::DragDrop );
     setRootIsDecorated( TRUE );
 
+    setFocusPolicy(Qt::StrongFocus);
+
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this,
             SLOT(updateFilter()));
 
@@ -286,6 +288,16 @@ void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 {
     QTreeWidget::focusOutEvent(ev);
+
+    if (fwbdebug)
+    {
+        QStyleOptionViewItem option = viewOptions();
+        qDebug() << "ObjectTreeView::focusOutEvent"
+                 << "QStyleOptionViewItem.state=" << int(option.state)
+                 << "hasFocus()=" << hasFocus()
+                 << "isActiveWindow()=" << isActiveWindow();
+    }
+
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
 }
