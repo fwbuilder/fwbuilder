@@ -534,7 +534,7 @@ table_rule :
         name:WORD
         GREATER_THAN 
         ( PERSIST ) ?
-        ( CONST ) ?
+        ( CONST_WORD ) ?
         ( COUNTERS )?
         (
             FILE file:STRING
@@ -1864,7 +1864,7 @@ tokens
     RDR = "rdr";
     BINAT = "binat";
     TABLE = "table";
-    CONST = "const";
+    CONST_WORD = "const";
     PERSIST = "persist";
     COUNTERS = "counters";
     FILE = "file";

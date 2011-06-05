@@ -78,7 +78,7 @@ struct CUSTOM_API PFCfgParserTokenTypes {
 		LESS_THAN = 67,
 		GREATER_THAN = 68,
 		PERSIST = 69,
-		CONST = 70,
+		CONST_WORD = 70,
 		COUNTERS = 71,
 		FILE = 72,
 		STRING = 73,

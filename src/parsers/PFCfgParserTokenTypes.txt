@@ -66,7 +66,7 @@ TABLE="table"=66
 LESS_THAN=67
 GREATER_THAN=68
 PERSIST="persist"=69
-CONST="const"=70
+CONST_WORD="const"=70
 COUNTERS="counters"=71
 FILE="file"=72
 STRING=73

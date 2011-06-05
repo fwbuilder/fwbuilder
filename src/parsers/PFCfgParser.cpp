@@ -414,7 +414,7 @@ void PFCfgParser::table_rule() {
 		}
 		case NEWLINE:
 		case OPENING_BRACE:
-		case CONST:
+		case CONST_WORD:
 		case COUNTERS:
 		case FILE:
 		{
@@ -428,9 +428,9 @@ void PFCfgParser::table_rule() {
 		}
 		{
 		switch ( LA(1)) {
-		case CONST:
+		case CONST_WORD:
 		{
-			match(CONST);
+			match(CONST_WORD);
 			break;
 		}
 		case NEWLINE:
