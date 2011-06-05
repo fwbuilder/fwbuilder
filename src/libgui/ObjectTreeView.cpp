@@ -84,6 +84,11 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     this->setParent(parent, f);
     setFont(st->getTreeFont());
 
+    QPalette updated_palette = palette();
+    updated_palette.setColor(
+        QPalette::Inactive, QPalette::Highlight, QColor("silver"));
+    setPalette(updated_palette);
+
     setExpandsOnDoubleClick(false);
 
 //    setAcceptDrops( TRUE );
