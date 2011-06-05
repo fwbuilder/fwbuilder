@@ -145,6 +145,8 @@ void ProjectPanel::saveMainSplitter()
 {
     QString fileName ;
     if (rcs!=NULL) fileName = rcs->getFileName();
+
+#ifdef TREE_IS_DOCKABLE
     // Save position of splitters regardless of the window state
     // Do not save if one of tree panel is floating
     if (!m_panel->treeDockWidget->isWindow())
@@ -161,6 +163,20 @@ void ProjectPanel::saveMainSplitter()
             qDebug() << out1;
         }
     }
+#else
+    QList<int> sl = m_panel->topSplitter->sizes();
+    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+    if (sl[0] || sl[1])
+        st->setStr("Window/" + fileName + "/MainWindowSplitter", arg );
+
+    if (fwbdebug)
+    {
+        QString out1 = " save Window/" + fileName + "/MainWindowSplitter";
+        out1+= " " + arg;
+        qDebug() << out1;
+    }
+
+#endif
 }
 
 void ProjectPanel::loadMainSplitter()

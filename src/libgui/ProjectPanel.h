@@ -234,13 +234,9 @@ public:
     void setActive();
 
  private:
-    void adjustDockWidths(bool makeZeroWidth);
-    
+
  public slots:
     void newObject();
-
-    void topLevelChangedForTreePanel(bool topLevel);
-    void visibilityChangedForTreePanel(bool topLevel);
     
     virtual void back();
     virtual void lockObject();
@@ -299,10 +295,6 @@ public:
 
     void aboutToActivate();
     
-#if QT_VERSION < 0x040500
-    void setTreeDockPosition();
-#endif
-
     void splitterPositionChanged(int, int);
 
 public:
@@ -346,7 +338,7 @@ public:
     QString printHeader();
 
     void toggleViewTree(bool f);
-
+    
 protected:
     int oldState ;
     virtual void showEvent(QShowEvent *ev);

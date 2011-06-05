@@ -1035,12 +1035,6 @@ void ProjectPanel::showEvent(QShowEvent *ev)
     if (fwbdebug) qDebug() << "ProjectPanel::showEvent " << this
                            << "title " << mdiWindow->windowTitle();
 
-    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChangedForTreePanel(bool)));
-    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(visibilityChangedForTreePanel(bool)));
-
-    m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
 
     // we get this event when MDI window is maximized or restored
@@ -1067,11 +1061,6 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
         ev->ignore();
         return;
     }
-
-    disconnect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-               this, SLOT(topLevelChangedForTreePanel(bool)));
-    disconnect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-               this, SLOT(visibilityChangedForTreePanel(bool)));
 
     saveState();
     fileClose();
@@ -1270,152 +1259,14 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
 
 void ProjectPanel::toggleViewTree(bool f)
 {
-    if (f) m_panel->treeDockWidget->show();
-    else m_panel->treeDockWidget->hide();
-}
-
-
-/* Make the objectTree dock zero width if the objectTree is floating,
-   or if it's not visible.  Then the rules editor will take up the
-   full width */
-void ProjectPanel::adjustDockWidths(bool makeZeroWidth)
-{
-    /* These can be static since they are the same for every window
-       (they come from the .ui file) */
-    static int dockMinSize = 0;
-    static int dockMaxSize = 0;
-    if (dockMinSize == 0 && dockMaxSize == 0) {
-        dockMinSize = m_panel->treeDockWidgetParentFrame->minimumWidth();
-        dockMaxSize = m_panel->treeDockWidgetParentFrame->maximumWidth();
-    }
-
-    if (makeZeroWidth) {
-        m_panel->treeDockWidgetParentFrame->setMinimumWidth(0);
-        m_panel->treeDockWidgetParentFrame->setMaximumWidth(0);
-    } else {
-        m_panel->treeDockWidgetParentFrame->setMinimumWidth(dockMinSize);
-        m_panel->treeDockWidgetParentFrame->setMaximumWidth(dockMaxSize);
-    }
-}
-
-
-/*
- * Signal QDockWidget::topLevelChanged is called after dock widget
- * is made floating or docked.
- */
-void ProjectPanel::topLevelChangedForTreePanel(bool f)
-{
-    if (fwbdebug)
-        qDebug() << "ProjectPanel::topLevelChangedForTreePanel  f=" << f;
-
-    /*
-     * QDockWidget object uses native decorators on Windows and Mac
-     * and therefore gets window title bar there. On X11 QT emulates
-     * title bar and allows dragging of the floating dock widget only
-     * if its parent is QMainWindow. Here is a hack: we reparent the
-     * widget in order to satisfy their requirements and make floating
-     * panel widget draggable on all platforms. Need to reparent it
-     * back and stick it into the layout of the ProjectPanel when it
-     * is docked.
-     */
-
-    adjustDockWidths(f);
-
-    m_panel->treeDockWidget->blockSignals(true);
-
-    if (f)  // window becomes detached
-    {
-        QString file_name = getFileName(); // full path
-        QFileInfo fi(file_name);
-        QString short_name = fi.fileName();
-        m_panel->treeDockWidget->setParent(mw);
-        m_panel->treeDockWidget->setWindowTitle(short_name);
-        mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
-        m_panel->treeDockWidget->show();
-        m_panel->treeDockWidget->blockSignals(false);
-    } else
-    {
-#if QT_VERSION < 0x040500
-// See bug #973 for details
-        QTimer::singleShot(0, this, SLOT(setTreeDockPosition()));
-#else
-// Setting widget position here causes crash on Qt < 4.5.
-        mw->removeDockWidget(m_panel->treeDockWidget);
-        m_panel->treeDockWidget->setWindowTitle("");
-        m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
-        m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
-        m_panel->treeDockWidget->show();
-        m_panel->treeDockWidget->blockSignals(false);
-#endif
-    }
-    m_panel->treeDockWidget->setFloating(f);
-
-    if (fwbdebug)
-    {
-        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 1";
-        qDebug() << "m_panel->treeDockWidget->isWindow()="
-                 << m_panel->treeDockWidget->isWindow();
-    }
-
-    if ( ! m_panel->treeDockWidget->isWindow())
-    {
-#if QT_VERSION >= 0x040500
-        if (fwbdebug) qDebug() << "Calling loadMainSplitter()";
-        loadMainSplitter();
-#endif
-    } else
-    {
-        // expand rules
-        collapseTree();
-        m_panel->treeDockWidget->widget()->update();
-    }
-
-    if (fwbdebug)
-        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 2";
-}
-
-void ProjectPanel::visibilityChangedForTreePanel(bool f)
-{
-    if (fwbdebug)
-        qDebug() << "ProjectPanel::visibilityChangedForTreePanel  f="
-                 << f
-                 << "isVisible()=" << m_panel->treeDockWidget->isVisible()
-                 << "isWindow()=" << m_panel->treeDockWidget->isWindow()
-                 << "mdiWindow->isMaximized()=" << mdiWindow->isMaximized();
-
-    adjustDockWidths(!m_panel->treeDockWidget->isVisible() ||
-                     m_panel->treeDockWidget->isFloating());
-
-#if 0
-    if (m_panel->treeDockWidget->isVisible() &&
-        ! m_panel->treeDockWidget->isWindow())  // visible and not floating
-    {
-        loadMainSplitter();
-    } else
-    {
-        // expand rules
-        collapseTree();
-        m_panel->treeDockWidget->widget()->update();
-    }
-#endif
+    if (f) m_panel->treePanelFrame->show();
+    else m_panel->treePanelFrame->hide();
 }
 
 void ProjectPanel::setActive()
 {
     undoStack->setActive(true);
 }
-
-#if QT_VERSION < 0x040500
-void ProjectPanel::setTreeDockPosition()
-{
-    mw->removeDockWidget(m_panel->treeDockWidget);
-    m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
-    m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
-    m_panel->treeDockWidget->blockSignals(false);
-    m_panel->treeDockWidget->show();
-    loadMainSplitter();
-}
-#endif
 
 void ProjectPanel::splitterPositionChanged(int,int)
 {

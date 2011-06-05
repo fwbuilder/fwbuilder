@@ -949,7 +949,7 @@ void FWWindow::prepareViewMenu()
     m_mainWindow->actionEditor_panel->setEnabled(true);
 
     m_mainWindow->actionObject_Tree->setChecked(
-        activeProject()->m_panel->treeDockWidget->isVisible());
+        activeProject()->m_panel->treePanelFrame->isVisible());
     m_mainWindow->actionEditor_panel->setChecked(
         m_mainWindow->editorDockWidget->isVisible());
     m_mainWindow->actionUndo_view->setChecked(

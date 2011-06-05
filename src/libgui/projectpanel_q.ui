@@ -29,7 +29,7 @@
      <property name="childrenCollapsible">
       <bool>false</bool>
      </property>
-     <widget class="QFrame" name="treeDockWidgetParentFrame">
+     <widget class="QFrame" name="treePanelFrame">
       <property name="minimumSize">
        <size>
         <width>150</width>
@@ -40,52 +40,35 @@
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Plain</enum>
       </property>
-      <layout class="QGridLayout" name="treeDockWidgetParentFrameLayout">
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
        <property name="margin">
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QDockWidget" name="treeDockWidget">
-         <property name="floating">
-          <bool>false</bool>
+        <widget class="ObjectManipulator" name="om" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="allowedAreas">
-          <set>Qt::LeftDockWidgetArea</set>
+         <property name="minimumSize">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
          </property>
-         <property name="windowTitle">
-          <string/>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
          </property>
-         <widget class="QWidget" name="dockWidgetContents">
-          <layout class="QGridLayout" name="gridLayout_4">
-           <property name="margin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="ObjectManipulator" name="om" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>10</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </widget>
        </item>
       </layout>

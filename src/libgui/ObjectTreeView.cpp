@@ -163,6 +163,22 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 //    setSortingEnabled(true);
 }
 
+void ObjectTreeView::paintEvent(QPaintEvent *ev)
+{
+    // testing for #2475
+    // QPalette pal = palette();
+    // qDebug() << "ObjectTreeView::paintEvent"
+    //          << "color(QPalette::Highlight)="
+    //          << pal.color(QPalette::Highlight);
+
+    QStyleOptionViewItem option = viewOptions();
+    qDebug() << "ObjectTreeView::paintEvent"
+             << "QStyleOptionViewItem.state=" << int(option.state);
+
+
+    QTreeWidget::paintEvent(ev);
+}
+
 bool ObjectTreeView::event( QEvent *event )
 {
     if (event->type() == QEvent::ToolTip)
@@ -280,6 +296,8 @@ FWObject* ObjectTreeView::getCurrentObject()
 
 void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 {
+    qDebug() << "ObjectTreeView::focusInEvent";
+
     QTreeWidget::focusInEvent(ev);
     QTreeWidgetItem *ci = currentItem();
     if (ci) repaint();
@@ -287,6 +305,8 @@ void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 
 void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 {
+    qDebug() << "ObjectTreeView::focusOutEvent";
+
     QTreeWidget::focusOutEvent(ev);
 
     if (fwbdebug)

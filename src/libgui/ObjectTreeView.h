@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -48,7 +46,8 @@ namespace libfwbuilder {
 
 class ProjectPanel;
 
-class ObjectTreeView : public QTreeWidget {
+class ObjectTreeView : public QTreeWidget
+{
 
     Q_OBJECT;
 
@@ -102,6 +101,8 @@ protected:
                       EditTrigger trigger, QEvent *event);
     
     void startDrag(Qt::DropActions supportedActions);
+
+    virtual void paintEvent(QPaintEvent *ev);
     
  public:
 
