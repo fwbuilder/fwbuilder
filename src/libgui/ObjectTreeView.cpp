@@ -88,7 +88,12 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     QPalette updated_palette = palette();
     updated_palette.setColor(
-        QPalette::Inactive, QPalette::Highlight, QColor("silver"));
+        QPalette::Inactive,
+        QPalette::Highlight,
+        QColor("silver"));
+
+//        palette().color(QPalette::Highlight).lighter(300));
+
     setPalette(updated_palette);
 
     setExpandsOnDoubleClick(false);
@@ -162,7 +167,10 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 // QT 4.3.4 (discovered on Ubuntu Hardy). Crash happened when
 // second object was added to any branch of the tree.
 //
+// This causes crash with Qt 4.6 as well
+//
 //    setSortingEnabled(true);
+
 }
 
 void ObjectTreeView::paintEvent(QPaintEvent *ev)

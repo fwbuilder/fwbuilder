@@ -279,9 +279,6 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 
     if (Cluster::isA(obj) || Firewall::isA(obj))
     {
-         for (FWObjectTypedChildIterator it = obj->findByType(Interface::TYPENAME);
-              it != it.end(); ++it) insertSubtree( nitm, *it );
-
          for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
               it != it.end(); ++it) insertSubtree( nitm, *it );
 
@@ -289,6 +286,9 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
               it != it.end(); ++it) insertSubtree( nitm, *it );
 
          for (FWObjectTypedChildIterator it = obj->findByType(Routing::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         for (FWObjectTypedChildIterator it = obj->findByType(Interface::TYPENAME);
               it != it.end(); ++it) insertSubtree( nitm, *it );
 
          return ;
