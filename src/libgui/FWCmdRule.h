@@ -326,7 +326,8 @@ class FWCmdRuleNegateRE : public FWCmdRuleChangeRe
 
 public:
     FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                      libfwbuilder::RuleElement* ruleElement);
+                      libfwbuilder::RuleElement* ruleElement,
+                      int position, int column);
 
     virtual void redo();
     virtual void undo();

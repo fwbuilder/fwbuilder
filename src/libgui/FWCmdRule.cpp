@@ -663,8 +663,8 @@ void FWCmdRuleChangeRe::notify()
 
 FWCmdRuleNegateRE::FWCmdRuleNegateRE(
     ProjectPanel *project,
-    RuleSet* ruleset, RuleElement* ruleElement) :
-    FWCmdRuleChangeRe(project, ruleset, ruleElement, 0, 0, 0, QObject::tr("Negate"))
+    RuleSet* ruleset, RuleElement* ruleElement, int position, int column) :
+    FWCmdRuleChangeRe(project, ruleset, ruleElement, position, column, 0, QObject::tr("Negate"))
 {
 }
 

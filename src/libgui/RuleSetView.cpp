@@ -2012,8 +2012,12 @@ void RuleSetView::negateRE()
 
     RuleElement *re = getRE(index);
     if (re==NULL) return;
+
+    int position = Rule::cast(re->getParent())->getPosition();
+    int column = index.column();
+
     project->undoStack->push(
-        new FWCmdRuleNegateRE(project, md->getRuleSet(), re));
+        new FWCmdRuleNegateRE(project, md->getRuleSet(), re, position, column));
 }
 
 void RuleSetView::revealObjectInTree()
