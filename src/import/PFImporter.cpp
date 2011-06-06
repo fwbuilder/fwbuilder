@@ -417,6 +417,13 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
         return false;
     }
 
+    if (port_op == "!=")
+    {
+        error_tracker->registerError(
+            QObject::tr("'Port not equal' operation "
+                        "is not supported yet."));
+    }
+
     sig->port_range_inclusive = true;
 
     if (source)
