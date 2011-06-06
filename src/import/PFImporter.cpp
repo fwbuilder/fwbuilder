@@ -1245,7 +1245,11 @@ void PFImporter::newAddressTableObject(const string &name, const string &file)
     ObjectSignature sig(error_tracker);
     sig.type_name = AddressTable::TYPENAME;
     sig.object_name = QString::fromUtf8(name.c_str());
-    sig.address_table_name = QString::fromUtf8(file.c_str());
+
+    QString filename = QString::fromUtf8(file.c_str());
+    filename.replace("\"", "");
+
+    sig.address_table_name = filename;
     FWObject *at = address_maker->createObject(sig);
 
     address_table_registry[sig.object_name] = at;
