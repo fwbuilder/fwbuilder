@@ -293,11 +293,6 @@ void RuleSetViewDelegate::paintOptions(
 {
     DrawingContext ctx = initContext(option.rect, true); // useEnireSpace=true
 
-    if (fwbdebug)
-        qDebug() << "RuleSetViewDelegate::paintOptions"
-                 << "option.rect=" << option.rect
-                 << "ctx.objectRect=" << ctx.objectRect;
-
     if (option.state & QStyle::State_Selected)
         drawSelectedFocus(painter, option, ctx.objectRect);
 

@@ -401,8 +401,6 @@ int RuleSetView::getColByType(ColDesc::ColumnType type) const
 
 void RuleSetView::mousePressEvent( QMouseEvent* ev )
 {
-    if (fwbdebug) qDebug() << "RuleSetView::mousePressEvent";
-
     //TODO: provide custom implementation of QTreeView::mousePressEvent( ev ); for column != 0
     QTreeView::mousePressEvent( ev );
 
@@ -883,16 +881,15 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
     if (!index.isValid()) return;
     if (index.row()<0) return;
 
-    ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
-    
-    if (fwosm->selectedObject!=NULL)
-    {
-        QCoreApplication::postEvent(
-            mw,
-            new showObjectInTreeEvent(
-                project->getFileName(), fwosm->selectedObject->getId()));
+    // ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
+    // if (fwosm->selectedObject!=NULL)
+    // {
+    //     QCoreApplication::postEvent(
+    //         mw,
+    //         new showObjectInTreeEvent(
+    //             project->getFileName(), fwosm->selectedObject->getId()));
+    // }
 
-    }
     editSelected(index);
 }
 
@@ -900,6 +897,19 @@ void RuleSetView::editSelected(const QModelIndex& index)
 {
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
     FWObject *obj = fwosm->selectedObject;
+
+    // see #2454 -- we do not want to switch object tree view to the standard
+    // objects library when user double clicks on object "any" 
+    if (obj != NULL &&
+        (obj->getId() != FWObjectDatabase::ANY_ADDRESS_ID &&
+         obj->getId() != FWObjectDatabase::ANY_SERVICE_ID &&
+         obj->getId() != FWObjectDatabase::ANY_INTERVAL_ID))
+    {
+        QCoreApplication::postEvent(
+            mw,
+            new showObjectInTreeEvent(
+                project->getFileName(), fwosm->selectedObject->getId()));
+    }
 
     if (!mw->isEditorVisible()) mw->showEditor();
     switchObjectInEditor(index);
