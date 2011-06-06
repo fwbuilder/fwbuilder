@@ -621,27 +621,17 @@ void ObjectSignature::setDstPortRangeFromPortOpForCisco(const QString &port_op,
 }
 
 void ObjectSignature::setSrcPortRangeFromPortOpForPF(const QString &port_op,
-                                                     const QString &port_spec,
+                                                     const QString &port1,
+                                                     const QString &port2,
                                                      const QString &proto)
 {
     QString portop = port_op.trimmed();
-    QString portspec = port_spec.trimmed();
 
     src_port_range_start = 0;
     src_port_range_end = 0;
 
-    QString range_start;
-    QString range_end;
-    QStringList sl = portspec.split(" ");
-    if (sl.size() > 1)
-    {
-        range_start = sl[0];
-        range_end = sl[1];
-    } else
-    {
-        range_start = portspec;
-        range_end = portspec;
-    }
+    QString range_start = port1;
+    QString range_end = port2;
 
     src_port_range_start = portFromString(range_start, proto, 0);
     src_port_range_end = portFromString(range_end, proto, 65535);
@@ -687,27 +677,17 @@ void ObjectSignature::setSrcPortRangeFromPortOpForPF(const QString &port_op,
 }
 
 void ObjectSignature::setDstPortRangeFromPortOpForPF(const QString &port_op,
-                                                     const QString &port_spec,
+                                                     const QString &port1,
+                                                     const QString &port2,
                                                      const QString &proto)
 {
     QString portop = port_op.trimmed();
-    QString portspec = port_spec.trimmed();
 
     dst_port_range_start = 0;
     dst_port_range_end = 0;
 
-    QString range_start;
-    QString range_end;
-    QStringList sl = portspec.split(" ");
-    if (sl.size() > 1)
-    {
-        range_start = sl[0];
-        range_end = sl[1];
-    } else
-    {
-        range_start = portspec;
-        range_end = portspec;
-    }
+    QString range_start = port1;
+    QString range_end = port2;
 
     dst_port_range_start = portFromString(range_start, proto, 0);
     dst_port_range_end = portFromString(range_end, proto, 65535);

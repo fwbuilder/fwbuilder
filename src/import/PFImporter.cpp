@@ -245,9 +245,8 @@ void PFImporter::addServiceObjectsToRE(RuleElement *re)
 
                     buildTCPUDPObjectSingature(
                         &sig,
-                        "",
-                        "",
-                        false,  // dest.
+                        PortSpec(),
+                        PortSpec(),
                         protocol.c_str(),
                         flags_check.c_str(),
                         flags_mask.c_str());
@@ -256,10 +255,11 @@ void PFImporter::addServiceObjectsToRE(RuleElement *re)
 
                 } else
                 {
-                    addTCPUDPServiceObjectsToRE(re, protocol, src_port_group,
-                                                true, false);
-                    addTCPUDPServiceObjectsToRE(re, protocol, dst_port_group,
-                                                false, false);
+                    addTCPUDPServiceObjectsToRE(re,
+                                                protocol,
+                                                src_port_group,
+                                                dst_port_group,
+                                                false);
                 }
             } else
             {
@@ -289,32 +289,41 @@ void PFImporter::addServiceObjectsToRE(RuleElement *re)
 void PFImporter::addTCPUDPServiceObjectsToRE(
     RuleElement *re,
     const std::string &protocol,
-    list< PortSpec > &port_spec_list,
-    bool source,
+    const list< PortSpec > &src_port_list,
+    const list< PortSpec > &dst_port_list,
     bool for_nat_rhs)
 {
-    list<PortSpec>::iterator psi;
+    list<PortSpec> src_ports = src_port_list;
+    if (src_port_list.size() == 0) src_ports.push_back(PortSpec());
 
-    for (psi=port_spec_list.begin(); psi!=port_spec_list.end(); ++psi)
+    list<PortSpec> dst_ports = dst_port_list;
+    if (dst_port_list.size() == 0) dst_ports.push_back(PortSpec());
+
+    list<PortSpec>::const_iterator psis;
+    list<PortSpec>::const_iterator psid;
+
+    for (psis=src_ports.begin(); psis!=src_ports.end(); ++psis)
     {
-        PortSpec ps = *psi;
-        ObjectSignature sig(error_tracker);
-        QString port_spec = 
-            QString("%1 %2")
-            .arg(ps.port1.c_str()).arg(ps.port2.c_str());
+        PortSpec ps_src = *psis;
 
-        buildTCPUDPObjectSingature(
-            &sig,
-            ps.port_op.c_str(),
-            port_spec,
-            source,
-            protocol.c_str(),
-            (for_nat_rhs) ? "" : flags_check.c_str(),
-            (for_nat_rhs) ? "" : flags_mask.c_str());
+        for (psid=dst_ports.begin(); psid!=dst_ports.end(); ++psid)
+        {
+            PortSpec ps_dst = *psid;
+
+            ObjectSignature sig(error_tracker);
+
+            buildTCPUDPObjectSingature(
+                &sig,
+                ps_src,
+                ps_dst,
+                protocol.c_str(),
+                (for_nat_rhs) ? "" : flags_check.c_str(),
+                (for_nat_rhs) ? "" : flags_mask.c_str());
             
-        re->addRef(commitObject(service_maker->createObject(sig)));
+            re->addRef(commitObject(service_maker->createObject(sig)));
 
-        if (!for_nat_rhs && ps.port_op == "!=") re->setNeg(true);
+            if (!for_nat_rhs && ps_dst.port_op == "!=") re->setNeg(true);
+        }
     }
 
 }
@@ -380,25 +389,36 @@ void PFImporter::addTDst()
 void PFImporter::addTSrvSNAT()
 {
     NATRule *rule = NATRule::cast(current_rule);
-    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group,
-                                true,   // source
-                                true);  // for_nat_rhs
+    if (protocol == "tcp" || protocol == "udp")
+    {
+        addTCPUDPServiceObjectsToRE(rule->getTSrv(),
+                                    protocol,
+                                    nat_port_group,
+                                    list< PortSpec >(),
+                                    true);  // for_nat_rhs
+    }
 }
 
 void PFImporter::addTSrvDNAT()
 {
     NATRule *rule = NATRule::cast(current_rule);
-    addTCPUDPServiceObjectsToRE(rule->getTSrv(), protocol, nat_port_group,
-                                false,  // source
-                                true);  // for_nat_rhs
+    if (protocol == "tcp" || protocol == "udp")
+    {
+        addTCPUDPServiceObjectsToRE(rule->getTSrv(), 
+                                    protocol,
+                                    list< PortSpec >(),
+                                    nat_port_group,
+                                    true);  // for_nat_rhs
+    }
 }
 
-
-
+/*
+ * Set source and destination port ranges in the object signature
+ * object.
+ */
 bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
-                                            const QString &port_op,
-                                            const QString &port_spec,
-                                            bool source,
+                                            const PortSpec &src_port,
+                                            const PortSpec &dst_port,
                                             const QString &protocol,
                                             const QString &flags_check,
                                             const QString &flags_mask)
@@ -409,7 +429,7 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
     else
         sig->type_name = UDPService::TYPENAME;
 
-    if (port_op == "<>")
+    if (src_port.port_op == "<>" || dst_port.port_op == "<>")
     {
         error_tracker->registerError(
             QObject::tr("'except ranges' ('<>') for port numbers "
@@ -417,19 +437,22 @@ bool PFImporter::buildTCPUDPObjectSingature(ObjectSignature *sig,
         return false;
     }
 
-    if (port_op == "!=")
+    if (src_port.port_op == "!=" || dst_port.port_op == "!=")
     {
         error_tracker->registerError(
-            QObject::tr("'Port not equal' operation "
-                        "is not supported yet."));
+            QObject::tr("'Port not equal' operation is not supported yet."));
     }
 
     sig->port_range_inclusive = true;
 
-    if (source)
-        sig->setSrcPortRangeFromPortOpForPF(port_op, port_spec, protocol);
-    else
-        sig->setDstPortRangeFromPortOpForPF(port_op, port_spec, protocol);
+    sig->setSrcPortRangeFromPortOpForPF(src_port.port_op.c_str(),
+                                        src_port.port1.c_str(),
+                                        src_port.port2.c_str(),
+                                        protocol);
+    sig->setDstPortRangeFromPortOpForPF(dst_port.port_op.c_str(),
+                                        dst_port.port1.c_str(),
+                                        dst_port.port2.c_str(),
+                                        protocol);
 
     if (protocol == "tcp")
     {

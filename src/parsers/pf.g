@@ -1658,21 +1658,12 @@ label :
 
 //****************************************************************
 
-//  lexer matches port range (1000:1010) as IPv6, see rule
-// NUMBER_ADDRESS_OR_WORD
 src_port_part :
         PORT
         (
             port_op
         |
             port_op_list
-        |
-            IPV6
-            {
-                PortSpec ps;
-                ps.setFromPortRange(LT(0)->getText());
-                importer->tmp_port_group.push_back(ps);
-            }
         )
         {
             importer->src_port_group.splice(importer->src_port_group.begin(),
@@ -1680,21 +1671,12 @@ src_port_part :
         }
     ;
 
-//  lexer matches port range (1000:1010) as IPv6, see rule
-// NUMBER_ADDRESS_OR_WORD
 dst_port_part :
         PORT
         (
             port_op
         |
             port_op_list
-        |
-            IPV6
-            {
-                PortSpec ps;
-                ps.setFromPortRange(LT(0)->getText());
-                importer->tmp_port_group.push_back(ps);
-            }
         )
         {
             importer->dst_port_group.splice(importer->dst_port_group.begin(),
@@ -1728,6 +1710,8 @@ binary_port_op :
         )
     ;
 
+//  lexer matches port range (1000:1010) as IPv6, see rule
+// NUMBER_ADDRESS_OR_WORD
 port_op { PortSpec ps; } :
         (
             unary_port_op { ps.port_op = importer->tmp_port_op; }
@@ -1747,6 +1731,11 @@ port_op { PortSpec ps; } :
                 binary_port_op { ps.port_op = importer->tmp_port_op; }
                 port_def       { ps.port2 = LT(0)->getText(); }
             )?
+        |
+            IPV6
+            {
+                ps.setFromPortRange(LT(0)->getText());
+            }
         )
         {
             importer->tmp_port_group.push_back(ps);

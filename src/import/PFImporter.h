@@ -58,8 +58,8 @@ class PFImporter : public Importer
     void addTCPUDPServiceObjectsToRE(
         libfwbuilder::RuleElement *re,
         const std::string &protocol,
-        std::list< PortSpec > &port_spec_list,
-        bool source,
+        const std::list< PortSpec > &src_port_spec_list,
+        const std::list< PortSpec > &dst_port_spec_list,
         bool for_nat_rhs);
     
 public:
@@ -178,9 +178,8 @@ public:
 
 
     bool buildTCPUDPObjectSingature(ObjectSignature *sig,
-                                    const QString &port_op,
-                                    const QString &port_spec,
-                                    bool source,
+                                    const PortSpec &src_port,
+                                    const PortSpec &dst_port,
                                     const QString &protocol,
                                     const QString &flags_check,
                                     const QString &flags_mask);

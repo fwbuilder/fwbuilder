@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgLexer.cpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgLexer.cpp"$ */
 #line 43 "pf.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -595,7 +595,7 @@ void PFCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 1929 "pf.g"
+#line 1918 "pf.g"
 		newline();
 #line 601 "PFCfgLexer.cpp"
 	}
@@ -676,7 +676,7 @@ void PFCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 1924 "pf.g"
+#line 1913 "pf.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 682 "PFCfgLexer.cpp"
 	}
@@ -933,7 +933,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		mNUM_3DIGIT(false);
 		}
 		if ( inputState->guessing==0 ) {
-#line 1984 "pf.g"
+#line 1973 "pf.g"
 			_ttype = IPV4;
 #line 939 "PFCfgLexer.cpp"
 		}
@@ -1016,7 +1016,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			}  // ( ... )+
 			}
 			if ( inputState->guessing==0 ) {
-#line 1987 "pf.g"
+#line 1976 "pf.g"
 				_ttype = NUMBER;
 #line 1022 "PFCfgLexer.cpp"
 			}
@@ -1097,7 +1097,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}  // ( ... )+
 				}
 				if ( inputState->guessing==0 ) {
-#line 1969 "pf.g"
+#line 1958 "pf.g"
 					_ttype = IPV6;
 #line 1103 "PFCfgLexer.cpp"
 				}
@@ -1199,7 +1199,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						} // ( ... )*
 						}
 						if ( inputState->guessing==0 ) {
-#line 1975 "pf.g"
+#line 1964 "pf.g"
 							_ttype = IPV6;
 #line 1205 "PFCfgLexer.cpp"
 						}
@@ -1210,7 +1210,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						match(':' /* charlit */ );
 						}
 						if ( inputState->guessing==0 ) {
-#line 1977 "pf.g"
+#line 1966 "pf.g"
 							_ttype = IPV6;
 #line 1216 "PFCfgLexer.cpp"
 						}
@@ -1218,7 +1218,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					else if ((LA(1) == 0x3a /* ':' */ ) && (true)) {
 						match(':' /* charlit */ );
 						if ( inputState->guessing==0 ) {
-#line 1979 "pf.g"
+#line 1968 "pf.g"
 							_ttype = COLON;
 #line 1224 "PFCfgLexer.cpp"
 						}
@@ -1245,7 +1245,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop322:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 1989 "pf.g"
+#line 1978 "pf.g"
 						_ttype = INT_CONST;
 #line 1251 "PFCfgLexer.cpp"
 					}
@@ -1470,7 +1470,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 					_loop325:;
 					} // ( ... )*
 					if ( inputState->guessing==0 ) {
-#line 2000 "pf.g"
+#line 1989 "pf.g"
 						_ttype = WORD;
 #line 1476 "PFCfgLexer.cpp"
 					}

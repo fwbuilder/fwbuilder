@@ -1,22 +1,72 @@
-4: filtering rule: action pass; interfaces: 
 5: filtering rule: action pass; interfaces: 
 6: filtering rule: action pass; interfaces: 
 7: filtering rule: action pass; interfaces: 
+7: Error: 'Port not equal' operation is not supported yet.
 8: filtering rule: action pass; interfaces: 
 9: filtering rule: action pass; interfaces: 
 10: filtering rule: action pass; interfaces: 
-13: filtering rule: action pass; interfaces: 
+11: filtering rule: action pass; interfaces: 
+12: filtering rule: action pass; interfaces: 
 14: filtering rule: action pass; interfaces: 
 15: filtering rule: action pass; interfaces: 
-15: Error: 'except ranges' ('<>') for port numbers are not supported yet.
+16: filtering rule: action pass; interfaces: 
+17: filtering rule: action pass; interfaces: 
 18: filtering rule: action pass; interfaces: 
+19: filtering rule: action pass; interfaces: 
+20: filtering rule: action pass; interfaces: 
 21: filtering rule: action pass; interfaces: 
-22: filtering rule: action pass; interfaces: 
-23: filtering rule: action pass; interfaces: 
 24: filtering rule: action pass; interfaces: 
 25: filtering rule: action pass; interfaces: 
 26: filtering rule: action pass; interfaces: 
+26: Error: 'Port not equal' operation is not supported yet.
 27: filtering rule: action pass; interfaces: 
 28: filtering rule: action pass; interfaces: 
+29: filtering rule: action pass; interfaces: 
+30: filtering rule: action pass; interfaces: 
+31: filtering rule: action pass; interfaces: 
+33: filtering rule: action pass; interfaces: 
+34: filtering rule: action pass; interfaces: 
+35: filtering rule: action pass; interfaces: 
+36: filtering rule: action pass; interfaces: 
+37: filtering rule: action pass; interfaces: 
+38: filtering rule: action pass; interfaces: 
+39: filtering rule: action pass; interfaces: 
+40: filtering rule: action pass; interfaces: 
+43: filtering rule: action pass; interfaces: 
+44: filtering rule: action pass; interfaces: 
+45: filtering rule: action pass; interfaces: 
+45: Error: 'except ranges' ('<>') for port numbers are not supported yet.
+47: filtering rule: action pass; interfaces: 
+48: filtering rule: action pass; interfaces: 
+49: filtering rule: action pass; interfaces: 
+49: Error: 'except ranges' ('<>') for port numbers are not supported yet.
+52: filtering rule: action pass; interfaces: 
+55: filtering rule: action pass; interfaces: 
+56: filtering rule: action pass; interfaces: 
+56: Error: 'Port not equal' operation is not supported yet.
+57: filtering rule: action pass; interfaces: 
+58: filtering rule: action pass; interfaces: 
+59: filtering rule: action pass; interfaces: 
+60: filtering rule: action pass; interfaces: 
+61: filtering rule: action pass; interfaces: 
+62: filtering rule: action pass; interfaces: 
+63: filtering rule: action pass; interfaces: 
+63: Error: 'except ranges' ('<>') for port numbers are not supported yet.
+65: filtering rule: action pass; interfaces: 
+66: filtering rule: action pass; interfaces: 
+66: Error: 'Port not equal' operation is not supported yet.
+67: filtering rule: action pass; interfaces: 
+68: filtering rule: action pass; interfaces: 
+69: filtering rule: action pass; interfaces: 
+70: filtering rule: action pass; interfaces: 
+71: filtering rule: action pass; interfaces: 
+72: filtering rule: action pass; interfaces: 
+73: filtering rule: action pass; interfaces: 
+73: Error: 'except ranges' ('<>') for port numbers are not supported yet.
+75: filtering rule: action pass; interfaces: 
+78: filtering rule: action pass; interfaces: 
+80: filtering rule: action pass; interfaces: 
+82: filtering rule: action pass; interfaces: 
+84: filtering rule: action pass; interfaces: 
 Could not find enough information in the data file to create firewall interface objects.
 

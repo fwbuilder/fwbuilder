@@ -186,10 +186,12 @@ public:
                                            const QString &proto);
 
     void setSrcPortRangeFromPortOpForPF(const QString &port_op,
-                                        const QString &port_spec,
+                                        const QString &port1,
+                                        const QString &port2,
                                         const QString &proto);
     void setDstPortRangeFromPortOpForPF(const QString &port_op,
-                                        const QString &port_spec,
+                                        const QString &port1,
+                                        const QString &port2,
                                         const QString &proto);
 
     QString toString() const;
