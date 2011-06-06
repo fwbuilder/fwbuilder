@@ -2128,7 +2128,8 @@ bool NATCompiler_ipt::AssignInterface::processNext()
 
         if (iface)
         {
-            if (Cluster::isA(iface->getParentHost()))
+            FWObject *parent_host = Host::getParentHost(iface);
+            if (Cluster::isA(parent_host))
             {
 
                 if (iface->isFailoverInterface())

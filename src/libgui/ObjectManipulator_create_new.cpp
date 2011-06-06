@@ -667,7 +667,8 @@ FWObject* ObjectManipulator::newAttachedNetworks(QUndoCommand* macro)
     {
         FWObject *no = createObject(currentObj, AttachedNetworks::TYPENAME,
                                     tr("Attached Networks"), NULL, macro);
-        string name = Interface::cast(currentObj)->getParentHost()->getName() +
+        FWObject *parent_host = Host::getParentHost(currentObj);
+        string name = parent_host->getName() +
             ":" + currentObj->getName() + ":attached";
         no->setName(name);
         return no;
@@ -734,7 +735,8 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 
     if (Interface::isA(currentObj))
     {
-        FWObject *h = Interface::cast(currentObj)->getParentHost();
+        FWObject *h = Host::getParentHost(currentObj);
+        //FWObject *h = Interface::cast(currentObj)->getParentHost();
 
         bool supports_advanced_ifaces = false;
         supports_advanced_ifaces =
@@ -764,9 +766,10 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 
     if (Interface::isA(parent))
     {
+        FWObject *parent_host = Host::getParentHost(parent);
         interfaceProperties *int_prop =
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                Interface::cast(parent)->getParentHost());
+                parent_host);
         int_prop->guessSubInterfaceTypeAndAttributes(new_interface);
         delete int_prop;
         //guessSubInterfaceTypeAndAttributes(new_interface);

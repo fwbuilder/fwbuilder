@@ -122,7 +122,8 @@ void clusterMembersDialog::getSelectedMembers()
         Interface *iface = NULL;
         iface = Interface::cast(FWReference::cast((*it))->getPointer());
         assert(iface != NULL);
-        Firewall *fw = Firewall::cast(iface->getParentHost());
+        Firewall *fw = Firewall::cast(Host::getParentHost(iface));
+        //Firewall *fw = Firewall::cast(iface->getParentHost());
 
         // determine master
         std::string iface_id = FWObjectDatabase::getStringId(iface->getId());

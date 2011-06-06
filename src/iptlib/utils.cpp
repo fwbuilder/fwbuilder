@@ -159,7 +159,8 @@ void expand_interface_with_phys_address(Compiler *compiler,
  * we use physAddress only if Host option "use_mac_addr_filter" of the
  * parent Host object is true
  */
-    FWObject  *p = iface->getParentHost();
+    FWObject *p = Host::getParentHost(iface);
+    //FWObject *p = iface->getParentHost();
     assert(p!=NULL);
 
     FWOptions *hopt = Host::cast(p)->getOptionsObject();

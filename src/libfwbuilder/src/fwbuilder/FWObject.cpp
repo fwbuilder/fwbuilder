@@ -1593,3 +1593,5 @@ bool FWObjectNameCmpPredicate::operator()(FWObject *a, FWObject *b)
     FWObject *o2 = (follow_references) ? FWReference::getObject(b) : b;
     return o1->getName() < o2->getName();
 }
+
+

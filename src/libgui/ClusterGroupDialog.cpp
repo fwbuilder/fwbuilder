@@ -205,7 +205,8 @@ void ClusterGroupDialog::addIcon(FWObject *o, bool master)
 {
     FWObject *iface = o;
     assert(Interface::cast(iface)!=NULL);
-    FWObject *fw = Interface::cast(iface)->getParentHost(); // because iface can be subinterface
+    FWObject *fw = Host::getParentHost(iface);
+//    FWObject *fw = Interface::cast(iface)->getParentHost(); // because iface can be subinterface
     bool valid = cluster->validateMember(Firewall::cast(fw));
     QString iface_name = QString::fromUtf8(iface->getName().c_str());
     QString fw_name = QString::fromUtf8(fw->getName().c_str());

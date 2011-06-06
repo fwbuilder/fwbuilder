@@ -31,6 +31,7 @@
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
+#include <fwbuilder/Host.h>
 #include <fwbuilder/AttachedNetworks.h>
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/Resources.h>
@@ -283,9 +284,10 @@ FWOptions* Interface::getOptionsObject()
         add(iface_opt);
 
         // set default interface options
-        if (this->getParentHost() != NULL)
+        const FWObject *parent_host = Host::getParentHost(this);
+        if (parent_host != NULL)
         {
-            const string host_OS = this->getParentHost()->getStr("host_OS");
+            const string host_OS = parent_host->getStr("host_OS");
             try
             {
                 Resources::setDefaultIfaceOptions(host_OS, this);
@@ -424,17 +426,6 @@ bool Interface::isLoopback() const
         }
     }
     return false;
-}
-
-FWObject* Interface::getParentHost() const
-{
-    FWObject *p = this->getParent();
-    if (!Interface::isA(p)) {
-        return p;
-    } else {
-        p = p->getParent();
-    }
-    return p;
 }
 
 physAddress*  Interface::getPhysicalAddress () const

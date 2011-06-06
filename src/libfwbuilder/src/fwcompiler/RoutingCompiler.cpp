@@ -519,7 +519,8 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     Interface *iface = Interface::cast(o);
     if (iface)
     {
-        FWObject *parent = iface->getParentHost();
+        FWObject *parent = Host::getParentHost(iface);
+        //FWObject *parent = iface->getParentHost();
         if (parent->getId() == compiler->fw->getId()) return true;
 
         Cluster *cluster = Cluster::cast(parent);

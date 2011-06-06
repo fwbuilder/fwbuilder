@@ -290,7 +290,8 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
 QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
     throw(FWException)
 {
-    FWObject *h = Interface::cast(o)->getParentHost();
+    FWObject *h = Host::getParentHost(o);
+    //FWObject *h = Interface::cast(o)->getParentHost();
 
     string host_OS = h->getStr("host_OS");
     Resources *os = Resources::os_res[host_OS];

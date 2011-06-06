@@ -73,7 +73,7 @@ xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent) throw(FWException)
 void AttachedNetworks::addNetworkObject(const InetAddr *ip_addr,
                                         const InetAddr *ip_netm)
 {
-    FWObject *new_obj;
+    FWObject *new_obj = NULL;
 
     if (ip_addr->isV4())
     {

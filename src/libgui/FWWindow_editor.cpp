@@ -176,7 +176,10 @@ void FWWindow::openEditor(FWObject *obj)
     // firewall and if a ruleset visible in RuleSetView belongs to
     // another firewall, switch ruleset to the ruleset of the new
     // firewall which we looked at last time.
-    if (Firewall::cast(obj) != NULL)  // this includes Cluster
+    //
+    FWObject *parent_fw = Host::getParentHost(obj);
+
+    if (parent_fw != NULL)  // this includes Cluster
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
         if (rsv)
@@ -191,7 +194,8 @@ void FWWindow::openEditor(FWObject *obj)
             if (obj != current_ruleset->getParent())
             {
                 FWObject *old_rs =
-                    activeProject()->m_panel->om->findInHistoryByParent(obj);
+                    activeProject()->m_panel->om->findRuleSetInHistoryByParentFw(
+                        parent_fw);
 
                 if (old_rs == NULL)
                     old_rs = obj->getFirstByType(Policy::TYPENAME);

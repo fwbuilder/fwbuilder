@@ -941,7 +941,8 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
     {
         Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
         assert(member_iface);
-        FWObject *member = member_iface->getParentHost();
+        FWObject *member = Host::getParentHost(member_iface);
+        //FWObject *member = member_iface->getParentHost();
 
         if (cluster_interface)
         {

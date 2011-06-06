@@ -541,7 +541,8 @@ void getInterfaceTypes(Interface *iface, list<QStringPair> &res)
  */
 void getSubInterfaceTypes(Interface *iface, list<QStringPair> &res)
 {
-    FWObject *p = iface->getParentHost();
+    FWObject *p = Host::getParentHost(iface);
+    //FWObject *p = iface->getParentHost();
     assert(p!=NULL);
 
     QString host_os = p->getStr("host_OS").c_str();
@@ -583,7 +584,8 @@ void setInterfaceTypes(QComboBox *iface_type,
         // Note that if resource file says this subint can not be vlan, we
         // dan't return vlan type on the list even if its name looks like
         // it could be one.
-        FWObject *p = iface->getParentHost();
+        FWObject *p = Host::getParentHost(iface);
+        //FWObject *p = iface->getParentHost();
         assert(p!=NULL);
         QString host_os = p->getStr("host_OS").c_str();
         QString obj_name = iface->getName().c_str();

@@ -461,7 +461,8 @@ void Compiler::_expand_interface(Rule *rule,
  * we use physAddress only if Host option "use_mac_addr_filter" of the
  * parent Host object is true
  */
-    FWObject  *p = iface->getParentHost();
+    FWObject *p = Host::getParentHost(iface);
+    //FWObject *p = iface->getParentHost();
     Host *hp = Host::cast(p);
     if (hp==NULL) return;  // something is very broken
     FWOptions *hopt = hp->getOptionsObject();

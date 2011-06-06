@@ -45,9 +45,9 @@ class genericDialogTest : public QObject
 private slots:
     void initTestCase();
     void testFirewallSettingsDialog_iptables();
-    void testRuleOptionsDialog();
-    void testRoutingRuleOptionsDialog();
-    void testNATRuleOptionsDialog();
+    /* void testRuleOptionsDialog(); */
+    /* void testRoutingRuleOptionsDialog(); */
+    /* void testNATRuleOptionsDialog(); */
     void testHostOSSettingsDialog_linux24();
 
 

@@ -101,12 +101,6 @@ public:
         DECLARE_DISPATCH_METHODS(Interface);
         
         /**
-         *  helper-function, needed when dealing with sub-interfaces: function
-         *  returns the parent host (or firewall) of an interface.
-         */
-        FWObject* getParentHost() const;
-
-        /**
          *   each interface must be associated with some security level. Level
          *   is described by interger number between 0 and 100, with 0 being
          *   least secure and 100 most secure levels. By default class Interface

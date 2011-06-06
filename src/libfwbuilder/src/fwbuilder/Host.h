@@ -97,6 +97,15 @@ class Host : public Address
 
     virtual bool isPrimaryObject() const { return true; }
 
+    /**
+     *  helper-function, needed when dealing with sub-interfaces:
+     *  function returns the parent host (or firewall) of an interface
+     *  or rule set. This is just a convenience function that performs
+     *  operation we often need.
+     */
+    static FWObject* getParentHost(FWObject *obj);
+
+    
     protected:
     
     Management *mgmt;

@@ -365,9 +365,15 @@ void interfacePropertiesTest::isEligibleForCluster()
 
     CPPUNIT_ASSERT(int_prop != NULL);
 
+    Firewall *fw1 = Firewall::cast(db->create(Firewall::TYPENAME));
+    fw1->setName("iface");
+    fw1->setStr("host_OS", "unknown");
+    db->add(fw1);
+
     Interface *parent1 = Interface::cast(db->create(Interface::TYPENAME));
     Interface *iface1 = Interface::cast(db->create(Interface::TYPENAME));
-    db->add(parent1);
+
+    fw1->add(parent1);
     parent1->add(iface1);
 
     iface1->getOptionsObject()->setStr("type", "ethernet");

@@ -239,11 +239,14 @@ void genericDialogTest::testDialog(QWidget *dialog, FWObject *object)
         //qDebug() << "testing control" << widgets.at(i);
         old->duplicate(object);
         QWidget *widget = widgets.at(i);
+
         // Skipping QSpinBox (which inherits QLineEdit) with QLineEdit type
         // there should be another one with right type in list
         if (widget->objectName() == "qt_spinbox_lineedit") continue;
+
         if (dynamic_cast<QDialog*>(dialog) != NULL)
             dynamic_cast<QDialog*>(dialog)->open();
+
         activateTab(widget);
         if (!widget->isVisible() || !widget->isEnabled()) continue;
 
@@ -284,6 +287,12 @@ void genericDialogTest::testHostOSSettingsDialog_linux24()
     QDialog *dialog = dynamic_cast<QDialog*>(DialogFactory::createOSDialog(mw, firewall));
     testDialog(dialog, firewall);
 }
+
+#if 0
+// rule options dialog uses stacked widget with only one page visible,
+// depending on the firewall platform. Some widgets in invisible pages
+// are not even initialized, also depending on the platform. Need to
+// devise better test that would take this into account.
 
 void genericDialogTest::testRuleOptionsDialog()
 {
@@ -342,6 +351,8 @@ void genericDialogTest::testNATRuleOptionsDialog()
         testDialog(dynamic_cast<QWidget*>(dialog), FWObject::cast(rule));
     }
 }
+#endif
+
 
 Library* genericDialogTest::findUserLibrary()
 {

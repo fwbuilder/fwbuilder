@@ -87,15 +87,6 @@ public:
 };
 
 
-class FindHistoryItemByParentObjectId
-{
-    int id;
-public:
-    FindHistoryItemByParentObjectId(int i) { id = i; }
-    bool operator()(const HistoryItem &itm);
-};
-
-
 class ObjectManipulator : public QWidget
 {
     Q_OBJECT;
@@ -334,7 +325,8 @@ public:
       * parent. Used to find which rule set of the firewall user
       * looked at last.
       */
-     libfwbuilder::FWObject* findInHistoryByParent(libfwbuilder::FWObject* parent);
+     libfwbuilder::FWObject* findRuleSetInHistoryByParentFw(
+         libfwbuilder::FWObject* parent);
          
      void expandObjectInTree(libfwbuilder::FWObject *obj);
      

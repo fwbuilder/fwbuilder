@@ -122,9 +122,10 @@ void InterfaceDialog::loadFWObject(FWObject *o)
          * something relevant in the interface to complement their changes
          * and right after the interface has been created.
          */
+        FWObject *parent_host = Host::getParentHost(s);
         interfaceProperties *int_prop =
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                s->getParentHost());
+                parent_host);
         int_prop->guessSubInterfaceTypeAndAttributes(s);
         delete int_prop;
     }
@@ -197,7 +198,8 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         m_dialog->bridge_port_label->hide();
     }
 
-    FWObject *f = s->getParentHost();
+    FWObject *f = Host::getParentHost(s);
+    //FWObject *f = s->getParentHost();
 
     m_dialog->advancedconfig->setEnabled(true);
 
@@ -329,9 +331,10 @@ void InterfaceDialog::validate(bool *res)
         return;
     }
 
+    FWObject *parent_host = Host::getParentHost(obj);
     interfaceProperties *int_prop =
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            Interface::cast(obj)->getParentHost());
+            parent_host);
     QString err;
 
     /*
@@ -448,7 +451,8 @@ void InterfaceDialog::applyChanges()
     // NOTE: new_state is a copy of the interface but it is not attached to
     // the tree and therefore has no parent. Need to use original object obj
     // to get the pointer to the parent firewall.
-    FWObject *f = Interface::cast(obj)->getParentHost();
+    FWObject *f = Host::getParentHost(obj);
+    //FWObject *f = Interface::cast(obj)->getParentHost();
     bool supports_security_levels = false;
     bool supports_network_zones   = false;
     bool supports_unprotected     = false;
@@ -503,9 +507,10 @@ void InterfaceDialog::applyChanges()
         {
             // ticket #328: automatically assign vlan id to interface based on
             // interface name
+            FWObject *parent_host = Host::getParentHost(obj);
             interfaceProperties *int_prop =
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    Interface::cast(obj)->getParentHost());
+                    parent_host);
             int_prop->setPerformVlanChecks(true);
             int_prop->guessSubInterfaceTypeAndAttributes(intf);
             delete int_prop;

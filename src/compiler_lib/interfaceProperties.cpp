@@ -170,7 +170,8 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     update_addresses.clear();
     ignore_addresses.clear();
 
-    FWObject *fw = intf->getParentHost();
+    FWObject *fw = Host::getParentHost(intf);
+    //FWObject *fw = intf->getParentHost();
     Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
     assert(os_res != NULL);
 
@@ -270,7 +271,8 @@ bool interfaceProperties::validateInterface(FWObject *target,
                 Interface::cast(target)->getOptionsObject()->getStr("type");
             if (target_interface_type.empty()) target_interface_type = "ethernet";
 
-            FWObject *fw = Interface::cast(target)->getParentHost();
+            FWObject *fw = Host::getParentHost(target);
+            //FWObject *fw = Interface::cast(target)->getParentHost();
             QString host_os = fw->getStr("host_OS").c_str();
             Resources* os_res = Resources::os_res[host_os.toStdString()];
             list<string> interface_type_pairs;
@@ -437,7 +439,8 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
             parent_iface->getOptionsObject()->getStr("type") == "bridge")
             return false;
 
-        FWObject *fw = intf->getParentHost();
+        FWObject *fw = Host::getParentHost(intf);
+        //FWObject *fw = intf->getParentHost();
         list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
         list<FWObject*>::iterator i;
         for (i=interfaces.begin(); i!=interfaces.end(); ++i )
@@ -469,7 +472,8 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
     if (parent_intf == NULL)
         return;
 
-    FWObject *f = intf->getParentHost();
+    FWObject *f = Host::getParentHost(intf);
+    //FWObject *f = intf->getParentHost();
 
     // Resources* os_res = Resources::os_res[f->getStr("host_OS")];
     // string os_family = f->getStr("host_OS");

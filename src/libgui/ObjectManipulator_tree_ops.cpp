@@ -351,22 +351,17 @@ bool FindHistoryItemByObjectId::operator()(const HistoryItem &itm)
     return (itm.id() == id);
 }
 
-bool FindHistoryItemByParentObjectId::operator()(const HistoryItem &itm)
+FWObject* ObjectManipulator::findRuleSetInHistoryByParentFw(FWObject* parent)
 {
-    FWObject *obj = mw->activeProject()->db()->findInIndex(itm.id());
-    FWObject *parent = obj->getParent();
-    return (parent != NULL && parent->getId() == id);
-}
-
-FWObject* ObjectManipulator::findInHistoryByParent(FWObject* parent)
-{
-    FindHistoryItemByParentObjectId pred(parent->getId());
-    list<HistoryItem>::reverse_iterator it =
-        std::find_if(history.rbegin(), history.rend(), pred);
-
-    if (it != history.rend())
+    list<HistoryItem>::reverse_iterator it = history.rbegin();
+    for (; it!=history.rend(); ++it)
     {
-        return m_project->db()->findInIndex(it->id());
+        FWObject *obj = mw->activeProject()->db()->findInIndex(it->id());
+        if (RuleSet::cast(obj))
+        {
+            FWObject *parent_fw = Host::getParentHost(obj);
+            if (parent_fw != NULL && parent_fw == parent) return obj;
+        }
     }
 
     return NULL;

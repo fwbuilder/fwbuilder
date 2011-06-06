@@ -489,7 +489,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
             Interface *iface = Interface::cast(currentObj);
-            FWObject *h = iface->getParentHost();
+            FWObject *h = Host::getParentHost(iface);
+            //FWObject *h = iface->getParentHost();
 
             bool supports_advanced_ifaces = false;
             try {

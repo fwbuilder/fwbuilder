@@ -168,3 +168,16 @@ int Host::countInetAddresses(bool skip_loopback) const
     return res;
 }
 
+/*
+ * This function will find parent host, firewall or cluster object of
+ * a given object. If object is not a child of host, firewall or
+ * cluster, it returns NULL
+ */
+FWObject* Host::getParentHost(FWObject *obj)
+{
+    FWObject *parent_h = obj;
+    while (parent_h != NULL && Host::cast(parent_h) == NULL)
+        parent_h = parent_h->getParent();
+    return parent_h;
+}
+
