@@ -533,9 +533,23 @@ table_rule :
         LESS_THAN
         name:WORD
         GREATER_THAN 
-        ( PERSIST ) ?
-        ( CONST_WORD ) ?
-        ( COUNTERS )?
+        (
+            PERSIST
+        ) ?
+        (
+            CONST_WORD
+            {
+                importer->addMessageToLog(
+                    QString("Warning: attribute \"const\" will be dropped from table configuration since this attribute is not supported at this time"));
+            }
+        ) ?
+        (
+            COUNTERS
+            {
+                importer->addMessageToLog(
+                    QString("Warning: attribute \"counters\" will be dropped from table configuration since this attribute is not supported at this time"));
+            }
+        )?
         (
             FILE file:STRING
             {
