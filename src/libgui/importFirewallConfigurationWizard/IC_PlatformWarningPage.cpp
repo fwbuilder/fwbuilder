@@ -214,6 +214,11 @@ void IC_PlatformWarningPage::initializePage()
 
             platformOk = true;
 
+            m_dialog->version->clear();
+            m_dialog->hostOS->clear();
+            wz->host_os_list.clear();
+            wz->version_list.clear();
+
             // populate host OS items using standard function from platforms.cpp
             // but add an empty item on top and make it current
             setHostOS(m_dialog->hostOS, "pf", "");
