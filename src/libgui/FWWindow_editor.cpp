@@ -179,6 +179,10 @@ void FWWindow::openEditor(FWObject *obj)
     //
     FWObject *parent_fw = Host::getParentHost(obj);
 
+    if (fwbdebug)
+        qDebug() << "parent firewall:" << parent_fw
+                 << QString((parent_fw)? parent_fw->getName().c_str() : "");
+
     if (parent_fw != NULL)  // this includes Cluster
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
@@ -191,18 +195,19 @@ void FWWindow::openEditor(FWObject *obj)
                 md = (RuleSetModel*)rsv->model();
                 current_ruleset = md->getRuleSet();
             }
-            if (obj != current_ruleset->getParent())
+            if (parent_fw != current_ruleset->getParent())
             {
                 FWObject *old_rs =
                     activeProject()->m_panel->om->findRuleSetInHistoryByParentFw(
                         parent_fw);
 
                 if (old_rs == NULL)
-                    old_rs = obj->getFirstByType(Policy::TYPENAME);
+                    old_rs = parent_fw->getFirstByType(Policy::TYPENAME);
 
-                QCoreApplication::postEvent(
-                    activeProject(), new openRulesetImmediatelyEvent(
-                        activeProject()->getFileName(), old_rs->getId()));
+                if (old_rs != NULL)
+                    QCoreApplication::postEvent(
+                        activeProject(), new openRulesetImmediatelyEvent(
+                            activeProject()->getFileName(), old_rs->getId()));
             }
         }
     }
