@@ -132,8 +132,6 @@ void ObjectManipulator::buildNewObjectMenu()
 
     mw->addNewObjectMenu(newObjectPopup);
     mw->showNewObjectMenu();
-
-//    m_objectManipulator->newButton->setMenu( newObjectPopup );
 }
 
 QAction* ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
