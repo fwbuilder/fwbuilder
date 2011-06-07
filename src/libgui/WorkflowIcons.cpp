@@ -49,8 +49,7 @@ WorkflowIcons::WorkflowIcons(QWidget *parent) :
 void WorkflowIcons::setUpSignals(QWidget *panel)
 {
     ObjectManipulator *om = panel->findChild<ObjectManipulator*>();
-    QAction *newFirewall = om->findChild<QAction*>(QString("newObject_") + libfwbuilder::Firewall::TYPENAME);
-    connect(ui->newFirewall, SIGNAL(clicked()), newFirewall, SLOT(trigger()));
+    connect(ui->newFirewall, SIGNAL(clicked()), om, SLOT(newFirewallSlot()));
 
     // global variable mw is null when this is running
     QObject *mainWindow = dynamic_cast<ProjectPanel*>(panel)->getWindow();

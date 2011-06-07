@@ -91,9 +91,6 @@ using namespace libfwbuilder;
 
 void ObjectManipulator::buildNewObjectMenu()
 {
-    popup_menu = new QMenu(this);
-    popup_menu->setObjectName("objectTreeContextMenu");
-
     QMenu* newObjectPopup = new QMenu( mw );
 
     newObjectPopup->setObjectName("newObjectPopup");
@@ -262,6 +259,35 @@ void ObjectManipulator::createNewObject()
                 m_project, new openRulesetEvent(
                     m_project->getFileName(), ruleset->getId()));
     }
+
+    m_project->undoStack->push(macro);
+}
+
+void ObjectManipulator::newFirewallSlot()
+{
+    QString descr = FWBTree().getTranslatableObjectTypeName(Firewall::TYPENAME);
+    // FWCmdMacro should be used for commands grouping
+    FWCmdMacro* macro = 0;
+    macro = new FWCmdMacro(
+        FWBTree().getTranslatableNewObjectMenuText(Firewall::TYPENAME));
+
+    FWObject *new_obj = newFirewall(macro);
+
+    if (new_obj == NULL)
+    {
+        delete macro;
+        return;
+    }
+
+    QCoreApplication::postEvent(
+        m_project, new expandObjectInTreeEvent(
+            m_project->getFileName(), new_obj->getId()));
+
+    FWObject *ruleset = new_obj->getFirstByType(Policy::TYPENAME);
+    if (ruleset)
+        QCoreApplication::postEvent(
+            m_project, new openRulesetEvent(
+                m_project->getFileName(), ruleset->getId()));
 
     m_project->undoStack->push(macro);
 }

@@ -1807,6 +1807,5 @@ void FWWindow::addNewObjectMenu(QMenu *m)
 void FWWindow::showNewObjectMenu()
 {
     m_mainWindow->newObjectAction->menu()->popup(QCursor::pos());
-//        m_mainWindow->newObjectAction->parentWidget()->mapToGlobal(QPoint(0,0)));
 }
 

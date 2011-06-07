@@ -237,7 +237,8 @@ public slots:
      void newObject();
 
      void createNewObject();
-
+     void newFirewallSlot();
+     
      void copyObj();
      void cutObj();
      void pasteObj();

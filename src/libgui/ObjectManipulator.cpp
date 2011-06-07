@@ -131,6 +131,8 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     // used in duplicateWithDependencies()
     dedup_marker_global_counter = time(NULL);
 
+    popup_menu = NULL;
+
 //    buildNewObjectMenu();
 
 }
@@ -362,7 +364,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     //if (currentObj==NULL)  currentObj=otvi->getFWObject();
     FWObject *currentObj = getSelectedObject();
 
-    popup_menu->clear();
+    if (popup_menu == NULL)
+    {
+        popup_menu = new QMenu(this);
+        popup_menu->setObjectName("objectTreeContextMenu");
+    } else
+        popup_menu->clear();
 
     if (item->childCount() > 0)
     {
