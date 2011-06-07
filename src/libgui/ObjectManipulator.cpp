@@ -131,7 +131,7 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     // used in duplicateWithDependencies()
     dedup_marker_global_counter = time(NULL);
 
-    buildNewObjectMenu();
+//    buildNewObjectMenu();
 
 }
 
@@ -1371,7 +1371,7 @@ void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
     );
     bool new_object_op_possible = !f;
     emit libraryAccessChanged(new_object_op_possible);
-    m_objectManipulator->newButton->setEnabled(new_object_op_possible);
+//    m_objectManipulator->newButton->setEnabled(new_object_op_possible);
     QAction *noa = (QAction*)(mw->findChild<QAction*>("newObjectAction"));
     noa->setEnabled(new_object_op_possible);
 }
@@ -1400,7 +1400,8 @@ void ObjectManipulator::openLib(FWObject *obj)
 
 void ObjectManipulator::newObject()
 {
-    m_objectManipulator->newButton->showMenu();
+//     m_objectManipulator->newButton->showMenu();
+    buildNewObjectMenu();
 }
 
 void ObjectManipulator::select()

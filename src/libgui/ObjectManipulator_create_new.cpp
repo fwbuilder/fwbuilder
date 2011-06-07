@@ -94,7 +94,7 @@ void ObjectManipulator::buildNewObjectMenu()
     popup_menu = new QMenu(this);
     popup_menu->setObjectName("objectTreeContextMenu");
 
-    QMenu* newObjectPopup = new QMenu( this );
+    QMenu* newObjectPopup = new QMenu( mw );
 
     newObjectPopup->setObjectName("newObjectPopup");
 
@@ -130,7 +130,10 @@ void ObjectManipulator::buildNewObjectMenu()
 
     addNewObjectMenuItem(newObjectPopup, Interval::TYPENAME);
 
-    m_objectManipulator->newButton->setMenu( newObjectPopup );
+    mw->addNewObjectMenu(newObjectPopup);
+    mw->showNewObjectMenu();
+
+//    m_objectManipulator->newButton->setMenu( newObjectPopup );
 }
 
 QAction* ObjectManipulator::addNewObjectMenuItem(QMenu *menu,

@@ -265,8 +265,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     // connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
     //          this, SLOT(newObject() ) );
 
-    connect( m_mainWindow->backAction, SIGNAL( triggered() ),
-             this, SLOT(back() ) );
+    // connect( m_mainWindow->backAction, SIGNAL( triggered() ),
+    //          this, SLOT(back() ) );
 
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
              this, SLOT(search()) );
@@ -1795,5 +1795,17 @@ void FWWindow::transferfw()
     std::set<Firewall*> emp;
     transferDialog *ed = new transferDialog(NULL, emp);
     ed->show();
+}
+
+void FWWindow::addNewObjectMenu(QMenu *m)
+{
+    QMenu *old_menu = m_mainWindow->newObjectAction->menu();
+    if (old_menu) delete old_menu;
+    m_mainWindow->newObjectAction->setMenu( m );
+}
+
+void FWWindow::showNewObjectMenu()
+{
+    m_mainWindow->newObjectAction->menu()->show();
 }
 

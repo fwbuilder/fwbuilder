@@ -22,145 +22,20 @@
   <property name="windowTitle">
    <string>Tree of Objects</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_103">
-   <property name="verticalSpacing">
-    <number>2</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_2">
    <property name="margin">
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="buttonGroup1">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-QGroupBox {
-	margin-top: 1ex;
-    padding: 0px;
-}
-
-QComboBox {
-	margin-top: 0px;
-    padding: 0px;
-}
-</string>
-     </property>
-     <layout class="QGridLayout">
-      <property name="margin">
-       <number>2</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QToolButton" name="backButton">
-        <property name="toolTip">
-         <string>Back</string>
-        </property>
-        <property name="whatsThis">
-         <string>Go back to the previous object</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="MainRes.qrc">
-          <normaloff>:/Icons/Return/icon</normaloff>:/Icons/Return/icon</iconset>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Line" name="line1">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>32767</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::VLine</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="libs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Object libraries&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Library &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;Standard&amp;quot;&lt;/span&gt; holds predefined&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;collection of service and address objects&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;that ships with the package. Library &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;User&amp;quot;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;is where you create your own objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QComboBox { padding: 2px;}
-</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="newButton">
-        <property name="toolTip">
-         <string>New Object</string>
-        </property>
-        <property name="whatsThis">
-         <string>Create New Object</string>
-        </property>
-        <property name="icon">
-         <iconset resource="MainRes.qrc">
-          <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Filter:</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="AutocompletedComboBox" name="filter">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -176,7 +51,7 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QToolButton" name="clearFilter">
        <property name="toolTip">
         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -186,17 +61,46 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Clear filter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string/>
+        <string>Clear</string>
        </property>
-       <property name="icon">
-        <iconset resource="MainRes.qrc">
-         <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Library:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="libs">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Object libraries&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Library &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;Standard&amp;quot;&lt;/span&gt; holds predefined&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;collection of service and address objects&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;that ships with the package. Library &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;User&amp;quot;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;is where you create your own objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox { padding: 2px;}
+</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QStackedWidget" name="widgetStack">
      <widget class="QWidget" name="page">
       <property name="palette">
@@ -254,54 +158,6 @@ p, li { white-space: pre-wrap; }
  </resources>
  <connections>
   <connection>
-   <sender>libs</sender>
-   <signal>activated(int)</signal>
-   <receiver>ObjectManipulator_q</receiver>
-   <slot>libChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>74</x>
-     <y>31</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>backButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ObjectManipulator_q</receiver>
-   <slot>back()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>newButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ObjectManipulator_q</receiver>
-   <slot>newObject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>50</x>
-     <y>30</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>widgetStack</sender>
    <signal>currentChanged(int)</signal>
    <receiver>ObjectManipulator_q</receiver>
@@ -333,5 +189,24 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>libs</sender>
+   <signal>activated(int)</signal>
+   <receiver>ObjectManipulator_q</receiver>
+   <slot>libChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>119</x>
+     <y>38</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>libChanged(int)</slot>
+ </slots>
 </ui>

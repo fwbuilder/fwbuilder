@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1144</width>
+    <width>1124</width>
     <height>846</height>
    </rect>
   </property>
@@ -662,11 +662,11 @@
               </widget>
               <widget class="QWidget" name="page_35">
                <layout class="QGridLayout" name="gridLayout_40">
-                <property name="horizontalSpacing">
-                 <number>6</number>
-                </property>
                 <property name="margin">
                  <number>0</number>
+                </property>
+                <property name="horizontalSpacing">
+                 <number>6</number>
                 </property>
                 <item row="0" column="0">
                  <widget class="MetricEditorPanel" name="w_MetricEditorPanel" native="true"/>
@@ -738,6 +738,8 @@
    <addaction name="toolbarFileOpen"/>
    <addaction name="toolbarFileSave"/>
    <addaction name="separator"/>
+   <addaction name="backAction"/>
+   <addaction name="newObjectAction"/>
    <addaction name="findAction"/>
    <addaction name="separator"/>
    <addaction name="compileAction"/>
@@ -748,8 +750,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1144</width>
-     <height>26</height>
+     <width>1124</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -2297,6 +2299,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>backAction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>back()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2312,5 +2330,6 @@
   <slot>inspect()</slot>
   <slot>toolsImportAddressesFromFile()</slot>
   <slot>toolsSNMPDiscovery()</slot>
+  <slot>back()</slot>
  </slots>
 </ui>

@@ -150,8 +150,11 @@ public slots:
     
     void editorPanelTabChanged(int);
     
+    void back();
+
     void minimize();
     void maximize();
+
     virtual void search();
 
     virtual void restoreRuleSetTab();
@@ -216,7 +219,6 @@ public slots:
     virtual void pasteRuleAbove();
     virtual void pasteRuleBelow();
 
-    virtual void back();
     virtual void newObject();
     virtual void lockObject();
     virtual void unlockObject();
@@ -368,6 +370,9 @@ public slots:
                                  QPixmap *pm,
                                  bool include_file_name);
     void showIntroDialog();
+
+    void addNewObjectMenu(QMenu*);
+    void showNewObjectMenu();
     
  protected:
 

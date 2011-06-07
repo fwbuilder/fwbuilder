@@ -67,7 +67,6 @@ using namespace Ui;
 
 /*************************************************************************/
 
-
 bool FWWindow::saveIfModified()
 {
     if (activeProject()) return activeProject()->saveIfModified();
@@ -388,7 +387,10 @@ void FWWindow::back()
 
 void FWWindow::newObject()
 {
-    if (activeProject()) activeProject()->newObject();
+    if (activeProject())
+    {
+        activeProject()->newObject();
+    }
 }
 
 // ObjectManipulator::lockObject calls
