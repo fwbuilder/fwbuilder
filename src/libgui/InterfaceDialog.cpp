@@ -145,39 +145,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-    m_dialog->label->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->label);
-
-    m_dialog->regular->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->regular);
-
-    m_dialog->dynamic->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->dynamic);
-
-    m_dialog->unnumbered->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->unnumbered);
-
-    m_dialog->management->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->management);
-
-    m_dialog->unprotected->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->unprotected);
-
-    m_dialog->dedicated_failover->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->dedicated_failover);
-
-    m_dialog->seclevel->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->seclevel);
-
-    m_dialog->netzone->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->netzone);
-
     if (s->isBridgePort())
     {
         m_dialog->regular->hide();
@@ -312,6 +279,39 @@ void InterfaceDialog::loadFWObject(FWObject *o)
             m_dialog->netzone->clear();
         }
     }
+
+    m_dialog->obj_name->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->obj_name);
+
+    m_dialog->comment->setReadOnly(o->isReadOnly());
+    setDisabledPalette(m_dialog->comment);
+
+    m_dialog->label->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->label);
+
+    m_dialog->regular->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->regular);
+
+    m_dialog->dynamic->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->dynamic);
+
+    m_dialog->unnumbered->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->unnumbered);
+
+    m_dialog->management->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->management);
+
+    m_dialog->unprotected->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->unprotected);
+
+    m_dialog->dedicated_failover->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->dedicated_failover);
+
+    m_dialog->seclevel->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->seclevel);
+
+    m_dialog->netzone->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->netzone);
 
     //apply->setEnabled( false );
 
