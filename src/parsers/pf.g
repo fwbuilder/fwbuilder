@@ -1330,6 +1330,10 @@ filteropts :
     ;
 
 filteropt :
+        user_match
+    |
+        group_match
+    |
         tcp_flags
     |
         icmp_type
@@ -1351,6 +1355,49 @@ filteropt :
         scrub_options
     ;
 
+//************************************************************************
+user_match
+    :
+        USER ( user_group_op | user_group_op_list )
+        {
+            importer->addMessageToLog(
+                QString("Error: import of 'user' match is not supported."));
+        }
+    ;
+
+group_match
+    :
+        GROUP ( user_group_op | user_group_op_list )
+        {
+            importer->addMessageToLog(
+                QString("Error: import of 'group' match is not supported."));
+        }
+    ;
+
+user_group_op
+    :
+        (
+            unary_op ( WORD | INT_CONST )
+        |
+            ( WORD | INT_CONST )
+            (
+                binary_op
+                ( WORD | INT_CONST )
+            )?
+        )
+    ;
+
+user_group_op_list :
+        OPENING_BRACE
+        user_group_op
+        (
+            ( COMMA )?
+            user_group_op
+        )*
+        CLOSING_BRACE
+    ;
+
+//************************************************************************
 match_rule_scrub_options
     :
         SCRUB scrub_options
@@ -1697,7 +1744,7 @@ dst_port_part :
         }
     ;
 
-unary_port_op :
+unary_op :
         (
             EQUAL              { importer->tmp_port_op = "="; }
         |
@@ -1713,7 +1760,7 @@ unary_port_op :
         )
     ;
 
-binary_port_op :
+binary_op :
         (
             LESS_THAN GREATER_THAN { importer->tmp_port_op = "<>"; }
         |
@@ -1727,7 +1774,7 @@ binary_port_op :
 // NUMBER_ADDRESS_OR_WORD
 port_op { PortSpec ps; } :
         (
-            unary_port_op { ps.port_op = importer->tmp_port_op; }
+            unary_op { ps.port_op = importer->tmp_port_op; }
             port_def
             {
                 ps.port1 = importer->tmp_port_def;
@@ -1741,7 +1788,7 @@ port_op { PortSpec ps; } :
                 ps.port_op = "=";
             }
             (
-                binary_port_op { ps.port_op = importer->tmp_port_op; }
+                binary_op { ps.port_op = importer->tmp_port_op; }
                 port_def       { ps.port2 = LT(0)->getText(); }
             )?
         |
@@ -1846,6 +1893,7 @@ tokens
     ANY = "any";
     ALL = "all";
     USER = "user";
+    GROUP = "group";
     NETWORK = "network";
     BROADCAST = "broadcast";
     PEER = "peer";

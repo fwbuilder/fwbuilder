@@ -1,0 +1,16 @@
+1: Error: import of 'user' match is not supported.
+1: filtering rule: action pass; interfaces: 
+2: Error: import of 'user' match is not supported.
+2: filtering rule: action pass; interfaces: 
+3: Error: import of 'user' match is not supported.
+3: filtering rule: action pass; interfaces: 
+4: Error: import of 'user' match is not supported.
+4: filtering rule: action pass; interfaces: 
+5: Error: import of 'group' match is not supported.
+5: filtering rule: action pass; interfaces: 
+6: Error: import of 'group' match is not supported.
+6: filtering rule: action pass; interfaces: 
+7: Error: import of 'group' match is not supported.
+7: filtering rule: action pass; interfaces: 
+Could not find enough information in the data file to create firewall interface objects.
+

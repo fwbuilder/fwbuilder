@@ -82,6 +82,7 @@
 	    supported at this time.
 	  - Import of TCP flag matches for flags 'E' and 'W' is not supported.
 	  - Import of "include" clause is not supported
+	  - Import of "user" and "group" matches is not supported
 
 2011-05-26  Vadim Kurland  <vadim@netcitadel.com>
 

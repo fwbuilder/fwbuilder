@@ -168,6 +168,8 @@ public:
 	public: void routehost();
 	public: void routehost_list();
 	public: void filteropt();
+	public: void user_match();
+	public: void group_match();
 	public: void tcp_flags();
 	public: void icmp_type();
 	public: void icmp6_type();
@@ -176,6 +178,10 @@ public:
 	public: void label();
 	public: void match_rule_scrub_options();
 	public: void scrub_options();
+	public: void user_group_op();
+	public: void user_group_op_list();
+	public: void unary_op();
+	public: void binary_op();
 	public: void scrub_option();
 	public: void scrub_option_list();
 	public: void icmp_type_code();
@@ -183,8 +189,6 @@ public:
 	public: void icmp_type_by_name();
 	public: void port_op();
 	public: void port_op_list();
-	public: void unary_port_op();
-	public: void binary_port_op();
 public:
 	ANTLR_USE_NAMESPACE(antlr)RefAST getAST()
 	{
@@ -196,10 +200,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 260;
+	static const int NUM_TOKENS = 261;
 #else
 	enum {
-		NUM_TOKENS = 260
+		NUM_TOKENS = 261
 	};
 #endif
 	
@@ -311,6 +315,12 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_52;
 	static const unsigned long _tokenSet_53_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_53;
+	static const unsigned long _tokenSet_54_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_54;
+	static const unsigned long _tokenSet_55_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_55;
+	static const unsigned long _tokenSet_56_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_56;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

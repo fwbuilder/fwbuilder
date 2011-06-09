@@ -72,6 +72,7 @@ public:
     void scrubCommandsOld();
     void scrubCommandsNew();
     void tableDefinitions();
+    void userGroupMatches();
     
     CPPUNIT_TEST_SUITE(PFImporterTest);
 
@@ -89,6 +90,7 @@ public:
     CPPUNIT_TEST(scrubCommandsOld);
     CPPUNIT_TEST(scrubCommandsNew);
     CPPUNIT_TEST(tableDefinitions);
+    CPPUNIT_TEST(userGroupMatches);
     
     CPPUNIT_TEST_SUITE_END();
 

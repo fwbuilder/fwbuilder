@@ -484,5 +484,27 @@ void PFImporterTest::tableDefinitions()
 }
 
 
+void PFImporterTest::userGroupMatches()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-user-group-matches.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-user-group-matches.fwb");
+
+    compareResults(logger,
+                   "test_data/pf-user-group-matches.output",
+                   "pf-user-group-matches.output");
+    compareFwbFiles("test_data/pf-user-group-matches.fwb",
+                    "pf-user-group-matches.fwb");
+}
+
+
 
 
