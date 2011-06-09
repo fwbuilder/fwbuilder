@@ -49,6 +49,7 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
 #include "fwbuilder/physAddress.h"
 
 #include "QStringListOperators.h"
@@ -108,46 +109,6 @@ ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
     dst_port_range_end = 0;
     
     established = false;
-}
-
-ObjectSignature::ObjectSignature(const ObjectSignature &other)
-{
-    error_tracker = other.error_tracker;
-
-    type_name = other.type_name;
-    object_name = other.object_name;
-    address = other.address;
-    netmask = other.netmask;
-    address_range_start = other.address_range_start;
-    address_range_end = other.address_range_end;
-    dns_name = other.dns_name;
-    address_table_name = other.address_table_name;
-    parent_interface_name = other.parent_interface_name;
-    protocol = other.protocol;
-    fragments = other.fragments;
-    short_fragments = other.short_fragments;
-    any_opt = other.any_opt;
-    dscp = other.dscp;
-    tos = other.tos;
-    lsrr = other.lsrr;
-    ssrr = other.ssrr;
-    rr = other.rr;
-    ts = other.ts;
-    rtralt = other.rtralt;
-    rtralt_value = other.rtralt_value;
-    icmp_type = other.icmp_type;
-    icmp_code = other.icmp_code;
-    src_port_range_start = other.src_port_range_start;
-    src_port_range_end = other.src_port_range_end;
-    dst_port_range_start = other.dst_port_range_start;
-    dst_port_range_end = other.dst_port_range_end;
-    established = other.established;
-    flags_mask = other.flags_mask;
-    flags_comp = other.flags_comp;
-    platform = other.platform;
-    protocol_name = other.protocol_name;
-    code = other.code;
-    tag = other.tag;
 
     if (icmp_names.size() == 0)
     {
@@ -352,6 +313,48 @@ ObjectSignature::ObjectSignature(const ObjectSignature &other)
         icmp_code_names["auth-fail"] = 2;
         icmp_code_names["decrypt-fail"] = 3;
     }
+
+}
+
+ObjectSignature::ObjectSignature(const ObjectSignature &other)
+{
+    error_tracker = other.error_tracker;
+
+    type_name = other.type_name;
+    object_name = other.object_name;
+    address = other.address;
+    netmask = other.netmask;
+    address_range_start = other.address_range_start;
+    address_range_end = other.address_range_end;
+    dns_name = other.dns_name;
+    address_table_name = other.address_table_name;
+    parent_interface_name = other.parent_interface_name;
+    protocol = other.protocol;
+    fragments = other.fragments;
+    short_fragments = other.short_fragments;
+    any_opt = other.any_opt;
+    dscp = other.dscp;
+    tos = other.tos;
+    lsrr = other.lsrr;
+    ssrr = other.ssrr;
+    rr = other.rr;
+    ts = other.ts;
+    rtralt = other.rtralt;
+    rtralt_value = other.rtralt_value;
+    icmp_type = other.icmp_type;
+    icmp_code = other.icmp_code;
+    src_port_range_start = other.src_port_range_start;
+    src_port_range_end = other.src_port_range_end;
+    dst_port_range_start = other.dst_port_range_start;
+    dst_port_range_end = other.dst_port_range_end;
+    established = other.established;
+    flags_mask = other.flags_mask;
+    flags_comp = other.flags_comp;
+    platform = other.platform;
+    protocol_name = other.protocol_name;
+    code = other.code;
+    tag = other.tag;
+    user_id = other.user_id;
 }
 
 void ObjectSignature::setAddress(const QString &s)
@@ -794,6 +797,9 @@ QString ObjectSignature::toString() const
         type_name == ObjectGroup::TYPENAME)
         sig << group_children_ids;
 
+    if (type_name == UserService::TYPENAME)
+        sig << protocol_name << user_id;
+
     return sig.join("||");
 }
 
@@ -968,6 +974,16 @@ void* ObjectSignature::dispatch(DNSName *obj, void*)
     dns_name = obj->getSourceName().c_str();
     return this;
 }
+
+void* ObjectSignature::dispatch(UserService *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
+    protocol_name = obj->getProtocolName().c_str();
+    user_id = obj->getUserId().c_str();
+    return this;
+}
+
 
 void* ObjectSignature::dispatch(AttachedNetworks *obj, void*)
 {

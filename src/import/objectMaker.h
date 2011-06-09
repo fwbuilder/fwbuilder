@@ -56,6 +56,7 @@ namespace libfwbuilder
     class TagService;
     class UDPService;
     class physAddress;
+    class UserService;
 };
 
 
@@ -151,6 +152,9 @@ public:
 
     QList<int> group_children_ids;
 
+    // UserService
+    QString user_id;
+    
     // convenience methods that populate various attributes from
     // strings taken from imported configs
     void setAddress(const QString &s);
@@ -216,6 +220,7 @@ public:
     virtual void* dispatch(libfwbuilder::ObjectGroup*, void*);
     virtual void* dispatch(libfwbuilder::ServiceGroup*, void*);
     virtual void* dispatch(libfwbuilder::AttachedNetworks*, void*);
+    virtual void* dispatch(libfwbuilder::UserService*, void*);
     
 };
 
