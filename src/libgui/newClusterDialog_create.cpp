@@ -271,8 +271,11 @@ void newClusterDialog::createNewCluster()
         pp->closeRuleSet(current_ruleset);
     }
 
+    db->setIgnoreReadOnlyFlag(true);
+
     FWObject *fwgroup =
-        FWBTree().getStandardSlotForObject(parent->getLibrary(), Firewall::TYPENAME);
+        FWBTree().getStandardSlotForObject(parent->getLibrary(),
+                                           Firewall::TYPENAME);
 
     foreach(fwpair member, member_firewalls)
     {
@@ -305,6 +308,8 @@ void newClusterDialog::createNewCluster()
         deleteRuleSets(NAT::TYPENAME, fw);
         deleteRuleSets(Routing::TYPENAME, fw);
     }
+
+    db->setIgnoreReadOnlyFlag(false);
 
     FWObject *first_policy = ncl->getFirstByType(Policy::TYPENAME);
     QCoreApplication::postEvent(

@@ -1,3 +1,9 @@
+2011-06-09  Vadim Kurland  <vadim@netcitadel.com>
+
+	* fixed several GUI crashes that happened when user performed
+	various operations on the object tree that contained locked
+	objects. see #2487
+
 2011-06-04  vadim  <vadim@netcitadel.com>
 
 	* FWWindow_editor.cpp (openEditor): this change is a part of the
