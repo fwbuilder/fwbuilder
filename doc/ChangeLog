@@ -81,6 +81,7 @@
 	  - Import of IPv6 addresses and ICMPv6 matches in pf.conf is not
 	    supported at this time.
 	  - Import of TCP flag matches for flags 'E' and 'W' is not supported.
+	  - Import of "include" clause is not supported
 
 2011-05-26  Vadim Kurland  <vadim@netcitadel.com>
 

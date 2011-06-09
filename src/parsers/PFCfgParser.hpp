@@ -91,6 +91,7 @@ public:
 	}
 	public: void cfgfile();
 	public: void comment();
+	public: void include_command();
 	public: void macro_definition();
 	public: void altq_rule();
 	public: void antispoof_rule();
@@ -195,10 +196,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 259;
+	static const int NUM_TOKENS = 260;
 #else
 	enum {
-		NUM_TOKENS = 259
+		NUM_TOKENS = 260
 	};
 #endif
 	

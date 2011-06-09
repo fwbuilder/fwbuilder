@@ -114,6 +114,8 @@ cfgfile :
         (
             comment
         |
+            include_command
+        |
             macro_definition
         |
             altq_rule
@@ -150,6 +152,17 @@ cfgfile :
 
 //****************************************************************
 comment : LINE_COMMENT ;
+
+//****************************************************************
+include_command : INCLUDE_COMMAND
+        {
+            importer->clear();
+            importer->setCurrentLineNumber(LT(0)->getLine());
+            importer->addMessageToLog(
+                QString("Error: import of 'include' commands is not supported."));
+            consumeUntil(NEWLINE);
+        }
+    ;
 
 //****************************************************************
 macro_definition : WORD EQUAL
@@ -1773,6 +1786,8 @@ options
 
 tokens
 {
+    INCLUDE_COMMAND = "include";
+
     EXIT = "exit";
     QUIT = "quit";
 
