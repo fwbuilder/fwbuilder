@@ -140,6 +140,8 @@ void IPServiceDialog::loadFWObject(FWObject *o)
         }
         setCodeLabel();
 
+        anyOptionsStateChanged();
+
         m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
         m_dialog->object_attributes_1->show();
@@ -179,7 +181,12 @@ void IPServiceDialog::loadFWObject(FWObject *o)
         m_dialog->comment->setReadOnly(o->isReadOnly());
         setDisabledPalette(m_dialog->comment);
 
-        anyOptionsStateChanged();
+        m_dialog->use_tos->setEnabled(!o->isReadOnly());
+        m_dialog->use_dscp->setEnabled(!o->isReadOnly());
+        m_dialog->code->setEnabled(!o->isReadOnly());
+        setDisabledPalette(m_dialog->code);
+
+        //anyOptionsStateChanged();
     }
 
     init = false;
