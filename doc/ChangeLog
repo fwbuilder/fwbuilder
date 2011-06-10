@@ -1,3 +1,13 @@
+2011-06-10  Theron Tock  <theron@netcitadel.com>
+
+	* implementation of keywords associated with objects in the GUI;
+	ability to filter by keywords, dialog layout changes to add GUI
+	controls for keywords.
+
+	* imlementation of the DynamicGroup object type. Dynamic group
+	automatically expands to a set of objects using matching rules
+	that at this time can match object types and keywords.
+
 2011-06-09  Vadim Kurland  <vadim@netcitadel.com>
 
 	* fixed several GUI crashes that happened when user performed

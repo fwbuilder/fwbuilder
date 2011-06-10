@@ -80,7 +80,7 @@
 <!ELEMENT FWObjectDatabase (Library*)>
 <!ATTLIST FWObjectDatabase
  xmlns        CDATA     #FIXED "http://www.fwbuilder.org/1.0/"
- version      %STRING;  #FIXED "21"
+ version      %STRING;  #FIXED "22"
  lastModified %NUMBER;  #IMPLIED
  id           ID        #REQUIRED
 >

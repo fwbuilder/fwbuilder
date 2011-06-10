@@ -17,8 +17,7 @@ QMAKE_LINK = "@echo"
 
 target.path = $${migration.path}
 
-target.files  = FWObjectDatabase_0.8.7.xslt \
-				FWObjectDatabase_0.9.0.xslt \
+target.files  = FWObjectDatabase_0.9.0.xslt \
 				FWObjectDatabase_0.9.1.xslt \
 				FWObjectDatabase_0.9.2.xslt \
 				FWObjectDatabase_0.9.3.xslt \
@@ -95,5 +94,6 @@ target.files  = FWObjectDatabase_0.8.7.xslt \
                 FWObjectDatabase_18.xslt \
                 FWObjectDatabase_19.xslt \
                 FWObjectDatabase_20.xslt \
+                FWObjectDatabase_21.xslt \
 
 
