@@ -35,7 +35,6 @@ libtool
 .ui
 qtdbus_test
 fwbedit
-fwbuilder
 qrc_MainRes.cpp
 fwb_iosacl
 fwb_ipf
