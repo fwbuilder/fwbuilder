@@ -26,6 +26,7 @@
 #ifndef __FWBSETTINGS_H_
 #define __FWBSETTINGS_H_
 
+#include "../../VERSION.h"
 
 #include <qsettings.h>
 #include <qrect.h>
@@ -34,9 +35,10 @@
 
 #include <set>
 
-#define SETTINGS_PATH_PREFIX  "/4.2"
+#define SETTINGS_PATH_PREFIX  "/" GENERATION
 
 #include <fwbuilder/FWObject.h>
+
 
 class QWidget;
 
@@ -48,8 +50,8 @@ class QWidget;
 #define LoadStandardObjects 0
 #define LoadLastEditedFile  1
 
-class FWBSettings : public QSettings {
-
+class FWBSettings : public QSettings
+{
  public:
 
     enum LabelColors { RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, GRAY };
@@ -68,7 +70,10 @@ class FWBSettings : public QSettings {
     FWBSettings(bool testData = false);
     ~FWBSettings();
 
-    static QString getApplicationNameForSettings() { return "FirewallBuilder4.2"; }
+    static QString getApplicationNameForSettings()
+    {
+        return "FirewallBuilder" GENERATION;
+    }
 
     void init(bool force_first_time_run=false);
     void save();
