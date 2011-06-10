@@ -52,6 +52,7 @@ SOURCES  = 	InetAddr.cpp \
 			NetworkIPv6.cpp \
 			AttachedNetworks.cpp \
 			ObjectGroup.cpp \
+			DynamicGroup.cpp \
 			physAddress.cpp \
             DNSName.cpp\
             AddressTable.cpp\
@@ -127,6 +128,7 @@ HEADERS  = 	inet_net.h \
 			NetworkIPv6.h \
 			AttachedNetworks.h \
 			ObjectGroup.h \
+			DynamicGroup.h \
 			physAddress.h \
             DNSName.h\
             AddressTable.h\

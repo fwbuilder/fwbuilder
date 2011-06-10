@@ -58,6 +58,8 @@ UserDialog::UserDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::UserDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 UserDialog::~UserDialog() { delete m_dialog; }
@@ -77,7 +79,8 @@ void UserDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->userid->setText( s->getUserId().c_str() );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+
+    m_dialog->commentKeywords->loadFWObject(o);
 
     //apply->setEnabled( false );
 
@@ -86,10 +89,6 @@ void UserDialog::loadFWObject(FWObject *o)
 
     m_dialog->userid->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->userid);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -116,8 +115,8 @@ void UserDialog::applyChanges()
 
     string oldname = obj->getName();
     s->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setUserId( string(m_dialog->userid->text().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

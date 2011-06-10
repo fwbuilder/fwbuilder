@@ -58,6 +58,8 @@ TCPServiceDialog::TCPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
 
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 TCPServiceDialog::~TCPServiceDialog()
@@ -100,11 +102,9 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->established->setChecked( s->getBool("established") );
 
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     toggleEstablished();
-
-    //apply->setEnabled( false );
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
@@ -160,10 +160,6 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->established->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->established);
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-
     init=false;
 }
 
@@ -186,7 +182,7 @@ void TCPServiceDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     // check port ranges (bug #1695481, range start must be <= range end)
     // See #981  Do this check in applyChanges() rather than validate so we

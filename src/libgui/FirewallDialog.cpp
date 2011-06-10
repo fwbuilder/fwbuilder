@@ -80,6 +80,8 @@ FirewallDialog::FirewallDialog(QWidget *parent) :
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 void FirewallDialog::getHelpName(QString *str)
@@ -116,7 +118,7 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
         m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
 
-        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+        m_dialog->commentKeywords->loadFWObject(o);
 
         m_dialog->inactive->setChecked(s->getInactive());
 
@@ -137,9 +139,6 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
         m_dialog->osAdvanced->setEnabled(!o->isReadOnly());
         setDisabledPalette(m_dialog->osAdvanced);
-
-        m_dialog->comment->setReadOnly(o->isReadOnly());
-        setDisabledPalette(m_dialog->comment);
 
 //    snmpCommunity->setEnabled(!o->isReadOnly());
 //    setDisabledPalette(snmpCommunity);
@@ -325,7 +324,7 @@ void FirewallDialog::applyChanges()
     string old_version = obj->getStr("version");
 
     new_state->setName(new_name);
-    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     s->setInactive(m_dialog->inactive->isChecked());
 

@@ -26,14 +26,14 @@
 
 #include "FWObjectDropArea.h"
 #include "BaseObjectDialog.h"
+#include "CommentKeywords.h"
 
 #include <QSpinBox>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QRadioButton>
-#include <QObject>
-
+#include <QTextEdit>
 
 void BaseObjectDialog::connectSignalsOfAllWidgetsToSlotChange()
 {
@@ -80,6 +80,20 @@ void BaseObjectDialog::connectSignalsOfAllWidgetsToSlotChange()
         if (sb)
         {
             connect(sb, SIGNAL(valueChanged(int)), this, SLOT(changed()));
+            continue;
+        }
+
+        QTextEdit *textEdit = qobject_cast<QTextEdit*>(w);
+        if (textEdit)
+        {
+            connect(textEdit, SIGNAL(textChanged()), this, SLOT(changed()));
+            continue;
+        }
+
+        CommentKeywords *ck = dynamic_cast<CommentKeywords*>(w);
+        if (ck)
+        {
+            connect(ck, SIGNAL(changed()), this, SLOT(changed()));
             continue;
         }
     }

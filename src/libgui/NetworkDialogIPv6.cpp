@@ -61,6 +61,8 @@ NetworkDialogIPv6::NetworkDialogIPv6(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::NetworkDialogIPv6_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 NetworkDialogIPv6::~NetworkDialogIPv6() { delete m_dialog; }
@@ -82,7 +84,7 @@ void NetworkDialogIPv6::loadFWObject(FWObject *o)
     m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
     m_dialog->netmask->setText( QString("%1").arg(
                                     s->getNetmaskPtr()->getLength()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     //apply->setEnabled( false );
 
@@ -94,10 +96,6 @@ void NetworkDialogIPv6::loadFWObject(FWObject *o)
 
     m_dialog->netmask->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->netmask);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -173,8 +171,8 @@ void NetworkDialogIPv6::applyChanges()
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment(
-        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
+
     try
     {
         s->setAddress(

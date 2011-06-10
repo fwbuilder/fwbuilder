@@ -63,6 +63,7 @@ namespace libfwbuilder
     class ClusterGroupOptions;
     class CustomService;
     class DNSName;
+    class DynamicGroup;
     class FWBDManagement;
     class FWIntervalReference;
     class FWObjectReference;
@@ -131,6 +132,7 @@ namespace libfwbuilder
     DECLARE_CREATE_OBJ_METHOD(ClusterGroupOptions);
     DECLARE_CREATE_OBJ_METHOD(CustomService);
     DECLARE_CREATE_OBJ_METHOD(DNSName);
+    DECLARE_CREATE_OBJ_METHOD(DynamicGroup);
     DECLARE_CREATE_OBJ_METHOD(FWBDManagement);
     DECLARE_CREATE_OBJ_METHOD(FWIntervalReference);
     DECLARE_CREATE_OBJ_METHOD(FWObjectReference);
@@ -498,6 +500,7 @@ public:
     DECLARE_CREATE_OBJ_CLASS_METHOD(ClusterGroupOptions);
     DECLARE_CREATE_OBJ_CLASS_METHOD(CustomService);
     DECLARE_CREATE_OBJ_CLASS_METHOD(DNSName);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(DynamicGroup);
     DECLARE_CREATE_OBJ_CLASS_METHOD(FWBDManagement);
     DECLARE_CREATE_OBJ_CLASS_METHOD(FWIntervalReference);
     DECLARE_CREATE_OBJ_CLASS_METHOD(FWObjectReference);

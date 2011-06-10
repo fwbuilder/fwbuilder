@@ -123,6 +123,7 @@ extern QString calculateIconName(const QString &_icn, bool negation);
 
 extern void parseCommandLine(const QString &cmd, QStringList &argv);
 
+QStringList sortStrings(const QStringList &list);
 
 /*
  * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)

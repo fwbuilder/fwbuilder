@@ -70,6 +70,8 @@ LibraryDialog::LibraryDialog(QWidget *parent) : BaseObjectDialog(parent)
     flags &= ~Qt::WindowMaximizeButtonHint;
     flags &= ~Qt::WindowMinimizeButtonHint;
     setWindowFlags(flags);
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 LibraryDialog::~LibraryDialog()
@@ -90,7 +92,7 @@ void LibraryDialog::loadFWObject(FWObject *o)
 
     init=true;
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->obj_name->setEnabled(
         obj->getId() != FWObjectDatabase::STANDARD_LIB_ID);
@@ -107,8 +109,6 @@ void LibraryDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
 
     m_dialog->colorButton->setEnabled(!o->isReadOnly());
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
 
     init=false;
 }
@@ -132,7 +132,7 @@ void LibraryDialog::applyChanges()
     QString oldcolor = new_state->getStr("color").c_str();
 
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
     new_state->setStr("color", color.toLatin1().constData());
 
     if (!cmd->getOldState()->cmp(new_state, true))
@@ -160,7 +160,7 @@ void LibraryDialog::changeColor()
     color = clr.name();
     fillColor();
 
-    changed();
+    emit changed();
 }
 
 void LibraryDialog::fillColor()

@@ -201,10 +201,6 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     else
         m_dialog->objectViewsStack->setCurrentWidget(listView);
 
-    setTabOrder( m_dialog->obj_name, iconView );
-    setTabOrder( iconView, listView );
-    setTabOrder( listView, m_dialog->comment );
-
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     iconView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -265,6 +261,8 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     QString mode = st->getGroupViewMode();
     if (mode==ICON_VIEW_MODE) switchToIconView();
     else switchToListView();
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 GroupObjectDialog::~GroupObjectDialog()
@@ -425,10 +423,9 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(g->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->obj_name->setEnabled( !FWBTree().isSystem(obj) );
-    m_dialog->comment->setEnabled(  !FWBTree().isSystem(obj) );
 
     listView->clear();
     iconView->clear();
@@ -461,9 +458,6 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly() && !FWBTree().isSystem(o));
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->comment->setEnabled(!o->isReadOnly() && !FWBTree().isSystem(o));
-    setDisabledPalette(m_dialog->comment);
 
     m_dialog->newButton->setEnabled(!o->isReadOnly());
 
@@ -537,8 +531,7 @@ void GroupObjectDialog::applyChanges()
         new_state->setName(newname);
     }
 
-    new_state->setComment(
-        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     set<int> oldobj;
     set<int> newobj;

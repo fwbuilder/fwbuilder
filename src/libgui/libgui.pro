@@ -191,6 +191,9 @@ HEADERS += ../../config.h \
     WorkflowIcons.h \
     FirewallCodeViewer.h \
 	networkZoneManager.h  \
+	KeywordsDialog.h \
+	CommentKeywords.h \
+	DynamicGroupDialog.h \
 \
 	ObjectDescriptor.h \
 	QThreadLogger.h \
@@ -406,6 +409,9 @@ SOURCES += ProjectPanel.cpp \
     WorkflowIcons.cpp \
     FirewallCodeViewer.cpp \
 	networkZoneManager.cpp \
+	KeywordsDialog.cpp \
+	CommentKeywords.cpp \
+	DynamicGroupDialog.cpp \
 \
 	ObjectDescriptor.cpp \
 	QThreadLogger.cpp \
@@ -545,6 +551,9 @@ FORMS = FWBMainWindow_q.ui \
     WorkflowIcons.ui \
     FirewallCodeViewer.ui \
 	objectselectorwidget_q.ui \
+	keywordsdialog_q.ui \
+	commentkeywords_q.ui \
+	dynamicgroupdialog_q.ui \
 \
 	importAddressListWizard/chooseobjectspage_q.ui \
 	importAddressListWizard/createobjectspage_q.ui \

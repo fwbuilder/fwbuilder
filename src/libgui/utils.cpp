@@ -619,3 +619,23 @@ void parseCommandLine(const QString &cmd, QStringList &argv)
    }
 }
 
+
+static bool stringsCompare(const QString &a, const QString &b)
+{
+    QString aLower = a.toLower();
+    QString bLower = b.toLower();
+    int result = aLower.localeAwareCompare(bLower);
+    if (result == 0) {
+        return a.localeAwareCompare(b) < 0;
+    } else {
+        return result < 0;
+    }
+}
+
+
+QStringList sortStrings(const QStringList &list)
+{
+    QStringList ret = list;
+    qSort(ret.begin(), ret.end(), stringsCompare);
+    return ret;
+}

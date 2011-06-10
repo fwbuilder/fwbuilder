@@ -778,32 +778,23 @@ QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
 
 bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
 {
-    ProjectPanel *proj;
-    // if the only project panel window that we have shows
-    // default object tree (i.e. its filename is empty), then load file
-    // into. Otherwise create new project window.
-    //
-    // However if the only project panel has default tree with unsaved
-    // changes then we open new project window.
+    /* We always create new project panel, deleting the old one if
+       it's the default (standard objects) one with no changes.
+       Otherwise we leave behind traces of the old project panel. */
 
-    proj = activeProject();
-
-    if (proj && proj->getFileName().isEmpty() &&
-        (proj->db() == NULL || !proj->db()->isDirty()))
-    {
-        if (!proj->loadFile(file_name, load_rcs_head)) return false;
-    } else
-    {
-        proj = newProjectPanel();
-        if (proj->loadFile(file_name, load_rcs_head))
-        {
-            showSub(proj);
-        } else
-        {
-            delete proj;
-            return false;
+    ProjectPanel *oldProj = activeProject();
+    ProjectPanel *proj = newProjectPanel();
+    if (proj->loadFile(file_name, load_rcs_head)) {
+        if (oldProj != 0 && oldProj->getFileName().isEmpty() &&
+            (oldProj->db() == NULL || !oldProj->db()->isDirty())) {
+            oldProj->fileClose();
         }
+        showSub(proj);
+    } else {
+        delete proj;
+        return false;
     }
+
     proj->readyStatus(true);
     proj->loadState(true);
     return true;

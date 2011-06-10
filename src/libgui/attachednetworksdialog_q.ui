@@ -38,7 +38,7 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0" rowspan="2">
+      <item row="0" column="0">
        <widget class="QFrame" name="object_attributes">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
@@ -133,7 +133,7 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1" rowspan="2">
+      <item row="0" column="1">
        <widget class="QFrame" name="frame">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -156,37 +156,12 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="textLabel2">
-        <property name="text">
-         <string>Comment:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="TextEditWidget" name="comment">
+       <widget class="CommentKeywords" name="commentKeywords" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>180</height>
-         </size>
-        </property>
-        <property name="tabChangesFocus">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -197,14 +172,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TextEditWidget</class>
-   <extends>QTextEdit</extends>
-   <header>TextEditWidget.h</header>
+   <class>CommentKeywords</class>
+   <extends>QWidget</extends>
+   <header>CommentKeywords.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
-  <tabstop>comment</tabstop>
  </tabstops>
  <resources>
   <include location="MainRes.qrc"/>
@@ -213,22 +188,6 @@
   <connection>
    <sender>obj_name</sender>
    <signal>editingFinished()</signal>
-   <receiver>AttachedNetworksDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>comment</sender>
-   <signal>textChanged()</signal>
    <receiver>AttachedNetworksDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

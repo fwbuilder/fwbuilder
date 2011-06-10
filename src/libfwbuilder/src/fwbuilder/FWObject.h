@@ -119,6 +119,7 @@ private:
     static std::string NOT_FOUND;
 
     time_t creation_time;
+    std::set<std::string> keywords;
 
 protected:
 
@@ -565,6 +566,11 @@ public:
     std::map<std::string, std::string>::const_iterator dataEnd()
     { return data.end();   }
 
+    const std::set<std::string> &getKeywords() { return keywords; }
+    const std::set<std::string> &getAllKeywords();
+    void addKeyword(const std::string &keyword);
+    void removeKeyword(const std::string &keyword);
+    void clearKeywords();
 };
 
 class FWObjectTypedChildIterator
@@ -664,10 +670,3 @@ class FWObjectFindPredicate
 }
 
 #endif // _FWOBJECT_HH
-
-
-
-
-
-
-

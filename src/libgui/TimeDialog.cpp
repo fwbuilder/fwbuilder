@@ -63,6 +63,8 @@ TimeDialog::TimeDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
 
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 TimeDialog::~TimeDialog()
@@ -89,7 +91,7 @@ void TimeDialog::loadFWObject(FWObject *o)
         m_dialog->object_attributes_1->hide();
         m_dialog->object_attributes_2->hide();
 
-        m_dialog->comment->setText(
+        m_dialog->commentKeywords->setReadOnlyComment(
             QObject::tr(
                 "When used in the Time Interval field of a rule, "
                 "the Any object will match any time of the day or day "
@@ -97,10 +99,6 @@ void TimeDialog::loadFWObject(FWObject *o)
                 "match only specific "
                 "service, drag-and-drop an object from "
                 "the Object tree into the field in the rule."));
-
-        m_dialog->comment->setReadOnly(true);
-        setDisabledPalette(m_dialog->comment);
-
     } else
     {
         m_dialog->cbStart1_2->setCheckState(Qt::Unchecked);
@@ -112,7 +110,7 @@ void TimeDialog::loadFWObject(FWObject *o)
         m_dialog->cbStart7_2->setCheckState(Qt::Unchecked);
 
         m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-        m_dialog->comment->setPlainText( QString::fromUtf8(s->getComment().c_str()) );
+        m_dialog->commentKeywords->loadFWObject(o);
 
         int fromH = obj->getInt("from_hour");
         int fromM = obj->getInt("from_minute");
@@ -166,7 +164,7 @@ void TimeDialog::loadFWObject(FWObject *o)
         m_dialog->object_attributes_2->show();
 
         setDisabledPalette(m_dialog->obj_name);
-        setDisabledPalette(m_dialog->comment);
+        //setDisabledPalette(m_dialog->comment);
         setDisabledPalette(m_dialog->startTime);
         setDisabledPalette(m_dialog->useStartDate);
         setDisabledPalette(m_dialog->startDate);
@@ -187,7 +185,6 @@ void TimeDialog::loadFWObject(FWObject *o)
 void TimeDialog::enableAllWidgets()
 {
     m_dialog->obj_name->setEnabled(!obj->isReadOnly());
-    m_dialog->comment->setReadOnly(obj->isReadOnly());
 
     m_dialog->startTime->setEnabled(!obj->isReadOnly());
     m_dialog->useStartDate->setEnabled(!obj->isReadOnly());
@@ -221,7 +218,7 @@ void TimeDialog::applyChanges()
     assert(interval!=NULL);
 
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     if (m_dialog->useStartDate->isChecked())
     {

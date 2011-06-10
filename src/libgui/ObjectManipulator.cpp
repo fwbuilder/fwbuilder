@@ -56,6 +56,7 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Firewall.h"
@@ -344,6 +345,64 @@ QString ObjectManipulator::makeNameUnique(FWObject* parent,
     return newname;
 }
 
+static void addKeywordsMenu(ObjectManipulator *om, QMenu *menu)
+{
+    QMenu *keywordsMenu = menu->addMenu(om->tr("Keywords"));
+    QMenu *addKeywords = keywordsMenu->addMenu(om->tr("Add"));
+
+    addKeywords->addAction(om->tr("New Keyword..."),
+                           om, SLOT(addNewKeywordSlot()));
+    addKeywords->addSeparator();
+
+    QStringList addList;
+    const set<string> &allKeywords = om->getSelectedObject()->getAllKeywords();
+    set<string>::const_iterator iterz;
+    for (iterz = allKeywords.begin(); iterz != allKeywords.end(); ++iterz) {
+        addList.append(QString::fromUtf8((*iterz).c_str()));
+    }
+    addList = sortStrings(addList);
+
+    QStringList data;
+    data << "add" << "";
+    foreach (QString add, addList) {
+        QAction *act =
+            addKeywords->addAction(add, om, SLOT(processKeywordSlot()));
+        data[1] = add;
+        act->setData(data);
+    }
+
+    bool allLocked = true;
+    QMenu *removeKeywords = keywordsMenu->addMenu(om->tr("Remove"));
+    QSet<QString> toRemove;
+    foreach (FWObject *obj, om->getCurrentObjectTree()->getSelectedObjects()) {
+        if (obj->isReadOnly()) continue;
+        allLocked = false;
+
+        const set<string> &keywords = obj->getKeywords();
+        set<string>::const_iterator iter;
+        for (iter = keywords.begin(); iter != keywords.end(); ++iter) {
+            toRemove.insert(QString::fromUtf8((*iter).c_str()));
+        }
+    }
+
+    if (toRemove.isEmpty()) {
+        removeKeywords->setDisabled(true);
+    } else {
+        data[0] = "remove";
+        foreach (QString str, sortStrings(toRemove.toList())) {
+            QAction *act =
+                removeKeywords->addAction(str, om, SLOT(processKeywordSlot()));
+            data[1] = str;
+            act->setData(data);
+        }
+    }
+
+    if (allLocked) {
+        keywordsMenu->setDisabled(true);
+    }
+}
+
+
 void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 {
 /* in extended selection mode there may be several selected items */
@@ -624,9 +683,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 addNewObjectMenuItem(popup_menu, NetworkIPv6::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Objects/Groups")
+        if (currentObj->getPath(true)=="Objects/Groups") {
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ObjectGroup::TYPENAME));
+            AddObjectActions.append(
+                addNewObjectMenuItem(popup_menu, DynamicGroup::TYPENAME));
+        }
 
         if (currentObj->getPath(true)=="Services/Custom")
             AddObjectActions.append(
@@ -684,6 +746,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     popup_menu->addSeparator();
     popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) )
             ->setDisabled(getCurrentObjectTree()->getNumSelected()==1);
+
+    addKeywordsMenu(this, popup_menu);
 
     if (Firewall::cast(currentObj)!=NULL ||
         (ObjectGroup::cast(currentObj)!=NULL &&

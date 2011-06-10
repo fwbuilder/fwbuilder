@@ -63,6 +63,8 @@ RuleSetDialog::RuleSetDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
     obj = NULL;
     platform = "";
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 RuleSetDialog::~RuleSetDialog()
@@ -86,7 +88,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     init = true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     // ipv4_6_rule_set QComboBox:
     // 0 - ipv4
@@ -214,8 +216,7 @@ void RuleSetDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment(
-        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     switch (m_dialog->ipv4_6_rule_set->currentIndex())
     {

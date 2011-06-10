@@ -827,30 +827,52 @@ void ObjectTreeView::updateFilter()
     setFilter(filter);
 }
 
+static bool filterMatches(const QString &text,
+                          ObjectTreeViewItem *item,
+                          FWObject *obj)
+{
+    if (text.isEmpty()) return true;
+    if (item->text(0).contains(text, Qt::CaseInsensitive)) return true;
+
+    QByteArray utf8 = text.toUtf8();
+    set<string> keys = obj->getKeywords();
+    set<string>::const_iterator iter;
+    for (iter = keys.begin(); iter != keys.end(); ++iter) {
+        if ((*iter).find(utf8.constData()) != string::npos) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 void ObjectTreeView::setFilter(QString text)
 {
     if (fwbdebug)
         qDebug() << "ObjectTreeView::setFilter " << text;
 
-    if (filter.isEmpty() && text.isEmpty()) return;
-    filter = text;
-    QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains|Qt::MatchRecursive, 0).toSet();
-    QSet<QTreeWidgetItem *> children, parents;
-    QSet<QTreeWidgetItem *>::iterator iter;
-    for(iter=items.begin(); iter!=items.end(); iter++)
+    QTreeWidgetItemIterator wit(this);
+    while (*wit)
     {
-        children.unite(resolveChildren((*iter)));
-        parents.unite(resolveParents((*iter)));
+        ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem *>(*wit);
+        FWObject *obj = otvi->getFWObject();
+
+        if (filterMatches(text, otvi, obj)) {
+            (*wit)->setHidden(false);
+
+            QTreeWidgetItem *parent = (*wit)->parent();
+            while (parent != 0) {
+                parent->setHidden(false);
+                parent = parent->parent();
+            }
+        } else {
+            (*wit)->setHidden(true);
+        }
+
+        ++wit;
     }
-    items.unite(children);
-    items.unite(parents);
-    QTreeWidgetItemIterator witer(this);
-    while (*witer)
-    {
-        if (items.contains((*witer))) (*witer)->setHidden(false);
-        else (*witer)->setHidden(true);
-        witer++;
-    }
+
     if (!text.isEmpty()) this->expandAll();
 }
 

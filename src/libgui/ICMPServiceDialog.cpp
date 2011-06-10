@@ -59,6 +59,8 @@ ICMPServiceDialog::ICMPServiceDialog(QWidget *parent) :
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 ICMPServiceDialog::~ICMPServiceDialog()
@@ -94,9 +96,7 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->icmpType->setValue( s->getInt("type") );
     m_dialog->icmpCode->setValue( s->getInt("code") );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
-    //apply->setEnabled( false );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
@@ -106,9 +106,6 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->icmpCode->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->icmpCode);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     init=false;
 }
@@ -128,7 +125,7 @@ void ICMPServiceDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     new_state->setInt("type", m_dialog->icmpType->value() );
     new_state->setInt("code", m_dialog->icmpCode->value() );

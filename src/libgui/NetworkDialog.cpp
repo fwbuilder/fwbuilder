@@ -61,6 +61,8 @@ NetworkDialog::NetworkDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::NetworkDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 NetworkDialog::~NetworkDialog() { delete m_dialog; }
@@ -90,21 +92,19 @@ void NetworkDialog::loadFWObject(FWObject *o)
     if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID)
     {
         m_dialog->object_attributes->hide();
-        m_dialog->comment->setText(
+        m_dialog->commentKeywords->setReadOnlyComment(
             QObject::tr(
                 "When used in the Source or Destination field of a rule, "
                 "the Any object will match all "
                 "IP addresses. To update your rule to match only specific "
                 "IP addresses, drag-and-drop an object from "
                 "the Object tree into the field in the rule."));
-        m_dialog->comment->setReadOnly(true);
-        setDisabledPalette(m_dialog->comment);
     } else
     {
         m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
         m_dialog->address->setText( s->getAddressPtr()->toString().c_str() );
         m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
-        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+        m_dialog->commentKeywords->loadFWObject(o);
 
         m_dialog->object_attributes->show();
 
@@ -116,9 +116,6 @@ void NetworkDialog::loadFWObject(FWObject *o)
 
         m_dialog->netmask->setEnabled(!o->isReadOnly());
         setDisabledPalette(m_dialog->netmask);
-
-        m_dialog->comment->setReadOnly(o->isReadOnly());
-        setDisabledPalette(m_dialog->comment);
     }
 
     init = false;
@@ -237,8 +234,8 @@ void NetworkDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    new_state->setComment(string(
-                              m_dialog->comment->toPlainText().toUtf8().constData()));
+    m_dialog->commentKeywords->applyChanges(new_state);
+
     try
     {
         s->setAddress(InetAddr(m_dialog->address->text().toStdString()));

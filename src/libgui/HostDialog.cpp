@@ -59,6 +59,8 @@ HostDialog::HostDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 HostDialog::~HostDialog()
@@ -88,7 +90,7 @@ void HostDialog::loadFWObject(FWObject *o)
 //    snmpCommunity->setText( mgmt->getSNMPManagement()->getReadCommunity().c_str() );
     m_dialog->MACmatching->setChecked( opt->getBool("use_mac_addr_filter") );
 
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     //apply->setEnabled( false );
 
@@ -100,10 +102,6 @@ void HostDialog::loadFWObject(FWObject *o)
 
     m_dialog->MACmatching->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->MACmatching);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -162,7 +160,7 @@ void HostDialog::applyChanges()
 
     string oldname=obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
     opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked());
 
     if (!cmd->getOldState()->cmp(new_state, true))

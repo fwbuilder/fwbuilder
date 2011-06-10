@@ -44,6 +44,7 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -399,11 +400,13 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 members.push_front(QObject::tr("Members:"));
                 str << members.join(" ");
             }
+        } else if (DynamicGroup::cast(obj) != 0) {
+            DynamicGroup *objGroup = DynamicGroup::cast(obj);
+            str << QObject::tr("%1 filters").arg(objGroup->getFilter().size());
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             Group *g=Group::cast(obj);
             str << QObject::tr("%1 objects").arg(g->size());
-
         } else if (Firewall::cast(obj))
         {
 
@@ -710,6 +713,9 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                         arg(fw->getName().c_str()).arg(obj->getName().c_str());
                 }
             }
+        } else if (DynamicGroup::cast(obj) != 0) {
+            DynamicGroup *objGroup = DynamicGroup::cast(obj);
+            str += QObject::tr("%1 filters<br>\n").arg(objGroup->getFilter().size());
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";

@@ -55,6 +55,7 @@
 #include <fwbuilder/FailoverClusterGroup.h>
 
 #include <fwbuilder/AttachedNetworks.h>
+#include <fwbuilder/DynamicGroup.h>
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Host.h>
 #include <fwbuilder/ICMP6Service.h>
@@ -142,6 +143,8 @@ void FWObjectDatabase::init_create_methods_table()
                            &create_CustomService);
         registerObjectType("DNSName",
                            &create_DNSName);
+        registerObjectType("DynamicGroup",
+                           &create_DynamicGroup);
         registerObjectType("FWBDManagement",
                            &create_FWBDManagement);
         registerObjectType("IntervalRef",
@@ -271,6 +274,7 @@ FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
         FWObject   *nobj;
 
         if (strcmp("comment", type_name_cptr)==SAME) return NULL;
+        if (strcmp("SelectionCriteria", type_name_cptr) == 0) return 0;
 
         if (strcmp("AnyNetwork", type_name_cptr)==SAME)
         {
@@ -342,6 +346,7 @@ CREATE_OBJ_METHOD(FailoverClusterGroup);
 CREATE_OBJ_METHOD(ClusterGroupOptions);
 CREATE_OBJ_METHOD(CustomService);
 CREATE_OBJ_METHOD(DNSName);
+CREATE_OBJ_METHOD(DynamicGroup);
 CREATE_OBJ_METHOD(FWBDManagement);
 CREATE_OBJ_METHOD(FWIntervalReference);
 CREATE_OBJ_METHOD(FWObjectReference);

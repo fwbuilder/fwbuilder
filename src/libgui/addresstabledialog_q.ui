@@ -28,8 +28,8 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QGridLayout">
-      <item row="0" column="0" rowspan="2">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
        <widget class="QFrame" name="frame10">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -55,10 +55,7 @@
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QGridLayout">
-         <property name="spacing">
-          <number>12</number>
-         </property>
+        <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="textLabel1">
            <property name="text">
@@ -69,7 +66,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1" colspan="2">
+         <item row="0" column="1">
           <widget class="QLineEdit" name="obj_name">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -86,32 +83,49 @@
           </widget>
          </item>
          <item row="1" column="0" colspan="2">
-          <widget class="QRadioButton" name="r_compiletime">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Compile Time</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QRadioButton" name="r_compiletime">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Compile Time</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="r_runtime">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Run Time</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
-         <item row="1" column="2">
-          <widget class="QRadioButton" name="r_runtime">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Run Time</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="3">
+         <item row="2" column="0" colspan="2">
           <widget class="QLabel" name="textLabel2_2">
            <property name="text">
             <string>File name:</string>
@@ -121,7 +135,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="3">
+         <item row="3" column="0" colspan="2">
           <widget class="QLineEdit" name="filename">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -137,7 +151,7 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="3">
+         <item row="4" column="0" colspan="2">
           <layout class="QHBoxLayout">
            <item>
             <widget class="QPushButton" name="BrowseButton">
@@ -180,7 +194,7 @@
            </item>
           </layout>
          </item>
-         <item row="5" column="1" colspan="2">
+         <item row="5" column="1">
           <spacer>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -199,44 +213,13 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="textLabel2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Comment:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="TextEditWidget" name="comment">
+      <item>
+       <widget class="CommentKeywords" name="commentKeywords" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
-          <verstretch>100</verstretch>
+          <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>180</height>
-         </size>
-        </property>
-        <property name="tabChangesFocus">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -247,9 +230,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TextEditWidget</class>
-   <extends>QTextEdit</extends>
-   <header>TextEditWidget.h</header>
+   <class>CommentKeywords</class>
+   <extends>QWidget</extends>
+   <header>CommentKeywords.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -259,92 +243,11 @@
   <tabstop>filename</tabstop>
   <tabstop>BrowseButton</tabstop>
   <tabstop>editButton</tabstop>
-  <tabstop>comment</tabstop>
  </tabstops>
  <resources>
   <include location="MainRes.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>comment</sender>
-   <signal>textChanged()</signal>
-   <receiver>AddressTableDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>obj_name</sender>
-   <signal>editingFinished()</signal>
-   <receiver>AddressTableDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>r_compiletime</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>AddressTableDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>r_runtime</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>AddressTableDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>filename</sender>
-   <signal>editingFinished()</signal>
-   <receiver>AddressTableDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>BrowseButton</sender>
    <signal>clicked()</signal>

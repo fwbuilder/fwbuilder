@@ -45,6 +45,7 @@
 #include "FWCmdMoveObject.h"
 #include "FWBTree.h"
 #include "FWWindow.h"
+#include "KeywordsDialog.h"
 #include "ProjectPanel.h"
 #include "ConfirmDeleteObjectDialog.h"
 
@@ -62,6 +63,7 @@
 
 #include <memory>
 
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QTextEdit>
 #include <QTime>
@@ -439,7 +441,8 @@ void ObjectManipulator::lockObject()
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
                 std::auto_ptr<FWCmdLockObject> cmd(
-                    new FWCmdLockObject(m_project, obj, QObject::tr("Lock object")));
+                    new FWCmdLockObject(m_project, obj, tr("Lock object ") +
+                                        QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(true);
                 if (!cmd->getOldState()->cmp(new_state, true))
@@ -476,7 +479,8 @@ void ObjectManipulator::unlockObject()
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
                 std::auto_ptr<FWCmdLockObject> cmd(
-                    new FWCmdLockObject(m_project, obj, QObject::tr("Unlock object")));
+                    new FWCmdLockObject(m_project, obj, tr("Unlock object ") +
+                                        QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(false);
                 if (!cmd->getOldState()->cmp(new_state, true))
@@ -683,3 +687,59 @@ void ObjectManipulator::groupObjects()
     }
 }
 
+
+static void doKeyword(vector<FWObject *> objs, bool doAdd,
+                      const string &keyword, ProjectPanel *project)
+{
+    vector<FWObject *>::const_iterator iter;
+    for (iter = objs.begin(); iter != objs.end(); ++iter) {
+        FWObject *obj = *iter;
+
+        FWCmdChange *cmd = new FWCmdChange(project, obj);
+        FWObject *newObj = cmd->getNewState();
+        if (doAdd) {
+            newObj->addKeyword(keyword);
+        } else {
+            newObj->removeKeyword(keyword);
+        }
+
+        if (!obj->cmp(newObj)) {
+            project->undoStack->push(cmd);
+        } else {
+            delete cmd;
+        }
+    }
+}
+
+
+void ObjectManipulator::addNewKeywordSlot()
+{
+    QString keyword = QInputDialog::getText(0, tr("Add New Keyword"),
+                          tr("Enter new keyword to add to selected objects"));
+    keyword = keyword.simplified();
+    if (fwbdebug) {
+        qDebug() << "ObjectManipulator::addNewKeyword: " << keyword;
+    }
+
+    if (!KeywordsDialog::validateKeyword(0, keyword)) return;
+
+    doKeyword(getCurrentObjectTree()->getSelectedObjects(), true, 
+              keyword.toUtf8().constData(), m_project);
+}
+
+
+void ObjectManipulator::processKeywordSlot()
+{
+    const QObject *qObj = sender();
+    if (qObj == 0) return;
+    const QAction *qAct = dynamic_cast<const QAction *>(qObj);
+    QStringList list = qAct->data().toStringList();
+    if (list.length() != 2) return;
+
+    if (fwbdebug) {
+        qDebug() << "ObjectManipulator::processKeyword:" << list;
+    }
+
+    doKeyword(getCurrentObjectTree()->getSelectedObjects(), (list[0] == "add"),
+              list[1].toUtf8().constData(), m_project);
+}

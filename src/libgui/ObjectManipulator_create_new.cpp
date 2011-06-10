@@ -99,29 +99,15 @@ void ObjectManipulator::buildNewObjectMenu()
 
     newObjectPopup->addSeparator();
 
-    addNewObjectMenuItem(newObjectPopup, Firewall::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, Cluster::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, Host::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, Network::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, NetworkIPv6::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, IPv4::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, IPv6::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, DNSName::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, AddressTable::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, AddressRange::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, ObjectGroup::TYPENAME);
+    foreach (const char *type, FWBTree::getObjectTypes()) {
+        addNewObjectMenuItem(newObjectPopup, type);
+    }
 
     newObjectPopup->addSeparator();
 
-    addNewObjectMenuItem(newObjectPopup, CustomService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, IPService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, ICMPService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, ICMP6Service::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, TCPService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, UDPService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, TagService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, UserService::TYPENAME);
-    addNewObjectMenuItem(newObjectPopup, ServiceGroup::TYPENAME);
+    foreach (const char *type, FWBTree::getServiceTypes()) {
+        addNewObjectMenuItem(newObjectPopup, type);
+    }
 
     newObjectPopup->addSeparator();
 

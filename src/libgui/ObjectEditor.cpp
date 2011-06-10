@@ -72,6 +72,7 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
@@ -153,6 +154,7 @@ ObjectEditor::ObjectEditor( QWidget *parent):
     registerObjectDialog(editorStack, TagService::TYPENAME, "w_TagServiceDialog");
     registerObjectDialog(editorStack, ServiceGroup::TYPENAME, "w_ServiceGroupDialog");
     registerObjectDialog(editorStack, ObjectGroup::TYPENAME, "w_ObjectGroupDialog");
+    registerObjectDialog(editorStack, DynamicGroup::TYPENAME, "w_DynamicGroupDialog");
     registerObjectDialog(editorStack, IntervalGroup::TYPENAME, "w_IntervalGroupDialog");
     registerObjectDialog(editorStack, Interval::TYPENAME, "w_TimeDialog");
 

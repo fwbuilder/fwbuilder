@@ -63,6 +63,8 @@ DNSNameDialog::DNSNameDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::DNSNameDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 DNSNameDialog::~DNSNameDialog()
@@ -85,7 +87,7 @@ void DNSNameDialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->dnsrec->setText( s->getSourceName().c_str() );
     m_dialog->r_compiletime->setChecked(s->isCompileTime() );
@@ -99,12 +101,8 @@ void DNSNameDialog::loadFWObject(FWObject *o)
     m_dialog->dnsrec->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->dnsrec);
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
     if (st->getBool("Objects/DNSName/useNameForDNSRecord"))
         m_dialog->dnsrec->setEnabled(false);
-
 
     init=false;
 }
@@ -130,7 +128,7 @@ void DNSNameDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 

@@ -59,6 +59,8 @@ CustomServiceDialog::CustomServiceDialog(QWidget *parent) : BaseObjectDialog(par
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 CustomServiceDialog::~CustomServiceDialog()
@@ -80,7 +82,7 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
 /* fill in m_dialog->platform */
     m_dialog->platform->clear();
@@ -152,11 +154,6 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
-//    m_dialog->platform->setEnabled(!o->isReadOnly());
-
     m_dialog->code->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->code);
 
@@ -215,9 +212,8 @@ void CustomServiceDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    string commText = string(
-        m_dialog->comment->toPlainText().toUtf8().constData());
-    new_state->setComment( commText );
+    m_dialog->commentKeywords->applyChanges(new_state);
+
     QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++)

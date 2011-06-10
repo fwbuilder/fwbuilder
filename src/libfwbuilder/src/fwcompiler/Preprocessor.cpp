@@ -71,9 +71,11 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt = MultiAddress::cast(obj);
-    if (adt!=NULL && adt->isCompileTime())
+    if (adt!=NULL && adt->isCompileTime() &&
+        obj->getInt(".loaded") != infinite_recursion_breaker)
     {
         adt->loadFromSource(ipv6, inTestMode());
+        obj->setInt(".loaded", infinite_recursion_breaker);
     }
 }
 
@@ -82,8 +84,7 @@ int  Preprocessor::prolog()
     return 0;
 }
 
-void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top,
-                                                      set<FWObject*> *resset)
+void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top)
 {
     if (top->getInt(".recursion_breaker") == infinite_recursion_breaker)
         return;
@@ -97,23 +98,20 @@ void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top,
         {
             RuleSet *branch_ruleset = rule->getBranch();
             if (branch_ruleset)
-                findMultiAddressObjectsUsedInRules(branch_ruleset, resset);
+                findMultiAddressObjectsUsedInRules(branch_ruleset);
         }
 
         FWReference *ref = FWReference::cast(obj);
         if (ref == NULL)
-            findMultiAddressObjectsUsedInRules(obj, resset);
+            findMultiAddressObjectsUsedInRules(obj);
         else
         {
             FWObject *obj_ptr = FWReference::getObject(obj);
-            if (MultiAddress::cast(obj_ptr))
-                resset->insert(obj_ptr);
-            else
-            {
-                // Note that MultiAddress inherits ObjectGroup
-                if (Group::cast(obj_ptr))
-                    findMultiAddressObjectsUsedInRules(obj_ptr, resset);
-            }
+            convertObject(obj_ptr);
+
+            // Note that MultiAddress inherits ObjectGroup
+            if (Group::cast(obj_ptr))
+                findMultiAddressObjectsUsedInRules(obj_ptr);
         }
     }
 }
@@ -127,26 +125,22 @@ void Preprocessor::compile()
 
     // Note: fw belongs to the original object tree rather than dbcopy
     infinite_recursion_breaker++;
-    set<FWObject*> resset;
     FWObject *rule_copy = NULL;
-    if (single_rule_mode)
+
+    try
     {
-        rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
-        findMultiAddressObjectsUsedInRules(rule_copy, &resset);
-    } else
-    {
-        FWObject *fwcopy = dbcopy->findInIndex(fw->getId());
-        findMultiAddressObjectsUsedInRules(fwcopy, &resset);
-    }
-    for (set<FWObject*>::iterator it=resset.begin(); it!=resset.end(); ++it)
-    {
-        try
+        if (single_rule_mode)
         {
-            convertObject(*it);
-        } catch (FWException &ex)
+            rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
+            findMultiAddressObjectsUsedInRules(rule_copy);
+        } else
         {
-            abort(ex.toString());
+            FWObject *fwcopy = dbcopy->findInIndex(fw->getId());
+            findMultiAddressObjectsUsedInRules(fwcopy);
         }
+    } catch (FWException &ex)
+    {
+        abort(ex.toString());
     }
 /* resolving MultiAddress objects */
 //    convertObjectsRecursively(dbcopy);

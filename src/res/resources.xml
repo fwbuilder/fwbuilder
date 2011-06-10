@@ -53,6 +53,10 @@
       <description>Group of Objects</description>
     </ObjectGroup>
 
+    <DynamicGroup>
+      <description>Dynamic Group of Objects</description>
+    </DynamicGroup>
+
     <ServiceGroup>
       <description>Group of Services</description>
     </ServiceGroup>

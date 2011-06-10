@@ -108,6 +108,9 @@ class FWBTree
 
     QString getTranslatableObjectTypeName(const QString &type_name);
     QString getTranslatableNewObjectMenuText(const QString &type_name);
+
+    static QList<const char *> getObjectTypes();
+    static QList<const char *> getServiceTypes();
 };
 
 #endif

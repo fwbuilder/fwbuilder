@@ -269,7 +269,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>250</height>
+                <height>300</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -282,7 +282,7 @@
                <enum>QFrame::Sunken</enum>
               </property>
               <property name="currentIndex">
-               <number>37</number>
+               <number>39</number>
               </property>
               <widget class="QWidget" name="page">
                <layout class="QGridLayout" name="gridLayout_6">
@@ -683,13 +683,6 @@
                 </item>
                </layout>
               </widget>
-              <widget class="QWidget" name="page_38">
-               <layout class="QGridLayout" name="gridLayout_45">
-                <item row="0" column="0">
-                 <widget class="AttachedNetworksDialog" name="w_AttachedNetworksDialog" native="true"/>
-                </item>
-               </layout>
-              </widget>
               <widget class="QWidget" name="page_37">
                <layout class="QGridLayout" name="gridLayout_42">
                 <property name="margin">
@@ -697,6 +690,20 @@
                 </property>
                 <item row="0" column="0">
                  <widget class="BlankDialog" name="w_BlankDialog" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_38">
+               <layout class="QGridLayout" name="gridLayout_45">
+                <item row="0" column="0">
+                 <widget class="AttachedNetworksDialog" name="w_AttachedNetworksDialog" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_39">
+               <layout class="QGridLayout" name="gridLayout_46">
+                <item row="0" column="0">
+                 <widget class="DynamicGroupDialog" name="w_DynamicGroupDialog" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -751,7 +758,7 @@
      <x>0</x>
      <y>0</y>
      <width>1124</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -1604,6 +1611,12 @@
    <class>AttachedNetworksDialog</class>
    <extends>QWidget</extends>
    <header>AttachedNetworksDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DynamicGroupDialog</class>
+   <extends>QWidget</extends>
+   <header>DynamicGroupDialog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

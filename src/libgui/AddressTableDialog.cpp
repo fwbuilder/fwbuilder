@@ -68,6 +68,8 @@ AddressTableDialog::AddressTableDialog(QWidget *parent) : BaseObjectDialog(paren
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 AddressTableDialog::~AddressTableDialog()
@@ -90,7 +92,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     init = true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->filename->setText( s->getSourceName().c_str() );
     m_dialog->r_compiletime->setChecked(s->isCompileTime() );
@@ -105,9 +107,6 @@ void AddressTableDialog::loadFWObject(FWObject *o)
 
     m_dialog->filename->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->filename);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     updateButtons();
 
@@ -138,7 +137,8 @@ void AddressTableDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
+
     QByteArray cs = m_dialog->filename->text().toLocal8Bit();
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );

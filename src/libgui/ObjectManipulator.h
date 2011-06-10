@@ -268,6 +268,8 @@ public slots:
      virtual void simulateInstall();
      virtual void findWhereUsedSlot();
 
+     void addNewKeywordSlot();
+     void processKeywordSlot();
 
 public:
 

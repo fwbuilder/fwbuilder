@@ -63,6 +63,28 @@ string FWObject::NOT_FOUND="";
 //#define FWB_DEBUG
 //#define TI_DEBUG
 
+
+static void
+parseKeywordsFromString(set<string> &keywords, set<string> &allKeywords,
+                        const string &str)
+{
+    if (str.empty()) return;
+    string::size_type pos = 0;
+    for ( ; ; ) {
+        string::size_type delim = str.find(',', pos);
+        if (delim == string::npos) {
+            keywords.insert(str.substr(pos));
+            allKeywords.insert(str.substr(pos));
+            break;
+        } else {
+            keywords.insert(str.substr(pos, delim - pos));
+            allKeywords.insert(str.substr(pos, delim - pos));
+            pos = delim + 1;
+        }
+    }
+}
+
+
 void FWObject::fromXML(xmlNodePtr root) throw(FWException)
 {
     assert(root!=NULL);
@@ -87,6 +109,14 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
     {
         setComment(XMLTools::unquote_linefeeds(n));
         FREEXMLBUFF(n);
+    }
+
+    if (dbroot != 0) {
+        n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("keywords")));
+        if (n != 0) {
+            parseKeywordsFromString(keywords, dbroot->keywords, n);
+            FREEXMLBUFF(n);
+        }
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ro")));
@@ -130,6 +160,20 @@ xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return toXML(xml_parent_node, true);
 }
 
+static string keywordsAsString(const set<string> &keywords)
+{
+    if (keywords.empty()) return "";
+    set<string>::const_iterator iter = keywords.begin();
+    string ret = *iter;
+    ++iter;
+    while (iter != keywords.end()) {
+        ret += ",";
+        ret += *iter;
+        ++iter;
+    }
+    return ret;
+}
+
 xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
     throw(FWException)
 {
@@ -147,6 +191,11 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
             me, 
             TOXMLCAST("id"),
             STRTOXMLCAST(s_id));
+    }
+
+    if (!keywords.empty()) {
+        xmlNewProp(me, TOXMLCAST("keywords"),
+                   STRTOXMLCAST(keywordsAsString(keywords)));
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -337,6 +386,9 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
         if (j->second!=value) return false;
     }
 
+    if (keywords.empty() != obj->keywords.empty() || keywords != obj->keywords)
+        return false;
+
     if (recursive)
     {
         if (size()!=obj->size())  return false;
@@ -439,6 +491,12 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     ro = x->ro;
     data = x->data;
     private_data = x->private_data;
+
+    keywords = x->keywords;
+    set<string>::const_iterator iter;
+    for (iter = keywords.begin(); iter != keywords.end(); ++iter) {
+        dbroot->keywords.insert(*iter);
+    }
 
     setReadOnly(false);
 
@@ -1582,6 +1640,27 @@ void FWObject::_findDependencies_internal(FWObject *obj,
 
 bool FWObject::isPrimaryObject() const { return false; }
 
+const set<string> &FWObject::getAllKeywords()
+{
+    return dbroot->keywords;
+}
+
+void FWObject::addKeyword(const string &keyword)
+{
+    keywords.insert(keyword);
+    dbroot->keywords.insert(keyword);
+}
+
+void FWObject::removeKeyword(const string &keyword)
+{
+    keywords.erase(keyword);
+}
+
+void FWObject::clearKeywords()
+{
+    keywords.clear();
+}
+
 FWObjectNameCmpPredicate::FWObjectNameCmpPredicate(bool follow_refs)
 {
     follow_references = follow_refs;
@@ -1593,5 +1672,3 @@ bool FWObjectNameCmpPredicate::operator()(FWObject *a, FWObject *b)
     FWObject *o2 = (follow_references) ? FWReference::getObject(b) : b;
     return o1->getName() < o2->getName();
 }
-
-

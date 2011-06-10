@@ -65,6 +65,8 @@ ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
     m_dialog->setupUi(this);
     obj = NULL;
     reload = false;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 void ClusterGroupDialog::loadFWObject(FWObject *o)
@@ -118,11 +120,9 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
             "type", possible_cluster_group_types.front().first.toStdString());
 
     m_dialog->obj_name->setText(QString::fromUtf8(g->getName().c_str()));
-    m_dialog->comment->setText(QString::fromUtf8(g->getComment().c_str()));
+    m_dialog->commentKeywords->loadFWObject(o);
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     QString grp_type = obj->getStr("type").c_str();
     m_dialog->type->clear();
@@ -289,7 +289,7 @@ void ClusterGroupDialog::applyChanges()
 
     QString oldname = obj->getName().c_str();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     saveGroupType(new_state);
 

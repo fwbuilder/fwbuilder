@@ -83,6 +83,8 @@ InterfaceDialog::InterfaceDialog(QWidget *parent) :
     netzone->hide();     netzoneLabel->hide();
 */
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 InterfaceDialog::~InterfaceDialog()
@@ -143,7 +145,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->management->setChecked( s->isManagement() );
 
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(s);
 
     if (s->isBridgePort())
     {
@@ -282,9 +284,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     m_dialog->label->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->label);
@@ -441,7 +440,7 @@ void InterfaceDialog::applyChanges()
     string oldname = obj->getName();
     string oldlabel = intf->getLabel();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     intf->setLabel( string(m_dialog->label->text().toUtf8().constData()) );
     intf->setDyn( m_dialog->dynamic->isChecked() );

@@ -56,6 +56,8 @@ IPv4Dialog::IPv4Dialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 IPv4Dialog::~IPv4Dialog()
@@ -78,7 +80,9 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+
+    m_dialog->commentKeywords->loadFWObject(o);
+
 
 /*
  * if this is an address that belongs to an interface, we can't move
@@ -121,8 +125,7 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     m_dialog->netmask->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->netmask);
 
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
+    m_dialog->dnsLookup->setEnabled(!o->isReadOnly());
 
     init=false;
 }
@@ -182,7 +185,6 @@ void IPv4Dialog::validate(bool *result)
 }
 
 
-
 void IPv4Dialog::applyChanges()
 {
     std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
@@ -191,8 +193,8 @@ void IPv4Dialog::applyChanges()
     IPv4 *s = dynamic_cast<IPv4*>(new_state);
     assert(s!=NULL);
 
-    new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    new_state->setName(m_dialog->obj_name->text().toUtf8().constData());
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     try
     {

@@ -57,6 +57,8 @@ UDPServiceDialog::UDPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
 
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 UDPServiceDialog::~UDPServiceDialog()
@@ -83,9 +85,7 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->ds->setValue( TCPUDPService::cast(s)->getDstRangeStart() );
     m_dialog->de->setValue( TCPUDPService::cast(s)->getDstRangeEnd() );
 
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
-
-    //apply->setEnabled( false );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
@@ -101,10 +101,6 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->de->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->de);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -126,7 +122,7 @@ void UDPServiceDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     // check port ranges (bug #1695481, range start must be <= range end)
     int sps = m_dialog->ss->value();

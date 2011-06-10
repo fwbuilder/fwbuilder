@@ -50,6 +50,7 @@
 #include "TCPServiceDialog.h"
 #include "UDPServiceDialog.h"
 #include "GroupObjectDialog.h"
+#include "DynamicGroupDialog.h"
 #include "HostDialog.h"
 #include "FirewallDialog.h"
 #include "ClusterDialog.h"
@@ -114,6 +115,7 @@
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/IPService.h"
@@ -193,6 +195,8 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
     if (objType==UDPService::TYPENAME)    return new UDPServiceDialog(parent);
 
     if (objType==ObjectGroup::TYPENAME)   return new GroupObjectDialog(parent);
+
+    if (objType==DynamicGroup::TYPENAME)   return new DynamicGroupDialog(parent);
 
     if (objType==ServiceGroup::TYPENAME)  return new GroupObjectDialog(parent);
 

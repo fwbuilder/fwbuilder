@@ -45,8 +45,7 @@ namespace fwcompiler {
 
     class Preprocessor : public Compiler {
 
-        void findMultiAddressObjectsUsedInRules(
-            libfwbuilder::FWObject *top, std::set<libfwbuilder::FWObject*> *resset);
+        void findMultiAddressObjectsUsedInRules(libfwbuilder::FWObject *top);
 
 public:
 	virtual std::string myPlatformName();

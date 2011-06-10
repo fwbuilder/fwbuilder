@@ -37,6 +37,7 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
@@ -130,6 +131,7 @@ void FWBTree::init_statics()
         systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
         systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
         systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
+        systemGroupPaths[DynamicGroup::TYPENAME]  = "Objects/Groups";
         systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
         systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
         systemGroupPaths[NetworkIPv6::TYPENAME]   = "Objects/Networks";
@@ -184,6 +186,9 @@ void FWBTree::init_statics()
 
         systemGroupTypes[ObjectGroup::TYPENAME]=   ObjectGroup::TYPENAME;
         systemGroupNames[ObjectGroup::TYPENAME]=   "Groups"         ;
+
+        systemGroupTypes[DynamicGroup::TYPENAME]=  ObjectGroup::TYPENAME;
+        systemGroupNames[DynamicGroup::TYPENAME]=  "Groups"         ;
 
         systemGroupTypes[CustomService::TYPENAME]= ServiceGroup::TYPENAME;
         systemGroupNames[CustomService::TYPENAME]= "Custom";
@@ -614,6 +619,7 @@ QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
     if (type_name == AddressTable::TYPENAME) return QObject::tr("Address Table");
     if (type_name == AddressRange::TYPENAME) return QObject::tr("Address Range");
     if (type_name == ObjectGroup::TYPENAME) return QObject::tr("Object Group");
+    if (type_name == DynamicGroup::TYPENAME) return QObject::tr("Dynamic Group");
     if (type_name == CustomService::TYPENAME) return QObject::tr("Custom Service");
     if (type_name == IPService::TYPENAME) return QObject::tr("IP Service");
     if (type_name == ICMPService::TYPENAME) return QObject::tr("ICMP Service");
@@ -652,6 +658,7 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == AddressTable::TYPENAME) return QObject::tr("New Address Table");
     if (type_name == AddressRange::TYPENAME) return QObject::tr("New Address Range");
     if (type_name == ObjectGroup::TYPENAME) return QObject::tr("New Object Group");
+    if (type_name == DynamicGroup::TYPENAME) return QObject::tr("New Dynamic Group");
     if (type_name == CustomService::TYPENAME) return QObject::tr("New Custom Service");
     if (type_name == IPService::TYPENAME) return QObject::tr("New IP Service");
     if (type_name == ICMPService::TYPENAME) return QObject::tr("New ICMP Service");
@@ -661,7 +668,7 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == TagService::TYPENAME) return QObject::tr("New TagService");
     if (type_name == UserService::TYPENAME) return QObject::tr("New User Service");
     if (type_name == ServiceGroup::TYPENAME) return QObject::tr("New Service Group");
-    if (type_name == Interval::TYPENAME) return QObject::tr( "Time Interval");
+    if (type_name == Interval::TYPENAME) return QObject::tr( "New Time Interval");
     if (type_name == physAddress::TYPENAME) return QObject::tr( "New MAC Address");
 
     if (type_name == Policy::TYPENAME) return QObject::tr( "New Policy Rule Set");
@@ -674,3 +681,39 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     return "";
 }
 
+
+QList<const char *> FWBTree::getObjectTypes()
+{
+    QList<const char *> ret;
+    ret.append(Firewall::TYPENAME);
+    ret.append(Cluster::TYPENAME);
+    ret.append(Host::TYPENAME);
+    ret.append(Network::TYPENAME);
+    ret.append(NetworkIPv6::TYPENAME);
+    ret.append(IPv4::TYPENAME);
+    ret.append(IPv6::TYPENAME);
+    ret.append(DNSName::TYPENAME);
+    ret.append(AddressTable::TYPENAME);
+    ret.append(AddressRange::TYPENAME);
+    ret.append(ObjectGroup::TYPENAME);
+    ret.append(DynamicGroup::TYPENAME);
+
+    return ret;
+}
+
+
+QList<const char *> FWBTree::getServiceTypes()
+{
+    QList<const char *> ret;
+    ret.append(CustomService::TYPENAME);
+    ret.append(IPService::TYPENAME);
+    ret.append(ICMPService::TYPENAME);
+    ret.append(ICMP6Service::TYPENAME);
+    ret.append(TCPService::TYPENAME);
+    ret.append(UDPService::TYPENAME);
+    ret.append(TagService::TYPENAME);
+    ret.append(UserService::TYPENAME);
+    ret.append(ServiceGroup::TYPENAME);
+
+    return ret;
+}

@@ -2,11 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2009 NetCitadel, LLC
+                 Copyright (C) 2011 NetCitadel, LLC
 
-  Author:  Vadim Kurland     vadim@fwbuilder.org
-
-  $Id$
+  Author:  Theron Tock
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -17,42 +15,44 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-#ifndef __TEXTEDITWIDGET_H__
-#define __TEXTEDITWIDGET_H__
 
-#include <QTextEdit>
+#ifndef __CommentKeywords_h_
+#define __CommentKeywords_h_
 
-class QFocusEvent;
-class QKeyEvent;
+#include "fwbuilder/FWObject.h"
+#include <ui_commentkeywords_q.h>
 
-class TextEditWidget : public QTextEdit
+class CommentKeywords : public QWidget
 {
+ private:
     Q_OBJECT;
 
-    bool modified;
-    bool showingDefault;
-    bool hasFocus;
-    QString defaultText;
+    Ui_CommentKeywords_q m_ui;
+    libfwbuilder::FWObject *m_obj;
+    QStringList m_keywords;
 
-signals:
-    void textChanged();
-    
-public slots:
-    void dirty(bool);
-    
-public:
-    TextEditWidget(QWidget *parent);
-    virtual void focusInEvent(QFocusEvent *event);
-    virtual void focusOutEvent(QFocusEvent* event);
+    void updateKeywordsLabel();
 
-    void setTextDefault(const QString &text, const QString &theDefault);
-    QString getText();
+ public:
+    CommentKeywords(QWidget *parent = 0);
+
+    void applyChanges(libfwbuilder::FWObject *newObj);
+    void loadFWObject(libfwbuilder::FWObject *obj);
+
+    void setReadOnlyComment(const QString &comment);
+
+ signals:
+    void changed();
+
+ public slots:
+    virtual void keywordsClicked();
+    
 };
 
-#endif
+#endif  /* CommentKeywords_h_ */

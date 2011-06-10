@@ -61,6 +61,8 @@ AttachedNetworksDialog::AttachedNetworksDialog(QWidget *parent) : BaseObjectDial
     m_dialog = new Ui::AttachedNetworksDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 AttachedNetworksDialog::~AttachedNetworksDialog() { delete m_dialog; }
@@ -79,16 +81,13 @@ void AttachedNetworksDialog::loadFWObject(FWObject *o)
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
 
     m_dialog->addresses->setEnabled(false);  // always read-only
     setDisabledPalette(m_dialog->addresses);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     Interface *parent_intf = Interface::cast(obj->getParent());
     assert(parent_intf);
@@ -153,8 +152,7 @@ void AttachedNetworksDialog::applyChanges()
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    new_state->setComment(string(
-                              m_dialog->comment->toPlainText().toUtf8().constData()));
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

@@ -58,6 +58,8 @@ IPServiceDialog::IPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 IPServiceDialog::~IPServiceDialog()
@@ -101,7 +103,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
         m_dialog->object_attributes_2->hide();
         m_dialog->object_attributes_3->hide();
 
-        m_dialog->comment->setText(
+        m_dialog->commentKeywords->setReadOnlyComment(
             QObject::tr(
                 "When used in the Service field of a rule, "
                 "the Any object will match all "
@@ -110,8 +112,8 @@ void IPServiceDialog::loadFWObject(FWObject *o)
                 "service, drag-and-drop an object from "
                 "the Object tree into the field in the rule."));
 
-        m_dialog->comment->setReadOnly(true);
-        setDisabledPalette(m_dialog->comment);
+        //m_dialog->comment->setReadOnly(true);
+        //setDisabledPalette(m_dialog->comment);
     } else
     {
         m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
@@ -142,7 +144,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
         anyOptionsStateChanged();
 
-        m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+        m_dialog->commentKeywords->loadFWObject(o);
 
         m_dialog->object_attributes_1->show();
         m_dialog->object_attributes_2->show();
@@ -177,9 +179,6 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
         m_dialog->short_fragments->setEnabled(!o->isReadOnly());
         setDisabledPalette(m_dialog->short_fragments);
-
-        m_dialog->comment->setReadOnly(o->isReadOnly());
-        setDisabledPalette(m_dialog->comment);
 
         m_dialog->use_tos->setEnabled(!o->isReadOnly());
         m_dialog->use_dscp->setEnabled(!o->isReadOnly());
@@ -235,7 +234,7 @@ void IPServiceDialog::applyChanges()
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     new_state->setInt("protocol_num", m_dialog->protocolNum->value() );
     new_state->setBool("any_opt", m_dialog->any_opt->isChecked() );

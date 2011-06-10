@@ -59,6 +59,8 @@ PhysicalAddressDialog::PhysicalAddressDialog(QWidget *parent) : BaseObjectDialog
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);
     obj=NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 PhysicalAddressDialog::~PhysicalAddressDialog()
@@ -81,7 +83,7 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->pAddress->setText( s->getPhysAddress().c_str() );
-    m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
+    m_dialog->commentKeywords->loadFWObject(o);
 
     //apply->setEnabled( false );
 
@@ -90,10 +92,6 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
 
     m_dialog->pAddress->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->pAddress);
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
-
 
     init=false;
 }
@@ -117,7 +115,8 @@ void PhysicalAddressDialog::applyChanges()
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    m_dialog->commentKeywords->applyChanges(new_state);
+
     s->setPhysAddress( m_dialog->pAddress->text().toLatin1().constData() );
 
     if (!cmd->getOldState()->cmp(new_state, true))

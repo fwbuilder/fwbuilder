@@ -55,6 +55,8 @@ ClusterDialog::ClusterDialog(QWidget *parent)
     m_dialog = new Ui::ClusterDialog_q;
     m_dialog->setupUi(this);
     obj = NULL;
+
+    connectSignalsOfAllWidgetsToSlotChange();
 }
 
 void ClusterDialog::loadFWObject(FWObject *o)
@@ -79,7 +81,7 @@ void ClusterDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText(QString::fromUtf8(s->getName().c_str()));
 
-    m_dialog->comment->setText(QString::fromUtf8(s->getComment().c_str()));
+    m_dialog->commentKeywords->loadFWObject(o);
 
     m_dialog->inactive->setChecked(s->getInactive());
 
@@ -99,9 +101,6 @@ void ClusterDialog::loadFWObject(FWObject *o)
       m_dialog->osAdvanced->setEnabled(!o->isReadOnly());
       setDisabledPalette(m_dialog->osAdvanced);
     */
-
-    m_dialog->comment->setReadOnly(o->isReadOnly());
-    setDisabledPalette(m_dialog->comment);
 
     m_dialog->inactive->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->inactive);
@@ -128,7 +127,7 @@ void ClusterDialog::updateTimeStamps()
 void ClusterDialog::platformChanged()
 {
     config_changed = true;
-    changed();
+    emit changed();
 
     QString platform = readPlatform(m_dialog->platform);
     setHostOS(m_dialog->hostOS, platform, "");
@@ -145,7 +144,7 @@ void ClusterDialog::hostOSChanged()
     {
         config_changed = true;
         resetClusterGroupTypes();
-        changed();
+        emit changed();
     }
 }
 
@@ -252,7 +251,7 @@ void ClusterDialog::applyChanges()
     string oldplatform = obj->getStr("platform");
 
     new_state->setName(newname);
-    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    m_dialog->commentKeywords->applyChanges(new_state);
 
     string pl = readPlatform(m_dialog->platform).toLatin1().constData();
     new_state->setStr("platform", pl);
