@@ -54,8 +54,6 @@ public slots:
     virtual void validate(bool*);
     virtual void browse();
     virtual void editFile( void  );
-    virtual void getHelpName(QString*);
-
 };
 
 #endif 

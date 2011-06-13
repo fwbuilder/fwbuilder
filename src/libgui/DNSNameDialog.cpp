@@ -72,11 +72,6 @@ DNSNameDialog::~DNSNameDialog()
     delete m_dialog;
 }
 
-void DNSNameDialog::getHelpName(QString *str)
-{
-    *str = "DNSNameDialog";
-}
-
 void DNSNameDialog::loadFWObject(FWObject *o)
 {
     obj=o;

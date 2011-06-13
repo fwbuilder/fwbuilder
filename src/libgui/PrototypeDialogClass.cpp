@@ -48,11 +48,6 @@
 using namespace libfwbuilder;
 using namespace std;
 
-void PrototypeDialog::getHelpName(QString *str)
-{
-    *str = "PrototypeDialog";
-}
-
 void PrototypeDialog::loadFWObject(FWObject *o)
 {
     obj=o;

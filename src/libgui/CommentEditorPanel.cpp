@@ -127,11 +127,6 @@ void CommentEditorPanel::applyChanges()
         m_project->undoStack->push(cmd.release());
 }
 
-void CommentEditorPanel::getHelpName(QString *str)
-{
-    *str = "CommentEditorPanel";
-}
-
 void CommentEditorPanel::loadFWObject(FWObject *obj)
 {
     Rule *r = Rule::cast(obj);

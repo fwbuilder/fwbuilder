@@ -43,11 +43,6 @@ BlankDialog::~BlankDialog()
     delete m_dialog;
 }
 
-void BlankDialog::getHelpName(QString *str)
-{
-    *str = "BlankDialog";
-}
-
 void BlankDialog::loadFWObject(FWObject *o)
 {
     obj = o;

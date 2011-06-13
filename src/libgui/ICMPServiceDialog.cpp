@@ -68,11 +68,6 @@ ICMPServiceDialog::~ICMPServiceDialog()
     delete m_dialog;
 }
 
-void ICMPServiceDialog::getHelpName(QString *str)
-{
-    *str = "ICMPServiceDialog";
-}
-
 void ICMPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

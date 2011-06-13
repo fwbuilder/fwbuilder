@@ -61,12 +61,10 @@ public slots:
     virtual void validate(bool*);
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void openClusterConfDialog();
-    virtual void getHelpName(QString*);
 
     void openObject(QTreeWidgetItem *item);
     void objectChanged();
     void openParametersEditor();
-
 };
 
 #endif /* __CLUSTERDIALOG_H_ */

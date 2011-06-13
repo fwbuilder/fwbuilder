@@ -53,11 +53,6 @@ ClusterGroupDialog::~ClusterGroupDialog()
     delete m_dialog;
 }
 
-void ClusterGroupDialog::getHelpName(QString *str)
-{
-    *str = "ClusterGroupDialog";
-}
-
 ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
     : BaseObjectDialog(parent)
 {

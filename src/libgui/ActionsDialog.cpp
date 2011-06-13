@@ -97,11 +97,6 @@ void ActionsDialog::loadFWObject(FWObject *o)
     setRule(Rule::cast(o));
 }
 
-void ActionsDialog::getHelpName(QString *str)
-{
-    *str = help_name;
-}
-
 void ActionsDialog::validate(bool *res)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
@@ -212,7 +207,6 @@ void ActionsDialog::setRule(Rule *r)
     {
         // firewall can be NULL if rule set is in Deleted Objects library
         platform = firewall->getStr("platform");
-        help_name = string(platform + "_" + act).c_str();
         editor = DialogFactory::getActionDialogPageName(firewall, r);
     }
 

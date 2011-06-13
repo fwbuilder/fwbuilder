@@ -66,11 +66,6 @@ UDPServiceDialog::~UDPServiceDialog()
     delete m_dialog;
 }
 
-void UDPServiceDialog::getHelpName(QString *str)
-{
-    *str = "UDPServiceDialog";
-}
-
 void UDPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

@@ -78,11 +78,6 @@ void MetricEditorPanel::applyChanges()
     rule->setMetric( value() );
 }
 
-void MetricEditorPanel::getHelpName(QString *str)
-{
-    *str = "MetricEditorPanel";
-}
-
 void MetricEditorPanel::loadFWObject(libfwbuilder::FWObject *obj)
 {
     RoutingRule *r=RoutingRule::cast(obj);

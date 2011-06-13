@@ -66,11 +66,6 @@ NATRuleOptionsDialog::NATRuleOptionsDialog(QWidget *parent) : BaseObjectDialog(p
     init=false;
 }
 
-void NATRuleOptionsDialog::getHelpName(QString *str)
-{
-    *str = "NATRuleOptionsDialog";
-}
-
 void NATRuleOptionsDialog::loadFWObject(FWObject *o)
 {
     obj = o;

@@ -84,11 +84,6 @@ FirewallDialog::FirewallDialog(QWidget *parent) :
     connectSignalsOfAllWidgetsToSlotChange();
 }
 
-void FirewallDialog::getHelpName(QString *str)
-{
-    *str = "FirewallDialog";
-}
-
 void FirewallDialog::loadFWObject(FWObject *o)
 {
     try

@@ -52,8 +52,6 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void addressEntered();
-    virtual void getHelpName(QString*);
-
 };
 
 #endif // NETWORKDIALOG_H

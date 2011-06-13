@@ -64,11 +64,6 @@ UserDialog::UserDialog(QWidget *parent) : BaseObjectDialog(parent)
 
 UserDialog::~UserDialog() { delete m_dialog; }
 
-void UserDialog::getHelpName(QString *str)
-{
-    *str = "UserDialog";
-}
-
 void UserDialog::loadFWObject(FWObject *o)
 {
     obj=o;

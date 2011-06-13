@@ -409,11 +409,6 @@ void GroupObjectDialog::addIcon(FWObject *o, bool ref)
     listView->addTopLevelItem(tree_item);
 }
 
-void GroupObjectDialog::getHelpName(QString *str)
-{
-    *str = "GroupObjectDialog";
-}
-
 void GroupObjectDialog::loadFWObject(FWObject *o)
 {
     obj = o;

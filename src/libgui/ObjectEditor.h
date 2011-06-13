@@ -56,11 +56,9 @@ class ObjectEditor : public QObject {
     int current_dialog_idx;
     QString current_dialog_name;
     QStackedWidget *editorStack;
-    QPushButton *helpButton;
     ProjectPanel *m_project;
     
     void disconnectSignals();
-    void findAndLoadHelp();
 
 public: 
     enum OptType{optAction, optComment, optMetric, optNone};
@@ -96,14 +94,11 @@ public:
     void purge();
     bool validate();
     
-    void setHelpButton(QPushButton * b);
-
     int getCurrentDialogIndex() { return current_dialog_idx; };
     QWidget* getCurrentObjectDialog();
     
 public slots:
 
-    void help();
     void changed();
     void blank();
 
@@ -127,11 +122,6 @@ signals:
      * the user and saves data in the object.
      */
     void applyChanges_sign();
-
-    /**
-     * the dialog class returns corresponding help file name
-     */
-    void getHelpName_sign(QString *str);
 };
 
 #endif

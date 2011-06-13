@@ -72,11 +72,6 @@ TimeDialog::~TimeDialog()
     delete m_dialog;
 }
 
-void TimeDialog::getHelpName(QString *str)
-{
-    *str = "TimeDialog";
-}
-
 void TimeDialog::loadFWObject(FWObject *o)
 {
     obj=o;

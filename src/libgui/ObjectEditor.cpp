@@ -108,7 +108,6 @@ using namespace libfwbuilder;
 ObjectEditor::ObjectEditor( QWidget *parent):
     QObject(parent), opened(0), current_dialog_idx(-1), current_dialog_name(""),
     editorStack(dynamic_cast<QStackedWidget*>(parent)),
-    helpButton(0),
     m_project(0),
     openedOpt(optNone)
 {
@@ -256,7 +255,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
     openedOpt = opt;
 
     load();
-    findAndLoadHelp();
 
     //show();
 
@@ -271,10 +269,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
     connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
             this,
             SLOT(changed()));
-
-    connect(this, SIGNAL(getHelpName_sign(QString*)),
-            dialogs[ current_dialog_idx ],
-            SLOT(getHelpName(QString*)));
 }
 
 void ObjectEditor::open(FWObject *obj)
@@ -313,7 +307,6 @@ void ObjectEditor::disconnectSignals()
     disconnect( SIGNAL(loadObject_sign(libfwbuilder::FWObject*)) );
     disconnect( SIGNAL(validate_sign(bool*)) );
     disconnect( SIGNAL(applyChanges_sign()) );
-    disconnect( SIGNAL(getHelpName_sign(QString*)) );
     if (current_dialog_idx>=0) dialogs[current_dialog_idx]->disconnect( this );
 }
 
@@ -322,35 +315,6 @@ void ObjectEditor::purge()
     if (fwbdebug) qDebug("ObjectEditor::purge");
     activateDialog("BLANK", NULL, optNone);
     openedOpt = optNone;
-}
-
-void ObjectEditor::setHelpButton(QPushButton * b)
-{
-    helpButton=b;
-    helpButton->setEnabled(true);
-    connect((QWidget*)helpButton,SIGNAL(clicked()),this,SLOT(help()));
-}
-
-void ObjectEditor::help()
-{
-    QString help_name;
-    emit getHelpName_sign(&help_name);
-    if (fwbdebug)
-        qDebug("ObjectEditor::help: %s", help_name.toStdString().c_str());
-    Help *h = Help::getHelpWindow(mw);
-    h->setSource(QUrl(help_name + ".html"));
-    h->raise();
-    h->show();
-}
-
-void ObjectEditor::findAndLoadHelp()
-{
-    QString help_name;
-    emit getHelpName_sign(&help_name);
-
-    // is help available?
-    Help *h = Help::getHelpWindow(mw);
-    helpButton->setEnabled(!h->findHelpFile(help_name + ".html").isEmpty());
 }
 
 void ObjectEditor::load()

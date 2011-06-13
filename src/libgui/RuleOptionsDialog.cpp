@@ -83,12 +83,6 @@ RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
     init=false;
 }
 
-void RuleOptionsDialog::getHelpName(QString *str)
-{
-    // can make help name different depending on the currently opened tab
-    *str = help_name;
-}
-
 void RuleOptionsDialog::loadFWObject(FWObject *o)
 {
     obj = o;
@@ -97,8 +91,6 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     while (!Firewall::cast(firewall)) firewall = firewall->getParent();
     platform = firewall->getStr("platform").c_str();
     string version = firewall->getStr("version");
-
-    help_name = platform + "_rule_options";
 
     // build a map for combobox so visible combobox items can be localized
     QStringList route_options = getRouteOptions_pf_ipf(platform);

@@ -67,11 +67,6 @@ NetworkDialogIPv6::NetworkDialogIPv6(QWidget *parent) : BaseObjectDialog(parent)
 
 NetworkDialogIPv6::~NetworkDialogIPv6() { delete m_dialog; }
 
-void NetworkDialogIPv6::getHelpName(QString *str)
-{
-    *str = "NetworkDialogIPv6";
-}
-
 void NetworkDialogIPv6::loadFWObject(FWObject *o)
 {
     obj=o;

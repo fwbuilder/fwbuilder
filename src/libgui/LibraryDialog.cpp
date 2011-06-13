@@ -79,11 +79,6 @@ LibraryDialog::~LibraryDialog()
     delete m_dialog;
 }
 
-void LibraryDialog::getHelpName(QString *str)
-{
-    *str = "LibraryDialog";
-}
-
 void LibraryDialog::loadFWObject(FWObject *o)
 {
     obj=o;

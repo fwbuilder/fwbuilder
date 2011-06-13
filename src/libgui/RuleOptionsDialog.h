@@ -50,8 +50,6 @@ class RuleOptionsDialog : public BaseObjectDialog
     Ui::RuleOptionsDialog_q*m_dialog;
     libfwbuilder::FWObject *firewall;
     
-    QString help_name;
-
 public:
     RuleOptionsDialog(QWidget *parent);
     ~RuleOptionsDialog();
@@ -64,7 +62,6 @@ public slots:
     virtual void cancelChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void getHelpName(QString*);
     virtual void connlimitAboveLabelChange();
     virtual void limitLabelChange();
     virtual void iptRouteContinueToggled();  // #2367

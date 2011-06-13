@@ -84,7 +84,6 @@ class GroupObjectDialog : public BaseObjectDialog
     virtual void dropped(QDropEvent *ev);
     virtual void iconContextMenu(const QPoint & pos);
     virtual void listContextMenu(const QPoint & pos);
-    virtual void getHelpName(QString*);
     
     void copyObj();
     void cutObj();

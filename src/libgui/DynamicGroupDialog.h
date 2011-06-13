@@ -61,7 +61,6 @@ class DynamicGroupDialog : public BaseObjectDialog
     virtual void applyChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool *);
-    virtual void getHelpName(QString *);
 
     void addMatchClicked();
     void deleteFilterClicked();

@@ -70,11 +70,6 @@ TagServiceDialog::TagServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     connectSignalsOfAllWidgetsToSlotChange();
 }
 
-void TagServiceDialog::getHelpName(QString *str)
-{
-    *str = "TagServiceDialog";
-}
-
 void TagServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

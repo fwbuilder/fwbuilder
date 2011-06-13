@@ -67,11 +67,6 @@ NetworkDialog::NetworkDialog(QWidget *parent) : BaseObjectDialog(parent)
 
 NetworkDialog::~NetworkDialog() { delete m_dialog; }
 
-void NetworkDialog::getHelpName(QString *str)
-{
-    *str = "NetworkDialog";
-}
-
 void NetworkDialog::loadFWObject(FWObject *o)
 {
     obj = o;

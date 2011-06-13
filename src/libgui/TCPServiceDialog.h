@@ -51,8 +51,6 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void toggleEstablished();
-    virtual void getHelpName(QString*);
-
 };
 
 #endif // TCPSERVICEDIALOG_H

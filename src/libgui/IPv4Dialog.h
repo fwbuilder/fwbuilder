@@ -55,9 +55,6 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void DNSlookup();
-    virtual void getHelpName(QString*);
-    
-
 };
 
 #endif // IPV4DIALOG_H

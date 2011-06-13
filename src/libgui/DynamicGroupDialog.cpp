@@ -310,11 +310,6 @@ void DynamicGroupDialog::validate(bool *result)
 }
 
 
-void DynamicGroupDialog::getHelpName(QString *)
-{
-}
-
-
 void DynamicGroupDialog::addMatchClicked()
 {
     int newRow = m_model->rowCount();

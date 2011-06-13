@@ -67,11 +67,6 @@ TCPServiceDialog::~TCPServiceDialog()
     delete m_dialog;
 }
 
-void TCPServiceDialog::getHelpName(QString *str)
-{
-    *str = "TCPServiceDialog";
-}
-
 void TCPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;

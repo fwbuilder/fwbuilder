@@ -53,8 +53,6 @@ public slots:
     virtual void useStartOrEndDate();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void getHelpName(QString*);
-
 };
 
 #endif // __TIMEDIALOG_H

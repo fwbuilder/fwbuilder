@@ -66,11 +66,6 @@ AddressRangeDialog::~AddressRangeDialog()
     delete m_dialog;
 }
 
-void AddressRangeDialog::getHelpName(QString *str)
-{
-    *str = "AddressRangeDialog";
-}
-
 void AddressRangeDialog::loadFWObject(FWObject *o)
 {
     obj=o;

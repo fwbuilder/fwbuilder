@@ -58,9 +58,6 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void changeColor();
-    virtual void getHelpName(QString*);
-    
-
 };
 
 #endif // LIBRARYDIALOG_H

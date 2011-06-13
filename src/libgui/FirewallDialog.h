@@ -58,9 +58,6 @@ public slots:
     virtual void validate(bool*);
     virtual void openFWDialog();
     virtual void openOSDialog();
-    virtual void getHelpName(QString*);
-    
-    
 };
 
 #endif // FIREWALLDIALOG_H

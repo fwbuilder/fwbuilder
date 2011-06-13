@@ -67,11 +67,6 @@ AttachedNetworksDialog::AttachedNetworksDialog(QWidget *parent) : BaseObjectDial
 
 AttachedNetworksDialog::~AttachedNetworksDialog() { delete m_dialog; }
 
-void AttachedNetworksDialog::getHelpName(QString *str)
-{
-    *str = "AttachedNetworksDialog";
-}
-
 void AttachedNetworksDialog::loadFWObject(FWObject *o)
 {
     obj=o;

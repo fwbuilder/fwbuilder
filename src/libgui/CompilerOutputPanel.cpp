@@ -72,11 +72,6 @@ void CompilerOutputPanel::applyChanges()
 {
 }
 
-void CompilerOutputPanel::getHelpName(QString *str)
-{
-    *str = "CompilerOutputPanel";
-}
-
 void CompilerOutputPanel::loadFWObject(FWObject *obj)
 {
     if (fwbdebug)
