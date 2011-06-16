@@ -853,9 +853,8 @@ static bool filterMatches(const QString &text,
     set<string> keys = obj->getKeywords();
     set<string>::const_iterator iter;
     for (iter = keys.begin(); iter != keys.end(); ++iter) {
-        if ((*iter).find(utf8.constData()) != string::npos) {
-            return true;
-        }
+        QString keyword = QString::fromUtf8((*iter).c_str());
+        if (keyword.contains(text, Qt::CaseInsensitive)) return true;
     }
 
     return false;
