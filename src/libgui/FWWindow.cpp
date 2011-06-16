@@ -605,10 +605,16 @@ void FWWindow::showIntroDialog()
             msg_box.addButton(tr("Watch the guide"), QMessageBox::AcceptRole);
         msg_box.addButton(QMessageBox::Close);
 
+        /* Hack alert!  Disconnect signals from the checkbox so that
+           QMessageBox doesn't know when it gets clicked.  We check it
+           directly ourselves to see what state it's in when the user
+           clicks "close" or "watch". */
+        cb.disconnect();
+
         msg_box.setDefaultButton(watch_button);
         msg_box.exec();
 
-        if (msg_box.clickedButton() == &cb)
+        if (cb.isChecked())
         {
             st->setIntroDialogEnabled(false);
         }
