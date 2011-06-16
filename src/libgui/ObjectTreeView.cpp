@@ -43,6 +43,9 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
 
 #include <QAbstractItemView>
@@ -98,7 +101,7 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     setExpandsOnDoubleClick(false);
 
-//    setAcceptDrops( TRUE );
+    setDragEnabled(true);
     item_before_drag_started=NULL;
     lastSelected = NULL;
     second_click = false;
@@ -329,17 +332,18 @@ void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 void ObjectTreeView::updateTreeIcons()
 {
     QTreeWidgetItemIterator it(this);
-    while ( *it )
+    for ( ; *it; ++it)
     {
         QTreeWidgetItem *itm = *it;
         ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
         FWObject *obj = otvi->getFWObject();
 
+        /* We can have obj==0 if it's a user-create subfolder */
+        if (obj == 0) continue;
+
         QPixmap pm_obj;
         IconSetter::setObjectIcon(obj, &pm_obj, 0);
         itm->setIcon(0, pm_obj );
-
-        ++it;
     }
     update();
 }
@@ -349,9 +353,10 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     QTreeWidgetItem *ovi = currentItem();
     if (ovi==NULL) return;
 
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-
     FWObject *current_obj = getCurrentObject();
+
+    /* User-defined folders can't be dragged */
+    if (current_obj == 0) return;
 
     if (fwbdebug) qDebug("ObjectTreeView::startDrag: this: %p current_obj: %s",
                          this, current_obj->getName().c_str());
@@ -450,10 +455,6 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     if (fwbdebug) qDebug("ObjectTreeView::dragObject()  this=%p visible=%d",
                          this,visible);
 
-    FWObject *edit_obj = mw->getOpenedEditor();
-
-    if (fwbdebug) qDebug("ObjectTreeView::dragObject()  returns !NULL");
-
     drag->start(supportedActions);
 }
 
@@ -463,79 +464,87 @@ void ObjectTreeView::dragEnterEvent( QDragEnterEvent *ev)
     ev->setDropAction(Qt::MoveAction);
 }
 
-bool ObjectTreeView::isCurrReadOnly(QDragMoveEvent *ev)
-{
-// the tree can accept drop only if it goes into a group and if that group
-//  validates the object and tree is not read-only
-    QTreeWidgetItem *ovi = itemAt(ev->pos());
-
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-    FWObject *trobj;
-    if (otvi && (trobj = otvi->getFWObject()))
-        return trobj->isReadOnly();
-    return false;
-}
-
 void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
 {
     QWidget *fromWidget = ev->source();
 
     // The source of DnD object must be the same instance of fwbuilder
-    if (!fromWidget)
-    {
-        ev->setAccepted(false);
-        return;
-    }
-   
-    if (isCurrReadOnly(ev) ||
-        !ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE))
-    {
+    if (!fromWidget || fromWidget != this) {
+    notWanted:
         ev->setAccepted(false);
         return;
     }
 
-    list<FWObject*> dragol;
-    if (!FWObjectDrag::decode(ev, dragol))
-        ev->setAccepted(false);
-    for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
-    {
-        FWObject *dragobj = *i;
-        assert(dragobj!=NULL);
+    ObjectTreeViewItem *dest =
+        dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
+    if (dest == 0) goto notWanted;
 
-        if (FWBTree().isSystem(dragobj))
-        {
-// can not drop system folder anywhere 
-            ev->setAccepted(false);
-            return;
-        }
+    list<FWObject*> objs;
+    if (!FWObjectDrag::decode(ev, objs)) goto notWanted;
 
-        // see #1976 do not allow pasting object that has been deleted
-        if (dragobj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
-        {
-            ev->setAccepted(false);
-            return;
+    bool dragIsNoop = true;
+    list<FWObject *>::const_iterator iter;
+    for (iter = objs.begin(); iter != objs.end(); ++iter) {
+        FWObject *dragobj = *iter;
+        assert(dragobj != 0);
+
+        if (Interface::cast(dragobj) != 0 ||
+            Interface::cast(dragobj->getParent()) != 0 ||
+            Policy::cast(dragobj) != 0 ||
+            NAT::cast(dragobj) != 0 ||
+            Routing::cast(dragobj) != 0) goto notWanted;
+
+        /* See if destination is a user folder */
+        if (dest->getUserFolderParent() != 0) {
+            /* Dragged object has to match parent of user folder */
+            if (dest->getUserFolderParent() != dragobj->getParent()) {
+                goto notWanted;
+            }
+
+            /* Are we dragging within the same user folder? */
+            if (dest->getUserFolderName() !=
+                QString::fromUtf8(dragobj->getStr("folder").c_str())) {
+                dragIsNoop = false;
+            }
+        } else {
+            /* OK to drag onto parent itself, or object that shares parent */
+            if (dragobj->getParent() != dest->getFWObject() &&
+                dragobj->getParent() != dest->getFWObject()->getParent()) {
+                goto notWanted;
+            }
+
+            /* Are we dragging to a new place? */
+            if ((FWBTree().isSystem(dest->getFWObject()) &&
+                 dragobj->getStr("folder") != "") ||
+                (dest->getFWObject()->getStr("folder") !=
+                 dragobj->getStr("folder"))) {
+                dragIsNoop = false;
+            }
         }
     }
 
+    if (dragIsNoop) goto notWanted;
+
+    ev->setDropAction(Qt::MoveAction);
     ev->setAccepted(true);
 }
 
-/*
- * See ticket #483: d&d of objects inside the tree should not be allowed
- */
+
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
-    ev->setAccepted(false);
-    return;
-}
+    ObjectTreeViewItem *dest =
+        dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
+    if (dest == 0) {
+    notWanted:
+        ev->setAccepted(false);
+        return;
+    }
 
-FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject*)
-{
-    QTreeWidgetItem *ovi = itemAt(ev->pos());
+    list<FWObject*> objs;
+    if (!FWObjectDrag::decode(ev, objs)) goto notWanted;
 
-    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(ovi);
-    if (otvi) return otvi->getFWObject();
-    else return NULL;
+    emit moveItems_sign(dest, objs);
+    ev->setAccepted(true);
 }
 
 void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)
@@ -547,6 +556,9 @@ void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)
 
 void ObjectTreeView::mouseMoveEvent( QMouseEvent * e )
 {
+    /* This stops highlighting of stuff in the tree when the user
+       clicks and tries to drag something non-draggable. */
+    if (state() == DragSelectingState) return;
     QTreeWidget::mouseMoveEvent(e);
     if (e==NULL)  return;
 }
@@ -745,6 +757,9 @@ void ObjectTreeView::itemSelectionChanged()
         QTreeWidgetItem *itm = (*it);
         ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
 
+        FWObject *obj = otvi->getFWObject();
+        if (obj == 0) continue;
+
         selectedObjects.push_back(otvi->getFWObject());
 
         if (fwbdebug) qDebug(
@@ -783,14 +798,14 @@ void ObjectTreeView::ExpandTreeItems(const set<int> &ids)
         qDebug() << "ObjectTreeView::ExpandTreeItems()";
 
     QTreeWidgetItemIterator it(this);
-    while ( *it )
+    for ( ; *it; ++it)
     {
         QTreeWidgetItem *itm = *it;
         ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
         FWObject *obj = otvi->getFWObject();
+        if (obj == 0) continue;
         if (ids.count(obj->getId()))
             itm->setExpanded(true);
-        ++it;
     }
 }
 
@@ -852,10 +867,9 @@ void ObjectTreeView::setFilter(QString text)
     if (fwbdebug)
         qDebug() << "ObjectTreeView::setFilter " << text;
 
-    QTreeWidgetItemIterator wit(this);
-    while (*wit)
-    {
+    for (QTreeWidgetItemIterator wit(this); *wit; ++wit) {
         ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem *>(*wit);
+        if (otvi->getUserFolderParent() != 0) continue;
         FWObject *obj = otvi->getFWObject();
 
         if (filterMatches(text, otvi, obj)) {
@@ -869,8 +883,6 @@ void ObjectTreeView::setFilter(QString text)
         } else {
             (*wit)->setHidden(true);
         }
-
-        ++wit;
     }
 
     if (!text.isEmpty()) this->expandAll();

@@ -80,59 +80,31 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
     return QTreeWidgetItem::data(column, role);
 }
 
-bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const
+
+static int getRank(FWObject *obj)
 {
-    int rank1 = -1;
-    int rank2 = -1;
-    const ObjectTreeViewItem * otvi =
-        dynamic_cast<const ObjectTreeViewItem*>(& other);
+    /* User-defined folders are first */
+    if (obj == 0) return 0;
+    
+    if (Interface::cast(obj) != 0) return 5;
+    if (Policy::cast(obj) != 0) return 2;
+    if (NAT::cast(obj) != 0) return 3;
+    if (Routing::cast(obj) != 0) return 4;
 
-    if (otvi->objptr==NULL) return true ;
-    if (objptr==NULL) return true ;
+    return 1;
+}
 
-    if (Interface::cast(otvi->objptr)!=NULL)
-    {
-        rank1=3;
-    }
-    if (Policy::cast(otvi->objptr)!=NULL)
-    {
-        rank1=0;
-    }
-    if (NAT::cast(otvi->objptr)!=NULL)
-    {
-        rank1=1;
-    }
-    if (Routing::cast(otvi->objptr)!=NULL)
-    {
-        rank1=2;
-    }
-    if (Interface::cast(objptr)!=NULL)
-    {
-        rank2=3;
-    }
-    if (Policy::cast(objptr)!=NULL)
-    {
-        rank2=0;
-    }
-    if (NAT::cast(objptr)!=NULL)
-    {
-        rank2=1;
-    }
-    if (Routing::cast(objptr)!=NULL)
-    {
-        rank2=2;
-    }
 
-    if (rank1==rank2)
-    {
-        QString s1 = objptr->getName().c_str();
-        QString s2 = otvi->objptr->getName ().c_str();
-        //return ( s1 < s2);
-        return ( s1.toLower() < s2.toLower());
-    }
-    if (rank1>rank2)
-    {
-        return true ;
-    }
-    return false ;
+bool ObjectTreeViewItem::operator<(const QTreeWidgetItem &other) const
+{
+    const ObjectTreeViewItem *otvi =
+        dynamic_cast<const ObjectTreeViewItem*>(&other);
+
+    int rank1 = getRank(otvi->objptr);
+    int rank2 = getRank(objptr);
+
+    if (rank1 == rank2)
+        return text(0).toLower() < otvi->text(0).toLower();
+
+    return rank1 > rank2;
 }

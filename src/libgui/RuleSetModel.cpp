@@ -1203,7 +1203,6 @@ bool RuleSetModel::isGroup(const QModelIndex &index) const
 
 void RuleSetModel::resetAllSizes()
 {
-    qDebug() << "resetAllSizes()";
     emit layoutAboutToBeChanged ();
     root->resetAllSizes();
     emit layoutChanged ();

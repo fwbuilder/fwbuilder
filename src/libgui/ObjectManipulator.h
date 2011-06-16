@@ -190,6 +190,10 @@ public slots:
      
      void selectionChanged(QTreeWidgetItem *cur);
 
+     void removeUserFolder();
+     void moveItems(ObjectTreeViewItem *dest,
+                    const std::list<libfwbuilder::FWObject *> &items);
+
      /**
       * open object obj in the editor. Does not open editor panel
       * if it is closed. Asks FWWindow permission to own editor.
@@ -268,6 +272,7 @@ public slots:
      virtual void simulateInstall();
      virtual void findWhereUsedSlot();
 
+     void addSubfolderSlot();
      void addNewKeywordSlot();
      void processKeywordSlot();
 

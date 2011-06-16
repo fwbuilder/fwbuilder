@@ -67,6 +67,7 @@
  comment  %STRING;  #IMPLIED
  id       ID        #REQUIRED
  ro       %BOOLEAN; #IMPLIED
+ folder   %STRING;  #IMPLIED
 '>
 
 <!-- Standard attributes for all system nodes -->
@@ -112,7 +113,8 @@
 
 <!ELEMENT ServiceGroup (( ServiceGroup | IPService | ICMPService  | ICMP6Service  | TCPService | UDPService | CustomService | ServiceRef | TagService | UserService)*)>
 <!ATTLIST ServiceGroup
- %STD_ATTRIBUTES;
+        %STD_ATTRIBUTES;
+        subfolders %STRING; #IMPLIED
 >
 
 <!-- 
@@ -127,7 +129,8 @@
 
 <!ELEMENT ObjectGroup ((ObjectGroup|DynamicGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|ObjectRef)*)>
 <!ATTLIST ObjectGroup
- %STD_ATTRIBUTES;
+        %STD_ATTRIBUTES;
+        subfolders %STRING; #IMPLIED
 >
 
 <!ELEMENT SelectionCriteria EMPTY>
@@ -611,7 +614,8 @@ some can't (ipfilter, IOS, PIX)
 
 <!ELEMENT IntervalGroup ((IntervalGroup|Interval|IntervalRef)*)>
 <!ATTLIST IntervalGroup
- %STD_ATTRIBUTES;
+        %STD_ATTRIBUTES;
+        subfolders %STRING; #IMPLIED
 >
 
 <!-- Reference to time interval -->

@@ -228,4 +228,40 @@ string stringify(const vector<string>& parts, const string& delimiter)
     return result;
 }
 
+
+set<string> stringToSet(const string &str)
+{
+    set<string> ret;
+    size_t lastpos = 0;
+    for ( ; ; ) {
+        size_t pos = str.find(',', lastpos);
+        if (pos == string::npos) {
+            if (lastpos < str.size()) {
+                ret.insert(str.substr(lastpos));
+            }
+            return ret;
+        }
+        ret.insert(str.substr(lastpos, pos - lastpos));
+        lastpos = pos + 1;
+    }
+}
+
+
+string setToString(const set<string> &s)
+{
+    string ret;
+    set<string>::const_iterator iter;
+    bool first = true;
+    for (iter = s.begin(); iter != s.end(); ++iter) {
+        if (first) {
+            first = false;
+        } else {
+            ret += ",";
+        }
+        ret += *iter;
+    }
+
+    return ret;
+}
+
 }

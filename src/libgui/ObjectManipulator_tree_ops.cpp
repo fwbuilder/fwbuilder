@@ -242,7 +242,11 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
 
     nitm->setIcon( 0, QIcon(pm) );
 //    nitm->setIcon( 1, QIcon(pm) );
-    nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
+    if (FWBTree().isSystem(obj)) {
+        nitm->setFlags(nitm->flags() & ~Qt::ItemIsDragEnabled);
+    } else {
+        nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
+    }
 
     nitm->setProperty("type", obj->getTypeName().c_str() );
     nitm->setFWObject( obj );
@@ -270,6 +274,20 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     if (nitm==NULL) return;
 
     if (FWBTree().isStandardFolder(obj)) nitm->setExpanded( st->getExpandTree());
+
+    QMap<QString,ObjectTreeViewItem *> folders;
+    set<string> subfolders = stringToSet(obj->getStr("subfolders"));
+    set<string>::const_iterator iter;
+    for (iter = subfolders.begin(); iter != subfolders.end(); ++iter) {
+        ObjectTreeViewItem *sub = new ObjectTreeViewItem(nitm);
+        sub->setUserFolderParent(obj);
+        QString name = QString::fromUtf8((*iter).c_str());
+        sub->setUserFolderName(name);
+        sub->setText(0, name);
+        sub->setIcon(0, QIcon(LoadPixmap(":/Icons/SystemGroup/icon-tree")));
+
+        folders[name] = sub;
+    }
 
     if (Cluster::isA(obj))
     {
@@ -313,12 +331,17 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
          return;
     }
 
-
     for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
     {
         FWObject *o1=*m;
         if (FWReference::cast(o1)!=NULL) continue;
-        insertSubtree( nitm, o1 );
+
+        ObjectTreeViewItem *item = 0;
+        QString folder = QString::fromUtf8(o1->getStr("folder").c_str());
+        item = folders.value(folder);
+        if (item == 0) item = nitm;
+
+        insertSubtree( item, o1 );
     }
 }
 
@@ -591,16 +614,15 @@ void ObjectManipulator::addLib(FWObject *lib)
             SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
             this, SLOT(selectionChanged(QTreeWidgetItem*)));
 
+    connect(objTreeView, SIGNAL(moveItems_sign(ObjectTreeViewItem *, const std::list<libfwbuilder::FWObject *> &)),
+            this, SLOT(moveItems(ObjectTreeViewItem *, const std::list<libfwbuilder::FWObject *> &)));
 
     ObjectTreeViewItem *itm1=new ObjectTreeViewItem( objTreeView );
 
     itm1->setLib("");
     itm1->setExpanded(TRUE);
 
-/* need to enable dragging in order to avoid object highlighting in
- * the tree when user drags mouse cursor */
-
-    itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
+    itm1->setFlags(itm1->flags() & ~Qt::ItemIsDragEnabled);
 
     itm1->setText( 0, getTreeLabel(lib, 0) );
     itm1->setText( 1, getTreeLabel(lib, 1) );
@@ -682,3 +704,30 @@ void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem 
     getCurrentObjectTree()->update();
 }
 
+void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
+                                  const list<FWObject *> &items)
+{
+    string folder;
+    QTreeWidgetItem *destItem;
+    if (dest->getUserFolderParent() != 0) {
+        folder = dest->getUserFolderName().toUtf8().constData();
+        destItem = dest;
+    } else {
+        folder = dest->getFWObject()->getStr("folder");
+        if (FWBTree().isSystem(dest->getFWObject())) {
+            destItem = dest;
+        } else {
+            destItem = dest->parent();
+        }
+    }
+
+    list<FWObject *>::const_iterator iter;
+    for (iter = items.begin(); iter != items.end(); ++iter) {
+        (*iter)->setStr("folder", folder);
+        ObjectTreeViewItem *item = allItems[*iter];
+        item->parent()->removeChild(item);
+        destItem->addChild(item);
+    }
+
+    refreshSubtree(destItem, 0);
+}

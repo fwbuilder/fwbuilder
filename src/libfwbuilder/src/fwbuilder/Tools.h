@@ -45,6 +45,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <set>
 
 #ifndef _WIN32
 #  include <dirent.h>
@@ -109,8 +110,11 @@ namespace libfwbuilder
      *  Strip identifier from string 'in' and return as string.
      */
     std::string strip(const std::string& in, const std::string& identifier);
+
+    /* Convert from string <-> set<string>, using comma as delim */
+    std::set<std::string> stringToSet(const std::string &str);
+    std::string setToString(const std::set<std::string> &s);
+    
 }
 
 #endif
-
-

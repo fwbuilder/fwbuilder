@@ -43,21 +43,28 @@ class ObjectTreeView;
 class ObjectTreeViewItem : public QTreeWidgetItem {
 
     libfwbuilder::FWObject *objptr;
+    libfwbuilder::FWObject *userFolderParent;
+    QString                 userFolderName;
     QMap<QString, QString>  props;
     QString                 lib;
     
  public:
 
-     ObjectTreeViewItem(QTreeWidget *parent) : QTreeWidgetItem(parent) {
-        objptr=NULL;
-    }
+    ObjectTreeViewItem(QTreeWidget *parent) :
+        QTreeWidgetItem(parent), objptr(0), userFolderParent(0) {}
 
-    ObjectTreeViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent){
-        objptr=NULL;
-    }
+    ObjectTreeViewItem(QTreeWidgetItem *parent) :
+        QTreeWidgetItem(parent), objptr(0), userFolderParent(0) {}
 
     libfwbuilder::FWObject *getFWObject() const { return objptr; }
+    libfwbuilder::FWObject *getUserFolderParent() { return userFolderParent; }
     void setFWObject(libfwbuilder::FWObject *obj) { objptr=obj; }
+    void setUserFolderParent(libfwbuilder::FWObject *obj) {
+        userFolderParent = obj;
+    }
+
+    void setUserFolderName(const QString &name) { userFolderName = name; }
+    const QString &getUserFolderName() { return userFolderName; }
 
     ObjectTreeView* getTree();
 

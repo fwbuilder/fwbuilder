@@ -405,6 +405,13 @@ static void addKeywordsMenu(ObjectManipulator *om, QMenu *menu)
 
 void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 {
+    if (popup_menu == NULL)
+    {
+        popup_menu = new QMenu(this);
+        popup_menu->setObjectName("objectTreeContextMenu");
+    } else
+        popup_menu->clear();
+
 /* in extended selection mode there may be several selected items */
 
     QTreeWidget *objTreeView = getCurrentObjectTree();
@@ -417,18 +424,23 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(item);
     if (otvi==NULL)  return;  // happens when user clicks outside an item
 
+    FWObject *obj = otvi->getFWObject();
+    if (obj == 0) {
+        assert(otvi->getUserFolderParent() != 0);
+        QAction *action =
+            popup_menu->addAction(tr("Remove"), this, SLOT(removeUserFolder()));
+        if (otvi->childCount() > 0) {
+            action->setEnabled(false);
+        }
+        popup_menu->exec(QCursor::pos());
+        return;
+    }
+
     if (!getCurrentObjectTree()->isSelected(otvi->getFWObject()))
         openObjectInTree( otvi, true );
 
     //if (currentObj==NULL)  currentObj=otvi->getFWObject();
     FWObject *currentObj = getSelectedObject();
-
-    if (popup_menu == NULL)
-    {
-        popup_menu = new QMenu(this);
-        popup_menu->setObjectName("objectTreeContextMenu");
-    } else
-        popup_menu->clear();
 
     if (item->childCount() > 0)
     {
@@ -535,7 +547,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
-
+        bool addSubfolder = false;
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
@@ -639,16 +651,21 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                     popup_menu, StateSyncClusterGroup::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Firewalls")
+        if (currentObj->getPath(true)=="Firewalls") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Firewall::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Clusters")
+        if (currentObj->getPath(true)=="Clusters") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Cluster::TYPENAME));
+        }
 
         if (currentObj->getPath(true)=="Objects/Addresses")
         {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
             AddObjectActions.append(
@@ -657,26 +674,33 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, DNSName::TYPENAME));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Tables")
         {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, AddressTable::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Objects/Address Ranges")
+        if (currentObj->getPath(true)=="Objects/Address Ranges") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Objects/Hosts")
+        if (currentObj->getPath(true)=="Objects/Hosts") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Host::TYPENAME));
+        }
 
         if (currentObj->getPath(true)=="Objects/Networks")
         {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Network::TYPENAME));
             AddObjectActions.append(
@@ -684,51 +708,76 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         }
 
         if (currentObj->getPath(true)=="Objects/Groups") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ObjectGroup::TYPENAME));
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, DynamicGroup::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Services/Custom")
+        if (currentObj->getPath(true)=="Services/Custom") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, CustomService::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Services/IP")
+        if (currentObj->getPath(true)=="Services/IP") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, IPService::TYPENAME));
+        }
 
         if (currentObj->getPath(true)=="Services/ICMP")
         {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ICMPService::TYPENAME));
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ICMP6Service::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Services/TCP")
+        if (currentObj->getPath(true)=="Services/TCP") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, TCPService::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Services/UDP")
+        if (currentObj->getPath(true)=="Services/UDP") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, UDPService::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Services/TagServices")
+        if (currentObj->getPath(true)=="Services/TagServices") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, TagService::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Services/Groups")
+        if (currentObj->getPath(true)=="Services/Groups") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, ServiceGroup::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Services/Users")
+        if (currentObj->getPath(true)=="Services/Users") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, UserService::TYPENAME));
+        }
 
-        if (currentObj->getPath(true)=="Time")
+        if (currentObj->getPath(true)=="Time") {
+            addSubfolder = true;
             AddObjectActions.append(
                 addNewObjectMenuItem(popup_menu, Interval::TYPENAME));
+        }
+
+        if (addSubfolder) {
+            QAction *action = popup_menu->addAction(tr("New Subfolder"), this,
+                                                    SLOT(addSubfolderSlot()));
+            action->setData(currentObj->getId());
+            AddObjectActions.append(action);
+        }
 
         popup_menu->addSeparator();
 
@@ -742,7 +791,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         findID->setEnabled( !FWBTree().isStandardFolder(currentObj));
         whereUsedID->setEnabled( !FWBTree().isStandardFolder(currentObj));
     }
-    
+
     popup_menu->addSeparator();
     popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) )
             ->setDisabled(getCurrentObjectTree()->getNumSelected()==1);
@@ -855,7 +904,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
 
-    popup_menu->exec( objTreeView->mapToGlobal( pos ) );
+    popup_menu->exec(QCursor::pos());
 }
 
 bool ObjectManipulator::getDeleteMenuState(FWObject *obj)

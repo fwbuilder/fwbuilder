@@ -45,6 +45,7 @@ namespace libfwbuilder {
 };
 
 class ProjectPanel;
+class ObjectTreeViewItem;
 
 class ObjectTreeView : public QTreeWidget
 {
@@ -65,11 +66,6 @@ class ObjectTreeView : public QTreeWidget
     std::set<int> expanded_objects;
     std::vector<libfwbuilder::FWObject*> selectedObjects;
     ProjectPanel* m_project;
-
-
-    bool isCurrReadOnly(QDragMoveEvent *ev);
-    libfwbuilder::FWObject *getDropTarget(
-        QDropEvent *ev, libfwbuilder::FWObject* dragobj);
 
     QSet<QTreeWidgetItem*> resolveChildren(QTreeWidgetItem*);
 
@@ -169,6 +165,8 @@ protected:
      void objectDropped_sign(libfwbuilder::FWObject *);
      void deleteObject_sign(libfwbuilder::FWObject *);
      void contextMenuRequested_sign(const QPoint&);
+     void moveItems_sign(ObjectTreeViewItem *dest,
+                         const std::list<libfwbuilder::FWObject *> &items);
 };
 
 

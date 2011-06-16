@@ -743,3 +743,66 @@ void ObjectManipulator::processKeywordSlot()
     doKeyword(getCurrentObjectTree()->getSelectedObjects(), (list[0] == "add"),
               list[1].toUtf8().constData(), m_project);
 }
+
+
+void ObjectManipulator::addSubfolderSlot()
+{
+    const QAction *qAct = dynamic_cast<const QAction *>(sender());
+    if (qAct == 0) return;
+
+    FWObject *obj = getCurrentObjectTree()->getCurrentObject();
+    assert(obj->getId() == qAct->data().toInt());
+
+    QString folder = QInputDialog::getText(0, tr("Add Subfolder"),
+                                           tr("Enter new subfolder name"));
+    folder = folder.simplified();
+    if (folder.isEmpty()) return;
+    if (fwbdebug) {
+        qDebug() << "ObjectManipulator::addSubfolder: " << folder;
+    }
+
+    set<string> folders = stringToSet(obj->getStr("subfolders"));
+    folders.insert(folder.toUtf8().constData());
+    string encoded = setToString(folders);
+
+    obj->setStr("subfolders", encoded);
+
+    QTreeWidgetItem *item = getCurrentObjectTree()->currentItem();
+    ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
+    sub->setUserFolderParent(obj);
+    sub->setUserFolderName(folder);
+    sub->setText(0, folder);
+    sub->setIcon(0, QIcon(LoadPixmap(":/Icons/SystemGroup/icon-tree")));
+    refreshSubtree(item, sub);
+}
+
+
+void ObjectManipulator::removeUserFolder()
+{
+    ObjectTreeViewItem *item = dynamic_cast<ObjectTreeViewItem *>
+        (getCurrentObjectTree()->currentItem());
+    if (item == 0 || item->getUserFolderParent() == 0) return;
+    ObjectTreeViewItem *parent = dynamic_cast<ObjectTreeViewItem *>
+        (item->parent());
+    assert(parent != 0);
+
+    FWObject *parentObj = parent->getFWObject();
+    set<string> folders = stringToSet(parentObj->getStr("subfolders"));
+    folders.erase(item->getUserFolderName().toUtf8().constData());
+    parentObj->setStr("subfolders", setToString(folders));
+
+    QList<QTreeWidgetItem *> children = item->takeChildren();
+    while (!children.isEmpty()) {
+        ObjectTreeViewItem *child = dynamic_cast<ObjectTreeViewItem *>
+            (children.takeFirst());
+        assert(child != 0);
+        child->getFWObject()->setStr("folder", "");
+        parent->addChild(child);
+    }
+
+    parent->removeChild(item);
+    delete item;
+
+    refreshSubtree(parent, 0);
+
+}

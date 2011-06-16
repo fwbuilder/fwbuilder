@@ -64,27 +64,6 @@ string FWObject::NOT_FOUND="";
 //#define TI_DEBUG
 
 
-static void
-parseKeywordsFromString(set<string> &keywords, set<string> &allKeywords,
-                        const string &str)
-{
-    if (str.empty()) return;
-    string::size_type pos = 0;
-    for ( ; ; ) {
-        string::size_type delim = str.find(',', pos);
-        if (delim == string::npos) {
-            keywords.insert(str.substr(pos));
-            allKeywords.insert(str.substr(pos));
-            break;
-        } else {
-            keywords.insert(str.substr(pos, delim - pos));
-            allKeywords.insert(str.substr(pos, delim - pos));
-            pos = delim + 1;
-        }
-    }
-}
-
-
 void FWObject::fromXML(xmlNodePtr root) throw(FWException)
 {
     assert(root!=NULL);
@@ -111,12 +90,23 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
-    if (dbroot != 0) {
-        n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("keywords")));
-        if (n != 0) {
-            parseKeywordsFromString(keywords, dbroot->keywords, n);
-            FREEXMLBUFF(n);
-        }
+    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("keywords")));
+    if (n != 0) {
+        keywords = stringToSet(n);
+        dbroot->keywords.insert(keywords.begin(), keywords.end());
+        FREEXMLBUFF(n);
+    }
+
+    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("subfolders")));
+    if (n != 0) {
+        setStr("subfolders", n);
+        FREEXMLBUFF(n);
+    }
+
+    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("folder")));
+    if (n != 0) {
+        setStr("folder", n);
+        FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ro")));
@@ -160,20 +150,6 @@ xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
     return toXML(xml_parent_node, true);
 }
 
-static string keywordsAsString(const set<string> &keywords)
-{
-    if (keywords.empty()) return "";
-    set<string>::const_iterator iter = keywords.begin();
-    string ret = *iter;
-    ++iter;
-    while (iter != keywords.end()) {
-        ret += ",";
-        ret += *iter;
-        ++iter;
-    }
-    return ret;
-}
-
 xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
     throw(FWException)
 {
@@ -195,7 +171,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
 
     if (!keywords.empty()) {
         xmlNewProp(me, TOXMLCAST("keywords"),
-                   STRTOXMLCAST(keywordsAsString(keywords)));
+                   STRTOXMLCAST(setToString(keywords)));
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -669,7 +645,7 @@ void FWObject::remStr(const string &name)
 
 void FWObject::setStr(const string &name, const string &val)
 {
-    if (name[0]!='.') checkReadOnly();
+    if (name[0]!='.' && name != "folder") checkReadOnly();
     string old_val = data[name];
     if (old_val != val)
     {
