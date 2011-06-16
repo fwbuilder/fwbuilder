@@ -247,6 +247,7 @@ void DynamicGroupDialog::loadObjFilter()
 
     m_reloadObjFilter = false;
     m_loadedObjFilter = filter;
+    m_loadedAllKeywords = obj->getAllKeywords();
 }
 
 
@@ -255,7 +256,8 @@ void DynamicGroupDialog::loadFWObject(FWObject *o)
     DynamicGroup *objGroup = dynamic_cast<DynamicGroup *>(o);
 
     const list<string> &filter = objGroup->getFilter();
-    if (obj != o || m_reloadObjFilter || m_loadedObjFilter != filter) {
+    if (obj != o || m_reloadObjFilter || m_loadedObjFilter != filter ||
+        m_loadedAllKeywords != o->getAllKeywords()) {
         obj = o;
         loadObjFilter();
     }

@@ -50,6 +50,7 @@ class DynamicGroupDialog : public BaseObjectDialog
     QStandardItemModel *m_model;
     bool m_reloadObjFilter;
     std::list<std::string> m_loadedObjFilter;
+    std::set<std::string> m_loadedAllKeywords;
 
     void loadObjFilter();
 
