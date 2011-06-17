@@ -257,6 +257,7 @@
     <file alias="Icons/UserService/icon-tree" >Icons/user_16.png</file>
     <file alias="Icons/lock" >Icons/lock.png</file>
     <file alias="Icons/neg" >Icons/neg.png</file>
+    <file alias="Icons/neg2" >Icons/neg2.png</file>
     <file alias="Icons/physAddress/icon" >Icons/physaddress_25.png</file>
     <file alias="Icons/physAddress/icon-big" >Icons/physaddress_64.png</file>
     <file alias="Icons/physAddress/icon-neg" >Icons/physaddress-neg_25.png</file>

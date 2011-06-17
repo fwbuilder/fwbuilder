@@ -35,36 +35,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="AutocompletedComboBox" name="filter">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Object name pattern</string>
-       </property>
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QToolButton" name="clearFilter">
-       <property name="toolTip">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Clear filter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -97,6 +67,9 @@ p, li { white-space: pre-wrap; }
 </string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="FilterLineEdit" name="filter"/>
      </item>
     </layout>
    </item>
@@ -148,9 +121,9 @@ p, li { white-space: pre-wrap; }
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>AutocompletedComboBox</class>
-   <extends>QComboBox</extends>
-   <header>AutocompletedComboBox.h</header>
+   <class>FilterLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>FilterLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -170,22 +143,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clearFilter</sender>
-   <signal>clicked()</signal>
-   <receiver>filter</receiver>
-   <slot>clearEditText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>25</x>
-     <y>51</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>69</x>
-     <y>59</y>
     </hint>
    </hints>
   </connection>

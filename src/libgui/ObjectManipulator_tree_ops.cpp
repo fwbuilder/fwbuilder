@@ -269,7 +269,7 @@ void ObjectManipulator::insertSubtree(FWObject *parent, FWObject *obj)
 
 void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
-    this->m_objectManipulator->filter->clearEditText();
+    this->m_objectManipulator->filter->clear();
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
     if (nitm==NULL) return;
 
@@ -641,7 +641,7 @@ void ObjectManipulator::addLib(FWObject *lib)
     objTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
 
     m_objectManipulator->filter->connect(m_objectManipulator->filter,
-                                         SIGNAL(editTextChanged(QString)),
+                                         SIGNAL(textChanged(QString)),
                                          objTreeView, SLOT(setFilter(QString)));
 }
 

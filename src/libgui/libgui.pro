@@ -170,7 +170,6 @@ HEADERS += ../../config.h \
     pfsyncOptionsDialog.h \
     check_update_url.h \
     startup_tip_url.h \
-    AutocompletedComboBox.h \
     InterfaceEditorWidget.h \
     FWCmdBasic.h \
     FWCmdChange.h \
@@ -194,6 +193,7 @@ HEADERS += ../../config.h \
 	KeywordsDialog.h \
 	CommentKeywords.h \
 	DynamicGroupDialog.h \
+	FilterLineEdit.h \
 \
 	ObjectDescriptor.h \
 	QThreadLogger.h \
@@ -388,7 +388,6 @@ SOURCES += ProjectPanel.cpp \
     pfsyncOptionsDialog.cpp \
     heartbeatOptionsDialog.cpp \
     openaisOptionsDialog.cpp \
-    AutocompletedComboBox.cpp \
     InterfaceEditorWidget.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
@@ -412,6 +411,7 @@ SOURCES += ProjectPanel.cpp \
 	KeywordsDialog.cpp \
 	CommentKeywords.cpp \
 	DynamicGroupDialog.cpp \
+	FilterLineEdit.cpp \
 \
 	ObjectDescriptor.cpp \
 	QThreadLogger.cpp \
