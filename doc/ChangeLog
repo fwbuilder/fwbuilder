@@ -1,5 +1,10 @@
 2011-06-20  Vadim Kurland  <vadim@netcitadel.com>
 
+	* ObjectManipulator_slots.cpp (forward): see #2493 implemented
+	"forward" function in addition to the "back" function, added
+	a button to the roolbar, using new icons for Back and Forward
+	buttons.
+
 	* src.pro (SUBDIRS): see #2477 removed transfer agent
 	code.
 

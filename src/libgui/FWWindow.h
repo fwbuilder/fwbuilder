@@ -151,7 +151,8 @@ public slots:
     void editorPanelTabChanged(int);
     
     void back();
-
+    void forward();
+    
     void minimize();
     void maximize();
 

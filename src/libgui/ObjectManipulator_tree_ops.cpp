@@ -407,6 +407,19 @@ void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
     if (history.empty()) mw->enableBackAction();
 }
 
+void ObjectManipulator::addObjectToHistory(ObjectTreeViewItem* otvi,
+                                           FWObject *obj)
+{
+    history.push_back( HistoryItem(otvi, obj->getId()) );
+    current_history_item = history.end();
+    current_history_item--;
+}
+
+ObjectTreeViewItem* ObjectManipulator::getCurrentHistoryItem()
+{
+    return current_history_item->item();
+}
+
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
     QString clr = lib->getStr("color").c_str();

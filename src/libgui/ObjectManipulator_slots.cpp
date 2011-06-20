@@ -434,34 +434,51 @@ void ObjectManipulator::back()
 {
     if (!history.empty())
     {
-        history.pop_back();
+        FWObject *obj = NULL;
 
-/* skip objects that have been deleted.
- *
- * But see removeObjectFromHistory() which is now called by
- * removeObjectFromTreeView() it may not be necessary to do this
- * additional check here, especially since according to #1661 it
- * probably does not work anyway.
- *
- */
-        while ( ! history.empty())
+        current_history_item--;
+
+        if ( current_history_item != history.end())
         {
-            if (m_project->db()->findInIndex( history.back().id() )!=NULL) break;
-            history.pop_back();
+            ObjectTreeViewItem* otvi = current_history_item->item();
+            int obj_id = current_history_item->id();
+            obj = m_project->db()->findInIndex(obj_id);
+            if ( obj != NULL)
+            {
+                openObjectInTree( otvi, false );
+
+                if (mw->isEditorVisible()) editSelectedObject();
+            }
+        } else
+        {
+            current_history_item = history.begin();
         }
+    }
+}
 
-        if (history.empty())
+void ObjectManipulator::forward()
+{
+    if (!history.empty())
+    {
+        FWObject *obj = NULL;
+
+        current_history_item++;
+
+        if ( current_history_item != history.end())
         {
-            mw->enableBackAction();
-            return;
-        }
+            ObjectTreeViewItem* otvi = current_history_item->item();
+            int obj_id = current_history_item->id();
+            obj = m_project->db()->findInIndex(obj_id);
+            if ( obj != NULL)
+            {
+                openObjectInTree( otvi, false );
 
-        openObjectInTree( history.back().item(), false );
-
-        if (mw->isEditorVisible())
+                if (mw->isEditorVisible()) editSelectedObject();
+            }
+        } else
         {
-            ObjectTreeViewItem *otvi=history.back().item();
-            switchObjectInEditor(otvi->getFWObject());
+            current_history_item = history.end();
+            current_history_item--;
         }
     }
 }

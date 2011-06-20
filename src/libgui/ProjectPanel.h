@@ -239,6 +239,8 @@ public:
     void newObject();
     
     virtual void back();
+    virtual void forward();
+    
     virtual void lockObject();
     virtual void unlockObject();
  

@@ -259,12 +259,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect(current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
 
-    // connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
-    //          this, SLOT(newObject() ) );
-
-    // connect( m_mainWindow->backAction, SIGNAL( triggered() ),
-    //          this, SLOT(back() ) );
-
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
              this, SLOT(search()) );
 
