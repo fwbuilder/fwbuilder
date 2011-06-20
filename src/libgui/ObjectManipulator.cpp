@@ -820,38 +820,6 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
         popup_menu->addAction( tr("Install"), this, SLOT( install()));
         popup_menu->addAction( tr("Inspect"), this, SLOT( inspect()));
-
-        if (Firewall::cast(currentObj)!=NULL)
-        {
-            Resources* os_res = Resources::os_res[currentObj->getStr("host_OS")];
-            if (os_res)
-            {
-                string transfer = os_res->getTransferAgent();
-                if (!transfer.empty())
-                    popup_menu->addAction( tr("Transfer"), this, SLOT(transferfw()));
-            }
-        }
-
-        if (ObjectGroup::cast(currentObj)!=NULL &&
-            currentObj->getName()=="Firewalls")
-        {
-            // Config transfer is currently only supported for Secuwall.
-            // Check if we have any
-            bool have_transfer_support = false;
-            for (FWObject::iterator it=currentObj->begin();
-                 it!=currentObj->end(); ++it)
-            {
-                FWObject *fw = *it;
-                Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
-                if (os_res)
-                {
-                    string transfer = os_res->getTransferAgent();
-                    have_transfer_support = have_transfer_support || (!transfer.empty());
-                }
-            }
-            if (have_transfer_support)
-                popup_menu->addAction( tr("Transfer"), this, SLOT(transferfw()));
-        }
     }
 
     popup_menu->addSeparator();

@@ -1,5 +1,8 @@
 2011-06-20  Vadim Kurland  <vadim@netcitadel.com>
 
+	* src.pro (SUBDIRS): see #2477 removed transfer agent
+	code.
+
 	* gui.pro: see #2506 Removed obsolete localization files (Russian
 	and Japanese). These were incomplete and have never been updated for
 	v4.

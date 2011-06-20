@@ -14,7 +14,7 @@ SOURCES += main.cpp
 
 IMPORT_LIB = ../import/$$BINARY_SUBDIR/libimport.a
 FWBPARSER_LIB = ../parsers/$$BINARY_SUBDIR/libfwbparser.a
-FWTRANSFER_LIB = ../fwtransfer/$$BINARY_SUBDIR/libfwtransfer.a
+# FWTRANSFER_LIB = ../fwtransfer/$$BINARY_SUBDIR/libfwtransfer.a
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
 DEFINES += $$ANTLR_DEFINES
@@ -23,13 +23,14 @@ STATIC_LIBS += ../libgui/$$BINARY_SUBDIR/libgui.a \
 				$$IMPORT_LIB $$FWBPARSER_LIB $$ANTLR_LIBS
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
-STATIC_LIBS += $$FWTRANSFER_LIB
-contains( HAVE_QTDBUS, 1 ):unix { 
-    !macx:QT += network \
-        dbus
-    macx:STATIC_LIBS += -framework \
-        QtDBus
-}
+# STATIC_LIBS += $$FWTRANSFER_LIB
+
+# contains( HAVE_QTDBUS, 1 ):unix { 
+#     !macx:QT += network \
+#         dbus
+#     macx:STATIC_LIBS += -framework \
+#         QtDBus
+# }
 
 # !macx:STATIC_LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 

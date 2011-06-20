@@ -412,17 +412,6 @@ void ObjectManipulator::inspect()
     m_project->inspect(fwset);
 }
 
-void ObjectManipulator::transferfw()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    set<Firewall*> fo;
-    filterFirewallsFromSelection(so, fo);
-
-    m_project->transferfw(fo);
-}
-
 void ObjectManipulator::find()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;

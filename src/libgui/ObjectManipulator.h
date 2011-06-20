@@ -251,7 +251,6 @@ public slots:
      void compile();
      void install();
      void inspect();
-     void transferfw();
 
      void duplicateObj(QAction*);
      void moveObj(QAction*);

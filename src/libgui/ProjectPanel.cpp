@@ -991,16 +991,6 @@ void ProjectPanel::inspect(set<Firewall *> fws)
     viewer->show();
 }
 
-void ProjectPanel::transferfw(set<Firewall*> vf)
-{
-    mainW->transferfw(vf);
-}
-
-void ProjectPanel::transferfw()
-{
-    mainW->transferfw();
-}
-
 QString ProjectPanel::printHeader()
 {
     QString headerText = rcs->getFileName().section("/",-1,-1);

@@ -69,8 +69,6 @@
 #include "HttpGet.h"
 #include "StartTipDialog.h"
 
-#include "transferDialog.h"
-
 #include "events.h"
 
 #include "importAddressListWizard/ImportAddressListWizard.h"
@@ -1778,19 +1776,6 @@ void FWWindow::inspect()
         if (activeProject()->db()->isDirty()) return;
         this->activeProject()->inspectAll();
     }
-}
-
-void FWWindow::transferfw(set<Firewall*> vf)
-{
-    transferDialog *ed = new transferDialog(NULL, vf);
-    ed->show();
-}
-
-void FWWindow::transferfw()
-{
-    std::set<Firewall*> emp;
-    transferDialog *ed = new transferDialog(NULL, emp);
-    ed->show();
 }
 
 void FWWindow::addNewObjectMenu(QMenu *m)
