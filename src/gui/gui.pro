@@ -58,19 +58,15 @@ STATIC_LIBS += $$OTHER_LIBS
 
 PRE_TARGETDEPS  = $$STATIC_LIBS
 
-macx:STATIC_LIBS += -framework \
-    Carbon
+macx:STATIC_LIBS += -framework Carbon
 STATIC_LIBS += $$LIBS_FWCOMPILER
 
 LIBS = $$STATIC_LIBS $$LIBS
 
-#RESOURCES += ../libgui/MainRes.qrc
-TRANSLATIONS = fwbuilder_ru.ts \
-    fwbuilder_ja.ts \
-    fwbuilder_en.ts
-ja.path = $$PKGLOCALEDIR
-ja.files = fwbuilder_ja.qm
-ru.path = $$PKGLOCALEDIR
-ru.files = fwbuilder_ru.qm
-INSTALLS += ja ru
+# TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts fwbuilder_en.ts
+# ja.path = $$PKGLOCALEDIR
+# ja.files = fwbuilder_ja.qm
+# ru.path = $$PKGLOCALEDIR
+# ru.files = fwbuilder_ru.qm
+# INSTALLS += ja ru
 

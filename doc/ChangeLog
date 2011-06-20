@@ -1,3 +1,9 @@
+2011-06-20  Vadim Kurland  <vadim@netcitadel.com>
+
+	* gui.pro: see #2506 Removed obsolete localization files (Russian
+	and Japanese). These were incomplete and have never been updated for
+	v4.
+
 2011-06-10  Theron Tock  <theron@netcitadel.com>
 
 	* implementation of keywords associated with objects in the GUI;
