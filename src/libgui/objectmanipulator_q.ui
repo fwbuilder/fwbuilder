@@ -62,10 +62,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;that ships with the package. Library &lt;span style=&quot; font-weight:600;&quot;&gt;&amp;quot;User&amp;quot;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;is where you create your own objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QComboBox { padding: 2px;}
-</string>
+       <property name="autoFillBackground">
+        <bool>false</bool>
        </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Item1 </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Item 2</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item row="0" column="1">
@@ -75,6 +87,9 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="1" column="0">
     <widget class="QStackedWidget" name="widgetStack">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <widget class="QWidget" name="page">
       <property name="palette">
        <palette>
