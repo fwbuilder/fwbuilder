@@ -734,7 +734,7 @@ void ObjectManipulator::processKeywordSlot()
     if (qObj == 0) return;
     const QAction *qAct = dynamic_cast<const QAction *>(qObj);
     QStringList list = qAct->data().toStringList();
-    if (list.length() != 2) return;
+    if (list.size() != 2) return;
 
     if (fwbdebug) {
         qDebug() << "ObjectManipulator::processKeyword:" << list;
