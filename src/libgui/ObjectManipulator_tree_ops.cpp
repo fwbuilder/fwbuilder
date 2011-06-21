@@ -555,13 +555,17 @@ void ObjectManipulator::loadObjects()
 
         addLib( lib );
 
-        if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p added lib %s",
-                             this, lib->getName().c_str());
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::loadObjects"
+                     << this << "added lib" << lib->getName().c_str();
+
     }
 
-    if (firstUserLib==NULL) firstUserLib=ll.front();
+    if (firstUserLib==NULL) firstUserLib = ll.front();
     openLib( firstUserLib );
-    if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p done", this);
+
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::loadObjects done" << this;
 }
 
 void ObjectManipulator::addLib(FWObject *lib)

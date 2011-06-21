@@ -1483,7 +1483,7 @@ ObjectTreeView* ObjectManipulator::getCurrentObjectTree()
 
 void ObjectManipulator::openLib(FWObject *obj)
 {
-    openObjectInTree(obj->getLibrary(),false);
+    openObjectInTree(obj->getLibrary(), false);
 }
 
 void ObjectManipulator::newObject()
