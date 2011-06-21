@@ -75,7 +75,6 @@ rm -fr $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 /usr/bin/fwb_pf
 /usr/bin/fwb_pix
 /usr/bin/fwb_procurve_acl
-/usr/bin/transfer_secuwall
 %doc doc/AUTHORS
 %doc doc/COPYING
 %doc doc/Credits
