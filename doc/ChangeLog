@@ -1,3 +1,9 @@
+2011-06-21  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_pf.cpp (compile): fixed #2428 "PF compiler crashes
+	when ipv4+ipv6 NAT rule uses only ipv4 address". This has been
+	reported as SF bug 3305234.
+
 2011-06-20  Vadim Kurland  <vadim@netcitadel.com>
 
 	* ObjectManipulator_slots.cpp (forward): see #2493 implemented
