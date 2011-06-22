@@ -1026,120 +1026,251 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 
 QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
 {
+    if (rule == NULL) return "";
+
     QList<QPair<QString,QString> > options;
 
-    if (rule!=NULL)
-    {
-        FWObject *o = rule;
-        while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
-        assert(o!=NULL);
-        Firewall *f = Firewall::cast(o);
-        string platform = f->getStr("platform");
-        FWOptions *ropt = rule->getOptionsObject();
+    PolicyRule *prule = PolicyRule::cast(rule);
+    FWObject *o = rule;
+    while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
+    assert(o!=NULL);
+    Firewall *f = Firewall::cast(o);
+    string platform = f->getStr("platform");
+    FWOptions *ropt = rule->getOptionsObject();
 
-        if (platform!="iosacl" && platform!="procurve_acl")
+    if (platform!="iosacl" && platform!="procurve_acl")
+    {
+        if (ropt->getBool("stateless"))
         {
-            if (ropt->getBool("stateless"))
+            options << qMakePair(QObject::tr("Stateless"), QString(""));
+        } else
+        {
+            options << qMakePair(QObject::tr("Stateful"), QString(""));
+        }
+    }
+
+    if (platform=="iptables")
+    {
+        if (prule)
+        {
+            if (prule->getTagging())
             {
-                options << qMakePair(QObject::tr("Stateless"), QString(""));
-            } else
+                options << qMakePair(QObject::tr("tag:"), 
+                                     QString(prule->getTagValue().c_str()));
+            }
+
+            if (prule->getClassification())
             {
-                options << qMakePair(QObject::tr("Stateful"), QString(""));
+                options << qMakePair(QObject::tr("class:"),
+                                     QString(ropt->getStr("classify_str").c_str()));
+            }
+        }
+            
+        if (!ropt->getStr("log_prefix").empty())
+        {
+            options << qMakePair(QObject::tr("Log prefix:"),
+                                 QString(ropt->getStr("log_prefix").c_str()));
+        }
+
+        if (!ropt->getStr("log_level").empty())
+        {
+            options << qMakePair(
+                QObject::tr("Log Level:"),
+                QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                      getLogLevels(platform.c_str()))));
+        }
+
+        if (ropt->getInt("ulog_nlgroup")>1)
+        {
+            options << qMakePair(
+                QObject::tr("Netlink group:"),
+                QString(ropt->getStr("ulog_nlgroup").c_str()));
+        }
+            
+        if (ropt->getInt("limit_value")>0)
+        {
+            QString arg;
+            if (ropt->getBool("limit_value_not")) arg = " ! ";
+            arg += QString(ropt->getStr("limit_value").c_str());
+            if (!ropt->getStr("limit_suffix").empty())
+            {
+                arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
+                                     getLimitSuffixes(platform.c_str()));
+            }
+            options << qMakePair(QString("Limit value:"), arg);
+        }
+
+        if (ropt->getInt("limit_burst")>0)
+        {
+            options << qMakePair(QString("Limit burst:"),
+                                 QString(ropt->getStr("limit_burst").c_str()));
+        }
+
+        if (ropt->getInt("connlimit_value")>0)
+        {
+            QString arg;
+
+            if (ropt->getBool("connlimit_above_not")) arg = " ! ";
+            arg += QString(ropt->getStr("connlimit_value").c_str());
+
+            options << qMakePair(QObject::tr("connlimit value:"), arg);
+        }
+
+        if (ropt->getInt("hashlimit_value")>0)
+        {
+            QString arg;
+            if (ropt->getBool("hashlimit_value_not")) arg = " ! ";
+            arg += QString(ropt->getStr("hashlimit_value").c_str());
+            if (!ropt->getStr("hashlimit_suffix").empty())
+            {
+                arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
+                                     getLimitSuffixes(platform.c_str()));
+            }
+
+            options << qMakePair(
+                QString("hashlimit name:"),
+                QString(ropt->getStr("hashlimit_name").c_str()));
+            options << qMakePair(QString("hashlimit value:"), arg);
+
+            if (ropt->getInt("hashlimit_burst")>0)
+            {
+                options << qMakePair(
+                    QString("haslimit burst:"),
+                    QString(ropt->getStr("hashlimit_burst").c_str()));
+            }
+        }
+            
+        if (ropt->getBool("firewall_is_part_of_any_and_networks"))
+        {
+            options << qMakePair(QObject::tr("Part of Any"), QString(""));
+        }
+
+            
+    } else if (platform=="ipf") 
+    {
+        if (!ropt->getStr("ipf_log_facility").empty())
+        {
+            options << qMakePair(
+                QObject::tr("Log facility:"),
+                QString(getScreenName(ropt->getStr("ipf_log_facility").c_str(),
+                                      getLogFacilities(platform.c_str()))));
+        }
+            
+        if (!ropt->getStr("log_level").empty())
+        {
+            options << qMakePair(
+                QObject::tr("Log level:"),
+                QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                      getLogLevels(platform.c_str()))));
+        }
+            
+        if (ropt->getBool("ipf_return_icmp_as_dest"))
+        {
+            options << qMakePair(
+                QObject::tr("Send 'unreachable'"), QString(""));
+        }
+
+        if (ropt->getBool("ipf_keep_frags"))
+        {
+            options << qMakePair(
+                QObject::tr("Keep information on fragmented packets"),
+                QString(""));
+        }
+            
+    }else if (platform=="pf")
+    {
+
+        if (prule)
+        {
+            if (prule->getTagging())
+            {
+                options << qMakePair(QObject::tr("tag:"), 
+                                     QString(prule->getTagValue().c_str()));
+            }
+
+            if (prule->getClassification())
+            {
+                options << qMakePair(QObject::tr("queue:"),
+                                     QString(ropt->getStr("pf_classify_str").c_str()));
             }
         }
 
-        if (platform=="iptables")
+        if (!ropt->getStr("log_prefix").empty())
         {
-            if (!ropt->getStr("log_prefix").empty())
-            {
-                options << qMakePair(QObject::tr("Log prefix:"),
-                                     QString(ropt->getStr("log_prefix").c_str()));
-            }
-
-            if (!ropt->getStr("log_level").empty())
-            {
-                options << qMakePair(
-                    QObject::tr("Log Level:"),
-                    QString(getScreenName(ropt->getStr("log_level").c_str(),
-                                          getLogLevels(platform.c_str()))));
-            }
-
-            if (ropt->getInt("ulog_nlgroup")>1)
-            {
-                options << qMakePair(
-                    QObject::tr("Netlink group:"),
-                    QString(ropt->getStr("ulog_nlgroup").c_str()));
-            }
+            options << qMakePair(QObject::tr("Log prefix:"), 
+                                 QString(ropt->getStr("log_prefix").c_str()));
+        }
             
-            if (ropt->getInt("limit_value")>0)
-            {
-                QString arg;
-                if (ropt->getBool("limit_value_not")) arg = " ! ";
-                arg += QString(ropt->getStr("limit_value").c_str());
-                if (!ropt->getStr("limit_suffix").empty())
-                {
-                    arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
-                                         getLimitSuffixes(platform.c_str()));
-                }
-                options << qMakePair(QString("Limit value:"), arg);
-            }
-
-            if (ropt->getInt("limit_burst")>0)
-            {
-                options << qMakePair(QString("Limit burst:"),
-                                     QString(ropt->getStr("limit_burst").c_str()));
-            }
-
-            if (ropt->getInt("connlimit_value")>0)
-            {
-                QString arg;
-
-                if (ropt->getBool("connlimit_above_not")) arg = " ! ";
-                arg += QString(ropt->getStr("connlimit_value").c_str());
-
-                options << qMakePair(QObject::tr("connlimit value:"), arg);
-            }
-
-            if (ropt->getInt("hashlimit_value")>0)
-            {
-                QString arg;
-                if (ropt->getBool("hashlimit_value_not")) arg = " ! ";
-                arg += QString(ropt->getStr("hashlimit_value").c_str());
-                if (!ropt->getStr("hashlimit_suffix").empty())
-                {
-                    arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
-                                         getLimitSuffixes(platform.c_str()));
-                }
-
-                options << qMakePair(
-                    QString("hashlimit name:"),
-                    QString(ropt->getStr("hashlimit_name").c_str()));
-                options << qMakePair(QString("hashlimit value:"), arg);
-
-                if (ropt->getInt("hashlimit_burst")>0)
-                {
-                    options << qMakePair(
-                        QString("haslimit burst:"),
-                        QString(ropt->getStr("hashlimit_burst").c_str()));
-                }
-            }
-            
-            if (ropt->getBool("firewall_is_part_of_any_and_networks"))
-            {
-                options << qMakePair(QObject::tr("Part of Any"), QString(""));
-            }
-
-            
-        } else if (platform=="ipf") 
+        if (ropt->getInt("pf_rule_max_state")>0)
         {
-            if (!ropt->getStr("ipf_log_facility").empty())
-            {
-                options << qMakePair(
-                    QObject::tr("Log facility:"),
-                    QString(getScreenName(ropt->getStr("ipf_log_facility").c_str(),
-                                          getLogFacilities(platform.c_str()))));
-            }
+            options << qMakePair(
+                QObject::tr("Max state:"),
+                QString(ropt->getStr("pf_rule_max_state").c_str()));
+        }
             
+        if (ropt->getBool("pf_keep_state"))
+        {
+            options << qMakePair(
+                QObject::tr("Force 'keep-state'"), QString(""));
+        }
+        if (ropt->getBool("pf_no_sync"))
+        {
+            options << qMakePair(QString("no-sync"), QString(""));
+        }
+        if (ropt->getBool("pf_pflow"))
+        {
+            options << qMakePair(QString("pflow"), QString(""));
+        }
+        if (ropt->getBool("pf_sloppy_tracker"))
+        {
+            options << qMakePair(QString("sloppy-tracker"), QString(""));
+        }
+            
+        if (ropt->getBool("pf_source_tracking"))
+        {
+            options << qMakePair(
+                QObject::tr("Source tracking"), QString(""));
+                
+            options << qMakePair(
+                QObject::tr("Max src nodes:"),
+                QString(ropt->getStr("pf_max_src_nodes").c_str()));
+                
+            options << qMakePair(
+                QObject::tr("Max src states:"),
+                QString(ropt->getStr("pf_max_src_states").c_str()));
+        }
+
+        if (ropt->getBool("pf_synproxy"))
+        {
+            options << qMakePair(QString("synproxy"), QString(""));
+        }
+
+        if (ropt->getBool("pf_modulate_state"))
+        {
+            options << qMakePair(QString("modulate_state"), QString(""));
+        }
+            
+    }else if (platform=="ipfw")
+    {
+        ;
+    }else if (platform == "iosacl" || platform == "procurve_acl")
+    {
+        if (ropt->getBool("iosacl_add_mirror_rule"))
+        {
+            options << qMakePair(
+                QObject::tr("Add mirrored rule"), QString(""));
+        }
+            
+    }else if (platform=="pix" || platform=="fwsm")
+    {
+        string vers = "version_"+f->getStr("version");
+            
+        options << qMakePair(QObject::tr("Version:"), QString(vers.c_str()));
+            
+        if ( Resources::platform_res[platform]->getResourceBool(
+                 "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
+        {
+                
             if (!ropt->getStr("log_level").empty())
             {
                 options << qMakePair(
@@ -1147,124 +1278,22 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                     QString(getScreenName(ropt->getStr("log_level").c_str(),
                                           getLogLevels(platform.c_str()))));
             }
-            
-            if (ropt->getBool("ipf_return_icmp_as_dest"))
+            if (ropt->getInt("log_interval")>0)
             {
                 options << qMakePair(
-                    QObject::tr("Send 'unreachable'"), QString(""));
+                    QObject::tr("Log interval:"),
+                    QString(ropt->getStr("log_interval").c_str()));
             }
-
-            if (ropt->getBool("ipf_keep_frags"))
-            {
-                options << qMakePair(
-                    QObject::tr("Keep information on fragmented packets"),
-                    QString(""));
-            }
-            
-        }else if (platform=="pf")
-        {
-            
-            if (!ropt->getStr("log_prefix").empty())
-            {
-                options << qMakePair(QObject::tr("Log prefix:"), 
-                                     QString(ropt->getStr("log_prefix").c_str()));
-            }
-            
-            if (ropt->getInt("pf_rule_max_state")>0)
-            {
-                options << qMakePair(
-                    QObject::tr("Max state:"),
-                    QString(ropt->getStr("pf_rule_max_state").c_str()));
-            }
-            
-            if (ropt->getBool("pf_keep_state"))
-            {
-                options << qMakePair(
-                    QObject::tr("Force 'keep-state'"), QString(""));
-            }
-            if (ropt->getBool("pf_no_sync"))
-            {
-                options << qMakePair(QString("no-sync"), QString(""));
-            }
-            if (ropt->getBool("pf_pflow"))
-            {
-                options << qMakePair(QString("pflow"), QString(""));
-            }
-            if (ropt->getBool("pf_sloppy_tracker"))
-            {
-                options << qMakePair(QString("sloppy-tracker"), QString(""));
-            }
-            
-            if (ropt->getBool("pf_source_tracking"))
-            {
-                options << qMakePair(
-                    QObject::tr("Source tracking"), QString(""));
                 
-                options << qMakePair(
-                    QObject::tr("Max src nodes:"),
-                    QString(ropt->getStr("pf_max_src_nodes").c_str()));
-                
-                options << qMakePair(
-                    QObject::tr("Max src states:"),
-                    QString(ropt->getStr("pf_max_src_states").c_str()));
-            }
-
-            if (ropt->getBool("pf_synproxy"))
-            {
-                options << qMakePair(QString("synproxy"), QString(""));
-            }
-
-            if (ropt->getBool("pf_modulate_state"))
-            {
-                options << qMakePair(QString("modulate_state"), QString(""));
-            }
-            
-        }else if (platform=="ipfw")
-        {
-            ;
-        }else if (platform == "iosacl" || platform == "procurve_acl")
-        {
-            if (ropt->getBool("iosacl_add_mirror_rule"))
+            if (ropt->getBool("disable_logging_for_this_rule"))
             {
                 options << qMakePair(
-                    QObject::tr("Add mirrored rule"), QString(""));
+                    QObject::tr("Disable logging for this rule"), QString(""));
             }
-            
-        }else if (platform=="pix" || platform=="fwsm")
-        {
-            string vers = "version_"+f->getStr("version");
-            
-            options << qMakePair(QObject::tr("Version:"), QString(vers.c_str()));
-            
-            if ( Resources::platform_res[platform]->getResourceBool(
-                  "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
-            {
                 
-                if (!ropt->getStr("log_level").empty())
-                {
-                    options << qMakePair(
-                        QObject::tr("Log level:"),
-                        QString(getScreenName(ropt->getStr("log_level").c_str(),
-                                              getLogLevels(platform.c_str()))));
-                }
-                if (ropt->getInt("log_interval")>0)
-                {
-                    options << qMakePair(
-                        QObject::tr("Log interval:"),
-                        QString(ropt->getStr("log_interval").c_str()));
-                }
-                
-                if (ropt->getBool("disable_logging_for_this_rule"))
-                {
-                    options << qMakePair(
-                        QObject::tr("Disable logging for this rule"), QString(""));
-                }
-                
-            } 
-        }
+        } 
     }
 
-    PolicyRule *prule = PolicyRule::cast(rule);
     if (prule)
         options << qMakePair(
             QObject::tr("Logging: "),
