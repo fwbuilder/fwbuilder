@@ -1,5 +1,8 @@
 2011-06-22  Vadim Kurland  <vadim@netcitadel.com>
 
+	* CompilerDriver.cpp (CompilerDriver): fixed #2521 "Compile fails
+	if firewall has locked interface that is set to dynamic".
+
 	* NATCompiler_pf_writers.cpp (_printProtocol): see #2524 'avoid
 	" {tcp udp icmp} " in place of protocol'. NAT compiler for PF does
 	not need to generate protocol match "proto {tcp udp icmp}" when
