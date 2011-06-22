@@ -123,9 +123,10 @@ void ObjectManipulator::autorename(FWObject *obj)
         list<FWObject*> ipv6_list = obj->getByType(IPv6::TYPENAME);
         list<FWObject*> pa_list = obj->getByType(physAddress::TYPENAME);
         list<FWObject*> failover_list = obj->getByType(FailoverClusterGroup::TYPENAME);
+        list<FWObject*> attached_list = obj->getByType(AttachedNetworks::TYPENAME);
 
         if (ipv4_list.size() || ipv6_list.size() || pa_list.size() ||
-            failover_list.size() || subinterfaces.size())
+            failover_list.size() || subinterfaces.size() || attached_list.size())
         {
             list<FWObject*> vlans;
             for (list<FWObject*>::iterator j=subinterfaces.begin();
@@ -146,6 +147,7 @@ void ObjectManipulator::autorename(FWObject *obj)
             autorename(ipv6_list, IPv6::TYPENAME, "ip6");
             autorename(pa_list, physAddress::TYPENAME, "mac");
             autorename(failover_list, FailoverClusterGroup::TYPENAME, "members");
+            autorename(attached_list, AttachedNetworks::TYPENAME, "attached");
         }
     }
 }

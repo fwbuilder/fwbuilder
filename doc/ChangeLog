@@ -1,5 +1,8 @@
 2011-06-22  Vadim Kurland  <vadim@netcitadel.com>
 
+	* ObjectManipulator_ops.cpp (autorename): fixed #2520 "Attached
+	Network objects are not renamed if a firewall is renamed"
+
 	* AttachedNetworksDialog.cpp (addAddressToList): see #2519 Avoid
 	creating duplicate network objects for the AttachedNetwork object
 	if the parent interface has multiple ip addresses that belong to
