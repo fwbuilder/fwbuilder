@@ -1,5 +1,10 @@
 2011-06-22  Vadim Kurland  <vadim@netcitadel.com>
 
+	* AttachedNetworksDialog.cpp (addAddressToList): see #2519 Avoid
+	creating duplicate network objects for the AttachedNetwork object
+	if the parent interface has multiple ip addresses that belong to
+	the same subnet.
+
 	* CompilerDriver.cpp (CompilerDriver): fixed #2521 "Compile fails
 	if firewall has locked interface that is set to dynamic".
 
