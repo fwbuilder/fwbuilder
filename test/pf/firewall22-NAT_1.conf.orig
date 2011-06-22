@@ -1,5 +1,5 @@
 # 
 # Rule  NAT_1 0 (NAT)
-nat on  en1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (en1) 
-nat on  en0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (en0) 
+nat on  en1 from 192.168.1.0/24 to any -> (en1) 
+nat on  en0 from 192.168.1.0/24 to any -> (en0) 
 

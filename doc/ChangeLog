@@ -1,3 +1,12 @@
+2011-06-22  Vadim Kurland  <vadim@netcitadel.com>
+
+	* NATCompiler_pf_writers.cpp (_printProtocol): see #2524 'avoid
+	" {tcp udp icmp} " in place of protocol'. NAT compiler for PF does
+	not need to generate protocol match "proto {tcp udp icmp}" when
+	service object used in the NAT rule is "any". The reason this was
+	done this way is lost in the mist of time; it's been like this
+	since very early versions of fwbuilder.
+
 2011-06-21  vadim  <vadim@netcitadel.com>
 
 	* NATCompiler_pf.cpp (compile): fixed #2428 "PF compiler crashes

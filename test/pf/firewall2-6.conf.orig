@@ -4,53 +4,53 @@
 # 
 # Rule  0 (NAT)
 # NETMAP and no -o itf
-nat proto {tcp udp icmp} from 192.168.1.0/24 to any -> 22.22.22.0/24 
+nat from 192.168.1.0/24 to any -> 22.22.22.0/24 
 # 
 # Rule  1 (NAT)
-nat on  em1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  em1 from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  2 (NAT)
 # 	
-nat on  em3 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  em3 from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  3 (NAT)
 # 	
-nat on  { em1 em3 } proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  { em1 em3 } from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  4 (NAT)
-nat on  { em1 em3 } proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  { em1 em3 } from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  5 (NAT)
 # 	
-nat on ! em3 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on ! em3 from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  6 (NAT)
 # 	
-nat on  { em0 em2 } proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  { em0 em2 } from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  7 (NAT)
-nat on  { em0 em2 } proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  { em0 em2 } from 192.168.1.0/24 to any -> 222.222.222.40 
 # 
 # Rule  8 (NAT)
-rdr proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  9 (NAT)
-rdr on  em0 proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on  em0 from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  10 (NAT)
-rdr on  { em0 em2 } proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on  { em0 em2 } from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  11 (NAT)
-rdr on  { em0 em2 } proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on  { em0 em2 } from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  12 (NAT)
-rdr on ! em0 proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on ! em0 from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  13 (NAT)
-rdr on  { em1 em3 } proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on  { em1 em3 } from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  14 (NAT)
-rdr on  { em1 em3 } proto {tcp udp icmp} from any to 222.222.222.40 -> 192.168.1.10 
+rdr on  { em1 em3 } from any to 222.222.222.40 -> 192.168.1.10 
 # 
 # Rule  15 (NAT)
 # REDIRECT

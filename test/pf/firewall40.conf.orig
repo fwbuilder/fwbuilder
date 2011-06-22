@@ -5,12 +5,12 @@
 # Rule  0 (NAT)
 # Translate source address
 # for outgoing connections
-nat on  le1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (le1) 
+nat on  le1 from 192.168.1.0/24 to any -> (le1) 
 # 
 # Rule  1 (NAT)
 # Translate source address
 # for outgoing connections
-nat on  le2 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (le2) 
+nat on  le2 from 192.168.1.0/24 to any -> (le2) 
 
 # 
 # Rule  0 (lo0)

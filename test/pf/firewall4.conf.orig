@@ -19,16 +19,16 @@ table <tbl.r6.s> { 192.168.1.10 , 192.168.1.20 }
 #
 # 
 # Rule  0 (NAT)
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.10 to any -> (eth0) 
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.10 to any -> (eth1) 
-nat on  eth2 proto {tcp udp icmp} from 192.168.1.10 to any -> (eth2) 
-nat on  eth3 proto {tcp udp icmp} from 192.168.1.10 to any -> (eth3) 
+nat on  eth0 from 192.168.1.10 to any -> (eth0) 
+nat on  eth1 from 192.168.1.10 to any -> (eth1) 
+nat on  eth2 from 192.168.1.10 to any -> (eth2) 
+nat on  eth3 from 192.168.1.10 to any -> (eth3) 
 # 
 # Rule  1 (NAT)
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth0) 
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth1) 
-nat on  eth2 proto {tcp udp icmp} from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth2) 
-nat on  eth3 proto {tcp udp icmp} from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth3) 
+nat on  eth0 from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth0) 
+nat on  eth1 from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth1) 
+nat on  eth2 from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth2) 
+nat on  eth3 from 192.168.1.0/24 to ! 192.168.2.0/24 -> (eth3) 
 # 
 # Rule  2 (NAT)
 rdr proto tcp from any to <tbl.r2> port 22 -> 192.168.1.10 port 22 
@@ -39,7 +39,7 @@ rdr on  eth3 proto tcp from 192.168.1.0/24 to 222.222.222.222 port 80 -> 192.168
 nat on  eth0 proto tcp from 192.168.1.0/24 to 192.168.1.10 port 80 -> (eth0) 
 # 
 # Rule  4 (NAT)
-nat on  eth3 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth3) 
+nat on  eth3 from 192.168.1.0/24 to any -> (eth3) 
 # 
 # Rule  5 (NAT)
 # eth1 is dynamic

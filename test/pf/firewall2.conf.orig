@@ -30,17 +30,17 @@ table <tbl.r5.s> { self  , 192.168.1.0/24 }
 
 # 
 # Rule  0 (NAT)
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth0) 
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth1) 
-nat on  eth3 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth3) 
-nat on  eth2 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth2) 
-nat on  eth4 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth4) 
+nat on  eth0 from 192.168.1.0/24 to any -> (eth0) 
+nat on  eth1 from 192.168.1.0/24 to any -> (eth1) 
+nat on  eth3 from 192.168.1.0/24 to any -> (eth3) 
+nat on  eth2 from 192.168.1.0/24 to any -> (eth2) 
+nat on  eth4 from 192.168.1.0/24 to any -> (eth4) 
 # 
 # Rule  1 (NAT)
-nat proto {tcp udp icmp} from <tbl.r1> to any -> 22.22.22.23 
+nat from <tbl.r1> to any -> 22.22.22.23 
 # 
 # Rule  2 (NAT)
-nat proto {tcp udp icmp} from 192.168.1.0/24 to <tbl.r1> -> 192.168.1.1 
+nat from 192.168.1.0/24 to <tbl.r1> -> 192.168.1.1 
 # 
 # Rule  3 (NAT)
 nat on  eth0 proto tcp from 192.168.1.0/24 to any port 80 -> (eth0) 
@@ -69,7 +69,7 @@ nat proto icmp from <tbl.r1> to any -> 22.22.22.23
 nat proto udp from 192.168.1.0/24 to <tbl.r1> port 53 -> 192.168.1.1 
 # 
 # Rule  9 (NAT)
-rdr proto {tcp udp icmp} from any to 22.22.22.23 -> 192.168.1.10 
+rdr from any to 22.22.22.23 -> 192.168.1.10 
 # 
 # Rule  10 (NAT)
 rdr proto tcp from any to 22.22.22.23 port 80 -> 192.168.1.10 port 80 
@@ -79,16 +79,16 @@ rdr proto tcp from any to 22.22.22.23 port 119 -> 192.168.1.10 port 119
 rdr proto tcp from any to 22.22.22.22 port 119 -> 192.168.1.10 port 119 
 # 
 # Rule  12 (NAT)
-nat proto {tcp udp icmp} from 192.168.1.20 to any -> 22.22.23.24 
+nat from 192.168.1.20 to any -> 22.22.23.24 
 # 
 # Rule  16 (NAT)
-rdr proto {tcp udp icmp} from any to <tbl.r16> -> 192.168.1.10 
+rdr from any to <tbl.r16> -> 192.168.1.10 
 # 
 # Rule  17 (NAT)
-rdr on  eth1 proto {tcp udp icmp} from any to 22.22.22.22 -> 192.168.1.10 
+rdr on  eth1 from any to 22.22.22.22 -> 192.168.1.10 
 # 
 # Rule  18 (NAT)
-rdr on  eth1 proto {tcp udp icmp} from any to 22.22.22.22 -> 192.168.1.10 
+rdr on  eth1 from any to 22.22.22.22 -> 192.168.1.10 
 # 
 # Rule  19 (NAT)
 rdr proto 47 from any to <tbl.r16> -> 192.168.1.10 
