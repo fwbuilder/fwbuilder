@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="20" lastModified="" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -40,7 +40,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id3F9A1BD5" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id3F9A1CE7" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F9A1CE7" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BC7"/>
             </Src>
@@ -57,11 +57,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9AF2C0" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3F9AF2C0" disabled="False" group="" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9AF27F"/>
             </Src>
@@ -80,13 +79,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9A1BF6" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F9A1BF6" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCA"/>
             </Src>
@@ -103,11 +100,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9A1BEC" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F9A1BEC" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCA"/>
             </Src>
@@ -124,11 +120,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C2E" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F9A1C2E" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BCB"/>
             </Src>
@@ -145,11 +140,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C96" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F9A1C96" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F9A1BC7"/>
             </Src>
@@ -166,11 +160,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+              <Option name="pf_classify_str"></Option>
+            </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3F9A1C3A" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3F9A1C3A" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -187,11 +180,9 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
               <Option name="stateless">True</Option>
-            
-          <Option name="pf_classify_str"/>
-          </PolicyRuleOptions>
-  
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -230,20 +221,20 @@
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -251,14 +242,14 @@
           <Option name="ipf_nat_raudio_proxy">False</Option>
           <Option name="ipf_nat_rcmd_proxy">False</Option>
           <Option name="ipf_return_icmp_as_dest">False</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_path_ip"/>
-          <Option name="linux24_path_iptables"/>
-          <Option name="linux24_path_logger"/>
-          <Option name="linux24_path_lsmod"/>
-          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
           <Option name="load_modules">True</Option>
@@ -273,9 +264,9 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
