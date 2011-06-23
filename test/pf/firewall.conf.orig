@@ -32,8 +32,8 @@ table <tbl.r9.s> { 211.11.11.11 , 211.22.22.22 }
 
 # 
 # Rule  0 (NAT)
-nat on  eth1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth1) 
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth0) 
+nat on  eth1 from 192.168.1.0/24 to any -> (eth1) 
+nat on  eth0 from 192.168.1.0/24 to any -> (eth0) 
 # 
 # Rule  2 (NAT)
 rdr proto tcp from any to <tbl.r2> port 25 -> 192.168.1.10 port 25 

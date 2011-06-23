@@ -578,9 +578,9 @@ FORMS = FWBMainWindow_q.ui \
 
 
 # fwtransfer stuff.
-HEADERS += transferDialog.h
-SOURCES += transferDialog.cpp
-FORMS += transferdialog_q.ui
+# HEADERS += transferDialog.h
+# SOURCES += transferDialog.cpp
+# FORMS += transferdialog_q.ui
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 
@@ -590,8 +590,8 @@ INCLUDEPATH += \
     ../pflib \
     ../cisco_lib \
     ../compiler_lib \
-    ../fwtransfer \
 	../libfwbuilder/src
+
 DEPENDPATH += \
     ../import \
     ../iptlib \

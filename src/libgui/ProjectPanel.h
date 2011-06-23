@@ -239,6 +239,8 @@ public:
     void newObject();
     
     virtual void back();
+    virtual void forward();
+    
     virtual void lockObject();
     virtual void unlockObject();
  
@@ -277,8 +279,6 @@ public:
     virtual void install(std::set<libfwbuilder::Firewall*> vf);
     virtual void install();
     virtual void inspect(std::set<libfwbuilder::Firewall*> vf);
-    virtual void transferfw(std::set<libfwbuilder::Firewall*> vf);
-    virtual void transferfw();
 
     void splitterMoved ( int pos, int index );
 

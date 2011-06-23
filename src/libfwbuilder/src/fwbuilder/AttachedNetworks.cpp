@@ -115,12 +115,30 @@ void AttachedNetworks::loadFromSource(bool ipv6, bool ) throw(FWException)
 
     string c_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
 
+    // assemble list of address/netmask pairs to eliminate duplicates
+    map<string, Address*> networks;
+
     FWObjectTypedChildIterator k = parent_intf->findByType(c_type);
     for ( ; k!=k.end(); ++k)
     {
         Address *addr = Address::cast(*k);
         const InetAddr *ip_netm = addr->getNetmaskPtr();
         const InetAddr *ip_net_addr = addr->getNetworkAddressPtr();
+        ostringstream net;
+        if (ip_net_addr->isV6())
+        {
+            net << ip_net_addr->toString() << "/" << ip_netm->getLength();
+        } else
+        {
+            net << ip_net_addr->toString() << "/" << ip_netm->toString();
+        }
+        networks[net.str()] = addr;
+    }
+
+    for (map<string, Address*>::iterator it=networks.begin(); it!=networks.end(); ++it)
+    {
+        const InetAddr *ip_netm = it->second->getNetmaskPtr();
+        const InetAddr *ip_net_addr = it->second->getNetworkAddressPtr();
         addNetworkObject(ip_net_addr, ip_netm);
     }
 }

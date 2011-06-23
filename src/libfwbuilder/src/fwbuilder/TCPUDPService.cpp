@@ -122,6 +122,7 @@ FWObject& TCPUDPService::shallowDuplicate(const FWObject *obj,
 bool TCPUDPService::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     const TCPUDPService *other = TCPUDPService::constcast(obj);
+    if (other == NULL) return false;
     if (src_range_start != other->src_range_start ||
         src_range_end != other->src_range_end ||
         dst_range_start != other->dst_range_start ||

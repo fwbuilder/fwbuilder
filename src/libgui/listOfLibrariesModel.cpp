@@ -6,8 +6,6 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
-
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -38,6 +36,7 @@
 
 using namespace libfwbuilder;
 
+
 ListOfLibrariesModel::ListOfLibrariesModel(QObject *parent) : QStringListModel(parent)
 {
     top_static_items.push_back(tr("Object Libraries:"));
@@ -65,7 +64,7 @@ Qt::ItemFlags ListOfLibrariesModel::flags(const QModelIndex &index) const
     
     FWObject *lib = items.at(index.row()).lib;
     if (lib == NULL) return Qt::ItemIsEnabled;
-    else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    else return QStringListModel::flags(index);
 }
 
 bool ListOfLibrariesModel::insertRows(int row, int count, const QModelIndex & parent)

@@ -649,7 +649,7 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == Cluster::TYPENAME) return QObject::tr("New Cluster");
     if (type_name == Host::TYPENAME) return QObject::tr("New Host");
     if (type_name == Interface::TYPENAME) return QObject::tr("New Interface");
-    if (type_name == AttachedNetworks::TYPENAME) return QObject::tr("New Attached Networks Object");
+    if (type_name == AttachedNetworks::TYPENAME) return QObject::tr("New Attached Networks");
     if (type_name == Network::TYPENAME) return QObject::tr("New Network");
     if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("New Network IPv6");
     if (type_name == IPv4::TYPENAME) return QObject::tr("New Address");

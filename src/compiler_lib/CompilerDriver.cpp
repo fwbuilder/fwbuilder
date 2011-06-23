@@ -95,6 +95,7 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     fw_by_id = false;
 
     objdb = new FWObjectDatabase(*db);
+    objdb->setIgnoreReadOnlyFlag(true);
 
     //objdb = db;
 

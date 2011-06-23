@@ -69,8 +69,6 @@
 #include "HttpGet.h"
 #include "StartTipDialog.h"
 
-#include "transferDialog.h"
-
 #include "events.h"
 
 #include "importAddressListWizard/ImportAddressListWizard.h"
@@ -260,12 +258,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     current_version_http_getter = new HttpGet();
     connect(current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
-
-    // connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
-    //          this, SLOT(newObject() ) );
-
-    // connect( m_mainWindow->backAction, SIGNAL( triggered() ),
-    //          this, SLOT(back() ) );
 
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
              this, SLOT(search()) );
@@ -1778,19 +1770,6 @@ void FWWindow::inspect()
         if (activeProject()->db()->isDirty()) return;
         this->activeProject()->inspectAll();
     }
-}
-
-void FWWindow::transferfw(set<Firewall*> vf)
-{
-    transferDialog *ed = new transferDialog(NULL, vf);
-    ed->show();
-}
-
-void FWWindow::transferfw()
-{
-    std::set<Firewall*> emp;
-    transferDialog *ed = new transferDialog(NULL, emp);
-    ed->show();
 }
 
 void FWWindow::addNewObjectMenu(QMenu *m)

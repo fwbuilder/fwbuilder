@@ -151,7 +151,8 @@ public slots:
     void editorPanelTabChanged(int);
     
     void back();
-
+    void forward();
+    
     void minimize();
     void maximize();
 
@@ -204,8 +205,6 @@ public slots:
     virtual void install(std::set<libfwbuilder::Firewall * > vf);
     virtual void install();
     virtual void inspect();
-    virtual void transferfw(std::set<libfwbuilder::Firewall * > vf);
-    virtual void transferfw();
 
     virtual void insertRule();
     virtual void addRuleAfterCurrent();

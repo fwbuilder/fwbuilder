@@ -1269,6 +1269,7 @@ void NATCompiler_pf::compile()
     add( new emptyGroupsInTSrv(    "check for empty groups in TSRV"    ) );
 
     add( new ExpandGroups( "expand groups" ) );
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
     add( new eliminateDuplicatesInOSRC(  "eliminate duplicates in OSRC") );
     add( new eliminateDuplicatesInODST(  "eliminate duplicates in ODST") );
     add( new eliminateDuplicatesInOSRV(  "eliminate duplicates in OSRV") );
@@ -1291,6 +1292,8 @@ void NATCompiler_pf::compile()
              "process MultiAddress objects in ODst") );
     add( new processMultiAddressObjectsInTDst(
              "process MultiAddress objects in TDst") );
+
+    add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
     add( new splitOnOSrv( "split rule on original service" ) );
     add( new fillTranslatedSrv( "fill translated service" ) );

@@ -55,6 +55,7 @@
 #include "LibExportDialog.h"
 #include "longTextDialog.h"
 #include "FWBTree.h"
+#include "ObjectTreeView.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -972,6 +973,7 @@ void ProjectPanel::loadStandardObjects()
         setupAutoSave();
 
         time_t last_modified = objdb->getTimeLastModified();
+
         if (fwbdebug)
             qDebug("ProjectPanel::load(): done  last_modified=%s dirty=%d",
                    ctime(&last_modified), objdb->isDirty());

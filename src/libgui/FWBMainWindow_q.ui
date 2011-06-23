@@ -65,16 +65,7 @@
       </property>
       <widget class="QWidget" name="dockWidgetContents">
        <layout class="QGridLayout" name="gridLayout">
-        <property name="leftMargin">
-         <number>2</number>
-        </property>
-        <property name="topMargin">
-         <number>2</number>
-        </property>
-        <property name="rightMargin">
-         <number>2</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>2</number>
         </property>
         <item row="0" column="0">
@@ -720,6 +711,8 @@
    <addaction name="toolbarFileSave"/>
    <addaction name="separator"/>
    <addaction name="backAction"/>
+   <addaction name="forwardAction"/>
+   <addaction name="separator"/>
    <addaction name="newObjectAction"/>
    <addaction name="findAction"/>
    <addaction name="separator"/>
@@ -732,7 +725,7 @@
      <x>0</x>
      <y>0</y>
      <width>1124</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -1111,7 +1104,7 @@
    </property>
    <property name="icon">
     <iconset resource="MainRes.qrc">
-     <normaloff>:/Icons/back_32.png</normaloff>:/Icons/back_32.png</iconset>
+     <normaloff>:/Icons/back_25.png</normaloff>:/Icons/back_25.png</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -1373,6 +1366,18 @@
   <action name="SNMPDiscoveryAction">
    <property name="text">
     <string>Discover networks and hosts using SNMP</string>
+   </property>
+  </action>
+  <action name="forwardAction">
+   <property name="icon">
+    <iconset resource="MainRes.qrc">
+     <normaloff>:/Icons/forward_25.png</normaloff>:/Icons/forward_25.png</iconset>
+   </property>
+   <property name="text">
+    <string>Forward</string>
+   </property>
+   <property name="toolTip">
+    <string>Move forward to the next object</string>
    </property>
   </action>
  </widget>
@@ -2302,6 +2307,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>forwardAction</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>forward()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2318,5 +2339,6 @@
   <slot>toolsImportAddressesFromFile()</slot>
   <slot>toolsSNMPDiscovery()</slot>
   <slot>back()</slot>
+  <slot>forward()</slot>
  </slots>
 </ui>

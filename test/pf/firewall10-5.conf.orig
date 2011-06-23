@@ -7,7 +7,7 @@ scrub in all fragment reassemble
 
 # 
 # Rule  1 (NAT)
-nat on  eth0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (eth0) 
+nat on  eth0 from 192.168.1.0/24 to any -> (eth0) 
 
 # 
 # Rule  backup ssh access rule

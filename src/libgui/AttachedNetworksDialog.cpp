@@ -111,15 +111,18 @@ void AttachedNetworksDialog::addAddressToList(const InetAddr *ip_addr,
                                               const InetAddr *ip_netm)
 {
     QString name("%1/%2");
+    QString itm;
     if (ip_addr->isV6())
     {
-        m_dialog->addresses->addItem(
-            name.arg(ip_addr->toString().c_str()).arg(ip_netm->getLength()));
+        itm = name.arg(ip_addr->toString().c_str()).arg(ip_netm->getLength());
     } else
     {
-        m_dialog->addresses->addItem(
-            name.arg(ip_addr->toString().c_str()).arg(ip_netm->toString().c_str()));
+        itm = name.arg(ip_addr->toString().c_str()).arg(ip_netm->toString().c_str());
     }
+
+    QList<QListWidgetItem*> items = m_dialog->addresses->findItems(
+        itm, Qt::MatchExactly);
+    if (items.size() == 0) m_dialog->addresses->addItem(itm);
 }
 
 void AttachedNetworksDialog::validate(bool *result)

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3547
+#  Firewall Builder  fwb_pf v5.0.0.3551
 #
-#  Generated Fri Jun  3 18:57:43 2011 PDT by vadim
+#  Generated Wed Jun 22 10:50:26 2011 PDT by vadim
 #
 # files: * firewall-base-rulesets.fw /etc/fw/firewall-base-rulesets.fw
 # files:   firewall-base-rulesets.conf /etc/fw/firewall-base-rulesets.conf
@@ -169,7 +169,7 @@ configure_interfaces() {
     update_addresses_of_interface "en2 192.168.100.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Fri Jun  3 18:57:43 2011 by vadim"
+log "Activating firewall script generated Wed Jun 22 10:50:26 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

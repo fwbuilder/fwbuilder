@@ -2,28 +2,28 @@
 
 
 
-# Tables: (4)
+# Tables: (3)
 table <tbl.r0> { 157.166.224.25 , 157.166.224.26 , 157.166.226.25 , 157.166.226.26 , 157.166.255.18 , 157.166.255.19 } 
 table <tbl.r10.d> { www.google.com  , 157.166.224.25 , 157.166.224.26 , 157.166.226.25 , 157.166.226.26 , 157.166.255.18 , 157.166.255.19 } 
 table <tbl.r2> { www.google.com  , www.cnn.com  } 
-table <tbl.r8.d> { 74.125.224.48 , 74.125.224.49 , 74.125.224.50 , 74.125.224.51 , 74.125.224.52 , 157.166.224.25 , 157.166.224.26 , 157.166.226.25 , 157.166.226.26 , 157.166.255.18 , 157.166.255.19 } 
 
 # 
 # Rule  0 (NAT)
-nat on  eth0.100 proto {tcp udp icmp} from any to <tbl.r0> -> (eth0.100) 
+nat on  eth0.100 from any to <tbl.r0> -> (eth0.100) 
 # 
 # Rule  1 (NAT)
-nat on  eth0.100 proto {tcp udp icmp} from any to www.cnn.com -> (eth0.100) 
+nat on  eth0.100 from any to www.cnn.com -> (eth0.100) 
 # 
 # Rule  2 (NAT)
-nat on  eth0.100 proto {tcp udp icmp} from any to <tbl.r2> -> (eth0.100) 
+nat on  eth0.100 from any to <tbl.r2> -> (eth0.100) 
 # 
 # Rule  3 (NAT)
-nat on  eth0.100 proto {tcp udp icmp} from any to ! <tbl.r2> -> (eth0.100) 
+nat on  eth0.100 from any to ! <tbl.r2> -> (eth0.100) 
 
 # Policy compiler errors and warnings:
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 # firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
+# firewall33:Policy:8: error: Empty group or address table object 'google (ct)' is used in the rule but option 'Ignore rules with empty groups' is off
 # 
 # Rule  0 (global)
 pass  quick inet  from <tbl.r0>  to any keep state  label "RULE 0 -- ACCEPT on global "  
@@ -54,7 +54,9 @@ pass  quick inet  from any  to ! 192.0.2.1 keep state  label "RULE 6 -- ACCEPT o
 pass  quick inet  from any  to ! buildmaster keep state  label "RULE 7 -- ACCEPT on global "  
 # 
 # Rule  8 (global)
-pass  quick inet  from any  to ! <tbl.r8.d> keep state  label "RULE 8 -- ACCEPT on global "  
+# firewall33:Policy:8: error: Empty group or address table object 'google (ct)' is used in the rule but option 'Ignore rules with empty groups' is off
+
+pass  quick inet  from any  to ! <tbl.r0> keep state  label "RULE 8 -- ACCEPT on global "  
 # 
 # Rule  9 (global)
 pass  quick inet  from any  to ! <tbl.r2> keep state  label "RULE 9 -- ACCEPT on global "  

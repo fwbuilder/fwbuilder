@@ -426,6 +426,19 @@ void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
     if (history.empty()) mw->enableBackAction();
 }
 
+void ObjectManipulator::addObjectToHistory(ObjectTreeViewItem* otvi,
+                                           FWObject *obj)
+{
+    history.push_back( HistoryItem(otvi, obj->getId()) );
+    current_history_item = history.end();
+    current_history_item--;
+}
+
+ObjectTreeViewItem* ObjectManipulator::getCurrentHistoryItem()
+{
+    return current_history_item->item();
+}
+
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
     QString clr = lib->getStr("color").c_str();
@@ -561,13 +574,17 @@ void ObjectManipulator::loadObjects()
 
         addLib( lib );
 
-        if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p added lib %s",
-                             this, lib->getName().c_str());
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::loadObjects"
+                     << this << "added lib" << lib->getName().c_str();
+
     }
 
-    if (firstUserLib==NULL) firstUserLib=ll.front();
+    if (firstUserLib==NULL) firstUserLib = ll.front();
     openLib( firstUserLib );
-    if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p done", this);
+
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::loadObjects done" << this;
 }
 
 void ObjectManipulator::addLib(FWObject *lib)

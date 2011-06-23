@@ -619,6 +619,11 @@ void ProjectPanel::back()
     m_panel->om->back();
 }
 
+void ProjectPanel::forward()
+{
+    m_panel->om->forward();
+}
+
 void ProjectPanel::lockObject()
 {
     m_panel->om->lockObject();
@@ -989,16 +994,6 @@ void ProjectPanel::inspect(set<Firewall *> fws)
     FirewallCodeViewer *viewer =
         new FirewallCodeViewer(files, viewer_title, this);
     viewer->show();
-}
-
-void ProjectPanel::transferfw(set<Firewall*> vf)
-{
-    mainW->transferfw(vf);
-}
-
-void ProjectPanel::transferfw()
-{
-    mainW->transferfw();
 }
 
 QString ProjectPanel::printHeader()

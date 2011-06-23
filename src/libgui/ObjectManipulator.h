@@ -98,6 +98,7 @@ class ObjectManipulator : public QWidget
     int previous_lib_index;
     QSet<int> ids ;
     std::list<HistoryItem> history;
+    std::list<HistoryItem>::iterator current_history_item;
     int cacheHits;
 
     //libfwbuilder::FWObject *currentObj;
@@ -120,7 +121,7 @@ class ObjectManipulator : public QWidget
     int dedup_marker_global_counter;
 
     void buildNewObjectMenu();
-
+    
     ObjectTreeViewItem* insertObject(ObjectTreeViewItem *itm,
                                      libfwbuilder::FWObject *obj);
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
@@ -251,7 +252,6 @@ public slots:
      void compile();
      void install();
      void inspect();
-     void transferfw();
 
      void duplicateObj(QAction*);
      void moveObj(QAction*);
@@ -267,6 +267,8 @@ public slots:
      void findObject();
 
      virtual void back();
+     virtual void forward();
+
      virtual void lockObject();
      virtual void unlockObject();
      virtual void simulateInstall();
@@ -337,7 +339,10 @@ public:
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
      void removeObjectFromHistory(libfwbuilder::FWObject *obj);
-
+     void addObjectToHistory(ObjectTreeViewItem* otvi,
+                             libfwbuilder::FWObject *obj);
+     ObjectTreeViewItem* getCurrentHistoryItem();
+     
      /*
       * searches history trying to find an object that has given
       * parent. Used to find which rule set of the firewall user

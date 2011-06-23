@@ -40,6 +40,7 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/UserService.h"
 
 #include <assert.h>
 #include <QStringList>
@@ -387,12 +388,14 @@ void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)
         if (minus_p != string::npos) return;
     }
 
-    if ( !TagService::isA(srv))
+    if (!srv->isAny() && !TagService::isA(srv) && !UserService::isA(srv) && 
+        srv->getProtocolName()!="ip")
     {
-        string s = srv->getProtocolName();
-        if (s=="ip" || s=="any") s="{tcp udp icmp}";
-        compiler->output << "proto " <<  s << " ";
+	compiler->output << "proto ";
+	compiler->output << srv->getProtocolName();
+	compiler->output << " ";
     }
+
 }
 
 /*

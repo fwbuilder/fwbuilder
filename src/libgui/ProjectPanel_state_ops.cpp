@@ -33,6 +33,7 @@
 #include "FWBSettings.h"
 #include "RCS.h"
 #include "RuleSetView.h"
+#include "ObjectTreeView.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -322,10 +323,13 @@ void ProjectPanel::loadLastOpenedLib()
         if (last_lib_id > 0 && last_lib_id != FWObjectDatabase::DELETED_OBJECTS_ID)
         {
             m_panel->om->libChangedById(last_lib_id);
+            m_panel->om->getCurrentObjectTree()->setFocus(Qt::OtherFocusReason);
             return;
         }
     }
     loadFirstNonStandardLib();
+
+    m_panel->om->getCurrentObjectTree()->setFocus(Qt::OtherFocusReason);
 }
 
 void ProjectPanel::loadFirstNonStandardLib()

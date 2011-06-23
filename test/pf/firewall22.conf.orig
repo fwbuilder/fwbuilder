@@ -14,14 +14,14 @@ nat-anchor "ftp-proxy/*"
 rdr-anchor "ftp-proxy/*" 
 # 
 # Rule  1 (NAT)
-nat-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
-rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+nat-anchor "NAT_1" from 192.168.1.0/24 to any 
+rdr-anchor "NAT_1" from 192.168.1.0/24 to any 
 # 
 # Rule  2 (NAT)
 # firewall22:NAT:2: warning: Translated Src, Dst and Srv are ignored in the NAT rule with action 'Branch'
 
-nat-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
-rdr-anchor "NAT_1" proto {tcp udp icmp} from 192.168.1.0/24 to any 
+nat-anchor "NAT_1" from 192.168.1.0/24 to any 
+rdr-anchor "NAT_1" from 192.168.1.0/24 to any 
 
 # 
 # Rule  0 (global)

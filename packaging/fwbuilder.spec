@@ -1,6 +1,6 @@
 
 %define name    fwbuilder
-%define version 5.0.0.3549
+%define version 5.0.0.3552
 %define release 1
 
 %if "%_vendor" == "MandrakeSoft"
@@ -75,7 +75,6 @@ rm -fr $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 /usr/bin/fwb_pf
 /usr/bin/fwb_pix
 /usr/bin/fwb_procurve_acl
-/usr/bin/transfer_secuwall
 %doc doc/AUTHORS
 %doc doc/COPYING
 %doc doc/Credits

@@ -3,18 +3,18 @@
 
 # 
 # Rule  0 (NAT)
-nat on  dc2 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (dc2) 
-nat on  dc0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (dc0) 
-nat on  dc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (dc1) 
+nat on  dc2 from 192.168.1.0/24 to any -> (dc2) 
+nat on  dc0 from 192.168.1.0/24 to any -> (dc0) 
+nat on  dc1 from 192.168.1.0/24 to any -> (dc1) 
 # 
 # Rule  1 (NAT)
-nat on  dc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> (dc1) 
+nat on  dc1 from 192.168.1.0/24 to any -> (dc1) 
 # 
 # Rule  2 (NAT)
-nat on  dc1 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.20 
+nat on  dc1 from 192.168.1.0/24 to any -> 222.222.222.20 
 # 
 # Rule  3 (NAT)
-nat on  dc0 proto {tcp udp icmp} from 192.168.1.0/24 to any -> 222.222.222.40 
+nat on  dc0 from 192.168.1.0/24 to any -> 222.222.222.40 
 
 # 
 # Rule  0 (dc0)

@@ -385,6 +385,11 @@ void FWWindow::back()
     if (activeProject()) activeProject()->back();
 }
 
+void FWWindow::forward()
+{
+    if (activeProject()) activeProject()->forward();
+}
+
 void FWWindow::newObject()
 {
     if (activeProject())
