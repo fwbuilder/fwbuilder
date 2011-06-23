@@ -216,6 +216,46 @@ void FWCmdAddObject::notify()
 
 
 /********************************************************
+ * FWCmdAddUserFolder
+ *
+ ********************************************************/
+
+FWCmdAddUserFolder::FWCmdAddUserFolder(ProjectPanel *project,
+                                       FWObject *parentFolder,
+                                       const QString &userFolder,
+                                       QString text,
+                                       QUndoCommand *macro)
+    : FWCmdChange(project, parentFolder, text, false, macro),
+      m_userFolder(userFolder)
+{
+}
+
+
+void FWCmdAddUserFolder::redo()
+{
+    FWCmdChange::redo();
+
+    FWObject *obj = getObject();
+
+    QString fileName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(mw, new addUserFolderEvent
+                                (fileName, obj->getId(), m_userFolder));
+}
+
+
+void FWCmdAddUserFolder::undo()
+{
+    FWCmdChange::undo();
+
+    FWObject *obj = getObject();
+    QString fName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(mw,
+                                new removeUserFolderEvent(fName, obj->getId(),
+                                                          m_userFolder));
+}
+
+
+/********************************************************
  * FWCmdAddLibrary
  *
  ********************************************************/

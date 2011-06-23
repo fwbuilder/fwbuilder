@@ -313,6 +313,16 @@ public:
      void loadObjects();
      void clearObjects();
 
+     /* Add/remove user folder from tree */
+     void addUserFolderToTree(libfwbuilder::FWObject *obj,
+                              const QString &folder);
+     void removeUserFolderFromTree(libfwbuilder::FWObject *obj,
+                                   const QString &folder);
+     void moveToFromUserFolderInTree(libfwbuilder::FWObject *parent,
+                                     libfwbuilder::FWObject *objToMove,
+                                     const QString &oldFolder,
+                                     const QString &newFolder);
+
      void reopenCurrentItemParent();
 
      void insertSubtree(libfwbuilder::FWObject *parent,

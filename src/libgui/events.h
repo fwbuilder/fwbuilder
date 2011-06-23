@@ -71,6 +71,9 @@ enum EVENT_CODES {
     EXPAND_OBJECT_IN_TREE,
     CLOSE_EDITOR_PANEL_EVENT ,
     CLEAR_EDITOR_PANEL_EVENT ,
+    ADD_USER_FOLDER_EVENT,
+    REMOVE_USER_FOLDER_EVENT,
+    MOVE_TOFROM_USER_FOLDER_EVENT,
 };
 
 
@@ -411,6 +414,46 @@ public:
     fwbUpdateEvent("", -1,
                    QEvent::Type(QEvent::User + CLEAR_EDITOR_PANEL_EVENT),
                    "clearEditorPanelEvent")
+    {}
+};
+
+
+class addUserFolderEvent : public fwbUpdateEvent {
+public:
+    QString m_userFolder;
+    addUserFolderEvent(const QString &fileName, int objId,
+                       const QString &userFolder) :
+        fwbUpdateEvent(fileName, objId,
+                       QEvent::Type(QEvent::User + ADD_USER_FOLDER_EVENT),
+                       "addUserFolderEvent")
+    { m_userFolder = userFolder; }
+};
+
+class removeUserFolderEvent : public fwbUpdateEvent {
+public:
+    QString m_userFolder;
+    removeUserFolderEvent(const QString &fileName, int objId,
+                          const QString &userFolder) :
+        fwbUpdateEvent(fileName, objId,
+                       QEvent::Type(QEvent::User + REMOVE_USER_FOLDER_EVENT),
+                       "removeUserFolderEvent")
+    { m_userFolder = userFolder; }
+};
+
+class moveToFromUserFolderEvent : public fwbUpdateEvent {
+public:
+    int m_objIdToMove;
+    QString m_oldFolder;
+    QString m_newFolder;
+    moveToFromUserFolderEvent(const QString &fileName, int objId,
+                              int objIdToMove, const QString &oldFolder,
+                              const QString &newFolder) :
+        fwbUpdateEvent(fileName, objId,
+                       QEvent::Type(QEvent::User+MOVE_TOFROM_USER_FOLDER_EVENT),
+                       "removeUserFolderEvent"),
+        m_objIdToMove(objIdToMove),
+        m_oldFolder(oldFolder),
+        m_newFolder(newFolder)
     {}
 };
 

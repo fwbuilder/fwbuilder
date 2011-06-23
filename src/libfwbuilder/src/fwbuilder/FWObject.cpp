@@ -180,6 +180,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
         const string &value = (*i).second;
 
         if (name[0]=='.') continue;
+        if (name == "folder" && value.empty()) continue;
 
         xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
     }

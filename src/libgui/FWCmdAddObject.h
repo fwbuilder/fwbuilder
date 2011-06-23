@@ -53,6 +53,22 @@ public:
     virtual void undo();
 };
 
+
+class FWCmdAddUserFolder : public FWCmdChange
+{
+    QString m_userFolder;
+
+public:
+    FWCmdAddUserFolder(ProjectPanel *project,
+                       libfwbuilder::FWObject *parentFolder,
+                       const QString &userFolder,
+                       QString text = QString(),
+                       QUndoCommand *macro = 0);
+
+    virtual void redo();
+    virtual void undo();
+};
+
 /********************************************************
  * FWCmdAddLibrary
  ********************************************************/

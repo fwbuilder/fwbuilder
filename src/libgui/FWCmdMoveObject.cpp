@@ -67,8 +67,10 @@ FWCmdMoveObject::FWCmdMoveObject(
     FWObject *new_p,
     FWObject *o,
     map<int, set<FWObject*> > &reference_holder_objects,
-    QString text, QUndoCommand* macro) : FWCmdBasic(project, macro),
-                    reference_holders(reference_holder_objects)
+    QString text, QUndoCommand* macro)
+     : FWCmdBasic(project, macro),
+       oldUserFolder(QString::fromUtf8(o->getStr("folder").c_str())),
+       reference_holders(reference_holder_objects)
 {
     old_parent = old_p;
     new_parent = new_p;
@@ -90,6 +92,7 @@ FWCmdMoveObject::~FWCmdMoveObject()
 
 void FWCmdMoveObject::undo()
 {
+    obj->setStr("folder", oldUserFolder.toUtf8().constData());
     if (new_parent->hasChild(obj) && !old_parent->hasChild(obj))
     {
         new_parent->remove(obj, false);
@@ -117,6 +120,7 @@ void FWCmdMoveObject::undo()
 
 void FWCmdMoveObject::redo()
 {
+    obj->setStr("folder", "");
     if (!new_parent->hasChild(obj) && old_parent->hasChild(obj))
     {
         old_parent->remove(obj, false);
@@ -228,3 +232,44 @@ void FWCmdMoveObject::notify()
                                     filename, new_obj->getId()));
 }
 
+/****************************************************************/
+
+FWCmdMoveToFromUserFolder::FWCmdMoveToFromUserFolder(ProjectPanel *project,
+                                                     FWObject *parent,
+                                                     FWObject *obj,
+                                                     const QString &oldFolder,
+                                                     const QString &newFolder,
+                                                     QString text,
+                                                     QUndoCommand *macro)
+    : FWCmdChange(project, obj, text, false, macro),
+      m_parentId(parent->getId()),
+      m_oldFolder(oldFolder),
+      m_newFolder(newFolder)
+{
+}
+
+
+void FWCmdMoveToFromUserFolder::redo()
+{
+    FWCmdChange::redo();
+
+    FWObject *obj = getObject();
+    QString fileName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+
+    QCoreApplication::postEvent(mw, new moveToFromUserFolderEvent
+                                (fileName, m_parentId, obj->getId(),
+                                 m_oldFolder, m_newFolder));
+}
+
+
+void FWCmdMoveToFromUserFolder::undo()
+{
+    FWCmdChange::undo();
+
+    FWObject *obj = getObject();
+    QString fileName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+
+    QCoreApplication::postEvent(mw, new moveToFromUserFolderEvent
+                                (fileName, m_parentId, obj->getId(),
+                                 m_newFolder, m_oldFolder));
+}

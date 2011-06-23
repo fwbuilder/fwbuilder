@@ -761,19 +761,17 @@ void ObjectManipulator::addSubfolderSlot()
         qDebug() << "ObjectManipulator::addSubfolder: " << folder;
     }
 
-    set<string> folders = stringToSet(obj->getStr("subfolders"));
+    FWCmdAddUserFolder *cmd = new FWCmdAddUserFolder(m_project, obj, folder,
+                                                     tr("Add subfolder"));
+    FWObject *newObj = cmd->getNewState();
+
+    set<string> folders = stringToSet(newObj->getStr("subfolders"));
     folders.insert(folder.toUtf8().constData());
     string encoded = setToString(folders);
 
-    obj->setStr("subfolders", encoded);
+    newObj->setStr("subfolders", encoded);
 
-    QTreeWidgetItem *item = getCurrentObjectTree()->currentItem();
-    ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
-    sub->setUserFolderParent(obj);
-    sub->setUserFolderName(folder);
-    sub->setText(0, folder);
-    sub->setIcon(0, QIcon(LoadPixmap(":/Icons/SystemGroup/icon-tree")));
-    refreshSubtree(item, sub);
+    m_project->undoStack->push(cmd);
 }
 
 
@@ -786,23 +784,53 @@ void ObjectManipulator::removeUserFolder()
         (item->parent());
     assert(parent != 0);
 
-    FWObject *parentObj = parent->getFWObject();
-    set<string> folders = stringToSet(parentObj->getStr("subfolders"));
-    folders.erase(item->getUserFolderName().toUtf8().constData());
-    parentObj->setStr("subfolders", setToString(folders));
+    vector<FWObject *> objs;
+    for (int ii = 0; ii < item->childCount(); ii++) {
+        ObjectTreeViewItem *child = dynamic_cast<ObjectTreeViewItem *>
+            (item->child(ii));
+
+        FWObject *obj = child->getFWObject();
+        if (obj->getRO()) {
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Folder with locked object "
+                                     "cannot be deleted"));
+            return;
+        }
+
+        objs.push_back(obj);
+    }
+
+    if (objs.size() > 0) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        ConfirmDeleteObjectDialog confirm(this);
+        confirm.load(objs);
+        QApplication::restoreOverrideCursor();
+        if (confirm.exec() == QDialog::Rejected) return;
+    }
+
+    FWCmdMacro *macro = new FWCmdMacro(tr("Delete user folder"));
 
     QList<QTreeWidgetItem *> children = item->takeChildren();
     while (!children.isEmpty()) {
         ObjectTreeViewItem *child = dynamic_cast<ObjectTreeViewItem *>
             (children.takeFirst());
         assert(child != 0);
-        child->getFWObject()->setStr("folder", "");
-        parent->addChild(child);
+
+        FWObject *obj = child->getFWObject();
+        if (mw->isEditorVisible() && mw->getOpenedEditor() == obj) {
+            mw->hideEditor();
+        }
+
+        deleteObject(obj, macro);
     }
 
-    parent->removeChild(item);
-    delete item;
+    FWCmdRemoveUserFolder *cmd =
+        new FWCmdRemoveUserFolder(m_project, parent->getFWObject(),
+                                  item->getUserFolderName(), "", macro);
+    FWObject *newObj = cmd->getNewState();
+    set<string> folders = stringToSet(newObj->getStr("subfolders"));
+    folders.erase(item->getUserFolderName().toUtf8().constData());
+    newObj->setStr("subfolders", setToString(folders));
 
-    refreshSubtree(parent, 0);
-
+    m_project->undoStack->push(macro);
 }

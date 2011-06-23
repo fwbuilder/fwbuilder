@@ -137,3 +137,40 @@ void FWCmdDeleteObject::redo()
 void FWCmdDeleteObject::notify()
 {
 }
+
+
+/********************************************************************/
+
+FWCmdRemoveUserFolder::FWCmdRemoveUserFolder(ProjectPanel *project,
+                                             FWObject *parentFolder,
+                                             const QString &userFolder,
+                                             QString text,
+                                             QUndoCommand *macro)
+    : FWCmdChange(project, parentFolder, text, false, macro),
+      m_userFolder(userFolder)
+{
+}
+
+
+void FWCmdRemoveUserFolder::redo()
+{
+    FWCmdChange::redo();
+
+    FWObject *obj = getObject();
+    QString fName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(mw,
+                                new removeUserFolderEvent(fName, obj->getId(),
+                                                          m_userFolder));
+}
+
+
+void FWCmdRemoveUserFolder::undo()
+{
+    FWCmdChange::undo();
+
+    FWObject *obj = getObject();
+    QString fName = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(mw,
+                                new addUserFolderEvent(fName, obj->getId(),
+                                                       m_userFolder));
+}

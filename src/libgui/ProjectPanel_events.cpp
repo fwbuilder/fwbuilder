@@ -435,6 +435,22 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case ADD_USER_FOLDER_EVENT:
+                m_panel->om->addUserFolderToTree(obj, dynamic_cast<addUserFolderEvent *>(event)->m_userFolder);
+                ev->accept();
+                return true;
+
+            case REMOVE_USER_FOLDER_EVENT:
+                m_panel->om->removeUserFolderFromTree(obj, dynamic_cast<removeUserFolderEvent *>(event)->m_userFolder);
+                ev->accept();
+                return true;
+
+            case MOVE_TOFROM_USER_FOLDER_EVENT:
+                moveToFromUserFolderEvent *moveEvent =
+                    dynamic_cast<moveToFromUserFolderEvent *>(event);
+                m_panel->om->moveToFromUserFolderInTree(obj, db()->findInIndex(moveEvent->m_objIdToMove), moveEvent->m_oldFolder, moveEvent->m_newFolder);
+                ev->accept();
+                return true;
             }
         }
         return false;

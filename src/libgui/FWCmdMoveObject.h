@@ -26,7 +26,7 @@
 #ifndef FWCMDMOVEOBJECT_H
 #define FWCMDMOVEOBJECT_H
 
-#include "FWCmdBasic.h"
+#include "FWCmdChange.h"
 #include <map>
 #include <set>
 
@@ -40,6 +40,7 @@ class FWCmdMoveObject : public FWCmdBasic
     libfwbuilder::FWObject *new_parent;
     libfwbuilder::FWObject *current_parent;
     libfwbuilder::FWObject *obj;
+    QString oldUserFolder;
     std::map<int, std::set<libfwbuilder::FWObject*> > reference_holders;
 
 protected:
@@ -54,6 +55,27 @@ public:
                     QString text=QString(),
                     QUndoCommand* macro = 0);
     ~FWCmdMoveObject();
+    virtual void redo();
+    virtual void undo();
+};
+
+/*************************************************************/
+
+class FWCmdMoveToFromUserFolder : public FWCmdChange
+{
+    int m_parentId;
+    QString m_oldFolder;
+    QString m_newFolder;
+
+public:
+    FWCmdMoveToFromUserFolder(ProjectPanel *project,
+                              libfwbuilder::FWObject *parent,
+                              libfwbuilder::FWObject *obj,
+                              const QString &oldFolder,
+                              const QString &newFolder,
+                              QString text = QString(),
+                              QUndoCommand *macro = 0);
+
     virtual void redo();
     virtual void undo();
 };

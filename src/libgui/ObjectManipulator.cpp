@@ -414,7 +414,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
 /* in extended selection mode there may be several selected items */
 
-    QTreeWidget *objTreeView = getCurrentObjectTree();
+    ObjectTreeView *objTreeView = getCurrentObjectTree();
     QTreeWidgetItem *item = objTreeView->itemAt(pos);//clicked item
 
     if (fwbdebug)
@@ -428,8 +428,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (obj == 0) {
         assert(otvi->getUserFolderParent() != 0);
         QAction *action =
-            popup_menu->addAction(tr("Remove"), this, SLOT(removeUserFolder()));
-        if (otvi->childCount() > 0) {
+            popup_menu->addAction(tr("Delete"), this, SLOT(removeUserFolder()));
+        /* The user-defined folder doesn't get counted as a selected obj */
+        if (objTreeView->getNumSelected() > 0) {
             action->setEnabled(false);
         }
         popup_menu->exec(QCursor::pos());

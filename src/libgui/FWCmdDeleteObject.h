@@ -51,4 +51,20 @@ public:
 };
 
 
+class FWCmdRemoveUserFolder : public FWCmdChange
+{
+    QString m_userFolder;
+
+public:
+    FWCmdRemoveUserFolder(ProjectPanel *project,
+                          libfwbuilder::FWObject *parentFolder,
+                          const QString &userFolder,
+                          QString text = QString(),
+                          QUndoCommand *macro = 0);
+
+    virtual void redo();
+    virtual void undo();
+};
+
+
 #endif
