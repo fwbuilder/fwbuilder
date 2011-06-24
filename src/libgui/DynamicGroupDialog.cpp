@@ -30,6 +30,7 @@
 #include "FWWindow.h"
 #include "fwbuilder/DynamicGroup.h"
 #include <qpixmapcache.h>
+#include <QHeaderView>
 #include <QMouseEvent>
 
 using namespace std;
