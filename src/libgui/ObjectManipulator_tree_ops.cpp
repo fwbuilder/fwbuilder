@@ -299,7 +299,6 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 
     if (FWBTree().isStandardFolder(obj)) nitm->setExpanded( st->getExpandTree());
 
-    QMap<QString,ObjectTreeViewItem *> folders;
     set<string> subfolders = stringToSet(obj->getStr("subfolders"));
     set<string>::const_iterator iter;
     for (iter = subfolders.begin(); iter != subfolders.end(); ++iter) {
@@ -309,8 +308,6 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
         sub->setUserFolderName(name);
         sub->setText(0, name);
         sub->setIcon(0, QIcon(LoadPixmap(":/Icons/SystemGroup/icon-tree")));
-
-        folders[name] = sub;
     }
 
     if (Cluster::isA(obj))
@@ -744,21 +741,10 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
                                   const list<FWObject *> &items)
 {
     string folder;
-    QTreeWidgetItem *destItem;
-    FWObject *folderObj;
     if (dest->getUserFolderParent() != 0) {
         folder = dest->getUserFolderName().toUtf8().constData();
-        destItem = dest;
-        folderObj = dest->getUserFolderParent();
     } else {
         folder = dest->getFWObject()->getStr("folder");
-        if (FWBTree().isSystem(dest->getFWObject())) {
-            destItem = dest;
-            folderObj = dest->getFWObject();
-        } else {
-            destItem = dest->parent();
-            folderObj = dynamic_cast<ObjectTreeViewItem *>(dest->parent())->getFWObject();
-        }
     }
 
     FWCmdMacro *macro = new FWCmdMacro(tr("Move objects"));
@@ -768,7 +754,7 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
         FWObject *obj = *iter;
 
         FWCmdMoveToFromUserFolder *cmd = new FWCmdMoveToFromUserFolder
-            (m_project, folderObj, obj,
+            (m_project, obj->getParent(), obj,
              obj->getStr("folder").c_str(), folder.c_str(), "", macro);
 
         FWObject *newObj = cmd->getNewState();
