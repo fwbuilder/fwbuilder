@@ -759,6 +759,11 @@ void ObjectManipulator::addSubfolderSlot()
                                            tr("Enter new subfolder name"));
     folder = folder.simplified();
     if (folder.isEmpty()) return;
+
+    /* See if the subfolder already exists */
+    set<string> folders = stringToSet(obj->getStr("subfolders"));
+    if (folders.find(folder.toUtf8().constData()) != folders.end()) return;
+
     if (fwbdebug) {
         qDebug() << "ObjectManipulator::addSubfolder: " << folder;
     }
@@ -766,12 +771,7 @@ void ObjectManipulator::addSubfolderSlot()
     FWCmdAddUserFolder *cmd = new FWCmdAddUserFolder(m_project, obj, folder,
                                                      tr("Add subfolder"));
     FWObject *newObj = cmd->getNewState();
-
-    set<string> folders = stringToSet(newObj->getStr("subfolders"));
-    folders.insert(folder.toUtf8().constData());
-    string encoded = setToString(folders);
-
-    newObj->setStr("subfolders", encoded);
+    newObj->setStr("subfolders", setToString(folders));
 
     m_project->undoStack->push(cmd);
 }
