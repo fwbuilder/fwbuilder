@@ -52,8 +52,9 @@ class DynamicGroup : public MultiAddress
     static bool makeFilter(std::string &filter, const std::string &type,
                            const std::string &keyword);
 
-    bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
-    FWObject& shallowDuplicate(const FWObject *other, bool preserve_id)
+    virtual bool cmp(const FWObject *obj, bool recursive=false)
+        throw (FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *other, bool preserve_id)
         throw (FWException);
 
     virtual bool isCompileTime() const;
