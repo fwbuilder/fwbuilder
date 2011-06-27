@@ -174,3 +174,10 @@ void FWCmdRemoveUserFolder::undo()
                                 new addUserFolderEvent(fName, obj->getId(),
                                                        m_userFolder));
 }
+
+
+/* We don't want to display the system folder after we remove a user
+   folder, so we just swallow the notify. */
+void FWCmdRemoveUserFolder::notify()
+{
+}

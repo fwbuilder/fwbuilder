@@ -67,6 +67,7 @@ public:
 
     virtual void redo();
     virtual void undo();
+    virtual void notify();
 };
 
 /********************************************************

@@ -254,6 +254,11 @@ void FWCmdAddUserFolder::undo()
                                                           m_userFolder));
 }
 
+/* We don't want to display the system folder after we add a user
+   folder, so we just swallow the notify. */
+void FWCmdAddUserFolder::notify()
+{
+}
 
 /********************************************************
  * FWCmdAddLibrary

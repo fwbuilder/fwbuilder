@@ -119,6 +119,8 @@ void FWWindow::openEditorPanel()
 
 void FWWindow::openEditor(FWObject *obj)
 {
+    if (FWBTree().isSystem(obj)) return;
+
     attachEditorToProjectPanel(activeProject());
 
     /*
