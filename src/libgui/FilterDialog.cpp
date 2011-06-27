@@ -115,161 +115,142 @@ void FilterDialog::apply()
 
 void  FilterDialog::save()
 {
-    QString dir;
-    if (LastFile.isEmpty())
-    {
-        dir=st->getWDir();
-        if (dir.isEmpty())  dir=st->getOpenFileDir();
-        if (dir.isEmpty())  dir="~";
-    }
-    else
-    {
-        dir=LastFile;
-    }
+    QString dir = LastFile;
+    if (dir.isEmpty()) dir = st->getOpenFileDir();
+
     QString s = QFileDialog::getSaveFileName(
                     this,
                     "Save file dialog",
                     dir,
                     "FWBuilder filter files (*.fwf)");
 
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
 
-    if (!s.isEmpty())
+    if (!s.endsWith(".fwf")) s += ".fwf";
+
+    xmlDocPtr doc;
+
+    xmlNodePtr node;
+    //xmlNodePtr tree;
+
+    doc = xmlNewDoc(TOXMLCAST("1.0"));
+    doc->children = xmlNewDocNode(doc, NULL, TOXMLCAST("FWB_FILTER"), NULL);
+
+    xmlSetProp(doc->children, TOXMLCAST("version"),
+               TOXMLCAST( VERSION ));
+    xmlSetProp(doc->children, TOXMLCAST("CaseSensitive"),
+               TOXMLCAST( ((m_dialog->case_sensitive->isChecked())?"1":"0") ));
+    xmlSetProp(doc->children, TOXMLCAST("Match"),
+               TOXMLCAST( QString("%1").arg(m_dialog->combo->currentIndex()).toLatin1().constData() ));
+
+    QString buf;
+    int n=m_dialog->table->rowCount();
+    for (int i=0;i<n;i++)
     {
-        if (!s.endsWith(".fwf"))
-        {
-            s+=".fwf";
-        }
+        node = xmlNewChild(doc->children, NULL,
+                           TOXMLCAST("FWB_FILTER_ITEM"), NULL);
 
-        xmlDocPtr doc;
+        buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,0))->currentIndex());
+        xmlSetProp(node,(const xmlChar*)  "Target",
+                   TOXMLCAST(buf.toLatin1().constData()) );
 
-        xmlNodePtr node;
-        //xmlNodePtr tree;
+        buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,1))->currentIndex());
+        xmlSetProp(node, (const xmlChar*) "Type",
+                   TOXMLCAST(buf.toLatin1().constData()) );
 
-        doc = xmlNewDoc(TOXMLCAST("1.0"));
-        doc->children = xmlNewDocNode(doc, NULL, TOXMLCAST("FWB_FILTER"), NULL);
-
-        xmlSetProp(doc->children, TOXMLCAST("version"),
-                TOXMLCAST( VERSION ));
-        xmlSetProp(doc->children, TOXMLCAST("CaseSensitive"),
-                TOXMLCAST( ((m_dialog->case_sensitive->isChecked())?"1":"0") ));
-        xmlSetProp(doc->children, TOXMLCAST("Match"),
-                TOXMLCAST( QString("%1").arg(m_dialog->combo->currentIndex()).toLatin1().constData() ));
-
-        QString buf;
-        int n=m_dialog->table->rowCount();
-        for (int i=0;i<n;i++)
-        {
-            node = xmlNewChild(doc->children , NULL ,  TOXMLCAST("FWB_FILTER_ITEM"), NULL);
-
-            buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,0))->currentIndex());
-            xmlSetProp(node,(const xmlChar*)  "Target",
-                    TOXMLCAST(buf.toLatin1().constData()) );
-
-            buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,1))->currentIndex());
-            xmlSetProp(node, (const xmlChar*) "Type",
-                    TOXMLCAST(buf.toLatin1().constData()) );
-
-            xmlSetProp(node, (const xmlChar*) "Pattern",
-                       TOXMLCAST(m_dialog->table->item(i,2)->text().toLatin1().constData()));
-        }
-
-
-        xmlSaveFile(s.toLatin1().constData(),doc);
-        xmlFreeDoc(doc);
-
+        xmlSetProp(node, (const xmlChar*) "Pattern",
+                   TOXMLCAST(m_dialog->table->item(i,2)->text().toLatin1().constData()));
     }
+
+    xmlSaveFile(s.toLatin1().constData(),doc);
+    xmlFreeDoc(doc);
 }
+
 void  FilterDialog::load()
 {
-    QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Open file dialog",
-                    dir,
+                    st->getOpenFileDir(),
                     "FWBuilder filter files (*.fwf)");
 
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
 
-    if (!s.isEmpty())
+    xmlDocPtr doc=xmlParseFile(s.toLatin1().constData());
+    //TODO: use local codepage
+    if (doc == NULL)
     {
-
-        xmlDocPtr doc=xmlParseFile(s.toLatin1().constData());
-        //TODO: use local codepage
-        if (doc == NULL)
-        {
-            qDebug("Document not parsed successfully.");
-            return;
-        }
-
-        xmlNodePtr node= xmlDocGetRootElement(doc);
-
-        if (node == NULL)
-        {
-            qDebug("empty document");
-            xmlFreeDoc(doc);
-            return;
-        }
-
-        if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER"))
-        {
-            qDebug("document of the wrong type. (FWB_FILTER)");
-            xmlFreeDoc(doc);
-            return;
-        }
-
-        xmlChar *xmlbuf;
-        QString qbuf;
-
-        xmlbuf=xmlGetProp(node,(const xmlChar*) "CaseSensitive");
-        qbuf=FROMXMLCAST(xmlbuf);
-        FREEXMLBUFF(xmlbuf);
-        m_dialog->case_sensitive->setChecked(qbuf.toInt());
-
-        xmlbuf=xmlGetProp(node,(const xmlChar*) "Match");
-        qbuf=FROMXMLCAST(xmlbuf);
-        FREEXMLBUFF(xmlbuf);
-        m_dialog->combo->setCurrentIndex(qbuf.toInt());
-
-
-        node=node->xmlChildrenNode;
-        while (node != NULL)
-        {
-            if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER_ITEM"))
-            {
-                qDebug("document of the wrong type. (FWB_FILTER_ITEM)");
-                xmlFreeDoc(doc);
-                return;
-            }
-
-            addPattern();
-            int n=m_dialog->table->rowCount()-1;
-
-
-            xmlbuf=xmlGetProp(node,(const xmlChar*) "Target");
-            qbuf=FROMXMLCAST(xmlbuf);
-            FREEXMLBUFF(xmlbuf);
-            ((QComboBox*)m_dialog->table->cellWidget(n,0))->setCurrentIndex(
-                       qbuf.toInt());
-
-            xmlbuf=xmlGetProp(node,(const xmlChar*) "Type");
-            qbuf=FROMXMLCAST(xmlbuf);
-            FREEXMLBUFF(xmlbuf);
-            ((QComboBox*)m_dialog->table->cellWidget(n,1))->setCurrentIndex(
-                       qbuf.toInt());
-
-
-            xmlbuf=xmlGetProp(node,(const xmlChar*) "Pattern");
-            qbuf=FROMXMLCAST(xmlbuf);
-            FREEXMLBUFF(xmlbuf);
-            m_dialog->table->item(n,2)->setText(qbuf);
-
-            node=node->next;
-        }
-        LastFile=s;
+        qDebug("Document not parsed successfully.");
+        return;
     }
+
+    xmlNodePtr node= xmlDocGetRootElement(doc);
+
+    if (node == NULL)
+    {
+        qDebug("empty document");
+        xmlFreeDoc(doc);
+        return;
+    }
+
+    if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER"))
+    {
+        qDebug("document of the wrong type. (FWB_FILTER)");
+        xmlFreeDoc(doc);
+        return;
+    }
+
+    xmlChar *xmlbuf;
+    QString qbuf;
+
+    xmlbuf=xmlGetProp(node,(const xmlChar*) "CaseSensitive");
+    qbuf=FROMXMLCAST(xmlbuf);
+    FREEXMLBUFF(xmlbuf);
+    m_dialog->case_sensitive->setChecked(qbuf.toInt());
+
+    xmlbuf=xmlGetProp(node,(const xmlChar*) "Match");
+    qbuf=FROMXMLCAST(xmlbuf);
+    FREEXMLBUFF(xmlbuf);
+    m_dialog->combo->setCurrentIndex(qbuf.toInt());
+
+
+    node=node->xmlChildrenNode;
+    while (node != NULL)
+    {
+        if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER_ITEM"))
+        {
+            qDebug("document of the wrong type. (FWB_FILTER_ITEM)");
+            xmlFreeDoc(doc);
+            return;
+        }
+
+        addPattern();
+        int n=m_dialog->table->rowCount()-1;
+
+
+        xmlbuf=xmlGetProp(node,(const xmlChar*) "Target");
+        qbuf=FROMXMLCAST(xmlbuf);
+        FREEXMLBUFF(xmlbuf);
+        ((QComboBox*)m_dialog->table->cellWidget(n,0))->setCurrentIndex(
+            qbuf.toInt());
+
+        xmlbuf=xmlGetProp(node,(const xmlChar*) "Type");
+        qbuf=FROMXMLCAST(xmlbuf);
+        FREEXMLBUFF(xmlbuf);
+        ((QComboBox*)m_dialog->table->cellWidget(n,1))->setCurrentIndex(
+            qbuf.toInt());
+
+
+        xmlbuf=xmlGetProp(node,(const xmlChar*) "Pattern");
+        qbuf=FROMXMLCAST(xmlbuf);
+        FREEXMLBUFF(xmlbuf);
+        m_dialog->table->item(n,2)->setText(qbuf);
+
+        node=node->next;
+    }
+    LastFile=s;
 }
 
 void FilterDialog::update()

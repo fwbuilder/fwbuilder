@@ -136,8 +136,6 @@ bool ProjectPanel::saveIfModified(bool include_discard_button)
 QString ProjectPanel::chooseNewFileName(const QString &fname,
                                         const QString &title)
 {
-    QString destdir = getDestDir(fname);
-
     // when file open dialog is created using static function
     // QFileDialog::getSaveFileName, its behavior is different on
     // Linux and Mac (did not check on windows)
@@ -159,7 +157,7 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     fd.setDefaultSuffix("fwb");
     fd.setFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
     fd.setWindowTitle(title);
-    fd.setDirectory(destdir);
+    fd.setDirectory(st->getOpenFileDir(fname));
     fd.setAcceptMode(QFileDialog::AcceptSave);
 
     QString fn;
@@ -169,6 +167,7 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
         fn = fileNames.front();
         QFileInfo finfo(fn);
         if (finfo.suffix().isEmpty()) fn += ".fwb";
+        st->setOpenFileDir(fn);
     }
 
     return fn;
@@ -458,18 +457,20 @@ void ProjectPanel::fileCompare()
     QString fname1 = QFileDialog::getOpenFileName(
         mainW,
         tr("Choose the first file"),
-        st->getWDir(),
+        st->getOpenFileDir(),
         "FWB files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
 
     if (fname1.isEmpty()) return;   // Cancel
+    st->setOpenFileDir(fname1);
 
     QString fname2 = QFileDialog::getOpenFileName(
         mainW,
         tr("Choose the second file"),
-        st->getWDir(),
+        st->getOpenFileDir(),
         "FWB files (*.fwb);;FWB Library Files (*.fwl);;All Files (*)");
 
     if (fname2.isEmpty()) return;   // Cancel
+    st->setOpenFileDir(fname2);
 
     MessageBoxUpgradePredicate upgrade_predicate(mainW);
 
@@ -539,22 +540,17 @@ void ProjectPanel::fileCompare()
         {
             // save report to a file
 
-            QString destdir = getDestDir(fname1);
-
             QString fn = QFileDialog::getSaveFileName( this,
                            tr("Choose name and location for the report file"),
-                           destdir,
+                           st->getOpenFileDir(fname1),
                            tr( "TXT Files (*.txt);;All Files (*)" ));
 
+            if (fn.isEmpty()) return;   // Cancel
+            st->setOpenFileDir(fn);
+
+            if (!fn.endsWith(".txt")) fn += ".txt";
             if (fwbdebug)
                 qDebug() << QString("Saving report to %1").arg(fn);
-
-            if (fn.isEmpty() ) return ;   // Cancel
-
-            if (!fn.endsWith(".txt"))
-            {
-                fn+=".txt";
-            }
 
             QFile report_file(fn);
             if (report_file.open(QIODevice::WriteOnly))
@@ -593,7 +589,6 @@ void ProjectPanel::fileExport()
     LibExportDialog ed;
     list<FWObject*>  selectedLibs;
     map<int,FWObject*>::iterator i;
-    QString path="";
     int lib_idx = -1;
     do
     {
@@ -620,7 +615,7 @@ void ProjectPanel::fileExport()
     } while (!exportLibraryTest(selectedLibs));
 
     FWObject *selLib = ed.mapOfLibs[ lib_idx ];
-    path = st->getWDir() + QString::fromUtf8(selLib->getName().c_str()) + ".fwl";
+    QString path = st->getOpenFileDir() + QString::fromUtf8(selLib->getName().c_str()) + ".fwl";
 
     resetFD();
 
@@ -640,6 +635,7 @@ void ProjectPanel::fileExport()
              tr("&Yes"), tr("&No"), QString::null,
              0, 1 )==1 ) return;
 
+    st->setOpenFileDir(path);
     exportLibraryTo(fname,selectedLibs,ed.m_dialog->exportRO->isChecked());
 }
 

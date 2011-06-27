@@ -464,31 +464,6 @@ void ProjectPanel::editPaste()
     }
 }
 
-QString ProjectPanel::getDestDir(const QString &fname)
-{
-    QString destdir = "";
-
-    if (st->getWDir().isEmpty())
-    {
-        if (fname.isEmpty())
-        {
-            destdir = userDataDir.c_str();
-        } else
-        {
-            QFileInfo fi(fname);
-            if (fi.isDir()) destdir = fname;
-            else
-            {
-                destdir = fi.canonicalPath();
-            }
-        }
-    } else
-    {
-        destdir = st->getWDir();
-    }
-    return destdir;
-}
-
 void ProjectPanel::setFileName(const QString &fname)
 {
     systemFile = false;

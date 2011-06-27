@@ -1,10 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CommentEditorPanel_q</class>
- <widget class="QWidget" name="CommentEditorPanel_q" >
-  <property name="enabled" >
+ <widget class="QWidget" name="CommentEditorPanel_q">
+  <property name="enabled">
    <bool>true</bool>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,91 +13,23 @@
     <height>217</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Comment Editor Panel</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>2</number>
-   </property>
-   <property name="spacing" >
-    <number>2</number>
-   </property>
-   <item row="0" column="0" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>2</number>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="TextEditWidget" name="editor">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
      </property>
-     <property name="margin" >
-      <number>2</number>
-     </property>
-     <item>
-      <widget class="TextEditWidget" name="editor" >
-       <property name="minimumSize" >
-        <size>
-         <width>500</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line6" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::HLine</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" >
-       <property name="spacing" >
-        <number>2</number>
-       </property>
-       <property name="margin" >
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="inputFromFileButton" >
-         <property name="text" >
-          <string>Import from file ...</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>211</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>TextEditWidget</class>
@@ -112,11 +45,11 @@
    <receiver>CommentEditorPanel_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>

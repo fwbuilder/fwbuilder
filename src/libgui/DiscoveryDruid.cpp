@@ -683,42 +683,31 @@ void DiscoveryDruid::startBackgroundProcess()
 
 void DiscoveryDruid::browseHostsFile()
 {
-    QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Choose a file",
-                    dir,
+                    st->getOpenFileDir(),
                     "All files (*)");
 
-    if (!s.isEmpty())
-    {
-        m_dialog->filename->setText(s);
-    }
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
+
+    m_dialog->filename->setText(s);
 
 }
 
 void DiscoveryDruid::browseForImport()
 {
-    QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Choose a file",
-                    dir,
+                    st->getOpenFileDir(),
                     "All files (*)");
 
-    if (!s.isEmpty())
-    {
-        m_dialog->import_filename->setText(s);
-    }
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
 
+    m_dialog->import_filename->setText(s);
 }
 
 void DiscoveryDruid::updatePrg()
@@ -1495,41 +1484,34 @@ void DiscoveryDruid::loadDataFromImporter()
 
 void DiscoveryDruid::saveScanLog()
 {
-    QString dir;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-
     QString s = QFileDialog::getSaveFileName(
                     this,
                     "Choose a file",
-                    dir,
+                    st->getOpenFileDir(),
                     "Text file (*.txt)");
 
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
 
-    if (!s.isEmpty())
+    if (s.endsWith(".txt")) s += ".txt";
+
+    QFile f(s);
+    if (f.open(QIODevice::WriteOnly))
     {
-        if (s.endsWith(".txt"))
+        if (fwbdebug)
         {
-            s+=".txt";
+            qDebug("Saving crawler log to file: %d chars",
+                   m_dialog->discoverylog->toPlainText().length());
+            qDebug("--------------------------------");
         }
-        QFile f(s);
-        if (f.open(QIODevice::WriteOnly))
-        {
-            if (fwbdebug)
-            {
-                qDebug("Saving crawler log to file: %d chars",
-                       m_dialog->discoverylog->toPlainText().length());
-                qDebug("--------------------------------");
-            }
-            QTextStream strm(&f);
-            QString txt = m_dialog->discoverylog->toPlainText();
-            strm << txt << endl;
-            if (fwbdebug) qDebug("%s",txt.toAscii().constData());
-            if (fwbdebug)
-                qDebug("--------------------------------");
-            f.close();
-        }
+
+        QTextStream strm(&f);
+        QString txt = m_dialog->discoverylog->toPlainText();
+        strm << txt << endl;
+        if (fwbdebug) qDebug("%s",txt.toAscii().constData());
+        if (fwbdebug)
+            qDebug("--------------------------------");
+        f.close();
     }
 }
 

@@ -677,38 +677,19 @@ void FWWindow::fileOpen()
     QString dir;
     QMdiSubWindow *last_active_window = m_mainWindow->m_space->activeSubWindow();
 
-/*
- * Pick default directory where to look for the file to open.
- * 1) if "work directory" is configured in preferences, always use it
- * 2) if it is blank, use the same directory where currently opened file is
- * 3) if this is the first file to be opened, get directory where the user opened
- *    during last session from settings using st->getOpenFileDir
- */
-
-    dir = st->getWDir();
-    if (fwbdebug) qDebug("Choosing directory for file open 1: %s",
-                         dir.toStdString().c_str());
-
-    if (dir.isEmpty() && !mw->getCurrentFileName().isEmpty())
-        dir = getFileDir(mw->getCurrentFileName());
-    if (fwbdebug) qDebug("Choosing directory for file open 2: %s",
-                         dir.toStdString().c_str());
-
-    if (dir.isEmpty()) dir = st->getOpenFileDir();
-    if (fwbdebug) qDebug("Choosing directory for file open 3: %s",
-                         dir.toStdString().c_str());
-
     QString file_name = QFileDialog::getOpenFileName(
         this,
         tr("Open File"),
-        dir,
+        st->getOpenFileDir(mw->getCurrentFileName()),
         "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
 
     if (file_name.isEmpty())
     {
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
-        return ;
+        return;
     }
+
+    st->setOpenFileDir(file_name);
 
     // Using absoluteFilePath(), see #1334
     QFileInfo fi(file_name);

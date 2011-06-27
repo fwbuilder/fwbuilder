@@ -47,15 +47,10 @@ class CommentEditorPanel : public BaseObjectDialog
     ~CommentEditorPanel();
     libfwbuilder::Rule *rule;
 
-    void setFileInput(bool enableLoadFromFile);
-
     QString text();
     void setText(QString s);
 
 public slots:
-     virtual void loadFromFile();
-    
-
     virtual void changed();
     virtual void applyChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);

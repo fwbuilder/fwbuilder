@@ -83,11 +83,8 @@ class FWBSettings : public QSettings
     QString getWDir();
     void    setWDir( const QString &wd );
 
-    QString getOpenFileDir();
+    QString getOpenFileDir( const QString &existingPath = "");
     void    setOpenFileDir( const QString &d );
-
-    QString getSaveFileDir();
-    void    setSaveFileDir( const QString &d );
 
     int     getInfoStyle();
     void    setInfoStyle(int s);

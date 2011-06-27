@@ -398,19 +398,23 @@ void PrefsDialog::findWDir()
 void PrefsDialog::findSSH()
 {
     QString fp = QFileDialog::getOpenFileName(
-        this,
-        tr("Find Secure Shell utility") );
+        this, tr("Find Secure Shell utility"), st->getOpenFileDir());
 
-    if (!fp.isEmpty()) m_dialog->sshPath->setText(fp);
+    if (fp.isEmpty()) return;
+    st->setOpenFileDir(fp);
+
+    m_dialog->sshPath->setText(fp);
 }
 
 void PrefsDialog::findSCP()
 {
     QString fp = QFileDialog::getOpenFileName(
-        this,
-        tr("Find SCP utility") );
+        this, tr("Find SCP utility"), st->getOpenFileDir());
 
-    if (!fp.isEmpty()) m_dialog->scpPath->setText(fp);
+    if (fp.isEmpty()) return;
+    st->setOpenFileDir(fp);
+
+    m_dialog->scpPath->setText(fp);
 }
 
 void PrefsDialog::accept()

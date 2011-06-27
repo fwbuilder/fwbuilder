@@ -8,6 +8,13 @@
 
 	* Fixed #2528, display icon next to "new subfolder" menu item.
 
+	* Added feature #2517: directory location caching.  Use
+	FWBSettings::{get|set}OpenFileDir() any time we use QFileDialog so
+	that the directory you navigated to last time shows up in the next
+	file dialog.  This behavior is overridden by setting a working
+	directory.  If the directory no longer exists, gracefully fall
+	back to something sensible.
+
 2011-06-23  theron	<theron@netcitadel.com>
 
 	* Added support for creating user-defined subfolders.  The

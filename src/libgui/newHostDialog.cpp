@@ -120,14 +120,14 @@ newHostDialog::newHostDialog(QWidget *parentw, FWObject *_p) : QDialog(parentw)
 
 void newHostDialog::browseTemplate()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("FWBuilder template files"), "", tr("FWBuilder template files (*.xml *.fwb)"));
-    if (fileName=="")
-        return ;
-    QDir dir (fileName);
-//    if (dir.exists ())
-//    {
-        m_dialog->templateFilePath->setText(fileName);
-//    }
+    QString fileName = QFileDialog::getOpenFileName(
+                this, tr("FWBuilder template files"), st->getOpenFileDir(),
+                tr("FWBuilder template files (*.xml *.fwb)"));
+
+    if (fileName.isEmpty()) return;
+    st->setOpenFileDir(fileName);
+
+    m_dialog->templateFilePath->setText(fileName);
     updateTemplatePanel();
 }
 

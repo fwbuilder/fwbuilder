@@ -70,7 +70,6 @@ const char* ResSetpath = SETTINGS_PATH_PREFIX "/System/ResPath";
 const char* compression = SETTINGS_PATH_PREFIX "/DataFile/compression";
 const char* wdirSetpath = SETTINGS_PATH_PREFIX "/Environment/WDir";
 const char* ofdirSetpath = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
-const char* sfdirSetpath = SETTINGS_PATH_PREFIX "/Environment/SaveFileDir";
 const char* startupActionSetpath =
     SETTINGS_PATH_PREFIX "/Environment/StartupAction";
 const char* labelColorPath = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
@@ -506,24 +505,32 @@ void FWBSettings::setTooltipDelay(int v) { setValue( tooltipDelay, v); }
 QString FWBSettings::getLastEdited() { return value(lastEditedSetpath).toString();}
 void FWBSettings::setLastEdited(const QString &file) { setValue(lastEditedSetpath,file);}
 
-QString FWBSettings::getOpenFileDir()
+QString FWBSettings::getOpenFileDir(const QString &existingPath)
 {
-    return value(ofdirSetpath).toString();
+    QString ret = getWDir();
+    if (!ret.isEmpty() && QFileInfo(ret).isDir()) return ret;
+
+    ret = value(ofdirSetpath).toString();
+    if (!ret.isEmpty() && QFileInfo(ret).isDir()) return ret;
+
+    if (!existingPath.isEmpty()) {
+        ret = getFileDir(existingPath);
+        if (QFileInfo(ret).isDir()) return ret;
+    }
+
+    return userDataDir.c_str();
 }
 
-void FWBSettings::setOpenFileDir( const QString &d )
+void FWBSettings::setOpenFileDir(const QString &d)
 {
-     setValue(ofdirSetpath,d);
-}
+    QString dirPath = d;
 
-QString FWBSettings::getSaveFileDir()
-{
-    return value(sfdirSetpath).toString();
-}
+    QFileInfo info(d);
+    if (!info.isDir()) {
+        dirPath = info.dir().path();
+    }
 
-void FWBSettings::setSaveFileDir( const QString &d )
-{
-     setValue(sfdirSetpath,d);
+    setValue(ofdirSetpath, dirPath);
 }
 
 void FWBSettings::save()

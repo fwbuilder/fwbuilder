@@ -44,6 +44,8 @@
 #include <QRegExp>
 #include <QPixmap>
 #include <QApplication>
+#include <QFileInfo>
+#include <QDir>
 #include <QtDebug>
 
 #include "FWBSettings.h"
@@ -300,21 +302,7 @@ QString quoteString(const QString &str)
 
 QString getFileDir(const QString &file)
 {
-    int sn1  = file.lastIndexOf("/",-1);
-    int sn2  = file.lastIndexOf("\\",-1);
-    int sn   = (sn1>=0)?sn1:sn2;
-    QString dir;
-
-    if(sn<0) dir = "./";
-    else     dir = file.left( sn );
-
-#ifdef _WIN32
-/* on windows, if directory is in the root of the drive (like "c:"),
- * I must append "\" to it
- */
-    if (dir.indexOf(":")==(dir.length()-1)) dir=dir + "\\";
-#endif
-    return dir;
+    return QFileInfo(file).dir().path();
 }
 
 void setDisabledPalette(QWidget *w)

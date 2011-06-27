@@ -69,33 +69,35 @@ QString SimpleTextEditor::text()
 
 void SimpleTextEditor::loadFromFile()
 {
-    if ( QMessageBox::warning(
-       this,"Firewall Builder",
-       tr("Warning: loading from file discards current contents of the script."),
-       "&Load", "&Cancel", QString::null, 0, 1 )==0)
+    if (QMessageBox::warning(this, tr("Firewall Builder"),
+                             tr("Warning: loading from file discards "
+                                "current contents of the script."),
+                             "&Load", "&Cancel", QString::null, 0, 1 ) != 0)
     {
-        QString filename = QFileDialog::getOpenFileName( this, tr("Choose file"),
-                                                         st->getWDir());
+        return;
+    }
 
-        if (filename!="")
-        {
-           ifstream ifile(filename.toLatin1().constData());
-           if (!ifile)
-           {
-               QMessageBox::warning(
-                   this,"Firewall Builder",
-                   tr("Could not open file %1").arg(filename),
-                   "&Continue", QString::null, QString::null, 0, 1 );
-               return;
-           }
+    QString filename = QFileDialog::getOpenFileName(this, tr("Choose file"),
+                                                    st->getOpenFileDir());
 
-           m_dialog->editor->clear();
-           char buf[1024];
-           while (ifile.getline(buf,1024))
-           {
-               m_dialog->editor->append( buf );
-           }
-        }
+    if (filename.isEmpty()) return;
+    st->setOpenFileDir(filename);
+
+    ifstream ifile(filename.toLatin1().constData());
+    if (!ifile)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Could not open file %1").arg(filename),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return;
+    }
+
+    m_dialog->editor->clear();
+    char buf[1024];
+    while (ifile.getline(buf,1024))
+    {
+        m_dialog->editor->append( buf );
     }
 }
 

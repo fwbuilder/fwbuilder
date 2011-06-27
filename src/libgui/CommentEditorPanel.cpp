@@ -56,14 +56,7 @@ CommentEditorPanel::CommentEditorPanel(QWidget *p) : BaseObjectDialog(p)
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);
-    m_widget->inputFromFileButton->hide();
     rule=NULL;
-}
-
-void CommentEditorPanel::setFileInput(bool enableLoadFromFile)
-{
-    if (enableLoadFromFile) m_widget->inputFromFileButton->show();
-    else                    m_widget->inputFromFileButton->hide();
 }
 
 QString CommentEditorPanel::text()
@@ -74,36 +67,6 @@ QString CommentEditorPanel::text()
 void CommentEditorPanel::setText(QString s)
 {
     m_widget->editor->setText(s);
-}
-
-void CommentEditorPanel::loadFromFile()
-{
-    if ( QMessageBox::warning(
-       this,"Firewall Builder",
-       tr("Warning: loading from file discards current contents of the script."),
-       "&Load", "&Cancel", QString::null, 0, 1 )==0)
-    {
-        QString filename = QFileDialog::getOpenFileName(
-                this, tr("Choose file that contains PIX commands"), st->getWDir());
-        if (filename!="")
-        {
-           ifstream ifile(filename.toLatin1().constData());
-           if (!ifile)
-           {
-               QMessageBox::warning(
-                   this,"Firewall Builder",
-                   tr("Could not open file %1").arg(filename),
-                   "&Continue", QString::null, QString::null, 0, 1 );
-               return;
-           }
-
-           char buf[1024];
-           while (ifile.getline(buf,1024))
-           {
-               m_widget->editor->append( buf );
-           }
-        }
-    }
 }
 
 void CommentEditorPanel::changed()

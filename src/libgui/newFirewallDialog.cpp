@@ -196,16 +196,13 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
 void newFirewallDialog::browseTemplate()
 {
     QString fileName = QFileDialog::getOpenFileName(
-        this, tr("FWBuilder template files"), "",
+        this, tr("FWBuilder template files"), st->getOpenFileDir(),
         tr("FWBuilder template files (*.xml *.fwb *.fwl)"));
 
-    if (fileName=="") return ;
+    if (fileName.isEmpty()) return;
+    st->setOpenFileDir(fileName);
 
-//    QDir dir (fileName);
-//    if (dir.exists ())
-//    {
     m_dialog->templateFilePath->setText(fileName);
-//    }
     updateTemplatePanel();
 }
 

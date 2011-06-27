@@ -705,12 +705,6 @@ void instDialog::hideEvent( QHideEvent *ev)
 
 void instDialog::saveLog()
 {
-    QString dir;
-    //if (m_dialog->procLogDisplay==NULL) return;
-    dir=st->getWDir();
-    if (dir.isEmpty())  dir=st->getOpenFileDir();
-    if (dir.isEmpty())  dir="~";
-
     /*
      * We use QTextEdit::append to add lines to the log buffer, each
      append creates a new paragraph so QTextEdit::text returns only
@@ -723,26 +717,22 @@ void instDialog::saveLog()
     QString s = QFileDialog::getSaveFileName(
                     this,
                     "Choose a file",
-                    dir,
+                    st->getOpenFileDir(),
                     "Text file (*.txt)");
 
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
+
+    if (!s.endsWith(".txt")) s += ".txt";
     if (fwbdebug)
         qDebug( "Saving log to file %s", s.toAscii().constData() );
 
-    if (!s.isEmpty())
+    QFile f(s);
+    if (f.open( QIODevice::WriteOnly ))
     {
-        if (!s.endsWith(".txt"))
-        {
-            s+=".txt";
-        }
-
-        QFile f(s);
-        if (f.open( QIODevice::WriteOnly ))
-        {
-            QTextStream str( &f );
-            str << logText;
-            f.close();
-        }
+        QTextStream str( &f );
+        str << logText;
+        f.close();
     }
 }
 
