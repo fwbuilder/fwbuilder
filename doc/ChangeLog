@@ -1,3 +1,21 @@
+2011-06-27  theron	<theron@netcitadel.com>
+
+	* Fixed #2530, where adding a subfolder opens the parent folder in
+	the object editor.
+
+	* Fixed #2529, where dragging and dropping items between
+	subfolders could cause a crash.
+
+2011-06-23  theron	<theron@netcitadel.com>
+
+	* Added support for creating user-defined subfolders.  The
+	subfolders exist purely in the display and are not reflected in
+	the FWObject tree, in order to keep changes in the back-end to a
+	minimum.  New attribute "subfolders" on a system folder tells the
+	gui what additional child elements to display in the tree, and
+	attribute "folder" on any FWObject tells gui which child tree
+	element to put it in.
+
 2011-06-22  Vadim Kurland  <vadim@netcitadel.com>
 
 	* ObjectManipulator_ops.cpp (autorename): fixed #2520 "Attached
