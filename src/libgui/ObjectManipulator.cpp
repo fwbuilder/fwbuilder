@@ -774,8 +774,10 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         }
 
         if (addSubfolder) {
-            QAction *action = popup_menu->addAction(tr("New Subfolder"), this,
-                                                    SLOT(addSubfolderSlot()));
+            QAction *action =
+                popup_menu->addAction(QIcon(":/Icons/SystemGroup/icon-tree"),
+                                      tr("New Subfolder"), this,
+                                      SLOT(addSubfolderSlot()));
             action->setData(currentObj->getId());
             AddObjectActions.append(action);
         }

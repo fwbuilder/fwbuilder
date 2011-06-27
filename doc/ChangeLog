@@ -6,6 +6,8 @@
 	* Fixed #2529, where dragging and dropping items between
 	subfolders could cause a crash.
 
+	* Fixed #2528, display icon next to "new subfolder" menu item.
+
 2011-06-23  theron	<theron@netcitadel.com>
 
 	* Added support for creating user-defined subfolders.  The
