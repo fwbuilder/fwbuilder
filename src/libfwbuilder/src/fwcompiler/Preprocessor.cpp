@@ -71,11 +71,9 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt = MultiAddress::cast(obj);
-    if (adt!=NULL && adt->isCompileTime() &&
-        obj->getInt(".loaded") != infinite_recursion_breaker)
+    if (adt!=NULL && adt->isCompileTime())
     {
         adt->loadFromSource(ipv6, inTestMode());
-        obj->setInt(".loaded", infinite_recursion_breaker);
     }
 }
 
@@ -107,7 +105,16 @@ void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top)
         else
         {
             FWObject *obj_ptr = FWReference::getObject(obj);
-            convertObject(obj_ptr);
+            if (obj_ptr->getInt(".loaded") == infinite_recursion_breaker)
+                continue;
+            obj_ptr->setInt(".loaded", infinite_recursion_breaker);
+
+            try
+            {
+                convertObject(obj_ptr);
+            } catch (FWException &ex) {
+                abort(ex.toString());
+            }
 
             // Note that MultiAddress inherits ObjectGroup
             if (Group::cast(obj_ptr))
@@ -127,20 +134,14 @@ void Preprocessor::compile()
     infinite_recursion_breaker++;
     FWObject *rule_copy = NULL;
 
-    try
+    if (single_rule_mode)
     {
-        if (single_rule_mode)
-        {
-            rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
-            findMultiAddressObjectsUsedInRules(rule_copy);
-        } else
-        {
-            FWObject *fwcopy = dbcopy->findInIndex(fw->getId());
-            findMultiAddressObjectsUsedInRules(fwcopy);
-        }
-    } catch (FWException &ex)
+        rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
+        findMultiAddressObjectsUsedInRules(rule_copy);
+    } else
     {
-        abort(ex.toString());
+        FWObject *fwcopy = dbcopy->findInIndex(fw->getId());
+        findMultiAddressObjectsUsedInRules(fwcopy);
     }
 /* resolving MultiAddress objects */
 //    convertObjectsRecursively(dbcopy);

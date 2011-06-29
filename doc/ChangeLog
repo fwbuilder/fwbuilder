@@ -4,6 +4,11 @@
 	validate the drop the same we we validate in dragMove to make sure
 	the drop is valid.
 
+	* Fixed #2542.  Catch exception inside preprocessor loop so that
+	loop continues after error (for unit tests).  Also make sure to
+	set ".loaded" variable before calling loadFromSource so that if an
+	exception happens we won't try to load it again later.
+
 2011-06-27  theron	<theron@netcitadel.com>
 
 	* Fixed #2530, where adding a subfolder opens the parent folder in
