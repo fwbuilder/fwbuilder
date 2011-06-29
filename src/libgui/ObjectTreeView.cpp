@@ -464,23 +464,11 @@ void ObjectTreeView::dragEnterEvent( QDragEnterEvent *ev)
     ev->setDropAction(Qt::MoveAction);
 }
 
-void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
+
+static bool isValidDropTarget(QTreeWidgetItem *item, list<FWObject *> &objs)
 {
-    QWidget *fromWidget = ev->source();
-
-    // The source of DnD object must be the same instance of fwbuilder
-    if (!fromWidget || fromWidget != this) {
-    notWanted:
-        ev->setAccepted(false);
-        return;
-    }
-
-    ObjectTreeViewItem *dest =
-        dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
-    if (dest == 0) goto notWanted;
-
-    list<FWObject*> objs;
-    if (!FWObjectDrag::decode(ev, objs)) goto notWanted;
+    ObjectTreeViewItem *dest = dynamic_cast<ObjectTreeViewItem *>(item);
+    if (dest == 0) return false;
 
     bool dragIsNoop = true;
     list<FWObject *>::const_iterator iter;
@@ -492,13 +480,13 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
             Interface::cast(dragobj->getParent()) != 0 ||
             Policy::cast(dragobj) != 0 ||
             NAT::cast(dragobj) != 0 ||
-            Routing::cast(dragobj) != 0) goto notWanted;
+            Routing::cast(dragobj) != 0) return false;
 
         /* See if destination is a user folder */
         if (dest->getUserFolderParent() != 0) {
             /* Dragged object has to match parent of user folder */
             if (dest->getUserFolderParent() != dragobj->getParent()) {
-                goto notWanted;
+                return false;
             }
 
             /* Are we dragging within the same user folder? */
@@ -510,7 +498,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
             /* OK to drag onto parent itself, or object that shares parent */
             if (dragobj->getParent() != dest->getFWObject() &&
                 dragobj->getParent() != dest->getFWObject()->getParent()) {
-                goto notWanted;
+                return false;
             }
 
             /* Are we dragging to a new place? */
@@ -523,7 +511,18 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         }
     }
 
-    if (dragIsNoop) goto notWanted;
+    return !dragIsNoop;
+}
+
+
+void ObjectTreeView::dragMoveEvent(QDragMoveEvent *ev)
+{
+    list<FWObject*> objs;
+    if (ev->source() != this || !FWObjectDrag::decode(ev, objs) ||
+        !isValidDropTarget(itemAt(ev->pos()), objs)) {
+        ev->setAccepted(false);
+        return;
+    }
 
     ev->setDropAction(Qt::MoveAction);
     ev->setAccepted(true);
@@ -542,6 +541,9 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
 
     list<FWObject*> objs;
     if (!FWObjectDrag::decode(ev, objs)) goto notWanted;
+
+    /* Make sure the drop event is on an object that can handle it */
+    if (ev->source() != this || !isValidDropTarget(dest, objs)) goto notWanted;
 
     emit moveItems_sign(dest, objs);
     ev->setAccepted(true);

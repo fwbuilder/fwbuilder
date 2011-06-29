@@ -1,3 +1,9 @@
+2011-06-29  theron	<theron@netcitadel.com>
+	* Fixed #2540.  On mac we can get a drop event even if
+	dragMoveEvent() says the drop is invalid.  So in ObjectTreeView we
+	validate the drop the same we we validate in dragMove to make sure
+	the drop is valid.
+
 2011-06-27  theron	<theron@netcitadel.com>
 
 	* Fixed #2530, where adding a subfolder opens the parent folder in
