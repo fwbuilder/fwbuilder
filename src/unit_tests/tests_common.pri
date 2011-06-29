@@ -48,24 +48,12 @@ INCLUDEPATH += $$ANTLR_INCLUDEPATH
 DEPENDPATH  += $$ANTLR_INCLUDEPATH
 DEFINES += $$ANTLR_DEFINES
 
-# fwtransfer lib. Add this before adding -lQtDBus to LIBS below
-#LIBS += ../$$FWTRANSFER_LIB
-contains( HAVE_QTDBUS, 1 ):unix {
-    !macx:QT += network \
-        dbus
-    macx:LIBS += -framework \
-        QtDBus
-}
-
-# !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
-
 DEPENDPATH = ../../common \
     ../../iptlib \
     ../../pflib \
     ../../cisco_lib/ \
     ../../compiler_lib \
     ../../libgui \
-    ../../fwtransfer \
     ../../libfwbuilder/src/fwbuilder \
     ../../libfwbuilder/src/fwcompiler
 
@@ -78,7 +66,6 @@ STATIC_LIBS += \
     ../../pflib/libfwbpf.a \
     ../../cisco_lib/libfwbcisco.a \
     ../../compiler_lib/libcompilerdriver.a \
-    ../../fwtransfer/libfwtransfer.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
     ../../parsers/libfwbparser.a \
@@ -91,7 +78,6 @@ PRE_TARGETDEPS += ../../common/libcommon.a \
     ../../pflib/libfwbpf.a \
     ../../cisco_lib/libfwbcisco.a \
     ../../compiler_lib/libcompilerdriver.a \
-    ../../fwtransfer/libfwtransfer.a \
     ../../parsers/libfwbparser.a \
     ../../import/libimport.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
