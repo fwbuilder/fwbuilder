@@ -9,6 +9,12 @@
 	set ".loaded" variable before calling loadFromSource so that if an
 	exception happens we won't try to load it again later.
 
+	* Fixed #2539.  Make sure user folders are added properly.  Also
+	deal with case of an object that has a folder attribute that
+	doesn't exist in the parent's subfolders list (shouldn't ever
+	happen, but in case it does it no longer crashes).  Also make sure
+	that subfolders don't have commas in them.
+
 2011-06-27  theron	<theron@netcitadel.com>
 
 	* Fixed #2530, where adding a subfolder opens the parent folder in

@@ -252,7 +252,13 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     ObjectTreeViewItem *item = itm;
     if (!obj->getStr("folder").empty()) {
         item = findUserFolder(itm, obj->getStr("folder").c_str());
-        if (item == 0) item = itm;
+
+        /* If we can't find the user folder, put it under the system
+           folder and get rid of the folder attribute */
+        if (item == 0) {
+            item = itm;
+            obj->setStr("folder", "");
+        }
     }
 
     ObjectTreeViewItem *nitm = new ObjectTreeViewItem(item);

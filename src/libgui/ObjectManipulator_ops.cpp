@@ -759,10 +759,18 @@ void ObjectManipulator::addSubfolderSlot()
                                            tr("Enter new subfolder name"));
     folder = folder.simplified();
     if (folder.isEmpty()) return;
+    if (folder.contains(',')) {
+        QMessageBox::warning(this, "Firewall Builder",
+                             tr("Subfolder cannot contain a comma"), "&OK",
+                             QString::null, QString::null, 0, 1);
+        return;
+    }
 
     /* See if the subfolder already exists */
+    string folderStr = folder.toUtf8().constData();
     set<string> folders = stringToSet(obj->getStr("subfolders"));
-    if (folders.find(folder.toUtf8().constData()) != folders.end()) return;
+    if (folders.find(folderStr) != folders.end()) return;
+    folders.insert(folderStr);
 
     if (fwbdebug) {
         qDebug() << "ObjectManipulator::addSubfolder: " << folder;
