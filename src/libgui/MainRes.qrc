@@ -183,12 +183,12 @@
     <file alias="Icons/ObjectGroup/icon-neg-tree">Icons/object-group-neg_16.png</file>
     <file alias="Icons/ObjectGroup/icon-ref">Icons/object-group-ref_25.png</file>
     <file alias="Icons/ObjectGroup/icon-tree">Icons/object-group_16.png</file>
-    <file alias="Icons/DynamicGroup/icon">Icons/object-group_25.png</file>
+    <file alias="Icons/DynamicGroup/icon">Icons/dynamic-group_25.png</file>
     <file alias="Icons/DynamicGroup/icon-big">Icons/object-group_64.png</file>
     <file alias="Icons/DynamicGroup/icon-neg">Icons/object-group-neg_25.png</file>
     <file alias="Icons/DynamicGroup/icon-neg-tree">Icons/object-group-neg_16.png</file>
     <file alias="Icons/DynamicGroup/icon-ref">Icons/object-group-ref_25.png</file>
-    <file alias="Icons/DynamicGroup/icon-tree">Icons/object-group_16.png</file>
+    <file alias="Icons/DynamicGroup/icon-tree">Icons/dynamic-group_16.png</file>
     <file alias="Icons/Options/icon">Icons/options_25.png</file>
     <file alias="Icons/Options/icon-big">Icons/options_64.png</file>
     <file alias="Icons/Options/icon-tree">Icons/options_16.png</file>
