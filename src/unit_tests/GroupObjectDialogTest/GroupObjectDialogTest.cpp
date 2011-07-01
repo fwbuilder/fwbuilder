@@ -89,6 +89,10 @@ void GroupObjectDialogTest::initTestCase()
     tcpservice = createObject<TCPService>("tcpservice");
     tagservice = createObject<TagService>("tagservice");
     userservice = createObject<UserService>("userservice");
+
+    FWObject *object_group = createObject<ObjectGroup>("Object Group");
+    FWObject *service_group = createObject<ServiceGroup>("Service Group");
+
 }
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
@@ -162,10 +166,16 @@ template <class FWTYPE> FWTYPE* GroupObjectDialogTest::createObject(QString name
 
 bool checkObjectInsertion(GroupObjectDialog *dlg, Group *grp, FWObject *obj)
 {
+    qDebug() << "Trying to add object"
+             << obj->getName().c_str() << "(" << obj->getTypeName().c_str() << ")"
+             << "to group" << grp->getPath().c_str();
+
     dlg->insertObject(obj);
+    dlg->applyChanges();
+
     for (Group::iterator i = grp->begin(); i!= grp->end(); i++)
     {
-        if (FWObjectReference::cast(*i)->getPointer() == obj)
+        if (FWReference::cast(*i)->getPointer() == obj)
             return true;
     }
 
@@ -173,32 +183,30 @@ bool checkObjectInsertion(GroupObjectDialog *dlg, Group *grp, FWObject *obj)
     return false;
 }
 
-bool checkObjectInsertion2(GroupObjectDialog *dlg, ServiceGroup *grp, FWObject *obj)
-{
-    dlg->insertObject(obj);
-    for (ServiceGroup::iterator i = grp->begin(); i!= grp->end(); i++)
-    {
-        if (FWServiceReference::cast(*i)->getPointer() == obj)
-            return true;
-    }
-
-    //object was not inserted into group
-    return false;
-}
-
+/*
+ * Test insertion of objects of different types into an object group
+ */
 void GroupObjectDialogTest::testObjectGroup()
 {
-    mw->findChild<QWidget*>("om")->findChild<QAction*>(QString("newObject_") + ObjectGroup::TYPENAME)->trigger();
-    ObjectTreeViewItem *groupItem = dynamic_cast<ObjectTreeViewItem*>(mw->getCurrentObjectTree()->findItems("Object Group", Qt::MatchRecursive, 0).first());
-    mw->getCurrentObjectTree()->setCurrentItem(groupItem, 0, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
+    ObjectTreeViewItem *groupItem = dynamic_cast<ObjectTreeViewItem*>(
+        mw->getCurrentObjectTree()->findItems(
+            "Object Group", Qt::MatchRecursive, 0).first());
+
     QVERIFY(groupItem != NULL);
+
+    mw->getCurrentObjectTree()->setCurrentItem(
+        groupItem, 0,
+        QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
+
     ObjectGroup *group = ObjectGroup::cast(groupItem->getFWObject());
     QVERIFY(group != NULL);
     om->editObject(group);
     QTest::qWait(50);
-    GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>("w_ObjectGroupDialog");
-    QVERIFY(groupdialog != NULL);
 
+    GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>(
+        "w_ObjectGroupDialog");
+
+    QVERIFY(groupdialog != NULL);
 
     QVERIFY(checkObjectInsertion(groupdialog, group, address));
     QVERIFY(checkObjectInsertion(groupdialog, group, address6));
@@ -217,9 +225,10 @@ void GroupObjectDialogTest::testObjectGroup()
     QVERIFY(!checkObjectInsertion(groupdialog, group, tagservice));
     QVERIFY(!checkObjectInsertion(groupdialog, group, userservice));
 
-
-    QPushButton *newButton = mw->findChild<GroupObjectDialog*>("w_ObjectGroupDialog")->findChild<QPushButton*>("newButton");
+    QPushButton *newButton = mw->findChild<GroupObjectDialog*>(
+        "w_ObjectGroupDialog")->findChild<QPushButton*>("newButton");
     QVERIFY(newButton != NULL);
+
     QTimer::singleShot(50, this, SLOT(checkObjectGroupMenu()));
     QTest::mouseClick(newButton, Qt::LeftButton);
 }
@@ -227,17 +236,18 @@ void GroupObjectDialogTest::testObjectGroup()
 void GroupObjectDialogTest::checkObjectGroupMenu()
 {
     QMenu *menu = mw->findChild<GroupObjectDialog*>("w_ObjectGroupDialog")->findChild<QMenu*>("GroupObjectDialog_newObjectMenu");
+
     QList<QString> names;
     names << (QString("newObject_") + Host::TYPENAME)
-            << (QString("newObject_") + Firewall::TYPENAME)
-            << (QString("newObject_") + Cluster::TYPENAME)
-            << (QString("newObject_") + Network::TYPENAME)
-            << (QString("newObject_") + NetworkIPv6::TYPENAME)
-            << (QString("newObject_") + IPv4::TYPENAME)
-            << (QString("newObject_") + IPv6::TYPENAME)
-            << (QString("newObject_") + DNSName::TYPENAME)
-            << (QString("newObject_") + AddressRange::TYPENAME)
-            << (QString("newObject_") + AddressTable::TYPENAME);
+          << (QString("newObject_") + Firewall::TYPENAME)
+          << (QString("newObject_") + Cluster::TYPENAME)
+          << (QString("newObject_") + Network::TYPENAME)
+          << (QString("newObject_") + NetworkIPv6::TYPENAME)
+          << (QString("newObject_") + IPv4::TYPENAME)
+          << (QString("newObject_") + IPv6::TYPENAME)
+          << (QString("newObject_") + DNSName::TYPENAME)
+          << (QString("newObject_") + AddressRange::TYPENAME)
+          << (QString("newObject_") + AddressTable::TYPENAME);
     QList<QString> menuNames;
 
     foreach(QAction *act, menu->actions())
@@ -252,15 +262,16 @@ void GroupObjectDialogTest::checkObjectGroupMenu()
 void GroupObjectDialogTest::checkObjectServiceGroupMenu()
 {
     QMenu *menu = mw->findChild<GroupObjectDialog*>("w_ServiceGroupDialog")->findChild<QMenu*>("GroupObjectDialog_newObjectMenu");
+
     QList<QString> names;
     names << (QString("newObject_") + IPService::TYPENAME)
-            << (QString("newObject_") + ICMPService::TYPENAME)
-            << (QString("newObject_") + ICMP6Service::TYPENAME)
-            << (QString("newObject_") + TCPService::TYPENAME)
-            << (QString("newObject_") + UDPService::TYPENAME)
-            << (QString("newObject_") + CustomService::TYPENAME)
-            << (QString("newObject_") + TagService::TYPENAME)
-            << (QString("newObject_") + UserService::TYPENAME);
+          << (QString("newObject_") + ICMPService::TYPENAME)
+          << (QString("newObject_") + ICMP6Service::TYPENAME)
+          << (QString("newObject_") + TCPService::TYPENAME)
+          << (QString("newObject_") + UDPService::TYPENAME)
+          << (QString("newObject_") + CustomService::TYPENAME)
+          << (QString("newObject_") + TagService::TYPENAME)
+          << (QString("newObject_") + UserService::TYPENAME);
     QList<QString> menuNames;
 
     foreach(QAction *act, menu->actions())
@@ -275,35 +286,41 @@ void GroupObjectDialogTest::checkObjectServiceGroupMenu()
 
 void GroupObjectDialogTest::testServiceGroup()
 {
+    ObjectTreeViewItem *groupItem = dynamic_cast<ObjectTreeViewItem*>(
+        mw->getCurrentObjectTree()->findItems(
+            "Service Group", Qt::MatchRecursive, 0).first());
 
-    mw->findChild<QWidget*>("om")->findChild<QAction*>(QString("newObject_") + ServiceGroup::TYPENAME)->trigger();
-    ObjectTreeViewItem *groupItem = dynamic_cast<ObjectTreeViewItem*>(mw->getCurrentObjectTree()->findItems("Service Group", Qt::MatchRecursive, 0).first());
-    mw->getCurrentObjectTree()->setCurrentItem(groupItem, 0, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
+    mw->getCurrentObjectTree()->setCurrentItem(
+        groupItem, 0,
+        QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
+
     QVERIFY(groupItem != NULL);
     ServiceGroup *group = ServiceGroup::cast(groupItem->getFWObject());
     QVERIFY(group != NULL);
     om->editObject(group);
     QTest::qWait(50);
-    GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>("w_ServiceGroupDialog");
+
+    GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>(
+        "w_ServiceGroupDialog");
     QVERIFY(groupdialog != NULL);
 
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, address));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, address6));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, network));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, network6));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, range));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, table));
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, dns));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, address));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, address6));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, network));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, network6));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, range));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, table));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, dns));
 
-    QVERIFY(checkObjectInsertion2(groupdialog, group, group));
+    QVERIFY(checkObjectInsertion(groupdialog, group, group));
     FWObject *objGroup = dynamic_cast<ObjectTreeViewItem*>(mw->getCurrentObjectTree()->findItems("Object Group", Qt::MatchRecursive, 0).first())->getFWObject();
-    QVERIFY(!checkObjectInsertion2(groupdialog, group, objGroup));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, ipservice));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, icmpservice));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, udpservice));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, tcpservice));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, tagservice));
-    QVERIFY(checkObjectInsertion2(groupdialog, group, userservice));
+    QVERIFY(!checkObjectInsertion(groupdialog, group, objGroup));
+    QVERIFY(checkObjectInsertion(groupdialog, group, ipservice));
+    QVERIFY(checkObjectInsertion(groupdialog, group, icmpservice));
+    QVERIFY(checkObjectInsertion(groupdialog, group, udpservice));
+    QVERIFY(checkObjectInsertion(groupdialog, group, tcpservice));
+    QVERIFY(checkObjectInsertion(groupdialog, group, tagservice));
+    QVERIFY(checkObjectInsertion(groupdialog, group, userservice));
 
 
     QPushButton *newButton = mw->findChild<GroupObjectDialog*>("w_ServiceGroupDialog")->findChild<QPushButton*>("newButton");
