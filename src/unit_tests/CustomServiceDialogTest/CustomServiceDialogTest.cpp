@@ -170,6 +170,8 @@ void CustomServiceDialogTest::testDialog()
     selectComboItem(platform, "iptables");
     dialog->platformChanged();
     selectComboItem(protocol, "tcp");
+    dialog->applyChanges();
+    QTest::qWait(100);
     QVERIFY(service->getProtocol() == "tcp");
 
     selectComboItem(platform, "pf");
