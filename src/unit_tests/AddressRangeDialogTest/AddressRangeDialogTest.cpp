@@ -94,11 +94,18 @@ void AddressRangeDialogTest::checkMessageBox()
 void AddressRangeDialogTest::editSelectedObject()
 {
 //NOTUSED    QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
-    mw->findChild<QAction*>(QString("newObject_") + AddressRange::TYPENAME)->trigger();
+
+    ObjectManipulator* om = dynamic_cast<ObjectManipulator*>(
+        mw->getCurrentObjectTree()->parent()->parent());
+    om->createObject(
+        FWBTree().getStandardSlotForObject(
+            om->getCurrentLib(), AddressRange::TYPENAME),
+        AddressRange::TYPENAME, "Address Range");
+
     QTest::qWait(100);
     QTreeWidgetItem *item = mw->getCurrentObjectTree()->findItems("Address Range", Qt::MatchRecursive | Qt::MatchExactly, 0).first();
     mw->getCurrentObjectTree()->setCurrentItem(item, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
-    ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
+
     om->editSelectedObject();
     QTest::qWait(100);
 
