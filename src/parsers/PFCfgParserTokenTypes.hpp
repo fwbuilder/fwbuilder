@@ -1,7 +1,7 @@
 #ifndef INC_PFCfgParserTokenTypes_hpp_
 #define INC_PFCfgParserTokenTypes_hpp_
 
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParserTokenTypes.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParserTokenTypes.hpp"$ */
 
 #ifndef CUSTOM_API
 # define CUSTOM_API
@@ -119,10 +119,10 @@ struct CUSTOM_API PFCfgParserTokenTypes {
 		IN_WORD = 108,
 		OUT_WORD = 109,
 		LOG = 110,
-		ALL = 111,
-		USER = 112,
-		TO = 113,
-		QUICK = 114,
+		QUICK = 111,
+		ALL = 112,
+		USER = 113,
+		TO = 114,
 		INET = 115,
 		INET6 = 116,
 		PROTO = 117,

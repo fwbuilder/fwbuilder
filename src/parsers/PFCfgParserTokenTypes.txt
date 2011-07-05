@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20100319): pf.g -> PFCfgParserTokenTypes.txt$
+// $ANTLR 2.7.7 (20090306): pf.g -> PFCfgParserTokenTypes.txt$
 PFCfgParser    // output token vocab name
 NEWLINE=4
 LINE_COMMENT=5
@@ -107,10 +107,10 @@ RETURN_ICMP6=107
 IN_WORD="in"=108
 OUT_WORD="out"=109
 LOG="log"=110
-ALL="all"=111
-USER="user"=112
-TO="to"=113
-QUICK="quick"=114
+QUICK="quick"=111
+ALL="all"=112
+USER="user"=113
+TO="to"=114
 INET="inet"=115
 INET6="inet6"=116
 PROTO="proto"=117

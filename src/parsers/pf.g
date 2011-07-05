@@ -1002,8 +1002,7 @@ block_return :
 
 rule_extended :
         ( direction )?
-        ( logging )?
-        ( quick )?
+        ( quick_or_log )?
         ( intrface )?
         ( route )?
         ( address_family )?
@@ -1018,11 +1017,19 @@ direction : ( IN_WORD | OUT_WORD )
         }
     ;
 
-logging : 
-        LOG (logopts)?
-        {
-            importer->logging = true;
-        }
+// looks like both "block log quick" and "block quick log" are legitimate
+quick_or_log : 
+        (
+            LOG (logopts)? { importer->logging = true; }
+            ( QUICK { importer->quick = true; } )?
+        |
+            QUICK { importer->quick = true; }
+            ( LOG (logopts)? { importer->logging = true; } )?
+        )
+    ;
+
+logging :
+        LOG (logopts)? { importer->logging = true; }
     ;
 
 logopts :
@@ -1038,12 +1045,6 @@ logopts :
 logopt : ALL | USER | TO WORD
         {
             importer->logopts += LT(0)->getText();
-        }
-    ;
-
-quick : QUICK
-        {
-            importer->quick = true;
         }
     ;
 
@@ -1265,7 +1266,7 @@ host_list :
         OPENING_BRACE
         host
         (
-            COMMA
+            ( COMMA )?
             host
         )*
         CLOSING_BRACE

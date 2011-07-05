@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -143,7 +143,7 @@ public:
 	public: void block_return();
 	public: void icmp_code_by_name();
 	public: void direction();
-	public: void quick();
+	public: void quick_or_log();
 	public: void route();
 	public: void filteropts();
 	public: void logopts();
@@ -321,6 +321,14 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_55;
 	static const unsigned long _tokenSet_56_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_56;
+	static const unsigned long _tokenSet_57_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_57;
+	static const unsigned long _tokenSet_58_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_58;
+	static const unsigned long _tokenSet_59_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_59;
+	static const unsigned long _tokenSet_60_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_60;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

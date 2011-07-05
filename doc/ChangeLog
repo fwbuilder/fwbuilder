@@ -1,3 +1,12 @@
+2011-07-05  vadim  <vadim@netcitadel.com>
+
+	* pf.g: fixed bug in PF import: address lists such as "{ addr1,
+	addr2, ... }" defined as macros or inside the rule could not be
+	imported correctly.
+
+	* pf.g: we should be able to import both "block quick log" and
+	"block log quick".
+
 2011-06-29  theron	<theron@netcitadel.com>
 	* Fixed #2547, made keyword add/remove buttons same size.
 

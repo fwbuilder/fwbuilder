@@ -1,18 +1,15 @@
-2: Address Table: <dst_addresses_1>:  192.168.1.1/, 192.168.1.2/, 192.168.2.0/24
-3: New interface: pcn0
-3: Address Table: <dst_addresses_2>:  pcn0/, pcn0/
-4: Address Table: <dst_addresses_3>:  pcn0/, pcn0/
-5: Address Table: <dst_addresses_4>:  www.fwbuilder.org/, www.netcitadel.com/
-8: filtering rule: action pass; interfaces: 
-9: filtering rule: action pass; interfaces: 
-9: Error: import of 'interface:broadcast' is not supported.
-10: filtering rule: action pass; interfaces: 
-10: Error: import of 'interface:peer' is not supported.
+5: Address Table: <dst_addresses_1>:  192.168.1.1/, 192.168.1.2/, 192.168.2.0/24
+6: New interface: pcn0
+6: Address Table: <dst_addresses_2>:  pcn0/, pcn0/
+7: Address Table: <dst_addresses_3>:  pcn0/, pcn0/
+8: Address Table: <dst_addresses_4>:  www.fwbuilder.org/, www.netcitadel.com/
 11: filtering rule: action pass; interfaces: 
-11: Error: import of 'interface:0' is not supported.
+12: filtering rule: action pass; interfaces: 
+12: Error: import of 'interface:broadcast' is not supported.
 13: filtering rule: action pass; interfaces: 
+13: Error: import of 'interface:peer' is not supported.
 14: filtering rule: action pass; interfaces: 
-15: filtering rule: action pass; interfaces: 
+14: Error: import of 'interface:0' is not supported.
 16: filtering rule: action pass; interfaces: 
 17: filtering rule: action pass; interfaces: 
 18: filtering rule: action pass; interfaces: 
@@ -20,19 +17,28 @@
 20: filtering rule: action pass; interfaces: 
 21: filtering rule: action pass; interfaces: 
 22: filtering rule: action pass; interfaces: 
+23: filtering rule: action pass; interfaces: 
 24: filtering rule: action pass; interfaces: 
-24: Error: IPv6 import is not supported. 
 25: filtering rule: action pass; interfaces: 
+26: filtering rule: action pass; interfaces: 
 27: filtering rule: action pass; interfaces: 
 28: filtering rule: action pass; interfaces: 
-29: filtering rule: action pass; interfaces: 
 30: filtering rule: action pass; interfaces: 
+30: Error: IPv6 import is not supported. 
 31: filtering rule: action pass; interfaces: 
-32: filtering rule: action pass; interfaces: 
 33: filtering rule: action pass; interfaces: 
 34: filtering rule: action pass; interfaces: 
 35: filtering rule: action pass; interfaces: 
 36: filtering rule: action pass; interfaces: 
+37: filtering rule: action pass; interfaces: 
 38: filtering rule: action pass; interfaces: 
-38: Error: IPv6 import is not supported. 
 39: filtering rule: action pass; interfaces: 
+40: filtering rule: action pass; interfaces: 
+41: filtering rule: action pass; interfaces: 
+42: filtering rule: action pass; interfaces: 
+43: filtering rule: action pass; interfaces: 
+44: filtering rule: action pass; interfaces: 
+45: filtering rule: action pass; interfaces: 
+47: filtering rule: action pass; interfaces: 
+47: Error: IPv6 import is not supported. 
+48: filtering rule: action pass; interfaces: 
