@@ -954,7 +954,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 
     _printInterface(rule);
 
-    _printRouteOptions(rule);
+    if (XMLTools::version_compare(version, "4.7")<0)
+        _printRouteOptions(rule);
 
     _printAF(rule);
 
@@ -1184,6 +1185,9 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 
     _printQueue(rule);
     _printLabel(rule);
+
+    if (XMLTools::version_compare(version, "4.7")>=0)
+        _printRouteOptions(rule);
 
     compiler->output << endl;
 

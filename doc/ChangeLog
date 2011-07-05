@@ -1,5 +1,10 @@
 2011-07-05  vadim  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pf_writers.cpp (processNext): see #2549 "Update
+	generated route-to configuration for PF versions 4.7 and later",
+	SF bug 3348931. The "route-to" parameter moved to the end of
+	pass rules in PF 4.7
+
 	* pf.g: fixed bug in PF import: address lists such as "{ addr1,
 	addr2, ... }" defined as macros or inside the rule could not be
 	imported correctly.
