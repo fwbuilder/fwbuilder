@@ -1274,7 +1274,7 @@ host_list :
 
 // ************************************************************************
 route :
-        route_to | reply_to
+        route_to | reply_to | dup_to
     ;
 
 route_to :
@@ -1288,6 +1288,13 @@ reply_to :
         REPLY_TO ( routehost | routehost_list )
         {
             importer->route_type = PFImporter::REPLY_TO;
+        }
+    ;
+
+dup_to :
+        DUP_TO ( routehost | routehost_list )
+        {
+            importer->route_type = PFImporter::DUP_TO;
         }
     ;
 
@@ -1942,6 +1949,7 @@ tokens
 
     ROUTE_TO = "route-to";
     REPLY_TO = "reply-to";
+    DUP_TO = "dup-to";
 
     DROP = "drop";
     RETURN = "return";

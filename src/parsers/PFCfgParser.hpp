@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -165,6 +165,7 @@ public:
 	public: void host_list();
 	public: void route_to();
 	public: void reply_to();
+	public: void dup_to();
 	public: void routehost();
 	public: void routehost_list();
 	public: void filteropt();
@@ -200,10 +201,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 261;
+	static const int NUM_TOKENS = 262;
 #else
 	enum {
-		NUM_TOKENS = 261
+		NUM_TOKENS = 262
 	};
 #endif
 	

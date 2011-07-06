@@ -523,6 +523,24 @@ void PFImporterTest::userGroupMatches()
                     "pf-user-group-matches.fwb");
 }
 
+void PFImporterTest::routeToTest()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-route-to.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-route-to.fwb");
+
+    compareResults(logger, "test_data/pf-route-to.output", "pf-route-to.output");
+    compareFwbFiles("test_data/pf-route-to.fwb", "pf-route-to.fwb");
+}
+
 
 
 

@@ -829,6 +829,50 @@ void PFImporter::pushPolicyRule()
     if (! queue.empty()) ropt->setStr("pf_classify_str", queue);
 
     /*
+     * route-to options
+     *
+     */
+    if (route_type != UNKNOWN && route_group.size() != 0)
+    {
+        switch (route_type)
+        {
+        case ROUTE_TO:
+            ropt->setStr("pf_route_option", "route_through"); break;
+
+        case REPLY_TO:
+            ropt->setStr("pf_route_option", "route_reply_through"); break;
+
+        case DUP_TO:
+            ropt->setStr("pf_route_option", "route_copy_through"); break;
+
+        default: ;
+        }
+
+        QStringList route_opt_addr;
+        list<RouteSpec>::iterator it;
+        for (it=route_group.begin(); it!=route_group.end(); ++it)
+        {
+            RouteSpec &rs = *it;
+
+            Interface *intf = getInterfaceByName(rs.iface);
+            if (intf == NULL)
+            {
+                // this interface was never used in "on <intf>" clause before
+                newInterface(rs.iface);
+            }
+
+            ropt->setStr("pf_route_opt_if", rs.iface);
+
+            if (rs.netmask.empty())
+                route_opt_addr << rs.address.c_str();
+            else
+                route_opt_addr << QString("%1/%2")
+                    .arg(rs.address.c_str()).arg(rs.netmask.c_str());
+        }
+        ropt->setStr("pf_route_opt_addr", route_opt_addr.join(",").toStdString());
+    }
+
+    /*
      * Protocols are in proto_list
      * Source addresses are in src_group
      * Destination addresses are in dst_group

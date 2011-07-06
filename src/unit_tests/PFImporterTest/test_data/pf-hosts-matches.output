@@ -1,8 +1,8 @@
-5: Address Table: <dst_addresses_1>:  192.168.1.1/, 192.168.1.2/, 192.168.2.0/24
+5: Address Table: <dst_addresses_1>:  192.168.1.1, 192.168.1.2, 192.168.2.0/24
+6: Address Table: <dst_addresses_2>:  pcn0, pcn0
 6: New interface: pcn0
-6: Address Table: <dst_addresses_2>:  pcn0/, pcn0/
-7: Address Table: <dst_addresses_3>:  pcn0/, pcn0/
-8: Address Table: <dst_addresses_4>:  www.fwbuilder.org/, www.netcitadel.com/
+7: Address Table: <dst_addresses_3>:  pcn0, pcn0
+8: Address Table: <dst_addresses_4>:  www.fwbuilder.org, www.netcitadel.com
 11: filtering rule: action pass; interfaces: 
 12: filtering rule: action pass; interfaces: 
 12: Error: import of 'interface:broadcast' is not supported.

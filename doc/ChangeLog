@@ -1,5 +1,9 @@
 2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PFImporter.cpp (pushPolicyRule): see #2551 "PF Import - source
+	routing rules are not imported with rule options set". Importer
+	should import "route-to" rule parameters.
+
 	* PFImporter.cpp (newAddressTableObject): see #2546 "PF import -
 	negation inside of inline tables is ignored". We can not import
 	PF table definition that has some addresses negated.

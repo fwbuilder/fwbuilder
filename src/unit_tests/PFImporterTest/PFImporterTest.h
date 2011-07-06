@@ -74,6 +74,7 @@ public:
     void scrubCommandsNew();
     void tableDefinitions();
     void userGroupMatches();
+    void routeToTest();
     
     CPPUNIT_TEST_SUITE(PFImporterTest);
 
@@ -93,6 +94,7 @@ public:
     CPPUNIT_TEST(scrubCommandsNew);
     CPPUNIT_TEST(tableDefinitions);
     CPPUNIT_TEST(userGroupMatches);
+    CPPUNIT_TEST(routeToTest);
     
     CPPUNIT_TEST_SUITE_END();
 
