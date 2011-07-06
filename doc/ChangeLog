@@ -1,5 +1,9 @@
 2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
 
+	* applied two patches by Vadim Zhukov persgray@gmail.com to
+	replace calls to sprintf with safer calls to snprintf and fix some
+	compiler warnings.
+
 	* Importer.cpp (addStandardImportComment): see #2552 "PF import:
 	add ability to suppress comments referring to line numbers in the
 	original file".

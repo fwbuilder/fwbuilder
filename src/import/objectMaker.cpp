@@ -317,6 +317,7 @@ ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
 }
 
 ObjectSignature::ObjectSignature(const ObjectSignature &other)
+  : libfwbuilder::Dispatch(other)
 {
     error_tracker = other.error_tracker;
 
