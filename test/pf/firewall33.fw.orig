@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3551
+#  Firewall Builder  fwb_pf v5.0.0.3556
 #
-#  Generated Wed Jun 22 10:50:17 2011 PDT by vadim
+#  Generated Tue Jul  5 18:05:26 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 # files:   firewall33.conf /etc/fw/firewall33.conf
@@ -15,7 +15,6 @@
 
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 # firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
-# firewall33:Policy:8: error: Empty group or address table object 'google (ct)' is used in the rule but option 'Ignore rules with empty groups' is off
 
 
 
@@ -169,7 +168,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Wed Jun 22 10:50:17 2011 by vadim"
+log "Activating firewall script generated Tue Jul  5 18:05:26 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

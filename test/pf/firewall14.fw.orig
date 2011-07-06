@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3551
+#  Firewall Builder  fwb_pf v5.0.0.3556
 #
-#  Generated Wed Jun 22 10:50:12 2011 PDT by vadim
+#  Generated Tue Jul  5 18:05:21 2011 PDT by vadim
 #
 # files: * firewall14.fw /etc/firewall14.fw
 # files:   firewall14.conf /etc/firewall14.conf
@@ -248,7 +248,7 @@ configure_interfaces() {
     update_addresses_of_interface "vlan103 10.100.103.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Jun 22 10:50:12 2011 by vadim"
+log "Activating firewall script generated Tue Jul  5 18:05:21 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

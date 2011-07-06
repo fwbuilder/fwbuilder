@@ -4,14 +4,14 @@
 #
 #  Firewall Builder  fwb_pf v5.0.0.3556
 #
-#  Generated Tue Jul  5 18:05:20 2011 PDT by vadim
+#  Generated Tue Jul  5 18:05:30 2011 PDT by vadim
 #
-# files: * firewall12.fw /etc/fw/firewall12.fw
-# files:   firewall12.conf /etc/fw/firewall12.conf
+# files: * firewall40-2.fw /etc/firewall40-2.fw
+# files:   firewall40-2.conf /etc/firewall40-2.conf
 #
-# Compiled for pf 4.0
+# Compiled for pf 4.7
 #
-# This firewall does not do NAT for addresses, but translates port for a server
+# testing Route action for PF v4.7 and later
 
 
 
@@ -140,7 +140,7 @@ verify_interfaces() {
 
 set_kernel_vars() {
     :
-    
+    $SYSCTL -w net.inet.ip.forwarding=1
 }
 
 prolog_commands() {
@@ -160,18 +160,19 @@ run_epilog_and_exit() {
 
 configure_interfaces() {
     :
-    update_addresses_of_interface "en0 22.22.22.22/0xffffff00" ""
-    update_addresses_of_interface "en1 22.22.23.22/0xffffff00" ""
+    update_addresses_of_interface "fxp0 192.168.1.1/0xffffff00" ""
+    update_addresses_of_interface "le1 192.0.2.1/0xffffff00" ""
+    update_addresses_of_interface "le2 192.0.3.1/0xffffff00" ""
     update_addresses_of_interface "lo0 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Tue Jul  5 18:05:20 2011 by vadim"
+log "Activating firewall script generated Tue Jul  5 18:05:30 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
 prolog_commands
 
-$PFCTL    -f /etc/fw/firewall12.conf || exit 1
+$PFCTL    -f /etc/firewall40-2.conf || exit 1
 
 
 

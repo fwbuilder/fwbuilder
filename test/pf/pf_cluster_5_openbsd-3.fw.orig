@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3551
+#  Firewall Builder  fwb_pf v5.0.0.3556
 #
-#  Generated Wed Jun 22 10:50:27 2011 PDT by vadim
+#  Generated Tue Jul  5 18:05:39 2011 PDT by vadim
 #
 # files: * pf_cluster_5_openbsd-3.fw /etc/pf_cluster_5_openbsd-3.fw
 # files:   pf_cluster_5_openbsd-3.conf /etc/pf_cluster_5_openbsd-3.conf
@@ -302,7 +302,7 @@ configure_interfaces() {
     update_addresses_of_interface "carp2 172.20.0.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Wed Jun 22 10:50:27 2011 by vadim"
+log "Activating firewall script generated Tue Jul  5 18:05:39 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
