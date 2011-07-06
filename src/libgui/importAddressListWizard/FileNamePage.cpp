@@ -47,21 +47,15 @@ FileNamePage::FileNamePage(QWidget *parent) : QWizardPage(parent)
 
 void FileNamePage::selectAddressListFile()
 {
-    QString dir;
-    dir = st->getWDir();
-    if (dir.isEmpty())  dir = st->getOpenFileDir();
-    if (dir.isEmpty())  dir = "~";
-
     QString s = QFileDialog::getOpenFileName(
                     this,
                     "Choose a file",
-                    dir,
+                    st->getOpenFileDir(),
                     "All files (*)");
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
 
-    if (!s.isEmpty())
-    {
-        m_dialog->fileName->setText(s);
-    }
+    m_dialog->fileName->setText(s);
 }
 
 bool FileNamePage::validatePage()
