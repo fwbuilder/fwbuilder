@@ -56,6 +56,7 @@ class ImporterThread : public QThread
     bool stopFlag;
     QString userChoiceHostOS;
     QString userChoiceVersion;
+    bool addStandardComments;
     
 public:
     ImporterThread(QWidget *ui,
@@ -74,6 +75,7 @@ public:
 
     void setUserChoiceHostOS(const QString &s);
     void setUserChoiceVersion(const QString &s);
+    void setAddStandardCommentsFlag(bool f);
     
 signals:
     void finished();

@@ -167,6 +167,8 @@ Importer::~Importer()
 
 void Importer::clear()
 {
+    last_comment.clear();
+
     action = "";
 
     protocol = "";
@@ -898,6 +900,16 @@ void Importer::addMessageToLog(const QString &msg)
     }
 }
 
+/**
+ * This function adds "standard" comment to the object, plus text
+ * passed as @additional_comment argument. If the object already has
+ * some comment, it is preserved and new text is appended to it. If
+ * flag add_standard_comments is false, then comment referring to the
+ * line number in the original file is not added, but
+ * @additional_comment is added anyway. Note that we also add comments
+ * to rules in case of errors but those are not suppressed by the flag
+ * add_standard_comments
+ */
 void Importer::addStandardImportComment(FWObject *obj,
                                         const QString &additional_comment)
 {
@@ -916,10 +928,13 @@ void Importer::addStandardImportComment(FWObject *obj,
 
     if ( ! additional_comment.isEmpty()) comment << additional_comment;
 
-    QString file_and_line("Created during import of %1 line %2");
-    comment << file_and_line
-        .arg(QString::fromUtf8(input_file_name.c_str()))
-        .arg(getCurrentLineNumber());
+    if (add_standard_comments)
+    {
+        QString file_and_line("Created during import of %1 line %2");
+        comment << file_and_line
+            .arg(QString::fromUtf8(input_file_name.c_str()))
+            .arg(getCurrentLineNumber());
+    }
 
     obj->setComment(comment.join("\n").toUtf8().constData());
     obj->setBool(".import-commited", true);

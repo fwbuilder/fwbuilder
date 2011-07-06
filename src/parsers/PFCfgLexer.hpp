@@ -48,9 +48,9 @@ public:
 	PFCfgLexer(ANTLR_USE_NAMESPACE(antlr)InputBuffer& ib);
 	PFCfgLexer(const ANTLR_USE_NAMESPACE(antlr)LexerSharedInputState& state);
 	ANTLR_USE_NAMESPACE(antlr)RefToken nextToken();
-	public: void mLINE_COMMENT(bool _createToken);
-	public: void mNEWLINE(bool _createToken);
 	public: void mWhitespace(bool _createToken);
+	public: void mCOMMENT_START(bool _createToken);
+	public: void mNEWLINE(bool _createToken);
 	protected: void mINT_CONST(bool _createToken);
 	protected: void mHEX_CONST(bool _createToken);
 	protected: void mNUMBER(bool _createToken);
@@ -63,7 +63,6 @@ public:
 	public: void mNUMBER_ADDRESS_OR_WORD(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	public: void mPIPE_CHAR(bool _createToken);
-	public: void mNUMBER_SIGN(bool _createToken);
 	public: void mPERCENT(bool _createToken);
 	public: void mAMPERSAND(bool _createToken);
 	public: void mAPOSTROPHE(bool _createToken);
@@ -104,8 +103,6 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_4;
 	static const unsigned long _tokenSet_5_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_5;
-	static const unsigned long _tokenSet_6_data_[];
-	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_6;
 };
 
 #endif /*INC_PFCfgLexer_hpp_*/

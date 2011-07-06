@@ -151,7 +151,18 @@ cfgfile :
     ;
 
 //****************************************************************
-comment : LINE_COMMENT ;
+comment :
+        COMMENT_START
+        {
+            QStringList str;
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            {
+                str << QString::fromUtf8(LT(1)->getText().c_str());
+                consume();
+            }
+            importer->last_comment << str.join(" ");
+        }
+    ;
 
 //****************************************************************
 include_command : INCLUDE_COMMAND
@@ -1979,13 +1990,13 @@ tokens
     STATIC_PORT = "static-port";
 }
 
-LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
+// LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
 
 Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'..'\377' | ' ' )
         { $setType(ANTLR_USE_NAMESPACE(antlr)Token::SKIP);  } ;
 
 
-//COMMENT_START : '!' ;
+COMMENT_START : '#' ;
 
 NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline();  } ;
 
@@ -2064,7 +2075,6 @@ options {
 STRING : '"' (~'"')* '"';
 
 PIPE_CHAR : '|';
-NUMBER_SIGN : '#' ;
 // DOLLAR : '$' ;
 PERCENT : '%' ;
 AMPERSAND : '&' ;

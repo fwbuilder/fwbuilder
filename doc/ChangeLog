@@ -1,5 +1,9 @@
 2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
 
+	* Importer.cpp (addStandardImportComment): see #2552 "PF import:
+	add ability to suppress comments referring to line numbers in the
+	original file".
+
 	* PFImporter.cpp (pushPolicyRule): see #2551 "PF Import - source
 	routing rules are not imported with rule options set". Importer
 	should import "route-to" rule parameters.

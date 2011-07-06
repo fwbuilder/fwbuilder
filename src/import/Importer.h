@@ -211,6 +211,9 @@ public:
     // making logger public so I can access it from the code in the grammar
     libfwbuilder::Logger *logger;
     
+    QStringList last_comment;
+    bool add_standard_comments;
+    
     // temporary variables used by parser to store values
     // Importer converts these into a proper rule using method
     // pushRule()
@@ -298,6 +301,7 @@ public:
 
     void setUserChoiceHostOS(const std::string &s) { user_choice_host_os = s; }
     void setUserChoiceVersion(const std::string &s) { user_choice_version = s; }
+    void setAddStandardCommentsFlag(bool f) { add_standard_comments = f; }
     
     virtual void setHostName(const std::string &hn);
     virtual void newInterface(const std::string &interface_name);

@@ -158,9 +158,11 @@ void IC_ProgressPage::initializePage()
     {
         int host_os_idx = field("hostOS").toInt();
         int version_idx = field("version").toInt();
+        bool add_standard_comments = field("addStandardComments").toBool();
 
         importer->setUserChoiceHostOS( wz->host_os_list.at( host_os_idx ));
         importer->setUserChoiceVersion( wz->version_list.at( version_idx ));
+        importer->setAddStandardCommentsFlag(add_standard_comments);
     }
     
     connect(importer, SIGNAL(destroyed(QObject*)),
