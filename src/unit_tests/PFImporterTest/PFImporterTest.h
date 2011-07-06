@@ -58,6 +58,7 @@ class PFImporterTest : public CppUnit::TestFixture
 public:
     void setUp();
 
+    void macrosTest();
     void hostsMatchTest();
     void blockReturnTest();
     void icmpMatchTest();
@@ -76,6 +77,7 @@ public:
     
     CPPUNIT_TEST_SUITE(PFImporterTest);
 
+    CPPUNIT_TEST(macrosTest);
     CPPUNIT_TEST(hostsMatchTest);
     CPPUNIT_TEST(blockReturnTest);
     CPPUNIT_TEST(icmpMatchTest);

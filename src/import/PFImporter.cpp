@@ -546,7 +546,7 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
     if (as.at == AddressSpec::INTERFACE_BROADCAST)
     {
         error_tracker->registerError(
-            QString("import of 'interface:broadcast' is not supported."));
+            QObject::tr("import of 'interface:broadcast' is not supported."));
         return NULL;
     }
 
@@ -1271,6 +1271,10 @@ Interface* PFImporter::getInterfaceByName(const string &name)
     
 void PFImporter::newAddressTableObject(const string &name, const string &file)
 {
+    addMessageToLog(QString("Address Table: <%1> file %2")
+                    .arg(QString::fromUtf8(name.c_str()))
+                    .arg(QString::fromUtf8(file.c_str())));
+
     ObjectMaker maker(Library::cast(library), error_tracker);
     ObjectSignature sig(error_tracker);
     sig.type_name = AddressTable::TYPENAME;
@@ -1283,30 +1287,46 @@ void PFImporter::newAddressTableObject(const string &name, const string &file)
     FWObject *at = address_maker->createObject(sig);
 
     address_table_registry[sig.object_name] = at;
-
-    addMessageToLog(QString("Address Table: <%1> file %2")
-                    .arg(sig.object_name).arg(file.c_str()));
 }
 
 void PFImporter::newAddressTableObject(const string &name,
                                        list<AddressSpec> &addresses)
 {
+    bool has_negations = false;
+    QStringList addr_list;
+    list<AddressSpec>::iterator it;
+    for (it=addresses.begin(); it!=addresses.end(); ++it)
+    {
+        if (it->neg) has_negations = true;
+        QString nm = QString(it->netmask.c_str()).trimmed();
+        if (!nm.isEmpty()) nm = "/" + nm;
+        addr_list << QString("%1%2%3")
+            .arg((it->neg)?"!":"").arg(it->address.c_str()).arg(nm);
+    }
+
+    addMessageToLog(QString("Address Table: <%1>:  %2")
+                    .arg(QString::fromUtf8(name.c_str()))
+                    .arg(addr_list.join(", ")));
+
+    if (has_negations)
+    {
+        // can not use error_tracker->registerError() here because
+        // tables are created before importer encounters any rules and
+        // so this error can not be associated with a rule.
+        addMessageToLog(
+            QObject::tr("Error: import of table definition with negated addresses is not supported."));
+    }
+
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *og =
         commitObject(maker.createObject(ObjectGroup::TYPENAME, name.c_str()));
     assert(og!=NULL);
     address_table_registry[name.c_str()] = og;
 
-    QStringList addr_list;
-    list<AddressSpec>::iterator it;
     for (it=addresses.begin(); it!=addresses.end(); ++it)
     {
-        addr_list << QString("%1/%2").arg(it->address.c_str()).arg(it->netmask.c_str());;
         FWObject *obj = makeAddressObj(*it);
         if (obj) og->addRef(obj);
     }
-
-    addMessageToLog(QString("Address Table: <%1>:  %2")
-                    .arg(name.c_str()).arg(addr_list.join(", ")));
 }
 

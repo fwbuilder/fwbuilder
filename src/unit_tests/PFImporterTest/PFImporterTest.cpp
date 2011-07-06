@@ -204,6 +204,24 @@ std::string PFImporterTest::openTestFile(const QString &file_name)
     return buffer;
 }
 
+void PFImporterTest::macrosTest()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-macros.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-macros.fwb");
+
+    compareResults(logger, "test_data/pf-macros.output", "pf-macros.output");
+    compareFwbFiles("test_data/pf-macros.fwb", "pf-macros.fwb");
+}
+
 void PFImporterTest::hostsMatchTest()
 {
     platform = "pf";
