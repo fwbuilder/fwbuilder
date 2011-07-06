@@ -1,3 +1,12 @@
+2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PFImporterRun.cpp (run): see #2550 "PF import - recursive macros
+	are not supported". Importer for PF should interpret macro
+	definitions that use other macros. See #2545 "PF import error when
+	using macro names with same base name and incrementing digit
+	suffix". Importer should correctly interpret a macro that has name
+	of another macro as a substring of its own name.
+
 2011-07-05  vadim  <vadim@netcitadel.com>
 
 	* PolicyCompiler_pf_writers.cpp (processNext): see #2549 "Update

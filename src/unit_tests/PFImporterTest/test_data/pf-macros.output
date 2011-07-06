@@ -1,0 +1,15 @@
+16: filtering rule: action pass; interfaces: 
+18: filtering rule: action pass; interfaces: 
+19: filtering rule: action pass; interfaces: 
+20: filtering rule: action pass; interfaces: 
+21: filtering rule: action pass; interfaces: 
+22: filtering rule: action pass; interfaces: 
+23: filtering rule: action pass; interfaces: 
+24: filtering rule: action pass; interfaces: 
+25: filtering rule: action pass; interfaces: 
+27: filtering rule: action pass; interfaces: 
+28: filtering rule: action pass; interfaces: 
+29: filtering rule: action pass; interfaces: 
+31: filtering rule: action block; interfaces: 
+33: New interface: em1
+33: filtering rule: action pass; interfaces: em1
