@@ -44,21 +44,16 @@ IC_FileNamePage::IC_FileNamePage(QWidget *parent) : QWizardPage(parent)
 
 void IC_FileNamePage::selectFile()
 {
-    QString dir;
-    dir = st->getWDir();
-    if (dir.isEmpty())  dir = st->getOpenFileDir();
-    if (dir.isEmpty())  dir = "~";
-
     QString s = QFileDialog::getOpenFileName(
         this,
         "Choose file",
-        dir,
+        st->getOpenFileDir(),
         "All files (*)");
 
-    if (!s.isEmpty())
-    {
-        m_dialog->fileName->setText(s);
-    }
+    if (s.isEmpty()) return;
+    st->setOpenFileDir(s);
+
+    m_dialog->fileName->setText(s);
 }
 
 bool IC_FileNamePage::validatePage()
