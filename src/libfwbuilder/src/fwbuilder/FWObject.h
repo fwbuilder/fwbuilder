@@ -577,8 +577,8 @@ class FWObjectTypedChildIterator
 {
     public:
 
-    FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);
-    
+    FWObjectTypedChildIterator();
+    FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);   
     FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name);
     
     bool operator==(const FWObject::const_iterator& __x) const;
@@ -596,6 +596,8 @@ class FWObjectTypedChildIterator
     FWObject::const_iterator real_iterator;
     FWObject::const_iterator _begin;
     FWObject::const_iterator _end;
+
+    void init(const FWObject *o, const std::string &_type_name);
 };
  
 /**

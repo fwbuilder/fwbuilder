@@ -1385,6 +1385,14 @@ void FWObject::checkReadOnly() throw(FWException)
         throw FWException(string("Attempt to modify read-only object ")+getName());
 }
 
+
+
+
+FWObjectTypedChildIterator::FWObjectTypedChildIterator() :
+    type_name(), real_iterator()
+{
+}
+
 FWObjectTypedChildIterator::FWObjectTypedChildIterator(
     const FWObjectTypedChildIterator &o) :
     type_name(o.type_name),
@@ -1395,10 +1403,17 @@ FWObjectTypedChildIterator::FWObjectTypedChildIterator(
 FWObjectTypedChildIterator::FWObjectTypedChildIterator(
     const FWObject *o, const std::string &_type_name)
 {
+    init(o, _type_name);
+}
+
+void FWObjectTypedChildIterator::init(
+    const FWObject *o, const std::string &_type_name)
+{
     type_name     = _type_name ;
     _end          = o->end()   ;
-    real_iterator = o->begin() ;
+
     // position to first element
+    real_iterator = o->begin() ;
     while(real_iterator!=_end && (*real_iterator)->getTypeName()!=type_name)
         real_iterator++;
     _begin = real_iterator;
@@ -1432,15 +1447,18 @@ FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator++()
         return *this;
 }
 
+/*
+ * if iterator points to the first element in the list, then operator--() 
+ * should move it and make it point to end()
+ */
 FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator--() 
 { 
-    if(real_iterator==_begin)
+    if(real_iterator==_end)
         return *this;
     do
     {
         real_iterator--;
-    } while(real_iterator!=_begin &&
-           (real_iterator==_end || (*real_iterator)->getTypeName()!=type_name));
+    } while(real_iterator!=_end && (*real_iterator)->getTypeName()!=type_name);
     return *this;
 }
 
