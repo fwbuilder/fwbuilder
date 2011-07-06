@@ -1,5 +1,9 @@
 2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PFImporter.cpp (newAddressTableObject): see #2546 "PF import -
+	negation inside of inline tables is ignored". We can not import
+	PF table definition that has some addresses negated.
+
 	* PFImporterRun.cpp (run): see #2550 "PF import - recursive macros
 	are not supported". Importer for PF should interpret macro
 	definitions that use other macros. See #2545 "PF import error when
