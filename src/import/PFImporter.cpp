@@ -870,6 +870,8 @@ void PFImporter::pushPolicyRule()
                     .arg(rs.address.c_str()).arg(rs.netmask.c_str());
         }
         ropt->setStr("pf_route_opt_addr", route_opt_addr.join(",").toStdString());
+
+        rule->setRouting( ! ropt->getStr("pf_route_option").empty());
     }
 
     /*

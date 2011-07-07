@@ -103,6 +103,12 @@ void PFImporter::run()
     int pass = 0;
     while (1)
     {
+        if (fwbdebug)
+        {
+            qDebug() << "################################";
+            qDebug() << "Pass " << pass;
+        }
+
         QMapIterator<QString, QString> it(macros);
         while (it.hasNext())
         {
@@ -114,6 +120,13 @@ void PFImporter::run()
             whole_input.replace(macro_instance, macro_value);
         }
         QRegExp any_macro_instance("\\$\\w+\\W");
+
+        if (fwbdebug)
+        {
+            qDebug() << "pf.conf file after line unfolding and macro substitution:";
+            qDebug() << whole_input;
+        }
+
         if (! whole_input.contains(any_macro_instance)) break;
         pass++;
     }
