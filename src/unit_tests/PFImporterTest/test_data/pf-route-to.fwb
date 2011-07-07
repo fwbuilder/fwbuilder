@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1309988144" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1310062508" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -479,6 +479,7 @@
               <Option name="pf_route_opt_addr">10.1.2.3</Option>
               <Option name="pf_route_opt_if">em0</Option>
               <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -502,6 +503,7 @@
               <Option name="pf_route_opt_addr">10.3.4.5</Option>
               <Option name="pf_route_opt_if">bce0</Option>
               <Option name="pf_route_option">route_reply_through</Option>
+              <Option name="routing">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -525,6 +527,7 @@
               <Option name="pf_route_opt_addr">10.1.2.3</Option>
               <Option name="pf_route_opt_if">em0</Option>
               <Option name="pf_route_option">route_copy_through</Option>
+              <Option name="routing">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
