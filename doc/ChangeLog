@@ -1,5 +1,12 @@
 2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PFImporterRun.cpp (run): see #2554 "PF import: create groups of
+	address objects for macros where possible". Importer for PF
+	recognizes macros that define lists of ip addresses, interfaces or
+	host names and creates object groups with the same name from them.
+	Only macros that contain at least one ip address in the list are
+	recognized.
+
 	* PF import: check if a macro used somewhere in the file to be
 	imported is actually defined and abort if not
 

@@ -1,3 +1,4 @@
+2: Address Table: <addr_list_macro>:  10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
 5: Address Table: <dst_addresses_1>:  192.168.1.1, 192.168.1.2, 192.168.2.0/24
 6: Address Table: <dst_addresses_2>:  pcn0, pcn0
 6: New interface: pcn0

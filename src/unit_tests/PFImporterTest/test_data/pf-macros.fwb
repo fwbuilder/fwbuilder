@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1309979482" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1310080604" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -432,53 +432,116 @@
   <Library id="id0" name="User" comment="" ro="False">
     <ObjectGroup id="id1" name="Objects" comment="" ro="False">
       <ObjectGroup id="id2" name="Addresses" comment="" ro="False">
-        <IPv4 id="id3" name="h-10.1.1.1" comment="Created during import of  line 16" ro="False" address="10.1.1.1" netmask="255.255.255.255"/>
-        <IPv4 id="id4" name="h-10.11.11.11" comment="Created during import of  line 18" ro="False" address="10.11.11.11" netmask="255.255.255.255"/>
-        <IPv4 id="id5" name="h-10.12.12.12" comment="Created during import of  line 19" ro="False" address="10.12.12.12" netmask="255.255.255.255"/>
-        <IPv4 id="id6" name="h-10.13.13.13" comment="Created during import of  line 20" ro="False" address="10.13.13.13" netmask="255.255.255.255"/>
-        <IPv4 id="id7" name="h-10.14.14.14" comment="Created during import of  line 21" ro="False" address="10.14.14.14" netmask="255.255.255.255"/>
-        <IPv4 id="id8" name="h-10.15.15.15" comment="Created during import of  line 22" ro="False" address="10.15.15.15" netmask="255.255.255.255"/>
-        <IPv4 id="id9" name="h-10.16.16.16" comment="Created during import of  line 23" ro="False" address="10.16.16.16" netmask="255.255.255.255"/>
-        <IPv4 id="id10" name="h-10.17.17.17" comment="Created during import of  line 24" ro="False" address="10.17.17.17" netmask="255.255.255.255"/>
-        <IPv4 id="id11" name="h-10.18.18.18" comment="Created during import of  line 25" ro="False" address="10.18.18.18" netmask="255.255.255.255"/>
-        <IPv4 id="id12" name="h-10.1.2.3" comment="Created during import of  line 29" ro="False" address="10.1.2.3" netmask="255.255.255.255"/>
-        <IPv4 id="id13" name="h-10.4.5.6" comment="Created during import of  line 29" ro="False" address="10.4.5.6" netmask="255.255.255.255"/>
-        <IPv4 id="id14" name="h-10.7.8.9" comment="Created during import of  line 29" ro="False" address="10.7.8.9" netmask="255.255.255.255"/>
-        <IPv4 id="id15" name="h-192.168.1.1" comment="Created during import of  line 31" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
-        <IPv4 id="id16" name="h-192.168.1.2" comment="Created during import of  line 31" ro="False" address="192.168.1.2" netmask="255.255.255.255"/>
+        <IPv4 id="id3" name="h-10.1.1.1" comment="Created during import of  line 5" ro="False" address="10.1.1.1" netmask="255.255.255.255"/>
+        <IPv4 id="id4" name="h-10.1.2.3" comment="Created during import of  line 15" ro="False" address="10.1.2.3" netmask="255.255.255.255"/>
+        <IPv4 id="id5" name="h-10.4.5.6" comment="Created during import of  line 15" ro="False" address="10.4.5.6" netmask="255.255.255.255"/>
+        <IPv4 id="id6" name="h-10.7.8.9" comment="Created during import of  line 15" ro="False" address="10.7.8.9" netmask="255.255.255.255"/>
+        <IPv4 id="id7" name="h-192.168.1.1" comment="Created during import of  line 19" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
+        <IPv4 id="id8" name="h-192.168.1.2" comment="Created during import of  line 19" ro="False" address="192.168.1.2" netmask="255.255.255.255"/>
+        <IPv4 id="id9" name="h-192.168.2.1" comment="Created during import of  line 23" ro="False" address="192.168.2.1" netmask="255.255.255.255"/>
+        <IPv4 id="id10" name="h-10.11.11.11" comment="Created during import of  line 31" ro="False" address="10.11.11.11" netmask="255.255.255.255"/>
+        <IPv4 id="id11" name="h-10.12.12.12" comment="Created during import of  line 32" ro="False" address="10.12.12.12" netmask="255.255.255.255"/>
+        <IPv4 id="id12" name="h-10.13.13.13" comment="Created during import of  line 33" ro="False" address="10.13.13.13" netmask="255.255.255.255"/>
+        <IPv4 id="id13" name="h-10.14.14.14" comment="Created during import of  line 34" ro="False" address="10.14.14.14" netmask="255.255.255.255"/>
+        <IPv4 id="id14" name="h-10.15.15.15" comment="Created during import of  line 35" ro="False" address="10.15.15.15" netmask="255.255.255.255"/>
+        <IPv4 id="id15" name="h-10.16.16.16" comment="Created during import of  line 36" ro="False" address="10.16.16.16" netmask="255.255.255.255"/>
+        <IPv4 id="id16" name="h-10.17.17.17" comment="Created during import of  line 37" ro="False" address="10.17.17.17" netmask="255.255.255.255"/>
+        <IPv4 id="id17" name="h-10.18.18.18" comment="Created during import of  line 38" ro="False" address="10.18.18.18" netmask="255.255.255.255"/>
       </ObjectGroup>
-      <ObjectGroup id="id17" name="DNS Names" comment="" ro="False"/>
-      <ObjectGroup id="id18" name="Address Tables" comment="" ro="False"/>
-      <ObjectGroup id="id19" name="Groups" comment="" ro="False"/>
-      <ObjectGroup id="id20" name="Hosts" comment="" ro="False"/>
-      <ObjectGroup id="id21" name="Networks" comment="" ro="False">
-        <Network id="id22" name="net-10.123.12.32/255.255.255.224" comment="Created during import of  line 27" ro="False" address="10.123.12.32" netmask="255.255.255.224"/>
-        <Network id="id23" name="net-10.123.14.8/255.255.255.224" comment="Created during import of  line 27" ro="False" address="10.123.14.8" netmask="255.255.255.224"/>
-        <Network id="id24" name="net-10.123.10.16/255.255.255.240" comment="Created during import of  line 27" ro="False" address="10.123.10.16" netmask="255.255.255.240"/>
-        <Network id="id25" name="net-10.123.0.0/255.255.255.0" comment="Created during import of  line 27" ro="False" address="10.123.0.0" netmask="255.255.255.0"/>
+      <ObjectGroup id="id18" name="DNS Names" comment="" ro="False">
+        <DNSName id="id19" dnsrec="www.fwbuilder.org" dnsrectype="A" run_time="True" name="www.fwbuilder.org" comment="" ro="False"/>
       </ObjectGroup>
-      <ObjectGroup id="id26" name="Address Ranges" comment="" ro="False"/>
+      <ObjectGroup id="id20" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id21" name="Groups" comment="" ro="False">
+        <ObjectGroup id="id22" name="addr_list_1" comment="Created during import of  line 3" ro="False">
+          <ObjectRef ref="id66"/>
+          <ObjectRef ref="id67"/>
+          <ObjectRef ref="id68"/>
+          <ObjectRef ref="id69"/>
+        </ObjectGroup>
+        <ObjectGroup id="id27" name="addr_list_2" comment="Created during import of  line 5" ro="False">
+          <ObjectRef ref="id3"/>
+          <ObjectRef ref="id66"/>
+          <ObjectRef ref="id67"/>
+          <ObjectRef ref="id68"/>
+          <ObjectRef ref="id69"/>
+        </ObjectGroup>
+        <ObjectGroup id="id33" name="addr_list_3" comment="Created during import of  line 7" ro="False">
+          <ObjectRef ref="id3"/>
+          <ObjectRef ref="id70"/>
+          <ObjectRef ref="id71"/>
+        </ObjectGroup>
+        <ObjectGroup id="id37" name="addr_list_4" comment="Created during import of  line 9" ro="False">
+          <ObjectRef ref="id3"/>
+          <ObjectRef ref="id72"/>
+          <ObjectRef ref="id73"/>
+        </ObjectGroup>
+        <ObjectGroup id="id41" name="addr_list_5" comment="Created during import of  line 12" ro="False">
+          <ObjectRef ref="id3"/>
+          <ObjectRef ref="id74"/>
+          <ObjectRef ref="id75"/>
+        </ObjectGroup>
+        <ObjectGroup id="id45" name="addr_list_1_foo" comment="Created during import of  line 15" ro="False">
+          <ObjectRef ref="id4"/>
+          <ObjectRef ref="id5"/>
+          <ObjectRef ref="id6"/>
+        </ObjectGroup>
+        <ObjectGroup id="id49" name="recursive_macro" comment="Created during import of  line 19" ro="False">
+          <ObjectRef ref="id7"/>
+          <ObjectRef ref="id8"/>
+        </ObjectGroup>
+        <ObjectGroup id="id52" name="mixed_macro_1" comment="Created during import of  line 23" ro="False">
+          <ObjectRef ref="id7"/>
+          <ObjectRef ref="id9"/>
+          <ObjectRef ref="id19"/>
+        </ObjectGroup>
+        <ObjectGroup id="id56" name="mixed_macro_2" comment="Created during import of  line 24" ro="False">
+          <ObjectRef ref="id7"/>
+          <ObjectRef ref="id9"/>
+          <ObjectRef ref="id348"/>
+        </ObjectGroup>
+        <ObjectGroup id="id60" name="mixed_macro_3" comment="Created during import of  line 25" ro="False">
+          <ObjectRef ref="id7"/>
+          <ObjectRef ref="id9"/>
+          <ObjectRef ref="id349"/>
+        </ObjectGroup>
+      </ObjectGroup>
+      <ObjectGroup id="id64" name="Hosts" comment="" ro="False"/>
+      <ObjectGroup id="id65" name="Networks" comment="" ro="False">
+        <Network id="id66" name="net-10.123.12.32/255.255.255.224" comment="Created during import of  line 3" ro="False" address="10.123.12.32" netmask="255.255.255.224"/>
+        <Network id="id67" name="net-10.123.14.8/255.255.255.224" comment="Created during import of  line 3" ro="False" address="10.123.14.8" netmask="255.255.255.224"/>
+        <Network id="id68" name="net-10.123.10.16/255.255.255.240" comment="Created during import of  line 3" ro="False" address="10.123.10.16" netmask="255.255.255.240"/>
+        <Network id="id69" name="net-10.123.0.0/255.255.255.0" comment="Created during import of  line 3" ro="False" address="10.123.0.0" netmask="255.255.255.0"/>
+        <Network id="id70" name="net-10.123.12.33/255.255.255.224" comment="Created during import of  line 7" ro="False" address="10.123.12.33" netmask="255.255.255.224"/>
+        <Network id="id71" name="net-10.123.14.9/255.255.255.224" comment="Created during import of  line 7" ro="False" address="10.123.14.9" netmask="255.255.255.224"/>
+        <Network id="id72" name="net-10.123.12.34/255.255.255.224" comment="Created during import of  line 9" ro="False" address="10.123.12.34" netmask="255.255.255.224"/>
+        <Network id="id73" name="net-10.123.14.10/255.255.255.224" comment="Created during import of  line 9" ro="False" address="10.123.14.10" netmask="255.255.255.224"/>
+        <Network id="id74" name="net-10.123.12.35/255.255.255.224" comment="Created during import of  line 12" ro="False" address="10.123.12.35" netmask="255.255.255.224"/>
+        <Network id="id75" name="net-10.123.14.11/255.255.255.224" comment="Created during import of  line 12" ro="False" address="10.123.14.11" netmask="255.255.255.224"/>
+      </ObjectGroup>
+      <ObjectGroup id="id76" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
-    <ServiceGroup id="id27" name="Services" comment="" ro="False">
-      <ServiceGroup id="id28" name="Groups" comment="" ro="False"/>
-      <ServiceGroup id="id29" name="ICMP" comment="" ro="False"/>
-      <ServiceGroup id="id30" name="IP" comment="" ro="False"/>
-      <ServiceGroup id="id31" name="TCP" comment="" ro="False">
-        <TCPService id="id32" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 22:22" comment="Created during import of  line 33" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
-        <TCPService id="id33" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 25:25" comment="Created during import of  line 33" ro="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
+    <ServiceGroup id="id77" name="Services" comment="" ro="False">
+      <ServiceGroup id="id78" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id79" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id80" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id81" name="TCP" comment="" ro="False">
+        <TCPService id="id82" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 22:22" comment="Created during import of  line 47" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="id83" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 25:25" comment="Created during import of  line 47" ro="False" src_range_start="0" src_range_end="0" dst_range_start="25" dst_range_end="25"/>
+        <TCPService id="id84" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 0:0 / 80:80" comment="Created during import of  line 49" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
       </ServiceGroup>
-      <ServiceGroup id="id34" name="UDP" comment="" ro="False"/>
-      <ServiceGroup id="id35" name="Users" comment="" ro="False"/>
-      <ServiceGroup id="id36" name="Custom" comment="" ro="False"/>
-      <ServiceGroup id="id37" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id85" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id86" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id87" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id88" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
-    <ObjectGroup id="id38" name="Firewalls" comment="" ro="False">
-      <Firewall id="id39" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pf" name="test_fw" comment="Created during import of  line 16" ro="False">
-        <NAT id="id231" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+    <ObjectGroup id="id89" name="Firewalls" comment="" ro="False">
+      <Firewall id="id90" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pf" name="test_fw" comment="Created during import of  line 24" ro="False">
+        <NAT id="id344" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
-        <Policy id="id41" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id43" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Created during import of  line 16">
+        <Policy id="id92" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id94" disabled="False" group="" log="False" position="0" action="Accept" direction="Inbound" comment="Created during import of  line 29">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -498,139 +561,13 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id55" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Created during import of  line 18">
+          <PolicyRule id="id106" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Created during import of  line 31">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="id4"/>
-              <ObjectRef ref="id3"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id68" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="Created during import of  line 19">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id5"/>
-              <ObjectRef ref="id3"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id81" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="Created during import of  line 20">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id6"/>
-              <ObjectRef ref="id3"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id94" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="Created during import of  line 21">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id3"/>
-              <ObjectRef ref="id7"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id107" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="Created during import of  line 22">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id3"/>
-              <ObjectRef ref="id8"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id120" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="Created during import of  line 23">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id3"/>
-              <ObjectRef ref="id9"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id133" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="Created during import of  line 24">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id3"/>
               <ObjectRef ref="id10"/>
+              <ObjectRef ref="id3"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -645,60 +582,13 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id146" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="Created during import of  line 25">
+          <PolicyRule id="id119" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="Created during import of  line 32">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="id3"/>
               <ObjectRef ref="id11"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id159" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="Created during import of  line 27">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id22"/>
-              <ObjectRef ref="id23"/>
-              <ObjectRef ref="id24"/>
-              <ObjectRef ref="id25"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id174" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="Created during import of  line 28">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
               <ObjectRef ref="id3"/>
-              <ObjectRef ref="id22"/>
-              <ObjectRef ref="id23"/>
-              <ObjectRef ref="id24"/>
-              <ObjectRef ref="id25"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -713,13 +603,54 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id190" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="Created during import of  line 29">
+          <PolicyRule id="id132" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="Created during import of  line 33">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id12"/>
+              <ObjectRef ref="id3"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id145" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="Created during import of  line 34">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3"/>
               <ObjectRef ref="id13"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id158" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="Created during import of  line 35">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3"/>
               <ObjectRef ref="id14"/>
             </Dst>
             <Srv neg="False">
@@ -735,13 +666,13 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id204" disabled="False" group="" log="False" position="12" action="Deny" direction="Inbound" comment="Created during import of  line 31">
+          <PolicyRule id="id171" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="Created during import of  line 36">
             <Src neg="False">
-              <ObjectRef ref="id15"/>
-              <ObjectRef ref="id16"/>
+              <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
+              <ObjectRef ref="id3"/>
+              <ObjectRef ref="id15"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -756,20 +687,262 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id217" disabled="False" group="" log="False" position="13" action="Accept" direction="Outbound" comment="Created during import of  line 33">
+          <PolicyRule id="id184" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="Created during import of  line 37">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="id15"/>
+              <ObjectRef ref="id3"/>
               <ObjectRef ref="id16"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id32"/>
-              <ServiceRef ref="id33"/>
+              <ServiceRef ref="sysid1"/>
             </Srv>
             <Itf neg="False">
-              <ObjectRef ref="id235"/>
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id197" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="Created during import of  line 38">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3"/>
+              <ObjectRef ref="id17"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id210" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="Created during import of  line 40">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id22"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id222" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="Created during import of  line 41">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id27"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id234" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="Created during import of  line 42">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id33"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id246" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="Created during import of  line 43">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id37"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id258" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="Created during import of  line 44">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id41"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id270" disabled="False" group="" log="False" position="14" action="Accept" direction="Inbound" comment="Created during import of  line 45">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id45"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id282" disabled="False" group="" log="False" position="15" action="Accept" direction="Outbound" comment="Created during import of  line 47">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id49"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id82"/>
+              <ServiceRef ref="id83"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id348"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id295" disabled="False" group="" log="False" position="16" action="Accept" direction="Inbound" comment="Created during import of  line 49">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id52"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id84"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id348"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id307" disabled="False" group="" log="False" position="17" action="Accept" direction="Inbound" comment="Created during import of  line 50">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id56"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id84"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id348"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id319" disabled="False" group="" log="False" position="18" action="Accept" direction="Inbound" comment="Created during import of  line 51">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id60"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id84"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id348"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id331" disabled="False" group="" log="False" position="19" action="Accept" direction="Inbound" comment="Created during import of  line 52">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id349"/>
+              <ObjectRef ref="id19"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id84"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id348"/>
             </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
@@ -780,11 +953,12 @@
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Routing id="id233" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <Routing id="id346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id235" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em1" comment="Created during import of  line 33" ro="False">
+        <Interface id="id348" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em1" comment="Created during import of  line 24" ro="False">
           <InterfaceOptions/>
+          <AttachedNetworks id="id349" name="em1-net" comment="" ro="False"/>
         </Interface>
         <FirewallOptions>
           <Option name="check_shading">true</Option>
@@ -804,7 +978,7 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id237" name="Clusters" comment="" ro="False"/>
-    <IntervalGroup id="id238" name="Time" comment="" ro="False"/>
+    <ObjectGroup id="id351" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id352" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>
