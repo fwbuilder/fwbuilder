@@ -103,11 +103,7 @@ void PFImporter::run()
     int pass = 0;
     while (1)
     {
-        if (fwbdebug)
-        {
-            qDebug() << "################################";
-            qDebug() << "Pass " << pass;
-        }
+        if (fwbdebug) qDebug() << "Pass " << pass;
 
         QMapIterator<QString, QString> it(macros);
         while (it.hasNext())
@@ -119,15 +115,23 @@ void PFImporter::run()
 
             whole_input.replace(macro_instance, macro_value);
         }
-        QRegExp any_macro_instance("\\$\\w+\\W");
 
-        if (fwbdebug)
+        QRegExp any_macro_instance("\\$(\\w+)\\W");
+        if (any_macro_instance.indexIn(whole_input) == -1)
         {
-            qDebug() << "pf.conf file after line unfolding and macro substitution:";
-            qDebug() << whole_input;
+            break;
+        } else
+        {
+            QString macro_name = any_macro_instance.cap(1);
+            if (!macros.contains(macro_name))
+            {
+                err << gen_err + " " +
+                    QObject::tr("Macro %1 is undefined").arg(macro_name);
+                *logger << err.join("\n").toUtf8().constData();
+                return;
+            }
         }
 
-        if (! whole_input.contains(any_macro_instance)) break;
         pass++;
     }
 
