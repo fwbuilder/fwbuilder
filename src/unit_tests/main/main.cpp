@@ -25,6 +25,7 @@
 #include "FWBSettings.h"
 #include "FWBApplication.h"
 #include "UserWorkflow.h"
+#include "FWObjectClipboard.h"
 
 #include "common/commoninit.h"
 
@@ -77,4 +78,6 @@ void build_app(int argc, char** argv,
     qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
                        qt_resource_dir);
     (*app)->installTranslator (&qt_translator);
+
+    new FWObjectClipboard();
 }
