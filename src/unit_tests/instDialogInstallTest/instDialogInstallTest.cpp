@@ -128,10 +128,10 @@ bool checkProgress(QTreeWidget *list)
 
 void instDialogInstallTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    new FWObjectClipboard();
     ssh_auth_sock = getenv("SSH_AUTH_SOCK");
 }
 

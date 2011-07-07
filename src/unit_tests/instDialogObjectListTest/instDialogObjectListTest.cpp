@@ -105,10 +105,10 @@ using namespace libfwbuilder;
 
 void instDialogObjectListTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    new FWObjectClipboard();
 }
 
 void instDialogObjectListTest::openPolicy(QString fwname)

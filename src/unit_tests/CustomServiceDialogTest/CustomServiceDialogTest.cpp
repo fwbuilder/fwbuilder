@@ -182,10 +182,10 @@ void CustomServiceDialogTest::testDialog()
     selectComboItem(platform, "iptables");
     dialog->platformChanged();
     QTest::mouseClick(ipv6, Qt::LeftButton, Qt::NoModifier, QPoint(10,10));
-    QVERIFY(service->getAddressFamily() == 10);
+    QVERIFY(service->getAddressFamily() == AF_INET6);
     selectComboItem(platform, "PF");
     dialog->platformChanged();
-    QVERIFY(service->getAddressFamily() == 10);
+    QVERIFY(service->getAddressFamily() == AF_INET6);
 
     // testing that changing address family does not change platform code
     foreach (QString key, platforms.keys())
@@ -193,11 +193,11 @@ void CustomServiceDialogTest::testDialog()
         string oldcode = service->getCodeForPlatform(key.toStdString().c_str());
         string oldprotocol = service->getProtocol();
         QTest::mouseClick(ipv4, Qt::LeftButton, Qt::NoModifier, QPoint(10,10));
-        QVERIFY(service->getAddressFamily() == 2);
+        QVERIFY(service->getAddressFamily() == AF_INET);
         QVERIFY(oldcode == service->getCodeForPlatform(key.toStdString().c_str()));
         QVERIFY(oldprotocol == service->getProtocol());
         QTest::mouseClick(ipv6, Qt::LeftButton, Qt::NoModifier, QPoint(10,10));
-        QVERIFY(service->getAddressFamily() == 10);
+        QVERIFY(service->getAddressFamily() == AF_INET6);
         QVERIFY(oldcode == service->getCodeForPlatform(key.toStdString().c_str()));
         QVERIFY(oldprotocol == service->getProtocol());
     }
