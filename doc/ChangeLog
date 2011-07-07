@@ -1,3 +1,11 @@
+2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PF import: check if a macro used somewhere in the file to be
+	imported is actually defined and abort if not
+
+	* PF import: see #2551 making sure rules that have route-to option
+	get the call to setRoute() in the importer
+
 2011-07-06  Vadim Kurland  <vadim@netcitadel.com>
 
 	* applied two patches by Vadim Zhukov persgray@gmail.com to
