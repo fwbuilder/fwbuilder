@@ -158,7 +158,8 @@ comment :
         COMMENT_START
         {
             QStringList str;
-            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE &&
+                   LA(1) != NEWLINE)
             {
                 str << QString::fromUtf8(LT(1)->getText().c_str());
                 consume();
@@ -2072,8 +2073,13 @@ options {
         '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
       { $setType(WORD); }
 
-    | '$' ( 'a'..'z' | 'A'..'Z' ) ( 'a'..'z' | 'A'..'Z' | '0'..'9' | '_' )*
-      { $setType(MACRO); }
+    | ( '$' ) =>
+        (
+            '$' ( 'a'..'z' | 'A'..'Z' ) ( 'a'..'z' | 'A'..'Z' | '0'..'9' | '_' )*
+            { $setType(MACRO); }
+        |
+            '$'
+        )
     ;
 
 STRING : '"' (~'"')* '"';
