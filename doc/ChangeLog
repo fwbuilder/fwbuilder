@@ -1,5 +1,10 @@
 2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* RoutingCompiler.cpp (processNext): see #2191 "Crash when
+	compiling a route with table object". Compiler for PF crashed
+	when run-time AddressTable object was used in RDst of a routing
+	rule.
+
 	* PFImporter.cpp (makeAddressObj): see #2546 "PF import - negation
 	inside of inline tables is ignored". Since we can not import
 	address lists or tables that contain a mix of negated and
