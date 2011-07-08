@@ -231,7 +231,7 @@ void ImporterTest::IOSImporterTest()
     std::istringstream instream(buffer);
 
     Importer* imp = new IOSImporter(lib, instream, logger, "test_fw");
-
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
 
     imp->finalize();
@@ -256,7 +256,7 @@ void ImporterTest::IPTImporterTest()
     std::istringstream instream(buffer);
 
     Importer* imp = new IPTImporter(lib, instream, logger, "test_fw");
-
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
 
     imp->finalize();
@@ -281,7 +281,7 @@ void ImporterTest::IPTImporterNoNatTest()
     std::istringstream instream(buffer);
 
     Importer* imp = new IPTImporter(lib, instream, logger, "test_fw");
-
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
 
     imp->finalize();
@@ -317,7 +317,7 @@ void ImporterTest::IPTImporterParseVersionsTest()
         std::istringstream instream(actual_iptables_save.toStdString());
 
         Importer* imp = new IPTImporter(lib, instream, logger, "test_fw");
-
+        imp->setAddStandardCommentsFlag(true);
         CPPUNIT_ASSERT_NO_THROW( imp->run() );
 
         imp->finalize();
