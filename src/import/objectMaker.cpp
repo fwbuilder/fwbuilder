@@ -55,9 +55,23 @@ void ObjectMakerErrorTracker::registerError(const QString &msg)
     error_status = true;
 }
 
+void ObjectMakerErrorTracker::registerError(const string &msg)
+{
+    QString qs_msg = QString::fromUtf8(msg.c_str());
+    if ( ! errors.contains(qs_msg)) errors.append(qs_msg);
+    error_status = true;
+}
+
 void ObjectMakerErrorTracker::registerWarning(const QString &msg)
 {
     if ( ! warnings.contains(msg)) warnings.append(msg);
+    warning_status = true;
+}
+
+void ObjectMakerErrorTracker::registerWarning(const string &msg)
+{
+    QString qs_msg = QString::fromUtf8(msg.c_str());
+    if ( ! warnings.contains(qs_msg)) warnings.append(qs_msg);
     warning_status = true;
 }
 

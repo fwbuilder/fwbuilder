@@ -1,5 +1,18 @@
 2011-07-08  vadim  <vadim@netcitadel.com>
 
+	* parsers/pf.g: see #2556 "PF import: impor of rules referring to
+	undefined macros". Importer now records all parser errors in the
+	comments of rules where they occurred and marks these rules
+	"broken" by coloring them red. Behavior on import of pf.conf file
+	with undefined macros is inconsistent at this time: undefined
+	macro that appears in a rule where parser expects ip addresses is
+	converted to a run-time DNSName object with name "$macro", a
+	warning is displayed and rule is marked as "broken". Undefined
+	macro in the position of interface name, port name or other
+	parameters triggers generic parser error that looks like "Parser
+	error: line 26:19: unexpected token: $ext". The rule is marked as
+	"broken" and the error is recorded in the comment.
+
 	* PFImporterRun.cpp (substituteMacros): see #2556 "PF import:
 	impor of rules referring to undefined macros". Importer displays
 	warnings for all undefined macros found in the file, even if there

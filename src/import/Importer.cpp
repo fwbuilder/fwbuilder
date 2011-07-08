@@ -565,14 +565,23 @@ void Importer::pushRule()
     if (error_tracker->hasWarnings())
     {
         QStringList warn = error_tracker->getWarnings();
-        addMessageToLog("Warning: " + warn.join("\n"));
+        // parser errors and warnings are added to the log by
+        // PFCfgParser::reportError() and PFCfgParser::reportWarning()
+        // so we dont need to add them again here
+        foreach(QString w, warn)
+        {
+            if (!w.startsWith("Parser warning:")) addMessageToLog("Warning: " + w);
+        }
         markCurrentRuleBad();
     }
 
     if (error_tracker->hasErrors())
     {
         QStringList err = error_tracker->getErrors();
-        addMessageToLog("Error: " + err.join("\n"));
+        foreach(QString e, err)
+        {
+            if (!e.startsWith("Parser error:")) addMessageToLog("Error: " + e);
+        }
         markCurrentRuleBad();
     }
 

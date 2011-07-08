@@ -9,7 +9,7 @@
 
 #line 11 "PFCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "PFCfgParserTokenTypes.hpp"
@@ -47,6 +47,7 @@ class CUSTOM_API PFCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publi
     virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
     {
         importer->addMessageToLog("Parser error: " + ex.toString());
+        importer->error_tracker->registerError("Parser error: " + ex.toString());
         std::cerr << ex.toString() << std::endl;
     }
 
@@ -54,6 +55,7 @@ class CUSTOM_API PFCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publi
     virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser error: " + s);
+        importer->error_tracker->registerError("Parser error: " + s);
         std::cerr << s << std::endl;
     }
 
@@ -61,6 +63,7 @@ class CUSTOM_API PFCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, publi
     virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser warning: " + s);
+        importer->error_tracker->registerError("Parser warning: " + s);
         std::cerr << s << std::endl;
     }
 

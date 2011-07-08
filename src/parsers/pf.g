@@ -91,6 +91,7 @@ options
     virtual void reportError(const ANTLR_USE_NAMESPACE(antlr)RecognitionException& ex)
     {
         importer->addMessageToLog("Parser error: " + ex.toString());
+        importer->error_tracker->registerError("Parser error: " + ex.toString());
         std::cerr << ex.toString() << std::endl;
     }
 
@@ -98,6 +99,7 @@ options
     virtual void reportError(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser error: " + s);
+        importer->error_tracker->registerError("Parser error: " + s);
         std::cerr << s << std::endl;
     }
 
@@ -105,6 +107,7 @@ options
     virtual void reportWarning(const ANTLR_USE_NAMESPACE(std)string& s)
     {
         importer->addMessageToLog("Parser warning: " + s);
+        importer->error_tracker->registerError("Parser warning: " + s);
         std::cerr << s << std::endl;
     }
 

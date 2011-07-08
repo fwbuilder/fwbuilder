@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.7 (20100319): "pf.g" -> "PFCfgParser.cpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pf.g" -> "PFCfgParser.cpp"$ */
 #line 43 "pf.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -156,7 +156,7 @@ void PFCfgParser::comment() {
 	
 	try {      // for error handling
 		match(COMMENT_START);
-#line 156 "pf.g"
+#line 159 "pf.g"
 		
 		QStringList str;
 		while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
@@ -179,7 +179,7 @@ void PFCfgParser::include_command() {
 	
 	try {      // for error handling
 		match(INCLUDE_COMMAND);
-#line 169 "pf.g"
+#line 172 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -201,7 +201,7 @@ void PFCfgParser::macro_definition() {
 	try {      // for error handling
 		match(WORD);
 		match(EQUAL);
-#line 180 "pf.g"
+#line 183 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -220,7 +220,7 @@ void PFCfgParser::altq_rule() {
 	
 	try {      // for error handling
 		match(ALTQ);
-#line 200 "pf.g"
+#line 203 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -241,7 +241,7 @@ void PFCfgParser::antispoof_rule() {
 	
 	try {      // for error handling
 		match(ANTISPOOF);
-#line 189 "pf.g"
+#line 192 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -262,7 +262,7 @@ void PFCfgParser::queue_rule() {
 	
 	try {      // for error handling
 		match(QUEUE);
-#line 211 "pf.g"
+#line 214 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -283,7 +283,7 @@ void PFCfgParser::set_rule() {
 	
 	try {      // for error handling
 		match(SET);
-#line 222 "pf.g"
+#line 225 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -379,7 +379,7 @@ void PFCfgParser::scrub_rule() {
 	
 	try {      // for error handling
 		match(SCRUB);
-#line 521 "pf.g"
+#line 524 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -402,7 +402,7 @@ void PFCfgParser::match_rule() {
 	
 	try {      // for error handling
 		match(MATCH);
-#line 536 "pf.g"
+#line 539 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -412,7 +412,7 @@ void PFCfgParser::match_rule() {
 		
 #line 414 "PFCfgParser.cpp"
 		rule_extended();
-#line 544 "pf.g"
+#line 547 "pf.g"
 		
 		if ( ! importer->scrub_rule) importer->pushRule();
 		
@@ -432,7 +432,7 @@ void PFCfgParser::table_rule() {
 	
 	try {      // for error handling
 		match(TABLE);
-#line 553 "pf.g"
+#line 556 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -468,7 +468,7 @@ void PFCfgParser::table_rule() {
 		case CONST_WORD:
 		{
 			match(CONST_WORD);
-#line 565 "pf.g"
+#line 568 "pf.g"
 			
 			importer->addMessageToLog(
 			QString("Warning: attribute \"const\" will be dropped from table configuration since this attribute is not supported at this time"));
@@ -494,7 +494,7 @@ void PFCfgParser::table_rule() {
 		case COUNTERS:
 		{
 			match(COUNTERS);
-#line 572 "pf.g"
+#line 575 "pf.g"
 			
 			importer->addMessageToLog(
 			QString("Warning: attribute \"counters\" will be dropped from table configuration since this attribute is not supported at this time"));
@@ -521,7 +521,7 @@ void PFCfgParser::table_rule() {
 			match(FILE);
 			file = LT(1);
 			match(STRING);
-#line 579 "pf.g"
+#line 582 "pf.g"
 			
 			importer->newAddressTableObject(
 			name->getText(), file->getText());
@@ -568,7 +568,7 @@ void PFCfgParser::table_rule() {
 			_loop58:;
 			} // ( ... )*
 			match(CLOSING_BRACE);
-#line 591 "pf.g"
+#line 594 "pf.g"
 			
 			importer->newAddressTableObject(
 			name->getText(), importer->tmp_group);
@@ -579,7 +579,7 @@ void PFCfgParser::table_rule() {
 		case NEWLINE:
 		{
 			match(NEWLINE);
-#line 597 "pf.g"
+#line 600 "pf.g"
 			
 			// Special case: table definition without file name or list of addresses.
 			// Create run-time AddressTable object with name but no file spec.
@@ -606,7 +606,7 @@ void PFCfgParser::no_nat_rule() {
 	
 	try {      // for error handling
 		match(NO);
-#line 672 "pf.g"
+#line 675 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -645,7 +645,7 @@ void PFCfgParser::nat_rule() {
 	
 	try {      // for error handling
 		match(NAT);
-#line 689 "pf.g"
+#line 692 "pf.g"
 		
 		if ( importer->action != "nonat" )
 		{
@@ -662,7 +662,7 @@ void PFCfgParser::nat_rule() {
 		case PASS:
 		{
 			match(PASS);
-#line 701 "pf.g"
+#line 704 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat pass' commands is not supported."));
@@ -822,7 +822,7 @@ void PFCfgParser::nat_rule() {
 		case TAG:
 		{
 			tag_clause();
-#line 714 "pf.g"
+#line 717 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat ... tag' commands is not supported."));
@@ -867,7 +867,7 @@ void PFCfgParser::nat_rule() {
 			}
 			}
 			}
-#line 722 "pf.g"
+#line 725 "pf.g"
 			
 			importer->nat_group = importer->tmp_group;
 			
@@ -877,7 +877,7 @@ void PFCfgParser::nat_rule() {
 			case PORT:
 			{
 				portspec();
-#line 727 "pf.g"
+#line 730 "pf.g"
 				
 				importer->nat_port_group = importer->tmp_port_group;
 				
@@ -925,7 +925,7 @@ void PFCfgParser::nat_rule() {
 			case STATIC_PORT:
 			{
 				match(STATIC_PORT);
-#line 733 "pf.g"
+#line 736 "pf.g"
 				importer->nat_rule_opt_2 = "static-port";
 #line 931 "PFCfgParser.cpp"
 				break;
@@ -952,7 +952,7 @@ void PFCfgParser::nat_rule() {
 		}
 		}
 		}
-#line 736 "pf.g"
+#line 739 "pf.g"
 		
 		importer->pushRule();
 		
@@ -970,7 +970,7 @@ void PFCfgParser::rdr_rule() {
 	
 	try {      // for error handling
 		match(RDR);
-#line 745 "pf.g"
+#line 748 "pf.g"
 		
 		if ( importer->action != "nonat" )
 		{
@@ -987,7 +987,7 @@ void PFCfgParser::rdr_rule() {
 		case PASS:
 		{
 			match(PASS);
-#line 757 "pf.g"
+#line 760 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat pass' commands is not supported."));
@@ -1147,7 +1147,7 @@ void PFCfgParser::rdr_rule() {
 		case TAG:
 		{
 			tag_clause();
-#line 770 "pf.g"
+#line 773 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("import of 'nat ... tag' commands is not supported."));
@@ -1192,7 +1192,7 @@ void PFCfgParser::rdr_rule() {
 			}
 			}
 			}
-#line 778 "pf.g"
+#line 781 "pf.g"
 			
 			importer->nat_group = importer->tmp_group;
 			
@@ -1202,7 +1202,7 @@ void PFCfgParser::rdr_rule() {
 			case PORT:
 			{
 				portspec();
-#line 783 "pf.g"
+#line 786 "pf.g"
 				
 				importer->nat_port_group = importer->tmp_port_group;
 				
@@ -1255,7 +1255,7 @@ void PFCfgParser::rdr_rule() {
 		}
 		}
 		}
-#line 789 "pf.g"
+#line 792 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1273,7 +1273,7 @@ void PFCfgParser::binat_rule() {
 	
 	try {      // for error handling
 		match(BINAT);
-#line 921 "pf.g"
+#line 924 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1294,7 +1294,7 @@ void PFCfgParser::pass_rule() {
 	
 	try {      // for error handling
 		match(PASS);
-#line 944 "pf.g"
+#line 947 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1304,7 +1304,7 @@ void PFCfgParser::pass_rule() {
 		
 #line 1306 "PFCfgParser.cpp"
 		rule_extended();
-#line 952 "pf.g"
+#line 955 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1322,7 +1322,7 @@ void PFCfgParser::block_rule() {
 	
 	try {      // for error handling
 		match(BLOCK);
-#line 959 "pf.g"
+#line 962 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1389,7 +1389,7 @@ void PFCfgParser::block_rule() {
 		}
 		}
 		rule_extended();
-#line 968 "pf.g"
+#line 971 "pf.g"
 		
 		importer->pushRule();
 		
@@ -1455,7 +1455,7 @@ void PFCfgParser::set_ruleset_optimization() {
 	
 	try {      // for error handling
 		match(14);
-#line 265 "pf.g"
+#line 268 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1509,7 +1509,7 @@ void PFCfgParser::set_optimization() {
 		}
 		}
 		}
-#line 287 "pf.g"
+#line 290 "pf.g"
 		importer->set_optimization = LT(0)->getText();
 #line 1515 "PFCfgParser.cpp"
 	}
@@ -1558,7 +1558,7 @@ void PFCfgParser::set_loginterface() {
 	
 	try {      // for error handling
 		match(LITERAL_loginterface);
-#line 298 "pf.g"
+#line 301 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1597,7 +1597,7 @@ void PFCfgParser::set_block_policy() {
 		}
 		}
 		}
-#line 310 "pf.g"
+#line 313 "pf.g"
 		importer->set_block_policy = LT(0)->getText();
 #line 1603 "PFCfgParser.cpp"
 	}
@@ -1630,7 +1630,7 @@ void PFCfgParser::set_state_policy() {
 		}
 		}
 		}
-#line 316 "pf.g"
+#line 319 "pf.g"
 		importer->set_state_policy = LT(0)->getText();
 #line 1636 "PFCfgParser.cpp"
 	}
@@ -1645,7 +1645,7 @@ void PFCfgParser::set_state_defaults() {
 	
 	try {      // for error handling
 		match(29);
-#line 322 "pf.g"
+#line 325 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1666,7 +1666,7 @@ void PFCfgParser::set_require_order() {
 	
 	try {      // for error handling
 		match(30);
-#line 334 "pf.g"
+#line 337 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1687,7 +1687,7 @@ void PFCfgParser::set_fingerprints() {
 	
 	try {      // for error handling
 		match(LITERAL_fingerprints);
-#line 346 "pf.g"
+#line 349 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1723,7 +1723,7 @@ void PFCfgParser::set_debug() {
 	try {      // for error handling
 		match(LITERAL_debug);
 		match(WORD);
-#line 382 "pf.g"
+#line 385 "pf.g"
 		
 		importer->set_debug = LT(0)->getText();
 		
@@ -1740,7 +1740,7 @@ void PFCfgParser::set_reassemble() {
 	
 	try {      // for error handling
 		match(LITERAL_reassemble);
-#line 390 "pf.g"
+#line 393 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1761,7 +1761,7 @@ void PFCfgParser::set_hostid() {
 	
 	try {      // for error handling
 		match(LITERAL_hostid);
-#line 402 "pf.g"
+#line 405 "pf.g"
 		
 		importer->clear();
 		importer->setCurrentLineNumber(LT(0)->getLine());
@@ -1779,7 +1779,7 @@ void PFCfgParser::set_hostid() {
 
 void PFCfgParser::timeout_def() {
 	Tracer traceInOut(this, "timeout_def");
-#line 420 "pf.g"
+#line 423 "pf.g"
 	std::string timeout_name, timeout_value;
 #line 1785 "PFCfgParser.cpp"
 	
@@ -1887,13 +1887,13 @@ void PFCfgParser::timeout_def() {
 		}
 		}
 		}
-#line 461 "pf.g"
+#line 464 "pf.g"
 		
 		timeout_name = LT(0)->getText();
 		
 #line 1895 "PFCfgParser.cpp"
 		match(INT_CONST);
-#line 465 "pf.g"
+#line 468 "pf.g"
 		
 		timeout_value = LT(0)->getText();
 		importer->timeouts.push_back(
@@ -1970,7 +1970,7 @@ void PFCfgParser::timeout_def_list() {
 
 void PFCfgParser::limit_def() {
 	Tracer traceInOut(this, "limit_def");
-#line 483 "pf.g"
+#line 486 "pf.g"
 	std::string limit_name, limit_value;
 #line 1976 "PFCfgParser.cpp"
 	
@@ -2008,13 +2008,13 @@ void PFCfgParser::limit_def() {
 		}
 		}
 		}
-#line 496 "pf.g"
+#line 499 "pf.g"
 		
 		limit_name = LT(0)->getText();
 		
 #line 2016 "PFCfgParser.cpp"
 		match(INT_CONST);
-#line 500 "pf.g"
+#line 503 "pf.g"
 		
 		limit_value = LT(0)->getText();
 		importer->limits.push_back(
@@ -2083,7 +2083,7 @@ void PFCfgParser::skip_def() {
 		case WORD:
 		{
 			match(WORD);
-#line 362 "pf.g"
+#line 365 "pf.g"
 			importer->set_skip_on.push_back(LT(0)->getText());
 #line 2089 "PFCfgParser.cpp"
 			break;
@@ -2111,7 +2111,7 @@ void PFCfgParser::skip_list() {
 	try {      // for error handling
 		match(OPENING_BRACE);
 		match(WORD);
-#line 371 "pf.g"
+#line 374 "pf.g"
 		importer->set_skip_on.push_back(LT(0)->getText());
 #line 2117 "PFCfgParser.cpp"
 		{ // ( ... )*
@@ -2130,7 +2130,7 @@ void PFCfgParser::skip_list() {
 				_loop32:;
 				} // ( ... )*
 				match(WORD);
-#line 374 "pf.g"
+#line 377 "pf.g"
 				importer->set_skip_on.push_back(LT(0)->getText());
 #line 2136 "PFCfgParser.cpp"
 			}
@@ -2494,7 +2494,7 @@ void PFCfgParser::rule_extended() {
 
 void PFCfgParser::tableaddr_spec() {
 	Tracer traceInOut(this, "tableaddr_spec");
-#line 605 "pf.g"
+#line 608 "pf.g"
 	AddressSpec as;
 #line 2500 "PFCfgParser.cpp"
 	
@@ -2504,7 +2504,7 @@ void PFCfgParser::tableaddr_spec() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 606 "pf.g"
+#line 609 "pf.g"
 			as.neg = true;
 #line 2510 "PFCfgParser.cpp"
 			break;
@@ -2528,7 +2528,7 @@ void PFCfgParser::tableaddr_spec() {
 		case WORD:
 		{
 			match(WORD);
-#line 609 "pf.g"
+#line 612 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -2545,7 +2545,7 @@ void PFCfgParser::tableaddr_spec() {
 				case NETWORK:
 				{
 					match(NETWORK);
-#line 618 "pf.g"
+#line 621 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_NETWORK;
 					
@@ -2555,7 +2555,7 @@ void PFCfgParser::tableaddr_spec() {
 				case BROADCAST:
 				{
 					match(BROADCAST);
-#line 623 "pf.g"
+#line 626 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_BROADCAST;
 					
@@ -2565,7 +2565,7 @@ void PFCfgParser::tableaddr_spec() {
 				case PEER:
 				{
 					match(PEER);
-#line 628 "pf.g"
+#line 631 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:peer' is not supported."));
@@ -2576,7 +2576,7 @@ void PFCfgParser::tableaddr_spec() {
 				case INT_CONST:
 				{
 					match(INT_CONST);
-#line 634 "pf.g"
+#line 637 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:0' is not supported."));
@@ -2614,7 +2614,7 @@ void PFCfgParser::tableaddr_spec() {
 		case SELF:
 		{
 			match(SELF);
-#line 642 "pf.g"
+#line 645 "pf.g"
 			
 			as.at = AddressSpec::SPECIAL_ADDRESS;
 			as.address = "self";
@@ -2649,7 +2649,7 @@ void PFCfgParser::tableaddr_spec() {
 			}
 			}
 			}
-#line 649 "pf.g"
+#line 652 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
@@ -2660,7 +2660,7 @@ void PFCfgParser::tableaddr_spec() {
 			case SLASH:
 			{
 				match(SLASH);
-#line 655 "pf.g"
+#line 658 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
@@ -2683,7 +2683,7 @@ void PFCfgParser::tableaddr_spec() {
 				}
 				}
 				}
-#line 659 "pf.g"
+#line 662 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
@@ -2715,7 +2715,7 @@ void PFCfgParser::tableaddr_spec() {
 		}
 		}
 		}
-#line 664 "pf.g"
+#line 667 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
@@ -2760,7 +2760,7 @@ void PFCfgParser::logging() {
 		}
 		}
 		}
-#line 1043 "pf.g"
+#line 1046 "pf.g"
 		importer->logging = true;
 #line 2766 "PFCfgParser.cpp"
 	}
@@ -2814,7 +2814,7 @@ void PFCfgParser::address_family() {
 		case INET6:
 		{
 			match(INET6);
-#line 1087 "pf.g"
+#line 1090 "pf.g"
 			
 			importer->address_family = LT(0)->getText();
 			
@@ -2854,7 +2854,7 @@ void PFCfgParser::hosts() {
 		case ALL:
 		{
 			match(ALL);
-#line 1130 "pf.g"
+#line 1133 "pf.g"
 			
 			importer->src_group.push_back(
 			AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
@@ -2995,7 +2995,7 @@ void PFCfgParser::tagged() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1689 "pf.g"
+#line 1692 "pf.g"
 			importer->tagged_neg = true;
 #line 3001 "PFCfgParser.cpp"
 			break;
@@ -3012,7 +3012,7 @@ void PFCfgParser::tagged() {
 		}
 		match(TAGGED);
 		match(WORD);
-#line 1691 "pf.g"
+#line 1694 "pf.g"
 		
 		importer->tagged = LT(0)->getText();
 		
@@ -3030,7 +3030,7 @@ void PFCfgParser::tag_clause() {
 	try {      // for error handling
 		match(TAG);
 		match(WORD);
-#line 1698 "pf.g"
+#line 1701 "pf.g"
 		
 		importer->tag = LT(0)->getText();
 		
@@ -3044,7 +3044,7 @@ void PFCfgParser::tag_clause() {
 
 void PFCfgParser::redirhost() {
 	Tracer traceInOut(this, "redirhost");
-#line 800 "pf.g"
+#line 803 "pf.g"
 	AddressSpec as;
 #line 3050 "PFCfgParser.cpp"
 	
@@ -3054,7 +3054,7 @@ void PFCfgParser::redirhost() {
 		case IPV4:
 		{
 			match(IPV4);
-#line 803 "pf.g"
+#line 806 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
@@ -3065,7 +3065,7 @@ void PFCfgParser::redirhost() {
 			case SLASH:
 			{
 				match(SLASH);
-#line 809 "pf.g"
+#line 812 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
@@ -3088,7 +3088,7 @@ void PFCfgParser::redirhost() {
 				}
 				}
 				}
-#line 813 "pf.g"
+#line 816 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
@@ -3122,7 +3122,7 @@ void PFCfgParser::redirhost() {
 		{
 			match(OPENING_PAREN);
 			match(WORD);
-#line 820 "pf.g"
+#line 823 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -3135,7 +3135,7 @@ void PFCfgParser::redirhost() {
 		case WORD:
 		{
 			match(WORD);
-#line 828 "pf.g"
+#line 831 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -3150,7 +3150,7 @@ void PFCfgParser::redirhost() {
 		}
 		}
 		}
-#line 834 "pf.g"
+#line 837 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
@@ -3209,7 +3209,7 @@ void PFCfgParser::redirhost_list() {
 
 void PFCfgParser::portspec() {
 	Tracer traceInOut(this, "portspec");
-#line 859 "pf.g"
+#line 862 "pf.g"
 	PortSpec ps;
 #line 3215 "PFCfgParser.cpp"
 	
@@ -3221,7 +3221,7 @@ void PFCfgParser::portspec() {
 		case INT_CONST:
 		{
 			port_def();
-#line 863 "pf.g"
+#line 866 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = ps.port1;
@@ -3233,7 +3233,7 @@ void PFCfgParser::portspec() {
 		case IPV6:
 		{
 			match(IPV6);
-#line 872 "pf.g"
+#line 875 "pf.g"
 			
 			ps.setFromPortRange(LT(0)->getText());
 			
@@ -3243,7 +3243,7 @@ void PFCfgParser::portspec() {
 			case STAR:
 			{
 				match(STAR);
-#line 876 "pf.g"
+#line 879 "pf.g"
 				ps.port2 = "65535";
 #line 3249 "PFCfgParser.cpp"
 				break;
@@ -3271,7 +3271,7 @@ void PFCfgParser::portspec() {
 		}
 		}
 		}
-#line 879 "pf.g"
+#line 882 "pf.g"
 		
 		importer->tmp_port_group.push_back(ps);
 		
@@ -3292,7 +3292,7 @@ void PFCfgParser::pooltype() {
 		case BITMASK:
 		{
 			match(BITMASK);
-#line 893 "pf.g"
+#line 896 "pf.g"
 			importer->nat_rule_opt_1 = "bitmask";
 #line 3298 "PFCfgParser.cpp"
 			break;
@@ -3300,7 +3300,7 @@ void PFCfgParser::pooltype() {
 		case RANDOM:
 		{
 			match(RANDOM);
-#line 895 "pf.g"
+#line 898 "pf.g"
 			importer->nat_rule_opt_1 = "random";
 #line 3306 "PFCfgParser.cpp"
 			break;
@@ -3308,7 +3308,7 @@ void PFCfgParser::pooltype() {
 		case SOURCE_HASH:
 		{
 			match(SOURCE_HASH);
-#line 897 "pf.g"
+#line 900 "pf.g"
 			importer->nat_rule_opt_1 = "source-hash";
 #line 3314 "PFCfgParser.cpp"
 			{
@@ -3316,7 +3316,7 @@ void PFCfgParser::pooltype() {
 			case HEX_KEY:
 			{
 				match(HEX_KEY);
-#line 900 "pf.g"
+#line 903 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("import of 'nat' commands with 'source-hash hex-key' "
@@ -3328,7 +3328,7 @@ void PFCfgParser::pooltype() {
 			case STRING_KEY:
 			{
 				match(STRING_KEY);
-#line 907 "pf.g"
+#line 910 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("import of 'nat' commands with 'source-hash string-key' "
@@ -3354,7 +3354,7 @@ void PFCfgParser::pooltype() {
 		case ROUND_ROBIN:
 		{
 			match(ROUND_ROBIN);
-#line 914 "pf.g"
+#line 917 "pf.g"
 			importer->nat_rule_opt_1 = "round-robin";
 #line 3360 "PFCfgParser.cpp"
 			break;
@@ -3412,7 +3412,7 @@ void PFCfgParser::port_def() {
 		}
 		}
 		}
-#line 1826 "pf.g"
+#line 1829 "pf.g"
 		
 		importer->tmp_port_def = LT(0)->getText();
 		
@@ -3433,7 +3433,7 @@ void PFCfgParser::block_return() {
 		case DROP:
 		{
 			match(DROP);
-#line 976 "pf.g"
+#line 979 "pf.g"
 			importer->block_action_params.push_back("drop");
 #line 3439 "PFCfgParser.cpp"
 			break;
@@ -3441,7 +3441,7 @@ void PFCfgParser::block_return() {
 		case RETURN:
 		{
 			match(RETURN);
-#line 978 "pf.g"
+#line 981 "pf.g"
 			importer->block_action_params.push_back("return");
 #line 3447 "PFCfgParser.cpp"
 			break;
@@ -3449,7 +3449,7 @@ void PFCfgParser::block_return() {
 		case RETURN_RST:
 		{
 			match(RETURN_RST);
-#line 980 "pf.g"
+#line 983 "pf.g"
 			importer->block_action_params.push_back("return-rst");
 #line 3455 "PFCfgParser.cpp"
 			{
@@ -3458,7 +3458,7 @@ void PFCfgParser::block_return() {
 			{
 				match(TTL);
 				match(INT_CONST);
-#line 983 "pf.g"
+#line 986 "pf.g"
 				
 				importer->error_tracker->registerError(
 				QString("Import of \"block return-rst ttl number\" is not supported. "));
@@ -3517,7 +3517,7 @@ void PFCfgParser::block_return() {
 		case RETURN_ICMP:
 		{
 			match(RETURN_ICMP);
-#line 989 "pf.g"
+#line 992 "pf.g"
 			importer->block_action_params.push_back("return-icmp");
 #line 3523 "PFCfgParser.cpp"
 			{
@@ -3570,7 +3570,7 @@ void PFCfgParser::block_return() {
 				}
 				}
 				}
-#line 993 "pf.g"
+#line 996 "pf.g"
 				importer->block_action_params.push_back(LT(0)->getText());
 #line 3576 "PFCfgParser.cpp"
 				{
@@ -3625,7 +3625,7 @@ void PFCfgParser::block_return() {
 					}
 					}
 					}
-#line 997 "pf.g"
+#line 1000 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("Import of \"block return-icmp (icmp_code, icmp6_code)\" is not supported"));
@@ -3657,7 +3657,7 @@ void PFCfgParser::block_return() {
 		case RETURN_ICMP6:
 		{
 			match(RETURN_ICMP6);
-#line 1006 "pf.g"
+#line 1009 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("Import of \"block return-icmp6\" is not supported"));
@@ -3870,7 +3870,7 @@ void PFCfgParser::direction() {
 		}
 		}
 		}
-#line 1026 "pf.g"
+#line 1029 "pf.g"
 		
 		importer->direction = LT(0)->getText();
 		
@@ -3902,7 +3902,7 @@ void PFCfgParser::quick_or_log() {
 			}
 			
 			}
-#line 1034 "pf.g"
+#line 1037 "pf.g"
 			importer->logging = true;
 #line 3908 "PFCfgParser.cpp"
 			{
@@ -3910,7 +3910,7 @@ void PFCfgParser::quick_or_log() {
 			case QUICK:
 			{
 				match(QUICK);
-#line 1035 "pf.g"
+#line 1038 "pf.g"
 				importer->quick = true;
 #line 3916 "PFCfgParser.cpp"
 				break;
@@ -3962,7 +3962,7 @@ void PFCfgParser::quick_or_log() {
 		case QUICK:
 		{
 			match(QUICK);
-#line 1037 "pf.g"
+#line 1040 "pf.g"
 			importer->quick = true;
 #line 3968 "PFCfgParser.cpp"
 			{
@@ -3981,7 +3981,7 @@ void PFCfgParser::quick_or_log() {
 				}
 				
 				}
-#line 1038 "pf.g"
+#line 1041 "pf.g"
 				importer->logging = true;
 #line 3987 "PFCfgParser.cpp"
 				break;
@@ -4147,7 +4147,7 @@ void PFCfgParser::logopts() {
 		for (;;) {
 			if ((LA(1) == COMMA)) {
 				match(COMMA);
-#line 1050 "pf.g"
+#line 1053 "pf.g"
 				importer->logopts += ",";
 #line 4153 "PFCfgParser.cpp"
 				logopt();
@@ -4186,7 +4186,7 @@ void PFCfgParser::logopt() {
 		{
 			match(TO);
 			match(WORD);
-#line 1057 "pf.g"
+#line 1060 "pf.g"
 			
 			importer->logopts += LT(0)->getText();
 			
@@ -4207,7 +4207,7 @@ void PFCfgParser::logopt() {
 
 void PFCfgParser::ifspec() {
 	Tracer traceInOut(this, "ifspec");
-#line 1065 "pf.g"
+#line 1068 "pf.g"
 	InterfaceSpec is;
 #line 4213 "PFCfgParser.cpp"
 	
@@ -4217,7 +4217,7 @@ void PFCfgParser::ifspec() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1066 "pf.g"
+#line 1069 "pf.g"
 			is.neg = true;
 #line 4223 "PFCfgParser.cpp"
 			break;
@@ -4233,7 +4233,7 @@ void PFCfgParser::ifspec() {
 		}
 		}
 		match(WORD);
-#line 1068 "pf.g"
+#line 1071 "pf.g"
 		
 		is.name = LT(0)->getText();
 		importer->iface_group.push_back(is);
@@ -4432,7 +4432,7 @@ void PFCfgParser::proto_name() {
 		}
 		}
 		}
-#line 1107 "pf.g"
+#line 1110 "pf.g"
 		
 		importer->proto_list.push_back(LT(0)->getText());
 		
@@ -4449,7 +4449,7 @@ void PFCfgParser::proto_number() {
 	
 	try {      // for error handling
 		match(INT_CONST);
-#line 1113 "pf.g"
+#line 1116 "pf.g"
 		
 		importer->proto_list.push_back(LT(0)->getText());
 		
@@ -4652,7 +4652,7 @@ void PFCfgParser::src_hosts_part() {
 		case URPF_FAILED:
 		{
 			match(URPF_FAILED);
-#line 1153 "pf.g"
+#line 1156 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::SPECIAL_ADDRESS, false,
@@ -4667,7 +4667,7 @@ void PFCfgParser::src_hosts_part() {
 		}
 		}
 		}
-#line 1159 "pf.g"
+#line 1162 "pf.g"
 		
 		importer->src_neg = importer->tmp_neg;
 		importer->src_group.splice(importer->src_group.begin(),
@@ -4710,7 +4710,7 @@ void PFCfgParser::src_port_part() {
 		}
 		}
 		}
-#line 1747 "pf.g"
+#line 1750 "pf.g"
 		
 		importer->src_port_group.splice(importer->src_port_group.begin(),
 		importer->tmp_port_group);
@@ -4728,7 +4728,7 @@ void PFCfgParser::dst_hosts_part() {
 	
 	try {      // for error handling
 		common_hosts_part();
-#line 1168 "pf.g"
+#line 1171 "pf.g"
 		
 		importer->dst_neg = importer->tmp_neg;
 		importer->dst_group.splice(importer->dst_group.begin(),
@@ -4771,7 +4771,7 @@ void PFCfgParser::dst_port_part() {
 		}
 		}
 		}
-#line 1760 "pf.g"
+#line 1763 "pf.g"
 		
 		importer->dst_port_group.splice(importer->dst_port_group.begin(),
 		importer->tmp_port_group);
@@ -4792,7 +4792,7 @@ void PFCfgParser::common_hosts_part() {
 		case ANY:
 		{
 			match(ANY);
-#line 1177 "pf.g"
+#line 1180 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::ANY, false, "0.0.0.0", "0.0.0.0"));
@@ -4803,7 +4803,7 @@ void PFCfgParser::common_hosts_part() {
 		case NO_ROUTE:
 		{
 			match(NO_ROUTE);
-#line 1183 "pf.g"
+#line 1186 "pf.g"
 			
 			importer->tmp_group.push_back(
 			AddressSpec(AddressSpec::SPECIAL_ADDRESS, false, "no-route", ""));
@@ -4844,7 +4844,7 @@ void PFCfgParser::host() {
 	Tracer traceInOut(this, "host");
 	ANTLR_USE_NAMESPACE(antlr)RefToken  tn = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  in = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 1193 "pf.g"
+#line 1196 "pf.g"
 	AddressSpec as;
 #line 4850 "PFCfgParser.cpp"
 	
@@ -4854,7 +4854,7 @@ void PFCfgParser::host() {
 		case EXLAMATION:
 		{
 			match(EXLAMATION);
-#line 1194 "pf.g"
+#line 1197 "pf.g"
 			as.neg = true;
 #line 4860 "PFCfgParser.cpp"
 			break;
@@ -4898,7 +4898,7 @@ void PFCfgParser::host() {
 			}
 			}
 			}
-#line 1197 "pf.g"
+#line 1200 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -4915,7 +4915,7 @@ void PFCfgParser::host() {
 				case NETWORK:
 				{
 					match(NETWORK);
-#line 1206 "pf.g"
+#line 1209 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_NETWORK;
 					
@@ -4925,7 +4925,7 @@ void PFCfgParser::host() {
 				case BROADCAST:
 				{
 					match(BROADCAST);
-#line 1211 "pf.g"
+#line 1214 "pf.g"
 					
 					as.at = AddressSpec::INTERFACE_BROADCAST;
 					
@@ -4935,7 +4935,7 @@ void PFCfgParser::host() {
 				case PEER:
 				{
 					match(PEER);
-#line 1216 "pf.g"
+#line 1219 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:peer' is not supported."));
@@ -4946,7 +4946,7 @@ void PFCfgParser::host() {
 				case INT_CONST:
 				{
 					match(INT_CONST);
-#line 1222 "pf.g"
+#line 1225 "pf.g"
 					
 					importer->error_tracker->registerError(
 					QString("import of 'interface:0' is not supported."));
@@ -5010,7 +5010,7 @@ void PFCfgParser::host() {
 		case SELF:
 		{
 			match(SELF);
-#line 1230 "pf.g"
+#line 1233 "pf.g"
 			
 			as.at = AddressSpec::SPECIAL_ADDRESS;
 			as.address = "self";
@@ -5021,7 +5021,7 @@ void PFCfgParser::host() {
 		case IPV6:
 		{
 			match(IPV6);
-#line 1236 "pf.g"
+#line 1239 "pf.g"
 			
 			importer->error_tracker->registerError(
 			QString("IPv6 import is not supported. "));
@@ -5033,7 +5033,7 @@ void PFCfgParser::host() {
 		case IPV4:
 		{
 			match(IPV4);
-#line 1243 "pf.g"
+#line 1246 "pf.g"
 			
 			as.at = AddressSpec::HOST_ADDRESS;
 			as.address = LT(0)->getText();
@@ -5044,7 +5044,7 @@ void PFCfgParser::host() {
 			case SLASH:
 			{
 				match(SLASH);
-#line 1249 "pf.g"
+#line 1252 "pf.g"
 				
 				as.at = AddressSpec::NETWORK_ADDRESS;
 				
@@ -5067,7 +5067,7 @@ void PFCfgParser::host() {
 				}
 				}
 				}
-#line 1253 "pf.g"
+#line 1256 "pf.g"
 				
 				as.netmask = LT(0)->getText(); 
 				
@@ -5125,7 +5125,7 @@ void PFCfgParser::host() {
 			tn = LT(1);
 			match(WORD);
 			match(GREATER_THAN);
-#line 1259 "pf.g"
+#line 1262 "pf.g"
 			
 			as.at = AddressSpec::TABLE;
 			as.address = tn->getText();
@@ -5139,7 +5139,7 @@ void PFCfgParser::host() {
 			in = LT(1);
 			match(WORD);
 			match(CLOSING_PAREN);
-#line 1265 "pf.g"
+#line 1268 "pf.g"
 			
 			// interface name or domain/host name
 			as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -5154,7 +5154,7 @@ void PFCfgParser::host() {
 		}
 		}
 		}
-#line 1271 "pf.g"
+#line 1274 "pf.g"
 		
 		importer->tmp_group.push_back(as);
 		
@@ -5239,7 +5239,7 @@ void PFCfgParser::route_to() {
 		}
 		}
 		}
-#line 1293 "pf.g"
+#line 1296 "pf.g"
 		
 		importer->route_type = PFImporter::ROUTE_TO;
 		
@@ -5274,7 +5274,7 @@ void PFCfgParser::reply_to() {
 		}
 		}
 		}
-#line 1300 "pf.g"
+#line 1303 "pf.g"
 		
 		importer->route_type = PFImporter::REPLY_TO;
 		
@@ -5309,7 +5309,7 @@ void PFCfgParser::dup_to() {
 		}
 		}
 		}
-#line 1307 "pf.g"
+#line 1310 "pf.g"
 		
 		importer->route_type = PFImporter::DUP_TO;
 		
@@ -5327,14 +5327,14 @@ void PFCfgParser::routehost() {
 	ANTLR_USE_NAMESPACE(antlr)RefToken  v6 = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  nm = ANTLR_USE_NAMESPACE(antlr)nullToken;
 	ANTLR_USE_NAMESPACE(antlr)RefToken  nm6 = ANTLR_USE_NAMESPACE(antlr)nullToken;
-#line 1312 "pf.g"
+#line 1315 "pf.g"
 	RouteSpec rs;
 #line 5333 "PFCfgParser.cpp"
 	
 	try {      // for error handling
 		match(OPENING_PAREN);
 		match(WORD);
-#line 1314 "pf.g"
+#line 1317 "pf.g"
 		rs.iface = LT(0)->getText();
 #line 5340 "PFCfgParser.cpp"
 		{
@@ -5394,7 +5394,7 @@ void PFCfgParser::routehost() {
 		}
 		}
 		}
-#line 1316 "pf.g"
+#line 1319 "pf.g"
 		
 		if (v6)
 		{
@@ -5575,7 +5575,7 @@ void PFCfgParser::user_match() {
 		}
 		}
 		}
-#line 1381 "pf.g"
+#line 1384 "pf.g"
 		
 		importer->addMessageToLog(
 		QString("Error: import of 'user' match is not supported."));
@@ -5616,7 +5616,7 @@ void PFCfgParser::group_match() {
 		}
 		}
 		}
-#line 1390 "pf.g"
+#line 1393 "pf.g"
 		
 		importer->addMessageToLog(
 		QString("Error: import of 'group' match is not supported."));
@@ -5641,7 +5641,7 @@ void PFCfgParser::tcp_flags() {
 		case ANY:
 		{
 			match(ANY);
-#line 1500 "pf.g"
+#line 1503 "pf.g"
 			
 			importer->flags_check = "none";
 			importer->flags_mask = "none";
@@ -5712,7 +5712,7 @@ void PFCfgParser::tcp_flags() {
 			}
 			}
 			}
-#line 1506 "pf.g"
+#line 1509 "pf.g"
 			
 			if (check)
 			importer->flags_check = check->getText();
@@ -5799,7 +5799,7 @@ void PFCfgParser::icmp6_type() {
 	
 	try {      // for error handling
 		match(ICMP6_TYPE);
-#line 1681 "pf.g"
+#line 1684 "pf.g"
 		
 		importer->error_tracker->registerError(
 		QString("ICMP6 import is not supported. "));
@@ -5845,7 +5845,7 @@ void PFCfgParser::state() {
 		}
 		}
 		}
-#line 1713 "pf.g"
+#line 1716 "pf.g"
 		
 		importer->state_op = LT(0)->getText();
 		
@@ -5868,7 +5868,7 @@ void PFCfgParser::queue() {
 		case WORD:
 		{
 			match(WORD);
-#line 1722 "pf.g"
+#line 1725 "pf.g"
 			importer->queue += LT(0)->getText();
 #line 5874 "PFCfgParser.cpp"
 			break;
@@ -5877,18 +5877,18 @@ void PFCfgParser::queue() {
 		{
 			match(OPENING_PAREN);
 			match(WORD);
-#line 1725 "pf.g"
+#line 1728 "pf.g"
 			importer->queue += LT(0)->getText();
 #line 5883 "PFCfgParser.cpp"
 			{ // ( ... )*
 			for (;;) {
 				if ((LA(1) == COMMA)) {
 					match(COMMA);
-#line 1727 "pf.g"
+#line 1730 "pf.g"
 					importer->queue += ",";
 #line 5890 "PFCfgParser.cpp"
 					match(WORD);
-#line 1728 "pf.g"
+#line 1731 "pf.g"
 					importer->queue += LT(0)->getText();
 #line 5894 "PFCfgParser.cpp"
 				}
@@ -6129,7 +6129,7 @@ void PFCfgParser::unary_op() {
 		case EQUAL:
 		{
 			match(EQUAL);
-#line 1768 "pf.g"
+#line 1771 "pf.g"
 			importer->tmp_port_op = "=";
 #line 6135 "PFCfgParser.cpp"
 			break;
@@ -6138,7 +6138,7 @@ void PFCfgParser::unary_op() {
 		{
 			match(EXLAMATION);
 			match(EQUAL);
-#line 1770 "pf.g"
+#line 1773 "pf.g"
 			importer->tmp_port_op = "!=";
 #line 6144 "PFCfgParser.cpp"
 			break;
@@ -6146,27 +6146,27 @@ void PFCfgParser::unary_op() {
 		default:
 			if ((LA(1) == LESS_THAN) && (LA(2) == WORD || LA(2) == INT_CONST)) {
 				match(LESS_THAN);
-#line 1772 "pf.g"
+#line 1775 "pf.g"
 				importer->tmp_port_op = "<";
 #line 6152 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == LESS_THAN) && (LA(2) == EQUAL)) {
 				match(LESS_THAN);
 				match(EQUAL);
-#line 1774 "pf.g"
+#line 1777 "pf.g"
 				importer->tmp_port_op = "<=";
 #line 6159 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == GREATER_THAN) && (LA(2) == WORD || LA(2) == INT_CONST)) {
 				match(GREATER_THAN);
-#line 1776 "pf.g"
+#line 1779 "pf.g"
 				importer->tmp_port_op = ">";
 #line 6165 "PFCfgParser.cpp"
 			}
 			else if ((LA(1) == GREATER_THAN) && (LA(2) == EQUAL)) {
 				match(GREATER_THAN);
 				match(EQUAL);
-#line 1778 "pf.g"
+#line 1781 "pf.g"
 				importer->tmp_port_op = ">=";
 #line 6172 "PFCfgParser.cpp"
 			}
@@ -6192,7 +6192,7 @@ void PFCfgParser::binary_op() {
 		{
 			match(LESS_THAN);
 			match(GREATER_THAN);
-#line 1784 "pf.g"
+#line 1787 "pf.g"
 			importer->tmp_port_op = "<>";
 #line 6198 "PFCfgParser.cpp"
 			break;
@@ -6201,7 +6201,7 @@ void PFCfgParser::binary_op() {
 		{
 			match(GREATER_THAN);
 			match(LESS_THAN);
-#line 1786 "pf.g"
+#line 1789 "pf.g"
 			importer->tmp_port_op = "><";
 #line 6207 "PFCfgParser.cpp"
 			break;
@@ -6209,7 +6209,7 @@ void PFCfgParser::binary_op() {
 		case COLON:
 		{
 			match(COLON);
-#line 1788 "pf.g"
+#line 1791 "pf.g"
 			importer->tmp_port_op = ":";
 #line 6215 "PFCfgParser.cpp"
 			break;
@@ -6259,7 +6259,7 @@ void PFCfgParser::scrub_option() {
 			}
 			}
 			}
-#line 1452 "pf.g"
+#line 1455 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("fragment", LT(0)->getText()));
@@ -6272,7 +6272,7 @@ void PFCfgParser::scrub_option() {
 		{
 			match(LITERAL_reassemble);
 			match(TCP);
-#line 1459 "pf.g"
+#line 1462 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("reassemble", "tcp"));
@@ -6284,7 +6284,7 @@ void PFCfgParser::scrub_option() {
 		case 146:
 		{
 			match(146);
-#line 1466 "pf.g"
+#line 1469 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple(LT(0)->getText(), ""));
@@ -6297,7 +6297,7 @@ void PFCfgParser::scrub_option() {
 		{
 			match(147);
 			match(INT_CONST);
-#line 1473 "pf.g"
+#line 1476 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("min-ttl", LT(0)->getText()));
@@ -6310,7 +6310,7 @@ void PFCfgParser::scrub_option() {
 		{
 			match(148);
 			match(INT_CONST);
-#line 1480 "pf.g"
+#line 1483 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple("max-mss", LT(0)->getText()));
@@ -6322,7 +6322,7 @@ void PFCfgParser::scrub_option() {
 		case 149:
 		{
 			match(149);
-#line 1487 "pf.g"
+#line 1490 "pf.g"
 			
 			importer->scrub_options.push_back(
 			str_tuple(LT(0)->getText(), ""));
@@ -6394,7 +6394,7 @@ void PFCfgParser::scrub_option_list() {
 
 void PFCfgParser::icmp_type_code() {
 	Tracer traceInOut(this, "icmp_type_code");
-#line 1528 "pf.g"
+#line 1531 "pf.g"
 	IcmpSpec is;
 #line 6400 "PFCfgParser.cpp"
 	
@@ -6428,7 +6428,7 @@ void PFCfgParser::icmp_type_code() {
 		case LITERAL_photuris:
 		{
 			icmp_type_by_name();
-#line 1530 "pf.g"
+#line 1533 "pf.g"
 			is.icmp_type_name = LT(0)->getText();
 #line 6434 "PFCfgParser.cpp"
 			break;
@@ -6436,7 +6436,7 @@ void PFCfgParser::icmp_type_code() {
 		case INT_CONST:
 		{
 			match(INT_CONST);
-#line 1532 "pf.g"
+#line 1535 "pf.g"
 			is.icmp_type_int = LT(0)->getText();
 #line 6442 "PFCfgParser.cpp"
 			break;
@@ -6486,7 +6486,7 @@ void PFCfgParser::icmp_type_code() {
 			case 206:
 			{
 				icmp_code_by_name();
-#line 1538 "pf.g"
+#line 1541 "pf.g"
 				is.icmp_code_name = LT(0)->getText();
 #line 6492 "PFCfgParser.cpp"
 				break;
@@ -6494,7 +6494,7 @@ void PFCfgParser::icmp_type_code() {
 			case INT_CONST:
 			{
 				match(INT_CONST);
-#line 1540 "pf.g"
+#line 1543 "pf.g"
 				is.icmp_code_int = LT(0)->getText();
 #line 6500 "PFCfgParser.cpp"
 				break;
@@ -6567,7 +6567,7 @@ void PFCfgParser::icmp_type_code() {
 		}
 		}
 		}
-#line 1543 "pf.g"
+#line 1546 "pf.g"
 		
 		importer->icmp_type_code_group.push_back(is);
 		
@@ -6793,7 +6793,7 @@ void PFCfgParser::icmp_type_by_name() {
 
 void PFCfgParser::port_op() {
 	Tracer traceInOut(this, "port_op");
-#line 1794 "pf.g"
+#line 1797 "pf.g"
 	PortSpec ps;
 #line 6799 "PFCfgParser.cpp"
 	
@@ -6806,11 +6806,11 @@ void PFCfgParser::port_op() {
 		case EXLAMATION:
 		{
 			unary_op();
-#line 1796 "pf.g"
+#line 1799 "pf.g"
 			ps.port_op = importer->tmp_port_op;
 #line 6812 "PFCfgParser.cpp"
 			port_def();
-#line 1798 "pf.g"
+#line 1801 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = importer->tmp_port_def;
@@ -6822,7 +6822,7 @@ void PFCfgParser::port_op() {
 		case INT_CONST:
 		{
 			port_def();
-#line 1804 "pf.g"
+#line 1807 "pf.g"
 			
 			ps.port1 = importer->tmp_port_def;
 			ps.port2 = ps.port1;
@@ -6832,11 +6832,11 @@ void PFCfgParser::port_op() {
 			{
 			if ((LA(1) == LESS_THAN || LA(1) == GREATER_THAN || LA(1) == COLON) && (_tokenSet_48.member(LA(2)))) {
 				binary_op();
-#line 1810 "pf.g"
+#line 1813 "pf.g"
 				ps.port_op = importer->tmp_port_op;
 #line 6838 "PFCfgParser.cpp"
 				port_def();
-#line 1811 "pf.g"
+#line 1814 "pf.g"
 				ps.port2 = LT(0)->getText();
 #line 6842 "PFCfgParser.cpp"
 			}
@@ -6852,7 +6852,7 @@ void PFCfgParser::port_op() {
 		case IPV6:
 		{
 			match(IPV6);
-#line 1815 "pf.g"
+#line 1818 "pf.g"
 			
 			ps.setFromPortRange(LT(0)->getText());
 			
@@ -6865,7 +6865,7 @@ void PFCfgParser::port_op() {
 		}
 		}
 		}
-#line 1819 "pf.g"
+#line 1822 "pf.g"
 		
 		importer->tmp_port_group.push_back(ps);
 		

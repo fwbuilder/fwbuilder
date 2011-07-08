@@ -87,10 +87,12 @@ public:
     void clear() { error_status = false; warning_status = false; errors.clear(); warnings.clear(); }
     
     void registerError(const QString &msg);
+    void registerError(const std::string &msg);
     bool hasErrors() { return error_status; }
     QStringList getErrors() { return errors; }
 
     void registerWarning(const QString &msg);
+    void registerWarning(const std::string &msg);
     bool hasWarnings() { return warning_status; }
     QStringList getWarnings() { return warnings; }
 };
