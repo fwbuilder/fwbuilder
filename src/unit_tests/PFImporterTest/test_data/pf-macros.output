@@ -1,4 +1,4 @@
-3: Address Table: <addr_list_1>:  10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
+Warning: Macro undefined_macro is undefined3: Address Table: <addr_list_1>:  10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
 5: Address Table: <addr_list_2>:  10.1.1.1, 10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
 7: Address Table: <addr_list_3>:  10.1.1.1, 10.123.12.33/27, 10.123.14.9/27
 9: Address Table: <addr_list_4>:  10.1.1.1, 10.123.12.34/27, 10.123.14.10/27
@@ -9,23 +9,25 @@
 24: Address Table: <mixed_macro_2>:  192.168.1.1, 192.168.2.1, em1
 24: New interface: em1
 25: Address Table: <mixed_macro_3>:  192.168.1.1, 192.168.2.1, em1
-29: filtering rule: action pass; interfaces: 
 31: filtering rule: action pass; interfaces: 
-32: filtering rule: action pass; interfaces: 
 33: filtering rule: action pass; interfaces: 
 34: filtering rule: action pass; interfaces: 
 35: filtering rule: action pass; interfaces: 
 36: filtering rule: action pass; interfaces: 
 37: filtering rule: action pass; interfaces: 
 38: filtering rule: action pass; interfaces: 
+39: filtering rule: action pass; interfaces: 
 40: filtering rule: action pass; interfaces: 
-41: filtering rule: action pass; interfaces: 
 42: filtering rule: action pass; interfaces: 
 43: filtering rule: action pass; interfaces: 
 44: filtering rule: action pass; interfaces: 
 45: filtering rule: action pass; interfaces: 
-47: filtering rule: action pass; interfaces: em1
-49: filtering rule: action pass; interfaces: em1
-50: filtering rule: action pass; interfaces: em1
-51: filtering rule: action pass; interfaces: em1
+46: filtering rule: action pass; interfaces: 
+47: filtering rule: action pass; interfaces: 
+50: filtering rule: action pass; interfaces: 
+50: Warning: Macro '$undefined_macro' was undefined, rule may be broken
 52: filtering rule: action pass; interfaces: em1
+54: filtering rule: action pass; interfaces: em1
+55: filtering rule: action pass; interfaces: em1
+56: filtering rule: action pass; interfaces: em1
+57: filtering rule: action pass; interfaces: em1

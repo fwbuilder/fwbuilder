@@ -507,11 +507,25 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
             return intf;
         } else
         {
-            // TODO: create and return DNSName object
+            QString name = QString::fromUtf8(as.address.c_str());
+            if (name.startsWith('$'))
+            {
+                /*
+                 * We perform macro substitutions in
+                 * PFImporter::substituteMacros(), however if we get a
+                 * host name that starts with a '$' here, then this is
+                 * an undefined macro that could not be substituted.
+                 * Mark rule as bad but still create run-time DNSName
+                 * object.
+                 */
+                error_tracker->registerWarning(
+                    QObject::tr("Macro '%1' was undefined, rule may be broken")
+                    .arg(name));
+            }
             ObjectSignature sig(error_tracker);
             sig.type_name = DNSName::TYPENAME;
-            sig.object_name = QString::fromUtf8(as.address.c_str());
-            sig.dns_name = QString::fromUtf8(as.address.c_str());
+            sig.object_name = name;
+            sig.dns_name = name;
             return address_maker->createObject(sig);
         }
     }
@@ -650,6 +664,13 @@ void PFImporter::pushRule()
         pushNATRule();
 
     assert(current_rule!=NULL);
+
+    if (error_tracker->hasWarnings())
+    {
+        QStringList warn = error_tracker->getWarnings();
+        addMessageToLog("Warning: " + warn.join("\n"));
+        markCurrentRuleBad();
+    }
 
     if (error_tracker->hasErrors())
     {

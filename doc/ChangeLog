@@ -1,5 +1,16 @@
 2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PFImporter.cpp (makeAddressObj): see #2556 "PF import: impor of
+	rules referring to undefined macros". If pf.conf file uses an
+	undefined macro (there is $macro somewhere but the macro has never
+	been defined), importer issues a warning, creates run-time DNSName
+	object with the name "$macro" and marks all rules where it is used
+	as broken, that is, rules are colored red and the error message is
+	added to the comment field. Using run-time DNSName object makes
+	compiler use "$macro" in the generated pf rule which means
+	fwbuilder generates exactly the same pf rule as the one it tried
+	to import.
+
 	* PFImporterRun.cpp (run): see #2554 "PF import: create groups of
 	address objects for macros where possible". Importer for PF
 	recognizes macros that define lists of ip addresses, interfaces or

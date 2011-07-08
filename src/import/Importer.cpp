@@ -562,6 +562,13 @@ void Importer::pushRule()
     // then add it to the current ruleset
     current_ruleset->ruleset->add(current_rule);
 
+    if (error_tracker->hasWarnings())
+    {
+        QStringList warn = error_tracker->getWarnings();
+        addMessageToLog("Warning: " + warn.join("\n"));
+        markCurrentRuleBad();
+    }
+
     if (error_tracker->hasErrors())
     {
         QStringList err = error_tracker->getErrors();
@@ -790,6 +797,9 @@ void Importer::markCurrentRuleBad()
     QStringList comment;
     if ( ! current_rule->getComment().empty())
         comment.append(QString::fromUtf8(current_rule->getComment().c_str()));
+
+    foreach(QString err, error_tracker->getWarnings())
+        comment.append(err);
 
     foreach(QString err, error_tracker->getErrors())
         comment.append(err);

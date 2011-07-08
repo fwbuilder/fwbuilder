@@ -1193,7 +1193,7 @@ common_hosts_part :
 host { AddressSpec as; } :
         ( EXLAMATION { as.neg = true; } )?
         (
-            WORD
+            ( WORD | MACRO )
             {
                 // interface name or domain/host name
                 as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -2061,15 +2061,16 @@ options {
     | ( DIGIT )+ { $setType(INT_CONST); }
 
 
-// making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD do
-// not start WORD with '$' since we expand macros in PFImporterRun
-// using regex.
-// double quote " should be included, without it STRING does not match
+// Making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD.
+// Double quote " should be included, without it STRING does not match
 
     | ( 'a'..'z' | 'A'..'Z' )
       ( '"' | '$' | '%' | '&' | '-' | '.' | '0'..'9' | ';' |
         '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
       { $setType(WORD); }
+
+    | '$' ( 'a'..'z' | 'A'..'Z' ) ( 'a'..'z' | 'A'..'Z' | '0'..'9' | '_' )*
+      { $setType(MACRO); }
     ;
 
 STRING : '"' (~'"')* '"';

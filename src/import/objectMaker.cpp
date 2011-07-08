@@ -81,6 +81,12 @@ void ObjectMakerErrorTracker::registerError(const QString &msg)
     error_status = true;
 }
 
+void ObjectMakerErrorTracker::registerWarning(const QString &msg)
+{
+    if ( ! warnings.contains(msg)) warnings.append(msg);
+    warning_status = true;
+}
+
 
 ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
 {
