@@ -1,5 +1,12 @@
 2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PFImporter.cpp (makeAddressObj): see #2546 "PF import - negation
+	inside of inline tables is ignored". Since we can not import
+	address lists or tables that contain a mix of negated and
+	non-negated items, importer should display an error when it
+	enounters one of these and mark all rules that use it as "broken"
+	(rule is colored red and error message is added to the comment).
+
 	* PFImporter.cpp (makeAddressObj): see #2556 "PF import: impor of
 	rules referring to undefined macros". If pf.conf file uses an
 	undefined macro (there is $macro somewhere but the macro has never

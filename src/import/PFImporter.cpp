@@ -587,7 +587,12 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
 
     if (as.at == AddressSpec::TABLE)
     {
-        return address_table_registry[as.address.c_str()];
+        FWObject *at = address_table_registry[as.address.c_str()];
+        if (isObjectBroken(at))
+        {
+            error_tracker->registerError(getBrokenObjectError(at));
+        }
+        return at;
     }
 
     return NULL;
@@ -1375,20 +1380,27 @@ void PFImporter::newAddressTableObject(const string &name,
                     .arg(QString::fromUtf8(name.c_str()))
                     .arg(addr_list.join(", ")));
 
-    if (has_negations)
-    {
-        // can not use error_tracker->registerError() here because
-        // tables are created before importer encounters any rules and
-        // so this error can not be associated with a rule.
-        addMessageToLog(
-            QObject::tr("Error: import of table definition with negated addresses is not supported."));
-    }
-
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *og =
         commitObject(maker.createObject(ObjectGroup::TYPENAME, name.c_str()));
     assert(og!=NULL);
     address_table_registry[name.c_str()] = og;
+
+    if (has_negations)
+    {
+        // can not use error_tracker->registerError() here because
+        // tables are created before importer encounters any rules and
+        // so this error can not be associated with a rule.
+        QString err =
+            QObject::tr("Error: import of table definition with negated "
+                        "addresses is not supported.");
+        addMessageToLog(err);
+
+        err =
+            QObject::tr("Address table '%1' has a mix of negated and non-negated "
+                        "addresses in the original file.");
+        registerBrokenObject(og, err.arg(QString::fromUtf8(name.c_str())));
+    }
 
     for (it=addresses.begin(); it!=addresses.end(); ++it)
     {

@@ -12,5 +12,8 @@
 10: New interface: pcn0
 11: Address Table: <dst_addresses_3>:  pcn0, pcn0
 12: Address Table: <dst_addresses_4>:  www.fwbuilder.org, www.netcitadel.com
-Could not find enough information in the data file to create any firewall rules.
-
+15: Address Table: <dst_addresses_5>:  192.168.10.1, !192.168.10.2, 192.168.20.0/24
+15: Error: import of table definition with negated addresses is not supported.
+18: New interface: em1
+18: filtering rule: action pass; interfaces: em1
+18: Error: Address table 'dst_addresses_5' has a mix of negated and non-negated addresses in the original file.

@@ -1016,3 +1016,18 @@ void Importer::rearrangeVlanInterfaces()
 
 }
 
+void Importer::registerBrokenObject(FWObject *obj, const QString &err)
+{
+    broken_objects[obj] = err;
+}
+
+bool Importer::isObjectBroken(FWObject *obj)
+{
+    return broken_objects.count(obj) != 0;
+}
+
+QString Importer::getBrokenObjectError(FWObject *obj)
+{
+    return broken_objects[obj];
+}
+
