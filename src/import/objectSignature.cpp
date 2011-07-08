@@ -52,6 +52,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/UserService.h"
 #include "fwbuilder/physAddress.h"
+#include "fwbuilder/DynamicGroup.h"
 
 #include "QStringListOperators.h"
 #include "getProtoByName.h"
@@ -850,6 +851,16 @@ void* ObjectSignature::dispatch(AddressTable *obj, void*)
     object_name = QString::fromUtf8(obj->getName().c_str());
     type_name = obj->getTypeName().c_str();
     address_table_name = QString::fromUtf8(obj->getSourceName().c_str());
+    return this;
+}
+
+/*
+ * TODO: implement signature for DynamicGroup object so we can deduplicate them
+ */
+void* ObjectSignature::dispatch(DynamicGroup *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
     return this;
 }
 

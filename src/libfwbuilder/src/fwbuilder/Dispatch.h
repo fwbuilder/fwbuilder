@@ -113,6 +113,7 @@ namespace libfwbuilder {
     class UDPService;
     class UserService;
     class physAddress;
+    class DynamicGroup;
 };
 
 /*
@@ -225,7 +226,7 @@ public:
         __DECLARE_DISPATCH_METHODS(UDPService);
         __DECLARE_DISPATCH_METHODS(UserService);
         __DECLARE_DISPATCH_METHODS(physAddress);
-        
+        __DECLARE_DISPATCH_METHODS(DynamicGroup);
     };
 };
 

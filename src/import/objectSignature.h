@@ -57,6 +57,7 @@ namespace libfwbuilder
     class UDPService;
     class physAddress;
     class UserService;
+    class DynamicGroup;
 };
 
 class ObjectMakerErrorTracker;
@@ -194,6 +195,7 @@ public:
     virtual void* dispatch(libfwbuilder::ServiceGroup*, void*);
     virtual void* dispatch(libfwbuilder::AttachedNetworks*, void*);
     virtual void* dispatch(libfwbuilder::UserService*, void*);
+    virtual void* dispatch(libfwbuilder::DynamicGroup*, void*);
     
 };
 

@@ -1,3 +1,8 @@
+2011-07-08  vadim  <vadim@netcitadel.com>
+
+	* objectSignature.cpp: fixes #2559 "Crash on import when at least
+	one DynamicGroup object already exists in the object tree."
+
 2011-07-07  Vadim Kurland  <vadim@netcitadel.com>
 
 	* RoutingCompiler.cpp (processNext): see #2191 "Crash when
