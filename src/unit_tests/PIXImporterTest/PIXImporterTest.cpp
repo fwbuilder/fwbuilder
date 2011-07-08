@@ -211,6 +211,7 @@ void PIXImporterTest::PIX_6_Test()
     std::istringstream instream(openTestFile("test_data/pix6.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -228,6 +229,7 @@ void PIXImporterTest::PIX_7_Test()
     std::istringstream instream(openTestFile("test_data/pix7.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -245,6 +247,7 @@ void PIXImporterTest::PIX_7_NAT_Test()
     std::istringstream instream(openTestFile("test_data/pix7-nat.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -262,6 +265,7 @@ void PIXImporterTest::ASA_8_0_Test()
     std::istringstream instream(openTestFile("test_data/asa8.0.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -279,6 +283,7 @@ void PIXImporterTest::ASA_8_3_Test()
     std::istringstream instream(openTestFile("test_data/asa8.3.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -296,7 +301,7 @@ void PIXImporterTest::ObjectsAndGroupsTest()
     std::istringstream instream(openTestFile("test_data/asa8.3-objects-and-groups.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
-
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -317,6 +322,7 @@ void PIXImporterTest::ACLObjectsAndGroupsTest()
     std::istringstream instream(openTestFile("test_data/asa8.3-acl-object-groups.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -337,6 +343,7 @@ void PIXImporterTest::ACLTest()
     std::istringstream instream(openTestFile("test_data/asa8.3-acl.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -354,6 +361,7 @@ void PIXImporterTest::NamesTest()
     std::istringstream instream(openTestFile("test_data/asa8.0-names.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -369,6 +377,7 @@ void PIXImporterTest::FWSM_4_1_Test()
     std::istringstream instream(openTestFile("test_data/fwsm1.test"));
 
     Importer* imp = new PIXImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
